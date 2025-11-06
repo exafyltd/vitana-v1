@@ -1,0 +1,298 @@
+import React, { useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { MoreVertical } from 'lucide-react';
+import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
+import { useRTL } from '@/components/RTLProvider';
+
+export interface StandardHorizontalCardProps {
+  id: string;
+  screenId: string;
+  icon: React.ReactNode | string;
+  title: string;
+  description: string;
+  badges?: Array<{ 
+    label: string; 
+    variant: 'default' | 'secondary' | 'outline' | 'destructive';
+    icon?: React.ReactNode;
+  }>;
+  metadata?: Array<{ 
+    icon: React.ReactNode; 
+    text: string; 
+    color?: string;
+  }>;
+  timestamp?: string | Date;
+  primaryAction?: {
+    label: string;
+    onClick: () => void;
+    variant?: 'default' | 'outline' | 'ghost';
+    icon?: React.ReactNode;
+    disabled?: boolean;
+    requiresConsent?: boolean;
+  };
+  secondaryActions?: Array<{
+    label: string;
+    onClick: () => void;
+    icon?: React.ReactNode;
+    variant?: 'ghost' | 'outline';
+  }>;
+  expandedContent?: React.ReactNode;
+  isExpanded?: boolean;
+  onToggleExpand?: (id: string) => void;
+  density?: 'compact' | 'comfy';
+  accentColor?: string;
+  className?: string;
+  privacyBadge?: {
+    label: string;
+    color: string;
+  };
+  requiresConsent?: boolean;
+  onConsentRequired?: () => void;
+  onClick?: () => void;
+  analyticsCategory?: string;
+}
+
+export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardHorizontalCardProps>(
+  (props, ref) => {
+    const {
+      id,
+      screenId,
+      icon,
+      title,
+      description,
+      badges,
+      metadata,
+      timestamp,
+      primaryAction,
+      secondaryActions,
+      expandedContent,
+      isExpanded,
+      onToggleExpand,
+      density = 'comfy',
+      accentColor,
+      className,
+      privacyBadge,
+      requiresConsent,
+      onConsentRequired,
+      onClick,
+      analyticsCategory
+    } = props;
+
+    const { isRTL } = useRTL();
+    const cardRef = useRef<HTMLDivElement>(null);
+    const hasLoggedView = useRef(false);
+
+    useEffect(() => {
+      if (!hasLoggedView.current && cardRef.current) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              horizontalCardAnalytics.cardView({
+                screenId,
+                cardId: id,
+                variant: 'standard',
+                density
+              });
+              hasLoggedView.current = true;
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.5 }
+        );
+        observer.observe(cardRef.current);
+        return () => observer.disconnect();
+      }
+    }, [screenId, id, density]);
+
+    const handlePrimaryAction = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      
+      if (primaryAction?.requiresConsent && requiresConsent) {
+        onConsentRequired?.();
+        return;
+      }
+      
+      horizontalCardAnalytics.ctaClick({
+        screenId,
+        cardId: id,
+        variant: 'standard',
+        ctaLabel: primaryAction?.label || 'primary',
+        ctaPosition: 'primary'
+      });
+      
+      primaryAction?.onClick();
+    };
+
+    const handleExpand = () => {
+      const newExpanded = !isExpanded;
+      onToggleExpand?.(id);
+      
+      horizontalCardAnalytics.cardExpand({
+        screenId,
+        cardId: id,
+        variant: 'standard',
+        expanded: newExpanded
+      });
+    };
+
+    const renderIcon = () => {
+      if (typeof icon === 'string') {
+        return (
+          <div className={cn(
+            "flex items-center justify-center rounded-full",
+            density === 'compact' ? 'w-10 h-10 text-xl' : 'w-12 h-12 text-2xl',
+            accentColor ? `bg-${accentColor}/10` : 'bg-muted'
+          )}>
+            {icon}
+          </div>
+        );
+      }
+      return icon;
+    };
+
+    const formatTimestamp = () => {
+      if (!timestamp) return '';
+      if (typeof timestamp === 'string') return timestamp;
+      return timestamp.toLocaleDateString();
+    };
+
+    return (
+      <article
+        ref={ref || cardRef}
+        className={cn(
+          "group relative",
+          "bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg",
+          "hover:shadow-xl transition-all duration-200",
+          "focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
+          density === 'compact' ? 'min-h-[64px]' : 'min-h-[80px]',
+          className
+        )}
+        onClick={onClick}
+        role="article"
+        aria-expanded={isExpanded}
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleExpand();
+          }
+        }}
+      >
+        {accentColor && (
+          <div className={cn(
+            "absolute top-0 bottom-0 w-1 rounded-l-2xl",
+            `bg-${accentColor}`,
+            isRTL ? 'right-0 rounded-l-none rounded-r-2xl' : 'left-0'
+          )} />
+        )}
+
+        <div className={cn(
+          "grid items-center gap-4 px-4 py-3",
+          "grid-cols-[48px_1fr_auto]"
+        )}>
+          <div className="flex items-center justify-center">
+            {renderIcon()}
+          </div>
+
+          <div className="flex-1 min-w-0 space-y-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="font-semibold text-sm truncate" dir={isRTL ? 'rtl' : 'ltr'}>
+                {title}
+              </h3>
+              {badges?.map((badge, idx) => (
+                <Badge key={idx} variant={badge.variant} className="flex items-center gap-1">
+                  {badge.icon}
+                  <span>{badge.label}</span>
+                </Badge>
+              ))}
+              {privacyBadge && (
+                <Badge variant="outline" className={cn("text-xs", privacyBadge.color)}>
+                  🔒 {privacyBadge.label}
+                </Badge>
+              )}
+            </div>
+            <p className="text-sm text-muted-foreground line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+              {description}
+            </p>
+            {metadata && (
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                {metadata.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-1">
+                    {item.icon}
+                    <span>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="flex items-center justify-end gap-2">
+            {timestamp && (
+              <span className="text-xs text-muted-foreground hidden group-hover:block">
+                {formatTimestamp()}
+              </span>
+            )}
+            
+            {primaryAction && (
+              <Button
+                size="sm"
+                variant={primaryAction.variant || 'default'}
+                onClick={handlePrimaryAction}
+                disabled={primaryAction.disabled}
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                {primaryAction.icon}
+                {primaryAction.label}
+              </Button>
+            )}
+
+            {secondaryActions && secondaryActions.length > 0 && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align={isRTL ? 'start' : 'end'}>
+                  {secondaryActions.map((action, idx) => (
+                    <DropdownMenuItem
+                      key={idx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        horizontalCardAnalytics.ctaClick({
+                          screenId,
+                          cardId: id,
+                          variant: 'standard',
+                          ctaLabel: action.label,
+                          ctaPosition: 'secondary'
+                        });
+                        action.onClick();
+                      }}
+                    >
+                      {action.icon}
+                      {action.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
+
+        {isExpanded && expandedContent && (
+          <div className="px-4 pb-4 pt-2 border-t border-white/20 animate-in fade-in slide-in-from-top-2">
+            {expandedContent}
+          </div>
+        )}
+      </article>
+    );
+  }
+);
+
+StandardHorizontalCard.displayName = 'StandardHorizontalCard';
