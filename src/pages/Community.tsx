@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";

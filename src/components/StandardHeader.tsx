@@ -4,19 +4,21 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 interface StandardHeaderProps {
   title: string;
   description: string;
   emoji?: string;
   syncTimestamp?: string | null;
+  className?: string;
 }
 
 /**
  * Standard 3-card header pattern for all major pages
  * Ensures consistent Welcome + Autopilot + Vitana Index layout
  */
-export default function StandardHeader({ title, description, emoji, syncTimestamp }: StandardHeaderProps) {
+export default function StandardHeader({ title, description, emoji, syncTimestamp, className }: StandardHeaderProps) {
   const navigate = useNavigate();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -27,7 +29,7 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
   return (
     <>
       {/* Header Section with Perfect Symmetry - Three Cards Layout */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-8">
+      <div className={cn("flex flex-col lg:flex-row gap-4 mb-8", className)}>
         {/* Welcome Message */}
         <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
           <div>
