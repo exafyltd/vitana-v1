@@ -226,11 +226,12 @@ export default function Reminder() {
       <SubNavigation items={messagesNavigation} />
       
       <div className="p-6 bg-gradient-to-br from-domain-messages-tint via-background to-domain-messages-tint/50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl xl:max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-6">
           <StandardHeader
             title="Smart Reminders"
             description="Catch up with unanswered messages and respond quickly"
             emoji="⏰"
+            className="mb-4 xl:mb-3"
           />
 
           <UtilityActionButton>

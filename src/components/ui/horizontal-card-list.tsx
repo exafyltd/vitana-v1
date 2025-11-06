@@ -65,7 +65,12 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
   // Disable virtualization when any card is expanded
   const shouldVirtualize = expandedCards.size === 0 && (enableVirtualization ?? items.length >= 30);
   
-  const actualItemHeight = itemHeight || (variant === 'standard' ? 88 : 160);
+  // Use responsive heights based on screen size
+  const isXL = typeof window !== 'undefined' && window.innerWidth >= 1280;
+  const actualItemHeight = itemHeight || (variant === 'standard' 
+    ? (isXL ? 84 : 88) 
+    : (isXL ? 152 : 160)
+  );
   const actualContainerHeight = containerHeight || 
     (typeof window !== 'undefined' ? window.innerHeight - 200 : 600);
 
@@ -205,9 +210,9 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
   }
 
   const gapClass = {
-    sm: 'divide-y divide-white/5 [&>*]:py-1.5',
-    md: 'divide-y divide-white/5 [&>*]:py-2',
-    lg: 'space-y-2'
+    sm: 'divide-y divide-white/5 [&>*]:py-1.5 xl:[&>*]:py-1',
+    md: 'divide-y divide-white/5 [&>*]:py-2 xl:[&>*]:py-1.5',
+    lg: 'space-y-2 xl:space-y-1.5'
   }[gap];
 
   return (

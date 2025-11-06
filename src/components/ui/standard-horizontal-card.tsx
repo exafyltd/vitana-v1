@@ -180,7 +180,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           "rounded-xl border border-white/10",
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "min-h-[88px]",
+          "min-h-[88px] xl:min-h-[84px]",
           "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
           isRTL 
@@ -197,7 +197,10 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
         <button 
           className={cn(
-            "w-full grid items-center gap-3 px-4 py-3 text-left min-h-[88px]",
+            "w-full grid items-center text-left",
+            "min-h-[88px] xl:min-h-[84px]",
+            "gap-3 xl:gap-2.5",
+            "px-4 py-3 xl:px-3.5 xl:py-2.5",
             "grid-cols-[36px_1fr_auto]",
             "focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset",
             "rounded-xl transition-all duration-200"
@@ -230,7 +233,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-baseline gap-2 flex-nowrap">
-              <h3 className="text-[15px] font-semibold leading-tight tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
+              <h3 className="text-[15px] font-semibold leading-tight xl:leading-[1.2] tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {badges?.map((badge, idx) => (
@@ -250,11 +253,11 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 </span>
               )}
             </div>
-            <p className="text-[13.5px] leading-snug text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug xl:leading-[1.25] text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             {metadata && (
-              <div className="flex items-center gap-1 text-[12px] text-muted-foreground/70">
+              <div className="flex items-center gap-1 text-[12px] leading-normal xl:leading-[1.1] text-muted-foreground/70">
                 {metadata.map((item, idx) => (
                   <React.Fragment key={idx}>
                     {idx > 0 && <span className="text-muted-foreground/40 mx-0.5">•</span>}
@@ -270,6 +273,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
           <div className={cn(
             "flex items-center justify-end gap-1.5",
+            "focus-within:xl:opacity-100",
             isRTL && "justify-start order-first"
           )}>
             {primaryAction && (
@@ -279,10 +283,20 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 onClick={handlePrimaryAction}
                 disabled={primaryAction.disabled}
                 tabIndex={-1}
-                className="h-8 px-3 text-[13px] font-medium opacity-70 hover:opacity-100 hover:bg-accent hover:text-accent-foreground group-hover:opacity-100 transition-all duration-200"
+                className={cn(
+                  "h-8 text-[13px] font-medium transition-all duration-200",
+                  "opacity-70 hover:opacity-100 hover:bg-accent hover:text-accent-foreground group-hover:opacity-100",
+                  "xl:w-8 xl:p-0 xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
+                  "xl:group-hover:w-auto xl:group-hover:px-3",
+                  "px-3"
+                )}
+                aria-label={primaryAction.label}
+                title={primaryAction.label}
               >
                 {primaryAction.icon}
-                {primaryAction.label}
+                <span className="xl:hidden xl:group-hover:inline xl:ml-1">
+                  {primaryAction.label}
+                </span>
               </Button>
             )}
 
@@ -293,7 +307,12 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                     size="sm"
                     variant="ghost"
                     tabIndex={-1}
-                    className="h-8 w-8 p-0"
+                    className={cn(
+                      "h-8 w-8 p-0",
+                      "xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
+                      "transition-opacity duration-200"
+                    )}
+                    aria-label="More actions"
                   >
                     <MoreVertical className="w-4 h-4" />
                   </Button>

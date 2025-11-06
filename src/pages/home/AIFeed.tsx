@@ -91,11 +91,12 @@ export default function AIFeed() {
       <SEO title="AI Feed | Dashboard" description="AI Feed & Automations" canonical={window.location.href} />
       <SubNavigation items={homeNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl xl:max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-6">
           <StandardHeader
             title="AI Feed & Automations"
             description="The magic window – where Autopilot shows its work."
             emoji="⚡"
+            className="mb-4 xl:mb-3"
           />
 
           {/* Action Buttons */}

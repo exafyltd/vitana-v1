@@ -262,10 +262,12 @@ function Timeline() {
       <SubNavigation items={memoryNavigation} />
       
       <div className="p-6">
+        <div className="max-w-7xl xl:max-w-[1480px] 2xl:max-w-[1600px] mx-auto px-6">
         <StandardHeader 
           title="Activity Timeline"
           description="Track your activity history across all system interactions"
           emoji="📜"
+          className="mb-4 xl:mb-3"
         />
 
         <UtilityActionButton>
@@ -306,7 +308,7 @@ function Timeline() {
               </p>
             </div>
 
-            <div className="max-w-7xl mx-auto">
+            <div>
               {isLoadingAll ? (
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -337,7 +339,7 @@ function Timeline() {
               </p>
             </div>
 
-            <div className="max-w-7xl mx-auto">
+            <div>
               {/* Horizontal Category Menu */}
               <div className="overflow-x-auto pb-4 mb-6">
                 <div className="flex gap-3 min-w-max">
@@ -368,8 +370,9 @@ function Timeline() {
                       </Button>
                     );
                   })}
-                </div>
-              </div>
+        </div>
+        </div>
+      </div>
 
               {/* Selected Category Content */}
               {expandedCategory && (() => {
@@ -466,8 +469,7 @@ function Timeline() {
                   </div>
                 );
               })()}
-            </div>
-          </TabsContent>
+            </TabsContent>
         </Tabs>
 
         <HistoryMasterActionPopup 
@@ -480,6 +482,7 @@ function Timeline() {
           open={promoteDialogOpen}
           onOpenChange={setPromoteDialogOpen}
         />
+        </div>
       </div>
     </AppLayout>
   );

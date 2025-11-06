@@ -134,15 +134,14 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       <article
         ref={ref || cardRef}
         className={cn(
-          "group relative",
+          "group relative overflow-hidden",
           "rounded-xl border border-white/10",
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
-          "min-h-[100px]",
-          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-[2px] before:rounded-l-xl",
+          "min-h-[160px] xl:min-h-[152px]",
+          "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
-          "hover:before:bg-current",
-          isRTL && "before:left-auto before:right-0 before:rounded-l-none before:rounded-r-xl",
+          "before:left-0 before:rounded-l-xl hover:before:bg-current focus-within:before:bg-current",
           className
         )}
         style={{
@@ -152,10 +151,16 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         }}
         aria-label={title}
       >
-        <div className="grid items-stretch grid-cols-1 lg:grid-cols-[36%_auto_112px] gap-0 lg:gap-3">
-          <div 
-            className="relative overflow-hidden h-[100px] rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none"
-          >
+      <div className={cn(
+        "grid items-stretch grid-cols-1",
+        "lg:grid-cols-[36%_auto_112px]",
+        "xl:grid-cols-[32%_auto_104px]",
+        "gap-0 lg:gap-3 xl:gap-2.5"
+      )}>
+          <div className={cn(
+            "relative overflow-hidden rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none",
+            "h-[160px] xl:h-[152px]"
+          )}>
             {!imageError ? (
               <>
                 <img
@@ -193,7 +198,11 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           </div>
 
           <button
-            className="flex-1 px-4 py-3 flex flex-col justify-center gap-1.5 text-left focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset"
+            className={cn(
+              "flex-1 flex flex-col justify-center gap-1.5 text-left",
+              "px-4 py-3 xl:px-3.5 xl:py-2.5",
+              "focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset"
+            )}
             onClick={() => {
               if (expandedContent) {
                 handleExpand();
@@ -204,7 +213,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             tabIndex={0}
           >
             <div className="flex items-baseline gap-2 flex-nowrap">
-              <h3 className="text-[15px] font-semibold leading-tight tracking-tight line-clamp-2 flex-1 min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
+              <h3 className="text-[15px] font-semibold leading-tight xl:leading-[1.2] tracking-tight line-clamp-2 flex-1 min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {privacyBadge && (
@@ -219,12 +228,12 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
               )}
             </div>
             
-            <p className="text-[13.5px] leading-snug text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug xl:leading-[1.25] text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             
             {(motivationalHook || (metadata && metadata.length > 0)) && (
-              <div className="flex items-center gap-1 text-[12px]">
+              <div className="flex items-center gap-1 text-[12px] leading-normal xl:leading-[1.1]">
                 {motivationalHook && (
                   <p className="text-primary font-medium line-clamp-1 flex-shrink min-w-0">
                     {motivationalHook}
@@ -251,11 +260,12 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           </button>
 
           {/* Right Badge Zone - Fixed width, single medal + cadence text */}
-          <div className={cn(
-            "flex flex-col items-end justify-center px-3 py-3 bg-muted/20",
-            "shrink-0 w-full lg:w-[112px] min-w-[100px]",
-            "lg:mt-0 mt-2"
-          )}>
+        <div className={cn(
+          "flex flex-col items-end justify-center bg-muted/20",
+          "px-3 py-3 xl:px-2.5 xl:py-2.5",
+          "shrink-0 w-full lg:w-[112px] xl:w-[104px] min-w-[100px]",
+          "lg:mt-0 mt-2"
+        )}>
             {statusBadge && (
               <div 
                 className="flex items-center gap-1 text-[13px] font-semibold leading-none"

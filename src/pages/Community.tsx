@@ -1134,11 +1134,15 @@ export default withScreenId(function Community() {
 
             <SplitBarContent value="rankings">
               {/* Rankings Controls */}
-              <div className="flex flex-wrap gap-4 mb-6 p-4 bg-white/50 rounded-lg mx-6">
+              <div className={cn(
+                "flex flex-wrap items-center rounded-lg mx-6",
+                "gap-4 xl:gap-2 p-4 xl:p-3 mb-6 xl:mb-4",
+                "bg-white/50"
+              )}>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Timeframe:</span>
                   <Select value={timeframe} onValueChange={setTimeframe}>
-                    <SelectTrigger className="w-24">
+                    <SelectTrigger className="w-24 h-10 xl:h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -1152,7 +1156,7 @@ export default withScreenId(function Community() {
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">Scope:</span>
                   <Select value={scope} onValueChange={setScope}>
-                    <SelectTrigger className="w-32">
+                    <SelectTrigger className="w-32 h-10 xl:h-9">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
