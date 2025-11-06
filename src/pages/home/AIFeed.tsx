@@ -32,6 +32,7 @@ import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { transformActivityToVisualCard, transformRoutineToVisualCard } from "@/lib/ai-feed-transformers";
 import { isFeatureEnabled } from "@/lib/feature-flags";
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
+import { DividerCard, MOTIVATIONAL_DIVIDERS } from "@/components/ui/divider-card";
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -84,6 +85,17 @@ export default function AIFeed() {
   // Transform activities to visual cards if unified lists are enabled
   const transformedActivities: VisualHorizontalCardProps[] = filteredFeed.map(transformActivityToVisualCard);
   const useUnifiedLists = isFeatureEnabled('enableUnifiedHorizontalLists');
+  
+  // Inject motivational dividers for Activity Feed only
+  const activitiesWithDividers = transformedActivities.flatMap((activity, index) => {
+    const items: any[] = [activity];
+    if ((index + 1) % 4 === 0 && index < transformedActivities.length - 1) {
+      const dividerIndex = Math.floor((index + 1) / 4) - 1;
+      const divider = MOTIVATIONAL_DIVIDERS[dividerIndex % MOTIVATIONAL_DIVIDERS.length];
+      items.push({ type: 'divider', id: `divider-${index}`, ...divider });
+    }
+    return items;
+  });
 
   return (
     <AppLayout>
@@ -154,15 +166,22 @@ export default function AIFeed() {
                   </div>
 
                   {useUnifiedLists ? (
-                    <HorizontalCardList
-                      items={transformedActivities}
-                      variant="visual"
-                      groupBy="date"
-                      screenId="AI_FEED_ACTIVITY"
-                      listId="ai-feed-activity"
-                      gap="sm"
-                      className="pb-4"
-                    />
+                    <div className="space-y-0">
+                      {activitiesWithDividers.map((item: any) => 
+                        'type' in item && item.type === 'divider' ? (
+                          <DividerCard key={item.id} emoji={item.emoji} message={item.message} />
+                        ) : null
+                      )}
+                      <HorizontalCardList
+                        items={transformedActivities}
+                        variant="visual"
+                        groupBy="date"
+                        screenId="AI_FEED_ACTIVITY"
+                        listId="ai-feed-activity"
+                        gap="sm"
+                        className="pb-4"
+                      />
+                    </div>
                   ) : (
                     <VisualActivityFeed activities={filteredFeed} />
                   )}

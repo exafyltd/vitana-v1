@@ -16,7 +16,8 @@ export function HorizontalCardSkeleton({
     <>
       {Array.from({ length: count }).map((_, index) => (
         <div 
-          key={index} 
+          key={index}
+          data-testid="horizontal-card-skeleton"
           className={cn(
             "relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm",
             variant === 'standard' ? 'min-h-[88px]' : 'min-h-[160px]',
