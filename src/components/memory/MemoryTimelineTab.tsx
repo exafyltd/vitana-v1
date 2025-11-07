@@ -11,10 +11,17 @@ import { horizontalCardsSLO } from "@/lib/horizontal-cards-slo";
 import { isFeatureEnabled } from "@/lib/feature-flags";
 import { SCREEN_IDS } from "@/lib/screen-id";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { PhotoCarouselModal } from "@/components/diary/PhotoCarouselModal";
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
+  const [selectedPhotoEntry, setSelectedPhotoEntry] = useState<{
+    images: string[];
+    caption?: string;
+    tags?: string[];
+    createdAt?: string;
+  } | null>(null);
   
   const useNewCards = isFeatureEnabled('enableHorizontalCardsTimeline');
 
@@ -77,7 +84,19 @@ export function MemoryTimelineTab() {
     timestamp: new Date(item.createdAt),
     primaryAction: {
       label: 'Open',
-      onClick: () => console.log('Opening item:', item.id),
+      onClick: () => {
+        console.log('Opening item:', item.id);
+        // If it's a photo diary entry with attachments, open carousel
+        if (item.source === 'diary' && item.attachments && item.attachments.length > 0) {
+          setSelectedPhotoEntry({
+            images: item.attachments,
+            caption: item.content,
+            tags: item.tags,
+            createdAt: item.createdAt,
+          });
+        }
+        // Otherwise, the expandOnPrimaryClick will handle expansion
+      },
       variant: 'outline' as const,
       icon: <Maximize2 className="w-4 h-4 mr-1" />
     },
@@ -249,6 +268,15 @@ export function MemoryTimelineTab() {
           )}
         </>
       )}
+
+      <PhotoCarouselModal
+        open={!!selectedPhotoEntry}
+        onOpenChange={(open) => !open && setSelectedPhotoEntry(null)}
+        images={selectedPhotoEntry?.images || []}
+        caption={selectedPhotoEntry?.caption}
+        tags={selectedPhotoEntry?.tags}
+        createdAt={selectedPhotoEntry?.createdAt}
+      />
     </div>
   );
 }

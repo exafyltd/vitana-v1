@@ -11,6 +11,7 @@ export interface KnowledgeItem {
   tags?: string[];
   confidenceScore?: number;
   duration?: number;
+  attachments?: string[];
   createdAt: string;
   metadata?: any;
 }
@@ -84,6 +85,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
             source: "diary" as const,
             tags: entry.tags,
             duration: entry.duration,
+            attachments: entry.attachments as string[],
             createdAt: entry.created_at,
             metadata: { source: entry.source },
           }))
