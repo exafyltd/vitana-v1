@@ -177,7 +177,6 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
     };
 
     const panelId = `card-panel-${id}`;
-    const hasInteractive = !!primaryAction || (secondaryActions && secondaryActions.length > 0) || !!expandedContent;
 
     return (
       <article
@@ -210,17 +209,18 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             "px-4 py-3 xl:px-3.5 xl:py-2.5",
             "grid-cols-[36px_1fr_auto]",
             "rounded-xl transition-all duration-200",
-            onClick && !hasInteractive && "cursor-pointer"
+            (expandedContent || onClick) && "cursor-pointer"
           )}
           onClick={(e) => {
-            if (hasInteractive) {
-              console.log('[HC] container click (guarded)', id);
+            const target = e.target as HTMLElement;
+            if (target.closest('button') || target.closest('[role="button"]') || target.closest('a')) {
               return;
             }
-            // Only trigger onClick if not clicking on interactive elements
-            const target = e.target as HTMLElement;
-            if (!target.closest('button') && !target.closest('[role="button"]') && !target.closest('a')) {
-              console.log('[HC] container click (fire)', id);
+            if (expandedContent) {
+              console.log('[HC] container click -> expand', id);
+              handleExpand(e);
+            } else {
+              console.log('[HC] container click -> onClick', id);
               onClick?.();
             }
           }}
@@ -286,16 +286,14 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 disabled={primaryAction.disabled}
                 className={cn(
                   "h-8 text-[13px] font-medium transition-all duration-200",
-                  "opacity-70 hover:opacity-100 hover:bg-accent hover:text-accent-foreground group-hover:opacity-100",
-                  "xl:w-8 xl:p-0 xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
-                  "xl:group-hover:w-auto xl:group-hover:px-3",
+                  "opacity-80 hover:opacity-100 hover:bg-accent hover:text-accent-foreground",
                   "px-3"
                 )}
                 aria-label={primaryAction.label}
                 title={primaryAction.label}
               >
                 {primaryAction.icon}
-                <span className="xl:hidden xl:group-hover:inline xl:ml-1">
+                <span className="ml-1">
                   {primaryAction.label}
                 </span>
               </Button>
@@ -330,9 +328,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                     variant="ghost"
                     onClick={(e) => e.stopPropagation()}
                     className={cn(
-                      "h-8 w-8 p-0",
-                      "xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
-                      "transition-opacity duration-200"
+                      "h-8 w-8 p-0"
                     )}
                     aria-label="More actions"
                   >
