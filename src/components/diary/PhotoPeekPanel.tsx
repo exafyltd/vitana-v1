@@ -77,7 +77,7 @@ export function PhotoPeekPanel({
   };
 
   const content = (
-    <div className="flex flex-col h-full space-y-4 p-6 overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-0 space-y-4 p-6 overflow-hidden">
       {/* Image Container */}
       <div className="relative shrink-0">
         <AspectRatio ratio={4 / 3} className="bg-muted rounded-xl overflow-hidden">
@@ -190,8 +190,8 @@ export function PhotoPeekPanel({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="h-[80vh] bg-card/95 backdrop-blur-sm border-white/10">
-          <DrawerHeader className="relative">
+        <DrawerContent className="h-[80vh] mt-0 bg-card/95 backdrop-blur-sm border-white/10">
+          <DrawerHeader className="relative shrink-0">
             <DrawerTitle>Photo Preview</DrawerTitle>
             <Button
               variant="ghost"
@@ -212,9 +212,9 @@ export function PhotoPeekPanel({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[38vw] min-w-[420px] max-w-[560px] bg-card/95 backdrop-blur-sm border-white/10 shadow-xl p-0 overflow-hidden"
+        className="w-[38vw] min-w-[420px] max-w-[560px] bg-card/95 backdrop-blur-sm border-white/10 shadow-xl p-0 overflow-hidden flex flex-col"
       >
-        <SheetHeader className="p-6 pb-0">
+        <SheetHeader className="p-6 pb-0 shrink-0">
           <SheetTitle className="text-left">Photo Preview</SheetTitle>
         </SheetHeader>
         {content}
