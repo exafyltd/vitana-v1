@@ -109,6 +109,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
     const handlePrimaryAction = (e: React.MouseEvent) => {
       e.stopPropagation();
+      console.log('[HC] primaryAction click start', id, primaryAction?.label);
       
       if (primaryAction?.requiresConsent && requiresConsent) {
         onConsentRequired?.();
@@ -123,12 +124,17 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         ctaPosition: 'primary'
       });
       
-      primaryAction?.onClick();
+      try {
+        primaryAction?.onClick();
+      } finally {
+        console.log('[HC] primaryAction click end', id, primaryAction?.label);
+      }
     };
 
     const handleExpand = (e?: React.MouseEvent | React.KeyboardEvent) => {
       e?.stopPropagation();
       const newExpanded = !isExpanded;
+      console.log('[HC] expand toggle', id, { expanded: newExpanded });
       onToggleExpand?.(id);
       
       horizontalCardAnalytics.cardExpand({
@@ -171,12 +177,13 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
     };
 
     const panelId = `card-panel-${id}`;
+    const hasInteractive = !!primaryAction || (secondaryActions && secondaryActions.length > 0) || !!expandedContent;
 
     return (
       <article
         ref={ref || cardRef}
         className={cn(
-          "group relative overflow-hidden",
+          "group relative overflow-hidden z-20",
           "rounded-xl border border-white/10",
           "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
           "transition-all duration-200 ease-out",
@@ -203,12 +210,17 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             "px-4 py-3 xl:px-3.5 xl:py-2.5",
             "grid-cols-[36px_1fr_auto]",
             "rounded-xl transition-all duration-200",
-            onClick && "cursor-pointer"
+            onClick && !hasInteractive && "cursor-pointer"
           )}
           onClick={(e) => {
+            if (hasInteractive) {
+              console.log('[HC] container click (guarded)', id);
+              return;
+            }
             // Only trigger onClick if not clicking on interactive elements
             const target = e.target as HTMLElement;
             if (!target.closest('button') && !target.closest('[role="button"]') && !target.closest('a')) {
+              console.log('[HC] container click (fire)', id);
               onClick?.();
             }
           }}
@@ -261,7 +273,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           </div>
 
           <div className={cn(
-            "flex items-center justify-end gap-1.5",
+            "flex items-center justify-end gap-1.5 relative z-20 pointer-events-auto",
             "focus-within:xl:opacity-100",
             isRTL && "justify-start order-first"
           )}>
@@ -333,6 +345,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                       key={idx}
                       onClick={(e) => {
                         e.stopPropagation();
+                        console.log('[HC] secondaryAction click', id, action.label);
                         horizontalCardAnalytics.ctaClick({
                           screenId,
                           cardId: id,

@@ -128,7 +128,7 @@ const getCategoryIcon = (category: string, emoji: string) => {
 
 export function transformActivityToVisualCard(activity: ActivityItem): StandardHorizontalCardProps {
   const secondaryInfo = getSecondaryInfo(activity.category, activity.title);
-  const ctaConfig = getCtaForScreen('AI_FEED_ACTIVITY');
+  const ctaConfig = getCtaForScreen('D1-001-04');
   
   return {
     id: activity.id,
