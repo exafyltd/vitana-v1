@@ -113,16 +113,13 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       e.stopPropagation();
       console.log('[HC] primaryAction click start', id, primaryAction?.label);
       
-      // If configured, expand the card when primary action is clicked
-      if (expandOnPrimaryClick && expandedContent) {
-        handleExpand(e);
-      }
-      
+      // Check consent first
       if (primaryAction?.requiresConsent && requiresConsent) {
         onConsentRequired?.();
         return;
       }
       
+      // Execute analytics
       horizontalCardAnalytics.ctaClick({
         screenId,
         cardId: id,
@@ -131,11 +128,26 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         ctaPosition: 'primary'
       });
       
+      // Execute the primary action FIRST (isolated from expansion)
       try {
+        console.log('[HC] executing primaryAction.onClick', id);
         primaryAction?.onClick();
-      } finally {
-        console.log('[HC] primaryAction click end', id, primaryAction?.label);
+        console.log('[HC] primaryAction.onClick completed', id);
+      } catch (error) {
+        console.error('[HC] primaryAction.onClick error', id, error);
       }
+      
+      // Then expand if configured (isolated from action)
+      if (expandOnPrimaryClick && expandedContent) {
+        try {
+          console.log('[HC] expanding after primary action', id);
+          handleExpand(e);
+        } catch (error) {
+          console.error('[HC] expansion error', id, error);
+        }
+      }
+      
+      console.log('[HC] primaryAction click end', id, primaryAction?.label);
     };
 
     const handleExpand = (e?: React.MouseEvent | React.KeyboardEvent) => {
