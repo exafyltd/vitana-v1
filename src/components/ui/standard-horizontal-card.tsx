@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, ChevronDown, ChevronUp } from 'lucide-react';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 import { useRTL } from '@/components/RTLProvider';
 
@@ -208,9 +208,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           onClick={(e) => {
             // Only trigger onClick if not clicking on interactive elements
             const target = e.target as HTMLElement;
-            if (!target.closest('button') && !target.closest('[role="button"]')) {
+            if (!target.closest('button') && !target.closest('[role="button"]') && !target.closest('a')) {
               onClick?.();
-              if (expandedContent) handleExpand(e);
             }
           }}
         >
@@ -223,7 +222,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-baseline gap-2 flex-nowrap">
-              <h3 className="text-[15px] font-semibold leading-tight xl:leading-[1.2] tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
+              <h3 id={`card-title-${id}`} className="text-[15px] font-semibold leading-tight xl:leading-[1.2] tracking-tight truncate flex-shrink min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
                 {title}
               </h3>
               {badges?.map((badge, idx) => (
@@ -268,6 +267,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           )}>
             {primaryAction && (
               <Button
+                type="button"
                 size="sm"
                 variant="ghost"
                 onClick={handlePrimaryAction}
@@ -289,12 +289,34 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
               </Button>
             )}
 
+            {expandedContent && (
+              <Button
+                type="button"
+                size="sm"
+                variant="ghost"
+                onClick={(e) => handleExpand(e)}
+                aria-expanded={!!isExpanded}
+                aria-controls={panelId}
+                className={cn(
+                  "h-8 w-8 p-0",
+                  "xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
+                  "transition-opacity duration-200"
+                )}
+                aria-label={isExpanded ? "Collapse" : "Expand"}
+                title={isExpanded ? "Collapse" : "Expand"}
+              >
+                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </Button>
+            )}
+
             {secondaryActions && secondaryActions.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
+                    type="button"
                     size="sm"
                     variant="ghost"
+                    onClick={(e) => e.stopPropagation()}
                     className={cn(
                       "h-8 w-8 p-0",
                       "xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
