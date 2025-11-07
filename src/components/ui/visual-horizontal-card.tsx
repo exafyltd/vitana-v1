@@ -268,7 +268,10 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         )}>
             {statusBadge && (
               <div 
-                className="flex items-center gap-1 text-[13px] font-semibold leading-none"
+                className={cn(
+                  "flex items-center gap-1 text-[13px] font-semibold leading-none pr-1",
+                  statusBadge.label === '1st Place' && "drop-shadow-[0_0_8px_rgba(234,179,8,0.4)]"
+                )}
                 aria-label={`Rank ${statusBadge.label}`}
                 title={`${statusBadge.icon} ${statusBadge.label}`}
               >
@@ -300,7 +303,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             role="region"
             aria-labelledby={`card-header-${id}`}
             aria-live="polite"
-            className="px-4 pb-2 pt-1.5 border-t border-white/10"
+            className="px-4 pb-3 pt-3 border-t border-border/30"
             style={{ 
               animation: 'accordion-down 200ms ease-out'
             }}

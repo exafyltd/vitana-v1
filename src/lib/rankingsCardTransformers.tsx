@@ -23,13 +23,13 @@ const getPositionBadge = (position: number) => {
 const getPositionBorderStyle = (position: number) => {
   switch (position) {
     case 1:
-      return 'border-yellow-400/40 hover:border-yellow-400/60 shadow-yellow-100';
+      return 'border-yellow-400/60 hover:border-yellow-400/80 hover:shadow-lg hover:shadow-yellow-400/20';
     case 2:
-      return 'border-gray-400/40 hover:border-gray-400/60 shadow-gray-100';
+      return 'border-gray-400/50 hover:border-gray-400/70 hover:shadow-lg hover:shadow-gray-400/15';
     case 3:
-      return 'border-orange-400/40 hover:border-orange-400/60 shadow-orange-100';
+      return 'border-orange-400/50 hover:border-orange-400/70 hover:shadow-lg hover:shadow-orange-400/15';
     default:
-      return '';
+      return 'border-white/10 hover:border-white/20';
   }
 };
 
@@ -42,12 +42,12 @@ const TrendIcon = ({ trend }: { trend: 'up' | 'down' | 'stable' }) => {
 
 // Ranking stats table component
 const RankingStatsTable = ({ stats }: { stats: Array<{label: string, value: string | number, trend?: 'up' | 'down' | 'stable'}> }) => (
-  <div className="bg-white/40 rounded-lg p-3 space-y-2">
+  <div className="bg-white/40 rounded-lg p-3 space-y-1.5">
     {stats.map((stat, idx) => (
-      <div key={idx} className="flex justify-between items-center text-sm">
-        <span className="text-muted-foreground">{stat.label}</span>
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-foreground">{stat.value}</span>
+      <div key={idx} className="grid grid-cols-[1fr_auto_16px] gap-2 items-center text-sm">
+        <span className="text-muted-foreground text-left">{stat.label}</span>
+        <span className="font-semibold text-foreground text-right">{stat.value}</span>
+        <div className="flex justify-end">
           {stat.trend && <TrendIcon trend={stat.trend} />}
         </div>
       </div>
@@ -274,9 +274,9 @@ export const transformCreatorRankingToCard = (
             { label: 'Repeat Rate', value: `${creator.repeatRate || 78}%` }
           ]}
         />
-        <div className="mt-3 pt-3 border-t border-white/20">
+        <div className="mt-3 pt-3 border-t border-border/30 flex justify-end">
           <Button
-            className="w-full"
+            className="ml-auto"
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
@@ -362,9 +362,9 @@ export const transformMemberRankingToCard = (
             { label: 'Total Activities', value: member.total_activities || 0 }
           ]}
         />
-        <div className="mt-3 pt-3 border-t border-white/20">
+        <div className="mt-3 pt-3 border-t border-border/30 flex justify-end">
           <Button
-            className="w-full"
+            className="ml-auto"
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
