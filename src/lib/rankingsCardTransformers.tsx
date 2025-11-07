@@ -1,495 +1,360 @@
-import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { getVitanaIndexTier, formatVitanaIndexScore } from '@/lib/vitanaIndex';
-import { TrendingUp, TrendingDown, Minus, Users, Calendar, Award, Activity, Droplet, Moon, Utensils, Dumbbell, Brain } from 'lucide-react';
 import React from 'react';
+import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
+import { Users, TrendingUp, Activity, Star, Calendar, Award, Trophy, Flame, BarChart, UserPlus, CheckCircle, Target, ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-/**
- * Member Ranking Data Structure
- */
-export interface MemberRanking {
-  user_id: string;
-  display_name: string | null;
-  avatar_url: string | null;
-  vitana_score: number;
-  vitana_tier: string;
-  score_trend: 'up' | 'down' | 'stable';
-  pillar_scores?: {
-    sleep: number;
-    exercise: number;
-    nutrition: number;
-    hydration: number;
-    mental: number;
-  };
-  wellness_streak_days: number;
-  score_30d_change: number;
-  total_activities: number;
-  achievements?: Array<{
-    title: string;
-    description: string;
-    earned_at: string;
-  }>;
-}
-
-/**
- * Get trend icon component
- */
-function getTrendIcon(trend: 'up' | 'down' | 'stable') {
-  switch (trend) {
-    case 'up':
-      return '↗️';
-    case 'down':
-      return '↘️';
+// Position badge configurations
+const getPositionBadge = (position: number) => {
+  switch (position) {
+    case 1:
+      return { icon: '🥇', label: '1st Place', color: 'text-yellow-600', bg: 'bg-yellow-50/50', border: 'border-yellow-400' };
+    case 2:
+      return { icon: '🥈', label: '2nd Place', color: 'text-gray-600', bg: 'bg-gray-50/50', border: 'border-gray-400' };
+    case 3:
+      return { icon: '🥉', label: '3rd Place', color: 'text-orange-600', bg: 'bg-orange-50/50', border: 'border-orange-400' };
     default:
-      return '→';
+      return { icon: '📍', label: `#${position}`, color: 'text-slate-600', bg: 'bg-slate-50/50', border: 'border-slate-400' };
   }
-}
+};
 
-/**
- * Get rank emoji based on position
- */
-function getRankEmoji(rank: number): string {
-  if (rank === 1) return '🥇';
-  if (rank === 2) return '🥈';
-  if (rank === 3) return '🥉';
-  return '🏅';
-}
-
-/**
- * Get rank-specific accent color
- */
-function getRankColor(rank: number): string {
-  if (rank === 1) return 'hsl(45, 100%, 50%)'; // Gold
-  if (rank === 2) return 'hsl(0, 0%, 75%)'; // Silver
-  if (rank === 3) return 'hsl(30, 80%, 60%)'; // Bronze
-  return 'hsl(217, 91%, 60%)'; // Blue
-}
-
-/**
- * Get description by ranking type
- */
-function getDescriptionByType(member: MemberRanking, type: string): string {
-  switch (type) {
-    case 'vitana_index':
-      return `${formatVitanaIndexScore(member.vitana_score)} • ${member.total_activities || 0} activities`;
-    case 'most_improved':
-      return `+${member.score_30d_change} points in 30 days`;
-    case 'streak':
-      return `${member.wellness_streak_days} day streak 🔥`;
-    case 'balanced':
-      return `Balanced across all 5 wellness pillars`;
+// Get border styling by position
+const getPositionBorderStyle = (position: number) => {
+  switch (position) {
+    case 1:
+      return 'border-yellow-400/40 hover:border-yellow-400/60 shadow-yellow-100';
+    case 2:
+      return 'border-gray-400/40 hover:border-gray-400/60 shadow-gray-100';
+    case 3:
+      return 'border-orange-400/40 hover:border-orange-400/60 shadow-orange-100';
     default:
       return '';
   }
-}
+};
 
-/**
- * Transform Member Ranking to Visual Horizontal Card
- */
-export function transformMemberRankingToCard(
-  member: MemberRanking,
-  rank: number,
-  rankingType: 'vitana_index' | 'most_improved' | 'streak' | 'balanced' = 'vitana_index'
-): VisualHorizontalCardProps {
-  const tier = getVitanaIndexTier(member.vitana_score);
-  const rankEmoji = getRankEmoji(rank);
-  
-  // Category badge varies by ranking type
-  const categoryConfig = {
-    vitana_index: {
-      icon: '💎',
-      label: 'Top VITANA',
-      color: tier.color
-    },
-    most_improved: {
-      icon: '📈',
-      label: 'Most Improved',
-      color: 'hsl(142, 71%, 45%)' // Green
-    },
-    streak: {
-      icon: '🔥',
-      label: 'Streak Leader',
-      color: 'hsl(24, 95%, 53%)' // Orange
-    },
-    balanced: {
-      icon: '⚖️',
-      label: 'Balanced',
-      color: 'hsl(217, 91%, 60%)' // Blue
-    }
-  };
+// Trend indicator component
+const TrendIcon = ({ trend }: { trend: 'up' | 'down' | 'stable' }) => {
+  if (trend === 'up') return <ArrowUp className="w-3 h-3 text-green-600" />;
+  if (trend === 'down') return <ArrowDown className="w-3 h-3 text-red-600" />;
+  return <Minus className="w-3 h-3 text-slate-400" />;
+};
 
-  const config = categoryConfig[rankingType];
-
-  // Expanded content: Pillar scores breakdown
-  const expandedContent = member.pillar_scores ? (
-    <div className="space-y-3 pt-2">
-      <h4 className="text-sm font-semibold text-foreground">Wellness Pillar Breakdown</h4>
-      <div className="grid grid-cols-1 gap-2">
-        <div className="flex items-center justify-between p-2 rounded-lg bg-primary/5">
-          <div className="flex items-center gap-2">
-            <Moon className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Sleep</span>
-          </div>
-          <span className="text-sm font-bold text-foreground">{member.pillar_scores.sleep}</span>
-        </div>
-        <div className="flex items-center justify-between p-2 rounded-lg bg-primary/5">
-          <div className="flex items-center gap-2">
-            <Dumbbell className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Exercise</span>
-          </div>
-          <span className="text-sm font-bold text-foreground">{member.pillar_scores.exercise}</span>
-        </div>
-        <div className="flex items-center justify-between p-2 rounded-lg bg-primary/5">
-          <div className="flex items-center gap-2">
-            <Utensils className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Nutrition</span>
-          </div>
-          <span className="text-sm font-bold text-foreground">{member.pillar_scores.nutrition}</span>
-        </div>
-        <div className="flex items-center justify-between p-2 rounded-lg bg-primary/5">
-          <div className="flex items-center gap-2">
-            <Droplet className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Hydration</span>
-          </div>
-          <span className="text-sm font-bold text-foreground">{member.pillar_scores.hydration}</span>
-        </div>
-        <div className="flex items-center justify-between p-2 rounded-lg bg-primary/5">
-          <div className="flex items-center gap-2">
-            <Brain className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">Mental Wellness</span>
-          </div>
-          <span className="text-sm font-bold text-foreground">{member.pillar_scores.mental}</span>
+// Ranking stats table component
+const RankingStatsTable = ({ stats }: { stats: Array<{label: string, value: string | number, trend?: 'up' | 'down' | 'stable'}> }) => (
+  <div className="bg-white/40 rounded-lg p-3 space-y-2">
+    {stats.map((stat, idx) => (
+      <div key={idx} className="flex justify-between items-center text-sm">
+        <span className="text-muted-foreground">{stat.label}</span>
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-foreground">{stat.value}</span>
+          {stat.trend && <TrendIcon trend={stat.trend} />}
         </div>
       </div>
-      {member.achievements && member.achievements.length > 0 && (
-        <>
-          <h4 className="text-sm font-semibold text-foreground pt-2">Recent Achievements</h4>
-          <div className="space-y-2">
-            {member.achievements.slice(0, 3).map((achievement, idx) => (
-              <div key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-secondary/50">
-                <Award className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">{achievement.title}</p>
-                  <p className="text-xs text-muted-foreground">{achievement.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
+    ))}
+  </div>
+);
+
+// Organizer link component
+const OrganizerLink = ({ organizer }: { organizer: { name: string, id: string, avatar?: string } }) => (
+  <div className="mt-3 pt-3 border-t border-white/20">
+    <div className="flex items-center gap-2">
+      {organizer.avatar && (
+        <img 
+          src={organizer.avatar} 
+          alt={organizer.name}
+          className="w-8 h-8 rounded-full object-cover"
+        />
       )}
+      <div className="flex-1 min-w-0">
+        <p className="text-xs text-muted-foreground">Organized by</p>
+        <p className="text-sm font-medium text-foreground truncate">{organizer.name}</p>
+      </div>
+      <Button 
+        size="sm" 
+        variant="outline"
+        className="text-xs h-7"
+        onClick={(e) => {
+          e.stopPropagation();
+          // Navigate to organizer profile
+          console.log('View organizer:', organizer.id);
+        }}
+      >
+        View
+      </Button>
     </div>
-  ) : null;
+  </div>
+);
 
-  return {
-    id: `member-rank-${member.user_id}`,
-    title: member.display_name || 'Anonymous User',
-    description: getDescriptionByType(member, rankingType),
-    imageUrl: member.avatar_url || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
-    imageAlt: member.display_name || 'Member',
-    category: {
-      icon: config.icon,
-      label: config.label,
-      color: config.color
-    },
-    metadata: [
-      {
-        icon: '💯',
-        text: `${formatVitanaIndexScore(member.vitana_score)} • ${tier.label}`
-      },
-      {
-        icon: getTrendIcon(member.score_trend),
-        text: member.score_trend === 'up' ? 'Rising' : member.score_trend === 'down' ? 'Falling' : 'Stable'
-      }
-    ],
-    statusBadge: {
-      label: `V#${rank}`,
-      variant: rank <= 3 ? 'default' : 'secondary',
-      icon: rankEmoji
-    },
-    secondaryLabel: member.score_trend === 'up' ? 'Rising' : member.score_trend === 'down' ? 'Falling' : 'Stable',
-    expandedContent,
-    density: 'compact',
-    screenId: 'COMMUNITY_RANKINGS_MEMBERS',
-    onClick: () => {
-      console.log('View member profile:', member.user_id);
-      // TODO: Implement navigation to profile page
-    }
-  };
-}
-
-/**
- * Transform Group Ranking to Visual Horizontal Card
- */
-export function transformGroupRankingToCard(
+// Transform Group Ranking to Card
+export const transformGroupRankingToCard = (
   group: any,
-  rank: number
-): VisualHorizontalCardProps {
-  const rankEmoji = getRankEmoji(rank);
-  const rankColor = getRankColor(rank);
+  position: number
+): VisualHorizontalCardProps => {
+  const positionBadge = getPositionBadge(position);
+  const borderStyle = getPositionBorderStyle(position);
   
-  // Expanded content: Group activity stats
-  const expandedContent = (
-    <div className="space-y-3 pt-2">
-      <h4 className="text-sm font-semibold text-foreground">Group Activity</h4>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
-          <div className="flex items-center gap-2 mb-1">
-            <Users className="w-4 h-4 text-primary" />
-            <span className="text-xs text-muted-foreground">Members</span>
-          </div>
-          <p className="text-lg font-bold text-foreground">{group.attendees || 0}</p>
-        </div>
-        <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
-          <div className="flex items-center gap-2 mb-1">
-            <Activity className="w-4 h-4 text-primary" />
-            <span className="text-xs text-muted-foreground">Activity</span>
-          </div>
-          <p className="text-lg font-bold text-foreground">{group.timestamp || 'Active'}</p>
-        </div>
-      </div>
-      <div className="pt-2">
-        <h4 className="text-sm font-semibold text-foreground mb-2">Focus Area</h4>
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50">
-          <div className="w-2 h-2 rounded-full bg-primary"></div>
-          <span className="text-sm font-medium">{group.pillar || 'Wellness'}</span>
-        </div>
-      </div>
-      <div className="pt-2">
-        <h4 className="text-sm font-semibold text-foreground mb-2">Location</h4>
-        <p className="text-sm text-muted-foreground">{group.location || 'Virtual'}</p>
-      </div>
-    </div>
-  );
-
+  // Calculate comparative metrics
+  const leadingBy = position === 1 && group.members ? `Leading by ${group.members - 980} members` : undefined;
+  const growthText = group.growthRate ? `+${group.growthRate}% growth` : undefined;
+  
   return {
-    id: `group-rank-${group.id}`,
-    title: group.title,
-    description: group.description,
+    id: group.id,
+    screenId: 'COMMUNITY_RANKINGS_GROUPS',
     imageUrl: group.imageUrl,
     imageAlt: group.title,
     category: {
-      icon: '🏆',
-      label: 'Top Group',
-      color: rankColor
+      icon: '👥',
+      label: 'Group',
+      color: 'hsl(var(--primary))'
     },
+    title: group.title,
+    description: group.description || `${group.members || group.attendees} members • ${group.pillar}`,
+    motivationalHook: leadingBy || growthText || 'Top performing group',
     metadata: [
       {
-        icon: '👥',
-        text: `${group.attendees || 0} members`
+        icon: <Users className="w-3.5 h-3.5" />,
+        text: `${group.members || group.attendees} members`
       },
       {
-        icon: '📍',
-        text: group.location || 'Virtual'
+        icon: <TrendingUp className="w-3.5 h-3.5" />,
+        text: `${group.growthRate || 15}%`
+      },
+      {
+        icon: <Activity className="w-3.5 h-3.5" />,
+        text: `Score: ${group.engagementScore || 92}`
       }
     ],
     statusBadge: {
-      label: `V#${rank}`,
-      variant: rank <= 3 ? 'default' : 'secondary',
-      icon: rankEmoji
+      label: positionBadge.label,
+      variant: 'default',
+      icon: <span className="text-lg">{positionBadge.icon}</span>
     },
-    secondaryLabel: 'Weekly',
-    expandedContent,
-    density: 'compact',
-    screenId: 'COMMUNITY_RANKINGS_GROUPS',
+    secondaryLabel: group.pillar,
+    expandedContent: (
+      <>
+        <RankingStatsTable 
+          stats={[
+            { label: 'Total Members', value: group.members || group.attendees, trend: 'up' },
+            { label: 'Active Members', value: group.activeMembers || Math.floor((group.members || group.attendees) * 0.69), trend: 'stable' },
+            { label: 'Growth Rate (30d)', value: `+${group.growthRate || 15}%`, trend: 'up' },
+            { label: 'Engagement Score', value: `${group.engagementScore || 92}/100`, trend: 'up' },
+            { label: 'Posts This Week', value: group.postsThisWeek || 124 }
+          ]}
+        />
+        {group.organizer && <OrganizerLink organizer={group.organizer} />}
+      </>
+    ),
+    className: cn(borderStyle),
     onClick: () => {
-      console.log('View group:', group.id);
-      // TODO: Navigate to group detail
+      console.log('Navigate to group:', group.id);
+      // Will navigate to /comm/my-groups/${group.id}
     }
   };
-}
+};
 
-/**
- * Transform Event Ranking to Visual Horizontal Card
- */
-export function transformEventRankingToCard(
+// Transform Event Ranking to Card
+export const transformEventRankingToCard = (
   event: any,
-  rank: number
-): VisualHorizontalCardProps {
-  const rankEmoji = getRankEmoji(rank);
-  const rankColor = getRankColor(rank);
+  position: number
+): VisualHorizontalCardProps => {
+  const positionBadge = getPositionBadge(position);
+  const borderStyle = getPositionBorderStyle(position);
   
-  // Format event dates
-  const formatEventDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { 
-        weekday: 'short', 
-        month: 'short', 
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit'
-      });
-    } catch {
-      return 'Date TBA';
-    }
-  };
-
-  // Expanded content: Event schedule details
-  const expandedContent = (
-    <div className="space-y-3 pt-2">
-      <h4 className="text-sm font-semibold text-foreground">Event Details</h4>
-      <div className="space-y-2">
-        <div className="flex items-start gap-2 p-2 rounded-lg bg-primary/5">
-          <Calendar className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-          <div className="flex-1">
-            <p className="text-xs text-muted-foreground">Start Time</p>
-            <p className="text-sm font-medium text-foreground">
-              {event.start_time ? formatEventDate(event.start_time) : 'TBA'}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-start gap-2 p-2 rounded-lg bg-primary/5">
-          <Users className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-          <div className="flex-1">
-            <p className="text-xs text-muted-foreground">Attendance</p>
-            <p className="text-sm font-medium text-foreground">{event.attendees || 0} participants</p>
-          </div>
-        </div>
-        {event.author && (
-          <div className="flex items-start gap-2 p-2 rounded-lg bg-secondary/50">
-            <Award className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-            <div className="flex-1">
-              <p className="text-xs text-muted-foreground">Hosted by</p>
-              <p className="text-sm font-medium text-foreground">{event.author.name}</p>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="pt-2">
-        <h4 className="text-sm font-semibold text-foreground mb-2">Category</h4>
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50">
-          <div className="w-2 h-2 rounded-full bg-primary"></div>
-          <span className="text-sm font-medium capitalize">{event.category || event.pillar || 'Wellness'}</span>
-        </div>
-      </div>
-    </div>
-  );
-
+  const mostPopular = position === 1 ? 'Most popular event' : undefined;
+  const ratingText = event.averageRating ? `${event.averageRating}⭐ rating` : undefined;
+  
   return {
-    id: `event-rank-${event.id}`,
-    title: event.title,
-    description: event.description,
+    id: event.id,
+    screenId: 'COMMUNITY_RANKINGS_EVENTS',
     imageUrl: event.imageUrl,
     imageAlt: event.title,
     category: {
       icon: '📅',
-      label: 'Top Event',
-      color: rankColor
+      label: 'Event',
+      color: 'hsl(var(--primary))'
     },
+    title: event.title,
+    description: event.description || `${event.attendees} attendees • ${event.pillar}`,
+    motivationalHook: mostPopular || ratingText || 'Top performing event',
     metadata: [
       {
-        icon: '👥',
-        text: `${event.attendees || 0} attending`
+        icon: <Users className="w-3.5 h-3.5" />,
+        text: `${event.attendees} attending`
       },
       {
-        icon: '📍',
-        text: event.location || 'Virtual'
+        icon: <Star className="w-3.5 h-3.5" />,
+        text: `${event.averageRating || 4.8}⭐`
+      },
+      {
+        icon: <CheckCircle className="w-3.5 h-3.5" />,
+        text: `${event.completionRate || 87}% shown`
       }
     ],
     statusBadge: {
-      label: `V#${rank}`,
-      variant: rank <= 3 ? 'default' : 'secondary',
-      icon: rankEmoji
+      label: positionBadge.label,
+      variant: 'default',
+      icon: <span className="text-lg">{positionBadge.icon}</span>
     },
-    secondaryLabel: 'This Week',
-    expandedContent,
-    density: 'compact',
-    screenId: 'COMMUNITY_RANKINGS_EVENTS',
+    secondaryLabel: event.pillar,
+    expandedContent: (
+      <>
+        <RankingStatsTable 
+          stats={[
+            { label: 'Confirmed Attendees', value: event.attendees, trend: 'up' },
+            { label: 'Total Registered', value: event.registrations || event.attendees + 22, trend: 'up' },
+            { label: 'Completion Rate', value: `${event.completionRate || 87}%`, trend: 'up' },
+            { label: 'Average Rating', value: `${event.averageRating || 4.8}/5.0`, trend: 'stable' },
+            { label: 'Repeat Attendees', value: event.repeatAttendees || 23 }
+          ]}
+        />
+        {event.organizer && <OrganizerLink organizer={event.organizer} />}
+      </>
+    ),
+    className: cn(borderStyle),
     onClick: () => {
-      console.log('View event:', event.id);
-      // TODO: Navigate to event detail or open RSVP modal
+      console.log('View event details:', event.id);
+      // Will open event details drawer
     }
   };
-}
+};
 
-/**
- * Transform Creator Ranking to Visual Horizontal Card
- */
-export function transformCreatorRankingToCard(
+// Transform Creator Ranking to Card
+export const transformCreatorRankingToCard = (
   creator: any,
-  rank: number
-): VisualHorizontalCardProps {
-  const rankEmoji = getRankEmoji(rank);
-  const rankColor = getRankColor(rank);
+  position: number
+): VisualHorizontalCardProps => {
+  const positionBadge = getPositionBadge(position);
+  const borderStyle = getPositionBorderStyle(position);
   
-  // Parse event count from timestamp if available
-  const eventCount = creator.timestamp?.match(/\d+/)?.[0] || '0';
-  
-  // Expanded content: Creator achievements and stats
-  const expandedContent = (
-    <div className="space-y-3 pt-2">
-      <h4 className="text-sm font-semibold text-foreground">Creator Stats</h4>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
-          <div className="flex items-center gap-2 mb-1">
-            <Calendar className="w-4 h-4 text-primary" />
-            <span className="text-xs text-muted-foreground">Events</span>
-          </div>
-          <p className="text-lg font-bold text-foreground">{eventCount}</p>
-        </div>
-        <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
-          <div className="flex items-center gap-2 mb-1">
-            <Award className="w-4 h-4 text-primary" />
-            <span className="text-xs text-muted-foreground">Rank</span>
-          </div>
-          <p className="text-lg font-bold text-foreground">#{rank}</p>
-        </div>
-      </div>
-      <div className="pt-2">
-        <h4 className="text-sm font-semibold text-foreground mb-2">Specialty</h4>
-        <div className="flex items-center gap-2 p-2 rounded-lg bg-secondary/50">
-          <div className="w-2 h-2 rounded-full bg-primary"></div>
-          <span className="text-sm font-medium">{creator.pillar || 'Wellness'}</span>
-        </div>
-      </div>
-      <div className="pt-2">
-        <h4 className="text-sm font-semibold text-foreground mb-2">Primary Venue</h4>
-        <p className="text-sm text-muted-foreground">{creator.location || 'Multiple venues'}</p>
-      </div>
-      {creator.author && (
-        <div className="pt-2">
-          <h4 className="text-sm font-semibold text-foreground mb-2">About</h4>
-          <div className="flex items-center gap-2 p-2 rounded-lg bg-primary/5">
-            <Users className="w-4 h-4 text-primary" />
-            <span className="text-sm text-foreground">{creator.author.name}</span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  const topLeader = position === 1 ? 'Top community leader' : undefined;
+  const impactText = creator.impactScore ? `Impact score: ${creator.impactScore}` : undefined;
   
   return {
-    id: `creator-rank-${creator.id}`,
-    title: creator.title, // e.g., "Lisa Chen - Wellness Guru"
-    description: creator.description, // e.g., "Hosted 12 events this month"
+    id: creator.id,
+    screenId: 'COMMUNITY_RANKINGS_CREATORS',
     imageUrl: creator.imageUrl,
-    imageAlt: creator.author?.name || creator.title,
+    imageAlt: creator.title || creator.author?.name,
     category: {
       icon: '⭐',
-      label: 'Top Creator',
-      color: rankColor
+      label: 'Creator',
+      color: 'hsl(var(--primary))'
     },
+    title: creator.title || creator.author?.name || 'Community Creator',
+    description: creator.description || `${creator.eventsHosted || 12} events hosted • ${creator.pillar}`,
+    motivationalHook: topLeader || impactText || 'Elite community creator',
     metadata: [
       {
-        icon: '🎯',
-        text: creator.timestamp || 'Active' // e.g., "12 Events Hosted"
+        icon: <Calendar className="w-3.5 h-3.5" />,
+        text: `${creator.eventsHosted || 12} events`
       },
       {
-        icon: '📍',
-        text: creator.location || 'Multiple venues'
+        icon: <Users className="w-3.5 h-3.5" />,
+        text: `${creator.totalAttendees || 342} reach`
+      },
+      {
+        icon: <Trophy className="w-3.5 h-3.5" />,
+        text: `${creator.impactScore || 95}/100`
       }
     ],
     statusBadge: {
-      label: `V#${rank}`,
-      variant: rank <= 3 ? 'default' : 'secondary',
-      icon: rankEmoji
+      label: positionBadge.label,
+      variant: 'default',
+      icon: <span className="text-lg">{positionBadge.icon}</span>
     },
-    secondaryLabel: 'Monthly',
-    expandedContent,
-    density: 'compact',
-    screenId: 'COMMUNITY_RANKINGS_CREATORS',
+    secondaryLabel: creator.specialization || creator.pillar,
+    expandedContent: (
+      <RankingStatsTable 
+        stats={[
+          { label: 'Events Hosted (30d)', value: creator.eventsHosted || 12, trend: 'up' },
+          { label: 'Total Attendees', value: creator.totalAttendees || 342, trend: 'up' },
+          { label: 'Average Rating', value: `${creator.averageRating || 4.9}/5.0`, trend: 'stable' },
+          { label: 'Impact Score', value: `${creator.impactScore || 95}/100`, trend: 'up' },
+          { label: 'Repeat Rate', value: `${creator.repeatRate || 78}%` }
+        ]}
+      />
+    ),
+    className: cn(borderStyle),
     onClick: () => {
       console.log('View creator profile:', creator.id);
-      // TODO: Navigate to creator profile
+      // Will navigate to creator profile page
     }
   };
-}
+};
+
+// Transform Member Ranking to Card
+export const transformMemberRankingToCard = (
+  member: any,
+  position: number,
+  rankingType: 'vitana_index' | 'pillar_specific' = 'vitana_index'
+): VisualHorizontalCardProps => {
+  const positionBadge = getPositionBadge(position);
+  const borderStyle = getPositionBorderStyle(position);
+  
+  const elitePerformer = position === 1 ? 'Elite performer' : undefined;
+  const percentileText = member.percentile ? `Top ${100 - member.percentile}%` : undefined;
+  
+  return {
+    id: member.user_id,
+    screenId: 'COMMUNITY_RANKINGS_MEMBERS',
+    imageUrl: member.avatar_url,
+    imageAlt: member.display_name,
+    category: {
+      icon: '💎',
+      label: 'Member',
+      color: 'hsl(var(--primary))'
+    },
+    title: member.display_name,
+    description: `VITANA Score: ${member.vitana_score} • ${member.vitana_tier}`,
+    motivationalHook: elitePerformer || percentileText || `${member.score_30d_change > 0 ? '+' : ''}${member.score_30d_change} in 30d`,
+    metadata: [
+      {
+        icon: <Target className="w-3.5 h-3.5" />,
+        text: `${member.vitana_score} pts`
+      },
+      {
+        icon: <Flame className="w-3.5 h-3.5" />,
+        text: `${member.wellness_streak_days} day streak`
+      },
+      {
+        icon: <TrendingUp className="w-3.5 h-3.5" />,
+        text: `${member.score_30d_change > 0 ? '+' : ''}${member.score_30d_change}`
+      }
+    ],
+    statusBadge: {
+      label: positionBadge.label,
+      variant: 'default',
+      icon: <span className="text-lg">{positionBadge.icon}</span>
+    },
+    secondaryLabel: member.vitana_tier,
+    expandedContent: (
+      <>
+        <div className="mb-3">
+          <p className="text-xs text-muted-foreground mb-2">Pillar Breakdown</p>
+          <RankingStatsTable 
+            stats={[
+              { label: '💤 Sleep', value: member.pillar_scores.sleep, trend: 'up' },
+              { label: '💪 Exercise', value: member.pillar_scores.exercise, trend: 'up' },
+              { label: '🍎 Nutrition', value: member.pillar_scores.nutrition, trend: 'stable' },
+              { label: '💧 Hydration', value: member.pillar_scores.hydration, trend: 'up' },
+              { label: '🧠 Mental', value: member.pillar_scores.mental, trend: 'stable' }
+            ]}
+          />
+        </div>
+        <RankingStatsTable 
+          stats={[
+            { label: 'Total VITANA Score', value: member.vitana_score, trend: member.score_trend },
+            { label: 'Wellness Streak', value: `${member.wellness_streak_days} days`, trend: 'up' },
+            { label: '30-Day Change', value: member.score_30d_change > 0 ? `+${member.score_30d_change}` : member.score_30d_change, trend: member.score_30d_change > 0 ? 'up' : 'down' },
+            { label: 'Total Activities', value: member.total_activities || 0 }
+          ]}
+        />
+      </>
+    ),
+    className: cn(borderStyle),
+    onClick: () => {
+      console.log('View member profile:', member.user_id);
+      // Will show member profile popup
+    }
+  };
+};

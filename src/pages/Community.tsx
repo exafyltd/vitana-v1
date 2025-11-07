@@ -250,13 +250,24 @@ const communityMedia = [
 const topGroups = [
   {
     id: "group-1",
-    title: "Sleep & Recovery Circle 🥇",
+    title: "Sleep & Recovery Circle",
     description: "The ultimate bedtime relaxation community with 1,240 members",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
     category: "group" as const,
     pillar: "Sleep",
     author: { name: "Sleep Community", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Virtual Rooms",
+    members: 1240,
+    activeMembers: 856,
+    growthRate: 15,
+    engagementScore: 92,
+    postsThisWeek: 124,
+    organizer: {
+      name: "Sleep Community Team",
+      id: "org-sleep-123",
+      avatar: "/lovable-uploads/james-davis-avatar.jpg"
+    },
+    trend: "up" as const,
     attendees: 1240,
     timestamp: "Most Active",
     start_time: new Date().toISOString(),
@@ -264,13 +275,24 @@ const topGroups = [
   },
   {
     id: "group-2",
-    title: "Longevity Dance Club 🥈",
+    title: "Longevity Dance Club",
     description: "Neon dance floor energy with 980 passionate dancers",
     imageUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
     category: "group" as const,
     pillar: "Exercise",
     author: { name: "Dance Community", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Dance Studios",
+    members: 980,
+    activeMembers: 672,
+    growthRate: 12,
+    engagementScore: 88,
+    postsThisWeek: 98,
+    organizer: {
+      name: "Dance Team Lead",
+      id: "org-dance-456",
+      avatar: "/lovable-uploads/emma-wilson-avatar.jpg"
+    },
+    trend: "up" as const,
     attendees: 980,
     timestamp: "2nd Place",
     start_time: new Date().toISOString(),
@@ -278,13 +300,24 @@ const topGroups = [
   },
   {
     id: "group-3",
-    title: "Plant-Based Nutritionists 🥉",
+    title: "Plant-Based Nutritionists",
     description: "Fresh vegan cuisine experts with 860 food lovers",
     imageUrl: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop",
     category: "group" as const,
     pillar: "Nutrition",
     author: { name: "Nutrition Community", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     location: "Community Kitchens",
+    members: 860,
+    activeMembers: 594,
+    growthRate: 18,
+    engagementScore: 85,
+    postsThisWeek: 87,
+    organizer: {
+      name: "Chef Tae Min",
+      id: "org-nutrition-789",
+      avatar: "/lovable-uploads/tae-min-avatar.jpg"
+    },
+    trend: "up" as const,
     attendees: 860,
     timestamp: "3rd Place",
     start_time: new Date().toISOString(),
@@ -304,6 +337,15 @@ const topEvents = [
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
     location: "Virtual & Local",
     attendees: 45,
+    registrations: 67,
+    completionRate: 87,
+    averageRating: 4.8,
+    repeatAttendees: 23,
+    organizer: {
+      name: "Dr. Roberts",
+      id: "user-roberts-456",
+      avatar: "/lovable-uploads/dr-roberts-avatar.jpg"
+    },
     timestamp: "This Week",
     start_time: new Date(Date.now() + 86400000).toISOString(),
     end_time: new Date(Date.now() + 90000000).toISOString()
@@ -318,6 +360,15 @@ const topEvents = [
     author: { name: "Nutritionist Tae", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     location: "Community Center",
     attendees: 30,
+    registrations: 42,
+    completionRate: 92,
+    averageRating: 4.7,
+    repeatAttendees: 18,
+    organizer: {
+      name: "Nutritionist Tae Min",
+      id: "user-tae-789",
+      avatar: "/lovable-uploads/tae-min-avatar.jpg"
+    },
     timestamp: "Weekly",
     start_time: new Date(Date.now() + 172800000).toISOString(),
     end_time: new Date(Date.now() + 176400000).toISOString()
@@ -332,6 +383,15 @@ const topEvents = [
     author: { name: "Sleep Expert Lisa", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Wellness Center",
     attendees: 25,
+    registrations: 35,
+    completionRate: 85,
+    averageRating: 4.9,
+    repeatAttendees: 15,
+    organizer: {
+      name: "Lisa Chen",
+      id: "user-lisa-321",
+      avatar: "/lovable-uploads/lisa-chen-avatar.jpg"
+    },
     timestamp: "Every Thursday",
     start_time: new Date(Date.now() + 259200000).toISOString(),
     end_time: new Date(Date.now() + 262800000).toISOString()
@@ -349,6 +409,12 @@ const topCreators = [
     pillar: "Mental",
     author: { name: "Lisa Chen", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Yoga Studio",
+    eventsHosted: 12,
+    totalAttendees: 342,
+    averageRating: 4.9,
+    impactScore: 95,
+    repeatRate: 78,
+    specialization: "Mental",
     timestamp: "12 Events Hosted",
     start_time: new Date().toISOString(),
     end_time: new Date(Date.now() + 3600000).toISOString()
@@ -362,6 +428,12 @@ const topCreators = [
     pillar: "Exercise",
     author: { name: "Trainer Mike", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
     location: "Fitness Studio",
+    eventsHosted: 9,
+    totalAttendees: 287,
+    averageRating: 4.7,
+    impactScore: 89,
+    repeatRate: 72,
+    specialization: "Exercise",
     timestamp: "9 Bootcamps Led",
     start_time: new Date().toISOString(),
     end_time: new Date(Date.now() + 3600000).toISOString()
@@ -375,6 +447,12 @@ const topCreators = [
     pillar: "Nutrition",
     author: { name: "Chef Emma", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Community Kitchen",
+    eventsHosted: 6,
+    totalAttendees: 198,
+    averageRating: 4.8,
+    impactScore: 87,
+    repeatRate: 85,
+    specialization: "Nutrition",
     timestamp: "6 Workshops Created",
     start_time: new Date().toISOString(),
     end_time: new Date(Date.now() + 3600000).toISOString()
@@ -400,6 +478,9 @@ const topVitanaMembers = [
     wellness_streak_days: 47,
     score_30d_change: 65,
     total_activities: 234,
+    rank_change: 2,
+    percentile: 98,
+    monthly_leader: true,
     achievements: [
       { title: '🏆 30-Day Streak', description: 'Completed goals for 30 days straight', earned_at: '2024-01-15' }
     ]
@@ -420,7 +501,10 @@ const topVitanaMembers = [
     },
     wellness_streak_days: 32,
     score_30d_change: 12,
-    total_activities: 189
+    total_activities: 189,
+    rank_change: 0,
+    percentile: 97,
+    monthly_leader: false
   },
   {
     user_id: 'member-3',
@@ -1164,6 +1248,22 @@ export default withScreenId(function Community() {
                       <SelectItem value="global">Global</SelectItem>
                       <SelectItem value="region">Region</SelectItem>
                       <SelectItem value="group">My Groups</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">Category:</span>
+                  <Select defaultValue="all">
+                    <SelectTrigger className="w-32 h-10 xl:h-9">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      <SelectItem value="sleep">Sleep</SelectItem>
+                      <SelectItem value="exercise">Exercise</SelectItem>
+                      <SelectItem value="nutrition">Nutrition</SelectItem>
+                      <SelectItem value="hydration">Hydration</SelectItem>
+                      <SelectItem value="mental">Mental</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
