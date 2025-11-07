@@ -163,6 +163,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
       variant: ctaConfig.primary.variant,
       icon: ctaConfig.primary.icon
     },
+    expandOnPrimaryClick: true,
     secondaryActions: [
       {
         label: 'Improve',

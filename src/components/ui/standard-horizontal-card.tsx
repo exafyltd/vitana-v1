@@ -279,22 +279,30 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             )}
           </div>
 
-          <div className={cn(
-            "flex items-center justify-end gap-1.5 relative z-20 pointer-events-auto",
-            "focus-within:xl:opacity-100",
-            isRTL && "justify-start order-first"
-          )}>
+          <div 
+            className={cn(
+              "flex items-center justify-end gap-1.5 relative z-30 pointer-events-auto",
+              "focus-within:xl:opacity-100",
+              isRTL && "justify-start order-first"
+            )}
+            onClick={(e) => e.stopPropagation()}
+          >
             {primaryAction && (
               <Button
                 type="button"
                 size="sm"
                 variant="ghost"
                 onClick={handlePrimaryAction}
+                onPointerDown={(e) => { 
+                  e.stopPropagation(); 
+                  console.log('[HC] primaryAction pointerdown', id, primaryAction.label);
+                }}
                 disabled={primaryAction.disabled}
                 className={cn(
                   "h-8 text-[13px] font-medium transition-all duration-200",
                   "opacity-80 hover:opacity-100 hover:bg-accent hover:text-accent-foreground",
-                  "px-3"
+                  "px-3",
+                  "relative z-30 pointer-events-auto"
                 )}
                 aria-label={primaryAction.label}
                 title={primaryAction.label}
