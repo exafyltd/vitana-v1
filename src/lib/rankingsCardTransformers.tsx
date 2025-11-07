@@ -379,7 +379,6 @@ export const transformMemberRankingToCard = (
             View Full Profile
           </Button>
         </div>
-        </div>
       </>
     ),
     className: cn(borderStyle),
