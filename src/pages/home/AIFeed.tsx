@@ -42,6 +42,7 @@ export default function AIFeed() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [addToFeedOpen, setAddToFeedOpen] = useState(false);
+  const [savedActivityIds, setSavedActivityIds] = useState<Set<string>>(new Set());
   const { createKnowledge } = useKnowledgeBase();
   
   // Mock activity feed data including completed/failed actions
@@ -87,18 +88,28 @@ export default function AIFeed() {
   // Transform activities to standard cards if unified lists are enabled
   const transformedActivities: StandardHorizontalCardProps[] = filteredFeed.map((activity) => {
     const card = transformActivityToVisualCard(activity as any);
+    const activityId = (activity as any).id;
+    const isSaved = savedActivityIds.has(activityId);
+    
     return {
       ...card,
       primaryAction: {
         ...card.primaryAction,
+        label: isSaved ? "✓ Saved" : card.primaryAction.label,
+        variant: isSaved ? "ghost" : card.primaryAction.variant,
         onClick: () => {
-          console.log("[AI Feed] Saving activity to memory:", (activity as any).id);
+          if (isSaved) return; // Prevent double-saving
+          
+          console.log("[AI Feed] Saving activity to memory:", activityId);
           createKnowledge({
             source: "ai",
             content: `${(activity as any).title} — ${(activity as any).reason}`,
             memoryType: "insight",
             confidenceScore: 0.85,
           });
+          
+          // Mark as saved immediately
+          setSavedActivityIds(prev => new Set(prev).add(activityId));
         },
       },
     };
