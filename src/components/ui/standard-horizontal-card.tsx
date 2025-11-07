@@ -195,32 +195,22 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         }}
       >
 
-        <button 
+        <div 
           className={cn(
-            "w-full grid items-center text-left",
+            "w-full grid items-center",
             "min-h-[88px] xl:min-h-[84px]",
             "gap-3 xl:gap-2.5",
             "px-4 py-3 xl:px-3.5 xl:py-2.5",
             "grid-cols-[36px_1fr_auto]",
-            "focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset",
-            "rounded-xl transition-all duration-200"
+            "rounded-xl transition-all duration-200",
+            onClick && "cursor-pointer"
           )}
-          type="button"
-          tabIndex={0}
-          aria-expanded={expandedContent ? isExpanded : undefined}
-          aria-controls={expandedContent ? panelId : undefined}
           onClick={(e) => {
-            onClick?.();
-            if (expandedContent) handleExpand(e);
-          }}
-          onKeyDown={(e) => {
-            if (!expandedContent) return;
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleExpand(e);
-            } else if (e.key === 'Escape' && isExpanded) {
-              e.preventDefault();
-              handleExpand(e);
+            // Only trigger onClick if not clicking on interactive elements
+            const target = e.target as HTMLElement;
+            if (!target.closest('button') && !target.closest('[role="button"]')) {
+              onClick?.();
+              if (expandedContent) handleExpand(e);
             }
           }}
         >
@@ -282,7 +272,6 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 variant="ghost"
                 onClick={handlePrimaryAction}
                 disabled={primaryAction.disabled}
-                tabIndex={-1}
                 className={cn(
                   "h-8 text-[13px] font-medium transition-all duration-200",
                   "opacity-70 hover:opacity-100 hover:bg-accent hover:text-accent-foreground group-hover:opacity-100",
@@ -306,7 +295,6 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                   <Button
                     size="sm"
                     variant="ghost"
-                    tabIndex={-1}
                     className={cn(
                       "h-8 w-8 p-0",
                       "xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
@@ -341,7 +329,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
               </DropdownMenu>
             )}
           </div>
-        </button>
+        </div>
 
         {isExpanded && expandedContent && (
           <div 
