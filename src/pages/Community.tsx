@@ -468,7 +468,7 @@ const topVitanaMembers = [
     user_id: 'c5a4daf9-190a-4a9e-9638-d6b32f85244a',
     handle: 'dragan',
     display_name: 'Dragan Stevanovic',
-    avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
     vitana_score: 894,
     vitana_tier: 'Elite',
     score_trend: 'up' as const,

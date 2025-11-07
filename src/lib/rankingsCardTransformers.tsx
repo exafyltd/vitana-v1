@@ -264,15 +264,29 @@ export const transformCreatorRankingToCard = (
     },
     secondaryLabel: creator.specialization || creator.pillar,
     expandedContent: (
-      <RankingStatsTable 
-        stats={[
-          { label: 'Events Hosted (30d)', value: creator.eventsHosted || 12, trend: 'up' },
-          { label: 'Total Attendees', value: creator.totalAttendees || 342, trend: 'up' },
-          { label: 'Average Rating', value: `${creator.averageRating || 4.9}/5.0`, trend: 'stable' },
-          { label: 'Impact Score', value: `${creator.impactScore || 95}/100`, trend: 'up' },
-          { label: 'Repeat Rate', value: `${creator.repeatRate || 78}%` }
-        ]}
-      />
+      <>
+        <RankingStatsTable 
+          stats={[
+            { label: 'Events Hosted (30d)', value: creator.eventsHosted || 12, trend: 'up' },
+            { label: 'Total Attendees', value: creator.totalAttendees || 342, trend: 'up' },
+            { label: 'Average Rating', value: `${creator.averageRating || 4.9}/5.0`, trend: 'stable' },
+            { label: 'Impact Score', value: `${creator.impactScore || 95}/100`, trend: 'up' },
+            { label: 'Repeat Rate', value: `${creator.repeatRate || 78}%` }
+          ]}
+        />
+        <div className="mt-3 pt-3 border-t border-white/20">
+          <Button
+            className="w-full"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.location.href = `/u/${creator.id}`;
+            }}
+          >
+            View Full Profile
+          </Button>
+        </div>
+      </>
     ),
     className: cn(borderStyle),
     onClick: () => {
@@ -348,6 +362,18 @@ export const transformMemberRankingToCard = (
             { label: 'Total Activities', value: member.total_activities || 0 }
           ]}
         />
+        <div className="mt-3 pt-3 border-t border-white/20">
+          <Button
+            className="w-full"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.location.href = `/u/${member.user_id}`;
+            }}
+          >
+            View Full Profile
+          </Button>
+        </div>
       </>
     ),
     className: cn(borderStyle),
