@@ -39,6 +39,7 @@ export interface StandardHorizontalCardProps {
     variant?: 'ghost' | 'outline';
   }>;
   expandedContent?: React.ReactNode;
+  expandOnPrimaryClick?: boolean;
   isExpanded?: boolean;
   onToggleExpand?: (id: string) => void;
   density?: 'compact' | 'comfy';
@@ -69,6 +70,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       primaryAction,
       secondaryActions,
       expandedContent,
+      expandOnPrimaryClick = false,
       isExpanded,
       onToggleExpand,
       density = 'compact',
@@ -110,6 +112,11 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
     const handlePrimaryAction = (e: React.MouseEvent) => {
       e.stopPropagation();
       console.log('[HC] primaryAction click start', id, primaryAction?.label);
+      
+      // If configured, expand the card when primary action is clicked
+      if (expandOnPrimaryClick && expandedContent) {
+        handleExpand(e);
+      }
       
       if (primaryAction?.requiresConsent && requiresConsent) {
         onConsentRequired?.();

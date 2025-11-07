@@ -93,7 +93,23 @@ export function MemoryTimelineTab() {
         icon: <Trash2 className="w-3 h-3 mr-1" /> 
       }
     ],
-    expandedContent: item.tags && item.tags.length > 0 ? (
+    expandedContent: item.source === 'ai' ? (
+      <div className="space-y-2 transition-opacity duration-150">
+        <div className="text-sm text-muted-foreground/80">
+          <span className="font-medium">Type:</span> {item.memoryType || "insight"}
+        </div>
+        {item.confidenceScore && (
+          <div className="text-sm text-amber-600 dark:text-amber-500">
+            Confidence: {Math.round(item.confidenceScore * 100)}%
+          </div>
+        )}
+        {item.metadata && (
+          <div className="text-xs text-muted-foreground/70">
+            Additional metadata available
+          </div>
+        )}
+      </div>
+    ) : item.tags && item.tags.length > 0 ? (
       <div className="space-y-2 transition-opacity duration-150">
         <div className="flex flex-wrap gap-1.5">
           {item.tags.map((tag) => (
@@ -107,6 +123,7 @@ export function MemoryTimelineTab() {
         </div>
       </div>
     ) : undefined,
+    expandOnPrimaryClick: true,
     density: 'compact' as const,
     accentColor: getAccentForSource(item.source)
   }));
