@@ -23,7 +23,7 @@ const getPositionBadge = (position: number) => {
 const getPositionBorderStyle = (position: number) => {
   switch (position) {
     case 1:
-      return 'border-yellow-400/60 hover:border-yellow-400/80 hover:shadow-lg hover:shadow-yellow-400/20';
+      return 'border-2 border-yellow-400/70 hover:border-yellow-400/90 rounded-xl shadow-[0_0_12px_rgba(234,179,8,0.25)] hover:shadow-[0_0_16px_rgba(234,179,8,0.35)]';
     case 2:
       return 'border-gray-400/50 hover:border-gray-400/70 hover:shadow-lg hover:shadow-gray-400/15';
     case 3:
@@ -46,7 +46,7 @@ const RankingStatsTable = ({ stats }: { stats: Array<{label: string, value: stri
     {stats.map((stat, idx) => (
       <div key={idx} className="grid grid-cols-[1fr_auto_16px] gap-2 items-center text-sm">
         <span className="text-muted-foreground text-left">{stat.label}</span>
-        <span className="font-semibold text-foreground text-right">{stat.value}</span>
+        <span className="font-semibold text-foreground text-right tabular-nums">{stat.value}</span>
         <div className="flex justify-end">
           {stat.trend && <TrendIcon trend={stat.trend} />}
         </div>
@@ -274,9 +274,14 @@ export const transformCreatorRankingToCard = (
             { label: 'Repeat Rate', value: `${creator.repeatRate || 78}%` }
           ]}
         />
+        {creator.organizedBy && (
+          <div className="mt-2 pt-2 border-t border-border/20 text-xs text-muted-foreground">
+            Organized by {creator.organizedBy}
+          </div>
+        )}
         <div className="mt-3 pt-3 border-t border-border/30 flex justify-end">
           <Button
-            className="ml-auto"
+            className="ml-auto opacity-80 hover:opacity-100 transition-opacity"
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
@@ -364,7 +369,7 @@ export const transformMemberRankingToCard = (
         />
         <div className="mt-3 pt-3 border-t border-border/30 flex justify-end">
           <Button
-            className="ml-auto"
+            className="ml-auto opacity-80 hover:opacity-100 transition-opacity"
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
@@ -373,6 +378,7 @@ export const transformMemberRankingToCard = (
           >
             View Full Profile
           </Button>
+        </div>
         </div>
       </>
     ),

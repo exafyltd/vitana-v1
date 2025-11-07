@@ -303,9 +303,10 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             role="region"
             aria-labelledby={`card-header-${id}`}
             aria-live="polite"
-            className="px-4 pb-3 pt-3 border-t border-border/30"
+            className="px-4 pb-3 pt-3 mt-1 border-t border-border/30 bg-background/[0.02]"
             style={{ 
-              animation: 'accordion-down 200ms ease-out'
+              animation: 'accordion-down 200ms ease-out',
+              transition: 'all 0.25s ease-in-out'
             }}
           >
             {expandedContent}
