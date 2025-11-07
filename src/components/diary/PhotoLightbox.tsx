@@ -172,19 +172,21 @@ export function PhotoLightbox({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-[98vw] h-[98vh] p-0 bg-black/60 backdrop-blur-md border-none"
+        className="max-w-[98vw] h-[98vh] p-0 bg-black/80 backdrop-blur-[4px] border-none"
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        role="dialog"
+        aria-label="Photo preview"
       >
-        {/* Chrome Bar */}
-        <div className="absolute top-0 left-0 right-0 z-50 h-14 bg-card/80 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6">
+        {/* Chrome Bar - Semi-transparent with gradient fade */}
+        <div className="absolute top-0 left-0 right-0 z-50 h-14 bg-black/30 backdrop-blur-md border-b border-white/10 flex items-center justify-between px-6 bg-gradient-to-b from-black/20 to-transparent">
           <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">Timeline / Diary entry</span>
+            <span className="text-[13px] text-white/80">Timeline / Diary entry</span>
             {createdAt && (
               <>
-                <span className="text-muted-foreground">·</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-white/60">·</span>
+                <span className="text-[13px] text-white/80">
                   {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
                 </span>
               </>
@@ -192,80 +194,139 @@ export function PhotoLightbox({
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={handleZoomOut} disabled={zoomState.scale <= 1}>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleZoomOut} 
+              disabled={zoomState.scale <= 1}
+              className="text-white/85 hover:text-white hover:bg-white/10"
+            >
               <ZoomOut className="h-4 w-4" />
             </Button>
-            <span className="text-sm text-muted-foreground min-w-[3ch] text-center">
+            <span className="text-sm text-white/85 min-w-[3ch] text-center">
               {Math.round(zoomState.scale * 100)}%
             </span>
-            <Button variant="ghost" size="sm" onClick={handleZoomIn} disabled={zoomState.scale >= 3}>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleZoomIn} 
+              disabled={zoomState.scale >= 3}
+              className="text-white/85 hover:text-white hover:bg-white/10"
+            >
               <ZoomIn className="h-4 w-4" />
             </Button>
-            <div className="w-px h-6 bg-border mx-1" />
-            <Button variant="ghost" size="sm" onClick={handleDownload}>
+            <div className="w-px h-6 bg-white/10 mx-1" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleDownload}
+              className="text-white/85 hover:text-white hover:bg-white/10"
+            >
               <Download className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-white/85 hover:text-white hover:bg-white/10"
+            >
               <Share2 className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-white/85 hover:text-white hover:bg-white/10"
+            >
               <MoreHorizontal className="h-4 w-4" />
             </Button>
-            <div className="w-px h-6 bg-border mx-1" />
-            <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
+            <div className="w-px h-6 bg-white/10 mx-1" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => onOpenChange(false)}
+              className="text-white/85 hover:text-white hover:bg-white/10"
+            >
               <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
-        {/* Image Container */}
-        <figure
-          ref={containerRef}
-          className="flex items-center justify-center h-full pt-14 pb-16 px-4"
-          onWheel={handleWheel}
-        >
-          <img
-            ref={imageRef}
-            src={images[currentIndex]}
-            alt={caption || `Photo ${currentIndex + 1}`}
-            className="max-w-[92vw] max-h-[calc(88vh-7rem)] object-contain rounded-2xl shadow-2xl transition-transform duration-200 ease-out select-none"
-            style={{
-              transform: `scale(${zoomState.scale}) translate(${zoomState.x / zoomState.scale}px, ${zoomState.y / zoomState.scale}px)`,
-              cursor: zoomState.scale > 1 ? (isDragging ? "grabbing" : "grab") : "default",
-            }}
-            onDoubleClick={handleDoubleClick}
-            onMouseDown={handleMouseDown}
-            draggable={false}
-          />
+        {/* Main Content Container - Flex column to stack image and caption */}
+        <div className="flex flex-col items-center justify-center h-full pt-14 pb-16 px-4 gap-4">
+          {/* Image Container */}
+          <figure
+            ref={containerRef}
+            className="flex items-center justify-center relative"
+            onWheel={handleWheel}
+          >
+            <img
+              ref={imageRef}
+              src={images[currentIndex]}
+              alt={caption || `Photo ${currentIndex + 1}`}
+              className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.4)] transition-all duration-500 ease-out select-none hover:scale-[1.01]"
+              style={{
+                transform: `scale(${zoomState.scale}) translate(${zoomState.x / zoomState.scale}px, ${zoomState.y / zoomState.scale}px)`,
+                cursor: zoomState.scale > 1 ? (isDragging ? "grabbing" : "grab") : zoomState.scale === 1 ? "zoom-in" : "zoom-out",
+              }}
+              onDoubleClick={handleDoubleClick}
+              onMouseDown={handleMouseDown}
+              draggable={false}
+            />
 
-          {/* Navigation Arrows */}
-          {images.length > 1 && (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
-                onClick={() => onIndexChange(currentIndex - 1)}
-                disabled={currentIndex === 0}
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
-                onClick={() => onIndexChange(currentIndex + 1)}
-                disabled={currentIndex === images.length - 1}
-              >
-                <ChevronRight className="h-6 w-6" />
-              </Button>
-            </>
+            {/* Navigation Arrows - Positioned relative to the figure */}
+            {images.length > 1 && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
+                  onClick={() => onIndexChange(currentIndex - 1)}
+                  disabled={currentIndex === 0}
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 disabled:opacity-30 h-12 w-12"
+                  onClick={() => onIndexChange(currentIndex + 1)}
+                  disabled={currentIndex === images.length - 1}
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
+              </>
+            )}
+          </figure>
+
+          {/* Caption & Tags Card - Below the image */}
+          {(caption || (tags && tags.length > 0)) && (
+            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-lg px-4 py-3 max-w-[80%] animate-fade-in opacity-0 [animation-delay:200ms] [animation-fill-mode:forwards]">
+              {caption && (
+                <p className="text-[14.5px] font-medium text-white leading-relaxed mb-2">
+                  {caption}
+                </p>
+              )}
+              {tags && tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-white/15 text-white/80 border-none text-xs font-medium"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
-        </figure>
+        </div>
 
-        {/* Filmstrip */}
+        {/* Filmstrip - Keep at bottom */}
         {showFilmstrip && images.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-card/80 backdrop-blur-md border-t border-white/10 px-6">
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-black/30 backdrop-blur-md border-t border-white/10 px-6">
             <div className="flex items-center gap-2 h-full overflow-x-auto">
               {images.map((img, index) => (
                 <button
@@ -276,31 +337,12 @@ export function PhotoLightbox({
                       ? "ring-2 ring-primary scale-110"
                       : "opacity-60 hover:opacity-100"
                   }`}
+                  aria-label={`View photo ${index + 1}`}
                 >
                   <img src={img} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Caption & Tags Overlay */}
-        {(caption || (tags && tags.length > 0)) && (
-          <div className="absolute bottom-20 left-6 right-6 bg-card/90 backdrop-blur-md border border-white/10 rounded-xl p-4 space-y-2 max-w-xl">
-            {caption && <p className="text-sm text-foreground">{caption}</p>}
-            {tags && tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag, index) => (
-                  <Badge
-                    key={index}
-                    variant="secondary"
-                    className="bg-secondary/50 backdrop-blur-sm border border-white/10 text-xs"
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            )}
           </div>
         )}
       </DialogContent>
