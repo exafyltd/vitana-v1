@@ -33,6 +33,7 @@ import { transformActivityToVisualCard, transformRoutineToVisualCard } from "@/l
 import { isFeatureEnabled } from "@/lib/feature-flags";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
+import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function AIFeed() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [addToFeedOpen, setAddToFeedOpen] = useState(false);
+  const { createKnowledge } = useKnowledgeBase();
   
   // Mock activity feed data including completed/failed actions
   const activityFeed = [
@@ -83,7 +85,24 @@ export default function AIFeed() {
     : activityFeed;
 
   // Transform activities to standard cards if unified lists are enabled
-  const transformedActivities: StandardHorizontalCardProps[] = filteredFeed.map(transformActivityToVisualCard);
+  const transformedActivities: StandardHorizontalCardProps[] = filteredFeed.map((activity) => {
+    const card = transformActivityToVisualCard(activity as any);
+    return {
+      ...card,
+      primaryAction: {
+        ...card.primaryAction,
+        onClick: () => {
+          console.log("[AI Feed] Saving activity to memory:", (activity as any).id);
+          createKnowledge({
+            source: "ai",
+            content: `${(activity as any).title} — ${(activity as any).reason}`,
+            memoryType: "insight",
+            confidenceScore: 0.85,
+          });
+        },
+      },
+    };
+  });
   const useUnifiedLists = isFeatureEnabled('enableUnifiedHorizontalLists');
 
   return (

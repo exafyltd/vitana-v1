@@ -4,7 +4,7 @@ import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap, Activity, Brain, Dr
 import { AutopilotActionStatus } from '@/types/autopilot';
 import { createElement } from 'react';
 import { getCtaForScreen } from './cta-taxonomy';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 
 // Import images for routines (Visual pattern)
 import sunriseRoutineImg from '@/assets/ai-feed/sunrise-routine.jpg';
@@ -158,7 +158,10 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
       label: ctaConfig.primary.label,
       onClick: () => {
         console.log('[AI Feed] Saving activity to memory:', activity.id);
-        toast.success('Activity saved to Memory');
+        toast({
+          title: 'Activity saved to Memory',
+          description: 'Added to your knowledge base.',
+        });
       },
       variant: ctaConfig.primary.variant,
       icon: ctaConfig.primary.icon
@@ -169,7 +172,10 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
         label: 'Improve',
         onClick: () => {
           console.log('[AI Feed] Requesting improvement:', activity.id);
-          toast.info('Improvement request sent to AI');
+          toast({
+            title: 'Improvement requested',
+            description: 'We’ll analyze and update suggestions shortly.',
+          });
         },
         icon: createElement(TrendingUp, { className: 'w-3 h-3 mr-1' })
       },
@@ -177,7 +183,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
         label: 'Hide',
         onClick: () => {
           console.log('[AI Feed] Hiding activity:', activity.id);
-          toast.success('Activity hidden');
+          toast({ title: 'Activity hidden' });
         },
         icon: createElement(EyeOff, { className: 'w-3 h-3 mr-1' })
       }
