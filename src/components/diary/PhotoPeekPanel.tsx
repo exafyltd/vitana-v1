@@ -77,9 +77,9 @@ export function PhotoPeekPanel({
   };
 
   const content = (
-    <div className="flex flex-col h-full space-y-4 p-6">
+    <div className="flex flex-col h-full space-y-4 p-6 overflow-hidden">
       {/* Image Container */}
-      <div className="relative">
+      <div className="relative shrink-0">
         <AspectRatio ratio={4 / 3} className="bg-muted rounded-xl overflow-hidden">
           <img
             src={image}
@@ -117,7 +117,7 @@ export function PhotoPeekPanel({
       </div>
 
       {/* Metadata Section */}
-      <div className="space-y-3 flex-1 overflow-y-auto">
+      <div className="space-y-3 flex-1 min-h-0 overflow-y-auto">
         {/* Timestamp */}
         {createdAt && (
           <p className="text-xs text-muted-foreground">
@@ -158,7 +158,7 @@ export function PhotoPeekPanel({
       </div>
 
       {/* Action Row */}
-      <div className="flex items-center gap-2 pt-2 border-t border-border/50">
+      <div className="flex items-center gap-2 pt-2 border-t border-border/50 shrink-0">
         <Button
           variant="outline"
           size="sm"
