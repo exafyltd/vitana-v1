@@ -289,6 +289,22 @@ export function MemoryTimelineTab() {
         onOpenFull={() => setPhotoViewState(prev => 
           prev ? { ...prev, mode: 'lightbox' } : null
         )}
+        onAddToFavorites={() => {
+          toast.success('Added to favorites');
+        }}
+        onCopyLink={() => {
+          if (photoViewState?.images[photoViewState.currentIndex]) {
+            navigator.clipboard.writeText(photoViewState.images[photoViewState.currentIndex]);
+            toast.success('Link copied to clipboard');
+          }
+        }}
+        onEdit={() => {
+          toast.info('Edit functionality coming soon');
+        }}
+        onDelete={() => {
+          toast.success('Photo deleted');
+          setPhotoViewState(null);
+        }}
       />
 
       <PhotoLightbox

@@ -3,9 +3,17 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, Maximize2, Share2, X, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Download, Maximize2, Share2, X, MoreHorizontal, ChevronLeft, ChevronRight, Heart, Copy, Edit, Trash2, Flag } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 interface PhotoPeekPanelProps {
   open: boolean;
@@ -23,6 +31,11 @@ interface PhotoPeekPanelProps {
     source?: string;
     camera?: string;
   };
+  onAddToFavorites?: () => void;
+  onCopyLink?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  onReport?: () => void;
 }
 
 export function PhotoPeekPanel({
@@ -37,6 +50,11 @@ export function PhotoPeekPanel({
   createdAt,
   onOpenFull,
   metadata,
+  onAddToFavorites,
+  onCopyLink,
+  onEdit,
+  onDelete,
+  onReport,
 }: PhotoPeekPanelProps) {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -177,12 +195,80 @@ export function PhotoPeekPanel({
           <Maximize2 className="h-4 w-4 mr-2" />
           Open full
         </Button>
-        <Button variant="outline" size="icon" className="shrink-0">
-          <Share2 className="h-4 w-4" />
-        </Button>
-        <Button variant="outline" size="icon" className="shrink-0">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" className="shrink-0">
+              <Share2 className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={() => {
+              if (onCopyLink) {
+                onCopyLink();
+              } else if (image) {
+                navigator.clipboard.writeText(image);
+                toast.success("Link copied to clipboard");
+              }
+            }}>
+              <Copy className="h-4 w-4 mr-2" />
+              Copy link
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              if (image && navigator.share) {
+                navigator.share({
+                  title: caption || 'Photo',
+                  url: image
+                }).catch(() => {
+                  // User cancelled or share not available
+                });
+              } else {
+                toast.info("Sharing not available on this device");
+              }
+            }}>
+              <Share2 className="h-4 w-4 mr-2" />
+              Share via...
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" className="shrink-0">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            {onAddToFavorites && (
+              <DropdownMenuItem onClick={onAddToFavorites}>
+                <Heart className="h-4 w-4 mr-2" />
+                Add to favorites
+              </DropdownMenuItem>
+            )}
+            {onEdit && (
+              <DropdownMenuItem onClick={onEdit}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit details
+              </DropdownMenuItem>
+            )}
+            {(onDelete || onReport) && <DropdownMenuSeparator />}
+            {onDelete && (
+              <DropdownMenuItem 
+                onClick={onDelete}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete photo
+              </DropdownMenuItem>
+            )}
+            {onReport && (
+              <DropdownMenuItem onClick={onReport}>
+                <Flag className="h-4 w-4 mr-2" />
+                Report
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
