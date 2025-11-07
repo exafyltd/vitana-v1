@@ -12,12 +12,15 @@ import { isFeatureEnabled } from "@/lib/feature-flags";
 import { SCREEN_IDS } from "@/lib/screen-id";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { PhotoCarouselModal } from "@/components/diary/PhotoCarouselModal";
+import { PhotoPeekPanel } from "@/components/diary/PhotoPeekPanel";
+import { PhotoLightbox } from "@/components/diary/PhotoLightbox";
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
-  const [selectedPhotoEntry, setSelectedPhotoEntry] = useState<{
+  const [photoViewState, setPhotoViewState] = useState<{
+    mode: 'closed' | 'peek' | 'lightbox';
     images: string[];
+    currentIndex: number;
     caption?: string;
     tags?: string[];
     createdAt?: string;
@@ -86,10 +89,12 @@ export function MemoryTimelineTab() {
       label: 'Open',
       onClick: () => {
         console.log('Opening item:', item.id);
-        // If it's a photo diary entry with attachments, open carousel
+        // If it's a photo diary entry with attachments, open peek panel
         if (item.source === 'diary' && item.attachments && item.attachments.length > 0) {
-          setSelectedPhotoEntry({
+          setPhotoViewState({
+            mode: 'peek',
             images: item.attachments,
+            currentIndex: 0,
             caption: item.content,
             tags: item.tags,
             createdAt: item.createdAt,
@@ -269,13 +274,40 @@ export function MemoryTimelineTab() {
         </>
       )}
 
-      <PhotoCarouselModal
-        open={!!selectedPhotoEntry}
-        onOpenChange={(open) => !open && setSelectedPhotoEntry(null)}
-        images={selectedPhotoEntry?.images || []}
-        caption={selectedPhotoEntry?.caption}
-        tags={selectedPhotoEntry?.tags}
-        createdAt={selectedPhotoEntry?.createdAt}
+      <PhotoPeekPanel
+        open={photoViewState?.mode === 'peek'}
+        onOpenChange={(open) => !open && setPhotoViewState(null)}
+        image={photoViewState?.images[photoViewState?.currentIndex || 0] || ''}
+        images={photoViewState?.images || []}
+        currentIndex={photoViewState?.currentIndex || 0}
+        onIndexChange={(index) => setPhotoViewState(prev => 
+          prev ? { ...prev, currentIndex: index } : null
+        )}
+        caption={photoViewState?.caption}
+        tags={photoViewState?.tags}
+        createdAt={photoViewState?.createdAt}
+        onOpenFull={() => setPhotoViewState(prev => 
+          prev ? { ...prev, mode: 'lightbox' } : null
+        )}
+      />
+
+      <PhotoLightbox
+        open={photoViewState?.mode === 'lightbox'}
+        onOpenChange={(open) => {
+          if (!open) {
+            // Return to peek mode instead of closing completely
+            setPhotoViewState(prev => prev ? { ...prev, mode: 'peek' } : null);
+          }
+        }}
+        images={photoViewState?.images || []}
+        currentIndex={photoViewState?.currentIndex || 0}
+        onIndexChange={(index) => setPhotoViewState(prev => 
+          prev ? { ...prev, currentIndex: index } : null
+        )}
+        caption={photoViewState?.caption}
+        tags={photoViewState?.tags}
+        createdAt={photoViewState?.createdAt}
+        showFilmstrip={true}
       />
     </div>
   );
