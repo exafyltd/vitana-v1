@@ -401,7 +401,8 @@ const topEvents = [
 // Top Creators
 const topCreators = [
   {
-    id: "creator-1",
+    id: "8a3c1f2e-4567-89ab-cdef-234567890abc",
+    handle: "lisachen",
     title: "Lisa Chen - Wellness Guru",
     description: "Hosted 12 amazing events this month in yoga and mindfulness",
     imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
@@ -420,7 +421,8 @@ const topCreators = [
     end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
-    id: "creator-2",
+    id: "7b2d3e4f-5678-9abc-def0-345678901bcd",
+    handle: "trainermike",
     title: "Trainer Mike - Fitness Pro",
     description: "Led 9 high-energy fitness bootcamps with incredible results",
     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
@@ -439,7 +441,8 @@ const topCreators = [
     end_time: new Date(Date.now() + 3600000).toISOString()
   },
   {
-    id: "creator-3",
+    id: "6c1e2f3a-6789-abcd-ef01-456789012cde",
+    handle: "chefemma",
     title: "Chef Emma - Culinary Expert",
     description: "Created 6 inspiring cooking workshops with healthy recipes",
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
@@ -462,7 +465,33 @@ const topCreators = [
 // Top VITANA Members
 const topVitanaMembers = [
   {
-    user_id: 'member-1',
+    user_id: 'c5a4daf9-190a-4a9e-9638-d6b32f85244a',
+    handle: 'dragan',
+    display_name: 'Dragan Stevanovic',
+    avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    vitana_score: 894,
+    vitana_tier: 'Elite',
+    score_trend: 'up' as const,
+    pillar_scores: {
+      sleep: 182,
+      exercise: 190,
+      nutrition: 185,
+      hydration: 178,
+      mental: 159
+    },
+    wellness_streak_days: 56,
+    score_30d_change: 72,
+    total_activities: 267,
+    rank_change: 1,
+    percentile: 99,
+    monthly_leader: true,
+    achievements: [
+      { title: '🏆 50-Day Streak', description: 'Completed goals for 50 days straight', earned_at: '2024-01-20' }
+    ]
+  },
+  {
+    user_id: '8f3b2c1d-4567-89ab-cdef-123456789abc',
+    handle: 'sarahmitchell',
     display_name: 'Sarah Mitchell',
     avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
     vitana_score: 892,
@@ -486,7 +515,8 @@ const topVitanaMembers = [
     ]
   },
   {
-    user_id: 'member-2',
+    user_id: '7a2b1c3d-5678-9abc-def0-234567890bcd',
+    handle: 'marcusjohnson',
     display_name: 'Marcus Johnson',
     avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
     vitana_score: 875,
@@ -507,7 +537,8 @@ const topVitanaMembers = [
     monthly_leader: false
   },
   {
-    user_id: 'member-3',
+    user_id: '6b1c2d3e-6789-abcd-ef01-345678901cde',
+    handle: 'emilyrodriguez',
     display_name: 'Emily Rodriguez',
     avatar_url: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
     vitana_score: 831,

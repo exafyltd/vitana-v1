@@ -276,8 +276,7 @@ export const transformCreatorRankingToCard = (
     ),
     className: cn(borderStyle),
     onClick: () => {
-      console.log('View creator profile:', creator.id);
-      // Will navigate to creator profile page
+      window.location.href = `/u/${creator.id}`;
     }
   };
 };
@@ -353,8 +352,7 @@ export const transformMemberRankingToCard = (
     ),
     className: cn(borderStyle),
     onClick: () => {
-      console.log('View member profile:', member.user_id);
-      // Will show member profile popup
+      window.location.href = `/u/${member.user_id}`;
     }
   };
 };
