@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -243,11 +244,15 @@ export function LiveRoomCard({
             {/* Meta row: avatars + location - Fixed height */}
             <div className="flex items-center justify-between gap-2 h-6 pointer-events-none">
               <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  <Avatar className="h-6 w-6 ring-2 ring-white/50">
-                    <AvatarImage src={room.host.avatar} />
-                    <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
-                  </Avatar>
+                <div className="flex -space-x-2 pointer-events-auto">
+                  <ClickableAvatar
+                    userId={room.host.id}
+                    src={room.host.avatar}
+                    fallback={room.host.name[0]}
+                    alt={room.host.name}
+                    className="h-6 w-6 ring-2 ring-white/50"
+                    disabled={room.host.id.startsWith('demo-')}
+                  />
                   {room.participants > 1 &&
                     Array.from({ length: Math.min(room.participants - 1, 2) }).map((_, i) => (
                       <Avatar key={i} className="h-6 w-6 ring-2 ring-white/50">

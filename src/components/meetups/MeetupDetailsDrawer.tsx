@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
@@ -570,26 +571,19 @@ export function MeetupDetailsDrawer({
               {/* Unified Host Bar */}
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 mt-3">
                 {/* Identity Chip - Clickable to profile */}
-                <button
-                  onClick={() => {
-                    toast({
-                      title: "Opening profile",
-                      description: `Viewing ${event.author?.name || 'host'}'s profile`,
-                    });
-                  }}
-                  aria-label={`${event.creator_display_name || event.author?.name || 'Community Host'}, Host — open profile`}
+                <div
                   className={cn(
                     "group flex items-center gap-2 h-11 sm:h-11 px-2 rounded-full",
-                    "bg-background/95 backdrop-blur-sm shadow-lg",
-                    "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
-                    "transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    prefersReducedMotion && "transition-none hover:scale-100 active:scale-100"
+                    "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
                 >
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
-                    <AvatarImage src={event.creator_avatar_url || event.author?.avatar} />
-                    <AvatarFallback className="text-xs">{(event.creator_display_name || event.author?.name)?.[0] || 'H'}</AvatarFallback>
-                  </Avatar>
+                  <ClickableAvatar
+                    userId={event.created_by}
+                    src={event.creator_avatar_url || event.author?.avatar}
+                    fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
+                    alt={event.creator_display_name || event.author?.name || 'Community Host'}
+                    className="h-7 w-7 ring-1 ring-white/50"
+                  />
                   <div className="flex items-center gap-1.5 pr-2">
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
                       {event.creator_display_name || event.author?.name || 'Community Host'}
@@ -599,7 +593,7 @@ export function MeetupDetailsDrawer({
                       Host
                     </span>
                   </div>
-                </button>
+                </div>
 
                 {/* Follow Button - Same height as chip */}
                 <Button

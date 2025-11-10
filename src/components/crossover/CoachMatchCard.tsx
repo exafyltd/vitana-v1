@@ -2,7 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { UserCheck, Calendar, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { useToast } from "@/hooks/use-toast";
@@ -48,10 +48,15 @@ function CoachMatchCardBase({ className }: CoachMatchCardProps) {
           className="flex items-center gap-3 p-3 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 cursor-pointer group"
           onClick={() => handleBookCoach(coach.id, coach.name)}
         >
-          <Avatar className="w-12 h-12 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
-            <AvatarImage src={coach.avatar} />
-            <AvatarFallback>{coach.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-          </Avatar>
+          <ClickableAvatar
+            userId={coach.user_id}
+            handle={coach.handle}
+            src={coach.avatar}
+            fallback={coach.name.split(' ').map(n => n[0]).join('')}
+            alt={coach.name}
+            className="w-12 h-12 ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
+            disabled={coach.id.startsWith('demo-')}
+          />
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
               <p className="font-semibold text-sm truncate">{coach.name}</p>

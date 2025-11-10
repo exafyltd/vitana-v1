@@ -2,7 +2,7 @@ import { CrossoverCard } from "./CrossoverCard";
 import { Users, Heart, X, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { withCardId } from "@/lib/withCardId";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -183,10 +183,14 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
             <div key={match.user_id} className="flex items-center gap-3 p-3 rounded-2xl bg-card/70 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(236,72,153,0.15)] hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 group">
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-fuchsia-500 rounded-full opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
-                <Avatar className={`h-12 w-12 relative transition-all duration-300 ${getAvatarRingColor(match.compatibility_score)}`}>
-                  <AvatarImage src={match.avatar_url} />
-                  <AvatarFallback>{match.display_name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                </Avatar>
+                <ClickableAvatar
+                  userId={match.user_id}
+                  src={match.avatar_url}
+                  fallback={match.display_name.split(' ').map(n => n[0]).join('')}
+                  alt={match.display_name}
+                  className={`h-12 w-12 relative transition-all duration-300 ${getAvatarRingColor(match.compatibility_score)}`}
+                  disabled={match.user_id.startsWith('demo-') || match.avatar_url.includes('dicebear.com')}
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
 import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus } from "lucide-react";
@@ -22,6 +22,8 @@ interface NewsCardProps {
     name: string;
     avatar?: string;
   };
+  authorId?: string;
+  authorHandle?: string;
   location?: string;
   attendees?: number;
   timestamp?: string;
@@ -50,7 +52,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     pillar,
     icon: IconComponent,
     mediaType, 
-    author, 
+    author,
+    authorId,
+    authorHandle,
     location, 
     attendees, 
     timestamp, 
@@ -320,12 +324,15 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 {/* Author */}
                 {author && (
                   <div className="flex items-center gap-2.5">
-                    <Avatar className="w-7 h-7 border-2 border-white/40">
-                      <AvatarImage src={author.avatar} alt={author.name} />
-                      <AvatarFallback className="text-xs bg-white/20 text-white">
-                        {author.name.charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
+                    <ClickableAvatar
+                      userId={authorId}
+                      handle={authorHandle}
+                      src={author.avatar}
+                      fallback={author.name.charAt(0)}
+                      alt={author.name}
+                      className="w-7 h-7 border-2 border-white/40"
+                      disabled={authorId?.startsWith('demo-')}
+                    />
                     <span className="text-xs text-white font-medium">
                       {author.name}
                     </span>

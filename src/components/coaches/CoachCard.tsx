@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 import { DemoCoach } from "@/hooks/useDemoMatches";
@@ -30,12 +30,15 @@ export function CoachCard({ coach, onBook }: CoachCardProps) {
       </div>
       
       {/* Coach Avatar */}
-      <Avatar className="w-20 h-20 mx-auto mb-4 ring-2 ring-primary/20 group-hover:ring-primary/40 group-hover:scale-110 transition-all">
-        <AvatarImage src={coach.avatar} />
-        <AvatarFallback>
-          {coach.name.split(' ').map(n => n[0]).join('')}
-        </AvatarFallback>
-      </Avatar>
+      <ClickableAvatar
+        userId={coach.user_id}
+        handle={coach.handle}
+        src={coach.avatar}
+        fallback={coach.name.split(' ').map(n => n[0]).join('')}
+        alt={coach.name}
+        className="w-20 h-20 mx-auto mb-4 ring-2 ring-primary/20 group-hover:ring-primary/40 group-hover:scale-110 transition-all"
+        disabled={coach.id.startsWith('demo-')}
+      />
       
       {/* Coach Info */}
       <div className="text-center space-y-2">

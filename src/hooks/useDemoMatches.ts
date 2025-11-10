@@ -27,6 +27,8 @@ export interface DemoGroup {
 
 export interface DemoCoach {
   id: string;
+  user_id?: string;
+  handle?: string;
   name: string;
   avatar: string;
   specialty: string;
@@ -312,6 +314,8 @@ export function useDemoMatches() {
   const coaches: DemoCoach[] = [
     {
       id: "demo-coach-1",
+      user_id: "demo-user-coach-1",
+      handle: "demo-mia-torres",
       name: "Mia Torres",
       avatar: generateAvatar(11),
       specialty: "Yoga & Mobility",
@@ -322,6 +326,8 @@ export function useDemoMatches() {
     },
     {
       id: "demo-coach-2",
+      user_id: "demo-user-coach-2",
+      handle: "demo-eric-novak",
       name: "Eric Novak",
       avatar: generateAvatar(12),
       specialty: "Nutrition",
@@ -332,6 +338,8 @@ export function useDemoMatches() {
     },
     {
       id: "demo-coach-3",
+      user_id: "demo-user-coach-3",
+      handle: "demo-anya-petrov",
       name: "Anya Petrov",
       avatar: generateAvatar(13),
       specialty: "Mindfulness",
@@ -342,6 +350,8 @@ export function useDemoMatches() {
     },
     {
       id: "demo-coach-4",
+      user_id: "demo-user-coach-4",
+      handle: "demo-leo-park",
       name: "Leo Park",
       avatar: generateAvatar(14),
       specialty: "Strength & Rehab",
