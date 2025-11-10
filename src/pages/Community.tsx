@@ -3,6 +3,8 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthProvider";
+import { toast } from "sonner";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -674,7 +676,19 @@ const highlightsData = [
 ];
 
 // Enhanced render grid function with interactive action buttons and global row counter
-const renderEventGrid = (events: any[], section?: string, startingRowIndex: number = 0, onEventClick?: (eventId: string) => void) => {
+const renderEventGrid = (
+  events: any[], 
+  section?: string, 
+  startingRowIndex: number = 0, 
+  onEventClick?: (eventId: string) => void,
+  followContext?: {
+    user: any;
+    followStatus: Map<string, boolean>;
+    setFollowStatus: React.Dispatch<React.SetStateAction<Map<string, boolean>>>;
+    setFollowLoading: React.Dispatch<React.SetStateAction<Set<string>>>;
+    followLoading: Set<string>;
+  }
+) => {
   const rows = [];
   let currentRowIndex = startingRowIndex;
   
@@ -688,15 +702,68 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
   };
 
   // Helper function to handle action clicks
-  const handleActionClick = (event: any) => {
+  const handleActionClick = async (event: any) => {
     const category = getCategory(event);
     switch (category) {
       case "event":
         console.log(`Joining event: ${event.title}`);
         break;
-      case "people":
-        console.log(`Following: ${event.title}`);
+      case "people": {
+        if (!followContext) return;
+        
+        const targetUserId = event.authorId || event.id;
+        
+        if (targetUserId?.startsWith('demo-')) {
+          toast.info("This is a demo profile. Follow functionality available for real users.");
+          return;
+        }
+        
+        if (!followContext.user) {
+          toast.error("Please sign in to follow users");
+          return;
+        }
+        
+        const isCurrentlyFollowing = followContext.followStatus.get(targetUserId) || false;
+        
+        followContext.setFollowStatus(prev => new Map(prev).set(targetUserId, !isCurrentlyFollowing));
+        followContext.setFollowLoading(prev => new Set(prev).add(targetUserId));
+        
+        try {
+          if (isCurrentlyFollowing) {
+            const { error } = await supabase
+              .from('user_follows')
+              .delete()
+              .eq('follower_id', followContext.user.id)
+              .eq('following_id', targetUserId);
+            
+            if (error) throw error;
+            
+            toast.success(`Unfollowed ${event.author?.name || event.title}`);
+          } else {
+            const { error } = await supabase
+              .from('user_follows')
+              .insert({
+                follower_id: followContext.user.id,
+                following_id: targetUserId
+              });
+            
+            if (error) throw error;
+            
+            toast.success(`Now following ${event.author?.name || event.title}!`);
+          }
+        } catch (error) {
+          followContext.setFollowStatus(prev => new Map(prev).set(targetUserId, isCurrentlyFollowing));
+          console.error('Error toggling follow:', error);
+          toast.error("Failed to update follow status. Please try again.");
+        } finally {
+          followContext.setFollowLoading(prev => {
+            const next = new Set(prev);
+            next.delete(targetUserId);
+            return next;
+          });
+        }
         break;
+      }
       case "media":
         console.log(`Playing: ${event.title}`);
         break;
@@ -737,6 +804,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                 author={rowEvents[0]?.author}
                 authorId={rowEvents[0]?.authorId}
                 authorHandle={rowEvents[0]?.authorHandle}
+                isFollowing={followContext?.followStatus.get(rowEvents[0]?.authorId || '') || false}
+                isFollowLoading={followContext?.followLoading.has(rowEvents[0]?.authorId || '')}
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
@@ -761,6 +830,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   author={rowEvents[1].author}
                   authorId={rowEvents[1]?.authorId}
                   authorHandle={rowEvents[1]?.authorHandle}
+                  isFollowing={followContext?.followStatus.get(rowEvents[1]?.authorId || '') || false}
+                  isFollowLoading={followContext?.followLoading.has(rowEvents[1]?.authorId || '')}
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
@@ -786,6 +857,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   author={rowEvents[2].author}
                   authorId={rowEvents[2]?.authorId}
                   authorHandle={rowEvents[2]?.authorHandle}
+                  isFollowing={followContext?.followStatus.get(rowEvents[2]?.authorId || '') || false}
+                  isFollowLoading={followContext?.followLoading.has(rowEvents[2]?.authorId || '')}
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
@@ -898,6 +971,34 @@ export default withScreenId(function Community() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [communityFiltersOpen, setCommunityFiltersOpen] = useState(false);
+  
+  // Follow state management
+  const { user } = useAuth();
+  const [followStatus, setFollowStatus] = useState<Map<string, boolean>>(new Map());
+  const [followLoading, setFollowLoading] = useState<Set<string>>(new Set());
+
+  // Fetch follow statuses for visible people
+  const fetchFollowStatuses = async (userIds: string[]) => {
+    if (!user || userIds.length === 0) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('user_follows')
+        .select('following_id')
+        .eq('follower_id', user.id)
+        .in('following_id', userIds);
+      
+      if (error) throw error;
+      
+      const statusMap = new Map<string, boolean>();
+      userIds.forEach(id => statusMap.set(id, false));
+      data?.forEach(follow => statusMap.set(follow.following_id, true));
+      
+      setFollowStatus(statusMap);
+    } catch (error) {
+      console.error('Error fetching follow statuses:', error);
+    }
+  };
   
   // Phase 1: Real Community Members
   const { members, loading: membersLoading, getDisplayName } = useCommunityMembers();
@@ -1048,6 +1149,18 @@ export default withScreenId(function Community() {
     rewardDescription: "Connect for social credits"
   }));
 
+  // Fetch follow statuses when people data loads
+  useEffect(() => {
+    const allPeople = realCommunityPeople.length > 0 ? realCommunityPeople : communityPeople;
+    const userIds = allPeople
+      .map(p => p.authorId)
+      .filter(id => id && !id.startsWith('demo-')) as string[];
+    
+    if (userIds.length > 0) {
+      fetchFollowStatuses(userIds);
+    }
+  }, [realCommunityPeople.length, members.length, user]);
+
   const displayPeople = realCommunityPeople.length > 0 
     ? realCommunityPeople 
     : communityPeople;
@@ -1153,7 +1266,13 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Today Highlights</h3>
                 {(() => {
-                  const result = renderEventGrid(todayHighlights, "Today Highlights", globalRowIndex, handleEventClick);
+                  const result = renderEventGrid(
+                    todayHighlights, 
+                    "Today Highlights", 
+                    globalRowIndex, 
+                    handleEventClick,
+                    { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                  );
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -1168,7 +1287,13 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">This Week in Community</h3>
                 {(() => {
-                  const result = renderEventGrid(weeklyEvents, "This Week in Community", globalRowIndex, handleEventClick);
+                  const result = renderEventGrid(
+                    weeklyEvents, 
+                    "This Week in Community", 
+                    globalRowIndex, 
+                    handleEventClick,
+                    { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                  );
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -1198,7 +1323,13 @@ export default withScreenId(function Community() {
                   </Button>
                 </div>
                 {(() => {
-                  const result = renderEventGrid(highlightsData, "Community Highlights", globalRowIndex, handleEventClick);
+                  const result = renderEventGrid(
+                    highlightsData, 
+                    "Community Highlights", 
+                    globalRowIndex, 
+                    handleEventClick,
+                    { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                  );
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -1222,7 +1353,13 @@ export default withScreenId(function Community() {
                   )}
                 </div>
                 {(() => {
-                  const result = renderEventGrid(displayPeople, "Discover People", globalRowIndex, handleEventClick);
+                  const result = renderEventGrid(
+                    displayPeople, 
+                    "Discover People", 
+                    globalRowIndex, 
+                    handleEventClick,
+                    { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                  );
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -1237,7 +1374,13 @@ export default withScreenId(function Community() {
               <div className="mb-8">
                 <h3 className="text-xl font-bold mb-4 px-6">Community Media</h3>
                 {(() => {
-                  const result = renderEventGrid(communityMedia, "Community Media", globalRowIndex, handleEventClick);
+                  const result = renderEventGrid(
+                    communityMedia, 
+                    "Community Media", 
+                    globalRowIndex, 
+                    handleEventClick,
+                    { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                  );
                   globalRowIndex = result.nextRowIndex;
                   return result.content;
                 })()}
@@ -1499,7 +1642,13 @@ export default withScreenId(function Community() {
                   </div>
                   {(() => {
                     let spotlightRowIndex = 0;
-                    const result = renderEventGrid(aiSpotlightItems, "AI Spotlight", spotlightRowIndex, handleEventClick);
+                    const result = renderEventGrid(
+                      aiSpotlightItems, 
+                      "AI Spotlight", 
+                      spotlightRowIndex, 
+                      handleEventClick,
+                      { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                    );
                     return result.content;
                   })()}
                 </div>
@@ -1510,7 +1659,13 @@ export default withScreenId(function Community() {
                 <h3 className="text-xl font-bold mb-4 px-6">Featured Content</h3>
                 {(() => {
                   let spotlightRowIndex = recommendations.length > 0 ? 3 : 0;
-                  const result = renderEventGrid(spotlightFeatures, "Spotlight", spotlightRowIndex, handleEventClick);
+                  const result = renderEventGrid(
+                    spotlightFeatures, 
+                    "Spotlight", 
+                    spotlightRowIndex, 
+                    handleEventClick,
+                    { user, followStatus, setFollowStatus, setFollowLoading, followLoading }
+                  );
                   return result.content;
                 })()}
               </div>

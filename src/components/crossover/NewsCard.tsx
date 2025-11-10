@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
-import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus } from "lucide-react";
+import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus, Loader2 } from "lucide-react";
 import { useEventParticipation } from "@/hooks/useEventParticipation";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
@@ -24,6 +24,8 @@ interface NewsCardProps {
   };
   authorId?: string;
   authorHandle?: string;
+  isFollowing?: boolean;
+  isFollowLoading?: boolean;
   location?: string;
   attendees?: number;
   timestamp?: string;
@@ -55,7 +57,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     author,
     authorId,
     authorHandle,
-    location, 
+    isFollowing,
+    isFollowLoading,
+    location,
     attendees, 
     timestamp, 
     price,
@@ -110,7 +114,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       
       let buttonText = "View";
       let buttonIcon = null;
-      let buttonType: "join" | "follow" | "play" | "secondary" = "secondary";
+      let buttonType: "join" | "follow" | "following" | "play" | "secondary" = "secondary";
       
         // For events, use participation state
         if (category === "event" && eventId) {
@@ -134,9 +138,15 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             buttonType = "join";
             break;
           case "people":
-            buttonText = "Follow";
-            buttonIcon = UserPlus;
-            buttonType = "follow";
+            if (isFollowing) {
+              buttonText = "Following";
+              buttonIcon = UserMinus;
+              buttonType = "following";
+            } else {
+              buttonText = "Follow";
+              buttonIcon = UserPlus;
+              buttonType = "follow";
+            }
             break;
           case "media":
             buttonText = mediaType === "video" ? "Watch Now" : 
@@ -167,6 +177,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             return `${baseClasses} bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl`;
           case "follow":
             return `${baseClasses} bg-gradient-to-r from-gradient-follow-start to-gradient-follow-end hover:shadow-gradient-follow-start/50 hover:shadow-2xl`;
+          case "following":
+            return `${baseClasses} bg-gradient-to-r from-gray-500 to-gray-600 hover:from-red-500 hover:to-red-600 hover:shadow-red-500/50`;
           case "play":
             return `${baseClasses} bg-gradient-to-r from-gradient-play-start to-gradient-play-end hover:shadow-gradient-play-start/50 hover:shadow-2xl`;
           case "secondary":
@@ -175,11 +187,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         }
       };
       
+      const isLoading = eventId ? eventParticipation?.loading : (category === "people" ? isFollowLoading : false);
+      
       return (
         <Button
           size="sm"
           className={getButtonClasses()}
-          disabled={eventId ? eventParticipation?.loading : false}
+          disabled={isLoading}
           onClick={(e) => {
             e.stopPropagation();
             if (eventId && category === "event") {
@@ -189,8 +203,12 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             }
           }}
         >
-          {ButtonIcon && <ButtonIcon className="w-4 h-4" />}
-          {buttonText}
+          {isLoading ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            ButtonIcon && <ButtonIcon className="w-4 h-4" />
+          )}
+          {!isLoading && buttonText}
         </Button>
       );
     };
