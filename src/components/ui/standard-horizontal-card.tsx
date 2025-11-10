@@ -192,7 +192,16 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
     const formatTimestamp = () => {
       if (!timestamp) return '';
       if (typeof timestamp === 'string') return timestamp;
-      return timestamp.toLocaleDateString();
+      
+      // Format with date and 24-hour time
+      const dateStr = timestamp.toLocaleDateString();
+      const timeStr = timestamp.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+      
+      return `${dateStr}, ${timeStr}`;
     };
 
     const panelId = `card-panel-${id}`;
