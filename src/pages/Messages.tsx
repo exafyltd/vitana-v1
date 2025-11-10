@@ -27,6 +27,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare } from "lucide-react";
 import NewConversationPopup from "@/components/NewConversationPopup";
@@ -327,12 +328,14 @@ export default function Messages() {
                     >
                       <div className="flex items-start space-x-3">
                         <div className="relative">
-                          <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                            <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
-                            <AvatarFallback>
-                              {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
-                            </AvatarFallback>
-                          </Avatar>
+                          <ClickableAvatar
+                            userId={thread.type !== 'group' ? getOtherParticipant(thread, user?.id)?.user_id : undefined}
+                            src={getConversationDisplayAvatar(thread, user?.id) || undefined}
+                            fallback={getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
+                            alt={getConversationDisplayTitle(thread, user?.id)}
+                            className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}
+                            disabled={thread.type === 'group'}
+                          />
                           <div className="absolute -bottom-0.5 -right-0.5">
                             <PresenceIndicator 
                               userId={getOtherParticipant(thread, user?.id)?.user_id || ''} 

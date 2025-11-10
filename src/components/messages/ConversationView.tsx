@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ClickableAvatar } from '@/components/ui/clickable-avatar';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -39,7 +40,7 @@ import AddContactDialog from '@/components/contacts/AddContactDialog';
 import { MessageThreadCallButtons } from '@/components/MessageThreadCallButtons';
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
-import { getConversationDisplayAvatar, getConversationDisplayTitle } from '@/utils/conversationHelpers';
+import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -974,12 +975,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   />
                 </div>
               ) : (
-                <Avatar className="shrink-0">
-                  <AvatarImage src={getConversationAvatar() || undefined} />
-                  <AvatarFallback>
-                    {getConversationTitle()[0]?.toUpperCase() || 'U'}
-                  </AvatarFallback>
-                </Avatar>
+                <ClickableAvatar
+                  userId={effectiveRecipientId || undefined}
+                  src={getConversationAvatar() || undefined}
+                  fallback={getConversationTitle()[0]?.toUpperCase() || 'U'}
+                  alt={getConversationTitle()}
+                  className="shrink-0"
+                />
               )}
               
               <div 
