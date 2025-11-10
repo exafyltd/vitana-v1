@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { MoreVertical, ChevronDown, ChevronUp } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 import { useRTL } from '@/components/RTLProvider';
 
@@ -323,26 +323,6 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 <span className="ml-1">
                   {primaryAction.label}
                 </span>
-              </Button>
-            )}
-
-            {expandedContent && (
-              <Button
-                type="button"
-                size="sm"
-                variant="ghost"
-                onClick={(e) => handleExpand(e)}
-                aria-expanded={!!isExpanded}
-                aria-controls={panelId}
-                className={cn(
-                  "h-8 w-8 p-0",
-                  "xl:opacity-0 group-hover:xl:opacity-100 group-focus-within:xl:opacity-100",
-                  "transition-opacity duration-200"
-                )}
-                aria-label={isExpanded ? "Collapse" : "Expand"}
-                title={isExpanded ? "Collapse" : "Expand"}
-              >
-                {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </Button>
             )}
 
