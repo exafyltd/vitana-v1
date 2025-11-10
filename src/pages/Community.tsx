@@ -162,6 +162,8 @@ const communityPeople = [
     category: "profile" as const,
     pillar: "Mental",
     author: { name: "Jovana T.", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    authorId: "demo-jovana",
+    authorHandle: "jovanat",
     location: "Digital Nomad",
     timestamp: "Online Now",
     start_time: new Date().toISOString(),
@@ -177,6 +179,8 @@ const communityPeople = [
     category: "profile" as const,
     pillar: "Hydration",
     author: { name: "Dr. Roberts", avatar: "/lovable-uploads/dr-roberts-avatar.jpg" },
+    authorId: "demo-dr-roberts",
+    authorHandle: "drroberts",
     location: "Medical Center",
     timestamp: "Available for consult",
     start_time: new Date().toISOString(),
@@ -192,6 +196,8 @@ const communityPeople = [
     category: "profile" as const,
     pillar: "Mental",
     author: { name: "Mariia", avatar: "/lovable-uploads/design-team-avatar.jpg" },
+    authorId: "demo-mariia",
+    authorHandle: "mariia",
     location: "Wellness Studio",
     timestamp: "Active in community",
     start_time: new Date().toISOString(),
@@ -729,6 +735,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                 category={getCategory(rowEvents[0])}
                 pillar={rowEvents[0]?.pillar}
                 author={rowEvents[0]?.author}
+                authorId={rowEvents[0]?.authorId}
+                authorHandle={rowEvents[0]?.authorHandle}
                 location={rowEvents[0]?.location}
                 attendees={rowEvents[0]?.attendees}
                 timestamp={rowEvents[0]?.timestamp}
@@ -751,6 +759,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   category={getCategory(rowEvents[1])}
                   pillar={rowEvents[1].pillar}
                   author={rowEvents[1].author}
+                  authorId={rowEvents[1]?.authorId}
+                  authorHandle={rowEvents[1]?.authorHandle}
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
@@ -774,6 +784,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   category={getCategory(rowEvents[2])}
                   pillar={rowEvents[2].pillar}
                   author={rowEvents[2].author}
+                  authorId={rowEvents[2]?.authorId}
+                  authorHandle={rowEvents[2]?.authorHandle}
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
@@ -801,6 +813,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   category={getCategory(rowEvents[0])}
                   pillar={rowEvents[0].pillar}
                   author={rowEvents[0].author}
+                  authorId={rowEvents[0]?.authorId}
+                  authorHandle={rowEvents[0]?.authorHandle}
                   location={rowEvents[0].location}
                   attendees={rowEvents[0].attendees}
                   timestamp={rowEvents[0].timestamp}
@@ -824,6 +838,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   category={getCategory(rowEvents[1])}
                   pillar={rowEvents[1].pillar}
                   author={rowEvents[1].author}
+                  authorId={rowEvents[1]?.authorId}
+                  authorHandle={rowEvents[1]?.authorHandle}
                   location={rowEvents[1].location}
                   attendees={rowEvents[1].attendees}
                   timestamp={rowEvents[1].timestamp}
@@ -847,6 +863,8 @@ const renderEventGrid = (events: any[], section?: string, startingRowIndex: numb
                   category={getCategory(rowEvents[2])}
                   pillar={rowEvents[2].pillar}
                   author={rowEvents[2].author}
+                  authorId={rowEvents[2]?.authorId}
+                  authorHandle={rowEvents[2]?.authorHandle}
                   location={rowEvents[2].location}
                   attendees={rowEvents[2].attendees}
                   timestamp={rowEvents[2].timestamp}
@@ -1020,6 +1038,8 @@ export default withScreenId(function Community() {
       name: getDisplayName(member), 
       avatar: member.avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
     },
+    authorId: member.user_id,
+    authorHandle: member.handle,
     location: "Community Member",
     timestamp: "Active Now",
     start_time: new Date().toISOString(),
