@@ -136,8 +136,10 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         className={cn(
           "group relative overflow-hidden",
           "rounded-xl border border-white/10",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-xl",
-          "transition-all duration-200 ease-out",
+          "shadow-[0_1px_6px_rgba(0,0,0,0.05)]",
+          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
+          "hover:scale-[1.01] hover:brightness-[1.02]",
+          "transition-all duration-150 ease-out",
           "min-h-[160px] xl:min-h-[152px]",
           "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
