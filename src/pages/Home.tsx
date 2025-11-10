@@ -141,34 +141,64 @@ const todayMediaContent = [
 
 const todayEventsAndMeetups = [
   {
+    id: 'mock-meetup-1',
     title: "Evening Wellness Meetup",
     description: "Connect with like-minded wellness enthusiasts",
+    event_type: "meetup",
     imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop",
     pillar: "Mental",
     author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
     location: "Downtown Center",
     attendees: 52,
-    timestamp: "19:00"
+    timestamp: "19:00",
+    start_time: new Date(new Date().setHours(19, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(20, 30, 0, 0)).toISOString(),
+    created_by: "demo-sarah-miller",
+    max_participants: 60,
+    participant_count: 52,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-meetup-2',
     title: "Hydration Challenge Kickoff",
     description: "Start the 30-day community hydration challenge",
+    event_type: "challenge",
     imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
     pillar: "Hydration",
     author: { name: "Health Coach Murphy", avatar: "/lovable-uploads/murphy-avatar.jpg" },
     location: "Wellness Center",
     attendees: 75,
-    timestamp: "18:00"
+    timestamp: "18:00",
+    start_time: new Date(new Date().setHours(18, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(19, 0, 0, 0)).toISOString(),
+    created_by: "demo-murphy",
+    max_participants: 100,
+    participant_count: 75,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-meetup-3',
     title: "Sleep Workshop Tonight",
     description: "Learn strategies for better sleep quality",
+    event_type: "workshop",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
     pillar: "Sleep",
     author: { name: "Sleep Therapist James", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "Therapy Center",
     attendees: 18,
-    timestamp: "20:00"
+    timestamp: "20:00",
+    start_time: new Date(new Date().setHours(20, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(21, 30, 0, 0)).toISOString(),
+    created_by: "demo-james-davis",
+    max_participants: 20,
+    participant_count: 18,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   }
 ];
 
@@ -203,96 +233,186 @@ const todayNews = [
 
 const guideInspirationalEvents = [
   {
+    id: 'mock-inspire-1',
     title: "Transform Your Life Weekend Retreat",
     description: "3-day intensive wellness transformation program",
+    event_type: "retreat",
     imageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
     pillar: "Mental",
     author: { name: "Wellness Masters", avatar: "/lovable-uploads/design-team-avatar.jpg" },
     location: "Mountain Retreat",
     attendees: 50,
     timestamp: "Next Month",
-    price: 299
+    price: 299,
+    start_time: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 33)).toISOString(),
+    created_by: "demo-wellness-masters",
+    max_participants: 60,
+    participant_count: 50,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-inspire-2',
     title: "Elite Fitness Challenge 2024",
     description: "Push your limits with professional athletes",
+    event_type: "challenge",
     imageUrl: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=600&fit=crop",
     pillar: "Exercise",
     author: { name: "Elite Trainers", avatar: "/lovable-uploads/mike-thompson-avatar.jpg" },
     location: "Olympic Center",
     attendees: 100,
     timestamp: "Registration Open",
-    price: 199
+    price: 199,
+    start_time: new Date(new Date().setDate(new Date().getDate() + 45)).toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 48)).toISOString(),
+    created_by: "demo-elite-trainers",
+    max_participants: 120,
+    participant_count: 100,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-inspire-3',
     title: "Mindfulness Mastery Workshop",
     description: "Advanced meditation and mindfulness techniques",
+    event_type: "workshop",
     imageUrl: "https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&h=600&fit=crop",
     pillar: "Mental",
     author: { name: "Mindfulness Experts", avatar: "/lovable-uploads/lisa-chen-avatar.jpg" },
     location: "Zen Center",
     attendees: 30,
     timestamp: "Limited Spots",
-    price: 149
+    price: 149,
+    start_time: new Date(new Date().setDate(new Date().getDate() + 14)).toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 14)).toISOString(),
+    created_by: "demo-mindfulness-experts",
+    max_participants: 30,
+    participant_count: 30,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-inspire-4',
     title: "Nutrition Certification Program",
     description: "Become a certified wellness nutrition consultant",
+    event_type: "program",
     imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
     pillar: "Nutrition",
     author: { name: "Nutrition Institute", avatar: "/lovable-uploads/se-hun-oh-avatar.jpg" },
     location: "Learning Center",
     attendees: 25,
     timestamp: "6-Week Program",
-    price: 599
+    price: 599,
+    start_time: new Date(new Date().setDate(new Date().getDate() + 21)).toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 63)).toISOString(),
+    created_by: "demo-nutrition-institute",
+    max_participants: 30,
+    participant_count: 25,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   }
 ];
 
 const guideDailyMatches = [
   {
+    id: 'mock-match-1',
     title: "Connect with Dr. Sarah Miller",
     description: "Mental health expert - Available for mentorship",
+    event_type: "meetup",
     imageUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&h=600&fit=crop",
     pillar: "Mental",
     author: { name: "Dr. Sarah Miller", avatar: "/lovable-uploads/sarah-miller-avatar.jpg" },
     location: "Virtual",
-    timestamp: "Available Now"
+    timestamp: "Available Now",
+    start_time: new Date().toISOString(),
+    end_time: new Date(new Date().setHours(new Date().getHours() + 1)).toISOString(),
+    created_by: "demo-sarah-miller",
+    max_participants: 1,
+    participant_count: 0,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-match-2',
     title: "Workout Partner: James Davis",
     description: "Marathon runner seeking training companion",
+    event_type: "meetup",
     imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
     pillar: "Exercise",
     author: { name: "James Davis", avatar: "/lovable-uploads/james-davis-avatar.jpg" },
     location: "City Park",
-    timestamp: "Mornings"
+    timestamp: "Mornings",
+    start_time: new Date(new Date().setHours(6, 0, 0, 0)).toISOString(),
+    end_time: new Date(new Date().setHours(7, 30, 0, 0)).toISOString(),
+    created_by: "demo-james-davis",
+    max_participants: 2,
+    participant_count: 1,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-match-3',
     title: "Cooking Buddy: Chef Tae Min",
     description: "Learn Korean healthy cooking techniques",
+    event_type: "meetup",
     imageUrl: "https://images.unsplash.com/photo-1556908114-4bfca461d0c6?w=800&h=600&fit=crop",
     pillar: "Nutrition",
     author: { name: "Tae Min", avatar: "/lovable-uploads/tae-min-avatar.jpg" },
     location: "Culinary Studio",
-    timestamp: "Weekends"
+    timestamp: "Weekends",
+    start_time: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 5)).toISOString(),
+    created_by: "demo-tae-min",
+    max_participants: 4,
+    participant_count: 2,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-match-4',
     title: "Sleep Support Group",
     description: "Weekly community for better sleep habits",
+    event_type: "meetup",
     imageUrl: "https://images.unsplash.com/photo-1520206715542-7088b3d3c6a1?w=800&h=600&fit=crop",
     pillar: "Sleep",
     author: { name: "Sleep Therapist Anna", avatar: "/lovable-uploads/emma-wilson-avatar.jpg" },
     location: "Wellness Center",
-    timestamp: "Thursdays"
+    timestamp: "Thursdays",
+    start_time: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 3)).toISOString(),
+    created_by: "demo-anna",
+    max_participants: 10,
+    participant_count: 7,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   },
   {
+    id: 'mock-match-5',
     title: "Hydration Challenge Buddy",
     description: "Join our 30-day hydration accountability partner",
+    event_type: "challenge",
     imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
     pillar: "Hydration",
     author: { name: "Health Coach Murphy", avatar: "/lovable-uploads/murphy-avatar.jpg" },
     location: "Online",
-    timestamp: "Daily Check-ins"
+    timestamp: "Daily Check-ins",
+    start_time: new Date().toISOString(),
+    end_time: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
+    created_by: "demo-murphy",
+    max_participants: 50,
+    participant_count: 32,
+    virtual_link: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
   }
 ];
 
@@ -364,7 +484,7 @@ export default function Home() {
   // Blend real and mock data - prioritize real content
   const blendedMediaContent = [
     ...realMediaContent,
-    ...todayMediaContent.map(item => ({ ...item, isReal: false }))
+    ...todayMediaContent.map((item, idx) => ({ ...item, id: `mock-media-${idx}`, isReal: false }))
   ].slice(0, 3);
 
   // Use global audio player
@@ -459,6 +579,21 @@ export default function Home() {
     // If not found in real events, search in mock scheduled events
     if (!event) {
       event = todayScheduledEvents.find(e => e.id === eventId);
+    }
+    
+    // Search in mock meetups
+    if (!event) {
+      event = todayEventsAndMeetups.find(e => e.id === eventId);
+    }
+    
+    // Search in guide inspirational events
+    if (!event) {
+      event = guideInspirationalEvents.find(e => e.id === eventId);
+    }
+    
+    // Search in guide daily matches
+    if (!event) {
+      event = guideDailyMatches.find(e => e.id === eventId);
     }
     
     if (event) {
@@ -731,6 +866,8 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={8}
                     rewardDescription="Earn credits for joining meetup"
+                    eventId={todayEventsAndMeetups[0]?.id}
+                    onClick={() => handleEventClick(todayEventsAndMeetups[0]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -747,6 +884,8 @@ export default function Home() {
                     showReward={true}
                     rewardPoints={6}
                     rewardDescription="Earn credits for hydration challenge"
+                    eventId={todayEventsAndMeetups[1]?.id}
+                    onClick={() => handleEventClick(todayEventsAndMeetups[1]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -760,6 +899,8 @@ export default function Home() {
                     location={todayEventsAndMeetups[2]?.location}
                     attendees={todayEventsAndMeetups[2]?.attendees}
                     timestamp={todayEventsAndMeetups[2]?.timestamp}
+                    eventId={todayEventsAndMeetups[2]?.id}
+                    onClick={() => handleEventClick(todayEventsAndMeetups[2]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -824,6 +965,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[0]?.attendees}
                     timestamp={guideInspirationalEvents[0]?.timestamp}
                     price={guideInspirationalEvents[0]?.price}
+                    eventId={guideInspirationalEvents[0]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[0]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -838,6 +981,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[1]?.attendees}
                     timestamp={guideInspirationalEvents[1]?.timestamp}
                     price={guideInspirationalEvents[1]?.price}
+                    eventId={guideInspirationalEvents[1]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[1]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -852,6 +997,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[2]?.attendees}
                     timestamp={guideInspirationalEvents[2]?.timestamp}
                     price={guideInspirationalEvents[2]?.price}
+                    eventId={guideInspirationalEvents[2]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[2]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -872,6 +1019,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[3]?.attendees}
                     timestamp={guideInspirationalEvents[3]?.timestamp}
                     price={guideInspirationalEvents[3]?.price}
+                    eventId={guideInspirationalEvents[3]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[3]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -884,6 +1033,8 @@ export default function Home() {
                     author={guideDailyMatches[0]?.author}
                     location={guideDailyMatches[0]?.location}
                     timestamp={guideDailyMatches[0]?.timestamp}
+                    eventId={guideDailyMatches[0]?.id}
+                    onClick={() => handleEventClick(guideDailyMatches[0]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -896,6 +1047,8 @@ export default function Home() {
                     author={guideDailyMatches[1]?.author}
                     location={guideDailyMatches[1]?.location}
                     timestamp={guideDailyMatches[1]?.timestamp}
+                    eventId={guideDailyMatches[1]?.id}
+                    onClick={() => handleEventClick(guideDailyMatches[1]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -914,6 +1067,8 @@ export default function Home() {
                     author={guideDailyMatches[2]?.author}
                     location={guideDailyMatches[2]?.location}
                     timestamp={guideDailyMatches[2]?.timestamp}
+                    eventId={guideDailyMatches[2]?.id}
+                    onClick={() => handleEventClick(guideDailyMatches[2]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -926,6 +1081,8 @@ export default function Home() {
                     author={guideDailyMatches[3]?.author}
                     location={guideDailyMatches[3]?.location}
                     timestamp={guideDailyMatches[3]?.timestamp}
+                    eventId={guideDailyMatches[3]?.id}
+                    onClick={() => handleEventClick(guideDailyMatches[3]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -938,6 +1095,8 @@ export default function Home() {
                     author={guideDailyMatches[4]?.author}
                     location={guideDailyMatches[4]?.location}
                     timestamp={guideDailyMatches[4]?.timestamp}
+                    eventId={guideDailyMatches[4]?.id}
+                    onClick={() => handleEventClick(guideDailyMatches[4]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -958,6 +1117,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[0]?.attendees}
                     timestamp={guideInspirationalEvents[0]?.timestamp}
                     price={guideInspirationalEvents[0]?.price}
+                    eventId={guideInspirationalEvents[0]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[0]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -972,6 +1133,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[1]?.attendees}
                     timestamp={guideInspirationalEvents[1]?.timestamp}
                     price={guideInspirationalEvents[1]?.price}
+                    eventId={guideInspirationalEvents[1]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[1]?.id)}
                     className="h-full"
                   />
                 </div>
@@ -986,6 +1149,8 @@ export default function Home() {
                     attendees={guideInspirationalEvents[2]?.attendees}
                     timestamp={guideInspirationalEvents[2]?.timestamp}
                     price={guideInspirationalEvents[2]?.price}
+                    eventId={guideInspirationalEvents[2]?.id}
+                    onClick={() => handleEventClick(guideInspirationalEvents[2]?.id)}
                     className="h-full"
                   />
                 </div>
