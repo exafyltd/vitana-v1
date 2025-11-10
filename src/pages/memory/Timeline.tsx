@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Plus, Loader2, Calendar as CalendarIcon, RefreshCw, LayoutList, Grid3x3 } from "lucide-react";
+import { Plus, Loader2, Calendar as CalendarIcon, RefreshCw, MessageSquare, Activity, Trash2, Sparkles, Brain, Mic } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -11,14 +11,15 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { HistoryMasterActionPopup } from "@/components/memory/HistoryMasterActionPopup";
-import { ActivityCard } from "@/components/memory/ActivityCard";
-import { ConversationCard } from "@/components/memory/ConversationCard";
 import { PromoteToKnowledgeDialog } from "@/components/memory/PromoteToKnowledgeDialog";
 import { memoryNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { toast } from "sonner";
 
 // Category configuration
 const CATEGORIES = [
@@ -158,44 +159,113 @@ function Timeline() {
     deleteActivity({ id: itemId, type });
   };
 
-  const groupItemsByDate = (items: any[]) => {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const weekAgo = new Date(today);
-    weekAgo.setDate(weekAgo.getDate() - 7);
-
-    const groups: Record<string, any[]> = {
-      Today: [],
-      Yesterday: [],
-      "This Week": [],
-      Older: [],
+  // Get accent color based on activity category
+  const getAccentColorForCategory = (category: string): string => {
+    const colorMap: Record<string, string> = {
+      chat: 'hsl(var(--pill-chat-accent))',
+      memory: 'hsl(var(--pill-memory-accent))',
+      wallet: 'hsl(var(--pill-wallet-accent))',
+      discover: 'hsl(var(--pill-discover-accent))',
+      calendar: 'hsl(var(--pill-calendar-accent))',
+      autopilot: 'hsl(var(--sys-ai-accent))',
+      health: 'hsl(var(--pill-health-accent))',
+      community: 'hsl(var(--pill-community-accent))',
     };
+    return colorMap[category] || 'hsl(var(--primary))';
+  };
 
-    items.forEach((item) => {
-      const itemDate = new Date(item.createdAt);
-      const itemDay = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate());
+  // Get icon for activity type
+  const getActivityIcon = (activityType: string, category: string) => {
+    if (activityType === 'conversation') {
+      return (
+        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center">
+          <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+        </div>
+      );
+    }
+    
+    const iconMap: Record<string, JSX.Element> = {
+      chat: <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />,
+      memory: <Brain className="w-4 h-4 text-purple-600 dark:text-purple-400" />,
+      calendar: <CalendarIcon className="w-4 h-4 text-green-600 dark:text-green-400" />,
+    };
+    
+    const icon = iconMap[category] || <Activity className="w-4 h-4" />;
+    
+    return (
+      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+        {icon}
+      </div>
+    );
+  };
 
-      if (itemDay.getTime() === today.getTime()) {
-        groups.Today.push(item);
-      } else if (itemDay.getTime() === yesterday.getTime()) {
-        groups.Yesterday.push(item);
-      } else if (itemDate >= weekAgo) {
-        groups["This Week"].push(item);
-      } else {
-        groups.Older.push(item);
-      }
-    });
-
-    // Remove empty groups
-    Object.keys(groups).forEach((key) => {
-      if (groups[key].length === 0) {
-        delete groups[key];
-      }
-    });
-
-    return groups;
+  // Transform activity to horizontal card props
+  const transformActivityToHorizontalCard = (item: any): StandardHorizontalCardProps => {
+    const isConversation = item.itemType === 'exchange';
+    const category = item.category || 'activity';
+    
+    return {
+      id: item.id,
+      screenId: SCREEN_IDS.MEMORY_TIMELINE,
+      icon: getActivityIcon(isConversation ? 'conversation' : item.activityType, category),
+      title: isConversation 
+        ? "Conversation Exchange"
+        : item.activityType?.replace(/_/g, ' ').replace(/\./g, ' ').split(' ').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || "Activity",
+      description: isConversation 
+        ? item.userMessage?.content || "No content"
+        : item.activityData?.description || item.activityData?.content || "Activity logged",
+      badges: [
+        { 
+          label: category.charAt(0).toUpperCase() + category.slice(1), 
+          variant: 'secondary' as const 
+        }
+      ],
+      metadata: [
+        ...(item.activityData?.isVoiceInput ? [{
+          icon: <Mic className="w-3.5 h-3.5 text-purple-500" />,
+          text: "Voice input"
+        }] : [])
+      ],
+      timestamp: new Date(item.createdAt),
+      primaryAction: {
+        label: 'View Details',
+        onClick: () => console.log('View details:', item.id),
+        variant: 'outline' as const,
+      },
+      secondaryActions: [
+        {
+          label: 'Save to Knowledge',
+          onClick: () => handlePromoteToKnowledge(item.id),
+          icon: <Sparkles className="w-3 h-3 mr-1" />
+        },
+        { 
+          label: 'Delete', 
+          onClick: () => handleDeleteActivity(item.id, isConversation ? 'conversation' : 'activity'), 
+          icon: <Trash2 className="w-3 h-3 mr-1" /> 
+        }
+      ],
+      expandedContent: isConversation ? (
+        <div className="space-y-3 transition-opacity duration-150">
+          <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
+            <div className="text-xs font-medium text-blue-700 dark:text-blue-300 mb-1">You</div>
+            <div className="text-sm text-foreground">{item.userMessage?.content}</div>
+          </div>
+          <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
+            <div className="text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">AI Assistant</div>
+            <div className="text-sm text-foreground">{item.aiMessage?.content}</div>
+          </div>
+        </div>
+      ) : item.activityData ? (
+        <div className="space-y-2 transition-opacity duration-150">
+          <div className="text-sm text-muted-foreground">
+            {JSON.stringify(item.activityData, null, 2).slice(0, 200)}...
+          </div>
+        </div>
+      ) : undefined,
+      expandOnPrimaryClick: true,
+      density: 'compact' as const,
+      accentColor: getAccentColorForCategory(category)
+    };
   };
 
   // Hide deletion log entries from the activity view
@@ -206,52 +276,8 @@ function Timeline() {
     return true;
   });
 
-  const renderActivityList = (items: any[], loadMoreRef?: React.RefObject<HTMLDivElement>, hasNext?: boolean, isFetchingNext?: boolean) => {
-    const groupedItems = groupItemsByDate(items);
-    
-    return (
-      <div className="space-y-6">
-        {Object.entries(groupedItems).map(([dateGroup, dateItems]) => (
-          <div key={dateGroup} className="space-y-3">
-            <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
-              {dateGroup}
-            </h3>
-            {dateItems.map((item) => (
-              item.itemType === 'exchange' ? (
-                <ConversationCard
-                  key={item.id}
-                  exchange={item}
-                  onPromote={handlePromoteToKnowledge}
-                  onDelete={handleDeleteActivity}
-                />
-              ) : (
-                <ActivityCard 
-                  key={item.id} 
-                  activity={item}
-                  onPromote={handlePromoteToKnowledge}
-                  onDelete={handleDeleteActivity}
-                />
-              )
-            ))}
-          </div>
-        ))}
-
-        {loadMoreRef && hasNext && (
-          <div ref={loadMoreRef} className="py-8 flex justify-center">
-            {isFetchingNext && (
-              <Loader2 className="w-6 h-6 animate-spin text-primary" />
-            )}
-          </div>
-        )}
-
-        {loadMoreRef && !hasNext && items.length > 0 && (
-          <p className="text-center text-sm text-muted-foreground py-8">
-            You've reached the beginning of your activity history 📜
-          </p>
-        )}
-      </div>
-    );
-  };
+  // Transform items for horizontal cards
+  const transformedAllItems: StandardHorizontalCardProps[] = allItems.map(transformActivityToHorizontalCard);
 
   return (
     <AppLayout>
@@ -308,12 +334,19 @@ function Timeline() {
               </p>
             </div>
 
-            <div>
-              {isLoadingAll ? (
-                <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                </div>
-              ) : allItems.length === 0 ? (
+            <HorizontalCardList
+              items={transformedAllItems}
+              variant="standard"
+              groupBy="date"
+              screenId={SCREEN_IDS.MEMORY_TIMELINE}
+              listId="timeline-all"
+              infiniteScroll={true}
+              onLoadMore={fetchNextAll}
+              hasMore={hasNextAll}
+              isLoading={isFetchingNextAll || isLoadingAll}
+              gap="sm"
+              className="pb-4"
+              emptyState={
                 <Card className="border-dashed">
                   <CardContent className="p-12 text-center">
                     <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
@@ -325,10 +358,8 @@ function Timeline() {
                     </Button>
                   </CardContent>
                 </Card>
-              ) : (
-                renderActivityList(allItems, allLoadMoreRef, hasNextAll, isFetchingNextAll)
-              )}
-            </div>
+              }
+            />
           </TabsContent>
 
           {/* By Category Tab */}
@@ -390,82 +421,40 @@ function Timeline() {
                 const hasNext = hookData?.hasNextPage;
                 const isFetchingNext = hookData?.isFetchingNextPage;
 
+                const transformedCategoryItems: StandardHorizontalCardProps[] = items.map(transformActivityToHorizontalCard);
+
                 return (
                   <div className="pt-4">
-                    {isLoading ? (
-                      <div className="flex items-center justify-center py-12">
-                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                      </div>
-                    ) : items.length === 0 ? (
-                      <Card className="border-dashed">
-                        <CardContent className="p-8 text-center">
-                          <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
-                          <p className="text-muted-foreground mb-3">
-                            No {category.label} activity yet
-                          </p>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => setActiveTab("all")}
-                          >
-                            View All Activity
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ) : (
-                      <div className="space-y-6">
-                        {Object.entries(groupItemsByDate(items)).map(([dateGroup, dateItems]) => (
-                          <div key={dateGroup} className="space-y-3">
-                            <h3 className="sticky top-0 bg-background z-10 py-2 font-semibold text-sm text-muted-foreground border-b">
-                              {dateGroup}
-                            </h3>
-                            {dateItems.map((item) => (
-                              item.itemType === 'exchange' ? (
-                                <ConversationCard
-                                  key={item.id}
-                                  exchange={item}
-                                  onPromote={handlePromoteToKnowledge}
-                                  onDelete={handleDeleteActivity}
-                                />
-                              ) : (
-                                <ActivityCard 
-                                  key={item.id} 
-                                  activity={item}
-                                  onPromote={handlePromoteToKnowledge}
-                                  onDelete={handleDeleteActivity}
-                                />
-                              )
-                            ))}
-                          </div>
-                        ))}
-
-                        {hasNext && (
-                          <div className="py-8 flex justify-center">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => hookData?.fetchNextPage()}
-                              disabled={isFetchingNext}
+                    <HorizontalCardList
+                      items={transformedCategoryItems}
+                      variant="standard"
+                      groupBy="date"
+                      screenId={SCREEN_IDS.MEMORY_TIMELINE}
+                      listId={`timeline-${category.filter}`}
+                      infiniteScroll={true}
+                      onLoadMore={() => hookData?.fetchNextPage()}
+                      hasMore={hasNext}
+                      isLoading={isFetchingNext || isLoading}
+                      gap="sm"
+                      className="pb-4"
+                      emptyState={
+                        <Card className="border-dashed">
+                          <CardContent className="p-8 text-center">
+                            <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground opacity-30" />
+                            <p className="text-muted-foreground mb-3">
+                              No {category.label} activity yet
+                            </p>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => setActiveTab("all")}
                             >
-                              {isFetchingNext ? (
-                                <>
-                                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                  Loading...
-                                </>
-                              ) : (
-                                'Load More'
-                              )}
+                              View All Activity
                             </Button>
-                          </div>
-                        )}
-
-                        {!hasNext && items.length > 0 && (
-                          <p className="text-center text-sm text-muted-foreground py-8">
-                            You've reached the beginning 📜
-                          </p>
-                        )}
-                      </div>
-                    )}
+                          </CardContent>
+                        </Card>
+                      }
+                    />
                   </div>
                 );
               })()}
