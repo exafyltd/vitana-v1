@@ -242,14 +242,16 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
       if (!session.session?.user?.id) throw new Error("Not authenticated");
 
       if (data.source === "ai") {
-        const { error } = await supabase.from("ai_memory").insert({
+        const { data: created, error } = await supabase.from("ai_memory").insert({
           user_id: session.session.user.id,
           content: data.content,
           memory_type: data.memoryType || "fact",
           confidence_score: data.confidenceScore || 0.8,
           is_active: true,
-        });
+          metadata: data.metadata || null,
+        }).select('id').single();
         if (error) throw error;
+        return created;
       } else {
         const { data: diaryEntry, error } = await supabase.from("diary_entries").insert({
           user_id: session.session.user.id,
@@ -278,6 +280,8 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
             console.error('[diary-insights] Auto-extraction failed:', err);
           });
         }
+        
+        return diaryEntry;
       }
     },
     onSuccess: async (data, variables) => {

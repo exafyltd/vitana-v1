@@ -34,6 +34,7 @@ import { isFeatureEnabled } from "@/lib/feature-flags";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { VisualHorizontalCardProps } from "@/components/ui/visual-horizontal-card";
 import { useKnowledgeBase } from "@/hooks/useKnowledgeBase";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AIFeed() {
   const navigate = useNavigate();
@@ -42,8 +43,9 @@ export default function AIFeed() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [addToFeedOpen, setAddToFeedOpen] = useState(false);
-  const [savedActivityIds, setSavedActivityIds] = useState<Set<string>>(new Set());
-  const { createKnowledge } = useKnowledgeBase();
+  const [savedActivityIds, setSavedActivityIds] = useState<Map<string, string>>(new Map());
+  const { createKnowledge, deleteKnowledge } = useKnowledgeBase();
+  const { toast } = useToast();
   
   // Mock activity feed data including completed/failed actions
   const activityFeed = [
@@ -97,19 +99,49 @@ export default function AIFeed() {
         ...card.primaryAction,
         label: isSaved ? "✓ Saved" : card.primaryAction.label,
         variant: isSaved ? "ghost" : card.primaryAction.variant,
-        onClick: () => {
-          if (isSaved) return; // Prevent double-saving
-          
-          console.log("[AI Feed] Saving activity to memory:", activityId);
-          createKnowledge({
-            source: "ai",
-            content: `${(activity as any).title} — ${(activity as any).reason}`,
-            memoryType: "insight",
-            confidenceScore: 0.85,
-          });
-          
-          // Mark as saved immediately
-          setSavedActivityIds(prev => new Set(prev).add(activityId));
+        onClick: async () => {
+          if (isSaved) {
+            // Unsave: remove from knowledge base
+            const knowledgeId = savedActivityIds.get(activityId);
+            if (knowledgeId) {
+              deleteKnowledge({ id: knowledgeId, source: "ai" });
+              setSavedActivityIds(prev => {
+                const newMap = new Map(prev);
+                newMap.delete(activityId);
+                return newMap;
+              });
+              toast({
+                title: "Removed from Memory",
+                description: "Activity has been removed from your knowledge base.",
+              });
+            }
+          } else {
+            // Save: create knowledge item with metadata
+            console.log("[AI Feed] Saving activity to memory:", activityId);
+            createKnowledge(
+              {
+                source: "ai",
+                content: `${(activity as any).title} — ${(activity as any).reason}`,
+                memoryType: "insight",
+                confidenceScore: 0.85,
+                metadata: {
+                  sourceActivityId: activityId,
+                  sourceScreen: "ai-feed"
+                }
+              },
+              {
+                onSuccess: (data: any) => {
+                  if (data?.id) {
+                    setSavedActivityIds(prev => new Map(prev).set(activityId, data.id));
+                  }
+                  toast({
+                    title: "Saved to Memory",
+                    description: "Activity has been saved to your knowledge base.",
+                  });
+                }
+              }
+            );
+          }
         },
       },
     };
