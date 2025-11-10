@@ -16,7 +16,7 @@ export const FEATURE_FLAGS: FeatureFlags = {
   enableHorizontalCardsTimeline: true, // Pilot 2 - Permanently enabled
   enableHorizontalCardsAIFeed: false, // Wave 2
   enableHorizontalCardsSharing: false, // Wave 2
-  enableUnifiedHorizontalLists: import.meta.env.DEV, // Unified patterns (dev only for now)
+  enableUnifiedHorizontalLists: true, // Unified patterns enabled everywhere
 };
 
 let testsPassed = true; // Default true for development
