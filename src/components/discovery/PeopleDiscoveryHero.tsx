@@ -224,30 +224,32 @@ export function PeopleDiscoveryHero() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-accent" />
-            Discover People
+    <div className="space-y-8">
+      {/* Hero Header */}
+      <div className="text-center space-y-3">
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-3xl">👋</span>
+          <h2 className="text-3xl font-bold text-foreground">
+            Meet Vitanians
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {viewedCount}/{totalCount} viewed today
-          </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => refetch()}>
-          <Sparkles className="h-4 w-4 mr-2" />
-          Refresh
-        </Button>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-        <div 
-          className="h-full bg-accent transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        />
+        <p className="text-base text-muted-foreground">
+          You have <span className="font-semibold text-accent">{totalCount - viewedCount} new matches</span> today
+        </p>
+        
+        {/* Progress Bar with Count */}
+        <div className="max-w-md mx-auto space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Today's Discovery</span>
+            <span className="font-semibold text-foreground">{viewedCount}/{totalCount}</span>
+          </div>
+          <div className="w-full h-2.5 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
+            <div 
+              className="h-full bg-gradient-to-r from-accent via-accent to-accent/80 transition-all duration-500 ease-out rounded-full"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Card Stack */}
@@ -261,12 +263,10 @@ export function PeopleDiscoveryHero() {
         />
       </div>
 
-      {/* Action Buttons (Desktop) */}
-      <div className="flex items-center justify-center gap-4 mt-6">
-        <Button
-          variant="outline"
-          size="lg"
-          className="rounded-full h-16 w-16"
+      {/* Action Buttons */}
+      <div className="flex items-center justify-center gap-6 mt-8">
+        {/* Pass Button */}
+        <button
           onClick={() => {
             const current = displayProfiles[currentIndex];
             if (current) {
@@ -274,13 +274,20 @@ export function PeopleDiscoveryHero() {
               setCurrentIndex(prev => prev + 1);
             }
           }}
+          className="group relative"
         >
-          <X className="h-6 w-6" />
-        </Button>
-        <Button
-          variant="outline"
-          size="lg"
-          className="rounded-full h-20 w-20 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-16 w-16 rounded-full bg-muted hover:bg-red-500/20 border-2 border-border hover:border-red-500/50 flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-red-500/20 hover:scale-110">
+              <X className="h-7 w-7 text-muted-foreground group-hover:text-red-500 transition-colors" />
+            </div>
+            <span className="text-xs font-semibold text-muted-foreground group-hover:text-red-500 transition-colors">
+              Pass
+            </span>
+          </div>
+        </button>
+
+        {/* Super Connect Button */}
+        <button
           onClick={() => {
             const current = displayProfiles[currentIndex];
             if (current) {
@@ -288,13 +295,20 @@ export function PeopleDiscoveryHero() {
               setCurrentIndex(prev => prev + 1);
             }
           }}
+          className="group relative"
         >
-          <Sparkles className="h-8 w-8" />
-        </Button>
-        <Button
-          variant="default"
-          size="lg"
-          className="rounded-full h-16 w-16 bg-accent hover:bg-accent/90"
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-yellow-400/20 to-amber-500/20 hover:from-yellow-400/40 hover:to-amber-500/40 border-2 border-yellow-500/40 hover:border-yellow-500/60 flex items-center justify-center transition-all duration-200 shadow-xl hover:shadow-yellow-500/30 hover:scale-110">
+              <Sparkles className="h-9 w-9 text-yellow-500 group-hover:text-yellow-400 transition-colors" />
+            </div>
+            <span className="text-xs font-bold text-yellow-600 dark:text-yellow-500 group-hover:text-yellow-500 dark:group-hover:text-yellow-400 transition-colors">
+              Super
+            </span>
+          </div>
+        </button>
+
+        {/* Connect Button */}
+        <button
           onClick={() => {
             const current = displayProfiles[currentIndex];
             if (current) {
@@ -302,14 +316,22 @@ export function PeopleDiscoveryHero() {
               setCurrentIndex(prev => prev + 1);
             }
           }}
+          className="group relative"
         >
-          <Heart className="h-6 w-6" />
-        </Button>
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-green-400/20 to-emerald-500/20 hover:from-green-400/40 hover:to-emerald-500/40 border-2 border-green-500/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-green-500/30 hover:scale-110">
+              <Heart className="h-7 w-7 text-green-500 group-hover:text-green-400 transition-colors" />
+            </div>
+            <span className="text-xs font-semibold text-green-600 dark:text-green-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors">
+              Connect
+            </span>
+          </div>
+        </button>
       </div>
 
       {/* Swipe Instructions */}
-      <p className="text-center text-sm text-muted-foreground">
-        Swipe left to pass, right to connect, or up for super connect
+      <p className="text-center text-sm text-muted-foreground mt-4">
+        💡 <span className="font-medium">Swipe or tap</span> • Left to pass • Right to connect • Up for super
       </p>
     </div>
   );

@@ -244,6 +244,10 @@ export default {
 					'&::-webkit-scrollbar': {
 						display: 'none'
 					}
+				},
+				'.perspective-1000': {
+					perspective: '1000px',
+					'transform-style': 'preserve-3d'
 				}
 			})
 		}

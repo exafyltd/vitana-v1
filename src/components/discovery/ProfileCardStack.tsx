@@ -57,14 +57,17 @@ export function ProfileCardStack({
 
   if (visibleProfiles.length === 0) {
     return (
-      <div className="relative w-full h-[550px] flex items-center justify-center">
-        <div className="text-center space-y-4">
+      <div className="relative w-full h-[620px] flex items-center justify-center">
+        <div className="text-center space-y-4 backdrop-blur-xl bg-card/60 rounded-3xl border border-border/20 shadow-2xl p-8">
           <div className="text-6xl mb-4">🎉</div>
           <h3 className="text-2xl font-bold text-foreground">
-            You've seen all matches for today!
+            You've discovered everyone!
           </h3>
-          <p className="text-muted-foreground">
-            Check back tomorrow for new connections
+          <p className="text-muted-foreground mb-4">
+            Great connections are built daily
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Check back tomorrow for 10 new fresh matches ✨
           </p>
         </div>
       </div>
@@ -72,12 +75,14 @@ export function ProfileCardStack({
   }
 
   return (
-    <div className="relative w-full h-[550px]">
+    <div className="relative w-full h-[620px] perspective-1000">
       <AnimatePresence>
         {visibleProfiles.map((profile, index) => {
           const isTop = index === 0;
-          const scale = 1 - index * 0.05;
-          const yOffset = index * 10;
+          const scale = 1 - index * 0.04;
+          const yOffset = index * 12;
+          const rotateZ = index * -2;
+          const opacity = index === 0 ? 1 : 0.6 - (index * 0.1);
 
           return (
             <SwipeableProfileCard
@@ -87,8 +92,10 @@ export function ProfileCardStack({
               onTap={isTop ? handleTap : () => {}}
               style={{
                 zIndex: visibleProfiles.length - index,
-                scale,
-                transform: `translateY(${yOffset}px)`,
+                opacity,
+                transform: `translateY(${yOffset}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
+                transformOrigin: 'center center',
+                transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
                 pointerEvents: isTop ? 'auto' : 'none',
               } as React.CSSProperties}
             />
