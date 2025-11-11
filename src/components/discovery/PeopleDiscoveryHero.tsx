@@ -287,6 +287,19 @@ export function PeopleDiscoveryHero() {
   const totalCount = displayProfiles.length;
   const progress = totalCount > 0 ? (viewedCount / totalCount) * 100 : 0;
 
+  // Calculate average match score for dynamic progress bar color
+  const averageMatchScore = useMemo(() => {
+    if (displayProfiles.length === 0) return 0;
+    const sum = displayProfiles.reduce((acc, profile) => acc + profile.match_score, 0);
+    return sum / displayProfiles.length;
+  }, [displayProfiles]);
+
+  const getProgressBarGradient = (avgScore: number) => {
+    if (avgScore > 80) return "from-emerald-400 via-emerald-500 to-emerald-600";
+    if (avgScore > 60) return "from-lime-400 via-lime-500 to-lime-600";
+    return "from-amber-400 via-amber-500 to-amber-600";
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[600px]">
@@ -306,12 +319,12 @@ export function PeopleDiscoveryHero() {
         {/* Hero Header */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2">
-            <span className="text-4xl">👋</span>
+            <span className="text-4xl inline-block transition-transform duration-300 hover:animate-[wave_0.6s_ease-in-out]">👋</span>
             <h2 className="text-4xl font-bold text-foreground">
               Meet Vitanians
             </h2>
           </div>
-          <p className="text-lg text-emerald-600 dark:text-emerald-400 font-medium tracking-tight">
+          <p className="text-lg text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
             You have{" "}
             <span className="text-2xl font-bold">
               {totalCount - viewedCount}
@@ -331,7 +344,7 @@ export function PeopleDiscoveryHero() {
               </div>
               <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
                 <div 
-                  className="h-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 transition-all duration-500 ease-out rounded-full"
+                  className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
                   style={{ width: `${progress}%` }}
                 />
               </div>

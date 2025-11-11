@@ -220,6 +220,15 @@ export default {
 					'100%': {
 						transform: 'translateX(100%)'
 					}
+				},
+				'wave': {
+					'0%, 100%': { transform: 'rotate(0deg)' },
+					'25%': { transform: 'rotate(5deg)' },
+					'75%': { transform: 'rotate(-5deg)' }
+				},
+				'fadeIn': {
+					'0%': { opacity: '0', transform: 'translateY(-10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
 				}
 			},
 			animation: {
