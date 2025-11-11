@@ -127,23 +127,27 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
       className="absolute w-full cursor-pointer will-change-transform"
     >
       <div className="relative overflow-hidden rounded-3xl shadow-2xl h-[600px]">
-        {/* Full Background Photo */}
+        {/* Full Background Photo - face centered at 25% */}
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover"
           style={{
             backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
-            backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))'
+            backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
+            backgroundPosition: 'center 25%'
           }}
         />
         
-        {/* Gradient Overlay with Vitana tier color */}
-        <div className={`absolute inset-0 bg-gradient-to-b ${getVitanaGradient()}`} />
+        {/* Soft top fade for contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-transparent h-[20%]" />
+        
+        {/* Gradient Overlay with Vitana tier color - starts from 60% height downward */}
+        <div className={`absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-b ${getVitanaGradient()}`} />
         
         {/* Vignette for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-background/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
 
-        {/* Top-right Match Badge with Glow */}
-        <div className="absolute top-6 right-6 z-30">
+        {/* Top-left Match Badge with Glow - repositioned to avoid face */}
+        <div className="absolute top-6 left-6 z-30">
           <div className="relative">
             {/* Animated glow ring */}
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur-xl opacity-50 animate-pulse" />
@@ -155,8 +159,9 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
           </div>
         </div>
 
-        {/* Glass Info Panel - Bottom Half */}
-        <div className="absolute bottom-0 inset-x-0 h-2/3 backdrop-blur-2xl bg-background/30 rounded-t-3xl border-t border-border/30 p-6 flex flex-col">
+        {/* Glass Info Panel - Lowered by ~40px for better visual balance */}
+        <div className="absolute inset-x-0 backdrop-blur-2xl bg-background/35 rounded-t-3xl border-t border-border/30 p-6 flex flex-col" 
+             style={{ bottom: '0px', height: 'calc(60% - 40px)', minHeight: '280px' }}>
           
           {/* Name & Age */}
           <div className="flex items-baseline justify-start gap-2 mb-2">
