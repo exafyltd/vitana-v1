@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
@@ -215,38 +215,42 @@ export function PeopleDiscoveryHero() {
     openPreview(userId);
   };
 
-  // Use demo data if no real matches
-  let displayProfiles = profiles && profiles.length > 0 
-    ? profiles 
-    : demoProfiles.map(p => ({
-        user_id: p.user_id,
-        display_name: p.display_name,
-        age: p.age,
-        avatar_url: p.avatar_url,
-        bio: p.bio,
-        location: p.location,
-        professional_headline: p.professional_headline,
-        vitana_index: p.vitana_index,
-        vitana_percentile: p.vitana_percentile,
-        activity_time_preference: p.activity_time_preference,
-        top_3_interests: p.top_3_interests,
-        certification_badges: p.certification_badges,
-        match_score: p.compatibility_score,
-        match_reasons: [p.match_reason],
-        shared_interests: p.shared_interests,
-      }));
+  // Use demo data if no real matches, and apply filters
+  const displayProfiles = useMemo(() => {
+    let baseProfiles = profiles && profiles.length > 0 
+      ? profiles 
+      : demoProfiles.map(p => ({
+          user_id: p.user_id,
+          display_name: p.display_name,
+          age: p.age,
+          avatar_url: p.avatar_url,
+          bio: p.bio,
+          location: p.location,
+          professional_headline: p.professional_headline,
+          vitana_index: p.vitana_index,
+          vitana_percentile: p.vitana_percentile,
+          activity_time_preference: p.activity_time_preference,
+          top_3_interests: p.top_3_interests,
+          certification_badges: p.certification_badges,
+          match_score: p.compatibility_score,
+          match_reasons: [p.match_reason],
+          shared_interests: p.shared_interests,
+        }));
 
-  // Apply filters
-  if (interestFilter !== "all") {
-    displayProfiles = displayProfiles.filter(p => 
-      p.top_3_interests?.some(i => i.toLowerCase().includes(interestFilter.toLowerCase()))
-    );
-  }
-  if (regionFilter !== "all") {
-    displayProfiles = displayProfiles.filter(p => 
-      p.location?.toLowerCase().includes(regionFilter.toLowerCase())
-    );
-  }
+    // Apply filters
+    if (interestFilter !== "all") {
+      baseProfiles = baseProfiles.filter(p => 
+        p.top_3_interests?.some(i => i.toLowerCase().includes(interestFilter.toLowerCase()))
+      );
+    }
+    if (regionFilter !== "all") {
+      baseProfiles = baseProfiles.filter(p => 
+        p.location?.toLowerCase().includes(regionFilter.toLowerCase())
+      );
+    }
+
+    return baseProfiles;
+  }, [profiles, demoProfiles, interestFilter, regionFilter]);
 
   // Keyboard shortcuts
   useEffect(() => {
