@@ -325,9 +325,9 @@ export function PeopleDiscoveryHero() {
         {/* Hero Header */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2">
-            <span className="text-4xl inline-block transition-transform duration-300 hover:animate-[wave_0.6s_ease-in-out]">👋</span>
+            <span className="text-4xl inline-block animate-[wave_0.6s_ease-in-out_infinite]">👋</span>
             <h2 className="text-4xl font-bold text-foreground">
-              Meet Vitanians
+              Meet Vitanaland Citizens
             </h2>
           </div>
           <p className="text-lg text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
