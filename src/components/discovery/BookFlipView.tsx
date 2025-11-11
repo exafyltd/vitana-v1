@@ -98,9 +98,9 @@ export function BookFlipView({
         {/* Peek Left */}
         {peekLeftProfile && (
           <motion.div 
-            className="hidden lg:block w-[10%] opacity-60"
+            className="hidden lg:block w-[10%] opacity-25"
             initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 0.6, x: 0 }}
+            animate={{ opacity: 0.25, x: 0 }}
             transition={{ duration: 0.3 }}
           >
             <BookFlipCard
@@ -118,14 +118,15 @@ export function BookFlipView({
           <AnimatePresence mode="wait">
             <motion.div
               key={currentProfile.user_id}
-              initial={{ opacity: 0, rotateY: -12, x: -100 }}
-              animate={{ opacity: 1, rotateY: 0, x: 0 }}
-              exit={{ opacity: 0, rotateY: 12, x: 100 }}
+              initial={{ opacity: 0, rotateY: -12, x: -100, scale: 0.95 }}
+              animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1.02 }}
+              exit={{ opacity: 0, rotateY: 12, x: 100, scale: 0.95 }}
               transition={{ 
                 type: "spring", 
                 stiffness: 260, 
                 damping: 20,
-                duration: 0.4 
+                duration: 0.4,
+                delay: 0.1
               }}
             >
               <BookFlipCard
@@ -140,9 +141,9 @@ export function BookFlipView({
         {/* Peek Right */}
         {peekRightProfile && (
           <motion.div 
-            className="hidden lg:block w-[10%] opacity-60"
+            className="hidden lg:block w-[10%] opacity-25"
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 0.6, x: 0 }}
+            animate={{ opacity: 0.25, x: 0 }}
             transition={{ duration: 0.3 }}
           >
             <BookFlipCard
