@@ -94,7 +94,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
   if (isPeek) {
     return (
       <div 
-        className={`w-full h-[210px] rounded-[22px] bg-cover bg-center`}
+        className={`w-full h-[210px] rounded-[22px] bg-cover bg-center ring-1 ring-white/20 shadow-xl overflow-hidden`}
         style={{
           backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
           backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
