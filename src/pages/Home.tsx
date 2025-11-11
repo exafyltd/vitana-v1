@@ -32,6 +32,9 @@ import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
+import { PeopleDiscoveryHero } from "@/components/discovery/PeopleDiscoveryHero";
+import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
+import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 
 // Mock data for Today and Guide screens - Fallback data
 const todayScheduledEvents = [
@@ -609,75 +612,81 @@ export default function Home() {
   };
 
   return (
-    <AppLayout>
-      <SEO title="Home | VITANA" description="VITANA Home Dashboard - Your wellness journey starts here" canonical={window.location.href} />
-      <SubNavigation items={homeNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen overflow-x-hidden">
-        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
-        <StandardHeader
-          title={greeting}
-          description="Your wellness journey starts today."
-          emoji={emoji}
-        />
-
-        {/* Utility Action Button */}
-        <UtilityActionButton>
-          <ExpandableSearchButton 
-            placeholder="Search today's content, events, or media…"
-            onSearch={(query) => console.log('Search:', query)}
+    <ProfilePreviewProvider>
+      <AppLayout>
+        <SEO title="Home | VITANA" description="VITANA Home Dashboard - Your wellness journey starts here" canonical={window.location.href} />
+        <SubNavigation items={homeNavigation} />
+        
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen overflow-x-hidden">
+          <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
+          <StandardHeader
+            title={greeting}
+            description="Your wellness journey starts today."
+            emoji={emoji}
           />
-          <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setMasterActionOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Action
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full"
-            onClick={() => window.location.reload()}
-            title="Refresh page"
-          >
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-        </UtilityActionButton>
 
-        {/* Split Navigation */}
-        <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <SplitBarList>
-            <SplitBarTrigger value="today">📅 Today</SplitBarTrigger>
-            <SplitBarTrigger value="guide">🧭 Guide</SplitBarTrigger>
-          </SplitBarList>
+          {/* Utility Action Button */}
+          <UtilityActionButton>
+            <ExpandableSearchButton 
+              placeholder="Search today's content, events, or media…"
+              onSearch={(query) => console.log('Search:', query)}
+            />
+            <UniversalCalendarButton />
+            <Button size="sm" onClick={() => setMasterActionOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Action
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={() => window.location.reload()}
+              title="Refresh page"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </UtilityActionButton>
 
-          <SplitBarContent value="today">
-            <div className="mt-6">
-              {/* Row 1: Scrolling Tracker - Continuous horizontal scroll */}
-              <div className="mb-6 overflow-x-hidden w-full min-w-0">
-                <ScrollingRail
-                  items={activeScheduledEvents.map((event, index) => ({
-                    title: event.title,
-                    description: event.description,
-                    imageUrl: event.imageUrl,
-                    pillar: event.pillar,
-                    author: event.author,
-                    location: event.location,
-                    attendees: event.attendees,
-                    timestamp: event.timestamp,
-                    showReward: true,
-                    rewardPoints: index === 0 ? 5 : index === 1 ? 4 : 8,
-                    rewardDescription: index === 0 ? "Earn credits for attending" : index === 1 ? "Earn credits for learning" : "Earn credits for group participation",
-                    eventId: event.id,
-                    onClick: () => handleEventClick(event.id)
-                  }))}
-                  speed="medium"
-                />
-              </div>
+          {/* Split Navigation */}
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <SplitBarList>
+              <SplitBarTrigger value="today">📅 Today</SplitBarTrigger>
+              <SplitBarTrigger value="guide">🧭 Guide</SplitBarTrigger>
+            </SplitBarList>
 
-              {/* Priority of the Day Banner */}
-              <div className="my-6">
-                <PriorityOfDayBanner />
-              </div>
+            <SplitBarContent value="today">
+              <div className="mt-6">
+                {/* HERO: Discover People Section */}
+                <div className="mb-8 bg-card rounded-2xl p-6 shadow-lg border border-border/50">
+                  <PeopleDiscoveryHero />
+                </div>
+
+                {/* Priority of the Day Banner */}
+                <div className="my-6">
+                  <PriorityOfDayBanner />
+                </div>
+
+                {/* Row 1: Scrolling Tracker - Continuous horizontal scroll */}
+                <div className="mb-6 overflow-x-hidden w-full min-w-0">
+                  <ScrollingRail
+                    items={activeScheduledEvents.map((event, index) => ({
+                      title: event.title,
+                      description: event.description,
+                      imageUrl: event.imageUrl,
+                      pillar: event.pillar,
+                      author: event.author,
+                      location: event.location,
+                      attendees: event.attendees,
+                      timestamp: event.timestamp,
+                      showReward: true,
+                      rewardPoints: index === 0 ? 5 : index === 1 ? 4 : 8,
+                      rewardDescription: index === 0 ? "Earn credits for attending" : index === 1 ? "Earn credits for learning" : "Earn credits for group participation",
+                      eventId: event.id,
+                      onClick: () => handleEventClick(event.id)
+                    }))}
+                    speed="medium"
+                  />
+                </div>
 
               {/* Row 2: Music List + Two Events (1+2 pattern) */}
               <div className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
@@ -1187,5 +1196,8 @@ export default function Home() {
       )}
       </div>
     </AppLayout>
+    
+    <ProfilePreviewDialog />
+  </ProfilePreviewProvider>
   );
 }

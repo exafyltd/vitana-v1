@@ -1120,11 +1120,7 @@ export function MeetupDetailsDrawer({
       )}
       
       {/* Profile Preview Dialog */}
-      <ProfilePreviewDialog
-        userId={previewUserId}
-        isOpen={isPreviewOpen}
-        onOpenChange={closePreview}
-      />
+      <ProfilePreviewDialog />
     </div>
   );
 

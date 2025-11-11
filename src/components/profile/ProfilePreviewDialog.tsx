@@ -8,6 +8,7 @@ import { UserProfile } from "@/types/profile";
 import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFront";
 import { useProfileTheme } from "@/hooks/useProfileTheme";
 import { getVitanaIndexPercentage } from "@/lib/vitanaIndex";
+import { useProfilePreview } from "@/hooks/useProfilePreview";
 
 interface DatabaseProfile {
   user_id: string;
@@ -21,13 +22,8 @@ interface DatabaseProfile {
   linkedin_headline: string;
 }
 
-interface ProfilePreviewDialogProps {
-  userId: string | null;
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-}
-
-export function ProfilePreviewDialog({ userId, isOpen, onOpenChange }: ProfilePreviewDialogProps) {
+export function ProfilePreviewDialog() {
+  const { userId, isOpen, closePreview } = useProfilePreview();
   const navigate = useNavigate();
   const { themeConfig } = useProfileTheme(userId);
 
@@ -110,11 +106,11 @@ export function ProfilePreviewDialog({ userId, isOpen, onOpenChange }: ProfilePr
   const handleViewFullProfile = () => {
     if (!profile) return;
     navigate(`/u/${profile.handle}`);
-    onOpenChange(false);
+    closePreview();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={closePreview}>
       <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center h-[500px]">
@@ -123,7 +119,7 @@ export function ProfilePreviewDialog({ userId, isOpen, onOpenChange }: ProfilePr
         ) : error || !profile ? (
           <div className="flex flex-col items-center justify-center h-[400px] gap-3 px-6">
             <p className="text-muted-foreground">Unable to load profile</p>
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
+            <Button variant="outline" onClick={closePreview}>
               Close
             </Button>
           </div>

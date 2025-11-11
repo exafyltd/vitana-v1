@@ -44,6 +44,30 @@ export type Database = {
         }
         Relationships: []
       }
+      agent_keys: {
+        Row: {
+          agent_name: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          key_hash: string
+        }
+        Insert: {
+          agent_name: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          key_hash: string
+        }
+        Update: {
+          agent_name?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          key_hash?: string
+        }
+        Relationships: []
+      }
       ai_conversations: {
         Row: {
           agent_type: string
@@ -1453,6 +1477,39 @@ export type Database = {
         }
         Relationships: []
       }
+      connection_requests: {
+        Row: {
+          created_at: string | null
+          from_user_id: string
+          id: string
+          message: string | null
+          request_type: string | null
+          responded_at: string | null
+          status: string | null
+          to_user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          from_user_id: string
+          id?: string
+          message?: string | null
+          request_type?: string | null
+          responded_at?: string | null
+          status?: string | null
+          to_user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          from_user_id?: string
+          id?: string
+          message?: string | null
+          request_type?: string | null
+          responded_at?: string | null
+          status?: string | null
+          to_user_id?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           contact_email: string | null
@@ -1600,6 +1657,42 @@ export type Database = {
           result?: Json | null
           status?: string | null
           work_item_id?: string | null
+        }
+        Relationships: []
+      }
+      daily_matches: {
+        Row: {
+          action: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          match_reasons: Json | null
+          match_score: number
+          matched_user_id: string
+          user_id: string
+          viewed_at: string | null
+        }
+        Insert: {
+          action?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          match_reasons?: Json | null
+          match_score: number
+          matched_user_id: string
+          user_id: string
+          viewed_at?: string | null
+        }
+        Update: {
+          action?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          match_reasons?: Json | null
+          match_score?: number
+          matched_user_id?: string
+          user_id?: string
+          viewed_at?: string | null
         }
         Relationships: []
       }
@@ -1902,6 +1995,7 @@ export type Database = {
           event_type: string
           id: string
           metadata: Json | null
+          projected: boolean | null
           source_service: string
           timestamp: string | null
           vtid: string
@@ -1913,6 +2007,7 @@ export type Database = {
           event_type: string
           id?: string
           metadata?: Json | null
+          projected?: boolean | null
           source_service: string
           timestamp?: string | null
           vtid: string
@@ -1924,6 +2019,7 @@ export type Database = {
           event_type?: string
           id?: string
           metadata?: Json | null
+          projected?: boolean | null
           source_service?: string
           timestamp?: string | null
           vtid?: string
@@ -4197,6 +4293,36 @@ export type Database = {
           },
         ]
       }
+      projection_offsets: {
+        Row: {
+          created_at: string
+          events_processed: number | null
+          id: string
+          last_event_id: string | null
+          last_event_time: string | null
+          last_processed_at: string
+          projector_name: string
+        }
+        Insert: {
+          created_at?: string
+          events_processed?: number | null
+          id?: string
+          last_event_id?: string | null
+          last_event_time?: string | null
+          last_processed_at?: string
+          projector_name: string
+        }
+        Update: {
+          created_at?: string
+          events_processed?: number | null
+          id?: string
+          last_event_id?: string | null
+          last_event_time?: string | null
+          last_processed_at?: string
+          projector_name?: string
+        }
+        Relationships: []
+      }
       provider_appointments: {
         Row: {
           appointment_type: string
@@ -4535,6 +4661,39 @@ export type Database = {
           search_term?: string
           searcher_id?: string
           tenant_id?: string | null
+        }
+        Relationships: []
+      }
+      skills_mcp: {
+        Row: {
+          connector_name: string
+          created_at: string | null
+          description: string | null
+          id: string
+          parameters: Json | null
+          skill_id: string
+          skill_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          connector_name: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          parameters?: Json | null
+          skill_id: string
+          skill_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          connector_name?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          parameters?: Json | null
+          skill_id?: string
+          skill_name?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -5363,6 +5522,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_wellness_interests: {
+        Row: {
+          interests: string[]
+          looking_for: string[] | null
+          preferred_activity_time: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          interests?: string[]
+          looking_for?: string[] | null
+          preferred_activity_time?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          interests?: string[]
+          looking_for?: string[] | null
+          preferred_activity_time?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       video_metadata: {
         Row: {
           has_captions: boolean | null
@@ -5431,12 +5614,46 @@ export type Database = {
         }
         Relationships: []
       }
+      vtid_ledger: {
+        Row: {
+          created_at: string | null
+          layer: string
+          module: string
+          status: string
+          summary: string | null
+          title: string | null
+          updated_at: string | null
+          vtid: string
+        }
+        Insert: {
+          created_at?: string | null
+          layer: string
+          module: string
+          status: string
+          summary?: string | null
+          title?: string | null
+          updated_at?: string | null
+          vtid: string
+        }
+        Update: {
+          created_at?: string | null
+          layer?: string
+          module?: string
+          status?: string
+          summary?: string | null
+          title?: string | null
+          updated_at?: string | null
+          vtid?: string
+        }
+        Relationships: []
+      }
       VtidLedger: {
         Row: {
           assigned_to: string | null
           created_at: string
           description: string
           id: string
+          is_test: boolean
           metadata: Json | null
           parent_vtid: string | null
           status: string
@@ -5451,6 +5668,7 @@ export type Database = {
           created_at?: string
           description: string
           id: string
+          is_test?: boolean
           metadata?: Json | null
           parent_vtid?: string | null
           status: string
@@ -5465,6 +5683,7 @@ export type Database = {
           created_at?: string
           description?: string
           id?: string
+          is_test?: boolean
           metadata?: Json | null
           parent_vtid?: string | null
           status?: string
