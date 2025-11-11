@@ -16,7 +16,7 @@ export function PulsingHighlightCard({
     <div className="relative">
       {featured && (
         <div 
-          className="absolute -top-3 -right-3 z-50 bg-gradient-to-r from-[hsl(var(--gradient-play-start))] to-[hsl(var(--gradient-play-end))] text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg"
+          className="absolute -top-3 -right-3 z-50 bg-gradient-to-r from-[hsl(var(--gradient-play-start))] to-[hsl(var(--gradient-play-end))] text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg transition-transform duration-150 ease-out hover:scale-[1.02]"
         >
           ⭐ FEATURED
         </div>
@@ -26,7 +26,7 @@ export function PulsingHighlightCard({
         rewardPosition={rewardPosition}
         className={cn(
           'transition-all duration-300',
-          featured && 'animate-pulse-glow shadow-xl hover:shadow-2xl',
+          featured && 'shadow-xl hover:shadow-2xl transition-shadow',
           className
         )}
       />

@@ -57,15 +57,22 @@ function VitanaIndexMiniBase({
   if (variant === "badge") {
     return (
       <div 
-        className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+        className="inline-flex items-center gap-1.5 rounded-full cursor-pointer px-2.5 py-1 text-[12.5px] font-medium bg-[color-mix(in_oklab,hsl(var(--accent))_14%,transparent)] ring-1 ring-[hsl(var(--accent))/28] text-foreground before:content-[''] before:inline-block before:h-3 before:w-[2px] before:rounded-full before:bg-[hsl(var(--accent))] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
         onClick={handleClick}
+        tabIndex={0}
+        role="button"
+        aria-label={`Vitana Index: ${score}. Click to view full report.`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick();
+          }
+        }}
       >
-        <Badge variant="outline" className="bg-gradient-to-r from-calendar-primary/10 to-calendar-secondary/10">
-          <Activity className="w-3 h-3 mr-1" />
-          Vitana Index: {score}
-        </Badge>
-        {trend === "up" && <TrendingUp className="w-4 h-4 text-calendar-success" />}
-        {trend === "down" && <TrendingDown className="w-4 h-4 text-destructive" />}
+        <Activity className="w-3 h-3 opacity-80" />
+        <span>Vitana Index: {score}</span>
+        {trend === "up" && <TrendingUp className="w-3 h-3 text-calendar-success" />}
+        {trend === "down" && <TrendingDown className="w-3 h-3 text-destructive" />}
       </div>
     );
   }
@@ -73,8 +80,16 @@ function VitanaIndexMiniBase({
   if (variant === "compact") {
     return (
       <div 
-        className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-calendar-primary/5 to-calendar-secondary/5 border border-calendar-primary/10 cursor-pointer hover:shadow-md transition-all"
+        className="flex items-center justify-between p-3 rounded-lg bg-card ring-1 ring-border/60 shadow-[0_2px_10px_rgba(0,0,0,0.06)] cursor-pointer transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
         onClick={handleClick}
+        tabIndex={0}
+        role="button"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick();
+          }
+        }}
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-calendar-primary to-calendar-secondary flex items-center justify-center">
@@ -96,8 +111,16 @@ function VitanaIndexMiniBase({
 
   return (
     <Card 
-      className="cursor-pointer hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-calendar-primary/5 to-calendar-secondary/5 border-calendar-primary/20 relative"
+      className="cursor-pointer bg-card ring-1 ring-border/60 shadow-[0_2px_10px_rgba(0,0,0,0.06)] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none relative"
       onClick={handleClick}
+      tabIndex={0}
+      role="button"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
     >
       <RewardDot 
         points={Math.floor(score / 10)} 

@@ -27,7 +27,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
   };
 
   return (
-    <Card className="h-full bg-gradient-to-br from-green-50 to-blue-50">
+    <Card className="h-full bg-card ring-1 ring-border/60 shadow-[0_2px_10px_rgba(0,0,0,0.06)]">
       <CardHeader>
         <CardTitle className="text-lg">Vitana Index</CardTitle>
       </CardHeader>

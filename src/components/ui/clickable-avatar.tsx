@@ -44,7 +44,8 @@ export function ClickableAvatar({
   return (
     <Avatar 
       className={cn(
-        !disabled && (userId || handle) && "cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all",
+        !disabled && (userId || handle) && "cursor-pointer hover:scale-[1.02] transition-transform duration-150 ease-out",
+        "focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none",
         className
       )}
       onClick={handleClick}

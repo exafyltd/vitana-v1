@@ -158,38 +158,31 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           </div>
         </div>
       
-        {/* Avatar with Layered Glow System */}
-        <div className="relative mb-5 z-10 animate-fade-in transition-all duration-300 ease-out" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
-          {/* Outer ambient halo - soft and wide */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`w-64 h-64 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[60px] animate-[pulse_4s_ease-in-out_infinite] transition-all duration-300`} />
+        {/* Avatar with Premium Subtle Depth - NO ANIMATIONS */}
+        <div className="relative mb-5 z-10 animate-fade-in" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
+          {/* Static soft ambient glow - single layer */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div 
+              className={`w-56 h-56 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-[40px] opacity-30 transition-colors duration-300`}
+            />
           </div>
           
-          {/* Inner light ring - bright and focused */}
-          <div className="absolute inset-0 flex items-center justify-center animate-[pulse_3s_ease-in-out_infinite]">
-            <div className={`w-56 h-56 rounded-full bg-gradient-to-br ${themeConfig.avatar.glow} blur-2xl transition-all duration-300`} />
+          {/* Static elegant ring */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div 
+              className={`w-[202px] h-[202px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`}
+              style={{
+                boxShadow: '0 0 20px hsl(var(--sys-vitana-accent) / 0.15)'
+              }}
+            />
           </div>
           
-          {/* Outer glow ring with pulse */}
-          <div className="absolute inset-0 flex items-center justify-center animate-[pulse_3.5s_ease-in-out_infinite]">
-            <div className={`w-[210px] h-[210px] rounded-full border ${themeConfig.avatar.rings[0]} transition-all duration-300`} 
-                 style={{
-                   boxShadow: '0 0 30px hsl(var(--sys-vitana-accent) / 0.3), 0 0 60px hsl(var(--sys-vitana-accent) / 0.15), inset 0 0 20px hsl(var(--sys-vitana-accent) / 0.08)'
-                 }} />
-          </div>
-          
-          {/* Inner vitality ring */}
-          <div className="absolute inset-0 flex items-center justify-center animate-[pulse_2.5s_ease-in-out_infinite]">
-            <div className={`w-[202px] h-[202px] rounded-full border-2 ${themeConfig.avatar.rings[1]} transition-all duration-300`} 
-                 style={{
-                   boxShadow: '0 0 40px hsl(var(--sys-vitana-accent) / 0.4), inset 0 0 25px hsl(var(--sys-vitana-accent) / 0.12)'
-                 }} />
-          </div>
-          
-          <Avatar className={`relative h-48 w-48 ${themeConfig.avatar.border} shadow-[0_25px_70px_rgba(0,0,0,0.25),0_0_50px_hsl(var(--sys-vitana-accent)/0.3),inset_0_2px_4px_rgba(255,255,255,0.5)] transition-all duration-500 hover:scale-105 ease-out`}
-                  style={{
-                    filter: 'drop-shadow(0 0 30px hsl(var(--sys-vitana-accent) / 0.4))'
-                  }}>
+          <Avatar 
+            className={`relative h-48 w-48 ${themeConfig.avatar.border} ring-1 ring-border/60 shadow-[0_4px_20px_rgba(0,0,0,0.12),0_2px_10px_rgba(0,0,0,0.06)] transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none`}
+            tabIndex={0}
+            role="img"
+            aria-label={`${profile.name}'s profile picture`}
+          >
             <AvatarImage src={profile.avatarUrl} alt={profile.name} className="object-cover" />
             <AvatarFallback className="text-4xl font-bold bg-gradient-to-br from-[hsl(199,36%,48%)] to-[hsl(239,36%,67%)] text-white">
               {profile.name.split(' ').map(n => n[0]).join('')}

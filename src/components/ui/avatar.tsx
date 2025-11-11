@@ -11,6 +11,10 @@ const Avatar = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+      "ring-1 ring-border/60 bg-card",
+      "shadow-[0_2px_10px_rgba(0,0,0,0.06)]",
+      "transition-transform duration-150 ease-out hover:scale-[1.02]",
+      "focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none",
       className
     )}
     {...props}
