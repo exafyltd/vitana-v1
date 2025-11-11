@@ -10,6 +10,7 @@ interface ClickableAvatarProps {
   alt?: string;
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
+  onPreview?: (userId: string, e: React.MouseEvent) => void;
   disabled?: boolean;
 }
 
@@ -21,6 +22,7 @@ export function ClickableAvatar({
   alt,
   className,
   onClick,
+  onPreview,
   disabled = false
 }: ClickableAvatarProps) {
   const navigate = useNavigate();
@@ -30,6 +32,12 @@ export function ClickableAvatar({
     
     if (onClick) {
       onClick(e);
+      return;
+    }
+    
+    // If onPreview is provided, use it instead of navigation
+    if (onPreview && userId) {
+      onPreview(userId, e);
       return;
     }
     

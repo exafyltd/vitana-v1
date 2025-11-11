@@ -15,6 +15,7 @@ import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
 import { EventSelectionProvider } from "@/context/EventSelectionContext";
 import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvider";
 import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
+import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -273,13 +274,14 @@ const App = () => {
       <MeetupSelectionProvider>
         <EventSelectionProvider>
           <StreamingStateProvider>
-            <GreetingProviderWrapper>
-              <TooltipProvider>
-              <Toaster />
-              <PresenceDebugPanel />
-              <BrowserRouter>
-                <TenantDetector />
-                <Routes>
+            <ProfilePreviewProvider>
+              <GreetingProviderWrapper>
+                <TooltipProvider>
+                <Toaster />
+                <PresenceDebugPanel />
+                <BrowserRouter>
+                  <TenantDetector />
+                  <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
           <Route path="/auth" element={<Auth />} />
@@ -1271,7 +1273,8 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-            </GreetingProviderWrapper>
+              </GreetingProviderWrapper>
+            </ProfilePreviewProvider>
           </StreamingStateProvider>
       </EventSelectionProvider>
     </MeetupSelectionProvider>

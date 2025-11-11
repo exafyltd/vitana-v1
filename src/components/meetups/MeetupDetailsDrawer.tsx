@@ -20,6 +20,8 @@ import { MessageComposeModal } from "@/components/profile/shared/MessageComposeM
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
+import { useProfilePreview } from "@/hooks/useProfilePreview";
+import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -166,6 +168,8 @@ export function MeetupDetailsDrawer({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [previousEventId, setPreviousEventId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   
@@ -583,6 +587,10 @@ export function MeetupDetailsDrawer({
                     fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
                     alt={event.creator_display_name || event.author?.name || 'Community Host'}
                     className="h-7 w-7 ring-1 ring-white/50"
+                    onPreview={(uid, e) => {
+                      e.stopPropagation();
+                      openPreview(uid);
+                    }}
                   />
                   <div className="flex items-center gap-1.5 pr-2">
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
@@ -871,10 +879,17 @@ export function MeetupDetailsDrawer({
                 <h3 className="font-semibold text-[17px]">Host</h3>
               </div>
               <div className="flex items-center gap-3 p-4 bg-muted/40 rounded-2xl">
-                <Avatar className="h-14 w-14 border-2 border-primary">
-                  <AvatarImage src={event.creator_avatar_url || event.author?.avatar} />
-                  <AvatarFallback>{(event.creator_display_name || event.author?.name)?.[0] || 'H'}</AvatarFallback>
-                </Avatar>
+                <ClickableAvatar
+                  userId={event.created_by}
+                  src={event.creator_avatar_url || event.author?.avatar}
+                  fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
+                  alt={event.creator_display_name || event.author?.name || 'Community Host'}
+                  className="h-14 w-14 border-2 border-primary"
+                  onPreview={(uid, e) => {
+                    e.stopPropagation();
+                    openPreview(uid);
+                  }}
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <p className="font-semibold text-[15px]">{event.creator_display_name || event.author?.name || 'Community Host'}</p>
@@ -1103,6 +1118,13 @@ export function MeetupDetailsDrawer({
           onSend={handleSendMessageToHost}
         />
       )}
+      
+      {/* Profile Preview Dialog */}
+      <ProfilePreviewDialog
+        userId={previewUserId}
+        isOpen={isPreviewOpen}
+        onOpenChange={closePreview}
+      />
     </div>
   );
 
