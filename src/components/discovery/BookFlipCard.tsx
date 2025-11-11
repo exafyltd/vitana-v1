@@ -130,7 +130,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
             backgroundPosition: '50% 40%',
             objectFit: 'cover',
-            boxShadow: 'inset 0 0 120px rgba(0,0,0,0.35)' // Vignette
+            boxShadow: 'inset 0 0 80px rgba(0,0,0,0.2)' // Vignette
           }}
         />
 
@@ -144,9 +144,9 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         )}
         
-        {/* Gradient Overlay - only from bottom 70% → 100% */}
+        {/* Gradient Overlay - only from bottom 50% → 100% */}
         <div 
-          className={`absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t ${getVitanaGradient()} backdrop-blur-xl z-10`}
+          className={`absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t ${getVitanaGradient()} backdrop-blur-xl z-10`}
           style={{ filter: 'brightness(1.1)' }}
         />
 
@@ -168,7 +168,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           <div className="backdrop-blur-[12px] rounded-b-[22px] h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1.5">
-              <h2 className="text-2xl font-semibold tracking-tight text-white" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <h2 className="text-2xl font-semibold tracking-tight text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
                 {profile.display_name}
               </h2>
               {profile.age && (

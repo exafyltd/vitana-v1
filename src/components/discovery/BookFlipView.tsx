@@ -84,7 +84,7 @@ export function BookFlipView({
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
-              className="hidden xl:block w-[504px] h-[294px] opacity-45 blur-[2px] cursor-pointer z-10"
+              className="hidden lg:block w-[504px] h-[294px] opacity-45 blur-[2px] cursor-pointer z-10"
               style={{ transform: 'translateX(-420px) scale(0.7)' }}
               initial={{ opacity: 0, x: 420, scale: 0.7 }}
               animate={{ opacity: 0.45, x: -420, scale: 0.7 }}
@@ -126,7 +126,7 @@ export function BookFlipView({
           {/* Peek Right */}
           {peekRightProfile && (
             <motion.div 
-              className="hidden xl:block w-[504px] h-[294px] opacity-45 blur-[2px] cursor-pointer z-10"
+              className="hidden lg:block w-[504px] h-[294px] opacity-45 blur-[2px] cursor-pointer z-10"
               style={{ transform: 'translateX(420px) scale(0.7)' }}
               initial={{ opacity: 0, x: -420, scale: 0.7 }}
               animate={{ opacity: 0.45, x: 420, scale: 0.7 }}
