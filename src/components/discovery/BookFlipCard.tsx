@@ -62,8 +62,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
   };
 
   const getVitanaGradient = () => {
-    // Translucent black glass gradient for all cards
-    return "from-black/60 via-black/30 to-transparent";
+    // Translucent emerald-green glass gradient for all cards
+    return "from-emerald-600/45 via-emerald-400/25 to-transparent";
   };
 
   const getActivityIcon = (time?: string) => {
@@ -119,7 +119,10 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         />
         
         {/* Gradient Overlay - only from bottom 70% → 100% */}
-        <div className={`absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t ${getVitanaGradient()} backdrop-blur-lg z-10`} />
+        <div 
+          className={`absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t ${getVitanaGradient()} backdrop-blur-xl z-10`}
+          style={{ filter: 'brightness(1.1)' }}
+        />
 
         {/* Top-left Match Badge with subtle glow */}
         <div className="absolute top-6 left-6 z-20">
@@ -135,7 +138,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         </div>
 
         {/* Glass Content Panel - bottom 45% */}
-        <div className="absolute bottom-0 inset-x-0 p-6 pb-8 backdrop-blur-lg bg-gradient-to-t from-black/60 via-black/30 to-transparent rounded-b-3xl border-t border-white/15 z-20 flex flex-col h-[45%]">
+        <div className="absolute bottom-0 inset-x-0 p-6 pb-8 backdrop-blur-xl bg-emerald-200/10 dark:bg-emerald-300/10 rounded-b-3xl border-t border-emerald-400/20 z-20 flex flex-col h-[45%]">
           <div className="backdrop-blur-[12px] rounded-b-3xl h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-2">
