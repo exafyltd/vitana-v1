@@ -48,8 +48,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         rotateX,
         x: translateX,
         scale: direction === 'up' ? [1, 1.04, 0.95] : [1, 0.98, 0.85],
-        filter: 'blur(4px)',
-      }, { duration: 0.4, ease: [0.785, 0.135, 0.15, 0.86] });
+        filter: 'blur(12px)',
+      }, { duration: 0.4, ease: [0.65, 0, 0.35, 1] });
 
       if (info.offset.y < upThreshold) {
         onFlip('up');
@@ -62,19 +62,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
   };
 
   const getVitanaGradient = () => {
-    if (!profile.vitana_index) return "from-black/45 via-black/18 to-transparent";
-    
-    const tier = getVitanaIndexTier(profile.vitana_index);
-    const colorMap: Record<string, string> = {
-      "Excellent": "from-blue-500/45 via-cyan-400/18 to-transparent",
-      "Good": "from-green-500/45 via-emerald-400/18 to-transparent",
-      "Improving": "from-lime-500/45 via-green-400/18 to-transparent",
-      "Fair": "from-yellow-500/45 via-amber-400/18 to-transparent",
-      "Poor": "from-orange-500/45 via-yellow-400/18 to-transparent",
-      "Very Poor": "from-red-400/45 via-orange-400/18 to-transparent"
-    };
-    
-    return colorMap[tier.label] || "from-black/45 via-black/18 to-transparent";
+    // Translucent black glass gradient for all cards
+    return "from-black/60 via-black/30 to-transparent";
   };
 
   const getActivityIcon = (time?: string) => {
@@ -110,27 +99,27 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
       whileHover={{ 
         scale: 1.02,
         rotateY: 2,
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
         transition: { duration: 0.15 }
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="w-full cursor-pointer will-change-transform"
+      className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40 shadow-emerald-400/20"
       style={{ transformStyle: 'preserve-3d' }}
     >
-      <div className="relative w-[960px] h-[640px] max-w-[92vw] rounded-3xl shadow-2xl overflow-hidden">
-        {/* Full Background Photo - face centered at 42% */}
+      <div className="relative w-[960px] h-[640px] max-w-[90vw] lg:max-w-[92vw] rounded-3xl shadow-[0_8px_60px_-8px_rgba(0,0,0,0.45)] overflow-hidden">
+        {/* Full Background Photo - face centered at 40% */}
         <div 
           className="absolute inset-0 bg-cover z-0"
           style={{
             backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
             backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
-            backgroundPosition: '50% 42%',
-            objectFit: 'cover'
+            backgroundPosition: '50% 40%',
+            objectFit: 'cover',
+            boxShadow: 'inset 0 0 120px rgba(0,0,0,0.35)' // Vignette
           }}
         />
         
-        {/* Gradient Overlay - only from bottom 75% → 100% */}
-        <div className={`absolute inset-x-0 bottom-0 h-[75%] bg-gradient-to-t ${getVitanaGradient()} z-10`} />
+        {/* Gradient Overlay - only from bottom 70% → 100% */}
+        <div className={`absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t ${getVitanaGradient()} backdrop-blur-lg z-10`} />
 
         {/* Top-left Match Badge with subtle glow */}
         <div className="absolute top-6 left-6 z-20">
@@ -145,38 +134,38 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         </div>
 
-        {/* Glass Content Panel - bottom 35% */}
-        <div className="absolute bottom-0 inset-x-0 p-6 pb-6 backdrop-blur-lg bg-white/15 dark:bg-black/25 rounded-t-3xl border-t border-emerald-400/30 z-20 flex flex-col h-[35%]">
-          <div className="backdrop-blur-[12px] rounded-t-3xl h-full flex flex-col">
+        {/* Glass Content Panel - bottom 45% */}
+        <div className="absolute bottom-0 inset-x-0 p-6 pb-8 backdrop-blur-lg bg-gradient-to-t from-black/60 via-black/30 to-transparent rounded-b-3xl border-t border-white/15 z-20 flex flex-col h-[45%]">
+          <div className="backdrop-blur-[12px] rounded-b-3xl h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-2">
-              <h2 className="text-3xl lg:text-3xl font-semibold tracking-tight text-foreground bg-black/20 px-2 py-0.5 rounded inline-block">
+              <h2 className="text-3xl font-semibold tracking-tight text-white" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.display_name}
               </h2>
               {profile.age && (
-                <span className="text-2xl font-semibold text-foreground/80 bg-black/20 px-2 py-0.5 rounded">, {profile.age}</span>
+                <span className="text-3xl font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>, {profile.age}</span>
               )}
             </div>
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-base font-semibold text-accent mb-2">
+              <p className="text-base text-white/90 mb-2" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.professional_headline}
               </p>
             )}
 
             {/* Location & Activity Time */}
-            <div className="flex items-center gap-4 mb-3 text-foreground/90">
+            <div className="flex items-center gap-4 mb-3 text-white/80">
               {profile.location && (
                 <div className="flex items-center gap-1.5">
                   <MapPin className="h-4 w-4" />
-                  <span className="text-sm font-medium">{profile.location}</span>
+                  <span className="text-sm font-medium" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{profile.location}</span>
                 </div>
               )}
               {profile.activity_time_preference && (
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/40 backdrop-blur">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur">
                   <span className="text-base">{getActivityIcon(profile.activity_time_preference)}</span>
-                  <span className="text-xs font-medium capitalize">
+                  <span className="text-xs font-medium capitalize" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     {profile.activity_time_preference}
                   </span>
                 </div>
@@ -186,12 +175,12 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             {/* Vitana Index Badge */}
             {profile.vitana_index && (
               <div className="flex items-center gap-2 mb-3">
-                <Badge variant="secondary" className="bg-background/60 backdrop-blur text-sm px-3 py-1.5 font-semibold">
-                  <Zap className="h-4 w-4 mr-1.5 text-accent" />
+                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-sm px-3 py-1.5 font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <Zap className="h-4 w-4 mr-1.5 text-emerald-400" />
                   Vitana Index: {profile.vitana_index}
                 </Badge>
                 {profile.vitana_percentile && (
-                  <Badge variant="secondary" className="bg-background/60 backdrop-blur text-xs px-2 py-1 font-medium">
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-1 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     Top {profile.vitana_percentile}%
                   </Badge>
                 )}
@@ -200,7 +189,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Bio */}
             {profile.bio && (
-              <p className="text-sm text-foreground/90 mb-3 line-clamp-2 leading-relaxed">
+              <p className="text-sm text-white/80 mb-3 line-clamp-2 leading-relaxed" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.bio}
               </p>
             )}
@@ -209,8 +198,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             {profile.top_3_interests && profile.top_3_interests.length > 0 && (
               <div className="mb-4 pb-4">
                 <div className="flex items-center gap-1.5 mb-2">
-                  <Sparkles className="h-4 w-4 text-accent" />
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  <Sparkles className="h-4 w-4 text-emerald-400" />
+                  <span className="text-xs font-bold text-white/70 uppercase tracking-wider" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     Interests
                   </span>
                 </div>
@@ -219,7 +208,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                     <Badge 
                       key={idx} 
                       variant="secondary" 
-                      className="text-xs font-medium bg-background/60 backdrop-blur px-3 py-1 rounded-full"
+                      className="text-xs font-medium bg-white/10 backdrop-blur px-3 py-1 rounded-full text-white/80"
+                      style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
                     >
                       {interest}
                     </Badge>

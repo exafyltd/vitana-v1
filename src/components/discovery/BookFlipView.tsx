@@ -119,14 +119,15 @@ export function BookFlipView({
             <motion.div
               key={currentProfile.user_id}
               initial={{ opacity: 0, rotateY: -12, x: -100, scale: 0.95 }}
-              animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1.02 }}
+              animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1.03 }}
               exit={{ opacity: 0, rotateY: 12, x: 100, scale: 0.95 }}
               transition={{ 
                 type: "spring", 
                 stiffness: 260, 
                 damping: 20,
                 duration: 0.4,
-                delay: 0.1
+                delay: 0.1,
+                ease: [0.65, 0, 0.35, 1]
               }}
             >
               <BookFlipCard
