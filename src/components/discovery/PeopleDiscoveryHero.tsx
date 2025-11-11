@@ -8,6 +8,7 @@ import { Heart, X, Sparkles, Loader2, Filter, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { motion } from "framer-motion";
 import {
   Select,
   SelectContent,
@@ -315,47 +316,36 @@ export function PeopleDiscoveryHero() {
   }
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#ffe8f0] via-[#f2f6ff] to-[#e0f7f4] dark:from-card dark:via-background dark:to-card py-6">
-      <div className="max-w-7xl mx-auto px-4 w-full flex flex-col items-center">
-        {/* Hero Header */}
-        <div className="text-center space-y-1 mb-3">
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-2xl inline-block transition-transform duration-300 hover:animate-[wave_0.6s_ease-in-out]">👋</span>
-            <h2 className="text-2xl font-bold text-foreground">
-              Meet Vitanians
-            </h2>
-          </div>
-          <div className="flex items-center justify-center gap-3">
-            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
-              You have{" "}
-              <span className="text-xl font-bold">
-                {totalCount - viewedCount}
-              </span>
-              <span className="font-semibold"> new matches</span> today
+    <section className="relative w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#ffe8f0] via-[#f2f6ff] to-[#e0f7f4] dark:from-card dark:via-background dark:to-card py-8">
+      <div className="max-w-[1200px] mx-auto px-4 w-full flex flex-col items-center space-y-2">
+        {/* Header */}
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-semibold text-foreground flex items-center justify-center gap-2">
+            <span className="text-2xl">👋</span>
+            Meet Vitanians
+          </h2>
+          <div className="flex items-center justify-center gap-4">
+            <p className="text-emerald-600 dark:text-emerald-400 font-medium tracking-tight">
+              You have <span className="text-2xl font-bold">{totalCount - viewedCount}</span> new matches today
             </p>
-            <Button variant="ghost" size="xs" onClick={() => refetch()}>
-              <RefreshCw className="h-3 w-3" />
-            </Button>
-          </div>
-          
-          {/* Progress Bar - compact */}
-          <div className="max-w-md mx-auto w-full">
-            <div className="flex items-center justify-between text-xs mb-0.5">
-              <span className="text-muted-foreground text-[10px] font-medium">Today's Discovery</span>
-              <span className="font-bold text-foreground text-[10px]">{viewedCount}/{totalCount}</span>
-            </div>
-            <div className="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
-              <div 
-                className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
-                style={{ width: `${progress}%` }}
-              />
+            {/* Progress Bar - Inline */}
+            <div className="flex items-center gap-2">
+              <div className="w-32 h-1.5 bg-muted rounded-full overflow-hidden">
+                <div 
+                  className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500`}
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <span className="text-[10px] text-muted-foreground font-medium">
+                {viewedCount}/{totalCount}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Card Area + Insight Chip - ≤420px container */}
-        <div className="flex flex-col items-center justify-center max-h-[420px] mb-3">
-          <div className="hidden lg:block">
+        {/* Card Stack with Match Insight */}
+        <div className="flex flex-col items-center space-y-2">
+          <div className="hidden md:block">
             <BookFlipView
               profiles={displayProfiles}
               onConnect={handleConnect}
@@ -365,7 +355,7 @@ export function PeopleDiscoveryHero() {
             />
           </div>
           
-          <div className="lg:hidden max-w-md mx-auto">
+          <div className="md:hidden max-w-md mx-auto">
             <ProfileCardStack
               profiles={displayProfiles}
               onConnect={handleConnect}
@@ -375,123 +365,87 @@ export function PeopleDiscoveryHero() {
             />
           </div>
           
-          {/* Insight Chip - directly below card */}
-          {displayProfiles[0]?.match_reasons?.[0] && (
-            <p className="mt-2 text-sm text-white/80 italic bg-emerald-100/10 px-4 py-1.5 rounded-full backdrop-blur-md flex items-center justify-center gap-1.5">
-              <span>✨</span>
-              {displayProfiles[0].match_reasons[0]}
-            </p>
+          {/* Match Insight Chip - Below Card */}
+          {displayProfiles[currentIndex] && (
+            <motion.div
+              key={`insight-${displayProfiles[currentIndex].user_id}`}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              className="text-sm text-white/80 italic bg-emerald-100/10 px-4 py-1.5 rounded-full backdrop-blur-md"
+            >
+              ✨ {displayProfiles[currentIndex].match_reasons?.[0] || "Great wellness match"}
+            </motion.div>
           )}
         </div>
 
-        {/* Action Buttons - directly below chip */}
-        <div className="flex items-center justify-center gap-8 mb-2">
-          {/* Pass Button */}
-          <button
-            onClick={() => {
-              const current = displayProfiles[currentIndex];
-              if (current) {
-                handlePass(current.user_id);
-                setCurrentIndex(prev => prev + 1);
-              }
-            }}
-            className="group flex flex-col items-center gap-2 transition-all"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-red-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative h-16 w-16 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/40 hover:border-red-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
-                <X className="h-8 w-8 text-muted-foreground group-hover:text-red-500 transition-colors" />
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs font-bold text-foreground group-hover:text-red-500 transition-colors">Pass (←)</div>
-            </div>
-          </button>
-
-          {/* Super Connect Button */}
-          <button
-            onClick={() => {
-              const current = displayProfiles[currentIndex];
-              if (current) {
-                handleSuperConnect(current.user_id);
-                setCurrentIndex(prev => prev + 1);
-              }
-            }}
-            className="group flex flex-col items-center gap-2 transition-all"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-2xl blur-2xl opacity-60 group-hover:opacity-100 animate-pulse" />
-              <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-yellow-400/30 to-amber-500/30 backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 flex items-center justify-center transition-all duration-200 shadow-2xl group-hover:scale-110">
-                <Sparkles className="h-9 w-9 text-yellow-500" />
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs font-bold text-yellow-600 dark:text-yellow-400">Super (↑)</div>
-            </div>
-          </button>
-
-          {/* Connect Button */}
-          <button
-            onClick={() => {
-              const current = displayProfiles[currentIndex];
-              if (current) {
-                handleConnect(current.user_id);
-                setCurrentIndex(prev => prev + 1);
-              }
-            }}
-            className="group flex flex-col items-center gap-2 transition-all"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-green-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-xl border border-border/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
-                <Heart className="h-8 w-8 text-green-500" />
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-xs font-bold text-green-600 dark:text-green-400">Connect (→)</div>
-            </div>
-          </button>
+        {/* Action Buttons with Labels */}
+        <div className="flex items-center justify-center gap-10 mt-4">
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => {
+                const current = displayProfiles[currentIndex];
+                if (current) {
+                  handlePass(current.user_id);
+                  setCurrentIndex(prev => prev + 1);
+                }
+              }}
+              className="flex items-center justify-center w-16 h-16 rounded-full bg-card/80 backdrop-blur border-2 hover:border-red-500/50 hover:bg-red-500/10 transition-all group"
+            >
+              <X className="h-6 w-6 text-muted-foreground group-hover:text-red-500 transition-colors" />
+            </Button>
+            <span className="text-[11px] text-muted-foreground font-medium">Pass (←)</span>
+          </div>
+          
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              variant="default"
+              size="lg"
+              onClick={() => {
+                const current = displayProfiles[currentIndex];
+                if (current) {
+                  handleSuperConnect(current.user_id);
+                  setCurrentIndex(prev => prev + 1);
+                }
+              }}
+              className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 border-0 shadow-lg hover:shadow-xl transition-all group"
+            >
+              <Sparkles className="h-6 w-6 text-white" />
+            </Button>
+            <span className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">Super (↑)</span>
+          </div>
+          
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              variant="default"
+              size="lg"
+              onClick={() => {
+                const current = displayProfiles[currentIndex];
+                if (current) {
+                  handleConnect(current.user_id);
+                  setCurrentIndex(prev => prev + 1);
+                }
+              }}
+              className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 border-0 shadow-lg hover:shadow-xl transition-all group"
+            >
+              <Heart className="h-6 w-6 text-white" />
+            </Button>
+            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">Connect (→)</span>
+          </div>
         </div>
 
-        {/* Filters + Shortcuts - single line below buttons */}
-        <div className="flex flex-col justify-start items-center border-t border-white/10 pt-2">
-          <div className="flex items-center justify-center gap-3 flex-wrap text-xs">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] text-muted-foreground">Interested in:</span>
-              <Select value={interestFilter} onValueChange={setInterestFilter}>
-                <SelectTrigger className="w-[120px] h-7 bg-muted/20 border border-border/20 text-[10px]">
-                  <SelectValue placeholder="All Wellness" />
-                </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Interests</SelectItem>
-                <SelectItem value="yoga">Yoga</SelectItem>
-                <SelectItem value="nutrition">Nutrition</SelectItem>
-                <SelectItem value="biohacking">Biohacking</SelectItem>
-                <SelectItem value="running">Running</SelectItem>
-                <SelectItem value="meditation">Meditation</SelectItem>
-              </SelectContent>
-            </Select>
-            </div>
-            
-            <div className="flex items-center gap-1.5">
-              <span className="text-[10px] text-muted-foreground">Distance:</span>
-              <Select value={regionFilter} onValueChange={setRegionFilter}>
-                <SelectTrigger className="w-[100px] h-7 bg-muted/20 border border-border/20 text-[10px]">
-                  <SelectValue placeholder="Any" />
-                </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Regions</SelectItem>
-                <SelectItem value="san francisco">San Francisco</SelectItem>
-                <SelectItem value="los angeles">Los Angeles</SelectItem>
-                <SelectItem value="new york">New York</SelectItem>
-                <SelectItem value="austin">Austin</SelectItem>
-                <SelectItem value="seattle">Seattle</SelectItem>
-              </SelectContent>
-            </Select>
-            </div>
-            
-            <span className="text-[10px] opacity-70 text-muted-foreground">Use ← → ↑ keys to navigate</span>
-          </div>
+        {/* Filters and Shortcuts */}
+        <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground border-t border-white/10 pt-3 mt-3">
+          <span>Show:</span>
+          <select className="bg-card/60 backdrop-blur border border-border rounded px-2 py-1 text-[10px]">
+            <option>All Members</option>
+            <option>Active Now</option>
+            <option>New This Week</option>
+          </select>
+          <span className="hidden sm:inline">•</span>
+          <span className="hidden sm:inline">Keyboard: ← Pass • → Connect • ↑ Super</span>
         </div>
       </div>
     </section>
