@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
+import { BookFlipView } from "./BookFlipView";
 import { Button } from "@/components/ui/button";
 import { Heart, X, Sparkles, Loader2, Filter, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -332,8 +333,18 @@ export function PeopleDiscoveryHero() {
           </div>
         </div>
 
-        {/* Card Stack */}
-        <div className="max-w-md mx-auto">
+        {/* Book Flip View (Desktop) / Card Stack (Mobile) */}
+        <div className="hidden lg:block">
+          <BookFlipView
+            profiles={displayProfiles}
+            onConnect={handleConnect}
+            onPass={handlePass}
+            onSuperConnect={handleSuperConnect}
+            onProfileTap={handleProfileTap}
+          />
+        </div>
+        
+        <div className="lg:hidden max-w-md mx-auto">
           <ProfileCardStack
             profiles={displayProfiles}
             onConnect={handleConnect}

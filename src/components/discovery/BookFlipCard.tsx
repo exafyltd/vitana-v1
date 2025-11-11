@@ -1,10 +1,10 @@
-import { motion, useMotionValue, useTransform, PanInfo, animate } from "framer-motion";
-import { useState, useRef } from "react";
+import { motion, PanInfo, animate } from "framer-motion";
+import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 
-interface SwipeableProfileCardProps {
+interface BookFlipCardProps {
   profile: {
     user_id: string;
     display_name: string;
@@ -22,45 +22,45 @@ interface SwipeableProfileCardProps {
     match_reasons: string[];
     shared_interests?: string[];
   };
-  onSwipe: (direction: 'left' | 'right' | 'up') => void;
+  onFlip: (direction: 'left' | 'right' | 'up') => void;
   onTap: () => void;
-  style?: React.CSSProperties;
+  isPeek?: boolean;
+  peekSide?: 'left' | 'right';
 }
 
-export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: SwipeableProfileCardProps) {
+export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookFlipCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const [tiltX, setTiltX] = useState(0);
-  const [tiltY, setTiltY] = useState(0);
-  
-  const rotate = useTransform(x, [-200, 200], [-10, 10]);
-  const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0.5, 1, 1, 1, 0.5]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 120;
     const upThreshold = -120;
 
     if (Math.abs(info.offset.x) > threshold || Math.abs(info.offset.y) > 120) {
-      // Enhanced exit animation with blur and rotation
+      // Book flip animation
+      const direction = info.offset.x > 0 ? 'right' : info.offset.x < 0 ? 'left' : 'up';
+      const rotateY = direction === 'right' ? [0, 12, 22] : direction === 'left' ? [0, -12, -22] : [0, 0, 0];
+      const translateX = direction === 'right' ? [0, 140, 560] : direction === 'left' ? [0, -140, -560] : [0, 0, 0];
+      const rotateX = direction === 'up' ? [0, -10, -20] : [0, 0, 0];
+
       animate(cardRef.current!, {
-        opacity: 0,
-        scale: 0.8,
-        filter: 'blur(8px)',
-        rotateZ: info.offset.x > 0 ? 15 : info.offset.x < 0 ? -15 : 0,
-      }, { duration: 0.3 });
+        opacity: [1, 0.9, 0],
+        rotateY,
+        rotateX,
+        x: translateX,
+        scale: direction === 'up' ? [1, 1.04, 0.95] : [1, 0.98, 0.85],
+        filter: 'blur(4px)',
+      }, { duration: 0.4, ease: [0.4, 0, 0.2, 1] });
 
       if (info.offset.y < upThreshold) {
-        onSwipe('up');
+        onFlip('up');
       } else if (info.offset.x > threshold) {
-        onSwipe('right');
+        onFlip('right');
       } else if (info.offset.x < -threshold) {
-        onSwipe('left');
+        onFlip('left');
       }
     }
   };
 
-  // Get gradient overlay based on Vitana Index
   const getVitanaGradient = () => {
     if (!profile.vitana_index) return "from-black/50 via-black/20 to-transparent";
     
@@ -77,21 +77,6 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
     return colorMap[tier.label] || "from-black/50 via-black/20 to-transparent";
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const xPos = (e.clientX - rect.left) / rect.width;
-    const yPos = (e.clientY - rect.top) / rect.height;
-    
-    setTiltX((yPos - 0.5) * 8);
-    setTiltY((xPos - 0.5) * -8);
-  };
-
-  const handleMouseLeave = () => {
-    setTiltX(0);
-    setTiltY(0);
-  };
-
-  // Get activity time icon
   const getActivityIcon = (time?: string) => {
     switch (time) {
       case 'morning': return '☀️';
@@ -102,29 +87,34 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
     }
   };
 
+  if (isPeek) {
+    return (
+      <div 
+        className={`w-full h-[560px] rounded-3xl bg-cover bg-center opacity-60 blur-[1px] pointer-events-none`}
+        style={{
+          backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
+          backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
+        }}
+      />
+    );
+  }
+
   return (
     <motion.div
       ref={cardRef}
-      style={{
-        x,
-        y,
-        rotate,
-        opacity,
-        rotateX: tiltX,
-        rotateY: tiltY,
-        transformStyle: 'preserve-3d',
-        ...style,
-      }}
       drag
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       dragElastic={0.6}
       onDragEnd={handleDragEnd}
       onClick={onTap}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.01 }}
+      whileHover={{ 
+        scale: 1.01,
+        rotateY: 2,
+        transition: { duration: 0.15 }
+      }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="absolute w-full cursor-pointer will-change-transform"
+      className="w-full cursor-pointer will-change-transform"
+      style={{ transformStyle: 'preserve-3d' }}
     >
       <div className="relative w-[960px] h-[560px] max-w-[92vw] rounded-3xl shadow-2xl overflow-hidden">
         {/* Full Background Photo - face centered at 35% */}
@@ -236,7 +226,6 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
               </div>
             </div>
           )}
-
         </div>
       </div>
       
@@ -249,7 +238,6 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
           </p>
         </div>
       </div>
-
     </motion.div>
   );
 }
