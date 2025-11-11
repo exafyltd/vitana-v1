@@ -78,16 +78,15 @@ export function BookFlipView({
   return (
     <div className="relative">
       {/* Roulette Deck Area */}
-      <div className="h-[420px] max-w-[1400px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
+      <div className="h-[420px] max-w-[1520px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
         {/* Book Spread Layout */}
-        <div className="flex items-center justify-center gap-6 relative">
+        <div className="flex items-center justify-center gap-8 xl:gap-10 relative">
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
-              className="hidden lg:block w-[360px] h-[210px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-white/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[0.52] transition-all duration-300"
-              style={{ transform: 'translateX(-280px) scale(0.5)' }}
-              initial={{ opacity: 0, x: 280, scale: 0.5 }}
-              animate={{ opacity: 0.70, x: -280, scale: 0.5 }}
+              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
             >
@@ -126,10 +125,9 @@ export function BookFlipView({
           {/* Peek Right */}
           {peekRightProfile && (
             <motion.div 
-              className="hidden lg:block w-[360px] h-[210px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-white/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[0.52] transition-all duration-300"
-              style={{ transform: 'translateX(280px) scale(0.5)' }}
-              initial={{ opacity: 0, x: -280, scale: 0.5 }}
-              animate={{ opacity: 0.70, x: 280, scale: 0.5 }}
+              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => setCurrentIndex(prev => Math.min(profiles.length - 1, prev + 1))}
             >
