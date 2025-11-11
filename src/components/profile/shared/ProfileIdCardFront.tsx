@@ -235,8 +235,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none" />
                   
                   <div className="flex flex-col items-center justify-center text-center relative z-10">
-                    <div className={`text-2xl font-extrabold leading-none ${themeConfig.vitanaOrb.text} drop-shadow-[0_3px_10px_rgba(0,0,0,0.4)] transition-colors duration-300`}>{profile.vitanaIndex}</div>
-                    <div className={`text-[8px] font-bold leading-tight mt-1 ${themeConfig.vitanaOrb.text}/98 tracking-[0.08em] uppercase transition-colors duration-300`}>
+                    <div className={`text-2xl font-extrabold leading-none ${themeConfig.vitanaOrb.text} drop-shadow-[0_2px_6px_rgba(0,0,0,0.25)] transition-colors duration-300`}>{profile.vitanaIndex}</div>
+                    <div className={`text-[10px] font-semibold leading-tight mt-1 ${themeConfig.vitanaOrb.text}/98 tracking-[0.05em] uppercase transition-colors duration-300`}>
                       Vitana
                     </div>
                   </div>
@@ -250,18 +250,23 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                        }} />
                 </div>
                 
-                {/* Metallic gradient capsule for Top % badge */}
+                {/* Premium percentile badge */}
                 {profile.vitanaPercentile && (
                   <div className="absolute -top-1.5 -right-2 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
-                    <div className="relative group/badge">
-                      {/* Badge glow */}
-                      <div className={`absolute inset-0 bg-gradient-to-r ${themeConfig.badge.glow} rounded-full blur-md opacity-60 group-hover/badge:opacity-80 transition-all duration-300`} />
-                      {/* Metallic badge */}
-                      <div className={`relative h-5 px-2.5 rounded-full ${themeConfig.badge.background} shadow-[0_4px_16px_rgba(251,191,36,0.5),inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.2)] flex items-center justify-center border border-amber-200/50 transition-transform duration-150 ease-out hover:scale-[1.02]`}>
-                        <span className={`text-[8px] font-extrabold ${themeConfig.badge.text} leading-none tracking-[0.05em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]`}>
-                          TOP {100 - profile.vitanaPercentile}%
-                        </span>
-                      </div>
+                    <div 
+                      className="relative h-6 px-3 py-0.5 rounded-full
+                                 bg-[color-mix(in_oklab,hsl(var(--accent))_20%,hsl(var(--background)))]
+                                 ring-1 ring-[hsl(var(--accent))/40]
+                                 shadow-[0_2px_8px_rgba(0,0,0,0.15)]
+                                 flex items-center justify-center
+                                 transition-transform duration-150 ease-out hover:scale-[1.02]
+                                 focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none"
+                      role="status"
+                      aria-label={`Top ${100 - profile.vitanaPercentile} percentile`}
+                    >
+                      <span className="text-[11px] font-bold text-foreground leading-none tracking-wide">
+                        TOP {100 - profile.vitanaPercentile}%
+                      </span>
                     </div>
                   </div>
                 )}
