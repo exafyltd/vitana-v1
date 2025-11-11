@@ -321,7 +321,7 @@ export function PeopleDiscoveryHero() {
            style={{ backgroundSize: '200% 200%' }} 
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-12 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
         {/* Hero Header */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2">
@@ -380,7 +380,7 @@ export function PeopleDiscoveryHero() {
         </div>
 
         {/* Large Expressive Action Buttons */}
-        <div className="flex items-center justify-center gap-8 mt-8">
+        <div className="flex items-center justify-center gap-10 mt-4">
           {/* Pass Button */}
           <button
             onClick={() => {
@@ -390,21 +390,20 @@ export function PeopleDiscoveryHero() {
                 setCurrentIndex(prev => prev + 1);
               }
             }}
-            className="group flex flex-col items-center gap-3 min-w-[120px] transition-all"
+            className="group flex flex-col items-center gap-2 transition-all"
           >
             <div className="relative">
               {/* Glow on hover */}
               <div className="absolute inset-0 bg-red-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               
               {/* Button body */}
-              <div className="relative h-20 w-20 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/40 hover:border-red-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
-                <X className="h-10 w-10 text-muted-foreground group-hover:text-red-500 transition-colors" />
+              <div className="relative h-16 w-16 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/40 hover:border-red-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
+                <X className="h-8 w-8 text-muted-foreground group-hover:text-red-500 transition-colors" />
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-base font-bold text-foreground group-hover:text-red-500 transition-colors">Pass</div>
-              <div className="text-xs text-muted-foreground">← or Swipe Left</div>
+              <div className="text-sm font-bold text-foreground group-hover:text-red-500 transition-colors">Pass</div>
             </div>
           </button>
 
@@ -417,19 +416,18 @@ export function PeopleDiscoveryHero() {
                 setCurrentIndex(prev => prev + 1);
               }
             }}
-            className="group flex flex-col items-center gap-3 min-w-[140px] transition-all"
+            className="group flex flex-col items-center gap-2 transition-all"
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-2xl blur-2xl opacity-60 group-hover:opacity-100 animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-2xl blur-2xl opacity-60 group-hover:opacity-100" />
               
-              <div className="relative h-24 w-24 rounded-2xl bg-gradient-to-br from-yellow-400/30 to-amber-500/30 backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 flex items-center justify-center transition-all duration-200 shadow-2xl group-hover:scale-110">
-                <Sparkles className="h-12 w-12 text-yellow-500" />
+              <div className="relative h-18 w-18 rounded-2xl bg-gradient-to-br from-yellow-400/30 to-amber-500/30 backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 flex items-center justify-center transition-all duration-200 shadow-2xl group-hover:scale-110">
+                <Sparkles className="h-10 w-10 text-yellow-500" />
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-base font-bold text-yellow-600 dark:text-yellow-400">Super Connect</div>
-              <div className="text-xs text-muted-foreground">↑ or Swipe Up</div>
+              <div className="text-sm font-bold text-yellow-600 dark:text-yellow-400">Super</div>
             </div>
           </button>
 
@@ -442,77 +440,78 @@ export function PeopleDiscoveryHero() {
                 setCurrentIndex(prev => prev + 1);
               }
             }}
-            className="group flex flex-col items-center gap-3 min-w-[120px] transition-all"
+            className="group flex flex-col items-center gap-2 transition-all"
           >
             <div className="relative">
               <div className="absolute inset-0 bg-green-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               
-              <div className="relative h-20 w-20 rounded-2xl bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-xl border border-border/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
-                <Heart className="h-10 w-10 text-green-500" />
+              <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-xl border border-border/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
+                <Heart className="h-8 w-8 text-green-500" />
               </div>
             </div>
             
             <div className="text-center">
-              <div className="text-base font-bold text-green-600 dark:text-green-400">Connect</div>
-              <div className="text-xs text-muted-foreground">→ or Swipe Right</div>
+              <div className="text-sm font-bold text-green-600 dark:text-green-400">Connect</div>
             </div>
           </button>
         </div>
 
-        {/* Filter Controls */}
-        <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
-          <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm font-medium text-muted-foreground">Filters:</span>
+        {/* Filter Controls & Keyboard Shortcuts */}
+        <div className="border-t border-white/10 pt-3 mt-3">
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium text-muted-foreground">Filters:</span>
+            </div>
+            
+            <Select value={interestFilter} onValueChange={setInterestFilter}>
+              <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
+                <SelectValue placeholder="Interests ▾" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Interests</SelectItem>
+                <SelectItem value="yoga">Yoga</SelectItem>
+                <SelectItem value="nutrition">Nutrition</SelectItem>
+                <SelectItem value="biohacking">Biohacking</SelectItem>
+                <SelectItem value="running">Running</SelectItem>
+                <SelectItem value="meditation">Meditation</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Select value={regionFilter} onValueChange={setRegionFilter}>
+              <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
+                <SelectValue placeholder="Region ▾" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Regions</SelectItem>
+                <SelectItem value="san francisco">San Francisco</SelectItem>
+                <SelectItem value="los angeles">Los Angeles</SelectItem>
+                <SelectItem value="new york">New York</SelectItem>
+                <SelectItem value="austin">Austin</SelectItem>
+                <SelectItem value="seattle">Seattle</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            {(interestFilter !== "all" || regionFilter !== "all") && (
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => {
+                  setInterestFilter("all");
+                  setRegionFilter("all");
+                  setPillarFilter("all");
+                }}
+              >
+                Clear Filters
+              </Button>
+            )}
+            
+            {/* Keyboard Shortcuts in same line */}
+            <span className="text-[10px] text-muted-foreground ml-4">
+              ← Pass • → Connect • ↑ Super
+            </span>
           </div>
-          
-          <Select value={interestFilter} onValueChange={setInterestFilter}>
-            <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
-              <SelectValue placeholder="Interests ▾" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Interests</SelectItem>
-              <SelectItem value="yoga">Yoga</SelectItem>
-              <SelectItem value="nutrition">Nutrition</SelectItem>
-              <SelectItem value="biohacking">Biohacking</SelectItem>
-              <SelectItem value="running">Running</SelectItem>
-              <SelectItem value="meditation">Meditation</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          <Select value={regionFilter} onValueChange={setRegionFilter}>
-            <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
-              <SelectValue placeholder="Region ▾" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Regions</SelectItem>
-              <SelectItem value="san francisco">San Francisco</SelectItem>
-              <SelectItem value="los angeles">Los Angeles</SelectItem>
-              <SelectItem value="new york">New York</SelectItem>
-              <SelectItem value="austin">Austin</SelectItem>
-              <SelectItem value="seattle">Seattle</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          {(interestFilter !== "all" || regionFilter !== "all") && (
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => {
-                setInterestFilter("all");
-                setRegionFilter("all");
-                setPillarFilter("all");
-              }}
-            >
-              Clear Filters
-            </Button>
-          )}
         </div>
-
-        {/* Keyboard Hint */}
-        <p className="text-center text-sm text-muted-foreground border-t border-white/10 pt-3 mt-4">
-          💡 <span className="font-medium">Keyboard shortcuts:</span> ← Pass • → Connect • ↑ Super Connect
-        </p>
       </div>
     </div>
   );
