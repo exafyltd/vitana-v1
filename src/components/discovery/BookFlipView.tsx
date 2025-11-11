@@ -76,22 +76,32 @@ export function BookFlipView({
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto h-[420px] flex items-center justify-center" style={{ perspective: '1600px' }}>
-      {/* Roulette Layout */}
-      <div className="flex items-center justify-center w-full h-full relative">
+    <div className="max-w-[1280px] mx-auto px-6 lg:px-8" style={{ perspective: '1600px' }}>
+      {/* Vertical Index Dots (Desktop) */}
+      <div className="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 space-y-2 z-30">
+        {profiles.slice(0, 10).map((_, idx) => (
+          <div
+            key={idx}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              idx === currentIndex
+                ? 'bg-accent scale-125'
+                : idx < currentIndex
+                ? 'bg-accent/40'
+                : 'bg-border'
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Book Spread Layout */}
+      <div className="flex items-center justify-center gap-4 lg:gap-6">
         {/* Peek Left */}
         {peekLeftProfile && (
           <motion.div 
-            className="hidden md:block absolute left-0 z-10 cursor-pointer"
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 0.45, x: 0 }}
-            transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
-            style={{ 
-              width: '504px',
-              height: '294px',
-              transform: 'translateX(-420px) scale(0.7)',
-            }}
-            onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
+            className="hidden lg:block w-[10%] opacity-25"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 0.25, x: 0 }}
+            transition={{ duration: 0.3 }}
           >
             <BookFlipCard
               profile={peekLeftProfile}
@@ -103,19 +113,22 @@ export function BookFlipView({
           </motion.div>
         )}
 
-        {/* Current Card - Responsive sizes */}
-        <div className="w-[92vw] h-[62vh] sm:w-[560px] sm:h-[340px] md:w-[560px] md:h-[340px] lg:w-[640px] lg:h-[380px] xl:w-[720px] xl:h-[420px] z-20">
+        {/* Current Page */}
+        <div className="w-full lg:w-[70%] max-w-[960px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentProfile.user_id}
-              initial={{ opacity: 0.45, x: 420, scale: 0.7 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0.45, x: -420, scale: 0.7 }}
+              initial={{ opacity: 0, rotateY: -12, x: -100, scale: 0.95 }}
+              animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1.03 }}
+              exit={{ opacity: 0, rotateY: 12, x: 100, scale: 0.95 }}
               transition={{ 
-                duration: 0.45,
+                type: "spring", 
+                stiffness: 260, 
+                damping: 20,
+                duration: 0.4,
+                delay: 0.1,
                 ease: [0.65, 0, 0.35, 1]
               }}
-              className="w-full h-full"
             >
               <BookFlipCard
                 profile={currentProfile}
@@ -129,16 +142,10 @@ export function BookFlipView({
         {/* Peek Right */}
         {peekRightProfile && (
           <motion.div 
-            className="hidden md:block absolute right-0 z-10 cursor-pointer"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 0.45, x: 0 }}
-            transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
-            style={{ 
-              width: '504px',
-              height: '294px',
-              transform: 'translateX(420px) scale(0.7)',
-            }}
-            onClick={() => setCurrentIndex(prev => prev + 1)}
+            className="hidden lg:block w-[10%] opacity-25"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 0.25, x: 0 }}
+            transition={{ duration: 0.3 }}
           >
             <BookFlipCard
               profile={peekRightProfile}
