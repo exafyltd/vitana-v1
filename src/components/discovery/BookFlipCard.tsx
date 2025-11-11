@@ -120,7 +120,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
       className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40 shadow-emerald-400/20"
       style={{ transformStyle: 'preserve-3d' }}
     >
-      <div className="relative w-[960px] h-[640px] max-w-[90vw] lg:max-w-[92vw] rounded-[1.75rem] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.25)] ring-1 ring-emerald-300/10 overflow-hidden">
+      <div className="relative w-[480px] h-[300px] max-w-[90vw] lg:max-w-full rounded-[1.5rem] shadow-[0_16px_40px_-10px_rgba(0,0,0,0.25)] ring-1 ring-emerald-300/10 overflow-hidden">
         {/* Full Background Photo - face centered at 40% */}
         <div 
           className="absolute inset-0 bg-cover z-0"
@@ -136,8 +136,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         {/* Faint Background Pillar Glyph */}
         {profile.primary_pillar && (
           <div 
-            className="absolute top-1/3 right-12 text-[280px] leading-none opacity-15 pointer-events-none transition-opacity duration-300 group-hover:opacity-25 z-[5]"
-            style={{ textShadow: '0 0 60px rgba(255,255,255,0.3)' }}
+            className="absolute top-1/3 right-8 text-[120px] leading-none opacity-15 pointer-events-none transition-opacity duration-300 group-hover:opacity-25 z-[5]"
+            style={{ textShadow: '0 0 30px rgba(255,255,255,0.3)' }}
           >
             {getPillarGlyph(profile.primary_pillar)}
           </div>
@@ -150,57 +150,57 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         />
 
         {/* Top-left Match Badge with subtle glow */}
-        <div className="absolute top-6 left-6 z-20">
+        <div className="absolute top-3 left-3 z-20">
           <div className="relative">
             {/* Subtle glow */}
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur-lg opacity-30" />
             
             {/* Badge */}
-            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-bold text-base px-4 py-2 shadow-2xl border-0">
+            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-bold text-sm px-3 py-1 shadow-2xl border-0">
               {profile.match_score}% Match 🌿
             </Badge>
           </div>
         </div>
 
         {/* Glass Content Panel - bottom 45% */}
-        <div className="absolute bottom-0 inset-x-0 p-6 pb-8 backdrop-blur-xl bg-emerald-200/10 dark:bg-emerald-300/10 rounded-b-3xl border-t border-emerald-400/20 z-20 flex flex-col h-[45%]">
-          <div className="backdrop-blur-[12px] rounded-b-3xl h-full flex flex-col">
+        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-emerald-200/10 dark:bg-emerald-300/10 rounded-b-[1.5rem] border-t border-emerald-400/20 z-20 flex flex-col h-[45%]">
+          <div className="backdrop-blur-[12px] rounded-b-[1.5rem] h-full flex flex-col">
             {/* Name & Age */}
-            <div className="flex items-baseline justify-start gap-2 mb-2">
-              <h2 className="text-3xl font-semibold tracking-tight text-white" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+            <div className="flex items-baseline justify-start gap-2 mb-1">
+              <h2 className="text-xl font-semibold tracking-tight text-white" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.display_name}
               </h2>
               {profile.age && (
-                <span className="text-3xl font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>, {profile.age}</span>
+                <span className="text-xl font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>, {profile.age}</span>
               )}
             </div>
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-base text-white/90 mb-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-sm text-white/90 mb-0.5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.professional_headline}
               </p>
             )}
 
             {/* Story Cue */}
             {profile.story_cue && (
-              <p className="text-sm text-white/70 italic mb-2" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-xs text-white/70 italic mb-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 "{profile.story_cue.slice(0, 55)}{profile.story_cue.length > 55 ? '...' : ''}"
               </p>
             )}
 
             {/* Location & Activity Time */}
-            <div className="flex items-center gap-4 mb-3 text-white/80">
+            <div className="flex items-center gap-2 mb-2 text-white/80">
               {profile.location && (
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="h-4 w-4" />
-                  <span className="text-sm font-medium" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{profile.location}</span>
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-3 w-3" />
+                  <span className="text-xs font-medium" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{profile.location}</span>
                 </div>
               )}
               {profile.activity_time_preference && (
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur">
-                  <span className="text-base">{getActivityIcon(profile.activity_time_preference)}</span>
-                  <span className="text-xs font-medium capitalize" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 backdrop-blur">
+                  <span className="text-sm">{getActivityIcon(profile.activity_time_preference)}</span>
+                  <span className="text-[10px] font-medium capitalize" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     {profile.activity_time_preference}
                   </span>
                 </div>
@@ -209,63 +209,48 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Vitana Index Badge with Merged Micro-badges */}
             {profile.vitana_index && (
-              <div className="flex items-center gap-2 mb-3 flex-wrap">
-                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-sm px-3 py-1.5 font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
-                  <Zap className="h-4 w-4 mr-1.5 text-emerald-400" />
-                  Vitana Index: {profile.vitana_index}
+              <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <Zap className="h-3 w-3 mr-1 text-emerald-400" />
+                  VI: {profile.vitana_index}
                 </Badge>
                 {profile.vitana_percentile && (
-                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-1 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-[10px] px-1.5 py-0.5 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     Top {profile.vitana_percentile}%
                   </Badge>
                 )}
                 {profile.streak_days && profile.streak_days > 0 && (
-                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-1 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
-                    🔥 {profile.streak_days} Day Streak
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-[10px] px-1.5 py-0.5 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                    🔥 {profile.streak_days}d
                   </Badge>
                 )}
               </div>
             )}
 
-            {/* Bio */}
-            {profile.bio && (
-              <p className="text-sm text-white/80 mb-3 line-clamp-2 leading-relaxed" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
-                {profile.bio}
-              </p>
-            )}
-
-            {/* Top Interests */}
+            {/* Top Interests - Compact */}
             {profile.top_3_interests && profile.top_3_interests.length > 0 && (
-              <div className="mb-4 pb-4">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Sparkles className="h-4 w-4 text-emerald-400" />
-                  <span className="text-xs font-bold text-white/70 uppercase tracking-wider" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
-                    Interests
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {profile.top_3_interests.map((interest, idx) => (
-                    <Badge 
-                      key={idx} 
-                      variant="secondary" 
-                      className="text-xs font-medium bg-white/10 backdrop-blur px-3 py-1 rounded-full text-white/80"
-                      style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
-                    >
-                      {interest}
-                    </Badge>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-1.5">
+                {profile.top_3_interests.slice(0, 3).map((interest, idx) => (
+                  <Badge 
+                    key={idx} 
+                    variant="secondary" 
+                    className="text-[10px] font-medium bg-white/10 backdrop-blur px-2 py-0.5 rounded-full text-white/80"
+                    style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
+                  >
+                    {interest}
+                  </Badge>
+                ))}
               </div>
             )}
           </div>
         </div>
       </div>
       
-      {/* Match Reason - Below the card as a separate chip */}
-      <div className="mt-3 max-w-[960px] mx-auto">
-        <div className="bg-gradient-to-r from-accent/20 via-accent/10 to-accent/20 rounded-xl p-3 border border-accent/30 backdrop-blur">
-          <p className="text-sm text-center font-semibold text-foreground flex items-center justify-center gap-2">
-            <span className="text-base">✨</span>
+      {/* Match Reason - Below the card as a compact chip */}
+      <div className="mt-2 max-w-[480px] mx-auto">
+        <div className="bg-emerald-100/10 rounded-full px-4 py-1.5 border border-emerald-400/20 backdrop-blur-md">
+          <p className="text-sm text-center italic text-white/80 flex items-center justify-center gap-1.5">
+            <span className="text-sm">✨</span>
             {profile.match_reasons[0] || 'Great wellness alignment!'}
           </p>
         </div>

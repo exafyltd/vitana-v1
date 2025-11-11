@@ -76,32 +76,17 @@ export function BookFlipView({
   }
 
   return (
-    <div className="max-w-[1280px] mx-auto px-6 lg:px-8" style={{ perspective: '1600px' }}>
-      {/* Vertical Index Dots (Desktop) */}
-      <div className="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 space-y-2 z-30">
-        {profiles.slice(0, 10).map((_, idx) => (
-          <div
-            key={idx}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              idx === currentIndex
-                ? 'bg-accent scale-125'
-                : idx < currentIndex
-                ? 'bg-accent/40'
-                : 'bg-border'
-            }`}
-          />
-        ))}
-      </div>
-
+    <div className="max-w-[1280px] mx-auto px-6 lg:px-8 h-full flex items-center justify-center" style={{ perspective: '1600px' }}>
       {/* Book Spread Layout */}
-      <div className="flex items-center justify-center gap-4 lg:gap-6">
+      <div className="flex items-center justify-center gap-4 lg:gap-6 w-full h-full relative">
         {/* Peek Left */}
         {peekLeftProfile && (
           <motion.div 
-            className="hidden lg:block w-[10%] opacity-25"
+            className="hidden lg:block absolute left-0 w-[15%] opacity-40 blur-[3px]"
             initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 0.25, x: 0 }}
+            animate={{ opacity: 0.4, x: 0, scale: 0.7 }}
             transition={{ duration: 0.3 }}
+            style={{ transform: 'translateX(-200px)' }}
           >
             <BookFlipCard
               profile={peekLeftProfile}
@@ -113,13 +98,13 @@ export function BookFlipView({
           </motion.div>
         )}
 
-        {/* Current Page */}
-        <div className="w-full lg:w-[70%] max-w-[960px]">
+        {/* Current Card - 480x300px */}
+        <div className="w-full lg:w-[60%] max-w-[480px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentProfile.user_id}
               initial={{ opacity: 0, rotateY: -12, x: -100, scale: 0.95 }}
-              animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1.03 }}
+              animate={{ opacity: 1, rotateY: 0, x: 0, scale: 1 }}
               exit={{ opacity: 0, rotateY: 12, x: 100, scale: 0.95 }}
               transition={{ 
                 type: "spring", 
@@ -142,10 +127,11 @@ export function BookFlipView({
         {/* Peek Right */}
         {peekRightProfile && (
           <motion.div 
-            className="hidden lg:block w-[10%] opacity-25"
+            className="hidden lg:block absolute right-0 w-[15%] opacity-40 blur-[3px]"
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 0.25, x: 0 }}
+            animate={{ opacity: 0.4, x: 0, scale: 0.7 }}
             transition={{ duration: 0.3 }}
+            style={{ transform: 'translateX(200px)' }}
           >
             <BookFlipCard
               profile={peekRightProfile}
