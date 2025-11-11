@@ -13,6 +13,7 @@ interface BookFlipCardProps {
     bio?: string;
     location?: string;
     professional_headline?: string;
+    story_cue?: string;
     vitana_index?: number;
     vitana_percentile?: number;
     activity_time_preference?: 'morning' | 'afternoon' | 'evening' | 'flexible';
@@ -21,6 +22,8 @@ interface BookFlipCardProps {
     match_score: number;
     match_reasons: string[];
     shared_interests?: string[];
+    streak_days?: number;
+    primary_pillar?: string;
   };
   onFlip: (direction: 'left' | 'right' | 'up') => void;
   onTap: () => void;
@@ -76,6 +79,18 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
     }
   };
 
+  const getPillarGlyph = (pillar?: string) => {
+    switch (pillar?.toLowerCase()) {
+      case 'vitality': return '⚡';
+      case 'nutrition': return '🥗';
+      case 'movement': return '🏃';
+      case 'recovery': return '🧘';
+      case 'mental': return '🧠';
+      case 'purpose': return '🎯';
+      default: return '🌿';
+    }
+  };
+
   if (isPeek) {
     return (
       <div 
@@ -117,6 +132,16 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             boxShadow: 'inset 0 0 120px rgba(0,0,0,0.35)' // Vignette
           }}
         />
+
+        {/* Faint Background Pillar Glyph */}
+        {profile.primary_pillar && (
+          <div 
+            className="absolute top-1/3 right-12 text-[280px] leading-none opacity-15 pointer-events-none transition-opacity duration-300 group-hover:opacity-25 z-[5]"
+            style={{ textShadow: '0 0 60px rgba(255,255,255,0.3)' }}
+          >
+            {getPillarGlyph(profile.primary_pillar)}
+          </div>
+        )}
         
         {/* Gradient Overlay - only from bottom 70% → 100% */}
         <div 
@@ -152,8 +177,15 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-base text-white/90 mb-2" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-base text-white/90 mb-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.professional_headline}
+              </p>
+            )}
+
+            {/* Story Cue */}
+            {profile.story_cue && (
+              <p className="text-sm text-white/70 italic mb-2" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                "{profile.story_cue.slice(0, 55)}{profile.story_cue.length > 55 ? '...' : ''}"
               </p>
             )}
 
@@ -175,9 +207,9 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
               )}
             </div>
 
-            {/* Vitana Index Badge */}
+            {/* Vitana Index Badge with Merged Micro-badges */}
             {profile.vitana_index && (
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
                 <Badge variant="secondary" className="bg-white/10 backdrop-blur text-sm px-3 py-1.5 font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                   <Zap className="h-4 w-4 mr-1.5 text-emerald-400" />
                   Vitana Index: {profile.vitana_index}
@@ -185,6 +217,11 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                 {profile.vitana_percentile && (
                   <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-1 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     Top {profile.vitana_percentile}%
+                  </Badge>
+                )}
+                {profile.streak_days && profile.streak_days > 0 && (
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-1 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                    🔥 {profile.streak_days} Day Streak
                   </Badge>
                 )}
               </div>

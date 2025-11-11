@@ -7,6 +7,7 @@ export interface DemoPerson {
   bio: string;
   location: string;
   professional_headline: string;
+  story_cue?: string;
   vitana_index: number;
   vitana_percentile: number;
   longevity_archetype?: string;
@@ -18,6 +19,8 @@ export interface DemoPerson {
   match_reason: string;
   shared_interests: string[];
   distance_km: number;
+  streak_days?: number;
+  primary_pillar?: string;
 }
 
 export interface DemoGroup {
@@ -85,6 +88,7 @@ export function useDemoMatches() {
       bio: "Former tech PM turned wellness coach. Helping busy professionals build sustainable health habits. 5AM club member 🌅 | Plant-based nutrition advocate",
       location: "San Francisco, CA",
       professional_headline: "Wellness Coach & Habit Designer",
+      story_cue: "Built a 365-day meditation streak during burnout",
       vitana_index: 721,
       vitana_percentile: 15,
       longevity_archetype: "The Mindful Optimizer",
@@ -95,7 +99,9 @@ export function useDemoMatches() {
       compatibility_score: 92,
       match_reason: "You both wake at 5AM and practice morning yoga 🧘‍♀️",
       shared_interests: ["Yoga", "Morning Routine", "Plant-Based", "Meditation", "Journaling"],
-      distance_km: 2.3
+      distance_km: 2.3,
+      streak_days: 365,
+      primary_pillar: "mental",
     },
     {
       id: "demo-2",
@@ -106,6 +112,7 @@ export function useDemoMatches() {
       bio: "Software engineer optimizing code and biology. Cold showers, fasted workouts, and bulletproof coffee are my morning rituals ☕❄️",
       location: "Austin, TX",
       professional_headline: "Tech Lead & Biohacker",
+      story_cue: "Went from burnout to 6AM workouts in 90 days",
       vitana_index: 687,
       vitana_percentile: 22,
       longevity_archetype: "The Disciplined Performer",
@@ -115,7 +122,9 @@ export function useDemoMatches() {
       compatibility_score: 88,
       match_reason: "You're both early risers who love optimizing performance 🚀",
       shared_interests: ["Morning Routine", "HIIT", "Productivity", "Cold Showers", "Journaling"],
-      distance_km: 1.8
+      distance_km: 1.8,
+      streak_days: 47,
+      primary_pillar: "vitality",
     },
     {
       id: "demo-3",
@@ -126,6 +135,7 @@ export function useDemoMatches() {
       bio: "Sunrise yoga teacher and meditation guide. Creating calm in the chaos, one breath at a time. Let's flow together! 🧘‍♀️✨",
       location: "Portland, OR",
       professional_headline: "Yoga Teacher (500hr RYT)",
+      story_cue: "Teaching 5AM classes for stressed executives",
       vitana_index: 758,
       vitana_percentile: 10,
       longevity_archetype: "The Zen Warrior",
@@ -136,7 +146,9 @@ export function useDemoMatches() {
       compatibility_score: 90,
       match_reason: "You both practice sunrise yoga and track sleep quality 🌅",
       shared_interests: ["Yoga", "Meditation", "Breathwork", "Mindfulness", "Morning Routine"],
-      distance_km: 3.1
+      distance_km: 3.1,
+      streak_days: 21,
+      primary_pillar: "recovery",
     },
 
     // THE BIOHACKERS (2 profiles)
@@ -149,6 +161,7 @@ export function useDemoMatches() {
       bio: "Longevity researcher exploring cold therapy, fasting, and metabolic health. Always looking for workout partners who push limits! ❄️💪",
       location: "San Francisco, CA",
       professional_headline: "Longevity Researcher & MD",
+      story_cue: "Published 12 papers on metabolic optimization",
       vitana_index: 812,
       vitana_percentile: 5,
       longevity_archetype: "The Data-Driven Optimizer",
@@ -159,7 +172,9 @@ export function useDemoMatches() {
       compatibility_score: 87,
       match_reason: "Shared interest in biohacking + similar Vitana Index 📊",
       shared_interests: ["Biohacking", "Cold Therapy", "Fasting", "HRV", "VO2 Max"],
-      distance_km: 2.9
+      distance_km: 2.9,
+      streak_days: 120,
+      primary_pillar: "vitality",
     },
     {
       id: "demo-5",
@@ -170,6 +185,7 @@ export function useDemoMatches() {
       bio: "Quantified self enthusiast. CGM wearer, sleep optimizer, and supplement experimenter. Let's swap protocols! 📈🔬",
       location: "NYC, NY",
       professional_headline: "Biohacker & Health Optimizer",
+      story_cue: "Reversed pre-diabetes with real-time glucose data",
       vitana_index: 695,
       vitana_percentile: 20,
       longevity_archetype: "The Experimenter",
@@ -179,7 +195,9 @@ export function useDemoMatches() {
       compatibility_score: 85,
       match_reason: "You both track HRV and optimize for recovery 💤",
       shared_interests: ["Biohacking", "Sleep Tracking", "Supplements", "Red Light Therapy", "Nootropics"],
-      distance_km: 4.2
+      distance_km: 4.2,
+      streak_days: 67,
+      primary_pillar: "nutrition",
     },
 
     // THE WELLNESS PROFESSIONALS (3 profiles)

@@ -33,6 +33,7 @@ interface MatchProfile {
   bio?: string;
   location?: string;
   professional_headline?: string;
+  story_cue?: string;
   vitana_index?: number;
   vitana_percentile?: number;
   activity_time_preference?: 'morning' | 'afternoon' | 'evening' | 'flexible';
@@ -41,6 +42,8 @@ interface MatchProfile {
   match_score: number;
   match_reasons: string[];
   shared_interests?: string[];
+  streak_days?: number;
+  primary_pillar?: string;
 }
 
 export function PeopleDiscoveryHero() {
@@ -228,6 +231,7 @@ export function PeopleDiscoveryHero() {
           bio: p.bio,
           location: p.location,
           professional_headline: p.professional_headline,
+          story_cue: p.story_cue,
           vitana_index: p.vitana_index,
           vitana_percentile: p.vitana_percentile,
           activity_time_preference: p.activity_time_preference,
@@ -236,6 +240,8 @@ export function PeopleDiscoveryHero() {
           match_score: p.compatibility_score,
           match_reasons: [p.match_reason],
           shared_interests: p.shared_interests,
+          streak_days: p.streak_days,
+          primary_pillar: p.primary_pillar,
         }));
 
     // Apply filters
