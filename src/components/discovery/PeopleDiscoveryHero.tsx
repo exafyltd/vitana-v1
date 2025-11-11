@@ -19,9 +19,16 @@ interface DailyMatch {
 interface MatchProfile {
   user_id: string;
   display_name: string;
+  age?: number;
   avatar_url?: string;
   bio?: string;
   location?: string;
+  professional_headline?: string;
+  vitana_index?: number;
+  vitana_percentile?: number;
+  activity_time_preference?: 'morning' | 'afternoon' | 'evening' | 'flexible';
+  top_3_interests?: string[];
+  certification_badges?: string[];
   match_score: number;
   match_reasons: string[];
   shared_interests?: string[];
@@ -189,9 +196,16 @@ export function PeopleDiscoveryHero() {
     : demoProfiles.map(p => ({
         user_id: p.user_id,
         display_name: p.display_name,
+        age: p.age,
         avatar_url: p.avatar_url,
         bio: p.bio,
-        location: `${p.distance_km}km away`,
+        location: p.location,
+        professional_headline: p.professional_headline,
+        vitana_index: p.vitana_index,
+        vitana_percentile: p.vitana_percentile,
+        activity_time_preference: p.activity_time_preference,
+        top_3_interests: p.top_3_interests,
+        certification_badges: p.certification_badges,
         match_score: p.compatibility_score,
         match_reasons: [p.match_reason],
         shared_interests: p.shared_interests,
