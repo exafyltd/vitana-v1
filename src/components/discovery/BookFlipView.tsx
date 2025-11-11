@@ -84,10 +84,10 @@ export function BookFlipView({
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
-              className="hidden lg:block w-[504px] h-[294px] opacity-45 blur-[2px] cursor-pointer z-10"
-              style={{ transform: 'translateX(-420px) scale(0.7)' }}
-              initial={{ opacity: 0, x: 420, scale: 0.7 }}
-              animate={{ opacity: 0.45, x: -420, scale: 0.7 }}
+              className="hidden lg:block w-[360px] h-[210px] opacity-45 blur-[2px] cursor-pointer z-10"
+              style={{ transform: 'translateX(-360px) scale(0.5)' }}
+              initial={{ opacity: 0, x: 360, scale: 0.5 }}
+              animate={{ opacity: 0.45, x: -360, scale: 0.5 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
             >
@@ -102,7 +102,7 @@ export function BookFlipView({
           )}
 
           {/* Current Page */}
-          <div className="w-[720px] z-20">
+          <div className="xl:w-[720px] lg:w-[640px] md:w-[560px] w-[92vw] z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentProfile.user_id}
@@ -126,10 +126,10 @@ export function BookFlipView({
           {/* Peek Right */}
           {peekRightProfile && (
             <motion.div 
-              className="hidden lg:block w-[504px] h-[294px] opacity-45 blur-[2px] cursor-pointer z-10"
-              style={{ transform: 'translateX(420px) scale(0.7)' }}
-              initial={{ opacity: 0, x: -420, scale: 0.7 }}
-              animate={{ opacity: 0.45, x: 420, scale: 0.7 }}
+              className="hidden lg:block w-[360px] h-[210px] opacity-45 blur-[2px] cursor-pointer z-10"
+              style={{ transform: 'translateX(360px) scale(0.5)' }}
+              initial={{ opacity: 0, x: -360, scale: 0.5 }}
+              animate={{ opacity: 0.45, x: 360, scale: 0.5 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => setCurrentIndex(prev => Math.min(profiles.length - 1, prev + 1))}
             >

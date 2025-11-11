@@ -321,7 +321,7 @@ export function PeopleDiscoveryHero() {
            style={{ backgroundSize: '200% 200%' }} 
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-7xl mx-auto px-4 py-4 space-y-4">
         {/* Hero Header */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-2">
@@ -348,7 +348,7 @@ export function PeopleDiscoveryHero() {
                 <span className="text-muted-foreground font-medium">Today's Discovery</span>
                 <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
               </div>
-              <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
+              <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
                 <div 
                   className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
                   style={{ width: `${progress}%` }}

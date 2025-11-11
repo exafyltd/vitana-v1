@@ -94,11 +94,11 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
   if (isPeek) {
     return (
       <div 
-        className={`w-full h-[294px] rounded-[22px] bg-cover bg-center`}
+        className={`w-full h-[210px] rounded-[22px] bg-cover bg-center`}
         style={{
           backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
           backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
-          backgroundPosition: '50% 40%',
+          backgroundPosition: '50% 35%',
         }}
       />
     );
@@ -128,7 +128,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           style={{
             backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
             backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
-            backgroundPosition: '50% 40%',
+            backgroundPosition: '50% 35%',
             objectFit: 'cover',
             boxShadow: 'inset 0 0 80px rgba(0,0,0,0.2)' // Vignette
           }}
@@ -146,7 +146,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         
         {/* Gradient Overlay - only from bottom 50% → 100% */}
         <div 
-          className={`absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t ${getVitanaGradient()} backdrop-blur-xl z-10`}
+          className={`absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t ${getVitanaGradient()} z-10`}
           style={{ filter: 'brightness(1.1)' }}
         />
 
