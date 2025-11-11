@@ -209,19 +209,28 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
               {profile.name}
             </h1>
             
-            {/* Glass Orb VITANA Index with animated pulse and gradient edge */}
+            {/* Glass Orb VITANA Index - Premium Static Style */}
             {profile.vitanaIndex && (
               <div className="relative flex items-center">
-                {/* Triple-layer ethereal glow system */}
-                <div className={`absolute inset-0 w-24 h-24 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-3xl animate-[pulse_2.5s_ease-in-out_infinite] transition-all duration-300`}></div>
-                <div className={`absolute inset-0 w-20 h-20 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-2xl animate-[pulse_2s_ease-in-out_infinite] transition-all duration-300`}></div>
-                <div className={`absolute inset-0 w-18 h-18 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-xl animate-[pulse_3s_ease-in-out_infinite] transition-all duration-300`}></div>
+                {/* Single static ambient glow */}
+                <div className={`absolute inset-0 w-20 h-20 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-2xl opacity-40 transition-all duration-300`}></div>
                 
-                {/* Glass orb with gradient border and inner light */}
-                <div className={`relative w-[68px] h-[68px] rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.15),0_0_50px_hsl(var(--sys-vitana-accent)/0.6),inset_0_2px_12px_rgba(255,255,255,0.3),inset_0_-2px_8px_rgba(0,0,0,0.1)] border-[3px] flex flex-col items-center justify-center animate-[pulse_2.8s_ease-in-out_infinite] transition-all duration-500 hover:scale-110 hover:shadow-[0_12px_50px_rgba(0,0,0,0.2),0_0_70px_hsl(var(--sys-vitana-accent)/0.8)] cursor-pointer group ease-out`}
+                {/* Glass orb with premium depth */}
+                <div className={`relative w-[68px] h-[68px] rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.12),0_2px_10px_rgba(0,0,0,0.06),0_0_30px_hsl(var(--sys-vitana-accent)/0.2),inset_0_2px_8px_rgba(255,255,255,0.25),inset_0_-2px_6px_rgba(0,0,0,0.08)] border-[3px] flex flex-col items-center justify-center transition-transform duration-150 ease-out hover:scale-[1.02] cursor-pointer group focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none`}
                      style={{
                        background: themeConfig.vitanaOrb.background,
-                     }}>
+                     }}
+                     tabIndex={0}
+                     role="button"
+                     aria-label={`Vitana Index: ${profile.vitanaIndex}`}
+                     onClick={() => window.location.href = '/health/my-health-tracker'}
+                     onKeyDown={(e) => {
+                       if (e.key === 'Enter' || e.key === ' ') {
+                         e.preventDefault();
+                         window.location.href = '/health/my-health-tracker';
+                       }
+                     }}
+                >
                   {/* Inner glass reflection */}
                   <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none" />
                   
@@ -248,7 +257,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                       {/* Badge glow */}
                       <div className={`absolute inset-0 bg-gradient-to-r ${themeConfig.badge.glow} rounded-full blur-md opacity-60 group-hover/badge:opacity-80 transition-all duration-300`} />
                       {/* Metallic badge */}
-                      <div className={`relative h-5 px-2.5 rounded-full ${themeConfig.badge.background} shadow-[0_4px_16px_rgba(251,191,36,0.5),inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.2)] flex items-center justify-center border border-amber-200/50 transition-all duration-300 hover:scale-110`}>
+                      <div className={`relative h-5 px-2.5 rounded-full ${themeConfig.badge.background} shadow-[0_4px_16px_rgba(251,191,36,0.5),inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.2)] flex items-center justify-center border border-amber-200/50 transition-transform duration-150 ease-out hover:scale-[1.02]`}>
                         <span className={`text-[8px] font-extrabold ${themeConfig.badge.text} leading-none tracking-[0.05em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]`}>
                           TOP {100 - profile.vitanaPercentile}%
                         </span>
