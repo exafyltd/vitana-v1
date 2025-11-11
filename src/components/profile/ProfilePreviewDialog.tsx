@@ -11,12 +11,14 @@ import { getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 
 interface DatabaseProfile {
   user_id: string;
-  display_name: string | null;
-  handle: string | null;
-  avatar_url: string | null;
-  cover_url: string | null;
-  bio: string | null;
-  location: string | null;
+  display_name: string;
+  full_name: string;
+  handle: string;
+  avatar_url: string;
+  cover_url: string;
+  bio: string;
+  location: string;
+  linkedin_headline: string;
 }
 
 interface ProfilePreviewDialogProps {
@@ -35,14 +37,14 @@ export function ProfilePreviewDialog({ userId, isOpen, onOpenChange }: ProfilePr
     queryFn: async () => {
       if (!userId) return null;
 
+      // Use RPC function to bypass RLS and get public profile data
       const { data, error } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, handle, avatar_url, cover_url, bio, location')
-        .eq('user_id', userId)
-        .single();
+        .rpc('get_user_profile_by_identifier', { identifier: userId });
 
       if (error) throw error;
-      return data as DatabaseProfile;
+      if (!data || data.length === 0) return null;
+      
+      return data[0] as DatabaseProfile;
     },
     staleTime: 60_000,
   });
@@ -74,7 +76,7 @@ export function ProfilePreviewDialog({ userId, isOpen, onOpenChange }: ProfilePr
   const profile: UserProfile | null = dbProfile && stats ? {
     id: dbProfile.user_id,
     user_id: dbProfile.user_id,
-    name: dbProfile.display_name || 'Unknown User',
+    name: dbProfile.display_name || dbProfile.full_name || 'Unknown User',
     handle: dbProfile.handle || dbProfile.user_id.slice(0, 8),
     avatarUrl: dbProfile.avatar_url || undefined,
     coverUrl: dbProfile.cover_url || undefined,
@@ -82,6 +84,7 @@ export function ProfilePreviewDialog({ userId, isOpen, onOpenChange }: ProfilePr
     membershipTier: null,
     bio: dbProfile.bio || undefined,
     location: dbProfile.location || undefined,
+    linkedin_headline: dbProfile.linkedin_headline || undefined,
     stats,
     vitanaIndex: (() => {
       const userIdHash = dbProfile.user_id.split('-')[0];
