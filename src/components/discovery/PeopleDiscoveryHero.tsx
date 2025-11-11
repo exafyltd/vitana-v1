@@ -311,28 +311,30 @@ export function PeopleDiscoveryHero() {
               Meet Vitanians
             </h2>
           </div>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-emerald-600 dark:text-emerald-400 font-medium tracking-tight">
             You have{" "}
-            <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+            <span className="text-2xl font-bold">
               {totalCount - viewedCount}
             </span>
-            <span className="font-semibold text-foreground"> new matches</span> today
+            <span className="font-semibold"> new matches</span> today
             <Button variant="ghost" size="sm" onClick={() => refetch()} className="ml-2">
               <RefreshCw className="h-4 w-4" />
             </Button>
           </p>
           
-          {/* Progress Bar with Gradient */}
-          <div className="max-w-2xl mx-auto space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground font-medium">Today's Discovery</span>
-              <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
-            </div>
-            <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
-              <div 
-                className="h-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 transition-all duration-500 ease-out rounded-full"
-                style={{ width: `${progress}%` }}
-              />
+          {/* Progress Bar with Gradient - aligned horizontally */}
+          <div className="max-w-2xl mx-auto flex items-center gap-4">
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground font-medium">Today's Discovery</span>
+                <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
+              </div>
+              <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
+                <div 
+                  className="h-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 transition-all duration-500 ease-out rounded-full"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -489,7 +491,7 @@ export function PeopleDiscoveryHero() {
         </div>
 
         {/* Keyboard Hint */}
-        <p className="text-center text-sm text-muted-foreground mt-6">
+        <p className="text-center text-sm text-muted-foreground border-t border-white/10 pt-3 mt-4">
           💡 <span className="font-medium">Keyboard shortcuts:</span> ← Pass • → Connect • ↑ Super Connect
         </p>
       </div>

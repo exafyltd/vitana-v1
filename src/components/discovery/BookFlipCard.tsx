@@ -62,8 +62,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
   };
 
   const getVitanaGradient = () => {
-    // Translucent emerald-green glass gradient for all cards
-    return "from-emerald-600/45 via-emerald-400/25 to-transparent";
+    // Translucent emerald-green glass gradient for all cards - slightly reduced tint
+    return "from-emerald-500/45 via-emerald-400/25 to-transparent";
   };
 
   const getActivityIcon = (time?: string) => {
@@ -105,7 +105,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
       className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40 shadow-emerald-400/20"
       style={{ transformStyle: 'preserve-3d' }}
     >
-      <div className="relative w-[960px] h-[640px] max-w-[90vw] lg:max-w-[92vw] rounded-3xl shadow-[0_8px_60px_-8px_rgba(0,0,0,0.45)] overflow-hidden">
+      <div className="relative w-[960px] h-[640px] max-w-[90vw] lg:max-w-[92vw] rounded-[1.75rem] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.25)] ring-1 ring-emerald-300/10 overflow-hidden">
         {/* Full Background Photo - face centered at 40% */}
         <div 
           className="absolute inset-0 bg-cover z-0"
