@@ -79,10 +79,11 @@ export function ProfileCardStack({
       <AnimatePresence>
         {visibleProfiles.map((profile, index) => {
           const isTop = index === 0;
-          const scale = 1 - index * 0.04;
-          const yOffset = index * 12;
-          const rotateZ = index * -2;
-          const opacity = index === 0 ? 1 : 0.6 - (index * 0.1);
+          const scale = 1 - index * 0.08;
+          const yOffset = index * 20;
+          const rotateZ = index * -5;
+          const rotateY = index * -8;
+          const opacity = index === 0 ? 1 : 0.5 - (index * 0.15);
 
           return (
             <SwipeableProfileCard
@@ -93,9 +94,9 @@ export function ProfileCardStack({
               style={{
                 zIndex: visibleProfiles.length - index,
                 opacity,
-                transform: `translateY(${yOffset}px) scale(${scale}) rotateZ(${rotateZ}deg)`,
+                transform: `translateY(${yOffset}px) scale(${scale}) rotateZ(${rotateZ}deg) rotateY(${rotateY}deg)`,
                 transformOrigin: 'center center',
-                transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
+                transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                 pointerEvents: isTop ? 'auto' : 'none',
               } as React.CSSProperties}
             />

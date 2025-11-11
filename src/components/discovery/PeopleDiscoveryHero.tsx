@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
 import { Button } from "@/components/ui/button";
-import { Heart, X, Sparkles, Loader2 } from "lucide-react";
+import { Heart, X, Sparkles, Loader2, Filter, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import confetti from "canvas-confetti";
 
 interface DailyMatch {
   id: string;
@@ -40,6 +48,9 @@ export function PeopleDiscoveryHero() {
   const { openPreview } = useProfilePreview();
   const { people: demoProfiles } = useDemoMatches();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [interestFilter, setInterestFilter] = useState<string>("all");
+  const [regionFilter, setRegionFilter] = useState<string>("all");
+  const [pillarFilter, setPillarFilter] = useState<string>("all");
 
   // Fetch daily matches
   const { data: matches, isLoading, refetch } = useQuery({
@@ -48,7 +59,6 @@ export function PeopleDiscoveryHero() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
-      // Try to get existing matches
       const { data: existingMatches } = await supabase
         .from('daily_matches')
         .select('*')
@@ -57,16 +67,13 @@ export function PeopleDiscoveryHero() {
         .is('action', null)
         .order('match_score', { ascending: false });
 
-      // If no matches, generate new ones
       if (!existingMatches || existingMatches.length === 0) {
         const { error } = await supabase.functions.invoke('generate-daily-matches');
         if (error) {
           console.error('Error generating matches:', error);
-          // Fall back to demo data
           return null;
         }
 
-        // Fetch newly generated matches
         const { data: newMatches } = await supabase
           .from('daily_matches')
           .select('*')
@@ -98,7 +105,6 @@ export function PeopleDiscoveryHero() {
 
       const profilesData = await Promise.all(profilePromises);
 
-      // Combine with match data
       return matches.map((match, idx) => {
         const profile = profilesData[idx];
         return {
@@ -109,7 +115,7 @@ export function PeopleDiscoveryHero() {
           location: profile?.location,
           match_score: match.match_score,
           match_reasons: match.match_reasons,
-          shared_interests: ['Yoga', 'Nutrition', 'Mindfulness'], // Demo data
+          shared_interests: ['Yoga', 'Nutrition', 'Mindfulness'],
         };
       }) as MatchProfile[];
     },
@@ -161,6 +167,15 @@ export function PeopleDiscoveryHero() {
     if (match) {
       updateMatchMutation.mutate({ matchId: match.id, action: 'connect' });
     }
+    
+    // Trigger confetti!
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#10b981', '#34d399', '#6ee7b7']
+    });
+    
     toast({
       title: "Connection request sent! 💚",
       description: "They'll be notified of your interest.",
@@ -180,6 +195,16 @@ export function PeopleDiscoveryHero() {
     if (match) {
       updateMatchMutation.mutate({ matchId: match.id, action: 'super_connect' });
     }
+    
+    // Trigger confetti with golden colors!
+    confetti({
+      particleCount: 150,
+      spread: 80,
+      origin: { y: 0.5 },
+      colors: ['#fbbf24', '#f59e0b', '#fde047'],
+      startVelocity: 45,
+    });
+    
     toast({
       title: "Super Connect sent! ⭐",
       description: "You'll appear at the top of their matches!",
@@ -191,7 +216,7 @@ export function PeopleDiscoveryHero() {
   };
 
   // Use demo data if no real matches
-  const displayProfiles = profiles && profiles.length > 0 
+  let displayProfiles = profiles && profiles.length > 0 
     ? profiles 
     : demoProfiles.map(p => ({
         user_id: p.user_id,
@@ -211,6 +236,48 @@ export function PeopleDiscoveryHero() {
         shared_interests: p.shared_interests,
       }));
 
+  // Apply filters
+  if (interestFilter !== "all") {
+    displayProfiles = displayProfiles.filter(p => 
+      p.top_3_interests?.some(i => i.toLowerCase().includes(interestFilter.toLowerCase()))
+    );
+  }
+  if (regionFilter !== "all") {
+    displayProfiles = displayProfiles.filter(p => 
+      p.location?.toLowerCase().includes(regionFilter.toLowerCase())
+    );
+  }
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      const current = displayProfiles[currentIndex];
+      if (!current) return;
+      
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        handlePass(current.user_id);
+        setCurrentIndex(prev => prev + 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        handleConnect(current.user_id);
+        setCurrentIndex(prev => prev + 1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        handleSuperConnect(current.user_id);
+        setCurrentIndex(prev => prev + 1);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentIndex, displayProfiles]);
+
   const viewedCount = currentIndex;
   const totalCount = displayProfiles.length;
   const progress = totalCount > 0 ? (viewedCount / totalCount) * 100 : 0;
@@ -224,115 +291,189 @@ export function PeopleDiscoveryHero() {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Hero Header */}
-      <div className="text-center space-y-3">
-        <div className="flex items-center justify-center gap-2">
-          <span className="text-3xl">👋</span>
-          <h2 className="text-3xl font-bold text-foreground">
-            Meet Vitanians
-          </h2>
+    <div className="w-full">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#ffe8f0] via-[#f2f6ff] to-[#e0f7f4] dark:from-slate-950 dark:via-purple-950/20 dark:to-teal-950/20 animate-gradient-x" 
+           style={{ backgroundSize: '200% 200%' }} 
+      />
+
+      <div className="max-w-7xl mx-auto px-4 py-12 space-y-8">
+        {/* Hero Header */}
+        <div className="text-center space-y-3">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-4xl">👋</span>
+            <h2 className="text-4xl font-bold text-foreground">
+              Meet Vitanians
+            </h2>
+          </div>
+          <p className="text-lg text-muted-foreground">
+            You have <span className="font-semibold text-accent">{totalCount - viewedCount} new matches</span> today
+            <Button variant="ghost" size="sm" onClick={() => refetch()} className="ml-2">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+          </p>
+          
+          {/* Progress Bar with Gradient */}
+          <div className="max-w-2xl mx-auto space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground font-medium">Today's Discovery</span>
+              <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
+            </div>
+            <div className="w-full h-3 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
+              <div 
+                className="h-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 transition-all duration-500 ease-out rounded-full"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
         </div>
-        <p className="text-base text-muted-foreground">
-          You have <span className="font-semibold text-accent">{totalCount - viewedCount} new matches</span> today
+
+        {/* Card Stack */}
+        <div className="max-w-md mx-auto">
+          <ProfileCardStack
+            profiles={displayProfiles}
+            onConnect={handleConnect}
+            onPass={handlePass}
+            onSuperConnect={handleSuperConnect}
+            onProfileTap={handleProfileTap}
+          />
+        </div>
+
+        {/* Large Expressive Action Buttons */}
+        <div className="flex items-center justify-center gap-8 mt-8">
+          {/* Pass Button */}
+          <button
+            onClick={() => {
+              const current = displayProfiles[currentIndex];
+              if (current) {
+                handlePass(current.user_id);
+                setCurrentIndex(prev => prev + 1);
+              }
+            }}
+            className="group flex flex-col items-center gap-3 min-w-[120px] transition-all"
+          >
+            <div className="relative">
+              {/* Glow on hover */}
+              <div className="absolute inset-0 bg-red-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              {/* Button body */}
+              <div className="relative h-20 w-20 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/40 hover:border-red-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
+                <X className="h-10 w-10 text-muted-foreground group-hover:text-red-500 transition-colors" />
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-base font-bold text-foreground group-hover:text-red-500 transition-colors">Pass</div>
+              <div className="text-xs text-muted-foreground">← or Swipe Left</div>
+            </div>
+          </button>
+
+          {/* Super Connect Button */}
+          <button
+            onClick={() => {
+              const current = displayProfiles[currentIndex];
+              if (current) {
+                handleSuperConnect(current.user_id);
+                setCurrentIndex(prev => prev + 1);
+              }
+            }}
+            className="group flex flex-col items-center gap-3 min-w-[140px] transition-all"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-2xl blur-2xl opacity-60 group-hover:opacity-100 animate-pulse" />
+              
+              <div className="relative h-24 w-24 rounded-2xl bg-gradient-to-br from-yellow-400/30 to-amber-500/30 backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 flex items-center justify-center transition-all duration-200 shadow-2xl group-hover:scale-110">
+                <Sparkles className="h-12 w-12 text-yellow-500" />
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-base font-bold text-yellow-600 dark:text-yellow-400">Super Connect</div>
+              <div className="text-xs text-muted-foreground">↑ or Swipe Up</div>
+            </div>
+          </button>
+
+          {/* Connect Button */}
+          <button
+            onClick={() => {
+              const current = displayProfiles[currentIndex];
+              if (current) {
+                handleConnect(current.user_id);
+                setCurrentIndex(prev => prev + 1);
+              }
+            }}
+            className="group flex flex-col items-center gap-3 min-w-[120px] transition-all"
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-green-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              
+              <div className="relative h-20 w-20 rounded-2xl bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-xl border border-border/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
+                <Heart className="h-10 w-10 text-green-500" />
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-base font-bold text-green-600 dark:text-green-400">Connect</div>
+              <div className="text-xs text-muted-foreground">→ or Swipe Right</div>
+            </div>
+          </button>
+        </div>
+
+        {/* Filter Controls */}
+        <div className="flex items-center justify-center gap-4 mt-8 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Filters:</span>
+          </div>
+          
+          <Select value={interestFilter} onValueChange={setInterestFilter}>
+            <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
+              <SelectValue placeholder="Interests ▾" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Interests</SelectItem>
+              <SelectItem value="yoga">Yoga</SelectItem>
+              <SelectItem value="nutrition">Nutrition</SelectItem>
+              <SelectItem value="biohacking">Biohacking</SelectItem>
+              <SelectItem value="running">Running</SelectItem>
+              <SelectItem value="meditation">Meditation</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select value={regionFilter} onValueChange={setRegionFilter}>
+            <SelectTrigger className="w-[160px] bg-background/60 backdrop-blur border-border/40">
+              <SelectValue placeholder="Region ▾" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Regions</SelectItem>
+              <SelectItem value="san francisco">San Francisco</SelectItem>
+              <SelectItem value="los angeles">Los Angeles</SelectItem>
+              <SelectItem value="new york">New York</SelectItem>
+              <SelectItem value="austin">Austin</SelectItem>
+              <SelectItem value="seattle">Seattle</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          {(interestFilter !== "all" || regionFilter !== "all") && (
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => {
+                setInterestFilter("all");
+                setRegionFilter("all");
+                setPillarFilter("all");
+              }}
+            >
+              Clear Filters
+            </Button>
+          )}
+        </div>
+
+        {/* Keyboard Hint */}
+        <p className="text-center text-sm text-muted-foreground mt-6">
+          💡 <span className="font-medium">Keyboard shortcuts:</span> ← Pass • → Connect • ↑ Super Connect
         </p>
-        
-        {/* Progress Bar with Count */}
-        <div className="max-w-md mx-auto space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Today's Discovery</span>
-            <span className="font-semibold text-foreground">{viewedCount}/{totalCount}</span>
-          </div>
-          <div className="w-full h-2.5 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
-            <div 
-              className="h-full bg-gradient-to-r from-accent via-accent to-accent/80 transition-all duration-500 ease-out rounded-full"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
       </div>
-
-      {/* Card Stack */}
-      <div className="max-w-md mx-auto">
-        <ProfileCardStack
-          profiles={displayProfiles}
-          onConnect={handleConnect}
-          onPass={handlePass}
-          onSuperConnect={handleSuperConnect}
-          onProfileTap={handleProfileTap}
-        />
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex items-center justify-center gap-6 mt-8">
-        {/* Pass Button */}
-        <button
-          onClick={() => {
-            const current = displayProfiles[currentIndex];
-            if (current) {
-              handlePass(current.user_id);
-              setCurrentIndex(prev => prev + 1);
-            }
-          }}
-          className="group relative"
-        >
-          <div className="flex flex-col items-center gap-2">
-            <div className="h-16 w-16 rounded-full bg-muted hover:bg-red-500/20 border-2 border-border hover:border-red-500/50 flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-red-500/20 hover:scale-110">
-              <X className="h-7 w-7 text-muted-foreground group-hover:text-red-500 transition-colors" />
-            </div>
-            <span className="text-xs font-semibold text-muted-foreground group-hover:text-red-500 transition-colors">
-              Pass
-            </span>
-          </div>
-        </button>
-
-        {/* Super Connect Button */}
-        <button
-          onClick={() => {
-            const current = displayProfiles[currentIndex];
-            if (current) {
-              handleSuperConnect(current.user_id);
-              setCurrentIndex(prev => prev + 1);
-            }
-          }}
-          className="group relative"
-        >
-          <div className="flex flex-col items-center gap-2">
-            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-yellow-400/20 to-amber-500/20 hover:from-yellow-400/40 hover:to-amber-500/40 border-2 border-yellow-500/40 hover:border-yellow-500/60 flex items-center justify-center transition-all duration-200 shadow-xl hover:shadow-yellow-500/30 hover:scale-110">
-              <Sparkles className="h-9 w-9 text-yellow-500 group-hover:text-yellow-400 transition-colors" />
-            </div>
-            <span className="text-xs font-bold text-yellow-600 dark:text-yellow-500 group-hover:text-yellow-500 dark:group-hover:text-yellow-400 transition-colors">
-              Super
-            </span>
-          </div>
-        </button>
-
-        {/* Connect Button */}
-        <button
-          onClick={() => {
-            const current = displayProfiles[currentIndex];
-            if (current) {
-              handleConnect(current.user_id);
-              setCurrentIndex(prev => prev + 1);
-            }
-          }}
-          className="group relative"
-        >
-          <div className="flex flex-col items-center gap-2">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-br from-green-400/20 to-emerald-500/20 hover:from-green-400/40 hover:to-emerald-500/40 border-2 border-green-500/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-green-500/30 hover:scale-110">
-              <Heart className="h-7 w-7 text-green-500 group-hover:text-green-400 transition-colors" />
-            </div>
-            <span className="text-xs font-semibold text-green-600 dark:text-green-500 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors">
-              Connect
-            </span>
-          </div>
-        </button>
-      </div>
-
-      {/* Swipe Instructions */}
-      <p className="text-center text-sm text-muted-foreground mt-4">
-        💡 <span className="font-medium">Swipe or tap</span> • Left to pass • Right to connect • Up for super
-      </p>
     </div>
   );
 }
