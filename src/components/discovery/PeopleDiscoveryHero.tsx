@@ -315,23 +315,18 @@ export function PeopleDiscoveryHero() {
   }
 
   return (
-    <div className="w-full h-[100vh] flex flex-col">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#ffe8f0] via-[#f2f6ff] to-[#e0f7f4] dark:from-slate-950 dark:via-purple-950/20 dark:to-teal-950/20 animate-gradient-x" 
-           style={{ backgroundSize: '200% 200%' }} 
-      />
-
-      <div className="max-w-7xl mx-auto px-4 w-full flex flex-col h-full">
-        {/* Hero Header - 12vh */}
-        <div className="text-center space-y-2 h-[12vh] flex flex-col justify-center shrink-0">
+    <section className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#ffe8f0] via-[#f2f6ff] to-[#e0f7f4] dark:from-card dark:via-background dark:to-card py-6">
+      <div className="max-w-7xl mx-auto px-4 w-full flex flex-col items-center">
+        {/* Hero Header */}
+        <div className="text-center space-y-1 mb-3">
           <div className="flex items-center justify-center gap-2">
-            <span className="text-3xl inline-block transition-transform duration-300 hover:animate-[wave_0.6s_ease-in-out]">👋</span>
-            <h2 className="text-3xl font-bold text-foreground">
+            <span className="text-2xl inline-block transition-transform duration-300 hover:animate-[wave_0.6s_ease-in-out]">👋</span>
+            <h2 className="text-2xl font-bold text-foreground">
               Meet Vitanians
             </h2>
           </div>
           <div className="flex items-center justify-center gap-3">
-            <p className="text-base text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
+            <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
               You have{" "}
               <span className="text-xl font-bold">
                 {totalCount - viewedCount}
@@ -339,17 +334,17 @@ export function PeopleDiscoveryHero() {
               <span className="font-semibold"> new matches</span> today
             </p>
             <Button variant="ghost" size="xs" onClick={() => refetch()}>
-              <RefreshCw className="h-3.5 w-3.5" />
+              <RefreshCw className="h-3 w-3" />
             </Button>
           </div>
           
           {/* Progress Bar - compact */}
-          <div className="max-w-xl mx-auto w-full">
-            <div className="flex items-center justify-between text-xs mb-1">
-              <span className="text-muted-foreground font-medium">Today's Discovery</span>
-              <span className="font-bold text-foreground">{viewedCount}/{totalCount}</span>
+          <div className="max-w-md mx-auto w-full">
+            <div className="flex items-center justify-between text-xs mb-0.5">
+              <span className="text-muted-foreground text-[10px] font-medium">Today's Discovery</span>
+              <span className="font-bold text-foreground text-[10px]">{viewedCount}/{totalCount}</span>
             </div>
-            <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
+            <div className="w-full h-1.5 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
               <div 
                 className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
                 style={{ width: `${progress}%` }}
@@ -358,9 +353,9 @@ export function PeopleDiscoveryHero() {
           </div>
         </div>
 
-        {/* Card Area - 55vh + Insight Chip - 6vh */}
-        <div className="h-[61vh] flex flex-col shrink-0">
-          <div className="hidden lg:block flex-1">
+        {/* Card Area + Insight Chip - ≤420px container */}
+        <div className="flex flex-col items-center justify-center max-h-[420px] mb-3">
+          <div className="hidden lg:block">
             <BookFlipView
               profiles={displayProfiles}
               onConnect={handleConnect}
@@ -370,7 +365,7 @@ export function PeopleDiscoveryHero() {
             />
           </div>
           
-          <div className="lg:hidden max-w-md mx-auto flex-1">
+          <div className="lg:hidden max-w-md mx-auto">
             <ProfileCardStack
               profiles={displayProfiles}
               onConnect={handleConnect}
@@ -379,10 +374,18 @@ export function PeopleDiscoveryHero() {
               onProfileTap={handleProfileTap}
             />
           </div>
+          
+          {/* Insight Chip - directly below card */}
+          {displayProfiles[0]?.match_reasons?.[0] && (
+            <p className="mt-2 text-sm text-white/80 italic bg-emerald-100/10 px-4 py-1.5 rounded-full backdrop-blur-md flex items-center justify-center gap-1.5">
+              <span>✨</span>
+              {displayProfiles[0].match_reasons[0]}
+            </p>
+          )}
         </div>
 
-        {/* Action Buttons - 12vh */}
-        <div className="flex items-center justify-center gap-10 h-[12vh] shrink-0">
+        {/* Action Buttons - directly below chip */}
+        <div className="flex items-center justify-center gap-8 mb-2">
           {/* Pass Button */}
           <button
             onClick={() => {
@@ -401,7 +404,7 @@ export function PeopleDiscoveryHero() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-sm font-bold text-foreground group-hover:text-red-500 transition-colors">Pass</div>
+              <div className="text-xs font-bold text-foreground group-hover:text-red-500 transition-colors">Pass (←)</div>
             </div>
           </button>
 
@@ -423,7 +426,7 @@ export function PeopleDiscoveryHero() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-sm font-bold text-yellow-600 dark:text-yellow-400">Super</div>
+              <div className="text-xs font-bold text-yellow-600 dark:text-yellow-400">Super (↑)</div>
             </div>
           </button>
 
@@ -445,23 +448,20 @@ export function PeopleDiscoveryHero() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-sm font-bold text-green-600 dark:text-green-400">Connect</div>
+              <div className="text-xs font-bold text-green-600 dark:text-green-400">Connect (→)</div>
             </div>
           </button>
         </div>
 
-        {/* Filters + Shortcuts - 15vh */}
-        <div className="h-[15vh] flex flex-col justify-center items-center gap-3 shrink-0 border-t border-white/10 pt-3">
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <div className="flex items-center gap-2">
-              <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-xs font-medium text-muted-foreground">Filters:</span>
-            </div>
-            
-            <Select value={interestFilter} onValueChange={setInterestFilter}>
-              <SelectTrigger className="w-[150px] h-8 bg-background/60 backdrop-blur border-border/40 text-xs">
-                <SelectValue placeholder="Interests ▾" />
-              </SelectTrigger>
+        {/* Filters + Shortcuts - single line below buttons */}
+        <div className="flex flex-col justify-start items-center border-t border-white/10 pt-2">
+          <div className="flex items-center justify-center gap-3 flex-wrap text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-muted-foreground">Interested in:</span>
+              <Select value={interestFilter} onValueChange={setInterestFilter}>
+                <SelectTrigger className="w-[120px] h-7 bg-muted/20 border border-border/20 text-[10px]">
+                  <SelectValue placeholder="All Wellness" />
+                </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Interests</SelectItem>
                 <SelectItem value="yoga">Yoga</SelectItem>
@@ -471,11 +471,14 @@ export function PeopleDiscoveryHero() {
                 <SelectItem value="meditation">Meditation</SelectItem>
               </SelectContent>
             </Select>
+            </div>
             
-            <Select value={regionFilter} onValueChange={setRegionFilter}>
-              <SelectTrigger className="w-[150px] h-8 bg-background/60 backdrop-blur border-border/40 text-xs">
-                <SelectValue placeholder="Region ▾" />
-              </SelectTrigger>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] text-muted-foreground">Distance:</span>
+              <Select value={regionFilter} onValueChange={setRegionFilter}>
+                <SelectTrigger className="w-[100px] h-7 bg-muted/20 border border-border/20 text-[10px]">
+                  <SelectValue placeholder="Any" />
+                </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Regions</SelectItem>
                 <SelectItem value="san francisco">San Francisco</SelectItem>
@@ -485,29 +488,12 @@ export function PeopleDiscoveryHero() {
                 <SelectItem value="seattle">Seattle</SelectItem>
               </SelectContent>
             </Select>
+            </div>
             
-            {(interestFilter !== "all" || regionFilter !== "all") && (
-              <Button 
-                variant="ghost" 
-                size="xs"
-                onClick={() => {
-                  setInterestFilter("all");
-                  setRegionFilter("all");
-                  setPillarFilter("all");
-                }}
-                className="text-xs"
-              >
-                Clear Filters
-              </Button>
-            )}
+            <span className="text-[10px] opacity-70 text-muted-foreground">Use ← → ↑ keys to navigate</span>
           </div>
-
-          {/* Keyboard Hint */}
-          <p className="text-xs text-muted-foreground">
-            💡 <span className="font-medium">Shortcuts:</span> ← Pass • → Connect • ↑ Super
-          </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
