@@ -209,62 +209,72 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
               {profile.name}
             </h1>
             
-            {/* Glass Orb VITANA Index - Premium Static Style */}
-            {profile.vitanaIndex && (
-              <div className="relative flex items-center">
-                {/* Single static ambient glow */}
-                <div className={`absolute inset-0 w-20 h-20 rounded-full bg-gradient-to-br ${themeConfig.vitanaOrb.glow} blur-2xl opacity-40 transition-all duration-300`}></div>
-                
-                {/* Glass orb with premium depth */}
-                <div className={`relative w-[68px] h-[68px] rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.12),0_2px_10px_rgba(0,0,0,0.06),0_0_30px_hsl(var(--sys-vitana-accent)/0.2),inset_0_2px_8px_rgba(255,255,255,0.25),inset_0_-2px_6px_rgba(0,0,0,0.08)] border-[3px] flex flex-col items-center justify-center transition-transform duration-150 ease-out hover:scale-[1.02] cursor-pointer group focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none`}
-                     style={{
-                       background: themeConfig.vitanaOrb.background,
-                     }}
-                     tabIndex={0}
-                     role="button"
-                     aria-label={`Vitana Index: ${profile.vitanaIndex}`}
-                     onClick={() => window.location.href = '/health/my-health-tracker'}
-                     onKeyDown={(e) => {
-                       if (e.key === 'Enter' || e.key === ' ') {
-                         e.preventDefault();
-                         window.location.href = '/health/my-health-tracker';
-                       }
-                     }}
-                >
-                  {/* Inner glass reflection */}
-                  <div className="absolute inset-[3px] rounded-full bg-gradient-to-br from-white/20 via-transparent to-transparent pointer-events-none" />
-                  
-                  <div className="flex flex-col items-center justify-center text-center relative z-10">
-                    <div className={`text-2xl font-extrabold leading-none ${themeConfig.vitanaOrb.text} drop-shadow-[0_3px_10px_rgba(0,0,0,0.4)] transition-colors duration-300`}>{profile.vitanaIndex}</div>
-                    <div className={`text-[8px] font-bold leading-tight mt-1 ${themeConfig.vitanaOrb.text}/98 tracking-[0.08em] uppercase transition-colors duration-300`}>
+            {/* Vitana Index - SVG Donut Ring + Premium Chip */}
+            {profile.vitanaIndex && profile.vitanaPercentile && (
+              <div 
+                className="relative inline-flex cursor-pointer transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:outline-none rounded-full"
+                style={{ width: 72, height: 72 }}
+                tabIndex={0}
+                role="button"
+                aria-label={`Vitana Index ${profile.vitanaIndex}, Top ${100 - profile.vitanaPercentile}%`}
+                onClick={() => window.location.href = '/health/my-health-tracker'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    window.location.href = '/health/my-health-tracker';
+                  }
+                }}
+              >
+                {/* SVG Donut Ring */}
+                <svg width={72} height={72} role="img" aria-hidden="true">
+                  {/* Track */}
+                  <circle
+                    cx={36} cy={36} r={30}
+                    className="stroke-[hsl(var(--border))]"
+                    fill="none"
+                    strokeWidth={8}
+                    opacity={0.5}
+                  />
+                  {/* Progress Arc */}
+                  <circle
+                    cx={36} cy={36} r={30}
+                    className="stroke-[hsl(var(--accent))]"
+                    fill="none"
+                    strokeWidth={8}
+                    strokeLinecap="round"
+                    style={{
+                      strokeDasharray: `${((100 - profile.vitanaPercentile) / 100) * 188.5} ${188.5}`,
+                      transform: 'rotate(-90deg)',
+                      transformOrigin: '36px 36px',
+                    }}
+                  />
+                </svg>
+
+                {/* Center Content */}
+                <div className="absolute inset-0 grid place-items-center">
+                  <div className="flex flex-col items-center">
+                    <div className="text-[18px] font-bold leading-none text-foreground">
+                      {profile.vitanaIndex}
+                    </div>
+                    <div className="text-[10.5px] text-muted-foreground mt-0.5 uppercase tracking-wide">
                       Vitana
                     </div>
                   </div>
-                  
-                  {/* Rotating gradient border effect */}
-                  <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                       style={{
-                         background: 'conic-gradient(from 0deg, hsl(199,36%,48%), hsl(239,36%,67%), hsl(219,36%,58%), hsl(199,36%,48%))',
-                         mask: 'radial-gradient(circle, transparent 95%, black 98%)',
-                         WebkitMask: 'radial-gradient(circle, transparent 95%, black 98%)',
-                       }} />
                 </div>
-                
-                {/* Metallic gradient capsule for Top % badge */}
-                {profile.vitanaPercentile && (
-                  <div className="absolute -top-1.5 -right-2 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
-                    <div className="relative group/badge">
-                      {/* Badge glow */}
-                      <div className={`absolute inset-0 bg-gradient-to-r ${themeConfig.badge.glow} rounded-full blur-md opacity-60 group-hover/badge:opacity-80 transition-all duration-300`} />
-                      {/* Metallic badge */}
-                      <div className={`relative h-5 px-2.5 rounded-full ${themeConfig.badge.background} shadow-[0_4px_16px_rgba(251,191,36,0.5),inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-1px_2px_rgba(0,0,0,0.2)] flex items-center justify-center border border-amber-200/50 transition-transform duration-150 ease-out hover:scale-[1.02]`}>
-                        <span className={`text-[8px] font-extrabold ${themeConfig.badge.text} leading-none tracking-[0.05em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]`}>
-                          TOP {100 - profile.vitanaPercentile}%
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+
+                {/* Outside Chip - Top Right */}
+                <div
+                  className="absolute -top-1.5 -right-1.5 z-10
+                             inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+                             text-[11.5px] font-medium
+                             bg-[color-mix(in_oklab,hsl(var(--accent))_14%,transparent)]
+                             ring-1 ring-[hsl(var(--accent))/28] text-foreground
+                             transition-transform duration-150 ease-out hover:scale-[1.02]"
+                  title={`Top ${100 - profile.vitanaPercentile}th percentile`}
+                >
+                  <span className="opacity-80">🏅</span>
+                  <span>Top {100 - profile.vitanaPercentile}%</span>
+                </div>
               </div>
             )}
           </div>
