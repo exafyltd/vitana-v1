@@ -252,9 +252,9 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                 
                 {/* Premium percentile badge */}
                 {profile.vitanaPercentile && (
-                  <div className="absolute -top-1.5 -right-2 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
+                  <div className="absolute -top-1.5 -right-3 z-20 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}>
                     <div 
-                      className="relative h-6 px-3 py-0.5 rounded-full
+                      className="relative h-5 px-2.5 py-0.5 rounded-full
                                  bg-[color-mix(in_oklab,hsl(var(--accent))_20%,hsl(var(--background)))]
                                  ring-1 ring-[hsl(var(--accent))/40]
                                  shadow-[0_2px_8px_rgba(0,0,0,0.15)]
@@ -264,7 +264,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                       role="status"
                       aria-label={`Top ${100 - profile.vitanaPercentile} percentile`}
                     >
-                      <span className="text-[11px] font-bold text-foreground leading-none tracking-wide">
+                      <span className="text-[9px] font-bold text-foreground leading-none tracking-wide">
                         TOP {100 - profile.vitanaPercentile}%
                       </span>
                     </div>
