@@ -126,7 +126,7 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="absolute w-full cursor-pointer will-change-transform"
     >
-      <div className="relative overflow-hidden rounded-3xl shadow-2xl h-[600px]">
+      <div className="relative overflow-visible rounded-3xl shadow-2xl h-[600px]">
         {/* Full Background Photo - face centered at 25% */}
         <div 
           className="absolute inset-0 bg-cover"
@@ -141,10 +141,10 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-transparent h-[20%]" />
         
         {/* Gradient Overlay with Vitana tier color - starts from 60% height downward */}
-        <div className={`absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-b ${getVitanaGradient()}`} />
+        <div className={`absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-b ${getVitanaGradient()} z-[5]`} />
         
         {/* Vignette for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent z-[6]" />
 
         {/* Top-left Match Badge with Glow - repositioned to avoid face */}
         <div className="absolute top-6 left-6 z-30">
@@ -160,8 +160,8 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
         </div>
 
         {/* Glass Info Panel - Lowered by ~40px for better visual balance */}
-        <div className="absolute inset-x-0 backdrop-blur-2xl bg-background/35 rounded-t-3xl border-t border-border/30 p-6 flex flex-col" 
-             style={{ bottom: '0px', height: 'calc(60% - 40px)', minHeight: '280px' }}>
+        <div className="absolute inset-x-0 backdrop-blur-2xl bg-background/35 rounded-t-3xl border-t border-border/30 p-6 pb-10 flex flex-col z-[10]" 
+             style={{ bottom: '0px', height: 'calc(60% - 40px)', minHeight: '320px' }}>
           
           {/* Name & Age */}
           <div className="flex items-baseline justify-start gap-2 mb-2">
@@ -243,8 +243,8 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
             </div>
           )}
 
-          {/* Match Reason - Pushed to Bottom */}
-          <div className="mt-auto pt-4">
+          {/* Match Reason - Pushed to Bottom with extra padding */}
+          <div className="mt-auto pt-4 pb-2">
             <div className="bg-gradient-to-r from-accent/20 via-accent/10 to-accent/20 rounded-xl p-3 border border-accent/30 backdrop-blur">
               <p className="text-sm text-center font-semibold text-foreground flex items-center justify-center gap-2">
                 <span className="text-base">✨</span>
