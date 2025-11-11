@@ -312,7 +312,11 @@ export function PeopleDiscoveryHero() {
             </h2>
           </div>
           <p className="text-lg text-muted-foreground">
-            You have <span className="font-semibold text-accent">{totalCount - viewedCount} new matches</span> today
+            You have{" "}
+            <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+              {totalCount - viewedCount}
+            </span>
+            <span className="font-semibold text-foreground"> new matches</span> today
             <Button variant="ghost" size="sm" onClick={() => refetch()} className="ml-2">
               <RefreshCw className="h-4 w-4" />
             </Button>
