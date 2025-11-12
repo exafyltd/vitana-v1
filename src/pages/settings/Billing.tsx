@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { settingsNavigation } from "@/config/navigation";
-import { CreditCard, Calendar, Download, Star, Check, Trophy, Gift, Target, Award, Coins, Sparkles, Plus } from "lucide-react";
+import { CreditCard, Calendar, Download, Eye, Star, Check, Trophy, Gift, Target, Award, Coins, Sparkles, Plus } from "lucide-react";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Progress } from "@/components/ui/progress";
 import { BillingActionPopup } from "@/components/BillingActionPopup";
@@ -224,11 +224,16 @@ export default function Billing() {
                 <p className="font-medium">Premium Subscription</p>
                 <p className="text-sm text-muted-foreground">Dec 15, 2024</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
-                <Button variant="ghost" size="sm">
-                  <Download className="w-4 h-4" />
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="sm" title="View Invoice">
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" title="Download Invoice">
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -237,11 +242,16 @@ export default function Billing() {
                 <p className="font-medium">Premium Subscription</p>
                 <p className="text-sm text-muted-foreground">Nov 15, 2024</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
-                <Button variant="ghost" size="sm">
-                  <Download className="w-4 h-4" />
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="sm" title="View Invoice">
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" title="Download Invoice">
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -250,11 +260,16 @@ export default function Billing() {
                 <p className="font-medium">Premium Subscription</p>
                 <p className="text-sm text-muted-foreground">Oct 15, 2024</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
-                <Button variant="ghost" size="sm">
-                  <Download className="w-4 h-4" />
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button variant="ghost" size="sm" title="View Invoice">
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" title="Download Invoice">
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
