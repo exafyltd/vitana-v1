@@ -346,7 +346,7 @@ export function PeopleDiscoveryHero() {
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground font-medium">Today's Discovery</span>
-                <span className="font-bold text-foreground opacity-70">{viewedCount}/{totalCount} viewed</span>
+                <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
               </div>
               <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
                 <div 
@@ -380,7 +380,7 @@ export function PeopleDiscoveryHero() {
         </div>
 
         {/* Large Expressive Action Buttons */}
-        <div className="flex items-center justify-center gap-10 mt-2">
+        <div className="flex items-center justify-center gap-10 mt-4">
           {/* Pass Button */}
           <button
             onClick={() => {
@@ -457,7 +457,7 @@ export function PeopleDiscoveryHero() {
         </div>
 
         {/* Filter Controls & Keyboard Shortcuts */}
-        <div className="border-t border-white/10 pt-2 mt-2">
+        <div className="border-t border-white/10 pt-3 mt-3">
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />

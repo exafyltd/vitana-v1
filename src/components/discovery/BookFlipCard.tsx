@@ -114,7 +114,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
       onClick={onTap}
       whileHover={{ 
         scale: 1.02,
-        transition: { duration: 0.25, ease: "easeOut" }
+        rotateY: 2,
+        transition: { duration: 0.15 }
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40 shadow-emerald-400/20"

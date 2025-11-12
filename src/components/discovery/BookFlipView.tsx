@@ -80,16 +80,15 @@ export function BookFlipView({
       {/* Roulette Deck Area */}
       <div className="h-[420px] max-w-[1520px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
         {/* Book Spread Layout */}
-        <div className="flex items-center justify-center gap-6 xl:gap-8 relative">
+        <div className="flex items-center justify-center gap-8 xl:gap-10 relative">
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
-              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-40 blur-[2px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
-              initial={{ opacity: 0, y: 20, scale: 0.68 }}
-              animate={{ opacity: 0.40, y: 20, scale: 0.68 }}
+              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
-              style={{ filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.2))' }}
             >
               <BookFlipCard
                 profile={peekLeftProfile}
@@ -126,12 +125,11 @@ export function BookFlipView({
           {/* Peek Right */}
           {peekRightProfile && (
             <motion.div 
-              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-40 blur-[2px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
-              initial={{ opacity: 0, y: 20, scale: 0.68 }}
-              animate={{ opacity: 0.40, y: 20, scale: 0.68 }}
+              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => setCurrentIndex(prev => Math.min(profiles.length - 1, prev + 1))}
-              style={{ filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.2))' }}
             >
               <BookFlipCard
                 profile={peekRightProfile}
@@ -147,7 +145,7 @@ export function BookFlipView({
 
       {/* Match Reason Chip Below */}
       <div className="mt-2 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-200/25 backdrop-blur-md text-sm italic text-emerald-900/90 dark:text-white/90">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100/10 backdrop-blur-md text-sm italic text-foreground">
           <span>✨</span>
           {currentProfile.match_reasons[0] || 'Great wellness alignment!'}
         </div>
