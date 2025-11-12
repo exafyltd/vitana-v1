@@ -80,13 +80,13 @@ export function BookFlipView({
   return (
     <div className="relative">
       {/* Roulette Deck Area */}
-      <div className="h-[420px] max-w-[1520px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
+      <div className="h-[340px] max-w-[1520px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
         {/* Book Spread Layout */}
         <div className="flex items-center justify-center gap-4 xl:gap-6 relative">
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
-              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              className="hidden lg:block xl:w-[290px] xl:h-[170px] lg:w-[260px] lg:h-[155px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
@@ -103,7 +103,7 @@ export function BookFlipView({
           )}
 
           {/* Current Page */}
-          <div className="xl:w-[720px] lg:w-[640px] md:w-[560px] w-[92vw] z-20">
+          <div className="xl:w-[580px] lg:w-[520px] md:w-[450px] w-[92vw] z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentProfile.user_id}
@@ -127,7 +127,7 @@ export function BookFlipView({
           {/* Peek Right */}
           {peekRightProfile && (
             <motion.div 
-              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              className="hidden lg:block xl:w-[290px] xl:h-[170px] lg:w-[260px] lg:h-[155px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
@@ -146,8 +146,8 @@ export function BookFlipView({
       </div>
 
       {/* Match Reason Chip Below */}
-      <div className="mt-2 text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100/10 backdrop-blur-md text-sm italic text-foreground">
+      <div className="mt-1.5 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/10 backdrop-blur-md text-xs italic text-foreground">
           <span>✨</span>
           {currentProfile.match_reasons[0] || 'Great wellness alignment!'}
         </div>

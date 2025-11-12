@@ -321,23 +321,23 @@ export function PeopleDiscoveryHero() {
            style={{ backgroundSize: '200% 200%' }} 
       />
 
-      <div className="max-w-7xl mx-auto px-4 py-4 space-y-4">
+      <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
         {/* Hero Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-1.5">
           <div className="flex items-center justify-center gap-2">
-            <span className="text-4xl inline-block animate-[wave_0.6s_ease-in-out_infinite]">👋</span>
-            <h2 className="text-4xl font-bold text-foreground">
+            <span className="text-3xl inline-block animate-[wave_0.6s_ease-in-out_infinite]">👋</span>
+            <h2 className="text-3xl font-bold text-foreground">
               Meet Vitanaland Citizens
             </h2>
           </div>
-          <p className="text-lg text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
+          <p className="text-base text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
             You have{" "}
-            <span className="text-2xl font-bold">
+            <span className="text-xl font-bold">
               {totalCount - viewedCount}
             </span>
             <span className="font-semibold"> new matches</span> today
             <Button variant="ghost" size="sm" onClick={() => refetch()} className="ml-2">
-              <RefreshCw className="h-4 w-4" />
+              <RefreshCw className="h-3.5 w-3.5" />
             </Button>
           </p>
           
@@ -382,7 +382,7 @@ export function PeopleDiscoveryHero() {
         </div>
 
         {/* Large Expressive Action Buttons */}
-        <div className="flex items-center justify-center gap-10 mt-4">
+        <div className="flex items-center justify-center gap-8 mt-2">
           {/* Pass Button */}
           <button
             onClick={() => {
@@ -399,8 +399,8 @@ export function PeopleDiscoveryHero() {
               <div className="absolute inset-0 bg-red-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               
               {/* Button body */}
-              <div className="relative h-16 w-16 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/40 hover:border-red-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
-                <X className="h-8 w-8 text-muted-foreground group-hover:text-red-500 transition-colors" />
+              <div className="relative h-14 w-14 rounded-2xl bg-background/60 backdrop-blur-xl border border-border/40 hover:border-red-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
+                <X className="h-7 w-7 text-muted-foreground group-hover:text-red-500 transition-colors" />
               </div>
             </div>
             
@@ -423,8 +423,8 @@ export function PeopleDiscoveryHero() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-2xl blur-2xl opacity-60 group-hover:opacity-100" />
               
-              <div className="relative h-18 w-18 rounded-2xl bg-gradient-to-br from-yellow-400/30 to-amber-500/30 backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 flex items-center justify-center transition-all duration-200 shadow-2xl group-hover:scale-110">
-                <Sparkles className="h-10 w-10 text-yellow-500" />
+              <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-yellow-400/30 to-amber-500/30 backdrop-blur-xl border-2 border-yellow-500/50 hover:border-yellow-400 flex items-center justify-center transition-all duration-200 shadow-2xl group-hover:scale-110">
+                <Sparkles className="h-8 w-8 text-yellow-500" />
               </div>
             </div>
             
@@ -447,8 +447,8 @@ export function PeopleDiscoveryHero() {
             <div className="relative">
               <div className="absolute inset-0 bg-green-500/30 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               
-              <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-xl border border-border/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
-                <Heart className="h-8 w-8 text-green-500" />
+              <div className="relative h-14 w-14 rounded-2xl bg-gradient-to-br from-green-400/30 to-emerald-500/30 backdrop-blur-xl border border-border/40 hover:border-green-500/60 flex items-center justify-center transition-all duration-200 shadow-xl group-hover:scale-110">
+                <Heart className="h-7 w-7 text-green-500" />
               </div>
             </div>
             
@@ -459,11 +459,11 @@ export function PeopleDiscoveryHero() {
         </div>
 
         {/* Filter Controls & Keyboard Shortcuts */}
-        <div className="border-t border-white/10 pt-3 mt-3">
+        <div className="border-t border-white/10 pt-2 mt-1.5">
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">Filters:</span>
+              <Filter className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="text-[10px] font-medium text-muted-foreground">Filters:</span>
             </div>
             
             <Select value={interestFilter} onValueChange={setInterestFilter}>
