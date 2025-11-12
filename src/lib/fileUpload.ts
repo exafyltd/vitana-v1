@@ -34,9 +34,16 @@ export interface FileValidationResult {
  */
 export async function uploadChatAttachment(
   file: File,
-  onProgress?: (progress: UploadProgress) => void
+  onProgress?: (progress: UploadProgress) => void,
+  threadId?: string
 ): Promise<FileUploadResult> {
   try {
+    // Get authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      throw new Error('User must be authenticated to upload files');
+    }
+
     // Validate file size (50MB limit)
     const maxSize = 50 * 1024 * 1024; // 50MB
     if (file.size > maxSize) {
@@ -48,7 +55,12 @@ export async function uploadChatAttachment(
     const randomId = Math.random().toString(36).substring(2);
     const fileExtension = file.name.split('.').pop() || '';
     const fileName = `${timestamp}_${randomId}.${fileExtension}`;
-    const filePath = `attachments/${fileName}`;
+    
+    // Use provided threadId or generate a temporary one for draft messages
+    const actualThreadId = threadId || 'draft';
+    
+    // Construct path: {user_id}/{thread_id}/{filename}
+    const filePath = `${user.id}/${actualThreadId}/${fileName}`;
 
     // Upload file to Supabase storage
     const { data, error } = await supabase.storage

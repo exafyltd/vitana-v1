@@ -271,8 +271,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
     const uploadId = Date.now().toString();
     
     try {
-      const currentThreadId = threadId || 'current-thread';
-      
       const attachmentResult = await uploadChatAttachment(
         file,
         (progress) => {
@@ -280,7 +278,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
             ...prev,
             [uploadId]: progress
           }));
-        }
+        },
+        threadId
       );
 
       // Convert FileUploadResult to AttachmentData format
