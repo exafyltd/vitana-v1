@@ -346,7 +346,7 @@ export function PeopleDiscoveryHero() {
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground font-medium">Today's Discovery</span>
-                <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
+                <span className="font-bold text-emerald-900/60 dark:text-emerald-100/60">{viewedCount}/{totalCount} viewed</span>
               </div>
               <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
                 <div 
