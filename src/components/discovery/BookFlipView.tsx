@@ -107,12 +107,12 @@ export function BookFlipView({
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentProfile.user_id}
-                initial={{ opacity: 0.45, x: 420, scale: 0.7 }}
+                initial={{ opacity: 0.65, x: 320, scale: 0.88 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0.45, x: -420, scale: 0.7 }}
+                exit={{ opacity: 0.65, x: -320, scale: 0.88 }}
                 transition={{ 
-                  duration: 0.45,
-                  ease: [0.65, 0, 0.35, 1]
+                  duration: 0.65,
+                  ease: [0.16, 1, 0.3, 1]
                 }}
               >
                 <BookFlipCard
