@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFront";
+import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
+import { ProfileStats } from "@/components/profile/shared/ProfileStats";
 import { useProfileTheme } from "@/hooks/useProfileTheme";
 import { getVitanaIndexPercentage } from "@/lib/vitanaIndex";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
@@ -20,6 +22,12 @@ interface DatabaseProfile {
   bio: string;
   location: string;
   linkedin_headline: string;
+  linkedin_url: string | null;
+  instagram_url: string | null;
+  facebook_url: string | null;
+  x_url: string | null;
+  youtube_url: string | null;
+  tiktok_url: string | null;
 }
 
 export function ProfilePreviewDialog() {
@@ -81,6 +89,12 @@ export function ProfilePreviewDialog() {
     bio: dbProfile.bio || undefined,
     location: dbProfile.location || undefined,
     linkedin_headline: dbProfile.linkedin_headline || undefined,
+    linkedin_url: dbProfile.linkedin_url || undefined,
+    instagram_url: dbProfile.instagram_url || undefined,
+    facebook_url: dbProfile.facebook_url || undefined,
+    x_url: dbProfile.x_url || undefined,
+    youtube_url: dbProfile.youtube_url || undefined,
+    tiktok_url: dbProfile.tiktok_url || undefined,
     stats,
     vitanaIndex: (() => {
       const userIdHash = dbProfile.user_id.split('-')[0];
@@ -111,7 +125,7 @@ export function ProfilePreviewDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={closePreview}>
-      <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-6xl p-0 gap-0 overflow-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center h-[500px]">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -125,26 +139,42 @@ export function ProfilePreviewDialog() {
           </div>
         ) : (
           <>
-            {/* Profile ID Card - matches actual profile design */}
-            <div className="scale-[0.92] origin-top">
-              <ProfileIdCardFront
-                profile={profile}
-                scope="public"
-                editMode={false}
-                themeConfig={themeConfig}
-                cycleTheme={() => {}}
-              />
+            {/* Two ID Cards Layout - Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+              {/* Front ID Card - Left */}
+              <div className="w-full">
+                <ProfileIdCardFront
+                  profile={profile}
+                  scope="public"
+                  editMode={false}
+                  themeConfig={themeConfig}
+                  cycleTheme={() => {}}
+                />
+              </div>
+              
+              {/* Back ID Card - Right */}
+              <div className="w-full">
+                <ProfileIdCardBack 
+                  profile={profile} 
+                  themeConfig={themeConfig}
+                />
+              </div>
+            </div>
+
+            {/* Stats Row */}
+            <div className="px-6 pb-4">
+              <ProfileStats profile={profile} />
             </div>
 
             {/* View Full Profile Button */}
-            <div className="px-8 pb-6 pt-2">
+            <div className="px-6 pb-6">
               <Button
                 onClick={handleViewFullProfile}
                 variant="default"
-                className="w-full gap-2 h-11 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+                className="w-full gap-2 h-12 font-semibold rounded-full shadow-lg hover:shadow-xl transition-all text-base"
                 size="lg"
               >
-                <ExternalLink className="h-4 w-4" />
+                <ExternalLink className="h-5 w-5" />
                 View Full Profile
               </Button>
             </div>
