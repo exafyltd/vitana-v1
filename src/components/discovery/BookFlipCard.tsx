@@ -178,14 +178,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-xs text-white/90 mb-0.5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-sm text-white/95 font-medium mb-0.5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.professional_headline}
               </p>
             )}
 
             {/* Story Cue */}
             {profile.story_cue && (
-              <p className="text-[10px] text-white/70 italic mb-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-xs text-white/85 italic mb-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 "{profile.story_cue.slice(0, 45)}{profile.story_cue.length > 45 ? '...' : ''}"
               </p>
             )}
@@ -194,14 +194,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             <div className="flex items-center gap-2 mb-1.5 text-white/80">
               {profile.location && (
                 <div className="flex items-center gap-1">
-                  <MapPin className="h-3.5 w-3.5" />
-                  <span className="text-xs font-medium" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{profile.location}</span>
+                  <MapPin className="h-4 w-4" />
+                  <span className="text-sm font-medium" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>{profile.location}</span>
                 </div>
               )}
               {profile.activity_time_preference && (
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 backdrop-blur">
                   <span className="text-sm">{getActivityIcon(profile.activity_time_preference)}</span>
-                  <span className="text-[10px] font-medium capitalize" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <span className="text-xs font-medium capitalize" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     {profile.activity_time_preference}
                   </span>
                 </div>
