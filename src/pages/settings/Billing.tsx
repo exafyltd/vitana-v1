@@ -14,13 +14,64 @@ import { CreditCard, Calendar, Download, Eye, Star, Check, Trophy, Gift, Target,
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Progress } from "@/components/ui/progress";
 import { BillingActionPopup } from "@/components/BillingActionPopup";
+import { InvoicePreviewDialog, type InvoiceData } from "@/components/billing/InvoicePreviewDialog";
 
 export default function Billing() {
   const [searchQuery, setSearchQuery] = useState("");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<InvoiceData | null>(null);
+  const [isInvoiceDialogOpen, setIsInvoiceDialogOpen] = useState(false);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+  };
+
+  // Mock invoice data - will be replaced with real data from API
+  const invoiceDataDec: InvoiceData = {
+    id: "INV-2024-12-001",
+    date: "Dec 15, 2024",
+    amount: 19.99,
+    description: "Premium Subscription",
+    items: [
+      { description: "Premium Subscription - Monthly", quantity: 1, price: 19.99 }
+    ],
+    subtotal: 19.99,
+    tax: 0,
+    total: 19.99,
+    paymentMethod: "Card ending in 4242"
+  };
+
+  const invoiceDataNov: InvoiceData = {
+    id: "INV-2024-11-001",
+    date: "Nov 15, 2024",
+    amount: 19.99,
+    description: "Premium Subscription",
+    items: [
+      { description: "Premium Subscription - Monthly", quantity: 1, price: 19.99 }
+    ],
+    subtotal: 19.99,
+    tax: 0,
+    total: 19.99,
+    paymentMethod: "Card ending in 4242"
+  };
+
+  const invoiceDataOct: InvoiceData = {
+    id: "INV-2024-10-001",
+    date: "Oct 15, 2024",
+    amount: 19.99,
+    description: "Premium Subscription",
+    items: [
+      { description: "Premium Subscription - Monthly", quantity: 1, price: 19.99 }
+    ],
+    subtotal: 19.99,
+    tax: 0,
+    total: 19.99,
+    paymentMethod: "Card ending in 4242"
+  };
+
+  const handleViewInvoice = (invoiceData: InvoiceData) => {
+    setSelectedInvoice(invoiceData);
+    setIsInvoiceDialogOpen(true);
   };
 
   return (
@@ -227,7 +278,12 @@ export default function Billing() {
               <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="sm" title="View Invoice">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    title="View Invoice"
+                    onClick={() => handleViewInvoice(invoiceDataDec)}
+                  >
                     <Eye className="w-4 h-4" />
                   </Button>
                   <Button variant="ghost" size="sm" title="Download Invoice">
@@ -245,7 +301,12 @@ export default function Billing() {
               <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="sm" title="View Invoice">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    title="View Invoice"
+                    onClick={() => handleViewInvoice(invoiceDataNov)}
+                  >
                     <Eye className="w-4 h-4" />
                   </Button>
                   <Button variant="ghost" size="sm" title="Download Invoice">
@@ -263,7 +324,12 @@ export default function Billing() {
               <div className="flex items-center gap-3">
                 <span className="font-medium">$19.99</span>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="sm" title="View Invoice">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    title="View Invoice"
+                    onClick={() => handleViewInvoice(invoiceDataOct)}
+                  >
                     <Eye className="w-4 h-4" />
                   </Button>
                   <Button variant="ghost" size="sm" title="Download Invoice">
@@ -494,6 +560,12 @@ export default function Billing() {
       <BillingActionPopup 
         isOpen={actionPopupOpen}
         onClose={() => setActionPopupOpen(false)}
+      />
+
+      <InvoicePreviewDialog
+        open={isInvoiceDialogOpen}
+        onOpenChange={setIsInvoiceDialogOpen}
+        invoiceData={selectedInvoice}
       />
     </AppLayout>
   );
