@@ -137,6 +137,7 @@ export function AttachmentMenu({
   className,
   conversationType
 }: AttachmentMenuProps) {
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [showSendFunds, setShowSendFunds] = useState(false);
   const [showPaymentRequest, setShowPaymentRequest] = useState(false);
   const [showGlobalSendFunds, setShowGlobalSendFunds] = useState(false);
@@ -160,7 +161,7 @@ export function AttachmentMenu({
 
   console.log('💰 AttachmentMenu walletRecipient:', { recipient, walletRecipient, hasRecipientContext });
   return (
-    <Popover>
+    <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
         <Button
           type="button"
@@ -230,7 +231,10 @@ export function AttachmentMenu({
           <Button
             variant="ghost"
             className="w-full justify-start h-10 px-3"
-            onClick={onFileAttach}
+            onClick={() => {
+              setPopoverOpen(false);
+              onFileAttach();
+            }}
           >
             <FileText className="w-5 h-5 mr-3 text-purple-500" />
             <span className="text-sm">Attach File</span>
