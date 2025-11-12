@@ -151,14 +151,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         )}
         
-        {/* Gradient Overlay - only from bottom 42% → 100% */}
+        {/* Gradient Overlay - only from bottom 30% → 100% */}
         <div 
-          className={`absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t ${getVitanaGradient()} z-10`}
+          className={`absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t ${getVitanaGradient()} z-10`}
           style={{ filter: 'brightness(1.1)' }}
         />
 
         {/* Minimal dark scrim - emerald gradient provides main contrast */}
-        <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-black/3 to-transparent z-15" />
+        <div className="absolute bottom-0 inset-x-0 h-[30%] bg-gradient-to-t from-black/3 to-transparent z-15" />
 
         {/* Top-left Match Badge with enhanced glow */}
         <div className="absolute top-4 left-4 z-20">
@@ -173,8 +173,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         </div>
 
-        {/* Glass Content Panel - bottom 42% with emerald tint - ultra transparent */}
-        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-emerald-600/5 dark:bg-emerald-700/8 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[42%]">
+        {/* Glass Content Panel - bottom 30% with emerald tint - ultra transparent */}
+        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-emerald-600/5 dark:bg-emerald-700/8 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[30%]">
           <div className="backdrop-blur-[4px] rounded-b-[22px] h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1">
