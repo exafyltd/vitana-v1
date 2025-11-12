@@ -17,6 +17,7 @@ export interface UploadProgress {
 export interface AttachmentData {
   type: 'image' | 'file' | 'voice' | 'video' | 'audio';
   url: string;
+  path?: string; // Storage path for future signed URL support
   filename?: string;
   name: string;
   size: number;

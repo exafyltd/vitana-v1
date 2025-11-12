@@ -5823,6 +5823,123 @@ export type Database = {
         }
         Relationships: []
       }
+      commandhub_board_api: {
+        Row: {
+          created_at: string | null
+          is_test: boolean | null
+          status: string | null
+          summary: string | null
+          task_family: string | null
+          task_type: string | null
+          tenant: string | null
+          title: string | null
+          updated_at: string | null
+          vtid: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          is_test?: boolean | null
+          status?: string | null
+          summary?: never
+          task_family?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: never
+          updated_at?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          is_test?: boolean | null
+          status?: string | null
+          summary?: never
+          task_family?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: never
+          updated_at?: string | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
+      commandhub_board_v1: {
+        Row: {
+          created_at: string | null
+          is_test: boolean | null
+          status: string | null
+          summary: string | null
+          task_family: string | null
+          task_type: string | null
+          tenant: string | null
+          title: string | null
+          updated_at: string | null
+          vtid: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          is_test?: boolean | null
+          status?: string | null
+          summary?: never
+          task_family?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: never
+          updated_at?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          is_test?: boolean | null
+          status?: string | null
+          summary?: never
+          task_family?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: never
+          updated_at?: string | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
+      commandhub_board_visible: {
+        Row: {
+          created_at: string | null
+          is_test: boolean | null
+          status: string | null
+          summary: string | null
+          task_family: string | null
+          task_type: string | null
+          tenant: string | null
+          title: string | null
+          updated_at: string | null
+          vtid: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          is_test?: boolean | null
+          status?: string | null
+          summary?: never
+          task_family?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: never
+          updated_at?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          is_test?: boolean | null
+          status?: string | null
+          summary?: never
+          task_family?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: never
+          updated_at?: string | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
       popular_podcast_shows: {
         Row: {
           category: string | null
@@ -6091,6 +6208,10 @@ export type Database = {
           user_id: string
         }[]
       }
+      next_vtid: {
+        Args: { p_family: string; p_module: string }
+        Returns: string
+      }
       process_wallet_exchange: {
         Args: {
           p_amount: number
@@ -6133,6 +6254,21 @@ export type Database = {
           from_balance: number
           to_balance: number
           transaction_id: string
+        }[]
+      }
+      rpc_board_list_scheduled: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          created_at: string
+          is_test: boolean
+          status: string
+          summary: string
+          task_family: string
+          task_type: string
+          tenant: string
+          title: string
+          updated_at: string
+          vtid: string
         }[]
       }
       search_global_directory: {

@@ -205,10 +205,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   }, []);
 
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
+
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
+    const imageLoadFailed = failedImages.has(index);
 
-    if (isImage) {
+    // If image failed to load, render as file chip instead
+    if (isImage && !imageLoadFailed) {
       // Render image thumbnail
       return (
         <div 
@@ -221,6 +225,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             alt={attachment.filename}
             className="w-full h-auto rounded-lg max-h-64 object-cover"
             loading="lazy"
+            onError={() => {
+              console.warn('[Attachment] Image failed to load, falling back to file chip:', attachment.filename);
+              setFailedImages(prev => new Set(prev).add(index));
+            }}
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-colors" />
           <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">

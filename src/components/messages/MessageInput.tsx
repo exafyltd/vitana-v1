@@ -301,12 +301,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
       );
 
       // Convert FileUploadResult to AttachmentData format
-      console.log('[Attachment] Upload success', { url: attachmentResult.url, type: attachmentResult.type, size: attachmentResult.size });
+      console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
       const previewableImages = new Set(['image/jpeg','image/png','image/gif','image/webp','image/svg+xml']);
       const isPreviewImage = previewableImages.has(attachmentResult.type);
       const attachmentData: AttachmentData = {
         type: isPreviewImage ? 'image' : 'file',
         url: attachmentResult.url,
+        path: attachmentResult.path, // Store path for future signed URL support
         name: attachmentResult.name,
         size: attachmentResult.size,
         mime: attachmentResult.type,
