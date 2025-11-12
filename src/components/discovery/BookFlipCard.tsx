@@ -118,10 +118,10 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         transition: { duration: 0.15 }
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40 shadow-emerald-400/20"
+      className="w-full cursor-pointer will-change-transform"
       style={{ transformStyle: 'preserve-3d' }}
     >
-      <div className="relative w-[720px] h-[420px] max-w-[92vw] rounded-[22px] shadow-[0_18px_48px_-12px_rgba(0,0,0,0.35)] ring-1 ring-emerald-300/10 overflow-hidden">
+      <div className="relative w-[720px] h-[420px] max-w-[92vw] rounded-[22px] shadow-[0_18px_48px_-12px_rgba(0,0,0,0.35)] overflow-hidden">
         {/* Full Background Photo - face centered at 40% */}
         <div 
           className="absolute inset-0 bg-cover z-0"
