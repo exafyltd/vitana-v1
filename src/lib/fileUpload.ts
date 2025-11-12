@@ -145,7 +145,7 @@ export function isValidFileType(file: File): boolean {
   // Allow most common file types
   const allowedTypes = [
     // Images
-    'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
     // Videos
     'video/mp4', 'video/webm', 'video/quicktime',
     // Audio

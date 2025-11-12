@@ -249,6 +249,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
 
     // Only allow one file at a time for better UX
     const file = files[0];
+    console.log('[Attachment] Selected file:', { name: file.name, type: file.type, size: file.size });
     
     // Validate file
     const validation = validateFile(file);
@@ -266,9 +267,26 @@ const MessageInput: React.FC<MessageInputProps> = ({
       return;
     }
 
+    // Ensure we have a thread to attach to
+    if (!threadId) {
+      toast({
+        title: 'Open a conversation',
+        description: 'Select or open a conversation before attaching files.',
+        variant: 'destructive',
+      });
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     // Start upload process
     setIsUploading(true);
     const uploadId = Date.now().toString();
+    // Show immediate progress chip
+    setUploadProgress(prev => ({
+      ...prev,
+      [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
+    }));
+    console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
     
     try {
       const attachmentResult = await uploadChatAttachment(
@@ -283,8 +301,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
       );
 
       // Convert FileUploadResult to AttachmentData format
+      console.log('[Attachment] Upload success', { url: attachmentResult.url, type: attachmentResult.type, size: attachmentResult.size });
+      const previewableImages = new Set(['image/jpeg','image/png','image/gif','image/webp','image/svg+xml']);
+      const isPreviewImage = previewableImages.has(attachmentResult.type);
       const attachmentData: AttachmentData = {
-        type: attachmentResult.type.startsWith('image/') ? 'image' : 'file',
+        type: isPreviewImage ? 'image' : 'file',
         url: attachmentResult.url,
         name: attachmentResult.name,
         size: attachmentResult.size,
@@ -539,7 +560,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.zip,.rar"
+          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
           onChange={handleFileSelect}
           className="hidden"
         />
