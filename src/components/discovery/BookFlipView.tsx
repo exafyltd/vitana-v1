@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BookFlipCard } from "./BookFlipCard";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -31,6 +32,7 @@ export function BookFlipView({
   onProfileTap,
   onIndexChange,
 }: BookFlipViewProps) {
+  const [isHoveringCenter, setIsHoveringCenter] = useState(false);
 
   const handleFlip = (direction: 'left' | 'right' | 'up') => {
     const currentProfile = profiles[currentIndex];
@@ -82,13 +84,18 @@ export function BookFlipView({
       {/* Roulette Deck Area */}
       <div className="h-[420px] max-w-[1520px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
         {/* Book Spread Layout */}
-        <div className="flex items-center justify-center gap-8 xl:gap-10 relative">
+        <div className="flex items-center justify-center gap-6 xl:gap-8 relative">
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
               className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.70 }}
+              initial={{ opacity: 0, y: 20, scale: 0.68 }}
+              animate={{ 
+                opacity: 0.40, 
+                y: 20, 
+                scale: 0.68,
+                x: isHoveringCenter ? -12 : 0,
+              }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => onIndexChange(Math.max(0, currentIndex - 1))}
             >
@@ -103,7 +110,11 @@ export function BookFlipView({
           )}
 
           {/* Current Page */}
-          <div className="xl:w-[720px] lg:w-[640px] md:w-[560px] w-[92vw] z-20">
+          <div 
+            className="xl:w-[720px] lg:w-[640px] md:w-[560px] w-[92vw] z-20"
+            onMouseEnter={() => setIsHoveringCenter(true)}
+            onMouseLeave={() => setIsHoveringCenter(false)}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentProfile.user_id}
@@ -128,8 +139,13 @@ export function BookFlipView({
           {peekRightProfile && (
             <motion.div 
               className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.70 }}
+              initial={{ opacity: 0, y: 20, scale: 0.68 }}
+              animate={{ 
+                opacity: 0.40, 
+                y: 20, 
+                scale: 0.68,
+                x: isHoveringCenter ? 12 : 0,
+              }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => onIndexChange(Math.min(profiles.length - 1, currentIndex + 1))}
             >
