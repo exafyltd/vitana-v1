@@ -82,7 +82,7 @@ export function BookFlipView({
       {/* Roulette Deck Area */}
       <div className="h-[420px] max-w-[1520px] mx-auto px-6 lg:px-8 flex items-center justify-center" style={{ perspective: '1600px' }}>
         {/* Book Spread Layout */}
-        <div className="flex items-center justify-center gap-8 xl:gap-10 relative">
+        <div className="flex items-center justify-center gap-4 xl:gap-6 relative">
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
