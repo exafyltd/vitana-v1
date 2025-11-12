@@ -152,21 +152,25 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         )}
         
 
-        {/* Top-left Match Badge - Glass Pill */}
-        <div className="absolute top-3 left-3 z-20">
-          <div className="h-7 px-3 rounded-full bg-emerald-500/22 backdrop-blur-md ring-1 ring-white/15 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.35)] transition-colors hover:bg-emerald-500/28">
-            <span className="text-white font-semibold text-[13px] tracking-tight drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] flex items-center h-full">
-              {profile.match_score}% Match
-            </span>
+        {/* Top-left Match Badge with enhanced glow */}
+        <div className="absolute top-4 left-4 z-20">
+          <div className="relative">
+            {/* Enhanced glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur-xl opacity-40" />
+            
+            {/* Larger Badge */}
+            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-extrabold text-lg px-4 py-2 shadow-2xl border-0">
+              {profile.match_score}% Match 🌿
+            </Badge>
           </div>
         </div>
 
         {/* Bottom Scrim for Premium Glass Contrast */}
-        <div className="absolute bottom-0 inset-x-0 h-[46%] bg-gradient-to-t from-emerald-600/40 via-emerald-400/22 to-transparent pointer-events-none z-15" />
+        <div className="absolute bottom-0 inset-x-0 h-[46%] bg-gradient-to-t from-emerald-600/35 via-emerald-400/18 to-transparent pointer-events-none z-15" />
 
-        {/* Glass Content Panel - ultra-light premium glass with inner highlight */}
-        <div className="absolute bottom-0 inset-x-0 px-4 py-3 backdrop-blur-xl bg-emerald-100/10 dark:bg-emerald-300/10 rounded-2xl ring-1 ring-white/12 z-20 flex flex-col h-[42%] before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-t before:from-white/6 before:to-transparent before:pointer-events-none">
-          <div className="rounded-2xl h-full flex flex-col relative z-10">
+        {/* Glass Content Panel - ultra-light premium glass */}
+        <div className="absolute bottom-0 inset-x-0 px-4 py-3 backdrop-blur-xl bg-emerald-100/10 dark:bg-emerald-300/10 rounded-2xl ring-1 ring-white/12 z-20 flex flex-col h-[42%]">
+          <div className="rounded-2xl h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1">
               <h2 className="text-xl font-semibold tracking-tight text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
@@ -179,14 +183,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-sm text-white/85 leading-[1.25] font-medium mb-0.5 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
+              <p className="text-sm text-white font-medium mb-0.5 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
                 {profile.professional_headline}
               </p>
             )}
 
             {/* Story Cue */}
             {profile.story_cue && (
-              <p className="text-xs text-white/85 leading-[1.25] italic mb-1 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
+              <p className="text-xs text-white italic mb-1 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
                 "{profile.story_cue.slice(0, 45)}{profile.story_cue.length > 45 ? '...' : ''}"
               </p>
             )}
@@ -200,9 +204,9 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                 </div>
               )}
               {profile.activity_time_preference && (
-                <div className="flex items-center gap-1 h-6 px-2 rounded-full bg-white/12 ring-1 ring-white/15 backdrop-blur-md">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/12 ring-1 ring-white/15 backdrop-blur-md">
                   <span className="text-sm">{getActivityIcon(profile.activity_time_preference)}</span>
-                  <span className="text-[11px] font-medium capitalize" style={textStrokeStyle}>
+                  <span className="text-xs font-medium capitalize" style={textStrokeStyle}>
                     {profile.activity_time_preference}
                   </span>
                 </div>
@@ -211,18 +215,18 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Vitana Index Badge with Merged Micro-badges */}
             {profile.vitana_index && (
-              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <Badge variant="secondary" className="h-6 px-2 bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-[11px] font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] rounded-full" style={textStrokeStyle}>
-                  <Zap className="h-3 w-3 mr-1 text-emerald-400" />
+              <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                <Badge variant="secondary" className="bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-sm px-3 py-1.5 font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
+                  <Zap className="h-4 w-4 mr-1 text-emerald-400" />
                   VI: {profile.vitana_index}
                 </Badge>
                 {profile.vitana_percentile && (
-                  <Badge variant="secondary" className="h-6 px-2 bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-[11px] font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] rounded-full" style={textStrokeStyle}>
+                  <Badge variant="secondary" className="bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-xs px-2 py-0.5 font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
                     Top {profile.vitana_percentile}%
                   </Badge>
                 )}
                 {profile.streak_days && profile.streak_days > 0 && (
-                  <Badge variant="secondary" className="h-6 px-2 bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-[11px] font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] rounded-full" style={textStrokeStyle}>
+                  <Badge variant="secondary" className="bg-white/12 ring-1 ring-white/15 backdrop-blur-md text-xs px-2 py-0.5 font-semibold text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
                     🔥 {profile.streak_days}d
                   </Badge>
                 )}
@@ -231,7 +235,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Bio */}
             {profile.bio && (
-              <p className="text-[10px] text-white/85 leading-[1.25] mb-1.5 line-clamp-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
+              <p className="text-[10px] text-white mb-1.5 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]" style={textStrokeStyle}>
                 {profile.bio}
               </p>
             )}
@@ -245,12 +249,12 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                     Interests
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {profile.top_3_interests.map((interest, idx) => (
                     <Badge 
                       key={idx} 
                       variant="secondary" 
-                      className="h-6 px-2 text-[11px] font-medium bg-white/12 ring-1 ring-white/15 backdrop-blur-md rounded-full text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]"
+                      className="text-xs font-medium bg-white/12 ring-1 ring-white/15 backdrop-blur-md px-3 py-1 rounded-full text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]"
                       style={textStrokeStyle}
                     >
                       {interest}
