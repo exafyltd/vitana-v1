@@ -160,7 +160,9 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             
             {/* Larger Badge */}
             <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-extrabold text-lg px-4 py-2 shadow-2xl border-0">
-              {profile.match_score}% Match 🌿
+              <span style={{ textShadow: '0 1px 6px rgba(0,0,0,0.35)' }}>
+                {profile.match_score}% Match 🌿
+              </span>
             </Badge>
           </div>
         </div>
