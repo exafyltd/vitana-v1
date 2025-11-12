@@ -150,14 +150,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           style={{ filter: 'brightness(1.1)' }}
         />
 
-        {/* Top-left Match Badge with subtle glow */}
+        {/* Top-left Match Badge with enhanced glow */}
         <div className="absolute top-4 left-4 z-20">
           <div className="relative">
-            {/* Subtle glow */}
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur-lg opacity-30" />
+            {/* Enhanced glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full blur-xl opacity-40" />
             
-            {/* Badge */}
-            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-bold text-sm px-3 py-1.5 shadow-2xl border-0">
+            {/* Larger Badge */}
+            <Badge className="relative bg-gradient-to-r from-emerald-400 to-cyan-400 text-white font-extrabold text-lg px-4 py-2 shadow-2xl border-0">
               {profile.match_score}% Match 🌿
             </Badge>
           </div>
@@ -211,17 +211,17 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             {/* Vitana Index Badge with Merged Micro-badges */}
             {profile.vitana_index && (
               <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2.5 py-1 font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
-                  <Zap className="h-3.5 w-3.5 mr-1 text-emerald-400" />
+                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-sm px-3 py-1.5 font-semibold text-white/90" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <Zap className="h-4 w-4 mr-1 text-emerald-400" />
                   VI: {profile.vitana_index}
                 </Badge>
                 {profile.vitana_percentile && (
-                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-[10px] px-1.5 py-0.5 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     Top {profile.vitana_percentile}%
                   </Badge>
                 )}
                 {profile.streak_days && profile.streak_days > 0 && (
-                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-[10px] px-1.5 py-0.5 font-medium text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/80" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     🔥 {profile.streak_days}d
                   </Badge>
                 )}
@@ -240,7 +240,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
               <div className="mb-2 pb-2">
                 <div className="flex items-center gap-1 mb-1.5">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                  <span className="text-[10px] font-bold text-white/70 uppercase tracking-wider" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+                  <span className="text-xs font-bold text-white/80 uppercase tracking-wider" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                     Interests
                   </span>
                 </div>
@@ -249,7 +249,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                     <Badge 
                       key={idx} 
                       variant="secondary" 
-                      className="text-[10px] font-medium bg-white/10 backdrop-blur px-2.5 py-0.5 rounded-full text-white/80"
+                      className="text-xs font-medium bg-white/10 backdrop-blur px-3 py-1 rounded-full text-white/85"
                       style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
                     >
                       {interest}
