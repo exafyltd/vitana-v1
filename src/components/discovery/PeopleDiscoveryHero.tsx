@@ -362,10 +362,12 @@ export function PeopleDiscoveryHero() {
         <div className="hidden lg:block">
           <BookFlipView
             profiles={displayProfiles}
+            currentIndex={currentIndex}
             onConnect={handleConnect}
             onPass={handlePass}
             onSuperConnect={handleSuperConnect}
             onProfileTap={handleProfileTap}
+            onIndexChange={setCurrentIndex}
           />
         </div>
         

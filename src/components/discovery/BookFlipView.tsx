@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BookFlipCard } from "./BookFlipCard";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -15,20 +14,23 @@ interface Profile {
 
 interface BookFlipViewProps {
   profiles: Profile[];
+  currentIndex: number;
   onConnect: (userId: string) => void;
   onPass: (userId: string) => void;
   onSuperConnect: (userId: string) => void;
   onProfileTap: (userId: string) => void;
+  onIndexChange: (newIndex: number) => void;
 }
 
 export function BookFlipView({
   profiles,
+  currentIndex,
   onConnect,
   onPass,
   onSuperConnect,
   onProfileTap,
+  onIndexChange,
 }: BookFlipViewProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleFlip = (direction: 'left' | 'right' | 'up') => {
     const currentProfile = profiles[currentIndex];
@@ -42,7 +44,7 @@ export function BookFlipView({
       onSuperConnect(currentProfile.user_id);
     }
 
-    setCurrentIndex(prev => prev + 1);
+    onIndexChange(currentIndex + 1);
   };
 
   const handleTap = () => {
@@ -88,7 +90,7 @@ export function BookFlipView({
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
-              onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
+              onClick={() => onIndexChange(Math.max(0, currentIndex - 1))}
             >
               <BookFlipCard
                 profile={peekLeftProfile}
@@ -129,7 +131,7 @@ export function BookFlipView({
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.70 }}
               transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
-              onClick={() => setCurrentIndex(prev => Math.min(profiles.length - 1, prev + 1))}
+              onClick={() => onIndexChange(Math.min(profiles.length - 1, currentIndex + 1))}
             >
               <BookFlipCard
                 profile={peekRightProfile}
