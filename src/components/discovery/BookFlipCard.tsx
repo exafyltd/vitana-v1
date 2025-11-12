@@ -65,8 +65,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
   };
 
   const getVitanaGradient = () => {
-    // Lighter emerald gradient for harmonious aesthetic with smart text shadows
-    return "from-emerald-700/50 via-emerald-500/28 to-transparent";
+    // Vibrant emerald gradient matching the reference aesthetic
+    return "from-emerald-600/75 via-emerald-500/50 to-transparent";
   };
 
   const getActivityIcon = (time?: string) => {
@@ -150,8 +150,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           style={{ filter: 'brightness(1.1)' }}
         />
 
-        {/* Subtle dark scrim for text legibility without heavy darkness */}
-        <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-black/18 to-transparent z-15" />
+        {/* Minimal dark scrim - emerald gradient provides main contrast */}
+        <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-black/8 to-transparent z-15" />
 
         {/* Top-left Match Badge with enhanced glow */}
         <div className="absolute top-4 left-4 z-20">
@@ -166,8 +166,8 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         </div>
 
-        {/* Glass Content Panel - bottom 42% with emerald-tinted gradient */}
-        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-gradient-to-b from-emerald-950/12 via-black/15 to-black/20 dark:from-emerald-950/18 dark:via-black/20 dark:to-black/25 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[42%]">
+        {/* Glass Content Panel - bottom 42% with emerald tint */}
+        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-emerald-600/15 dark:bg-emerald-700/20 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[42%]">
           <div className="backdrop-blur-[12px] rounded-b-[22px] h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1">
