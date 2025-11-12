@@ -1,5 +1,5 @@
 import { motion, PanInfo, animate } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
@@ -33,7 +33,6 @@ interface BookFlipCardProps {
 
 export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookFlipCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 120;
@@ -92,22 +91,6 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isPeek) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    
-    setTilt({ 
-      x: y * 8,
-      y: x * -8
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
-
   if (isPeek) {
     return (
       <div 
@@ -129,22 +112,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
       dragElastic={0.6}
       onDragEnd={handleDragEnd}
       onClick={onTap}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      animate={{
-        rotateX: tilt.x,
-        rotateY: tilt.y
-      }}
       whileHover={{ 
         scale: 1.02,
+        rotateY: 2,
         transition: { duration: 0.15 }
       }}
-      transition={{ type: "spring", stiffness: 150, damping: 15 }}
-      className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40"
-      style={{ 
-        transformStyle: 'preserve-3d',
-        boxShadow: '0 0 50px -20px rgba(0,255,180,0.25), 0 12px 40px -8px rgba(0,0,0,0.35)'
-      }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="w-full cursor-pointer will-change-transform ring-1 ring-emerald-400/40 shadow-emerald-400/20"
+      style={{ transformStyle: 'preserve-3d' }}
     >
       <div className="relative w-[720px] h-[420px] max-w-[92vw] rounded-[22px] shadow-[0_18px_48px_-12px_rgba(0,0,0,0.35)] ring-1 ring-emerald-300/10 overflow-hidden">
         {/* Full Background Photo - face centered at 40% */}
@@ -193,7 +168,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           <div className="backdrop-blur-[12px] rounded-b-[22px] h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1.5">
-              <h2 className="text-2xl font-semibold tracking-tight text-white leading-[1.35]" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+              <h2 className="text-2xl font-semibold tracking-tight text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
                 {profile.display_name}
               </h2>
               {profile.age && (
@@ -203,14 +178,14 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-sm text-white/90 mb-1 leading-[1.35]" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-sm text-white/90 mb-1" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.professional_headline}
               </p>
             )}
 
             {/* Story Cue */}
             {profile.story_cue && (
-              <p className="text-xs text-white/70 italic mb-1.5 leading-[1.35]" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-xs text-white/70 italic mb-1.5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 "{profile.story_cue.slice(0, 45)}{profile.story_cue.length > 45 ? '...' : ''}"
               </p>
             )}
@@ -255,7 +230,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Bio */}
             {profile.bio && (
-              <p className="text-xs text-white/80 mb-2 line-clamp-2 leading-[1.35]" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
+              <p className="text-xs text-white/80 mb-2 line-clamp-2 leading-relaxed" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
                 {profile.bio}
               </p>
             )}

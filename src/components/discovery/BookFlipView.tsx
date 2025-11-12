@@ -1,6 +1,5 @@
 import { BookFlipCard } from "./BookFlipCard";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
 
 interface Profile {
   user_id: string;
@@ -32,7 +31,6 @@ export function BookFlipView({
   onProfileTap,
   onIndexChange,
 }: BookFlipViewProps) {
-  const [keyPulse, setKeyPulse] = useState<'left' | 'right' | 'up' | null>(null);
 
   const handleFlip = (direction: 'left' | 'right' | 'up') => {
     const currentProfile = profiles[currentIndex];
@@ -55,26 +53,6 @@ export function BookFlipView({
       onProfileTap(currentProfile.user_id);
     }
   };
-
-  // Keyboard pulse feedback
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      
-      if (e.key === 'ArrowLeft') {
-        setKeyPulse('left');
-      } else if (e.key === 'ArrowRight') {
-        setKeyPulse('right');
-      } else if (e.key === 'ArrowUp') {
-        setKeyPulse('up');
-      }
-      
-      setTimeout(() => setKeyPulse(null), 300);
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   const currentProfile = profiles[currentIndex];
   const peekLeftProfile = currentIndex > 0 ? profiles[currentIndex - 1] : null;
@@ -108,10 +86,10 @@ export function BookFlipView({
           {/* Peek Left */}
           {peekLeftProfile && (
             <motion.div 
-              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-60 cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-75 hover:brightness-100 hover:blur-0 hover:scale-[0.78] transition-all duration-300"
-              initial={{ opacity: 0.6 }}
-              animate={{ opacity: 0.6, scale: 0.75, filter: 'brightness(0.9) blur(0.5px)' }}
-              transition={{ duration: 0.5, ease: [0.455, 0.03, 0.515, 0.955] }}
+              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.70 }}
+              transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => onIndexChange(Math.max(0, currentIndex - 1))}
             >
               <BookFlipCard
@@ -129,17 +107,12 @@ export function BookFlipView({
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentProfile.user_id}
-                initial={{ opacity: 0.6, x: 420, scale: 0.7 }}
-                animate={{ 
-                  opacity: 1, 
-                  x: 0, 
-                  scale: keyPulse ? 0.98 : 1,
-                  rotate: keyPulse === 'left' ? -2 : keyPulse === 'right' ? 2 : keyPulse === 'up' ? -1 : 0
-                }}
-                exit={{ opacity: 0.6, x: -420, scale: 0.7 }}
+                initial={{ opacity: 0.45, x: 420, scale: 0.7 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0.45, x: -420, scale: 0.7 }}
                 transition={{ 
-                  duration: 0.5,
-                  ease: [0.455, 0.03, 0.515, 0.955]
+                  duration: 0.45,
+                  ease: [0.65, 0, 0.35, 1]
                 }}
               >
                 <BookFlipCard
@@ -154,10 +127,10 @@ export function BookFlipView({
           {/* Peek Right */}
           {peekRightProfile && (
             <motion.div 
-              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-60 cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-75 hover:brightness-100 hover:blur-0 hover:scale-[0.78] transition-all duration-300"
-              initial={{ opacity: 0.6 }}
-              animate={{ opacity: 0.6, scale: 0.75, filter: 'brightness(0.9) blur(0.5px)' }}
-              transition={{ duration: 0.5, ease: [0.455, 0.03, 0.515, 0.955] }}
+              className="hidden lg:block xl:w-[360px] xl:h-[210px] lg:w-[320px] lg:h-[190px] opacity-70 blur-[0.5px] cursor-pointer z-10 rounded-[22px] ring-1 ring-border/20 shadow-2xl hover:opacity-85 hover:blur-0 hover:scale-[1.02] transition-all duration-300"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.70 }}
+              transition={{ duration: 0.45, ease: [0.65, 0, 0.35, 1] }}
               onClick={() => onIndexChange(Math.min(profiles.length - 1, currentIndex + 1))}
             >
               <BookFlipCard
