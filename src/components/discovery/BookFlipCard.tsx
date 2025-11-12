@@ -34,6 +34,13 @@ interface BookFlipCardProps {
 export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookFlipCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
+  // Text outline style for legibility on transparent backgrounds
+  const textOutlineStyle = {
+    textShadow: '0 1px 4px rgba(0,0,0,0.9), 0 2px 16px rgba(0,0,0,0.7), 0 0 1px rgba(0,0,0,1)',
+    WebkitTextStroke: '0.5px rgba(0,0,0,0.8)',
+    paintOrder: 'stroke fill',
+  } as React.CSSProperties;
+
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 120;
     const upThreshold = -120;
@@ -151,7 +158,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         />
 
         {/* Minimal dark scrim - emerald gradient provides main contrast */}
-        <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-black/8 to-transparent z-15" />
+        <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-black/3 to-transparent z-15" />
 
         {/* Top-left Match Badge with enhanced glow */}
         <div className="absolute top-4 left-4 z-20">
@@ -166,29 +173,29 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         </div>
 
-        {/* Glass Content Panel - bottom 42% with emerald tint */}
-        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-emerald-600/15 dark:bg-emerald-700/20 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[42%]">
-          <div className="backdrop-blur-[12px] rounded-b-[22px] h-full flex flex-col">
+        {/* Glass Content Panel - bottom 42% with emerald tint - ultra transparent */}
+        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-xl bg-emerald-600/5 dark:bg-emerald-700/8 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[42%]">
+          <div className="backdrop-blur-[4px] rounded-b-[22px] h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1">
-              <h2 className="text-xl font-semibold tracking-tight text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+              <h2 className="text-xl font-semibold tracking-tight text-white" style={textOutlineStyle}>
                 {profile.display_name}
               </h2>
               {profile.age && (
-                <span className="text-xl font-semibold text-white/90" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>, {profile.age}</span>
+                <span className="text-xl font-semibold text-white/90" style={textOutlineStyle}>, {profile.age}</span>
               )}
             </div>
 
             {/* Professional Headline */}
             {profile.professional_headline && (
-              <p className="text-sm text-white/95 font-medium mb-0.5" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+              <p className="text-sm text-white/95 font-medium mb-0.5" style={textOutlineStyle}>
                 {profile.professional_headline}
               </p>
             )}
 
             {/* Story Cue */}
             {profile.story_cue && (
-              <p className="text-xs text-white/85 italic mb-1" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+              <p className="text-xs text-white/85 italic mb-1" style={textOutlineStyle}>
                 "{profile.story_cue.slice(0, 45)}{profile.story_cue.length > 45 ? '...' : ''}"
               </p>
             )}
@@ -198,13 +205,13 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
               {profile.location && (
                 <div className="flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
-                  <span className="text-sm font-medium" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>{profile.location}</span>
+                  <span className="text-sm font-medium" style={textOutlineStyle}>{profile.location}</span>
                 </div>
               )}
               {profile.activity_time_preference && (
                 <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 backdrop-blur">
                   <span className="text-sm">{getActivityIcon(profile.activity_time_preference)}</span>
-                  <span className="text-xs font-medium capitalize" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+                  <span className="text-xs font-medium capitalize" style={textOutlineStyle}>
                     {profile.activity_time_preference}
                   </span>
                 </div>
@@ -214,17 +221,17 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
             {/* Vitana Index Badge with Merged Micro-badges */}
             {profile.vitana_index && (
               <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-sm px-3 py-1.5 font-semibold text-white/90" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+                <Badge variant="secondary" className="bg-white/10 backdrop-blur text-sm px-3 py-1.5 font-semibold text-white/90" style={textOutlineStyle}>
                   <Zap className="h-4 w-4 mr-1 text-emerald-400" />
                   VI: {profile.vitana_index}
                 </Badge>
                 {profile.vitana_percentile && (
-                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/80" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/80" style={textOutlineStyle}>
                     Top {profile.vitana_percentile}%
                   </Badge>
                 )}
                 {profile.streak_days && profile.streak_days > 0 && (
-                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/80" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+                  <Badge variant="secondary" className="bg-white/10 backdrop-blur text-xs px-2 py-0.5 font-semibold text-white/80" style={textOutlineStyle}>
                     🔥 {profile.streak_days}d
                   </Badge>
                 )}
@@ -233,7 +240,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
             {/* Bio */}
             {profile.bio && (
-              <p className="text-[10px] text-white/80 mb-1.5 line-clamp-2 leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+              <p className="text-[10px] text-white/80 mb-1.5 line-clamp-2 leading-relaxed" style={textOutlineStyle}>
                 {profile.bio}
               </p>
             )}
@@ -243,7 +250,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
               <div className="mb-2 pb-2">
                 <div className="flex items-center gap-1 mb-1.5">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
-                  <span className="text-xs font-bold text-white/80 uppercase tracking-wider" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}>
+                  <span className="text-xs font-bold text-white/80 uppercase tracking-wider" style={textOutlineStyle}>
                     Interests
                   </span>
                 </div>
@@ -253,7 +260,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
                       key={idx} 
                       variant="secondary" 
                       className="text-xs font-medium bg-white/10 backdrop-blur px-3 py-1 rounded-full text-white/85"
-                      style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8), 0 2px 12px rgba(0,0,0,0.5)' }}
+                      style={textOutlineStyle}
                     >
                       {interest}
                     </Badge>
