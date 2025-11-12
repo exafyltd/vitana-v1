@@ -151,9 +151,9 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         )}
         
-        {/* Gradient Overlay - only from bottom 50% → 100% */}
+        {/* Gradient Overlay - only from bottom 42% → 100% */}
         <div 
-          className={`absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t ${getVitanaGradient()} z-10`}
+          className={`absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t ${getVitanaGradient()} z-10`}
           style={{ filter: 'brightness(1.1)' }}
         />
 
