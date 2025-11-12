@@ -174,7 +174,7 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
         </div>
 
         {/* Glass Content Panel - bottom 42% with emerald tint */}
-        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-[8px] bg-emerald-600/8 dark:bg-emerald-700/12 rounded-b-[22px] border-t border-white/20 z-20 flex flex-col h-[42%]">
+        <div className="absolute bottom-0 inset-x-0 p-3 pb-4 backdrop-blur-[4px] bg-emerald-700/5 dark:bg-emerald-800/8 rounded-b-[22px] border-t border-white/10 z-20 flex flex-col h-[42%]">
           <div className="rounded-b-[22px] h-full flex flex-col">
             {/* Name & Age */}
             <div className="flex items-baseline justify-start gap-2 mb-1">
