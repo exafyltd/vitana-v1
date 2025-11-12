@@ -152,7 +152,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
     
     // Guard conditions - allow sending if we have either threadId or recipientId
-    if ((!activeThread?.id && !recipientId) || message.trim() === '' || disabled || isUploading || isSending) {
+    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || isSending) {
       return;
     }
     
