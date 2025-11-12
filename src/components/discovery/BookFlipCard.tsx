@@ -151,14 +151,6 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
           </div>
         )}
         
-        {/* Gradient Overlay - only from bottom 50% → 100% */}
-        <div 
-          className={`absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t ${getVitanaGradient()} z-10`}
-          style={{ filter: 'brightness(1.1)' }}
-        />
-
-        {/* Minimal dark scrim - emerald gradient provides main contrast */}
-        <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-black/8 to-transparent z-15" />
 
         {/* Top-left Match Badge with enhanced glow */}
         <div className="absolute top-4 left-4 z-20">
