@@ -111,8 +111,10 @@ export function BookFlipView({
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0.65, x: -320, scale: 0.88 }}
                 transition={{ 
-                  duration: 0.65,
-                  ease: [0.16, 1, 0.3, 1]
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20,
+                  mass: 0.8
                 }}
               >
                 <BookFlipCard
