@@ -20,8 +20,10 @@ import { Search, Plus } from "lucide-react";
 import { ManageMyActionsPopup } from "@/components/ManageMyActionsPopup";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { VisualActionCard } from "@/components/actions/VisualActionCard";
 import { cn } from "@/lib/utils";
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { transformAutopilotActionsToVisualCards } from "@/lib/autopilot-transformers";
+import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
 
 export default function Actions() {
   const navigate = useNavigate();
@@ -128,27 +130,34 @@ export default function Actions() {
                 <div className="grid grid-cols-12 gap-6 xl:gap-7">
                   <section
                     className={cn(
-                      "col-span-12 space-y-6",
+                      "col-span-12",
                       hasGuide ? "xl:col-span-9" : "xl:col-span-12"
                     )}
                     data-testid="actions-main-rail"
                   >
                     {pendingActions.length > 0 ? (
-                      pendingActions
-                        .sort((a, b) => {
-                          const priorityOrder = { high: 3, medium: 2, low: 1 };
-                          return priorityOrder[b.priority] - priorityOrder[a.priority];
-                        })
-                        .map(action => (
-                          <VisualActionCard
-                            key={action.id}
-                            action={action}
-                            onExecute={() => executeActions([action.id])}
-                            onDismiss={() => dismissActions([action.id])}
-                            onEdit={() => console.log("Edit action:", action.id)}
-                            onDetails={() => console.log("View details:", action.id)}
-                          />
-                        ))
+                      <HorizontalCardList
+                        variant="visual"
+                        items={transformAutopilotActionsToVisualCards(
+                          pendingActions.sort((a, b) => {
+                            const priorityOrder = { high: 3, medium: 2, low: 1 };
+                            return priorityOrder[b.priority] - priorityOrder[a.priority];
+                          }),
+                          'home_actions_pending'
+                        )}
+                        enableVirtualization={pendingActions.length > 30}
+                        listId="pending-actions"
+                        screenId="home_actions_pending"
+                        gap="md"
+                        emptyState={
+                          <div className="text-center py-8 text-muted-foreground">
+                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                              <Zap className="w-8 h-8 text-gray-400" />
+                            </div>
+                            <p>No pending actions</p>
+                          </div>
+                        }
+                      />
                     ) : (
                       <div className="text-center py-8 text-muted-foreground">
                         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
@@ -202,23 +211,20 @@ export default function Actions() {
                         <TabsContent key={category.key} value={category.key} className="space-y-6">
                           {actionsByCategory[category.key]?.length > 0 ? (
                             <>
-                              <div className="space-y-6">
-                                {actionsByCategory[category.key]
-                                  .sort((a, b) => {
+                              <HorizontalCardList
+                                variant="visual"
+                                items={transformAutopilotActionsToVisualCards(
+                                  actionsByCategory[category.key].sort((a, b) => {
                                     const priorityOrder = { high: 3, medium: 2, low: 1 };
                                     return priorityOrder[b.priority] - priorityOrder[a.priority];
-                                  })
-                                  .map(action => (
-                                    <VisualActionCard
-                                      key={action.id}
-                                      action={action}
-                                      onExecute={() => executeActions([action.id])}
-                                      onDismiss={() => dismissActions([action.id])}
-                                      onEdit={() => console.log("Edit action:", action.id)}
-                                      onDetails={() => console.log("View details:", action.id)}
-                                    />
-                                  ))}
-                              </div>
+                                  }),
+                                  `home_actions_${category.key}`
+                                )}
+                                enableVirtualization={actionsByCategory[category.key].length > 30}
+                                listId={`${category.key}-actions`}
+                                screenId={`home_actions_${category.key}`}
+                                gap="md"
+                              />
                               <div className="flex justify-between pt-4">
                                 <Button 
                                   variant="outline"
