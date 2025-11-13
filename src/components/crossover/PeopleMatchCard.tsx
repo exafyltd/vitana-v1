@@ -127,7 +127,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
 
   const handleChatClick = (match: PeopleMatch) => {
     // Check if it's a demo user (DiceBear avatar URLs or demo- prefix)
-    if (match.user_id.startsWith('demo-') || match.avatar_url.includes('dicebear.com')) {
+    if (match.user_id.startsWith('demo-') || match.avatar_url?.includes('dicebear.com')) {
       toast({
         title: "💬 Chat started",
         description: `Opening conversation with ${match.display_name}...`,
@@ -189,7 +189,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
                   fallback={match.display_name.split(' ').map(n => n[0]).join('')}
                   alt={match.display_name}
                   className={`h-12 w-12 relative transition-all duration-300 ${getAvatarRingColor(match.compatibility_score)}`}
-                  disabled={match.user_id.startsWith('demo-') || match.avatar_url.includes('dicebear.com')}
+                  disabled={match.user_id.startsWith('demo-') || match.avatar_url?.includes('dicebear.com')}
                 />
               </div>
               <div className="flex-1 min-w-0">
