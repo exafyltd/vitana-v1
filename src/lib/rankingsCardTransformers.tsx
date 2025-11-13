@@ -4,6 +4,7 @@ import { Users, TrendingUp, Activity, Star, Calendar, Award, Trophy, Flame, BarC
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { getVariantForAction } from './cta-variants';
 
 // Position badge configurations
 const getPositionBadge = (position: number) => {

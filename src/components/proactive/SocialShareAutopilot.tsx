@@ -6,6 +6,7 @@ import { Zap, TrendingUp, Calendar, Sparkles, Trophy } from "lucide-react";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { getVariantForAction } from "@/lib/cta-variants";
 
 interface ShareableMoment {
   id: string;
@@ -111,6 +112,7 @@ export function SocialShareAutopilot() {
           onClick: () => handleAutoShare(moment.id),
           icon: <Zap className="h-4 w-4" />,
           disabled: connectedPlatforms.length === 0,
+          variant: 'default' as const,
         },
         secondaryActions: [
           {

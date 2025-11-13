@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { PhotoPeekPanel } from "@/components/diary/PhotoPeekPanel";
 import { PhotoLightbox } from "@/components/diary/PhotoLightbox";
+import { getVariantForAction } from "@/lib/cta-variants";
 
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
