@@ -252,7 +252,7 @@ export function PeopleDiscoveryHero() {
     }
     if (regionFilter !== "all") {
       baseProfiles = baseProfiles.filter(p => 
-        p.location?.toLowerCase().includes(regionFilter.toLowerCase())
+        p.location?.toLowerCase()?.includes(regionFilter.toLowerCase()) ?? false
       );
     }
 
