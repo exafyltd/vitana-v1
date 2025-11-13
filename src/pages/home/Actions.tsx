@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { HorizontalVisualCardsScroll } from "@/components/ui/horizontal-visual-cards-scroll";
 import { transformAutopilotActionsToVisualCards } from "@/lib/autopilot-transformers";
 import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -154,8 +155,7 @@ export default function Actions() {
                     data-testid="actions-main-rail"
                   >
                     {pendingActions.length > 0 ? (
-                      <HorizontalCardList
-                        variant="visual"
+                      <HorizontalVisualCardsScroll
                         items={transformAutopilotActionsToVisualCards(
                           pendingActions.sort((a, b) => {
                             const priorityOrder = { high: 3, medium: 2, low: 1 };
@@ -165,18 +165,10 @@ export default function Actions() {
                           handleExecuteAction,
                           handleDismissAction
                         )}
-                        enableVirtualization={pendingActions.length > 30}
-                        listId="pending-actions"
                         screenId="home_actions_pending"
-                        gap="md"
-                        emptyState={
-                          <div className="text-center py-8 text-muted-foreground">
-                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                              <Zap className="w-8 h-8 text-gray-400" />
-                            </div>
-                            <p>No pending actions</p>
-                          </div>
-                        }
+                        listId="pending-actions"
+                        cardWidth="md"
+                        className="px-2"
                       />
                     ) : (
                       <div className="text-center py-8 text-muted-foreground">
@@ -231,8 +223,7 @@ export default function Actions() {
                         <TabsContent key={category.key} value={category.key} className="space-y-6">
                           {actionsByCategory[category.key]?.length > 0 ? (
                             <>
-                              <HorizontalCardList
-                                variant="visual"
+                              <HorizontalVisualCardsScroll
                                 items={transformAutopilotActionsToVisualCards(
                                   actionsByCategory[category.key].sort((a, b) => {
                                     const priorityOrder = { high: 3, medium: 2, low: 1 };
@@ -242,10 +233,10 @@ export default function Actions() {
                                   handleExecuteAction,
                                   handleDismissAction
                                 )}
-                                enableVirtualization={actionsByCategory[category.key].length > 30}
-                                listId={`${category.key}-actions`}
                                 screenId={`home_actions_${category.key}`}
-                                gap="md"
+                                listId={`${category.key}-actions`}
+                                cardWidth="md"
+                                className="px-2"
                               />
                               <div className="flex justify-between pt-4">
                                 <Button 
