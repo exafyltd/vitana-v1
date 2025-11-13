@@ -24,9 +24,11 @@ import { cn } from "@/lib/utils";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { transformAutopilotActionsToVisualCards } from "@/lib/autopilot-transformers";
 import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Actions() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { pendingActions, executeActions, toggleActionSelection, dismissActions } = useAutopilot();
   const [manageActionsOpen, setManageActionsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -34,6 +36,22 @@ export default function Actions() {
   
   // Guide rail visibility - set to true when Guide widgets are added
   const hasGuide = false;
+
+  const handleExecuteAction = async (actionId: string) => {
+    await executeActions([actionId]);
+    toast({
+      title: "Action Executed",
+      description: "Your action has been completed successfully.",
+    });
+  };
+
+  const handleDismissAction = (actionId: string) => {
+    dismissActions([actionId]);
+    toast({
+      title: "Action Dismissed",
+      description: "This action has been removed from your list.",
+    });
+  };
 
   const getCategoryIcon = (category: AutopilotCategory) => {
     switch (category) {
@@ -143,7 +161,9 @@ export default function Actions() {
                             const priorityOrder = { high: 3, medium: 2, low: 1 };
                             return priorityOrder[b.priority] - priorityOrder[a.priority];
                           }),
-                          'home_actions_pending'
+                          'home_actions_pending',
+                          handleExecuteAction,
+                          handleDismissAction
                         )}
                         enableVirtualization={pendingActions.length > 30}
                         listId="pending-actions"
