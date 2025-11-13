@@ -1,6 +1,7 @@
 import React from 'react';
 import { AutopilotAction, AutopilotCategory, AutopilotPriority } from '@/types/autopilot';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
+import { StandardHorizontalCardProps } from '@/components/ui/standard-horizontal-card';
 import { 
   Clock, 
   Zap, 
@@ -14,7 +15,9 @@ import {
   Rocket, 
   Eye,
   Star,
-  Sparkles
+  Sparkles,
+  AlertCircle,
+  TrendingUp
 } from 'lucide-react';
 
 // Import action images
@@ -307,6 +310,99 @@ export function transformAutopilotActionToVisualCard(
       </div>
     ) : undefined,
   };
+}
+
+/**
+ * Transforms AutopilotAction[] to StandardHorizontalCardProps[]
+ */
+export function transformAutopilotActionsToStandardCards(
+  actions: AutopilotAction[],
+  screenId: string = 'home_actions',
+  onExecute?: (actionId: string) => void,
+  onDismiss?: (actionId: string) => void
+): StandardHorizontalCardProps[] {
+  return actions.map((action) => {
+    const cta = getContextualCta(action);
+    
+    // Map priority to badge
+    const priorityBadge = action.priority === 'high' 
+      ? { label: '🔴 High', variant: 'destructive' as const }
+      : action.priority === 'medium'
+      ? { label: '🟡 Medium', variant: 'default' as const }
+      : { label: '🟢 Low', variant: 'secondary' as const };
+    
+    return {
+      id: action.id,
+      screenId,
+      icon: getCategoryIcon(action.category),
+      title: action.title,
+      description: action.reason,
+      badges: [
+        { label: getCategoryLabel(action.category), variant: 'outline' as const },
+        priorityBadge
+      ],
+      timestamp: action.timestamp,
+      primaryAction: onExecute ? {
+        label: cta.label,
+        icon: cta.icon,
+        onClick: () => onExecute(action.id)
+      } : undefined,
+      secondaryActions: onDismiss ? [
+        {
+          label: 'Dismiss',
+          icon: <X className="w-4 h-4" />,
+          onClick: () => onDismiss(action.id)
+        }
+      ] : undefined,
+      expandedContent: (
+        <div className="space-y-4 px-4 py-3">
+          {/* Why this action section */}
+          <div>
+            <h4 className="font-semibold text-sm mb-1.5 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-primary" />
+              Why this action?
+            </h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">{action.reason}</p>
+          </div>
+
+          {/* Time estimate */}
+          {action.timeEstimate && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              <span>Time needed: <span className="font-medium text-foreground">{action.timeEstimate}</span></span>
+            </div>
+          )}
+
+          {/* Priority indicator */}
+          <div className="flex items-center gap-2 text-sm">
+            <AlertCircle className="w-4 h-4" />
+            <span className="text-muted-foreground">Priority: <span className="font-medium text-foreground">{action.priority.toUpperCase()}</span></span>
+          </div>
+
+          {/* Expected outcome */}
+          <div>
+            <h4 className="font-semibold text-sm mb-1.5 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-emerald-600" />
+              Expected outcome
+            </h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {action.category === 'community' && 'Connect with like-minded individuals, strengthen social wellness, and expand your longevity network.'}
+              {action.category === 'health' && 'Improve your health metrics, build sustainable habits, and optimize your longevity journey.'}
+              {action.category === 'media' && 'Gain valuable insights, learn proven strategies, and discover new approaches to wellness.'}
+              {action.category === 'discover' && 'Discover curated products and services that align with your longevity goals.'}
+              {action.category === 'calendar' && 'Stay organized, optimize your schedule, and never miss important wellness activities.'}
+            </p>
+          </div>
+
+          {/* Action metadata */}
+          <div className="pt-2 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
+            <span>Action ID: {action.id.slice(0, 8)}</span>
+            <span>{getCategoryLabel(action.category)}</span>
+          </div>
+        </div>
+      )
+    };
+  });
 }
 
 /**
