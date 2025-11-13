@@ -258,7 +258,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             "min-h-[88px] xl:min-h-[84px]",
             "gap-3 xl:gap-2.5",
             "px-4 py-3 xl:px-3.5 xl:py-2.5",
-            layoutMode === 'stack' ? "grid-cols-[40px_1fr_auto]" : "grid-cols-[36px_1fr_auto]",
+            layoutMode === 'stack' ? "grid-cols-[40px_1fr_minmax(120px,auto)]" : "grid-cols-[36px_1fr_minmax(100px,auto)]",
             "rounded-xl transition-all duration-200",
             (expandedContent || onClick) && "cursor-pointer"
           )}
@@ -326,8 +326,9 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
           <div 
             className={cn(
               "flex items-center justify-end gap-1.5 relative z-30 pointer-events-auto",
+              "pr-2",
               "focus-within:xl:opacity-100",
-              isRTL && "justify-start order-first"
+              isRTL && "justify-start order-first pl-2 pr-0"
             )}
             onClick={(e) => e.stopPropagation()}
           >
@@ -343,8 +344,9 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 }}
                 disabled={primaryAction.disabled}
                 className={cn(
-                  "h-8 text-[13px] transition-all duration-200",
+                  "h-9 text-[13px] transition-all duration-200",
                   "relative z-30 pointer-events-auto",
+                  "whitespace-nowrap",
                   // Use green gradient for "Join" buttons to match event cards
                   primaryAction.label?.toLowerCase().includes('join')
                     ? "rounded-full font-bold text-white border-0 shadow-lg hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl px-4"
