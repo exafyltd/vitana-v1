@@ -1,10 +1,11 @@
 import { StandardHorizontalCardProps } from '@/components/ui/standard-horizontal-card';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap, Activity, Brain, Droplets, EyeOff } from 'lucide-react';
+import { Award, TrendingUp, CheckCircle, AlertTriangle, Zap, Activity, Brain, Droplets, EyeOff, Play, Pause } from 'lucide-react';
 import { AutopilotActionStatus } from '@/types/autopilot';
 import { createElement } from 'react';
 import { getCtaForScreen } from './cta-taxonomy';
 import { toast } from '@/components/ui/use-toast';
+import { getVariantForAction } from './cta-variants';
 
 // Import images for routines (Visual pattern)
 import sunriseRoutineImg from '@/assets/ai-feed/sunrise-routine.jpg';
@@ -163,7 +164,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
           description: 'Added to your knowledge base.',
         });
       },
-      variant: ctaConfig.primary.variant,
+      variant: 'default',
       icon: ctaConfig.primary.icon
     },
     expandOnPrimaryClick: true,
@@ -185,7 +186,8 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
           console.log('[AI Feed] Hiding activity:', activity.id);
           toast({ title: 'Activity hidden' });
         },
-        icon: createElement(EyeOff, { className: 'w-3 h-3 mr-1' })
+        icon: createElement(EyeOff, { className: 'w-3 h-3 mr-1' }),
+        variant: 'ghost' as const
       }
     ],
     expandedContent: createElement(
