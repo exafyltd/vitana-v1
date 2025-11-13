@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 import { useRTL } from '@/components/RTLProvider';
-import { X } from 'lucide-react';
 
 export interface VisualHorizontalCardProps {
   id: string;
@@ -225,30 +224,6 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
               </div>
             )}
           </div>
-
-          {/* Always-visible Dismiss Button */}
-          {secondaryAction && secondaryAction.label === 'Dismiss' && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 right-2 z-20 h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-muted/90 border border-border/40 shadow-sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                secondaryAction.onClick();
-                horizontalCardAnalytics.ctaClick({
-                  screenId,
-                  cardId: id,
-                  variant: 'visual',
-                  ctaLabel: secondaryAction.label,
-                  ctaPosition: 'secondary'
-                });
-              }}
-              aria-label="Dismiss"
-              title="Dismiss this suggestion"
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          )}
 
           <button
             className={cn(

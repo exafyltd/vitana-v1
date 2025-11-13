@@ -254,6 +254,13 @@ export function transformAutopilotActionToVisualCard(
   const { variant: priorityVariant, label: priorityLabel } = getPriorityBadge(action.priority);
   const contextualCta = getContextualCta(action);
 
+  // Get subtle shadow based on priority
+  const priorityShadow = {
+    high: 'shadow-lg shadow-red-500/10',
+    medium: 'shadow-md shadow-amber-500/8',
+    low: 'shadow-sm'
+  }[action.priority];
+
   return {
     id: action.id,
     screenId,
@@ -279,6 +286,8 @@ export function transformAutopilotActionToVisualCard(
     statusDot: action.status === 'completed' ? 'success' : action.status === 'failed' ? 'error' : 'info',
     density: 'compact',
     analyticsCategory: action.category,
+    className: priorityShadow,
+    // PRIMARY ACTION: Contextual CTA (e.g., "Join", "Book", "Watch")
     primaryAction: onExecute
       ? {
           label: contextualCta.label,
@@ -287,28 +296,73 @@ export function transformAutopilotActionToVisualCard(
           variant: 'default',
         }
       : undefined,
-    secondaryAction: onDismiss
-      ? {
-          label: 'Dismiss',
-          icon: <X className="w-4 h-4 mr-1" />,
-          onClick: () => onDismiss(action.id),
-          variant: 'ghost',
-        }
-      : undefined,
-    expandedContent: action.timeEstimate ? (
-      <div className="space-y-2 text-sm">
-        <div className="flex items-center gap-2">
-          <Target className="w-4 h-4 text-primary" />
-          <span className="font-medium">Expected Outcome:</span>
-          <span className="text-muted-foreground">Complete this action to boost your {getCategoryLabel(action.category)} score</span>
+    // NO SECONDARY ACTION on collapsed card - Dismiss only in expanded content
+    secondaryAction: undefined,
+    expandedContent: (
+      <div className="space-y-4 p-4">
+        {/* Why this action */}
+        <div>
+          <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            Why this action?
+          </h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">{action.reason}</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Zap className="w-4 h-4 text-amber-500" />
-          <span className="font-medium">Time Required:</span>
-          <span className="text-muted-foreground">{action.timeEstimate}</span>
+
+        {/* Time estimate */}
+        {action.timeEstimate && (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Clock className="w-4 h-4" />
+            <span>Time needed: <span className="font-medium text-foreground">{action.timeEstimate}</span></span>
+          </div>
+        )}
+
+        {/* Priority indicator */}
+        <div className="flex items-center gap-2 text-sm">
+          <AlertCircle className="w-4 h-4" />
+          <span className="text-muted-foreground">Priority: <span className="font-medium text-foreground">{action.priority.toUpperCase()}</span></span>
+        </div>
+
+        {/* Expected outcome */}
+        <div>
+          <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-emerald-600" />
+            Expected outcome
+          </h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {action.category === 'community' && 'Connect with like-minded individuals, strengthen social wellness, and expand your longevity network.'}
+            {action.category === 'health' && 'Improve your health metrics, build sustainable habits, and optimize your longevity journey.'}
+            {action.category === 'media' && 'Gain valuable insights, learn proven strategies, and discover new approaches to wellness.'}
+            {action.category === 'discover' && 'Discover curated products and services that align with your longevity goals.'}
+            {action.category === 'calendar' && 'Stay organized, optimize your schedule, and never miss important wellness activities.'}
+          </p>
+        </div>
+
+        {/* Action buttons - horizontal layout */}
+        <div className="flex gap-2 pt-2 border-t border-border/50">
+          {/* PRIMARY CTA */}
+          {onExecute && (
+            <button
+              onClick={() => onExecute(action.id)}
+              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              {contextualCta.icon}
+              {contextualCta.label}
+            </button>
+          )}
+          
+          {/* DISMISS (subtle, ghost) */}
+          {onDismiss && (
+            <button
+              onClick={() => onDismiss(action.id)}
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
+            >
+              Not Interested
+            </button>
+          )}
         </div>
       </div>
-    ) : undefined,
+    ),
   };
 }
 
