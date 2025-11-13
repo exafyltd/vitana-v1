@@ -9,6 +9,7 @@ import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 interface HorizontalCardListProps<T extends StandardHorizontalCardProps | VisualHorizontalCardProps> {
   items: T[];
   variant: 'standard' | 'visual';
+  layout?: 'stack' | 'rail';
   groupBy?: 'date' | 'category' | 'none';
   groupLabels?: {
     today?: string;
@@ -39,6 +40,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
   const {
     items,
     variant,
+    layout = 'stack',
     groupBy = 'none',
     groupLabels,
     infiniteScroll = false,
@@ -210,45 +212,76 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
   }
 
   const gapClass = {
-    sm: 'divide-y divide-white/5 [&>*]:py-1.5 xl:[&>*]:py-1',
-    md: 'divide-y divide-white/5 [&>*]:py-2 xl:[&>*]:py-1.5',
-    lg: 'space-y-2 xl:space-y-1.5'
+    sm: 'gap-2',
+    md: 'gap-3',
+    lg: 'gap-4'
   }[gap];
 
   return (
     <div className={cn("w-full", className)}>
-      {groupedItems.map((group, groupIdx) => (
-        <div key={groupIdx} className="mb-6">
-        {group.label && (
-          <div className="text-[12px] font-medium text-muted-foreground/80 uppercase tracking-wide py-1.5 px-2 h-8 sticky top-0 bg-background/80 backdrop-blur-sm z-10 flex items-center mb-0.5">
-            {group.label}
-          </div>
-        )}
+      {layout === 'stack' ? (
+        // Stack mode - vertical list
+        <div className="w-full max-w-[1200px] mx-auto px-4">
+          {groupedItems.map((group, groupIdx) => (
+            <div key={groupIdx} className="mb-6">
+              {group.label && (
+                <div className="text-[12px] font-medium text-muted-foreground/80 uppercase tracking-wide py-1.5 px-2 h-8 flex items-center mb-2">
+                  {group.label}
+                </div>
+              )}
+              <div className={cn("flex flex-col", gapClass)}>
+                {group.items.map((item, idx) => renderCard(item, idx))}
+              </div>
+            </div>
+          ))}
 
-          {shouldVirtualize ? (
-            <VirtualizedList
-              items={group.items}
-              itemHeight={actualItemHeight}
-              height={actualContainerHeight}
-              renderItem={renderCard}
-              className={gapClass}
-            />
-          ) : (
-            <div className={gapClass}>
-              {group.items.map((item, idx) => renderCard(item, idx))}
+          {isLoading && (
+            <div className={cn("flex flex-col", gapClass)}>
+              <HorizontalCardSkeleton variant={variant} count={3} />
             </div>
           )}
-        </div>
-      ))}
 
-      {isLoading && (
-        <div className="space-y-3">
-          <HorizontalCardSkeleton variant={variant} count={3} />
+          {infiniteScroll && hasMore && (
+            <div ref={sentinelRef} className="h-4" />
+          )}
         </div>
-      )}
+      ) : (
+        // Rail mode - existing vertical stack logic
+        <>
+          {groupedItems.map((group, groupIdx) => (
+            <div key={groupIdx} className="mb-6">
+              {group.label && (
+                <div className="text-[12px] font-medium text-muted-foreground/80 uppercase tracking-wide py-1.5 px-2 h-8 sticky top-0 bg-background/80 backdrop-blur-sm z-10 flex items-center mb-0.5">
+                  {group.label}
+                </div>
+              )}
 
-      {infiniteScroll && hasMore && (
-        <div ref={sentinelRef} className="h-4" />
+              {shouldVirtualize ? (
+                <VirtualizedList
+                  items={group.items}
+                  itemHeight={actualItemHeight}
+                  height={actualContainerHeight}
+                  renderItem={renderCard}
+                  className={gapClass}
+                />
+              ) : (
+                <div className={gapClass}>
+                  {group.items.map((item, idx) => renderCard(item, idx))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className="space-y-3">
+              <HorizontalCardSkeleton variant={variant} count={3} />
+            </div>
+          )}
+
+          {infiniteScroll && hasMore && (
+            <div ref={sentinelRef} className="h-4" />
+          )}
+        </>
       )}
     </div>
   );

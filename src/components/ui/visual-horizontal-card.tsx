@@ -56,6 +56,7 @@ export interface VisualHorizontalCardProps {
   onClick?: () => void;
   enableCompactDensity?: boolean;
   analyticsCategory?: string;
+  layoutMode?: 'stack' | 'rail';
 }
 
 export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHorizontalCardProps>(
@@ -83,10 +84,11 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       isExpanded,
       onToggleExpand,
       density = 'compact',
-      className,
-      onClick,
-      analyticsCategory
-    } = props;
+    className,
+    onClick,
+    analyticsCategory,
+    layoutMode = 'rail',
+  } = props;
 
     const { isRTL } = useRTL();
     const cardRef = useRef<HTMLDivElement>(null);
@@ -162,14 +164,33 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         className={cn(
           "group relative overflow-hidden",
           "rounded-xl border border-white/10",
-          "shadow-[0_1px_6px_rgba(0,0,0,0.05)]",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
-          "hover:scale-[1.01] hover:brightness-[1.02]",
-          "transition-all duration-150 ease-out",
+          "bg-background/60 backdrop-blur-sm",
+          "hover:border-[hsl(var(--accent))]/40",
+          "transition-all duration-200 ease-out",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60",
+          
+          // Stack mode - full width with shadow
+          layoutMode === 'stack' && [
+            "w-full",
+            "shadow-[0_2px_10px_rgba(0,0,0,0.06)]",
+            "hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
+            "hover:scale-[1.005]",
+          ],
+          
+          // Rail mode - fixed width
+          layoutMode === 'rail' && [
+            "shadow-[0_1px_6px_rgba(0,0,0,0.05)]",
+            "hover:scale-[1.01]",
+          ],
+          
+          // Height adjustments
           "min-h-[160px] xl:min-h-[152px]",
+          
+          // Accent rail
           "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
           "before:left-0 before:rounded-l-xl hover:before:bg-current focus-within:before:bg-current",
+          
           className
         )}
         style={{
