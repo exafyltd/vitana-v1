@@ -54,6 +54,7 @@ export interface StandardHorizontalCardProps {
   onConsentRequired?: () => void;
   onClick?: () => void;
   analyticsCategory?: string;
+  layoutMode?: 'stack' | 'rail';
 }
 
 export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardHorizontalCardProps>(
@@ -80,7 +81,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       requiresConsent,
       onConsentRequired,
       onClick,
-      analyticsCategory
+      analyticsCategory,
+      layoutMode = 'rail',
     } = props;
 
     const { isRTL } = useRTL();
@@ -212,16 +214,35 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
         className={cn(
           "group relative overflow-hidden z-20",
           "rounded-xl border border-white/10",
-          "shadow-[0_1px_6px_rgba(0,0,0,0.05)]",
-          "hover:border-[hsl(var(--accent))]/40 hover:shadow-[0_2px_10px_rgba(0,0,0,0.08)]",
-          "hover:scale-[1.01] hover:brightness-[1.02]",
-          "transition-all duration-150 ease-out",
+          "bg-background/60 backdrop-blur-sm",
+          "hover:border-[hsl(var(--accent))]/40",
+          "transition-all duration-200 ease-out",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60",
+          
+          // Stack mode - full width
+          layoutMode === 'stack' && [
+            "w-full",
+            "shadow-[0_2px_10px_rgba(0,0,0,0.06)]",
+            "hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
+            "hover:scale-[1.005]",
+          ],
+          
+          // Rail mode - fixed width
+          layoutMode === 'rail' && [
+            "shadow-[0_1px_6px_rgba(0,0,0,0.05)]",
+            "hover:scale-[1.01]",
+          ],
+          
+          // Height
           "min-h-[88px] xl:min-h-[84px]",
+          
+          // Accent rail
           "before:absolute before:top-0 before:bottom-0 before:w-[2px]",
           "before:bg-transparent before:transition-all before:duration-200",
           isRTL 
             ? "before:right-0 before:rounded-r-xl hover:before:bg-current focus-within:before:bg-current" 
             : "before:left-0 before:rounded-l-xl hover:before:bg-current focus-within:before:bg-current",
+          
           className
         )}
         style={{
@@ -237,7 +258,7 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
             "min-h-[88px] xl:min-h-[84px]",
             "gap-3 xl:gap-2.5",
             "px-4 py-3 xl:px-3.5 xl:py-2.5",
-            "grid-cols-[36px_1fr_auto]",
+            layoutMode === 'stack' ? "grid-cols-[40px_1fr_auto]" : "grid-cols-[36px_1fr_auto]",
             "rounded-xl transition-all duration-200",
             (expandedContent || onClick) && "cursor-pointer"
           )}

@@ -155,21 +155,28 @@ export default function Actions() {
                     data-testid="actions-main-rail"
                   >
                     {pendingActions.length > 0 ? (
-                      <HorizontalVisualCardsScroll
-                        items={transformAutopilotActionsToVisualCards(
-                          pendingActions.sort((a, b) => {
-                            const priorityOrder = { high: 3, medium: 2, low: 1 };
-                            return priorityOrder[b.priority] - priorityOrder[a.priority];
-                          }),
-                          'home_actions_pending',
-                          handleExecuteAction,
-                          handleDismissAction
-                        )}
-                        screenId="home_actions_pending"
-                        listId="pending-actions"
-                        cardWidth="md"
-                        className="px-2"
-                      />
+          <HorizontalCardList
+            variant="visual"
+            layout="stack"
+            items={transformAutopilotActionsToVisualCards(
+              pendingActions.sort((a, b) => {
+                const priorityOrder = { high: 3, medium: 2, low: 1 };
+                return priorityOrder[b.priority] - priorityOrder[a.priority];
+              }),
+              'home_actions_pending',
+              handleExecuteAction,
+              handleDismissAction
+            ).map(item => ({ ...item, layoutMode: 'stack' as const }))}
+            screenId="home_actions_pending"
+            listId="pending-actions"
+            infiniteScroll={false}
+            className="mt-4"
+            emptyState={
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No pending actions</p>
+              </div>
+            }
+          />
                     ) : (
                       <div className="text-center py-8 text-muted-foreground">
                         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
@@ -223,7 +230,9 @@ export default function Actions() {
                         <TabsContent key={category.key} value={category.key} className="space-y-6">
                           {actionsByCategory[category.key]?.length > 0 ? (
                             <>
-                              <HorizontalVisualCardsScroll
+                              <HorizontalCardList
+                                variant="visual"
+                                layout="stack"
                                 items={transformAutopilotActionsToVisualCards(
                                   actionsByCategory[category.key].sort((a, b) => {
                                     const priorityOrder = { high: 3, medium: 2, low: 1 };
@@ -232,11 +241,11 @@ export default function Actions() {
                                   `home_actions_${category.key}`,
                                   handleExecuteAction,
                                   handleDismissAction
-                                )}
+                                ).map(item => ({ ...item, layoutMode: 'stack' as const }))}
                                 screenId={`home_actions_${category.key}`}
                                 listId={`${category.key}-actions`}
-                                cardWidth="md"
-                                className="px-2"
+                                infiniteScroll={false}
+                                className="mt-4"
                               />
                               <div className="flex justify-between pt-4">
                                 <Button 
