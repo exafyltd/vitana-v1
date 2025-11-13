@@ -202,9 +202,9 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       >
       <div className={cn(
         "grid items-stretch grid-cols-1",
-        "lg:grid-cols-[36%_auto_112px]",
-        "xl:grid-cols-[32%_auto_104px]",
-        "gap-0 lg:gap-3 xl:gap-2.5"
+        "lg:grid-cols-[36%_1fr_140px_112px]",
+        "xl:grid-cols-[32%_1fr_128px_104px]",
+        "gap-0 lg:gap-2 xl:gap-2"
       )}>
           <div className={cn(
             "relative overflow-hidden rounded-t-xl lg:rounded-l-xl lg:rounded-tr-none",
@@ -308,57 +308,38 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </button>
 
-          {/* Action Buttons */}
-          {(primaryAction || secondaryAction) && (
-            <div className="flex items-center gap-2.5 px-4 pb-4 pt-3 border-t border-border/30 mt-3">
-              {secondaryAction && (
-                <Button
-                  variant={secondaryAction.variant || 'ghost'}
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    secondaryAction.onClick();
-                    horizontalCardAnalytics.ctaClick({
-                      screenId,
-                      cardId: id,
-                      variant: 'visual',
-                      ctaLabel: secondaryAction.label,
-                      ctaPosition: 'secondary'
-                    });
-                  }}
-                  className="gap-1.5 text-muted-foreground hover:text-foreground"
-                >
-                  {secondaryAction.icon}
-                  {secondaryAction.label}
-                </Button>
-              )}
-              {primaryAction && (
-                <Button
-                  variant={primaryAction.variant || 'default'}
-                  size="default"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    primaryAction.onClick();
-                    horizontalCardAnalytics.ctaClick({
-                      screenId,
-                      cardId: id,
-                      variant: 'visual',
-                      ctaLabel: primaryAction.label,
-                      ctaPosition: 'primary'
-                    });
-                  }}
-                  className={cn(
-                    "gap-2 font-semibold ml-auto",
-                    // Use green gradient for "Join" buttons to match event cards
-                    primaryAction.label?.toLowerCase().includes('join')
-                      ? "rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl"
-                      : "shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-primary to-primary/90"
-                  )}
-                >
-                  {primaryAction.icon}
-                  {primaryAction.label}
-                </Button>
-              )}
+          {/* CTA Column - Dedicated fixed-width space for primary action */}
+          {primaryAction && (
+            <div className={cn(
+              "flex items-center justify-center",
+              "px-3 py-3 xl:px-2 xl:py-2",
+              "w-full lg:w-[140px] xl:w-[128px]",
+              "shrink-0"
+            )}>
+              <Button
+                variant={primaryAction.variant || 'default'}
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  primaryAction.onClick();
+                  horizontalCardAnalytics.ctaClick({
+                    screenId,
+                    cardId: id,
+                    variant: 'visual',
+                    ctaLabel: primaryAction.label,
+                    ctaPosition: 'primary'
+                  });
+                }}
+                className={cn(
+                  "font-semibold w-full h-9",
+                  primaryAction.label?.toLowerCase().includes('join')
+                    ? "rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl px-4"
+                    : "shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-primary to-primary/90 px-3"
+                )}
+              >
+                {primaryAction.icon}
+                {primaryAction.label}
+              </Button>
             </div>
           )}
 
