@@ -343,10 +343,12 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 }}
                 disabled={primaryAction.disabled}
                 className={cn(
-                  "h-8 text-[13px] font-medium transition-all duration-200",
-                  "opacity-80 hover:opacity-100 hover:bg-accent hover:text-accent-foreground",
-                  "px-3",
-                  "relative z-30 pointer-events-auto"
+                  "h-8 text-[13px] transition-all duration-200",
+                  "relative z-30 pointer-events-auto",
+                  // Use green gradient for "Join" buttons to match event cards
+                  primaryAction.label?.toLowerCase().includes('join')
+                    ? "rounded-full font-bold text-white border-0 shadow-lg hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl px-4"
+                    : "font-medium opacity-80 hover:opacity-100 hover:bg-accent hover:text-accent-foreground px-3"
                 )}
                 aria-label={primaryAction.label}
                 title={primaryAction.label}
