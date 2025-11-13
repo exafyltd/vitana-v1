@@ -347,7 +347,13 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                       ctaPosition: 'primary'
                     });
                   }}
-                  className="gap-2 font-semibold shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-primary to-primary/90 ml-auto"
+                  className={cn(
+                    "gap-2 font-semibold ml-auto",
+                    // Use green gradient for "Join" buttons to match event cards
+                    primaryAction.label?.toLowerCase().includes('join')
+                      ? "rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl"
+                      : "shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-primary to-primary/90"
+                  )}
                 >
                   {primaryAction.icon}
                   {primaryAction.label}
