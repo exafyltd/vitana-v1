@@ -21,7 +21,6 @@ const buttonVariants = cva(
         solid: "rounded-full bg-[#111827] text-white hover:bg-[#0f1525] transition-all",
         soft: "rounded-full bg-violet-50 text-violet-700 hover:bg-violet-100 dark:bg-violet-950/50 dark:text-violet-300 dark:hover:bg-violet-900/50 transition-all",
         pill: "rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-all",
-        join: "bg-gradient-to-r from-[hsl(142,76%,36%)] to-[hsl(173,58%,39%)] text-white hover:from-[hsl(142,76%,32%)] hover:to-[hsl(173,58%,35%)] active:from-[hsl(142,76%,28%)] active:to-[hsl(173,58%,31%)] shadow-sm hover:shadow-md transition-all duration-200",
       },
       size: {
         default: "h-10 px-4 py-2",
