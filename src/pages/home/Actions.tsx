@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
-import { transformAutopilotActionsToStandardCards } from "@/lib/autopilot-transformers";
+import { transformAutopilotActionsToVisualCards } from "@/lib/autopilot-transformers";
 import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
 import { useToast } from "@/hooks/use-toast";
 
@@ -155,8 +155,8 @@ export default function Actions() {
                   >
                     {pendingActions.length > 0 ? (
                       <HorizontalCardList
-                        variant="standard"
-                        items={transformAutopilotActionsToStandardCards(
+                        variant="visual"
+                        items={transformAutopilotActionsToVisualCards(
                           pendingActions.sort((a, b) => {
                             const priorityOrder = { high: 3, medium: 2, low: 1 };
                             return priorityOrder[b.priority] - priorityOrder[a.priority];
@@ -232,8 +232,8 @@ export default function Actions() {
                           {actionsByCategory[category.key]?.length > 0 ? (
                             <>
                               <HorizontalCardList
-                                variant="standard"
-                                items={transformAutopilotActionsToStandardCards(
+                                variant="visual"
+                                items={transformAutopilotActionsToVisualCards(
                                   actionsByCategory[category.key].sort((a, b) => {
                                     const priorityOrder = { high: 3, medium: 2, low: 1 };
                                     return priorityOrder[b.priority] - priorityOrder[a.priority];
