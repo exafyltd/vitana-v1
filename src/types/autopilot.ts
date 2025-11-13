@@ -21,6 +21,8 @@ export interface AutopilotAction {
   timestamp: Date;
   status: AutopilotActionStatus;
   selected?: boolean;
+  actionType?: string; // e.g., "join", "book", "review", "watch", "start"
+  ctaLabel?: string; // explicit CTA override
 }
 
 export interface AutopilotState {

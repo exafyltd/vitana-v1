@@ -256,7 +256,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
               )}
             </div>
             
-            <p className="text-[13.5px] leading-snug xl:leading-[1.25] text-foreground/85 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
+            <p className="text-[13.5px] leading-snug xl:leading-[1.25] text-foreground/70 line-clamp-2" dir={isRTL ? 'rtl' : 'ltr'}>
               {description}
             </p>
             
@@ -289,28 +289,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
 
           {/* Action Buttons */}
           {(primaryAction || secondaryAction) && (
-            <div className="flex items-center gap-2 px-4 pb-3">
-              {primaryAction && (
-                <Button
-                  variant={primaryAction.variant || 'default'}
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    primaryAction.onClick();
-                    horizontalCardAnalytics.ctaClick({
-                      screenId,
-                      cardId: id,
-                      variant: 'visual',
-                      ctaLabel: primaryAction.label,
-                      ctaPosition: 'primary'
-                    });
-                  }}
-                  className="flex-1"
-                >
-                  {primaryAction.icon}
-                  {primaryAction.label}
-                </Button>
-              )}
+            <div className="flex items-center gap-2.5 px-4 pb-4 pt-3 border-t border-border/30 mt-3">
               {secondaryAction && (
                 <Button
                   variant={secondaryAction.variant || 'ghost'}
@@ -326,10 +305,31 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                       ctaPosition: 'secondary'
                     });
                   }}
-                  className="flex-1"
+                  className="gap-1.5 text-muted-foreground hover:text-foreground"
                 >
                   {secondaryAction.icon}
                   {secondaryAction.label}
+                </Button>
+              )}
+              {primaryAction && (
+                <Button
+                  variant={primaryAction.variant || 'default'}
+                  size="default"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    primaryAction.onClick();
+                    horizontalCardAnalytics.ctaClick({
+                      screenId,
+                      cardId: id,
+                      variant: 'visual',
+                      ctaLabel: primaryAction.label,
+                      ctaPosition: 'primary'
+                    });
+                  }}
+                  className="gap-2 font-semibold shadow-sm hover:shadow-md transition-shadow bg-gradient-to-br from-primary to-primary/90 ml-auto"
+                >
+                  {primaryAction.icon}
+                  {primaryAction.label}
                 </Button>
               )}
             </div>

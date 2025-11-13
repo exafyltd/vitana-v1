@@ -16,7 +16,8 @@ const generateMockActions = (): AutopilotAction[] => [
     imageUrl: "/src/assets/actions/community-dance-group.jpg",
     timestamp: new Date(Date.now() - 5 * 60 * 1000),
     status: "pending",
-    selected: true
+    selected: true,
+    actionType: "join"
   },
   {
     id: "2", 
@@ -29,7 +30,8 @@ const generateMockActions = (): AutopilotAction[] => [
     imageUrl: "/src/assets/actions/ai-neural-patterns.jpg",
     timestamp: new Date(Date.now() - 8 * 60 * 1000),
     status: "pending",
-    selected: true
+    selected: true,
+    ctaLabel: "View Insight"
   },
   {
     id: "3",
@@ -42,7 +44,8 @@ const generateMockActions = (): AutopilotAction[] => [
     imageUrl: "/src/assets/actions/hydration-water-bottle.jpg",
     timestamp: new Date(Date.now() - 12 * 60 * 1000),
     status: "pending",
-    selected: true
+    selected: true,
+    ctaLabel: "Log It"
   },
   {
     id: "4",
@@ -55,7 +58,8 @@ const generateMockActions = (): AutopilotAction[] => [
     imageUrl: "/src/assets/actions/friends-meetup-selfie.jpg",
     timestamp: new Date(Date.now() - 15 * 60 * 1000),
     status: "pending",
-    selected: true
+    selected: true,
+    ctaLabel: "Send Invites"
   },
   {
     id: "5",
@@ -68,7 +72,8 @@ const generateMockActions = (): AutopilotAction[] => [
     imageUrl: "/src/assets/actions/doctor-biomarker-review.jpg",
     timestamp: new Date(Date.now() - 18 * 60 * 1000),
     status: "pending",
-    selected: false
+    selected: false,
+    actionType: "review"
   },
   {
     id: "6",
@@ -81,7 +86,8 @@ const generateMockActions = (): AutopilotAction[] => [
     imageUrl: "/src/assets/actions/wellness-yoga-nature.jpg",
     timestamp: new Date(Date.now() - 22 * 60 * 1000),
     status: "pending", 
-    selected: true
+    selected: true,
+    actionType: "watch"
   }
 ];
 
