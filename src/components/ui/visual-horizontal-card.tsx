@@ -36,6 +36,18 @@ export interface VisualHorizontalCardProps {
     label: string;
     color: string;
   };
+  primaryAction?: {
+    label: string;
+    icon?: React.ReactNode;
+    onClick: () => void;
+    variant?: 'default' | 'ghost' | 'outline';
+  };
+  secondaryAction?: {
+    label: string;
+    icon?: React.ReactNode;
+    onClick: () => void;
+    variant?: 'default' | 'ghost' | 'outline';
+  };
   expandedContent?: React.ReactNode;
   isExpanded?: boolean;
   onToggleExpand?: (id: string) => void;
@@ -65,6 +77,8 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       statusDot,
       rewardPoints,
       privacyBadge,
+      primaryAction,
+      secondaryAction,
       expandedContent,
       isExpanded,
       onToggleExpand,
@@ -127,7 +141,19 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
     const formatTimestamp = () => {
       if (!timestamp) return '';
       if (typeof timestamp === 'string') return timestamp;
-      return timestamp.toLocaleDateString();
+      
+      // Format with full date and time
+      const dateStr = timestamp.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      const timeStr = timestamp.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      return `${dateStr} at ${timeStr}`;
     };
 
     return (
@@ -260,6 +286,54 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
               </div>
             )}
           </button>
+
+          {/* Action Buttons */}
+          {(primaryAction || secondaryAction) && (
+            <div className="flex items-center gap-2 px-4 pb-3">
+              {primaryAction && (
+                <Button
+                  variant={primaryAction.variant || 'default'}
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    primaryAction.onClick();
+                    horizontalCardAnalytics.ctaClick({
+                      screenId,
+                      cardId: id,
+                      variant: 'visual',
+                      ctaLabel: primaryAction.label,
+                      ctaPosition: 'primary'
+                    });
+                  }}
+                  className="flex-1"
+                >
+                  {primaryAction.icon}
+                  {primaryAction.label}
+                </Button>
+              )}
+              {secondaryAction && (
+                <Button
+                  variant={secondaryAction.variant || 'ghost'}
+                  size="sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    secondaryAction.onClick();
+                    horizontalCardAnalytics.ctaClick({
+                      screenId,
+                      cardId: id,
+                      variant: 'visual',
+                      ctaLabel: secondaryAction.label,
+                      ctaPosition: 'secondary'
+                    });
+                  }}
+                  className="flex-1"
+                >
+                  {secondaryAction.icon}
+                  {secondaryAction.label}
+                </Button>
+              )}
+            </div>
+          )}
 
           {/* Right Badge Zone - Fixed width, single medal + cadence text */}
         <div className={cn(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { AutopilotAction, AutopilotCategory, AutopilotPriority } from '@/types/autopilot';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { Clock } from 'lucide-react';
+import { Clock, Zap, Target, Check, X } from 'lucide-react';
 
 // Import action images
 import communityDanceImage from '@/assets/actions/community-dance-group.jpg';
@@ -152,7 +152,9 @@ const getPriorityBadge = (priority: AutopilotPriority): { label: string; variant
  */
 export function transformAutopilotActionToVisualCard(
   action: AutopilotAction,
-  screenId: string = 'home_actions'
+  screenId: string = 'home_actions',
+  onExecute?: (actionId: string) => void,
+  onDismiss?: (actionId: string) => void
 ): VisualHorizontalCardProps {
   return {
     id: action.id,
@@ -179,6 +181,36 @@ export function transformAutopilotActionToVisualCard(
     statusDot: action.status === 'completed' ? 'success' : action.status === 'failed' ? 'error' : 'info',
     density: 'compact',
     analyticsCategory: action.category,
+    primaryAction: onExecute
+      ? {
+          label: 'Take Action',
+          icon: <Check className="w-4 h-4 mr-1" />,
+          onClick: () => onExecute(action.id),
+          variant: 'default',
+        }
+      : undefined,
+    secondaryAction: onDismiss
+      ? {
+          label: 'Dismiss',
+          icon: <X className="w-4 h-4 mr-1" />,
+          onClick: () => onDismiss(action.id),
+          variant: 'ghost',
+        }
+      : undefined,
+    expandedContent: action.timeEstimate ? (
+      <div className="space-y-2 text-sm">
+        <div className="flex items-center gap-2">
+          <Target className="w-4 h-4 text-primary" />
+          <span className="font-medium">Expected Outcome:</span>
+          <span className="text-muted-foreground">Complete this action to boost your {getCategoryLabel(action.category)} score</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Zap className="w-4 h-4 text-amber-500" />
+          <span className="font-medium">Time Required:</span>
+          <span className="text-muted-foreground">{action.timeEstimate}</span>
+        </div>
+      </div>
+    ) : undefined,
   };
 }
 
@@ -187,7 +219,9 @@ export function transformAutopilotActionToVisualCard(
  */
 export function transformAutopilotActionsToVisualCards(
   actions: AutopilotAction[],
-  screenId: string = 'home_actions'
+  screenId: string = 'home_actions',
+  onExecute?: (actionId: string) => void,
+  onDismiss?: (actionId: string) => void
 ): VisualHorizontalCardProps[] {
-  return actions.map(action => transformAutopilotActionToVisualCard(action, screenId));
+  return actions.map(action => transformAutopilotActionToVisualCard(action, screenId, onExecute, onDismiss));
 }
