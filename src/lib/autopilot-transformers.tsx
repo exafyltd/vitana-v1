@@ -1,7 +1,21 @@
 import React from 'react';
 import { AutopilotAction, AutopilotCategory, AutopilotPriority } from '@/types/autopilot';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { Clock, Zap, Target, Check, X } from 'lucide-react';
+import { 
+  Clock, 
+  Zap, 
+  Target, 
+  Check, 
+  X, 
+  UserPlus, 
+  Calendar, 
+  Play, 
+  FileText, 
+  Rocket, 
+  Eye,
+  Star,
+  Sparkles
+} from 'lucide-react';
 
 // Import action images
 import communityDanceImage from '@/assets/actions/community-dance-group.jpg';
@@ -108,6 +122,83 @@ const getImageForAction = (action: AutopilotAction): string => {
 };
 
 /**
+ * Get contextual CTA label and icon based on action type or title
+ */
+export function getContextualCta(action: AutopilotAction): { label: string; icon: React.ReactNode } {
+  // Use explicit CTA label if provided
+  if (action.ctaLabel) {
+    return {
+      label: action.ctaLabel,
+      icon: <Check className="w-4 h-4" />
+    };
+  }
+
+  // Use actionType if provided
+  if (action.actionType) {
+    switch (action.actionType.toLowerCase()) {
+      case 'join':
+        return { label: 'Join', icon: <UserPlus className="w-4 h-4" /> };
+      case 'book':
+        return { label: 'Book Now', icon: <Calendar className="w-4 h-4" /> };
+      case 'watch':
+        return { label: 'Watch', icon: <Play className="w-4 h-4" /> };
+      case 'review':
+        return { label: 'Review', icon: <FileText className="w-4 h-4" /> };
+      case 'start':
+        return { label: 'Start', icon: <Rocket className="w-4 h-4" /> };
+      case 'schedule':
+        return { label: 'Schedule', icon: <Calendar className="w-4 h-4" /> };
+      case 'connect':
+        return { label: 'Connect', icon: <UserPlus className="w-4 h-4" /> };
+      case 'explore':
+        return { label: 'Explore', icon: <Sparkles className="w-4 h-4" /> };
+    }
+  }
+
+  // Smart detection based on title keywords
+  const title = action.title.toLowerCase();
+  
+  if (title.includes('join') || title.includes('group') || title.includes('squad')) {
+    return { label: 'Join', icon: <UserPlus className="w-4 h-4" /> };
+  }
+  if (title.includes('book') || title.includes('appointment') || title.includes('schedule')) {
+    return { label: 'Book', icon: <Calendar className="w-4 h-4" /> };
+  }
+  if (title.includes('watch') || title.includes('video') || title.includes('stream')) {
+    return { label: 'Watch', icon: <Play className="w-4 h-4" /> };
+  }
+  if (title.includes('review') || title.includes('biomarker') || title.includes('results') || title.includes('report')) {
+    return { label: 'Review', icon: <FileText className="w-4 h-4" /> };
+  }
+  if (title.includes('start') || title.includes('begin') || title.includes('challenge')) {
+    return { label: 'Start', icon: <Rocket className="w-4 h-4" /> };
+  }
+  if (title.includes('invite') || title.includes('meetup')) {
+    return { label: 'Send Invites', icon: <UserPlus className="w-4 h-4" /> };
+  }
+  if (title.includes('insight') || title.includes('discover') || title.includes('breakthrough')) {
+    return { label: 'View Insight', icon: <Sparkles className="w-4 h-4" /> };
+  }
+  if (title.includes('streak') || title.includes('track')) {
+    return { label: 'Log It', icon: <Check className="w-4 h-4" /> };
+  }
+
+  // Fallback based on category
+  switch (action.category) {
+    case 'community':
+      return { label: 'Connect', icon: <UserPlus className="w-4 h-4" /> };
+    case 'calendar':
+      return { label: 'Schedule', icon: <Calendar className="w-4 h-4" /> };
+    case 'media':
+      return { label: 'Watch', icon: <Play className="w-4 h-4" /> };
+    case 'health':
+      return { label: 'Take Action', icon: <Star className="w-4 h-4" /> };
+    default:
+      return { label: 'View Details', icon: <Eye className="w-4 h-4" /> };
+  }
+}
+
+/**
  * Generates motivational hook based on action context
  */
 const getMotivationalHook = (action: AutopilotAction): string => {
@@ -156,6 +247,10 @@ export function transformAutopilotActionToVisualCard(
   onExecute?: (actionId: string) => void,
   onDismiss?: (actionId: string) => void
 ): VisualHorizontalCardProps {
+  const motivationalHook = getMotivationalHook(action);
+  const { variant: priorityVariant, label: priorityLabel } = getPriorityBadge(action.priority);
+  const contextualCta = getContextualCta(action);
+
   return {
     id: action.id,
     screenId,
@@ -183,8 +278,8 @@ export function transformAutopilotActionToVisualCard(
     analyticsCategory: action.category,
     primaryAction: onExecute
       ? {
-          label: 'Take Action',
-          icon: <Check className="w-4 h-4 mr-1" />,
+          label: contextualCta.label,
+          icon: contextualCta.icon,
           onClick: () => onExecute(action.id),
           variant: 'default',
         }
