@@ -27,6 +27,8 @@ import {
   MessageSquare,
   Music,
   Check,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -126,6 +128,7 @@ export function CampaignCard({
   const { duplicateCampaign, deleteCampaign } = useCampaigns();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showAllSchedules, setShowAllSchedules] = useState(false);
 
   // Parse campaign data
   const selectedChannels = Object.entries(
@@ -393,7 +396,7 @@ export function CampaignCard({
               <TooltipTrigger asChild>
                 <div className="space-y-1.5">
                   {Object.entries(bestTimes)
-                    .slice(0, 3)
+                    .slice(0, showAllSchedules ? Object.keys(bestTimes).length : 3)
                     .map(([channel, times], index) => {
                       const channelInfo = CHANNEL_INFO[channel];
                       const timeArray = times as string[];
@@ -438,9 +441,31 @@ export function CampaignCard({
                     })}
 
                   {Object.keys(bestTimes).length > 3 && (
-                    <p className="text-xs text-gray-500 ml-2">
-                      +{Object.keys(bestTimes).length - 3} more channels
-                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowAllSchedules(!showAllSchedules);
+                      }}
+                      className={cn(
+                        "text-xs font-medium ml-2 px-2 py-1 rounded-md",
+                        "text-teal-600 hover:text-teal-700",
+                        "hover:bg-teal-50 transition-all duration-200",
+                        "flex items-center gap-1"
+                      )}
+                    >
+                      {showAllSchedules ? (
+                        <>
+                          <ChevronUp className="w-3 h-3" />
+                          Show less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="w-3 h-3" />
+                          +{Object.keys(bestTimes).length - 3} more channel
+                          {Object.keys(bestTimes).length - 3 !== 1 ? "s" : ""}
+                        </>
+                      )}
+                    </button>
                   )}
                 </div>
               </TooltipTrigger>
