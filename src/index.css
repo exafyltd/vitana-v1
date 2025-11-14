@@ -130,6 +130,12 @@ All colors MUST be HSL.
     /* Vitana Premium Gradient (emerald → cyan) */
     --gradient-vitana-start: 160 84% 39%; /* Emerald */
     --gradient-vitana-end: 189 94% 43%; /* Cyan */
+    
+    /* Vitana Glass Colors - Mint & Pink */
+    --vitana-mint: 173 58% 39%; /* Teal/Mint */
+    --vitana-pink: 328 86% 70%; /* Soft Pink */
+    --vitana-sky: 199 89% 48%; /* Sky Blue */
+    --vitana-glass-white: 0 0% 100%; /* White with opacity */
 
     /* Unified Layout System Variables */
     --row-base: 70px;
@@ -256,6 +262,12 @@ All colors MUST be HSL.
     /* Vitana Premium Gradient - Dark Mode */
     --gradient-vitana-start: 160 84% 49%; /* Brighter Emerald */
     --gradient-vitana-end: 189 94% 53%; /* Brighter Cyan */
+    
+    /* Vitana Glass Colors - Dark Mode */
+    --vitana-mint: 173 58% 49%; /* Brighter Teal/Mint */
+    --vitana-pink: 328 86% 80%; /* Brighter Soft Pink */
+    --vitana-sky: 199 89% 58%; /* Brighter Sky Blue */
+    --vitana-glass-white: 0 0% 100%; /* White with opacity */
 
     /* Tenant brand variables - dark mode defaults */
     --brand-accent: 339 89% 49%;

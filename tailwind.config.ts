@@ -145,6 +145,29 @@ export default {
 						tint: 'hsl(var(--domain-community-tint))'
 					}
 				},
+				vitana: {
+					mint: 'hsl(var(--vitana-mint))',
+					pink: 'hsl(var(--vitana-pink))',
+					sky: 'hsl(var(--vitana-sky))',
+					glass: {
+						white: 'hsl(var(--vitana-glass-white))'
+					}
+				},
+						tint: 'hsl(var(--domain-health-tint))'
+					},
+					tracker: {
+						accent: 'hsl(var(--domain-tracker-accent))',
+						tint: 'hsl(var(--domain-tracker-tint))'
+					},
+					messages: {
+						accent: 'hsl(var(--domain-messages-accent))',
+						tint: 'hsl(var(--domain-messages-tint))'
+					},
+					community: {
+						accent: 'hsl(var(--domain-community-accent))',
+						tint: 'hsl(var(--domain-community-tint))'
+					}
+				},
 				/* Action Button Gradients */
 				gradient: {
 					join: {
