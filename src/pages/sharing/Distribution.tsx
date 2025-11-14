@@ -114,87 +114,107 @@ export default withScreenId(function Distribution() {
                 </p>
                 
                 {/* Horizontal scroll list */}
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
-                  <Card className="min-w-[300px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-2xl">
-                          🚀
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-1">Launch Campaign</h3>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            High-frequency distribution pattern
-                          </p>
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">2x/day</span>
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">All channels</span>
-                          </div>
+              <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide">
+                <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-2xl">
+                        🚀
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-1">Launch Campaign</h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Multi-channel product launch
+                        </p>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">7 posts</span>
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">3 channels</span>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <Card className="min-w-[300px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-2xl">
-                          🌱
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-1">Nurture Campaign</h3>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            Build relationships over time
-                          </p>
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">2x/week</span>
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">LinkedIn + Email</span>
-                          </div>
+                <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-2xl">
+                        🌱
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-1">Nurture Campaign</h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Weekly engagement sequence
+                        </p>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">Recurring</span>
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">Email + Social</span>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <Card className="min-w-[300px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-2xl">
-                          📅
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-1">Event Promotion</h3>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            Build excitement with countdown
-                          </p>
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">Daily</span>
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">Multi-channel</span>
-                          </div>
+                <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-2xl">
+                        🎉
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-1">Event Promotion</h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Build excitement before event
+                        </p>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">14-day countdown</span>
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">All channels</span>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <Card className="min-w-[300px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-2xl">
-                          🎯
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-1">Product Launch</h3>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            Coordinated multi-phase rollout
-                          </p>
-                          <div className="flex flex-wrap gap-2 text-xs">
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">3 phases</span>
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">All platforms</span>
-                          </div>
+                <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-400 to-violet-500 flex items-center justify-center text-2xl">
+                        🎯
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-1">Product Launch</h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Coordinated multi-channel rollout
+                        </p>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">3x/day</span>
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">All channels</span>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-2xl">
+                        ⚡
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-1">Flash Sale</h3>
+                        <p className="text-sm text-muted-foreground mb-3">
+                          Urgent time-sensitive promotion
+                        </p>
+                        <div className="flex flex-wrap gap-2 text-xs">
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">Hourly</span>
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded">Social + Email</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
               </div>
             </SplitBarContent>
 
@@ -206,36 +226,102 @@ export default withScreenId(function Distribution() {
                 </p>
                 
                 {/* Horizontal scroll list */}
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
-                  <Card className="min-w-[320px] flex-shrink-0 bg-muted/30">
+                <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide">
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <Zap className="w-10 h-10 text-muted-foreground/50" />
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-400 to-violet-500 flex items-center justify-center text-2xl">
+                          ⏰
+                        </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-2">Visual Rule Builder</h3>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            Drag-and-drop interface for creating automation rules. Coming soon to help you automate your distribution workflows.
+                          <h3 className="font-semibold text-lg mb-1">Auto-Schedule</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Optimize posting times automatically
                           </p>
-                          <Button variant="outline" size="sm" disabled>
-                            Coming Soon
-                          </Button>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-emerald-500/10 text-emerald-600 rounded font-medium">Active</span>
+                            <span className="text-muted-foreground">3 campaigns</span>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="min-w-[320px] flex-shrink-0 bg-muted/30">
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <Zap className="w-10 h-10 text-muted-foreground/50" />
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-2xl">
+                          📡
+                        </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-2">Smart Triggers</h3>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            Time-based, engagement-based, and event-based triggers for intelligent automation.
+                          <h3 className="font-semibold text-lg mb-1">Cross-Post</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Sync content across platforms
                           </p>
-                          <Button variant="outline" size="sm" disabled>
-                            Coming Soon
-                          </Button>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-amber-500/10 text-amber-600 rounded font-medium">Paused</span>
+                            <span className="text-muted-foreground">5 channels</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-2xl">
+                          📈
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Engagement Boost</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Auto-reply and boost trending posts
+                          </p>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-emerald-500/10 text-emerald-600 rounded font-medium">Active</span>
+                            <span className="text-muted-foreground">Real-time</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-2xl">
+                          🔄
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Auto-Repost</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Repost top performers automatically
+                          </p>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-emerald-500/10 text-emerald-600 rounded font-medium">Active</span>
+                            <span className="text-muted-foreground">12 posts affected</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-2xl">
+                          🎯
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Audience Targeting</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Auto-adjust based on engagement
+                          </p>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-emerald-500/10 text-emerald-600 rounded font-medium">Active</span>
+                            <span className="text-muted-foreground">8 campaigns</span>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
@@ -252,121 +338,101 @@ export default withScreenId(function Distribution() {
                 </p>
                 
                 {/* Horizontal scroll list */}
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
-                  <Card className="min-w-[280px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide">
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
-                          <BarChart3 className="w-6 h-6 text-white" />
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-2xl">
+                          🎨
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-lg mb-1">Instagram</h3>
-                          <p className="text-xs text-muted-foreground mb-3">
-                            Visual-first platform guidelines
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Voice & Tone</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Brand personality guidelines
                           </p>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Size:</span>
-                              <span className="font-medium">1080×1080px</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Format:</span>
-                              <span className="font-medium">JPG, PNG</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Best:</span>
-                              <span className="font-medium">#hashtags</span>
-                            </div>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">4 guidelines</span>
+                            <span className="text-muted-foreground">Last updated: 2w ago</span>
                           </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="min-w-[280px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-                          <BarChart3 className="w-6 h-6 text-white" />
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-2xl">
+                          🖼️
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-lg mb-1">LinkedIn</h3>
-                          <p className="text-xs text-muted-foreground mb-3">
-                            Professional network optimization
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Visual Assets</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Logos, colors, and imagery
                           </p>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Size:</span>
-                              <span className="font-medium">1200×627px</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Best time:</span>
-                              <span className="font-medium">Tue-Thu 9-11am</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Tone:</span>
-                              <span className="font-medium">Professional</span>
-                            </div>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">42 assets</span>
+                            <span className="text-muted-foreground">Brand approved</span>
                           </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="min-w-[280px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
-                          <BarChart3 className="w-6 h-6 text-white" />
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center text-2xl">
+                          📋
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-lg mb-1">Twitter/X</h3>
-                          <p className="text-xs text-muted-foreground mb-3">
-                            Quick, engaging content
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Channel Guidelines</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Platform-specific best practices
                           </p>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Limit:</span>
-                              <span className="font-medium">280 chars</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Format:</span>
-                              <span className="font-medium">Threads</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Best:</span>
-                              <span className="font-medium">Quick updates</span>
-                            </div>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">6 channels</span>
+                            <span className="text-muted-foreground">Detailed specs</span>
                           </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
 
-                  <Card className="min-w-[280px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
-                          <BarChart3 className="w-6 h-6 text-white" />
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center text-2xl">
+                          📐
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-lg mb-1">YouTube</h3>
-                          <p className="text-xs text-muted-foreground mb-3">
-                            Video content guidelines
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Design Templates</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Pre-made layouts for each channel
                           </p>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Thumbnail:</span>
-                              <span className="font-medium">1280×720px</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Length:</span>
-                              <span className="font-medium">7-15 min</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">SEO:</span>
-                              <span className="font-medium">Keywords</span>
-                            </div>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">24 templates</span>
+                            <span className="text-muted-foreground">Updated weekly</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="snap-start min-w-[340px] max-w-[340px] flex-shrink-0 hover:shadow-lg transition-shadow cursor-pointer">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-2xl">
+                          ✨
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-lg mb-1">Content Library</h3>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            Stock photos and graphics
+                          </p>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">1,200+ assets</span>
+                            <span className="text-muted-foreground">Licensed</span>
                           </div>
                         </div>
                       </div>
