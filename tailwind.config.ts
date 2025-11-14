@@ -145,14 +145,6 @@ export default {
 						tint: 'hsl(var(--domain-community-tint))'
 					}
 				},
-				vitana: {
-					mint: 'hsl(var(--vitana-mint))',
-					pink: 'hsl(var(--vitana-pink))',
-					sky: 'hsl(var(--vitana-sky))',
-					glass: {
-						white: 'hsl(var(--vitana-glass-white))'
-					}
-				},
 						tint: 'hsl(var(--domain-health-tint))'
 					},
 					tracker: {

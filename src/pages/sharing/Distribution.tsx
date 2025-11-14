@@ -84,9 +84,9 @@ const BRAND_CHANNELS = [
 ];
 
 const BRAND_SWATCHES = [
-  { name: "Vitana Mint", color: "hsl(var(--vitana-mint))" },
-  { name: "Soft Pink", color: "hsl(var(--vitana-pink))" },
-  { name: "Sky Blue", color: "hsl(var(--vitana-sky))" },
+  { name: "Vitana Teal", color: "hsl(173, 58%, 39%)" },
+  { name: "Soft Pink", color: "hsl(328, 86%, 70%)" },
+  { name: "Sky Blue", color: "hsl(199, 89%, 48%)" },
 ];
 
 export default withScreenId(function Distribution() {
@@ -179,14 +179,14 @@ export default withScreenId(function Distribution() {
                         )}
                         style={{
                           animationDelay: `${index * 100}ms`,
-                          backgroundImage: "linear-gradient(135deg, hsl(var(--vitana-mint) / 0.05), hsl(var(--vitana-pink) / 0.05))",
-                          borderImage: "linear-gradient(135deg, hsl(var(--vitana-mint) / 0.3), hsl(var(--vitana-pink) / 0.3)) 1",
+                          backgroundImage: "linear-gradient(135deg, hsl(173 58% 39% / 0.05), hsl(328 86% 70% / 0.05))",
+                          borderImage: "linear-gradient(135deg, hsl(173 58% 39% / 0.3), hsl(328 86% 70% / 0.3)) 1",
                         }}
                       >
                         {/* Gradient border effect on hover */}
                         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           style={{
-                            background: "linear-gradient(135deg, hsl(var(--vitana-mint) / 0.1), hsl(var(--vitana-pink) / 0.1))",
+                            background: "linear-gradient(135deg, hsl(173 58% 39% / 0.1), hsl(328 86% 70% / 0.1))",
                           }}
                         />
                         
