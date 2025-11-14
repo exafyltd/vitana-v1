@@ -4,16 +4,16 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode, command }) => ({
+export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
   },
   plugins: [
     react(),
-    // Disable lovable-tagger completely during build to prevent Sucrase from parsing CSS
-    ...(mode === 'development' && command === 'serve' ? [componentTagger()] : []),
-  ],
+    mode === 'development' &&
+    componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
