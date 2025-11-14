@@ -26,13 +26,18 @@ import {
   Mail,
   MessageSquare,
   Music,
+  Check,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import type { Campaign } from "@/hooks/useCampaigns";
+import { useCampaigns } from "@/hooks/useCampaigns";
 import { CHANNEL_INFO, DISTRIBUTION_TEMPLATES } from "@/lib/campaign-templates";
 import type { LucideIcon } from "lucide-react";
+import { DeleteCampaignDialog } from "./DeleteCampaignDialog";
+import { CampaignAnalyticsExpanded } from "./CampaignAnalyticsExpanded";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -42,6 +47,9 @@ interface CampaignCardProps {
     drafts: number;
   };
   onClick?: () => void;
+  bulkMode?: boolean;
+  isSelected?: boolean;
+  onToggleSelect?: () => void;
 }
 
 function getStatusAccentBar(status: string): string {
@@ -106,8 +114,18 @@ function getChannelIcon(channelKey: string): LucideIcon {
   return icons[channelKey] || Mail;
 }
 
-export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
+export function CampaignCard({ 
+  campaign, 
+  stats, 
+  onClick,
+  bulkMode = false,
+  isSelected = false,
+  onToggleSelect,
+}: CampaignCardProps) {
   const navigate = useNavigate();
+  const { duplicateCampaign, deleteCampaign } = useCampaigns();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
 
   // Parse campaign data
   const selectedChannels = Object.entries(
@@ -128,8 +146,31 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
   const bestTimes = (campaign.distribution_config as any)?.best_times;
   const hasBestTimes = bestTimes && Object.keys(bestTimes).length > 0;
 
+  const handleDuplicate = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const result = await duplicateCampaign.mutateAsync(campaign.id);
+    if (result && onClick) {
+      onClick();
+    }
+  };
+
+  const handleDelete = () => {
+    const skipConfirm = localStorage.getItem("vitana_skip_draft_delete_confirm");
+    
+    if (campaign.status === "draft" && skipConfirm === "true") {
+      deleteCampaign.mutate(campaign.id);
+    } else {
+      setShowDeleteDialog(true);
+    }
+  };
+
+  const confirmDelete = () => {
+    deleteCampaign.mutate(campaign.id);
+  };
+
   return (
-    <Card
+    <>
+      <Card
       className={cn(
         // Base styling
         "group relative overflow-visible cursor-pointer",
@@ -148,6 +189,32 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       )}
       onClick={onClick}
     >
+      {/* Bulk Selection Checkbox */}
+      {bulkMode && (
+        <div className={cn(
+          "absolute top-3 left-3 z-10",
+          "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+          isSelected && "opacity-100"
+        )}>
+          <div
+            className={cn(
+              "w-6 h-6 rounded-md flex items-center justify-center",
+              "bg-white/90 backdrop-blur-sm border-2 border-gray-300",
+              "hover:border-teal-500 transition-all cursor-pointer",
+              isSelected && "bg-teal-100 border-teal-500"
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleSelect?.();
+            }}
+          >
+            {isSelected && (
+              <Check className="w-4 h-4 text-teal-600" />
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Header Zone */}
       <div className="flex items-start justify-between gap-3 mb-5">
         <h3
@@ -498,14 +565,14 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                   className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-blue-100 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/sharing/campaigns/${campaign.id}`);
+                    setShowAnalytics(!showAnalytics);
                   }}
                 >
                   <Eye className="w-3.5 h-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">View Analytics</p>
+                <p className="text-xs">{showAnalytics ? "Hide Analytics" : "View Analytics"}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -538,16 +605,16 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                   size="sm"
                   variant="ghost"
                   className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-purple-100 shadow-sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Handle duplicate
-                  }}
+                  onClick={handleDuplicate}
+                  disabled={duplicateCampaign.isPending}
                 >
                   <Copy className="w-3.5 h-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Duplicate</p>
+                <p className="text-xs">
+                  {duplicateCampaign.isPending ? "Duplicating..." : "Duplicate"}
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -561,7 +628,7 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                   className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-red-100 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    // Handle delete
+                    handleDelete();
                   }}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -575,5 +642,24 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
         </div>
       </div>
     </Card>
+
+    {/* Delete Confirmation Dialog */}
+    <DeleteCampaignDialog
+      open={showDeleteDialog}
+      onOpenChange={setShowDeleteDialog}
+      onConfirm={confirmDelete}
+      campaignName={campaign.name}
+      isDraft={campaign.status === "draft"}
+    />
+
+    {/* Expanded Analytics View */}
+    {showAnalytics && (
+      <CampaignAnalyticsExpanded
+        campaign={campaign}
+        stats={stats}
+        onClose={() => setShowAnalytics(false)}
+      />
+    )}
+  </>
   );
 }

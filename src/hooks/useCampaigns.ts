@@ -119,10 +119,70 @@ export function useCampaigns() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaigns"] });
-      toast.success("Campaign completed");
+      toast.success("Campaign completed successfully");
     },
     onError: (error: Error) => {
       toast.error(`Failed to complete campaign: ${error.message}`);
+    },
+  });
+
+  const duplicateCampaign = useMutation({
+    mutationFn: async (campaignId: string) => {
+      // Fetch the original campaign
+      const { data: original, error: fetchError } = await supabase
+        .from("campaigns")
+        .select("*")
+        .eq("id", campaignId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Create duplicate with modified name
+      const duplicate: CampaignInsert = {
+        name: `${original.name} (Copy)`,
+        description: original.description,
+        status: "draft",
+        start_date: original.start_date,
+        end_date: original.end_date,
+        target_channels: original.target_channels,
+        distribution_config: original.distribution_config,
+        user_id: original.user_id,
+      };
+
+      const { data, error } = await supabase
+        .from("campaigns")
+        .insert(duplicate)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      toast.success("Campaign duplicated successfully — new draft created.");
+      return data;
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to duplicate campaign: ${error.message}`);
+    },
+  });
+
+  const deleteCampaign = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("campaigns")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      toast.success("Campaign deleted.");
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to delete campaign: ${error.message}`);
     },
   });
 
@@ -134,5 +194,7 @@ export function useCampaigns() {
     activateCampaign,
     pauseCampaign,
     completeCampaign,
+    duplicateCampaign,
+    deleteCampaign,
   };
 }
