@@ -314,29 +314,54 @@ export function CampaignAnalyticsExpanded({
               <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
                 Reach Trend
               </h4>
-              <div className="flex items-end justify-between gap-3 h-40 p-4 bg-white/60 rounded-xl border border-gray-200">
-                {analytics.trendData.map((data, index) => {
-                  const maxTrend = Math.max(...analytics.trendData.map((d) => d.reach));
-                  const heightPercent = (data.reach / maxTrend) * 100;
+              <div className="p-4 bg-white/60 rounded-xl border border-gray-200">
+                {/* Chart Area */}
+                <div className="flex items-end justify-between gap-3 h-32 mb-3">
+                  {analytics.trendData.map((data, index) => {
+                    const maxTrend = Math.max(...analytics.trendData.map((d) => d.reach));
+                    const heightPercent = (data.reach / maxTrend) * 100;
+                    const minHeight = 8; // Minimum 8px even for smallest values
 
-                  return (
-                    <div key={index} className="flex-1 flex flex-col items-center gap-2">
-                      <div className="w-full flex items-end justify-center h-full">
+                    return (
+                      <div 
+                        key={index} 
+                        className="flex-1 relative group"
+                      >
+                        {/* Tooltip on hover */}
+                        <div className={cn(
+                          "absolute -top-8 left-1/2 -translate-x-1/2",
+                          "opacity-0 group-hover:opacity-100 transition-opacity",
+                          "bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+                        )}>
+                          {data.reach.toLocaleString()}
+                        </div>
+                        
+                        {/* Bar */}
                         <div
                           className={cn(
-                            "w-full rounded-t-lg transition-all duration-500",
+                            "w-full rounded-t-lg transition-all duration-500 cursor-pointer",
                             "bg-gradient-to-t from-teal-400 to-pink-400",
-                            "hover:from-teal-500 hover:to-pink-500"
+                            "hover:from-teal-500 hover:to-pink-500 hover:shadow-lg"
                           )}
-                          style={{ height: `${heightPercent}%` }}
+                          style={{ 
+                            height: `${Math.max(heightPercent, minHeight)}%`
+                          }}
                         />
                       </div>
+                    );
+                  })}
+                </div>
+                
+                {/* Labels */}
+                <div className="flex items-center justify-between gap-3">
+                  {analytics.trendData.map((data, index) => (
+                    <div key={index} className="flex-1 text-center">
                       <span className="text-xs text-gray-600 font-medium">
                         {data.date}
                       </span>
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
