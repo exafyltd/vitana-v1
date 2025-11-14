@@ -112,12 +112,10 @@ All colors MUST be HSL.
     --health-warning: 45 100% 60%;
     --health-danger: 0 84% 60%;
     
-    /* Tenant brand variables - default to Maxina */
     --brand-accent: 339 89% 49%;
     --brand-bg: 0 0% 100%;
     --brand-fg: 222.2 84% 4.9%;
 
-    /* Action Button Gradients */
     --gradient-join-start: 142 76% 36%;
     --gradient-join-end: 173 58% 39%;
     --gradient-follow-start: 217 91% 60%;
@@ -127,7 +125,6 @@ All colors MUST be HSL.
     --gradient-disabled-start: 220 14% 60%;
     --gradient-disabled-end: 220 13% 69%;
     
-    /* Vitana Premium Gradient */
     --gradient-vitana-start: 160 84% 39%;
     --gradient-vitana-end: 189 94% 43%;
 
@@ -152,34 +149,23 @@ All colors MUST be HSL.
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 240 3.7% 15.9%;
     --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 240 3.7% 15.9%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-
-    /* Vitana Pillar-First Color System - Dark Mode */
-    /* 5 Health Pillars */
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
     --pill-nutrition-accent: 150 60% 55%;
     --pill-nutrition-tint: 150 60% 8%;
     --pill-hydration-accent: 210 90% 65%;
@@ -190,8 +176,6 @@ All colors MUST be HSL.
     --pill-exercise-tint: 210 25% 8%;
     --pill-sleep-accent: 50 95% 65%;
     --pill-sleep-tint: 50 100% 8%;
-
-    /* System / Utility */
     --sys-vitana-accent: 199 36% 52%;
     --sys-vitana-tint: 199 36% 8%;
     --sys-autopilot-accent: 8 85% 66%;
@@ -204,22 +188,16 @@ All colors MUST be HSL.
     --util-settings-tint: 215 25% 10%;
     --util-profile-accent: 173 70% 55%;
     --util-profile-tint: 173 70% 8%;
-
-    /* Domain specifics */
     --domain-discover-accent: 265 85% 70%;
     --domain-discover-tint: 265 100% 8%;
     --domain-health-accent: 42 35% 88%;
     --domain-health-tint: 42 65% 10%;
     --domain-tracker-accent: 42 30% 85%;
     --domain-tracker-tint: 42 60% 10%;
-
-    /* Messaging & Community (Mental Health family) */
     --domain-messages-accent: 330 75% 55%;
     --domain-messages-tint: 330 85% 8%;
     --domain-community-accent: 330 90% 70%;
     --domain-community-tint: 330 100% 8%;
-
-    /* Legacy colors */
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -228,8 +206,6 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    
-    /* Calendar dark mode colors */
     --calendar-primary: 280 100% 60%;
     --calendar-primary-light: 280 100% 75%;
     --calendar-secondary: 320 100% 65%;
@@ -239,11 +215,10 @@ All colors MUST be HSL.
     --calendar-card: 280 20% 12%;
     --calendar-gradient-start: 280 100% 60%;
     --calendar-gradient-end: 320 100% 65%;
-    
-    /* Ruby red for streaming */
     --ruby: 339 89% 49%;
-    
-    /* Action Button Gradients - Dark Mode */
+    --brand-accent: 339 89% 49%;
+    --brand-bg: 222.2 84% 4.9%;
+    --brand-fg: 210 40% 98%;
     --gradient-join-start: 142 76% 46%;
     --gradient-join-end: 173 58% 49%;
     --gradient-follow-start: 217 91% 70%;
@@ -252,17 +227,8 @@ All colors MUST be HSL.
     --gradient-play-end: 328 86% 80%;
     --gradient-disabled-start: 220 14% 70%;
     --gradient-disabled-end: 220 13% 79%;
-    
-    /* Vitana Premium Gradient - Dark Mode */
     --gradient-vitana-start: 160 84% 49%;
     --gradient-vitana-end: 189 94% 53%;
-
-    /* Tenant brand variables - dark mode defaults */
-    --brand-accent: 339 89% 49%;
-    --brand-bg: 222.2 84% 4.9%;
-    --brand-fg: 210 40% 98%;
-
-    /* Focus Profile Theme - Dark Mode (same as light for this theme) */
     --profile-bg-start: 216 53% 8%;
     --profile-bg-end: 222 47% 11%;
     --profile-accent-teal: 199 36% 48%;
