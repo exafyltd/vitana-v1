@@ -10,17 +10,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { CampaignCard } from "@/components/sharing/CampaignCard";
+import { BulkActionToolbar } from "@/components/sharing/BulkActionToolbar";
 import { useCampaigns, type Campaign } from "@/hooks/useCampaigns";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plus, FileText } from "lucide-react";
+import { Plus, FileText, CheckSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default withScreenId(function Campaigns() {
   const [campaignPopupOpen, setCampaignPopupOpen] = React.useState(false);
   const [editingCampaign, setEditingCampaign] = React.useState<Campaign | null>(null);
-  const { campaigns, isLoading } = useCampaigns();
+  const [bulkMode, setBulkMode] = React.useState(false);
+  const [selectedCampaigns, setSelectedCampaigns] = React.useState<Set<string>>(new Set());
+  const { campaigns, isLoading, duplicateCampaign, deleteCampaign } = useCampaigns();
   const { posts } = useDistributionPosts();
   const navigate = useNavigate();
 
@@ -45,6 +49,77 @@ export default withScreenId(function Campaigns() {
     };
   };
 
+  const toggleCampaignSelection = (campaignId: string) => {
+    setSelectedCampaigns((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(campaignId)) {
+        newSet.delete(campaignId);
+      } else {
+        newSet.add(campaignId);
+      }
+      return newSet;
+    });
+  };
+
+  const selectAll = () => {
+    if (campaigns) {
+      setSelectedCampaigns(new Set(campaigns.map((c) => c.id)));
+    }
+  };
+
+  const deselectAll = () => {
+    setSelectedCampaigns(new Set());
+  };
+
+  const handleBulkDelete = async () => {
+    const selectedArray = Array.from(selectedCampaigns);
+    for (const campaignId of selectedArray) {
+      await deleteCampaign.mutateAsync(campaignId);
+    }
+    deselectAll();
+    toast.success(`${selectedArray.length} campaigns deleted`);
+  };
+
+  const handleBulkDuplicate = async () => {
+    const selectedArray = Array.from(selectedCampaigns);
+    for (const campaignId of selectedArray) {
+      await duplicateCampaign.mutateAsync(campaignId);
+    }
+    deselectAll();
+    toast.success(`${selectedArray.length} campaigns duplicated`);
+  };
+
+  const handleBulkExport = () => {
+    const selectedArray = Array.from(selectedCampaigns);
+    const campaignsToExport = campaigns?.filter((c) => selectedArray.includes(c.id)) || [];
+    
+    const csvContent = [
+      ["Name", "Status", "Start Date", "End Date", "Description"],
+      ...campaignsToExport.map((c) => [
+        c.name,
+        c.status,
+        c.start_date || "",
+        c.end_date || "",
+        c.description || "",
+      ]),
+    ]
+      .map((row) => row.map((cell) => `"${cell}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "campaigns-export.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+    
+    toast.success("Campaigns exported to CSV");
+  };
+
+  const handleSmartReschedule = () => {
+    toast.info("Smart-Reschedule feature coming soon!");
+  };
 
   return (
     <AppLayout>
@@ -65,6 +140,23 @@ export default withScreenId(function Campaigns() {
           <UtilityActionButton>
             <ExpandableSearchButton placeholder="Search campaigns..." />
             <UniversalCalendarButton />
+            
+            {campaigns && campaigns.length >= 2 && (
+              <Button
+                size="sm"
+                variant={bulkMode ? "default" : "outline"}
+                onClick={() => {
+                  setBulkMode(!bulkMode);
+                  if (bulkMode) {
+                    deselectAll();
+                  }
+                }}
+              >
+                <CheckSquare className="w-4 h-4 mr-2" />
+                {bulkMode ? "Exit Bulk Mode" : "Bulk Actions"}
+              </Button>
+            )}
+            
             <Button size="sm" onClick={() => setCampaignPopupOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               New Campaign
@@ -76,20 +168,42 @@ export default withScreenId(function Campaigns() {
               Loading campaigns...
             </div>
           ) : campaigns && campaigns.length > 0 ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {campaigns.map((campaign) => {
-                const stats = getCampaignStats(campaign.id);
+            <>
+              {/* Bulk Action Toolbar */}
+              {bulkMode && selectedCampaigns.size > 0 && (
+                <BulkActionToolbar
+                  selectedCount={selectedCampaigns.size}
+                  onDelete={handleBulkDelete}
+                  onDuplicate={handleBulkDuplicate}
+                  onExport={handleBulkExport}
+                  onSmartReschedule={handleSmartReschedule}
+                  onSelectAll={selectAll}
+                  onDeselectAll={deselectAll}
+                  onClose={() => {
+                    setBulkMode(false);
+                    deselectAll();
+                  }}
+                />
+              )}
 
-                return (
-                  <CampaignCard
-                    key={campaign.id}
-                    campaign={campaign}
-                    stats={stats}
-                    onClick={() => handleEditCampaign(campaign)}
-                  />
-                );
-              })}
-            </div>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {campaigns.map((campaign) => {
+                  const stats = getCampaignStats(campaign.id);
+
+                  return (
+                    <CampaignCard
+                      key={campaign.id}
+                      campaign={campaign}
+                      stats={stats}
+                      onClick={() => !bulkMode && handleEditCampaign(campaign)}
+                      bulkMode={bulkMode}
+                      isSelected={selectedCampaigns.has(campaign.id)}
+                      onToggleSelect={() => toggleCampaignSelection(campaign.id)}
+                    />
+                  );
+                })}
+              </div>
+            </>
           ) : (
             <Card>
               <CardContent className="text-center py-12">

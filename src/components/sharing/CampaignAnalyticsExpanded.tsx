@@ -1,0 +1,291 @@
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  X,
+  TrendingUp,
+  Users,
+  MousePointerClick,
+  DollarSign,
+  Calendar,
+  Instagram,
+  Linkedin,
+  Facebook,
+  Mail,
+} from "lucide-react";
+import { XIcon } from "@/components/icons/XIcon";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import type { Campaign } from "@/hooks/useCampaigns";
+import type { LucideIcon } from "lucide-react";
+
+interface CampaignAnalyticsExpandedProps {
+  campaign: Campaign;
+  stats: {
+    total: number;
+    published: number;
+    drafts: number;
+  };
+  onClose: () => void;
+}
+
+// Mock analytics data - replace with real data from backend
+const MOCK_ANALYTICS = {
+  reach: 12400,
+  engagement: 2847,
+  ctr: 3.4,
+  conversions: 142,
+  channelBreakdown: [
+    { channel: "facebook", name: "Facebook", reach: 4200, engagement: 890, color: "bg-blue-600" },
+    { channel: "instagram", name: "Instagram", reach: 3800, engagement: 1020, color: "bg-pink-600" },
+    { channel: "linkedin", name: "LinkedIn", reach: 2900, engagement: 687, color: "bg-blue-700" },
+    { channel: "email", name: "Email", reach: 1500, engagement: 250, color: "bg-teal-600" },
+  ],
+  trendData: [
+    { date: "Week 1", reach: 2100 },
+    { date: "Week 2", reach: 3400 },
+    { date: "Week 3", reach: 4200 },
+    { date: "Week 4", reach: 2700 },
+  ],
+};
+
+function getChannelIcon(channel: string): LucideIcon | React.ComponentType<any> {
+  const icons: Record<string, LucideIcon | React.ComponentType<any>> = {
+    facebook: Facebook,
+    instagram: Instagram,
+    linkedin: Linkedin,
+    twitter: XIcon,
+    email: Mail,
+  };
+  return icons[channel] || Mail;
+}
+
+export function CampaignAnalyticsExpanded({
+  campaign,
+  stats,
+  onClose,
+}: CampaignAnalyticsExpandedProps) {
+  const analytics = MOCK_ANALYTICS;
+  const maxReach = Math.max(...analytics.channelBreakdown.map((c) => c.reach));
+
+  return (
+    <div className={cn(
+      "mt-4 overflow-hidden",
+      "animate-in slide-in-from-top-2 fade-in duration-250"
+    )}>
+      <Card className={cn(
+        "border-2 rounded-2xl p-6",
+        "bg-gradient-to-br from-white/95 to-gray-50/95 backdrop-blur-xl",
+        "border-teal-200/50 shadow-2xl shadow-teal-100/30"
+      )}>
+        {/* Top Bar */}
+        <div className="flex items-start justify-between mb-6 pb-4 border-b border-gray-200/50">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="text-xl font-bold text-gray-900">
+                {campaign.name}
+              </h3>
+              <Badge className="text-xs px-2 py-0.5 bg-teal-100 text-teal-700 border-teal-300">
+                Analytics
+              </Badge>
+            </div>
+            {campaign.start_date && campaign.end_date && (
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Calendar className="w-4 h-4" />
+                <span>
+                  {format(new Date(campaign.start_date), "MMM d")} - {format(new Date(campaign.end_date), "MMM d, yyyy")}
+                </span>
+              </div>
+            )}
+          </div>
+          
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={onClose}
+            className="h-8 w-8 p-0 rounded-full hover:bg-gray-200"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Summary Metrics */}
+          <div className="lg:col-span-1 space-y-3">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+              Performance Summary
+            </h4>
+            
+            {/* Reach Card */}
+            <Card className="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Total Reach</p>
+                  <p className="text-2xl font-bold text-teal-700">
+                    {analytics.reach.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-teal-200/50 flex items-center justify-center">
+                  <Users className="w-5 h-5 text-teal-700" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Engagement Card */}
+            <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Engagement</p>
+                  <p className="text-2xl font-bold text-blue-700">
+                    {analytics.engagement.toLocaleString()}
+                  </p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-blue-200/50 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-blue-700" />
+                </div>
+              </div>
+            </Card>
+
+            {/* CTR Card */}
+            <Card className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Click Rate</p>
+                  <p className="text-2xl font-bold text-purple-700">
+                    {analytics.ctr}%
+                  </p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-purple-200/50 flex items-center justify-center">
+                  <MousePointerClick className="w-5 h-5 text-purple-700" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Conversions Card */}
+            <Card className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-gray-600 mb-1">Conversions</p>
+                  <p className="text-2xl font-bold text-green-700">
+                    {analytics.conversions}
+                  </p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-green-200/50 flex items-center justify-center">
+                  <DollarSign className="w-5 h-5 text-green-700" />
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Right Column - Channel Breakdown & Trend */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Channel Breakdown */}
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                Channel Performance
+              </h4>
+              <div className="space-y-3">
+                {analytics.channelBreakdown.map((channel) => {
+                  const Icon = getChannelIcon(channel.channel);
+                  const reachPercent = (channel.reach / maxReach) * 100;
+
+                  return (
+                    <div
+                      key={channel.channel}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-gray-200 hover:bg-white/80 transition-all"
+                    >
+                      <div className={cn(
+                        "w-10 h-10 rounded-full flex items-center justify-center",
+                        channel.color
+                      )}>
+                        <Icon className="w-5 h-5 text-white" />
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-semibold text-gray-900">
+                            {channel.name}
+                          </span>
+                          <span className="text-sm font-bold text-gray-700">
+                            {channel.reach.toLocaleString()}
+                          </span>
+                        </div>
+                        
+                        {/* Progress Bar */}
+                        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                          <div
+                            className={cn(
+                              "h-full rounded-full transition-all duration-500",
+                              "bg-gradient-to-r from-teal-400 to-blue-500"
+                            )}
+                            style={{ width: `${reachPercent}%` }}
+                          />
+                        </div>
+                        
+                        <div className="flex items-center gap-4 mt-1">
+                          <span className="text-xs text-gray-500">
+                            {channel.engagement.toLocaleString()} engagements
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Trend Chart (Simple Bar Chart) */}
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                Reach Trend
+              </h4>
+              <div className="flex items-end justify-between gap-3 h-40 p-4 bg-white/60 rounded-xl border border-gray-200">
+                {analytics.trendData.map((data, index) => {
+                  const maxTrend = Math.max(...analytics.trendData.map((d) => d.reach));
+                  const heightPercent = (data.reach / maxTrend) * 100;
+
+                  return (
+                    <div key={index} className="flex-1 flex flex-col items-center gap-2">
+                      <div className="w-full flex items-end justify-center h-full">
+                        <div
+                          className={cn(
+                            "w-full rounded-t-lg transition-all duration-500",
+                            "bg-gradient-to-t from-teal-400 to-pink-400",
+                            "hover:from-teal-500 hover:to-pink-500"
+                          )}
+                          style={{ height: `${heightPercent}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-600 font-medium">
+                        {data.date}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-gray-200/50">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Export Report
+          </Button>
+          
+          <Button
+            size="sm"
+            className="gap-2 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700"
+          >
+            Open Full Dashboard
+          </Button>
+        </div>
+      </Card>
+    </div>
+  );
+}
