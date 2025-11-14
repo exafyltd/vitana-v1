@@ -133,14 +133,15 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       className={cn(
         // Base styling
         "group relative overflow-visible cursor-pointer",
-        "p-5 rounded-2xl border-2",
+        "p-5 max-md:p-4 rounded-2xl border-2",
         // Frosted glass background
         "bg-white/85 backdrop-blur-xl",
-        // Gradient border effect
-        "bg-gradient-to-br from-white to-gray-50",
-        "shadow-xl shadow-purple-100/50",
+        // Dynamic gradient border
+        getStatusBorderGradient(campaign.status),
+        // Inner glow
+        "shadow-[0_0_12px_rgba(0,0,0,0.05)] shadow-xl",
         // Hover effects
-        "hover:scale-[1.01] hover:shadow-2xl hover:shadow-purple-200/60",
+        "hover:scale-[1.01] hover:shadow-2xl",
         "transition-all duration-300 ease-out",
         // Status accent bar
         getStatusAccentBar(campaign.status)
@@ -148,11 +149,14 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       onClick={onClick}
     >
       {/* Header Zone */}
-      <div className="flex items-start justify-between gap-3 mb-4">
+      <div className="flex items-start justify-between gap-3 mb-5">
         <h3
           className={cn(
-            "text-lg font-bold text-gray-900 leading-tight flex-1",
-            "group-hover:text-primary transition-colors duration-200"
+            "text-lg max-md:text-base font-semibold leading-tight tracking-tight flex-1",
+            "text-gray-900",
+            "group-hover:bg-gradient-to-r group-hover:from-gradient-join-start group-hover:to-gradient-join-end",
+            "group-hover:bg-clip-text group-hover:text-transparent",
+            "transition-all duration-200"
           )}
         >
           {campaign.name}
@@ -160,27 +164,51 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
 
         {/* Status Pills */}
         <div className="flex items-center gap-2 shrink-0">
-          <Badge
-            className={cn(
-              "text-xs font-semibold capitalize px-3 py-1",
-              getStatusPillStyle(campaign.status)
-            )}
-          >
-            {campaign.status}
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge
+                  className={cn(
+                    "px-2 py-0.5 text-xs font-medium capitalize rounded-full",
+                    getStatusPillStyle(campaign.status)
+                  )}
+                >
+                  {campaign.status}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">
+                  {campaign.status === 'draft' ? 'Not yet published' : 
+                   campaign.status === 'active' ? 'Currently publishing' :
+                   campaign.status === 'completed' ? 'Campaign completed' :
+                   'Campaign paused'}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           {smartSchedulingEnabled && (
-            <Badge
-              className={cn(
-                "text-xs font-semibold px-3 py-1 gap-1.5",
-                "bg-gradient-to-r from-teal-400/20 to-green-400/20",
-                "border-teal-300 text-teal-700",
-                "group-hover:animate-shimmer"
-              )}
-            >
-              <Sparkles className="w-3 h-3" />
-              Smart
-            </Badge>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Badge
+                    className={cn(
+                      "px-2 py-0.5 text-xs font-medium gap-1 rounded-full",
+                      "bg-gradient-to-r from-teal-400/20 to-green-400/20",
+                      "border-teal-300 text-teal-700",
+                      "hover:shadow-lg hover:shadow-teal-200/50",
+                      "transition-all duration-300"
+                    )}
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    Smart
+                  </Badge>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">AI scheduling active</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
       </div>
@@ -190,9 +218,13 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <p className="text-sm text-gray-600 line-clamp-2 mb-4 leading-relaxed">
-                {campaign.description}
-              </p>
+              <div className="relative mb-5">
+                <p className="text-sm text-muted-foreground/90 line-clamp-2 leading-relaxed">
+                  {campaign.description}
+                </p>
+                {/* Fade mask after 2 lines */}
+                <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white/85 to-transparent pointer-events-none" />
+              </div>
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
               <p className="text-xs">{campaign.description}</p>
@@ -280,9 +312,15 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       {/* Scheduled Sweet Spots */}
       {hasBestTimes && (
         <div className="mb-4">
-          <h4 className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-2">
-            Scheduled Sweet Spots
-          </h4>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Clock className="w-3.5 h-3.5 text-gray-500/70" />
+            <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-gray-500/80">
+              Scheduled Sweet Spots
+            </h4>
+          </div>
+          <p className="text-[10px] text-gray-500/70 mb-2 ml-5">
+            🕒 AI-recommended posting times
+          </p>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -365,7 +403,7 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       <div
         className={cn(
           "flex items-center justify-between gap-4 pt-4 mt-4",
-          "border-t border-gray-200"
+          "border-t border-teal-100/10"
         )}
       >
         {/* Posts */}
@@ -415,22 +453,24 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
           </Tooltip>
         </TooltipProvider>
 
-        {/* Engagement */}
+        {/* Reach */}
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-blue-600" />
+                <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold text-blue-600">2.4K</span>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500">
+                  <span className="text-base font-bold text-blue-600 leading-none">
+                    2.4K
+                  </span>
+                  <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
                     Reach
                   </span>
                 </div>
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-xs">Estimated audience interactions</p>
+              <p className="text-xs">Estimated audience reach</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
