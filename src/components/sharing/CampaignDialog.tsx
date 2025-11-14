@@ -8,12 +8,27 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useCampaigns, type Campaign } from "@/hooks/useCampaigns";
 import { useChannels } from "@/hooks/useChannels";
 import { useProfile } from "@/context/ProfileProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronLeft, ChevronRight, CheckCircle, AlertCircle } from "lucide-react";
+import { 
+  ChevronLeft, ChevronRight, CheckCircle, AlertCircle, 
+  Settings, Target, Eye, Link2, Lightbulb, 
+  Share2, MessageSquare, Home, Info, Moon,
+  ShieldCheck, Rocket, X, Sparkles, Calendar
+} from "lucide-react";
 import { DISTRIBUTION_TEMPLATES, CHANNEL_BEST_TIMES, CHANNEL_INFO } from "@/lib/campaign-templates";
+import { EnhancedStepIndicator } from "./EnhancedStepIndicator";
+import { CampaignCreationHeader } from "./CampaignCreationHeader";
+import { CampaignSuccessModal } from "./CampaignSuccessModal";
+import { cn } from "@/lib/utils";
+import { format, addDays } from "date-fns";
+import { toast } from "sonner";
 
 interface CampaignDialogProps {
   open: boolean;
@@ -39,6 +54,25 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   const [smartSchedulingEnabled, setSmartSchedulingEnabled] = useState(
     ((editingCampaign?.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true
   );
+
+  // Step 1 additions
+  const [goal, setGoal] = useState("");
+  const [linkedSource, setLinkedSource] = useState<any>(null);
+  const [lastSaved, setLastSaved] = useState(new Date());
+
+  // Step 3 additions (custom template)
+  const [customFrequency, setCustomFrequency] = useState("weekly");
+  const [customStartDate, setCustomStartDate] = useState<Date>();
+  const [customEndDate, setCustomEndDate] = useState<Date>();
+  const [aiAssistEnabled, setAiAssistEnabled] = useState(false);
+
+  // Step 4 additions
+  const [timezone, setTimezone] = useState("America/New_York");
+  const [quietHoursEnabled, setQuietHoursEnabled] = useState(true);
+
+  // Success modal
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [createdCampaignData, setCreatedCampaignData] = useState<any>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -86,8 +120,12 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
       target_channels: selectedChannels,
       distribution_config: {
         template_id: selectedTemplate,
-        frequency: template?.frequency || "custom",
+        frequency: template?.frequency || customFrequency,
         smart_scheduling_enabled: smartSchedulingEnabled,
+        goal,
+        timezone,
+        quiet_hours_enabled: quietHoursEnabled,
+        ai_assist_enabled: aiAssistEnabled,
         best_times: Object.keys(selectedChannels)
           .filter(ch => selectedChannels[ch])
           .reduce((acc, ch) => {
@@ -102,11 +140,48 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
         id: editingCampaign.id,
         ...campaignData,
       });
+      handleClose();
     } else {
       await createCampaign.mutateAsync(campaignData);
+      
+      // Show success modal
+      setCreatedCampaignData({
+        name,
+        channels: Object.entries(selectedChannels)
+          .filter(([_, selected]) => selected)
+          .map(([key]) => CHANNEL_INFO[key]?.name || key),
+        template: DISTRIBUTION_TEMPLATES.find(t => t.id === selectedTemplate)?.name || "Custom",
+        firstPostDate: customStartDate || addDays(new Date(), 1)
+      });
+      setShowSuccessModal(true);
+      handleClose();
     }
+  };
 
-    handleClose();
+  // Helper function: Extract handle from URL
+  const extractHandle = (url: string): string => {
+    if (!url) return "";
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:linkedin\.com\/in\/|instagram\.com\/|facebook\.com\/|twitter\.com\/|x\.com\/)([\w-]+)/);
+    return match ? match[1] : url.split('/').pop() || url;
+  };
+
+  // Helper function: Get schedule summary
+  const getScheduleSummary = (): string => {
+    const t = DISTRIBUTION_TEMPLATES.find(t => t.id === selectedTemplate);
+    const channelCount = Object.values(selectedChannels).filter(Boolean).length;
+    
+    if (!t) return "Custom schedule";
+    
+    return `Posting ${t.frequency} on ${channelCount} channel${channelCount !== 1 ? 's' : ''}${customStartDate ? ` starting ${format(customStartDate, "MMM d")}` : ''}`;
+  };
+
+  // Helper function: Handle channel connection
+  const handleConnectChannel = (channelKey: string) => {
+    toast.info("Connecting...", {
+      description: `Redirecting to ${CHANNEL_INFO[channelKey]?.name} authentication`
+    });
+    // Trigger OAuth flow
+    window.open(`/auth/connect/${channelKey}`, '_blank');
   };
 
   const toggleChannel = (channelKey: string) => {
@@ -170,132 +245,288 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => { if (isOpen) { onOpenChange(true); } else { handleClose(); } }}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {isEditMode ? "Edit Campaign" : "Create New Campaign"}
-          </DialogTitle>
-          <div className="flex items-center gap-2 mt-4">
-            {Array.from({ length: totalSteps }).map((_, i) => {
-              const current = i + 1;
-              const isActive = current <= step;
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setStep(current)}
-                  className={`h-2 flex-1 rounded-full transition-colors focus:outline-none ${isActive ? "bg-primary" : "bg-muted"}`}
-                  aria-label={`Go to step ${current}`}
-                  title={`Go to step ${current}`}
-                />
-              );
-            })}
-          </div>
-          <p className="text-sm text-muted-foreground mt-2">
-            Step {step} of {totalSteps}
-          </p>
-        </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={(isOpen) => { if (isOpen) { onOpenChange(true); } else { handleClose(); } }}>
+        <DialogContent className={cn(
+          "max-w-3xl overflow-hidden flex flex-col",
+          "md:max-h-[90vh] md:rounded-2xl",
+          "max-md:w-screen max-md:h-screen max-md:max-w-full max-md:rounded-none",
+          "bg-gradient-to-br from-background/95 via-background to-background backdrop-blur-xl border-2 shadow-2xl"
+        )}>
+          <DialogHeader>
+            <DialogTitle className="sr-only">
+              {isEditMode ? "Edit Campaign" : "Create New Campaign"}
+            </DialogTitle>
+          </DialogHeader>
 
-        <div className="space-y-6 py-4">
-          {/* Step 1: Basic Info */}
-          {step === 1 && (
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="name">Campaign Name *</Label>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g., Summer Launch 2025"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Describe your campaign goals..."
-                  rows={4}
-                  className="mt-1"
-                />
-              </div>
-            </div>
-          )}
+          {/* 3-Card Header */}
+          <CampaignCreationHeader 
+            currentStep={step} 
+            draftsCount={0} 
+            liveCount={0} 
+          />
 
-          {/* Step 2: Channel Selection */}
-          {step === 2 && (
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline" onClick={selectAllChannels}>
-                  Select All
-                </Button>
-                <Button size="sm" variant="outline" onClick={deselectAllChannels}>
-                  Deselect All
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                {Object.entries(CHANNEL_INFO).map(([key, info]) => {
-                  const isConnected = getChannelConnectionStatus(key);
-                  return (
-                    <div
-                      key={key}
-                      className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-colors ${
-                        selectedChannels[key] ? "border-primary bg-primary/5" : "hover:bg-muted/50"
-                      }`}
-                      onClick={() => toggleChannel(key)}
-                    >
-                      <Checkbox
-                        checked={selectedChannels[key] || false}
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{info.name}</span>
-                          {isConnected ? (
-                            <CheckCircle className="w-4 h-4 text-green-500" />
-                          ) : (
-                            <AlertCircle className="w-4 h-4 text-yellow-500" />
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          {isConnected ? "Connected" : "Not connected"}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* Enhanced Step Indicator */}
+          <EnhancedStepIndicator 
+            currentStep={step}
+            onStepClick={(s) => s <= step && setStep(s)}
+          />
 
-          {/* Step 3: Distribution Strategy */}
-          {step === 3 && (
-            <div className="space-y-4">
-              <Label>Choose a Template</Label>
-              <RadioGroup value={selectedTemplate} onValueChange={applyTemplate}>
-                {DISTRIBUTION_TEMPLATES.map((template) => (
-                  <div
-                    key={template.id}
-                    className={`flex items-start gap-3 p-4 border rounded-lg cursor-pointer transition-colors ${
-                      selectedTemplate === template.id ? "border-primary bg-primary/5" : "hover:bg-muted/50"
-                    }`}
-                    onClick={() => applyTemplate(template.id)}
-                  >
-                    <RadioGroupItem value={template.id} id={template.id} />
-                    <div className="flex-1">
-                      <Label htmlFor={template.id} className="cursor-pointer">
-                        <span className="text-xl mr-2">{template.icon}</span>
-                        <span className="font-semibold">{template.name}</span>
-                      </Label>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {template.description}
+          <div className="flex-1 overflow-y-auto px-1">
+            <div className="space-y-6 py-4">
+              {/* Step 1: Basic Info - Enhanced */}
+              {step === 1 && (
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Campaign Name *</Label>
+                    <Input
+                      id="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="e.g., Summer Launch 2025"
+                      className="mt-1"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="e.g., Multi-channel promotion for our new product launch targeting millennials"
+                      rows={4}
+                      className="mt-1"
+                    />
+                    <div className="flex items-start gap-2 mt-2 p-3 bg-[hsl(var(--sys-ai-tint))] border border-[hsl(var(--sys-ai-accent))]/20 rounded-lg">
+                      <Lightbulb className="w-4 h-4 text-[hsl(var(--sys-ai-accent))] shrink-0 mt-0.5" />
+                      <p className="text-xs text-foreground">
+                        <strong>Tip:</strong> Describe your campaign in one sentence — who it's for and what success looks like.
                       </p>
-                      <div className="flex gap-2 mt-2">
-                        <Badge variant="outline">{template.frequency}</Badge>
-                        <Badge variant="outline">{template.duration}</Badge>
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="goal">Campaign Goal (Optional)</Label>
+                    <Select value={goal} onValueChange={setGoal}>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select campaign goal..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="awareness">🎯 Awareness</SelectItem>
+                        <SelectItem value="engagement">💬 Engagement</SelectItem>
+                        <SelectItem value="event_promotion">📅 Event Promotion</SelectItem>
+                        <SelectItem value="community_growth">🌱 Community Growth</SelectItem>
+                        <SelectItem value="sales">💰 Sales</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Helps Autopilot optimize your posting strategy
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2: Channel Selection - Enhanced */}
+              {step === 2 && (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <Label>Select Distribution Channels</Label>
+                    <div className="flex gap-2">
+                      <Button variant="ghost" size="sm" onClick={selectAllChannels}>
+                        Select All
+                      </Button>
+                      <Button variant="ghost" size="sm" onClick={deselectAllChannels}>
+                        Clear
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Social Media Group */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded">
+                      <Share2 className="w-4 h-4 text-muted-foreground" />
+                      <h4 className="text-sm font-semibold text-foreground">Social Media</h4>
+                    </div>
+                    <div className="grid gap-3 pl-4">
+                      {['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'tiktok'].map((key) => {
+                        const info = CHANNEL_INFO[key];
+                        const isConnected = getChannelConnectionStatus(key);
+                        const isSelected = selectedChannels[key];
+                        
+                        return (
+                          <div
+                            key={key}
+                            className={cn(
+                              "flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200",
+                              isSelected 
+                                ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-md" 
+                                : "border-border hover:border-muted-foreground/50 hover:bg-muted/50"
+                            )}
+                            onClick={() => toggleChannel(key)}
+                          >
+                            <Checkbox checked={isSelected} />
+                            
+                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white", info.color)}>
+                              <span className="font-bold">{info.name.charAt(0)}</span>
+                            </div>
+
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">{info.name}</span>
+                                {isConnected ? (
+                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
+                                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
+                                    <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">Connected</span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
+                                    <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
+                                    <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">Not connected</span>
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {!isConnected && (
+                                <Button
+                                  variant="link"
+                                  size="sm"
+                                  className="h-auto p-0 text-xs text-[hsl(var(--pill-hydration-accent))] hover:text-[hsl(var(--pill-hydration-accent))]/80"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleConnectChannel(key);
+                                  }}
+                                >
+                                  Connect now →
+                                </Button>
+                              )}
+                              
+                              {isConnected && profile?.[`${key}_url` as keyof typeof profile] && (
+                                <p className="text-xs text-muted-foreground truncate">
+                                  @{extractHandle(String(profile[`${key}_url` as keyof typeof profile] || ''))}
+                                </p>
+                              )}
+                            </div>
+
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Info className="w-4 h-4 text-muted-foreground cursor-help" />
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-xs">
+                                  <p className="text-xs">
+                                    Connect to schedule posts automatically
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Messaging Group */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded">
+                      <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                      <h4 className="text-sm font-semibold text-foreground">Direct Messaging</h4>
+                    </div>
+                    <div className="grid gap-3 pl-4">
+                      {['email', 'sms'].map((key) => {
+                        const info = CHANNEL_INFO[key];
+                        const isConnected = getChannelConnectionStatus(key);
+                        const isSelected = selectedChannels[key];
+                        
+                        return (
+                          <div
+                            key={key}
+                            className={cn(
+                              "flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200",
+                              isSelected 
+                                ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-md" 
+                                : "border-border hover:border-muted-foreground/50 hover:bg-muted/50"
+                            )}
+                            onClick={() => toggleChannel(key)}
+                          >
+                            <Checkbox checked={isSelected} />
+                            
+                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white", info.color)}>
+                              <span className="font-bold">{info.name.charAt(0)}</span>
+                            </div>
+
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">{info.name}</span>
+                                {isConnected ? (
+                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
+                                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
+                                    <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">Connected</span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
+                                    <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
+                                    <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">Not connected</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Email/SMS Consent Warning */}
+                  {(selectedChannels.email || selectedChannels.sms) && (
+                    <Alert className="bg-[hsl(var(--sys-ai-tint))] border-[hsl(var(--sys-ai-accent))]/30">
+                      <AlertCircle className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
+                      <AlertTitle className="text-foreground">Consent Required</AlertTitle>
+                      <AlertDescription className="text-muted-foreground text-sm">
+                        Some audience members may not have given promotional consent for{" "}
+                        {selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS"}.
+                        <Button variant="link" className="h-auto p-0 ml-1 text-foreground underline">
+                          Request consent →
+                        </Button>
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
+              )}
+
+              {/* Step 3: Template Selection - Enhanced */}
+              {step === 3 && (
+                <div className="space-y-4">
+                  <Label className="text-lg font-semibold">Choose Your Campaign Template</Label>
+                  <RadioGroup value={selectedTemplate} onValueChange={applyTemplate}>
+                    {DISTRIBUTION_TEMPLATES.map((template) => (
+                      <div
+                        key={template.id}
+                        className={cn(
+                          "flex items-start gap-4 p-5 border-2 rounded-xl cursor-pointer transition-all duration-200",
+                          selectedTemplate === template.id 
+                            ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-lg ring-2 ring-[hsl(var(--gradient-join-start))]/20" 
+                            : "border-border hover:border-muted-foreground/50 hover:bg-muted/50 hover:shadow-md"
+                        )}
+                        onClick={() => applyTemplate(template.id)}
+                      >
+                        <RadioGroupItem value={template.id} id={template.id} className="mt-1" />
+                        <div className="flex-1">
+                          <Label htmlFor={template.id} className="cursor-pointer">
+                            <div className="flex items-center gap-3 mb-2">
+                              <span className="text-3xl">{template.icon}</span>
+                              <span className="text-lg font-bold">{template.name}</span>
+                            </div>
+                          </Label>
+                          <p className="text-sm text-foreground/80 mb-3">
+                            {template.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            <Badge variant="secondary" className="text-xs">
+                              📊 {template.frequency}
+                            </Badge>
+                            <Badge variant="secondary" className="text-xs">
+                              ⏱️ {template.duration}</Badge>
                       </div>
                       <p className="text-xs text-muted-foreground mt-2">
                         Best for: {template.bestFor}
@@ -349,43 +580,63 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
                 </p>
               </div>
             </div>
-          )}
-        </div>
+              )}
+            </div>
+          </div>
 
-        <div className="flex justify-between gap-2 pt-4 border-t">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => step === 1 ? handleClose() : setStep(step - 1)}
-          >
-            {step === 1 ? "Cancel" : (
-              <>
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                Back
-              </>
+          <div className="flex justify-between gap-3 pt-6 border-t-2 px-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              onClick={() => step === 1 ? handleClose() : setStep(step - 1)}
+              className="min-w-[120px]"
+            >
+              {step === 1 ? (
+                <>
+                  <X className="w-4 h-4 mr-2" />
+                  Cancel
+                </>
+              ) : (
+                <>
+                  <ChevronLeft className="w-4 h-4 mr-2" />
+                  Back
+                </>
+              )}
+            </Button>
+            
+            {step < totalSteps ? (
+              <Button
+                onClick={() => setStep(step + 1)}
+                disabled={!canProceed()}
+                size="lg"
+                className="min-w-[160px] bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-lg transition-all"
+              >
+                Continue
+                <ChevronRight className="w-4 h-4 ml-2" />
+              </Button>
+            ) : (
+              <Button
+                onClick={handleSubmit}
+                disabled={createCampaign.isPending || updateCampaign.isPending || !canProceed()}
+                size="lg"
+                className="min-w-[180px] bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-xl transition-all"
+              >
+                {createCampaign.isPending || updateCampaign.isPending
+                  ? (isEditMode ? "Updating..." : "Creating Campaign...")
+                  : (isEditMode ? "Update Campaign" : "Create Campaign")}
+                <Rocket className="w-4 h-4 ml-2" />
+              </Button>
             )}
-          </Button>
-          
-          {step < totalSteps ? (
-            <Button
-              onClick={() => setStep(step + 1)}
-              disabled={!canProceed()}
-            >
-              Next
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Button>
-          ) : (
-            <Button
-              onClick={handleSubmit}
-              disabled={createCampaign.isPending || updateCampaign.isPending || !canProceed()}
-            >
-              {createCampaign.isPending || updateCampaign.isPending
-                ? isEditMode ? "Updating..." : "Creating..."
-                : isEditMode ? "Update Campaign" : "Create Campaign"}
-            </Button>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <CampaignSuccessModal 
+        open={showSuccessModal}
+        onOpenChange={setShowSuccessModal}
+        campaign={createdCampaignData || { name: '', channels: [], template: '', firstPostDate: new Date() }}
+      />
+    </>
   );
 }
