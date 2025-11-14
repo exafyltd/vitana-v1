@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Minimal theme tokens and base styles */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -67,17 +66,8 @@
     --ring: 217.2 32.6% 17.5%;
   }
 
-  /* Minimal reset using design tokens (no @apply to avoid PostCSS issues) */
-  * {
-    border-color: hsl(var(--border));
-  }
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-  }
+  * { border-color: hsl(var(--border)); }
+  body { background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
 }
 
-/* Empty but balanced components layer */
-@layer components {
-  /* Add component-level styles here as needed */
-}
+@layer components {}

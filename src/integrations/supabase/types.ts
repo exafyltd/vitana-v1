@@ -5651,45 +5651,54 @@ export type Database = {
         Row: {
           assigned_to: string | null
           created_at: string
-          description: string
+          description: string | null
+          description_md: string | null
           id: string
           is_test: boolean
           metadata: Json | null
           parent_vtid: string | null
           status: string
           task_family: string
-          task_type: string
+          task_module: string | null
+          task_type: string | null
           tenant: string
+          title: string | null
           updated_at: string
           vtid: string
         }
         Insert: {
           assigned_to?: string | null
           created_at?: string
-          description: string
+          description?: string | null
+          description_md?: string | null
           id: string
           is_test?: boolean
           metadata?: Json | null
           parent_vtid?: string | null
           status: string
           task_family: string
-          task_type: string
+          task_module?: string | null
+          task_type?: string | null
           tenant: string
+          title?: string | null
           updated_at?: string
           vtid: string
         }
         Update: {
           assigned_to?: string | null
           created_at?: string
-          description?: string
+          description?: string | null
+          description_md?: string | null
           id?: string
           is_test?: boolean
           metadata?: Json | null
           parent_vtid?: string | null
           status?: string
           task_family?: string
-          task_type?: string
+          task_module?: string | null
+          task_type?: string | null
           tenant?: string
+          title?: string | null
           updated_at?: string
           vtid?: string
         }
