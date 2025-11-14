@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { useCampaigns, type Campaign } from "@/hooks/useCampaigns";
 import { useChannels } from "@/hooks/useChannels";
+import { useProfile } from "@/context/ProfileProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { ChevronLeft, ChevronRight, CheckCircle, AlertCircle } from "lucide-react";
 import { DISTRIBUTION_TEMPLATES, CHANNEL_BEST_TIMES, CHANNEL_INFO } from "@/lib/campaign-templates";
@@ -23,6 +24,7 @@ interface CampaignDialogProps {
 export function CampaignDialog({ open, onOpenChange, editingCampaign }: CampaignDialogProps) {
   const { createCampaign, updateCampaign } = useCampaigns();
   const { channels } = useChannels();
+  const { profile } = useProfile();
   
   // Form state
   const [step, setStep] = useState(1);
@@ -146,6 +148,20 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   };
 
   const getChannelConnectionStatus = (channelKey: string) => {
+    // Check profiles table for social media URLs (matches Social Presence logic)
+    if (profile) {
+      switch(channelKey.toLowerCase()) {
+        case 'linkedin': return !!profile.linkedin_url;
+        case 'instagram': return !!profile.instagram_url;
+        case 'facebook': return !!profile.facebook_url;
+        case 'twitter': 
+        case 'x': return !!profile.x_url;
+        case 'youtube': return !!profile.youtube_url;
+        case 'tiktok': return !!profile.tiktok_url;
+      }
+    }
+    
+    // Fall back to distribution_channels table for other channels (email, SMS, etc.)
     const channel = channels?.find(c => 
       c.channel_type?.toLowerCase() === channelKey || 
       c.channel_name?.toLowerCase() === channelKey
