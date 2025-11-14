@@ -12,12 +12,16 @@ import {
   Linkedin,
   Facebook,
   Mail,
+  Download,
+  ExternalLink,
 } from "lucide-react";
 import { XIcon } from "@/components/icons/XIcon";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import type { Campaign } from "@/hooks/useCampaigns";
 import type { LucideIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface CampaignAnalyticsExpandedProps {
   campaign: Campaign;
@@ -60,13 +64,84 @@ function getChannelIcon(channel: string): LucideIcon | React.ComponentType<any> 
   return icons[channel] || Mail;
 }
 
+function generateCSV(campaign: Campaign, analytics: typeof MOCK_ANALYTICS): string {
+  const rows: string[][] = [];
+  
+  // Header
+  rows.push(['Campaign Analytics Report']);
+  rows.push(['Campaign Name', campaign.name]);
+  rows.push(['Date Range', campaign.start_date && campaign.end_date 
+    ? `${format(new Date(campaign.start_date), "MMM d, yyyy")} - ${format(new Date(campaign.end_date), "MMM d, yyyy")}`
+    : 'N/A'
+  ]);
+  rows.push(['Status', campaign.status]);
+  rows.push([]);
+  
+  // Summary Metrics
+  rows.push(['Performance Summary']);
+  rows.push(['Metric', 'Value']);
+  rows.push(['Total Reach', analytics.reach.toLocaleString()]);
+  rows.push(['Engagement', analytics.engagement.toLocaleString()]);
+  rows.push(['Click Rate (CTR)', `${analytics.ctr}%`]);
+  rows.push(['Conversions', analytics.conversions.toString()]);
+  rows.push([]);
+  
+  // Channel Breakdown
+  rows.push(['Channel Performance']);
+  rows.push(['Channel', 'Reach', 'Engagement']);
+  analytics.channelBreakdown.forEach(channel => {
+    rows.push([channel.name, channel.reach.toString(), channel.engagement.toString()]);
+  });
+  rows.push([]);
+  
+  // Trend Data
+  rows.push(['Reach Trend']);
+  rows.push(['Period', 'Reach']);
+  analytics.trendData.forEach(data => {
+    rows.push([data.date, data.reach.toString()]);
+  });
+  
+  // Convert to CSV format
+  return rows.map(row => 
+    row.map(cell => `"${cell}"`).join(',')
+  ).join('\n');
+}
+
+function downloadCSV(csvContent: string, filename: string) {
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  URL.revokeObjectURL(url);
+}
+
 export function CampaignAnalyticsExpanded({
   campaign,
   stats,
   onClose,
 }: CampaignAnalyticsExpandedProps) {
+  const navigate = useNavigate();
   const analytics = MOCK_ANALYTICS;
   const maxReach = Math.max(...analytics.channelBreakdown.map((c) => c.reach));
+
+  const handleExportReport = () => {
+    const csvContent = generateCSV(campaign, analytics);
+    const filename = `campaign-analytics-${campaign.name.toLowerCase().replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    downloadCSV(csvContent, filename);
+    toast.success("Analytics report downloaded successfully");
+  };
+
+  const handleOpenFullDashboard = () => {
+    navigate(`/sharing/campaigns/${campaign.id}`);
+  };
 
   return (
     <div className={cn(
@@ -273,16 +348,19 @@ export function CampaignAnalyticsExpanded({
             variant="outline"
             size="sm"
             className="gap-2"
+            onClick={handleExportReport}
           >
-            <TrendingUp className="w-4 h-4" />
+            <Download className="w-4 h-4" />
             Export Report
           </Button>
           
           <Button
             size="sm"
             className="gap-2 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700"
+            onClick={handleOpenFullDashboard}
           >
             Open Full Dashboard
+            <ExternalLink className="w-4 h-4" />
           </Button>
         </div>
       </Card>
