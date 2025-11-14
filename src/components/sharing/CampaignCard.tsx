@@ -45,13 +45,24 @@ interface CampaignCardProps {
 }
 
 function getStatusAccentBar(status: string): string {
-  const bars: Record<string, string> = {
-    active: "border-l-4 border-green-500",
-    draft: "border-l-4 border-amber-500",
-    paused: "border-l-4 border-yellow-500",
-    completed: "border-l-4 border-purple-500",
+  const bars = {
+    active: "border-l-4 border-l-green-500",
+    draft: "border-l-4 border-l-amber-500",
+    paused: "border-l-4 border-l-yellow-500",
+    completed: "border-l-4 border-l-purple-500",
   };
-  return bars[status] || bars.draft;
+  return bars[status as keyof typeof bars] || bars.draft;
+}
+
+function getStatusBorderGradient(status: string): string {
+  const gradients: Record<string, string> = {
+    draft: "border-transparent bg-gradient-to-br from-amber-100/50 via-orange-50/30 to-amber-100/50",
+    active: "border-transparent bg-gradient-to-br from-teal-100/50 via-cyan-50/30 to-teal-100/50",
+    smart: "border-transparent bg-gradient-to-br from-teal-100/50 via-cyan-50/30 to-teal-100/50",
+    completed: "border-transparent bg-gradient-to-br from-purple-100/50 via-pink-50/30 to-purple-100/50",
+    paused: "border-transparent bg-gradient-to-br from-yellow-100/50 via-amber-50/30 to-yellow-100/50",
+  };
+  return gradients[status] || gradients.draft;
 }
 
 function getStatusPillStyle(status: string): string {
@@ -221,7 +232,7 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       {/* Publishing To (Channels) */}
       {selectedChannels.length > 0 && (
         <div className="mb-4">
-          <h4 className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-2">
+          <h4 className="text-[11px] font-medium uppercase tracking-[0.5px] text-gray-500/80 mb-2">
             Publishing To
           </h4>
           <div className="flex flex-wrap gap-2">
@@ -233,16 +244,18 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                 <TooltipProvider key={channelKey}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div
-                        className={cn(
-                          "w-8 h-8 rounded-full flex items-center justify-center",
-                          "ring-2 ring-white shadow-md",
-                          "transition-transform hover:scale-110",
-                          channelInfo.color
-                        )}
-                      >
-                        <Icon className="w-4 h-4 text-white" />
-                      </div>
+                  <div
+                    className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center",
+                      "ring-2 ring-white shadow-md",
+                      "transition-all duration-200",
+                      "hover:scale-110 hover:shadow-lg",
+                      "hover:shadow-[0_0_16px_rgba(0,0,0,0.15)]",
+                      channelInfo.color
+                    )}
+                  >
+                    <Icon className="w-4 h-4 text-white" />
+                  </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="text-xs">{channelInfo.name} • Connected</p>
@@ -253,9 +266,12 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
             })}
 
             {selectedChannels.length > 4 && (
-              <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-300 text-gray-700 text-xs font-semibold ring-2 ring-white shadow-md">
+              <Badge
+                variant="secondary"
+                className="text-xs font-medium px-2 py-0.5 rounded-full"
+              >
                 +{selectedChannels.length - 4}
-              </div>
+              </Badge>
             )}
           </div>
         </div>
@@ -273,31 +289,45 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                 <div className="space-y-1.5">
                   {Object.entries(bestTimes)
                     .slice(0, 3)
-                    .map(([channel, times]) => {
+                    .map(([channel, times], index) => {
                       const channelInfo = CHANNEL_INFO[channel];
                       const timeArray = times as string[];
                       const Icon = getChannelIcon(channel);
 
                       return channelInfo && timeArray?.length > 0 ? (
-                        <div
-                          key={channel}
-                          className="flex items-center gap-2 text-xs bg-gradient-to-r from-blue-50 to-purple-50 px-2.5 py-1.5 rounded-lg border border-blue-100"
-                        >
+                        <div key={channel}>
                           <div
                             className={cn(
-                              "w-5 h-5 rounded-full flex items-center justify-center",
-                              channelInfo.color
+                              "flex items-center gap-2 text-xs px-2.5 py-1.5 rounded-lg",
+                              "bg-gradient-to-r from-blue-50 to-purple-50",
+                              "border border-blue-100",
+                              "transition-all duration-200",
+                              "hover:bg-gradient-to-r hover:from-teal-50 hover:to-cyan-50",
+                              "hover:border-teal-200 hover:shadow-md"
                             )}
                           >
-                            <Icon className="w-3 h-3 text-white" />
+                            <div
+                              className={cn(
+                                "w-5 h-5 rounded-full flex items-center justify-center opacity-90",
+                                channelInfo.color
+                              )}
+                            >
+                              <Icon className="w-3 h-3 text-white" />
+                            </div>
+                            <Clock className="w-3 h-3 text-gray-600" />
+                            <span className="font-medium text-gray-700">
+                              {channelInfo.name}:
+                            </span>
+                            <span className="text-gray-600">
+                              {timeArray.slice(0, 2).join(", ")}
+                            </span>
                           </div>
-                          <Clock className="w-3 h-3 text-gray-500" />
-                          <span className="font-medium text-gray-700">
-                            {channelInfo.name}:
-                          </span>
-                          <span className="text-gray-600">
-                            {timeArray.slice(0, 2).join(", ")}
-                          </span>
+
+                          {/* Divider between rows */}
+                          {index <
+                            Math.min(Object.keys(bestTimes).length, 3) - 1 && (
+                            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-1" />
+                          )}
                         </div>
                       ) : null;
                     })}
@@ -343,19 +373,19 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-gray-500" />
+                <FileText className="w-3.5 h-3.5 text-gray-500" />
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold text-gray-900">
+                  <span className="text-base font-bold text-gray-900 leading-none">
                     {stats.total}
                   </span>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500">
+                  <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
                     Posts
                   </span>
                 </div>
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-xs">Total posts prepared</p>
+              <p className="text-xs">Total prepared posts</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -366,14 +396,14 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
             <TooltipTrigger asChild>
               <div className="flex items-center gap-2">
                 <div className="relative">
-                  <Radio className="w-4 h-4 text-green-600" />
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <Radio className="w-3.5 h-3.5 text-green-600" />
+                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-lg font-bold text-green-600">
+                  <span className="text-base font-bold text-green-600 leading-none">
                     {stats.published}
                   </span>
-                  <span className="text-[9px] uppercase tracking-wider text-gray-500">
+                  <span className="text-[9px] uppercase tracking-wider text-gray-500 mt-0.5">
                     Live
                   </span>
                 </div>
@@ -409,12 +439,13 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
       {/* Quick Actions Overlay */}
       <div
         className={cn(
-          "absolute bottom-0 left-0 right-0 p-4",
-          "bg-gradient-to-t from-white/95 to-transparent backdrop-blur-md",
+          "absolute bottom-0 left-0 right-0 p-3",
+          "bg-gradient-to-t from-white/95 via-white/90 to-transparent backdrop-blur-sm",
           "opacity-0 group-hover:opacity-100",
           "translate-y-2 group-hover:translate-y-0",
           "transition-all duration-300 ease-out",
-          "rounded-b-2xl"
+          "rounded-b-2xl pointer-events-none group-hover:pointer-events-auto",
+          "max-md:gap-1"
         )}
       >
         <div className="flex items-center justify-end gap-2">
@@ -424,17 +455,17 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0 hover:bg-blue-100"
+                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-blue-100 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/sharing/campaigns/${campaign.id}`);
                   }}
                 >
-                  <Eye className="w-4 h-4" />
+                  <Eye className="w-3.5 h-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">View</p>
+                <p className="text-xs">View Analytics</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -445,13 +476,13 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0 hover:bg-green-100"
+                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-green-100 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onClick?.();
                   }}
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-3.5 h-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -466,13 +497,13 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0 hover:bg-purple-100"
+                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-purple-100 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     // Handle duplicate
                   }}
                 >
-                  <Copy className="w-4 h-4" />
+                  <Copy className="w-3.5 h-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -487,13 +518,13 @@ export function CampaignCard({ campaign, stats, onClick }: CampaignCardProps) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 w-8 p-0 hover:bg-red-100"
+                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-red-100 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     // Handle delete
                   }}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
