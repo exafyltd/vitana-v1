@@ -827,3 +827,4 @@ All colors MUST be HSL.
   .safe-bottom { 
     padding-bottom: calc(env(safe-area-inset-bottom) + 12px); 
   }
+}
