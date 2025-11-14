@@ -242,7 +242,7 @@ All colors MUST be HSL.
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   html, body, #root {
@@ -250,14 +250,22 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
 
 @layer components {
   /* Vitana Pillar-First Card System */
   .card {
-    @apply rounded-2xl border shadow-sm hover:shadow-md transition-all p-4;
+    border-radius: 1rem; /* rounded-2xl */
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 1rem; /* p-4 */
+  }
+  .card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
   }
 
   .card-accent-left {
@@ -570,31 +578,44 @@ All colors MUST be HSL.
 
   /* Message bubble improvements */
   .message-bubble {
-    @apply rounded-2xl shadow-sm transition-all duration-200;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     max-width: 75%;
   }
 
   .message-bubble-outgoing {
-    @apply bg-domain-messages-accent text-white ml-auto;
+    background-color: hsl(var(--domain-messages-accent));
+    color: hsl(0 0% 100%);
+    margin-left: auto;
   }
 
   .message-bubble-incoming {
-    @apply bg-muted text-foreground mr-auto;
+    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground));
+    margin-right: auto;
   }
 
   /* Enhanced thread list active states */
   .thread-item-active {
-    @apply bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md;
+    background-color: hsl(var(--domain-messages-tint));
+    border-left: 4px solid hsl(var(--domain-messages-accent));
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
     transform: translateX(2px);
   }
 
   .thread-item {
-    @apply transition-all duration-200 hover:shadow-sm;
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .thread-item:hover {
-    @apply bg-muted/50;
+    background-color: hsl(var(--muted) / 0.5);
     transform: translateX(1px);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
   }
 
   /* Scroll affordances */
@@ -609,18 +630,38 @@ All colors MUST be HSL.
 
   /* Presence indicators */
   .presence-online {
-    @apply absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-background rounded-full;
+    position: absolute;
+    bottom: -0.125rem; /* -0.5 */
+    right: -0.125rem;  /* -0.5 */
+    width: 0.75rem;    /* w-3 */
+    height: 0.75rem;   /* h-3 */
+    background-color: hsl(var(--health-success));
+    border: 2px solid hsl(var(--background));
+    border-radius: 9999px;
   }
 
   .presence-offline {
-    @apply absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-muted-foreground border-2 border-background rounded-full;
+    position: absolute;
+    bottom: -0.125rem;
+    right: -0.125rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: hsl(var(--muted-foreground));
+    border: 2px solid hsl(var(--background));
+    border-radius: 9999px;
   }
 
   /* Keyboard hint styling */
   .keyboard-hint kbd {
-    @apply px-1 py-0.5 bg-background border border-border rounded text-xs font-mono;
-  }
-    z-index: 10;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
+    background-color: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   }
 
   /* Chat history - scrollable middle zone */
