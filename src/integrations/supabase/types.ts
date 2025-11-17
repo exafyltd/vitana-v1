@@ -3630,6 +3630,42 @@ export type Database = {
         }
         Relationships: []
       }
+      oasis_tasks: {
+        Row: {
+          assignee: string | null
+          created_at: string
+          description: string | null
+          id: number
+          metadata: Json | null
+          status: string
+          title: string
+          updated_at: string
+          vtid: string
+        }
+        Insert: {
+          assignee?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          metadata?: Json | null
+          status?: string
+          title: string
+          updated_at?: string
+          vtid: string
+        }
+        Update: {
+          assignee?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          metadata?: Json | null
+          status?: string
+          title?: string
+          updated_at?: string
+          vtid?: string
+        }
+        Relationships: []
+      }
       OasisEvent: {
         Row: {
           created_at: string | null
