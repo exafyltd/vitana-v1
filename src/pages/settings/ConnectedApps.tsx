@@ -30,6 +30,7 @@ import {
   Link,
   Sparkles,
   RefreshCw,
+  Calendar,
 } from "lucide-react";
 import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -673,6 +674,358 @@ function ConnectedApps() {
   };
 
   // Data sync & preferences
+  const getWellnessFitnessIntegrationsCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'eightsleep',
+        name: 'Eight Sleep',
+        icon: Activity,
+        description: 'Sleep stages, temperature',
+      },
+      {
+        id: 'withings',
+        name: 'Withings',
+        icon: Activity,
+        description: 'Health metrics, body composition',
+      },
+      {
+        id: 'huawei-health',
+        name: 'Huawei Health',
+        icon: Activity,
+        description: 'Activity tracking, heart rate',
+      },
+      {
+        id: 'polar-flow',
+        name: 'Polar Flow',
+        icon: Activity,
+        description: 'Training load, recovery',
+      },
+      {
+        id: 'suunto',
+        name: 'Suunto',
+        icon: Activity,
+        description: 'Sports tracking, fitness data',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `wellness-fitness-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
+  const getNutritionLifestyleCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'cronometer',
+        name: 'Cronometer',
+        icon: Utensils,
+        description: 'Detailed nutrition tracking',
+      },
+      {
+        id: 'yazio',
+        name: 'Yazio',
+        icon: Apple,
+        description: 'Calorie counter, diet plans',
+      },
+      {
+        id: 'lifesum',
+        name: 'Lifesum',
+        icon: Apple,
+        description: 'Meal planning, nutrition',
+      },
+      {
+        id: 'loseit',
+        name: 'LoseIt!',
+        icon: Utensils,
+        description: 'Weight loss, calorie tracking',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `nutrition-lifestyle-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
+  const getClinicalLabsIntegrationsCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'lifespin',
+        name: 'Lifespin',
+        icon: TestTube,
+        description: 'Metabolic health insights',
+      },
+      {
+        id: 'fhir-providers',
+        name: 'FHIR Providers',
+        icon: Hospital,
+        description: 'Clinical health records',
+      },
+      {
+        id: 'partner-labs',
+        name: 'Partner Labs (AlKalma, Earthlinks)',
+        icon: TestTube,
+        description: 'Lab test results, biomarker tracking',
+      },
+      {
+        id: 'metabolomics',
+        name: 'Metabolomics Providers',
+        icon: Hospital,
+        description: 'Advanced metabolic profiling',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `clinical-labs-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon. This will enable secure access to {app.description.toLowerCase()}.
+        </div>
+      ),
+    }));
+  };
+
+  const getMentalHealthMindfulnessCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'calm',
+        name: 'Calm',
+        icon: Brain,
+        description: 'Meditation, mindfulness sessions',
+      },
+      {
+        id: 'headspace',
+        name: 'Headspace',
+        icon: Brain,
+        description: 'Guided meditation, sleep sounds',
+      },
+      {
+        id: 'muse',
+        name: 'Muse',
+        icon: Brain,
+        description: 'Brain activity, meditation feedback',
+      },
+      {
+        id: 'waking-up',
+        name: 'Waking Up',
+        icon: Brain,
+        description: 'Meditation and philosophy',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `mental-health-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
+  const getSmartHomeEnvironmentCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'smart-scales',
+        name: 'Smart Scales',
+        icon: Home,
+        description: 'Weight, body composition',
+      },
+      {
+        id: 'air-quality-sensors',
+        name: 'Air Quality Sensors',
+        icon: Home,
+        description: 'Indoor air quality monitoring',
+      },
+      {
+        id: 'sleep-pod-devices',
+        name: 'Sleep Pod Devices',
+        icon: Home,
+        description: 'Sleep environment optimization',
+      },
+      {
+        id: 'room-temp-sensors',
+        name: 'Room Temperature Sensors',
+        icon: Home,
+        description: 'Environmental temperature tracking',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `smart-home-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
+  const getCommunicationAppsIntegrationsCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'whatsapp',
+        name: 'WhatsApp',
+        icon: MessageCircle,
+        description: 'Messaging integration',
+      },
+      {
+        id: 'telegram',
+        name: 'Telegram',
+        icon: MessageCircle,
+        description: 'Bot and messaging',
+      },
+      {
+        id: 'gmail',
+        name: 'Gmail',
+        icon: MessageCircle,
+        description: 'Email notifications',
+      },
+      {
+        id: 'outlook-mail',
+        name: 'Outlook Mail',
+        icon: MessageCircle,
+        description: 'Email integration',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `communication-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
+  const getWalletPaymentsIntegrationsCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'apple-pay',
+        name: 'Apple Pay',
+        icon: Wallet,
+        description: 'Payment method',
+      },
+      {
+        id: 'google-pay',
+        name: 'Google Pay',
+        icon: Wallet,
+        description: 'Payment method',
+      },
+      {
+        id: 'stripe-connect',
+        name: 'Stripe Connect',
+        icon: CreditCard,
+        description: 'Payment processing',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `wallet-payments-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
+  const getDeveloperToolsIntegrationsCards = (): StandardHorizontalCardProps[] => {
+    const apps = [
+      {
+        id: 'api-keys',
+        name: 'API Keys',
+        icon: Code,
+        description: 'Developer access',
+      },
+      {
+        id: 'csv-import',
+        name: 'CSV Import',
+        icon: Code,
+        description: 'Bulk data import',
+      },
+      {
+        id: 'zapier',
+        name: 'Zapier',
+        icon: Braces,
+        description: 'Workflow automation',
+      },
+      {
+        id: 'n8n',
+        name: 'n8n',
+        icon: Braces,
+        description: 'Open-source automation',
+      },
+    ];
+
+    return apps.map((app) => ({
+      id: `developer-tools-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: app.description,
+      badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
+      primaryAction: undefined,
+      expandedContent: (
+        <div className="text-sm text-muted-foreground pt-2">
+          {app.name} integration is coming soon!
+        </div>
+      ),
+    }));
+  };
+
   const getSyncSettingsCards = (): StandardHorizontalCardProps[] => {
     return [
       {
@@ -990,7 +1343,7 @@ function ConnectedApps() {
             {/* Productivity & Calendar */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5" />
+                <Calendar className="w-5 h-5" />
                 Productivity & Calendar
               </h2>
               <HorizontalCardList
@@ -999,6 +1352,150 @@ function ConnectedApps() {
                 layout="stack"
                 screenId="settings-connected-apps"
                 listId="productivity"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Wellness & Fitness Integrations */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Activity className="w-5 h-5" />
+                Wellness & Fitness Integrations
+              </h2>
+              <HorizontalCardList
+                items={getWellnessFitnessIntegrationsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="wellness-fitness-integrations"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Nutrition & Lifestyle */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Apple className="w-5 h-5" />
+                Nutrition & Lifestyle
+              </h2>
+              <HorizontalCardList
+                items={getNutritionLifestyleCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="nutrition-lifestyle"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Clinical & Labs */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <TestTube className="w-5 h-5" />
+                Clinical & Labs
+              </h2>
+              <HorizontalCardList
+                items={getClinicalLabsIntegrationsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="clinical-labs-integrations"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Mental Health & Mindfulness */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Brain className="w-5 h-5" />
+                Mental Health & Mindfulness
+              </h2>
+              <HorizontalCardList
+                items={getMentalHealthMindfulnessCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="mental-health-mindfulness"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Smart Home & Environment */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Home className="w-5 h-5" />
+                Smart Home & Environment
+              </h2>
+              <HorizontalCardList
+                items={getSmartHomeEnvironmentCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="smart-home-environment"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Communication Apps */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <MessageCircle className="w-5 h-5" />
+                Communication Apps
+              </h2>
+              <HorizontalCardList
+                items={getCommunicationAppsIntegrationsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="communication-apps-integrations"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Wallet & Payments */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Wallet className="w-5 h-5" />
+                Wallet & Payments
+              </h2>
+              <HorizontalCardList
+                items={getWalletPaymentsIntegrationsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="wallet-payments-integrations"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Developer Tools */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Braces className="w-5 h-5" />
+                Developer Tools
+              </h2>
+              <HorizontalCardList
+                items={getDeveloperToolsIntegrationsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="developer-tools-integrations"
                 gap="md"
                 infiniteScroll={false}
                 className="pb-2"
