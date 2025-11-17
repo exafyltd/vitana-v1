@@ -64,7 +64,6 @@ export const sharingNavigation = [
   { id: "campaigns", name: "Campaigns", path: "/sharing/campaigns" },
   { id: "distribution", name: "Distribution", path: "/sharing/distribution" },
   { id: "data-consent", name: "Data & Consent", path: "/sharing/data-consent" },
-  { id: "integrations", name: "Integrations", path: "/sharing/integrations" },
 ];
 
 export const memoryNavigation = [
