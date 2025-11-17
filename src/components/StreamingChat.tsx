@@ -48,7 +48,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
   const { triggerProactiveMessage, isGenerating: isGeneratingMessage } = useProactiveAssistant()
   const { errors, showError, dismissError } = useErrorNotifications()
   const { suppressGreeting, cancelGreeting, schedulePostGlassCooldown } = useIntelligentGreetingContext()
-  const { setGlassModeActive, setMicActive, setSessionReady } = useStreamingState()
+  const { setGlassModeActive, setMicActive, setSessionReady, setAudioOverlayVisible } = useStreamingState()
   
   // Glass Mode integration
   const {
@@ -174,6 +174,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     // STOP if currently recording
     if (vertexRecording || isRecording) {
       console.log('[MIC] 🛑 Stopping audio-only mode');
+      setAudioOverlayVisible(false);
       vertexStopAudio();
       setIsRecording(false);
       setIsAudioActive(false);
@@ -202,6 +203,7 @@ export const StreamingChat = forwardRef<StreamingChatRef>((props, ref) => {
     setIsRecording(true);
     setIsAudioActive(true);
     setMicActive(true);
+    setAudioOverlayVisible(true);
     
     try {
       await vertexStartAudio();

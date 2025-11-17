@@ -4,9 +4,11 @@ interface StreamingStateContextValue {
   glassModeActive: boolean;
   micActive: boolean;
   sessionReady: boolean;
+  audioOverlayVisible: boolean;
   setGlassModeActive: (active: boolean) => void;
   setMicActive: (active: boolean) => void;
   setSessionReady: (ready: boolean) => void;
+  setAudioOverlayVisible: (visible: boolean) => void;
 }
 
 const StreamingStateContext = createContext<StreamingStateContextValue | undefined>(undefined);
@@ -15,6 +17,7 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
   const [glassModeActive, setGlassModeActive] = useState(false);
   const [micActive, setMicActive] = useState(false);
   const [sessionReady, setSessionReady] = useState(false);
+  const [audioOverlayVisible, setAudioOverlayVisible] = useState(false);
 
   return (
     <StreamingStateContext.Provider
@@ -22,9 +25,11 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
         glassModeActive,
         micActive,
         sessionReady,
+        audioOverlayVisible,
         setGlassModeActive,
         setMicActive,
         setSessionReady,
+        setAudioOverlayVisible,
       }}
     >
       {children}
