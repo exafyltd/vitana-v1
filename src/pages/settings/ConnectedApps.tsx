@@ -31,6 +31,10 @@ import {
   Sparkles,
   RefreshCw,
   Calendar,
+  History,
+  ListChecks,
+  RefreshCcw,
+  Clock,
 } from "lucide-react";
 import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -1071,93 +1075,177 @@ function ConnectedApps() {
     }));
   };
 
-  const getSyncSettingsCards = (): StandardHorizontalCardProps[] => {
-    return [
-      {
-        id: 'sync-frequency',
-        screenId: "settings-connected-apps",
-        icon: <Activity className="w-5 h-5" />,
-        title: 'Sync Frequency',
-        description: 'Current: Every 15 minutes',
-        badges: [{ label: 'Auto', variant: 'default' as const }],
-        primaryAction: {
-          label: 'Configure',
-          onClick: () => console.log('Configure sync frequency'),
+  const getSyncOverviewCard = (): StandardHorizontalCardProps => {
+    const [isSyncing, setIsSyncing] = useState(false);
+    
+    return {
+      id: 'sync-overview',
+      screenId: "settings-connected-apps",
+      icon: <RefreshCw className="w-5 h-5" />,
+      title: 'System Sync Status',
+      description: 'Shows the last time your data was synchronized across all connected apps',
+      badges: [{ label: 'All Systems Operational', variant: 'default' as const }],
+      primaryAction: {
+        label: isSyncing ? 'Syncing...' : 'Sync Now',
+        onClick: () => {
+          setIsSyncing(true);
+          console.log('Manual sync triggered');
+          setTimeout(() => setIsSyncing(false), 3000);
         },
-        expandedContent: (
-          <div className="space-y-3 pt-2">
-            <div className="text-sm font-medium">Choose sync frequency:</div>
-            <div className="space-y-2">
-              <Button variant="outline" size="sm" className="w-full justify-start">Real-time (battery intensive)</Button>
-              <Button variant="default" size="sm" className="w-full justify-start">Every 15 minutes ✓</Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">Hourly</Button>
-              <Button variant="outline" size="sm" className="w-full justify-start">Daily</Button>
+        disabled: isSyncing,
+        variant: 'ghost' as const,
+        icon: <RefreshCcw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />,
+      },
+      expandedContent: (
+        <div className="space-y-3 pt-2">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-sm font-medium">Last Sync</div>
+              <div className="text-sm text-muted-foreground">15 minutes ago</div>
+            </div>
+            <div>
+              <div className="text-sm font-medium">Total Synced Apps</div>
+              <div className="text-sm text-muted-foreground">5 connected</div>
+            </div>
+            <div>
+              <div className="text-sm font-medium">Pending Syncs</div>
+              <div className="text-sm text-muted-foreground">1 in queue</div>
+            </div>
+            <div>
+              <div className="text-sm font-medium">Next Automatic Sync</div>
+              <div className="text-sm text-muted-foreground">In 45 minutes</div>
             </div>
           </div>
-        ),
+        </div>
+      ),
+    };
+  };
+
+  const getPerAppSyncCards = (): StandardHorizontalCardProps[] => {
+    const connectedApps = [
+      {
+        id: 'apple-health',
+        name: 'Apple Health',
+        icon: Heart,
+        lastSync: '12 minutes ago',
+        newData: 'Sleep, Steps, Heart Rate',
+        connected: true,
       },
       {
-        id: 'sync-status',
-        screenId: "settings-connected-apps",
-        icon: <CheckCircle className="w-5 h-5" />,
-        title: 'Sync Status',
-        description: '1,247 data points synced today',
-        badges: [{ label: 'Healthy', variant: 'default' as const }],
-        primaryAction: {
-          label: 'View History',
-          onClick: () => console.log('View sync history'),
-        },
-        expandedContent: (
-          <div className="space-y-2 pt-2">
-            <div className="text-sm"><strong>Last sync:</strong> 2 minutes ago</div>
-            <div className="text-sm"><strong>Success rate:</strong> 99.2%</div>
-            <div className="text-sm text-muted-foreground">All connected apps are syncing properly.</div>
-            <Button variant="outline" size="sm" className="mt-2">Force Sync All Apps</Button>
-          </div>
-        ),
+        id: 'fitbit',
+        name: 'Fitbit',
+        icon: Activity,
+        lastSync: '18 minutes ago',
+        newData: 'Activity, Exercise, Sleep',
+        connected: true,
       },
       {
-        id: 'data-privacy',
-        screenId: "settings-connected-apps",
-        icon: <AlertCircle className="w-5 h-5" />,
-        title: 'Data Privacy',
-        description: 'Manage what data is shared',
-        primaryAction: {
-          label: 'Review',
-          onClick: () => console.log('Review privacy settings'),
-        },
-        expandedContent: (
-          <div className="space-y-2 pt-2">
-            <div className="text-sm">Control which health metrics are synced and shared with Vitana.</div>
-            <div className="text-sm text-muted-foreground">
-              All data is encrypted and stored securely.
-            </div>
-            <Button variant="outline" size="sm" className="mt-2">Privacy Settings</Button>
-          </div>
-        ),
+        id: 'myfitnesspal',
+        name: 'MyFitnessPal',
+        icon: Apple,
+        lastSync: '25 minutes ago',
+        newData: 'Nutrition, Calories',
+        connected: true,
       },
       {
-        id: 'battery-impact',
-        screenId: "settings-connected-apps",
-        icon: <Activity className="w-5 h-5" />,
-        title: 'Battery Impact',
-        description: 'Optimize background sync',
-        badges: [{ label: 'Optimized', variant: 'secondary' as const }],
-        primaryAction: {
-          label: 'Optimize',
-          onClick: () => console.log('Optimize battery'),
-        },
-        expandedContent: (
-          <div className="space-y-2 pt-2">
-            <div className="text-sm">Current battery impact: Low</div>
-            <div className="text-sm text-muted-foreground">
-              Background sync is optimized for battery life.
-            </div>
-            <Button variant="outline" size="sm" className="mt-2">Advanced Settings</Button>
-          </div>
-        ),
+        id: 'oura',
+        name: 'Oura Ring',
+        icon: Moon,
+        lastSync: '8 minutes ago',
+        newData: 'Readiness, Sleep, HRV',
+        connected: true,
+      },
+      {
+        id: 'strava',
+        name: 'Strava',
+        icon: Activity,
+        lastSync: '1 hour ago',
+        newData: 'Workouts, Routes',
+        connected: true,
+      },
+      {
+        id: 'garmin',
+        name: 'Garmin',
+        icon: Watch,
+        lastSync: 'Never',
+        newData: 'Not connected',
+        connected: false,
       },
     ];
+
+    return connectedApps.map((app) => ({
+      id: `app-sync-${app.id}`,
+      screenId: "settings-connected-apps",
+      icon: <app.icon className="w-5 h-5" />,
+      title: app.name,
+      description: `Last Sync: ${app.lastSync}`,
+      badges: app.connected 
+        ? [{ label: 'Synced', variant: 'default' as const }]
+        : [{ label: 'Not Connected', variant: 'secondary' as const }],
+      primaryAction: {
+        label: 'Sync',
+        onClick: () => console.log(`Sync ${app.name}`),
+        disabled: !app.connected,
+        variant: 'ghost' as const,
+      },
+      expandedContent: (
+        <div className="space-y-3 pt-2">
+          <div className="text-sm">
+            <strong>Last Sync:</strong> {app.lastSync}
+          </div>
+          <div className="text-sm">
+            <strong>New Data:</strong> {app.newData}
+          </div>
+          {app.connected && (
+            <div className="flex gap-2 mt-3">
+              <Button variant="outline" size="sm">Configure Sync</Button>
+              <Button variant="outline" size="sm">View Details</Button>
+            </div>
+          )}
+        </div>
+      ),
+    }));
+  };
+
+  const getSyncHistoryCard = (): StandardHorizontalCardProps => {
+    const historyEntries = [
+      { time: '10:42 AM', app: 'Fitbit', action: 'synced steps + HR' },
+      { time: '10:39 AM', app: 'Apple Health', action: 'synced sleep' },
+      { time: '10:15 AM', app: 'MyFitnessPal', action: 'synced nutrition' },
+      { time: '09:50 AM', app: 'Oura', action: 'synced readiness score' },
+      { time: '09:30 AM', app: 'Strava', action: 'synced morning run' },
+      { time: '08:15 AM', app: 'Apple Health', action: 'synced heart rate' },
+      { time: '07:45 AM', app: 'Fitbit', action: 'synced sleep data' },
+      { time: '06:30 AM', app: 'Oura', action: 'synced HRV' },
+      { time: '11:45 PM', app: 'MyFitnessPal', action: 'synced dinner log' },
+      { time: '10:20 PM', app: 'Apple Health', action: 'synced steps' },
+    ];
+
+    return {
+      id: 'sync-history',
+      screenId: "settings-connected-apps",
+      icon: <History className="w-5 h-5" />,
+      title: 'Sync Activity Log',
+      description: 'Chronological history of all sync events',
+      expandedContent: (
+        <div className="space-y-2 pt-2 max-h-96 overflow-y-auto">
+          {historyEntries.map((entry, index) => (
+            <div 
+              key={index} 
+              className="flex items-start gap-3 p-2 rounded-lg hover:bg-accent/50 transition-colors"
+            >
+              <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+              <div className="flex-1 text-sm">
+                <span className="font-medium">{entry.time}</span>
+                <span className="text-muted-foreground"> — </span>
+                <span className="font-medium">{entry.app}</span>
+                <span className="text-muted-foreground"> {entry.action}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    };
   };
 
   return (
@@ -1549,26 +1637,73 @@ function ConnectedApps() {
           </div>
         </SplitBarContent>
 
-        {/* Tab 3: Data Sync (Sync Settings & Preferences) */}
+        {/* Tab 3: Data Sync */}
         <SplitBarContent value="sync">
-          <div className="space-y-8">
-            {/* Data Sync & Preferences */}
+          <div className="space-y-6">
+            
+            {/* Section 1: Sync Overview */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <RefreshCw className="w-5 h-5" />
-                Data Sync & Preferences
+                Sync Overview
               </h2>
               <HorizontalCardList
-                items={getSyncSettingsCards()}
+                items={[getSyncOverviewCard()]}
                 variant="standard"
                 layout="stack"
                 screenId="settings-connected-apps"
-                listId="sync-settings"
+                listId="sync-overview"
                 gap="md"
                 infiniteScroll={false}
                 className="pb-2"
               />
             </div>
+
+            {/* Section 2: App Sync Details */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <ListChecks className="w-5 h-5" />
+                App Sync Details
+              </h2>
+              <HorizontalCardList
+                items={getPerAppSyncCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="per-app-sync"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
+            {/* Section 3: Sync Activity Log */}
+            <div>
+              {/* Optional Filter Bar */}
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                  <History className="w-5 h-5" />
+                  Sync Activity Log
+                </h2>
+                <div className="flex items-center gap-4 text-sm">
+                  <button className="font-medium border-b-2 border-primary pb-1">All</button>
+                  <button className="text-muted-foreground hover:text-foreground transition-colors pb-1">Today</button>
+                  <button className="text-muted-foreground hover:text-foreground transition-colors pb-1">Last 7 Days</button>
+                  <button className="text-muted-foreground hover:text-foreground transition-colors pb-1">Errors Only</button>
+                </div>
+              </div>
+              <HorizontalCardList
+                items={[getSyncHistoryCard()]}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="sync-history"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
           </div>
         </SplitBarContent>
       </SplitBar>
