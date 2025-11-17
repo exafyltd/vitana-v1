@@ -615,7 +615,7 @@ export default withScreenId(function Distribution() {
               <HorizontalCardList
                 items={getCampaignTemplateCards()}
                 variant="standard"
-                layout="rail"
+                layout="stack"
                 screenId="sharing-distribution"
                 listId="campaign-templates"
                 groupBy="none"
@@ -629,7 +629,7 @@ export default withScreenId(function Distribution() {
               <HorizontalCardList
                 items={getAutomationRuleCards()}
                 variant="standard"
-                layout="rail"
+                layout="stack"
                 screenId="sharing-distribution"
                 listId="automation-rules"
                 groupBy="none"
@@ -643,7 +643,7 @@ export default withScreenId(function Distribution() {
               <HorizontalCardList
                 items={getBrandKitCards()}
                 variant="standard"
-                layout="rail"
+                layout="stack"
                 screenId="sharing-distribution"
                 listId="brand-kit"
                 groupBy="none"
