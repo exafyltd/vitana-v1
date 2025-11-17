@@ -14,10 +14,12 @@ import { ConnectAppPopup } from "@/components/ConnectAppPopup";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useState } from "react";
 
 function ConnectedApps() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("connected");
   const { allPlatforms, loading } = useSocialPlatforms();
 
   // Transform social platforms into horizontal cards
@@ -320,8 +322,23 @@ function ConnectedApps() {
           <MotivationalBanner />
 
           {/* Vertical-scrolling horizontal lists organized by category */}
+      <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <SplitBarList className="w-full bg-white/50 backdrop-blur-sm rounded-lg mb-6 gap-1 overflow-x-auto">
+          <SplitBarTrigger value="connected" className="flex-1">
+            🔗 Connected Apps
+          </SplitBarTrigger>
+          <SplitBarTrigger value="available" className="flex-1">
+            ✨ Available Integrations
+          </SplitBarTrigger>
+          <SplitBarTrigger value="sync" className="flex-1">
+            🔄 Data Sync
+          </SplitBarTrigger>
+        </SplitBarList>
+
+        {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
+        <SplitBarContent value="connected">
           <div className="space-y-8">
-            {/* Section 1: Social Media */}
+            {/* Social Media */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 📱 Social Media
@@ -338,7 +355,7 @@ function ConnectedApps() {
               />
             </div>
 
-            {/* Section 2: Health & Fitness Apps */}
+            {/* Health & Fitness Apps */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 💪 Health & Fitness Apps
@@ -354,8 +371,13 @@ function ConnectedApps() {
                 className="pb-2"
               />
             </div>
+          </div>
+        </SplitBarContent>
 
-            {/* Section 3: Productivity & Calendar */}
+        {/* Tab 2: Available Integrations (Productivity & Calendar) */}
+        <SplitBarContent value="available">
+          <div className="space-y-8">
+            {/* Productivity & Calendar */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 📅 Productivity & Calendar
@@ -371,8 +393,13 @@ function ConnectedApps() {
                 className="pb-2"
               />
             </div>
+          </div>
+        </SplitBarContent>
 
-            {/* Section 4: Data Sync & Preferences */}
+        {/* Tab 3: Data Sync (Sync Settings & Preferences) */}
+        <SplitBarContent value="sync">
+          <div className="space-y-8">
+            {/* Data Sync & Preferences */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 🔄 Data Sync & Preferences
@@ -389,6 +416,8 @@ function ConnectedApps() {
               />
             </div>
           </div>
+        </SplitBarContent>
+      </SplitBar>
         </div>
       </div>
 
