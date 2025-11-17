@@ -62,6 +62,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
 
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const hasLoggedView = useRef(false);
   
   // Disable virtualization when any card is expanded
@@ -103,12 +104,15 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
           onLoadMore();
         }
       },
-      { rootMargin: '600px' }
+      { 
+        root: layout === 'rail' ? scrollRef.current : null,
+        rootMargin: layout === 'rail' ? '0px 600px 0px 0px' : '600px'
+      }
     );
 
     observer.observe(sentinelRef.current);
     return () => observer.disconnect();
-  }, [infiniteScroll, onLoadMore, hasMore, isLoading, screenId, listId, items.length]);
+  }, [infiniteScroll, onLoadMore, hasMore, isLoading, screenId, listId, items.length, layout]);
 
   const handleToggleExpand = (cardId: string) => {
     setExpandedCards(prev => {
@@ -190,6 +194,7 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
           key={item.id}
           {...(item as StandardHorizontalCardProps)}
           {...commonProps}
+          layoutMode={layout === 'rail' ? 'rail' : undefined}
         />
       );
     } else {
@@ -246,8 +251,37 @@ export function HorizontalCardList<T extends StandardHorizontalCardProps | Visua
           )}
         </div>
       ) : (
-        // Rail mode - existing vertical stack logic
-        <>
+        // Rail mode - HORIZONTAL scrolling
+        <div 
+          ref={scrollRef}
+          className="overflow-x-auto scrollbar-hide snap-x snap-mandatory -mx-4 px-4"
+          role="list"
+          aria-label={listId || screenId}
+        >
+          <div className={cn("flex items-stretch", gapClass)}>
+            {groupedItems[0].items.map((item) => (
+              <div 
+                key={item.id} 
+                className="snap-start flex-shrink-0 min-w-[360px] xl:min-w-[380px]"
+              >
+                {renderCard(item, 0)}
+              </div>
+            ))}
+            {infiniteScroll && hasMore && (
+              <div ref={sentinelRef} className="w-px h-px" />
+            )}
+          </div>
+          {isLoading && (
+            <div className="flex gap-3 mt-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="flex-shrink-0 min-w-[360px] xl:min-w-[380px]">
+                  <HorizontalCardSkeleton variant={variant} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )
           {groupedItems.map((group, groupIdx) => (
             <div key={groupIdx} className="mb-6">
               {group.label && (
