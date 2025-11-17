@@ -531,25 +531,6 @@ const getBrandKitCards = (): StandardHorizontalCardProps[] => [
     )
   }
 ];
-      variant: 'outline'
-    }
-  },
-  {
-    id: 'brand-library',
-    screenId: 'sharing-distribution',
-    icon: '✨',
-    title: 'Content Library',
-    description: 'Stock photos and graphics',
-    metadata: [
-      { icon: <FileText className="w-3.5 h-3.5" />, text: '1,200+ assets' }
-    ],
-    primaryAction: {
-      label: 'Browse Library',
-      onClick: () => console.log('Browse Content Library'),
-      variant: 'outline'
-    }
-  }
-];
 
 export default withScreenId(function Distribution() {
   const [rulePopupOpen, setRulePopupOpen] = React.useState(false);
