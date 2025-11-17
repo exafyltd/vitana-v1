@@ -16,6 +16,7 @@ import { EventSelectionProvider } from "@/context/EventSelectionContext";
 import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvider";
 import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
+import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -273,6 +274,7 @@ const App = () => {
       <MeetupSelectionProvider>
         <EventSelectionProvider>
           <StreamingStateProvider>
+            <VitanaAudioOverlay />
             <ProfilePreviewProvider>
               <GreetingProviderWrapper>
                 <TooltipProvider>
