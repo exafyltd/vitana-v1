@@ -6,11 +6,28 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
-import { Plus, Heart, Activity, Watch, CheckCircle, AlertCircle, Settings as SettingsIcon } from "lucide-react";
+import { 
+  Plus, 
+  Heart, 
+  Activity, 
+  Watch, 
+  CheckCircle, 
+  AlertCircle, 
+  Settings as SettingsIcon,
+  MessageCircle,
+  CreditCard,
+  Code,
+  Moon,
+  Brain,
+  Home,
+  Utensils,
+  Hospital,
+} from "lucide-react";
 import { settingsNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { ConnectAppPopup } from "@/components/ConnectAppPopup";
+import { XIcon } from "@/components/icons/XIcon";
+import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
@@ -318,8 +335,6 @@ function ConnectedApps() {
               Connect App
             </Button>
           </UtilityActionButton>
-
-          <MotivationalBanner />
 
           {/* Vertical-scrolling horizontal lists organized by category */}
       <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
