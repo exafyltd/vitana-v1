@@ -1135,41 +1135,41 @@ function ConnectedApps() {
         id: 'fitbit',
         name: 'Fitbit',
         icon: Activity,
-        lastSync: '18 minutes ago',
-        newData: 'Activity, Exercise, Sleep',
-        connected: true,
-      },
-      {
-        id: 'myfitnesspal',
-        name: 'MyFitnessPal',
-        icon: Apple,
-        lastSync: '25 minutes ago',
-        newData: 'Nutrition, Calories',
-        connected: true,
-      },
-      {
-        id: 'oura',
-        name: 'Oura Ring',
-        icon: Moon,
         lastSync: '8 minutes ago',
-        newData: 'Readiness, Sleep, HRV',
+        newData: 'Activity, Sleep, Weight',
         connected: true,
       },
       {
         id: 'strava',
         name: 'Strava',
         icon: Activity,
-        lastSync: '1 hour ago',
-        newData: 'Workouts, Routes',
+        lastSync: '14 minutes ago',
+        newData: 'Running, Cycling',
+        connected: true,
+      },
+      {
+        id: 'oura',
+        name: 'Oura Ring',
+        icon: Moon,
+        lastSync: '10 minutes ago',
+        newData: 'Sleep, Readiness, Activity',
         connected: true,
       },
       {
         id: 'garmin',
         name: 'Garmin',
         icon: Watch,
-        lastSync: 'Never',
-        newData: 'Not connected',
-        connected: false,
+        lastSync: '21 minutes ago',
+        newData: 'GPS data, Heart Rate, Activity',
+        connected: true,
+      },
+      {
+        id: 'myfitnesspal',
+        name: 'MyFitnessPal',
+        icon: Apple,
+        lastSync: '5 minutes ago',
+        newData: 'Nutrition, Calories',
+        connected: true,
       },
     ];
 
@@ -1191,10 +1191,10 @@ function ConnectedApps() {
       expandedContent: (
         <div className="space-y-3 pt-2">
           <div className="text-sm">
-            <strong>Last Sync:</strong> {app.lastSync}
+            <strong>Data Synced:</strong> {app.newData}
           </div>
           <div className="text-sm">
-            <strong>New Data:</strong> {app.newData}
+            <strong>Last Sync:</strong> {app.lastSync}
           </div>
           {app.connected && (
             <div className="flex gap-2 mt-3">
@@ -1207,19 +1207,28 @@ function ConnectedApps() {
     }));
   };
 
-  const getSyncHistoryCard = (): StandardHorizontalCardProps => {
-    const historyEntries = [
-      { time: '10:42 AM', app: 'Fitbit', action: 'synced steps + HR' },
-      { time: '10:39 AM', app: 'Apple Health', action: 'synced sleep' },
-      { time: '10:15 AM', app: 'MyFitnessPal', action: 'synced nutrition' },
-      { time: '09:50 AM', app: 'Oura', action: 'synced readiness score' },
-      { time: '09:30 AM', app: 'Strava', action: 'synced morning run' },
-      { time: '08:15 AM', app: 'Apple Health', action: 'synced heart rate' },
-      { time: '07:45 AM', app: 'Fitbit', action: 'synced sleep data' },
-      { time: '06:30 AM', app: 'Oura', action: 'synced HRV' },
-      { time: '11:45 PM', app: 'MyFitnessPal', action: 'synced dinner log' },
-      { time: '10:20 PM', app: 'Apple Health', action: 'synced steps' },
+  const getSyncHistoryCard = (filter: string): StandardHorizontalCardProps => {
+    const allEntries = [
+      { time: '10:42 AM', app: 'Fitbit', action: 'synced steps + heart rate', date: 'today', isError: false },
+      { time: '10:39 AM', app: 'Apple Health', action: 'synced sleep', date: 'today', isError: false },
+      { time: '10:15 AM', app: 'MyFitnessPal', action: 'synced nutrition', date: 'today', isError: false },
+      { time: '09:50 AM', app: 'Oura Ring', action: 'synced readiness + HRV', date: 'today', isError: false },
+      { time: '09:34 AM', app: 'Garmin', action: 'synced GPS + activity', date: 'today', isError: false },
+      { time: '08:10 AM', app: 'Fitbit', action: 'synced steps + calories', date: 'today', isError: false },
+      { time: '07:12 AM', app: 'Fitbit', action: 'sync failed', date: 'today', isError: true },
+      { time: 'Yesterday 22:48', app: 'Apple Health', action: 'synced sleep', date: 'last7days', isError: false },
+      { time: 'Yesterday 18:22', app: 'MyFitnessPal', action: 'synced dinner calories', date: 'last7days', isError: false },
     ];
+
+    let filteredEntries = allEntries;
+    
+    if (filter === 'today') {
+      filteredEntries = allEntries.filter(e => e.date === 'today');
+    } else if (filter === 'last7days') {
+      filteredEntries = allEntries;
+    } else if (filter === 'errors') {
+      filteredEntries = allEntries.filter(e => e.isError);
+    }
 
     return {
       id: 'sync-history',
@@ -1228,18 +1237,24 @@ function ConnectedApps() {
       title: 'Sync Activity Log',
       description: 'Chronological history of all sync events',
       expandedContent: (
-        <div className="space-y-2 pt-2 max-h-96 overflow-y-auto">
-          {historyEntries.map((entry, index) => (
+        <div className="space-y-3 pt-2 max-h-96 overflow-y-auto">
+          {filteredEntries.map((entry, index) => (
             <div 
               key={index} 
-              className="flex items-start gap-3 p-2 rounded-lg hover:bg-accent/50 transition-colors"
+              className="flex items-start gap-3 py-1"
             >
-              <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-              <div className="flex-1 text-sm">
-                <span className="font-medium">{entry.time}</span>
+              {entry.isError ? (
+                <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+              ) : (
+                <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+              )}
+              <div className="flex-1 text-sm leading-relaxed">
+                <span className="text-muted-foreground">{entry.time}</span>
                 <span className="text-muted-foreground"> — </span>
-                <span className="font-medium">{entry.app}</span>
-                <span className="text-muted-foreground"> {entry.action}</span>
+                <span className={`font-semibold ${entry.isError ? 'text-red-600 dark:text-red-400' : ''}`}>
+                  {entry.isError ? 'Error — ' : ''}{entry.app}
+                </span>
+                <span className={entry.isError ? 'text-red-600 dark:text-red-400' : ''}> {entry.action}</span>
               </div>
             </div>
           ))}
@@ -1639,72 +1654,114 @@ function ConnectedApps() {
 
         {/* Tab 3: Data Sync */}
         <SplitBarContent value="sync">
-          <div className="space-y-6">
+          {(() => {
+            const [syncFilter, setSyncFilter] = useState('all');
             
-            {/* Section 1: Sync Overview */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <RefreshCw className="w-5 h-5" />
-                Sync Overview
-              </h2>
-              <HorizontalCardList
-                items={[getSyncOverviewCard()]}
-                variant="standard"
-                layout="stack"
-                screenId="settings-connected-apps"
-                listId="sync-overview"
-                gap="md"
-                infiniteScroll={false}
-                className="pb-2"
-              />
-            </div>
-
-            {/* Section 2: App Sync Details */}
-            <div>
-              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <ListChecks className="w-5 h-5" />
-                App Sync Details
-              </h2>
-              <HorizontalCardList
-                items={getPerAppSyncCards()}
-                variant="standard"
-                layout="stack"
-                screenId="settings-connected-apps"
-                listId="per-app-sync"
-                gap="md"
-                infiniteScroll={false}
-                className="pb-2"
-              />
-            </div>
-
-            {/* Section 3: Sync Activity Log */}
-            <div>
-              {/* Optional Filter Bar */}
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-xl font-semibold flex items-center gap-2">
-                  <History className="w-5 h-5" />
-                  Sync Activity Log
-                </h2>
-                <div className="flex items-center gap-4 text-sm">
-                  <button className="font-medium border-b-2 border-primary pb-1">All</button>
-                  <button className="text-muted-foreground hover:text-foreground transition-colors pb-1">Today</button>
-                  <button className="text-muted-foreground hover:text-foreground transition-colors pb-1">Last 7 Days</button>
-                  <button className="text-muted-foreground hover:text-foreground transition-colors pb-1">Errors Only</button>
+            return (
+              <div className="space-y-6">
+                
+                {/* Section 1: Sync Overview */}
+                <div>
+                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <RefreshCw className="w-5 h-5" />
+                    Sync Overview
+                  </h2>
+                  <HorizontalCardList
+                    items={[getSyncOverviewCard()]}
+                    variant="standard"
+                    layout="stack"
+                    screenId="settings-connected-apps"
+                    listId="sync-overview"
+                    gap="md"
+                    infiniteScroll={false}
+                    className="pb-2"
+                  />
                 </div>
-              </div>
-              <HorizontalCardList
-                items={[getSyncHistoryCard()]}
-                variant="standard"
-                layout="stack"
-                screenId="settings-connected-apps"
-                listId="sync-history"
-                gap="md"
-                infiniteScroll={false}
-                className="pb-2"
-              />
-            </div>
 
-          </div>
+                {/* Section 2: App Sync Details */}
+                <div>
+                  <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <ListChecks className="w-5 h-5" />
+                    App Sync Details
+                  </h2>
+                  <HorizontalCardList
+                    items={getPerAppSyncCards()}
+                    variant="standard"
+                    layout="stack"
+                    screenId="settings-connected-apps"
+                    listId="per-app-sync"
+                    gap="md"
+                    infiniteScroll={false}
+                    className="pb-2"
+                  />
+                </div>
+
+                {/* Section 3: Sync Activity Log */}
+                <div>
+                  {/* Filter Bar */}
+                  <div className="mb-4 flex items-center justify-between">
+                    <h2 className="text-xl font-semibold flex items-center gap-2">
+                      <History className="w-5 h-5" />
+                      Sync Activity Log
+                    </h2>
+                    <div className="flex items-center gap-4 text-sm">
+                      <button 
+                        onClick={() => setSyncFilter('all')}
+                        className={`pb-1 transition-colors ${
+                          syncFilter === 'all' 
+                            ? 'font-medium border-b-2 border-primary text-foreground' 
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        All
+                      </button>
+                      <button 
+                        onClick={() => setSyncFilter('today')}
+                        className={`pb-1 transition-colors ${
+                          syncFilter === 'today' 
+                            ? 'font-medium border-b-2 border-primary text-foreground' 
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        Today
+                      </button>
+                      <button 
+                        onClick={() => setSyncFilter('last7days')}
+                        className={`pb-1 transition-colors ${
+                          syncFilter === 'last7days' 
+                            ? 'font-medium border-b-2 border-primary text-foreground' 
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        Last 7 Days
+                      </button>
+                      <button 
+                        onClick={() => setSyncFilter('errors')}
+                        className={`pb-1 transition-colors ${
+                          syncFilter === 'errors' 
+                            ? 'font-medium border-b-2 border-primary text-foreground' 
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        Errors Only
+                      </button>
+                    </div>
+                  </div>
+                  <HorizontalCardList
+                    items={[getSyncHistoryCard(syncFilter)]}
+                    variant="standard"
+                    layout="stack"
+                    screenId="settings-connected-apps"
+                    listId="sync-history"
+                    gap="md"
+                    infiniteScroll={false}
+                    className="pb-2"
+                  />
+                </div>
+
+              </div>
+            );
+          })()}
         </SplitBarContent>
       </SplitBar>
         </div>
