@@ -660,7 +660,12 @@ function ConnectedApps() {
         primaryAction: app.connected ? {
           label: 'Manage',
           onClick: () => console.log(`Manage ${app.name}`),
-        } : undefined,
+        } : {
+          label: 'Connect',
+          onClick: () => console.log(`Connect ${app.name}`),
+          disabled: true,
+          variant: 'ghost' as const,
+        },
         expandedContent: (
           <div className="text-sm text-muted-foreground pt-2">
             {app.connected 
@@ -715,7 +720,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
@@ -759,7 +769,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
@@ -803,7 +818,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon. This will enable secure access to {app.description.toLowerCase()}.
@@ -847,7 +867,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
@@ -891,7 +916,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
@@ -935,7 +965,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
@@ -973,7 +1008,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
@@ -1017,7 +1057,12 @@ function ConnectedApps() {
       title: app.name,
       description: app.description,
       badges: [{ label: 'Coming Soon', variant: 'secondary' as const }],
-      primaryAction: undefined,
+      primaryAction: {
+        label: 'Connect',
+        onClick: () => console.log(`Connect ${app.name}`),
+        disabled: true,
+        variant: 'ghost' as const,
+      },
       expandedContent: (
         <div className="text-sm text-muted-foreground pt-2">
           {app.name} integration is coming soon!
