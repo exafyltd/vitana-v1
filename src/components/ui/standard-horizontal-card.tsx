@@ -111,6 +111,20 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       }
     }, [screenId, id, density]);
 
+    // Auto-scroll to card when expanded
+    useEffect(() => {
+      if (isExpanded && cardRef.current) {
+        // Small delay to ensure expansion animation has started
+        setTimeout(() => {
+          cardRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest'
+          });
+        }, 100);
+      }
+    }, [isExpanded]);
+
     const handlePrimaryAction = (e: React.MouseEvent) => {
       e.stopPropagation();
       console.log('[HC] primaryAction click start', id, primaryAction?.label);
