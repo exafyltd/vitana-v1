@@ -200,7 +200,6 @@ import Rewards from "./pages/wallet/Rewards";
 // Sharing sub-pages
 import Distribution from "./pages/sharing/Distribution";
 import DataConsent from "./pages/sharing/DataConsent";
-import Integrations from "./pages/sharing/Integrations";
 import Campaigns from "./pages/sharing/Campaigns";
 import CampaignDetail from "./pages/sharing/CampaignDetail";
 
@@ -722,11 +721,6 @@ const App = () => {
           <Route path="/sharing/data-consent" element={
             <AuthGuard>
               <DataConsent />
-            </AuthGuard>
-          } />
-          <Route path="/sharing/integrations" element={
-            <AuthGuard>
-              <Integrations />
             </AuthGuard>
           } />
 

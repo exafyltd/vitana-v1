@@ -15,10 +15,13 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
 import { ConnectAppPopup } from "@/components/ConnectAppPopup";
+import { useSocialPlatforms } from "@/hooks/useSocialPlatforms";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 function ConnectedApps() {
   const [activeTab, setActiveTab] = useState("connected");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const { allPlatforms, loading } = useSocialPlatforms();
 
   return (
     <AppLayout>
@@ -43,6 +46,7 @@ function ConnectedApps() {
           <SplitBar value={activeTab} onValueChange={setActiveTab}>
             <SplitBarList>
               <SplitBarTrigger value="connected">🔌 Connected Apps</SplitBarTrigger>
+              <SplitBarTrigger value="social">📱 Social Media</SplitBarTrigger>
               <SplitBarTrigger value="available">✨ Available Integrations</SplitBarTrigger>
               <SplitBarTrigger value="sync">🔄 Data Sync</SplitBarTrigger>
             </SplitBarList>
@@ -182,6 +186,56 @@ function ConnectedApps() {
                   />
                 </div>
               </div>
+            </SplitBarContent>
+
+            <SplitBarContent value="social">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Connected Social Media</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {loading ? (
+                    <p className="text-sm text-muted-foreground">Loading social platforms...</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {allPlatforms.map((platform) => {
+                        const Icon = platform.icon;
+                        return (
+                          <div key={platform.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${platform.color}`}>
+                                <Icon className="w-4 h-4" />
+                              </div>
+                              <div>
+                                <h4 className="font-medium text-sm">{platform.name}</h4>
+                                {platform.url && (
+                                  <p className="text-xs text-muted-foreground">{platform.url}</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {platform.connected ? (
+                                <>
+                                  <Badge variant="secondary" className="bg-green-100 text-green-700 text-xs">
+                                    Connected
+                                  </Badge>
+                                  <Button size="sm" variant="outline">
+                                    Manage
+                                  </Button>
+                                </>
+                              ) : (
+                                <Button size="sm">
+                                  Connect
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </SplitBarContent>
 
             <SplitBarContent value="available">
