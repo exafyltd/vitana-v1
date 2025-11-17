@@ -1208,24 +1208,115 @@ function ConnectedApps() {
   };
 
   const getSyncHistoryCard = (filter: string): StandardHorizontalCardProps => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const twoDaysAgo = new Date(today);
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    const threeDaysAgo = new Date(today);
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
     const allEntries = [
-      { time: '10:42 AM', app: 'Fitbit', action: 'synced steps + heart rate', date: 'today', isError: false },
-      { time: '10:39 AM', app: 'Apple Health', action: 'synced sleep', date: 'today', isError: false },
-      { time: '10:15 AM', app: 'MyFitnessPal', action: 'synced nutrition', date: 'today', isError: false },
-      { time: '09:50 AM', app: 'Oura Ring', action: 'synced readiness + HRV', date: 'today', isError: false },
-      { time: '09:34 AM', app: 'Garmin', action: 'synced GPS + activity', date: 'today', isError: false },
-      { time: '08:10 AM', app: 'Fitbit', action: 'synced steps + calories', date: 'today', isError: false },
-      { time: '07:12 AM', app: 'Fitbit', action: 'sync failed', date: 'today', isError: true },
-      { time: 'Yesterday 22:48', app: 'Apple Health', action: 'synced sleep', date: 'last7days', isError: false },
-      { time: 'Yesterday 18:22', app: 'MyFitnessPal', action: 'synced dinner calories', date: 'last7days', isError: false },
+      { 
+        timestamp: new Date(today.getTime() + 10 * 60 * 60 * 1000 + 42 * 60 * 1000), // 10:42 AM today
+        app: 'Fitbit', 
+        action: 'synced steps + heart rate', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(today.getTime() + 10 * 60 * 60 * 1000 + 39 * 60 * 1000), // 10:39 AM today
+        app: 'Apple Health', 
+        action: 'synced sleep', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(today.getTime() + 10 * 60 * 60 * 1000 + 15 * 60 * 1000), // 10:15 AM today
+        app: 'MyFitnessPal', 
+        action: 'synced nutrition', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(today.getTime() + 9 * 60 * 60 * 1000 + 50 * 60 * 1000), // 9:50 AM today
+        app: 'Oura Ring', 
+        action: 'synced readiness + HRV', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(today.getTime() + 9 * 60 * 60 * 1000 + 34 * 60 * 1000), // 9:34 AM today
+        app: 'Garmin', 
+        action: 'synced GPS + activity', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(today.getTime() + 8 * 60 * 60 * 1000 + 10 * 60 * 1000), // 8:10 AM today
+        app: 'Fitbit', 
+        action: 'synced steps + calories', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(today.getTime() + 7 * 60 * 60 * 1000 + 12 * 60 * 1000), // 7:12 AM today
+        app: 'Fitbit', 
+        action: 'sync failed', 
+        isError: true 
+      },
+      { 
+        timestamp: new Date(yesterday.getTime() + 22 * 60 * 60 * 1000 + 48 * 60 * 1000), // Yesterday 10:48 PM
+        app: 'Apple Health', 
+        action: 'synced sleep', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(yesterday.getTime() + 18 * 60 * 60 * 1000 + 22 * 60 * 1000), // Yesterday 6:22 PM
+        app: 'MyFitnessPal', 
+        action: 'synced dinner calories', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(twoDaysAgo.getTime() + 15 * 60 * 60 * 1000 + 30 * 60 * 1000), // 2 days ago 3:30 PM
+        app: 'Strava', 
+        action: 'synced running activity', 
+        isError: false 
+      },
+      { 
+        timestamp: new Date(threeDaysAgo.getTime() + 9 * 60 * 60 * 1000 + 15 * 60 * 1000), // 3 days ago 9:15 AM
+        app: 'Oura Ring', 
+        action: 'synced sleep score', 
+        isError: false 
+      },
     ];
+
+    const formatTimestamp = (date: Date): string => {
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      const displayMinutes = minutes.toString().padStart(2, '0');
+      const timeString = `${displayHours}:${displayMinutes} ${ampm}`;
+      
+      if (date >= today) {
+        return timeString;
+      } else if (date >= yesterday) {
+        return `Yesterday ${timeString}`;
+      } else {
+        const daysAgo = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+        return `${daysAgo} days ago`;
+      }
+    };
 
     let filteredEntries = allEntries;
     
     if (filter === 'today') {
-      filteredEntries = allEntries.filter(e => e.date === 'today');
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayEnd = new Date(todayStart);
+      todayEnd.setDate(todayEnd.getDate() + 1);
+      filteredEntries = allEntries.filter(e => 
+        e.timestamp >= todayStart && e.timestamp < todayEnd
+      );
     } else if (filter === 'last7days') {
-      filteredEntries = allEntries;
+      const sevenDaysAgo = new Date(now);
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      filteredEntries = allEntries.filter(e => e.timestamp >= sevenDaysAgo);
     } else if (filter === 'errors') {
       filteredEntries = allEntries.filter(e => e.isError);
     }
@@ -1238,26 +1329,33 @@ function ConnectedApps() {
       description: 'Chronological history of all sync events',
       expandedContent: (
         <div className="space-y-3 pt-2 max-h-96 overflow-y-auto">
-          {filteredEntries.map((entry, index) => (
-            <div 
-              key={index} 
-              className="flex items-start gap-3 py-1"
-            >
-              {entry.isError ? (
-                <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-              ) : (
-                <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-              )}
-              <div className="flex-1 text-sm leading-relaxed">
-                <span className="text-muted-foreground">{entry.time}</span>
-                <span className="text-muted-foreground"> — </span>
-                <span className={`font-semibold ${entry.isError ? 'text-red-600 dark:text-red-400' : ''}`}>
-                  {entry.isError ? 'Error — ' : ''}{entry.app}
-                </span>
-                <span className={entry.isError ? 'text-red-600 dark:text-red-400' : ''}> {entry.action}</span>
-              </div>
+          {filteredEntries.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">No sync events for this filter yet.</p>
             </div>
-          ))}
+          ) : (
+            filteredEntries.map((entry, index) => (
+              <div 
+                key={index} 
+                className="flex items-start gap-3 py-1"
+              >
+                {entry.isError ? (
+                  <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                ) : (
+                  <Clock className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                )}
+                <div className="flex-1 text-sm leading-relaxed">
+                  <span className="text-muted-foreground">{formatTimestamp(entry.timestamp)}</span>
+                  <span className="text-muted-foreground"> — </span>
+                  <span className={`font-semibold ${entry.isError ? 'text-red-600 dark:text-red-400' : ''}`}>
+                    {entry.isError ? 'Error — ' : ''}{entry.app}
+                  </span>
+                  <span className={entry.isError ? 'text-red-600 dark:text-red-400' : ''}> {entry.action}</span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       ),
     };
