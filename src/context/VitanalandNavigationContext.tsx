@@ -51,6 +51,7 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [orbVisible, setOrbVisible] = useState(true);
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
+  const [isExpanding, setIsExpanding] = useState(false);
   
   const location = useLocation();
   const { setAudioOverlayVisible, audioOverlayVisible } = useStreamingState();
@@ -138,11 +139,13 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
   const expandToFull = useCallback(() => {
     setIsExpanded(true);
     setWorldVisible(true);
+    setIsExpanding(true);
     hasExpandedRef.current = true;
     
     // Activate Audio Screen after world fades in
     setTimeout(() => {
       setAudioOverlayVisible(true);
+      setIsExpanding(false);
     }, 800);
   }, [setAudioOverlayVisible]);
 
@@ -167,12 +170,12 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
     setOrbVisible(true);
   }, []);
 
-  // Auto-minimize when audio overlay closes
+  // Auto-minimize when audio overlay closes (but not during initial expansion)
   useEffect(() => {
-    if (!audioOverlayVisible && isExpanded) {
+    if (!audioOverlayVisible && isExpanded && !isExpanding) {
       minimizeToOrb();
     }
-  }, [audioOverlayVisible, isExpanded, minimizeToOrb]);
+  }, [audioOverlayVisible, isExpanded, isExpanding, minimizeToOrb]);
 
   return (
     <VitanalandNavigationContext.Provider
