@@ -216,16 +216,16 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 1 - aqua swirls (slowest) */}
+          {/* Nebula cloud layer 1 - aqua swirls (enhanced opacity) */}
           <motion.div
-            className="absolute inset-0 opacity-50"
+            className="absolute inset-0 opacity-60"
             style={{
-              background: 'radial-gradient(circle at 35% 40%, rgba(76, 200, 244, 0.4) 0%, transparent 70%)',
+              background: 'radial-gradient(circle at 35% 40%, rgba(76, 200, 244, 0.45) 0%, transparent 70%)',
               filter: 'blur(15px)',
             }}
             animate={{
               rotate: 360,
-              opacity: isProcessing ? 0.3 : 0.5,
+              opacity: isProcessing ? 0.35 : 0.6,
             }}
             transition={{
               rotate: {
@@ -239,16 +239,16 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 2 - rose swirls */}
+          {/* Nebula cloud layer 2 - rose swirls (enhanced opacity) */}
           <motion.div
-            className="absolute inset-0 opacity-40"
+            className="absolute inset-0 opacity-50"
             style={{
-              background: 'radial-gradient(circle at 65% 55%, rgba(255, 109, 168, 0.35) 0%, transparent 65%)',
+              background: 'radial-gradient(circle at 65% 55%, rgba(255, 109, 168, 0.4) 0%, transparent 65%)',
               filter: 'blur(18px)',
             }}
             animate={{
               rotate: -360,
-              opacity: isProcessing ? 0.25 : 0.4,
+              opacity: isProcessing ? 0.3 : 0.5,
             }}
             transition={{
               rotate: {
@@ -262,16 +262,16 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 3 - aqua-rose blend (new) */}
+          {/* Nebula cloud layer 3 - aqua-rose blend (enhanced opacity) */}
           <motion.div
-            className="absolute inset-0 opacity-30"
+            className="absolute inset-0 opacity-40"
             style={{
-              background: 'radial-gradient(circle at 50% 50%, rgba(160, 155, 220, 0.3) 0%, transparent 60%)',
+              background: 'radial-gradient(circle at 50% 50%, rgba(160, 155, 220, 0.35) 0%, transparent 60%)',
               filter: 'blur(20px)',
             }}
             animate={{
               rotate: 360,
-              opacity: isProcessing ? 0.2 : 0.3,
+              opacity: isProcessing ? 0.25 : 0.4,
             }}
             transition={{
               rotate: {
@@ -285,25 +285,90 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Enhanced double-core system */}
-          {/* Outer core - aqua-rose blend */}
+          {/* Nebula cloud layer 4 - NEW ultra-slow blend (atmospheric depth) */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full"
+            className="absolute inset-0 opacity-35"
             style={{
-              background: 'radial-gradient(circle, rgba(76, 200, 244, 0.8) 0%, rgba(255, 109, 168, 0.6) 60%, transparent 100%)',
-              filter: 'blur(20px)',
-              boxShadow: '0 0 50px rgba(76, 200, 244, 0.8)',
+              background: 'radial-gradient(ellipse at 45% 60%, rgba(76, 200, 244, 0.35) 0%, rgba(255, 109, 168, 0.25) 40%, transparent 70%)',
+              filter: 'blur(22px)',
             }}
             animate={{
-              scale: isListening ? [1, 1.1, 1] : [0.98, 1.02, 0.98],
+              rotate: -360,
+              opacity: isProcessing ? 0.2 : 0.35,
+            }}
+            transition={{
+              rotate: {
+                duration: 95,
+                repeat: Infinity,
+                ease: 'linear',
+              },
+              opacity: {
+                duration: 0.5,
+              },
+            }}
+          />
+
+          {/* Aurora Flow Paths - NEW signature element */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            viewBox="0 0 160 160"
+            style={{ transform: 'translate(0, 0)' }}
+          >
+            {auroraStrands.map((strand, index) => (
+              <motion.path
+                key={strand.id}
+                d={strand.path}
+                fill="none"
+                stroke={isProcessing ? `${strand.color.replace(/0\.\d+\)/, '0.15)')}` : strand.color}
+                strokeWidth={strand.width}
+                strokeLinecap="round"
+                style={{
+                  filter: `blur(${strand.blur}px)`,
+                  mixBlendMode: 'screen',
+                  opacity: isListening ? 0.85 : 0.7,
+                }}
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{
+                  pathLength: [0, 1, 0],
+                  opacity: isListening ? [0.7, 0.9, 0.7] : [0.6, 0.8, 0.6],
+                }}
+                transition={{
+                  pathLength: {
+                    duration: strand.duration * auroraSpeed,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: index * (strand.duration * 0.25),
+                  },
+                  opacity: {
+                    duration: strand.duration * auroraSpeed * 0.5,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: index * 0.5,
+                  },
+                }}
+              />
+            ))}
+          </svg>
+
+          {/* Enhanced triple-core system */}
+          {/* Outer core - aqua-rose blend (enhanced size and bloom) */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(76, 200, 244, 0.85) 0%, rgba(255, 109, 168, 0.65) 60%, transparent 100%)',
+              filter: 'blur(24px)',
+              boxShadow: '0 0 60px rgba(76, 200, 244, 0.9), 0 0 80px rgba(76, 200, 244, 0.5)',
+            }}
+            animate={{
+              scale: isListening ? [1, 1.1, 1] : [0.95, 1.05, 0.95],
               opacity: coreBrightness * 0.9,
               filter: isListening 
-                ? ['blur(20px) hue-rotate(0deg)', 'blur(20px) hue-rotate(15deg)', 'blur(20px) hue-rotate(0deg)']
-                : ['blur(20px) hue-rotate(0deg)', 'blur(20px) hue-rotate(10deg)', 'blur(20px) hue-rotate(0deg)'],
+                ? ['blur(24px) hue-rotate(0deg)', 'blur(24px) hue-rotate(15deg)', 'blur(24px) hue-rotate(0deg)']
+                : ['blur(24px) hue-rotate(0deg)', 'blur(24px) hue-rotate(10deg)', 'blur(24px) hue-rotate(0deg)'],
             }}
             transition={{
               scale: {
-                duration: isProcessing ? 3 : 2,
+                duration: isProcessing ? 3 : 5,
                 repeat: Infinity,
                 ease: 'easeInOut',
               },
@@ -318,13 +383,13 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Inner core - bright white center */}
+          {/* Inner core - bright white center (enhanced size and bloom) */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%)',
-              filter: 'blur(16px)',
-              boxShadow: '0 0 30px rgba(255, 255, 255, 0.9)',
+              background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.85) 50%, transparent 100%)',
+              filter: 'blur(18px)',
+              boxShadow: '0 0 40px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.6)',
             }}
             animate={{
               scale: isListening ? [1, 1.2, 1] : [0.95, 1.05, 0.95],
@@ -332,7 +397,7 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
             transition={{
               scale: {
-                duration: isProcessing ? 2.5 : 1.8,
+                duration: isProcessing ? 2.5 : 5,
                 repeat: Infinity,
                 ease: 'easeInOut',
               },
@@ -342,62 +407,73 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Premium floating internal spark fragments (6 particles in 3 depth layers) */}
-          <div className="absolute inset-0">
-            {[
-              // Foreground layer (2 particles)
-              { count: 2, size: 8, blur: 3, opacity: 0.9, zDepth: 1.2, color: 'rgba(255, 255, 255, 0.9)' },
-              // Mid layer (2 particles)
-              { count: 2, size: 6, blur: 2, opacity: 0.7, zDepth: 1.0, color: 'rgba(76, 200, 244, 0.85)' },
-              // Background layer (2 particles)
-              { count: 2, size: 5, blur: 1.5, opacity: 0.5, zDepth: 0.8, color: 'rgba(255, 109, 168, 0.8)' },
-            ].flatMap((layer, layerIndex) =>
-              Array.from({ length: layer.count }).map((_, i) => {
-                const particleIndex = layerIndex * 2 + i;
-                // Asymmetric, organic placement
-                const angle = (particleIndex / 6) * Math.PI * 2 + (particleIndex * 0.7);
-                const radius = 30 + Math.sin(particleIndex * 1.3) * 15;
-                const x = Math.cos(angle) * radius;
-                const y = Math.sin(angle) * radius;
-                
-                return (
-                  <motion.div
-                    key={`${layerIndex}-${i}`}
-                    className="absolute top-1/2 left-1/2 rounded-full"
-                    style={{
-                      width: `${layer.size}px`,
-                      height: `${layer.size}px`,
-                      background: layer.color,
-                      boxShadow: `0 0 ${layer.size * 2}px ${layer.color}`,
-                      filter: `blur(${layer.blur}px)`,
-                    }}
-                    animate={{
-                      x: [x, x + (Math.cos(angle + 0.5) * 15 * layer.zDepth), x],
-                      y: [y, y + (Math.sin(angle + 0.5) * 15 * layer.zDepth), y],
-                      opacity: isProcessing ? layer.opacity * 0.5 : [layer.opacity * 0.8, layer.opacity, layer.opacity * 0.8],
-                      scale: [0.9, 1.1 * layer.zDepth, 0.9],
-                    }}
-                    transition={{
-                      duration: (3.5 + particleIndex * 0.5) * particleSpeed,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                      delay: particleIndex * 0.4,
-                    }}
-                  />
-                );
-              })
-            )}
-          </div>
-
-          {/* Bottom light falloff for depth */}
-          <div
-            className="absolute inset-0 pointer-events-none"
+          {/* Micro core - NEW pure white definition point */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full"
             style={{
-              background: 'linear-gradient(180deg, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.35) 100%)',
+              background: 'rgba(255, 255, 255, 1)',
+              filter: 'blur(1px)',
+              boxShadow: '0 0 12px rgba(255, 255, 255, 1), 0 0 18px rgba(255, 255, 255, 0.8)',
+            }}
+            animate={{
+              scale: [0.95, 1.05, 0.95],
+              opacity: coreBrightness * 1.1,
+            }}
+            transition={{
+              scale: {
+                duration: 5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              },
+              opacity: {
+                duration: 0.3,
+              },
             }}
           />
 
-          {/* Glass rim shimmer */}
+          {/* Premium micro-fragments (4 particles with enhanced bloom and parallax) */}
+          <div className="absolute inset-0">
+            {microFragments.map((fragment, index) => {
+              const x = Math.cos(fragment.angle) * fragment.radius;
+              const y = Math.sin(fragment.angle) * fragment.radius;
+              
+              return (
+                <motion.div
+                  key={`fragment-${index}`}
+                  className="absolute top-1/2 left-1/2 rounded-full"
+                  style={{
+                    width: `${fragment.size}px`,
+                    height: `${fragment.size}px`,
+                    background: fragment.color,
+                    boxShadow: `0 0 ${fragment.size * 3}px ${fragment.color}`,
+                    filter: `blur(${fragment.blur}px)`,
+                  }}
+                  animate={{
+                    x: [x, x + (Math.cos(fragment.angle + 0.5) * 12 * fragment.zDepth), x],
+                    y: [y, y + (Math.sin(fragment.angle + 0.5) * 12 * fragment.zDepth), y],
+                    opacity: isProcessing ? fragment.opacity * 0.4 : [fragment.opacity * 0.75, fragment.opacity, fragment.opacity * 0.75],
+                    scale: [0.9, 1.05 * fragment.zDepth, 0.9],
+                  }}
+                  transition={{
+                    duration: (4 + index * 0.6) * particleSpeed,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: index * 0.5,
+                  }}
+                />
+              );
+            })}
+          </div>
+
+          {/* Bottom light falloff for depth (enhanced) */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(180deg, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.4) 100%)',
+            }}
+          />
+
+          {/* Glass rim shimmer (enhanced) */}
           <motion.div
             className="absolute inset-0 rounded-full"
             style={{
@@ -405,7 +481,8 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
               boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.1)',
             }}
             animate={{
-              opacity: [0.3, 0.6, 0.3],
+              opacity: [0.4, 0.7, 0.4],
+              scale: [1, 1.01, 1],
             }}
             transition={{
               duration: 2.5,
