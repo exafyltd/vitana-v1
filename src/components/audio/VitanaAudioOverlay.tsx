@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
+import { useIntelligentGreetingContext } from '@/context/IntelligentGreetingProvider';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
@@ -8,6 +9,7 @@ import { AudioStatusText } from './AudioStatusText';
 export function VitanaAudioOverlay() {
   const { audioOverlayVisible, micActive, sessionReady, setAudioOverlayVisible, setMicActive } =
     useStreamingState();
+  const { manualGreeting } = useIntelligentGreetingContext();
 
   const [audioState, setAudioState] = useState<'idle' | 'listening' | 'processing' | 'error'>('idle');
   const [volumeLevel, setVolumeLevel] = useState(0);
@@ -16,6 +18,7 @@ export function VitanaAudioOverlay() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number>();
+  const hasGreetedRef = useRef(false);
 
   // Auto-sync audio state with mic and session status
   useEffect(() => {
@@ -94,6 +97,26 @@ export function VitanaAudioOverlay() {
       }
     };
   }, [audioOverlayVisible, micActive]);
+
+  // Trigger welcome greeting when overlay opens
+  useEffect(() => {
+    if (audioOverlayVisible && !hasGreetedRef.current) {
+      hasGreetedRef.current = true;
+      
+      // Small delay to let overlay animation start
+      const greetingTimer = setTimeout(() => {
+        console.log('[AUDIO OVERLAY] Triggering audio mode greeting');
+        manualGreeting();
+      }, 400);
+      
+      return () => clearTimeout(greetingTimer);
+    }
+    
+    // Reset for next time overlay is opened
+    if (!audioOverlayVisible) {
+      hasGreetedRef.current = false;
+    }
+  }, [audioOverlayVisible, manualGreeting]);
 
   // Handle ESC key
   useEffect(() => {
