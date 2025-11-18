@@ -246,6 +246,17 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
     try {
       console.log('🎯 Triggering manual AI greeting...');
       
+      // For audio mode (when mic is active), use a brief contextual greeting
+      if (guards?.micActive) {
+        console.log('🎤 Audio mode detected - using brief greeting');
+        const briefMessage = "I'm listening. How can I help?";
+        speak(briefMessage, {
+          onStart: () => console.log('🔊 Audio greeting started'),
+          onEnd: () => console.log('✅ Audio greeting complete')
+        });
+        return;
+      }
+      
       // Get session for Authorization
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
@@ -280,7 +291,7 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
     } catch (error) {
       console.error('Failed to trigger manual greeting:', error);
     }
-  }, [speak, preferences]);
+  }, [speak, preferences, guards]);
 
   const suppressGreeting = useCallback(() => {
     const traceId = traceIdRef.current;
