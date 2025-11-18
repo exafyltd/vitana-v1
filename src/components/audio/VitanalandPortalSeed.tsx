@@ -92,16 +92,39 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
         }}
       />
 
-      {/* Main sphere container with 3D depth */}
+      {/* Main sphere container with 3D depth and organic morphing */}
       <motion.div
         className="relative w-full h-full"
         style={{
           perspective: '800px',
           transformStyle: 'preserve-3d',
+          willChange: 'transform, border-radius',
         }}
         animate={{
           scale: isProcessing ? [1, 1.01, 1] : [0.99, 1.01, 0.99],
           rotateY: tiltAngle,
+          borderRadius: isProcessing 
+            ? [
+                '50% 50% 50% 50% / 50% 50% 50% 50%',
+                '49.5% 50.5% 50% 50% / 50% 50% 50.5% 49.5%',
+                '50% 50% 50.5% 49.5% / 49.5% 50.5% 50% 50%',
+                '50% 50% 50% 50% / 50% 50% 50% 50%',
+              ]
+            : isListening
+            ? [
+                '50% 50% 50% 50% / 50% 50% 50% 50%',
+                `${50 - volumeLevel * 2}% ${50 + volumeLevel * 2}% ${50 + volumeLevel * 1.5}% ${50 - volumeLevel * 1.5}% / ${50 + volumeLevel * 1.8}% ${50 - volumeLevel * 1.8}% ${50 - volumeLevel * 1.2}% ${50 + volumeLevel * 1.2}%`,
+                `${50 + volumeLevel * 1.5}% ${50 - volumeLevel * 1.5}% ${50 - volumeLevel * 2}% ${50 + volumeLevel * 2}% / ${50 - volumeLevel * 1.5}% ${50 + volumeLevel * 1.5}% ${50 + volumeLevel * 1.8}% ${50 - volumeLevel * 1.8}%`,
+                '50% 50% 50% 50% / 50% 50% 50% 50%',
+              ]
+            : [
+                '50% 50% 50% 50% / 50% 50% 50% 50%',
+                '48% 52% 51% 49% / 50% 49% 51% 50%',
+                '51% 49% 48% 52% / 49% 51% 50% 50%',
+                '49% 51% 50% 50% / 52% 48% 49% 51%',
+                '50% 50% 52% 48% / 50% 50% 48% 52%',
+                '50% 50% 50% 50% / 50% 50% 50% 50%',
+              ],
         }}
         transition={{
           scale: {
@@ -113,10 +136,15 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             duration: 0.3,
             ease: 'easeOut',
           },
+          borderRadius: {
+            duration: isProcessing ? 6 : isListening ? 1.5 : 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          },
         }}
       >
-        {/* Glass shell outer layer with enhanced rim */}
-        <div
+        {/* Glass shell outer layer with enhanced rim and synced morphing */}
+        <motion.div
           className="absolute inset-0 rounded-full overflow-hidden"
           style={{
             background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.15) 0%, rgba(13, 44, 243, 0.45) 100%)',
@@ -124,6 +152,38 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
               ? '0 0 50px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(239, 68, 68, 0.2)'
               : '0 0 50px rgba(76, 200, 244, 0.4), inset 0 0 30px rgba(255, 109, 168, 0.25)',
             border: '2px solid rgba(255, 255, 255, 0.25)',
+            willChange: 'border-radius',
+          }}
+          animate={{
+            borderRadius: isProcessing 
+              ? [
+                  '50% 50% 50% 50% / 50% 50% 50% 50%',
+                  '49.5% 50.5% 50% 50% / 50% 50% 50.5% 49.5%',
+                  '50% 50% 50.5% 49.5% / 49.5% 50.5% 50% 50%',
+                  '50% 50% 50% 50% / 50% 50% 50% 50%',
+                ]
+              : isListening
+              ? [
+                  '50% 50% 50% 50% / 50% 50% 50% 50%',
+                  `${50 - volumeLevel * 2}% ${50 + volumeLevel * 2}% ${50 + volumeLevel * 1.5}% ${50 - volumeLevel * 1.5}% / ${50 + volumeLevel * 1.8}% ${50 - volumeLevel * 1.8}% ${50 - volumeLevel * 1.2}% ${50 + volumeLevel * 1.2}%`,
+                  `${50 + volumeLevel * 1.5}% ${50 - volumeLevel * 1.5}% ${50 - volumeLevel * 2}% ${50 + volumeLevel * 2}% / ${50 - volumeLevel * 1.5}% ${50 + volumeLevel * 1.5}% ${50 + volumeLevel * 1.8}% ${50 - volumeLevel * 1.8}%`,
+                  '50% 50% 50% 50% / 50% 50% 50% 50%',
+                ]
+              : [
+                  '50% 50% 50% 50% / 50% 50% 50% 50%',
+                  '48% 52% 51% 49% / 50% 49% 51% 50%',
+                  '51% 49% 48% 52% / 49% 51% 50% 50%',
+                  '49% 51% 50% 50% / 52% 48% 49% 51%',
+                  '50% 50% 52% 48% / 50% 50% 48% 52%',
+                  '50% 50% 50% 50% / 50% 50% 50% 50%',
+                ],
+          }}
+          transition={{
+            borderRadius: {
+              duration: isProcessing ? 6 : isListening ? 1.5 : 8,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            },
           }}
         >
           {/* Vignette effect for depth */}
@@ -500,7 +560,7 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
               transition={{ duration: 0.3 }}
             />
           )}
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );
