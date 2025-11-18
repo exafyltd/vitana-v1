@@ -152,6 +152,8 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
               ? '0 0 50px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(239, 68, 68, 0.2)'
               : '0 0 50px rgba(76, 200, 244, 0.4), inset 0 0 30px rgba(255, 109, 168, 0.25)',
             border: '2px solid rgba(255, 255, 255, 0.25)',
+            borderRadius: '50%',
+            overflow: 'hidden',
             willChange: 'border-radius',
           }}
           animate={{
