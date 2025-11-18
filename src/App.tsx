@@ -17,6 +17,8 @@ import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvid
 import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
+import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
+import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -274,9 +276,11 @@ const App = () => {
       <MeetupSelectionProvider>
         <EventSelectionProvider>
           <StreamingStateProvider>
-            <ProfilePreviewProvider>
-              <GreetingProviderWrapper>
-                <VitanaAudioOverlay />
+            <VitanalandNavigationProvider>
+              <ProfilePreviewProvider>
+                <GreetingProviderWrapper>
+                  <PersistentGuideOrb />
+                  <VitanaAudioOverlay />
                 <TooltipProvider>
                 <Toaster />
                 <PresenceDebugPanel />
@@ -1269,8 +1273,9 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-              </GreetingProviderWrapper>
-            </ProfilePreviewProvider>
+                </GreetingProviderWrapper>
+              </ProfilePreviewProvider>
+            </VitanalandNavigationProvider>
           </StreamingStateProvider>
       </EventSelectionProvider>
     </MeetupSelectionProvider>
