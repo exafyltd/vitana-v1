@@ -145,7 +145,7 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
       >
         {/* Glass shell outer layer with enhanced rim and synced morphing */}
         <motion.div
-          className="absolute inset-0 rounded-full overflow-hidden"
+          className="absolute inset-0"
           style={{
             background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.15) 0%, rgba(13, 44, 243, 0.45) 100%)',
             boxShadow: isError
