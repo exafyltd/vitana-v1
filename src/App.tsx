@@ -276,16 +276,16 @@ const App = () => {
       <MeetupSelectionProvider>
         <EventSelectionProvider>
           <StreamingStateProvider>
-            <VitanalandNavigationProvider>
-              <ProfilePreviewProvider>
-                <GreetingProviderWrapper>
-                  <PersistentGuideOrb />
-                  <VitanaAudioOverlay />
-                <TooltipProvider>
+            <ProfilePreviewProvider>
+              <TooltipProvider>
                 <Toaster />
                 <PresenceDebugPanel />
                 <BrowserRouter>
-                  <TenantDetector />
+                  <VitanalandNavigationProvider>
+                    <GreetingProviderWrapper>
+                      <PersistentGuideOrb />
+                      <VitanaAudioOverlay />
+                      <TenantDetector />
                   <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
@@ -1271,15 +1271,15 @@ const App = () => {
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-                </GreetingProviderWrapper>
-              </ProfilePreviewProvider>
-            </VitanalandNavigationProvider>
+                    </GreetingProviderWrapper>
+                  </VitanalandNavigationProvider>
+                </BrowserRouter>
+              </TooltipProvider>
+            </ProfilePreviewProvider>
           </StreamingStateProvider>
-      </EventSelectionProvider>
-    </MeetupSelectionProvider>
-  </RTLProvider>
+        </EventSelectionProvider>
+      </MeetupSelectionProvider>
+    </RTLProvider>
   );
 };
 
