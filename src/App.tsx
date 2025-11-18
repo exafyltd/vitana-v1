@@ -274,9 +274,9 @@ const App = () => {
       <MeetupSelectionProvider>
         <EventSelectionProvider>
           <StreamingStateProvider>
-            <VitanaAudioOverlay />
             <ProfilePreviewProvider>
               <GreetingProviderWrapper>
+                <VitanaAudioOverlay />
                 <TooltipProvider>
                 <Toaster />
                 <PresenceDebugPanel />
