@@ -1,19 +1,8 @@
 import { motion } from 'framer-motion';
-import { useMemo } from 'react';
 
 interface VitanalandPortalSeedProps {
   audioState: 'idle' | 'listening' | 'processing' | 'error';
   volumeLevel: number; // 0-1 range
-}
-
-interface Particle {
-  id: number;
-  angle: number;
-  radius: number;
-  z: number;
-  size: number;
-  color: string;
-  delay: number;
 }
 
 export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPortalSeedProps) {
@@ -22,156 +11,156 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
   const isProcessing = audioState === 'processing';
   const isError = audioState === 'error';
   
-  // Animation speed multipliers
-  const flowSpeed = isListening ? 0.4 : isProcessing ? 1.2 : 0.8;
-  const rippleIntensity = isListening ? volumeLevel * 0.15 : 0;
-  const centralGlow = isProcessing ? 0.8 : isListening ? 0.4 + (volumeLevel * 0.3) : 0.3;
+  // Animation parameters
+  const petalScale = isListening ? 1.08 + (volumeLevel * 0.12) : isProcessing ? 0.92 : 1;
+  const petalGlow = isListening ? 0.8 + (volumeLevel * 0.2) : 0.6;
+  const coreGlow = isProcessing ? 0.9 : isListening ? 0.5 : 0.4;
+  const shimmerOpacity = isListening ? 0.4 + (volumeLevel * 0.3) : 0;
 
-  // Generate particles in a corridor/tunnel pattern
-  const particles = useMemo(() => {
-    const particleArray: Particle[] = [];
-    const colors = ['#4cc8f4', '#0d2cf3', '#ff6da8', '#ffffff'];
-    
-    // Create 80 particles arranged in a 3D corridor
-    for (let i = 0; i < 80; i++) {
-      const ring = Math.floor(i / 16); // 5 rings of 16 particles each
-      const angleStep = (Math.PI * 2) / 16;
-      const angle = (i % 16) * angleStep;
-      
-      particleArray.push({
-        id: i,
-        angle: angle,
-        radius: 30 + (ring * 8), // Expand outward as we go deeper
-        z: ring * 50, // Depth layers
-        size: Math.max(1, 3 - ring * 0.4), // Smaller as they recede
-        color: colors[Math.floor(Math.random() * colors.length)],
-        delay: i * 0.05,
-      });
-    }
-    
-    return particleArray;
-  }, []);
+  // Generate 8 petals
+  const petals = Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    rotation: (360 / 8) * i,
+  }));
 
   return (
     <div className="relative w-[160px] h-[160px] lg:w-[220px] lg:h-[220px]">
       {/* Outer atmospheric glow */}
       <motion.div
-        className="absolute inset-[-30px] blur-3xl"
+        className="absolute inset-[-40px] blur-3xl"
         style={{
           background: isError
-            ? 'radial-gradient(circle, rgba(239, 68, 68, 0.25) 0%, transparent 70%)'
-            : 'radial-gradient(circle, rgba(76, 200, 244, 0.15) 0%, rgba(255, 109, 168, 0.08) 50%, transparent 80%)',
+            ? 'radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(76, 200, 244, 0.12) 0%, rgba(255, 109, 168, 0.08) 50%, transparent 80%)',
         }}
         animate={{
-          scale: isListening ? [1, 1.08, 1] : 1,
-          opacity: isListening ? [0.8, 1, 0.8] : 0.8,
+          scale: isListening ? [1, 1.05, 1] : [1, 1.02, 1],
+          opacity: [0.7, 1, 0.7],
         }}
         transition={{
-          duration: 2,
+          duration: isListening ? 2 : 4,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
       />
 
-      {/* 3D Particle Corridor Container */}
-      <div 
-        className="relative w-full h-full overflow-hidden"
-        style={{
-          perspective: '400px',
-          perspectiveOrigin: 'center center',
-        }}
-      >
-        {/* Central glow (processing state) */}
+      {/* Energy Bloom Container */}
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Petals */}
+        <div className="absolute inset-0">
+          {petals.map((petal) => (
+            <motion.div
+              key={petal.id}
+              className="absolute inset-0"
+              style={{
+                transformOrigin: 'center center',
+              }}
+              animate={{
+                rotate: petal.rotation,
+              }}
+            >
+              {/* Petal shape */}
+              <motion.div
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                style={{
+                  width: '80px',
+                  height: '120px',
+                  background: `linear-gradient(180deg, 
+                    rgba(13, 44, 243, ${petalGlow * 0.6}) 0%, 
+                    rgba(76, 200, 244, ${petalGlow * 0.7}) 40%, 
+                    rgba(255, 109, 168, ${petalGlow * 0.5}) 80%, 
+                    transparent 100%)`,
+                  borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
+                  filter: 'blur(8px)',
+                  boxShadow: isListening 
+                    ? `0 0 30px rgba(76, 200, 244, ${petalGlow})` 
+                    : `0 0 15px rgba(76, 200, 244, ${petalGlow * 0.5})`,
+                  transformOrigin: 'center bottom',
+                }}
+                animate={{
+                  scale: [petalScale * 0.98, petalScale * 1.02, petalScale * 0.98],
+                  y: [-60, -58, -60],
+                }}
+                transition={{
+                  duration: isListening ? 1.5 : 3,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: petal.id * 0.1,
+                }}
+              />
+
+              {/* Petal edge glow (listening state) */}
+              {isListening && (
+                <motion.div
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    width: '82px',
+                    height: '122px',
+                    background: `linear-gradient(180deg, 
+                      rgba(255, 255, 255, ${shimmerOpacity * 0.8}) 0%, 
+                      rgba(76, 200, 244, ${shimmerOpacity}) 50%, 
+                      transparent 100%)`,
+                    borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
+                    filter: 'blur(4px)',
+                    transformOrigin: 'center bottom',
+                  }}
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    opacity: [shimmerOpacity * 0.6, shimmerOpacity, shimmerOpacity * 0.6],
+                    y: [-60, -58, -60],
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    delay: petal.id * 0.08,
+                  }}
+                />
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Central core glow */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="relative z-10"
           animate={{
-            opacity: centralGlow,
+            scale: isProcessing ? [1, 1.05, 1] : [0.98, 1.02, 0.98],
+            opacity: coreGlow,
           }}
           transition={{
-            duration: 0.3,
-            ease: 'easeOut',
+            duration: isProcessing ? 2 : 3,
+            repeat: Infinity,
+            ease: 'easeInOut',
           }}
         >
           <div
-            className="w-16 h-16 lg:w-20 lg:h-20 rounded-full blur-2xl"
+            className="w-12 h-12 lg:w-16 lg:h-16 rounded-full blur-xl"
             style={{
               background: isError
-                ? 'rgba(239, 68, 68, 0.8)'
-                : 'radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(76, 200, 244, 0.6) 40%, transparent 80%)',
+                ? 'radial-gradient(circle, rgba(239, 68, 68, 0.9) 0%, rgba(239, 68, 68, 0.4) 70%, transparent 100%)'
+                : 'radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(76, 200, 244, 0.6) 40%, rgba(255, 109, 168, 0.3) 70%, transparent 100%)',
+              boxShadow: isError
+                ? '0 0 40px rgba(239, 68, 68, 0.6)'
+                : '0 0 40px rgba(255, 255, 255, 0.4)',
             }}
           />
         </motion.div>
 
-        {/* Particle corridor */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative w-full h-full">
-            {particles.map((particle) => {
-              // Calculate particle depth opacity (further = more transparent)
-              const depthOpacity = Math.max(0.15, 1 - (particle.z / 250));
-              
-              // Calculate blur based on depth (further = more blur)
-              const depthBlur = particle.z > 100 ? 2 : particle.z > 50 ? 1 : 0;
-
-              return (
-                <motion.div
-                  key={particle.id}
-                  className="absolute rounded-full"
-                  style={{
-                    width: `${particle.size}px`,
-                    height: `${particle.size}px`,
-                    backgroundColor: particle.color,
-                    boxShadow: `0 0 ${particle.size * 3}px ${particle.color}`,
-                    filter: `blur(${depthBlur}px)`,
-                    opacity: depthOpacity,
-                    left: '50%',
-                    top: '50%',
-                    transformStyle: 'preserve-3d',
-                  }}
-                  animate={{
-                    x: [
-                      Math.cos(particle.angle + rippleIntensity) * particle.radius,
-                      Math.cos(particle.angle + rippleIntensity) * (particle.radius * 0.5),
-                    ],
-                    y: [
-                      Math.sin(particle.angle + rippleIntensity) * particle.radius,
-                      Math.sin(particle.angle + rippleIntensity) * (particle.radius * 0.5),
-                    ],
-                    z: [particle.z, -50], // Move toward viewer
-                    scale: [1, 1.8], // Grow as they approach
-                  }}
-                  transition={{
-                    duration: 3 * flowSpeed,
-                    repeat: Infinity,
-                    ease: 'linear',
-                    delay: particle.delay,
-                  }}
-                />
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Depth of field gradient (foreground fade) */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.4) 80%)',
-          }}
-        />
-
-        {/* Listening ripple overlay */}
+        {/* Iridescent shimmer overlay (listening state) */}
         {isListening && (
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'radial-gradient(circle at center, rgba(76, 200, 244, 0.2) 0%, transparent 60%)',
+              background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, rgba(76, 200, 244, 0.1) 40%, transparent 70%)',
+              mixBlendMode: 'overlay',
             }}
             animate={{
               scale: [1, 1.15, 1],
               opacity: [0.3, 0.6 + (volumeLevel * 0.4), 0.3],
             }}
             transition={{
-              duration: 1.2,
+              duration: 1,
               repeat: Infinity,
               ease: 'easeInOut',
             }}
@@ -181,7 +170,7 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
         {/* Error overlay */}
         {isError && (
           <motion.div
-            className="absolute inset-0 bg-red-500/15 backdrop-blur-sm"
+            className="absolute inset-0 bg-red-500/10 backdrop-blur-sm rounded-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
@@ -191,10 +180,10 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
 
       {/* Soft bloom effect */}
       <div
-        className="absolute inset-0 pointer-events-none mix-blend-screen opacity-30"
+        className="absolute inset-0 pointer-events-none mix-blend-screen opacity-20"
         style={{
-          background: 'radial-gradient(circle at center, rgba(76, 200, 244, 0.3) 0%, transparent 70%)',
-          filter: 'blur(20px)',
+          background: 'radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, rgba(76, 200, 244, 0.15) 40%, transparent 70%)',
+          filter: 'blur(25px)',
         }}
       />
     </div>
