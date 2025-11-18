@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode, useRef } from 'react';
 import { useLocation, matchPath } from 'react-router-dom';
 import { useStreamingState } from './StreamingStateContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface VitanalandNavigationState {
   // Visual state
@@ -58,22 +59,35 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
 
   // Check first visit on mount
   useEffect(() => {
-    const lastSeen = localStorage.getItem('vitanaland_last_seen');
-    const today = new Date().toDateString();
-    
-    // Show on first visit of the day, only on /home or root
-    if (lastSeen !== today && (location.pathname === '/home' || location.pathname === '/')) {
-      setIsFirstVisit(true);
-      setIsExpanded(true);
-      setWorldVisible(true);
+    const checkFirstVisit = async () => {
+      const lastSeen = localStorage.getItem('vitanaland_last_seen');
+      const today = new Date().toDateString();
       
-      // Auto-minimize after 10 seconds
-      setTimeout(() => {
-        if (!hasExpandedRef.current) {
-          minimizeToOrb();
+      // Show on first visit of the day, only on /home or root
+      if (lastSeen !== today && (location.pathname === '/home' || location.pathname === '/')) {
+        // Check authentication before showing world
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+          // User is authenticated, show full experience
+          setIsFirstVisit(true);
+          setIsExpanded(true);
+          setWorldVisible(true);
+          
+          // Auto-minimize after 10 seconds
+          setTimeout(() => {
+            if (!hasExpandedRef.current) {
+              minimizeToOrb();
+            }
+          }, 10000);
+        } else {
+          // Not authenticated, just mark as seen
+          localStorage.setItem('vitanaland_last_seen', today);
         }
-      }, 10000);
-    }
+      }
+    };
+    
+    checkFirstVisit();
   }, []);
 
   // Check route visibility
