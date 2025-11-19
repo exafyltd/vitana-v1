@@ -8,6 +8,7 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { playSound } from "@/lib/playSound";
 
 export function VitanaButton() {
   const { expandToFull } = useVitanalandNavigation();
@@ -24,6 +25,11 @@ export function VitanaButton() {
     return () => window.removeEventListener('vitanaland-keyboard-trigger', handleKeyboardTrigger);
   }, []);
   
+  const handleOrbClick = () => {
+    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
+    expandToFull();
+  };
+  
   return (
     <TooltipProvider>
       <Tooltip>
@@ -32,7 +38,7 @@ export function VitanaButton() {
             variant="ghost"
             size="icon"
             className="rounded-full relative overflow-visible"
-            onClick={expandToFull}
+            onClick={handleOrbClick}
             aria-label="Enter VITANALAND (Cmd+K)"
           >
             <motion.div

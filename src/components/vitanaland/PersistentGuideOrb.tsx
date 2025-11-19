@@ -5,6 +5,7 @@ import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { VitanalandWorldLayer } from './VitanalandWorldLayer';
 import { CentralGuideOrb } from './CentralGuideOrb';
 import { GreetingMicrocopy } from './GreetingMicrocopy';
+import { playSound } from '@/lib/playSound';
 
 export function PersistentGuideOrb() {
   const { isExpanded, orbVisible, expandToFull, worldVisible } = useVitanalandNavigation();
@@ -14,6 +15,9 @@ export function PersistentGuideOrb() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !isExpanded && orbVisible) {
         e.preventDefault();
+        
+        // Play pulse sound
+        playSound("/sounds/vitanaland/pulse-chime.mp3", 0.12);
         
         // Trigger visual pulse on mini orb
         window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
