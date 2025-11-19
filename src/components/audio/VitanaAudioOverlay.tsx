@@ -5,7 +5,6 @@ import { useIntelligentGreetingContext } from '@/context/IntelligentGreetingProv
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
-import { GreetingMicrocopy } from '@/components/vitanaland/GreetingMicrocopy';
 
 export function VitanaAudioOverlay() {
   const { audioOverlayVisible, micActive, sessionReady, setAudioOverlayVisible, setMicActive } =
@@ -166,17 +165,6 @@ export function VitanaAudioOverlay() {
 
         {/* Content container */}
         <div className="relative h-full flex flex-col items-center justify-center">
-          {/* Greeting text above orb */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="mb-8 lg:mb-12"
-          >
-            <GreetingMicrocopy />
-          </motion.div>
-
           {/* Portal Seed */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
