@@ -11,8 +11,17 @@ export function CloudIslands({ isActive }: CloudIslandsProps) {
     <motion.div
       className="absolute inset-0"
       initial={{ opacity: 0 }}
-      animate={{ opacity: isActive ? 1 : 0 }}
-      transition={{ duration: 7, ease: 'easeInOut' }}
+      animate={{ 
+        opacity: isActive ? 1 : 0,
+        scale: isActive ? 1 : 1.15,
+        x: isActive ? 0 : -30,
+      }}
+      transition={{ 
+        duration: 15, 
+        ease: 'easeInOut',
+        scale: { duration: 15 },
+        x: { duration: 15 }
+      }}
     >
       {/* Far background layer - dreamy sky drift */}
       <motion.div
