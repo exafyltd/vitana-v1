@@ -313,12 +313,6 @@ function AppSidebar({
       </SidebarContent>
       <SidebarFooter className="sticky bottom-0 bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
-          {/* VITANA Orb - Voice-First Interface */}
-          <VitanaOrbButton onClick={() => {
-            // TODO: Phase 2 - Open VitanaOrbOverlay
-            console.log('VITANA Orb clicked');
-          }} />
-          
           {/* User Profile */}
           {open ? (
             <ProfileDrawer
@@ -358,6 +352,12 @@ function AppSidebar({
               }
             />
           )}
+          
+          {/* VITANA Orb - Voice-First Interface */}
+          <VitanaOrbButton onClick={() => {
+            // TODO: Phase 2 - Open VitanaOrbOverlay
+            console.log('VITANA Orb clicked');
+          }} />
         </div>
       </SidebarFooter>
     </Sidebar>
