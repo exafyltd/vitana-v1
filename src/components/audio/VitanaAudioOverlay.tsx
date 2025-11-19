@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useVitanalandLive } from '@/hooks/useVitanalandLive';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
+import { useVitanaPCMAudio } from '@/hooks/useVitanaPCMAudio';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
@@ -33,13 +34,20 @@ export function VitanaAudioOverlay() {
     connectionState,
     isListening,
     isProcessing,
+    isSpeaking,
     error,
     connect,
     disconnect,
     startListening,
     stopListening,
     sendMessage,
+    setAudioResponseHandler,
+    setAudioStartHandler,
+    setAudioEndHandler,
   } = useVitanalandLive();
+
+  // Audio playback system
+  const { playAudio, stopAudio, cleanup: cleanupAudio } = useVitanaPCMAudio();
 
   // Handle tool execution
   const { executeToolCall } = useVitanaOrbTools({
@@ -52,6 +60,22 @@ export function VitanaAudioOverlay() {
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number>();
 
+  // Set up audio handlers
+  useEffect(() => {
+    setAudioResponseHandler((blob) => {
+      console.log('[VITANALAND] Playing audio response');
+      playAudio(blob);
+    });
+
+    setAudioStartHandler(() => {
+      console.log('[VITANALAND] Audio playback started');
+    });
+
+    setAudioEndHandler(() => {
+      console.log('[VITANALAND] Audio playback ended');
+    });
+  }, [setAudioResponseHandler, setAudioStartHandler, setAudioEndHandler, playAudio]);
+
   // Connect/disconnect based on overlay visibility
   useEffect(() => {
     if (audioOverlayVisible) {
@@ -59,19 +83,33 @@ export function VitanaAudioOverlay() {
       connect(executeToolCall);
     } else {
       console.log('[VITANALAND] Overlay closed - disconnecting...');
+      stopAudio();
       disconnect();
+      cleanupAudio();
     }
-  }, [audioOverlayVisible, connect, disconnect, executeToolCall]);
+  }, [audioOverlayVisible, connect, disconnect, executeToolCall, stopAudio, cleanupAudio]);
 
   // Map VITANALAND states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'error' = 
     error ? 'error' :
+    isSpeaking ? 'processing' :
     isProcessing ? 'processing' :
     isListening ? 'listening' :
     connectionState === 'ready' ? 'idle' :
     'idle';
   
   const errorMessage = error || undefined;
+
+  // Get connection status message
+  const getConnectionStatus = () => {
+    if (error) return error;
+    if (connectionState === 'connecting') return 'Connecting...';
+    if (connectionState === 'disconnected') return 'Disconnected';
+    if (isSpeaking) return 'VITANA is speaking...';
+    if (isProcessing) return 'Thinking...';
+    if (isListening) return "I'm listening...";
+    return 'Ready';
+  };
 
   // Set up real-time volume monitoring when listening
   useEffect(() => {
@@ -152,11 +190,18 @@ export function VitanaAudioOverlay() {
     setAutopilotActive(false);
   };
 
-  const handleMicToggle = () => {
+  const handleMicToggle = async () => {
+    console.log('[VITANALAND] Mic toggle - current state:', { isListening, connectionState });
+    
+    if (connectionState !== 'ready') {
+      console.warn('[VITANALAND] Cannot toggle mic - not connected');
+      return;
+    }
+
     if (isListening) {
       stopListening();
     } else {
-      startListening();
+      await startListening();
     }
   };
 
