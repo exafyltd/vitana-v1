@@ -10,17 +10,19 @@ export function NebulaValley({ isActive }: NebulaValleyProps) {
   return (
     <motion.div
       className="absolute inset-0"
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1, scale: 1.2, x: 60 }}
       animate={{ 
-        opacity: isActive ? 1 : 0,
-        scale: isActive ? 1 : 1.15,
-        x: isActive ? 0 : -30,
+        opacity: 1,
+        scale: isActive ? 1 : 1.3,
+        x: isActive ? 0 : -80,
+        zIndex: isActive ? 20 : 10,
       }}
       transition={{ 
-        duration: 15, 
-        ease: 'easeInOut',
+        duration: 15,
+        ease: [0.45, 0.05, 0.15, 0.95],
         scale: { duration: 15 },
-        x: { duration: 15 }
+        x: { duration: 15 },
+        zIndex: { duration: 0, delay: isActive ? 0 : 8 },
       }}
     >
       {/* Far background layer - cosmic depth */}
