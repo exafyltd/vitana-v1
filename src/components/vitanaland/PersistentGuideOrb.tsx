@@ -48,7 +48,7 @@ export function PersistentGuideOrb() {
             transition={{ duration: 0.8, ease: 'easeInOut' }}
           >
             {/* Glassy transparent background */}
-            <div className="absolute inset-0 bg-background/15 backdrop-blur-md" />
+            <div className="absolute inset-0 bg-background/10 backdrop-blur-md" />
           </motion.div>
         )}
       </AnimatePresence>
