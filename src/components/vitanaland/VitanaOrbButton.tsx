@@ -52,11 +52,11 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 ease: 'easeOut',
               }}
             >
-              {/* Outer halo glow (cyan/teal) */}
+              {/* Outer halo glow */}
               <motion.div
                 className="absolute inset-[-14px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, rgba(34, 211, 238, 0.25) 0%, rgba(6, 182, 212, 0.15) 40%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, 0.4) 0%, rgba(76, 200, 244, 0.2) 40%, transparent 70%)',
                   filter: 'blur(18px)',
                 }}
                 animate={{
@@ -74,11 +74,11 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 }}
               />
 
-              {/* Secondary glow ring (cyan/blue) */}
+              {/* Secondary glow ring */}
               <motion.div
                 className="absolute inset-[-10px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(14, 165, 233, 0.2) 50%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, 0.15) 0%, rgba(76, 200, 244, 0.08) 50%, transparent 70%)',
                   filter: 'blur(12px)',
                 }}
                 animate={{
@@ -95,7 +95,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
               <motion.div
                 className="absolute inset-[-2px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, transparent 55%, rgba(255, 255, 255, 0.6) 65%, rgba(56, 189, 248, 0.9) 72%, transparent 80%)',
+                  background: 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
                   filter: 'blur(1.5px)',
                 }}
                 animate={{
@@ -108,18 +108,20 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 }}
               />
 
-              {/* Main orb sphere (64px) - rich gradient */}
+              {/* Main orb sphere (64px) - crystal gradient */}
               <motion.div
                 className="relative w-16 h-16 rounded-full"
                 style={{
-                  background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.9) 20%, rgba(125, 211, 252, 0.85) 45%, rgba(14, 165, 233, 0.75) 70%, rgba(8, 145, 178, 0.7) 85%, rgba(6, 95, 138, 0.65) 100%)',
-                  boxShadow: 'inset 0 0 32px rgba(255, 255, 255, 0.5), inset 0 0 16px rgba(56, 189, 248, 0.3), 0 6px 24px rgba(6, 182, 212, 0.4), 0 3px 12px rgba(14, 165, 233, 0.3)',
+                  background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
+                  boxShadow: 'inset 0 0 32px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15)',
                 }}
                 animate={{
                   scale: [1, 1.03, 1],
+                  scaleX: [1, 1.015, 1, 0.985, 1],
+                  scaleY: [1, 0.985, 1, 1.015, 1],
                 }}
                 transition={{
-                  duration: 6,
+                  duration: 8,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
@@ -129,9 +131,9 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
               >
                 {/* Inner shimmer highlight */}
                 <motion.div
-                  className="absolute inset-[28%] rounded-full blur-[4px]"
+                  className="absolute inset-[15%] rounded-full blur-[6px]"
                   style={{
-                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%)',
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
                   }}
                   animate={{
                     opacity: [0.4, 0.7, 0.4],
@@ -143,48 +145,6 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                   }}
                 />
               </motion.div>
-
-              {/* Micro star particle 1 */}
-              <motion.div
-                className="absolute w-[3.5px] h-[3.5px] rounded-full"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  boxShadow: '0 0 8px rgba(56, 189, 248, 0.9), 0 0 4px rgba(255, 255, 255, 0.7)',
-                }}
-                animate={{
-                  x: [24, 17, 0, -17, -24, -17, 0, 17, 24],
-                  y: [0, -17, -24, -17, 0, 17, 24, 17, 0],
-                  opacity: [0.5, 0.8, 0.5],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
-
-              {/* Micro star particle 2 */}
-              <motion.div
-                className="absolute w-[3px] h-[3px] rounded-full"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  background: 'rgba(224, 242, 254, 0.85)',
-                  boxShadow: '0 0 6px rgba(34, 211, 238, 0.8)',
-                }}
-                animate={{
-                  x: [-24, -17, 0, 17, 24, 17, 0, -17, -24],
-                  y: [0, 17, 24, 17, 0, -17, -24, -17, 0],
-                  opacity: [0.4, 0.7, 0.4],
-                }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
             </motion.div>
           </Button>
         </TooltipTrigger>
