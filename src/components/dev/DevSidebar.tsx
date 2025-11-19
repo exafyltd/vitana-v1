@@ -4,7 +4,7 @@ import { User } from "@supabase/supabase-js";
 import {
   Home, Satellite, Users, GitBranch, Database, 
   FileText, Globe, Workflow, Activity, Settings,
-  Play, Square, LogOut, ChevronRight, Search
+  LogOut, ChevronRight, Search
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
@@ -23,7 +23,6 @@ import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { StreamingChatRef } from "@/components/StreamingChat";
 import { cn } from "@/lib/utils";
 import { PlatformIconsRow } from "./PlatformIconsRow";
 
@@ -45,32 +44,16 @@ interface DevSidebarProps {
   user: User | null;
   mobileOpen?: boolean;
   onMobileOpenChange?: (open: boolean) => void;
-  streamingChatRef?: React.RefObject<StreamingChatRef>;
 }
 
-export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, streamingChatRef }: DevSidebarProps) {
+export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: DevSidebarProps) {
   const { open } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { toast } = useToast();
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const [isStreaming, setIsStreaming] = useState(false);
   const { profile } = useProfile();
-
-  // Track streaming state
-  useEffect(() => {
-    if (!streamingChatRef?.current) return;
-    
-    const interval = setInterval(() => {
-      const active = streamingChatRef.current?.isStreamingActive?.();
-      if (typeof active === "boolean" && active !== isStreaming) {
-        setIsStreaming(active);
-      }
-    }, 500);
-    
-    return () => clearInterval(interval);
-  }, [streamingChatRef, isStreaming]);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -78,21 +61,6 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
     navigate(url);
     if (isMobile && onMobileOpenChange) {
       onMobileOpenChange(false);
-    }
-  };
-
-
-  const handleStartStream = async () => {
-    if (!streamingChatRef?.current) return;
-    
-    try {
-      if (isStreaming) {
-        streamingChatRef.current.deactivateVideo();
-      } else {
-        await streamingChatRef.current.activateVideo();
-      }
-    } catch (error) {
-      console.error('Error toggling stream:', error);
     }
   };
 
@@ -127,34 +95,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange, strea
 
   const footerContent = (
     <>
-      {open ? (
-        <Button 
-          onClick={handleStartStream}
-          className={cn(
-            "w-full justify-center rounded-xl shadow-sm hover:shadow-md transition-all",
-            isStreaming 
-              ? "bg-red-500 text-white hover:bg-red-600" 
-              : "bg-primary text-primary-foreground hover:bg-primary/90"
-          )}
-        >
-          {isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-          <span>{isStreaming ? "Stop Stream" : "Start Stream"}</span>
-        </Button>
-      ) : (
-        <Button 
-          onClick={handleStartStream}
-          size="icon"
-          className={cn(
-            "w-10 h-10 rounded-full shadow-sm hover:shadow-md transition-all mx-auto",
-            isStreaming 
-              ? "bg-red-500 text-white hover:bg-red-600" 
-              : "bg-primary text-primary-foreground hover:bg-primary/90"
-          )}
-        >
-          {isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        </Button>
-      )}
-
+      {/* User Profile */}
       {open ? (
         <ProfileDrawer
           trigger={
