@@ -24,6 +24,9 @@ verify_jwt = true
 [functions.vertex-live]
 verify_jwt = false
 
+[functions.vitanaland-live]
+verify_jwt = false
+
 [functions.google-cloud-tts]
 verify_jwt = true
 
