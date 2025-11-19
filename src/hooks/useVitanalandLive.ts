@@ -41,7 +41,14 @@ class VitanalandLiveService {
 
       this.ws.onopen = () => {
         console.log('[VITANALAND Service] ✅ WebSocket connected');
+        
+        // Mark as ready immediately so client can start mic
+        this.isSetupComplete = true;
+        
+        // Notify React hook that we're ready
         this.callbacks.onConnectionReady?.();
+        this.callbacks.onConnectionChange?.(true);
+        this.callbacks.onGeminiReady?.();
       };
 
       this.ws.onmessage = (event) => {
@@ -67,22 +74,26 @@ class VitanalandLiveService {
 
           // Handle JSON messages
           const data = JSON.parse(event.data);
-          console.log('[VITANALAND Service] 📨 Message type:', {
-            _type: data.type,
-            value: data.type
-          });
+          console.log('[VITANALAND Service] 📨 Incoming JSON:', data);
 
+          // Optional legacy support for 'ready' message
           if (data.type === 'ready') {
             this.isSetupComplete = true;
             this.callbacks.onGeminiReady?.();
             this.callbacks.onConnectionChange?.(true);
+          }
+          
+          // Handle various server response formats
+          if (data.serverContent) {
+            this.handleServerContent(data.serverContent);
+          } else if (data.modelTurn || data.turnComplete) {
+            // Server may send these at top level instead of wrapped
+            this.handleServerContent(data);
           } else if (data.type === 'error') {
-            this.callbacks.onError?.(data.message);
+            this.callbacks.onError?.(data.message ?? 'Unknown error from server');
           } else if (data.toolCall) {
             console.log('[VITANALAND Service] 🔧 Tool call received:', data.toolCall);
             this.callbacks.onToolCall?.(data.toolCall);
-          } else if (data.serverContent) {
-            this.handleServerContent(data.serverContent);
           }
         } catch (err) {
           console.error('[VITANALAND Service] ❌ Error processing message:', err, 'Data type:', typeof event.data);
