@@ -192,19 +192,23 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
     try {
       console.log(`[GREET][${traceId}] fired timestamp=${new Date().toISOString()}`);
       
-      // Get session for Authorization
+      // Get session for Authorization and user_id
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
+      const userId = session?.user?.id;
       
-      if (!accessToken) {
-        console.warn(`[GREET][${traceId}] failed NO_AUTH_TOKEN`);
+      if (!accessToken || !userId) {
+        console.warn(`[GREET][${traceId}] failed NO_AUTH_TOKEN or NO_USER_ID`);
         return;
       }
       
-      // Call AI-powered greeting with proper auth and language
+      // Call AI-powered greeting with proper auth, user_id, and language
       const { data, error } = await supabase.functions.invoke('generate-proactive-greeting', {
         headers: { Authorization: `Bearer ${accessToken}` },
-        body: { override_language: preferences?.stt_language || 'en-US' }
+        body: { 
+          user_id: userId,
+          override_language: preferences?.stt_language || 'en-US' 
+        }
       });
       
       if (error) {
@@ -257,19 +261,23 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
         return;
       }
       
-      // Get session for Authorization
+      // Get session for Authorization and user_id
       const { data: { session } } = await supabase.auth.getSession();
       const accessToken = session?.access_token;
+      const userId = session?.user?.id;
       
-      if (!accessToken) {
-        console.warn('No session token, skipping greeting');
+      if (!accessToken || !userId) {
+        console.warn('No session token or user_id, skipping greeting');
         return;
       }
       
-      // Call AI-powered greeting with proper auth and language
+      // Call AI-powered greeting with proper auth, user_id, and language
       const { data, error } = await supabase.functions.invoke('generate-proactive-greeting', {
         headers: { Authorization: `Bearer ${accessToken}` },
-        body: { override_language: preferences?.stt_language || 'en-US' }
+        body: { 
+          user_id: userId,
+          override_language: preferences?.stt_language || 'en-US' 
+        }
       });
       
       if (error) throw error;
