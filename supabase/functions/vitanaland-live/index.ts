@@ -171,39 +171,79 @@ serve(async (req) => {
           vertexSocket!.send(JSON.stringify(setupMessage));
         };
 
-        vertexSocket.onmessage = (event) => {
+        vertexSocket.onmessage = async (event) => {
           try {
-            const data = JSON.parse(event.data);
+            // Check if message is JSON or Blob
+            if (typeof event.data === 'string') {
+              // Handle JSON messages
+              const data = JSON.parse(event.data);
+              console.log(`[vitanaland-live][${traceId}] 📥 Vertex AI JSON message type:`, data.type || Object.keys(data)[0]);
 
-            // Handle setup acknowledgment
-            if (data.setupComplete) {
-              setupAckReceived = true;
-              console.log(`[vitanaland-live][${traceId}] ✅ Setup acknowledged by Vertex AI`);
-              clientSocket.send(JSON.stringify({ type: 'ready' }));
-              
-              // Send greeting after setup complete
-              if (!hasGreeted) {
-                hasGreeted = true;
-                const greeting = getRandomGreeting();
-                console.log(`[vitanaland-live][${traceId}] 👋 Sending VITANALAND greeting: "${greeting}"`);
+              // Handle setup acknowledgment
+              if (data.setupComplete) {
+                setupAckReceived = true;
+                console.log(`[vitanaland-live][${traceId}] ✅ Setup acknowledged by Vertex AI`);
+                clientSocket.send(JSON.stringify({ type: 'ready' }));
                 
-                setTimeout(() => {
-                  const greetingMessage = {
-                    client_content: {
-                      turns: [
-                        { role: "user", parts: [{ text: `Say this greeting exactly: "${greeting}"` }] }
-                      ],
-                      turn_complete: true
-                    }
-                  };
-                  vertexSocket!.send(JSON.stringify(greetingMessage));
-                }, 300);
+                // Send greeting after setup complete
+                if (!hasGreeted) {
+                  hasGreeted = true;
+                  const greeting = getRandomGreeting();
+                  console.log(`[vitanaland-live][${traceId}] 👋 Sending VITANALAND greeting: "${greeting}"`);
+                  
+                  setTimeout(() => {
+                    const greetingMessage = {
+                      client_content: {
+                        turns: [
+                          { role: "user", parts: [{ text: `Say this greeting exactly: "${greeting}"` }] }
+                        ],
+                        turn_complete: true
+                      }
+                    };
+                    vertexSocket!.send(JSON.stringify(greetingMessage));
+                  }, 300);
+                }
               }
-            }
 
-            // Forward all other messages to client
-            if (data.serverContent || data.toolCall || data.toolCallCancellation) {
-              clientSocket.send(event.data);
+              // Forward all other messages to client
+              if (data.serverContent || data.toolCall || data.toolCallCancellation) {
+                try {
+                  if (clientSocket.readyState === WebSocket.OPEN) {
+                    clientSocket.send(event.data);
+                  } else {
+                    console.warn(`[vitanaland-live][${traceId}] ⚠️ Client socket not open, skipping message forward`);
+                  }
+                } catch (sendError) {
+                  console.error(`[vitanaland-live][${traceId}] ❌ Error forwarding JSON to client:`, sendError);
+                }
+              }
+            } else if (event.data instanceof Blob) {
+              // Handle binary audio data
+              console.log(`[vitanaland-live][${traceId}] 📥 Vertex AI audio Blob received`);
+              console.log(`[vitanaland-live][${traceId}]    Size: ${event.data.size} bytes`);
+              console.log(`[vitanaland-live][${traceId}]    Type: ${event.data.type}`);
+              
+              // Forward audio Blob to client as ArrayBuffer
+              const arrayBuffer = await event.data.arrayBuffer();
+              console.log(`[vitanaland-live][${traceId}]    ArrayBuffer size: ${arrayBuffer.byteLength} bytes`);
+              
+              // If payload looks like JSON (starts with '{' or '['), treat as TEXT frame
+              const b0 = new DataView(arrayBuffer).getUint8(0);
+              if (b0 === 0x7b /* '{' */ || b0 === 0x5b /* '[' */) {
+                const text = new TextDecoder().decode(arrayBuffer);
+                console.log(`[vitanaland-live][${traceId}] 🔁 Converting Blob-as-binary (JSON) back to text frame`);
+                if (clientSocket.readyState === WebSocket.OPEN) {
+                  clientSocket.send(text);
+                }
+                return;
+              }
+              
+              // Forward binary audio data to client
+              if (clientSocket.readyState === WebSocket.OPEN) {
+                clientSocket.send(arrayBuffer);
+              }
+            } else {
+              console.warn(`[vitanaland-live][${traceId}] ⚠️ Unknown message type:`, typeof event.data);
             }
           } catch (err) {
             console.error(`[vitanaland-live][${traceId}] ❌ Error processing Vertex message:`, err);
