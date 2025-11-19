@@ -121,25 +121,47 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                   scaleY: [1, 0.985, 1, 1.015, 1],
                 }}
                 transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
+                  scale: {
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
+                  scaleX: {
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
+                  scaleY: {
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
                 }}
                 whileHover={{
                   scale: 1.05,
                 }}
               >
+                {/* Highlight spot for 3D depth */}
+                <div
+                  className="absolute top-[20%] left-[25%] w-[35%] h-[35%] rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 65%)',
+                    filter: 'blur(4px)',
+                  }}
+                />
+                
                 {/* Inner shimmer highlight */}
                 <motion.div
-                  className="absolute inset-[15%] rounded-full blur-[6px]"
+                  className="absolute inset-[15%] rounded-full"
                   style={{
                     background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
+                    filter: 'blur(6px)',
                   }}
                   animate={{
-                    opacity: [0.4, 0.7, 0.4],
+                    opacity: [0.6, 0.8, 0.6],
                   }}
                   transition={{
-                    duration: 3.5,
+                    duration: 3,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
