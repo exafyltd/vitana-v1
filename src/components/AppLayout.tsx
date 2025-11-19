@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useEffect, useRef, useState } from "react";
 import { Bot, CalendarClock, MessageSquare, Search, Settings, Activity, LayoutDashboard, Play, Square, Bell, User, Heart, Wallet, Share2, Database, Shield, LogOut, Plane, Calendar, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { StreamingChat, StreamingChatRef } from "@/components/StreamingChat";
+
 import { GlobalSearch } from "@/components/GlobalSearch";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
 import NotificationBell from "@/components/NotificationBell";
@@ -38,7 +38,6 @@ interface AppLayoutProps {
 }
 
 function AppSidebar({ 
-  streamingChatRef, 
   autopilotPopupOpen, 
   setAutopilotPopupOpen, 
   walletPopupOpen,
@@ -47,7 +46,6 @@ function AppSidebar({
   setCartOpen,
   onSidebarOpenChange 
 }: { 
-  streamingChatRef: React.RefObject<StreamingChatRef>;
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
   walletPopupOpen: boolean;
@@ -56,7 +54,6 @@ function AppSidebar({
   setCartOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
 }) {
-  const [isStreaming, setIsStreaming] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { open } = useSidebar();
@@ -74,48 +71,6 @@ function AppSidebar({
   const isActivePath = (categoryPath: string) => {
     return location.pathname === categoryPath || location.pathname.startsWith(categoryPath + "/");
   };
-
-  const handleStreamToggle = async () => {
-    if (isStreaming) {
-      console.log('🛑 Ending stream...');
-      streamingChatRef.current?.deactivateVideo();
-      setIsStreaming(false); // Immediate UI update for stop
-      console.log('✅ Stream ended');
-    } else {
-      console.log('▶️ Starting stream (screen share)...');
-      
-      // DON'T set isStreaming = true here!
-      // Let the polling mechanism detect when it's actually active
-      
-      try {
-        await streamingChatRef.current?.activateVideo();
-        
-        // If we get here, connection succeeded
-        // The useEffect polling will pick up isStreamingActive() = true
-        console.log('✅ Stream activation initiated');
-      } catch (error) {
-        console.error('❌ Stream start failed:', error);
-        
-        // Make absolutely sure state is neutral
-        setIsStreaming(false);
-        
-        // Error toast is already shown by activateVideo, but log it
-        console.error('Connection error:', error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const active = streamingChatRef.current?.isStreamingActive?.();
-      if (typeof active === "boolean" && active !== isStreaming) {
-        setIsStreaming(active);
-      }
-    }, 150);
-    return () => clearInterval(interval);
-  }, [isStreaming]);
-
-  // Removed auto-start functionality - user must manually start stream
 
   const handleLogoClick = async () => {
     await signOut();
@@ -187,8 +142,6 @@ function AppSidebar({
     return 'Community';
   };
 
-  const buttonLabel = isStreaming ? "End Stream" : "Start Stream";
-  const buttonIcon = isStreaming ? <Square className="h-4 w-4" /> : <Play className="h-4 w-4" />;
 
   return (
     <Sidebar collapsible="icon" className="bg-sidebar rounded-r-2xl border-r shadow-lg">
@@ -412,7 +365,6 @@ function AppSidebar({
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
-  const streamingChatRef = useRef<StreamingChatRef>(null);
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -448,7 +400,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <div className="flex min-h-screen w-full overflow-x-hidden">
           <div className="dark">
             <AppSidebar 
-              streamingChatRef={streamingChatRef} 
               autopilotPopupOpen={autopilotPopupOpen}
               setAutopilotPopupOpen={setAutopilotPopupOpen}
               walletPopupOpen={walletPopupOpen}
@@ -481,7 +432,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
         open={cartOpen} 
         onClose={() => setCartOpen(false)} 
       />
-       <StreamingChat ref={streamingChatRef} />
        <MiniAudioPlayer />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
