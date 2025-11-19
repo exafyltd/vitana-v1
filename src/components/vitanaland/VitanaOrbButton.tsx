@@ -110,7 +110,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
 
               {/* Main orb sphere (64px) - crystal gradient */}
               <motion.div
-                className="relative w-16 h-16 rounded-full"
+                className="relative w-16 h-16 rounded-full overflow-visible"
                 style={{
                   background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
                   boxShadow: 'inset 0 0 32px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15)',
@@ -142,30 +142,30 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 }}
               >
                 {/* Highlight spot for 3D depth */}
-                <div
-                  className="absolute top-[20%] left-[25%] w-[35%] h-[35%] rounded-full"
-                  style={{
-                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 65%)',
-                    filter: 'blur(4px)',
-                  }}
-                />
+                 <div
+                   className="absolute top-[20%] left-[25%] w-[35%] h-[35%] rounded-full"
+                   style={{
+                     background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 65%)',
+                     filter: 'blur(6px)',
+                   }}
+                 />
                 
                 {/* Inner shimmer highlight */}
-                <motion.div
-                  className="absolute inset-[15%] rounded-full"
-                  style={{
-                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
-                    filter: 'blur(6px)',
-                  }}
-                  animate={{
-                    opacity: [0.6, 0.8, 0.6],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
+                 <motion.div
+                   className="absolute inset-[15%] rounded-full"
+                   style={{
+                     background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
+                     filter: 'blur(10px)',
+                   }}
+                   animate={{
+                     opacity: [0.6, 0.8, 0.6],
+                   }}
+                   transition={{
+                     duration: 3,
+                     repeat: Infinity,
+                     ease: 'easeInOut',
+                   }}
+                 />
               </motion.div>
             </motion.div>
           </Button>
