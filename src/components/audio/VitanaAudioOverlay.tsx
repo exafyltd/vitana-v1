@@ -1,44 +1,54 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
-import { useIntelligentGreetingContext } from '@/context/IntelligentGreetingProvider';
+import { useVitanalandLive } from '@/hooks/useVitanalandLive';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
 
 export function VitanaAudioOverlay() {
-  const { audioOverlayVisible, micActive, sessionReady, setAudioOverlayVisible, setMicActive } =
-    useStreamingState();
-  const { manualGreeting } = useIntelligentGreetingContext();
-
-  const [audioState, setAudioState] = useState<'idle' | 'listening' | 'processing' | 'error'>('idle');
-  const [volumeLevel, setVolumeLevel] = useState(0);
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const { audioOverlayVisible, setAudioOverlayVisible } = useStreamingState();
   
+  const {
+    connectionState,
+    isListening,
+    isProcessing,
+    error,
+    connect,
+    disconnect,
+    startListening,
+    stopListening,
+  } = useVitanalandLive();
+
+  const volumeLevel = useRef(0);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationFrameRef = useRef<number>();
-  const hasGreetedRef = useRef(false);
 
-  // Auto-sync audio state with mic and session status
+  // Connect/disconnect based on overlay visibility
   useEffect(() => {
-    if (!audioOverlayVisible) {
-      setAudioState('idle');
-      return;
-    }
-
-    if (micActive && sessionReady) {
-      setAudioState('listening');
-    } else if (micActive && !sessionReady) {
-      setAudioState('processing');
+    if (audioOverlayVisible) {
+      console.log('[VITANALAND] Overlay opened - connecting...');
+      connect();
     } else {
-      setAudioState('idle');
+      console.log('[VITANALAND] Overlay closed - disconnecting...');
+      disconnect();
     }
-  }, [audioOverlayVisible, micActive, sessionReady]);
+  }, [audioOverlayVisible, connect, disconnect]);
 
-  // Set up real-time volume monitoring
+  // Map VITANALAND states to visual feedback
+  const audioState: 'idle' | 'listening' | 'processing' | 'error' = 
+    error ? 'error' :
+    isProcessing ? 'processing' :
+    isListening ? 'listening' :
+    connectionState === 'ready' ? 'idle' :
+    'idle';
+  
+  const errorMessage = error || undefined;
+
+  // Set up real-time volume monitoring when listening
   useEffect(() => {
-    if (!audioOverlayVisible || !micActive) {
+    if (!audioOverlayVisible || !isListening) {
       // Clean up audio analysis
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -48,7 +58,7 @@ export function VitanaAudioOverlay() {
         audioContextRef.current = null;
         analyserRef.current = null;
       }
-      setVolumeLevel(0);
+      volumeLevel.current = 0;
       return;
     }
 
@@ -74,15 +84,13 @@ export function VitanaAudioOverlay() {
           const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
           const normalizedVolume = Math.min(average / 128, 1);
 
-          setVolumeLevel(normalizedVolume);
+          volumeLevel.current = normalizedVolume;
           animationFrameRef.current = requestAnimationFrame(updateVolume);
         };
 
         updateVolume();
       } catch (error) {
         console.error('Failed to setup audio analysis:', error);
-        setAudioState('error');
-        setErrorMessage('Microphone access needed');
       }
     };
 
@@ -93,30 +101,10 @@ export function VitanaAudioOverlay() {
         cancelAnimationFrame(animationFrameRef.current);
       }
       if (audioContextRef.current) {
-        audioContextRef.current.close();
+      audioContextRef.current.close();
       }
     };
-  }, [audioOverlayVisible, micActive]);
-
-  // Trigger welcome greeting when overlay opens
-  useEffect(() => {
-    if (audioOverlayVisible && !hasGreetedRef.current) {
-      hasGreetedRef.current = true;
-      
-      // Small delay to let overlay animation start
-      const greetingTimer = setTimeout(() => {
-        console.log('[AUDIO OVERLAY] Triggering audio mode greeting');
-        manualGreeting();
-      }, 400);
-      
-      return () => clearTimeout(greetingTimer);
-    }
-    
-    // Reset for next time overlay is opened
-    if (!audioOverlayVisible) {
-      hasGreetedRef.current = false;
-    }
-  }, [audioOverlayVisible, manualGreeting]);
+  }, [audioOverlayVisible, isListening]);
 
   // Handle ESC key
   useEffect(() => {
@@ -132,12 +120,14 @@ export function VitanaAudioOverlay() {
 
   const handleExit = () => {
     setAudioOverlayVisible(false);
-    setMicActive(false);
-    setErrorMessage(undefined);
   };
 
   const handleMicToggle = () => {
-    setMicActive(!micActive);
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
   };
 
   if (!audioOverlayVisible) return null;
@@ -172,7 +162,7 @@ export function VitanaAudioOverlay() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
           >
-            <VitanalandPortalSeed audioState={audioState} volumeLevel={volumeLevel} />
+            <VitanalandPortalSeed audioState={audioState} volumeLevel={volumeLevel.current} />
           </motion.div>
 
           {/* Status text */}
@@ -187,7 +177,7 @@ export function VitanaAudioOverlay() {
             className="absolute bottom-16 lg:bottom-20"
           >
             <AudioControls
-              micActive={micActive}
+              micActive={isListening}
               onMicToggle={handleMicToggle}
               onExit={handleExit}
             />

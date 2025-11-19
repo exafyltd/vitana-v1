@@ -6,9 +6,9 @@ interface AudioStatusTextProps {
 }
 
 const statusMessages = {
-  idle: 'Welcome to VITANALAND.',
-  listening: "I'm listening…",
-  processing: 'Thinking about the best way to help…',
+  idle: '', // VITANALAND speaks instead
+  listening: "I'm listening...",
+  processing: 'One moment...',
   error: 'Connection issue. Please try again.',
 };
 

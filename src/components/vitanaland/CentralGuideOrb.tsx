@@ -1,37 +1,43 @@
 import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useStreamingState } from '@/context/StreamingStateContext';
 import { playSound } from '@/lib/playSound';
 import { playLoopingSound } from '@/lib/playLoopingSound';
 
-export function CentralGuideOrb() {
-  const { micActive } = useStreamingState();
-  const humRef = useRef<HTMLAudioElement | null>(null);
-  const prevMicActiveRef = useRef(micActive);
+interface CentralGuideOrbProps {
+  audioState: 'idle' | 'listening' | 'processing' | 'error';
+  volumeLevel: number;
+}
 
-  // Handle sound effects based on mic state
+export function CentralGuideOrb({ audioState, volumeLevel }: CentralGuideOrbProps) {
+  const humRef = useRef<HTMLAudioElement | null>(null);
+  const prevAudioStateRef = useRef(audioState);
+
+  // Handle sound effects based on audio state
   useEffect(() => {
-    // When mic becomes active (listening starts)
-    if (micActive && !prevMicActiveRef.current) {
+    const prevState = prevAudioStateRef.current;
+    
+    // When listening starts
+    if (audioState === 'listening' && prevState !== 'listening') {
       playSound("/sounds/vitanaland/listening-shimmer.mp3", 0.10);
-      
-      // Start thinking hum (will be used when thinking state is implemented)
+    }
+    
+    // When processing starts
+    if (audioState === 'processing' && prevState !== 'processing') {
       if (!humRef.current) {
         humRef.current = playLoopingSound("/sounds/vitanaland/thinking-hum.mp3", 0.03);
       }
     }
     
-    // When mic becomes inactive (listening stops)
-    if (!micActive && prevMicActiveRef.current) {
-      // Stop thinking hum
+    // When processing stops
+    if (audioState !== 'processing' && prevState === 'processing') {
       if (humRef.current) {
         humRef.current.pause();
         humRef.current = null;
       }
     }
     
-    prevMicActiveRef.current = micActive;
-  }, [micActive]);
+    prevAudioStateRef.current = audioState;
+  }, [audioState]);
 
   return (
     <motion.div
@@ -62,12 +68,12 @@ export function CentralGuideOrb() {
               transform: 'scale(1.08, 1)',
             }}
             animate={{
-              scale: micActive ? 1.15 : 1.08,
-              opacity: micActive ? [0.8, 1, 0.8] : [0.9, 1, 0.9],
+              scale: audioState === 'listening' ? 1.15 : 1.08,
+              opacity: audioState === 'listening' ? [0.8, 1, 0.8] : [0.9, 1, 0.9],
             }}
             transition={{
               scale: { duration: 0.2, ease: 'easeOut' },
-              opacity: { duration: micActive ? 1.2 : 4, repeat: Infinity, ease: 'easeInOut' },
+              opacity: { duration: audioState === 'listening' ? 1.2 : 4, repeat: Infinity, ease: 'easeInOut' },
             }}
           />
 
@@ -98,7 +104,7 @@ export function CentralGuideOrb() {
               transform: 'scale(1.08, 1)',
             }}
             animate={{
-              scale: micActive ? 1.15 : 1.08,
+              scale: audioState === 'listening' ? 1.15 : 1.08,
             }}
             transition={{
               duration: 0.2,
@@ -114,13 +120,13 @@ export function CentralGuideOrb() {
               boxShadow: 'inset 0 0 80px rgba(255, 255, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.15)',
             }}
             animate={{
-              scale: micActive ? [1, 1.06, 1] : [1, 1.03, 1],
+              scale: audioState === 'listening' ? [1, 1.06, 1] : [1, 1.03, 1],
               scaleX: [1, 1.015, 1, 0.985, 1],
               scaleY: [1, 0.985, 1, 1.015, 1],
             }}
             transition={{
               scale: {
-                duration: micActive ? 1.5 : 4,
+                duration: audioState === 'listening' ? 1.5 : 4,
                 repeat: Infinity,
                 ease: 'easeInOut',
               },
@@ -144,10 +150,10 @@ export function CentralGuideOrb() {
                 filter: 'blur(12px)',
               }}
               animate={{
-                opacity: micActive ? [0.7, 0.95, 0.7] : [0.6, 0.8, 0.6],
+                opacity: audioState === 'listening' ? [0.7, 0.95, 0.7] : [0.6, 0.8, 0.6],
               }}
               transition={{
-                duration: micActive ? 1 : 3,
+                duration: audioState === 'listening' ? 1 : 3,
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
