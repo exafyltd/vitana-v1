@@ -29,6 +29,7 @@ import { CartSidebar } from "@/components/cart/CartSidebar";
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
+import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -357,30 +358,15 @@ function AppSidebar({
           </SidebarGroup>
         </div>
       </SidebarContent>
-      <SidebarFooter className="sticky bottom-24 bg-sidebar border-t rounded-tr-2xl">
+      <SidebarFooter className="sticky bottom-0 bg-sidebar border-t rounded-tr-2xl">
         <div className="px-2 py-3 space-y-3">
-          {open ? (
-            <Button 
-              onClick={handleStreamToggle} 
-              className={`w-full justify-center rounded-xl shadow-sm hover:shadow-md transition-all ${
-                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
-              }`}
-            >
-              {buttonIcon}
-              <span>{buttonLabel}</span>
-            </Button>
-          ) : (
-            <Button 
-              onClick={handleStreamToggle} 
-              size="icon"
-              className={`w-10 h-10 rounded-full shadow-sm hover:shadow-md transition-all mx-auto ${
-                isStreaming ? "bg-ruby text-white hover:bg-ruby/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
-              }`}
-            >
-              {buttonIcon}
-            </Button>
-          )}
+          {/* VITANA Orb - Voice-First Interface */}
+          <VitanaOrbButton onClick={() => {
+            // TODO: Phase 2 - Open VitanaOrbOverlay
+            console.log('VITANA Orb clicked');
+          }} />
           
+          {/* User Profile */}
           {open ? (
             <ProfileDrawer
               trigger={
