@@ -129,8 +129,8 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 }}
                 animate={{
                   scale: [1, 1.03, 1],
-                  scaleX: [1, 1.015, 1, 0.985, 1],
-                  scaleY: [1, 0.985, 1, 1.015, 1],
+                  scaleX: [1, 1.025, 1, 0.975, 1],
+                  scaleY: [1, 0.975, 1, 1.025, 1],
                 }}
                 transition={{
                   scale: {
