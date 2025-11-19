@@ -1,13 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useVitanalandLive } from '@/hooks/useVitanalandLive';
+import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
+import { VitanaOrbStatusBar } from '@/components/vitanaland/VitanaOrbStatusBar';
+import { DiaryQuickEntry } from '@/components/diary/DiaryQuickEntry';
+import { AutopilotPopup } from '@/components/AutopilotPopup';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Send } from 'lucide-react';
 
 export function VitanaAudioOverlay() {
-  const { audioOverlayVisible, setAudioOverlayVisible } = useStreamingState();
+  const { 
+    audioOverlayVisible, 
+    setAudioOverlayVisible, 
+    diaryActive, 
+    setDiaryActive,
+    autopilotActive,
+    setAutopilotActive,
+    textInputVisible,
+    setTextInputVisible,
+  } = useStreamingState();
+  
+  const [textInputValue, setTextInputValue] = useState('');
+  const [showDiaryEntry, setShowDiaryEntry] = useState(false);
+  const [showAutopilot, setShowAutopilot] = useState(false);
   
   const {
     connectionState,
@@ -18,7 +38,14 @@ export function VitanaAudioOverlay() {
     disconnect,
     startListening,
     stopListening,
+    sendMessage,
   } = useVitanalandLive();
+
+  // Handle tool execution
+  const { executeToolCall } = useVitanaOrbTools({
+    onDiaryOpen: () => setShowDiaryEntry(true),
+    onAutopilotOpen: () => setShowAutopilot(true),
+  });
 
   const volumeLevel = useRef(0);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -29,12 +56,12 @@ export function VitanaAudioOverlay() {
   useEffect(() => {
     if (audioOverlayVisible) {
       console.log('[VITANALAND] Overlay opened - connecting...');
-      connect();
+      connect(executeToolCall);
     } else {
       console.log('[VITANALAND] Overlay closed - disconnecting...');
       disconnect();
     }
-  }, [audioOverlayVisible, connect, disconnect]);
+  }, [audioOverlayVisible, connect, disconnect, executeToolCall]);
 
   // Map VITANALAND states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'error' = 
@@ -120,6 +147,9 @@ export function VitanaAudioOverlay() {
 
   const handleExit = () => {
     setAudioOverlayVisible(false);
+    setTextInputVisible(false);
+    setDiaryActive(false);
+    setAutopilotActive(false);
   };
 
   const handleMicToggle = () => {
@@ -128,6 +158,23 @@ export function VitanaAudioOverlay() {
     } else {
       startListening();
     }
+  };
+
+  const handleTextSubmit = () => {
+    if (textInputValue.trim()) {
+      sendMessage(textInputValue);
+      setTextInputValue('');
+    }
+  };
+
+  const handleDiaryClose = () => {
+    setShowDiaryEntry(false);
+    setDiaryActive(false);
+  };
+
+  const handleAutopilotClose = () => {
+    setShowAutopilot(false);
+    setAutopilotActive(false);
   };
 
   if (!audioOverlayVisible) return null;
@@ -155,6 +202,11 @@ export function VitanaAudioOverlay() {
 
         {/* Content container */}
         <div className="relative h-full flex flex-col items-center justify-center">
+          {/* Status Bar - Active Modes */}
+          <div className="absolute top-8">
+            <VitanaOrbStatusBar />
+          </div>
+
           {/* Portal Seed */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -167,6 +219,53 @@ export function VitanaAudioOverlay() {
 
           {/* Status text */}
           <AudioStatusText audioState={audioState} errorMessage={errorMessage} />
+
+          {/* Text Input Area - Slides up from bottom */}
+          <AnimatePresence>
+            {textInputVisible && (
+              <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 100 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                className="absolute bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md px-4"
+              >
+                <div className="bg-card/90 backdrop-blur-xl rounded-2xl p-4 border border-border/50 shadow-2xl">
+                  <Textarea
+                    value={textInputValue}
+                    onChange={(e) => setTextInputValue(e.target.value)}
+                    placeholder="Type your message..."
+                    className="min-h-[80px] resize-none bg-transparent border-0 focus-visible:ring-0"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleTextSubmit();
+                      }
+                    }}
+                  />
+                  <div className="flex items-center justify-between mt-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setTextInputVisible(false)}
+                      className="text-xs text-muted-foreground"
+                    >
+                      Return to voice
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleTextSubmit}
+                      disabled={!textInputValue.trim()}
+                      className="gap-2"
+                    >
+                      <Send className="h-3.5 w-3.5" />
+                      Send
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Controls */}
           <motion.div
@@ -183,6 +282,19 @@ export function VitanaAudioOverlay() {
             />
           </motion.div>
         </div>
+
+        {/* Modals */}
+        <DiaryQuickEntry
+          open={showDiaryEntry}
+          onClose={handleDiaryClose}
+        />
+        <AutopilotPopup
+          open={showAutopilot}
+          onOpenChange={(open) => {
+            setShowAutopilot(open);
+            if (!open) setAutopilotActive(false);
+          }}
+        />
       </motion.div>
     </AnimatePresence>
   );

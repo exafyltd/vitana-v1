@@ -151,7 +151,7 @@ serve(async (req) => {
           console.log(`[vitanaland-live][${traceId}] ✅ Vertex AI connection established`);
           isConnected = true;
 
-          // Send initial setup message with VITANALAND system instruction
+          // Send initial setup message with VITANALAND system instruction and tools
           const setupMessage = {
             setup: {
               model: `models/${modelId}`,
@@ -163,7 +163,81 @@ serve(async (req) => {
               },
               system_instruction: {
                 parts: [{ text: VITANALAND_SYSTEM_INSTRUCTION }]
-              }
+              },
+              tools: [
+                {
+                  function_declarations: [
+                    {
+                      name: "start_glass_mode",
+                      description: "Activate screen sharing mode with privacy controls. Use when the user wants to share their screen or show what they're looking at.",
+                      parameters: {
+                        type: "object",
+                        properties: {},
+                        required: []
+                      }
+                    },
+                    {
+                      name: "stop_glass_mode",
+                      description: "Deactivate screen sharing mode. Use when the user wants to stop sharing their screen.",
+                      parameters: {
+                        type: "object",
+                        properties: {},
+                        required: []
+                      }
+                    },
+                    {
+                      name: "start_camera_mode",
+                      description: "Toggle camera on/off. Use when the user wants to activate or deactivate their camera.",
+                      parameters: {
+                        type: "object",
+                        properties: {},
+                        required: []
+                      }
+                    },
+                    {
+                      name: "open_diary_entry",
+                      description: "Open the diary entry interface. Use when the user wants to write a diary entry, journal, or note their thoughts.",
+                      parameters: {
+                        type: "object",
+                        properties: {},
+                        required: []
+                      }
+                    },
+                    {
+                      name: "run_autopilot",
+                      description: "Trigger the autopilot mode for AI-driven suggestions and actions. Use when the user wants automated assistance or suggestions.",
+                      parameters: {
+                        type: "object",
+                        properties: {},
+                        required: []
+                      }
+                    },
+                    {
+                      name: "show_text_input",
+                      description: "Display the text input field. Use when the user wants to type instead of speaking.",
+                      parameters: {
+                        type: "object",
+                        properties: {},
+                        required: []
+                      }
+                    },
+                    {
+                      name: "navigate_to",
+                      description: "Navigate to a specific page or section in the app. PHASE 1: For now, provide conversational guidance instead of actual navigation.",
+                      parameters: {
+                        type: "object",
+                        properties: {
+                          destination: {
+                            type: "string",
+                            description: "The destination page or section (e.g., 'hydration tracker', 'calendar', 'profile')"
+                          }
+                        },
+                        required: ["destination"]
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           };
 
