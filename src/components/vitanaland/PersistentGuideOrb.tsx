@@ -38,11 +38,6 @@ export function PersistentGuideOrb() {
           >
             {/* Dreamlike background */}
             <VitanalandWorldLayer />
-            
-            {/* Greeting text */}
-            <div className="absolute inset-0 flex flex-col items-center justify-start pt-[20vh] lg:pt-[25vh]">
-              <GreetingMicrocopy />
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
