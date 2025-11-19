@@ -193,8 +193,9 @@ export function VitanaAudioOverlay() {
   const handleMicToggle = async () => {
     console.log('[VITANALAND] Mic toggle - current state:', { isListening, connectionState });
     
-    if (connectionState !== 'ready') {
-      console.warn('[VITANALAND] Cannot toggle mic - not connected');
+    // Only prevent mic toggle if completely disconnected
+    if (connectionState === 'disconnected') {
+      console.warn('[VITANALAND] Cannot toggle mic - disconnected');
       return;
     }
 
