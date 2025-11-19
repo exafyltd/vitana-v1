@@ -45,16 +45,16 @@ export function VitanaButton() {
                 ease: 'easeOut',
               }}
             >
-              {/* Outer halo glow (breathing) */}
+              {/* Outer halo glow (cyan/teal) */}
               <motion.div
-                className="absolute inset-[-8px] rounded-full"
+                className="absolute inset-[-10px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, rgba(76, 200, 244, 0.3) 0%, transparent 70%)',
-                  filter: 'blur(12px)',
+                  background: 'radial-gradient(circle, rgba(34, 211, 238, 0.25) 0%, rgba(6, 182, 212, 0.15) 40%, transparent 70%)',
+                  filter: 'blur(14px)',
                 }}
                 animate={{
-                  scale: [1, 1.03, 1],
-                  opacity: [0.6, 0.8, 0.6],
+                  scale: [1, 1.04, 1],
+                  opacity: [0.7, 0.9, 0.7],
                 }}
                 transition={{
                   duration: 6,
@@ -62,37 +62,37 @@ export function VitanaButton() {
                   ease: 'easeInOut',
                 }}
                 whileHover={{
-                  opacity: 0.9,
-                  scale: 1.05,
+                  opacity: 1,
+                  scale: 1.06,
                 }}
               />
 
-              {/* Soft ring halo */}
+              {/* Secondary glow ring (cyan/blue) */}
               <motion.div
-                className="absolute inset-[-6px] rounded-full"
+                className="absolute inset-[-7px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, rgba(76, 200, 244, 0.2) 0%, transparent 65%)',
-                  filter: 'blur(8px)',
+                  background: 'radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(14, 165, 233, 0.2) 50%, transparent 70%)',
+                  filter: 'blur(10px)',
                 }}
                 animate={{
-                  opacity: [0.5, 0.7, 0.5],
+                  opacity: [0.6, 0.8, 0.6],
                 }}
                 transition={{
-                  duration: 4,
+                  duration: 4.5,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
               />
 
-              {/* Thin glowing border */}
+              {/* Thin glowing border ring */}
               <motion.div
-                className="absolute inset-[-3px] rounded-full"
+                className="absolute inset-[-2px] rounded-full"
                 style={{
-                  background: 'radial-gradient(circle, transparent 60%, rgba(76, 200, 244, 0.8) 70%, transparent 75%)',
-                  filter: 'blur(1.5px)',
+                  background: 'radial-gradient(circle, transparent 55%, rgba(255, 255, 255, 0.6) 65%, rgba(56, 189, 248, 0.9) 72%, transparent 80%)',
+                  filter: 'blur(1px)',
                 }}
                 animate={{
-                  opacity: [0.7, 0.9, 0.7],
+                  opacity: [0.8, 1, 0.8],
                 }}
                 transition={{
                   duration: 3,
@@ -101,12 +101,12 @@ export function VitanaButton() {
                 }}
               />
 
-              {/* Main orb sphere (36px) */}
+              {/* Main orb sphere (36px) - rich gradient */}
               <motion.div
                 className="relative w-9 h-9 rounded-full"
                 style={{
-                  background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(76, 200, 244, 0.7))',
-                  boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15)',
+                  background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.9) 20%, rgba(125, 211, 252, 0.85) 45%, rgba(14, 165, 233, 0.75) 70%, rgba(8, 145, 178, 0.7) 85%, rgba(6, 95, 138, 0.65) 100%)',
+                  boxShadow: 'inset 0 0 24px rgba(255, 255, 255, 0.5), inset 0 0 12px rgba(56, 189, 248, 0.3), 0 4px 16px rgba(6, 182, 212, 0.4), 0 2px 8px rgba(14, 165, 233, 0.3)',
                 }}
                 animate={{
                   scale: [1, 1.03, 1],
@@ -116,35 +116,85 @@ export function VitanaButton() {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
+                whileHover={{
+                  scale: 1.05,
+                }}
               >
-                {/* Inner shimmer */}
+                {/* Inner shimmer highlight */}
                 <motion.div
-                  className="absolute inset-[30%] rounded-full bg-white/60 blur-sm"
+                  className="absolute inset-[28%] rounded-full blur-[3px]"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%)',
+                  }}
                   animate={{
-                    opacity: [0.5, 0.8, 0.5],
+                    opacity: [0.4, 0.7, 0.4],
                   }}
                   transition={{
-                    duration: 3,
+                    duration: 3.5,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
                 />
               </motion.div>
 
-              {/* Orbiting sparkle */}
+              {/* Micro star particle 1 */}
               <motion.div
-                className="absolute w-1 h-1 rounded-full bg-cyan-300"
+                className="absolute w-[3px] h-[3px] rounded-full"
                 style={{
                   top: '50%',
                   left: '50%',
-                  boxShadow: '0 0 4px rgba(76, 200, 244, 0.8)',
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  boxShadow: '0 0 6px rgba(56, 189, 248, 0.9), 0 0 3px rgba(255, 255, 255, 0.7)',
                 }}
                 animate={{
-                  x: [18, 12.7, 0, -12.7, -18, -12.7, 0, 12.7, 18],
-                  y: [0, -12.7, -18, -12.7, 0, 12.7, 18, 12.7, 0],
+                  x: [16, 11.3, 0, -11.3, -16, -11.3, 0, 11.3, 16],
+                  y: [0, -11.3, -16, -11.3, 0, 11.3, 16, 11.3, 0],
+                  opacity: [0.5, 0.8, 0.5],
                 }}
                 transition={{
                   duration: 8,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              />
+
+              {/* Micro star particle 2 */}
+              <motion.div
+                className="absolute w-[2.5px] h-[2.5px] rounded-full"
+                style={{
+                  top: '50%',
+                  left: '50%',
+                  background: 'rgba(224, 242, 254, 0.85)',
+                  boxShadow: '0 0 5px rgba(34, 211, 238, 0.8)',
+                }}
+                animate={{
+                  x: [-16, -11.3, 0, 11.3, 16, 11.3, 0, -11.3, -16],
+                  y: [0, 11.3, 16, 11.3, 0, -11.3, -16, -11.3, 0],
+                  opacity: [0.4, 0.7, 0.4],
+                }}
+                transition={{
+                  duration: 10,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+              />
+
+              {/* Micro star particle 3 */}
+              <motion.div
+                className="absolute w-[2px] h-[2px] rounded-full"
+                style={{
+                  top: '50%',
+                  left: '50%',
+                  background: 'rgba(186, 230, 253, 0.9)',
+                  boxShadow: '0 0 4px rgba(14, 165, 233, 0.7)',
+                }}
+                animate={{
+                  x: [0, 14, 14, 0, -14, -14, 0],
+                  y: [-14, -14, 0, 14, 14, 0, -14],
+                  opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{
+                  duration: 12,
                   repeat: Infinity,
                   ease: 'linear',
                 }}
