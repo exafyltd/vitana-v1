@@ -9,6 +9,7 @@ interface VitanalandLiveCallbacks {
   onError?: (error: string) => void;
   onAudioResponse?: (blob: Blob) => void;
   onResponseComplete?: () => void;
+  onToolCall?: (toolCall: any) => void;
 }
 
 class VitanalandLiveService {
@@ -47,6 +48,9 @@ class VitanalandLiveService {
             this.callbacks.onConnectionChange?.(true);
           } else if (data.type === 'error') {
             this.callbacks.onError?.(data.message);
+          } else if (data.toolCall) {
+            console.log('[VITANALAND Service] 🔧 Tool call received:', data.toolCall);
+            this.callbacks.onToolCall?.(data.toolCall);
           } else if (data.serverContent) {
             this.handleServerContent(data.serverContent);
           }
@@ -152,7 +156,7 @@ export const useVitanalandLive = () => {
   const audioChunksRef = useRef<Blob[]>([]);
 
   useEffect(() => {
-    serviceRef.current = new VitanalandLiveService({
+    const callbacks: VitanalandLiveCallbacks = {
       onConnectionReady: () => {
         console.log('[VITANALAND Hook] 🔌 WebSocket ready');
         setConnectionState('connecting');
@@ -189,8 +193,10 @@ export const useVitanalandLive = () => {
       onResponseComplete: () => {
         console.log('[VITANALAND Hook] ✅ Response complete');
         setIsProcessing(false);
-      }
-    });
+      },
+    };
+
+    serviceRef.current = new VitanalandLiveService(callbacks);
 
     return () => {
       console.log('[VITANALAND Hook] 🧹 Cleanup');
@@ -199,8 +205,18 @@ export const useVitanalandLive = () => {
     };
   }, []);
 
-  const connect = useCallback(async () => {
+  const connect = useCallback(async (onToolCall?: (toolCall: any) => void) => {
     console.log('[VITANALAND Hook] 🔌 Connecting...');
+    
+    // Update callbacks with tool call handler
+    if (onToolCall && serviceRef.current) {
+      const currentCallbacks = (serviceRef.current as any).callbacks;
+      (serviceRef.current as any).callbacks = {
+        ...currentCallbacks,
+        onToolCall,
+      };
+    }
+    
     const { data: { session } } = await supabase.auth.getSession();
     if (!session?.access_token) {
       setError('Not authenticated');

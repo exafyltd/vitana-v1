@@ -6,11 +6,19 @@ interface StreamingStateContextValue {
   sessionReady: boolean;
   audioOverlayVisible: boolean;
   triggeredByOrb: boolean;
+  cameraActive: boolean;
+  diaryActive: boolean;
+  autopilotActive: boolean;
+  textInputVisible: boolean;
   setGlassModeActive: (active: boolean) => void;
   setMicActive: (active: boolean) => void;
   setSessionReady: (ready: boolean) => void;
   setAudioOverlayVisible: (visible: boolean) => void;
   setTriggeredByOrb: (triggered: boolean) => void;
+  setCameraActive: (active: boolean) => void;
+  setDiaryActive: (active: boolean) => void;
+  setAutopilotActive: (active: boolean) => void;
+  setTextInputVisible: (visible: boolean) => void;
 }
 
 const StreamingStateContext = createContext<StreamingStateContextValue | undefined>(undefined);
@@ -21,6 +29,10 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
   const [sessionReady, setSessionReady] = useState(false);
   const [audioOverlayVisible, setAudioOverlayVisible] = useState(false);
   const [triggeredByOrb, setTriggeredByOrb] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [diaryActive, setDiaryActive] = useState(false);
+  const [autopilotActive, setAutopilotActive] = useState(false);
+  const [textInputVisible, setTextInputVisible] = useState(false);
 
   return (
     <StreamingStateContext.Provider
@@ -30,11 +42,19 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
         sessionReady,
         audioOverlayVisible,
         triggeredByOrb,
+        cameraActive,
+        diaryActive,
+        autopilotActive,
+        textInputVisible,
         setGlassModeActive,
         setMicActive,
         setSessionReady,
         setAudioOverlayVisible,
         setTriggeredByOrb,
+        setCameraActive,
+        setDiaryActive,
+        setAutopilotActive,
+        setTextInputVisible,
       }}
     >
       {children}
