@@ -14,7 +14,14 @@ export function PersistentGuideOrb() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k' && !isExpanded && orbVisible) {
         e.preventDefault();
-        expandToFull();
+        
+        // Trigger visual pulse on mini orb
+        window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
+        
+        // Small delay to let pulse animation play
+        setTimeout(() => {
+          expandToFull();
+        }, 200);
       }
     };
 
