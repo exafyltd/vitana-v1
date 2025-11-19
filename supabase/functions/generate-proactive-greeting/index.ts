@@ -13,9 +13,17 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { override_language } = body;
+    const { override_language, user_id } = body;
     
-    // RULE 1: Validate language
+    // RULE 1: Validate user_id
+    if (!user_id) {
+      return new Response(
+        JSON.stringify({ error: 'user_id is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    // RULE 2: Validate language
     const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT'];
     const targetLanguage = override_language || 'en-US';
     
@@ -30,18 +38,8 @@ serve(async (req) => {
     
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: {
-          headers: { Authorization: req.headers.get('Authorization')! },
-        },
-      }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
-
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
-    if (authError || !user) {
-      throw new Error('Authentication required');
-    }
 
     const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
     if (!GEMINI_API_KEY) {
@@ -49,7 +47,9 @@ serve(async (req) => {
     }
 
     // Get comprehensive user context
-    const contextResponse = await supabaseClient.functions.invoke('get-proactive-context');
+    const contextResponse = await supabaseClient.functions.invoke('get-proactive-context', {
+      body: { user_id }
+    });
     if (contextResponse.error) {
       throw contextResponse.error;
     }

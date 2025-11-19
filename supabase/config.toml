@@ -109,10 +109,10 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.get-proactive-context]
-verify_jwt = true
+verify_jwt = false
 
 [functions.generate-proactive-greeting]
-verify_jwt = true
+verify_jwt = false
 
 [functions.generate-proactive-message]
 verify_jwt = false
