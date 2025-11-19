@@ -40,15 +40,8 @@ class VitanalandLiveService {
       this.ws.binaryType = 'arraybuffer';
 
       this.ws.onopen = () => {
-        console.log('[VITANALAND Service] ✅ WebSocket connected');
-        
-        // Mark as ready immediately so client can start mic
-        this.isSetupComplete = true;
-        
-        // Notify React hook that we're ready
-        this.callbacks.onConnectionReady?.();
-        this.callbacks.onConnectionChange?.(true);
-        this.callbacks.onGeminiReady?.();
+        console.log('[VITANALAND Service] ✅ WebSocket connected to edge function, waiting for AI setup...');
+        // Don't mark as ready yet - wait for { type: 'ready' } message from server
       };
 
       this.ws.onmessage = (event) => {

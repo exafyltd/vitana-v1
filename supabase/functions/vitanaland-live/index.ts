@@ -106,6 +106,7 @@ serve(async (req) => {
     let pingInterval: number | undefined;
     let setupAckReceived = false;
     let hasGreeted = false;
+    let setupTimeout: number | undefined;
 
     // Non-async env lookups
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -243,6 +244,19 @@ serve(async (req) => {
 
           console.log(`[vitanaland-live][${traceId}] 📤 Sending VITANALAND setup...`);
           vertexSocket!.send(JSON.stringify(setupMessage));
+          
+          // Add timeout for Vertex AI setup acknowledgment
+          setupTimeout = setTimeout(() => {
+            if (!setupAckReceived) {
+              console.error(`[vitanaland-live][${traceId}] ❌ Setup timeout - Vertex AI did not respond within 10s`);
+              clientSocket.send(JSON.stringify({ 
+                type: 'error', 
+                message: 'AI setup timeout. Please try again.' 
+              }));
+              clientSocket.close(4504, 'setup-timeout');
+              if (vertexSocket) vertexSocket.close();
+            }
+          }, 10000);
         };
 
         vertexSocket.onmessage = async (event) => {
@@ -255,6 +269,7 @@ serve(async (req) => {
 
               // Handle setup acknowledgment
               if (data.setupComplete) {
+                clearTimeout(setupTimeout); // Clear the timeout
                 setupAckReceived = true;
                 console.log(`[vitanaland-live][${traceId}] ✅ Setup acknowledged by Vertex AI`);
                 clientSocket.send(JSON.stringify({ type: 'ready' }));
@@ -325,14 +340,23 @@ serve(async (req) => {
         };
 
         vertexSocket.onerror = (error) => {
-          console.error(`[vitanaland-live][${traceId}] ❌ Vertex AI error:`, error);
-          clientSocket.send(JSON.stringify({ type: 'error', message: 'Vertex AI connection error' }));
+          console.error(`[vitanaland-live][${traceId}] ❌ Vertex AI error:`, {
+            message: error.message || 'Unknown error',
+            type: error.type || 'unknown',
+            timestamp: new Date().toISOString()
+          });
+          clientSocket.send(JSON.stringify({ 
+            type: 'error', 
+            message: 'AI service connection failed. Please try again.' 
+          }));
+          clientSocket.close(4503, 'vertex-error');
         };
 
         vertexSocket.onclose = () => {
           console.log(`[vitanaland-live][${traceId}] 🔌 Vertex AI connection closed`);
           isConnected = false;
           if (pingInterval) clearInterval(pingInterval);
+          if (setupTimeout) clearTimeout(setupTimeout);
           clientSocket.close();
         };
 
@@ -377,6 +401,7 @@ serve(async (req) => {
         vertexSocket.close();
       }
       if (pingInterval) clearInterval(pingInterval);
+      if (setupTimeout) clearTimeout(setupTimeout);
     };
 
     clientSocket.onerror = (error) => {
