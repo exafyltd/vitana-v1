@@ -39,14 +39,9 @@ export function PersistentGuideOrb() {
             {/* Dreamlike background */}
             <VitanalandWorldLayer />
             
-            {/* Central expanded orb */}
+            {/* Greeting text */}
             <div className="absolute inset-0 flex flex-col items-center justify-start pt-[20vh] lg:pt-[25vh]">
-              <CentralGuideOrb />
-              
-              {/* Greeting text below orb */}
-              <div className="mt-6 lg:mt-8">
-                <GreetingMicrocopy />
-              </div>
+              <GreetingMicrocopy />
             </div>
           </motion.div>
         )}
