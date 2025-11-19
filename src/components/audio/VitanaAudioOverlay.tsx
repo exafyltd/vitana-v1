@@ -145,11 +145,11 @@ export function VitanaAudioOverlay() {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-        animate={{ opacity: 1, backdropFilter: 'blur(24px)' }}
-        exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-0 z-[100] bg-black/30"
+        className="fixed inset-0 z-[100]"
         role="dialog"
         aria-label="VITANA Audio Mode"
         style={{ pointerEvents: 'auto' }}
@@ -159,7 +159,7 @@ export function VitanaAudioOverlay() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(circle at center, rgba(13, 44, 243, 0.08) 0%, rgba(255, 109, 168, 0.04) 50%, transparent 100%)',
+              'radial-gradient(circle at center, rgba(13, 44, 243, 0.02) 0%, rgba(255, 109, 168, 0.01) 50%, transparent 100%)',
           }}
         />
 
