@@ -5691,14 +5691,18 @@ export type Database = {
           description_md: string | null
           id: string
           is_test: boolean
+          layer: string
           metadata: Json | null
+          module: string
           parent_vtid: string | null
+          priority: string | null
           status: string
+          summary: string | null
           task_family: string
           task_module: string | null
           task_type: string | null
           tenant: string
-          title: string | null
+          title: string
           updated_at: string
           vtid: string
         }
@@ -5709,14 +5713,18 @@ export type Database = {
           description_md?: string | null
           id: string
           is_test?: boolean
+          layer: string
           metadata?: Json | null
+          module: string
           parent_vtid?: string | null
+          priority?: string | null
           status: string
+          summary?: string | null
           task_family: string
           task_module?: string | null
           task_type?: string | null
           tenant: string
-          title?: string | null
+          title: string
           updated_at?: string
           vtid: string
         }
@@ -5727,14 +5735,18 @@ export type Database = {
           description_md?: string | null
           id?: string
           is_test?: boolean
+          layer?: string
           metadata?: Json | null
+          module?: string
           parent_vtid?: string | null
+          priority?: string | null
           status?: string
+          summary?: string | null
           task_family?: string
           task_module?: string | null
           task_type?: string | null
           tenant?: string
-          title?: string | null
+          title?: string
           updated_at?: string
           vtid?: string
         }
