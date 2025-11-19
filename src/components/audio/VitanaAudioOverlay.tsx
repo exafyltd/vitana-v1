@@ -103,12 +103,13 @@ export function VitanaAudioOverlay() {
   // Get connection status message
   const getConnectionStatus = () => {
     if (error) return error;
-    if (connectionState === 'connecting') return 'Connecting...';
-    if (connectionState === 'disconnected') return 'Disconnected';
     if (isSpeaking) return 'VITANA is speaking...';
     if (isProcessing) return 'Thinking...';
     if (isListening) return "I'm listening...";
-    return 'Ready';
+    if (connectionState === 'connecting') return 'Setting up AI connection...';
+    if (connectionState === 'ready') return 'Ready - say something or press the mic';
+    if (connectionState === 'disconnected') return 'Disconnected';
+    return 'Connecting...';
   };
 
   // Set up real-time volume monitoring when listening
