@@ -30,6 +30,8 @@ import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
+import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { playSound } from "@/lib/playSound";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -44,7 +46,8 @@ function AppSidebar({
   setWalletPopupOpen,
   cartOpen,
   setCartOpen,
-  onSidebarOpenChange 
+  onSidebarOpenChange,
+  expandToFull
 }: { 
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
@@ -53,6 +56,7 @@ function AppSidebar({
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
+  expandToFull: () => void;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -355,8 +359,9 @@ function AppSidebar({
           
           {/* VITANA Orb - Voice-First Interface */}
           <VitanaOrbButton onClick={() => {
-            // TODO: Phase 2 - Open VitanaOrbOverlay
             console.log('VITANA Orb clicked');
+            playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
+            expandToFull();
           }} />
         </div>
       </SidebarFooter>
@@ -365,6 +370,7 @@ function AppSidebar({
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
+  const { expandToFull } = useVitanalandNavigation();
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -407,6 +413,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
               cartOpen={cartOpen}
               setCartOpen={setCartOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
+              expandToFull={expandToFull}
             />
           </div>
 
