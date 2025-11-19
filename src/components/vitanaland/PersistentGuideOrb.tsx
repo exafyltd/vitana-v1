@@ -47,8 +47,8 @@ export function PersistentGuideOrb() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
           >
-            {/* Dreamlike background */}
-            <VitanalandWorldLayer />
+            {/* Glassy transparent background */}
+            <div className="absolute inset-0 bg-background/30 backdrop-blur-md" />
           </motion.div>
         )}
       </AnimatePresence>
