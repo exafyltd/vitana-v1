@@ -42,16 +42,28 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
             onClick={handleOrbClick}
             aria-label="Open VITANA Orb (⌘K)"
           >
+            {/* Floating motion wrapper - matches CentralGuideOrb idle state */}
             <motion.div
-              className="relative"
-              animate={isPulsing ? {
-                scale: [1, 1.15, 1],
-              } : undefined}
+              animate={{
+                y: [-8, 8, -8],
+              }}
               transition={{
-                duration: 0.4,
-                ease: 'easeOut',
+                duration: 5,
+                repeat: Infinity,
+                ease: 'easeInOut',
               }}
             >
+              {/* Keyboard-trigger pulse wrapper */}
+              <motion.div
+                className="relative"
+                animate={isPulsing ? {
+                  scale: [1, 1.15, 1],
+                } : undefined}
+                transition={{
+                  duration: 0.4,
+                  ease: 'easeOut',
+                }}
+              >
               {/* Outer halo glow */}
               <motion.div
                 className="absolute inset-[-14px] rounded-full"
@@ -122,7 +134,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 }}
                 transition={{
                   scale: {
-                    duration: 8,
+                    duration: 4,  // Match CentralGuideOrb idle state
                     repeat: Infinity,
                     ease: 'easeInOut',
                   },
@@ -167,6 +179,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                    }}
                  />
               </motion.div>
+            </motion.div>
             </motion.div>
           </Button>
         </TooltipTrigger>
