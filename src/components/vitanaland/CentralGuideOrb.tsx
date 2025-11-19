@@ -1,8 +1,37 @@
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
+import { playSound } from '@/lib/playSound';
+import { playLoopingSound } from '@/lib/playLoopingSound';
 
 export function CentralGuideOrb() {
   const { micActive } = useStreamingState();
+  const humRef = useRef<HTMLAudioElement | null>(null);
+  const prevMicActiveRef = useRef(micActive);
+
+  // Handle sound effects based on mic state
+  useEffect(() => {
+    // When mic becomes active (listening starts)
+    if (micActive && !prevMicActiveRef.current) {
+      playSound("/sounds/vitanaland/listening-shimmer.mp3", 0.10);
+      
+      // Start thinking hum (will be used when thinking state is implemented)
+      if (!humRef.current) {
+        humRef.current = playLoopingSound("/sounds/vitanaland/thinking-hum.mp3", 0.03);
+      }
+    }
+    
+    // When mic becomes inactive (listening stops)
+    if (!micActive && prevMicActiveRef.current) {
+      // Stop thinking hum
+      if (humRef.current) {
+        humRef.current.pause();
+        humRef.current = null;
+      }
+    }
+    
+    prevMicActiveRef.current = micActive;
+  }, [micActive]);
 
   return (
     <motion.div

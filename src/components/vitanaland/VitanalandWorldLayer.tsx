@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { DawnValley } from './scenes/DawnValley';
 import { AuroraLake } from './scenes/AuroraLake';
@@ -6,6 +6,7 @@ import { WellnessForest } from './scenes/WellnessForest';
 import { CloudIslands } from './scenes/CloudIslands';
 import { NebulaValley } from './scenes/NebulaValley';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
+import { playLoopingSound } from '@/lib/playLoopingSound';
 
 const scenes = [
   { component: DawnValley, duration: 30000 },
@@ -18,6 +19,19 @@ const scenes = [
 export function VitanalandWorldLayer() {
   const { activeSceneIndex, setActiveSceneIndex, worldVisible } = useVitanalandNavigation();
   const [preloadSceneIndex, setPreloadSceneIndex] = useState(1);
+  const ambientRef = useRef<HTMLAudioElement | null>(null);
+
+  // Handle ambient sound based on world visibility
+  useEffect(() => {
+    if (worldVisible && !ambientRef.current) {
+      ambientRef.current = playLoopingSound("/sounds/vitanaland/ambient-bed.mp3", 0.05);
+    }
+    
+    if (!worldVisible && ambientRef.current) {
+      ambientRef.current.pause();
+      ambientRef.current = null;
+    }
+  }, [worldVisible]);
 
   // Auto-cycle scenes
   useEffect(() => {
