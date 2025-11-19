@@ -141,7 +141,7 @@ Generate a personalized greeting now.`;
     await supabaseClient
       .from('proactive_engagement')
       .insert({
-        user_id: user.id,
+        user_id: user_id,
         engagement_type: 'greeting',
         context_snapshot: {
           time_of_day: timeOfDay,
