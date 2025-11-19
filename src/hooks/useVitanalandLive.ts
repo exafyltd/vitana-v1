@@ -93,7 +93,6 @@ class VitanalandLiveService {
           this.callbacks.onTranscript?.(part.text, true);
         }
         if (part.inlineData?.data) {
-          // Audio response
           try {
             const audioData = atob(part.inlineData.data);
             const bytes = new Uint8Array(audioData.length);
@@ -122,12 +121,7 @@ class VitanalandLiveService {
     if (this.ws && this.ws.readyState === WebSocket.OPEN && this.isSetupComplete) {
       this.ws.send(JSON.stringify({
         client_content: {
-          turns: [
-            {
-              role: "user",
-              parts: [{ inline_data: { mime_type: "audio/pcm", data: audioData } }]
-            }
-          ],
+          turns: [{ role: "user", parts: [{ inline_data: { mime_type: "audio/pcm", data: audioData } }] }],
           turn_complete: true
         }
       }));
@@ -158,7 +152,6 @@ export const useVitanalandLive = () => {
   const audioChunksRef = useRef<Blob[]>([]);
 
   useEffect(() => {
-    // Initialize VITANALAND service
     serviceRef.current = new VitanalandLiveService({
       onConnectionReady: () => {
         console.log('[VITANALAND Hook] 🔌 WebSocket ready');
@@ -169,6 +162,7 @@ export const useVitanalandLive = () => {
         setConnectionState('ready');
       },
       onConnectionChange: (connected) => {
+        console.log('[VITANALAND Hook] 🔌 Connection status:', connected);
         if (!connected) {
           setConnectionState('disconnected');
           setIsListening(false);
@@ -181,6 +175,7 @@ export const useVitanalandLive = () => {
         setConnectionState('error');
       },
       onTranscript: (text, isFinal) => {
+        console.log('[VITANALAND Hook] 📝 Transcript:', text, 'final:', isFinal);
         if (isFinal) {
           setTranscript(text);
           setIsListening(false);
@@ -198,6 +193,7 @@ export const useVitanalandLive = () => {
     });
 
     return () => {
+      console.log('[VITANALAND Hook] 🧹 Cleanup');
       serviceRef.current?.disconnect();
       serviceRef.current = null;
     };
@@ -285,131 +281,6 @@ export const useVitanalandLive = () => {
 
   const sendMessage = useCallback((text: string) => {
     console.log('[VITANALAND Hook] 💬 Sending text:', text);
-    if (serviceRef.current && connectionState === 'ready') {
-      serviceRef.current.sendText(text);
-      setIsProcessing(true);
-    }
-  }, [connectionState]);
-
-  return {
-    connectionState,
-    isListening,
-    isProcessing,
-    transcript,
-    error,
-    connect,
-    disconnect,
-    startListening,
-    stopListening,
-    sendMessage,
-  };
-};
-  const [connectionState, setConnectionState] = useState<'disconnected' | 'connecting' | 'ready' | 'error'>('disconnected');
-  const [isListening, setIsListening] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [transcript, setTranscript] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  
-  const serviceRef = useRef<VertexLiveService | null>(null);
-  const connectionStateRef = useRef<'disconnected' | 'connecting' | 'ready' | 'error'>(connectionState);
-
-  // Keep ref in sync with state
-  useEffect(() => {
-    connectionStateRef.current = connectionState;
-  }, [connectionState]);
-
-  useEffect(() => {
-    // Initialize VITANALAND service with custom endpoint
-    serviceRef.current = new VertexLiveService({
-      edgeFunctionName: 'vitanaland-live', // Use dedicated VITANALAND function
-      onConnectionReady: () => {
-        console.log('[VITANALAND] 🔌 WebSocket connected - waiting for Gemini...');
-        if (connectionStateRef.current === 'disconnected') {
-          setConnectionState('connecting');
-        }
-      },
-      onGeminiReady: () => {
-        console.log('[VITANALAND] ✅ Gemini ready - greeting will play');
-        setConnectionState('ready');
-      },
-      onConnectionChange: (connected) => {
-        console.log('[VITANALAND] 🔌 Connection status:', connected);
-        if (!connected) {
-          setConnectionState('disconnected');
-          setIsListening(false);
-          setIsProcessing(false);
-        }
-      },
-      onError: (errorMsg) => {
-        console.error('[VITANALAND] ❌ Error:', errorMsg);
-        setError(errorMsg);
-        setConnectionState('error');
-      },
-      onTranscript: (text, isFinal) => {
-        console.log('[VITANALAND] 📝 Transcript:', text, 'final:', isFinal);
-        if (isFinal) {
-          setTranscript(text);
-          setIsListening(false);
-          setIsProcessing(true);
-        }
-      },
-      onAudioResponse: (_blob) => {
-        console.log('[VITANALAND] 🔊 Audio response received');
-        setIsProcessing(false);
-      },
-      onResponseComplete: () => {
-        console.log('[VITANALAND] ✅ Response complete');
-        setIsProcessing(false);
-      }
-    });
-
-    return () => {
-      console.log('[VITANALAND] 🧹 Cleanup');
-      serviceRef.current?.disconnect();
-      serviceRef.current = null;
-    };
-  }, []);
-
-  const connect = useCallback(async () => {
-    console.log('[VITANALAND] 🔌 Connecting...');
-    if (serviceRef.current) {
-      setError(null);
-      setConnectionState('connecting');
-      await serviceRef.current.connect();
-    }
-  }, []);
-
-  const disconnect = useCallback(() => {
-    console.log('[VITANALAND] 🔌 Disconnecting...');
-    if (serviceRef.current) {
-      serviceRef.current.disconnect();
-      setConnectionState('disconnected');
-      setIsListening(false);
-      setIsProcessing(false);
-      setTranscript('');
-      setError(null);
-    }
-  }, []);
-
-  const startListening = useCallback(() => {
-    console.log('[VITANALAND] 🎤 Start listening');
-    if (serviceRef.current && connectionState === 'ready') {
-      serviceRef.current.startRecording();
-      setIsListening(true);
-      setTranscript('');
-    }
-  }, [connectionState]);
-
-  const stopListening = useCallback(() => {
-    console.log('[VITANALAND] 🎤 Stop listening');
-    if (serviceRef.current) {
-      serviceRef.current.stopRecording();
-      setIsListening(false);
-    }
-  }, []);
-
-  const sendMessage = useCallback((text: string) => {
-    console.log('[VITANALAND] 💬 Sending text:', text);
     if (serviceRef.current && connectionState === 'ready') {
       serviceRef.current.sendText(text);
       setIsProcessing(true);
