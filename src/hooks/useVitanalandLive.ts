@@ -46,8 +46,31 @@ class VitanalandLiveService {
 
       this.ws.onmessage = (event) => {
         try {
+          // Check if message is binary audio (ArrayBuffer)
+          if (event.data instanceof ArrayBuffer) {
+            console.log('[VITANALAND Service] 🔊 Binary audio received:', event.data.byteLength, 'bytes');
+            
+            // Skip empty or tiny buffers (likely control messages)
+            if (event.data.byteLength < 100) {
+              console.log('[VITANALAND Service] ⚠️ Skipping tiny buffer');
+              return;
+            }
+            
+            // Convert ArrayBuffer to Blob for audio playback
+            const blob = new Blob([event.data], { type: 'audio/pcm' });
+            
+            // Trigger audio callbacks
+            this.callbacks.onAudioStart?.();
+            this.callbacks.onAudioResponse?.(blob);
+            return; // Don't try to parse as JSON
+          }
+
+          // Handle JSON messages
           const data = JSON.parse(event.data);
-          console.log('[VITANALAND Service] 📨 Message type:', data.type);
+          console.log('[VITANALAND Service] 📨 Message type:', {
+            _type: data.type,
+            value: data.type
+          });
 
           if (data.type === 'ready') {
             this.isSetupComplete = true;
@@ -62,7 +85,7 @@ class VitanalandLiveService {
             this.handleServerContent(data.serverContent);
           }
         } catch (err) {
-          console.error('[VITANALAND Service] ❌ Error processing message:', err);
+          console.error('[VITANALAND Service] ❌ Error processing message:', err, 'Data type:', typeof event.data);
         }
       };
 
