@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield } from "lucide-react";
+import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
@@ -131,7 +132,7 @@ const MaxinaPortal = () => {
         )}
         
         {/* Dark overlay */}
-        <div className="fixed inset-0 bg-black/30 z-10" />
+        <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
         
         {/* Content */}
         <div className="relative z-20 min-h-screen flex items-center justify-center">
@@ -162,24 +163,26 @@ const MaxinaPortal = () => {
       )}
       
       {/* Dark overlay for readability */}
-      <div className="fixed inset-0 bg-black/30 z-10" />
+      <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
       
       {/* Content layer */}
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen p-6">
         <div className="max-w-md w-full space-y-8">
           {/* Header */}
           <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Heart className="h-12 w-12 text-white" />
+            <div className="flex items-center justify-center mb-6">
+              <div className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+                <Heart className="h-10 w-10 text-white" fill="white" fillOpacity={0.3} />
+              </div>
             </div>
-            <h1 className="text-4xl font-bold text-white">Maxina</h1>
-            <p className="text-white/80 mt-2">
-              Your comprehensive health & wellness platform
+            <h1 className="text-5xl font-bold text-white tracking-tight">Maxina</h1>
+            <p className="text-white/90 mt-3 text-lg font-light">
+              Your wellness journey starts here
             </p>
           </div>
 
           {/* Auth Tabs */}
-          <Card className="shadow-2xl backdrop-blur-sm">
+          <Card className="relative bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20">
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -188,8 +191,10 @@ const MaxinaPortal = () => {
               
               <TabsContent value="signin">
                 <CardHeader>
-                  <CardTitle>Welcome Back</CardTitle>
-                  <CardDescription>Sign in to your Maxina account</CardDescription>
+                  <CardTitle className="text-2xl">Welcome back to Maxina.</CardTitle>
+                  <CardDescription className="text-base mt-2">
+                    Sign in to continue your Vitanaland journey.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSignIn} className="space-y-4">
@@ -201,47 +206,66 @@ const MaxinaPortal = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your@email.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        disabled={loading}
-                      />
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="you@example.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          disabled={loading}
+                        />
                     </div>
                     
                     <div className="space-y-2">
                       <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        disabled={loading}
-                      />
+                        <Input
+                          id="password"
+                          type="password"
+                          placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          disabled={loading}
+                        />
+                      </div>
+                      
+                      <div className="flex justify-end">
+                        <Link 
+                          to="/reset-password" 
+                          className="text-sm text-muted-foreground hover:text-[#FF7BAC] transition-colors"
+                        >
+                          Forgot password?
+                        </Link>
+                      </div>
+                      
+                      <div>
                     </div>
                     
-                    <Button type="submit" className="w-full bg-[#FF7BAC] hover:bg-[#FF7BAC]/90" disabled={loading}>
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Signing In...
-                        </>
-                      ) : (
-                        "Sign In"
-                      )}
-                    </Button>
+                      <Button 
+                        type="submit" 
+                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300" 
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Signing in…
+                          </>
+                        ) : (
+                          "Sign In"
+                        )}
+                      </Button>
                   </form>
                 </CardContent>
               </TabsContent>
               
               <TabsContent value="signup">
                 <CardHeader>
-                  <CardTitle>Join Maxina</CardTitle>
-                  <CardDescription>Create your account and choose your role</CardDescription>
+                  <CardTitle className="text-2xl">Join the Maxina community.</CardTitle>
+                  <CardDescription className="text-base mt-2">
+                    Create your account and begin your wellness journey.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
@@ -269,7 +293,7 @@ const MaxinaPortal = () => {
                       <Input
                         id="email"
                         type="email"
-                        placeholder="your@email.com"
+                        placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -282,6 +306,7 @@ const MaxinaPortal = () => {
                       <Input
                         id="password"
                         type="password"
+                        placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -332,33 +357,74 @@ const MaxinaPortal = () => {
                       </div>
                     </div>
                     
-                    <Button type="submit" className="w-full bg-[#FF7BAC] hover:bg-[#FF7BAC]/90" disabled={loading}>
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Creating Account...
-                        </>
-                      ) : (
-                        "Create Account"
-                      )}
-                    </Button>
+                      <Button 
+                        type="submit" 
+                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300" 
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Creating account…
+                          </>
+                        ) : (
+                          "Create Account"
+                        )}
+                      </Button>
                   </form>
                 </CardContent>
               </TabsContent>
+              
+              {/* VITANA Orb Indicator */}
+              <div className="absolute -bottom-3 -right-3 flex items-center gap-2">
+                <div className="bg-white/80 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-white/30">
+                  <p className="text-[11px] text-muted-foreground font-medium">
+                    Your VITANA guide awaits inside
+                  </p>
+                </div>
+                <div className="relative">
+                  <VitanalandPortalSeed
+                    audioState="idle"
+                    volumeLevel={0}
+                    size="sm"
+                  />
+                </div>
+              </div>
             </Tabs>
           </Card>
 
-          {/* Navigation Links */}
-          <div className="flex justify-center space-x-6 text-sm">
-            <Link to="/alkalma" className="text-muted-foreground hover:text-primary">
-              AlKalma Portal
-            </Link>
-            <Link to="/earthlinks" className="text-muted-foreground hover:text-primary">
-              Earthlinks Portal
-            </Link>
-            <Link to="/" className="text-muted-foreground hover:text-primary">
-              Public Portal
-            </Link>
+          {/* Trust & Navigation Footer */}
+          <div className="space-y-4">
+            <p className="text-center text-white/70 text-sm">
+              Maxina is part of the VITANA ecosystem.
+            </p>
+            
+            <div className="flex justify-center items-center space-x-4 text-sm">
+              <Link to="/privacy" className="text-white/60 hover:text-white transition-colors">
+                Privacy
+              </Link>
+              <span className="text-white/40">·</span>
+              <Link to="/terms" className="text-white/60 hover:text-white transition-colors">
+                Terms
+              </Link>
+              <span className="text-white/40">·</span>
+              <Link to="/help" className="text-white/60 hover:text-white transition-colors">
+                Help
+              </Link>
+            </div>
+            
+            {/* Secondary navigation */}
+            <div className="flex justify-center space-x-6 text-sm pt-2">
+              <Link to="/alkalma" className="text-white/50 hover:text-white/80 transition-colors">
+                AlKalma Portal
+              </Link>
+              <Link to="/earthlinks" className="text-white/50 hover:text-white/80 transition-colors">
+                Earthlinks Portal
+              </Link>
+              <Link to="/" className="text-white/50 hover:text-white/80 transition-colors">
+                Public Portal
+              </Link>
+            </div>
           </div>
         </div>
       </div>
