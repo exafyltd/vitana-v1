@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
+import { getIntroVideoSrc } from "@/utils/introVideo";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +25,7 @@ const MaxinaPortal = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
+  const [videoSrc, setVideoSrc] = useState<string>("");
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
@@ -41,6 +43,11 @@ const MaxinaPortal = () => {
     root.style.setProperty("--brand-accent", "#FF7BAC");
     root.style.setProperty("--brand-bg", "#FFF5F8");
     root.style.setProperty("--brand-fg", "#1A1A1A");
+  }, []);
+
+  // Load daily-rotating video background
+  useEffect(() => {
+    getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -110,35 +117,69 @@ const MaxinaPortal = () => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-rose-50">
-        <Loader2 className="h-8 w-8 animate-spin text-[#FF7BAC]" />
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Video Background */}
+        {videoSrc && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="fixed inset-0 w-full h-full object-cover"
+            src={videoSrc}
+          />
+        )}
+        
+        {/* Dark overlay */}
+        <div className="fixed inset-0 bg-black/30 z-10" />
+        
+        {/* Content */}
+        <div className="relative z-20 min-h-screen flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-white" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50">
+    <div className="min-h-screen relative overflow-hidden">
       <SEO 
         title="Maxina Health Platform - VITANA" 
         description="Join Maxina's comprehensive health and wellness community. Connect with healthcare professionals and take control of your health journey." 
         canonical={window.location.href} 
       />
       
-      <div className="flex flex-col items-center justify-center min-h-screen p-6">
+      {/* Video Background */}
+      {videoSrc && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="fixed inset-0 w-full h-full object-cover"
+          src={videoSrc}
+        />
+      )}
+      
+      {/* Dark overlay for readability */}
+      <div className="fixed inset-0 bg-black/30 z-10" />
+      
+      {/* Content layer */}
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen p-6">
         <div className="max-w-md w-full space-y-8">
           {/* Header */}
           <div className="text-center">
             <div className="flex items-center justify-center mb-4">
-              <Heart className="h-12 w-12 text-[#FF7BAC]" />
+              <Heart className="h-12 w-12 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-foreground">Maxina</h1>
-            <p className="text-muted-foreground mt-2">
+            <h1 className="text-4xl font-bold text-white">Maxina</h1>
+            <p className="text-white/80 mt-2">
               Your comprehensive health & wellness platform
             </p>
           </div>
 
           {/* Auth Tabs */}
-          <Card>
+          <Card className="shadow-2xl backdrop-blur-sm">
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
