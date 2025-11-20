@@ -2467,6 +2467,191 @@ export type Database = {
           },
         ]
       }
+      governance_categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          severity: number | null
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          severity?: number | null
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          severity?: number | null
+          tenant_id?: string
+        }
+        Relationships: []
+      }
+      governance_enforcements: {
+        Row: {
+          action: string
+          details: Json | null
+          executed_at: string | null
+          id: string
+          rule_id: string | null
+          status: string
+          tenant_id: string
+        }
+        Insert: {
+          action: string
+          details?: Json | null
+          executed_at?: string | null
+          id?: string
+          rule_id?: string | null
+          status: string
+          tenant_id: string
+        }
+        Update: {
+          action?: string
+          details?: Json | null
+          executed_at?: string | null
+          id?: string
+          rule_id?: string | null
+          status?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_enforcements_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "governance_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_evaluations: {
+        Row: {
+          entity_id: string
+          evaluated_at: string | null
+          id: string
+          metadata: Json | null
+          rule_id: string | null
+          status: string
+          tenant_id: string
+        }
+        Insert: {
+          entity_id: string
+          evaluated_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rule_id?: string | null
+          status: string
+          tenant_id: string
+        }
+        Update: {
+          entity_id?: string
+          evaluated_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rule_id?: string | null
+          status?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_evaluations_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "governance_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_rules: {
+        Row: {
+          category_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          logic: Json
+          name: string
+          tenant_id: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          logic: Json
+          name: string
+          tenant_id: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          logic?: Json
+          name?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_rules_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "governance_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      governance_violations: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          id: string
+          resolved_at: string | null
+          rule_id: string | null
+          severity: number | null
+          status: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          id?: string
+          resolved_at?: string | null
+          rule_id?: string | null
+          severity?: number | null
+          status?: string
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          id?: string
+          resolved_at?: string | null
+          rule_id?: string | null
+          severity?: number | null
+          status?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "governance_violations_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "governance_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       group_recommendations: {
         Row: {
           created_at: string
@@ -3627,6 +3812,48 @@ export type Database = {
           title?: string | null
           topic?: string
           vtid?: string | null
+        }
+        Relationships: []
+      }
+      oasis_events_v1: {
+        Row: {
+          assignee_ai: string
+          created_at: string
+          git_sha: string | null
+          id: number
+          metadata: Json
+          notes: string | null
+          rid: string
+          schema_version: number
+          status: string
+          task_type: string
+          tenant: string
+        }
+        Insert: {
+          assignee_ai: string
+          created_at?: string
+          git_sha?: string | null
+          id?: number
+          metadata?: Json
+          notes?: string | null
+          rid: string
+          schema_version?: number
+          status: string
+          task_type: string
+          tenant: string
+        }
+        Update: {
+          assignee_ai?: string
+          created_at?: string
+          git_sha?: string | null
+          id?: number
+          metadata?: Json
+          notes?: string | null
+          rid?: string
+          schema_version?: number
+          status?: string
+          task_type?: string
+          tenant?: string
         }
         Relationships: []
       }
@@ -6050,6 +6277,7 @@ export type Database = {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
       }
+      current_tenant: { Args: never; Returns: string }
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
