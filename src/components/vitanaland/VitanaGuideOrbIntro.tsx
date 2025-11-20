@@ -83,13 +83,11 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       >
         {/* Container for orb + expanding pill - both move together */}
         <div 
-          className={`relative flex items-center gap-3 transition-all duration-[400ms] ${
-            isExpanded ? 'translate-x-[-200px]' : 'translate-x-0'
+          className={`relative flex items-center gap-3 transition-all duration-[550ms] ${
+            isExpanded ? 'translate-x-[-150px]' : 'translate-x-0'
           }`}
           style={{
-            transitionTimingFunction: isExpanded 
-              ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' 
-              : 'cubic-bezier(0.22, 1, 0.36, 1)'
+            transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
           }}
         >
           {/* Orb container - appears first (left) */}
@@ -114,10 +112,10 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
           <AnimatePresence>
             {showTooltip && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.90 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.90 }}
-                transition={{ duration: 0.25, ease: "easeOut", delay: 0.15 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.15 }}
                 className="flex-shrink-0"
               >
                 <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
