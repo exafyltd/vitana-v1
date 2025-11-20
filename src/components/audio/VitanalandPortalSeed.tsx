@@ -29,6 +29,7 @@ export function VitanalandPortalSeed({
       coreSize: 32,
       shellBorder: 1,
       rimHighlight: 8,
+      rimOpacity: 0.15,
     },
     lg: {
       container: 'w-[160px] h-[160px] lg:w-[220px] lg:h-[220px]',
@@ -44,6 +45,7 @@ export function VitanalandPortalSeed({
       coreSize: 100,
       shellBorder: 2,
       rimHighlight: 30,
+      rimOpacity: 0.4,
     }
   };
 
@@ -249,7 +251,7 @@ export function VitanalandPortalSeed({
           <div
             className="absolute inset-[2px] rounded-full pointer-events-none"
             style={{
-              border: '1px solid rgba(255, 255, 255, 0.4)',
+              border: `1px solid rgba(255, 255, 255, ${config.rimOpacity})`,
             }}
           />
 
