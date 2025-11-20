@@ -11,6 +11,7 @@ const INTRO_STORAGE_KEY = 'vitanaGuideIntroShown';
 
 export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrbIntroProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     // Check if intro has been shown in this session
@@ -28,19 +29,26 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       
       // Trigger intro animation after delay
       const timer = setTimeout(() => {
-        console.log('[VitanaGuideOrbIntro] Expanding pill...');
+        console.log('[VitanaGuideOrbIntro] Expanding orb and tooltip...');
         setIsExpanded(true);
+        setShowTooltip(true);
         
-        // Hold expanded state for 2.5 seconds, then retract
+        // Hold expanded state for 2.5 seconds
         setTimeout(() => {
-          console.log('[VitanaGuideOrbIntro] Retracting pill...');
-          setIsExpanded(false);
+          console.log('[VitanaGuideOrbIntro] Hiding tooltip first...');
+          setShowTooltip(false);
           
-          // Mark intro as shown (unless forced)
-          if (!forceShow) {
-            sessionStorage.setItem(INTRO_STORAGE_KEY, 'true');
-            console.log('[VitanaGuideOrbIntro] Marked as shown in sessionStorage');
-          }
+          // Wait for tooltip to fade out, then return orb to corner
+          setTimeout(() => {
+            console.log('[VitanaGuideOrbIntro] Returning orb to corner...');
+            setIsExpanded(false);
+            
+            // Mark intro as shown (unless forced)
+            if (!forceShow) {
+              sessionStorage.setItem(INTRO_STORAGE_KEY, 'true');
+              console.log('[VitanaGuideOrbIntro] Marked as shown in sessionStorage');
+            }
+          }, 250); // Wait for tooltip fade-out
         }, 2500);
       }, totalDelay);
 
@@ -73,17 +81,26 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
         }}
         className="relative cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
       >
-        {/* Container for orb + expanding pill */}
-        <div className="relative flex items-center gap-3 w-full min-w-[280px]">
-          {/* Expanding text pill - appears at original orb position */}
+        {/* Container for orb + expanding pill - both move together */}
+        <div 
+          className={`relative flex items-center gap-3 transition-all duration-[400ms] ${
+            isExpanded ? 'translate-x-[-200px]' : 'translate-x-0'
+          } group-hover:translate-x-[-4px]`}
+          style={{
+            transitionTimingFunction: isExpanded 
+              ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' 
+              : 'cubic-bezier(0.22, 1, 0.36, 1)'
+          }}
+        >
+          {/* Expanding text pill - flows naturally beside orb */}
           <AnimatePresence>
-            {isExpanded && (
+            {showTooltip && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.90 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.90 }}
                 transition={{ duration: 0.25, ease: "easeOut", delay: 0.15 }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 origin-right"
+                className="flex-shrink-0"
               >
                 <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
                   <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
@@ -95,17 +112,8 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
             )}
           </AnimatePresence>
 
-          {/* Orb container - moves left to reveal tooltip */}
-          <div 
-            className={`relative flex-shrink-0 transition-all duration-[400ms] ${
-              isExpanded ? 'translate-x-[-200px]' : 'translate-x-0'
-            } group-hover:translate-x-[-4px]`}
-            style={{
-              transitionTimingFunction: isExpanded 
-                ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' 
-                : 'cubic-bezier(0.22, 1, 0.36, 1)'
-            }}
-          >
+          {/* Orb container */}
+          <div className="relative flex-shrink-0">
             {/* Dark radial pad for better contrast against bright backgrounds */}
             <div className="absolute inset-0 translate-x-1 translate-y-1">
               <div className="h-24 w-24 rounded-full bg-black/30 blur-xl" />
@@ -123,9 +131,9 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
           </div>
         </div>
         
-        {/* Hover-only Tooltip - appears at right edge on hover */}
+        {/* Hover-only Tooltip - appears beside orb on hover */}
         {!isExpanded && (
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 origin-right opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
+          <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 origin-right opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
             <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
               <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-sky-300 animate-pulse" />
