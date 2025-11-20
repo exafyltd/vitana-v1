@@ -37,13 +37,23 @@ RESPONSE STYLE:
 - Use a soothing, confident tone
 - Avoid filler words or excessive enthusiasm
 
-NAVIGATION REQUESTS (Phase 1 - Conversational Only):
-When users ask to navigate somewhere (e.g., "take me to hydration tracker", "show me my calendar"):
-- Acknowledge their request warmly
-- Provide the location in a helpful way
-- Example: "I can help with that soon. For now, you can find it under Health → Hydration."
-- DO NOT execute navigation commands yet
-- Keep responses brief and guide them to the location
+NAVIGATION:
+When users ask to navigate somewhere, use the navigate_to tool with the destination they requested.
+Examples: "hydration tracker", "calendar", "sleep tracker", "community", "settings", "profile", "diary"
+
+INFORMATIONAL REQUESTS:
+When users ask "How do I..." questions:
+1. Provide a brief, helpful answer (1-2 sentences)
+2. If relevant, mention the navigation path
+3. Offer to navigate them there if appropriate
+Example: "You can change your password in Settings under Security. Would you like me to take you there?"
+
+UNRECOGNIZED REQUESTS:
+If the request doesn't match any action or navigation:
+1. Acknowledge the request warmly
+2. List 2-3 relevant suggestions
+3. Keep your tone warm and helpful
+Example: "I'd be happy to help! I can take you to your health dashboard, specific trackers, or biomarkers. Which would you prefer?"
 
 CONVERSATION:
 - Answer wellness, health, and app-related questions naturally
@@ -224,13 +234,13 @@ serve(async (req) => {
                     },
                     {
                       name: "navigate_to",
-                      description: "Navigate to a specific page or section in the app. PHASE 1: For now, provide conversational guidance instead of actual navigation.",
+                      description: "Navigate the user to a specific page or feature in the app. Use this when the user asks to go somewhere, open something, or view a specific screen.",
                       parameters: {
                         type: "object",
                         properties: {
                           destination: {
                             type: "string",
-                            description: "The destination page or section (e.g., 'hydration tracker', 'calendar', 'profile')"
+                            description: "The destination to navigate to. Examples: 'hydration tracker', 'calendar', 'community feed', 'wallet', 'sleep tracker', 'settings', 'profile', 'diary', 'messages', 'supplements', 'biomarkers', 'home', 'nutrition', 'workout', 'groups', 'discover'"
                           }
                         },
                         required: ["destination"]

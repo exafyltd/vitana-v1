@@ -8,6 +8,9 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { OrbCore } from "./OrbCore";
+import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
+import { useStreamingState } from '@/context/StreamingStateContext';
+import { playSound } from '@/lib/playSound';
 
 interface VitanaOrbButtonProps {
   onClick?: () => void;
@@ -15,6 +18,8 @@ interface VitanaOrbButtonProps {
 
 export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
   const [isPulsing, setIsPulsing] = useState(false);
+  const { expandToFull } = useVitanalandNavigation();
+  const { setAudioOverlayVisible } = useStreamingState();
   
   // Listen for keyboard trigger event
   useEffect(() => {
@@ -28,7 +33,17 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
   }, []);
   
   const handleOrbClick = () => {
-    // TODO: Phase 2 - Play spark-chime.mp3 sound
+    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
+    
+    // Trigger both navigation expansion AND audio overlay
+    expandToFull();
+    
+    // Ensure audio overlay is visible
+    setTimeout(() => {
+      setAudioOverlayVisible(true);
+    }, 100);
+    
+    // Call optional parent onClick
     onClick?.();
   };
   

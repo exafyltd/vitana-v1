@@ -49,8 +49,8 @@ export function VitanaAudioOverlay() {
   // Audio playback system
   const { playAudio, stopAudio, cleanup: cleanupAudio } = useVitanaPCMAudio();
 
-  // Handle tool execution
-  const { executeToolCall } = useVitanaOrbTools({
+  // Handle tool execution and navigation
+  const { executeToolCall, navigateByCommand } = useVitanaOrbTools({
     onDiaryOpen: () => setShowDiaryEntry(true),
     onAutopilotOpen: () => setShowAutopilot(true),
   });
@@ -208,10 +208,17 @@ export function VitanaAudioOverlay() {
   };
 
   const handleTextSubmit = () => {
-    if (textInputValue.trim()) {
-      sendMessage(textInputValue);
+    if (!textInputValue.trim()) return;
+    
+    // Try navigation first
+    if (navigateByCommand(textInputValue)) {
       setTextInputValue('');
+      return;
     }
+    
+    // Otherwise send to AI
+    sendMessage(textInputValue);
+    setTextInputValue('');
   };
 
   const handleDiaryClose = () => {

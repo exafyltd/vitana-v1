@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGlassMode } from './useGlassMode';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useToast } from './use-toast';
@@ -17,6 +18,7 @@ interface UseVitanaOrbToolsOptions {
 }
 
 export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
+  const navigate = useNavigate();
   const glassMode = useGlassMode();
   const { toast } = useToast();
   const {
@@ -27,6 +29,103 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
     setTextInputVisible,
     cameraActive,
   } = useStreamingState();
+
+  // Front-end navigation command mapping
+  const navigateByCommand = useCallback((text: string): boolean => {
+    const t = text.toLowerCase();
+    
+    // Health & Trackers
+    if (t.includes('hydration tracker') || t.includes('water tracker')) {
+      navigate('/health/tracker/hydration');
+      toast({ title: "Navigating to Hydration Tracker" });
+      return true;
+    }
+    if (t.includes('sleep tracker') || t.includes('sleep')) {
+      navigate('/health/tracker/sleep');
+      toast({ title: "Navigating to Sleep Tracker" });
+      return true;
+    }
+    if (t.includes('nutrition') || t.includes('food tracker')) {
+      navigate('/health/tracker/nutrition');
+      toast({ title: "Navigating to Nutrition Tracker" });
+      return true;
+    }
+    if (t.includes('workout') || t.includes('exercise') || t.includes('fitness')) {
+      navigate('/health/tracker/workout');
+      toast({ title: "Navigating to Workout Tracker" });
+      return true;
+    }
+    if (t.includes('biomarkers') || t.includes('blood work')) {
+      navigate('/health/biomarkers');
+      toast({ title: "Navigating to Biomarkers" });
+      return true;
+    }
+    
+    // Community & Social
+    if (t.includes('calendar') || t.includes('events')) {
+      navigate('/calendar');
+      toast({ title: "Navigating to Calendar" });
+      return true;
+    }
+    if (t.includes('community') || t.includes('feed')) {
+      navigate('/community');
+      toast({ title: "Navigating to Community" });
+      return true;
+    }
+    if (t.includes('groups') || t.includes('my groups')) {
+      navigate('/groups');
+      toast({ title: "Navigating to Groups" });
+      return true;
+    }
+    if (t.includes('messages') || t.includes('inbox') || t.includes('chat')) {
+      navigate('/inbox');
+      toast({ title: "Navigating to Messages" });
+      return true;
+    }
+    
+    // Wellness & Discover
+    if (t.includes('wellness') || t.includes('discover')) {
+      navigate('/discover');
+      toast({ title: "Navigating to Discover" });
+      return true;
+    }
+    if (t.includes('supplements')) {
+      navigate('/discover/supplements');
+      toast({ title: "Navigating to Supplements" });
+      return true;
+    }
+    
+    // Personal
+    if (t.includes('wallet') || t.includes('payment')) {
+      navigate('/wallet');
+      toast({ title: "Navigating to Wallet" });
+      return true;
+    }
+    if (t.includes('profile') || t.includes('my profile')) {
+      navigate('/profile');
+      toast({ title: "Navigating to Your Profile" });
+      return true;
+    }
+    if (t.includes('settings')) {
+      navigate('/settings');
+      toast({ title: "Navigating to Settings" });
+      return true;
+    }
+    if (t.includes('diary') || t.includes('journal')) {
+      navigate('/memory/diary');
+      toast({ title: "Navigating to Diary" });
+      return true;
+    }
+    
+    // Home
+    if (t.includes('home') || t.includes('dashboard')) {
+      navigate('/home');
+      toast({ title: "Navigating to Home" });
+      return true;
+    }
+    
+    return false; // No match found
+  }, [navigate, toast]);
 
   const executeToolCall = useCallback(async (toolCall: ToolCall) => {
     if (!toolCall.functionCalls || toolCall.functionCalls.length === 0) {
@@ -39,14 +138,21 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
       try {
         console.log(`[VITANA Tools] Executing: ${call.name}`);
 
+        // Check for navigation commands first
+        if (call.name === 'navigate_to') {
+          const destination = call.args?.destination || '';
+          if (navigateByCommand(destination)) {
+            console.log(`[VITANA Tools] ✅ Navigated to: ${destination}`);
+            continue;
+          }
+        }
+
         switch (call.name) {
           case 'start_glass_mode':
-            await glassMode.startGlassMode();
-            setGlassModeActive(true);
             toast({
-              title: "Screen Sharing Active",
-              description: "Glass mode enabled",
-              duration: 2000,
+              title: "🖥️ Screen Sharing Coming Soon",
+              description: "Share your screen with VITANA for contextual assistance.",
+              duration: 3000,
             });
             break;
 
@@ -61,34 +167,11 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
             break;
 
           case 'start_camera_mode':
-            // Toggle camera
-            if (cameraActive) {
-              setCameraActive(false);
-              toast({
-                title: "Camera Off",
-                description: "Camera deactivated",
-                duration: 2000,
-              });
-            } else {
-              // Request camera permission
-              try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                // Store stream reference if needed for display
-                setCameraActive(true);
-                toast({
-                  title: "Camera Active",
-                  description: "Camera is now on",
-                  duration: 2000,
-                });
-              } catch (err) {
-                toast({
-                  title: "Camera Access Denied",
-                  description: "Please enable camera permissions",
-                  variant: "destructive",
-                  duration: 3000,
-                });
-              }
-            }
+            toast({
+              title: "📹 Camera Mode Coming Soon",
+              description: "Vision-based AI interactions will be available in the next update.",
+              duration: 3000,
+            });
             break;
 
           case 'open_diary_entry':
@@ -141,9 +224,10 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
         });
       }
     }
-  }, [glassMode, setGlassModeActive, setCameraActive, setDiaryActive, setAutopilotActive, setTextInputVisible, cameraActive, options, toast]);
+  }, [glassMode, setGlassModeActive, setCameraActive, setDiaryActive, setAutopilotActive, setTextInputVisible, cameraActive, options, toast, navigateByCommand]);
 
   return {
     executeToolCall,
+    navigateByCommand, // Expose for direct use in text input
   };
 };

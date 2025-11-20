@@ -177,6 +177,53 @@ export function OrbCore({
   );
 
   // Wrap in float animation if enabled
+  // Color cycling wrapper for purple/pink/blue moments
+  const colorCycledContent = (
+    <motion.div
+      className="relative"
+      animate={{
+        filter: [
+          'hue-rotate(0deg)',
+          'hue-rotate(15deg)',
+          'hue-rotate(30deg)',
+          'hue-rotate(15deg)',
+          'hue-rotate(0deg)'
+        ],
+      }}
+      transition={{
+        duration: 20,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      }}
+    >
+      {orbContent}
+      
+      {/* Multi-color scatter dots */}
+      {['#4cc8f4', '#b494ff', '#ff6db8'].map((color, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 rounded-full pointer-events-none"
+          style={{
+            background: color,
+            left: `${20 + i * 30}%`,
+            top: `${25 + i * 20}%`,
+            filter: 'blur(1px)',
+          }}
+          animate={{
+            opacity: [0.3, 0.8, 0.3],
+            scale: [0.8, 1.2, 0.8],
+          }}
+          transition={{
+            duration: 4 + i,
+            repeat: Infinity,
+            delay: i * 0.5,
+            ease: 'easeInOut',
+          }}
+        />
+      ))}
+    </motion.div>
+  );
+
   if (enableFloat) {
     return (
       <motion.div
@@ -189,10 +236,10 @@ export function OrbCore({
           ease: 'easeInOut',
         }}
       >
-        {orbContent}
+        {colorCycledContent}
       </motion.div>
     );
   }
 
-  return orbContent;
+  return colorCycledContent;
 }
