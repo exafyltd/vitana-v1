@@ -19,6 +19,10 @@ const sizeConfig = {
     secondBlur: '22px',
     thinBlur: '1.5px',
     breathingScale: [1, 1.02, 1],
+    dotSize: 'w-[3px] h-[3px]',
+    dotBlur: 'blur(0.5px)',
+    outerHaloOpacity: 0.5,
+    secondHaloOpacity: 0.18,
   },
   md: {
     container: 'w-24 h-24',
@@ -29,6 +33,10 @@ const sizeConfig = {
     secondBlur: '23px',
     thinBlur: '1.5px',
     breathingScale: [1, 1.025, 1],
+    dotSize: 'w-1 h-1',
+    dotBlur: 'blur(1px)',
+    outerHaloOpacity: 0.4,
+    secondHaloOpacity: 0.15,
   },
   xl: {
     container: 'w-[120px] h-[120px] lg:w-[140px] lg:h-[140px]',
@@ -39,6 +47,10 @@ const sizeConfig = {
     secondBlur: '25px',
     thinBlur: '1.5px',
     breathingScale: [1, 1.03, 1],
+    dotSize: 'w-1 h-1',
+    dotBlur: 'blur(1px)',
+    outerHaloOpacity: 0.4,
+    secondHaloOpacity: 0.15,
   },
 };
 
@@ -65,7 +77,7 @@ export function OrbCore({
       <motion.div
         className={`absolute ${config.outerHalo} rounded-full`}
         style={{
-          background: 'radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, 0.4) 0%, rgba(76, 200, 244, 0.2) 40%, transparent 70%)',
+          background: `radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, ${config.outerHaloOpacity}) 0%, rgba(76, 200, 244, ${config.outerHaloOpacity * 0.5}) 40%, transparent 70%)`,
           filter: `blur(${config.outerBlur})`,
           transform: 'scale(1.08, 1)',
         }}
@@ -83,7 +95,7 @@ export function OrbCore({
       <motion.div
         className={`absolute ${config.secondHalo} rounded-full`}
         style={{
-          background: 'radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, 0.15) 0%, rgba(76, 200, 244, 0.08) 40%, transparent 70%)',
+          background: `radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, ${config.secondHaloOpacity}) 0%, rgba(76, 200, 244, ${config.secondHaloOpacity * 0.5}) 40%, transparent 70%)`,
           filter: `blur(${config.secondBlur})`,
           transform: 'scale(1.1, 1.05)',
         }}
@@ -123,8 +135,8 @@ export function OrbCore({
         }}
         animate={{
           scale: isProcessing ? [1, 1.015, 1] : config.breathingScale,
-          scaleX: [1, 1.025, 1, 0.975, 1],
-          scaleY: [1, 0.975, 1, 1.025, 1],
+          scaleX: size === 'sm' ? [1, 1.04, 1, 0.96, 1] : [1, 1.025, 1, 0.975, 1],
+          scaleY: size === 'sm' ? [1, 0.96, 1, 1.04, 1] : [1, 0.975, 1, 1.025, 1],
         }}
         transition={{
           scale: {
@@ -144,7 +156,7 @@ export function OrbCore({
           },
         }}
         whileHover={{
-          scale: size === 'sm' ? 1.03 : 1.08,
+          scale: size === 'sm' ? 1.05 : 1.08,
         }}
       >
         {/* Highlight spot for 3D depth */}
@@ -202,12 +214,12 @@ export function OrbCore({
       {['#4cc8f4', '#b494ff', '#ff6db8'].map((color, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 rounded-full pointer-events-none"
+          className={`absolute ${config.dotSize} rounded-full pointer-events-none`}
           style={{
             background: color,
             left: `${20 + i * 30}%`,
             top: `${25 + i * 20}%`,
-            filter: 'blur(1px)',
+            filter: config.dotBlur,
           }}
           animate={{
             opacity: [0.3, 0.8, 0.3],

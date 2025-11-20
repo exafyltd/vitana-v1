@@ -51,31 +51,37 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button 
-            variant="ghost"
-            size="icon"
-            className="h-16 w-16 rounded-full relative overflow-visible mx-auto"
+          <div
+            role="button"
+            tabIndex={0}
+            className="p-4 h-24 w-24 rounded-full relative overflow-visible mx-auto cursor-pointer"
             onClick={handleOrbClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleOrbClick();
+              }
+            }}
             aria-label="Open VITANA Orb (⌘K)"
           >
             {/* Keyboard-trigger pulse wrapper */}
             <motion.div
-                className="relative"
-                animate={isPulsing ? {
-                  scale: [1, 1.15, 1],
-                } : undefined}
-                transition={{
-                  duration: 0.4,
-                  ease: 'easeOut',
-                }}
-              >
+              className="relative"
+              animate={isPulsing ? {
+                scale: [1, 1.15, 1],
+              } : undefined}
+              transition={{
+                duration: 0.4,
+                ease: 'easeOut',
+              }}
+            >
               <OrbCore 
                 size="sm" 
                 enableFloat={false}
                 layoutId="vitana-orb"
               />
-             </motion.div>
-          </Button>
+            </motion.div>
+          </div>
         </TooltipTrigger>
         <TooltipContent side="right">
           <p>Open VITANA Orb (⌘K)</p>
