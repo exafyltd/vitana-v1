@@ -277,7 +277,7 @@ export default function IntroExperience() {
         >
           {/* Dark radial pad for better contrast against bright backgrounds */}
           <div className="absolute inset-0 translate-x-1 translate-y-1">
-            <div className="h-24 w-24 rounded-full bg-black/25 blur-xl" />
+            <div className="h-24 w-24 rounded-full bg-black/30 blur-xl" />
           </div>
           
           {/* Orb (positioned on top of pad) */}
