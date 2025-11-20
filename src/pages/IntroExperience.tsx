@@ -255,17 +255,17 @@ export default function IntroExperience() {
         </p>
       </div>
 
-      {/* Mini VITANA Orb - Bottom Right */}
+      {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
-        className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2"
+        className="fixed bottom-5 right-5 z-50 group"
       >
         <div
           role="button"
           tabIndex={0}
-          aria-label="Open VITANA guide"
+          aria-label="Your VITANA guide awaits inside"
           onClick={handleOrbClick}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -273,19 +273,19 @@ export default function IntroExperience() {
               handleOrbClick();
             }
           }}
-          className="cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
+          className="relative cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
         >
           <VitanalandPortalSeed 
-            size="sm" 
+            size="md" 
             audioState="idle" 
             volumeLevel={0}
             layoutId="vitana-orb"
           />
-        </div>
-        <div className="bg-white/80 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-white/30">
-          <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+          
+          {/* Hover-only Tooltip */}
+          <div className="absolute bottom-20 right-0 bg-black/70 text-white text-xs px-3 py-2 rounded-full shadow-lg whitespace-nowrap opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-200 pointer-events-none">
             Your VITANA guide awaits inside
-          </span>
+          </div>
         </div>
       </motion.div>
     </div>
