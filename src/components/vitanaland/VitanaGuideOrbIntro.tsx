@@ -83,11 +83,11 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       >
         {/* Container for orb + expanding pill - both move together */}
         <div 
-          className={`relative flex items-center gap-3 transition-all duration-[550ms] ${
-            isExpanded ? 'translate-x-[-150px]' : 'translate-x-0'
+          className={`relative flex items-center gap-3 transition-all duration-[600ms] ${
+            isExpanded ? 'translate-x-[-115px]' : 'translate-x-0'
           }`}
           style={{
-            transitionTimingFunction: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+            transitionTimingFunction: 'cubic-bezier(0.33, 1, 0.68, 1)'
           }}
         >
           {/* Orb container - appears first (left) */}
