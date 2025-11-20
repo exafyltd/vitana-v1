@@ -152,16 +152,16 @@ export function VitanalandPortalSeed({
         animate={{
           scale: isProcessing ? [1, 1.01, 1] : [0.99, 1.01, 0.99],
           rotateY: tiltAngle,
-          scaleX: isProcessing 
-            ? [1, 1.005, 1]
-            : isListening
-            ? [1, 1.02 + (volumeLevel * 0.01), 1]
-            : [1, 1.025, 0.975, 1.025, 1],
-          scaleY: isProcessing 
-            ? [1, 0.995, 1]
-            : isListening
-            ? [1, 0.98 - (volumeLevel * 0.01), 1]
-            : [1, 0.975, 1.025, 0.975, 1],
+        scaleX: isProcessing 
+          ? [1, 1.005, 1]
+          : isListening
+          ? [1, 1.02 + (volumeLevel * 0.01), 1]
+          : [1, 1.038, 0.962, 1.038, 1],
+        scaleY: isProcessing 
+          ? [1, 0.995, 1]
+          : isListening
+          ? [1, 0.98 - (volumeLevel * 0.01), 1]
+          : [1, 0.962, 1.038, 0.962, 1],
         }}
         transition={{
           scale: {
@@ -173,16 +173,16 @@ export function VitanalandPortalSeed({
             duration: 0.3,
             ease: 'easeOut',
           },
-          scaleX: {
-            duration: isProcessing ? 6 : isListening ? 2 : 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          },
-          scaleY: {
-            duration: isProcessing ? 6 : isListening ? 2 : 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          },
+        scaleX: {
+          duration: isProcessing ? 6 : isListening ? 2 : 6.5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        },
+        scaleY: {
+          duration: isProcessing ? 6 : isListening ? 2 : 6.5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        },
         }}
       >
         {/* Glass shell outer layer with enhanced rim */}
