@@ -7,7 +7,7 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
-import { OrbCore } from "./OrbCore";
+import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { playSound } from '@/lib/playSound';
@@ -75,9 +75,10 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 ease: 'easeOut',
               }}
             >
-              <OrbCore 
-                size="sm" 
-                enableFloat={false}
+              <VitanalandPortalSeed 
+                audioState="idle"
+                volumeLevel={0}
+                size="sm"
                 layoutId="vitana-orb"
               />
             </motion.div>
