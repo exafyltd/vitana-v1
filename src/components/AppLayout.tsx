@@ -358,11 +358,7 @@ function AppSidebar({
           )}
           
           {/* VITANA Orb - Voice-First Interface */}
-          <VitanaOrbButton onClick={() => {
-            console.log('VITANA Orb clicked');
-            playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-            expandToFull();
-          }} />
+          <VitanaOrbButton />
         </div>
       </SidebarFooter>
     </Sidebar>
