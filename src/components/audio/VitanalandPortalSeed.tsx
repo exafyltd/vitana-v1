@@ -3,9 +3,52 @@ import { motion } from 'framer-motion';
 interface VitanalandPortalSeedProps {
   audioState: 'idle' | 'listening' | 'processing' | 'error';
   volumeLevel: number; // 0-1 range
+  size?: 'sm' | 'lg';
+  layoutId?: string;
 }
 
-export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPortalSeedProps) {
+export function VitanalandPortalSeed({ 
+  audioState, 
+  volumeLevel,
+  size = 'lg',
+  layoutId
+}: VitanalandPortalSeedProps) {
+  // Size configuration for scaling all visual elements
+  const sizeConfig = {
+    sm: {
+      container: 'w-12 h-12',
+      outerHaloInset: -10,
+      secondHaloInset: -12,
+      thinRingInset: -5,
+      outerBlur: 14,
+      secondBlur: 17,
+      thinBlur: 1.5,
+      nebulaScale: 0.33,
+      auroraScale: 0.33,
+      fragmentScale: 0.33,
+      coreSize: 32,
+      shellBorder: 1,
+      rimHighlight: 8,
+    },
+    lg: {
+      container: 'w-[160px] h-[160px] lg:w-[220px] lg:h-[220px]',
+      outerHaloInset: -25,
+      secondHaloInset: -28,
+      thinRingInset: -12,
+      outerBlur: 20,
+      secondBlur: 25,
+      thinBlur: 1.5,
+      nebulaScale: 1,
+      auroraScale: 1,
+      fragmentScale: 1,
+      coreSize: 100,
+      shellBorder: 2,
+      rimHighlight: 30,
+    }
+  };
+
+  const config = sizeConfig[size];
+
   // Calculate dynamic values based on state and volume
   const isListening = audioState === 'listening';
   const isProcessing = audioState === 'processing';
@@ -17,12 +60,12 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
   const auroraSpeed = isListening ? 0.85 : isProcessing ? 1.5 : 1;
   const tiltAngle = isListening ? volumeLevel * 2 : 0;
 
-  // Premium micro-fragments (4 particles with enhanced bloom)
+  // Premium micro-fragments (4 particles with enhanced bloom) - scaled by config
   const microFragments = [
-    { size: 10, blur: 4, opacity: 0.85, zDepth: 1.3, color: 'rgba(255, 255, 255, 0.9)', angle: 0.3, radius: 35 },
-    { size: 8, blur: 3.5, opacity: 0.75, zDepth: 1.1, color: 'rgba(76, 200, 244, 0.85)', angle: 1.8, radius: 42 },
-    { size: 7, blur: 3, opacity: 0.65, zDepth: 0.9, color: 'rgba(255, 109, 168, 0.8)', angle: 3.5, radius: 38 },
-    { size: 9, blur: 4, opacity: 0.7, zDepth: 1.0, color: 'rgba(200, 180, 240, 0.8)', angle: 5.0, radius: 40 },
+    { size: 10 * config.fragmentScale, blur: 4 * config.fragmentScale, opacity: 0.85, zDepth: 1.3, color: 'rgba(255, 255, 255, 0.9)', angle: 0.3, radius: 35 * config.fragmentScale },
+    { size: 8 * config.fragmentScale, blur: 3.5 * config.fragmentScale, opacity: 0.75, zDepth: 1.1, color: 'rgba(76, 200, 244, 0.85)', angle: 1.8, radius: 42 * config.fragmentScale },
+    { size: 7 * config.fragmentScale, blur: 3 * config.fragmentScale, opacity: 0.65, zDepth: 0.9, color: 'rgba(255, 109, 168, 0.8)', angle: 3.5, radius: 38 * config.fragmentScale },
+    { size: 9 * config.fragmentScale, blur: 4 * config.fragmentScale, opacity: 0.7, zDepth: 1.0, color: 'rgba(200, 180, 240, 0.8)', angle: 5.0, radius: 40 * config.fragmentScale },
   ];
 
   // Aurora flow paths
@@ -34,15 +77,19 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
   ];
 
   return (
-    <div className="relative w-[160px] h-[160px] lg:w-[220px] lg:h-[220px]">
+    <motion.div 
+      className={`relative ${config.container}`}
+      layoutId={layoutId}
+    >
       {/* Outer halo - enhanced elliptical */}
       <motion.div
-        className="absolute inset-[-25px] rounded-full"
+        className="absolute rounded-full"
         style={{
+          inset: `${config.outerHaloInset}px`,
           background: isError
             ? 'radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.15) 40%, transparent 70%)'
             : 'radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, 0.4) 0%, rgba(76, 200, 244, 0.2) 40%, transparent 70%)',
-          filter: 'blur(20px)',
+          filter: `blur(${config.outerBlur}px)`,
           transform: 'scale(1.08, 1)',
         }}
         animate={{
@@ -57,10 +104,11 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
 
       {/* Second halo layer for depth */}
       <motion.div
-        className="absolute inset-[-28px] rounded-full"
+        className="absolute rounded-full"
         style={{
+          inset: `${config.secondHaloInset}px`,
           background: 'radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, 0.15) 0%, rgba(76, 200, 244, 0.08) 40%, transparent 70%)',
-          filter: 'blur(25px)',
+          filter: `blur(${config.secondBlur}px)`,
           transform: 'scale(1.1, 1.05)',
         }}
         animate={{
@@ -75,12 +123,13 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
 
       {/* Thin halo ring - enhanced */}
       <motion.div
-        className="absolute inset-[-12px] rounded-full"
+        className="absolute rounded-full"
         style={{
+          inset: `${config.thinRingInset}px`,
           background: isError
             ? 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(239, 68, 68, 0.5) 75%, transparent 80%)'
             : 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
-          filter: 'blur(1.5px)',
+          filter: `blur(${config.thinBlur}px)`,
           transform: 'scale(1.08, 1)',
         }}
         animate={{
@@ -142,9 +191,9 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
           style={{
             background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.15) 0%, rgba(13, 44, 243, 0.45) 100%)',
             boxShadow: isError
-              ? '0 0 50px rgba(239, 68, 68, 0.3), inset 0 0 30px rgba(239, 68, 68, 0.2)'
-              : '0 0 50px rgba(76, 200, 244, 0.4), inset 0 0 30px rgba(255, 109, 168, 0.25)',
-            border: '2px solid rgba(255, 255, 255, 0.25)',
+              ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, 0.3), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
+              : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, 0.4), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`,
+            border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.25)`,
           }}
         >
           {/* Vignette effect for depth */}
@@ -237,12 +286,12 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 1 - aqua swirls (enhanced opacity) */}
+          {/* Nebula cloud layer 1 - aqua swirls (enhanced opacity) - scaled */}
           <motion.div
             className="absolute inset-0 opacity-60"
             style={{
               background: 'radial-gradient(circle at 35% 40%, rgba(76, 200, 244, 0.45) 0%, transparent 70%)',
-              filter: 'blur(15px)',
+              filter: `blur(${15 * config.nebulaScale}px)`,
             }}
             animate={{
               rotate: 360,
@@ -260,12 +309,12 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 2 - rose swirls (enhanced opacity) */}
+          {/* Nebula cloud layer 2 - rose swirls (enhanced opacity) - scaled */}
           <motion.div
             className="absolute inset-0 opacity-50"
             style={{
               background: 'radial-gradient(circle at 65% 55%, rgba(255, 109, 168, 0.4) 0%, transparent 65%)',
-              filter: 'blur(18px)',
+              filter: `blur(${18 * config.nebulaScale}px)`,
             }}
             animate={{
               rotate: -360,
@@ -283,12 +332,12 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 3 - aqua-rose blend (enhanced opacity) */}
+          {/* Nebula cloud layer 3 - aqua-rose blend (enhanced opacity) - scaled */}
           <motion.div
             className="absolute inset-0 opacity-40"
             style={{
               background: 'radial-gradient(circle at 50% 50%, rgba(160, 155, 220, 0.35) 0%, transparent 60%)',
-              filter: 'blur(20px)',
+              filter: `blur(${20 * config.nebulaScale}px)`,
             }}
             animate={{
               rotate: 360,
@@ -306,12 +355,12 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Nebula cloud layer 4 - NEW ultra-slow blend (atmospheric depth) */}
+          {/* Nebula cloud layer 4 - NEW ultra-slow blend (atmospheric depth) - scaled */}
           <motion.div
             className="absolute inset-0 opacity-35"
             style={{
               background: 'radial-gradient(ellipse at 45% 60%, rgba(76, 200, 244, 0.35) 0%, rgba(255, 109, 168, 0.25) 40%, transparent 70%)',
-              filter: 'blur(22px)',
+              filter: `blur(${22 * config.nebulaScale}px)`,
             }}
             animate={{
               rotate: -360,
@@ -329,11 +378,14 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Aurora Flow Paths - NEW signature element */}
+          {/* Aurora Flow Paths - NEW signature element - scaled */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox="0 0 160 160"
-            style={{ transform: 'translate(0, 0)' }}
+            style={{ 
+              transform: `translate(0, 0) scale(${config.auroraScale})`,
+              transformOrigin: 'center'
+            }}
           >
             {auroraStrands.map((strand, index) => (
               <motion.path
@@ -344,7 +396,7 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
                 strokeWidth={strand.width}
                 strokeLinecap="round"
                 style={{
-                  filter: `blur(${strand.blur}px)`,
+                  filter: `blur(${strand.blur * config.auroraScale}px)`,
                   mixBlendMode: 'screen',
                   opacity: isListening ? 0.85 : 0.7,
                 }}
@@ -371,14 +423,16 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             ))}
           </svg>
 
-          {/* Enhanced triple-core system */}
+          {/* Enhanced triple-core system - scaled */}
           {/* Outer core - aqua-rose blend (enhanced size and bloom) */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
+              width: `${config.coreSize * 0.96}px`,
+              height: `${config.coreSize * 0.96}px`,
               background: 'radial-gradient(circle, rgba(76, 200, 244, 0.85) 0%, rgba(255, 109, 168, 0.65) 60%, transparent 100%)',
-              filter: 'blur(24px)',
-              boxShadow: '0 0 60px rgba(76, 200, 244, 0.9), 0 0 80px rgba(76, 200, 244, 0.5)',
+              filter: `blur(${24 * config.nebulaScale}px)`,
+              boxShadow: `0 0 ${60 * config.nebulaScale}px rgba(76, 200, 244, 0.9), 0 0 ${80 * config.nebulaScale}px rgba(76, 200, 244, 0.5)`,
             }}
             animate={{
               scale: isListening ? [1, 1.1, 1] : [0.95, 1.05, 0.95],
@@ -404,13 +458,15 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Inner core - bright white center (enhanced size and bloom) */}
+          {/* Inner core - bright white center (enhanced size and bloom) - scaled */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
+              width: `${config.coreSize * 0.56}px`,
+              height: `${config.coreSize * 0.56}px`,
               background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.85) 50%, transparent 100%)',
-              filter: 'blur(18px)',
-              boxShadow: '0 0 40px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.6)',
+              filter: `blur(${18 * config.nebulaScale}px)`,
+              boxShadow: `0 0 ${40 * config.nebulaScale}px rgba(255, 255, 255, 1), 0 0 ${60 * config.nebulaScale}px rgba(255, 255, 255, 0.6)`,
             }}
             animate={{
               scale: isListening ? [1, 1.2, 1] : [0.95, 1.05, 0.95],
@@ -428,13 +484,15 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
             }}
           />
 
-          {/* Micro core - NEW pure white definition point */}
+          {/* Micro core - NEW pure white definition point - scaled */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
+              width: `${6 * config.fragmentScale}px`,
+              height: `${6 * config.fragmentScale}px`,
               background: 'rgba(255, 255, 255, 1)',
-              filter: 'blur(1px)',
-              boxShadow: '0 0 12px rgba(255, 255, 255, 1), 0 0 18px rgba(255, 255, 255, 0.8)',
+              filter: `blur(${1 * config.fragmentScale}px)`,
+              boxShadow: `0 0 ${12 * config.fragmentScale}px rgba(255, 255, 255, 1), 0 0 ${18 * config.fragmentScale}px rgba(255, 255, 255, 0.8)`,
             }}
             animate={{
               scale: [0.95, 1.05, 0.95],
@@ -523,6 +581,6 @@ export function VitanalandPortalSeed({ audioState, volumeLevel }: VitanalandPort
           )}
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
