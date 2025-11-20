@@ -5,10 +5,6 @@ import { Play, Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { OrbCore } from '@/components/vitanaland/OrbCore';
-import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
-import { useStreamingState } from '@/context/StreamingStateContext';
-import { playSound } from '@/lib/playSound';
 
 const MAXINA_WELCOME_SSML = `<speak>
   Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
@@ -19,8 +15,6 @@ const MAXINA_WELCOME_SSML = `<speak>
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { expandToFull } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -28,14 +22,6 @@ export default function IntroExperience() {
   const [fadeOut, setFadeOut] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleOrbClick = useCallback(() => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
-  }, [expandToFull, setAudioOverlayVisible]);
 
   // Load video source
   useEffect(() => {
@@ -244,43 +230,14 @@ export default function IntroExperience() {
               Skip
             </button>
           </div>
-
-          {/* Keyboard hints */}
-          <div className="flex items-center justify-center gap-4 text-sm text-white/60 font-light">
-            <div className="flex items-center gap-1.5">
-              <kbd className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/80 font-mono text-xs">Space</kbd>
-              <span>or</span>
-              <kbd className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/80 font-mono text-xs">Enter</kbd>
-              <span>Play</span>
-            </div>
-            <span className="text-white/30">•</span>
-            <div className="flex items-center gap-1.5">
-              <kbd className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/80 font-mono text-xs">Esc</kbd>
-              <span>Skip</span>
-            </div>
-          </div>
-
-          {/* VITANA Guide Orb */}
-          <div className="absolute bottom-20 left-0 right-0 flex flex-col items-center gap-3 z-20">
-            <button
-              onClick={handleOrbClick}
-              className="focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full transition-transform duration-150 hover:scale-105"
-              aria-label="Open VITANA Guide"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleOrbClick();
-                }
-              }}
-            >
-              <OrbCore size="sm" audioState="idle" volumeLevel={0} />
-            </button>
-            <p className="text-white/70 text-xs font-light">
-              Your VITANA Guide awaits inside
-            </p>
-          </div>
         </div>
+      </div>
+
+      {/* Keyboard Hints */}
+      <div className="absolute bottom-6 left-0 right-0 text-center">
+        <p className="text-white/40 text-xs">
+          Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Space</kbd> to play • <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Esc</kbd> to skip
+        </p>
       </div>
     </div>
   );

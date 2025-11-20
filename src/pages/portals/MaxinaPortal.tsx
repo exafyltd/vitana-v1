@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
@@ -12,10 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield } from "lucide-react";
-import { OrbCore } from "@/components/vitanaland/OrbCore";
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
-import { useStreamingState } from "@/context/StreamingStateContext";
-import { playSound } from "@/lib/playSound";
+import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
@@ -23,8 +20,6 @@ const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
-  const { expandToFull } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -32,14 +27,6 @@ const MaxinaPortal = () => {
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
   const [videoSrc, setVideoSrc] = useState<string>("");
-
-  const handleOrbClick = useCallback(() => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
-  }, [expandToFull, setAudioOverlayVisible]);
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
@@ -389,26 +376,19 @@ const MaxinaPortal = () => {
               </TabsContent>
               
               {/* VITANA Orb Indicator */}
-              <div className="absolute -bottom-3 -right-3 flex flex-col items-end gap-2">
+              <div className="absolute -bottom-3 -right-3 flex items-center gap-2">
                 <div className="bg-white/80 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-white/30">
-                  <p className="text-foreground/80 text-[11px] font-medium whitespace-nowrap">
+                  <p className="text-[11px] text-muted-foreground font-medium">
                     Your VITANA guide awaits inside
                   </p>
                 </div>
-                <button
-                  onClick={handleOrbClick}
-                  className="focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full transition-transform duration-150 hover:scale-105"
-                  aria-label="Open VITANA Guide"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleOrbClick();
-                    }
-                  }}
-                >
-                  <OrbCore size="sm" audioState="idle" volumeLevel={0} />
-                </button>
+                <div className="relative">
+                  <VitanalandPortalSeed
+                    audioState="idle"
+                    volumeLevel={0}
+                    size="sm"
+                  />
+                </div>
               </div>
             </Tabs>
           </Card>
