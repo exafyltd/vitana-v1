@@ -85,14 +85,32 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
         <div 
           className={`relative flex items-center gap-3 transition-all duration-[400ms] ${
             isExpanded ? 'translate-x-[-200px]' : 'translate-x-0'
-          } group-hover:translate-x-[-4px]`}
+          }`}
           style={{
             transitionTimingFunction: isExpanded 
               ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' 
               : 'cubic-bezier(0.22, 1, 0.36, 1)'
           }}
         >
-          {/* Expanding text pill - flows naturally beside orb */}
+          {/* Orb container - appears first (left) */}
+          <div className="relative flex-shrink-0">
+            {/* Dark radial pad for better contrast against bright backgrounds */}
+            <div className="absolute inset-0 translate-x-1 translate-y-1">
+              <div className="h-24 w-24 rounded-full bg-black/30 blur-xl" />
+            </div>
+            
+            {/* Orb (positioned on top of pad) */}
+            <div className="relative">
+              <VitanalandPortalSeed 
+                size="md" 
+                audioState="idle" 
+                volumeLevel={0}
+                layoutId="vitana-orb"
+              />
+            </div>
+          </div>
+
+          {/* Expanding text pill - appears second (right of orb) */}
           <AnimatePresence>
             {showTooltip && (
               <motion.div
@@ -111,24 +129,6 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Orb container */}
-          <div className="relative flex-shrink-0">
-            {/* Dark radial pad for better contrast against bright backgrounds */}
-            <div className="absolute inset-0 translate-x-1 translate-y-1">
-              <div className="h-24 w-24 rounded-full bg-black/30 blur-xl" />
-            </div>
-            
-            {/* Orb (positioned on top of pad) */}
-            <div className="relative">
-              <VitanalandPortalSeed 
-                size="md" 
-                audioState="idle" 
-                volumeLevel={0}
-                layoutId="vitana-orb"
-              />
-            </div>
-          </div>
         </div>
         
         {/* Hover-only Tooltip - appears beside orb on hover */}
