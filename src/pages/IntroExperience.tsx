@@ -5,6 +5,11 @@ import { Play, Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
+import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
+import { useStreamingState } from '@/context/StreamingStateContext';
+import { playSound } from '@/lib/playSound';
+import { motion } from 'framer-motion';
 
 const MAXINA_WELCOME_SSML = `<speak>
   Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
@@ -15,6 +20,8 @@ const MAXINA_WELCOME_SSML = `<speak>
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
+  const { expandToFull } = useVitanalandNavigation();
+  const { setAudioOverlayVisible } = useStreamingState();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -57,6 +64,14 @@ export default function IntroExperience() {
     }
     continueToMaxina();
   }, [continueToMaxina]);
+
+  const handleOrbClick = () => {
+    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
+    expandToFull();
+    setTimeout(() => {
+      setAudioOverlayVisible(true);
+    }, 100);
+  };
 
   const handlePlayAudio = useCallback(async () => {
     setIsPreparingAudio(true);
@@ -239,6 +254,40 @@ export default function IntroExperience() {
           Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Space</kbd> to play • <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Esc</kbd> to skip
         </p>
       </div>
+
+      {/* Mini VITANA Orb - Bottom Right */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2"
+      >
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Open VITANA guide"
+          onClick={handleOrbClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleOrbClick();
+            }
+          }}
+          className="cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
+        >
+          <VitanalandPortalSeed 
+            size="sm" 
+            audioState="idle" 
+            volumeLevel={0}
+            layoutId="vitana-orb"
+          />
+        </div>
+        <div className="bg-white/80 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-white/30">
+          <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+            Your VITANA guide awaits inside
+          </span>
+        </div>
+      </motion.div>
     </div>
   );
 }
