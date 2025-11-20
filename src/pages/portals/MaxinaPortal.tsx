@@ -166,17 +166,17 @@ const MaxinaPortal = () => {
       <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
       
       {/* Content layer */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen p-6">
-        <div className="max-w-md w-full space-y-8">
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4">
+        <div className="max-w-md w-full space-y-4">
           {/* Header */}
           <div className="text-center">
-            <div className="flex items-center justify-center mb-6">
-              <div className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                <Heart className="h-10 w-10 text-white" fill="white" fillOpacity={0.3} />
+            <div className="flex items-center justify-center mb-4">
+              <div className="p-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+                <Heart className="h-8 w-8 text-white" fill="white" fillOpacity={0.3} />
               </div>
             </div>
-            <h1 className="text-5xl font-bold text-white tracking-tight">Maxina</h1>
-            <p className="text-white/90 mt-3 text-lg font-light">
+            <h1 className="text-4xl font-bold text-white tracking-tight">Maxina</h1>
+            <p className="text-white/90 mt-2 text-base font-light">
               Your wellness journey starts here
             </p>
           </div>
@@ -190,14 +190,14 @@ const MaxinaPortal = () => {
               </TabsList>
               
               <TabsContent value="signin">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Welcome back to Maxina.</CardTitle>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl">Welcome back to Maxina.</CardTitle>
                   <CardDescription className="text-base mt-2">
                     Sign in to continue your Vitanaland journey.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSignIn} className="space-y-4">
+                  <form onSubmit={handleSignIn} className="space-y-3">
                     {error && (
                       <Alert variant="destructive">
                         <AlertDescription>{error}</AlertDescription>
@@ -261,14 +261,14 @@ const MaxinaPortal = () => {
               </TabsContent>
               
               <TabsContent value="signup">
-                <CardHeader>
-                  <CardTitle className="text-2xl">Join the Maxina community.</CardTitle>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl">Join the Maxina community.</CardTitle>
                   <CardDescription className="text-base mt-2">
                     Create your account and begin your wellness journey.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSignUp} className="space-y-4">
+                  <form onSubmit={handleSignUp} className="space-y-3">
                     {error && (
                       <Alert variant="destructive">
                         <AlertDescription>{error}</AlertDescription>
@@ -394,35 +394,37 @@ const MaxinaPortal = () => {
           </Card>
 
           {/* Trust & Navigation Footer */}
-          <div className="space-y-4">
-            <p className="text-center text-white/70 text-sm">
+          <div className="space-y-3">
+            <p className="text-center text-white/70 text-xs">
               Maxina is part of the VITANA ecosystem.
             </p>
             
             <div className="flex justify-center items-center space-x-4 text-sm">
-              <Link to="/privacy" className="text-white/60 hover:text-white transition-colors">
+              <Link to="/privacy" className="text-white/80 hover:text-white font-medium transition-colors">
                 Privacy
               </Link>
               <span className="text-white/40">·</span>
-              <Link to="/terms" className="text-white/60 hover:text-white transition-colors">
+              <Link to="/terms" className="text-white/80 hover:text-white font-medium transition-colors">
                 Terms
               </Link>
               <span className="text-white/40">·</span>
-              <Link to="/help" className="text-white/60 hover:text-white transition-colors">
+              <Link to="/help" className="text-white/80 hover:text-white font-medium transition-colors">
                 Help
               </Link>
             </div>
             
+            <div className="w-16 h-px bg-white/30 mx-auto" />
+            
             {/* Secondary navigation */}
-            <div className="flex justify-center space-x-6 text-sm pt-2">
-              <Link to="/alkalma" className="text-white/50 hover:text-white/80 transition-colors">
+            <div className="flex justify-center space-x-6 text-sm pt-1">
+              <Link to="/alkalma" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
                 AlKalma Portal
               </Link>
-              <Link to="/earthlinks" className="text-white/50 hover:text-white/80 transition-colors">
+              <Link to="/earthlinks" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
                 Earthlinks Portal
               </Link>
-              <Link to="/" className="text-white/50 hover:text-white/80 transition-colors">
-                Public Portal
+              <Link to="/" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
+                ← Back to All Portals
               </Link>
             </div>
           </div>
