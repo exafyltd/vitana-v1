@@ -62,7 +62,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                 handleOrbClick();
               }
             }}
-            aria-label="Open VITANA Orb (⌘K)"
+            aria-label="Ask VITANA for guidance (⌘K)"
           >
             {/* Keyboard-trigger pulse wrapper */}
             <motion.div
@@ -85,7 +85,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
           </div>
         </TooltipTrigger>
         <TooltipContent side="right">
-          <p>Open VITANA Orb (⌘K)</p>
+          <p>Ask VITANA for guidance (⌘K)</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
