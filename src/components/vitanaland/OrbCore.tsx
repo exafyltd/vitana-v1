@@ -1,0 +1,198 @@
+import { motion } from "framer-motion";
+
+interface OrbCoreProps {
+  size: 'sm' | 'md' | 'xl';
+  audioState?: 'idle' | 'listening' | 'processing' | 'error';
+  volumeLevel?: number;
+  enableFloat?: boolean;
+  layoutId?: string;
+  className?: string;
+}
+
+const sizeConfig = {
+  sm: {
+    container: 'w-16 h-16',
+    outerHalo: 'inset-[-14px]',
+    secondHalo: 'inset-[-16px]',
+    thinRing: 'inset-[-7px]',
+    outerBlur: '18px',
+    secondBlur: '22px',
+    thinBlur: '1.5px',
+    breathingScale: [1, 1.02, 1],
+  },
+  md: {
+    container: 'w-24 h-24',
+    outerHalo: 'inset-[-18px]',
+    secondHalo: 'inset-[-21px]',
+    thinRing: 'inset-[-9px]',
+    outerBlur: '19px',
+    secondBlur: '23px',
+    thinBlur: '1.5px',
+    breathingScale: [1, 1.025, 1],
+  },
+  xl: {
+    container: 'w-[120px] h-[120px] lg:w-[140px] lg:h-[140px]',
+    outerHalo: 'inset-[-20px] lg:inset-[-25px]',
+    secondHalo: 'inset-[-23px] lg:inset-[-28px]',
+    thinRing: 'inset-[-10px] lg:inset-[-12px]',
+    outerBlur: '20px',
+    secondBlur: '25px',
+    thinBlur: '1.5px',
+    breathingScale: [1, 1.03, 1],
+  },
+};
+
+export function OrbCore({
+  size,
+  audioState = 'idle',
+  volumeLevel = 0,
+  enableFloat = false,
+  layoutId,
+  className = '',
+}: OrbCoreProps) {
+  const config = sizeConfig[size];
+  
+  // Enhanced animations for listening state
+  const isListening = audioState === 'listening';
+  const isProcessing = audioState === 'processing';
+  
+  const orbContent = (
+    <motion.div
+      layoutId={layoutId}
+      className={`relative ${config.container} ${className}`}
+    >
+      {/* Outer halo - enhanced elliptical */}
+      <motion.div
+        className={`absolute ${config.outerHalo} rounded-full`}
+        style={{
+          background: 'radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, 0.4) 0%, rgba(76, 200, 244, 0.2) 40%, transparent 70%)',
+          filter: `blur(${config.outerBlur})`,
+          transform: 'scale(1.08, 1)',
+        }}
+        animate={{
+          scale: isListening ? 1.15 : 1.08,
+          opacity: isListening ? [0.8, 1, 0.8] : [0.9, 1, 0.9],
+        }}
+        transition={{
+          scale: { duration: 0.2, ease: 'easeOut' },
+          opacity: { duration: isListening ? 1.2 : 4, repeat: Infinity, ease: 'easeInOut' },
+        }}
+      />
+
+      {/* Second halo layer for depth */}
+      <motion.div
+        className={`absolute ${config.secondHalo} rounded-full`}
+        style={{
+          background: 'radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, 0.15) 0%, rgba(76, 200, 244, 0.08) 40%, transparent 70%)',
+          filter: `blur(${config.secondBlur})`,
+          transform: 'scale(1.1, 1.05)',
+        }}
+        animate={{
+          opacity: [0.6, 0.8, 0.6],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      />
+
+      {/* Thin halo ring */}
+      <motion.div
+        className={`absolute ${config.thinRing} rounded-full`}
+        style={{
+          background: 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
+          filter: `blur(${config.thinBlur})`,
+          transform: 'scale(1.08, 1)',
+        }}
+        animate={{
+          scale: isListening ? 1.15 : 1.08,
+        }}
+        transition={{
+          duration: 0.2,
+          ease: 'easeOut',
+        }}
+      />
+
+      {/* Main orb sphere - crystal gradient */}
+      <motion.div
+        className={`relative ${config.container} rounded-full overflow-visible`}
+        style={{
+          background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
+          boxShadow: 'inset 0 0 80px rgba(255, 255, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.15)',
+        }}
+        animate={{
+          scale: isProcessing ? [1, 1.015, 1] : config.breathingScale,
+          scaleX: [1, 1.025, 1, 0.975, 1],
+          scaleY: [1, 0.975, 1, 1.025, 1],
+        }}
+        transition={{
+          scale: {
+            duration: isProcessing ? 3 : 6,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          },
+          scaleX: {
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          },
+          scaleY: {
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          },
+        }}
+        whileHover={{
+          scale: size === 'sm' ? 1.03 : 1.08,
+        }}
+      >
+        {/* Highlight spot for 3D depth */}
+        <div
+          className="absolute top-[20%] left-[25%] w-[35%] h-[35%] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 65%)',
+            filter: 'blur(8px)',
+          }}
+        />
+        
+        {/* Inner shimmer highlight */}
+        <motion.div
+          className="absolute inset-[15%] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
+            filter: 'blur(12px)',
+          }}
+          animate={{
+            opacity: [0.4, 0.7, 0.4],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+
+  // Wrap in float animation if enabled
+  if (enableFloat) {
+    return (
+      <motion.div
+        animate={{
+          y: [-8, 8, -8],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      >
+        {orbContent}
+      </motion.div>
+    );
+  }
+
+  return orbContent;
+}
