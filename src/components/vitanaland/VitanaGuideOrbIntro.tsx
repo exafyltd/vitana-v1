@@ -75,15 +75,15 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       >
         {/* Container for orb + expanding pill */}
         <div className="relative flex items-center gap-3">
-          {/* Expanding text pill - grows out of the orb */}
+          {/* Expanding text pill - grows out of the orb with 120ms delay */}
           <AnimatePresence>
             {isExpanded && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.90 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="absolute right-full top-1/2 -translate-y-1/2 mr-3 origin-right"
+                exit={{ opacity: 0, scale: 0.90 }}
+                transition={{ duration: 0.25, ease: "easeOut", delay: 0.12 }}
+                className="absolute left-full top-1/2 -translate-y-1/2 ml-3 origin-left"
               >
                 <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
                   <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
@@ -95,8 +95,10 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
             )}
           </AnimatePresence>
 
-          {/* Orb container */}
-          <div className="relative flex-shrink-0">
+          {/* Orb container - moves left and up during intro */}
+          <div className={`relative flex-shrink-0 transition-all duration-300 ease-out ${
+            isExpanded ? 'translate-x-[-12px] translate-y-[-2px]' : 'translate-x-0 translate-y-0'
+          } group-hover:translate-x-[-4px]`}>
             {/* Dark radial pad for better contrast against bright backgrounds */}
             <div className="absolute inset-0 translate-x-1 translate-y-1">
               <div className="h-24 w-24 rounded-full bg-black/30 blur-xl" />
@@ -116,7 +118,7 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
         
         {/* Hover-only Tooltip - grows out of the orb on hover */}
         {!isExpanded && (
-          <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 origin-right opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
+          <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 origin-left opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
             <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
               <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-sky-300 animate-pulse" />
