@@ -15,11 +15,17 @@ import { Loader2, Heart, Users, Stethoscope, Shield } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { useStreamingState } from "@/context/StreamingStateContext";
+import { playSound } from "@/lib/playSound";
+import { motion } from "framer-motion";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
+  const { expandToFull } = useVitanalandNavigation();
+  const { setAudioOverlayVisible } = useStreamingState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -50,6 +56,14 @@ const MaxinaPortal = () => {
   useEffect(() => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
+
+  const handleOrbClick = () => {
+    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
+    expandToFull();
+    setTimeout(() => {
+      setAudioOverlayVisible(true);
+    }, 100);
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -182,7 +196,7 @@ const MaxinaPortal = () => {
           </div>
 
           {/* Auth Tabs */}
-          <Card className="relative bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20">
+          <Card className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20">
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -374,22 +388,6 @@ const MaxinaPortal = () => {
                   </form>
                 </CardContent>
               </TabsContent>
-              
-              {/* VITANA Orb Indicator */}
-              <div className="absolute -bottom-3 -right-3 flex items-center gap-2">
-                <div className="bg-white/80 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-white/30">
-                  <p className="text-[11px] text-muted-foreground font-medium">
-                    Your VITANA guide awaits inside
-                  </p>
-                </div>
-                <div className="relative">
-                  <VitanalandPortalSeed
-                    audioState="idle"
-                    volumeLevel={0}
-                    size="sm"
-                  />
-                </div>
-              </div>
             </Tabs>
           </Card>
 
@@ -429,6 +427,40 @@ const MaxinaPortal = () => {
             </div>
           </div>
         </div>
+
+        {/* Mini VITANA Orb - Fixed Bottom Right */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-2"
+        >
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label="Open VITANA guide"
+            onClick={handleOrbClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleOrbClick();
+              }
+            }}
+            className="cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
+          >
+            <VitanalandPortalSeed 
+              size="sm" 
+              audioState="idle" 
+              volumeLevel={0}
+              layoutId="vitana-orb"
+            />
+          </div>
+          <div className="bg-white/80 backdrop-blur-md rounded-full px-3 py-1.5 shadow-lg border border-white/30">
+            <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+              Your VITANA guide awaits inside
+            </span>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
