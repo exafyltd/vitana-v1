@@ -107,8 +107,8 @@ export function VitanaAudioOverlay() {
     if (isProcessing) return 'Thinking...';
     if (isListening) return "I'm listening...";
     if (connectionState === 'connecting') return 'Setting up AI connection...';
-    if (connectionState === 'ready') return 'Ready - say something or press the mic';
-    if (connectionState === 'disconnected') return 'Disconnected';
+    if (connectionState === 'ready' && !isSpeaking && !isListening) return 'Ready - say something or press the mic';
+    if (connectionState === 'disconnected') return 'Connection lost — tap the orb to reconnect';
     return 'Connecting...';
   };
 

@@ -12,6 +12,7 @@ interface VitanalandLiveCallbacks {
   onAudioEnd?: () => void;
   onResponseComplete?: () => void;
   onToolCall?: (toolCall: any) => void;
+  onGreetingComplete?: () => void;
 }
 
 class VitanalandLiveService {
@@ -23,6 +24,7 @@ class VitanalandLiveService {
   private processor: ScriptProcessorNode | null = null;
   private source: MediaStreamAudioSourceNode | null = null;
   private isCurrentlyListening = false;
+  private hasGreetingPlayed = false;
 
   constructor(callbacks: VitanalandLiveCallbacks) {
     this.callbacks = callbacks;
@@ -83,7 +85,12 @@ class VitanalandLiveService {
             // Server may send these at top level instead of wrapped
             this.handleServerContent(data);
           } else if (data.type === 'error') {
+            console.error('[VITANALAND Service] Error from server:', data.message);
             this.callbacks.onError?.(data.message ?? 'Unknown error from server');
+            // If error is recoverable, don't mark as disconnected
+            if (!data.recoverable) {
+              this.callbacks.onConnectionChange?.(false);
+            }
           } else if (data.toolCall) {
             console.log('[VITANALAND Service] 🔧 Tool call received:', data.toolCall);
             this.callbacks.onToolCall?.(data.toolCall);
@@ -95,13 +102,18 @@ class VitanalandLiveService {
 
       this.ws.onerror = (error) => {
         console.error('[VITANALAND Service] ❌ WebSocket error:', error);
-        this.callbacks.onError?.('Connection error');
+        const errorMessage = this.isSetupComplete 
+          ? 'Connection interrupted. You can try again.'
+          : 'Could not complete setup. Please try again.';
+        this.callbacks.onError?.(errorMessage);
       };
 
       this.ws.onclose = () => {
         console.log('[VITANALAND Service] 🔌 WebSocket closed');
         this.callbacks.onConnectionChange?.(false);
+        this.callbacks.onError?.('Connection lost — tap the orb to reconnect');
         this.isSetupComplete = false;
+        this.hasGreetingPlayed = false;
       };
     } catch (error) {
       console.error('[VITANALAND Service] ❌ Connection error:', error);
@@ -123,6 +135,13 @@ class VitanalandLiveService {
     if (serverContent.turnComplete) {
       this.callbacks.onResponseComplete?.();
       this.callbacks.onAudioEnd?.();
+      
+      // If this was the greeting (first audio), trigger greeting complete
+      if (!this.hasGreetingPlayed && this.isSetupComplete) {
+        this.hasGreetingPlayed = true;
+        console.log('[VITANALAND Service] 🎉 Greeting complete, triggering auto-listen');
+        this.callbacks.onGreetingComplete?.();
+      }
     }
     
     if (serverContent.modelTurn) {
@@ -184,6 +203,13 @@ class VitanalandLiveService {
         }
 
         const inputData = e.inputBuffer.getChannelData(0);
+        
+        // Skip nearly silent frames
+        const maxAmplitude = Math.max(...Array.from(inputData).map(Math.abs));
+        if (maxAmplitude < 0.01) {
+          return;
+        }
+        
         const base64Audio = this.encodeAudioForAPI(new Float32Array(inputData));
 
         const message = {
@@ -294,6 +320,7 @@ class VitanalandLiveService {
       this.ws = null;
     }
     this.isSetupComplete = false;
+    this.hasGreetingPlayed = false;
   }
 }
 
@@ -309,12 +336,14 @@ export function useVitanalandLive() {
   const onAudioResponseRef = useRef<((blob: Blob) => void) | null>(null);
   const onAudioStartRef = useRef<(() => void) | null>(null);
   const onAudioEndRef = useRef<(() => void) | null>(null);
+  const hasAutoStartedListeningRef = useRef(false);
 
   const connect = useCallback(async (onToolCall?: (toolCall: any) => void) => {
     if (serviceRef.current) return;
 
     setConnectionState('connecting');
     setError(null);
+    hasAutoStartedListeningRef.current = false;
     onToolCallRef.current = onToolCall || null;
 
     try {
@@ -336,7 +365,20 @@ export function useVitanalandLive() {
           onAudioEndRef.current?.();
         },
         onResponseComplete: () => setIsProcessing(false),
-        onToolCall: (toolCall) => onToolCallRef.current?.(toolCall)
+        onToolCall: (toolCall) => onToolCallRef.current?.(toolCall),
+        onGreetingComplete: () => {
+          // Auto-start listening after greeting plays (one-time only)
+          if (!hasAutoStartedListeningRef.current) {
+            hasAutoStartedListeningRef.current = true;
+            console.log('[useVitanalandLive] Greeting complete, auto-starting listening in 500ms...');
+            setTimeout(() => {
+              if (serviceRef.current && connectionState === 'ready') {
+                setIsListening(true);
+                serviceRef.current.startListening();
+              }
+            }, 500);
+          }
+        }
       });
 
       await service.connect(session.access_token);
@@ -345,7 +387,7 @@ export function useVitanalandLive() {
       setError(err instanceof Error ? err.message : 'Connection failed');
       setConnectionState('disconnected');
     }
-  }, []);
+  }, [connectionState]);
 
   const disconnect = useCallback(() => {
     if (serviceRef.current) {
@@ -357,6 +399,7 @@ export function useVitanalandLive() {
     setIsProcessing(false);
     setIsSpeaking(false);
     setError(null);
+    hasAutoStartedListeningRef.current = false;
   }, []);
 
   const startListening = useCallback(async () => {
