@@ -42,19 +42,8 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
             onClick={handleOrbClick}
             aria-label="Open VITANA Orb (⌘K)"
           >
-            {/* Floating motion wrapper - matches CentralGuideOrb idle state */}
+            {/* Keyboard-trigger pulse wrapper */}
             <motion.div
-              animate={{
-                y: [-8, 8, -8],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            >
-              {/* Keyboard-trigger pulse wrapper */}
-              <motion.div
                 className="relative"
                 animate={isPulsing ? {
                   scale: [1, 1.15, 1],
@@ -72,11 +61,11 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                   filter: 'blur(18px)',
                 }}
                 animate={{
-                  scale: [1, 1.04, 1],
+                  scale: [1, 1.02, 1],
                   opacity: [0.7, 0.9, 0.7],
                 }}
                 transition={{
-                  duration: 6,
+                  duration: 8,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
@@ -121,38 +110,38 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
               />
 
               {/* Main orb sphere (64px) - crystal gradient */}
-              <motion.div
-                className="relative w-16 h-16 rounded-full overflow-visible"
-                style={{
-                  background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
-                  boxShadow: 'inset 0 0 50px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15)',
-                }}
-                animate={{
-                  scale: [1, 1.03, 1],
-                  scaleX: [1, 1.025, 1, 0.975, 1],
-                  scaleY: [1, 0.975, 1, 1.025, 1],
-                }}
-                transition={{
-                  scale: {
-                    duration: 4,  // Match CentralGuideOrb idle state
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  },
-                  scaleX: {
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  },
-                  scaleY: {
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  },
-                }}
-                whileHover={{
-                  scale: 1.05,
-                }}
-              >
+               <motion.div
+                 className="relative w-16 h-16 rounded-full overflow-visible"
+                 style={{
+                   background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
+                   boxShadow: 'inset 0 0 50px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15)',
+                 }}
+                 animate={{
+                   scale: [1, 1.03, 1],
+                   scaleX: [1, 1.025, 1, 0.975, 1],
+                   scaleY: [1, 0.975, 1, 1.025, 1],
+                 }}
+                 transition={{
+                   scale: {
+                     duration: 6,
+                     repeat: Infinity,
+                     ease: 'easeInOut',
+                   },
+                   scaleX: {
+                     duration: 8,
+                     repeat: Infinity,
+                     ease: 'easeInOut',
+                   },
+                   scaleY: {
+                     duration: 8,
+                     repeat: Infinity,
+                     ease: 'easeInOut',
+                   },
+                 }}
+                 whileHover={{
+                   scale: 1.05,
+                 }}
+               >
                 {/* Highlight spot for 3D depth */}
                  <div
                    className="absolute top-[20%] left-[25%] w-[35%] h-[35%] rounded-full"
@@ -163,24 +152,23 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
                  />
                 
                 {/* Inner shimmer highlight */}
-                 <motion.div
-                   className="absolute inset-[15%] rounded-full"
-                   style={{
-                     background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
-                     filter: 'blur(12px)',
-                   }}
-                   animate={{
-                     opacity: [0.6, 0.8, 0.6],
-                   }}
-                   transition={{
-                     duration: 3,
-                     repeat: Infinity,
-                     ease: 'easeInOut',
-                   }}
-                 />
-              </motion.div>
-            </motion.div>
-            </motion.div>
+                  <motion.div
+                    className="absolute inset-[15%] rounded-full"
+                    style={{
+                      background: 'radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(76, 200, 244, 0.3))',
+                      filter: 'blur(12px)',
+                    }}
+                    animate={{
+                      opacity: [0.4, 0.7, 0.4],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    }}
+                  />
+               </motion.div>
+             </motion.div>
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right">

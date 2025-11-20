@@ -59,11 +59,11 @@ export function VitanaButton() {
                   filter: 'blur(14px)',
                 }}
                 animate={{
-                  scale: [1, 1.04, 1],
+                  scale: [1, 1.02, 1],
                   opacity: [0.7, 0.9, 0.7],
                 }}
                 transition={{
-                  duration: 6,
+                  duration: 8,
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
@@ -116,11 +116,25 @@ export function VitanaButton() {
                 }}
                 animate={{
                   scale: [1, 1.03, 1],
+                  scaleX: [1, 1.025, 1, 0.975, 1],
+                  scaleY: [1, 0.975, 1, 1.025, 1],
                 }}
                 transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
+                  scale: {
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
+                  scaleX: {
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
+                  scaleY: {
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
                 }}
                 whileHover={{
                   scale: 1.05,
@@ -136,75 +150,12 @@ export function VitanaButton() {
                     opacity: [0.4, 0.7, 0.4],
                   }}
                   transition={{
-                    duration: 3.5,
+                    duration: 4,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
                 />
               </motion.div>
-
-              {/* Micro star particle 1 */}
-              <motion.div
-                className="absolute w-[3px] h-[3px] rounded-full"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  boxShadow: '0 0 6px rgba(56, 189, 248, 0.9), 0 0 3px rgba(255, 255, 255, 0.7)',
-                }}
-                animate={{
-                  x: [16, 11.3, 0, -11.3, -16, -11.3, 0, 11.3, 16],
-                  y: [0, -11.3, -16, -11.3, 0, 11.3, 16, 11.3, 0],
-                  opacity: [0.5, 0.8, 0.5],
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
-
-              {/* Micro star particle 2 */}
-              <motion.div
-                className="absolute w-[2.5px] h-[2.5px] rounded-full"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  background: 'rgba(224, 242, 254, 0.85)',
-                  boxShadow: '0 0 5px rgba(34, 211, 238, 0.8)',
-                }}
-                animate={{
-                  x: [-16, -11.3, 0, 11.3, 16, 11.3, 0, -11.3, -16],
-                  y: [0, 11.3, 16, 11.3, 0, -11.3, -16, -11.3, 0],
-                  opacity: [0.4, 0.7, 0.4],
-                }}
-                transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
-
-              {/* Micro star particle 3 */}
-              <motion.div
-                className="absolute w-[2px] h-[2px] rounded-full"
-                style={{
-                  top: '50%',
-                  left: '50%',
-                  background: 'rgba(186, 230, 253, 0.9)',
-                  boxShadow: '0 0 4px rgba(14, 165, 233, 0.7)',
-                }}
-                animate={{
-                  x: [0, 14, 14, 0, -14, -14, 0],
-                  y: [-14, -14, 0, 14, 14, 0, -14],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 12,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
             </motion.div>
           </Button>
         </TooltipTrigger>
