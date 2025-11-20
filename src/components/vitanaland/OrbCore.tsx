@@ -11,15 +11,15 @@ interface OrbCoreProps {
 
 const sizeConfig = {
   sm: {
-    container: 'w-16 h-16',
-    outerHalo: 'inset-[-14px]',
-    secondHalo: 'inset-[-16px]',
-    thinRing: 'inset-[-7px]',
-    outerBlur: '18px',
-    secondBlur: '22px',
+    container: 'w-12 h-12',
+    outerHalo: 'inset-[-10px]',
+    secondHalo: 'inset-[-12px]',
+    thinRing: 'inset-[-5px]',
+    outerBlur: '14px',
+    secondBlur: '17px',
     thinBlur: '1.5px',
     breathingScale: [1, 1.02, 1],
-    dotSize: 'w-[3px] h-[3px]',
+    dotSize: 'w-[2.5px] h-[2.5px]',
     dotBlur: 'blur(0.5px)',
     outerHaloOpacity: 0.5,
     secondHaloOpacity: 0.18,

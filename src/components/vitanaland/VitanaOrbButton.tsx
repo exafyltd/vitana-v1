@@ -51,11 +51,11 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div
-            role="button"
-            tabIndex={0}
-            className="p-4 h-24 w-24 rounded-full relative overflow-visible mx-auto cursor-pointer"
-            onClick={handleOrbClick}
+        <div
+          role="button"
+          tabIndex={0}
+          className="p-3 h-[72px] w-[72px] rounded-full relative overflow-visible mx-auto cursor-pointer"
+          onClick={handleOrbClick}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
