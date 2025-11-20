@@ -10,28 +10,46 @@ interface VitanaGuideOrbIntroProps {
 const INTRO_STORAGE_KEY = 'vitanaGuideIntroShown';
 
 export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrbIntroProps) {
-  const [showIntro, setShowIntro] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    // Check if intro has been shown before
-    const hasSeenIntro = localStorage.getItem(INTRO_STORAGE_KEY);
+    // Check if intro has been shown in this session
+    const hasSeenIntro = sessionStorage.getItem(INTRO_STORAGE_KEY);
     
-    if (!hasSeenIntro) {
+    // Force show via URL parameter for testing
+    const urlParams = new URLSearchParams(window.location.search);
+    const forceShow = urlParams.get('showOrbIntro') === 'true';
+    
+    console.log('[VitanaGuideOrbIntro] hasSeenIntro:', hasSeenIntro, 'forceShow:', forceShow);
+    
+    if (!hasSeenIntro || forceShow) {
+      const totalDelay = (initialDelay + 0.8) * 1000;
+      console.log(`[VitanaGuideOrbIntro] Starting timer (${totalDelay}ms)...`);
+      
       // Trigger intro animation after delay
       const timer = setTimeout(() => {
-        setShowIntro(true);
+        console.log('[VitanaGuideOrbIntro] Expanding pill...');
         setIsExpanded(true);
         
         // Hold expanded state for 2.5 seconds, then retract
         setTimeout(() => {
+          console.log('[VitanaGuideOrbIntro] Retracting pill...');
           setIsExpanded(false);
-          // Mark intro as shown
-          localStorage.setItem(INTRO_STORAGE_KEY, 'true');
+          
+          // Mark intro as shown (unless forced)
+          if (!forceShow) {
+            sessionStorage.setItem(INTRO_STORAGE_KEY, 'true');
+            console.log('[VitanaGuideOrbIntro] Marked as shown in sessionStorage');
+          }
         }, 2500);
-      }, (initialDelay + 0.8) * 1000); // After initial fade-in animation + 800ms
+      }, totalDelay);
 
-      return () => clearTimeout(timer);
+      return () => {
+        console.log('[VitanaGuideOrbIntro] Cleaning up timer');
+        clearTimeout(timer);
+      };
+    } else {
+      console.log('[VitanaGuideOrbIntro] Intro already shown, skipping animation');
     }
   }, [initialDelay]);
 
