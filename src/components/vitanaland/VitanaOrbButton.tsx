@@ -112,10 +112,10 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
               {/* Main orb sphere (64px) - crystal gradient */}
                <motion.div
                  className="relative w-16 h-16 rounded-full overflow-visible"
-                 style={{
-                   background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
-                   boxShadow: 'inset 0 0 50px rgba(255, 255, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.15)',
-                 }}
+                style={{
+                  background: 'radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95), rgba(200, 240, 255, 0.85) 45%, rgba(150, 220, 255, 0.75) 70%, rgba(76, 200, 244, 0.6))',
+                  boxShadow: 'inset 0 0 80px rgba(255, 255, 255, 0.4), 0 8px 32px rgba(0, 0, 0, 0.15)',
+                }}
                  animate={{
                    scale: [1, 1.03, 1],
                    scaleX: [1, 1.025, 1, 0.975, 1],

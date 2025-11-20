@@ -2570,6 +2570,54 @@ export type Database = {
           },
         ]
       }
+      governance_proposals: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          id: string
+          original_rule: Json | null
+          proposal_id: string
+          proposed_rule: Json
+          rationale: string | null
+          rule_code: string | null
+          status: string
+          tenant_id: string
+          timeline: Json
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          id?: string
+          original_rule?: Json | null
+          proposal_id: string
+          proposed_rule: Json
+          rationale?: string | null
+          rule_code?: string | null
+          status?: string
+          tenant_id: string
+          timeline?: Json
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          id?: string
+          original_rule?: Json | null
+          proposal_id?: string
+          proposed_rule?: Json
+          rationale?: string | null
+          rule_code?: string | null
+          status?: string
+          tenant_id?: string
+          timeline?: Json
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       governance_rules: {
         Row: {
           category_id: string | null
