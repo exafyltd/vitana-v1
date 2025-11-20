@@ -345,11 +345,14 @@ serve(async (req) => {
             type: error.type || 'unknown',
             timestamp: new Date().toISOString()
           });
+          // Send recoverable error to client but don't close connection
           clientSocket.send(JSON.stringify({ 
             type: 'error', 
-            message: 'AI service connection failed. Please try again.' 
+            message: 'Vitana had a hiccup. You can try again.',
+            recoverable: true
           }));
-          clientSocket.close(4503, 'vertex-error');
+          // Only close Vertex socket, not client socket
+          if (vertexSocket) vertexSocket.close();
         };
 
         vertexSocket.onclose = () => {
