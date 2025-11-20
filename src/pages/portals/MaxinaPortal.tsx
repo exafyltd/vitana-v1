@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
+import { VitanaGuideOrbIntro } from "@/components/vitanaland/VitanaGuideOrbIntro";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
@@ -429,46 +430,7 @@ const MaxinaPortal = () => {
         </div>
 
         {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="fixed bottom-6 right-6 z-50 group"
-        >
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label="Your VITANA guide awaits inside"
-            onClick={handleOrbClick}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleOrbClick();
-              }
-            }}
-            className="relative cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
-          >
-            {/* Dark radial pad for better contrast against bright backgrounds */}
-            <div className="absolute inset-0 translate-x-1 translate-y-1">
-              <div className="h-24 w-24 rounded-full bg-black/30 blur-xl" />
-            </div>
-            
-            {/* Orb (positioned on top of pad) */}
-            <div className="relative">
-              <VitanalandPortalSeed 
-                size="md" 
-                audioState="idle" 
-                volumeLevel={0}
-                layoutId="vitana-orb"
-              />
-            </div>
-            
-            {/* Hover-only Tooltip */}
-            <div className="absolute bottom-20 right-0 bg-black/70 text-white text-xs px-3 py-2 rounded-full shadow-lg whitespace-nowrap opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-200 pointer-events-none">
-              Your VITANA guide awaits inside
-            </div>
-          </div>
-        </motion.div>
+        <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={0.8} />
       </div>
     </div>
   );
