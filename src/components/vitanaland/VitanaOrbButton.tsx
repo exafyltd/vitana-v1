@@ -54,7 +54,7 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
         <div
           role="button"
           tabIndex={0}
-          className="p-3 h-[72px] w-[72px] rounded-full relative overflow-visible mx-auto cursor-pointer"
+          className="relative mx-auto cursor-pointer"
           onClick={handleOrbClick}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
