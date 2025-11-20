@@ -75,18 +75,21 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       >
         {/* Container for orb + expanding pill */}
         <div className="relative flex items-center gap-3">
-          {/* Expanding text pill - appears to the left of orb */}
+          {/* Expanding text pill - grows out of the orb */}
           <AnimatePresence>
             {isExpanded && (
               <motion.div
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: "auto", opacity: 1 }}
-                exit={{ width: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="absolute right-full top-1/2 -translate-y-1/2 mr-3 origin-right"
               >
-                <div className="bg-white/70 backdrop-blur-md text-foreground px-4 py-2 rounded-full shadow-xl border border-white/20 whitespace-nowrap text-sm font-medium">
-                  Your VITANA guide awaits inside
+                <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
+                  <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-sky-300 animate-pulse" />
+                    <span>Your VITANA guide awaits inside</span>
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -111,10 +114,15 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
           </div>
         </div>
         
-        {/* Hover-only Tooltip - only show when not expanded */}
+        {/* Hover-only Tooltip - grows out of the orb on hover */}
         {!isExpanded && (
-          <div className="absolute bottom-20 right-0 bg-black/70 text-white text-xs px-3 py-2 rounded-full shadow-lg whitespace-nowrap opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-200 pointer-events-none">
-            Your VITANA guide awaits inside
+          <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 origin-right opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
+            <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
+              <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-sky-300 animate-pulse" />
+                <span>Your VITANA guide awaits inside</span>
+              </div>
+            </div>
           </div>
         )}
       </div>
