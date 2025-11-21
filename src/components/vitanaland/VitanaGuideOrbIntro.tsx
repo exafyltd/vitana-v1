@@ -66,7 +66,7 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: initialDelay, duration: 0.5 }}
-      className="fixed bottom-6 left-6 z-50 group"
+      className="fixed bottom-[20px] left-[104px] z-50 group"
     >
       <div
         role="button"
@@ -100,7 +100,7 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
             {/* Orb (positioned on top of pad) */}
             <div className="relative">
               <VitanalandPortalSeed 
-                size="md" 
+                size="sm" 
                 audioState="idle" 
                 volumeLevel={0}
                 layoutId="vitana-orb"
