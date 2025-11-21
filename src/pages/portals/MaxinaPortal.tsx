@@ -201,20 +201,7 @@ const MaxinaPortal = () => {
       
       {/* Content layer */}
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4">
-        <div className="max-w-md w-full space-y-4">
-          {/* Header */}
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-2.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                <Heart className="h-8 w-8 text-white" fill="white" fillOpacity={0.3} />
-              </div>
-            </div>
-            <h1 className="text-4xl font-bold text-white tracking-tight">Maxina</h1>
-            <p className="text-white/90 mt-2 text-base font-light">
-              Your wellness journey starts here
-            </p>
-          </div>
-
+        <div className="max-w-md w-full">
           {/* Auth Tabs */}
           <Card className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20">
             <Tabs defaultValue="signin" className="w-full">
