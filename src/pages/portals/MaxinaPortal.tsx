@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { useStreamingState } from "@/context/StreamingStateContext";
+import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 
@@ -35,6 +36,7 @@ const MaxinaPortal = () => {
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true);
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
@@ -264,10 +266,23 @@ const MaxinaPortal = () => {
                           )}
                         </button>
                       </div>
-                    </div>
+                      </div>
                       
-                      <div className="flex justify-end">
-                        <Link 
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="keep-logged-in"
+                            checked={keepLoggedIn}
+                            onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
+                          />
+                          <Label
+                            htmlFor="keep-logged-in"
+                            className="text-sm font-normal cursor-pointer"
+                          >
+                            Keep me logged in
+                          </Label>
+                        </div>
+                        <Link
                           to="/reset-password" 
                           className="text-sm text-muted-foreground hover:text-[#FF7BAC] transition-colors"
                         >

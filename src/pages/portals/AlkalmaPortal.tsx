@@ -10,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, BookOpen, Users, Stethoscope, Shield } from "lucide-react";
+import { Loader2, BookOpen, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 
@@ -24,6 +25,8 @@ const AlkalmaPortal = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
+  const [showPassword, setShowPassword] = useState(false);
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true);
 
   // Switch to alkalma tenant if already authenticated
   useEffect(() => {
@@ -122,6 +125,24 @@ const AlkalmaPortal = () => {
     }
   };
 
+  const handleSocialLogin = async (provider: 'google' | 'apple') => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: getEmailRedirectUrl('/home'),
+          queryParams: {
+            tenant_slug: 'alkalma'
+          }
+        }
+      });
+      if (error) throw error;
+    } catch (err: any) {
+      console.error('OAuth error:', err);
+      setError(err.message || 'Social login failed. Please try again.');
+    }
+  };
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
@@ -187,14 +208,43 @@ const AlkalmaPortal = () => {
                     
                     <div className="space-y-2">
                       <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        disabled={loading}
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          disabled={loading}
+                          className="pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                          tabIndex={-1}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="keep-logged-in"
+                        checked={keepLoggedIn}
+                        onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
                       />
+                      <Label
+                        htmlFor="keep-logged-in"
+                        className="text-sm font-normal cursor-pointer"
+                      >
+                        Keep me logged in
+                      </Label>
                     </div>
                     
                     <Button type="submit" className="w-full bg-[#3B82F6] hover:bg-[#3B82F6]/90" disabled={loading}>
@@ -207,6 +257,48 @@ const AlkalmaPortal = () => {
                         "Sign In"
                       )}
                     </Button>
+                    
+                    <div className="relative my-4">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-border/50" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleSocialLogin('google')}
+                        disabled={loading}
+                        className="w-full"
+                      >
+                        <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <path
+                            fill="currentColor"
+                            d="M21.35 11.1h-9.17v2.98h5.44c-.24 1.38-1.65 4.04-5.44 4.04-3.28 0-5.96-2.71-5.96-6.05s2.68-6.05 5.96-6.05c1.87 0 3.12.79 3.84 1.47l2.62-2.53C17.51 3.26 15.35 2.4 13 2.4 7.98 2.4 3.94 6.46 3.94 11.5S7.98 20.6 13 20.6c7.47 0 8.94-6.05 8.34-9.5z"
+                          />
+                        </svg>
+                        Google
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleSocialLogin('apple')}
+                        disabled={loading}
+                        className="w-full"
+                      >
+                        <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <path
+                            fill="currentColor"
+                            d="M16.365 1.43c0 1.14-.42 2.13-1.26 2.97-.96.96-2.06 1.52-3.3 1.47-.06-1.17.42-2.19 1.26-3.03.9-.9 2.1-1.47 3.3-1.41zm5.22 16.29c-.6 1.47-1.38 2.73-2.28 3.69-1.02 1.08-2.16 1.65-3.42 1.68-1.02.03-1.71-.3-2.49-.66-.6-.3-1.23-.6-2.04-.6-.84 0-1.47.3-2.1.6-.78.36-1.53.72-2.55.69-1.29-.03-2.4-.57-3.42-1.65-1.14-1.2-2.07-2.76-2.82-4.74-.96-2.49-1.44-4.89-1.44-7.17 0-2.1.48-3.93 1.47-5.46C1.965 3.9 3.315 3 4.845 2.97c.96-.03 1.86.33 2.67.78.6.33 1.17.63 1.77.63.57 0 1.11-.3 1.74-.63.84-.45 1.77-.93 2.94-.81 1.89.18 3.24 1.02 4.17 2.52-1.65 1.02-2.49 2.46-2.46 4.32.03 1.77.96 3.27 2.43 4.11.72.42 1.53.66 2.43.69-.21.66-.45 1.29-.78 1.95z"
+                          />
+                        </svg>
+                        Apple
+                      </Button>
+                    </div>
                   </form>
                 </CardContent>
               </TabsContent>
