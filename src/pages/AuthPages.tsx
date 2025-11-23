@@ -45,6 +45,7 @@ const providers = [
 const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const isRegister = mode === "register";
 
   useEffect(() => {
@@ -177,8 +178,14 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm">
-                <Checkbox id="remember" />
-                <span className="text-muted-foreground">{isRegister ? "I agree to the terms" : "Remember me"}</span>
+                <Checkbox 
+                  id="keep-logged-in" 
+                  checked={keepLoggedIn}
+                  onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
+                />
+                <span className="text-muted-foreground cursor-pointer">
+                  {isRegister ? "I agree to the terms" : "Keep me logged in"}
+                </span>
               </label>
               <Link to="/dashboard" className="text-sm text-primary underline-offset-4 hover:underline">
                 {isRegister ? "Need help?" : "Forgot password?"}

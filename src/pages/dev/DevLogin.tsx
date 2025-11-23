@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function DevLogin() {
   const { user } = useAuth();
@@ -19,6 +21,7 @@ export default function DevLogin() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [keepLoggedIn, setKeepLoggedIn] = useState(true);
 
   // Handle redirect after auth
   useEffect(() => {
@@ -144,6 +147,19 @@ export default function DevLogin() {
                   )}
                 </button>
               </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="keep-logged-in"
+                checked={keepLoggedIn}
+                onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
+              />
+              <Label
+                htmlFor="keep-logged-in"
+                className="text-sm font-normal cursor-pointer"
+              >
+                Keep me logged in
+              </Label>
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
