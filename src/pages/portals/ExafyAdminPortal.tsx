@@ -134,31 +134,6 @@ const ExafyAdminPortal = () => {
             </CardContent>
           </Card>
 
-          {/* Features Overview */}
-          <div className="grid grid-cols-1 gap-4 mt-8">
-            <div className="flex items-center space-x-3 p-4 rounded-lg bg-white/50 border">
-              <Settings className="h-5 w-5 text-primary" />
-              <div>
-                <h3 className="font-medium">Tenant Management</h3>
-                <p className="text-sm text-muted-foreground">Manage Maxina, Alkalma, and Earthlinks environments</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 p-4 rounded-lg bg-white/50 border">
-              <Users className="h-5 w-5 text-primary" />
-              <div>
-                <h3 className="font-medium">Team Administration</h3>
-                <p className="text-sm text-muted-foreground">Grant admin access to team members</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3 p-4 rounded-lg bg-white/50 border">
-              <Shield className="h-5 w-5 text-primary" />
-              <div>
-                <h3 className="font-medium">Security Controls</h3>
-                <p className="text-sm text-muted-foreground">Audit logs and access management</p>
-              </div>
-            </div>
-          </div>
-
           {/* Back to Public Portal */}
           <div className="text-center">
             <Link to="/" className="text-sm text-muted-foreground hover:text-primary">
