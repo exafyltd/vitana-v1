@@ -15,7 +15,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MasterActionPopup } from "@/components/MasterActionPopup";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { VitanaButton } from "@/components/vitanaland/VitanaButton";
+
 import OnboardingOverlay from "@/components/OnboardingOverlay";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { NewsCard } from "@/components/crossover/NewsCard";
@@ -637,7 +637,7 @@ export default function Home() {
               <Plus className="w-4 h-4 mr-2" />
               Action
             </Button>
-            <VitanaButton />
+            
             <Button
               variant="ghost"
               size="icon"
