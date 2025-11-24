@@ -31,7 +31,43 @@ export default function IntroExperience() {
   const [fadeOut, setFadeOut] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
+  const ambientFadeFrameRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Smooth fade helper for ambient music
+  const fadeAmbientVolume = useCallback(
+    (targetVolume: number, duration = 600) => {
+      const ambient = ambientMusicRef.current?.audio;
+      if (!ambient) return;
+
+      // Cancel any existing fade
+      if (ambientFadeFrameRef.current !== null) {
+        cancelAnimationFrame(ambientFadeFrameRef.current);
+        ambientFadeFrameRef.current = null;
+      }
+
+      const startVolume = ambient.volume;
+      const volumeDelta = targetVolume - startVolume;
+      if (Math.abs(volumeDelta) < 0.001) return;
+
+      const startTime = performance.now();
+
+      const step = (now: number) => {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        ambient.volume = startVolume + volumeDelta * t;
+
+        if (t < 1) {
+          ambientFadeFrameRef.current = requestAnimationFrame(step);
+        } else {
+          ambientFadeFrameRef.current = null;
+        }
+      };
+
+      ambientFadeFrameRef.current = requestAnimationFrame(step);
+    },
+    []
+  );
 
   // Load video source
   useEffect(() => {
@@ -58,6 +94,9 @@ export default function IntroExperience() {
     }
     
     return () => {
+      if (ambientFadeFrameRef.current !== null) {
+        cancelAnimationFrame(ambientFadeFrameRef.current);
+      }
       if (ambientMusicRef.current) {
         ambientMusicRef.current.stop();
         ambientMusicRef.current = null;
@@ -65,16 +104,16 @@ export default function IntroExperience() {
     };
   }, [videoSrc]);
 
-  // Audio ducking: lower music volume when TTS plays
+  // Smoothly fade ambient music when TTS is playing
   useEffect(() => {
     if (ambientMusicRef.current) {
       if (isPlayingAudio) {
-        ambientMusicRef.current.audio.volume = 0.015;
+        fadeAmbientVolume(0.015, 600);
       } else {
-        ambientMusicRef.current.audio.volume = 0.04;
+        fadeAmbientVolume(0.04, 800);
       }
     }
-  }, [isPlayingAudio]);
+  }, [isPlayingAudio, fadeAmbientVolume]);
 
   const continueToMaxina = useCallback(() => {
     // Stop music BEFORE navigation
