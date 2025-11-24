@@ -101,8 +101,7 @@ export default function IntroExperience() {
         ambientMusicRef.current.stop();
         ambientMusicRef.current = null;
       }
-      // Global cleanup as safety net
-      stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
+      // Only local cleanup in useEffect
     };
   }, [videoSrc]);
 
