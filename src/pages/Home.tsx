@@ -28,6 +28,7 @@ import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { ScrollingRail } from "@/components/home/ScrollingRail";
 import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
 import { MusicListCard } from "@/components/home/MusicListCard";
+import { stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 import { PodcastListCard } from "@/components/home/PodcastListCard";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
@@ -426,15 +427,7 @@ export default function Home() {
   
   // Safety net: force stop any lingering Maxina ambient music
   useEffect(() => {
-    const allAudio = document.querySelectorAll('audio');
-    allAudio.forEach((audio) => {
-      if (audio.src.includes('maxina-ambient-music')) {
-        audio.pause();
-        audio.currentTime = 0;
-        audio.src = '';
-        audio.load();
-      }
-    });
+    stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
   }, []);
   
   const [showOnboarding, setShowOnboarding] = useState(false);
