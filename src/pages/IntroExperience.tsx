@@ -34,6 +34,22 @@ export default function IntroExperience() {
   const ambientFadeFrameRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Helper to ensure ambient music starts playing (for user interaction)
+  const ensureAmbientMusicPlaying = useCallback(() => {
+    if (ambientMusicRef.current?.audio) {
+      // Resume existing instance
+      ambientMusicRef.current.audio.play().catch((err) => {
+        console.warn('[IntroExperience] Could not resume ambient music:', err);
+      });
+    } else if (videoSrc && !ambientMusicRef.current) {
+      // Create new instance
+      ambientMusicRef.current = playLoopingSound(
+        "/sounds/vitanaland/maxina-ambient-music.mp3",
+        0.04
+      );
+    }
+  }, [videoSrc]);
+
   // Smooth fade helper for ambient music
   const fadeAmbientVolume = useCallback(
     (targetVolume: number, duration = 600) => {
@@ -162,6 +178,9 @@ export default function IntroExperience() {
   };
 
   const handlePlayAudio = useCallback(async () => {
+    // Ensure ambient music starts on user click
+    ensureAmbientMusicPlaying();
+    
     setIsPreparingAudio(true);
     
     try {
@@ -203,7 +222,7 @@ export default function IntroExperience() {
       setIsPreparingAudio(false);
       toast.error('Audio unavailable now');
     }
-  }, [continueToMaxina]);
+  }, [continueToMaxina, ensureAmbientMusicPlaying]);
 
   // Keyboard shortcuts - must be after function declarations
   useEffect(() => {
@@ -258,6 +277,7 @@ export default function IntroExperience() {
         className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-opacity duration-[1000ms] ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
+        onClick={ensureAmbientMusicPlaying}
       >
         {/* Title */}
         <h1 

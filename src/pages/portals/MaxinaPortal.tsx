@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
@@ -22,7 +22,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { playLoopingSound, stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 import { motion } from "framer-motion";
-import { useRef } from "react";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -40,6 +39,22 @@ const MaxinaPortal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
+
+  // Helper to ensure ambient music starts playing (for user interaction)
+  const ensureAmbientMusicPlaying = useCallback(() => {
+    if (ambientMusicRef.current?.audio) {
+      // Resume existing instance
+      ambientMusicRef.current.audio.play().catch((err) => {
+        console.warn('[MaxinaPortal] Could not resume ambient music:', err);
+      });
+    } else if (videoSrc && !ambientMusicRef.current) {
+      // Create new instance
+      ambientMusicRef.current = playLoopingSound(
+        "/sounds/vitanaland/maxina-ambient-music.mp3",
+        0.05
+      );
+    }
+  }, [videoSrc]);
 
   // Helper for LOCAL cleanup only (used in useEffect cleanup)
   const stopAmbientMusicLocal = () => {
@@ -238,7 +253,10 @@ const MaxinaPortal = () => {
       <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4">
         <div className="max-w-md w-full">
           {/* Auth Tabs */}
-          <Card className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20">
+          <Card 
+            className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20"
+            onClick={ensureAmbientMusicPlaying}
+          >
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -268,6 +286,7 @@ const MaxinaPortal = () => {
                           placeholder="you@example.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
+                          onFocus={ensureAmbientMusicPlaying}
                           required
                           disabled={loading}
                         />
