@@ -86,14 +86,22 @@ export default function IntroExperience() {
 
   // Start ambient music when video loads
   useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    
     if (videoSrc && !ambientMusicRef.current) {
-      ambientMusicRef.current = playLoopingSound(
-        "/sounds/vitanaland/maxina-ambient-music.mp3",
-        0.04
-      );
+      // Small delay to ensure any lingering cleanup has completed
+      timer = setTimeout(() => {
+        if (!ambientMusicRef.current) {
+          ambientMusicRef.current = playLoopingSound(
+            "/sounds/vitanaland/maxina-ambient-music.mp3",
+            0.04
+          );
+        }
+      }, 100);
     }
     
     return () => {
+      if (timer) clearTimeout(timer);
       if (ambientFadeFrameRef.current !== null) {
         cancelAnimationFrame(ambientFadeFrameRef.current);
       }
