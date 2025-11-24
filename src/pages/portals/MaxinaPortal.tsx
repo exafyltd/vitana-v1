@@ -22,7 +22,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { playLoopingSound, stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 import { motion } from "framer-motion";
-import { VitanaOrbRevealIntro } from "@/components/vitanaland/VitanaOrbRevealIntro";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -619,9 +618,6 @@ const MaxinaPortal = () => {
 
         {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
         <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={0.8} />
-
-        {/* Orb reveal animation */}
-        <VitanaOrbRevealIntro />
       </div>
     </div>
   );

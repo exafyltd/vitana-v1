@@ -12,7 +12,6 @@ import { useStreamingState } from '@/context/StreamingStateContext';
 import { playSound } from '@/lib/playSound';
 import { playLoopingSound, stopAllLoopingSoundsForPath } from '@/lib/playLoopingSound';
 import { motion } from 'framer-motion';
-import { VitanaOrbRevealIntro } from '@/components/vitanaland/VitanaOrbRevealIntro';
 
 const MAXINA_WELCOME_SSML = `<speak>
   Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
@@ -366,9 +365,6 @@ export default function IntroExperience() {
 
       {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
       <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={1} />
-
-      {/* Orb reveal animation */}
-      <VitanaOrbRevealIntro />
     </div>
   );
 }
