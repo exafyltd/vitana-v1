@@ -41,20 +41,25 @@ const MaxinaPortal = () => {
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
 
-  const stopAmbientMusic = () => {
+  // Helper for LOCAL cleanup only (used in useEffect cleanup)
+  const stopAmbientMusicLocal = () => {
     if (ambientMusicRef.current) {
       ambientMusicRef.current.stop();
       ambientMusicRef.current = null;
     }
-    // Also globally kill any lingering Maxina ambient loops
+  };
+
+  // Helper for GLOBAL cleanup (used before navigation)
+  const stopAmbientMusicGlobal = () => {
+    stopAmbientMusicLocal();
     stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
   };
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
-      // Stop music BEFORE leaving this screen
-      stopAmbientMusic();
+      // Stop music GLOBALLY before leaving
+      stopAmbientMusicGlobal();
       
       setTenantBySlug('maxina').then(() => {
         navigate("/home");
@@ -85,7 +90,7 @@ const MaxinaPortal = () => {
     }
     
     return () => {
-      stopAmbientMusic();
+      stopAmbientMusicLocal(); // Only local cleanup
     };
   }, [videoSrc]);
 
