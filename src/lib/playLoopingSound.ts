@@ -19,7 +19,6 @@ export function playLoopingSound(path: string, volume = 0.05) {
       audio.currentTime = 0;
       audio.src = '';
       audio.load();
-      audio.remove();
       activeLoopingSounds.delete(instance);
     }
   };
@@ -33,9 +32,15 @@ export function playLoopingSound(path: string, volume = 0.05) {
  * Useful for cleanup when navigating away or forcing cleanup
  */
 export function stopAllLoopingSoundsForPath(path: string) {
-  for (const instance of Array.from(activeLoopingSounds)) {
-    if (instance.path === path) {
+  const instancesToStop = Array.from(activeLoopingSounds).filter(
+    instance => instance.path === path
+  );
+  
+  instancesToStop.forEach(instance => {
+    try {
       instance.stop();
+    } catch (e) {
+      console.warn('Error stopping audio instance:', e);
     }
-  }
+  });
 }
