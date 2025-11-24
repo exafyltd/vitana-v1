@@ -20,7 +20,9 @@ import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { useStreamingState } from "@/context/StreamingStateContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
+import { playLoopingSound } from "@/lib/playLoopingSound";
 import { motion } from "framer-motion";
+import { useRef } from "react";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -37,6 +39,7 @@ const MaxinaPortal = () => {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const ambientMusicRef = useRef<HTMLAudioElement | null>(null);
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
@@ -60,6 +63,23 @@ const MaxinaPortal = () => {
   useEffect(() => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
+
+  // Start ambient music when video loads
+  useEffect(() => {
+    if (videoSrc && !ambientMusicRef.current) {
+      ambientMusicRef.current = playLoopingSound(
+        "/sounds/vitanaland/maxina-ambient-music.mp3",
+        0.05
+      );
+    }
+    
+    return () => {
+      if (ambientMusicRef.current) {
+        ambientMusicRef.current.pause();
+        ambientMusicRef.current = null;
+      }
+    };
+  }, [videoSrc]);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);

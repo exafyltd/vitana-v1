@@ -10,6 +10,7 @@ import { VitanaGuideOrbIntro } from '@/components/vitanaland/VitanaGuideOrbIntro
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { playSound } from '@/lib/playSound';
+import { playLoopingSound } from '@/lib/playLoopingSound';
 import { motion } from 'framer-motion';
 
 const MAXINA_WELCOME_SSML = `<speak>
@@ -29,6 +30,7 @@ export default function IntroExperience() {
   const [isPreparingAudio, setIsPreparingAudio] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const ambientMusicRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Load video source
@@ -45,6 +47,34 @@ export default function IntroExperience() {
       return () => clearTimeout(timer);
     }
   }, [videoSrc]);
+
+  // Start ambient music when video loads
+  useEffect(() => {
+    if (videoSrc && !ambientMusicRef.current) {
+      ambientMusicRef.current = playLoopingSound(
+        "/sounds/vitanaland/maxina-ambient-music.mp3",
+        0.04
+      );
+    }
+    
+    return () => {
+      if (ambientMusicRef.current) {
+        ambientMusicRef.current.pause();
+        ambientMusicRef.current = null;
+      }
+    };
+  }, [videoSrc]);
+
+  // Audio ducking: lower music volume when TTS plays
+  useEffect(() => {
+    if (ambientMusicRef.current) {
+      if (isPlayingAudio) {
+        ambientMusicRef.current.volume = 0.015;
+      } else {
+        ambientMusicRef.current.volume = 0.04;
+      }
+    }
+  }, [isPlayingAudio]);
 
   const continueToMaxina = useCallback(() => {
     if (tenantSlug) {
