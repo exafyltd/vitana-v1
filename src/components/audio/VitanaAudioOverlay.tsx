@@ -4,6 +4,7 @@ import { useStreamingState } from '@/context/StreamingStateContext';
 import { useVitanalandLive } from '@/hooks/useVitanalandLive';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVitanaPCMAudio } from '@/hooks/useVitanaPCMAudio';
+import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
@@ -13,11 +14,16 @@ import { AutopilotPopup } from '@/components/AutopilotPopup';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function VitanaAudioOverlay() {
   const { 
     audioOverlayVisible, 
     setAudioOverlayVisible, 
+    cameraActive,
+    setCameraActive,
+    screenShareActive,
+    setScreenShareActive,
     diaryActive, 
     setDiaryActive,
     autopilotActive,
@@ -29,6 +35,13 @@ export function VitanaAudioOverlay() {
   const [textInputValue, setTextInputValue] = useState('');
   const [showDiaryEntry, setShowDiaryEntry] = useState(false);
   const [showAutopilot, setShowAutopilot] = useState(false);
+  
+  // Visual context for screen/camera sharing
+  const { 
+    startCapture, 
+    stopCapture, 
+    setConfig 
+  } = useVisualContext();
   
   const {
     connectionState,
@@ -207,6 +220,44 @@ export function VitanaAudioOverlay() {
     }
   };
 
+  const handleCameraToggle = async () => {
+    try {
+      if (cameraActive) {
+        setConfig(prev => ({ ...prev, enableCamera: false }));
+        stopCapture();
+        setCameraActive(false);
+        toast.success('Camera stopped');
+      } else {
+        setConfig(prev => ({ ...prev, enableCamera: true, enableScreen: false }));
+        await startCapture();
+        setCameraActive(true);
+        toast.success('Camera started');
+      }
+    } catch (error) {
+      console.error('Camera toggle error:', error);
+      toast.error('Failed to toggle camera');
+    }
+  };
+
+  const handleScreenShareToggle = async () => {
+    try {
+      if (screenShareActive) {
+        setConfig(prev => ({ ...prev, enableScreen: false }));
+        stopCapture();
+        setScreenShareActive(false);
+        toast.success('Screen sharing stopped');
+      } else {
+        setConfig(prev => ({ ...prev, enableScreen: true, enableCamera: false }));
+        await startCapture();
+        setScreenShareActive(true);
+        toast.success('Screen sharing started');
+      }
+    } catch (error) {
+      console.error('Screen share toggle error:', error);
+      toast.error('Failed to toggle screen sharing');
+    }
+  };
+
   const handleTextSubmit = () => {
     if (!textInputValue.trim()) return;
     
@@ -336,7 +387,11 @@ export function VitanaAudioOverlay() {
           >
             <AudioControls
               micActive={isListening}
+              cameraActive={cameraActive}
+              screenShareActive={screenShareActive}
               onMicToggle={handleMicToggle}
+              onCameraToggle={handleCameraToggle}
+              onScreenShareToggle={handleScreenShareToggle}
               onExit={handleExit}
             />
           </motion.div>
