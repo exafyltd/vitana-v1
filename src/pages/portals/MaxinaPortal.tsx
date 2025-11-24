@@ -41,10 +41,19 @@ const MaxinaPortal = () => {
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
 
+  const stopAmbientMusic = () => {
+    if (ambientMusicRef.current) {
+      ambientMusicRef.current.stop();
+      ambientMusicRef.current = null;
+    }
+  };
+
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
-      // If user is already authenticated, switch to maxina tenant and redirect
+      // Stop music BEFORE leaving this screen
+      stopAmbientMusic();
+      
       setTenantBySlug('maxina').then(() => {
         navigate("/home");
       });
@@ -74,10 +83,7 @@ const MaxinaPortal = () => {
     }
     
     return () => {
-      if (ambientMusicRef.current) {
-        ambientMusicRef.current.stop();
-        ambientMusicRef.current = null;
-      }
+      stopAmbientMusic();
     };
   }, [videoSrc]);
 

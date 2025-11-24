@@ -424,6 +424,19 @@ export default function Home() {
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   
+  // Safety net: force stop any lingering Maxina ambient music
+  useEffect(() => {
+    const allAudio = document.querySelectorAll('audio');
+    allAudio.forEach((audio) => {
+      if (audio.src.includes('maxina-ambient-music')) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = '';
+        audio.load();
+      }
+    });
+  }, []);
+  
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
   const [searchOpen, setSearchOpen] = useState(false);
