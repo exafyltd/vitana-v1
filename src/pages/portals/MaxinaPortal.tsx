@@ -20,7 +20,7 @@ import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { useStreamingState } from "@/context/StreamingStateContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
-import { playLoopingSound } from "@/lib/playLoopingSound";
+import { playLoopingSound, stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 
@@ -46,6 +46,8 @@ const MaxinaPortal = () => {
       ambientMusicRef.current.stop();
       ambientMusicRef.current = null;
     }
+    // Also globally kill any lingering Maxina ambient loops
+    stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
   };
 
   // Switch to maxina tenant if already authenticated
