@@ -3,5 +3,15 @@ export function playLoopingSound(path: string, volume = 0.05) {
   audio.loop = true;
   audio.volume = volume;
   audio.play().catch(() => {});
-  return audio;
+  
+  return {
+    audio,
+    stop: () => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.src = '';
+      audio.load();
+      audio.remove();
+    }
+  };
 }

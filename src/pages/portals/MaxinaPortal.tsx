@@ -39,7 +39,7 @@ const MaxinaPortal = () => {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
-  const ambientMusicRef = useRef<HTMLAudioElement | null>(null);
+  const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
@@ -75,7 +75,7 @@ const MaxinaPortal = () => {
     
     return () => {
       if (ambientMusicRef.current) {
-        ambientMusicRef.current.pause();
+        ambientMusicRef.current.stop();
         ambientMusicRef.current = null;
       }
     };

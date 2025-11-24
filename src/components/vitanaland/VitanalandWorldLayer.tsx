@@ -19,7 +19,7 @@ const scenes = [
 export function VitanalandWorldLayer() {
   const { activeSceneIndex, setActiveSceneIndex, worldVisible } = useVitanalandNavigation();
   const [preloadSceneIndex, setPreloadSceneIndex] = useState(1);
-  const ambientRef = useRef<HTMLAudioElement | null>(null);
+  const ambientRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
 
   // Handle ambient sound based on world visibility
   useEffect(() => {
@@ -28,7 +28,7 @@ export function VitanalandWorldLayer() {
     }
     
     if (!worldVisible && ambientRef.current) {
-      ambientRef.current.pause();
+      ambientRef.current.stop();
       ambientRef.current = null;
     }
   }, [worldVisible]);

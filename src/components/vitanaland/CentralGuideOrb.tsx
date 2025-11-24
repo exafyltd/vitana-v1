@@ -10,7 +10,7 @@ interface CentralGuideOrbProps {
 }
 
 export function CentralGuideOrb({ audioState, volumeLevel }: CentralGuideOrbProps) {
-  const humRef = useRef<HTMLAudioElement | null>(null);
+  const humRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
   const prevAudioStateRef = useRef(audioState);
 
   // Handle sound effects based on audio state
@@ -32,7 +32,7 @@ export function CentralGuideOrb({ audioState, volumeLevel }: CentralGuideOrbProp
     // When processing stops
     if (audioState !== 'processing' && prevState === 'processing') {
       if (humRef.current) {
-        humRef.current.pause();
+        humRef.current.stop();
         humRef.current = null;
       }
     }
