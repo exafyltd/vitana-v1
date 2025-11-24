@@ -30,7 +30,7 @@ export default function IntroExperience() {
   const [isPreparingAudio, setIsPreparingAudio] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const ambientMusicRef = useRef<HTMLAudioElement | null>(null);
+  const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Load video source
@@ -59,7 +59,7 @@ export default function IntroExperience() {
     
     return () => {
       if (ambientMusicRef.current) {
-        ambientMusicRef.current.pause();
+        ambientMusicRef.current.stop();
         ambientMusicRef.current = null;
       }
     };
@@ -69,14 +69,20 @@ export default function IntroExperience() {
   useEffect(() => {
     if (ambientMusicRef.current) {
       if (isPlayingAudio) {
-        ambientMusicRef.current.volume = 0.015;
+        ambientMusicRef.current.audio.volume = 0.015;
       } else {
-        ambientMusicRef.current.volume = 0.04;
+        ambientMusicRef.current.audio.volume = 0.04;
       }
     }
   }, [isPlayingAudio]);
 
   const continueToMaxina = useCallback(() => {
+    // Stop music BEFORE navigation
+    if (ambientMusicRef.current) {
+      ambientMusicRef.current.stop();
+      ambientMusicRef.current = null;
+    }
+    
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
     }
@@ -89,10 +95,18 @@ export default function IntroExperience() {
   }, [tenantSlug, navigate]);
 
   const handleSkip = useCallback(() => {
+    // Stop TTS audio if playing
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current = null;
     }
+    
+    // Stop ambient music before navigation
+    if (ambientMusicRef.current) {
+      ambientMusicRef.current.stop();
+      ambientMusicRef.current = null;
+    }
+    
     continueToMaxina();
   }, [continueToMaxina]);
 
