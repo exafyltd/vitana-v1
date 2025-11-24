@@ -1,16 +1,28 @@
 import { motion } from 'framer-motion';
-import { Mic, MicOff, X } from 'lucide-react';
+import { Mic, MicOff, X, MonitorUp, MonitorX, Video, VideoOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface AudioControlsProps {
   micActive: boolean;
+  cameraActive: boolean;
+  screenShareActive: boolean;
   onMicToggle: () => void;
+  onCameraToggle: () => void;
+  onScreenShareToggle: () => void;
   onExit: () => void;
 }
 
-export function AudioControls({ micActive, onMicToggle, onExit }: AudioControlsProps) {
+export function AudioControls({ 
+  micActive, 
+  cameraActive, 
+  screenShareActive, 
+  onMicToggle, 
+  onCameraToggle, 
+  onScreenShareToggle, 
+  onExit 
+}: AudioControlsProps) {
   return (
-    <div className="flex items-center gap-6">
+    <div className="flex items-center justify-center gap-4">
       {/* Exit button */}
       <motion.button
         whileHover={{ scale: 1.05 }}
@@ -34,7 +46,7 @@ export function AudioControls({ micActive, onMicToggle, onExit }: AudioControlsP
         whileTap={{ scale: 0.95 }}
         onClick={onMicToggle}
         className={cn(
-          'h-16 w-16 rounded-full shadow-lg',
+          'h-14 w-14 rounded-full shadow-lg',
           'flex items-center justify-center',
           'transition-all duration-200',
           micActive
@@ -48,10 +60,54 @@ export function AudioControls({ micActive, onMicToggle, onExit }: AudioControlsP
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <Mic className="h-6 w-6 text-white" />
+            <Mic className="h-5 w-5 text-white" />
           </motion.div>
         ) : (
-          <MicOff className="h-6 w-6 text-foreground" />
+          <MicOff className="h-5 w-5 text-foreground" />
+        )}
+      </motion.button>
+
+      {/* Screen share toggle button */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={onScreenShareToggle}
+        className={cn(
+          'h-14 w-14 rounded-full shadow-lg',
+          'flex items-center justify-center',
+          'transition-all duration-200',
+          screenShareActive
+            ? 'bg-blue-600 hover:bg-blue-700 ring-4 ring-blue-500/30'
+            : 'bg-card/80 backdrop-blur-xl hover:bg-card border border-border/50'
+        )}
+        aria-label={screenShareActive ? 'Stop screen sharing' : 'Start screen sharing'}
+      >
+        {screenShareActive ? (
+          <MonitorUp className="h-5 w-5 text-white" />
+        ) : (
+          <MonitorX className="h-5 w-5 text-foreground" />
+        )}
+      </motion.button>
+
+      {/* Camera toggle button */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={onCameraToggle}
+        className={cn(
+          'h-14 w-14 rounded-full shadow-lg',
+          'flex items-center justify-center',
+          'transition-all duration-200',
+          cameraActive
+            ? 'bg-green-600 hover:bg-green-700 ring-4 ring-green-500/30'
+            : 'bg-card/80 backdrop-blur-xl hover:bg-card border border-border/50'
+        )}
+        aria-label={cameraActive ? 'Stop camera' : 'Start camera'}
+      >
+        {cameraActive ? (
+          <Video className="h-5 w-5 text-white" />
+        ) : (
+          <VideoOff className="h-5 w-5 text-foreground" />
         )}
       </motion.button>
     </div>

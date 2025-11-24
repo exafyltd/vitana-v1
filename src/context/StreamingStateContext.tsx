@@ -7,6 +7,7 @@ interface StreamingStateContextValue {
   audioOverlayVisible: boolean;
   triggeredByOrb: boolean;
   cameraActive: boolean;
+  screenShareActive: boolean;
   diaryActive: boolean;
   autopilotActive: boolean;
   textInputVisible: boolean;
@@ -16,6 +17,7 @@ interface StreamingStateContextValue {
   setAudioOverlayVisible: (visible: boolean) => void;
   setTriggeredByOrb: (triggered: boolean) => void;
   setCameraActive: (active: boolean) => void;
+  setScreenShareActive: (active: boolean) => void;
   setDiaryActive: (active: boolean) => void;
   setAutopilotActive: (active: boolean) => void;
   setTextInputVisible: (visible: boolean) => void;
@@ -30,6 +32,7 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
   const [audioOverlayVisible, setAudioOverlayVisible] = useState(false);
   const [triggeredByOrb, setTriggeredByOrb] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
+  const [screenShareActive, setScreenShareActive] = useState(false);
   const [diaryActive, setDiaryActive] = useState(false);
   const [autopilotActive, setAutopilotActive] = useState(false);
   const [textInputVisible, setTextInputVisible] = useState(false);
@@ -43,6 +46,7 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
         audioOverlayVisible,
         triggeredByOrb,
         cameraActive,
+        screenShareActive,
         diaryActive,
         autopilotActive,
         textInputVisible,
@@ -52,6 +56,7 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
         setAudioOverlayVisible,
         setTriggeredByOrb,
         setCameraActive,
+        setScreenShareActive,
         setDiaryActive,
         setAutopilotActive,
         setTextInputVisible,
