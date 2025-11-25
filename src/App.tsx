@@ -254,6 +254,7 @@ import ProactiveSettings from "./pages/admin/ai-assistant/ProactiveSettings";
 import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useMessageNotifications } from "@/hooks/useMessageNotifications";
+import { useAudioPriority } from "@/hooks/useAudioPriority";
 
 const App = () => {
   // Initialize session ID for activity logging
@@ -271,6 +272,9 @@ const App = () => {
   
   // Initialize message notifications globally
   useMessageNotifications();
+
+  // Initialize audio priority system globally
+  useAudioPriority();
 
   return (
     <RTLProvider>
