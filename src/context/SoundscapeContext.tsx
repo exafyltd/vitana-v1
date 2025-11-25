@@ -104,16 +104,23 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const toggleMute = useCallback(() => {
     if (audioRef.current) {
       if (isMuted) {
-        // Unmute
+        // Unmute - restore volume AND ensure audio is playing
         audioRef.current.volume = previousVolumeRef.current;
         setIsMuted(false);
+        
+        // Ensure audio is playing (it might have been paused by browser)
+        if (audioRef.current.paused && isPlaying) {
+          audioRef.current.play().catch((err) => {
+            console.warn('[Soundscape] Resume after unmute failed:', err);
+          });
+        }
       } else {
         // Mute
         audioRef.current.volume = 0;
         setIsMuted(true);
       }
     }
-  }, [isMuted]);
+  }, [isMuted, isPlaying]);
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
     if (externalAudio) {
