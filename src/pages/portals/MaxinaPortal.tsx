@@ -64,17 +64,13 @@ const MaxinaPortal = () => {
     }
   };
 
-  // Helper for GLOBAL cleanup (used before navigation)
-  const stopAmbientMusicGlobal = () => {
-    stopAmbientMusicLocal();
-    stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
-  };
-
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
-      // Stop music GLOBALLY before leaving
-      stopAmbientMusicGlobal();
+      // Hand off audio to global context instead of stopping
+      if (ambientMusicRef.current?.audio) {
+        // Note: This will be handled by AmbientMusicContext
+      }
       
       setTenantBySlug('maxina').then(() => {
         navigate("/home");

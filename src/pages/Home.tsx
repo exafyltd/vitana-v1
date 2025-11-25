@@ -28,7 +28,6 @@ import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
 import { ScrollingRail } from "@/components/home/ScrollingRail";
 import { PulsingHighlightCard } from "@/components/home/PulsingHighlightCard";
 import { MusicListCard } from "@/components/home/MusicListCard";
-import { stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 import { PodcastListCard } from "@/components/home/PodcastListCard";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePersonalizedMedia } from "@/hooks/usePersonalizedMedia";
@@ -424,11 +423,6 @@ const guideDailyMatches = [
 export default function Home() {
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const [masterActionOpen, setMasterActionOpen] = useState(false);
-  
-  // Safety net: force stop any lingering Maxina ambient music
-  useEffect(() => {
-    stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
-  }, []);
   
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [activeTab, setActiveTab] = useState("today");
