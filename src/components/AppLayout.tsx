@@ -32,6 +32,7 @@ import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { playSound } from "@/lib/playSound";
+import { AmbientMusicControl } from "@/components/audio/AmbientMusicControl";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -356,6 +357,9 @@ function AppSidebar({
               }
             />
           )}
+          
+          {/* Ambient Music Control */}
+          <AmbientMusicControl />
           
           {/* VITANA Orb - Voice-First Interface */}
           <VitanaOrbButton />

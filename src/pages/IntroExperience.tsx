@@ -132,13 +132,8 @@ export default function IntroExperience() {
   }, [isPlayingAudio, fadeAmbientVolume]);
 
   const continueToMaxina = useCallback(() => {
-    // Stop music BEFORE navigation
-    if (ambientMusicRef.current) {
-      ambientMusicRef.current.stop();
-      ambientMusicRef.current = null;
-    }
-    // Global cleanup as safety net
-    stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
+    // Audio will be handed off to global context in IntroExperience
+    // No need to stop it here
     
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
@@ -158,13 +153,8 @@ export default function IntroExperience() {
       audioRef.current = null;
     }
     
-    // Stop ambient music before navigation
-    if (ambientMusicRef.current) {
-      ambientMusicRef.current.stop();
-      ambientMusicRef.current = null;
-    }
-    // Global cleanup as safety net
-    stopAllLoopingSoundsForPath("/sounds/vitanaland/maxina-ambient-music.mp3");
+    // Audio will be handed off to global context
+    // No need to stop it here
     
     continueToMaxina();
   }, [continueToMaxina]);

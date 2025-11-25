@@ -19,6 +19,7 @@ import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
+import { AmbientMusicProvider } from "@/context/AmbientMusicContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -277,15 +278,16 @@ const App = () => {
         <EventSelectionProvider>
           <StreamingStateProvider>
             <ProfilePreviewProvider>
-              <TooltipProvider>
-                <Toaster />
-                <PresenceDebugPanel />
-                <BrowserRouter>
-                  <VitanalandNavigationProvider>
-                    <GreetingProviderWrapper>
-                      <PersistentGuideOrb />
-                      <VitanaAudioOverlay />
-                      <TenantDetector />
+              <AmbientMusicProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <PresenceDebugPanel />
+                  <BrowserRouter>
+                    <VitanalandNavigationProvider>
+                      <GreetingProviderWrapper>
+                        <PersistentGuideOrb />
+                        <VitanaAudioOverlay />
+                        <TenantDetector />
                   <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
@@ -1271,15 +1273,16 @@ const App = () => {
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-                    </GreetingProviderWrapper>
-                  </VitanalandNavigationProvider>
-                </BrowserRouter>
-              </TooltipProvider>
-            </ProfilePreviewProvider>
-          </StreamingStateProvider>
-        </EventSelectionProvider>
-      </MeetupSelectionProvider>
-    </RTLProvider>
+                  </GreetingProviderWrapper>
+                </VitanalandNavigationProvider>
+              </BrowserRouter>
+            </TooltipProvider>
+          </AmbientMusicProvider>
+        </ProfilePreviewProvider>
+      </StreamingStateProvider>
+    </EventSelectionProvider>
+  </MeetupSelectionProvider>
+</RTLProvider>
   );
 };
 
