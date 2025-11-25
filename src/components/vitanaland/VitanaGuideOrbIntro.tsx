@@ -81,15 +81,8 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
         }}
         className="relative cursor-pointer transition-transform duration-150 hover:scale-105 focus-visible:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 rounded-full"
       >
-        {/* Container for orb + expanding pill - both move together */}
-        <div 
-          className={`relative flex items-center gap-3 transition-all duration-[600ms] ${
-            isExpanded ? 'translate-x-[-115px]' : 'translate-x-0'
-          }`}
-          style={{
-            transitionTimingFunction: 'cubic-bezier(0.33, 1, 0.68, 1)'
-          }}
-        >
+        {/* Container for orb + expanding pill */}
+        <div className="relative flex items-center gap-3">
           {/* Orb container - appears first (left) */}
           <div className="relative flex-shrink-0">
             {/* Dark radial pad for better contrast against bright backgrounds */}
@@ -112,9 +105,9 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
           <AnimatePresence>
             {showTooltip && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -20, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: "easeOut", delay: 0.15 }}
                 className="flex-shrink-0"
               >
@@ -131,7 +124,7 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
         
         {/* Hover-only Tooltip - appears beside orb on hover */}
         {!isExpanded && (
-          <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 origin-right opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
+          <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 origin-left opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100 transition-all duration-200 pointer-events-none">
             <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
               <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-sky-300 animate-pulse" />
