@@ -116,15 +116,22 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
   }, [isMuted]);
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
-    // Take ownership of an existing audio element from login/intro screens
-    if (!audioRef.current && externalAudio) {
+    if (externalAudio) {
       console.log('[AmbientMusic] Taking ownership of external audio');
+      
+      // If there's already an audio element, stop and dispose it
+      if (audioRef.current && audioRef.current !== externalAudio) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
+      
+      // Take ownership of the external audio
       audioRef.current = externalAudio;
       audioRef.current.loop = true;
-      audioRef.current.volume = volume;
+      audioRef.current.volume = isMuted ? 0 : volume;
       setIsPlaying(!externalAudio.paused);
     }
-  }, [volume]);
+  }, [volume, isMuted]);
 
   const value: AmbientMusicContextType = {
     isPlaying,
