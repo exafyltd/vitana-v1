@@ -9,6 +9,7 @@ import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { VitanaGuideOrbIntro } from '@/components/vitanaland/VitanaGuideOrbIntro';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
+import { useAmbientMusic } from '@/context/AmbientMusicContext';
 import { playSound } from '@/lib/playSound';
 import { playLoopingSound, stopAllLoopingSoundsForPath } from '@/lib/playLoopingSound';
 import { motion } from 'framer-motion';
@@ -24,6 +25,7 @@ export default function IntroExperience() {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
+  const { handoffAudio } = useAmbientMusic();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -113,6 +115,7 @@ export default function IntroExperience() {
       if (ambientFadeFrameRef.current !== null) {
         cancelAnimationFrame(ambientFadeFrameRef.current);
       }
+      // Only cleanup if audio wasn't handed off
       if (ambientMusicRef.current) {
         ambientMusicRef.current.stop();
         ambientMusicRef.current = null;
@@ -132,8 +135,11 @@ export default function IntroExperience() {
   }, [isPlayingAudio, fadeAmbientVolume]);
 
   const continueToMaxina = useCallback(() => {
-    // Audio will be handed off to global context in IntroExperience
-    // No need to stop it here
+    // Hand off audio to global context BEFORE navigation
+    if (ambientMusicRef.current?.audio) {
+      handoffAudio(ambientMusicRef.current.audio);
+      ambientMusicRef.current = null; // Clear so cleanup doesn't stop it
+    }
     
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
@@ -144,7 +150,7 @@ export default function IntroExperience() {
       // Let the portal handle auth-based routing
       navigate(`/${tenantSlug}`, { replace: true });
     }, 800);
-  }, [tenantSlug, navigate]);
+  }, [tenantSlug, navigate, handoffAudio]);
 
   const handleSkip = useCallback(() => {
     // Stop TTS audio if playing
@@ -153,11 +159,14 @@ export default function IntroExperience() {
       audioRef.current = null;
     }
     
-    // Audio will be handed off to global context
-    // No need to stop it here
+    // Hand off ambient audio to global context
+    if (ambientMusicRef.current?.audio) {
+      handoffAudio(ambientMusicRef.current.audio);
+      ambientMusicRef.current = null;
+    }
     
     continueToMaxina();
-  }, [continueToMaxina]);
+  }, [continueToMaxina, handoffAudio]);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);

@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { useStreamingState } from "@/context/StreamingStateContext";
+import { useAmbientMusic } from "@/context/AmbientMusicContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { playLoopingSound, stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
@@ -29,6 +30,7 @@ const MaxinaPortal = () => {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
+  const { handoffAudio } = useAmbientMusic();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -67,16 +69,17 @@ const MaxinaPortal = () => {
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
-      // Hand off audio to global context instead of stopping
+      // Hand off audio to global context BEFORE navigation
       if (ambientMusicRef.current?.audio) {
-        // Note: This will be handled by AmbientMusicContext
+        handoffAudio(ambientMusicRef.current.audio);
+        ambientMusicRef.current = null; // Clear local ref so cleanup doesn't stop it
       }
       
       setTenantBySlug('maxina').then(() => {
         navigate("/home");
       });
     }
-  }, [user, authLoading, navigate, setTenantBySlug]);
+  }, [user, authLoading, navigate, setTenantBySlug, handoffAudio]);
 
   // Set tenant theme
   useEffect(() => {
@@ -101,7 +104,10 @@ const MaxinaPortal = () => {
     }
     
     return () => {
-      stopAmbientMusicLocal(); // Only local cleanup
+      // Only cleanup if audio wasn't handed off to global context
+      if (ambientMusicRef.current) {
+        stopAmbientMusicLocal();
+      }
     };
   }, [videoSrc]);
 
