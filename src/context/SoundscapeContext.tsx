@@ -11,6 +11,8 @@ interface SoundscapeContextType {
   setVolume: (vol: number) => void;
   toggleMute: () => void;
   handoffAudio: (audioInstance: HTMLAudioElement) => void;
+  pauseForPriorityAudio: () => void;
+  resumeAfterPriorityAudio: () => void;
 }
 
 const SoundscapeContext = createContext<SoundscapeContextType | undefined>(undefined);
@@ -25,6 +27,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const [currentTrack] = useState(AMBIENT_TRACK);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const previousVolumeRef = useRef(DEFAULT_VOLUME);
+  const [pausedByPriority, setPausedByPriority] = useState(false);
+  const wasPlayingBeforePriorityRef = useRef(false);
 
   // Initialize audio element
   useEffect(() => {
@@ -153,6 +157,28 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   }, [volume, isMuted]);
 
+  const pauseForPriorityAudio = useCallback(() => {
+    if (isPlaying && audioRef.current && !pausedByPriority) {
+      wasPlayingBeforePriorityRef.current = true;
+      audioRef.current.pause();
+      setIsPlaying(false);
+      setPausedByPriority(true);
+      console.log('[Soundscape] Paused for priority audio');
+    }
+  }, [isPlaying, pausedByPriority]);
+
+  const resumeAfterPriorityAudio = useCallback(() => {
+    if (pausedByPriority && wasPlayingBeforePriorityRef.current && audioRef.current) {
+      audioRef.current.play().catch((err) => {
+        console.warn('[Soundscape] Resume after priority audio failed:', err);
+      });
+      setIsPlaying(true);
+      setPausedByPriority(false);
+      wasPlayingBeforePriorityRef.current = false;
+      console.log('[Soundscape] Resumed after priority audio ended');
+    }
+  }, [pausedByPriority]);
+
   const value: SoundscapeContextType = {
     isPlaying,
     volume,
@@ -164,6 +190,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     setVolume,
     toggleMute,
     handoffAudio,
+    pauseForPriorityAudio,
+    resumeAfterPriorityAudio,
   };
 
   return (
