@@ -135,8 +135,21 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       // Take ownership of the external audio
       audioRef.current = externalAudio;
       audioRef.current.loop = true;
-      audioRef.current.volume = isMuted ? 0 : volume;
-      setIsPlaying(!externalAudio.paused);
+      
+      // Check if the handed-off audio is playing
+      const wasPlaying = !externalAudio.paused;
+      
+      if (wasPlaying) {
+        // Audio is playing - ensure unmuted state and persist preference
+        setIsMuted(false);
+        audioRef.current.volume = volume;
+        setIsPlaying(true);
+        localStorage.setItem('soundscape_auto_play', 'true');
+      } else {
+        // Audio was paused - just take ownership
+        audioRef.current.volume = isMuted ? 0 : volume;
+        setIsPlaying(false);
+      }
     }
   }, [volume, isMuted]);
 
