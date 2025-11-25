@@ -18,7 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { useStreamingState } from "@/context/StreamingStateContext";
-import { useAmbientMusic } from "@/context/AmbientMusicContext";
+import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { playLoopingSound, stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
@@ -30,7 +30,7 @@ const MaxinaPortal = () => {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
-  const { handoffAudio } = useAmbientMusic();
+  const { handoffAudio } = useSoundscape();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -40,18 +40,18 @@ const MaxinaPortal = () => {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
-  const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
+  const soundscapeRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
 
-  // Helper to ensure ambient music starts playing (for user interaction)
-  const ensureAmbientMusicPlaying = useCallback(() => {
-    if (ambientMusicRef.current?.audio) {
+  // Helper to ensure soundscape starts playing (for user interaction)
+  const ensureSoundscapePlaying = useCallback(() => {
+    if (soundscapeRef.current?.audio) {
       // Resume existing instance
-      ambientMusicRef.current.audio.play().catch((err) => {
-        console.warn('[MaxinaPortal] Could not resume ambient music:', err);
+      soundscapeRef.current.audio.play().catch((err) => {
+        console.warn('[MaxinaPortal] Could not resume soundscape:', err);
       });
-    } else if (videoSrc && !ambientMusicRef.current) {
+    } else if (videoSrc && !soundscapeRef.current) {
       // Create new instance
-      ambientMusicRef.current = playLoopingSound(
+      soundscapeRef.current = playLoopingSound(
         "/sounds/vitanaland/maxina-ambient-music.mp3",
         0.05
       );
@@ -59,10 +59,10 @@ const MaxinaPortal = () => {
   }, [videoSrc]);
 
   // Helper for LOCAL cleanup only (used in useEffect cleanup)
-  const stopAmbientMusicLocal = () => {
-    if (ambientMusicRef.current) {
-      ambientMusicRef.current.stop();
-      ambientMusicRef.current = null;
+  const stopSoundscapeLocal = () => {
+    if (soundscapeRef.current) {
+      soundscapeRef.current.stop();
+      soundscapeRef.current = null;
     }
   };
 
@@ -70,9 +70,9 @@ const MaxinaPortal = () => {
   useEffect(() => {
     if (!authLoading && user) {
       // Hand off audio to global context BEFORE navigation
-      if (ambientMusicRef.current?.audio) {
-        handoffAudio(ambientMusicRef.current.audio);
-        ambientMusicRef.current = null; // Clear local ref so cleanup doesn't stop it
+      if (soundscapeRef.current?.audio) {
+        handoffAudio(soundscapeRef.current.audio);
+        soundscapeRef.current = null; // Clear local ref so cleanup doesn't stop it
       }
       
       setTenantBySlug('maxina').then(() => {
@@ -94,10 +94,10 @@ const MaxinaPortal = () => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
 
-  // Start ambient music when video loads
+  // Start soundscape when video loads
   useEffect(() => {
-    if (videoSrc && !ambientMusicRef.current) {
-      ambientMusicRef.current = playLoopingSound(
+    if (videoSrc && !soundscapeRef.current) {
+      soundscapeRef.current = playLoopingSound(
         "/sounds/vitanaland/maxina-ambient-music.mp3",
         0.05
       );
@@ -105,8 +105,8 @@ const MaxinaPortal = () => {
     
     return () => {
       // Only cleanup if audio wasn't handed off to global context
-      if (ambientMusicRef.current) {
-        stopAmbientMusicLocal();
+      if (soundscapeRef.current) {
+        stopSoundscapeLocal();
       }
     };
   }, [videoSrc]);
@@ -257,7 +257,7 @@ const MaxinaPortal = () => {
           {/* Auth Tabs */}
           <Card 
             className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20"
-            onClick={ensureAmbientMusicPlaying}
+            onClick={ensureSoundscapePlaying}
           >
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
@@ -288,7 +288,7 @@ const MaxinaPortal = () => {
                           placeholder="you@example.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          onFocus={ensureAmbientMusicPlaying}
+                          onFocus={ensureSoundscapePlaying}
                           required
                           disabled={loading}
                         />

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 
-interface AmbientMusicContextType {
+interface SoundscapeContextType {
   isPlaying: boolean;
   volume: number;
   isMuted: boolean;
@@ -13,12 +13,12 @@ interface AmbientMusicContextType {
   handoffAudio: (audioInstance: HTMLAudioElement) => void;
 }
 
-const AmbientMusicContext = createContext<AmbientMusicContextType | undefined>(undefined);
+const SoundscapeContext = createContext<SoundscapeContextType | undefined>(undefined);
 
 const DEFAULT_VOLUME = 0.05;
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
 
-export function AmbientMusicProvider({ children }: { children: ReactNode }) {
+export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useState(DEFAULT_VOLUME);
   const [isMuted, setIsMuted] = useState(false);
@@ -29,8 +29,8 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
   // Initialize audio element
   useEffect(() => {
     // Load preferences from localStorage
-    const savedVolume = localStorage.getItem('ambient_music_volume');
-    const savedAutoPlay = localStorage.getItem('ambient_music_auto_play');
+    const savedVolume = localStorage.getItem('soundscape_volume');
+    const savedAutoPlay = localStorage.getItem('soundscape_auto_play');
     
     if (savedVolume) {
       const vol = parseFloat(savedVolume);
@@ -48,7 +48,7 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
       // Auto-play if preference is set
       if (savedAutoPlay === 'true') {
         audio.play().catch((err) => {
-          console.warn('[AmbientMusic] Auto-play blocked:', err);
+          console.warn('[Soundscape] Auto-play blocked:', err);
         });
         setIsPlaying(true);
       }
@@ -66,10 +66,10 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
   const play = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.play().catch((err) => {
-        console.warn('[AmbientMusic] Play failed:', err);
+        console.warn('[Soundscape] Play failed:', err);
       });
       setIsPlaying(true);
-      localStorage.setItem('ambient_music_auto_play', 'true');
+      localStorage.setItem('soundscape_auto_play', 'true');
     }
   }, []);
 
@@ -77,7 +77,7 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
     if (audioRef.current) {
       audioRef.current.pause();
       setIsPlaying(false);
-      localStorage.setItem('ambient_music_auto_play', 'false');
+      localStorage.setItem('soundscape_auto_play', 'false');
     }
   }, []);
 
@@ -98,7 +98,7 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
       audioRef.current.volume = clampedVol;
     }
     
-    localStorage.setItem('ambient_music_volume', clampedVol.toString());
+    localStorage.setItem('soundscape_volume', clampedVol.toString());
   }, [isMuted]);
 
   const toggleMute = useCallback(() => {
@@ -117,7 +117,7 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
     if (externalAudio) {
-      console.log('[AmbientMusic] Taking ownership of external audio');
+      console.log('[Soundscape] Taking ownership of external audio');
       
       // If there's already an audio element, stop and dispose it
       if (audioRef.current && audioRef.current !== externalAudio) {
@@ -133,7 +133,7 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
     }
   }, [volume, isMuted]);
 
-  const value: AmbientMusicContextType = {
+  const value: SoundscapeContextType = {
     isPlaying,
     volume,
     isMuted,
@@ -147,16 +147,16 @@ export function AmbientMusicProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AmbientMusicContext.Provider value={value}>
+    <SoundscapeContext.Provider value={value}>
       {children}
-    </AmbientMusicContext.Provider>
+    </SoundscapeContext.Provider>
   );
 }
 
-export function useAmbientMusic() {
-  const context = useContext(AmbientMusicContext);
+export function useSoundscape() {
+  const context = useContext(SoundscapeContext);
   if (context === undefined) {
-    throw new Error('useAmbientMusic must be used within an AmbientMusicProvider');
+    throw new Error('useSoundscape must be used within a SoundscapeProvider');
   }
   return context;
 }

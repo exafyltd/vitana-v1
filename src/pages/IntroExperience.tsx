@@ -9,7 +9,7 @@ import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { VitanaGuideOrbIntro } from '@/components/vitanaland/VitanaGuideOrbIntro';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
-import { useAmbientMusic } from '@/context/AmbientMusicContext';
+import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
 import { playLoopingSound, stopAllLoopingSoundsForPath } from '@/lib/playLoopingSound';
 import { motion } from 'framer-motion';
@@ -25,37 +25,37 @@ export default function IntroExperience() {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
-  const { handoffAudio } = useAmbientMusic();
+  const { handoffAudio } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [isPreparingAudio, setIsPreparingAudio] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const ambientMusicRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
+  const soundscapeRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
   const ambientFadeFrameRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Helper to ensure ambient music starts playing (for user interaction)
-  const ensureAmbientMusicPlaying = useCallback(() => {
-    if (ambientMusicRef.current?.audio) {
+  // Helper to ensure soundscape starts playing (for user interaction)
+  const ensureSoundscapePlaying = useCallback(() => {
+    if (soundscapeRef.current?.audio) {
       // Resume existing instance
-      ambientMusicRef.current.audio.play().catch((err) => {
-        console.warn('[IntroExperience] Could not resume ambient music:', err);
+      soundscapeRef.current.audio.play().catch((err) => {
+        console.warn('[IntroExperience] Could not resume soundscape:', err);
       });
-    } else if (videoSrc && !ambientMusicRef.current) {
+    } else if (videoSrc && !soundscapeRef.current) {
       // Create new instance
-      ambientMusicRef.current = playLoopingSound(
+      soundscapeRef.current = playLoopingSound(
         "/sounds/vitanaland/maxina-ambient-music.mp3",
         0.04
       );
     }
   }, [videoSrc]);
 
-  // Smooth fade helper for ambient music
+  // Smooth fade helper for soundscape
   const fadeAmbientVolume = useCallback(
     (targetVolume: number, duration = 600) => {
-      const ambient = ambientMusicRef.current?.audio;
+      const ambient = soundscapeRef.current?.audio;
       if (!ambient) return;
 
       // Cancel any existing fade
@@ -102,10 +102,10 @@ export default function IntroExperience() {
     }
   }, [videoSrc]);
 
-  // Start ambient music when video loads
+  // Start soundscape when video loads
   useEffect(() => {
-    if (videoSrc && !ambientMusicRef.current) {
-      ambientMusicRef.current = playLoopingSound(
+    if (videoSrc && !soundscapeRef.current) {
+      soundscapeRef.current = playLoopingSound(
         "/sounds/vitanaland/maxina-ambient-music.mp3",
         0.04
       );
@@ -116,16 +116,16 @@ export default function IntroExperience() {
         cancelAnimationFrame(ambientFadeFrameRef.current);
       }
       // Only cleanup if audio wasn't handed off
-      if (ambientMusicRef.current) {
-        ambientMusicRef.current.stop();
-        ambientMusicRef.current = null;
+      if (soundscapeRef.current) {
+        soundscapeRef.current.stop();
+        soundscapeRef.current = null;
       }
     };
   }, [videoSrc]);
 
-  // Smoothly fade ambient music when TTS is playing
+  // Smoothly fade soundscape when TTS is playing
   useEffect(() => {
-    if (ambientMusicRef.current) {
+    if (soundscapeRef.current) {
       if (isPlayingAudio) {
         fadeAmbientVolume(0.015, 600);
       } else {
@@ -136,9 +136,9 @@ export default function IntroExperience() {
 
   const continueToMaxina = useCallback(() => {
     // Hand off audio to global context BEFORE navigation
-    if (ambientMusicRef.current?.audio) {
-      handoffAudio(ambientMusicRef.current.audio);
-      ambientMusicRef.current = null; // Clear so cleanup doesn't stop it
+    if (soundscapeRef.current?.audio) {
+      handoffAudio(soundscapeRef.current.audio);
+      soundscapeRef.current = null; // Clear so cleanup doesn't stop it
     }
     
     if (tenantSlug) {
@@ -159,10 +159,10 @@ export default function IntroExperience() {
       audioRef.current = null;
     }
     
-    // Hand off ambient audio to global context
-    if (ambientMusicRef.current?.audio) {
-      handoffAudio(ambientMusicRef.current.audio);
-      ambientMusicRef.current = null;
+    // Hand off soundscape audio to global context
+    if (soundscapeRef.current?.audio) {
+      handoffAudio(soundscapeRef.current.audio);
+      soundscapeRef.current = null;
     }
     
     continueToMaxina();
@@ -177,8 +177,8 @@ export default function IntroExperience() {
   };
 
   const handlePlayAudio = useCallback(async () => {
-    // Ensure ambient music starts on user click
-    ensureAmbientMusicPlaying();
+    // Ensure soundscape starts on user click
+    ensureSoundscapePlaying();
     
     setIsPreparingAudio(true);
     
@@ -221,7 +221,7 @@ export default function IntroExperience() {
       setIsPreparingAudio(false);
       toast.error('Audio unavailable now');
     }
-  }, [continueToMaxina, ensureAmbientMusicPlaying]);
+  }, [continueToMaxina, ensureSoundscapePlaying]);
 
   // Keyboard shortcuts - must be after function declarations
   useEffect(() => {
@@ -276,7 +276,7 @@ export default function IntroExperience() {
         className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-opacity duration-[1000ms] ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
-        onClick={ensureAmbientMusicPlaying}
+        onClick={ensureSoundscapePlaying}
       >
         {/* Title */}
         <h1 

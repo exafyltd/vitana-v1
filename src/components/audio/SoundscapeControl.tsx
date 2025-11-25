@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Slider } from '@/components/ui/slider';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useAmbientMusic } from '@/context/AmbientMusicContext';
+import { useSoundscape } from '@/context/SoundscapeContext';
 import { useSidebar } from '@/components/ui/sidebar';
 
-export function AmbientMusicControl() {
-  const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useAmbientMusic();
+export function SoundscapeControl() {
+  const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
   const { open } = useSidebar();
 
   const handleVolumeChange = (value: number[]) => {
@@ -34,7 +34,7 @@ export function AmbientMusicControl() {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="right">
-          Ambient Music {isPlaying ? '(playing)' : '(paused)'}
+          Soundscape {isPlaying ? '(playing)' : '(paused)'}
         </TooltipContent>
       </Tooltip>
     );
@@ -54,7 +54,7 @@ export function AmbientMusicControl() {
         </Button>
         
         <div className="flex-1 flex items-center gap-2">
-          <span className="text-sm text-foreground">Ambient Music</span>
+          <span className="text-sm text-foreground">Soundscape</span>
           
           <Popover>
             <PopoverTrigger asChild>
