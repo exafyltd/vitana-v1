@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 511
+**Total Screens**: 546
 
 ---
 
@@ -42,8 +42,8 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Staff Role Screens | 9 |
 | Admin Role Screens | 117 |
 | Dev Hub Screens | 136 |
-| Global Overlays | 18 |
-| **TOTAL** | **511** |
+| Global Overlays | 53 |
+| **TOTAL** | **546** |
 
 ---
 
@@ -7262,6 +7262,1041 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Real-time presence debugging; only visible in dev mode; can be dismissed
+
+---
+
+## OVRL-009: Call Manager
+
+- **Module**: Global - Communication
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Global component)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CallManager.tsx
+- **Component Path**: src/components/CallManager.tsx
+- **UI Pattern**: Global call orchestration
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active call management, Call routing
+- **Status**: ✅ Implemented
+- **Purpose**: Central call management and routing system
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA compliance for medical calls
+- **Event Triggers**: call_started, call_ended, call_transferred
+- **Dependencies**: CallingScreen, IncomingCallModal
+- **Notes**: Global call orchestration layer
+
+---
+
+## OVRL-010: Calling Screen
+
+- **Module**: Global - Communication
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Overlay)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CallingScreen.tsx
+- **Component Path**: src/components/CallingScreen.tsx
+- **UI Pattern**: Full-screen overlay
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active call UI, Controls, Video grid
+- **Status**: ✅ Implemented
+- **Purpose**: Full-screen active call interface
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA compliance, recording consent
+- **Event Triggers**: call_muted, call_video_toggled, call_ended
+- **Dependencies**: CallManager
+- **Notes**: Main call UI overlay
+
+---
+
+## OVRL-011: Incoming Call Modal
+
+- **Module**: Global - Communication
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Modal)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/IncomingCallModal.tsx
+- **Component Path**: src/components/IncomingCallModal.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Caller info, Accept/Decline
+- **Status**: ✅ Implemented
+- **Purpose**: Incoming call notification and response
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: call_accepted, call_declined, call_missed
+- **Dependencies**: CallManager
+- **Notes**: Call notification modal
+
+---
+
+## OVRL-012: Global Search
+
+- **Module**: Global - Search
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Overlay)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/GlobalSearch.tsx
+- **Component Path**: src/components/GlobalSearch.tsx
+- **UI Pattern**: Command palette overlay
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Search input, Results, Quick actions
+- **Status**: ✅ Implemented
+- **Purpose**: Universal search and command palette
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: Multiple (searches across all entities)
+- **Compliance Notes**: RLS enforcement on search results
+- **Event Triggers**: search_performed, search_result_clicked
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Cmd/Ctrl+K triggered universal search
+
+---
+
+## OVRL-013: Notification Bell
+
+- **Module**: Global - Notifications
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Popover)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/NotificationBell.tsx
+- **Component Path**: src/components/NotificationBell.tsx
+- **UI Pattern**: Popover dropdown
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Notification list, Mark read, Settings
+- **Status**: ✅ Implemented
+- **Purpose**: Real-time notification center
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: notification_viewed, notification_dismissed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Global notification dropdown
+
+---
+
+## OVRL-014: Error Notification Stack
+
+- **Module**: Global - Error Handling
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Fixed overlay)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ErrorNotificationStack.tsx
+- **Component Path**: src/components/ErrorNotificationStack.tsx
+- **UI Pattern**: Toast stack
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Error toasts
+- **Status**: ✅ Implemented
+- **Purpose**: Global error notification system
+- **Primary APIs Used**: N/A
+- **DB Tables / Models Used**: N/A
+- **Compliance Notes**: No PII in error messages
+- **Event Triggers**: error_displayed, error_dismissed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Stacked error notifications
+
+---
+
+## OVRL-015: Onboarding Overlay
+
+- **Module**: Global - Onboarding
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Overlay)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/OnboardingOverlay.tsx
+- **Component Path**: src/components/OnboardingOverlay.tsx
+- **UI Pattern**: Full-screen wizard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Multi-step onboarding flow
+- **Status**: ✅ Implemented
+- **Purpose**: First-time user onboarding experience
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: profiles, user_preferences
+- **Compliance Notes**: Consent collection, data privacy
+- **Event Triggers**: onboarding_started, onboarding_completed, onboarding_skipped
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Multi-tenant onboarding wizard
+
+---
+
+## OVRL-016: Create Event Popup
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateEventPopup.tsx
+- **Component Path**: src/components/CreateEventPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Event form, Date/time, Location
+- **Status**: ✅ Implemented
+- **Purpose**: Quick event creation dialog
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: global_community_events, event_attendees
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: event_created, event_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Community event creation
+
+---
+
+## OVRL-017: Create Meetup Popup
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateMeetupPopup.tsx
+- **Component Path**: src/components/CreateMeetupPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Meetup form, Settings, Privacy
+- **Status**: ✅ Implemented
+- **Purpose**: Quick meetup creation dialog
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: global_community_events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: meetup_created, meetup_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Meetup-specific event creation
+
+---
+
+## OVRL-018: Edit Meetup Popup
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/EditMeetupPopup.tsx
+- **Component Path**: src/components/EditMeetupPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Edit form, Update settings
+- **Status**: ✅ Implemented
+- **Purpose**: Meetup editing interface
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: global_community_events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: meetup_updated, meetup_update_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Edit existing meetup details
+
+---
+
+## OVRL-019: Create Group Popup
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateGroupPopup.tsx
+- **Component Path**: src/components/CreateGroupPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Group form, Privacy, Invites
+- **Status**: ✅ Implemented
+- **Purpose**: Community group creation dialog
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: group_created, group_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Create new community group
+
+---
+
+## OVRL-020: Create Live Room Dialog
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateLiveRoomDialog.tsx
+- **Component Path**: src/components/CreateLiveRoomDialog.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Room settings, Privacy, Schedule
+- **Status**: ✅ Implemented
+- **Purpose**: Live room creation interface
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: community_live_streams
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: live_room_created, live_room_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Create live streaming room
+
+---
+
+## OVRL-021: Go Live Popup
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/GoLivePopup.tsx
+- **Component Path**: src/components/GoLivePopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Stream setup, Preview, Go live
+- **Status**: ✅ Implemented
+- **Purpose**: Quick go-live interface
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: community_live_streams
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: stream_started, stream_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Instant live streaming launch
+
+---
+
+## OVRL-022: Create Content Popup
+
+- **Module**: Sharing
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateContentPopup.tsx
+- **Component Path**: src/components/CreateContentPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Content editor, Media, Tags
+- **Status**: ✅ Implemented
+- **Purpose**: Content creation and distribution dialog
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: distribution_posts
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: content_created, content_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Multi-channel content creation
+
+---
+
+## OVRL-023: Media Upload Popup
+
+- **Module**: Global - Media
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/MediaUploadPopup.tsx
+- **Component Path**: src/components/MediaUploadPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Upload interface, Progress, Preview
+- **Status**: ✅ Implemented
+- **Purpose**: Universal media upload interface
+- **Primary APIs Used**: Supabase Storage
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: File size limits, virus scanning
+- **Event Triggers**: media_uploaded, upload_failed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Global media upload dialog
+
+---
+
+## OVRL-024: New Conversation Popup
+
+- **Module**: Inbox
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/NewConversationPopup.tsx
+- **Component Path**: src/components/NewConversationPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: User search, Message composer
+- **Status**: ✅ Implemented
+- **Purpose**: Start new message conversation
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: conversation_started, conversation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: New message dialog
+
+---
+
+## OVRL-025: New Ticket Popup
+
+- **Module**: Staff
+- **Portal(s)**: Staff, Admin
+- **Roles with access**: Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/NewTicketPopup.tsx
+- **Component Path**: src/components/NewTicketPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Ticket form, Priority, Assignment
+- **Status**: ✅ Implemented
+- **Purpose**: Support ticket creation
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: ticket_created, ticket_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Create support ticket
+
+---
+
+## OVRL-026: Master Action Popup
+
+- **Module**: Home
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/MasterActionPopup.tsx
+- **Component Path**: src/components/MasterActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Action selector, Quick actions
+- **Status**: ✅ Implemented
+- **Purpose**: Unified master action selector
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: action_selected, action_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Central action launcher
+
+---
+
+## OVRL-027: Health Master Action Popup
+
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/HealthMasterActionPopup.tsx
+- **Component Path**: src/components/HealthMasterActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Health actions, Quick log
+- **Status**: ✅ Implemented
+- **Purpose**: Health-specific master actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA compliance
+- **Event Triggers**: health_action_selected
+- **Dependencies**: MasterActionPopup
+- **Notes**: Health module actions
+
+---
+
+## OVRL-028: Health Tracker Master Action Popup
+
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/HealthTrackerMasterActionPopup.tsx
+- **Component Path**: src/components/HealthTrackerMasterActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Tracker selection, Quick entry
+- **Status**: ✅ Implemented
+- **Purpose**: Health tracker-specific actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA compliance
+- **Event Triggers**: tracker_action_selected
+- **Dependencies**: MasterActionPopup
+- **Notes**: Health tracker actions
+
+---
+
+## OVRL-029: Biomarkers Master Action Popup
+
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/BiomarkersMasterActionPopup.tsx
+- **Component Path**: src/components/BiomarkersMasterActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Biomarker actions, Quick log
+- **Status**: ✅ Implemented
+- **Purpose**: Biomarker-specific master actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA compliance, lab result handling
+- **Event Triggers**: biomarker_action_selected
+- **Dependencies**: MasterActionPopup
+- **Notes**: Biomarker module actions
+
+---
+
+## OVRL-030: Education Master Action Popup
+
+- **Module**: Discover
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/EducationMasterActionPopup.tsx
+- **Component Path**: src/components/EducationMasterActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Education actions, Content access
+- **Status**: ✅ Implemented
+- **Purpose**: Education-specific master actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: education_action_selected
+- **Dependencies**: MasterActionPopup
+- **Notes**: Education module actions
+
+---
+
+## OVRL-031: Services Master Action Popup
+
+- **Module**: Discover
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ServicesMasterActionPopup.tsx
+- **Component Path**: src/components/ServicesMasterActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Service actions, Book/Browse
+- **Status**: ✅ Implemented
+- **Purpose**: Services-specific master actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: service_action_selected
+- **Dependencies**: MasterActionPopup
+- **Notes**: Services module actions
+
+---
+
+## OVRL-032: Manage My Actions Popup
+
+- **Module**: Home
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ManageMyActionsPopup.tsx
+- **Component Path**: src/components/ManageMyActionsPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Action list, Edit, Remove
+- **Status**: ✅ Implemented
+- **Purpose**: Manage user's custom actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: actions_managed, action_removed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: User action management
+
+---
+
+## OVRL-033: Autopilot Popup
+
+- **Module**: AI
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/AutopilotPopup.tsx
+- **Component Path**: src/components/AutopilotPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Autopilot config, Start/Stop
+- **Status**: ✅ Implemented
+- **Purpose**: AI autopilot configuration and control
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: autopilot_actions, automation_rules
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: autopilot_started, autopilot_stopped
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: AI autopilot launcher
+
+---
+
+## OVRL-034: Add to AI Feed Popup
+
+- **Module**: AI
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/AddToAIFeedPopup.tsx
+- **Component Path**: src/components/AddToAIFeedPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Item selection, Context notes
+- **Status**: ✅ Implemented
+- **Purpose**: Add items to AI feed for context
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: item_added_to_ai_feed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: AI context enrichment
+
+---
+
+## OVRL-035: Enrich Context Popup
+
+- **Module**: AI
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/EnrichContextPopup.tsx
+- **Component Path**: src/components/EnrichContextPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Context editor, Data sources
+- **Status**: ✅ Implemented
+- **Purpose**: Enrich AI context with additional information
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: ai_memory
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: context_enriched
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: AI context enhancement
+
+---
+
+## OVRL-036: Lab Test Order Popup
+
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/LabTestOrderPopup.tsx
+- **Component Path**: src/components/LabTestOrderPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Test selection, Order form, Payment
+- **Status**: ✅ Implemented
+- **Purpose**: Lab test ordering interface
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA compliance, medical consent
+- **Event Triggers**: lab_test_ordered, order_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Lab test ordering flow
+
+---
+
+## OVRL-037: Billing Action Popup
+
+- **Module**: Wallet
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/BillingActionPopup.tsx
+- **Component Path**: src/components/BillingActionPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Payment method, Amount, Confirm
+- **Status**: ✅ Implemented
+- **Purpose**: Billing and payment actions
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: PCI compliance
+- **Event Triggers**: payment_initiated, payment_completed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Payment processing dialog
+
+---
+
+## OVRL-038: Browse Services Popup
+
+- **Module**: Discover
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/BrowseServicesPopup.tsx
+- **Component Path**: src/components/BrowseServicesPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Service catalog, Filters, Details
+- **Status**: ✅ Implemented
+- **Purpose**: Service browsing and discovery
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: service_viewed, service_selected
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Service catalog browser
+
+---
+
+## OVRL-039: Create Service Popup
+
+- **Module**: Professional
+- **Portal(s)**: Professional, Staff, Admin
+- **Roles with access**: Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateServicePopup.tsx
+- **Component Path**: src/components/CreateServicePopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Service form, Pricing, Availability
+- **Status**: ✅ Implemented
+- **Purpose**: Professional service creation
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: service_created, service_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Create professional service
+
+---
+
+## OVRL-040: Create Package Popup
+
+- **Module**: Professional
+- **Portal(s)**: Professional, Staff, Admin
+- **Roles with access**: Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreatePackagePopup.tsx
+- **Component Path**: src/components/CreatePackagePopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Package builder, Services, Pricing
+- **Status**: ✅ Implemented
+- **Purpose**: Service package creation
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: package_created, package_creation_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Bundle services into packages
+
+---
+
+## OVRL-041: Smart Package Popup
+
+- **Module**: Professional
+- **Portal(s)**: Professional, Staff, Admin
+- **Roles with access**: Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/SmartPackagePopup.tsx
+- **Component Path**: src/components/SmartPackagePopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: AI suggestions, Package config
+- **Status**: ✅ Implemented
+- **Purpose**: AI-powered package creation
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: smart_package_created
+- **Dependencies**: CreatePackagePopup
+- **Notes**: AI-assisted package builder
+
+---
+
+## OVRL-042: Create Business Event Popup
+
+- **Module**: Professional
+- **Portal(s)**: Professional, Staff, Admin
+- **Roles with access**: Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateBusinessEventPopup.tsx
+- **Component Path**: src/components/CreateBusinessEventPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Event form, Business settings
+- **Status**: ✅ Implemented
+- **Purpose**: Business-oriented event creation
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: global_community_events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: business_event_created
+- **Dependencies**: CreateEventPopup
+- **Notes**: Professional event creation
+
+---
+
+## OVRL-043: Consent Package Popup
+
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ConsentPackagePopup.tsx
+- **Component Path**: src/components/ConsentPackagePopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Consent viewer, Agree/Decline
+- **Status**: ✅ Implemented
+- **Purpose**: Display and collect user consent
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Legal consent tracking, GDPR/HIPAA
+- **Event Triggers**: consent_given, consent_declined
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Consent management dialog
+
+---
+
+## OVRL-044: Manage Consent Popup
+
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ManageConsentPopup.tsx
+- **Component Path**: src/components/ManageConsentPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Consent list, Revoke, History
+- **Status**: ✅ Implemented
+- **Purpose**: Manage user consent preferences
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: GDPR right to withdraw consent
+- **Event Triggers**: consent_revoked, consent_history_viewed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: User consent management
+
+---
+
+## OVRL-045: Privacy Audit Popup
+
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/PrivacyAuditPopup.tsx
+- **Component Path**: src/components/PrivacyAuditPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Privacy audit, Data access log
+- **Status**: ✅ Implemented
+- **Purpose**: Privacy audit and data access review
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: audit_events
+- **Compliance Notes**: GDPR right to access
+- **Event Triggers**: privacy_audit_viewed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: User privacy audit tool
+
+---
+
+## OVRL-046: Quick Setup Popup
+
+- **Module**: Home
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/QuickSetupPopup.tsx
+- **Component Path**: src/components/QuickSetupPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Setup wizard, Quick actions
+- **Status**: ✅ Implemented
+- **Purpose**: Quick account setup and configuration
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: profiles, user_preferences
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: setup_completed, setup_skipped
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Fast-track setup wizard
+
+---
+
+## OVRL-047: Reset Defaults Popup
+
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ResetDefaultsPopup.tsx
+- **Component Path**: src/components/ResetDefaultsPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Confirmation, Reset options
+- **Status**: ✅ Implemented
+- **Purpose**: Reset settings to default values
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: user_preferences
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: settings_reset, reset_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Settings reset dialog
+
+---
+
+## OVRL-048: Connect App Popup
+
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ConnectAppPopup.tsx
+- **Component Path**: src/components/ConnectAppPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: App list, OAuth flow
+- **Status**: ✅ Implemented
+- **Purpose**: Third-party app integration
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: api_integrations
+- **Compliance Notes**: OAuth security, data sharing consent
+- **Event Triggers**: app_connected, app_connection_cancelled
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Third-party app connector
+
+---
+
+## OVRL-049: View Details Popup
+
+- **Module**: Global - Utility
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/ViewDetailsPopup.tsx
+- **Component Path**: src/components/ViewDetailsPopup.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Detail view, Actions
+- **Status**: ✅ Implemented
+- **Purpose**: Generic detail viewer for various entities
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: Multiple (context-dependent)
+- **Compliance Notes**: RLS enforcement
+- **Event Triggers**: details_viewed
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Universal detail viewer
+
+---
+
+## OVRL-050: Community Filters Popup
+
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Popover)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CommunityFiltersPopup.tsx
+- **Component Path**: src/components/CommunityFiltersPopup.tsx
+- **UI Pattern**: Popover dropdown
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Filter options, Apply
+- **Status**: ✅ Implemented
+- **Purpose**: Community content filtering
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: N/A (client-side filtering)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: filters_applied
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Community filter controls
+
+---
+
+## OVRL-051: Business Filters Popup
+
+- **Module**: Professional
+- **Portal(s)**: Professional, Staff, Admin
+- **Roles with access**: Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Popover)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/BusinessFiltersPopup.tsx
+- **Component Path**: src/components/BusinessFiltersPopup.tsx
+- **UI Pattern**: Popover dropdown
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Filter options, Apply
+- **Status**: ✅ Implemented
+- **Purpose**: Business/professional content filtering
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: N/A (client-side filtering)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: filters_applied
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Professional filter controls
+
+---
+
+## OVRL-052: Match Filters Popup
+
+- **Module**: Home
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Popover)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/MatchFiltersPopup.tsx
+- **Component Path**: src/components/MatchFiltersPopup.tsx
+- **UI Pattern**: Popover dropdown
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Filter options, Preferences
+- **Status**: ✅ Implemented
+- **Purpose**: Match filtering and preferences
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: user_preferences
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: match_filters_applied
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Match filter controls
+
+---
+
+## OVRL-053: Create Selection Dialog
+
+- **Module**: Global - Utility
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: N/A (Dialog)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/CreateSelectionDialog.tsx
+- **Component Path**: src/components/CreateSelectionDialog.tsx
+- **UI Pattern**: dialog
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Creation type selector
+- **Status**: ✅ Implemented
+- **Purpose**: Universal creation type selection
+- **Primary APIs Used**: N/A
+- **DB Tables / Models Used**: N/A
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: creation_type_selected
+- **Dependencies**: Various create dialogs
+- **Notes**: Master creation type selector
 
 ---
 
