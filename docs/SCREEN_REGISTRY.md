@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 430
+**Total Screens**: 432
 
 ---
 
@@ -36,14 +36,14 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Category | Count |
 |----------|-------|
 | Public/Auth Screens | 24 |
-| Community Role Screens | 72 |
+| Community Role Screens | 74 |
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
 | Admin Role Screens | 85 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **430** |
+| **TOTAL** | **432** |
 
 ---
 
@@ -2406,6 +2406,54 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Tenant and role management for multi-role users
+
+---
+
+## SETT-009: Autopilot Settings
+
+- **CanonicalId**: SETT.00.009.A.ALL.CLI
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/settings/autopilot`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/settings/AutopilotSettings.tsx
+- **Component Path**: src/pages/settings/AutopilotSettings.tsx
+- **UI Pattern**: sub-page-header with cards
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Master switch, Action categories, Frequency & timing controls
+- **Status**: ✅ Implemented
+- **Purpose**: Configure personal autopilot automation preferences including action categories, daily limits, quiet hours, and priority filters
+- **Primary APIs Used**: Supabase API for user_preferences table read/update
+- **DB Tables / Models Used**: user_preferences (autopilot_enabled, autopilot_categories, autopilot_max_actions_per_day, autopilot_quiet_hours_start, autopilot_quiet_hours_end, autopilot_priority_filter)
+- **Compliance Notes**: User-specific automation preferences; all data is personal and non-medical; RLS enforced per user
+- **Event Triggers**: autopilot_settings_viewed, autopilot_enabled_toggled, autopilot_category_changed, autopilot_frequency_changed, screen_id:SETT-009
+- **Dependencies**: useUserPreferences hook, AuthProvider, settingsNavigation config, AppLayout, SubNavigation
+- **Notes**: Manages autopilot action preferences including health, community, discovery, and memory categories; controls daily action limits (1-20 per day) and quiet hours scheduling
+
+---
+
+## SETT-010: Voice AI Settings
+
+- **CanonicalId**: SETT.00.010.A.ALL.CLI
+- **Module**: Settings
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/settings/voice-ai`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/settings/VoiceAISettings.tsx
+- **Component Path**: src/pages/settings/VoiceAISettings.tsx
+- **UI Pattern**: sub-page-header with tabs (Voice, AI Models, Privacy)
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Voice tab (TTS/STT settings), AI Models tab (model selection), Privacy tab (data controls)
+- **Status**: ✅ Implemented
+- **Purpose**: Configure voice recognition (STT), text-to-speech (TTS), and AI assistant preferences including language, voice selection, speech parameters, AI model choices, and voice data retention settings
+- **Primary APIs Used**: Supabase API for user_preferences, Google Cloud TTS edge function (google-cloud-tts), Browser Web Speech API (speechSynthesis), OpenAI API for models
+- **DB Tables / Models Used**: user_preferences (stt_language, stt_enabled, tts_voice, tts_speed, tts_pitch, tts_volume, tts_enabled, ai_chat_model, ai_voice_model, ai_auto_transcribe, voice_data_retention_days, voice_analytics_enabled)
+- **Compliance Notes**: Voice data privacy sensitive; includes retention controls (7/30/90 days/indefinitely); analytics opt-in; multilingual support requires proper language/voice matching; TTS preview uses browser and cloud APIs
+- **Event Triggers**: voice_ai_settings_viewed, tts_voice_changed, stt_language_changed, ai_model_changed, voice_preview_played, privacy_setting_changed, screen_id:SETT-010
+- **Dependencies**: useUserPreferences hook, AuthProvider, settingsNavigation config, Browser Web Speech API, Google Cloud TTS edge function, Voice matching algorithm for language/voice pairing
+- **Notes**: Supports 9 languages (en-US, de-DE, sr-RS, es-ES, ar-XA, ru-RU, zh-CN, fr-FR, pt-PT); Auto-selects matching female voice when language changes; Includes browser and Google Cloud TTS voices with quality indicators; TTS controls for speed (0.5-2.0x), pitch (0.5-2.0), and volume (0-100%); AI model selection for chat (GPT-4, GPT-3.5) and voice (Whisper, Deepgram, Google); Privacy controls for data retention and analytics
 
 ---
 
