@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 439
+**Total Screens**: 440
 
 ---
 
@@ -36,14 +36,14 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Category | Count |
 |----------|-------|
 | Public/Auth Screens | 24 |
-| Community Role Screens | 81 |
+| Community Role Screens | 82 |
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
 | Admin Role Screens | 85 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **439** |
+| **TOTAL** | **440** |
 
 ---
 
@@ -1376,6 +1376,30 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Shopping cart for supplements
+
+---
+
+## DISC-010: Intent Router
+
+- **CanonicalId**: DISC.00.010.A.COMM.PROD
+- **Module**: Discover
+- **Portal(s)**: Community Portal
+- **Roles with access**: Community Member
+- **External Route (client URL)**: `/discover` (embedded component)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/discover/IntentRouter.tsx
+- **Component Path**: src/pages/discover/IntentRouter.tsx
+- **UI Pattern**: intent-detection-interface
+- **Tenant Availability**: Maxina
+- **Subscreens / Tabs / Modals**: Search Bar, Intent Chips (Doctors & Coaches, Wellness Services, Community Groups), Quick Stats
+- **Status**: ✅ Implemented
+- **Purpose**: Intelligent search interface that detects user intent and routes to appropriate discovery sections (providers, services, groups, or general browse) based on keyword matching; serves as the main entry point for discovery with visual intent chips and search functionality
+- **Primary APIs Used**: Supabase Analytics API (analytics.trackClick for intent detection tracking and user behavior analysis)
+- **DB Tables / Models Used**: N/A (client-side intent detection via keyword matching; no direct database queries)
+- **Compliance Notes**: No sensitive data collected; analytics tracks search queries and chip clicks for UX optimization; search terms are logged for intent improvement but not linked to PHI
+- **Event Triggers**: analytics.trackClick('discover-intent-router', '1.0', 'search'), analytics.trackClick('discover-intent-router', '1.0', 'intent-detected'), analytics.trackClick('discover-intent-router', '1.0', 'chip-click'), screen_id:DISC-010
+- **Dependencies**: withCardId HOC (CT-DIS-001, C-001), analytics library, react-router-dom navigation, Input component, Button component, Card/CardContent components, Lucide icons (Search, UserCheck, Heart, Users)
+- **Notes**: Uses keyword-based intent detection to route users to /discover/providers (for doctor/coach queries), /discover/categories (for wellness service queries), /community/groups (for community/social queries), or /discover/browse (default fallback); includes hardcoded stats display (150+ providers, 50+ categories, 1000+ members) for social proof
 
 ---
 
