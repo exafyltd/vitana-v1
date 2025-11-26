@@ -19,7 +19,6 @@ import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
-import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -281,8 +280,7 @@ const App = () => {
         <EventSelectionProvider>
           <StreamingStateProvider>
             <ProfilePreviewProvider>
-              <SoundscapeProvider>
-                <TooltipProvider>
+              <TooltipProvider>
                   <Toaster />
                   <PresenceDebugPanel />
                   <AppHooksInitializer />
@@ -1281,7 +1279,6 @@ const App = () => {
                 </VitanalandNavigationProvider>
               </BrowserRouter>
             </TooltipProvider>
-          </SoundscapeProvider>
         </ProfilePreviewProvider>
       </StreamingStateProvider>
     </EventSelectionProvider>
