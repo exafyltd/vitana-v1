@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 467
+**Total Screens**: 479
 
 ---
 
@@ -40,10 +40,10 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
-| Admin Role Screens | 105 |
+| Admin Role Screens | 117 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **467** |
+| **TOTAL** | **479** |
 
 ---
 
@@ -4896,6 +4896,294 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: vertex_testing_viewed, api_test_executed, model_response_reviewed, screen_id:ADMN-124
 - **Dependencies**: AuthProvider, AdminHeader, SubNavigation, Vertex AI API integration, AI testing utilities
 - **Notes**: Development tool for testing and validating Vertex AI integration; includes prompt testing, response validation, and configuration verification
+
+---
+
+## ADMN-125: AI Situation Analyzer
+
+- **CanonicalId**: ADMN.00.125.A.ADM.PROD
+- **Module**: Admin - AI Assistant
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/ai-assistant/situation-analyzer`
+- **Internal/Admin Route (if any)**: `/admin/ai-assistant/situation-analyzer`
+- **Dev Route (current project path)**: src/pages/admin/ai-assistant/AISituationAnalyzer.tsx
+- **Component Path**: src/pages/admin/ai-assistant/AISituationAnalyzer.tsx
+- **UI Pattern**: Interactive form with results viewer
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Situation input form, Analysis results, Suggested triggers, Suggested conditions, Suggested actions, Deploy to automation builder
+- **Status**: ✅ Implemented
+- **Purpose**: AI-powered situation analysis tool that converts natural language descriptions of scenarios into structured automation rules; analyzes admin-described situations, identifies patterns, suggests triggers/conditions/actions, and generates deployable automation configurations
+- **Primary APIs Used**: Vertex AI API (via analyze-situation edge function), Automation API, Supabase API
+- **DB Tables / Models Used**: ai_situation_analyses, automation_rules, ai_recommendations
+- **Compliance Notes**: AI-generated automation suggestions; admin review required before deployment; transparent AI reasoning; cost monitoring for Vertex AI calls; rate limiting
+- **Event Triggers**: situation_analyzer_viewed, situation_analyzed, analysis_deployed, automation_created, screen_id:ADMN-125
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminAIAssistantNavigation), SituationForm, AnalysisResults, analyze-situation edge function, useAutomationRules hook
+- **Notes**: Converts descriptions like "When a user views 3+ products without buying, send them a discount code" into structured automation rules with confidence scores and rationale
+
+---
+
+## ADMN-126: AI Assistant Analytics
+
+- **CanonicalId**: ADMN.00.126.A.ADM.PROD
+- **Module**: Admin - AI Assistant
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/ai-assistant/analytics`
+- **Internal/Admin Route (if any)**: `/admin/ai-assistant/analytics`
+- **Dev Route (current project path)**: src/pages/admin/ai-assistant/Analytics.tsx
+- **Component Path**: src/pages/admin/ai-assistant/Analytics.tsx
+- **UI Pattern**: Dashboard with charts
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Key metrics cards, Conversation trends chart, Memory creation chart, Automation performance, User engagement metrics
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive analytics dashboard for AI Assistant performance metrics; tracks conversation volumes, memory creation rates, automation effectiveness, user engagement, and AI system health; provides insights into AI assistant usage patterns and impact
+- **Primary APIs Used**: Analytics API, AI Conversations API, AI Memory API, Automation API
+- **DB Tables / Models Used**: ai_conversations, ai_memory, automation_rules, automation_executions, ai_recommendations
+- **Compliance Notes**: Aggregated analytics only; no individual conversation content exposure; AI performance transparency; usage cost tracking
+- **Event Triggers**: ai_analytics_viewed, metrics_exported, trend_analyzed, screen_id:ADMN-126
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminAIAssistantNavigation), AdminStatsCard, useAIAssistantAnalytics hook, Recharts (LineChart, CartesianGrid, Tooltip, Legend)
+- **Notes**: Key metrics include total conversations, memories created, avg confidence scores, active automations, execution success rates, and user engagement trends over time
+
+---
+
+## ADMN-127: Pattern Discovery
+
+- **CanonicalId**: ADMN.00.127.A.ADM.PROD
+- **Module**: Admin - AI Assistant
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/ai-assistant/pattern-discovery`
+- **Internal/Admin Route (if any)**: `/admin/ai-assistant/pattern-discovery`
+- **Dev Route (current project path)**: src/pages/admin/ai-assistant/PatternDiscovery.tsx
+- **Component Path**: src/pages/admin/ai-assistant/PatternDiscovery.tsx
+- **UI Pattern**: Grid with modal details
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Pattern cards grid, Pattern type filter, Pattern status filter, Pattern details modal, Create automation action, Review/Dismiss actions
+- **Status**: ✅ Implemented
+- **Purpose**: AI-powered pattern discovery interface that automatically identifies behavioral patterns, usage trends, and automation opportunities from user data; surfaces discovered patterns for admin review, enables pattern-to-automation conversion, and tracks pattern implementation status
+- **Primary APIs Used**: Pattern Discovery API, AI Recommendations API, Automation API
+- **DB Tables / Models Used**: pattern_discoveries, ai_recommendations, automation_rules, user_behavior_logs
+- **Compliance Notes**: User behavior pattern detection; privacy-preserving aggregation; pattern implementation consent; transparent pattern disclosure to affected users
+- **Event Triggers**: pattern_discovery_viewed, pattern_reviewed, pattern_implemented, pattern_dismissed, automation_created_from_pattern, screen_id:ADMN-127
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminAIAssistantNavigation), usePatternDiscovery hook, PatternCard, PatternDetails components, Filter selects
+- **Notes**: Discovers patterns like "Users who complete fitness assessment are 3x more likely to book consultations" or "Payment failures peak on Sundays"; enables quick automation creation from patterns
+
+---
+
+## ADMN-128: Proactive Settings
+
+- **CanonicalId**: ADMN.00.128.A.ADM.PROD
+- **Module**: Admin - AI Assistant
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/ai-assistant/proactive-settings`
+- **Internal/Admin Route (if any)**: `/admin/ai-assistant/proactive-settings`
+- **Dev Route (current project path)**: src/pages/admin/ai-assistant/ProactiveSettings.tsx
+- **Component Path**: src/pages/admin/ai-assistant/ProactiveSettings.tsx
+- **UI Pattern**: Settings form
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Global AI settings, Proactive engagement controls, Automation thresholds, Notification preferences, AI behavior configuration
+- **Status**: ✅ Implemented
+- **Purpose**: Configuration interface for AI Assistant proactive engagement settings; controls when and how the AI proactively suggests actions, sets confidence thresholds for automated vs. manual review, configures notification preferences, and manages AI behavior policies
+- **Primary APIs Used**: Settings API, Supabase API (admin_proactive_settings table)
+- **DB Tables / Models Used**: admin_proactive_settings, system_config
+- **Compliance Notes**: AI automation governance; human-in-the-loop controls; automated decision-making transparency; opt-out mechanisms
+- **Event Triggers**: proactive_settings_viewed, settings_updated, thresholds_changed, screen_id:ADMN-128
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminAIAssistantNavigation), Settings form components, admin_proactive_settings table
+- **Notes**: Controls settings like minimum confidence score for auto-deployment (e.g., 0.85), maximum automations per day, notification channels, and AI suggestion frequency
+
+---
+
+## ADMN-129: Automation Builder
+
+- **CanonicalId**: ADMN.00.129.A.ADM.PROD
+- **Module**: Admin - Automation
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/automation/builder`
+- **Internal/Admin Route (if any)**: `/admin/automation/builder`
+- **Dev Route (current project path)**: src/pages/admin/automation/AutomationBuilder.tsx
+- **Component Path**: src/pages/admin/automation/AutomationBuilder.tsx
+- **UI Pattern**: Multi-step form builder
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Name/description form, Trigger selector, Condition builder, Action configurator, Enable/disable toggle, Save/deploy actions
+- **Status**: ✅ Implemented
+- **Purpose**: Interactive automation workflow builder; enables admins to create complex automation rules by selecting triggers, defining conditions, and configuring actions; supports loading from AI-discovered patterns or manual creation; validates rule configuration before deployment
+- **Primary APIs Used**: Automation API, Supabase API (automation_rules table)
+- **DB Tables / Models Used**: automation_rules, pattern_discoveries (for pre-fill), automation_executions
+- **Compliance Notes**: Automation rule governance; impact assessment before deployment; rollback capabilities; audit trail of rule changes
+- **Event Triggers**: automation_builder_viewed, rule_created, rule_saved, trigger_selected, condition_added, action_configured, screen_id:ADMN-129
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminAutomationNavigation), TriggerSelector, ConditionBuilder, ActionConfigurator components, useAutomationRules hook
+- **Notes**: Supports pattern pre-fill via ?patternId query param; allows manual trigger/condition/action selection; validates rule logic before save
+
+---
+
+## ADMN-130: Community Events Moderation
+
+- **CanonicalId**: ADMN.00.130.A.ADM.PROD
+- **Module**: Admin - Community Supervision
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/community/events`
+- **Internal/Admin Route (if any)**: `/admin/community/events`
+- **Dev Route (current project path)**: src/pages/admin/community/Events.tsx
+- **Component Path**: src/pages/admin/community/Events.tsx
+- **UI Pattern**: data-table with tabs
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Pending events tab, Approved events tab, Flagged events tab, Event details, Approve/reject actions, Moderation notes
+- **Status**: ✅ Implemented
+- **Purpose**: Community event moderation dashboard; enables admins to review, approve, reject, and flag user-created events for content policy violations; tracks event status, moderation history, and provides real-time updates on new submissions
+- **Primary APIs Used**: Community Events API, Moderation API, Supabase Realtime
+- **DB Tables / Models Used**: global_community_events, event_attendees, content_reports, moderation_logs
+- **Compliance Notes**: Content moderation policies; event safety verification; age-restricted event flagging; legal compliance (permits, insurance); user appeals process
+- **Event Triggers**: events_moderation_viewed, event_approved, event_rejected, event_flagged, moderation_note_added, screen_id:ADMN-130
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminCommunityNavigation), Tabs, Table components, real-time subscriptions to global_community_events
+- **Notes**: Real-time event moderation with tabs for pending, approved, and flagged events; supports bulk moderation actions
+
+---
+
+## ADMN-131: Community Groups Admin
+
+- **CanonicalId**: ADMN.00.131.A.ADM.PROD
+- **Module**: Admin - Community Supervision
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/community/groups`
+- **Internal/Admin Route (if any)**: `/admin/community/groups`
+- **Dev Route (current project path)**: src/pages/admin/community/Groups.tsx
+- **Component Path**: src/pages/admin/community/Groups.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Groups list, Group details, Member management, Moderation actions, Group settings
+- **Status**: ✅ Implemented
+- **Purpose**: Community group oversight and management; enables admins to monitor all groups, review group activities, manage problematic groups, oversee group moderators, and take enforcement actions (warnings, suspensions, deletions) for policy violations
+- **Primary APIs Used**: Groups API, Moderation API, Supabase Realtime
+- **DB Tables / Models Used**: global_community_groups, group_members, group_posts, content_reports
+- **Compliance Notes**: Group content moderation; hate speech monitoring; private group privacy; minor protection in groups; data retention for deleted groups
+- **Event Triggers**: groups_admin_viewed, group_moderated, group_suspended, group_deleted, moderator_actioned, screen_id:ADMN-131
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminCommunityNavigation), DataTable, global_community_groups table
+- **Notes**: Comprehensive group management including member counts, activity metrics, and moderation status
+
+---
+
+## ADMN-132: Reported Content
+
+- **CanonicalId**: ADMN.00.132.A.ADM.PROD
+- **Module**: Admin - Community Supervision
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/community/reported-content`
+- **Internal/Admin Route (if any)**: `/admin/community/reported-content`
+- **Dev Route (current project path)**: src/pages/admin/community/ReportedContent.tsx
+- **Component Path**: src/pages/admin/community/ReportedContent.tsx
+- **UI Pattern**: data-table with tabs
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Pending reports tab, Reviewed reports tab, Report details, Content preview, Moderation actions (remove, warn, ban), Reporter info, Resolution notes
+- **Status**: ✅ Implemented
+- **Purpose**: Centralized user-generated content report management; enables admins to review flagged posts, comments, profiles, and media; take appropriate moderation actions; track report resolution; and manage appeals; provides quick access to reported content context and user history
+- **Primary APIs Used**: Reports API, Moderation API, Content API, Supabase Realtime
+- **DB Tables / Models Used**: content_reports, distribution_posts, live_chat_messages, profiles, moderation_actions
+- **Compliance Notes**: Content moderation response times; user privacy in reports; reporter anonymity; appeal rights; DMCA takedown procedures; harmful content documentation
+- **Event Triggers**: reported_content_viewed, report_reviewed, content_removed, user_warned, user_banned, appeal_submitted, screen_id:ADMN-132
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminCommunityNavigation), Tabs, Table components, content_reports table, real-time subscriptions
+- **Notes**: Handles reports across all content types (posts, comments, profiles, live streams, events, groups); supports bulk moderation and priority flagging
+
+---
+
+## ADMN-133: Media Analytics
+
+- **CanonicalId**: ADMN.00.133.A.ADM.PROD
+- **Module**: Admin - Media Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/media/analytics`
+- **Internal/Admin Route (if any)**: `/admin/media/analytics`
+- **Dev Route (current project path)**: src/pages/admin/media/Analytics.tsx
+- **Component Path**: src/pages/admin/media/Analytics.tsx
+- **UI Pattern**: Dashboard with charts
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Storage usage metrics, Content type breakdown, Upload trends, Popular content, Engagement analytics, Cost analysis
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive media library analytics dashboard; provides insights into storage usage, content distribution, upload patterns, popular content, user engagement with media, and storage costs; enables data-driven decisions for media management and CDN optimization
+- **Primary APIs Used**: Storage API, Analytics API, Supabase Storage API
+- **DB Tables / Models Used**: Supabase Storage buckets, media_uploads, media_views, media_engagement
+- **Compliance Notes**: Storage quota monitoring; cost optimization; content distribution policies; bandwidth usage tracking
+- **Event Triggers**: media_analytics_viewed, storage_analyzed, usage_report_generated, screen_id:ADMN-133
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminMediaNavigation), Recharts, Supabase Storage API
+- **Notes**: Tracks metrics like total storage used, uploads per day, top content by views, media type distribution (video/audio/image), and storage costs
+
+---
+
+## ADMN-134: Music Management
+
+- **CanonicalId**: ADMN.00.134.A.ADM.PROD
+- **Module**: Admin - Media Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/media/music`
+- **Internal/Admin Route (if any)**: `/admin/media/music`
+- **Dev Route (current project path)**: src/pages/admin/media/Music.tsx
+- **Component Path**: src/pages/admin/media/Music.tsx
+- **UI Pattern**: data-table with player
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Music library list, Upload music, Edit metadata, Audio player, Moderation status, License verification
+- **Status**: ✅ Implemented
+- **Purpose**: Music content library management; enables admins to manage music uploads, verify licensing, edit metadata (title, artist, album, genre), moderate content for copyright violations, and organize music for platform use (meditation, workout playlists, ambient soundscapes)
+- **Primary APIs Used**: Storage API, Media processing APIs, Licensing verification APIs
+- **DB Tables / Models Used**: media_uploads (media_type='audio'), audio_metadata, music_licenses
+- **Compliance Notes**: Music licensing compliance; DMCA takedown process; copyright verification; royalty tracking; content ID matching
+- **Event Triggers**: music_management_viewed, music_uploaded, music_moderated, license_verified, music_deleted, screen_id:ADMN-134
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminMediaNavigation), DataTable, Audio player, Supabase Storage
+- **Notes**: Manages platform music library including user uploads and licensed content; supports metadata editing, quality checks, and copyright verification
+
+---
+
+## ADMN-135: Podcasts Management
+
+- **CanonicalId**: ADMN.00.135.A.ADM.PROD
+- **Module**: Admin - Media Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/media/podcasts`
+- **Internal/Admin Route (if any)**: `/admin/media/podcasts`
+- **Dev Route (current project path)**: src/pages/admin/media/Podcasts.tsx
+- **Component Path**: src/pages/admin/media/Podcasts.tsx
+- **UI Pattern**: data-table with player
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Podcast list, Episode management, Upload podcast, Edit metadata, Audio player, Show notes editor, Moderation status
+- **Status**: ✅ Implemented
+- **Purpose**: Podcast content library management; enables admins to manage podcast shows, episodes, edit metadata (title, description, show notes, categories), moderate content, organize episodes into seasons, and distribute to podcast platforms (RSS feed generation)
+- **Primary APIs Used**: Storage API, Media processing APIs, RSS generation APIs
+- **DB Tables / Models Used**: media_uploads (media_type='podcast'), podcast_metadata, podcast_episodes, podcast_shows
+- **Compliance Notes**: Podcast content moderation; copyright for intro music; show notes accuracy; RSS feed compliance; content warnings
+- **Event Triggers**: podcasts_management_viewed, podcast_uploaded, episode_published, metadata_updated, podcast_deleted, screen_id:ADMN-135
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminMediaNavigation), DataTable, Audio player, Rich text editor for show notes
+- **Notes**: Manages platform podcast library including wellness podcasts, health talks, and meditation guides; supports episode organization and RSS feed generation
+
+---
+
+## ADMN-136: Videos Management
+
+- **CanonicalId**: ADMN.00.136.A.ADM.PROD
+- **Module**: Admin - Media Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/media/videos`
+- **Internal/Admin Route (if any)**: `/admin/media/videos`
+- **Dev Route (current project path)**: src/pages/admin/media/Videos.tsx
+- **Component Path**: src/pages/admin/media/Videos.tsx
+- **UI Pattern**: data-table with video player
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Video library list, Upload video, Edit metadata, Video player, Thumbnail editor, Moderation status, Transcoding status, Quality presets
+- **Status**: ✅ Implemented
+- **Purpose**: Video content library management; enables admins to manage video uploads, moderate content, edit metadata (title, description, tags, thumbnails), monitor transcoding status, organize into playlists, and configure quality/streaming settings
+- **Primary APIs Used**: Storage API, Video transcoding APIs, CDN APIs, Supabase Storage
+- **DB Tables / Models Used**: media_uploads (media_type='video'), video_metadata, video_processing_jobs
+- **Compliance Notes**: Video content moderation; copyright verification; age-restricted content flagging; DMCA compliance; transcoding privacy; storage quotas
+- **Event Triggers**: videos_management_viewed, video_uploaded, video_moderated, video_approved, video_deleted, transcoding_completed, screen_id:ADMN-136
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation (adminMediaNavigation), DataTable, Video player, useQuery for fetching videos and profiles, Supabase Storage
+- **Notes**: Manages platform video library including fitness classes, meditation videos, health education content; supports status filtering (pending, approved, rejected, processing), search, and bulk actions; displays uploader info, views, likes, duration, and processing status
 
 ---
 
