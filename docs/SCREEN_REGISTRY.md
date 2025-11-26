@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 432
+**Total Screens**: 437
 
 ---
 
@@ -36,14 +36,14 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Category | Count |
 |----------|-------|
 | Public/Auth Screens | 24 |
-| Community Role Screens | 74 |
+| Community Role Screens | 79 |
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
 | Admin Role Screens | 85 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **432** |
+| **TOTAL** | **437** |
 
 ---
 
@@ -2096,6 +2096,126 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Data sharing consent management
+
+---
+
+## SHAR-006: Consent Dashboard
+
+- **CanonicalId**: SHAR.00.006.A.ALL.CLI
+- **Module**: Sharing
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/sharing/consent`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/sharing/Consent.tsx
+- **Component Path**: src/pages/sharing/Consent.tsx
+- **UI Pattern**: sub-page-header with cards
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active Permissions, Pending Requests, Privacy Settings, Grant Access Dialog, Create Package Dialog, Privacy Settings Dialog
+- **Status**: ✅ Implemented
+- **Purpose**: Manage data sharing consents and permissions, view active access grants, review and approve/reject pending data sharing requests from organizations, configure privacy controls, create data packages for sharing with healthcare providers or research studies
+- **Primary APIs Used**: Supabase API for consent_records, data_access_requests, organizations tables
+- **DB Tables / Models Used**: consent_records, data_access_requests, organizations, data_types_shared, data_packages, privacy_settings
+- **Compliance Notes**: HIPAA/GDPR sensitive - manages explicit user consent for data sharing with third parties; requires audit trail of all consent actions; must support consent revocation; data sharing must be granular and purpose-specific
+- **Event Triggers**: consent_dashboard_viewed, consent_granted, consent_revoked, access_request_approved, access_request_rejected, privacy_settings_changed, data_package_created, screen_id:SHAR-006
+- **Dependencies**: AppLayout, SubNavigation, sharingNavigation config, GrantAccessDialog, CreatePackageDialog, PrivacySettingsDialog, StandardCard, UtilityActionButton, SEO component
+- **Notes**: Central hub for managing all data sharing activities; provides transparency into who has access to what data; supports granular consent management with time-limited and purpose-specific permissions
+
+---
+
+## SHAR-007: Logs & Revocation
+
+- **CanonicalId**: SHAR.00.007.A.ALL.CLI
+- **Module**: Sharing
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/sharing/logs`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/sharing/Logs.tsx
+- **Component Path**: src/pages/sharing/Logs.tsx
+- **UI Pattern**: sub-page-header with tabs
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Activity Logs, Revoked Access, Analytics Dashboard, Export Logs, View Details Popup
+- **Status**: ✅ Implemented
+- **Purpose**: Monitor and audit all data sharing activities, view detailed access logs showing who accessed what data when, manage and review revoked permissions with rationale, export activity reports for personal records, track data sharing analytics and patterns
+- **Primary APIs Used**: Supabase API for sharing_logs, revocation_records, audit_events tables; Edge function for log aggregation and analytics
+- **DB Tables / Models Used**: sharing_logs (log_id, user_id, organization_id, data_type, access_timestamp, ip_address, action), revocation_records (revocation_id, consent_id, revoked_at, reason, user_id), audit_events
+- **Compliance Notes**: HIPAA/GDPR audit trail requirement - all data access must be logged with timestamp, accessor identity, data type, and purpose; logs must be immutable and retained per regulatory requirements (typically 6+ years); users must have transparent access to view all activity; revocation must take effect immediately
+- **Event Triggers**: logs_viewed, log_detail_expanded, access_revoked_from_logs, logs_exported, analytics_viewed, log_filtered, screen_id:SHAR-007
+- **Dependencies**: AppLayout, SubNavigation, sharingNavigation config, ViewDetailsPopup, StandardCard, DataTable, ExportButton, SEO component, date range filters
+- **Notes**: Provides full transparency and audit capability for data sharing; supports compliance with right-to-know regulations; includes real-time activity monitoring; revocation management allows users to retroactively revoke access with documented reasons
+
+---
+
+## SHAR-008: Integration Marketplace
+
+- **CanonicalId**: SHAR.00.008.A.ALL.CLI
+- **Module**: Sharing
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/sharing/marketplace`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/sharing/Marketplace.tsx
+- **Component Path**: src/pages/sharing/Marketplace.tsx
+- **UI Pattern**: sub-page-header with grid cards
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Featured Integrations, Categories (Healthcare, Research, Wellness Apps, Insurance), My Connections, Browse Services Popup, Integration Detail Modal, Connect Authorization Flow
+- **Status**: ✅ Implemented
+- **Purpose**: Discover and connect with verified healthcare platforms, research studies, wellness apps, and insurance providers; browse available integrations by category; view integration benefits and data requirements; authorize and manage third-party connections; participate in approved research studies by sharing relevant health data
+- **Primary APIs Used**: Supabase API for marketplace_integrations, user_connections, research_studies tables; OAuth 2.0 authorization flow for third-party integrations; Edge functions for integration status checks
+- **DB Tables / Models Used**: marketplace_integrations (integration_id, name, category, description, logo_url, required_data_types, benefits, verification_status, privacy_policy_url), user_connections (connection_id, user_id, integration_id, connected_at, status, sync_frequency), research_studies (study_id, title, institution, required_data, compensation, duration)
+- **Compliance Notes**: HIPAA-compliant integration vetting required - all marketplace partners must undergo security and privacy audits; users must provide explicit consent before data sharing; OAuth scopes must be granular and clearly disclosed; research studies must have IRB approval documentation; insurance integrations must comply with state regulations
+- **Event Triggers**: marketplace_viewed, integration_browsed, integration_connected, connection_authorized, research_study_joined, category_filtered, integration_detail_viewed, screen_id:SHAR-008
+- **Dependencies**: AppLayout, SubNavigation, sharingNavigation config, BrowseServicesPopup, MotivationalBanner, StandardCard, AuthorizationFlow component, CategoryFilter, SEO component, OAuth provider integration
+- **Notes**: Curated marketplace of verified third-party integrations; includes featured partnerships with major health systems and insurance providers; supports research study recruitment with compensation tracking; OAuth-based secure authorization; real-time connection status monitoring
+
+---
+
+## SHAR-009: Data Packages
+
+- **CanonicalId**: SHAR.00.009.A.ALL.CLI
+- **Module**: Sharing
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/sharing/packages`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/sharing/Packages.tsx
+- **Component Path**: src/pages/sharing/Packages.tsx
+- **UI Pattern**: sub-page-header with tabs
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: My Packages, Templates, Create Custom, Package Detail View, Share Package Dialog, Edit Package Modal, Create Package Popup
+- **Status**: ✅ Implemented
+- **Purpose**: Create, manage, and share customized health data packages with healthcare providers, insurance companies, or research institutions; use pre-built templates for common scenarios (specialist visit, insurance claim, second opinion); define custom data packages with specific biomarkers, conditions, medications, and time ranges; generate shareable links or PDFs with expiration dates and access controls
+- **Primary APIs Used**: Supabase API for data_packages, package_templates, package_recipients, package_contents tables; Edge function for package generation and PDF export; File storage API for package attachments
+- **DB Tables / Models Used**: data_packages (package_id, user_id, name, description, created_at, expires_at, access_code, status, shared_with), package_templates (template_id, name, category, included_data_types, description), package_recipients (recipient_id, package_id, recipient_email, recipient_name, accessed_at, access_count), package_contents (content_id, package_id, data_type, data_id, included_at)
+- **Compliance Notes**: HIPAA-compliant package generation - packages must be encrypted at rest and in transit; access codes must be secure and time-limited; audit trail required for all package access; recipients must be authenticated before viewing; PDF exports must be watermarked with access tracking; packages containing sensitive data (genetic, mental health) require additional consent
+- **Event Triggers**: packages_viewed, package_created, package_shared, package_accessed_by_recipient, package_expired, package_deleted, template_used, pdf_generated, screen_id:SHAR-009
+- **Dependencies**: AppLayout, SubNavigation, sharingNavigation config, CreatePackagePopup, PackageTemplateSelector, StandardCard, DataTypeSelector, RecipientManager, PDFGenerator, ShareDialog, SEO component
+- **Notes**: Supports both instant sharing and scheduled future sharing; includes package templates for common medical scenarios (lab results for endocrinologist, fitness data for trainer, complete health history for new PCP); generated packages include metadata summary, data visualizations, and exportable formats (PDF, HL7 FHIR); tracks recipient access with notifications to user
+
+---
+
+## SHAR-010: Smart Package Creator
+
+- **CanonicalId**: SHAR.00.010.A.ALL.CLI
+- **Module**: Sharing
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/sharing/smart-package`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/sharing/SmartPackage.tsx
+- **Component Path**: src/pages/sharing/SmartPackage.tsx
+- **UI Pattern**: sub-page-header with AI-driven interface
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: AI Recommendations, Custom Builder, Templates, Package Preview, Smart Package Popup, Recipient Selection, Export Options
+- **Status**: ✅ Implemented
+- **Purpose**: Use AI to intelligently create health data packages tailored to specific recipients and purposes; receive smart recommendations based on appointment type, provider specialty, or medical condition; automatically select relevant biomarkers, medications, conditions, and lifestyle data; optimize package contents for maximum clinical utility; suggest additional data that may be helpful; preview and refine AI-generated packages before sharing
+- **Primary APIs Used**: Supabase API for smart_packages, ai_recommendations, package_templates tables; Vertex AI API for intelligent package composition; Edge function for AI-powered data relevance scoring and package optimization
+- **DB Tables / Models Used**: smart_packages (smart_package_id, user_id, purpose, recipient_type, ai_recommendations, selected_data, created_at, optimization_score), ai_recommendations (recommendation_id, package_id, data_type, relevance_score, reasoning, confidence_level), package_templates, user_health_data (for context analysis)
+- **Compliance Notes**: HIPAA/GDPR compliant AI processing - AI must not store or train on user health data; recommendations must be explainable with clear reasoning; user maintains full control over final package contents; AI suggestions must respect user privacy preferences; over-sharing warnings for sensitive data; audit trail of AI recommendations and user modifications
+- **Event Triggers**: smart_package_viewed, ai_recommendations_generated, recommendation_accepted, recommendation_rejected, package_optimized, recipient_analyzed, smart_package_created, optimization_score_viewed, screen_id:SHAR-010
+- **Dependencies**: AppLayout, SubNavigation, sharingNavigation config, SmartPackagePopup, MotivationalBanner, StandardCard, AIRecommendationCard, DataOptimizer component, RecipientAnalyzer, PackagePreview, SEO component, Vertex AI integration
+- **Notes**: AI analyzes recipient type (cardiologist, endocrinologist, personal trainer, insurance) and suggests optimal data selection; provides relevance scores and reasoning for each recommendation; warns about potential over-sharing or missing critical data; supports iterative refinement with user feedback; integrates with existing package templates; includes confidence indicators and explainability features; can analyze appointment context from calendar integration to suggest timing-specific data
 
 ---
 
