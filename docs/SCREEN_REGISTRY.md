@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 437
+**Total Screens**: 439
 
 ---
 
@@ -36,14 +36,14 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Category | Count |
 |----------|-------|
 | Public/Auth Screens | 24 |
-| Community Role Screens | 79 |
+| Community Role Screens | 81 |
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
 | Admin Role Screens | 85 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **437** |
+| **TOTAL** | **439** |
 
 ---
 
@@ -1880,6 +1880,54 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: AI companion chat
+
+---
+
+## AI-006: Agent Prompt Center
+
+- **CanonicalId**: AI.00.006.A.ALL.CLI
+- **Module**: AI
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/ai/agent-prompt-center`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/ai/AgentPromptCenter.tsx
+- **Component Path**: src/pages/ai/AgentPromptCenter.tsx
+- **UI Pattern**: sub-page-header with dual-panel layout
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Agent Templates panel, Custom Prompt Editor panel, Test Agent dialog, Save Prompt confirmation
+- **Status**: 🚧 Placeholder (Phase 5)
+- **Purpose**: Customize AI agent behavior and system prompts for personalized wellness assistance; select from pre-built agent templates or create custom prompts; define agent focus areas (Health, Social, Productivity, Longevity); test and save agent configurations; optimize AI responses to match individual communication preferences and wellness goals
+- **Primary APIs Used**: Supabase API for user_agent_prompts table; Vertex AI API for prompt testing and validation; Edge function for agent configuration management
+- **DB Tables / Models Used**: user_agent_prompts (prompt_id, user_id, agent_name, system_prompt, focus_areas, template_id, is_active, created_at, updated_at), agent_templates (template_id, name, description, prompt_text, category, color), agent_test_logs (test_id, prompt_id, test_input, test_output, timestamp)
+- **Compliance Notes**: User-specific AI customization data; prompts may contain sensitive health preferences; no PHI should be embedded in system prompts; prompt templates are public but user customizations are private; RLS enforced per user; audit trail for prompt changes recommended for AI transparency
+- **Event Triggers**: agent_prompt_center_viewed, template_selected, custom_prompt_created, agent_tested, prompt_saved, focus_area_selected, screen_id:AI-006
+- **Dependencies**: AppLayout, SEO, StandardHeader, Card components, Badge, Input, Textarea, Button components; Vertex AI integration for prompt testing; useUserAgentPrompts hook (future)
+- **Notes**: Includes 4 pre-built templates (Health Optimization Agent, Longevity Lifestyle Coach, Community Connection Agent, Wellness Productivity Agent) with categories (Health, Lifestyle, Social, Productivity); supports custom prompt editing with focus area tags; Test Agent and Save Prompt buttons currently disabled (Phase 5 implementation pending); read-only placeholder with UI/UX preview
+
+---
+
+## AI-007: Personal AI Timeline
+
+- **CanonicalId**: AI.00.007.A.ALL.CLI
+- **Module**: AI
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/ai/personal-timeline`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/ai/PersonalAITimeline.tsx
+- **Component Path**: src/pages/ai/PersonalAITimeline.tsx
+- **UI Pattern**: sub-page-header with activity feed
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: AI Activity Feed, Filter by type (success, insight, recommendation, automation), View details modal, Export timeline
+- **Status**: 🚧 Placeholder (Phase 5)
+- **Purpose**: Display chronological timeline of all AI assistant activities, insights, and recommendations; track autopilot executions and wellness actions; view detected health patterns and correlations; monitor AI-suggested community matches and events; review calendar optimizations and automated scheduling; provide transparency into AI decision-making and actions taken on user's behalf
+- **Primary APIs Used**: Supabase API for ai_activity_timeline, autopilot_actions, ai_recommendations tables; Edge function for timeline aggregation and filtering
+- **DB Tables / Models Used**: ai_activity_timeline (activity_id, user_id, timestamp, activity_type, title, description, icon, metadata, related_entity_id, related_entity_type), autopilot_actions (id, user_id, executed_at, action_type, status), ai_recommendations (id, user_id, created_at, recommendation_type, confidence_score), ai_insights (insight_id, user_id, detected_at, insight_type, pattern_data)
+- **Compliance Notes**: Contains AI-generated health insights and activity logs; no direct PHI but may reference health patterns; user-specific data with RLS enforcement; activity timeline must be auditable for AI transparency and explainability; users must have ability to view and export all AI actions
+- **Event Triggers**: ai_timeline_viewed, timeline_filtered, activity_detail_viewed, timeline_exported, insight_clicked, recommendation_acted_on, screen_id:AI-007
+- **Dependencies**: AppLayout, SEO, StandardHeader, Card components, Badge, activity type icons (Bot, Calendar, TrendingUp, Zap); useAIActivityTimeline hook (future); color-coded activity types (success: green, insight: blue, recommendation: purple, automation: orange)
+- **Notes**: Currently displays 4 sample timeline items with varied activity types; activity feed includes timestamp, title, description, type badge, and color-coded icon; supports filtering by activity type; read-only placeholder (Phase 5) with mock data demonstrating UI/UX; future implementation will connect to real AI activity logs, autopilot execution history, and recommendation engine; exportable timeline for personal records and transparency
 
 ---
 
