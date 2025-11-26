@@ -93,6 +93,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Hero section, Features, Pricing, Footer
 - **Status**: ✅ Implemented
+- **Purpose**: Main public entry point; marketing and onboarding funnel
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Public page, no sensitive data
+- **Event Triggers**: landing_page_viewed, cta_clicked
+- **Dependencies**: None (entry point)
 - **Notes**: Main public entry point; redirects authenticated users to their role dashboard
 
 ---
@@ -111,6 +117,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Sign In tab, Join tab, Social login buttons
 - **Status**: ✅ Implemented
+- **Purpose**: User authentication and registration when tenant is not specified
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, profiles
+- **Compliance Notes**: GDPR consent required; secure password handling; session management
+- **Event Triggers**: auth_signin_attempt, auth_signup_attempt, auth_success, auth_failure
+- **Dependencies**: Supabase Auth, Social OAuth providers
 - **Notes**: Generic auth page; can be used when no tenant specified
 
 ---
@@ -129,6 +141,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Maxina
 - **Subscreens / Tabs / Modals**: Sign In tab, Join Maxina tab, Social login (Google, Apple), Footer navigation
 - **Status**: ✅ Implemented
+- **Purpose**: Maxina tenant-specific authentication with premium wellness brand experience
+- **Primary APIs Used**: Supabase Auth API, Social OAuth APIs
+- **DB Tables / Models Used**: auth.users, profiles, tenants
+- **Compliance Notes**: GDPR consent; secure password handling; session management; wellness platform terms
+- **Event Triggers**: maxina_auth_signin, maxina_auth_signup, auth_success, ambient_music_played
+- **Dependencies**: Supabase Auth, Google/Apple OAuth, Ambient music player, Video background loader
 - **Notes**: Features daily rotating video background, ambient music, glassmorphic card, premium button styling
 
 ---
@@ -147,6 +165,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Alkalma
 - **Subscreens / Tabs / Modals**: Sign In tab, Join tab
 - **Status**: 🚧 Placeholder
+- **Purpose**: Alkalma tenant-specific authentication
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, profiles, tenants
+- **Compliance Notes**: GDPR consent; secure password handling; session management
+- **Event Triggers**: alkalma_auth_signin, alkalma_auth_signup, auth_success
+- **Dependencies**: Supabase Auth
 - **Notes**: Needs visual upgrade to match Maxina premium design
 
 ---
@@ -165,6 +189,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Earthlinks
 - **Subscreens / Tabs / Modals**: Sign In tab, Join tab
 - **Status**: 🚧 Placeholder
+- **Purpose**: Earthlinks tenant-specific authentication
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, profiles, tenants
+- **Compliance Notes**: GDPR consent; secure password handling; session management
+- **Event Triggers**: earthlinks_auth_signin, earthlinks_auth_signup, auth_success
+- **Dependencies**: Supabase Auth
 - **Notes**: Needs visual upgrade to match Maxina premium design
 
 ---
@@ -183,6 +213,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Sign In tab, Join Community tab
 - **Status**: 🚧 Placeholder
+- **Purpose**: Public community authentication for users not part of specific tenant
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, profiles
+- **Compliance Notes**: GDPR consent; secure password handling; session management
+- **Event Triggers**: community_auth_signin, community_auth_signup, auth_success
+- **Dependencies**: Supabase Auth
 - **Notes**: For users not part of specific tenant
 
 ---
@@ -201,6 +237,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Exafy
 - **Subscreens / Tabs / Modals**: Sign In only (no public join)
 - **Status**: 🚧 Placeholder
+- **Purpose**: Exafy organization admin authentication
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, profiles, admin_roles
+- **Compliance Notes**: Admin-only access; MFA recommended; session timeout; audit logging required
+- **Event Triggers**: exafy_admin_signin, auth_success, admin_access_logged
+- **Dependencies**: Supabase Auth, Admin role verification
 - **Notes**: Internal portal for Exafy organization administrators
 
 ---
@@ -219,6 +261,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global (tenant-specific content)
 - **Subscreens / Tabs / Modals**: Welcome message, "Play Welcome" TTS, Continue to Login, VITANA Orb intro animation
 - **Status**: ✅ Implemented
+- **Purpose**: Premium onboarding experience with voice welcome and ambient music
+- **Primary APIs Used**: TTS API (Vertex AI), Video service
+- **DB Tables / Models Used**: tenants
+- **Compliance Notes**: Public content; audio autoplay compliance
+- **Event Triggers**: intro_viewed, intro_audio_played, intro_continued, vitana_orb_revealed
+- **Dependencies**: Video loader, TTS service, Ambient music player, VitanaGuideOrbIntro
 - **Notes**: Features ambient music, daily rotating video, voice greeting, smooth transitions to login
 
 ---
@@ -237,6 +285,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Maxina
 - **Subscreens / Tabs / Modals**: Success message, Continue button
 - **Status**: ✅ Implemented
+- **Purpose**: Email verification confirmation for Maxina users
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Email verification required; secure token handling
+- **Event Triggers**: email_confirmed, account_verified
+- **Dependencies**: Supabase Auth email verification
 - **Notes**: Shown after email verification link clicked
 
 ---
@@ -255,6 +309,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Alkalma
 - **Subscreens / Tabs / Modals**: Success message, Continue button
 - **Status**: ✅ Implemented
+- **Purpose**: Email verification confirmation for Alkalma users
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Email verification required; secure token handling
+- **Event Triggers**: email_confirmed, account_verified
+- **Dependencies**: Supabase Auth email verification
 - **Notes**: Shown after email verification link clicked
 
 ---
@@ -273,6 +333,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Earthlinks
 - **Subscreens / Tabs / Modals**: Success message, Continue button
 - **Status**: ✅ Implemented
+- **Purpose**: Email verification confirmation for Earthlinks users
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Email verification required; secure token handling
+- **Event Triggers**: email_confirmed, account_verified
+- **Dependencies**: Supabase Auth email verification
 - **Notes**: Shown after email verification link clicked
 
 ---
@@ -291,7 +357,85 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Success message, Continue button
 - **Status**: ✅ Implemented
+- **Purpose**: Email verification confirmation for Community users
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Email verification required; secure token handling
+- **Event Triggers**: email_confirmed, account_verified
+- **Dependencies**: Supabase Auth email verification
 - **Notes**: Shown after email verification link clicked
+
+---
+
+## AUTH-013: Email Confirmation (Exafy)
+
+- **CanonicalId**: AUTH.00.013.A.ADMIN.INT
+- **Module**: Authentication
+- **Portal(s)**: Exafy
+- **Roles with access**: Exafy Admin (via email link)
+- **External Route (client URL)**: `/exafy-admin/confirmed`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/ExafyAdminConfirmed.tsx
+- **Component Path**: src/pages/portals/ExafyAdminConfirmed.tsx
+- **UI Pattern**: Confirmation screen
+- **Tenant Availability**: Exafy
+- **Subscreens / Tabs / Modals**: Success message, Continue button
+- **Status**: ✅ Implemented
+- **Purpose**: Email verification confirmation for Exafy admin users
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, admin_roles
+- **Compliance Notes**: Admin email verification; audit logging required
+- **Event Triggers**: admin_email_confirmed, account_verified, admin_access_logged
+- **Dependencies**: Supabase Auth email verification, Admin role verification
+- **Notes**: Shown after email verification link clicked
+
+---
+
+## AUTH-014: Not Found (404)
+
+- **CanonicalId**: AUTH.00.014.A.ALL.CLI
+- **Module**: Error
+- **Portal(s)**: All
+- **Roles with access**: All
+- **External Route (client URL)**: `*` (catch-all)
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/NotFound.tsx
+- **Component Path**: src/pages/NotFound.tsx
+- **UI Pattern**: Error screen
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: 404 message, Back to Home button
+- **Status**: ✅ Implemented
+- **Purpose**: Error handling for invalid routes
+- **Primary APIs Used**: None
+- **DB Tables / Models Used**: None
+- **Compliance Notes**: Public error page; no sensitive data exposure
+- **Event Triggers**: 404_error_viewed, route_not_found
+- **Dependencies**: React Router
+- **Notes**: Shown for invalid routes
+
+---
+
+## AUTH-015: Legacy Profile Redirect
+
+- **CanonicalId**: AUTH.00.015.A.ALL.CLI
+- **Module**: Utility
+- **Portal(s)**: All
+- **Roles with access**: All
+- **External Route (client URL)**: `/profile/:id`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/components/LegacyProfileRedirect.tsx
+- **Component Path**: src/components/LegacyProfileRedirect.tsx
+- **UI Pattern**: Redirect component
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: N/A
+- **Status**: ✅ Implemented
+- **Purpose**: Backwards compatibility for old profile URL format
+- **Primary APIs Used**: Profile API (to resolve ID to handle)
+- **DB Tables / Models Used**: profiles
+- **Compliance Notes**: None (redirect only)
+- **Event Triggers**: legacy_profile_redirect
+- **Dependencies**: React Router, Profile service
+- **Notes**: Redirects old profile URLs to new `/u/:handle` format
 
 ---
 
@@ -367,6 +511,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Context, Actions, Matches, AI Feed cards
 - **Status**: ✅ Implemented
+- **Purpose**: Primary dashboard for all authenticated users; role-aware home screen
+- **Primary APIs Used**: User profile API, Matches API, AI recommendations API
+- **DB Tables / Models Used**: profiles, daily_matches, ai_recommendations, calendar_events
+- **Compliance Notes**: User-specific data; RLS enforced
+- **Event Triggers**: home_viewed, card_clicked, screen_id:HOME-001
+- **Dependencies**: AuthProvider, RoleProvider, UtilityBar
 - **Notes**: Primary dashboard for all authenticated users; Screen ID D1-001
 
 ---
@@ -385,6 +535,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: User context and recent activity summary
+- **Primary APIs Used**: Activity API, Context API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: User-specific data; RLS enforced
+- **Event Triggers**: context_viewed, screen_id:HOME-002
+- **Dependencies**: AuthProvider
 - **Notes**: User context and recent activity; Screen ID D1-001-01
 
 ---
@@ -403,6 +559,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: Quick actions and shortcuts dashboard
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: User-specific data; RLS enforced
+- **Event Triggers**: actions_viewed, action_clicked, screen_id:HOME-003
+- **Dependencies**: AuthProvider
 - **Notes**: Quick actions and shortcuts; Screen ID D1-001-02
 
 ---
@@ -421,6 +583,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: AI-powered connection matches and recommendations
+- **Primary APIs Used**: Matches API, AI recommendations API
+- **DB Tables / Models Used**: daily_matches
+- **Compliance Notes**: User-specific data; AI-generated content; RLS enforced
+- **Event Triggers**: matches_viewed, match_actioned, screen_id:HOME-004
+- **Dependencies**: AuthProvider, AI service
 - **Notes**: AI-powered connection matches; Screen ID D1-001-03
 
 ---
@@ -439,6 +607,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: Personalized AI-generated content feed
+- **Primary APIs Used**: AI Feed API
+- **DB Tables / Models Used**: ai_recommendations
+- **Compliance Notes**: AI-generated content; user-specific; RLS enforced
+- **Event Triggers**: ai_feed_viewed, feed_item_clicked, screen_id:HOME-005
+- **Dependencies**: AuthProvider, AI service
 - **Notes**: Personalized AI-generated content feed; Screen ID D1-001-04
 
 ---
@@ -457,6 +631,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Feed, Events, Live Rooms, Media Hub, My Business, Meetups navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: Community hub dashboard; social interaction entry point
+- **Primary APIs Used**: Community API, Events API, Live Rooms API
+- **DB Tables / Models Used**: global_community_groups, global_community_events, community_live_streams
+- **Compliance Notes**: User-generated content; moderation required; RLS enforced
+- **Event Triggers**: community_viewed, community_card_clicked, screen_id:COMM-001
+- **Dependencies**: AuthProvider, CommunityContext
 - **Notes**: Community hub dashboard; Screen ID D1-002
 
 ---
@@ -475,6 +655,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Community Events tab, Meetups tab, Event details drawer, Create event popup
 - **Status**: ✅ Implemented
+- **Purpose**: Combined events and meetups discovery and management
+- **Primary APIs Used**: Events API, Meetups API
+- **DB Tables / Models Used**: global_community_events, event_attendees, event_recommendations
+- **Compliance Notes**: User-generated content; moderation required; calendar permissions; RLS enforced
+- **Event Triggers**: events_viewed, event_clicked, event_created, rsvp_submitted, screen_id:COMM-002
+- **Dependencies**: AuthProvider, EventDialog, MeetupDetailsDrawer, ProfilePreviewDialog
 - **Notes**: Combined events and meetups view; Screen ID D1-002-03 / D1-002-07
 
 ---
