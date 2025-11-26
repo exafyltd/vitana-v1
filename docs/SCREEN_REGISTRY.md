@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 215
+**Total Screens**: 430
 
 ---
 
@@ -35,15 +35,15 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 | Category | Count |
 |----------|-------|
-| Public/Auth Screens | 15 |
-| Community Role Screens | 55 |
+| Public/Auth Screens | 24 |
+| Community Role Screens | 72 |
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
-| Admin Role Screens | 47 |
-| Dev Hub Screens | 63 |
-| Global Overlays | 8 |
-| **TOTAL** | **215** |
+| Admin Role Screens | 85 |
+| Dev Hub Screens | 104 |
+| Global Overlays | 18 |
+| **TOTAL** | **430** |
 
 ---
 
@@ -493,6 +493,222 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ---
 
+## AUTH-016: Maxina Portal
+
+- **CanonicalId**: AUTH.00.016.A.MAXINA.CLI
+- **Module**: Portal
+- **Portal(s)**: Maxina
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/maxina`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/MaxinaPortal.tsx
+- **Component Path**: src/pages/portals/MaxinaPortal.tsx
+- **UI Pattern**: Auth portal with video background
+- **Tenant Availability**: Maxina
+- **Subscreens / Tabs / Modals**: Sign In tab, Join Maxina tab, Social login options
+- **Status**: ✅ Implemented
+- **Purpose**: Maxina tenant-specific authentication portal with premium video background and glassmorphic design
+- **Primary APIs Used**: Supabase Auth API, Google OAuth, Apple OAuth
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Public authentication page; HIPAA/GDPR compliant auth flow
+- **Event Triggers**: portal_viewed, auth_initiated, login_success, login_failed, social_login_clicked
+- **Dependencies**: AuthContext, SoundscapeContext (ambient music)
+- **Notes**: Premium auth experience with daily rotating video backgrounds; part of VITANA ecosystem
+
+---
+
+## AUTH-017: Maxina Email Confirmed
+
+- **CanonicalId**: AUTH.00.017.A.MAXINA.CLI
+- **Module**: Portal
+- **Portal(s)**: Maxina
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/maxina/confirmed`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/MaxinaConfirmed.tsx
+- **Component Path**: src/pages/portals/MaxinaConfirmed.tsx
+- **UI Pattern**: Confirmation screen
+- **Tenant Availability**: Maxina
+- **Subscreens / Tabs / Modals**: Success message, Continue to app button
+- **Status**: ✅ Implemented
+- **Purpose**: Email confirmation success page for Maxina portal
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Post-registration confirmation; no sensitive data
+- **Event Triggers**: email_confirmed_viewed, continue_clicked
+- **Dependencies**: AuthContext
+- **Notes**: Post-email-verification landing page
+
+---
+
+## AUTH-018: Alkalma Portal
+
+- **CanonicalId**: AUTH.00.018.A.ALKALMA.CLI
+- **Module**: Portal
+- **Portal(s)**: Alkalma
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/alkalma`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/AlkalmaPortal.tsx
+- **Component Path**: src/pages/portals/AlkalmaPortal.tsx
+- **UI Pattern**: Auth portal
+- **Tenant Availability**: Alkalma
+- **Subscreens / Tabs / Modals**: Sign In tab, Join Alkalma tab
+- **Status**: ✅ Implemented
+- **Purpose**: Alkalma tenant-specific authentication portal
+- **Primary APIs Used**: Supabase Auth API, Social OAuth
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Public authentication page; HIPAA/GDPR compliant
+- **Event Triggers**: portal_viewed, auth_initiated
+- **Dependencies**: AuthContext
+- **Notes**: Tenant-specific auth portal for Alkalma
+
+---
+
+## AUTH-019: Alkalma Email Confirmed
+
+- **CanonicalId**: AUTH.00.019.A.ALKALMA.CLI
+- **Module**: Portal
+- **Portal(s)**: Alkalma
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/alkalma/confirmed`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/AlkalmaConfirmed.tsx
+- **Component Path**: src/pages/portals/AlkalmaConfirmed.tsx
+- **UI Pattern**: Confirmation screen
+- **Tenant Availability**: Alkalma
+- **Subscreens / Tabs / Modals**: Success message
+- **Status**: ✅ Implemented
+- **Purpose**: Email confirmation success page for Alkalma portal
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Post-registration confirmation
+- **Event Triggers**: email_confirmed_viewed
+- **Dependencies**: AuthContext
+- **Notes**: Post-email-verification landing page
+
+---
+
+## AUTH-020: Earthlinks Portal
+
+- **CanonicalId**: AUTH.00.020.A.EARTHLINKS.CLI
+- **Module**: Portal
+- **Portal(s)**: Earthlinks
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/earthlinks`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/EarthlinksPortal.tsx
+- **Component Path**: src/pages/portals/EarthlinksPortal.tsx
+- **UI Pattern**: Auth portal
+- **Tenant Availability**: Earthlinks
+- **Subscreens / Tabs / Modals**: Sign In tab, Join Earthlinks tab
+- **Status**: ✅ Implemented
+- **Purpose**: Earthlinks tenant-specific authentication portal
+- **Primary APIs Used**: Supabase Auth API, Social OAuth
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Public authentication page
+- **Event Triggers**: portal_viewed, auth_initiated
+- **Dependencies**: AuthContext
+- **Notes**: Tenant-specific auth portal for Earthlinks
+
+---
+
+## AUTH-021: Earthlinks Email Confirmed
+
+- **CanonicalId**: AUTH.00.021.A.EARTHLINKS.CLI
+- **Module**: Portal
+- **Portal(s)**: Earthlinks
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/earthlinks/confirmed`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/EarthlinksConfirmed.tsx
+- **Component Path**: src/pages/portals/EarthlinksConfirmed.tsx
+- **UI Pattern**: Confirmation screen
+- **Tenant Availability**: Earthlinks
+- **Subscreens / Tabs / Modals**: Success message
+- **Status**: ✅ Implemented
+- **Purpose**: Email confirmation success page for Earthlinks portal
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Post-registration confirmation
+- **Event Triggers**: email_confirmed_viewed
+- **Dependencies**: AuthContext
+- **Notes**: Post-email-verification landing page
+
+---
+
+## AUTH-022: Community Portal
+
+- **CanonicalId**: AUTH.00.022.A.COMMUNITY.CLI
+- **Module**: Portal
+- **Portal(s)**: Community (Public)
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/community-portal`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/CommunityPortal.tsx
+- **Component Path**: src/pages/portals/CommunityPortal.tsx
+- **UI Pattern**: Auth portal
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Sign In tab, Join Community tab
+- **Status**: ✅ Implemented
+- **Purpose**: Public community authentication portal
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Public authentication page
+- **Event Triggers**: portal_viewed, auth_initiated
+- **Dependencies**: AuthContext
+- **Notes**: General public portal for community access
+
+---
+
+## AUTH-023: Community Email Confirmed
+
+- **CanonicalId**: AUTH.00.023.A.COMMUNITY.CLI
+- **Module**: Portal
+- **Portal(s)**: Community (Public)
+- **Roles with access**: Public (unauthenticated)
+- **External Route (client URL)**: `/community-portal/confirmed`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/CommunityConfirmed.tsx
+- **Component Path**: src/pages/portals/CommunityConfirmed.tsx
+- **UI Pattern**: Confirmation screen
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Success message
+- **Status**: ✅ Implemented
+- **Purpose**: Email confirmation success page for Community portal
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Post-registration confirmation
+- **Event Triggers**: email_confirmed_viewed
+- **Dependencies**: AuthContext
+- **Notes**: Post-email-verification landing page
+
+---
+
+## AUTH-024: Exafy Admin Portal
+
+- **CanonicalId**: AUTH.00.024.A.EXAFY.CLI
+- **Module**: Portal
+- **Portal(s)**: Exafy (Internal)
+- **Roles with access**: Exafy Admin only
+- **External Route (client URL)**: `/exafy-admin`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/portals/ExafyAdminPortal.tsx
+- **Component Path**: src/pages/portals/ExafyAdminPortal.tsx
+- **UI Pattern**: Admin auth portal
+- **Tenant Availability**: Exafy (Internal)
+- **Subscreens / Tabs / Modals**: Admin login
+- **Status**: ✅ Implemented
+- **Purpose**: Internal Exafy admin authentication portal
+- **Primary APIs Used**: Supabase Auth API
+- **DB Tables / Models Used**: auth.users, admin roles
+- **Compliance Notes**: Internal admin access only; elevated security
+- **Event Triggers**: admin_portal_viewed, admin_auth_initiated
+- **Dependencies**: AuthContext, Admin role verification
+- **Notes**: Internal admin portal for Exafy platform management
+
+---
+
 # COMMUNITY ROLE SCREENS
 
 ---
@@ -824,6 +1040,126 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Community groups discovery and management; Screen ID D1-002-01
+
+---
+
+## COMM-010: My Groups
+
+- **CanonicalId**: COMM.00.010.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/my-groups`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/MyGroups.tsx
+- **Component Path**: src/pages/community/MyGroups.tsx
+- **UI Pattern**: split-screen
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: My groups list, Group details
+- **Status**: ✅ Implemented
+- **Purpose**: User's joined groups management and overview
+- **Primary APIs Used**: Groups API, Supabase API
+- **DB Tables / Models Used**: global_community_groups, global_community_group_members
+- **Compliance Notes**: User-specific group data; RLS enforced
+- **Event Triggers**: my_groups_viewed, group_selected, screen_id:COMM-010
+- **Dependencies**: AuthProvider, GroupContext
+- **Notes**: User's personal group management
+
+---
+
+## COMM-011: Group Detail
+
+- **CanonicalId**: COMM.00.011.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/groups/:groupId`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/GroupDetail.tsx
+- **Component Path**: src/pages/community/GroupDetail.tsx
+- **UI Pattern**: Detail page
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Group info, Members, Posts, Events
+- **Status**: ✅ Implemented
+- **Purpose**: Detailed view of a specific community group
+- **Primary APIs Used**: Groups API
+- **DB Tables / Models Used**: global_community_groups, global_community_group_members
+- **Compliance Notes**: Group visibility controlled by privacy settings
+- **Event Triggers**: group_detail_viewed, member_action, screen_id:COMM-011
+- **Dependencies**: AuthProvider, GroupContext
+- **Notes**: Individual group detail and management
+
+---
+
+## COMM-012: My Business
+
+- **CanonicalId**: COMM.00.012.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Professional, Admin
+- **External Route (client URL)**: `/community/my-business`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/MyBusinessRenamed.tsx
+- **Component Path**: src/pages/community/MyBusinessRenamed.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Services, Events, Bookings
+- **Status**: ✅ Implemented
+- **Purpose**: Professional's business management dashboard
+- **Primary APIs Used**: Business API, Services API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Business owner access only; RLS enforced
+- **Event Triggers**: business_dashboard_viewed, service_managed, screen_id:COMM-012
+- **Dependencies**: AuthProvider, Professional role
+- **Notes**: Business profile and services management
+
+---
+
+## COMM-013: Media Hub
+
+- **CanonicalId**: COMM.00.013.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/media`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/MediaHub.tsx
+- **Component Path**: src/pages/community/MediaHub.tsx
+- **UI Pattern**: Media gallery
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Photos tab, Videos tab, Audio tab
+- **Status**: ✅ Implemented
+- **Purpose**: Community media content hub and gallery
+- **Primary APIs Used**: Media API, Supabase Storage
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: User-generated content; content moderation applies
+- **Event Triggers**: media_hub_viewed, media_played, screen_id:COMM-013
+- **Dependencies**: AuthProvider
+- **Notes**: Community media content library
+
+---
+
+## COMM-014: AI Insights
+
+- **CanonicalId**: COMM.00.014.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/ai-insights`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/AIInsights.tsx
+- **Component Path**: src/pages/community/AIInsights.tsx
+- **UI Pattern**: Insights dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Trending topics, Recommended connections, Activity insights
+- **Status**: ✅ Implemented
+- **Purpose**: AI-powered community insights and analytics
+- **Primary APIs Used**: AI Analytics API, Recommendations API
+- **DB Tables / Models Used**: ai_recommendations, ai_situation_analyses
+- **Compliance Notes**: AI-generated insights; user privacy maintained
+- **Event Triggers**: ai_insights_viewed, insight_clicked, screen_id:COMM-014
+- **Dependencies**: AuthProvider, AI service
+- **Notes**: AI-driven community analytics and recommendations
 
 ---
 
@@ -1208,6 +1544,126 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Health risk assessments and preventive planning
+
+---
+
+## HLTH-008: Biomarker Results
+
+- **CanonicalId**: HLTH.00.008.A.ALL.CLI
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/health/biomarkers`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/health/BiomarkerResults.tsx
+- **Component Path**: src/pages/health/BiomarkerResults.tsx
+- **UI Pattern**: Data visualization dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Lab results, Trends, Insights
+- **Status**: ✅ Implemented
+- **Purpose**: Biomarker test results display and trend analysis
+- **Primary APIs Used**: Biomarker API, Lab results API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: HIPAA sensitive; patient health data; strict RLS enforcement
+- **Event Triggers**: biomarkers_viewed, result_detail_opened, screen_id:HLTH-008
+- **Dependencies**: AuthProvider, HealthDataContext
+- **Notes**: Lab results and biomarker trending
+
+---
+
+## HLTH-009: My Biology
+
+- **CanonicalId**: HLTH.00.009.A.ALL.CLI
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/health/my-biology`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/health/MyBiology.tsx
+- **Component Path**: src/pages/health/MyBiology.tsx
+- **UI Pattern**: Profile page
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Genetics, Biometrics, Medical history
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive user biological profile and genetic data
+- **Primary APIs Used**: Genetics API, Biometric API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Highly sensitive genetic data; HIPAA/GINA compliance required; strict access control
+- **Event Triggers**: my_biology_viewed, genetic_data_accessed, screen_id:HLTH-009
+- **Dependencies**: AuthProvider, HealthDataContext
+- **Notes**: Personal biological and genetic profile
+
+---
+
+## HLTH-010: Plans
+
+- **CanonicalId**: HLTH.00.010.A.ALL.CLI
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/health/plans`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/health/Plans.tsx
+- **Component Path**: src/pages/health/Plans.tsx
+- **UI Pattern**: Plan overview
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active plans, Completed plans, Plan details
+- **Status**: ✅ Implemented
+- **Purpose**: Health and wellness plan management
+- **Primary APIs Used**: Plans API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Health plan data; user-specific; RLS enforced
+- **Event Triggers**: plans_viewed, plan_started, screen_id:HLTH-010
+- **Dependencies**: AuthProvider, PlansContext
+- **Notes**: Personalized health plans and programs
+
+---
+
+## HLTH-011: Education & Resources
+
+- **CanonicalId**: HLTH.00.011.A.ALL.CLI
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/health/education`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/health/EducationResources.tsx
+- **Component Path**: src/pages/health/EducationResources.tsx
+- **UI Pattern**: Resource library
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Articles, Videos, Guides
+- **Status**: ✅ Implemented
+- **Purpose**: Health education content and learning resources
+- **Primary APIs Used**: Content API, Education API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Public health information; content moderation required
+- **Event Triggers**: education_viewed, resource_accessed, screen_id:HLTH-011
+- **Dependencies**: ContentProvider
+- **Notes**: Educational content library for wellness
+
+---
+
+## HLTH-012: Wellness Services
+
+- **CanonicalId**: HLTH.00.012.A.ALL.CLI
+- **Module**: Health
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/health/services`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/health/WellnessServices.tsx
+- **Component Path**: src/pages/health/WellnessServices.tsx
+- **UI Pattern**: Service listing
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Service categories, Provider profiles, Booking
+- **Status**: ✅ Implemented
+- **Purpose**: Browse and book wellness services and appointments
+- **Primary APIs Used**: Services API, Booking API
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: Service provider information; booking data protected
+- **Event Triggers**: wellness_services_viewed, service_booked, screen_id:HLTH-012
+- **Dependencies**: AuthProvider, BookingContext
+- **Notes**: Wellness service marketplace
 
 ---
 
