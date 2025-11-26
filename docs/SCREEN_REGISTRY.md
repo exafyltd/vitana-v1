@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 447
+**Total Screens**: 467
 
 ---
 
@@ -40,10 +40,10 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
-| Admin Role Screens | 85 |
+| Admin Role Screens | 105 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **447** |
+| **TOTAL** | **467** |
 
 ---
 
@@ -4416,6 +4416,486 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: Broadcast configuration
+
+---
+
+## ADMN-105: AI Assistant Overview
+
+- **CanonicalId**: ADMN.00.105.A.ADM.PROD
+- **Module**: Admin - AI Assistant
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/ai-assistant`
+- **Internal/Admin Route (if any)**: `/admin/ai-assistant`
+- **Dev Route (current project path)**: src/pages/admin/AIAssistant.tsx
+- **Component Path**: src/pages/admin/AIAssistant.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active automations stats, AI recommendations, Pattern discoveries, System health
+- **Status**: ✅ Implemented
+- **Purpose**: Central dashboard for AI-powered automation and proactive engagement features; provides overview of active automations, AI-generated recommendations, pattern discoveries, and intelligent system management capabilities
+- **Primary APIs Used**: AI Recommendations API, Automation API, Analytics API
+- **DB Tables / Models Used**: ai_recommendations, automation_rules, ai_situation_analyses, autopilot_actions
+- **Compliance Notes**: AI-generated insights and recommendations; system-level access only; no PHI exposed; transparent AI methodology
+- **Event Triggers**: ai_assistant_viewed, automation_clicked, recommendation_reviewed, screen_id:ADMN-105
+- **Dependencies**: AuthProvider, AdminHeader, AdminStatsCard, SubNavigation, adminAIAssistantNavigation
+- **Notes**: Main AI Assistant overview page providing metrics on active automations (0, ready to scale to 5000+), AI recommendations (0, waiting for deployment), pattern discoveries, and execution stats; serves as entry point to AI-powered admin tools including proactive settings, situation analyzer, and pattern discovery
+
+---
+
+## ADMN-106: API Monitoring
+
+- **CanonicalId**: ADMN.00.106.A.ADM.PROD
+- **Module**: Admin - Monitoring
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/api-monitoring`
+- **Internal/Admin Route (if any)**: `/admin/api-monitoring`
+- **Dev Route (current project path)**: src/pages/admin/APIMonitoring.tsx
+- **Component Path**: src/pages/admin/APIMonitoring.tsx
+- **UI Pattern**: Dashboard with tabs
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Overview tab, Integrations tab, Performance tab, Logs tab, Test logs tab, Recent activity feed
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive API integration monitoring and management dashboard; tracks API health status, performance metrics (response times, throughput, error rates), connection status, and test execution results; provides real-time monitoring of third-party API integrations including auth status, endpoints, and test history
+- **Primary APIs Used**: Supabase API (api_integrations, api_performance_metrics, api_test_logs, api_test_notifications tables), Real-time subscriptions
+- **DB Tables / Models Used**: api_integrations, api_performance_metrics, api_test_logs, api_test_notifications
+- **Compliance Notes**: System-level API credentials storage; secure auth token handling; audit logging of API test executions; compliance with third-party API TOS
+- **Event Triggers**: api_monitoring_viewed, integration_tested, integration_toggled, test_log_viewed, screen_id:ADMN-106
+- **Dependencies**: AuthProvider, useRealtimeAPIMonitoring hook, AdminHeader, SubNavigation, Tabs component, Badge component, date-fns formatting, Recharts for performance graphs
+- **Notes**: Production-ready API monitoring with real-time subscriptions to api_integrations, api_performance_metrics, and api_test_logs tables; displays integration status (healthy, warning, error), last test timestamps, auth types (api_key, oauth, bearer, basic), connection status, success/error rates, throughput, latency metrics (avg, p95, p99), and recent activity feed; supports manual API testing, status toggling, and external dashboard links
+
+---
+
+## ADMN-107: Audit
+
+- **CanonicalId**: ADMN.00.107.A.ADM.PROD
+- **Module**: Admin - Monitoring
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/audit`
+- **Internal/Admin Route (if any)**: `/admin/audit`
+- **Dev Route (current project path)**: src/pages/admin/Audit.tsx
+- **Component Path**: src/pages/admin/Audit.tsx
+- **UI Pattern**: data-table with filters
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Audit log entries, Event filters, User filters, Export options
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive audit trail viewer for tracking all system events, user actions, and administrative operations; provides filterable log of security-relevant events for compliance and troubleshooting
+- **Primary APIs Used**: Supabase API (audit_events table)
+- **DB Tables / Models Used**: audit_events
+- **Compliance Notes**: HIPAA audit trail requirement; SOC 2 compliance logging; immutable event records; data retention policies enforced; user privacy considerations in log details
+- **Event Triggers**: audit_log_viewed, audit_event_filtered, audit_log_exported, screen_id:ADMN-107
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, DataTable component, audit_events table
+- **Notes**: System-wide audit logging; tracks user authentication, data access, configuration changes, and administrative actions
+
+---
+
+## ADMN-108: Automation Overview
+
+- **CanonicalId**: ADMN.00.108.A.ADM.PROD
+- **Module**: Admin - Automation
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/automation`
+- **Internal/Admin Route (if any)**: `/admin/automation`
+- **Dev Route (current project path)**: src/pages/admin/Automation.tsx
+- **Component Path**: src/pages/admin/Automation.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active automations stats, Executions today, Success rate, Pending review
+- **Status**: ✅ Implemented
+- **Purpose**: Central dashboard for automation workflow management; provides overview of active automations, execution statistics, success rates, and automated workflow health across the platform
+- **Primary APIs Used**: Automation API, Analytics API
+- **DB Tables / Models Used**: automation_rules, automation_executions
+- **Compliance Notes**: Automation audit trail; user consent for automated actions; transparent automation disclosure; compliance with automated decision-making regulations
+- **Event Triggers**: automation_overview_viewed, automation_builder_accessed, rules_manager_accessed, executions_viewed, screen_id:ADMN-108
+- **Dependencies**: AuthProvider, AdminHeader, AdminStatsCard, SubNavigation, adminAutomationNavigation
+- **Notes**: Main Automation overview providing metrics on active automations (0 currently running), executions today (0 total runs), success rate (0%), and pending review (0 awaiting approval); serves as entry point to automation builder, rules manager, and execution logs
+
+---
+
+## ADMN-109: Bootstrap
+
+- **CanonicalId**: ADMN.00.109.A.ADM.PROD
+- **Module**: Admin - System Admin
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/bootstrap`
+- **Internal/Admin Route (if any)**: `/admin/bootstrap`
+- **Dev Route (current project path)**: src/pages/admin/Bootstrap.tsx
+- **Component Path**: src/pages/admin/Bootstrap.tsx
+- **UI Pattern**: Utility interface
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: System initialization options, Data seeding controls, Configuration setup
+- **Status**: ✅ Implemented
+- **Purpose**: System bootstrapping utility for initial setup, data seeding, and configuration initialization; used during system deployment and major updates to prepare the database and seed initial data
+- **Primary APIs Used**: Supabase API (multiple tables), Bootstrap edge functions
+- **DB Tables / Models Used**: Multiple tables (tenants, profiles, system config)
+- **Compliance Notes**: Destructive operations warning; requires super admin access; audit logging of bootstrap actions; backup verification before execution
+- **Event Triggers**: bootstrap_accessed, bootstrap_executed, data_seeded, screen_id:ADMN-109
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, Bootstrap edge functions
+- **Notes**: Critical system utility for initial setup and data initialization; typically accessed only during deployment or major system updates
+
+---
+
+## ADMN-110: Community Rooms Admin
+
+- **CanonicalId**: ADMN.00.110.A.ADM.PROD
+- **Module**: Admin - Community Supervision
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/community-rooms`
+- **Internal/Admin Route (if any)**: `/admin/community-rooms`
+- **Dev Route (current project path)**: src/pages/admin/CommunityRoomsAdmin.tsx
+- **Component Path**: src/pages/admin/CommunityRoomsAdmin.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active rooms list, Room details, Moderation actions, User management
+- **Status**: ✅ Implemented
+- **Purpose**: Administrative oversight of community live rooms and chat spaces; enables admins to monitor active rooms, view participant lists, review chat history, and take moderation actions (warnings, kicks, bans, room closure)
+- **Primary APIs Used**: Live Rooms API, Supabase Realtime, Moderation API
+- **DB Tables / Models Used**: community_live_streams, live_chat_messages, stream_participants, content_reports
+- **Compliance Notes**: Real-time content moderation; chat history retention policies; user privacy in moderation logs; COPPA compliance for youth rooms; harmful content reporting and removal
+- **Event Triggers**: community_rooms_admin_viewed, room_moderated, participant_actioned, chat_reviewed, screen_id:ADMN-110
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, DataTable component, real-time subscriptions
+- **Notes**: Real-time monitoring and moderation of community live rooms including audio/video streams and text chat; supports instant moderation actions
+
+---
+
+## ADMN-111: Community Supervision
+
+- **CanonicalId**: ADMN.00.111.A.ADM.PROD
+- **Module**: Admin - Community Supervision
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/community-supervision`
+- **Internal/Admin Route (if any)**: `/admin/community-supervision`
+- **Dev Route (current project path)**: src/pages/admin/CommunitySupervision.tsx
+- **Component Path**: src/pages/admin/CommunitySupervision.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Content moderation queue, Flagged posts, User reports, Group oversight
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive community content moderation dashboard; provides centralized view of flagged content, user reports, group activities, and community health metrics; enables proactive content moderation and user safety management
+- **Primary APIs Used**: Moderation API, Reports API, Community API, Supabase Realtime
+- **DB Tables / Models Used**: content_reports, global_community_groups, global_community_profiles, distribution_posts
+- **Compliance Notes**: Content moderation policies enforcement; DMCA takedown handling; harmful content removal; age-restricted content verification; user privacy in moderation decisions; appeal process
+- **Event Triggers**: community_supervision_viewed, content_moderated, report_reviewed, group_actioned, screen_id:ADMN-111
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, content_reports table, real-time subscriptions
+- **Notes**: Central hub for all community moderation activities including posts, comments, live streams, groups, and events
+
+---
+
+## ADMN-112: Init Events
+
+- **CanonicalId**: ADMN.00.112.A.ADM.PROD
+- **Module**: Admin - System Admin
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/init-events`
+- **Internal/Admin Route (if any)**: `/admin/init-events`
+- **Dev Route (current project path)**: src/pages/admin/InitEvents.tsx
+- **Component Path**: src/pages/admin/InitEvents.tsx
+- **UI Pattern**: Utility interface
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Event initialization controls, Sample data generation, Event seeding options
+- **Status**: ✅ Implemented
+- **Purpose**: Utility for initializing and seeding event data in the system; used during development, testing, and initial system setup to populate the database with sample events, meetups, and community gatherings
+- **Primary APIs Used**: Supabase API (global_community_events table), Event seeding edge functions
+- **DB Tables / Models Used**: global_community_events, event_attendees, event_co_creators
+- **Compliance Notes**: Development/testing tool; audit logging of data seeding; data cleanup procedures; should not be accessible in production without proper authorization
+- **Event Triggers**: init_events_accessed, events_seeded, sample_data_generated, screen_id:ADMN-112
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, Event seeding utilities
+- **Notes**: Development and testing utility for populating event data; typically used in non-production environments
+
+---
+
+## ADMN-113: Live Stream Overview
+
+- **CanonicalId**: ADMN.00.113.A.ADM.PROD
+- **Module**: Admin - Live & Stream
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/live-stream-overview`
+- **Internal/Admin Route (if any)**: `/admin/live-stream-overview`
+- **Dev Route (current project path)**: src/pages/admin/LiveStreamOverview.tsx
+- **Component Path**: src/pages/admin/LiveStreamOverview.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active streams grid, Stream statistics, Quality metrics, Viewer analytics
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive live streaming dashboard providing real-time overview of all active streams, viewer statistics, stream health metrics, and quality monitoring; enables quick assessment of platform-wide streaming activity and performance
+- **Primary APIs Used**: Live Streaming API, WebRTC metrics API, Supabase Realtime
+- **DB Tables / Models Used**: community_live_streams, stream_participants, stream_recordings
+- **Compliance Notes**: Real-time stream monitoring; content moderation integration; viewer privacy; recording consent; age-restricted content enforcement; COPPA compliance
+- **Event Triggers**: live_stream_overview_viewed, stream_selected, emergency_stop_triggered, screen_id:ADMN-113
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, real-time stream metrics, WebRTC monitoring
+- **Notes**: High-level dashboard for monitoring all live streams across the platform; provides at-a-glance view of streaming health and activity
+
+---
+
+## ADMN-114: Media Management
+
+- **CanonicalId**: ADMN.00.114.A.ADM.PROD
+- **Module**: Admin - Media Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/media-management`
+- **Internal/Admin Route (if any)**: `/admin/media-management`
+- **Dev Route (current project path)**: src/pages/admin/MediaManagement.tsx
+- **Component Path**: src/pages/admin/MediaManagement.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Media library overview, Storage usage, Content types, Recent uploads
+- **Status**: ✅ Implemented
+- **Purpose**: Central media asset management dashboard; provides overview of all media content including videos, music, podcasts, images, and documents; tracks storage usage, content organization, and media library health
+- **Primary APIs Used**: Storage API, Supabase Storage, Media processing APIs
+- **DB Tables / Models Used**: Supabase Storage buckets, media metadata tables
+- **Compliance Notes**: DMCA compliance; copyright verification; content licensing tracking; age-restricted media flagging; storage quota management; data retention policies
+- **Event Triggers**: media_management_viewed, media_uploaded, media_deleted, storage_analyzed, screen_id:ADMN-114
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, Supabase Storage, media processing pipelines
+- **Notes**: Main entry point for media management tools including videos, music, podcasts, and analytics
+
+---
+
+## ADMN-115: Queue Management
+
+- **CanonicalId**: ADMN.00.115.A.ADM.PROD
+- **Module**: Admin - Clinical Operations
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/queue`
+- **Internal/Admin Route (if any)**: `/admin/queue`
+- **Dev Route (current project path)**: src/pages/admin/Queue.tsx
+- **Component Path**: src/pages/admin/Queue.tsx
+- **UI Pattern**: data-table with real-time updates
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Patient queue list, Check-in interface, Queue status, Wait time analytics
+- **Status**: ✅ Implemented
+- **Purpose**: Real-time patient queue and check-in management system; enables staff to manage patient flow, track check-in status, monitor wait times, and optimize clinical operations; provides live updates on queue status and patient arrivals
+- **Primary APIs Used**: Queue API, Check-in API, Supabase Realtime, Notifications API
+- **DB Tables / Models Used**: patient_queue, check_ins, appointments
+- **Compliance Notes**: HIPAA-compliant queue management; PHI access controls; patient privacy in waiting area; consent for notifications; audit trail of check-ins
+- **Event Triggers**: queue_viewed, patient_checked_in, queue_updated, wait_time_alert, screen_id:ADMN-115
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, real-time subscriptions, Queue management edge functions
+- **Notes**: Clinical operations tool for managing patient flow and check-ins; integrates with appointment system and notifications
+
+---
+
+## ADMN-116: Reports
+
+- **CanonicalId**: ADMN.00.116.A.ADM.PROD
+- **Module**: Admin - Monitoring
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/reports`
+- **Internal/Admin Route (if any)**: `/admin/reports`
+- **Dev Route (current project path)**: src/pages/admin/Reports.tsx
+- **Component Path**: src/pages/admin/Reports.tsx
+- **UI Pattern**: Dashboard with report builder
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Report templates, Custom report builder, Scheduled reports, Export options
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive reporting dashboard for generating system-wide analytics reports, operational insights, compliance reports, and custom data exports; supports scheduled report generation and automated distribution
+- **Primary APIs Used**: Analytics API, Reporting API, Export API
+- **DB Tables / Models Used**: Multiple tables depending on report type
+- **Compliance Notes**: Data export regulations; PHI handling in reports; user consent for data aggregation; secure report storage; audit trail of report generation
+- **Event Triggers**: reports_viewed, report_generated, report_scheduled, report_exported, screen_id:ADMN-116
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, Report generation engine, PDF/Excel export utilities
+- **Notes**: Flexible reporting system supporting operational, clinical, financial, and compliance reports; includes pre-built templates and custom report builder
+
+---
+
+## ADMN-117: Staff Management
+
+- **CanonicalId**: ADMN.00.117.A.ADM.PROD
+- **Module**: Admin - User Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/staff`
+- **Internal/Admin Route (if any)**: `/admin/staff`
+- **Dev Route (current project path)**: src/pages/admin/Staff.tsx
+- **Component Path**: src/pages/admin/Staff.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Staff directory, Add staff, Edit roles, Deactivate staff
+- **Status**: ✅ Implemented
+- **Purpose**: Staff member management and directory; enables admin to view all staff accounts, manage roles and permissions, add new staff members, and maintain staff directory information; tracks staff status and access levels
+- **Primary APIs Used**: User Management API, Roles API, Supabase Auth
+- **DB Tables / Models Used**: profiles (role='staff'), user_roles, staff_metadata
+- **Compliance Notes**: Staff access control; role-based permissions; background check tracking; credential verification; employment status management; audit trail of role changes
+- **Event Triggers**: staff_directory_viewed, staff_added, staff_role_changed, staff_deactivated, screen_id:ADMN-117
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, DataTable component, user management utilities
+- **Notes**: Comprehensive staff management including directory, roles, permissions, and status tracking
+
+---
+
+## ADMN-118: Stream Settings
+
+- **CanonicalId**: ADMN.00.118.A.ADM.PROD
+- **Module**: Admin - Live & Stream
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/stream-settings`
+- **Internal/Admin Route (if any)**: `/admin/stream-settings`
+- **Dev Route (current project path)**: src/pages/admin/StreamSettings.tsx
+- **Component Path**: src/pages/admin/StreamSettings.tsx
+- **UI Pattern**: Settings form
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Quality settings, Bitrate configuration, RTMP settings, Recording options, CDN configuration
+- **Status**: ✅ Implemented
+- **Purpose**: Global streaming configuration management; allows admins to configure platform-wide streaming settings including video quality presets, bitrate limits, RTMP server settings, recording defaults, and CDN optimization options
+- **Primary APIs Used**: Streaming API, WebRTC configuration API, CDN API
+- **DB Tables / Models Used**: system_config (streaming settings), stream_quality_presets
+- **Compliance Notes**: Bandwidth usage policies; recording consent defaults; data retention for recordings; CDN compliance; streaming quality standards
+- **Event Triggers**: stream_settings_viewed, settings_updated, quality_preset_changed, screen_id:ADMN-118
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, streaming infrastructure, CDN integration
+- **Notes**: Platform-wide streaming configuration affecting all live streams; includes quality presets, technical settings, and performance optimization
+
+---
+
+## ADMN-119: System Health
+
+- **CanonicalId**: ADMN.00.119.A.ADM.PROD
+- **Module**: Admin - Monitoring
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/system-health`
+- **Internal/Admin Route (if any)**: `/admin/system-health`
+- **Dev Route (current project path)**: src/pages/admin/SystemHealth.tsx
+- **Component Path**: src/pages/admin/SystemHealth.tsx
+- **UI Pattern**: Dashboard with real-time metrics
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: System status, Database health, API health, Service uptime, Resource usage
+- **Status**: ✅ Implemented
+- **Purpose**: Real-time system health monitoring dashboard; provides comprehensive view of system infrastructure health including database performance, API availability, service uptime, resource utilization, and error rates; enables proactive issue detection and response
+- **Primary APIs Used**: System monitoring APIs, Database health checks, Service health endpoints
+- **DB Tables / Models Used**: system_health_metrics, service_status, performance_logs
+- **Compliance Notes**: Uptime SLA tracking; incident response protocols; system status transparency; data center compliance
+- **Event Triggers**: system_health_viewed, health_check_triggered, alert_threshold_breached, screen_id:ADMN-119
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, real-time metrics, health check services
+- **Notes**: Critical operations dashboard for monitoring system health and performance; includes real-time status indicators and historical metrics
+
+---
+
+## ADMN-120: System Security
+
+- **CanonicalId**: ADMN.00.120.A.ADM.PROD
+- **Module**: Admin - System Admin
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/system-security`
+- **Internal/Admin Route (if any)**: `/admin/system-security`
+- **Dev Route (current project path)**: src/pages/admin/SystemSecurity.tsx
+- **Component Path**: src/pages/admin/SystemSecurity.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Security overview, Threat detection, Access logs, Security policies, Vulnerability scanning
+- **Status**: ✅ Implemented
+- **Purpose**: Comprehensive security monitoring and management dashboard; provides visibility into security threats, unauthorized access attempts, policy violations, and vulnerability status; enables security policy configuration and incident response
+- **Primary APIs Used**: Security monitoring APIs, Threat detection APIs, Audit APIs
+- **DB Tables / Models Used**: security_events, audit_events, failed_login_attempts, security_policies
+- **Compliance Notes**: SOC 2 security controls; HIPAA security requirements; penetration testing results; incident response procedures; vulnerability disclosure
+- **Event Triggers**: system_security_viewed, security_event_detected, policy_updated, vulnerability_scanned, screen_id:ADMN-120
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, security monitoring services, threat detection systems
+- **Notes**: Critical security operations dashboard for monitoring threats, managing security policies, and responding to incidents
+
+---
+
+## ADMN-121: Telemedicine Sessions
+
+- **CanonicalId**: ADMN.00.121.A.ADM.PROD
+- **Module**: Admin - Clinical Operations
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/telemedicine-sessions`
+- **Internal/Admin Route (if any)**: `/admin/telemedicine-sessions`
+- **Dev Route (current project path)**: src/pages/admin/TelemedicineSessions.tsx
+- **Component Path**: src/pages/admin/TelemedicineSessions.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active sessions, Session history, Quality monitoring, Participant management
+- **Status**: ✅ Implemented
+- **Purpose**: Administrative oversight of telemedicine video consultation sessions; enables monitoring of active consultations, quality metrics, technical issues, and compliance requirements; provides session history and audit trail for clinical documentation
+- **Primary APIs Used**: Telemedicine API, WebRTC monitoring, Session recording APIs
+- **DB Tables / Models Used**: telemedicine_sessions, session_participants, session_recordings, clinical_notes
+- **Compliance Notes**: HIPAA-compliant video sessions; patient consent for telehealth; recording consent; session encryption; PHI protection in recordings; state licensing verification for providers
+- **Event Triggers**: telemedicine_sessions_viewed, session_monitored, quality_issue_detected, session_ended, screen_id:ADMN-121
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, WebRTC monitoring, telemedicine infrastructure
+- **Notes**: Clinical operations tool for monitoring telemedicine consultations; ensures quality and compliance of remote healthcare delivery
+
+---
+
+## ADMN-122: Tenant Audit
+
+- **CanonicalId**: ADMN.00.122.A.ADM.PROD
+- **Module**: Admin - Tenant Management
+- **Portal(s)**: Exafy only
+- **Roles with access**: Admin (Exafy)
+- **External Route (client URL)**: `/admin/tenant-audit`
+- **Internal/Admin Route (if any)**: `/admin/tenant-audit`
+- **Dev Route (current project path)**: src/pages/admin/TenantAudit.tsx
+- **Component Path**: src/pages/admin/TenantAudit.tsx
+- **UI Pattern**: data-table with filters
+- **Tenant Availability**: Exafy
+- **Subscreens / Tabs / Modals**: Tenant-specific audit logs, Event filters, User actions, Configuration changes
+- **Status**: ✅ Implemented
+- **Purpose**: Tenant-level audit trail viewer for multi-tenant environments; enables Exafy admins to view audit logs scoped to specific tenants, track tenant-specific events, configuration changes, and user activities within tenant boundaries
+- **Primary APIs Used**: Audit API (tenant-filtered), Supabase API
+- **DB Tables / Models Used**: audit_events (filtered by tenant_id), tenant_activity_logs
+- **Compliance Notes**: Multi-tenant data isolation; tenant-specific audit requirements; SOC 2 multi-tenancy controls; data residency compliance; audit log retention per tenant
+- **Event Triggers**: tenant_audit_viewed, tenant_events_filtered, tenant_log_exported, screen_id:ADMN-122
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, tenant context, audit_events table
+- **Notes**: Exafy-specific tool for tenant-scoped audit logging in multi-tenant deployments
+
+---
+
+## ADMN-123: User Audit
+
+- **CanonicalId**: ADMN.00.123.A.ADM.PROD
+- **Module**: Admin - User Management
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/user-audit`
+- **Internal/Admin Route (if any)**: `/admin/user-audit`
+- **Dev Route (current project path)**: src/pages/admin/UserAudit.tsx
+- **Component Path**: src/pages/admin/UserAudit.tsx
+- **UI Pattern**: data-table with user search
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: User-specific audit logs, Activity timeline, Data access history, Security events
+- **Status**: ✅ Implemented
+- **Purpose**: User-level audit trail viewer; enables admins to investigate specific user activities, track data access patterns, review security events, and analyze user behavior for compliance, security investigations, or support purposes
+- **Primary APIs Used**: Audit API (user-filtered), User API, Supabase API
+- **DB Tables / Models Used**: audit_events (filtered by user_id), user_activity_logs, data_access_logs
+- **Compliance Notes**: User privacy in audit reviews; legitimate business purpose for access; audit of audit access; GDPR subject access request support; user notification of access reviews
+- **Event Triggers**: user_audit_viewed, user_activity_reviewed, user_logs_exported, screen_id:ADMN-123
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, user search, audit_events table
+- **Notes**: User-scoped audit logging for compliance investigations, security reviews, and user support
+
+---
+
+## ADMN-124: Vertex Testing
+
+- **CanonicalId**: ADMN.00.124.A.ADM.PROD
+- **Module**: Admin - AI Assistant
+- **Portal(s)**: All
+- **Roles with access**: Admin
+- **External Route (client URL)**: `/admin/vertex-testing`
+- **Internal/Admin Route (if any)**: `/admin/vertex-testing`
+- **Dev Route (current project path)**: src/pages/admin/VertexTesting.tsx
+- **Component Path**: src/pages/admin/VertexTesting.tsx
+- **UI Pattern**: Testing interface
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: API test console, Request/response viewer, Model testing, Configuration options
+- **Status**: ✅ Implemented
+- **Purpose**: Development and testing interface for Google Vertex AI integration; enables admins to test AI model responses, validate API configurations, debug prompts, and verify AI assistant functionality before deploying to production
+- **Primary APIs Used**: Vertex AI API, Google Cloud APIs, Testing edge functions
+- **DB Tables / Models Used**: ai_test_logs, vertex_api_config
+- **Compliance Notes**: API key security; test data privacy; AI model testing ethics; cost monitoring for API calls; non-production data usage
+- **Event Triggers**: vertex_testing_viewed, api_test_executed, model_response_reviewed, screen_id:ADMN-124
+- **Dependencies**: AuthProvider, AdminHeader, SubNavigation, Vertex AI API integration, AI testing utilities
+- **Notes**: Development tool for testing and validating Vertex AI integration; includes prompt testing, response validation, and configuration verification
 
 ---
 
