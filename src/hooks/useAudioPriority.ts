@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { globalState as audioPlayerGlobalState } from '@/hooks/useAudioPlayer';
@@ -15,12 +15,29 @@ import { globalState as audioPlayerGlobalState } from '@/hooks/useAudioPlayer';
 export function useAudioPriority() {
   const { pauseForPriorityAudio, resumeAfterPriorityAudio } = useSoundscape();
   const { audioOverlayVisible, glassModeActive } = useStreamingState();
+  
+  // Subscribe to audio player state changes
+  const [mediaPlayerActive, setMediaPlayerActive] = useState(audioPlayerGlobalState.isPlaying);
 
   useEffect(() => {
-    // Check all priority audio sources
-    const mediaPlayerActive = audioPlayerGlobalState.isPlaying;
-    const vitanaOrbActive = audioOverlayVisible || glassModeActive;
+    // Subscribe to the audio player's listener system
+    const listener = () => {
+      setMediaPlayerActive(audioPlayerGlobalState.isPlaying);
+    };
+    
+    audioPlayerGlobalState.listeners.add(listener);
+    
+    // Set initial state
+    setMediaPlayerActive(audioPlayerGlobalState.isPlaying);
+    
+    return () => {
+      audioPlayerGlobalState.listeners.delete(listener);
+    };
+  }, []);
 
+  // Handle priority audio changes
+  useEffect(() => {
+    const vitanaOrbActive = audioOverlayVisible || glassModeActive;
     const hasPriorityAudio = mediaPlayerActive || vitanaOrbActive;
 
     if (hasPriorityAudio) {
@@ -29,7 +46,7 @@ export function useAudioPriority() {
       resumeAfterPriorityAudio();
     }
   }, [
-    audioPlayerGlobalState.isPlaying,
+    mediaPlayerActive,
     audioOverlayVisible,
     glassModeActive,
     pauseForPriorityAudio,
