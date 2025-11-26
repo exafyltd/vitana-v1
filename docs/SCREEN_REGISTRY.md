@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 440
+**Total Screens**: 447
 
 ---
 
@@ -36,14 +36,14 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Category | Count |
 |----------|-------|
 | Public/Auth Screens | 24 |
-| Community Role Screens | 82 |
+| Community Role Screens | 89 |
 | Patient Role Screens | 9 |
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
 | Admin Role Screens | 85 |
 | Dev Hub Screens | 104 |
 | Global Overlays | 18 |
-| **TOTAL** | **440** |
+| **TOTAL** | **447** |
 
 ---
 
@@ -1091,27 +1091,171 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ---
 
-## COMM-012: My Business
+## COMM-012: Matchmaking
 
 - **CanonicalId**: COMM.00.012.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
-- **Roles with access**: Professional, Admin
-- **External Route (client URL)**: `/community/my-business`
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/matchmaking`
 - **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/pages/community/MyBusinessRenamed.tsx
-- **Component Path**: src/pages/community/MyBusinessRenamed.tsx
-- **UI Pattern**: Dashboard
+- **Dev Route (current project path)**: src/pages/community/Matchmaking.tsx
+- **Component Path**: src/pages/community/Matchmaking.tsx
+- **UI Pattern**: split-screen with tabs
 - **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: Services, Events, Bookings
+- **Subscreens / Tabs / Modals**: People tab, Groups tab, Coaches tab, Events tab, Analysis tab, Match filters popup
 - **Status**: ✅ Implemented
-- **Purpose**: Professional's business management dashboard
-- **Primary APIs Used**: Business API, Services API
-- **DB Tables / Models Used**: TBD (pending functional review)
-- **Compliance Notes**: Business owner access only; RLS enforced
-- **Event Triggers**: business_dashboard_viewed, service_managed, screen_id:COMM-012
-- **Dependencies**: AuthProvider, Professional role
-- **Notes**: Business profile and services management
+- **Purpose**: AI-powered matchmaking system for discovering compatible community members, groups, coaches, and events based on user interests, wellness goals, and activity patterns; provides compatibility analysis and personalized recommendations
+- **Primary APIs Used**: Matches API, AI recommendations API, Supabase API
+- **DB Tables / Models Used**: daily_matches, match_reasons, global_community_profiles, global_community_groups, global_community_events
+- **Compliance Notes**: AI-generated match scores and recommendations; user-specific data with RLS enforcement; privacy-sensitive matching algorithms; opt-out available in user settings
+- **Event Triggers**: matchmaking_viewed, match_tab_changed, match_filters_opened, match_card_clicked, screen_id:COMM-012
+- **Dependencies**: AuthProvider, PeopleMatchCard, GroupMatchCard, CoachMatchCard, EventMatchCard, CompatibilityCard, MatchFiltersPopup, MatchNotificationBadge, SubNavigation, StandardHeader, SplitBar
+- **Notes**: Premium feature providing AI-powered compatibility matching across multiple entity types; includes daily match notifications and advanced filtering options
+
+---
+
+## COMM-013: Live Interaction
+
+- **CanonicalId**: COMM.00.013.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/live-interaction`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/LiveInteraction.tsx
+- **Component Path**: src/pages/community/LiveInteraction.tsx
+- **UI Pattern**: dashboard with live stream grid
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Active live rooms grid, Go Live popup, Autopilot actions preview, Scheduled streams section
+- **Status**: ✅ Implemented
+- **Purpose**: Central hub for discovering, joining, and managing live audio/video streaming sessions; allows users to browse active streams, start their own broadcasts, and view scheduled upcoming sessions; integrates with autopilot for automated streaming recommendations
+- **Primary APIs Used**: Live Streaming API, WebRTC API, Supabase Realtime, Autopilot API
+- **DB Tables / Models Used**: community_live_streams, autopilot_actions
+- **Compliance Notes**: Real-time video/audio streaming with HIPAA considerations for health discussions; content moderation required; age-restricted content filtering; recording consent must be obtained; compliance with COPPA for under-13 users
+- **Event Triggers**: live_interaction_viewed, go_live_clicked, live_room_joined, autopilot_opened, scheduled_stream_viewed, screen_id:COMM-013
+- **Dependencies**: AuthProvider, useAutopilot hook, GoLivePopup, AutopilotPopup, SubNavigation, StandardHeader, Avatar components, WebRTC infrastructure
+- **Notes**: Premium interactive streaming feature with autopilot integration; supports both audio-only and video streams; displays real-time viewer counts and stream duration
+
+---
+
+## COMM-014: AI Insights
+
+- **CanonicalId**: COMM.00.014.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/ai-insights`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/AIInsights.tsx
+- **Component Path**: src/pages/community/AIInsights.tsx
+- **UI Pattern**: dashboard with insight cards
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Recommended connections, Trending topics, Engagement insights, Growth opportunities, Community analytics, Autopilot popup
+- **Status**: ✅ Implemented
+- **Purpose**: AI-powered analytics and recommendations dashboard providing personalized insights on community engagement, connection opportunities, trending topics, and growth strategies; helps users optimize their social wellness journey through data-driven recommendations
+- **Primary APIs Used**: AI Insights API, Analytics API, Recommendations API, Autopilot API
+- **DB Tables / Models Used**: ai_recommendations, global_community_profiles, engagement_metrics, autopilot_actions
+- **Compliance Notes**: AI-generated insights and recommendations; aggregated anonymized data for trending topics; user-specific analytics with RLS; no PHI exposed in community insights; transparent AI methodology disclosed to users
+- **Event Triggers**: ai_insights_viewed, connection_recommended, topic_clicked, insight_dismissed, autopilot_triggered, screen_id:COMM-014
+- **Dependencies**: AuthProvider, useAutopilot hook, AutopilotPopup, SubNavigation, StandardHeader, Avatar components, Chart/analytics visualization components
+- **Notes**: Premium AI feature providing match scores (75-95%), activity level tracking, shared goals analysis, engagement trends, and personalized growth recommendations; integrates with autopilot for automated action suggestions
+
+---
+
+## COMM-015: Live Room Viewer
+
+- **CanonicalId**: COMM.00.015.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/live-rooms/:roomId`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/LiveRoomViewer.tsx
+- **Component Path**: src/pages/community/LiveRoomViewer.tsx
+- **UI Pattern**: immersive-viewer with chat
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Live stream video/audio, Real-time chat, Participants list, Stream controls, Recording playback
+- **Status**: ✅ Implemented
+- **Purpose**: Immersive viewer for individual live audio/video streaming rooms; provides real-time participation with video/audio feeds, live chat, reactions, and participant management; supports both host and viewer modes with WebRTC-based streaming
+- **Primary APIs Used**: WebRTC API, Supabase Realtime API, Live Streaming API, Chat API, Recording API
+- **DB Tables / Models Used**: community_live_streams, live_chat_messages, stream_participants, stream_recordings
+- **Compliance Notes**: Real-time video/audio streaming with HIPAA considerations; chat moderation required; recording consent enforcement; participant privacy controls; age verification for restricted content; COPPA compliance for under-13 users
+- **Event Triggers**: live_room_entered, chat_message_sent, reaction_sent, participant_joined, recording_started, screen_id:COMM-015
+- **Dependencies**: AuthProvider, useStreamLifecycle hook, useLiveChat hook, useStreamRecording hook, useWebRTC hook, LiveRoom component, StreamRecordingPlayer, ScrollArea, Avatar components, SubNavigation
+- **Notes**: Full-featured live streaming viewer with WebRTC infrastructure; supports host/viewer roles, real-time chat with emoji reactions, participant list management, stream recording/playback, and dynamic room state synchronization via Supabase Realtime
+
+---
+
+## COMM-016: Meetups Standalone
+
+- **CanonicalId**: COMM.00.016.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/meetups`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/Meetups.tsx
+- **Component Path**: src/pages/community/Meetups.tsx
+- **UI Pattern**: split-screen with tabs and card grid
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Today tab, This Week tab, Later tab, Create meetup popup
+- **Status**: ✅ Implemented
+- **Purpose**: Dedicated meetups discovery and management page organized by time periods (Today, This Week, Later); provides categorized view of local wellness meetups including yoga, cooking workshops, hydration challenges, strength training, and sleep seminars; allows users to create new meetups tied to health pillars
+- **Primary APIs Used**: Meetups API, Calendar API, Supabase API
+- **DB Tables / Models Used**: global_community_events (filtered by event_type='meetup'), event_attendees
+- **Compliance Notes**: Location data shared for meetups; age restrictions for certain activities; health disclaimer required for physical activities; liability waivers for in-person events; COPPA compliance for youth-focused meetups
+- **Event Triggers**: meetups_viewed, meetup_tab_changed, meetup_card_clicked, create_meetup_opened, attendee_registered, screen_id:COMM-016
+- **Dependencies**: AuthProvider, usePermissions hook, CreateMeetupPopup, NewsCard component, SplitBar, UtilityActionButton, ExpandableSearchButton, UniversalCalendarButton, SubNavigation, StandardHeader, Tooltip components
+- **Notes**: Pillar-categorized meetups (Mental, Nutrition, Hydration, Movement, Sleep) with visual icons; displays attendee counts, timestamps, and locations; supports search and calendar integration; permission-gated create functionality for professional/staff roles
+
+---
+
+## COMM-017: Events Standalone
+
+- **CanonicalId**: COMM.00.017.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/events-standalone`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/Events.tsx
+- **Component Path**: src/pages/community/Events.tsx
+- **UI Pattern**: split-screen with tabs and card grid
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Today tab, This Week tab, This Month tab, Create event popup, Meetup details drawer, Social share dialog
+- **Status**: ✅ Implemented
+- **Purpose**: Dedicated events discovery page organized by time periods (Today, This Week, This Month); provides comprehensive view of wellness events including yoga, fitness classes, nutrition workshops, sleep seminars, and mental wellness activities; supports event creation and social sharing of events across platforms
+- **Primary APIs Used**: Events API, Calendar API, Supabase API, Social Share API
+- **DB Tables / Models Used**: global_community_events, event_attendees, event_co_creators
+- **Compliance Notes**: Location data shared for events; age restrictions for certain activities; health disclaimer required for physical activities; liability waivers for in-person events; social share preview metadata; COPPA compliance for youth-focused events
+- **Event Triggers**: events_standalone_viewed, event_tab_changed, event_card_clicked, create_event_opened, event_drawer_opened, event_shared, screen_id:COMM-017
+- **Dependencies**: AuthProvider, useEventSelection context, EventSelectionProvider, CreateEventPopup, MeetupDetailsDrawer, NewsCard component, SocialShareButton, SplitBar, UtilityActionButton, ExpandableSearchButton, UniversalCalendarButton, SubNavigation, StandardHeader
+- **Notes**: Pillar-categorized events (Exercise, Nutrition, Hydration, Sleep, Mental Wellness) with visual icons; displays attendee counts, time/location details; supports search, calendar integration, URL parameter-based drawer navigation (?meetupId=), and social sharing with Open Graph metadata
+
+---
+
+## COMM-018: Meetups Enhanced
+
+- **CanonicalId**: COMM.00.018.A.ALL.CLI
+- **Module**: Community
+- **Portal(s)**: All
+- **Roles with access**: Community, Patient, Professional, Staff, Admin
+- **External Route (client URL)**: `/community/meetups-enhanced`
+- **Internal/Admin Route (if any)**: N/A
+- **Dev Route (current project path)**: src/pages/community/Meetups2.tsx
+- **Component Path**: src/pages/community/Meetups2.tsx
+- **UI Pattern**: split-screen with tabs and enhanced card grid
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Today tab, This Week tab, This Month tab, Create meetup popup, Edit meetup popup, Meetup details drawer
+- **Status**: ✅ Implemented
+- **Purpose**: Enhanced version of meetups page with full CRUD operations (create, read, update, delete); connects to live Supabase backend for real-time event management; supports event_type filtering, location-based meetups, and comprehensive event editing capabilities; integrates with screen_id tracking system (COMM-018)
+- **Primary APIs Used**: Supabase API (global_community_events table), Calendar API, useCommunityEvents hook
+- **DB Tables / Models Used**: global_community_events (event_type='meetup'), event_attendees, event_co_creators
+- **Compliance Notes**: Real-time database sync; location data privacy; age restrictions enforced via database; health activity disclaimers; liability waivers stored; user authentication required for CRUD operations; RLS policies enforced; COPPA compliance
+- **Event Triggers**: meetups_enhanced_viewed, meetup_tab_changed, meetup_created, meetup_edited, meetup_deleted, meetup_drawer_opened, attendee_count_updated, screen_id:COMM-018
+- **Dependencies**: AuthProvider, useCommunityEvents hook, useMeetupSelection context, MeetupSelectionProvider, CreateMeetupPopup, EditMeetupPopup, MeetupDetailsDrawer, NewsCard component, SplitBar, UtilityActionButton, ExpandableSearchButton, UniversalCalendarButton, SubNavigation, StandardHeader, SCREEN_IDS constants, withScreenId HOC
+- **Notes**: Production-ready enhanced meetups page with full backend integration; supports real-time event updates, edit/delete capabilities for event creators, time-based filtering (Today/This Week/This Month), URL parameter-based drawer navigation (?meetupId=), attendee count tracking, and comprehensive event metadata (title, description, location, time, category, image); includes fallback to static placeholder image if event image unavailable
 
 ---
 
