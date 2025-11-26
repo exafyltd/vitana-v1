@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePresenceDebug } from '@/hooks/usePresenceDebug';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { X } from 'lucide-react';
 
 const PresenceDebugPanel: React.FC = () => {
   const { debugInfo, showDebug } = usePresenceDebug();
+  const [isDismissed, setIsDismissed] = useState(() => {
+    return sessionStorage.getItem('presence-debug-dismissed') === 'true';
+  });
 
-  if (!showDebug) return null;
+  const handleDismiss = () => {
+    setIsDismissed(true);
+    sessionStorage.setItem('presence-debug-dismissed', 'true');
+  };
+
+  if (!showDebug || isDismissed) return null;
 
   return (
     <Card className="fixed bottom-4 right-4 w-64 z-50 opacity-75 hover:opacity-100 transition-opacity">
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-sm">Presence Debug</CardTitle>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={handleDismiss}
+          className="h-6 w-6 p-0"
+        >
+          <X className="h-4 w-4" />
+        </Button>
       </CardHeader>
       <CardContent className="text-xs space-y-1">
         <div className="flex justify-between">
