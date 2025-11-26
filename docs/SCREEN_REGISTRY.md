@@ -697,6 +697,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Community media library; Screen ID D1-002-05
 
 ---
@@ -715,6 +721,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Business profile setup, Services, Booking calendar
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Business profile management for professionals; Screen ID D1-002-06
 
 ---
@@ -733,6 +745,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Group info, Members, Posts, Events
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Individual group page
 
 ---
@@ -751,6 +769,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Post cards, Create post popup
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Community social feed; Screen ID D1-002-02
 
 ---
@@ -769,6 +793,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Wellness challenges and competitions
 
 ---
@@ -787,6 +817,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: My Groups tab, Recommended Groups tab, Create group popup
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Community groups discovery and management; Screen ID D1-002-01
 
 ---
@@ -853,6 +889,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Wellness services discovery; Screen ID D1-003-01
 
 ---
@@ -871,6 +913,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Healthcare professional discovery; Screen ID D1-003-02
 
 ---
@@ -889,6 +937,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Special deals and promotions; Screen ID D1-003-03
 
 ---
@@ -907,6 +961,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Order list, Order detail drawer, Tracking info
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: User order history; Screen ID D1-003-04
 
 ---
@@ -925,6 +985,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Product images, Description, Reviews, Add to cart
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Individual product detail page for supplements
 
 ---
@@ -943,6 +1009,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Bio, Services, Reviews, Book appointment
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Healthcare provider profile page
 
 ---
@@ -961,6 +1033,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Cart items, Checkout button, Remove items
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Shopping cart for supplements
 
 ---
@@ -979,6 +1057,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Services Hub, My Biology, Plans, Education, Pillars, Conditions navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Health hub dashboard; Screen ID D1-005
 
 ---
@@ -997,6 +1081,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Health services directory; Screen ID D1-005-01
 
 ---
@@ -1015,6 +1105,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Biomarker cards, Trend charts, Detail views
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Personal biomarker tracking; Screen ID D1-005-02
 
 ---
@@ -1033,6 +1129,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Personalized health plans; Screen ID D1-005-05
 
 ---
@@ -1051,6 +1153,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Health education content; Screen ID D1-005-04
 
 ---
@@ -1069,6 +1177,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Health pillar tracking (sleep, nutrition, fitness, etc.)
 
 ---
@@ -1087,6 +1201,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Risk assessments, Preventive action plans
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Health risk assessments and preventive planning
 
 ---
@@ -1105,6 +1225,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Reminder, Inspiration, Archived navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Inbox hub; Screen ID D1-004
 
 ---
@@ -1123,6 +1249,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Reminder messages; Screen ID D1-004-01
 
 ---
@@ -1141,6 +1273,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Inspirational content; Screen ID D1-004-02
 
 ---
@@ -1159,6 +1297,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Archived messages
 
 ---
@@ -1177,6 +1321,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Insights, Recommendations, Daily Summary, Companion navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: AI hub dashboard
 
 ---
@@ -1195,6 +1345,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: AI-generated insights
 
 ---
@@ -1213,6 +1369,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: AI recommendations
 
 ---
@@ -1231,6 +1393,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Daily AI summary
 
 ---
@@ -1249,6 +1417,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: AI companion chat
 
 ---
@@ -1267,6 +1441,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Balance, Subscriptions, Rewards navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Wallet hub; Screen ID D1-006
 
 ---
@@ -1285,6 +1465,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Wallet balance view; Screen ID D1-006-01
 
 ---
@@ -1303,6 +1489,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Active subscriptions; Screen ID D1-006-02
 
 ---
@@ -1321,6 +1513,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Rewards program; Screen ID D1-006-03
 
 ---
@@ -1339,6 +1537,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Campaigns, Distribution, Data/Consent navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Content sharing hub; Screen ID D1-007
 
 ---
@@ -1357,6 +1561,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Campaign list, Create campaign button
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Content distribution campaigns; Screen ID D1-007-06
 
 ---
@@ -1375,6 +1585,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Campaign info, Posts, Analytics
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Individual campaign management; Screen ID D1-007-07
 
 ---
@@ -1393,6 +1609,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Content distribution management
 
 ---
@@ -1411,6 +1633,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Data sharing consent management
 
 ---
@@ -1429,6 +1657,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Timeline, Diary, Recall, Permissions navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Memory hub; Screen ID D1-008
 
 ---
@@ -1447,6 +1681,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Life timeline view; Screen ID D1-008-01
 
 ---
@@ -1465,6 +1705,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Diary entries, Create entry popup
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Personal diary/journal; Screen ID D1-008-02
 
 ---
@@ -1483,6 +1729,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: AI-powered memory recall; Screen ID D1-008-03
 
 ---
@@ -1501,6 +1753,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Memory sharing permissions; Screen ID D1-008-04
 
 ---
@@ -1519,6 +1777,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Preferences, Privacy, Notifications, Connected Apps, Billing, Support navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Settings hub; Screen ID D1-009
 
 ---
@@ -1537,6 +1801,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: User preferences; Screen ID D1-009-01
 
 ---
@@ -1555,6 +1825,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Privacy settings; Screen ID D1-009-02
 
 ---
@@ -1573,6 +1849,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Notification preferences
 
 ---
@@ -1591,6 +1873,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Third-party app integrations; Screen ID D1-009-03
 
 ---
@@ -1609,6 +1897,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Billing and rewards; Screen ID D1-009-04
 
 ---
@@ -1626,6 +1920,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Help and support
 
 ---
@@ -1643,6 +1943,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Role selector, Tenant info
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Tenant and role management for multi-role users
 
 ---
@@ -1660,6 +1966,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Chat input, Voice mode, Camera mode, Screen share
 - **Status**: ❌ Missing (Removed in favor of VITANA Orb)
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Deprecated communication bar; replaced by VITANA Orb overlay
 
 ---
@@ -1677,6 +1989,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Month view, Week view, Day view, Event creation
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Unified calendar for all events and appointments
 
 ---
@@ -1694,6 +2012,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Search filters, Result categories
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Global search
 
 ---
@@ -1711,6 +2035,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Basic info, Bio, Roles, Privacy
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: User profile editing
 
 ---
@@ -1728,6 +2058,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Profile card, Bio, Activity, Follow button
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Public user profile pages
 
 ---
@@ -1749,6 +2085,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Health, Appointments, Test Results, Care Team navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient role dashboard
 
 ---
@@ -1766,6 +2108,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: N/A
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient health overview
 
 ---
@@ -1783,6 +2131,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Upcoming, Past, Book appointment
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient appointments management
 
 ---
@@ -1800,6 +2154,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Test results list, Detail views
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Lab and test results
 
 ---
@@ -1817,6 +2177,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Care team members, Contact info
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient's care team
 
 ---
@@ -1834,6 +2200,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Goal list, Add goal, Progress tracking
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient health goals
 
 ---
@@ -1851,6 +2223,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Insurance cards, Coverage info
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Insurance information
 
 ---
@@ -1868,6 +2246,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Notification list, Mark as read
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient notifications
 
 ---
@@ -1885,6 +2269,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Preferences, Privacy
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient-specific settings
 
 ---
@@ -1906,6 +2296,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Patients, Schedule, Clinical Tools navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Professional role dashboard
 
 ---
@@ -1923,6 +2319,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Patient list, Patient detail, Add patient
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient management
 
 ---
@@ -1940,6 +2342,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Appointments, Availability settings
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Professional schedule management
 
 ---
@@ -1957,6 +2365,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Assessment tools, Treatment plans
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Clinical assessment and treatment tools
 
 ---
@@ -1974,6 +2388,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Referral list, Create referral
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient referral management
 
 ---
@@ -1991,6 +2411,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Invoices, Payments, Reports
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Professional billing and payments
 
 ---
@@ -2008,6 +2434,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Bio, Credentials, Services, Availability
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Professional public profile management
 
 ---
@@ -2025,6 +2457,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Courses, Certifications, Resources
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Continuing education resources
 
 ---
@@ -2042,6 +2480,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Preferences, Notifications, Integrations
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Professional-specific settings
 
 ---
@@ -2063,6 +2507,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Queue, Daily Tasks, Schedule navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Staff role dashboard
 
 ---
@@ -2080,6 +2530,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Patient queue, Check-in, Assign
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Patient queue management
 
 ---
@@ -2097,6 +2553,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Task list, Complete task, Add task
 - **Status**: 🚧 Placeholder
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Daily task management
 
 ---
