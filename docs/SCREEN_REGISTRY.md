@@ -805,6 +805,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Wellness Services, Doctors/Coaches, Deals/Offers, Orders navigation cards
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Discover marketplace hub; Screen ID D1-003
 
 ---
@@ -823,6 +829,12 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Product cards, Filter sidebar, Product detail page
 - **Status**: ✅ Implemented
+- **Purpose**: TBD (pending functional review)
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
 - **Notes**: Supplement marketplace powered by CJ Dropshipping
 
 ---
