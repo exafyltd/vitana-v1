@@ -4,8 +4,8 @@ import React from "react";
  * Screen ID management system for UI pattern enforcement
  * Synchronized with docs/SCREEN_REGISTRY.md
  * 
- * Total Screen IDs: 215
- * Last Updated: 2025-11-26
+ * Total Screen IDs: 214 (DEV-044 removed - not in registry)
+ * Last Synced: 2025-11-26
  */
 
 // ============================================================================
@@ -303,18 +303,17 @@ export const SCREEN_DEV_040 = "DEV-040"; // OASIS
 export const SCREEN_DEV_041 = "DEV-041"; // OASIS Events
 export const SCREEN_DEV_042 = "DEV-042"; // OASIS Projections
 export const SCREEN_DEV_043 = "DEV-043"; // OASIS Config
-export const SCREEN_DEV_044 = "DEV-044"; // OASIS Subscriptions
 
 // --- VTID ---
 export const SCREEN_DEV_050 = "DEV-050"; // VTID
-export const SCREEN_DEV_051 = "DEV-051"; // VTID Browser
-export const SCREEN_DEV_052 = "DEV-052"; // VTID Analytics
-export const SCREEN_DEV_053 = "DEV-053"; // VTID Config
+export const SCREEN_DEV_051 = "DEV-051"; // VTID Explorer
+export const SCREEN_DEV_052 = "DEV-052"; // VTID Graph
+export const SCREEN_DEV_053 = "DEV-053"; // VTID Analytics
 
 // --- Gateway ---
 export const SCREEN_DEV_060 = "DEV-060"; // Gateway
-export const SCREEN_DEV_061 = "DEV-061"; // Gateway Routing
-export const SCREEN_DEV_062 = "DEV-062"; // Gateway Middleware
+export const SCREEN_DEV_061 = "DEV-061"; // Gateway Routes
+export const SCREEN_DEV_062 = "DEV-062"; // Gateway Monitor
 export const SCREEN_DEV_063 = "DEV-063"; // Gateway Analytics
 
 // --- CI/CD ---
