@@ -256,6 +256,14 @@ import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications
 import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 
+// Component to initialize global hooks inside provider tree
+const AppHooksInitializer = () => {
+  useAppointmentNotifications();
+  useMessageNotifications();
+  useAudioPriority();
+  return null;
+};
+
 const App = () => {
   // Initialize session ID for activity logging
   useEffect(() => {
@@ -267,15 +275,6 @@ const App = () => {
     }
   }, []);
 
-  // Initialize appointment notifications globally
-  useAppointmentNotifications();
-  
-  // Initialize message notifications globally
-  useMessageNotifications();
-
-  // Initialize audio priority system globally
-  useAudioPriority();
-
   return (
     <RTLProvider>
       <MeetupSelectionProvider>
@@ -286,6 +285,7 @@ const App = () => {
                 <TooltipProvider>
                   <Toaster />
                   <PresenceDebugPanel />
+                  <AppHooksInitializer />
                   <BrowserRouter>
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
