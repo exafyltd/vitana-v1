@@ -81,6 +81,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-001: Landing Page
 
+- **CanonicalId**: AUTH.00.001.A.PUBLIC.CLI
 - **Module**: Public
 - **Portal(s)**: All (Global Landing)
 - **Roles with access**: Public (unauthenticated)
@@ -98,6 +99,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-002: Generic Auth
 
+- **CanonicalId**: AUTH.00.002.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: All
 - **Roles with access**: Public (unauthenticated)
@@ -115,6 +117,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-003: Maxina Portal Login
 
+- **CanonicalId**: AUTH.00.003.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Maxina
 - **Roles with access**: Public (unauthenticated)
@@ -132,6 +135,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-004: Alkalma Portal Login
 
+- **CanonicalId**: AUTH.00.004.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Alkalma
 - **Roles with access**: Public (unauthenticated)
@@ -149,6 +153,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-005: Earthlinks Portal Login
 
+- **CanonicalId**: AUTH.00.005.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Earthlinks
 - **Roles with access**: Public (unauthenticated)
@@ -166,6 +171,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-006: Community Portal Login
 
+- **CanonicalId**: AUTH.00.006.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Community (public)
 - **Roles with access**: Public (unauthenticated)
@@ -183,6 +189,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-007: Exafy Admin Portal Login
 
+- **CanonicalId**: AUTH.00.007.A.ADMIN.INT
 - **Module**: Authentication
 - **Portal(s)**: Exafy (Internal)
 - **Roles with access**: Exafy Admin only
@@ -200,6 +207,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-008: Intro Experience
 
+- **CanonicalId**: AUTH.00.008.A.PUBLIC.CLI
 - **Module**: Onboarding
 - **Portal(s)**: All tenants
 - **Roles with access**: Public (unauthenticated)
@@ -217,6 +225,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-009: Email Confirmation (Maxina)
 
+- **CanonicalId**: AUTH.00.009.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Maxina
 - **Roles with access**: Public (via email link)
@@ -234,6 +243,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-010: Email Confirmation (Alkalma)
 
+- **CanonicalId**: AUTH.00.010.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Alkalma
 - **Roles with access**: Public (via email link)
@@ -251,6 +261,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-011: Email Confirmation (Earthlinks)
 
+- **CanonicalId**: AUTH.00.011.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Earthlinks
 - **Roles with access**: Public (via email link)
@@ -268,6 +279,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-012: Email Confirmation (Community)
 
+- **CanonicalId**: AUTH.00.012.A.PUBLIC.CLI
 - **Module**: Authentication
 - **Portal(s)**: Community
 - **Roles with access**: Public (via email link)
@@ -285,6 +297,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-013: Email Confirmation (Exafy)
 
+- **CanonicalId**: AUTH.00.013.A.ADMIN.INT
 - **Module**: Authentication
 - **Portal(s)**: Exafy
 - **Roles with access**: Exafy Admin (via email link)
@@ -302,6 +315,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-014: Not Found (404)
 
+- **CanonicalId**: AUTH.00.014.A.ALL.CLI
 - **Module**: Error
 - **Portal(s)**: All
 - **Roles with access**: All
@@ -319,6 +333,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AUTH-015: Legacy Profile Redirect
 
+- **CanonicalId**: AUTH.00.015.A.ALL.CLI
 - **Module**: Utility
 - **Portal(s)**: All
 - **Roles with access**: All
@@ -340,6 +355,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HOME-001: Home Overview
 
+- **CanonicalId**: HOME.00.001.A.ALL.CLI
 - **Module**: Home
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -357,6 +373,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HOME-002: Context
 
+- **CanonicalId**: HOME.00.002.A.ALL.CLI
 - **Module**: Home
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -374,6 +391,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HOME-003: Actions
 
+- **CanonicalId**: HOME.00.003.A.ALL.CLI
 - **Module**: Home
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -391,6 +409,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HOME-004: Matches
 
+- **CanonicalId**: HOME.00.004.A.ALL.CLI
 - **Module**: Home
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -408,6 +427,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HOME-005: AI Feed
 
+- **CanonicalId**: HOME.00.005.A.ALL.CLI
 - **Module**: Home
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -425,6 +445,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-001: Community Overview
 
+- **CanonicalId**: COMM.00.001.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -442,6 +463,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-002: Events & Meetups
 
+- **CanonicalId**: COMM.00.002.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -459,6 +481,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-003: Live Rooms
 
+- **CanonicalId**: COMM.00.003.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -476,6 +499,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-004: Media Hub
 
+- **CanonicalId**: COMM.00.004.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -493,6 +517,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-005: My Business
 
+- **CanonicalId**: COMM.00.005.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -510,6 +535,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-006: Group Detail
 
+- **CanonicalId**: COMM.00.006.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -527,6 +553,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-007: Feed
 
+- **CanonicalId**: COMM.00.007.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -544,6 +571,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-008: Challenges
 
+- **CanonicalId**: COMM.00.008.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -561,6 +589,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## COMM-009: Groups
 
+- **CanonicalId**: COMM.00.009.A.ALL.CLI
 - **Module**: Community
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -578,6 +607,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-001: Discover Overview
 
+- **CanonicalId**: DISC.00.001.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -595,6 +625,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-002: Supplements
 
+- **CanonicalId**: DISC.00.002.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -612,6 +643,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-003: Wellness Services
 
+- **CanonicalId**: DISC.00.003.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -629,6 +661,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-004: Doctors & Coaches
 
+- **CanonicalId**: DISC.00.004.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -646,6 +679,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-005: Deals & Offers
 
+- **CanonicalId**: DISC.00.005.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -663,6 +697,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-006: Orders
 
+- **CanonicalId**: DISC.00.006.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -680,6 +715,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-007: Product Detail
 
+- **CanonicalId**: DISC.00.007.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -697,6 +733,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-008: Provider Profile
 
+- **CanonicalId**: DISC.00.008.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -714,6 +751,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## DISC-009: Cart
 
+- **CanonicalId**: DISC.00.009.A.ALL.CLI
 - **Module**: Discover
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -731,6 +769,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-001: Health Overview
 
+- **CanonicalId**: HLTH.00.001.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -748,6 +787,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-002: Services Hub
 
+- **CanonicalId**: HLTH.00.002.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -765,6 +805,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-003: My Biology (Biomarkers)
 
+- **CanonicalId**: HLTH.00.003.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -782,6 +823,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-004: Plans
 
+- **CanonicalId**: HLTH.00.004.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -799,6 +841,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-005: Education
 
+- **CanonicalId**: HLTH.00.005.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -816,6 +859,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-006: Pillars
 
+- **CanonicalId**: HLTH.00.006.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -833,6 +877,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## HLTH-007: Conditions & Risks
 
+- **CanonicalId**: HLTH.00.007.A.ALL.CLI
 - **Module**: Health
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -850,6 +895,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## INBX-001: Inbox Overview
 
+- **CanonicalId**: INBX.00.001.A.ALL.CLI
 - **Module**: Inbox
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -867,6 +913,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## INBX-002: Reminder
 
+- **CanonicalId**: INBX.00.002.A.ALL.CLI
 - **Module**: Inbox
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -884,6 +931,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## INBX-003: Inspiration
 
+- **CanonicalId**: INBX.00.003.A.ALL.CLI
 - **Module**: Inbox
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -901,6 +949,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## INBX-004: Archived
 
+- **CanonicalId**: INBX.00.004.A.ALL.CLI
 - **Module**: Inbox
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -918,6 +967,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AI-001: AI Overview
 
+- **CanonicalId**: AI.00.001.A.ALL.CLI
 - **Module**: AI
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -935,6 +985,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AI-002: Insights
 
+- **CanonicalId**: AI.00.002.A.ALL.CLI
 - **Module**: AI
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -952,6 +1003,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AI-003: Recommendations
 
+- **CanonicalId**: AI.00.003.A.ALL.CLI
 - **Module**: AI
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -969,6 +1021,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AI-004: Daily Summary
 
+- **CanonicalId**: AI.00.004.A.ALL.CLI
 - **Module**: AI
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -986,6 +1039,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## AI-005: Companion
 
+- **CanonicalId**: AI.00.005.A.ALL.CLI
 - **Module**: AI
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1003,6 +1057,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## WLLT-001: Wallet Overview
 
+- **CanonicalId**: WLLT.00.001.A.ALL.CLI
 - **Module**: Wallet
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1020,6 +1075,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## WLLT-002: Balance
 
+- **CanonicalId**: WLLT.00.002.A.ALL.CLI
 - **Module**: Wallet
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1037,6 +1093,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## WLLT-003: Subscriptions
 
+- **CanonicalId**: WLLT.00.003.A.ALL.CLI
 - **Module**: Wallet
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1054,6 +1111,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## WLLT-004: Rewards
 
+- **CanonicalId**: WLLT.00.004.A.ALL.CLI
 - **Module**: Wallet
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1071,6 +1129,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SHAR-001: Sharing Overview
 
+- **CanonicalId**: SHAR.00.001.A.ALL.CLI
 - **Module**: Sharing
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1088,6 +1147,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SHAR-002: Campaigns
 
+- **CanonicalId**: SHAR.00.002.A.ALL.CLI
 - **Module**: Sharing
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1105,6 +1165,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SHAR-003: Campaign Detail
 
+- **CanonicalId**: SHAR.00.003.A.ALL.CLI
 - **Module**: Sharing
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1122,6 +1183,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SHAR-004: Distribution
 
+- **CanonicalId**: SHAR.00.004.A.ALL.CLI
 - **Module**: Sharing
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1139,6 +1201,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SHAR-005: Data & Consent
 
+- **CanonicalId**: SHAR.00.005.A.ALL.CLI
 - **Module**: Sharing
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1156,6 +1219,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## MEMO-001: Memory Overview
 
+- **CanonicalId**: MEMO.00.001.A.ALL.CLI
 - **Module**: Memory
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1173,6 +1237,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## MEMO-002: Timeline
 
+- **CanonicalId**: MEMO.00.002.A.ALL.CLI
 - **Module**: Memory
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1190,6 +1255,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## MEMO-003: Diary
 
+- **CanonicalId**: MEMO.00.003.A.ALL.CLI
 - **Module**: Memory
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1207,6 +1273,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## MEMO-004: Recall
 
+- **CanonicalId**: MEMO.00.004.A.ALL.CLI
 - **Module**: Memory
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1224,6 +1291,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## MEMO-005: Permissions
 
+- **CanonicalId**: MEMO.00.005.A.ALL.CLI
 - **Module**: Memory
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1241,6 +1309,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SETT-001: Settings Overview
 
+- **CanonicalId**: SETT.00.001.A.ALL.CLI
 - **Module**: Settings
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1258,6 +1327,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SETT-002: Preferences
 
+- **CanonicalId**: SETT.00.002.A.ALL.CLI
 - **Module**: Settings
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1275,6 +1345,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SETT-003: Privacy
 
+- **CanonicalId**: SETT.00.003.A.ALL.CLI
 - **Module**: Settings
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1292,6 +1363,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SETT-004: Notifications
 
+- **CanonicalId**: SETT.00.004.A.ALL.CLI
 - **Module**: Settings
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1309,6 +1381,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SETT-005: Connected Apps
 
+- **CanonicalId**: SETT.00.005.A.ALL.CLI
 - **Module**: Settings
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
@@ -1326,6 +1399,7 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 ## SETT-006: Billing & Rewards
 
+- **CanonicalId**: SETT.00.006.A.ALL.CLI
 - **Module**: Settings
 - **Portal(s)**: All
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
