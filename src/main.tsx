@@ -5,6 +5,7 @@ import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
 import { ProfileProvider } from './context/ProfileProvider'
 import { LanguageProvider } from './contexts/LanguageContext'
+import { SoundscapeProvider } from './context/SoundscapeContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -27,7 +28,9 @@ createRoot(document.getElementById("root")!).render(
       <ProfileProvider>
         <LanguageProvider>
           <TenantProvider>
-            <App />
+            <SoundscapeProvider>
+              <App />
+            </SoundscapeProvider>
           </TenantProvider>
         </LanguageProvider>
       </ProfileProvider>
