@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-11-26  
-**Total Screens**: 479
+**Total Screens**: 511
 
 ---
 
@@ -41,9 +41,9 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Professional Role Screens | 9 |
 | Staff Role Screens | 9 |
 | Admin Role Screens | 117 |
-| Dev Hub Screens | 104 |
+| Dev Hub Screens | 136 |
 | Global Overlays | 18 |
-| **TOTAL** | **479** |
+| **TOTAL** | **511** |
 
 ---
 
@@ -6338,6 +6338,742 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Event Triggers**: TBD (pending functional review)
 - **Dependencies**: TBD (pending functional review)
 - **Notes**: System changelog
+
+---
+
+## DEV-105: Dev Login
+
+- **Module**: Dev Hub - Authentication
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/login`
+- **Internal/Admin Route (if any)**: `/dev/login`
+- **Dev Route (current project path)**: src/pages/dev/DevLogin.tsx
+- **Component Path**: src/pages/dev/DevLogin.tsx
+- **UI Pattern**: Authentication form
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Login form, Auth providers
+- **Status**: ✅ Implemented
+- **Purpose**: Dev Hub authentication and access control
+- **Primary APIs Used**: Supabase Auth
+- **DB Tables / Models Used**: auth.users
+- **Compliance Notes**: Dev-only access, admin role required
+- **Event Triggers**: dev_login_attempt, dev_login_success, dev_login_failure
+- **Dependencies**: AuthProvider, DevAuthGuard
+- **Notes**: Secure authentication gateway for Dev Hub
+
+---
+
+## DEV-106: Crew Template
+
+- **Module**: Dev Hub - Agents
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/agents/crew-template`
+- **Internal/Admin Route (if any)**: `/dev/agents/crew-template`
+- **Dev Route (current project path)**: src/pages/dev/agents/CrewTemplate.tsx
+- **Component Path**: src/pages/dev/agents/CrewTemplate.tsx
+- **UI Pattern**: sub-page-header
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Template editor, Agent assignment
+- **Status**: ✅ Implemented
+- **Purpose**: CrewAI template management for multi-agent workflows
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: crew_memory
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Template configuration for CrewAI agent crews
+
+---
+
+## DEV-107: QA Test
+
+- **Module**: Dev Hub - Agents
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/agents/qa-test`
+- **Internal/Admin Route (if any)**: `/dev/agents/qa-test`
+- **Dev Route (current project path)**: src/pages/dev/agents/QATest.tsx
+- **Component Path**: src/pages/dev/agents/QATest.tsx
+- **UI Pattern**: sub-page-header
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Test runner, Test results
+- **Status**: ✅ Implemented
+- **Purpose**: QA testing interface for agent workflows
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: crewai_test
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Quality assurance testing for AI agents
+
+---
+
+## DEV-108: Agent Validator
+
+- **Module**: Dev Hub - Agents
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/agents/validator`
+- **Internal/Admin Route (if any)**: `/dev/agents/validator`
+- **Dev Route (current project path)**: src/pages/dev/agents/Validator.tsx
+- **Component Path**: src/pages/dev/agents/Validator.tsx
+- **UI Pattern**: sub-page-header
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Validation rules, Test results
+- **Status**: ✅ Implemented
+- **Purpose**: Agent output validation and quality assurance
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Validates agent responses and behavior
+
+---
+
+## DEV-109: Agent Worker
+
+- **Module**: Dev Hub - Agents
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/agents/worker`
+- **Internal/Admin Route (if any)**: `/dev/agents/worker`
+- **Dev Route (current project path)**: src/pages/dev/agents/Worker.tsx
+- **Component Path**: src/pages/dev/agents/Worker.tsx
+- **UI Pattern**: sub-page-header
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Worker status, Task queue
+- **Status**: ✅ Implemented
+- **Purpose**: Background worker management for agent tasks
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Manages background agent task execution
+
+---
+
+## DEV-110: CI/CD Artifacts
+
+- **Module**: Dev Hub - CI/CD
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/cicd/artifacts`
+- **Internal/Admin Route (if any)**: `/dev/cicd/artifacts`
+- **Dev Route (current project path)**: src/pages/dev/cicd/Artifacts.tsx
+- **Component Path**: src/pages/dev/cicd/Artifacts.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Artifact list, Download, Version history
+- **Status**: ✅ Implemented
+- **Purpose**: Build artifact management and version tracking
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: CI/CD build artifact storage and retrieval
+
+---
+
+## DEV-111: CI/CD Matrix
+
+- **Module**: Dev Hub - CI/CD
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/cicd/matrix`
+- **Internal/Admin Route (if any)**: `/dev/cicd/matrix`
+- **Dev Route (current project path)**: src/pages/dev/cicd/Matrix.tsx
+- **Component Path**: src/pages/dev/cicd/Matrix.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Test matrix, Configuration
+- **Status**: ✅ Implemented
+- **Purpose**: Multi-environment test matrix configuration
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Test matrix for cross-platform builds
+
+---
+
+## DEV-112: CI/CD Runs
+
+- **Module**: Dev Hub - CI/CD
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/cicd/runs`
+- **Internal/Admin Route (if any)**: `/dev/cicd/runs`
+- **Dev Route (current project path)**: src/pages/dev/cicd/Runs.tsx
+- **Component Path**: src/pages/dev/cicd/Runs.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Run history, Run details, Logs
+- **Status**: ✅ Implemented
+- **Purpose**: CI/CD pipeline run history and execution tracking
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Pipeline execution history and status
+
+---
+
+## DEV-113: Command Approvals
+
+- **Module**: Dev Hub - Command
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/command/approvals`
+- **Internal/Admin Route (if any)**: `/dev/command/approvals`
+- **Dev Route (current project path)**: src/pages/dev/command/Approvals.tsx
+- **Component Path**: src/pages/dev/command/Approvals.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Pending approvals, Approve/Reject
+- **Status**: ✅ Implemented
+- **Purpose**: Command approval workflow for sensitive operations
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Approval system for high-risk commands
+
+---
+
+## DEV-114: Command Composer
+
+- **Module**: Dev Hub - Command
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/command/compose`
+- **Internal/Admin Route (if any)**: `/dev/command/compose`
+- **Dev Route (current project path)**: src/pages/dev/command/Compose.tsx
+- **Component Path**: src/pages/dev/command/Compose.tsx
+- **UI Pattern**: sub-page-header
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Command builder, Parameter editor
+- **Status**: ✅ Implemented
+- **Purpose**: Visual command composition and parameter configuration
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Interactive command builder interface
+
+---
+
+## DEV-115: Command History
+
+- **Module**: Dev Hub - Command
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/command/history`
+- **Internal/Admin Route (if any)**: `/dev/command/history`
+- **Dev Route (current project path)**: src/pages/dev/command/History.tsx
+- **Component Path**: src/pages/dev/command/History.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Command log, Replay, Filters
+- **Status**: ✅ Implemented
+- **Purpose**: Command execution history and audit trail
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: audit_events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Historical command log with replay capability
+
+---
+
+## DEV-116: Dashboard AI Feed
+
+- **Module**: Dev Hub - Dashboard
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/dashboard/ai-feed`
+- **Internal/Admin Route (if any)**: `/dev/dashboard/ai-feed`
+- **Dev Route (current project path)**: src/pages/dev/dashboard/AIFeed.tsx
+- **Component Path**: src/pages/dev/dashboard/AIFeed.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: AI activity stream, Insights
+- **Status**: ✅ Implemented
+- **Purpose**: Real-time AI system activity feed and insights
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: ai_conversations, ai_messages
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Live feed of AI system activities
+
+---
+
+## DEV-117: Dashboard Alerts
+
+- **Module**: Dev Hub - Dashboard
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/dashboard/alerts`
+- **Internal/Admin Route (if any)**: `/dev/dashboard/alerts`
+- **Dev Route (current project path)**: src/pages/dev/dashboard/Alerts.tsx
+- **Component Path**: src/pages/dev/dashboard/Alerts.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Alert list, Alert rules, Configuration
+- **Status**: ✅ Implemented
+- **Purpose**: System alert monitoring and management dashboard
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Central alert management interface
+
+---
+
+## DEV-118: Dashboard System Health
+
+- **Module**: Dev Hub - Dashboard
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/dashboard/system-health`
+- **Internal/Admin Route (if any)**: `/dev/dashboard/system-health`
+- **Dev Route (current project path)**: src/pages/dev/dashboard/SystemHealth.tsx
+- **Component Path**: src/pages/dev/dashboard/SystemHealth.tsx
+- **UI Pattern**: Dashboard with charts
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Health metrics, Service status
+- **Status**: ✅ Implemented
+- **Purpose**: Real-time system health monitoring and status dashboard
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Comprehensive system health overview
+
+---
+
+## DEV-119: Gateway Mobile Links
+
+- **Module**: Dev Hub - Gateway
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/gateway/mobile-links`
+- **Internal/Admin Route (if any)**: `/dev/gateway/mobile-links`
+- **Dev Route (current project path)**: src/pages/dev/gateway/MobileLinks.tsx
+- **Component Path**: src/pages/dev/gateway/MobileLinks.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Deep link config, Test links
+- **Status**: ✅ Implemented
+- **Purpose**: Mobile deep linking configuration and testing
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Universal and deep link management
+
+---
+
+## DEV-120: Gateway Requests
+
+- **Module**: Dev Hub - Gateway
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/gateway/requests`
+- **Internal/Admin Route (if any)**: `/dev/gateway/requests`
+- **Dev Route (current project path)**: src/pages/dev/gateway/Requests.tsx
+- **Component Path**: src/pages/dev/gateway/Requests.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Request log, Filters, Details
+- **Status**: ✅ Implemented
+- **Purpose**: API gateway request monitoring and debugging
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Live request tracking and analysis
+
+---
+
+## DEV-121: Gateway Webhooks
+
+- **Module**: Dev Hub - Gateway
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/gateway/webhooks`
+- **Internal/Admin Route (if any)**: `/dev/gateway/webhooks`
+- **Dev Route (current project path)**: src/pages/dev/gateway/Webhooks.tsx
+- **Component Path**: src/pages/dev/gateway/Webhooks.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Webhook config, Test, Logs
+- **Status**: ✅ Implemented
+- **Purpose**: Webhook management and monitoring
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Webhook configuration and testing
+
+---
+
+## DEV-122: OASIS Ledger
+
+- **Module**: Dev Hub - OASIS
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/oasis/ledger`
+- **Internal/Admin Route (if any)**: `/dev/oasis/ledger`
+- **Dev Route (current project path)**: src/pages/dev/oasis/Ledger.tsx
+- **Component Path**: src/pages/dev/oasis/Ledger.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Event ledger, Filters, Export
+- **Status**: ✅ Implemented
+- **Purpose**: OASIS event ledger and transaction log
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Complete OASIS event sourcing ledger
+
+---
+
+## DEV-123: OASIS Policies
+
+- **Module**: Dev Hub - OASIS
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/oasis/policies`
+- **Internal/Admin Route (if any)**: `/dev/oasis/policies`
+- **Dev Route (current project path)**: src/pages/dev/oasis/Policies.tsx
+- **Component Path**: src/pages/dev/oasis/Policies.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Policy list, Create policy, Edit
+- **Status**: ✅ Implemented
+- **Purpose**: OASIS event handling policy configuration
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Event processing policy management
+
+---
+
+## DEV-124: OASIS State
+
+- **Module**: Dev Hub - OASIS
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/oasis/state`
+- **Internal/Admin Route (if any)**: `/dev/oasis/state`
+- **Dev Route (current project path)**: src/pages/dev/oasis/State.tsx
+- **Component Path**: src/pages/dev/oasis/State.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: State viewer, State history
+- **Status**: ✅ Implemented
+- **Purpose**: OASIS system state inspection and time-travel debugging
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Current and historical state viewer
+
+---
+
+## DEV-125: Observability Costs
+
+- **Module**: Dev Hub - Observability
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/observability/costs`
+- **Internal/Admin Route (if any)**: `/dev/observability/costs`
+- **Dev Route (current project path)**: src/pages/dev/observability/Costs.tsx
+- **Component Path**: src/pages/dev/observability/Costs.tsx
+- **UI Pattern**: Dashboard with charts
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Cost analysis, Budget alerts
+- **Status**: ✅ Implemented
+- **Purpose**: Infrastructure cost monitoring and optimization
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Real-time cost tracking and analysis
+
+---
+
+## DEV-126: Observability Metrics
+
+- **Module**: Dev Hub - Observability
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/observability/metrics`
+- **Internal/Admin Route (if any)**: `/dev/observability/metrics`
+- **Dev Route (current project path)**: src/pages/dev/observability/Metrics.tsx
+- **Component Path**: src/pages/dev/observability/Metrics.tsx
+- **UI Pattern**: Dashboard with charts
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Metric graphs, Custom queries
+- **Status**: ✅ Implemented
+- **Purpose**: System metrics visualization and analysis
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Custom metric dashboards
+
+---
+
+## DEV-127: Observability Traces
+
+- **Module**: Dev Hub - Observability
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/observability/traces`
+- **Internal/Admin Route (if any)**: `/dev/observability/traces`
+- **Dev Route (current project path)**: src/pages/dev/observability/Traces.tsx
+- **Component Path**: src/pages/dev/observability/Traces.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Trace timeline, Span details
+- **Status**: ✅ Implemented
+- **Purpose**: Distributed tracing and request flow visualization
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Request tracing across services
+
+---
+
+## DEV-128: Pipelines Canary
+
+- **Module**: Dev Hub - Pipelines
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/pipelines/canary`
+- **Internal/Admin Route (if any)**: `/dev/pipelines/canary`
+- **Dev Route (current project path)**: src/pages/dev/pipelines/Canary.tsx
+- **Component Path**: src/pages/dev/pipelines/Canary.tsx
+- **UI Pattern**: Dashboard
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Canary status, Rollout config
+- **Status**: ✅ Implemented
+- **Purpose**: Canary deployment monitoring and control
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Progressive canary deployment management
+
+---
+
+## DEV-129: Pipelines Rollbacks
+
+- **Module**: Dev Hub - Pipelines
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/pipelines/rollbacks`
+- **Internal/Admin Route (if any)**: `/dev/pipelines/rollbacks`
+- **Dev Route (current project path)**: src/pages/dev/pipelines/Rollbacks.tsx
+- **Component Path**: src/pages/dev/pipelines/Rollbacks.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Rollback history, Rollback trigger
+- **Status**: ✅ Implemented
+- **Purpose**: Deployment rollback management and history
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Emergency rollback capabilities
+
+---
+
+## DEV-130: Pipelines Tests
+
+- **Module**: Dev Hub - Pipelines
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/pipelines/tests`
+- **Internal/Admin Route (if any)**: `/dev/pipelines/tests`
+- **Dev Route (current project path)**: src/pages/dev/pipelines/Tests.tsx
+- **Component Path**: src/pages/dev/pipelines/Tests.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Test results, Coverage, Failures
+- **Status**: ✅ Implemented
+- **Purpose**: Pipeline test execution and results tracking
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Automated test suite monitoring
+
+---
+
+## DEV-131: Settings Auth
+
+- **Module**: Dev Hub - Settings
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/settings/auth`
+- **Internal/Admin Route (if any)**: `/dev/settings/auth`
+- **Dev Route (current project path)**: src/pages/dev/settings/Auth.tsx
+- **Component Path**: src/pages/dev/settings/Auth.tsx
+- **UI Pattern**: sub-page-header
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Auth config, Providers, Keys
+- **Status**: ✅ Implemented
+- **Purpose**: Authentication system configuration and provider management
+- **Primary APIs Used**: Supabase Auth
+- **DB Tables / Models Used**: auth.users, agent_keys
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Auth provider and key management
+
+---
+
+## DEV-132: Settings Flags
+
+- **Module**: Dev Hub - Settings
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/settings/flags`
+- **Internal/Admin Route (if any)**: `/dev/settings/flags`
+- **Dev Route (current project path)**: src/pages/dev/settings/Flags.tsx
+- **Component Path**: src/pages/dev/settings/Flags.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Flag list, Toggle, Conditions
+- **Status**: ✅ Implemented
+- **Purpose**: Feature flag management and A/B testing configuration
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: TBD (pending functional review)
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Feature flag control panel
+
+---
+
+## DEV-133: Settings Tenants
+
+- **Module**: Dev Hub - Settings
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/settings/tenants`
+- **Internal/Admin Route (if any)**: `/dev/settings/tenants`
+- **Dev Route (current project path)**: src/pages/dev/settings/Tenants.tsx
+- **Component Path**: src/pages/dev/settings/Tenants.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Tenant list, Create tenant, Config
+- **Status**: ✅ Implemented
+- **Purpose**: Multi-tenant configuration and management
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: tenants
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Tenant isolation and configuration
+
+---
+
+## DEV-134: VTID Analytics
+
+- **Module**: Dev Hub - VTID
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/vtid/analytics`
+- **Internal/Admin Route (if any)**: `/dev/vtid/analytics`
+- **Dev Route (current project path)**: src/pages/dev/vtid/Analytics.tsx
+- **Component Path**: src/pages/dev/vtid/Analytics.tsx
+- **UI Pattern**: Dashboard with charts
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Usage metrics, Patterns, Trends
+- **Status**: ✅ Implemented
+- **Purpose**: VTID usage analytics and pattern analysis
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: VTID system analytics dashboard
+
+---
+
+## DEV-135: VTID Issue Tracker
+
+- **Module**: Dev Hub - VTID
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/vtid/issue`
+- **Internal/Admin Route (if any)**: `/dev/vtid/issue`
+- **Dev Route (current project path)**: src/pages/dev/vtid/Issue.tsx
+- **Component Path**: src/pages/dev/vtid/Issue.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Issue list, Issue detail, Resolution
+- **Status**: ✅ Implemented
+- **Purpose**: VTID-related issue tracking and debugging
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: VTID issue management system
+
+---
+
+## DEV-136: VTID Search
+
+- **Module**: Dev Hub - VTID
+- **Portal(s)**: Dev Hub only
+- **Roles with access**: Admin (Dev access)
+- **External Route (client URL)**: `/dev/vtid/search`
+- **Internal/Admin Route (if any)**: `/dev/vtid/search`
+- **Dev Route (current project path)**: src/pages/dev/vtid/Search.tsx
+- **Component Path**: src/pages/dev/vtid/Search.tsx
+- **UI Pattern**: data-table
+- **Tenant Availability**: Global (Dev)
+- **Subscreens / Tabs / Modals**: Search interface, Filters, Results
+- **Status**: ✅ Implemented
+- **Purpose**: Advanced VTID search and query interface
+- **Primary APIs Used**: TBD (pending functional review)
+- **DB Tables / Models Used**: events
+- **Compliance Notes**: TBD (pending functional review)
+- **Event Triggers**: TBD (pending functional review)
+- **Dependencies**: TBD (pending functional review)
+- **Notes**: Powerful VTID search capabilities
 
 ---
 
