@@ -169,8 +169,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     // Attach event listeners
     attachListeners(audio);
 
-    // Auto-play if preference is set
-    if (savedAutoPlay === 'true' && audio.paused) {
+  // Auto-play if preference is set AND user hasn't explicitly paused
+    if (savedAutoPlay === 'true' && audio.paused && !userExplicitlyPausedRef.current) {
       audio.play().catch((err) => {
         console.warn('[Soundscape] Auto-play blocked:', err);
       });
@@ -202,7 +202,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
         setIsPlaying(actuallyPlaying);
       }
     }
-  });
+  }, []); // Only run once on mount
 
   // Sync audioRef with window singleton (HMR recovery)
   useEffect(() => {
@@ -211,7 +211,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       audioRef.current = window.__SOUNDSCAPE_AUDIO__;
       attachListeners(window.__SOUNDSCAPE_AUDIO__);
     }
-  });
+  }, [attachListeners]); // Only run when attachListeners changes
 
 
   const play = useCallback(() => {
