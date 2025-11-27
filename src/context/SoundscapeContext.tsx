@@ -203,6 +203,24 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   });
 
+  // Periodic orphan cleanup when muted (dev mode safety net)
+  useEffect(() => {
+    if (!isMuted) return;
+    
+    // When muted, periodically check for orphans (dev mode safety)
+    const intervalId = setInterval(() => {
+      const filename = AMBIENT_TRACK.split('/').pop() || '';
+      document.querySelectorAll('audio').forEach((audio) => {
+        if (audio.src.includes(filename) && !audio.paused && audio !== audioRef.current) {
+          console.log('[Soundscape] Periodic cleanup: killing orphan:', audio.src);
+          audio.pause();
+        }
+      });
+    }, 1000); // Check every second
+    
+    return () => clearInterval(intervalId);
+  }, [isMuted]);
+
   const play = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.play().catch((err) => {
@@ -229,10 +247,31 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   }, [isPlaying, play, pause]);
 
+  // Helper function to kill orphaned audio elements
+  const killOrphanedAudio = useCallback(() => {
+    const filename = AMBIENT_TRACK.split('/').pop() || '';
+    const allAudio = document.querySelectorAll('audio');
+    allAudio.forEach((audio) => {
+      // Kill any audio playing the ambient track that isn't our controlled singleton
+      if (audio.src.includes(filename) && audio !== audioRef.current) {
+        console.log('[Soundscape] Killing orphaned audio:', audio.src);
+        audio.pause();
+        audio.src = '';
+        audio.load();
+      }
+    });
+  }, []);
+
   const setVolume = useCallback((vol: number) => {
     console.log('[Soundscape] setVolume called with:', vol, 'current isMuted:', isMutedRef.current);
     
     const clampedVol = Math.max(0, Math.min(1, vol));
+    
+    // If setting volume to 0, also kill orphaned audio
+    if (clampedVol === 0) {
+      killOrphanedAudio();
+    }
+    
     setVolumeState(clampedVol);
     previousVolumeRef.current = clampedVol;
     
@@ -250,9 +289,12 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
     
     localStorage.setItem('soundscape_volume', clampedVol.toString());
-  }, []);
+  }, [killOrphanedAudio]);
 
   const toggleMute = useCallback(() => {
+    // FIRST: Kill any orphaned audio elements
+    killOrphanedAudio();
+    
     console.log('[Soundscape] toggleMute called, current isMuted:', isMutedRef.current, 'isPlaying:', isPlayingRef.current);
     
     if (!audioRef.current) {
@@ -285,7 +327,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       setIsMuted(true);
       console.log('[Soundscape] Audio element volume after mute:', audioRef.current.volume);
     }
-  }, []);
+  }, [killOrphanedAudio]);
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
     console.log('[Soundscape] handoffAudio called with external audio:', {

@@ -53,13 +53,13 @@ export default function IntroExperience() {
     }
   }, [videoSrc]);
 
-  // Set soundscape volume when video loads (don't auto-play, respect user preference)
+  // Start soundscape when video loads
   useEffect(() => {
     if (videoSrc) {
       setVolume(0.04);
-      // Don't auto-play - let user start it via interaction
+      play();
     }
-  }, [videoSrc, setVolume]);
+  }, [videoSrc, setVolume, play]);
 
   // Fade soundscape volume when TTS is playing
   useEffect(() => {
