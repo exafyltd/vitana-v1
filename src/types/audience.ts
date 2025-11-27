@@ -43,6 +43,14 @@ export interface AudienceData {
     whatsapp: number;
     total: number;
   };
+  
+  // Event context (for event-based targeting)
+  eventContext?: {
+    eventId: string;
+    creatorId: string;
+    location?: string;
+    eventType?: string;
+  };
 }
 
 export interface CsvValidationResult {

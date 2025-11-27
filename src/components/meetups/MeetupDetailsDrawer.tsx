@@ -65,6 +65,7 @@ import {
   UserPlus,
   Timer,
   MapPinned,
+  Megaphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
@@ -144,6 +145,7 @@ interface MeetupDetailsDrawerProps {
   hasPrev?: boolean;
   hasNext?: boolean;
   isMobile?: boolean;
+  onPromoteEvent?: (event: any) => void;
 }
 
 export function MeetupDetailsDrawer({
@@ -155,6 +157,7 @@ export function MeetupDetailsDrawer({
   hasPrev,
   hasNext,
   isMobile = false,
+  onPromoteEvent,
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
@@ -989,6 +992,31 @@ export function MeetupDetailsDrawer({
               'Join Meetup'
             )}
           </Button>
+
+          {/* Promote Button (only for event creators) */}
+          {user && event.created_by === user.id && onPromoteEvent && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-12 w-12 shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onPromoteEvent(event);
+                    }}
+                    aria-label="Promote event"
+                  >
+                    <Megaphone className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Promote this event</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

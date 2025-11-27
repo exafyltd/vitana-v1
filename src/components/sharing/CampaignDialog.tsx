@@ -37,9 +37,24 @@ interface CampaignDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   editingCampaign?: Campaign | null;
+  prefillData?: {
+    name?: string;
+    description?: string;
+    goal?: string;
+    coverImage?: string;
+    eventLink?: string;
+    selectedChannels?: Record<string, boolean>;
+    audienceData?: AudienceData;
+    eventContext?: {
+      eventId: string;
+      creatorId: string;
+      location?: string;
+      eventType?: string;
+    };
+  };
 }
 
-export function CampaignDialog({ open, onOpenChange, editingCampaign }: CampaignDialogProps) {
+export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillData }: CampaignDialogProps) {
   const { createCampaign, updateCampaign } = useCampaigns();
   const { channels } = useChannels();
   const { profile } = useProfile();
@@ -94,16 +109,26 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
       setSmartSchedulingEnabled(((editingCampaign.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true);
       setAudienceData((editingCampaign.distribution_config as any)?.audience_data || null);
       setStep(1);
+    } else if (prefillData) {
+      // Pre-fill from event promotion
+      setName(prefillData.name || "");
+      setDescription(prefillData.description || "");
+      setGoal(prefillData.goal || "event_promotion");
+      setSelectedChannels(prefillData.selectedChannels || { email: true, sms: true, whatsapp: true });
+      setAudienceData(prefillData.audienceData || {});
+      setSelectedTemplate("custom");
+      setSmartSchedulingEnabled(true);
+      setStep(1);
     } else {
       setName("");
       setDescription("");
       setSelectedChannels({});
       setSelectedTemplate("custom");
       setSmartSchedulingEnabled(true);
-      setAudienceData(null);
+      setAudienceData({});
       setStep(1);
     }
-  }, [open, editingCampaign]);
+  }, [open, editingCampaign, prefillData]);
 
   const isEditMode = !!editingCampaign;
   const hasDirectMessaging = ['email', 'sms', 'whatsapp'].some(ch => selectedChannels[ch]);
@@ -543,6 +568,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
                     selectedChannels={Object.keys(selectedChannels).filter(ch => selectedChannels[ch])}
                     audienceData={audienceData}
                     onAudienceChange={setAudienceData}
+                    eventContext={prefillData?.eventContext}
                   />
                 </div>
               )}
