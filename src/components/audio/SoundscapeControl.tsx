@@ -5,6 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useSidebar } from '@/components/ui/sidebar';
+import { toast } from 'sonner';
 
 export function SoundscapeControl() {
   const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
@@ -12,12 +13,27 @@ export function SoundscapeControl() {
 
   const handleVolumeChange = (value: number[]) => {
     console.log('[SoundscapeControl] Volume slider changed to:', value[0]);
-    setVolume(value[0]);
+    try {
+      setVolume(value[0]);
+      console.log('[SoundscapeControl] Volume set successfully');
+    } catch (error) {
+      console.error('[SoundscapeControl] Failed to set volume:', error);
+      toast.error('Failed to adjust volume');
+    }
   };
 
   const handleToggleMute = () => {
     console.log('[SoundscapeControl] Mute button clicked, current isMuted:', isMuted);
-    toggleMute();
+    try {
+      toggleMute();
+      console.log('[SoundscapeControl] Mute toggled successfully');
+      toast.success(isMuted ? 'Soundscape unmuted' : 'Soundscape muted', {
+        duration: 1500
+      });
+    } catch (error) {
+      console.error('[SoundscapeControl] Failed to toggle mute:', error);
+      toast.error('Failed to toggle mute');
+    }
   };
 
   const handleTogglePlay = () => {
