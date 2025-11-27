@@ -26,6 +26,7 @@ import { DISTRIBUTION_TEMPLATES, CHANNEL_BEST_TIMES, CHANNEL_INFO } from "@/lib/
 import { EnhancedStepIndicator } from "./EnhancedStepIndicator";
 import { CampaignCreationHeader } from "./CampaignCreationHeader";
 import { CampaignSuccessModal } from "./CampaignSuccessModal";
+import { InlineChannelConnector } from "./InlineChannelConnector";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { toast } from "sonner";
@@ -73,6 +74,10 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   // Success modal
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [createdCampaignData, setCreatedCampaignData] = useState<any>(null);
+
+  // Channel connection modal
+  const [connectingChannel, setConnectingChannel] = useState<string | null>(null);
+  const [showConnectDialog, setShowConnectDialog] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -177,11 +182,20 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
 
   // Helper function: Handle channel connection
   const handleConnectChannel = (channelKey: string) => {
-    toast.info("Connecting...", {
-      description: `Redirecting to ${CHANNEL_INFO[channelKey]?.name} authentication`
-    });
-    // Trigger OAuth flow
-    window.open(`/auth/connect/${channelKey}`, '_blank');
+    setConnectingChannel(channelKey);
+    setShowConnectDialog(true);
+  };
+
+  const handleChannelConnected = () => {
+    if (connectingChannel) {
+      // Auto-select the newly connected channel
+      setSelectedChannels(prev => ({
+        ...prev,
+        [connectingChannel]: true,
+      }));
+    }
+    setConnectingChannel(null);
+    setShowConnectDialog(false);
   };
 
   const toggleChannel = (channelKey: string) => {
@@ -433,7 +447,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
                       <h4 className="text-sm font-semibold text-foreground">Direct Messaging</h4>
                     </div>
                     <div className="grid gap-3 pl-4">
-                      {['email', 'sms'].map((key) => {
+                      {['email', 'sms', 'whatsapp'].map((key) => {
                         const info = CHANNEL_INFO[key];
                         const isConnected = getChannelConnectionStatus(key);
                         const isSelected = selectedChannels[key];
@@ -470,6 +484,20 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
                                   </div>
                                 )}
                               </div>
+                              
+                              {!isConnected && (
+                                <Button
+                                  variant="link"
+                                  size="sm"
+                                  className="h-auto p-0 text-xs text-[hsl(var(--pill-hydration-accent))] hover:text-[hsl(var(--pill-hydration-accent))]/80"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleConnectChannel(key);
+                                  }}
+                                >
+                                  Connect now →
+                                </Button>
+                              )}
                             </div>
                           </div>
                         );
@@ -636,6 +664,13 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
         open={showSuccessModal}
         onOpenChange={setShowSuccessModal}
         campaign={createdCampaignData || { name: '', channels: [], template: '', firstPostDate: new Date() }}
+      />
+
+      <InlineChannelConnector
+        open={showConnectDialog}
+        onOpenChange={setShowConnectDialog}
+        channelKey={connectingChannel || ''}
+        onConnected={handleChannelConnected}
       />
     </>
   );
