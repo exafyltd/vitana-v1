@@ -11,7 +11,18 @@ export function SoundscapeControl() {
   const { open } = useSidebar();
 
   const handleVolumeChange = (value: number[]) => {
+    console.log('[SoundscapeControl] Volume slider changed to:', value[0]);
     setVolume(value[0]);
+  };
+
+  const handleToggleMute = () => {
+    console.log('[SoundscapeControl] Mute button clicked, current isMuted:', isMuted);
+    toggleMute();
+  };
+
+  const handleTogglePlay = () => {
+    console.log('[SoundscapeControl] Play/pause button clicked, current isPlaying:', isPlaying);
+    toggle();
   };
 
   // Collapsed sidebar - icon only
@@ -47,7 +58,7 @@ export function SoundscapeControl() {
         <Button
           variant="ghost"
           size="icon"
-          onClick={toggle}
+          onClick={handleTogglePlay}
           className="h-8 w-8 rounded-full shrink-0"
         >
           <Music2 className={`h-4 w-4 transition-colors ${isPlaying ? 'text-accent' : 'text-muted-foreground'}`} />
@@ -88,7 +99,7 @@ export function SoundscapeControl() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={toggleMute}
+                  onClick={handleToggleMute}
                   className="w-full"
                 >
                   {isMuted ? 'Unmute' : 'Mute'}
