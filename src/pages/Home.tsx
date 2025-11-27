@@ -36,6 +36,7 @@ import { useEventSelection } from "@/context/EventSelectionContext";
 import { PeopleDiscoveryHero } from "@/components/discovery/PeopleDiscoveryHero";
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
+import { stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 
 // Mock data for Today and Guide screens - Fallback data
 const todayScheduledEvents = [
@@ -436,6 +437,12 @@ export default function Home() {
   // Event selection for detail drawer
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
   const [selectedEventData, setSelectedEventData] = useState<any>(null);
+
+  // Safety net: Clean up any orphaned audio from playLoopingSound
+  useEffect(() => {
+    console.log('[Home] Cleanup safety net: stopping all looping sounds');
+    stopAllLoopingSoundsForPath('');
+  }, []);
 
   // Fetch real approved media uploads
   const { data: approvedMedia } = useQuery({
