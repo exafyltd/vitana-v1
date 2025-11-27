@@ -27,6 +27,66 @@ serve(async (req) => {
 
     let allRecipients: any[] = [];
 
+    // Process Event Attendees and Organizer Followers
+    if (audienceData?.eventAttendees?.enabled && audienceData.eventAttendees.eventIds.length > 0) {
+      console.log('📅 Fetching event-based audiences...');
+      for (const eventId of audienceData.eventAttendees.eventIds) {
+        // Fetch event attendees
+        const { data: attendees, error: attendeesError } = await supabaseClient
+          .from('global_event_participants')
+          .select('user_id, profiles:user_id(display_name, contact_email, contact_phone)')
+          .eq('event_id', eventId)
+          .eq('response', 'attending');
+
+        if (!attendeesError && attendees) {
+          for (const attendee of attendees) {
+            const profile = (attendee as any).profiles;
+            if (profile) {
+              allRecipients.push({
+                name: profile.display_name || 'Event Attendee',
+                email: profile.contact_email,
+                phone: profile.contact_phone,
+                whatsapp_number: profile.contact_phone,
+                source: 'event_attendees',
+                source_id: eventId,
+              });
+            }
+          }
+        }
+
+        // Fetch event creator's followers
+        const { data: event } = await supabaseClient
+          .from('global_community_events')
+          .select('created_by')
+          .eq('id', eventId)
+          .single();
+
+        if (event) {
+          const { data: followers } = await supabaseClient
+            .from('social_connections')
+            .select('follower_id, profiles:follower_id(display_name, contact_email, contact_phone)')
+            .eq('following_id', event.created_by)
+            .eq('status', 'active');
+
+          if (followers) {
+            for (const follower of followers) {
+              const profile = (follower as any).profiles;
+              if (profile) {
+                allRecipients.push({
+                  name: profile.display_name || 'Follower',
+                  email: profile.contact_email,
+                  phone: profile.contact_phone,
+                  whatsapp_number: profile.contact_phone,
+                  source: 'organizer_followers',
+                  source_id: event.created_by,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
     // Process Vitana Contacts
     if (audienceData?.vitanaContacts?.enabled && audienceData.vitanaContacts.contactIds?.length > 0) {
       const { data: contacts } = await supabaseClient

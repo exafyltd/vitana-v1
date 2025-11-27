@@ -9,6 +9,7 @@ import { CreateEventPopup } from '@/components/CreateEventPopup';
 import { CreateMeetupPopup } from '@/components/CreateMeetupPopup';
 import { CreateSelectionDialog } from '@/components/CreateSelectionDialog';
 import { EditMeetupPopup } from '@/components/EditMeetupPopup';
+import { CampaignDialog } from '@/components/sharing/CampaignDialog';
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { communityNavigation } from "@/config/navigation";
 import { MotivationalBanner } from '@/components/MotivationalBanner';
@@ -22,9 +23,10 @@ import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users, Edit } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { generateEventCampaignData } from "@/lib/eventPromotion";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -338,6 +340,8 @@ const EventsAndMeetups = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [promoteCampaignOpen, setPromoteCampaignOpen] = useState(false);
+  const [eventToPromote, setEventToPromote] = useState<any>(null);
 
   // Detect mobile
   useEffect(() => {
@@ -441,6 +445,12 @@ const EventsAndMeetups = () => {
   const handleEditEvent = (event: any) => {
     setSelectedEvent(event);
     setEditMeetupOpen(true);
+  };
+
+  // Handle promote event
+  const handlePromoteEvent = (event: any) => {
+    setEventToPromote(event);
+    setPromoteCampaignOpen(true);
   };
 
   // Handle event creation - show the newly created event
@@ -775,6 +785,33 @@ const EventsAndMeetups = () => {
           hasPrev={hasPrev}
           hasNext={hasNext}
           isMobile={isMobile}
+          onPromoteEvent={handlePromoteEvent}
+        />
+      )}
+
+      {/* Promote Campaign Dialog */}
+      {eventToPromote && (
+        <CampaignDialog
+          open={promoteCampaignOpen}
+          onOpenChange={setPromoteCampaignOpen}
+          prefillData={{
+            name: `Promotion: ${eventToPromote.title}`,
+            description: eventToPromote.description || "",
+            goal: "event_promotion",
+            selectedChannels: { email: true, sms: true, whatsapp: true },
+            audienceData: {
+              eventAttendees: {
+                enabled: true,
+                eventIds: [eventToPromote.id],
+              },
+            },
+            eventContext: {
+              eventId: eventToPromote.id,
+              creatorId: eventToPromote.created_by,
+              location: eventToPromote.location,
+              eventType: eventToPromote.event_type,
+            },
+          }}
         />
       )}
     </>

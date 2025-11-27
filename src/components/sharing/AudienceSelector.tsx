@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { Users, Upload, PenLine, Target } from "lucide-react";
+import { Users, Upload, PenLine, Target, Calendar } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { useContacts } from "@/hooks/useContacts";
 import { CsvContactUploader } from "./CsvContactUploader";
 import { ManualContactEntry } from "./ManualContactEntry";
@@ -11,12 +13,19 @@ interface AudienceSelectorProps {
   audienceData?: AudienceData;
   onAudienceChange: (data: AudienceData) => void;
   selectedChannels?: string[];
+  eventContext?: {
+    eventId: string;
+    creatorId: string;
+    location?: string;
+    eventType?: string;
+  };
 }
 
 export function AudienceSelector({ 
   audienceData, 
   onAudienceChange,
-  selectedChannels = []
+  selectedChannels = [],
+  eventContext
 }: AudienceSelectorProps) {
   const { contacts } = useContacts();
   
@@ -111,6 +120,67 @@ export function AudienceSelector({
 
   return (
     <div className="space-y-6">
+      {/* Event-Based Audiences (if event context is provided) */}
+      {eventContext && (
+        <Card className="border-2 border-[hsl(var(--sys-ai-accent))]/20 bg-[hsl(var(--sys-ai-tint))]">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
+              Event-Based Audiences
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-start gap-3 p-3 bg-background rounded-lg">
+              <Checkbox
+                id="organizer-followers"
+                checked={audienceData?.eventAttendees?.enabled || false}
+                onCheckedChange={(checked) => {
+                  onAudienceChange({
+                    ...audienceData,
+                    eventAttendees: {
+                      enabled: checked as boolean,
+                      eventIds: [eventContext.eventId],
+                    },
+                  });
+                }}
+              />
+              <div className="flex-1">
+                <Label htmlFor="organizer-followers" className="font-medium cursor-pointer">
+                  Your Followers
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  People who follow you will be notified about this event
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 p-3 bg-background rounded-lg">
+              <Checkbox
+                id="event-attendees"
+                checked={audienceData?.eventAttendees?.enabled || false}
+                onCheckedChange={(checked) => {
+                  onAudienceChange({
+                    ...audienceData,
+                    eventAttendees: {
+                      enabled: checked as boolean,
+                      eventIds: [eventContext.eventId],
+                    },
+                  });
+                }}
+              />
+              <div className="flex-1">
+                <Label htmlFor="event-attendees" className="font-medium cursor-pointer">
+                  Past Event Attendees
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  People who attended your previous events
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      
       <div>
         <h3 className="font-semibold mb-2">Select Your Audience</h3>
         <p className="text-sm text-muted-foreground mb-4">
