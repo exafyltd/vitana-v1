@@ -203,23 +203,42 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // Periodic orphan cleanup when muted (dev mode safety net)
+  // Sync audioRef with window singleton (HMR recovery)
   useEffect(() => {
-    if (!isMuted) return;
-    
-    // When muted, periodically check for orphans (dev mode safety)
+    if (window.__SOUNDSCAPE_AUDIO__ && audioRef.current !== window.__SOUNDSCAPE_AUDIO__) {
+      console.log('[Soundscape] Syncing audioRef with window singleton');
+      audioRef.current = window.__SOUNDSCAPE_AUDIO__;
+      attachListeners(window.__SOUNDSCAPE_AUDIO__);
+    }
+  });
+
+  // Aggressive periodic cleanup - ALWAYS run to catch orphaned audio
+  useEffect(() => {
     const intervalId = setInterval(() => {
       const filename = AMBIENT_TRACK.split('/').pop() || '';
-      document.querySelectorAll('audio').forEach((audio) => {
-        if (audio.src.includes(filename) && !audio.paused && audio !== audioRef.current) {
-          console.log('[Soundscape] Periodic cleanup: killing orphan:', audio.src);
-          audio.pause();
+      
+      // If we think we're muted/paused, ensure ALL audio is actually stopped
+      if (isMuted || !isPlaying) {
+        document.querySelectorAll('audio').forEach((audio) => {
+          if (audio.src.includes(filename) && !audio.paused) {
+            console.log('[Soundscape] Periodic cleanup: forcing pause on:', audio.src);
+            audio.pause();
+            audio.muted = true;
+            audio.volume = 0;
+          }
+        });
+        
+        // Also ensure window singleton is stopped
+        if (window.__SOUNDSCAPE_AUDIO__ && !window.__SOUNDSCAPE_AUDIO__.paused) {
+          console.log('[Soundscape] Periodic cleanup: forcing pause on window singleton');
+          window.__SOUNDSCAPE_AUDIO__.pause();
+          window.__SOUNDSCAPE_AUDIO__.muted = true;
         }
-      });
-    }, 1000); // Check every second
+      }
+    }, 500); // Check every 500ms
     
     return () => clearInterval(intervalId);
-  }, [isMuted]);
+  }, [isMuted, isPlaying]);
 
   const play = useCallback(() => {
     if (audioRef.current) {
@@ -232,11 +251,27 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const pause = useCallback(() => {
+    const filename = AMBIENT_TRACK.split('/').pop() || '';
+    
+    // Target 1: window.__SOUNDSCAPE_AUDIO__
+    if (window.__SOUNDSCAPE_AUDIO__) {
+      window.__SOUNDSCAPE_AUDIO__.pause();
+    }
+    
+    // Target 2: audioRef.current
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
-      localStorage.setItem('soundscape_auto_play', 'false');
     }
+    
+    // Target 3: ALL DOM audio elements with ambient track
+    document.querySelectorAll('audio').forEach((audio) => {
+      if (audio.src.includes(filename)) {
+        audio.pause();
+      }
+    });
+    
+    setIsPlaying(false);
+    localStorage.setItem('soundscape_auto_play', 'false');
   }, []);
 
   const toggle = useCallback(() => {
@@ -292,42 +327,58 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, [killOrphanedAudio]);
 
   const toggleMute = useCallback(() => {
-    // FIRST: Kill any orphaned audio elements
-    killOrphanedAudio();
+    const filename = AMBIENT_TRACK.split('/').pop() || '';
     
-    console.log('[Soundscape] toggleMute called, current isMuted:', isMutedRef.current, 'isPlaying:', isPlayingRef.current);
+    console.log('[Soundscape] toggleMute called, isMuted:', isMutedRef.current);
     
-    if (!audioRef.current) {
-      console.warn('[Soundscape] toggleMute: audioRef.current is null');
-      return;
-    }
-
     if (isMutedRef.current) {
-      // Unmute - restore volume AND muted property
+      // UNMUTE
       const targetVolume = previousVolumeRef.current;
-      console.log('[Soundscape] Unmuting, restoring volume to:', targetVolume);
-      audioRef.current.muted = false;  // Use muted property for reliability
-      audioRef.current.volume = targetVolume;
-      setIsMuted(false);
       
-      console.log('[Soundscape] Audio element volume after unmute:', audioRef.current.volume);
-      
-      // Ensure audio is playing (it might have been paused by browser)
-      if (audioRef.current.paused && isPlayingRef.current) {
-        console.log('[Soundscape] Audio was paused, resuming playback');
-        audioRef.current.play().catch((err) => {
-          console.warn('[Soundscape] Resume after unmute failed:', err);
-        });
+      // Target 1: window.__SOUNDSCAPE_AUDIO__
+      if (window.__SOUNDSCAPE_AUDIO__) {
+        window.__SOUNDSCAPE_AUDIO__.muted = false;
+        window.__SOUNDSCAPE_AUDIO__.volume = targetVolume;
       }
+      
+      // Target 2: audioRef.current (if different)
+      if (audioRef.current && audioRef.current !== window.__SOUNDSCAPE_AUDIO__) {
+        audioRef.current.muted = false;
+        audioRef.current.volume = targetVolume;
+      }
+      
+      setIsMuted(false);
     } else {
-      // Mute - use both volume and muted property
-      console.log('[Soundscape] Muting, setting volume to 0 and muted to true');
-      audioRef.current.muted = true;  // Use muted property for reliability
-      audioRef.current.volume = 0;
+      // MUTE - Kill everything
+      
+      // Target 1: window.__SOUNDSCAPE_AUDIO__
+      if (window.__SOUNDSCAPE_AUDIO__) {
+        window.__SOUNDSCAPE_AUDIO__.muted = true;
+        window.__SOUNDSCAPE_AUDIO__.volume = 0;
+        window.__SOUNDSCAPE_AUDIO__.pause();
+      }
+      
+      // Target 2: audioRef.current (if different)
+      if (audioRef.current && audioRef.current !== window.__SOUNDSCAPE_AUDIO__) {
+        audioRef.current.muted = true;
+        audioRef.current.volume = 0;
+        audioRef.current.pause();
+      }
+      
+      // Target 3: ALL DOM audio elements with the ambient track (nuclear fallback)
+      document.querySelectorAll('audio').forEach((audio) => {
+        if (audio.src.includes(filename)) {
+          console.log('[Soundscape] Muting DOM audio element:', audio.src);
+          audio.muted = true;
+          audio.volume = 0;
+          audio.pause();
+        }
+      });
+      
       setIsMuted(true);
-      console.log('[Soundscape] Audio element volume after mute:', audioRef.current.volume);
+      setIsPlaying(false);
     }
-  }, [killOrphanedAudio]);
+  }, []);
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
     console.log('[Soundscape] handoffAudio called with external audio:', {
