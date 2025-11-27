@@ -8,48 +8,22 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { toast } from 'sonner';
 
 export function SoundscapeControl() {
-  const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute, killAllAudio } = useSoundscape();
+  const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
   const { open } = useSidebar();
 
   const handleVolumeChange = (value: number[]) => {
-    console.log('[SoundscapeControl] Volume slider changed to:', value[0]);
-    try {
-      setVolume(value[0]);
-      console.log('[SoundscapeControl] Volume set successfully');
-    } catch (error) {
-      console.error('[SoundscapeControl] Failed to set volume:', error);
-      toast.error('Failed to adjust volume');
-    }
+    setVolume(value[0]);
   };
 
   const handleToggleMute = () => {
-    console.log('[SoundscapeControl] Mute button clicked, current isMuted:', isMuted);
-    try {
-      toggleMute();
-      console.log('[SoundscapeControl] Mute toggled successfully');
-      toast.success(isMuted ? 'Soundscape unmuted' : 'Soundscape muted', {
-        duration: 1500
-      });
-    } catch (error) {
-      console.error('[SoundscapeControl] Failed to toggle mute:', error);
-      toast.error('Failed to toggle mute');
-    }
+    toggleMute();
+    toast.success(isMuted ? 'Soundscape unmuted' : 'Soundscape muted', {
+      duration: 1500
+    });
   };
 
   const handleTogglePlay = () => {
-    console.log('[SoundscapeControl] Play/pause button clicked, current isPlaying:', isPlaying);
     toggle();
-  };
-
-  const handleKillAllAudio = () => {
-    console.log('[SoundscapeControl] Emergency stop button clicked');
-    try {
-      killAllAudio();
-      toast.success('All audio stopped', { duration: 1500 });
-    } catch (error) {
-      console.error('[SoundscapeControl] Failed to kill all audio:', error);
-      toast.error('Failed to stop audio');
-    }
   };
 
   // Collapsed sidebar - icon only
@@ -130,14 +104,6 @@ export function SoundscapeControl() {
                   className="w-full"
                 >
                   {isMuted ? 'Unmute' : 'Mute'}
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={handleKillAllAudio}
-                  className="w-full"
-                >
-                  Emergency Stop All
                 </Button>
               </div>
             </PopoverContent>
