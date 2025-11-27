@@ -8,7 +8,7 @@ import { useSidebar } from '@/components/ui/sidebar';
 import { toast } from 'sonner';
 
 export function SoundscapeControl() {
-  const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute } = useSoundscape();
+  const { isPlaying, volume, isMuted, toggle, setVolume, toggleMute, killAllAudio } = useSoundscape();
   const { open } = useSidebar();
 
   const handleVolumeChange = (value: number[]) => {
@@ -39,6 +39,17 @@ export function SoundscapeControl() {
   const handleTogglePlay = () => {
     console.log('[SoundscapeControl] Play/pause button clicked, current isPlaying:', isPlaying);
     toggle();
+  };
+
+  const handleKillAllAudio = () => {
+    console.log('[SoundscapeControl] Emergency stop button clicked');
+    try {
+      killAllAudio();
+      toast.success('All audio stopped', { duration: 1500 });
+    } catch (error) {
+      console.error('[SoundscapeControl] Failed to kill all audio:', error);
+      toast.error('Failed to stop audio');
+    }
   };
 
   // Collapsed sidebar - icon only
@@ -119,6 +130,14 @@ export function SoundscapeControl() {
                   className="w-full"
                 >
                   {isMuted ? 'Unmute' : 'Mute'}
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleKillAllAudio}
+                  className="w-full"
+                >
+                  Emergency Stop All
                 </Button>
               </div>
             </PopoverContent>
