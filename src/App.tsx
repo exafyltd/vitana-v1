@@ -19,6 +19,7 @@ import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
+import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -275,16 +276,17 @@ const App = () => {
   }, []);
 
   return (
-    <RTLProvider>
-      <MeetupSelectionProvider>
-        <EventSelectionProvider>
-          <StreamingStateProvider>
-            <ProfilePreviewProvider>
-              <TooltipProvider>
-                  <Toaster />
-                  <PresenceDebugPanel />
-                  <AppHooksInitializer />
-                  <BrowserRouter>
+    <SoundscapeProvider>
+      <RTLProvider>
+        <MeetupSelectionProvider>
+          <EventSelectionProvider>
+            <StreamingStateProvider>
+              <ProfilePreviewProvider>
+                <TooltipProvider>
+                    <Toaster />
+                    <PresenceDebugPanel />
+                    <AppHooksInitializer />
+                    <BrowserRouter>
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
@@ -1284,6 +1286,7 @@ const App = () => {
     </EventSelectionProvider>
   </MeetupSelectionProvider>
 </RTLProvider>
+    </SoundscapeProvider>
   );
 };
 
