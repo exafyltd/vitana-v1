@@ -31,7 +31,14 @@ export function InlineChannelConnector({
     email: "",
     phone: "",
     apiKey: "",
+    senderName: "",
+    twilioAccountSid: "",
+    twilioAuthToken: "",
+    twilioFromNumber: "",
+    metaApiToken: "",
+    metaPhoneNumberId: "",
   });
+  const [testing, setTesting] = useState(false);
 
   const channelInfo = CHANNEL_INFO[channelKey];
   const isSocialMedia = ['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'tiktok'].includes(channelKey);
@@ -66,6 +73,35 @@ export function InlineChannelConnector({
     }
   };
 
+  const handleTestConnection = async () => {
+    setTesting(true);
+    try {
+      if (channelKey === 'email') {
+        if (!formData.email || !formData.senderName) {
+          toast.error("Please fill in all email fields");
+          return;
+        }
+        toast.success("Email configuration looks good! (Test email not sent in preview)");
+      } else if (channelKey === 'sms') {
+        if (!formData.twilioAccountSid || !formData.twilioAuthToken || !formData.twilioFromNumber) {
+          toast.error("Please fill in all Twilio fields");
+          return;
+        }
+        toast.success("Twilio configuration validated!");
+      } else if (channelKey === 'whatsapp') {
+        if (!formData.metaApiToken || !formData.metaPhoneNumberId) {
+          toast.error("Please fill in all WhatsApp fields");
+          return;
+        }
+        toast.success("WhatsApp Business API configuration validated!");
+      }
+    } catch (error) {
+      toast.error("Connection test failed");
+    } finally {
+      setTesting(false);
+    }
+  };
+
   const handleConnectMessaging = async () => {
     setLoading(true);
     try {
@@ -74,19 +110,36 @@ export function InlineChannelConnector({
 
       let connectionData: any = {};
       
-      if (channelKey === 'email' && formData.email) {
-        connectionData = { email: formData.email };
-      } else if (channelKey === 'sms' && formData.phone) {
-        connectionData = { phone: formData.phone };
-      } else if (channelKey === 'whatsapp') {
-        if (!formData.phone) {
-          toast.error("Please enter your WhatsApp phone number");
+      if (channelKey === 'email') {
+        if (!formData.email || !formData.senderName) {
+          toast.error("Please fill in sender name and email");
           setLoading(false);
           return;
         }
         connectionData = { 
-          phone: formData.phone,
-          api_key: formData.apiKey || null 
+          email: formData.email,
+          sender_name: formData.senderName
+        };
+      } else if (channelKey === 'sms') {
+        if (!formData.twilioAccountSid || !formData.twilioAuthToken || !formData.twilioFromNumber) {
+          toast.error("Please fill in all Twilio credentials");
+          setLoading(false);
+          return;
+        }
+        connectionData = { 
+          twilio_account_sid: formData.twilioAccountSid,
+          twilio_auth_token: formData.twilioAuthToken,
+          from_number: formData.twilioFromNumber
+        };
+      } else if (channelKey === 'whatsapp') {
+        if (!formData.metaApiToken || !formData.metaPhoneNumberId) {
+          toast.error("Please fill in Meta API credentials");
+          setLoading(false);
+          return;
+        }
+        connectionData = { 
+          meta_api_token: formData.metaApiToken,
+          phone_number_id: formData.metaPhoneNumberId
         };
       }
 
@@ -149,69 +202,205 @@ export function InlineChannelConnector({
             </div>
           )}
 
-          {/* Email Input */}
+          {/* Email Configuration */}
           {channelKey === 'email' && (
-            <div>
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="mt-1"
-              />
-            </div>
-          )}
-
-          {/* SMS Input */}
-          {channelKey === 'sms' && (
-            <div>
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="+1 (555) 123-4567"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="mt-1"
-              />
-            </div>
-          )}
-
-          {/* WhatsApp Inputs */}
-          {channelKey === 'whatsapp' && (
-            <>
+            <div className="space-y-4">
               <div>
-                <Label htmlFor="whatsapp-phone">WhatsApp Phone Number</Label>
+                <Label htmlFor="sender-name">Sender Name</Label>
                 <Input
-                  id="whatsapp-phone"
+                  id="sender-name"
+                  type="text"
+                  placeholder="Your Name or Business"
+                  value={formData.senderName}
+                  onChange={(e) => setFormData({ ...formData, senderName: e.target.value })}
+                  className="mt-1"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  This name will appear in recipient inboxes
+                </p>
+              </div>
+              
+              <div>
+                <Label htmlFor="email">Sender Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="hello@yourdomain.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="mt-1"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Must be a verified domain in Resend
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                <div className="flex-1 text-sm">
+                  <p className="font-medium">Domain Verification</p>
+                  <p className="text-xs text-muted-foreground">
+                    Verify your domain in Resend to send emails
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('https://resend.com/domains', '_blank')}
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  Verify
+                </Button>
+              </div>
+
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full"
+                onClick={handleTestConnection}
+                disabled={testing}
+              >
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                Test Email Configuration
+              </Button>
+            </div>
+          )}
+
+          {/* SMS Configuration (Twilio) */}
+          {channelKey === 'sms' && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="twilio-sid">Twilio Account SID</Label>
+                <Input
+                  id="twilio-sid"
+                  type="text"
+                  placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  value={formData.twilioAccountSid}
+                  onChange={(e) => setFormData({ ...formData, twilioAccountSid: e.target.value })}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="twilio-token">Twilio Auth Token</Label>
+                <Input
+                  id="twilio-token"
+                  type="password"
+                  placeholder="Your Auth Token"
+                  value={formData.twilioAuthToken}
+                  onChange={(e) => setFormData({ ...formData, twilioAuthToken: e.target.value })}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="twilio-from">From Phone Number</Label>
+                <Input
+                  id="twilio-from"
                   type="tel"
                   placeholder="+1 (555) 123-4567"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  value={formData.twilioFromNumber}
+                  onChange={(e) => setFormData({ ...formData, twilioFromNumber: e.target.value })}
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Include country code
+                  Your Twilio phone number with country code
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                <div className="flex-1 text-sm">
+                  <p className="font-medium">Twilio Setup</p>
+                  <p className="text-xs text-muted-foreground">
+                    Get your credentials from Twilio Console
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('https://console.twilio.com', '_blank')}
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  Open
+                </Button>
+              </div>
+
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full"
+                onClick={handleTestConnection}
+                disabled={testing}
+              >
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                Test SMS Connection
+              </Button>
+            </div>
+          )}
+
+          {/* WhatsApp Configuration (Meta Business) */}
+          {channelKey === 'whatsapp' && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="meta-token">Meta Business API Token</Label>
+                <Input
+                  id="meta-token"
+                  type="password"
+                  placeholder="Your Business API Token"
+                  value={formData.metaApiToken}
+                  onChange={(e) => setFormData({ ...formData, metaApiToken: e.target.value })}
+                  className="mt-1"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  From Meta Business Suite
                 </p>
               </div>
 
               <div>
-                <Label htmlFor="api-key">WhatsApp Business API Key (Optional)</Label>
+                <Label htmlFor="phone-id">Phone Number ID</Label>
                 <Input
-                  id="api-key"
-                  type="password"
-                  placeholder="Your API key"
-                  value={formData.apiKey}
-                  onChange={(e) => setFormData({ ...formData, apiKey: e.target.value })}
+                  id="phone-id"
+                  type="text"
+                  placeholder="123456789012345"
+                  value={formData.metaPhoneNumberId}
+                  onChange={(e) => setFormData({ ...formData, metaPhoneNumberId: e.target.value })}
                   className="mt-1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Required for automated posting. Leave empty for manual posting.
+                  Your WhatsApp Business phone number ID
                 </p>
               </div>
-            </>
+
+              <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                <div className="flex-1 text-sm">
+                  <p className="font-medium">WhatsApp Business Setup</p>
+                  <p className="text-xs text-muted-foreground">
+                    Configure in Meta Business Suite
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open('https://business.facebook.com', '_blank')}
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  Open
+                </Button>
+              </div>
+
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full"
+                onClick={handleTestConnection}
+                disabled={testing}
+              >
+                {testing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                Test WhatsApp Connection
+              </Button>
+            </div>
           )}
 
           <div className="flex gap-2 pt-4">

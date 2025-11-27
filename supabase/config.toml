@@ -131,3 +131,9 @@ verify_jwt = true
 
 [functions.generate-personalized-plan]
 verify_jwt = true
+
+[functions.process-campaign-queue]
+verify_jwt = false
+
+[functions.queue-campaign-recipients]
+verify_jwt = true
