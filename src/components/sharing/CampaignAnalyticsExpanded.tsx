@@ -14,6 +14,8 @@ import {
   Mail,
   Download,
   ExternalLink,
+  MessageSquare,
+  Phone,
 } from "lucide-react";
 import { XIcon } from "@/components/icons/XIcon";
 import { cn } from "@/lib/utils";
@@ -22,6 +24,7 @@ import type { Campaign } from "@/hooks/useCampaigns";
 import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useCampaignAnalytics } from "@/hooks/useCampaignAnalytics";
 
 interface CampaignAnalyticsExpandedProps {
   campaign: Campaign;
@@ -60,8 +63,23 @@ function getChannelIcon(channel: string): LucideIcon | React.ComponentType<any> 
     linkedin: Linkedin,
     twitter: XIcon,
     email: Mail,
+    sms: Phone,
+    whatsapp: MessageSquare,
   };
   return icons[channel] || Mail;
+}
+
+function getChannelColor(channel: string): string {
+  const colors: Record<string, string> = {
+    facebook: "bg-blue-600",
+    instagram: "bg-pink-600",
+    linkedin: "bg-blue-700",
+    twitter: "bg-gray-900",
+    email: "bg-teal-600",
+    sms: "bg-green-600",
+    whatsapp: "bg-green-500",
+  };
+  return colors[channel] || "bg-gray-600";
 }
 
 function generateCSV(campaign: Campaign, analytics: typeof MOCK_ANALYTICS): string {
@@ -129,11 +147,29 @@ export function CampaignAnalyticsExpanded({
   onClose,
 }: CampaignAnalyticsExpandedProps) {
   const navigate = useNavigate();
-  const analytics = MOCK_ANALYTICS;
-  const maxReach = Math.max(...analytics.channelBreakdown.map((c) => c.reach));
+  const { analytics: realAnalytics, isLoading } = useCampaignAnalytics(campaign.id);
+  
+  // Use real analytics if available, fallback to mock for UI testing
+  const hasRealData = realAnalytics && realAnalytics.totalRecipients > 0;
+  const displayData = hasRealData ? {
+    reach: realAnalytics.totalDelivered,
+    engagement: realAnalytics.totalOpened,
+    ctr: realAnalytics.clickRate,
+    conversions: realAnalytics.totalClicked,
+    channelBreakdown: realAnalytics.channels.map(ch => ({
+      channel: ch.channel,
+      name: ch.channel.charAt(0).toUpperCase() + ch.channel.slice(1),
+      reach: ch.delivered,
+      engagement: ch.opened,
+      color: getChannelColor(ch.channel),
+    })),
+    trendData: MOCK_ANALYTICS.trendData, // Use mock trend data for now
+  } : MOCK_ANALYTICS;
+
+  const maxReach = Math.max(...displayData.channelBreakdown.map((c) => c.reach), 1);
 
   const handleExportReport = () => {
-    const csvContent = generateCSV(campaign, analytics);
+    const csvContent = generateCSV(campaign, displayData);
     const filename = `campaign-analytics-${campaign.name.toLowerCase().replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.csv`;
     downloadCSV(csvContent, filename);
     toast.success("Analytics report downloaded successfully");
@@ -191,14 +227,19 @@ export function CampaignAnalyticsExpanded({
               Performance Summary
             </h4>
             
-            {/* Reach Card */}
+            {/* Delivered Card */}
             <Card className="p-4 bg-gradient-to-br from-teal-50 to-cyan-50 border-teal-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Reach</p>
+                  <p className="text-xs text-gray-600 mb-1">Delivered</p>
                   <p className="text-2xl font-bold text-teal-700">
-                    {analytics.reach.toLocaleString()}
+                    {displayData.reach.toLocaleString()}
                   </p>
+                  {hasRealData && (
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {realAnalytics.deliveryRate.toFixed(1)}% rate
+                    </p>
+                  )}
                 </div>
                 <div className="w-10 h-10 rounded-full bg-teal-200/50 flex items-center justify-center">
                   <Users className="w-5 h-5 text-teal-700" />
@@ -206,14 +247,19 @@ export function CampaignAnalyticsExpanded({
               </div>
             </Card>
 
-            {/* Engagement Card */}
+            {/* Opened Card */}
             <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Engagement</p>
+                  <p className="text-xs text-gray-600 mb-1">Opened</p>
                   <p className="text-2xl font-bold text-blue-700">
-                    {analytics.engagement.toLocaleString()}
+                    {displayData.engagement.toLocaleString()}
                   </p>
+                  {hasRealData && (
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {realAnalytics.openRate.toFixed(1)}% rate
+                    </p>
+                  )}
                 </div>
                 <div className="w-10 h-10 rounded-full bg-blue-200/50 flex items-center justify-center">
                   <TrendingUp className="w-5 h-5 text-blue-700" />
@@ -221,13 +267,13 @@ export function CampaignAnalyticsExpanded({
               </div>
             </Card>
 
-            {/* CTR Card */}
+            {/* Click Rate Card */}
             <Card className="p-4 bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-600 mb-1">Click Rate</p>
                   <p className="text-2xl font-bold text-purple-700">
-                    {analytics.ctr}%
+                    {displayData.ctr.toFixed(1)}%
                   </p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-purple-200/50 flex items-center justify-center">
@@ -236,13 +282,13 @@ export function CampaignAnalyticsExpanded({
               </div>
             </Card>
 
-            {/* Conversions Card */}
+            {/* Clicks Card */}
             <Card className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Conversions</p>
+                  <p className="text-xs text-gray-600 mb-1">Total Clicks</p>
                   <p className="text-2xl font-bold text-green-700">
-                    {analytics.conversions}
+                    {displayData.conversions}
                   </p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-green-200/50 flex items-center justify-center">
@@ -260,52 +306,62 @@ export function CampaignAnalyticsExpanded({
                 Channel Performance
               </h4>
               <div className="space-y-3">
-                {analytics.channelBreakdown.map((channel) => {
-                  const Icon = getChannelIcon(channel.channel);
-                  const reachPercent = (channel.reach / maxReach) * 100;
+                {isLoading ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    Loading analytics...
+                  </div>
+                ) : displayData.channelBreakdown.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No channel data available yet
+                  </div>
+                ) : (
+                  displayData.channelBreakdown.map((channel) => {
+                    const Icon = getChannelIcon(channel.channel);
+                    const reachPercent = (channel.reach / maxReach) * 100;
 
-                  return (
-                    <div
-                      key={channel.channel}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-gray-200 hover:bg-white/80 transition-all"
-                    >
-                      <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center",
-                        channel.color
-                      )}>
-                        <Icon className="w-5 h-5 text-white" />
-                      </div>
-                      
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-semibold text-gray-900">
-                            {channel.name}
-                          </span>
-                          <span className="text-sm font-bold text-gray-700">
-                            {channel.reach.toLocaleString()}
-                          </span>
+                    return (
+                      <div
+                        key={channel.channel}
+                        className="flex items-center gap-3 p-3 rounded-xl bg-white/60 border border-gray-200 hover:bg-white/80 transition-all"
+                      >
+                        <div className={cn(
+                          "w-10 h-10 rounded-full flex items-center justify-center",
+                          channel.color
+                        )}>
+                          <Icon className="w-5 h-5 text-white" />
                         </div>
                         
-                        {/* Progress Bar */}
-                        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                          <div
-                            className={cn(
-                              "h-full rounded-full transition-all duration-500",
-                              "bg-gradient-to-r from-teal-400 to-blue-500"
-                            )}
-                            style={{ width: `${reachPercent}%` }}
-                          />
-                        </div>
-                        
-                        <div className="flex items-center gap-4 mt-1">
-                          <span className="text-xs text-gray-500">
-                            {channel.engagement.toLocaleString()} engagements
-                          </span>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-sm font-semibold text-gray-900">
+                              {channel.name}
+                            </span>
+                            <span className="text-sm font-bold text-gray-700">
+                              {channel.reach.toLocaleString()}
+                            </span>
+                          </div>
+                          
+                          {/* Progress Bar */}
+                          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div
+                              className={cn(
+                                "h-full rounded-full transition-all duration-500",
+                                "bg-gradient-to-r from-teal-400 to-blue-500"
+                              )}
+                              style={{ width: `${reachPercent}%` }}
+                            />
+                          </div>
+                          
+                          <div className="flex items-center gap-4 mt-1">
+                            <span className="text-xs text-gray-500">
+                              {channel.engagement.toLocaleString()} opened
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                )}
               </div>
             </div>
 
@@ -317,8 +373,8 @@ export function CampaignAnalyticsExpanded({
               <div className="p-4 bg-white/60 rounded-xl border border-gray-200">
                 {/* Chart Area */}
                 <div className="flex items-end justify-between gap-3 h-32 mb-3">
-                  {analytics.trendData.map((data, index) => {
-                    const maxTrend = Math.max(...analytics.trendData.map((d) => d.reach));
+                  {displayData.trendData.map((data, index) => {
+                    const maxTrend = Math.max(...displayData.trendData.map((d) => d.reach));
                     const heightPercent = (data.reach / maxTrend) * 100;
                     const minHeight = 8; // Minimum 8px even for smallest values
 
@@ -354,7 +410,7 @@ export function CampaignAnalyticsExpanded({
                 
                 {/* Labels */}
                 <div className="flex items-center justify-between gap-3">
-                  {analytics.trendData.map((data, index) => (
+                  {displayData.trendData.map((data, index) => (
                     <div key={index} className="flex-1 text-center">
                       <span className="text-xs text-gray-600 font-medium">
                         {data.date}

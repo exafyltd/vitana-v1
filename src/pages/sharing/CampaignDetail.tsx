@@ -286,6 +286,12 @@ function CampaignDetail() {
         isLoading={activateAllPosts.isPending || activateCampaign.isPending}
         postsCount={campaignPosts.length}
         draftCount={draftPosts.length}
+        campaignId={campaign?.id || ''}
+        campaignData={{
+          channels: (campaign?.target_channels as string[]) || [],
+          audienceData: (campaign?.distribution_config as any)?.audienceData,
+          messageContent: (campaign?.distribution_config as any)?.messageContent,
+        }}
       />
     </>
   );
