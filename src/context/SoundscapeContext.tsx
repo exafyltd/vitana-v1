@@ -143,8 +143,9 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     // Load preferences from localStorage
     const savedVolume = localStorage.getItem('soundscape_volume');
     const savedAutoPlay = localStorage.getItem('soundscape_auto_play');
+    const savedMuted = localStorage.getItem('soundscape_muted');
     
-    console.log('[Soundscape] Initializing with savedVolume:', savedVolume, 'savedAutoPlay:', savedAutoPlay);
+    console.log('[Soundscape] Initializing with savedVolume:', savedVolume, 'savedAutoPlay:', savedAutoPlay, 'savedMuted:', savedMuted);
     
     if (savedVolume) {
       const vol = parseFloat(savedVolume);
@@ -156,8 +157,16 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     const audio = getOrCreateAudioElement(AMBIENT_TRACK);
     audioRef.current = audio;
     
-    // Apply current volume
+    // Apply current volume and mute state
     audio.volume = savedVolume ? parseFloat(savedVolume) : DEFAULT_VOLUME;
+    
+    if (savedMuted === 'true') {
+      audio.muted = true;
+      setIsMuted(true);
+    } else {
+      audio.muted = false;
+      setIsMuted(false);
+    }
     
     console.log('[Soundscape] Audio element initialized:', {
       src: audio.src,
@@ -196,10 +205,18 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   // Sync React state with actual audio element state (handles HMR recovery)
   useEffect(() => {
     if (audioRef.current) {
+      // Sync isPlaying
       const actuallyPlaying = !audioRef.current.paused;
       if (actuallyPlaying !== isPlaying) {
-        console.log('[Soundscape] Syncing state: actuallyPlaying=', actuallyPlaying, 'isPlaying=', isPlaying);
+        console.log('[Soundscape] Syncing isPlaying state: actuallyPlaying=', actuallyPlaying, 'isPlaying=', isPlaying);
         setIsPlaying(actuallyPlaying);
+      }
+      
+      // Sync isMuted
+      const actuallyMuted = audioRef.current.muted;
+      if (actuallyMuted !== isMuted) {
+        console.log('[Soundscape] Syncing isMuted state: actuallyMuted=', actuallyMuted, 'isMuted=', isMuted);
+        setIsMuted(actuallyMuted);
       }
     }
   }, []); // Only run once on mount
@@ -293,18 +310,18 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     if (!audioRef.current) return;
     
     if (isMutedRef.current) {
-      // UNMUTE
+      // UNMUTE - restore volume
+      console.log('[Soundscape] Unmuting, restoring volume:', previousVolumeRef.current);
       audioRef.current.muted = false;
       audioRef.current.volume = previousVolumeRef.current;
       setIsMuted(false);
+      localStorage.setItem('soundscape_muted', 'false');
     } else {
-      // MUTE
+      // MUTE - silence but keep playing
+      console.log('[Soundscape] Muting, keeping playback active');
       audioRef.current.muted = true;
-      audioRef.current.pause();
       setIsMuted(true);
-      setIsPlaying(false);
-      localStorage.setItem('soundscape_auto_play', 'false');
-      userExplicitlyPausedRef.current = true;
+      localStorage.setItem('soundscape_muted', 'true');
     }
   }, []);
 
