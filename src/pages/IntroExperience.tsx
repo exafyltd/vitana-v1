@@ -11,7 +11,6 @@ import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
-import { playLoopingSound, stopAllLoopingSoundsForPath } from '@/lib/playLoopingSound';
 import { motion } from 'framer-motion';
 
 const MAXINA_WELCOME_SSML = `<speak>
@@ -25,67 +24,19 @@ export default function IntroExperience() {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
-  const { handoffAudio } = useSoundscape();
+  const { play, setVolume } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [isPreparingAudio, setIsPreparingAudio] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const soundscapeRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
-  const ambientFadeFrameRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
-    if (soundscapeRef.current?.audio) {
-      // Resume existing instance
-      soundscapeRef.current.audio.play().catch((err) => {
-        console.warn('[IntroExperience] Could not resume soundscape:', err);
-      });
-    } else if (videoSrc && !soundscapeRef.current) {
-      // Create new instance
-      soundscapeRef.current = playLoopingSound(
-        "/sounds/vitanaland/maxina-ambient-music.mp3",
-        0.04
-      );
-    }
-  }, [videoSrc]);
-
-  // Smooth fade helper for soundscape
-  const fadeAmbientVolume = useCallback(
-    (targetVolume: number, duration = 600) => {
-      const ambient = soundscapeRef.current?.audio;
-      if (!ambient) return;
-
-      // Cancel any existing fade
-      if (ambientFadeFrameRef.current !== null) {
-        cancelAnimationFrame(ambientFadeFrameRef.current);
-        ambientFadeFrameRef.current = null;
-      }
-
-      const startVolume = ambient.volume;
-      const volumeDelta = targetVolume - startVolume;
-      if (Math.abs(volumeDelta) < 0.001) return;
-
-      const startTime = performance.now();
-
-      const step = (now: number) => {
-        const elapsed = now - startTime;
-        const t = Math.min(1, elapsed / duration);
-        ambient.volume = startVolume + volumeDelta * t;
-
-        if (t < 1) {
-          ambientFadeFrameRef.current = requestAnimationFrame(step);
-        } else {
-          ambientFadeFrameRef.current = null;
-        }
-      };
-
-      ambientFadeFrameRef.current = requestAnimationFrame(step);
-    },
-    []
-  );
+    play();
+  }, [play]);
 
   // Load video source
   useEffect(() => {
@@ -104,43 +55,22 @@ export default function IntroExperience() {
 
   // Start soundscape when video loads
   useEffect(() => {
-    if (videoSrc && !soundscapeRef.current) {
-      soundscapeRef.current = playLoopingSound(
-        "/sounds/vitanaland/maxina-ambient-music.mp3",
-        0.04
-      );
+    if (videoSrc) {
+      setVolume(0.04);
+      play();
     }
-    
-    return () => {
-      if (ambientFadeFrameRef.current !== null) {
-        cancelAnimationFrame(ambientFadeFrameRef.current);
-      }
-      // Only cleanup if audio wasn't handed off
-      if (soundscapeRef.current) {
-        soundscapeRef.current.stop();
-        soundscapeRef.current = null;
-      }
-    };
-  }, [videoSrc]);
+  }, [videoSrc, play, setVolume]);
 
-  // Smoothly fade soundscape when TTS is playing
+  // Fade soundscape volume when TTS is playing
   useEffect(() => {
-    if (soundscapeRef.current) {
-      if (isPlayingAudio) {
-        fadeAmbientVolume(0.015, 600);
-      } else {
-        fadeAmbientVolume(0.04, 800);
-      }
+    if (isPlayingAudio) {
+      setVolume(0.015);
+    } else {
+      setVolume(0.04);
     }
-  }, [isPlayingAudio, fadeAmbientVolume]);
+  }, [isPlayingAudio, setVolume]);
 
   const continueToMaxina = useCallback(() => {
-    // Hand off audio to global context BEFORE navigation
-    if (soundscapeRef.current?.audio) {
-      handoffAudio(soundscapeRef.current.audio);
-      soundscapeRef.current = null; // Clear so cleanup doesn't stop it
-    }
-    
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
     }
@@ -150,7 +80,7 @@ export default function IntroExperience() {
       // Let the portal handle auth-based routing
       navigate(`/${tenantSlug}`, { replace: true });
     }, 800);
-  }, [tenantSlug, navigate, handoffAudio]);
+  }, [tenantSlug, navigate]);
 
   const handleSkip = useCallback(() => {
     // Stop TTS audio if playing
@@ -159,14 +89,8 @@ export default function IntroExperience() {
       audioRef.current = null;
     }
     
-    // Hand off soundscape audio to global context
-    if (soundscapeRef.current?.audio) {
-      handoffAudio(soundscapeRef.current.audio);
-      soundscapeRef.current = null;
-    }
-    
     continueToMaxina();
-  }, [continueToMaxina, handoffAudio]);
+  }, [continueToMaxina]);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);

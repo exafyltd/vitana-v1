@@ -21,7 +21,6 @@ import { useStreamingState } from "@/context/StreamingStateContext";
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
-import { playLoopingSound, stopAllLoopingSoundsForPath } from "@/lib/playLoopingSound";
 import { motion } from "framer-motion";
 
 const MaxinaPortal = () => {
@@ -30,7 +29,7 @@ const MaxinaPortal = () => {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
-  const { handoffAudio } = useSoundscape();
+  const { play, setVolume } = useSoundscape();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -40,46 +39,20 @@ const MaxinaPortal = () => {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
-  const soundscapeRef = useRef<{ audio: HTMLAudioElement; stop: () => void } | null>(null);
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
-    if (soundscapeRef.current?.audio) {
-      // Resume existing instance
-      soundscapeRef.current.audio.play().catch((err) => {
-        console.warn('[MaxinaPortal] Could not resume soundscape:', err);
-      });
-    } else if (videoSrc && !soundscapeRef.current) {
-      // Create new instance
-      soundscapeRef.current = playLoopingSound(
-        "/sounds/vitanaland/maxina-ambient-music.mp3",
-        0.05
-      );
-    }
-  }, [videoSrc]);
-
-  // Helper for LOCAL cleanup only (used in useEffect cleanup)
-  const stopSoundscapeLocal = () => {
-    if (soundscapeRef.current) {
-      soundscapeRef.current.stop();
-      soundscapeRef.current = null;
-    }
-  };
+    play();
+  }, [play]);
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
-      // Hand off audio to global context BEFORE navigation
-      if (soundscapeRef.current?.audio) {
-        handoffAudio(soundscapeRef.current.audio);
-        soundscapeRef.current = null; // Clear local ref so cleanup doesn't stop it
-      }
-      
       setTenantBySlug('maxina').then(() => {
         navigate("/home");
       });
     }
-  }, [user, authLoading, navigate, setTenantBySlug, handoffAudio]);
+  }, [user, authLoading, navigate, setTenantBySlug]);
 
   // Set tenant theme
   useEffect(() => {
@@ -96,20 +69,11 @@ const MaxinaPortal = () => {
 
   // Start soundscape when video loads
   useEffect(() => {
-    if (videoSrc && !soundscapeRef.current) {
-      soundscapeRef.current = playLoopingSound(
-        "/sounds/vitanaland/maxina-ambient-music.mp3",
-        0.05
-      );
+    if (videoSrc) {
+      setVolume(0.05);
+      play();
     }
-    
-    return () => {
-      // Only cleanup if audio wasn't handed off to global context
-      if (soundscapeRef.current) {
-        stopSoundscapeLocal();
-      }
-    };
-  }, [videoSrc]);
+  }, [videoSrc, play, setVolume]);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
