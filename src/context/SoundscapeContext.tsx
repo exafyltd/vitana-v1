@@ -59,6 +59,7 @@ interface SoundscapeContextType {
   handoffAudio: (audioInstance: HTMLAudioElement) => void;
   pauseForPriorityAudio: () => void;
   resumeAfterPriorityAudio: () => void;
+  killAllAudio: () => void;
 }
 
 const SoundscapeContext = createContext<SoundscapeContextType | undefined>(undefined);
@@ -75,6 +76,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const previousVolumeRef = useRef(DEFAULT_VOLUME);
   const [pausedByPriority, setPausedByPriority] = useState(false);
   const wasPlayingBeforePriorityRef = useRef(false);
+  const userExplicitlyPausedRef = useRef(false);
   
   // Use refs for state that callbacks need to access
   const isMutedRef = useRef(isMuted);
@@ -212,13 +214,18 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // Aggressive periodic cleanup - ALWAYS run to catch orphaned audio
+  // Aggressive periodic cleanup - ALWAYS run unconditionally to catch orphaned audio
   useEffect(() => {
     const intervalId = setInterval(() => {
       const filename = AMBIENT_TRACK.split('/').pop() || '';
       
-      // If we think we're muted/paused, ensure ALL audio is actually stopped
-      if (isMuted || !isPlaying) {
+      // Check actual audio state vs React state
+      const actuallyPaused = window.__SOUNDSCAPE_AUDIO__?.paused ?? true;
+      
+      // If React thinks we're paused/muted but audio is playing, force stop
+      if ((isMuted || !isPlaying) && !actuallyPaused) {
+        console.log('[Soundscape] Periodic cleanup: State desync detected, forcing stop');
+        
         document.querySelectorAll('audio').forEach((audio) => {
           if (audio.src.includes(filename) && !audio.paused) {
             console.log('[Soundscape] Periodic cleanup: forcing pause on:', audio.src);
@@ -247,6 +254,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       });
       setIsPlaying(true);
       localStorage.setItem('soundscape_auto_play', 'true');
+      userExplicitlyPausedRef.current = false; // Clear explicit pause flag
     }
   }, []);
 
@@ -272,15 +280,19 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     
     setIsPlaying(false);
     localStorage.setItem('soundscape_auto_play', 'false');
+    userExplicitlyPausedRef.current = true; // Mark as explicitly paused by user
   }, []);
 
   const toggle = useCallback(() => {
-    if (isPlaying) {
+    // Check actual audio state instead of just React state
+    const actuallyPlaying = window.__SOUNDSCAPE_AUDIO__ && !window.__SOUNDSCAPE_AUDIO__.paused;
+    
+    if (actuallyPlaying) {
       pause();
     } else {
       play();
     }
-  }, [isPlaying, play, pause]);
+  }, [play, pause]);
 
   // Helper function to kill orphaned audio elements
   const killOrphanedAudio = useCallback(() => {
@@ -377,6 +389,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       
       setIsMuted(true);
       setIsPlaying(false);
+      localStorage.setItem('soundscape_auto_play', 'false'); // Clear auto-play when muting
+      userExplicitlyPausedRef.current = true; // Mark as explicitly stopped
     }
   }, []);
 
@@ -444,6 +458,14 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, [isPlaying, pausedByPriority]);
 
   const resumeAfterPriorityAudio = useCallback(() => {
+    // Don't resume if user explicitly paused the music
+    if (userExplicitlyPausedRef.current) {
+      console.log('[Soundscape] Not resuming - user explicitly paused');
+      setPausedByPriority(false);
+      wasPlayingBeforePriorityRef.current = false;
+      return;
+    }
+    
     if (pausedByPriority && wasPlayingBeforePriorityRef.current && audioRef.current) {
       audioRef.current.play().catch((err) => {
         console.warn('[Soundscape] Resume after priority audio failed:', err);
@@ -535,6 +557,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     handoffAudio,
     pauseForPriorityAudio,
     resumeAfterPriorityAudio,
+    killAllAudio,
   };
 
   return (
