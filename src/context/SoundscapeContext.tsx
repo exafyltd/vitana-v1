@@ -1,6 +1,31 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
 
+// Module-level singleton that survives HMR cycles
+let globalAudioElement: HTMLAudioElement | null = null;
+
+function getOrCreateAudioElement(src: string): HTMLAudioElement {
+  // If we already have an audio element with the same source, reuse it
+  if (globalAudioElement && globalAudioElement.src.includes(src.split('/').pop() || '')) {
+    console.log('[Soundscape] Reusing existing audio element');
+    return globalAudioElement;
+  }
+  
+  // If there's an existing audio element, stop it first
+  if (globalAudioElement) {
+    console.log('[Soundscape] Stopping old audio element before creating new one');
+    globalAudioElement.pause();
+    globalAudioElement.src = '';
+    globalAudioElement.load();
+  }
+  
+  // Create new audio element
+  console.log('[Soundscape] Creating new audio element');
+  globalAudioElement = new Audio(src);
+  globalAudioElement.loop = true;
+  return globalAudioElement;
+}
+
 interface SoundscapeContextType {
   isPlaying: boolean;
   volume: number;
@@ -92,7 +117,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     console.log('[Soundscape] Event listeners attached successfully');
   }, []);
 
-  // Initialize audio element
+  // Initialize audio element using HMR-resilient singleton
   useEffect(() => {
     // Load preferences from localStorage
     const savedVolume = localStorage.getItem('soundscape_volume');
@@ -106,45 +131,57 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       previousVolumeRef.current = vol;
     }
 
-    // Create persistent audio element
-    if (!audioRef.current) {
-      const audio = new Audio(AMBIENT_TRACK);
-      audio.loop = true;
-      audio.volume = savedVolume ? parseFloat(savedVolume) : DEFAULT_VOLUME;
-      audioRef.current = audio;
+    // Get or create the singleton audio element
+    const audio = getOrCreateAudioElement(AMBIENT_TRACK);
+    audioRef.current = audio;
+    
+    // Apply current volume
+    audio.volume = savedVolume ? parseFloat(savedVolume) : DEFAULT_VOLUME;
+    
+    console.log('[Soundscape] Audio element initialized:', {
+      src: audio.src,
+      volume: audio.volume,
+      loop: audio.loop,
+      paused: audio.paused
+    });
 
-      console.log('[Soundscape] Audio element created:', {
-        src: audio.src,
-        volume: audio.volume,
-        loop: audio.loop
+    // Attach event listeners
+    attachListeners(audio);
+
+    // Auto-play if preference is set
+    if (savedAutoPlay === 'true' && audio.paused) {
+      audio.play().catch((err) => {
+        console.warn('[Soundscape] Auto-play blocked:', err);
       });
-
-      // Attach event listeners
-      attachListeners(audio);
-
-      // Auto-play if preference is set
-      if (savedAutoPlay === 'true') {
-        audio.play().catch((err) => {
-          console.warn('[Soundscape] Auto-play blocked:', err);
-        });
-        setIsPlaying(true);
-      }
+      setIsPlaying(true);
+    } else {
+      // Sync state with actual audio state
+      setIsPlaying(!audio.paused);
     }
 
+    // DO NOT cleanup/destroy the audio element on unmount
+    // The singleton persists across HMR cycles
     return () => {
-      // Cleanup on unmount
-      console.log('[Soundscape] Cleaning up audio element');
-      if (audioRef.current && handleVolumeChangeRef.current && handlePlayRef.current && handlePauseRef.current) {
+      // Only remove event listeners, don't destroy audio
+      if (audioRef.current && handleVolumeChangeRef.current) {
         audioRef.current.removeEventListener('volumechange', handleVolumeChangeRef.current);
-        audioRef.current.removeEventListener('play', handlePlayRef.current);
-        audioRef.current.removeEventListener('pause', handlePauseRef.current);
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current.load();
-        audioRef.current = null;
+        audioRef.current.removeEventListener('play', handlePlayRef.current!);
+        audioRef.current.removeEventListener('pause', handlePauseRef.current!);
       }
+      console.log('[Soundscape] Removed event listeners (audio element persists)');
     };
   }, [attachListeners]);
+
+  // Sync React state with actual audio element state (handles HMR recovery)
+  useEffect(() => {
+    if (audioRef.current) {
+      const actuallyPlaying = !audioRef.current.paused;
+      if (actuallyPlaying !== isPlaying) {
+        console.log('[Soundscape] Syncing state: actuallyPlaying=', actuallyPlaying, 'isPlaying=', isPlaying);
+        setIsPlaying(actuallyPlaying);
+      }
+    }
+  });
 
   const play = useCallback(() => {
     if (audioRef.current) {
@@ -320,31 +357,41 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     });
   }, [isPlaying, volume, isMuted]);
 
-  // Emergency function to kill all audio
+  // Emergency function to kill all audio (NUCLEAR OPTION)
   const killAllAudio = useCallback(() => {
-    console.log('[Soundscape] killAllAudio called - stopping all audio');
+    console.log('[Soundscape] killAllAudio called - NUCLEAR OPTION');
     
-    // Stop our audio
-    if (audioRef.current) {
+    // Kill the singleton
+    if (globalAudioElement) {
+      globalAudioElement.pause();
+      globalAudioElement.src = '';
+      globalAudioElement.load();
+      globalAudioElement = null;
+    }
+    
+    // Also kill our ref if it's different
+    if (audioRef.current && audioRef.current !== globalAudioElement) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
 
-    // Stop all looping sounds
+    // Stop all looping sounds from registry
     stopAllLoopingSoundsForPath('');
 
-    // Query and pause all audio elements in DOM
+    // Query and pause ALL audio elements in DOM
     const allAudio = document.querySelectorAll('audio');
     allAudio.forEach((audio, index) => {
       console.log(`[Soundscape] Killing audio element ${index}:`, audio.src);
       audio.pause();
-      audio.currentTime = 0;
+      audio.src = '';
+      audio.load();
     });
 
     // Reset state
     setIsPlaying(false);
+    audioRef.current = null;
     
-    console.log('[Soundscape] All audio killed');
+    console.log('[Soundscape] All audio NUKED');
   }, []);
 
   // Expose debug functions globally for console access
