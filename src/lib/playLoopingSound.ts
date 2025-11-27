@@ -1,5 +1,5 @@
 // Global registry to track all active looping sounds
-const activeLoopingSounds = new Set<{
+export const activeLoopingSounds = new Set<{
   audio: HTMLAudioElement;
   stop: () => void;
   path: string;
