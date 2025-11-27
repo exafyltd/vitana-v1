@@ -1,4 +1,4 @@
-import { FileText, Share2, Zap, Calendar, CheckCircle } from "lucide-react";
+import { FileText, Share2, Zap, Calendar, CheckCircle, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StepConfig {
@@ -7,32 +7,42 @@ interface StepConfig {
   icon: React.ReactNode;
 }
 
-const CAMPAIGN_STEPS: StepConfig[] = [
-  { number: 1, label: "Basics", icon: <FileText className="w-4 h-4" /> },
-  { number: 2, label: "Channels", icon: <Share2 className="w-4 h-4" /> },
-  { number: 3, label: "Template", icon: <Zap className="w-4 h-4" /> },
-  { number: 4, label: "Schedule", icon: <Calendar className="w-4 h-4" /> }
-];
-
 interface EnhancedStepIndicatorProps {
   currentStep: number;
+  totalSteps: number;
+  hasAudienceStep?: boolean;
   onStepClick?: (step: number) => void;
 }
 
-export function EnhancedStepIndicator({ currentStep, onStepClick }: EnhancedStepIndicatorProps) {
+export function EnhancedStepIndicator({ currentStep, totalSteps, hasAudienceStep, onStepClick }: EnhancedStepIndicatorProps) {
+  // Build dynamic steps based on whether audience selection is needed
+  const steps: StepConfig[] = [
+    { number: 1, label: "Basics", icon: <FileText className="w-4 h-4" /> },
+    { number: 2, label: "Channels", icon: <Share2 className="w-4 h-4" /> },
+  ];
+  
+  if (hasAudienceStep) {
+    steps.push({ number: 3, label: "Audience", icon: <Users className="w-4 h-4" /> });
+    steps.push({ number: 4, label: "Template", icon: <Zap className="w-4 h-4" /> });
+    steps.push({ number: 5, label: "Schedule", icon: <Calendar className="w-4 h-4" /> });
+  } else {
+    steps.push({ number: 3, label: "Template", icon: <Zap className="w-4 h-4" /> });
+    steps.push({ number: 4, label: "Schedule", icon: <Calendar className="w-4 h-4" /> });
+  }
+
   return (
     <div className="relative py-6">
       {/* Vitana gradient progress bar */}
       <div className="absolute top-1/2 left-0 right-0 h-1 bg-muted rounded-full">
         <div 
           className="h-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] rounded-full transition-all duration-500"
-          style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+          style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
         />
       </div>
       
       {/* Step circles with labels */}
       <div className="relative flex justify-between">
-        {CAMPAIGN_STEPS.map((step) => (
+        {steps.map((step) => (
           <button
             key={step.number}
             onClick={() => onStepClick?.(step.number)}

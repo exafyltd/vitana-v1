@@ -27,6 +27,7 @@ import { EnhancedStepIndicator } from "./EnhancedStepIndicator";
 import { CampaignCreationHeader } from "./CampaignCreationHeader";
 import { CampaignSuccessModal } from "./CampaignSuccessModal";
 import { InlineChannelConnector } from "./InlineChannelConnector";
+import { AudienceSelector } from "./AudienceSelector";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { toast } from "sonner";
@@ -55,6 +56,13 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   const [smartSchedulingEnabled, setSmartSchedulingEnabled] = useState(
     ((editingCampaign?.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true
   );
+  
+  // Audience selection state
+  const [audienceData, setAudienceData] = useState<{
+    type: 'contacts' | 'segments' | 'csv';
+    data: any;
+    recipientCount: number;
+  } | null>(null);
 
   // Step 1 additions
   const [goal, setGoal] = useState("");
@@ -87,6 +95,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
       setSelectedChannels((editingCampaign.target_channels as Record<string, boolean>) || {});
       setSelectedTemplate(((editingCampaign.distribution_config as any)?.template_id as string) || "custom");
       setSmartSchedulingEnabled(((editingCampaign.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true);
+      setAudienceData((editingCampaign.distribution_config as any)?.audience_data || null);
       setStep(1);
     } else {
       setName("");
@@ -94,12 +103,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
       setSelectedChannels({});
       setSelectedTemplate("custom");
       setSmartSchedulingEnabled(true);
+      setAudienceData(null);
       setStep(1);
     }
   }, [open, editingCampaign]);
 
   const isEditMode = !!editingCampaign;
-  const totalSteps = 4;
+  const hasDirectMessaging = ['email', 'sms', 'whatsapp'].some(ch => selectedChannels[ch]);
+  const totalSteps = hasDirectMessaging ? 5 : 4; // Add audience selection step if direct messaging
 
   const handleClose = () => {
     setStep(1);
@@ -108,6 +119,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
     setSelectedChannels({});
     setSelectedTemplate("custom");
     setSmartSchedulingEnabled(true);
+    setAudienceData(null);
     onOpenChange(false);
   };
 
@@ -131,6 +143,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
         timezone,
         quiet_hours_enabled: quietHoursEnabled,
         ai_assist_enabled: aiAssistEnabled,
+        audience_data: audienceData, // Store audience selection
         best_times: Object.keys(selectedChannels)
           .filter(ch => selectedChannels[ch])
           .reduce((acc, ch) => {
@@ -232,7 +245,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   const canProceed = () => {
     if (step === 1) return name.trim() !== "";
     if (step === 2) return Object.values(selectedChannels).some(v => v);
-    if (step === 3) return selectedTemplate !== "";
+    if (step === 3 && hasDirectMessaging) return audienceData && audienceData.recipientCount > 0;
+    if (step === 3 && !hasDirectMessaging) return selectedTemplate !== "";
+    if (step === 4 && hasDirectMessaging) return selectedTemplate !== "";
     return true;
   };
 
@@ -283,6 +298,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
           {/* Enhanced Step Indicator */}
           <EnhancedStepIndicator 
             currentStep={step}
+            totalSteps={totalSteps}
+            hasAudienceStep={hasDirectMessaging}
             onStepClick={(s) => s <= step && setStep(s)}
           />
 
@@ -522,8 +539,18 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
                 </div>
               )}
 
-              {/* Step 3: Template Selection - Enhanced */}
-              {step === 3 && (
+              {/* Step 3: Audience Selection (only for direct messaging channels) */}
+              {step === 3 && hasDirectMessaging && (
+                <div className="space-y-4">
+                  <AudienceSelector 
+                    selectedChannels={selectedChannels}
+                    onAudienceChange={setAudienceData}
+                  />
+                </div>
+              )}
+
+              {/* Step 3 or 4: Template Selection - Enhanced */}
+              {((step === 3 && !hasDirectMessaging) || (step === 4 && hasDirectMessaging)) && (
                 <div className="space-y-4">
                   <Label className="text-lg font-semibold">Choose Your Campaign Template</Label>
                   <RadioGroup value={selectedTemplate} onValueChange={applyTemplate}>
@@ -566,8 +593,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
             </div>
           )}
 
-          {/* Step 4: Smart Scheduling */}
-          {step === 4 && (
+          {/* Step 4 or 5: Smart Scheduling */}
+          {((step === 4 && !hasDirectMessaging) || (step === 5 && hasDirectMessaging)) && (
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
