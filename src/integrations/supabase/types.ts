@@ -1070,6 +1070,42 @@ export type Database = {
         }
         Relationships: []
       }
+      campaign_audience_segments: {
+        Row: {
+          contact_count: number | null
+          created_at: string | null
+          criteria: Json
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          contact_count?: number | null
+          created_at?: string | null
+          criteria?: Json
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          contact_count?: number | null
+          created_at?: string | null
+          criteria?: Json
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       campaign_posts: {
         Row: {
           added_at: string
@@ -1099,6 +1135,80 @@ export type Database = {
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "distribution_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaign_recipients: {
+        Row: {
+          campaign_id: string
+          channel: string
+          clicked_at: string | null
+          created_at: string | null
+          delivered_at: string | null
+          error_message: string | null
+          failed_at: string | null
+          id: string
+          metadata: Json | null
+          opened_at: string | null
+          recipient_email: string | null
+          recipient_id: string | null
+          recipient_name: string
+          recipient_phone: string | null
+          recipient_type: string
+          sent_at: string | null
+          status: string
+          unsubscribed_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          campaign_id: string
+          channel: string
+          clicked_at?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          error_message?: string | null
+          failed_at?: string | null
+          id?: string
+          metadata?: Json | null
+          opened_at?: string | null
+          recipient_email?: string | null
+          recipient_id?: string | null
+          recipient_name: string
+          recipient_phone?: string | null
+          recipient_type: string
+          sent_at?: string | null
+          status?: string
+          unsubscribed_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          channel?: string
+          clicked_at?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          error_message?: string | null
+          failed_at?: string | null
+          id?: string
+          metadata?: Json | null
+          opened_at?: string | null
+          recipient_email?: string | null
+          recipient_id?: string | null
+          recipient_name?: string
+          recipient_phone?: string | null
+          recipient_type?: string
+          sent_at?: string | null
+          status?: string
+          unsubscribed_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_recipients_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
         ]
@@ -3453,6 +3563,75 @@ export type Database = {
             columns: ["message_id"]
             isOneToOne: false
             referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message_queue: {
+        Row: {
+          attempts: number | null
+          campaign_id: string
+          channel_type: string
+          created_at: string | null
+          error: string | null
+          id: string
+          max_attempts: number | null
+          metadata: Json | null
+          payload: Json
+          priority: number | null
+          processed_at: string | null
+          recipient_id: string
+          scheduled_for: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          attempts?: number | null
+          campaign_id: string
+          channel_type: string
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          max_attempts?: number | null
+          metadata?: Json | null
+          payload: Json
+          priority?: number | null
+          processed_at?: string | null
+          recipient_id: string
+          scheduled_for: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          attempts?: number | null
+          campaign_id?: string
+          channel_type?: string
+          created_at?: string | null
+          error?: string | null
+          id?: string
+          max_attempts?: number | null
+          metadata?: Json | null
+          payload?: Json
+          priority?: number | null
+          processed_at?: string | null
+          recipient_id?: string
+          scheduled_for?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_queue_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_queue_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_recipients"
             referencedColumns: ["id"]
           },
         ]
