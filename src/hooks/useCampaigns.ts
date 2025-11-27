@@ -186,6 +186,39 @@ export function useCampaigns() {
     },
   });
 
+  // Start campaign distribution
+  const startCampaignDistribution = useMutation({
+    mutationFn: async ({ 
+      campaignId, 
+      mode 
+    }: { 
+      campaignId: string; 
+      mode: 'instant' | 'scheduled' 
+    }) => {
+      // Update campaign status to distributing
+      const { data, error } = await supabase
+        .from('campaigns')
+        .update({ 
+          status: mode === 'instant' ? 'active' : 'scheduled',
+          metadata: { distribution_mode: mode, started_at: new Date().toISOString() }
+        })
+        .eq('id', campaignId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+      toast.success('Campaign distribution started successfully');
+    },
+    onError: (error: Error) => {
+      console.error('Error starting campaign distribution:', error);
+      toast.error(`Failed to start distribution: ${error.message}`);
+    },
+  });
+
   return {
     campaigns,
     isLoading,
@@ -196,5 +229,6 @@ export function useCampaigns() {
     completeCampaign,
     duplicateCampaign,
     deleteCampaign,
+    startCampaignDistribution,
   };
 }
