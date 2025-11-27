@@ -1,29 +1,38 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
 
-// Module-level singleton that survives HMR cycles
-let globalAudioElement: HTMLAudioElement | null = null;
+// Store audio element on window to survive HMR module reloads
+declare global {
+  interface Window {
+    __SOUNDSCAPE_AUDIO__?: HTMLAudioElement;
+  }
+}
 
 function getOrCreateAudioElement(src: string): HTMLAudioElement {
-  // If we already have an audio element with the same source, reuse it
-  if (globalAudioElement && globalAudioElement.src.includes(src.split('/').pop() || '')) {
-    console.log('[Soundscape] Reusing existing audio element');
-    return globalAudioElement;
+  const filename = src.split('/').pop() || '';
+
+  // Check for existing HMR-surviving audio element
+  const existing = window.__SOUNDSCAPE_AUDIO__;
+  if (existing && existing.src.includes(filename)) {
+    console.log('[Soundscape] Reusing HMR-surviving audio element');
+    existing.loop = true;
+    return existing;
   }
-  
-  // If there's an existing audio element, stop it first
-  if (globalAudioElement) {
-    console.log('[Soundscape] Stopping old audio element before creating new one');
-    globalAudioElement.pause();
-    globalAudioElement.src = '';
-    globalAudioElement.load();
+
+  // If there's an existing element but for a different src, stop and dispose it
+  if (existing) {
+    console.log('[Soundscape] Stopping old HMR audio element before creating new one');
+    existing.pause();
+    existing.src = '';
+    existing.load();
   }
-  
-  // Create new audio element
+
+  // Create new audio element and persist it on window
   console.log('[Soundscape] Creating new audio element');
-  globalAudioElement = new Audio(src);
-  globalAudioElement.loop = true;
-  return globalAudioElement;
+  const audio = new Audio(src);
+  audio.loop = true;
+  window.__SOUNDSCAPE_AUDIO__ = audio;
+  return audio;
 }
 
 interface SoundscapeContextType {
@@ -361,24 +370,26 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const killAllAudio = useCallback(() => {
     console.log('[Soundscape] killAllAudio called - NUCLEAR OPTION');
     
-    // Kill the singleton
-    if (globalAudioElement) {
-      globalAudioElement.pause();
-      globalAudioElement.src = '';
-      globalAudioElement.load();
-      globalAudioElement = null;
+    // Kill the window-persisted audio singleton
+    if (window.__SOUNDSCAPE_AUDIO__) {
+      window.__SOUNDSCAPE_AUDIO__.pause();
+      window.__SOUNDSCAPE_AUDIO__.src = '';
+      window.__SOUNDSCAPE_AUDIO__.load();
+      delete window.__SOUNDSCAPE_AUDIO__;
     }
     
-    // Also kill our ref if it's different
-    if (audioRef.current && audioRef.current !== globalAudioElement) {
+    // Also kill our ref if it's still pointing at an element
+    if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
+      audioRef.current.src = '';
+      audioRef.current.load();
     }
 
     // Stop all looping sounds from registry
     stopAllLoopingSoundsForPath('');
 
-    // Query and pause ALL audio elements in DOM
+    // Query and pause ALL audio elements in DOM (safety net)
     const allAudio = document.querySelectorAll('audio');
     allAudio.forEach((audio, index) => {
       console.log(`[Soundscape] Killing audio element ${index}:`, audio.src);
