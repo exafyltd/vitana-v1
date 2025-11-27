@@ -101,6 +101,7 @@ export const CHANNEL_BEST_TIMES: Record<string, string[]> = {
   tiktok: ["07:00", "11:00", "19:00", "21:00"],
   email: ["09:00", "14:00"],
   sms: ["10:00", "15:00", "19:00"],
+  whatsapp: ["09:00", "12:00", "18:00", "21:00"],
 };
 
 export const CHANNEL_INFO: Record<string, { name: string; color: string }> = {
@@ -112,4 +113,5 @@ export const CHANNEL_INFO: Record<string, { name: string; color: string }> = {
   tiktok: { name: "TikTok", color: "bg-black" },
   email: { name: "Email", color: "bg-gray-600" },
   sms: { name: "SMS", color: "bg-green-600" },
+  whatsapp: { name: "WhatsApp", color: "bg-green-500" },
 };
