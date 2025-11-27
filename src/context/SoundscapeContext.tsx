@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
-import { stopAllLoopingSoundsForPath } from '@/lib/playLoopingSound';
+import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
 
 interface SoundscapeContextType {
   isPlaying: boolean;
@@ -235,6 +235,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       volume: externalAudio.volume
     });
 
+    if (!externalAudio) return;
+
     // Dispose of any existing audio element if it's different
     if (audioRef.current && audioRef.current !== externalAudio) {
       console.log('[Soundscape] Disposing existing audio element');
@@ -246,9 +248,9 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     // Take ownership of the external audio element
     audioRef.current = externalAudio;
 
-    // Remove from activeLoopingSounds to prevent conflicts
-    stopAllLoopingSoundsForPath(externalAudio.src);
-    console.log('[Soundscape] Removed handed-off audio from activeLoopingSounds');
+    // Remove from activeLoopingSounds registry without stopping it
+    removeFromRegistry(externalAudio);
+    console.log('[Soundscape] Removed handed-off audio from registry');
 
     // Attach event listeners to the new audio element
     attachListeners(externalAudio);
