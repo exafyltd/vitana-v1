@@ -59,7 +59,6 @@ interface SoundscapeContextType {
   handoffAudio: (audioInstance: HTMLAudioElement) => void;
   pauseForPriorityAudio: () => void;
   resumeAfterPriorityAudio: () => void;
-  killAllAudio: () => void;
 }
 
 const SoundscapeContext = createContext<SoundscapeContextType | undefined>(undefined);
@@ -214,38 +213,6 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // Aggressive periodic cleanup - ALWAYS run unconditionally to catch orphaned audio
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const filename = AMBIENT_TRACK.split('/').pop() || '';
-      
-      // Check actual audio state vs React state
-      const actuallyPaused = window.__SOUNDSCAPE_AUDIO__?.paused ?? true;
-      
-      // If React thinks we're paused/muted but audio is playing, force stop
-      if ((isMuted || !isPlaying) && !actuallyPaused) {
-        console.log('[Soundscape] Periodic cleanup: State desync detected, forcing stop');
-        
-        document.querySelectorAll('audio').forEach((audio) => {
-          if (audio.src.includes(filename) && !audio.paused) {
-            console.log('[Soundscape] Periodic cleanup: forcing pause on:', audio.src);
-            audio.pause();
-            audio.muted = true;
-            audio.volume = 0;
-          }
-        });
-        
-        // Also ensure window singleton is stopped
-        if (window.__SOUNDSCAPE_AUDIO__ && !window.__SOUNDSCAPE_AUDIO__.paused) {
-          console.log('[Soundscape] Periodic cleanup: forcing pause on window singleton');
-          window.__SOUNDSCAPE_AUDIO__.pause();
-          window.__SOUNDSCAPE_AUDIO__.muted = true;
-        }
-      }
-    }, 500); // Check every 500ms
-    
-    return () => clearInterval(intervalId);
-  }, [isMuted, isPlaying]);
 
   const play = useCallback(() => {
     if (audioRef.current) {
@@ -259,38 +226,22 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const pause = useCallback(() => {
-    const filename = AMBIENT_TRACK.split('/').pop() || '';
-    
-    // Target 1: window.__SOUNDSCAPE_AUDIO__
-    if (window.__SOUNDSCAPE_AUDIO__) {
-      window.__SOUNDSCAPE_AUDIO__.pause();
-    }
-    
-    // Target 2: audioRef.current
     if (audioRef.current) {
       audioRef.current.pause();
     }
     
-    // Target 3: ALL DOM audio elements with ambient track
-    document.querySelectorAll('audio').forEach((audio) => {
-      if (audio.src.includes(filename)) {
-        audio.pause();
-      }
-    });
-    
     setIsPlaying(false);
     localStorage.setItem('soundscape_auto_play', 'false');
-    userExplicitlyPausedRef.current = true; // Mark as explicitly paused by user
+    userExplicitlyPausedRef.current = true;
   }, []);
 
   const toggle = useCallback(() => {
-    // Check actual audio state instead of just React state
-    const actuallyPlaying = window.__SOUNDSCAPE_AUDIO__ && !window.__SOUNDSCAPE_AUDIO__.paused;
-    
-    if (actuallyPlaying) {
-      pause();
-    } else {
-      play();
+    if (audioRef.current) {
+      if (audioRef.current.paused) {
+        play();
+      } else {
+        pause();
+      }
     }
   }, [play, pause]);
 
@@ -339,58 +290,21 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, [killOrphanedAudio]);
 
   const toggleMute = useCallback(() => {
-    const filename = AMBIENT_TRACK.split('/').pop() || '';
-    
-    console.log('[Soundscape] toggleMute called, isMuted:', isMutedRef.current);
+    if (!audioRef.current) return;
     
     if (isMutedRef.current) {
       // UNMUTE
-      const targetVolume = previousVolumeRef.current;
-      
-      // Target 1: window.__SOUNDSCAPE_AUDIO__
-      if (window.__SOUNDSCAPE_AUDIO__) {
-        window.__SOUNDSCAPE_AUDIO__.muted = false;
-        window.__SOUNDSCAPE_AUDIO__.volume = targetVolume;
-      }
-      
-      // Target 2: audioRef.current (if different)
-      if (audioRef.current && audioRef.current !== window.__SOUNDSCAPE_AUDIO__) {
-        audioRef.current.muted = false;
-        audioRef.current.volume = targetVolume;
-      }
-      
+      audioRef.current.muted = false;
+      audioRef.current.volume = previousVolumeRef.current;
       setIsMuted(false);
     } else {
-      // MUTE - Kill everything
-      
-      // Target 1: window.__SOUNDSCAPE_AUDIO__
-      if (window.__SOUNDSCAPE_AUDIO__) {
-        window.__SOUNDSCAPE_AUDIO__.muted = true;
-        window.__SOUNDSCAPE_AUDIO__.volume = 0;
-        window.__SOUNDSCAPE_AUDIO__.pause();
-      }
-      
-      // Target 2: audioRef.current (if different)
-      if (audioRef.current && audioRef.current !== window.__SOUNDSCAPE_AUDIO__) {
-        audioRef.current.muted = true;
-        audioRef.current.volume = 0;
-        audioRef.current.pause();
-      }
-      
-      // Target 3: ALL DOM audio elements with the ambient track (nuclear fallback)
-      document.querySelectorAll('audio').forEach((audio) => {
-        if (audio.src.includes(filename)) {
-          console.log('[Soundscape] Muting DOM audio element:', audio.src);
-          audio.muted = true;
-          audio.volume = 0;
-          audio.pause();
-        }
-      });
-      
+      // MUTE
+      audioRef.current.muted = true;
+      audioRef.current.pause();
       setIsMuted(true);
       setIsPlaying(false);
-      localStorage.setItem('soundscape_auto_play', 'false'); // Clear auto-play when muting
-      userExplicitlyPausedRef.current = true; // Mark as explicitly stopped
+      localStorage.setItem('soundscape_auto_play', 'false');
+      userExplicitlyPausedRef.current = true;
     }
   }, []);
 
@@ -477,72 +391,6 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   }, [pausedByPriority]);
 
-  // Debug utility to inspect audio state
-  const debugAudioState = useCallback(() => {
-    console.log('[Soundscape Debug] Current state:', {
-      isPlaying,
-      volume,
-      isMuted,
-      audioElement: audioRef.current ? {
-        src: audioRef.current.src,
-        volume: audioRef.current.volume,
-        paused: audioRef.current.paused,
-        muted: audioRef.current.muted,
-        loop: audioRef.current.loop
-      } : null,
-      allAudioElements: document.querySelectorAll('audio').length
-    });
-  }, [isPlaying, volume, isMuted]);
-
-  // Emergency function to kill all audio (NUCLEAR OPTION)
-  const killAllAudio = useCallback(() => {
-    console.log('[Soundscape] killAllAudio called - NUCLEAR OPTION');
-    
-    // Kill the window-persisted audio singleton
-    if (window.__SOUNDSCAPE_AUDIO__) {
-      window.__SOUNDSCAPE_AUDIO__.pause();
-      window.__SOUNDSCAPE_AUDIO__.src = '';
-      window.__SOUNDSCAPE_AUDIO__.load();
-      delete window.__SOUNDSCAPE_AUDIO__;
-    }
-    
-    // Also kill our ref if it's still pointing at an element
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current.src = '';
-      audioRef.current.load();
-    }
-
-    // Stop all looping sounds from registry
-    stopAllLoopingSoundsForPath('');
-
-    // Query and pause ALL audio elements in DOM (safety net)
-    const allAudio = document.querySelectorAll('audio');
-    allAudio.forEach((audio, index) => {
-      console.log(`[Soundscape] Killing audio element ${index}:`, audio.src);
-      audio.pause();
-      audio.src = '';
-      audio.load();
-    });
-
-    // Reset state
-    setIsPlaying(false);
-    audioRef.current = null;
-    
-    console.log('[Soundscape] All audio NUKED');
-  }, []);
-
-  // Expose debug functions globally for console access
-  useEffect(() => {
-    (window as any).debugSoundscape = debugAudioState;
-    (window as any).killAllAudio = killAllAudio;
-    
-    return () => {
-      delete (window as any).debugSoundscape;
-      delete (window as any).killAllAudio;
-    };
-  }, [debugAudioState, killAllAudio]);
 
   const value: SoundscapeContextType = {
     isPlaying,
@@ -557,7 +405,6 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     handoffAudio,
     pauseForPriorityAudio,
     resumeAfterPriorityAudio,
-    killAllAudio,
   };
 
   return (
