@@ -28,6 +28,7 @@ import { CampaignCreationHeader } from "./CampaignCreationHeader";
 import { CampaignSuccessModal } from "./CampaignSuccessModal";
 import { InlineChannelConnector } from "./InlineChannelConnector";
 import { AudienceSelector } from "./AudienceSelector";
+import type { AudienceData } from "@/types/audience";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { toast } from "sonner";
@@ -58,11 +59,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   );
   
   // Audience selection state
-  const [audienceData, setAudienceData] = useState<{
-    type: 'contacts' | 'segments' | 'csv';
-    data: any;
-    recipientCount: number;
-  } | null>(null);
+  const [audienceData, setAudienceData] = useState<AudienceData>({});
 
   // Step 1 additions
   const [goal, setGoal] = useState("");
@@ -143,7 +140,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
         timezone,
         quiet_hours_enabled: quietHoursEnabled,
         ai_assist_enabled: aiAssistEnabled,
-        audience_data: audienceData, // Store audience selection
+        audience_data: audienceData as any, // Store audience selection
         best_times: Object.keys(selectedChannels)
           .filter(ch => selectedChannels[ch])
           .reduce((acc, ch) => {
@@ -245,7 +242,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
   const canProceed = () => {
     if (step === 1) return name.trim() !== "";
     if (step === 2) return Object.values(selectedChannels).some(v => v);
-    if (step === 3 && hasDirectMessaging) return audienceData && audienceData.recipientCount > 0;
+    if (step === 3 && hasDirectMessaging) return audienceData && (audienceData.eligibility?.total || 0) > 0;
     if (step === 3 && !hasDirectMessaging) return selectedTemplate !== "";
     if (step === 4 && hasDirectMessaging) return selectedTemplate !== "";
     return true;
@@ -543,7 +540,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign }: Campaign
               {step === 3 && hasDirectMessaging && (
                 <div className="space-y-4">
                   <AudienceSelector 
-                    selectedChannels={selectedChannels}
+                    selectedChannels={Object.keys(selectedChannels).filter(ch => selectedChannels[ch])}
+                    audienceData={audienceData}
                     onAudienceChange={setAudienceData}
                   />
                 </div>
