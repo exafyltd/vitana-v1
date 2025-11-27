@@ -1,0 +1,52 @@
+export interface ExternalContact {
+  name: string;
+  email?: string;
+  phone?: string;
+  whatsapp_number?: string;
+}
+
+export interface AudienceData {
+  // Vitana Contacts
+  vitanaContacts?: {
+    enabled: boolean;
+    contactIds: string[];
+  };
+  
+  // Community Segments
+  segments?: {
+    enabled: boolean;
+    segmentIds: string[];
+  };
+  
+  // Event Attendees
+  eventAttendees?: {
+    enabled: boolean;
+    eventIds: string[];
+  };
+  
+  // External Contacts (CSV)
+  csvUpload?: {
+    enabled: boolean;
+    data: ExternalContact[];
+  };
+  
+  // Manual Entry
+  manualContacts?: {
+    enabled: boolean;
+    data: ExternalContact[];
+  };
+  
+  // Eligibility counts (calculated)
+  eligibility?: {
+    email: number;
+    sms: number;
+    whatsapp: number;
+    total: number;
+  };
+}
+
+export interface CsvValidationResult {
+  valid: ExternalContact[];
+  invalid: Array<{ row: number; data: any; errors: string[] }>;
+  totalRows: number;
+}

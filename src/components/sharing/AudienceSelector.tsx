@@ -1,328 +1,235 @@
 import { useState, useEffect } from "react";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Input } from "@/components/ui/input";
+import { Users, Upload, PenLine, Target } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useContacts } from "@/hooks/useContacts";
-import { Users, Upload, Filter, CheckCircle2, AlertCircle, Mail, Phone, MessageSquare } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { CsvContactUploader } from "./CsvContactUploader";
+import { ManualContactEntry } from "./ManualContactEntry";
+import { ChannelEligibilityBadges } from "./ChannelEligibilityBadges";
+import type { AudienceData, ExternalContact } from "@/types/audience";
 
 interface AudienceSelectorProps {
-  selectedChannels: Record<string, boolean>;
-  onAudienceChange: (audienceData: {
-    type: 'contacts' | 'segments' | 'csv';
-    data: any;
-    recipientCount: number;
-  }) => void;
+  audienceData?: AudienceData;
+  onAudienceChange: (data: AudienceData) => void;
+  selectedChannels?: string[];
 }
 
-export function AudienceSelector({ selectedChannels, onAudienceChange }: AudienceSelectorProps) {
-  const { contacts, isLoading: contactsLoading } = useContacts();
-  const [audienceType, setAudienceType] = useState<'contacts' | 'segments' | 'csv'>('contacts');
-  const [selectedContacts, setSelectedContacts] = useState<Set<string>>(new Set());
-  const [csvFile, setCsvFile] = useState<File | null>(null);
-  const [csvRecipientCount, setCsvRecipientCount] = useState(0);
+export function AudienceSelector({ 
+  audienceData, 
+  onAudienceChange,
+  selectedChannels = []
+}: AudienceSelectorProps) {
+  const { contacts } = useContacts();
+  
+  const [vitanaContactsEnabled, setVitanaContactsEnabled] = useState(
+    audienceData?.vitanaContacts?.enabled || false
+  );
+  const [selectedContactIds, setSelectedContactIds] = useState<string[]>(
+    audienceData?.vitanaContacts?.contactIds || []
+  );
+  
+  const [csvEnabled, setCsvEnabled] = useState(audienceData?.csvUpload?.enabled || false);
+  const [csvContacts, setCsvContacts] = useState<ExternalContact[]>(
+    audienceData?.csvUpload?.data || []
+  );
+  
+  const [manualEnabled, setManualEnabled] = useState(audienceData?.manualContacts?.enabled || false);
+  const [manualContacts, setManualContacts] = useState<ExternalContact[]>(
+    audienceData?.manualContacts?.data || []
+  );
 
-  // Check if any direct messaging channels are selected
-  const hasDirectMessaging = ['email', 'sms', 'whatsapp'].some(ch => selectedChannels[ch]);
-
-  // Filter contacts that have the necessary contact info for selected channels
-  const eligibleContacts = contacts?.filter(contact => {
-    if (selectedChannels.email && contact.contact_email) return true;
-    if (selectedChannels.sms && contact.contact_phone) return true;
-    if (selectedChannels.whatsapp && contact.contact_phone) return true;
-    return false;
-  }) || [];
-
-  // Calculate recipient count based on audience type
-  const getRecipientCount = () => {
-    if (audienceType === 'contacts') {
-      return selectedContacts.size;
-    } else if (audienceType === 'csv') {
-      return csvRecipientCount;
-    } else {
-      return 0; // Segments - would calculate based on segment criteria
-    }
-  };
-
-  // Notify parent of audience changes
+  // Calculate eligibility whenever sources change
   useEffect(() => {
-    if (audienceType === 'contacts') {
-      const selectedContactData = Array.from(selectedContacts).map(id => 
-        eligibleContacts.find(c => c.id === id)
-      ).filter(Boolean);
-      
-      onAudienceChange({
-        type: 'contacts',
-        data: selectedContactData,
-        recipientCount: selectedContactData.length,
-      });
-    } else if (audienceType === 'csv' && csvFile) {
-      onAudienceChange({
-        type: 'csv',
-        data: csvFile,
-        recipientCount: csvRecipientCount,
-      });
+    const allContacts: ExternalContact[] = [];
+    
+    // Gather all contacts from enabled sources
+    if (vitanaContactsEnabled) {
+      const selected = contacts.filter(c => selectedContactIds.includes(c.id));
+      allContacts.push(...selected.map(c => ({
+        name: c.contact_name,
+        email: c.contact_email || undefined,
+        phone: c.contact_phone || undefined,
+        whatsapp_number: c.contact_phone || undefined // Use phone as fallback
+      })));
     }
-  }, [audienceType, selectedContacts, csvFile, csvRecipientCount]);
+    
+    if (csvEnabled) {
+      allContacts.push(...csvContacts);
+    }
+    
+    if (manualEnabled) {
+      allContacts.push(...manualContacts);
+    }
+    
+    // Calculate unique recipients by email/phone
+    const uniqueEmails = new Set(allContacts.map(c => c.email).filter(Boolean));
+    const uniquePhones = new Set(allContacts.map(c => c.phone).filter(Boolean));
+    const uniqueWhatsApp = new Set(
+      allContacts.map(c => c.whatsapp_number || c.phone).filter(Boolean)
+    );
+    
+    const eligibility = {
+      email: uniqueEmails.size,
+      sms: uniquePhones.size,
+      whatsapp: uniqueWhatsApp.size,
+      total: new Set([...uniqueEmails, ...uniquePhones]).size
+    };
+    
+    // Update parent with all audience data
+    onAudienceChange({
+      vitanaContacts: vitanaContactsEnabled ? {
+        enabled: true,
+        contactIds: selectedContactIds
+      } : undefined,
+      csvUpload: csvEnabled ? {
+        enabled: true,
+        data: csvContacts
+      } : undefined,
+      manualContacts: manualEnabled ? {
+        enabled: true,
+        data: manualContacts
+      } : undefined,
+      eligibility
+    });
+  }, [
+    vitanaContactsEnabled,
+    selectedContactIds,
+    csvEnabled,
+    csvContacts,
+    manualEnabled,
+    manualContacts,
+    contacts,
+    onAudienceChange
+  ]);
 
   const handleContactToggle = (contactId: string) => {
-    const newSelected = new Set(selectedContacts);
-    if (newSelected.has(contactId)) {
-      newSelected.delete(contactId);
-    } else {
-      newSelected.add(contactId);
-    }
-    setSelectedContacts(newSelected);
+    setSelectedContactIds(prev => 
+      prev.includes(contactId)
+        ? prev.filter(id => id !== contactId)
+        : [...prev, contactId]
+    );
   };
-
-  const handleSelectAll = () => {
-    setSelectedContacts(new Set(eligibleContacts.map(c => c.id)));
-  };
-
-  const handleDeselectAll = () => {
-    setSelectedContacts(new Set());
-  };
-
-  const handleCsvUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setCsvFile(file);
-      // Parse CSV to count recipients (simplified - would need full CSV parser)
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target?.result as string;
-        const lines = text.split('\n').filter(line => line.trim());
-        setCsvRecipientCount(Math.max(0, lines.length - 1)); // Subtract header row
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  if (!hasDirectMessaging) {
-    return null; // Don't show audience selector if no direct messaging channels
-  }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <Label className="text-base font-semibold">Select Your Audience</Label>
-        <Badge variant="outline" className="gap-1">
-          <Users className="w-3 h-3" />
-          {getRecipientCount()} recipients
-        </Badge>
+    <div className="space-y-6">
+      <div>
+        <h3 className="font-semibold mb-2">Select Your Audience</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Choose one or more audience sources. You can combine multiple sources.
+        </p>
+        
+        {/* Vitana Contacts */}
+        <div className="space-y-3 mb-4">
+          <div className="flex items-start gap-3 p-4 border rounded-lg">
+            <Checkbox
+              checked={vitanaContactsEnabled}
+              onCheckedChange={(checked) => setVitanaContactsEnabled(!!checked)}
+              className="mt-0.5"
+            />
+            <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
+            <div className="flex-1">
+              <div className="font-medium">Vitana Contacts</div>
+              <div className="text-sm text-muted-foreground">
+                Choose from your saved contacts
+              </div>
+              {vitanaContactsEnabled && (
+                <div className="mt-3 space-y-2 max-h-64 overflow-y-auto">
+                  {contacts.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">No contacts available</p>
+                  ) : (
+                    contacts.map(contact => (
+                      <div
+                        key={contact.id}
+                        className="flex items-center gap-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors"
+                      >
+                        <Checkbox
+                          checked={selectedContactIds.includes(contact.id)}
+                          onCheckedChange={() => handleContactToggle(contact.id)}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium text-sm">{contact.contact_name}</div>
+                          <div className="text-xs text-muted-foreground truncate">
+                            {contact.contact_email || contact.contact_phone || 'No contact info'}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* CSV Upload */}
+        <div className="space-y-3 mb-4">
+          <div className="flex items-start gap-3 p-4 border rounded-lg">
+            <Checkbox
+              checked={csvEnabled}
+              onCheckedChange={(checked) => setCsvEnabled(!!checked)}
+              className="mt-0.5"
+            />
+            <Upload className="h-5 w-5 text-muted-foreground mt-0.5" />
+            <div className="flex-1">
+              <div className="font-medium">External Contacts (CSV)</div>
+              <div className="text-sm text-muted-foreground mb-3">
+                Import contacts from a CSV file
+              </div>
+              {csvEnabled && (
+                <CsvContactUploader
+                  currentContacts={csvContacts}
+                  onContactsImported={setCsvContacts}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Manual Entry */}
+        <div className="space-y-3 mb-4">
+          <div className="flex items-start gap-3 p-4 border rounded-lg">
+            <Checkbox
+              checked={manualEnabled}
+              onCheckedChange={(checked) => setManualEnabled(!!checked)}
+              className="mt-0.5"
+            />
+            <PenLine className="h-5 w-5 text-muted-foreground mt-0.5" />
+            <div className="flex-1">
+              <div className="font-medium">Manual Entry</div>
+              <div className="text-sm text-muted-foreground mb-3">
+                Add contacts manually (up to 10)
+              </div>
+              {manualEnabled && (
+                <ManualContactEntry
+                  contacts={manualContacts}
+                  onContactsChange={setManualContacts}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Coming Soon */}
+        <div className="space-y-3 opacity-50 pointer-events-none">
+          <div className="flex items-center gap-3 p-4 border rounded-lg">
+            <Checkbox disabled />
+            <Target className="h-5 w-5 text-muted-foreground" />
+            <div className="flex-1">
+              <div className="font-medium">Community Segments</div>
+              <div className="text-sm text-muted-foreground">Coming soon</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <Alert className="bg-[hsl(var(--pill-hydration-tint))] border-[hsl(var(--pill-hydration-accent))]/20">
-        <AlertCircle className="w-4 h-4 text-[hsl(var(--pill-hydration-accent))]" />
-        <AlertDescription className="text-sm">
-          Direct messaging requires audience selection. Choose from your contacts, segments, or upload a CSV list.
-        </AlertDescription>
-      </Alert>
-
-      {/* Audience Type Selection */}
-      <RadioGroup value={audienceType} onValueChange={(val) => setAudienceType(val as any)}>
-        <div className="grid gap-3">
-          <Card className={cn(
-            "cursor-pointer transition-all border-2",
-            audienceType === 'contacts' 
-              ? "border-[hsl(var(--pill-nutrition-accent))] bg-[hsl(var(--pill-nutrition-tint))]" 
-              : "border-border hover:border-muted-foreground/50"
-          )}>
-            <CardContent className="p-4" onClick={() => setAudienceType('contacts')}>
-              <div className="flex items-start gap-3">
-                <RadioGroupItem value="contacts" id="contacts" className="mt-1" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Users className="w-4 h-4" />
-                    <Label htmlFor="contacts" className="font-semibold cursor-pointer">
-                      My Vitana Contacts
-                    </Label>
-                    <Badge variant="secondary" className="text-xs">
-                      {eligibleContacts.length} available
-                    </Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Select from your existing contacts with verified contact info
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className={cn(
-            "cursor-pointer transition-all border-2 opacity-60",
-            audienceType === 'segments' 
-              ? "border-[hsl(var(--pill-nutrition-accent))] bg-[hsl(var(--pill-nutrition-tint))]" 
-              : "border-border hover:border-muted-foreground/50"
-          )}>
-            <CardContent className="p-4" onClick={() => setAudienceType('segments')}>
-              <div className="flex items-start gap-3">
-                <RadioGroupItem value="segments" id="segments" className="mt-1" disabled />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Filter className="w-4 h-4" />
-                    <Label htmlFor="segments" className="font-semibold cursor-pointer">
-                      Community Segments
-                    </Label>
-                    <Badge variant="secondary" className="text-xs">Coming soon</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Target event attendees, group members, or custom segments
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className={cn(
-            "cursor-pointer transition-all border-2",
-            audienceType === 'csv' 
-              ? "border-[hsl(var(--pill-nutrition-accent))] bg-[hsl(var(--pill-nutrition-tint))]" 
-              : "border-border hover:border-muted-foreground/50"
-          )}>
-            <CardContent className="p-4" onClick={() => setAudienceType('csv')}>
-              <div className="flex items-start gap-3">
-                <RadioGroupItem value="csv" id="csv" className="mt-1" />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Upload className="w-4 h-4" />
-                    <Label htmlFor="csv" className="font-semibold cursor-pointer">
-                      Upload CSV List
-                    </Label>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Import a custom recipient list (must include email or phone)
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </RadioGroup>
-
-      {/* Contact Selection */}
-      {audienceType === 'contacts' && (
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <Label className="text-sm font-medium">Select Recipients</Label>
-            <div className="flex gap-2">
-              <Button variant="ghost" size="sm" onClick={handleSelectAll}>
-                Select All
-              </Button>
-              <Button variant="ghost" size="sm" onClick={handleDeselectAll}>
-                Clear
-              </Button>
-            </div>
-          </div>
-
-          {contactsLoading ? (
-            <div className="text-center py-8 text-muted-foreground">
-              Loading contacts...
-            </div>
-          ) : eligibleContacts.length === 0 ? (
-            <Alert>
-              <AlertCircle className="w-4 h-4" />
-              <AlertDescription>
-                No contacts found with the required contact information for selected channels.
-                Add contacts with email or phone numbers first.
-              </AlertDescription>
-            </Alert>
-          ) : (
-            <div className="border rounded-lg max-h-60 overflow-y-auto">
-              {eligibleContacts.map((contact) => {
-                const isSelected = selectedContacts.has(contact.id);
-                const hasConsent = true; // Would check actual consent status
-                
-                return (
-                  <div
-                    key={contact.id}
-                    className={cn(
-                      "flex items-center gap-3 p-3 border-b last:border-b-0 cursor-pointer transition-colors",
-                      isSelected ? "bg-[hsl(var(--pill-nutrition-tint))]" : "hover:bg-muted/50"
-                    )}
-                    onClick={() => handleContactToggle(contact.id)}
-                  >
-                    <div className={cn(
-                      "w-4 h-4 rounded border-2 flex items-center justify-center transition-all",
-                      isSelected 
-                        ? "border-[hsl(var(--pill-nutrition-accent))] bg-[hsl(var(--pill-nutrition-accent))]" 
-                        : "border-border"
-                    )}>
-                      {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm">{contact.contact_name}</span>
-                        {hasConsent && (
-                          <Badge variant="outline" className="text-xs gap-1 bg-[hsl(var(--pill-nutrition-tint))]">
-                            <CheckCircle2 className="w-3 h-3" />
-                            Opted in
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                        {contact.contact_email && (
-                          <span className="flex items-center gap-1">
-                            <Mail className="w-3 h-3" />
-                            {contact.contact_email}
-                          </span>
-                        )}
-                        {contact.contact_phone && (
-                          <span className="flex items-center gap-1">
-                            <Phone className="w-3 h-3" />
-                            {contact.contact_phone}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+      {/* Channel Eligibility */}
+      {(vitanaContactsEnabled || csvEnabled || manualEnabled) && selectedChannels.length > 0 && (
+        <div className="pt-6 border-t">
+          <ChannelEligibilityBadges
+            audienceData={audienceData || {}}
+            selectedChannels={selectedChannels}
+          />
         </div>
       )}
-
-      {/* CSV Upload */}
-      {audienceType === 'csv' && (
-        <div className="space-y-3">
-          <Label className="text-sm font-medium">Upload CSV File</Label>
-          <div className="border-2 border-dashed rounded-lg p-6 text-center">
-            <Upload className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-            <Input
-              type="file"
-              accept=".csv"
-              onChange={handleCsvUpload}
-              className="max-w-xs mx-auto"
-            />
-            {csvFile && (
-              <div className="mt-3 text-sm">
-                <p className="font-medium">{csvFile.name}</p>
-                <p className="text-muted-foreground">{csvRecipientCount} recipients found</p>
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground mt-2">
-              CSV must include columns: name, email (for email campaigns) or phone (for SMS/WhatsApp)
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Channel Requirements */}
-      <Alert className="bg-muted/50">
-        <MessageSquare className="w-4 h-4" />
-        <AlertDescription className="text-xs">
-          <strong>Selected channels require:</strong>
-          {selectedChannels.email && " Email addresses"}
-          {(selectedChannels.sms || selectedChannels.whatsapp) && " Phone numbers"}
-          {". Recipients without required info will be skipped."}
-        </AlertDescription>
-      </Alert>
     </div>
   );
 }

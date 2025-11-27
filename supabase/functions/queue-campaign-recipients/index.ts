@@ -47,10 +47,22 @@ serve(async (req) => {
     // Process CSV uploads
     if (audienceData?.csvUpload?.enabled && audienceData.csvUpload.data?.length > 0) {
       allRecipients.push(...audienceData.csvUpload.data.map((row: any) => ({
-        name: row.name || row.Name || 'Unknown',
-        email: row.email || row.Email,
-        phone: row.phone || row.Phone,
+        name: row.name || 'Unknown',
+        email: row.email,
+        phone: row.phone,
+        whatsapp_number: row.whatsapp_number || row.phone, // Use phone as fallback
         source: 'csv_upload'
+      })));
+    }
+
+    // Process Manual Entry
+    if (audienceData?.manualContacts?.enabled && audienceData.manualContacts.data?.length > 0) {
+      allRecipients.push(...audienceData.manualContacts.data.map((contact: any) => ({
+        name: contact.name || 'Unknown',
+        email: contact.email,
+        phone: contact.phone,
+        whatsapp_number: contact.whatsapp_number || contact.phone,
+        source: 'manual_entry'
       })));
     }
 
@@ -84,9 +96,21 @@ serve(async (req) => {
       }
     }
 
-    console.log(`Found ${allRecipients.length} total recipients`);
+    // Deduplicate recipients by email and phone
+    const uniqueRecipients: any[] = [];
+    const seen = new Set<string>();
 
-    if (allRecipients.length === 0) {
+    for (const recipient of allRecipients) {
+      const key = [recipient.email, recipient.phone].filter(Boolean).join('|');
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueRecipients.push(recipient);
+      }
+    }
+
+    console.log(`Found ${allRecipients.length} total recipients (${uniqueRecipients.length} unique)`);
+
+    if (uniqueRecipients.length === 0) {
       return new Response(
         JSON.stringify({ message: 'No recipients found', queued: 0 }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -97,11 +121,12 @@ serve(async (req) => {
     const campaignRecipients = [];
     const messageQueueItems = [];
 
-    for (const recipient of allRecipients) {
+    for (const recipient of uniqueRecipients) {
       for (const channel of channels) {
         // Validate recipient has required contact info for channel
         if (channel === 'email' && !recipient.email) continue;
-        if ((channel === 'sms' || channel === 'whatsapp') && !recipient.phone) continue;
+        if (channel === 'sms' && !recipient.phone) continue;
+        if (channel === 'whatsapp' && !recipient.whatsapp_number && !recipient.phone) continue;
 
         // Create campaign recipient record
         const recipientRecord = {
@@ -132,18 +157,22 @@ serve(async (req) => {
         campaignRecipients.push(insertedRecipient);
 
         // Create message queue item
-        messageQueueItems.push({
+        const queueItem: any = {
           campaign_id: campaignId,
           recipient_id: insertedRecipient.id,
           channel: channel,
           recipient_email: recipient.email,
-          recipient_phone: recipient.phone,
+          recipient_phone: channel === 'whatsapp' 
+            ? (recipient.whatsapp_number || recipient.phone)
+            : recipient.phone,
           recipient_name: recipient.name,
           message_content: messageContent,
           status: 'pending',
           retry_count: 0,
           scheduled_for: new Date().toISOString()
-        });
+        };
+
+        messageQueueItems.push(queueItem);
       }
     }
 
@@ -166,7 +195,7 @@ serve(async (req) => {
       .update({ 
         status: 'distributing',
         metadata: {
-          total_recipients: allRecipients.length,
+          total_recipients: uniqueRecipients.length,
           total_messages: queuedMessages.length,
           queued_at: new Date().toISOString()
         }
