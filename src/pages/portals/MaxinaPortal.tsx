@@ -67,13 +67,13 @@ const MaxinaPortal = () => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
 
-  // Start soundscape when video loads
+  // Set soundscape volume when video loads (don't auto-play, respect user preference)
   useEffect(() => {
     if (videoSrc) {
       setVolume(0.05);
-      play();
+      // Don't auto-play - let user start it via interaction
     }
-  }, [videoSrc, play, setVolume]);
+  }, [videoSrc, setVolume]);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);

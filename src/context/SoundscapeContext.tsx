@@ -10,6 +10,17 @@ declare global {
 
 function getOrCreateAudioElement(src: string): HTMLAudioElement {
   const filename = src.split('/').pop() || '';
+  
+  // FIRST: Stop any orphaned audio elements playing this track
+  const allAudio = document.querySelectorAll('audio');
+  allAudio.forEach((audio) => {
+    if (audio.src.includes(filename) && audio !== window.__SOUNDSCAPE_AUDIO__) {
+      console.log('[Soundscape] Found orphaned audio element, stopping it:', audio.src);
+      audio.pause();
+      audio.src = '';
+      audio.load();
+    }
+  });
 
   // Check for existing HMR-surviving audio element
   const existing = window.__SOUNDSCAPE_AUDIO__;
@@ -250,9 +261,10 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
 
     if (isMutedRef.current) {
-      // Unmute - restore volume AND ensure audio is playing
+      // Unmute - restore volume AND muted property
       const targetVolume = previousVolumeRef.current;
       console.log('[Soundscape] Unmuting, restoring volume to:', targetVolume);
+      audioRef.current.muted = false;  // Use muted property for reliability
       audioRef.current.volume = targetVolume;
       setIsMuted(false);
       
@@ -266,8 +278,9 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
         });
       }
     } else {
-      // Mute
-      console.log('[Soundscape] Muting, setting volume to 0');
+      // Mute - use both volume and muted property
+      console.log('[Soundscape] Muting, setting volume to 0 and muted to true');
+      audioRef.current.muted = true;  // Use muted property for reliability
       audioRef.current.volume = 0;
       setIsMuted(true);
       console.log('[Soundscape] Audio element volume after mute:', audioRef.current.volume);
