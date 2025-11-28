@@ -6,6 +6,25 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+function isCrawler(userAgent: string): boolean {
+  const crawlerPatterns = [
+    'WhatsApp',
+    'facebookexternalhit',
+    'Facebot',
+    'Twitterbot',
+    'LinkedInBot',
+    'TelegramBot',
+    'Slackbot',
+    'Discordbot',
+    'bot',
+    'crawler',
+    'spider'
+  ];
+  return crawlerPatterns.some(pattern => 
+    userAgent.toLowerCase().includes(pattern.toLowerCase())
+  );
+}
+
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
 
@@ -34,7 +53,7 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 200);
 }
 
-function generateOGHTML(content: ContentData): string {
+function generateOGHTML(content: ContentData, isCrawlerRequest: boolean): string {
   const title = sanitizeText(content.title);
   const description = sanitizeText(content.description);
   const imageUrl = ensureAbsoluteUrl(content.image_url);
@@ -63,16 +82,20 @@ function generateOGHTML(content: ContentData): string {
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${imageUrl}">
-  
+  ${isCrawlerRequest ? '' : `
   <!-- Redirect real users to actual app -->
-  <meta http-equiv="refresh" content="0;url=${appUrl}">
+  <meta http-equiv="refresh" content="1;url=${appUrl}">
   <script>
-    window.location.href = "${appUrl}";
+    setTimeout(function() {
+      window.location.href = "${appUrl}";
+    }, 1000);
   </script>
+  `}
 </head>
 <body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 40px;">
-  <h1>Redirecting to VITANA...</h1>
-  <p>If you're not redirected automatically, <a href="${appUrl}">click here</a>.</p>
+  <h1>${title}</h1>
+  <p>${description}</p>
+  ${isCrawlerRequest ? `<p><a href="${appUrl}">View on VITANA</a></p>` : `<p>Redirecting to VITANA...</p><p>If you're not redirected automatically, <a href="${appUrl}">click here</a>.</p>`}
 </body>
 </html>`;
 }
@@ -87,8 +110,10 @@ serve(async (req) => {
     const url = new URL(req.url);
     const type = url.searchParams.get('type');
     const id = url.searchParams.get('id');
+    const userAgent = req.headers.get('user-agent') || '';
+    const isCrawlerRequest = isCrawler(userAgent);
 
-    console.log(`[og-share] Request: type=${type}, id=${id}`);
+    console.log(`[og-share] Request: type=${type}, id=${id}, crawler=${isCrawlerRequest}`);
 
     if (!type || !id) {
       return new Response('Missing type or id parameter', { 
@@ -214,7 +239,7 @@ serve(async (req) => {
 
     console.log('[og-share] Generated OG tags for:', contentData.title);
 
-    const html = generateOGHTML(contentData);
+    const html = generateOGHTML(contentData, isCrawlerRequest);
 
     return new Response(html, {
       headers: {
