@@ -21,6 +21,8 @@ export function getShareUrl(
     const params = new URLSearchParams();
     params.set('type', type);
     params.set('id', id);
+    // Cache-buster to force platforms like WhatsApp to re-fetch OG tags
+    params.set('v', '2');
     
     // Add UTM parameters if provided
     if (options?.utm_source) params.set('utm_source', options.utm_source);
