@@ -18,9 +18,10 @@ export function getShareUrl(
   const appUrl = window.location.origin;
   
   // Map content types to app routes
+  // Events use public landing page for external sharing
   const routeMap: Record<typeof type, string> = {
-    event: `/comm/events-meetups?event=${encodeURIComponent(id)}`,
-    meetup: `/comm/events-meetups?event=${encodeURIComponent(id)}`,
+    event: `/pub/events/${encodeURIComponent(id)}`,
+    meetup: `/pub/events/${encodeURIComponent(id)}`,
     group: `/comm/groups/${encodeURIComponent(id)}`,
     profile: `/profile/${encodeURIComponent(id)}`,
     post: `/sharing/posts/${encodeURIComponent(id)}`,
