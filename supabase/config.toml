@@ -140,3 +140,6 @@ verify_jwt = true
 
 [functions.trigger-scheduled-campaigns]
 verify_jwt = false
+
+[functions.og-share]
+verify_jwt = false

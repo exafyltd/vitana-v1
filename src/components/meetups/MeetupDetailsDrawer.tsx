@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
+import { getShareUrl } from "@/lib/shareUrl";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -302,7 +303,11 @@ export function MeetupDetailsDrawer({
   };
 
   const handleShare = (platform?: string) => {
-    const url = `${window.location.origin}/comm/meetups?meetup=${event.id}`;
+    // Use OG-enabled share URL for rich social media previews
+    const url = getShareUrl('event', event.id, {
+      utm_source: 'event_details',
+      utm_medium: platform || 'copy_link'
+    });
     const text = `Check out this meetup: ${event.title}`;
     
     if (platform === 'twitter') {
