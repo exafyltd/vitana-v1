@@ -102,19 +102,68 @@ function generateOGHTML(content: ContentData, isCrawlerRequest: boolean): string
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${imageUrl}">
   ${isCrawlerRequest ? '' : `
-  <!-- Redirect real users to actual app -->
-  <meta http-equiv="refresh" content="1;url=${appUrl}">
+  <!-- Instant redirect for real users -->
+  <meta http-equiv="refresh" content="0;url=${appUrl}">
   <script>
-    setTimeout(function() {
-      window.location.href = "${appUrl}";
-    }, 1000);
+    // Immediate redirect - no delay
+    window.location.replace("${appUrl}");
   </script>
   `}
 </head>
-<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 40px;">
+<body style="${!isCrawlerRequest ? `
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+` : 'font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 40px;'}">
+  ${!isCrawlerRequest ? `
+  <div style="max-width: 400px;">
+    <!-- Vitana Logo -->
+    <div style="font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 16px; color: #60a5fa;">
+      VITANA
+    </div>
+    
+    <!-- Loading spinner -->
+    <div style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #60a5fa; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 24px;"></div>
+    
+    <!-- Message -->
+    <h1 style="font-size: 20px; font-weight: 500; margin: 0 0 8px; color: #ffffff;">
+      Opening your event in VITANA…
+    </h1>
+    <p style="font-size: 14px; color: rgba(255,255,255,0.6); margin: 0 0 24px;">
+      You'll be redirected automatically
+    </p>
+    
+    <!-- Fallback link -->
+    <a href="${appUrl}" style="
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+    ">
+      Open Event →
+    </a>
+  </div>
+  
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  ` : `
   <h1>${title}</h1>
   <p>${description}</p>
-  ${isCrawlerRequest ? `<p><a href="${appUrl}">View on VITANA</a></p>` : `<p>Redirecting to VITANA...</p><p>If you're not redirected automatically, <a href="${appUrl}">click here</a>.</p>`}
+  <p><a href="${appUrl}">View on VITANA</a></p>
+  `}
 </body>
 </html>`;
 }
