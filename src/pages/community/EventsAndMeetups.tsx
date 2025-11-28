@@ -564,11 +564,23 @@ const EventsAndMeetups = () => {
   const hasNext = currentIndex >= 0 && currentIndex < visibleEventIds.length - 1;
   const canEdit = selectedEventData && user && (selectedEventData.created_by === user.id || selectedEventData.is_co_creator === true);
 
+  // Dynamic OG meta tags for selected event
+  const eventSEO = selectedEventData ? {
+    title: selectedEventData.title,
+    description: selectedEventData.description || `Join us ${selectedEventData.start_time ? `on ${new Date(selectedEventData.start_time).toLocaleDateString()}` : ''} ${selectedEventData.location ? `at ${selectedEventData.location}` : ''}`,
+    image: selectedEventData.image_url || generateImageUrl(selectedEventData.title, selectedEventData.description),
+    url: `${window.location.origin}/comm/events-meetups?event=${selectedEventData.id}`,
+    type: 'event' as const,
+  } : null;
+
   return (
     <>
       <SEO 
-        title="Events & MeetUps" 
-        description="Discover and join community events and casual meetups"
+        title={eventSEO ? eventSEO.title : "Events & MeetUps"}
+        description={eventSEO ? eventSEO.description : "Discover and join community events and casual meetups"}
+        image={eventSEO?.image}
+        url={eventSEO?.url}
+        type={eventSEO?.type || 'website'}
       />
       <AppLayout>
         <SubNavigation items={communityNavigation} />

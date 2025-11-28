@@ -1,10 +1,10 @@
 /**
- * Generate a share URL with Open Graph support for rich previews on social media
+ * Generate a direct share URL with UTM parameters for tracking
  * 
  * @param type Content type (event, meetup, group, profile, post)
  * @param id Content ID
  * @param options Optional UTM parameters for tracking
- * @returns Share URL that serves OG tags for crawlers and redirects users to app
+ * @returns Direct app URL with UTM parameters
  */
 export function getShareUrl(
   type: 'event' | 'meetup' | 'group' | 'profile' | 'post',
@@ -15,18 +15,25 @@ export function getShareUrl(
     utm_campaign?: string;
   }
 ): string {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
-  const baseUrl = `${supabaseUrl}/functions/v1/og-share`;
+  const appUrl = window.location.origin;
   
-  const params = new URLSearchParams({
-    type,
-    id,
-  });
+  // Map content types to app routes
+  const routeMap: Record<typeof type, string> = {
+    event: `/comm/events-meetups?event=${encodeURIComponent(id)}`,
+    meetup: `/comm/events-meetups?event=${encodeURIComponent(id)}`,
+    group: `/comm/groups/${encodeURIComponent(id)}`,
+    profile: `/profile/${encodeURIComponent(id)}`,
+    post: `/sharing/posts/${encodeURIComponent(id)}`,
+  };
+  
+  const path = routeMap[type];
+  const params = new URLSearchParams();
 
   // Add UTM parameters if provided
   if (options?.utm_source) params.set('utm_source', options.utm_source);
   if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
   if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
   
-  return `${baseUrl}?${params.toString()}`;
+  const queryString = params.toString();
+  return `${appUrl}${path}${queryString ? '&' + queryString : ''}`;
 }
