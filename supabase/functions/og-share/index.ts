@@ -215,7 +215,7 @@ serve(async (req) => {
             title: data.title,
             description: data.description || `Join us ${data.start_time ? `on ${new Date(data.start_time).toLocaleDateString()}` : ''} ${data.location ? `at ${data.location}` : ''}`,
             image_url: data.image_url,
-            url: `${PUBLIC_APP_URL}/comm/events-meetups?event=${id}`
+            url: `${PUBLIC_APP_URL}/pub/events/${id}`
           };
         }
         break;
