@@ -36,5 +36,5 @@ export function getShareUrl(
   if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
   
   const queryString = params.toString();
-  return `${appUrl}${path}${queryString ? '&' + queryString : ''}`;
+  return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
 }
