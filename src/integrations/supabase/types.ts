@@ -5187,6 +5187,42 @@ export type Database = {
         }
         Relationships: []
       }
+      software_versions: {
+        Row: {
+          created_at: string
+          deploy_type: string
+          environment: string
+          git_commit: string
+          id: string
+          initiator: string
+          service: string
+          status: string
+          swv_id: string
+        }
+        Insert: {
+          created_at?: string
+          deploy_type: string
+          environment?: string
+          git_commit: string
+          id?: string
+          initiator: string
+          service: string
+          status: string
+          swv_id: string
+        }
+        Update: {
+          created_at?: string
+          deploy_type?: string
+          environment?: string
+          git_commit?: string
+          id?: string
+          initiator?: string
+          service?: string
+          status?: string
+          swv_id?: string
+        }
+        Relationships: []
+      }
       stream_recordings: {
         Row: {
           created_at: string

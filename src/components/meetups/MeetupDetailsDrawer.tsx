@@ -67,9 +67,10 @@ import {
   MapPinned,
   Megaphone,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import SEO from "@/components/SEO";
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
@@ -492,12 +493,29 @@ export function MeetupDetailsDrawer({
     }
   };
 
+  // Generate SEO data for rich link previews
+  const eventUrl = `${window.location.origin}/comm/events-meetups?event=${event.id}`;
+  const eventDescription = event.description?.slice(0, 200) || `Join ${event.title} on ${format(startDate, 'MMMM d, yyyy')}`;
+  const eventImage = getAbsoluteImageUrl(event.image_url);
+
   const content = (
-    <div 
-      className="flex flex-col h-full"
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
+    <>
+      {open && (
+        <SEO
+          title={`${event.title} | VITANA Events`}
+          description={eventDescription}
+          image={eventImage}
+          imageAlt={event.title}
+          url={eventUrl}
+          type="event"
+          canonical={eventUrl}
+        />
+      )}
+      <div 
+        className="flex flex-col h-full"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
     >
       <ScrollArea className="flex-1 pb-20">
         <div 
@@ -1150,6 +1168,7 @@ export function MeetupDetailsDrawer({
       {/* Profile Preview Dialog */}
       <ProfilePreviewDialog />
     </div>
+    </>
   );
 
   // Use Drawer for desktop, Sheet for mobile
