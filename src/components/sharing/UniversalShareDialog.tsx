@@ -160,10 +160,18 @@ export function UniversalShareDialog({
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
       instagram: `https://www.instagram.com/`, // Instagram doesn't support direct web sharing
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`,
+      email: `mailto:?subject=${encodeURIComponent(content.title)}&body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`,
+      sms: `sms:?body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`,
+      slack: `https://slack.com/intl/en-ae/`, // Slack doesn't have direct web share URL
     };
     
     if (shareUrls[platformId]) {
-      window.open(shareUrls[platformId], '_blank', 'width=600,height=400');
+      if (platformId === 'email' || platformId === 'sms') {
+        window.location.href = shareUrls[platformId];
+      } else {
+        window.open(shareUrls[platformId], '_blank', 'width=600,height=400');
+      }
       analytics.trackShare('share_completed', 'universal', content.id, content.type);
       toast({
         title: "Share opened",
