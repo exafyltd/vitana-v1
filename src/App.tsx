@@ -122,6 +122,7 @@ import AlkalmaConfirmed from "./pages/portals/AlkalmaConfirmed";
 import EarthlinksConfirmed from "./pages/portals/EarthlinksConfirmed";
 import CommunityConfirmed from "./pages/portals/CommunityConfirmed";
 import PublicProfilePage from "./pages/PublicProfilePage";
+import PublicEventLanding from "./pages/PublicEventLanding";
 import EditProfilePage from "./pages/EditProfilePage";
 import Wallet from "./pages/Wallet";
 import Sharing from "./pages/Sharing";
@@ -305,6 +306,9 @@ const App = () => {
           <Route path="/alkalma/confirmed" element={<AlkalmaConfirmed />} />
           <Route path="/earthlinks/confirmed" element={<EarthlinksConfirmed />} />
           <Route path="/community/confirmed" element={<CommunityConfirmed />} />
+          
+          {/* Public Routes - No Auth Required */}
+          <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
