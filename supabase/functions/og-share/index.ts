@@ -49,7 +49,7 @@ function generateOGHTML(content: ContentData): string {
   <meta name="description" content="${description}">
   
   <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="event">
   <meta property="og:site_name" content="VITANA">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
