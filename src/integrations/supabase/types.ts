@@ -6604,6 +6604,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_public_event_details: { Args: { event_id: string }; Returns: Json }
       get_recent_admin_activity: {
         Args: { limit_count?: number }
         Returns: {

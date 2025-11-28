@@ -39,12 +39,9 @@ export default function PublicEventLanding() {
       }
 
       try {
-        // Fetch event data without authentication requirement
+        // Fetch event data via public RPC function (bypasses RLS)
         const { data, error: fetchError } = await supabase
-          .from("global_community_events")
-          .select("*")
-          .eq("id", id)
-          .single();
+          .rpc("get_public_event_details", { event_id: id });
 
         if (fetchError) {
           console.error("Error fetching event:", fetchError);
@@ -53,7 +50,13 @@ export default function PublicEventLanding() {
           return;
         }
 
-        setEvent(data);
+        if (!data) {
+          setError("Event not found");
+          setLoading(false);
+          return;
+        }
+
+        setEvent(data as unknown as PublicEventData);
       } catch (err) {
         console.error("Error:", err);
         setError("Failed to load event");
