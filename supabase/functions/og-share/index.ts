@@ -251,14 +251,23 @@ serve(async (req) => {
       });
     }
 
-    // For real users (non-crawlers), return HTTP 302 redirect directly
+    // For real users (non-crawlers), return HTTP 302 redirect with UTM parameters
     if (!isCrawlerRequest) {
-      console.log('[og-share] Real user detected, redirecting to:', contentData.url);
+      const redirectUrl = new URL(contentData.url);
+      const utm_source = url.searchParams.get('utm_source');
+      const utm_medium = url.searchParams.get('utm_medium');
+      const utm_campaign = url.searchParams.get('utm_campaign');
+      
+      if (utm_source) redirectUrl.searchParams.set('utm_source', utm_source);
+      if (utm_medium) redirectUrl.searchParams.set('utm_medium', utm_medium);
+      if (utm_campaign) redirectUrl.searchParams.set('utm_campaign', utm_campaign);
+      
+      console.log('[og-share] Real user detected, redirecting to:', redirectUrl.toString());
       return new Response(null, {
         status: 302,
         headers: {
           ...corsHeaders,
-          'Location': contentData.url,
+          'Location': redirectUrl.toString(),
         },
       });
     }
