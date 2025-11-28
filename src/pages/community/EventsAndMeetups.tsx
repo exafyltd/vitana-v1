@@ -27,6 +27,7 @@ import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone } from 'l
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
+import { getShareUrl } from "@/lib/shareUrl";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -144,7 +145,10 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
         data={{
           title: event.title,
           description: event.description,
-          link: `${window.location.origin}/comm/events-meetups?event=${encodeURIComponent(event.id)}`
+          link: getShareUrl('event', event.id, { 
+            utm_source: 'event_card', 
+            utm_medium: 'social' 
+          })
         }}
         variant="icon"
         size="sm"
