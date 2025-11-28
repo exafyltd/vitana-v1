@@ -15,19 +15,30 @@ export function getShareUrl(
     utm_campaign?: string;
   }
 ): string {
-  const appUrl = window.location.origin;
+  // Events and meetups use og-share edge function for rich social previews
+  if (type === 'event' || type === 'meetup') {
+    const supabaseUrl = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co';
+    const params = new URLSearchParams();
+    params.set('type', type);
+    params.set('id', id);
+    
+    // Add UTM parameters if provided
+    if (options?.utm_source) params.set('utm_source', options.utm_source);
+    if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
+    if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
+    
+    return `${supabaseUrl}/functions/v1/og-share?${params.toString()}`;
+  }
   
-  // Map content types to app routes
-  // Events use public landing page for external sharing
-  const routeMap: Record<typeof type, string> = {
-    event: `/pub/events/${encodeURIComponent(id)}`,
-    meetup: `/pub/events/${encodeURIComponent(id)}`,
+  // Other content types use direct app URLs
+  const appUrl = window.location.origin;
+  const routeMap: Record<'group' | 'profile' | 'post', string> = {
     group: `/comm/groups/${encodeURIComponent(id)}`,
     profile: `/profile/${encodeURIComponent(id)}`,
     post: `/sharing/posts/${encodeURIComponent(id)}`,
   };
   
-  const path = routeMap[type];
+  const path = routeMap[type as 'group' | 'profile' | 'post'];
   const params = new URLSearchParams();
 
   // Add UTM parameters if provided
