@@ -6,32 +6,29 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-function isCrawler(userAgent: string): boolean {
-  const crawlerPatterns = [
-    'WhatsApp',
-    'facebookexternalhit',
-    'Facebot',
-    'Twitterbot',
-    'LinkedInBot',
-    'TelegramBot',
-    'Slackbot',
-    'Discordbot',
-    'bot',
-    'crawler',
-    'spider'
-  ];
-  return crawlerPatterns.some(pattern => 
-    userAgent.toLowerCase().includes(pattern.toLowerCase())
-  );
+// Derive app base URL from request headers
+function getAppBaseUrl(req: Request): string {
+  const referer = req.headers.get('referer');
+  const origin = req.headers.get('origin');
+  
+  // Check if request came from preview environment
+  if (referer?.includes('preview--vitana-v1') || origin?.includes('preview--vitana-v1')) {
+    return 'https://preview--vitana-v1.lovable.app';
+  }
+  
+  // Check if request came from production
+  if (referer?.includes('vitana-v1.lovable.app') || origin?.includes('vitana-v1.lovable.app')) {
+    return 'https://vitana-v1.lovable.app';
+  }
+  
+  // Default to production
+  return 'https://vitana-v1.lovable.app';
 }
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
-const PUBLIC_APP_URL = Deno.env.get('PUBLIC_APP_URL') || 'https://vitana-v1.lovable.app';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-console.log('[og-share] Using PUBLIC_APP_URL:', PUBLIC_APP_URL);
 
 interface ContentData {
   title: string;
@@ -71,7 +68,7 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 200);
 }
 
-function generateOGHTML(content: ContentData): string {
+function generateOGHTML(content: ContentData, redirectUrl: string): string {
   const title = sanitizeText(content.title);
   const description = sanitizeText(content.description);
   const imageUrl = ensureAbsoluteUrl(content.image_url);
@@ -80,13 +77,16 @@ function generateOGHTML(content: ContentData): string {
   // Debug logging to verify clean output
   console.log('[og-share] Sanitized title:', title);
   console.log('[og-share] Sanitized description:', description);
+  console.log('[og-share] Redirect URL:', redirectUrl);
 
-  // Only used for crawler requests - returns full OG tags
+  // Returns HTML with OG tags + meta refresh for instant redirect
+  // Crawlers read the OG tags, humans get redirected instantly
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0;url=${redirectUrl}">
   <title>${title} | VITANA</title>
   <meta name="description" content="${description}">
   
@@ -108,8 +108,8 @@ function generateOGHTML(content: ContentData): string {
 </head>
 <body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 40px;">
   <h1>${title}</h1>
-  <p>${description}</p>
-  <p><a href="${appUrl}">View on VITANA</a></p>
+  <p>Redirecting to event...</p>
+  <p><a href="${redirectUrl}">Click here if not redirected automatically</a></p>
 </body>
 </html>`;
 }
@@ -124,10 +124,9 @@ serve(async (req) => {
     const url = new URL(req.url);
     const type = url.searchParams.get('type');
     const id = url.searchParams.get('id');
-    const userAgent = req.headers.get('user-agent') || '';
-    const isCrawlerRequest = isCrawler(userAgent);
+    const appBaseUrl = getAppBaseUrl(req);
 
-    console.log(`[og-share] Request: type=${type}, id=${id}, crawler=${isCrawlerRequest}, UA=${userAgent}`);
+    console.log(`[og-share] Request: type=${type}, id=${id}, appBaseUrl=${appBaseUrl}`);
 
     if (!type || !id) {
       return new Response('Missing type or id parameter', { 
@@ -158,7 +157,7 @@ serve(async (req) => {
             title: data.title,
             description: data.description || `Join us ${data.start_time ? `on ${new Date(data.start_time).toLocaleDateString()}` : ''} ${data.location ? `at ${data.location}` : ''}`,
             image_url: data.image_url,
-            url: `${PUBLIC_APP_URL}/pub/events/${id}`
+            url: `${appBaseUrl}/pub/events/${id}`
           };
         }
         break;
@@ -181,7 +180,7 @@ serve(async (req) => {
             title: data.name,
             description: data.description || 'Join our community on VITANA',
             image_url: data.cover_url,
-            url: `${PUBLIC_APP_URL}/comm/groups/${id}`
+            url: `${appBaseUrl}/comm/groups/${id}`
           };
         }
         break;
@@ -204,7 +203,7 @@ serve(async (req) => {
             title: data.display_name || data.full_name || 'VITANA User',
             description: data.bio || 'Join me on VITANA',
             image_url: data.avatar_url,
-            url: `${PUBLIC_APP_URL}/profile/${data.handle || id}`
+            url: `${appBaseUrl}/profile/${data.handle || id}`
           };
         }
         break;
@@ -231,7 +230,7 @@ serve(async (req) => {
             title: data.title,
             description: data.description || 'Check out this post on VITANA',
             image_url: imageUrl,
-            url: `${PUBLIC_APP_URL}/sharing/posts/${id}`
+            url: `${appBaseUrl}/sharing/posts/${id}`
           };
         }
         break;
@@ -247,35 +246,25 @@ serve(async (req) => {
     if (!contentData) {
       return new Response('Content not found', { 
         status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'text/plain' }
+        headers: { ...corsHeaders, 'Content-Type': 'text/html' }
       });
     }
 
-    // For real users (non-crawlers), return HTTP 302 redirect with UTM parameters
-    if (!isCrawlerRequest) {
-      const redirectUrl = new URL(contentData.url);
-      const utm_source = url.searchParams.get('utm_source');
-      const utm_medium = url.searchParams.get('utm_medium');
-      const utm_campaign = url.searchParams.get('utm_campaign');
-      
-      if (utm_source) redirectUrl.searchParams.set('utm_source', utm_source);
-      if (utm_medium) redirectUrl.searchParams.set('utm_medium', utm_medium);
-      if (utm_campaign) redirectUrl.searchParams.set('utm_campaign', utm_campaign);
-      
-      console.log('[og-share] Real user detected, redirecting to:', redirectUrl.toString());
-      return new Response(null, {
-        status: 302,
-        headers: {
-          ...corsHeaders,
-          'Location': redirectUrl.toString(),
-        },
-      });
-    }
+    // Build redirect URL with UTM parameters preserved
+    const redirectUrl = new URL(contentData.url);
+    const utm_source = url.searchParams.get('utm_source');
+    const utm_medium = url.searchParams.get('utm_medium');
+    const utm_campaign = url.searchParams.get('utm_campaign');
+    
+    if (utm_source) redirectUrl.searchParams.set('utm_source', utm_source);
+    if (utm_medium) redirectUrl.searchParams.set('utm_medium', utm_medium);
+    if (utm_campaign) redirectUrl.searchParams.set('utm_campaign', utm_campaign);
 
-    // For crawlers only, return HTML with OG tags
-    console.log('[og-share] Crawler detected, generating OG tags for:', contentData.title);
+    // Always return HTML with OG tags + meta refresh
+    // Crawlers will read the OG tags, humans will be redirected instantly
+    console.log('[og-share] Generating OG HTML for:', contentData.title);
 
-    const html = generateOGHTML(contentData);
+    const html = generateOGHTML(contentData, redirectUrl.toString());
 
     // Use TextEncoder for proper UTF-8 response
     const encoder = new TextEncoder();
