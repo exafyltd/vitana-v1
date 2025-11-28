@@ -27,8 +27,11 @@ function isCrawler(userAgent: string): boolean {
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
 const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
+const PUBLIC_APP_URL = Deno.env.get('PUBLIC_APP_URL') || 'https://vitana-v1.lovable.app';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+console.log('[og-share] Using PUBLIC_APP_URL:', PUBLIC_APP_URL);
 
 interface ContentData {
   title: string;
@@ -212,7 +215,7 @@ serve(async (req) => {
             title: data.title,
             description: data.description || `Join us ${data.start_time ? `on ${new Date(data.start_time).toLocaleDateString()}` : ''} ${data.location ? `at ${data.location}` : ''}`,
             image_url: data.image_url,
-            url: `${SUPABASE_URL.replace('.supabase.co', '.lovable.app')}/comm/events-meetups?event=${id}`
+            url: `${PUBLIC_APP_URL}/comm/events-meetups?event=${id}`
           };
         }
         break;
@@ -235,7 +238,7 @@ serve(async (req) => {
             title: data.name,
             description: data.description || 'Join our community on VITANA',
             image_url: data.cover_url,
-            url: `${SUPABASE_URL.replace('.supabase.co', '.lovable.app')}/comm/groups/${id}`
+            url: `${PUBLIC_APP_URL}/comm/groups/${id}`
           };
         }
         break;
@@ -258,7 +261,7 @@ serve(async (req) => {
             title: data.display_name || data.full_name || 'VITANA User',
             description: data.bio || 'Join me on VITANA',
             image_url: data.avatar_url,
-            url: `${SUPABASE_URL.replace('.supabase.co', '.lovable.app')}/profile/${data.handle || id}`
+            url: `${PUBLIC_APP_URL}/profile/${data.handle || id}`
           };
         }
         break;
@@ -285,7 +288,7 @@ serve(async (req) => {
             title: data.title,
             description: data.description || 'Check out this post on VITANA',
             image_url: imageUrl,
-            url: `${SUPABASE_URL.replace('.supabase.co', '.lovable.app')}/sharing/posts/${id}`
+            url: `${PUBLIC_APP_URL}/sharing/posts/${id}`
           };
         }
         break;
