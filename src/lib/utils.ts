@@ -11,3 +11,22 @@ export function extractStoragePath(url: string, bucket: string): string | null {
   if (idx === -1) return null;
   return url.slice(idx + marker.length);
 }
+
+export function getAbsoluteImageUrl(url?: string): string {
+  if (!url) {
+    return 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&h=630&fit=crop';
+  }
+
+  // Already absolute URL
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+
+  // Relative URL - prepend origin
+  if (url.startsWith('/')) {
+    return `${window.location.origin}${url}`;
+  }
+
+  // Default fallback
+  return 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&h=630&fit=crop';
+}
