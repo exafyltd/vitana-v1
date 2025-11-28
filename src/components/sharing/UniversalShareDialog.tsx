@@ -30,6 +30,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthProvider";
 import { getChannelIcon, getChannelColor, getChannelDisplayName } from "@/utils/channelHelpers";
+import { getShareUrl } from "@/lib/shareUrl";
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
@@ -152,7 +153,12 @@ export function UniversalShareDialog({
   };
 
   const openNativeShare = (platformId: string) => {
-    const shareUrl = content.url || `${window.location.origin}/${content.type}/${content.id}`;
+    // Use OG-enabled share URL for rich social media previews
+    const shareUrl = content.url || getShareUrl(
+      content.type as 'event' | 'meetup' | 'group' | 'profile' | 'post',
+      content.id,
+      { utm_source: 'share', utm_medium: platformId }
+    );
     const shareText = `${content.title}${content.description ? '\n' + content.description : ''}`;
     
     const shareUrls: Record<string, string> = {
@@ -264,7 +270,12 @@ export function UniversalShareDialog({
   };
 
   const handleCopyLink = () => {
-    const shareUrl = content.url || `${window.location.origin}/${content.type}/${content.id}`;
+    // Use OG-enabled share URL for rich previews
+    const shareUrl = content.url || getShareUrl(
+      content.type as 'event' | 'meetup' | 'group' | 'profile' | 'post',
+      content.id,
+      { utm_source: 'share', utm_medium: 'copy_link' }
+    );
     navigator.clipboard.writeText(shareUrl);
     setLinkCopied(true);
     toast({
