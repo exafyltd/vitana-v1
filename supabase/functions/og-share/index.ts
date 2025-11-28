@@ -71,7 +71,7 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 200);
 }
 
-function generateOGHTML(content: ContentData, isCrawlerRequest: boolean): string {
+function generateOGHTML(content: ContentData): string {
   const title = sanitizeText(content.title);
   const description = sanitizeText(content.description);
   const imageUrl = ensureAbsoluteUrl(content.image_url);
@@ -81,9 +81,8 @@ function generateOGHTML(content: ContentData, isCrawlerRequest: boolean): string
   console.log('[og-share] Sanitized title:', title);
   console.log('[og-share] Sanitized description:', description);
 
-  // For crawler requests (WhatsApp, Facebook, etc.), return full OG tags with a simple body
-  if (isCrawlerRequest) {
-    return `<!DOCTYPE html>
+  // Only used for crawler requests - returns full OG tags
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -113,25 +112,6 @@ function generateOGHTML(content: ContentData, isCrawlerRequest: boolean): string
   <p><a href="${appUrl}">View on VITANA</a></p>
 </body>
 </html>`;
-  }
-
-  // For real users (non-crawlers), use minimal HTML with an instant redirect
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting to VITANA...</title>
-  <meta http-equiv="refresh" content="0;url=${appUrl}">
-  <script>
-    // Minimal, robust redirect for all modern browsers
-    window.location.replace("${appUrl}");
-  </script>
-</head>
-<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 40px;">
-  <p>Redirecting to VITANA... If you are not redirected, <a href="${appUrl}">click here to open your event</a>.</p>
-</body>
-</html>`;
 }
 
 serve(async (req) => {
@@ -147,7 +127,7 @@ serve(async (req) => {
     const userAgent = req.headers.get('user-agent') || '';
     const isCrawlerRequest = isCrawler(userAgent);
 
-    console.log(`[og-share] Request: type=${type}, id=${id}, crawler=${isCrawlerRequest}`);
+    console.log(`[og-share] Request: type=${type}, id=${id}, crawler=${isCrawlerRequest}, UA=${userAgent}`);
 
     if (!type || !id) {
       return new Response('Missing type or id parameter', { 
@@ -271,9 +251,22 @@ serve(async (req) => {
       });
     }
 
-    console.log('[og-share] Generated OG tags for:', contentData.title);
+    // For real users (non-crawlers), return HTTP 302 redirect directly
+    if (!isCrawlerRequest) {
+      console.log('[og-share] Real user detected, redirecting to:', contentData.url);
+      return new Response(null, {
+        status: 302,
+        headers: {
+          ...corsHeaders,
+          'Location': contentData.url,
+        },
+      });
+    }
 
-    const html = generateOGHTML(contentData, isCrawlerRequest);
+    // For crawlers only, return HTML with OG tags
+    console.log('[og-share] Crawler detected, generating OG tags for:', contentData.title);
+
+    const html = generateOGHTML(contentData);
 
     // Use TextEncoder for proper UTF-8 response
     const encoder = new TextEncoder();
