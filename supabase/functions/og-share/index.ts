@@ -46,10 +46,25 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
 
 function sanitizeText(text: string | null | undefined): string {
   if (!text) return '';
+  
   return text
+    // Remove emojis and other problematic Unicode
+    .replace(/[\u{1F300}-\u{1F9FF}]/gu, '') // Emojis
+    .replace(/[\u{2600}-\u{26FF}]/gu, '')   // Misc symbols
+    .replace(/[\u{2700}-\u{27BF}]/gu, '')   // Dingbats
+    .replace(/[\u200D\uFE0F]/g, '')         // Zero-width joiner, variation selector
+    // Convert em-dash/en-dash to regular hyphen
+    .replace(/[–—]/g, '-')
+    // Convert smart quotes to regular quotes
+    .replace(/[""]/g, '"')
+    .replace(/['']/g, "'")
+    // Escape HTML entities
+    .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
+    // Trim and limit length
+    .trim()
     .substring(0, 200);
 }
 
@@ -58,6 +73,10 @@ function generateOGHTML(content: ContentData, isCrawlerRequest: boolean): string
   const description = sanitizeText(content.description);
   const imageUrl = ensureAbsoluteUrl(content.image_url);
   const appUrl = content.url;
+
+  // Debug logging to verify clean output
+  console.log('[og-share] Sanitized title:', title);
+  console.log('[og-share] Sanitized description:', description);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -241,7 +260,11 @@ serve(async (req) => {
 
     const html = generateOGHTML(contentData, isCrawlerRequest);
 
-    return new Response(html, {
+    // Use TextEncoder for proper UTF-8 response
+    const encoder = new TextEncoder();
+    const htmlBytes = encoder.encode(html);
+
+    return new Response(htmlBytes, {
       headers: {
         ...corsHeaders,
         'Content-Type': 'text/html; charset=utf-8',
