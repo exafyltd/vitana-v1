@@ -10,15 +10,16 @@ import { useAuth } from "@/context/AuthProvider";
 interface PublicEventData {
   id: string;
   title: string;
-  description: string | null;
+  description: string;
   event_type: string;
-  location: string | null;
-  virtual_link: string | null;
+  location: string;
   start_time: string;
   end_time: string | null;
   max_participants: number | null;
   participant_count: number;
-  image_url?: string;
+  image_url: string | null;
+  organizer_name: string;
+  organizer_avatar: string | null;
 }
 
 export default function PublicEventLanding() {
@@ -50,13 +51,14 @@ export default function PublicEventLanding() {
           return;
         }
 
-        if (!data) {
+        if (!data || data.length === 0) {
           setError("Event not found");
           setLoading(false);
           return;
         }
 
-        setEvent(data as unknown as PublicEventData);
+        // RPC returns an array, take the first item
+        setEvent(data[0] as PublicEventData);
       } catch (err) {
         console.error("Error:", err);
         setError("Failed to load event");
@@ -175,17 +177,13 @@ export default function PublicEventLanding() {
                 </div>
               </div>
 
-              {event.end_time && (
-                <div className="flex items-start gap-3">
-                  <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Duration</p>
-                    <p className="text-sm text-muted-foreground">
-                      Until {format(new Date(event.end_time), "h:mm a")}
-                    </p>
-                  </div>
+              <div className="flex items-start gap-3">
+                <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">Hosted by</p>
+                  <p className="text-sm text-muted-foreground">{event.organizer_name}</p>
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Description */}

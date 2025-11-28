@@ -6604,7 +6604,24 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_public_event_details: { Args: { event_id: string }; Returns: Json }
+      get_public_event_details: {
+        Args: { event_id: string }
+        Returns: {
+          description: string
+          end_time: string
+          event_type: string
+          id: string
+          image_url: string
+          location: string
+          max_participants: number
+          organizer_avatar: string
+          organizer_id: string
+          organizer_name: string
+          participant_count: number
+          start_time: string
+          title: string
+        }[]
+      }
       get_recent_admin_activity: {
         Args: { limit_count?: number }
         Returns: {
