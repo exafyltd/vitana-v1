@@ -197,7 +197,14 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
             </Button>
           </form>
 
-          <footer className="mt-6 text-center text-sm text-muted-foreground">
+          <div className="mt-6 pt-4 border-t text-center">
+            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
+              <span>←</span>
+              <span>Back to all portals</span>
+            </Link>
+          </div>
+
+          <footer className="mt-4 text-center text-sm text-muted-foreground">
             {isRegister ? (
               <span>
                 Already have an account? {" "}
@@ -215,13 +222,6 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
             )}
           </footer>
         </article>
-
-        {/* Back to portals footer */}
-        <footer className="mt-6 text-center text-sm text-muted-foreground">
-          <Link to="/" className="hover:text-foreground transition-colors">
-            ← Back to all portals
-          </Link>
-        </footer>
       </main>
     </div>
   );
