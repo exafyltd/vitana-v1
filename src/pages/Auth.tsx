@@ -317,6 +317,17 @@ export default function Auth() {
                       Apple
                     </Button>
                   </div>
+
+                  <div className="mt-6 pt-4 border-t text-center">
+                    <button
+                      type="button"
+                      onClick={() => navigate('/')}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                    >
+                      <span>←</span>
+                      <span>Back to all portals</span>
+                    </button>
+                  </div>
                 </form>
               </TabsContent>
               
