@@ -381,7 +381,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   // Controlled sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
     const stored = getLocalStorageItem(tenant?.id || "global", "sidebar", "open");
-    return stored === "true";
+    return stored === null ? true : stored === "true";
   });
 
   // Persist sidebar state changes to localStorage
@@ -394,9 +394,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   useEffect(() => {
     if (tenant?.id) {
       const stored = getLocalStorageItem(tenant.id, "sidebar", "open");
-      if (stored !== null) {
-        setSidebarOpen(stored === "true");
-      }
+      setSidebarOpen(stored === null ? true : stored === "true");
     }
   }, [tenant?.id]);
 
