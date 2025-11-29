@@ -215,6 +215,13 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
             )}
           </footer>
         </article>
+
+        {/* Back to portals footer */}
+        <footer className="mt-6 text-center text-sm text-muted-foreground">
+          <Link to="/" className="hover:text-foreground transition-colors">
+            ← Back to all portals
+          </Link>
+        </footer>
       </main>
     </div>
   );
