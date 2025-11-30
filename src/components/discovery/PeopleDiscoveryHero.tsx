@@ -8,6 +8,7 @@ import { Heart, X, Sparkles, Loader2, Filter, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
 import {
   Select,
   SelectContent,
@@ -258,6 +259,15 @@ export function PeopleDiscoveryHero() {
 
     return baseProfiles;
   }, [profiles, demoProfiles, interestFilter, regionFilter]);
+
+  // Preload images for current + next 5 profiles
+  const imageUrls = useMemo(() => {
+    return displayProfiles
+      .filter(p => p.avatar_url)
+      .map(p => p.avatar_url!);
+  }, [displayProfiles]);
+
+  useImagePreloader(imageUrls, 6);
 
   // Keyboard shortcuts
   useEffect(() => {
