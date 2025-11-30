@@ -3991,6 +3991,7 @@ export type Database = {
           metadata: Json | null
           model: string | null
           module: string | null
+          projected: boolean | null
           ref: string | null
           role: string
           service: string
@@ -4011,6 +4012,7 @@ export type Database = {
           metadata?: Json | null
           model?: string | null
           module?: string | null
+          projected?: boolean | null
           ref?: string | null
           role: string
           service: string
@@ -4031,6 +4033,7 @@ export type Database = {
           metadata?: Json | null
           model?: string | null
           module?: string | null
+          projected?: boolean | null
           ref?: string | null
           role?: string
           service?: string

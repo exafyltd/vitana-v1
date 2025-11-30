@@ -22,6 +22,7 @@ import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
+import { preloadDemoImages } from "@/lib/preloadDemoImages";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -97,6 +98,9 @@ const MaxinaPortal = () => {
       if (error) {
         setError(error.message);
       } else {
+        // Preload demo images in background while user waits
+        preloadDemoImages().catch(console.error);
+        
         // After successful sign-in, switch to the current tenant context
         // This ensures users can access different tenants after login
         try {

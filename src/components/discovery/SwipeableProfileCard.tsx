@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { ProfileImage } from "./ProfileImage";
 
 interface SwipeableProfileCardProps {
   profile: {
@@ -128,15 +129,15 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
     >
       <div className="relative w-[960px] h-[560px] max-w-[92vw] rounded-3xl shadow-2xl overflow-hidden">
         {/* Full Background Photo - face centered at 35% */}
-        <div 
-          className="absolute inset-0 bg-cover z-0"
-          style={{
-            backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
-            backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
-            backgroundPosition: '50% 35%',
-            objectFit: 'cover'
-          }}
-        />
+        <div className="absolute inset-0 z-0">
+          <ProfileImage
+            src={profile.avatar_url}
+            alt={`${profile.display_name}'s profile`}
+            className="w-full h-full"
+            priority="high"
+            objectPosition="50% 35%"
+          />
+        </div>
         
         {/* Gradient Overlay - only from bottom 65% → 100% */}
         <div className={`absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t ${getVitanaGradient()} z-10`} />

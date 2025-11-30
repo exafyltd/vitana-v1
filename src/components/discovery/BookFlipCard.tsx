@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { ProfileImage } from "./ProfileImage";
 
 interface BookFlipCardProps {
   profile: {
@@ -100,14 +101,15 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
 
   if (isPeek) {
     return (
-      <div 
-        className={`w-full h-[210px] rounded-[22px] bg-cover bg-center ring-1 ring-white/20 shadow-xl overflow-hidden`}
-        style={{
-          backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
-          backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
-          backgroundPosition: '50% 35%',
-        }}
-      />
+      <div className="w-full h-[210px] rounded-[22px] ring-1 ring-white/20 shadow-xl overflow-hidden">
+        <ProfileImage
+          src={profile.avatar_url}
+          alt={`${profile.display_name}'s profile`}
+          className="w-full h-full"
+          priority="normal"
+          objectPosition="50% 35%"
+        />
+      </div>
     );
   }
 
@@ -129,17 +131,16 @@ export function BookFlipCard({ profile, onFlip, onTap, isPeek, peekSide }: BookF
       style={{ transformStyle: 'preserve-3d' }}
     >
       <div className="relative w-[580px] h-[340px] max-w-[92vw] rounded-[22px] shadow-[0_18px_48px_-12px_rgba(0,0,0,0.35)] overflow-hidden">
-        {/* Full Background Photo - face centered at 40% */}
-        <div 
-          className="absolute inset-0 bg-cover z-0"
-          style={{
-            backgroundImage: profile.avatar_url ? `url(${profile.avatar_url})` : 'none',
-            backgroundColor: profile.avatar_url ? 'transparent' : 'hsl(var(--accent))',
-            backgroundPosition: '50% 35%',
-            objectFit: 'cover',
-            boxShadow: 'inset 0 0 80px rgba(0,0,0,0.2)' // Vignette
-          }}
-        />
+        {/* Full Background Photo - face centered at 35% */}
+        <div className="absolute inset-0 z-0" style={{ boxShadow: 'inset 0 0 80px rgba(0,0,0,0.2)' }}>
+          <ProfileImage
+            src={profile.avatar_url}
+            alt={`${profile.display_name}'s profile`}
+            className="w-full h-full"
+            priority="high"
+            objectPosition="50% 35%"
+          />
+        </div>
 
         {/* Faint Background Pillar Glyph */}
         {profile.primary_pillar && (
