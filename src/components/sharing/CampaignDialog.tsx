@@ -198,6 +198,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       } finally {
         setUploadingImage(false);
       }
+    } else if (imagePreviewUrl) {
+      // Use existing image URL (e.g., from event promotion or editing)
+      coverImageUrl = imagePreviewUrl;
     }
 
     const template = DISTRIBUTION_TEMPLATES.find(t => t.id === selectedTemplate);
