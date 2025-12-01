@@ -31,6 +31,8 @@ export default function PublicCampaignLanding() {
   const [campaign, setCampaign] = useState<PublicCampaignData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const fetchPublicCampaign = async () => {
@@ -123,14 +125,16 @@ export default function PublicCampaignLanding() {
       
       <div className="min-h-screen bg-background">
         {/* Hero Section with Cover Image */}
-        {coverImage && (
+        {coverImage && !imageError && (
           <div className="relative w-full h-64 md:h-96 overflow-hidden">
             <img
               src={coverImage}
               alt={campaign.name}
               className="w-full h-full object-cover"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
           </div>
         )}
 
