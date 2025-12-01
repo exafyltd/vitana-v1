@@ -56,6 +56,7 @@ interface SoundscapeContextType {
   toggle: () => void;
   setVolume: (vol: number) => void;
   toggleMute: () => void;
+  startFresh: (initialVolume?: number) => void;
   handoffAudio: (audioInstance: HTMLAudioElement) => void;
   pauseForPriorityAudio: () => void;
   resumeAfterPriorityAudio: () => void;
@@ -465,6 +466,37 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   }, [pausedByPriority]);
 
+  const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
+    if (audioRef.current) {
+      // Force unmute for fresh start on entry screens
+      console.log('[Soundscape] startFresh: forcing unmute and starting playback');
+      audioRef.current.muted = false;
+      setIsMuted(false);
+      localStorage.setItem('soundscape_muted', 'false');
+      
+      // Set volume
+      audioRef.current.volume = initialVolume;
+      setVolumeState(initialVolume);
+      previousVolumeRef.current = initialVolume;
+      
+      // Play
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          setPendingAutoPlay(false);
+          localStorage.setItem('soundscape_auto_play', 'true');
+          userExplicitlyPausedRef.current = false;
+        })
+        .catch((err) => {
+          if (err.name === 'NotAllowedError') {
+            console.log('[Soundscape] startFresh blocked by browser, waiting for user interaction');
+            setPendingAutoPlay(true);
+          } else {
+            console.warn('[Soundscape] startFresh failed:', err);
+          }
+        });
+    }
+  }, []);
 
   const value: SoundscapeContextType = {
     isPlaying,
@@ -476,6 +508,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     toggle,
     setVolume,
     toggleMute,
+    startFresh,
     handoffAudio,
     pauseForPriorityAudio,
     resumeAfterPriorityAudio,
