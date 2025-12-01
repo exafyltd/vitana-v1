@@ -40,6 +40,16 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 160);
 }
 
+// Detect image MIME type from URL
+function getImageMimeType(url: string): string {
+  const lowerUrl = url.toLowerCase();
+  if (lowerUrl.endsWith('.webp')) return 'image/webp';
+  if (lowerUrl.endsWith('.png')) return 'image/png';
+  if (lowerUrl.endsWith('.gif')) return 'image/gif';
+  if (lowerUrl.endsWith('.svg')) return 'image/svg+xml';
+  return 'image/jpeg'; // default fallback for .jpg, .jpeg, or unknown
+}
+
 // Generate fallback HTML for invalid/missing campaigns
 function generateFallbackHTML(): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
@@ -91,6 +101,7 @@ function generateOGHTML(campaign: CampaignData): string {
   const title = sanitizeText(campaign.name);
   const description = sanitizeText(campaign.description);
   const imageUrl = ensureAbsoluteUrl(campaign.cover_image_url);
+  const imageType = getImageMimeType(imageUrl);
   const campaignUrl = `https://vitana-v1.lovable.app/pub/campaigns/${campaign.id}`;
 
   return `<!DOCTYPE html>
@@ -107,7 +118,7 @@ function generateOGHTML(campaign: CampaignData): string {
   <meta property="og:description" content="${description}" />
   <meta property="og:image" content="${imageUrl}" />
   <meta property="og:image:secure_url" content="${imageUrl}" />
-  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:type" content="${imageType}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="${campaignUrl}" />
