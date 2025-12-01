@@ -112,12 +112,18 @@ export default function PublicCampaignLanding() {
   const endDate = campaign.end_date ? format(new Date(campaign.end_date), "MMMM d, yyyy") : "";
   const shortDescription = campaign.description?.slice(0, 160) || `Check out ${campaign.name} on VITANA`;
   
-  // Hero image with fallback chain
-  const heroImage = 
-    campaign.cover_image_url || 
+  // Log the raw campaign data once for debugging image fields
+  console.log('PUBLIC CAMPAIGN DATA', campaign);
+
+  // Hero image with explicit fallback chain (campaign first, then metadata, then default)
+  const heroImage =
+    (campaign as any).image_url ||
+    campaign.cover_image_url ||
     campaign.metadata?.event_image_url ||
     campaign.metadata?.image_url ||
     'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+
+  console.log('PUBLIC CAMPAIGN HERO IMAGE BEFORE FIX', heroImage);
   
   // Check if campaign is draft (hide status badge for draft on public view)
   const isDraft = campaign.status?.toLowerCase() === 'draft';
