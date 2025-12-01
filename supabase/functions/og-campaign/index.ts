@@ -121,7 +121,10 @@ interface CampaignData {
 function generateOGHTML(campaign: CampaignData): string {
   const title = sanitizeText(campaign.name);
   const description = sanitizeText(campaign.description);
-  const imageUrl = getOptimizedImageUrl(campaign.cover_image_url);
+  
+  // Use the same hero image logic as the public campaign page (campaign first, then default)
+  const baseImage = campaign.cover_image_url || null;
+  const imageUrl = getOptimizedImageUrl(baseImage);
   const imageType = getImageMimeType(imageUrl);
   const campaignUrl = `https://vitana-v1.lovable.app/pub/campaigns/${campaign.id}`;
 
