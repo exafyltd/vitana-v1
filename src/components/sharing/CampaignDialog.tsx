@@ -239,11 +239,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       });
       handleClose();
     } else {
-      await createCampaign.mutateAsync(campaignData);
+      const result = await createCampaign.mutateAsync(campaignData);
       
-      // Show success modal
+      // Show success modal with campaign ID
       setCreatedCampaignData({
+        id: result?.id || '', // Use returned ID from mutation
         name,
+        description,
+        coverImage: coverImageUrl,
         channels: Object.entries(selectedChannels)
           .filter(([_, selected]) => selected)
           .map(([key]) => CHANNEL_INFO[key]?.name || key),
@@ -598,31 +601,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     </div>
                   </div>
 
-                  {/* Section 2: Direct Messaging (Manual Share) */}
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500/10 to-green-500/5 rounded-lg border border-green-500/20">
-                      <MessageSquare className="w-5 h-5 text-green-600 dark:text-green-400" />
-                      <div className="flex-1">
-                        <h3 className="text-base font-semibold text-foreground">Direct Messaging (Manual Share)</h3>
-                        <p className="text-xs text-muted-foreground">Fast sharing with your personal contacts</p>
-                      </div>
-                    </div>
-
-                    {editingCampaign?.id ? (
-                      <ManualShareActions
-                        campaignId={editingCampaign.id}
-                        campaignTitle={name || editingCampaign.name || "Your Campaign"}
-                        campaignDescription={description || editingCampaign.description || "Check out this campaign!"}
-                      />
-                    ) : (
-                      <div className="p-6 text-center text-muted-foreground bg-muted/30 rounded-lg border border-dashed">
-                        <p className="text-sm font-medium mb-1">Save your campaign first</p>
-                        <p className="text-xs">Create your campaign to enable direct sharing</p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Section 3: Advanced Messaging (Business API) - Collapsed */}
+                  {/* Section 2: Advanced Messaging (Business API) - Collapsed */}
                   <Collapsible open={showAdvancedChannels} onOpenChange={setShowAdvancedChannels}>
                     <CollapsibleTrigger asChild>
                       <Button
@@ -631,7 +610,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       >
                         <div className="flex items-center gap-2">
                           <Settings className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm font-medium">Show advanced channels (Business API)</span>
+                          <span className="text-sm font-medium">Advanced Broadcast Channels (Business API)</span>
                         </div>
                         <ChevronDown className={cn(
                           "w-4 h-4 text-muted-foreground transition-transform duration-200",
@@ -644,7 +623,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
                         <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                         <AlertDescription className="text-sm text-blue-900 dark:text-blue-100">
-                          These channels require professional configuration for automated bulk messaging. Regular users can use Manual Share above.
+                          For automated bulk sending via Twilio / Resend / WhatsApp Business. Normal users can use 'Share with my contacts' after creating the campaign.
                         </AlertDescription>
                       </Alert>
 
@@ -878,7 +857,15 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       <CampaignSuccessModal 
         open={showSuccessModal}
         onOpenChange={setShowSuccessModal}
-        campaign={createdCampaignData || { name: '', channels: [], template: '', firstPostDate: new Date() }}
+        campaign={createdCampaignData || { 
+          id: '', 
+          name: '', 
+          channels: [], 
+          template: '', 
+          firstPostDate: new Date(),
+          description: '',
+          coverImage: ''
+        }}
       />
 
       <InlineChannelConnector

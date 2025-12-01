@@ -29,6 +29,7 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Share2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -40,6 +41,7 @@ import { CHANNEL_INFO, DISTRIBUTION_TEMPLATES } from "@/lib/campaign-templates";
 import type { LucideIcon } from "lucide-react";
 import { DeleteCampaignDialog } from "./DeleteCampaignDialog";
 import { CampaignAnalyticsExpanded } from "./CampaignAnalyticsExpanded";
+import { ShareCampaignModal } from "./ShareCampaignModal";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -129,6 +131,7 @@ export function CampaignCard({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // Parse campaign data
   const selectedChannels = Object.entries(
@@ -629,6 +632,27 @@ export function CampaignCard({
                 <Button
                   size="sm"
                   variant="ghost"
+                  className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-teal-100 shadow-sm"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowShareModal(true);
+                  }}
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">Share</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="ghost"
                   className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-purple-100 shadow-sm"
                   onClick={handleDuplicate}
                   disabled={duplicateCampaign.isPending}
@@ -685,6 +709,16 @@ export function CampaignCard({
         onClose={() => setShowAnalytics(false)}
       />
     )}
+
+    {/* Share Modal */}
+    <ShareCampaignModal
+      open={showShareModal}
+      onOpenChange={setShowShareModal}
+      campaignId={campaign.id}
+      campaignName={campaign.name}
+      campaignDescription={campaign.description || undefined}
+      campaignImage={campaign.cover_image_url || undefined}
+    />
   </>
   );
 }

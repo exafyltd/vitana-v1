@@ -2,18 +2,23 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Info, LayoutGrid, Plus, Sparkles } from "lucide-react";
+import { CheckCircle, Info, LayoutGrid, Plus, Sparkles, Share2 } from "lucide-react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { ShareCampaignModal } from "./ShareCampaignModal";
+import { useState } from "react";
 
 interface CampaignSuccessModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   campaign: {
+    id: string;
     name: string;
     channels: string[];
     template: string;
     firstPostDate: Date;
+    description?: string;
+    coverImage?: string;
   };
 }
 
@@ -23,6 +28,7 @@ export function CampaignSuccessModal({
   campaign 
 }: CampaignSuccessModalProps) {
   const navigate = useNavigate();
+  const [showShareModal, setShowShareModal] = useState(false);
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -41,7 +47,7 @@ export function CampaignSuccessModal({
           <div>
             <h2 className="text-2xl font-bold mb-2">Campaign Created! 🎉</h2>
             <p className="text-sm text-muted-foreground">
-              Your campaign is ready to go
+              Now share it with your community
             </p>
           </div>
 
@@ -84,42 +90,52 @@ export function CampaignSuccessModal({
           </div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-3">
+            <Button
+              onClick={() => {
+                setShowShareModal(true);
+              }}
+              className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
+              size="lg"
+            >
+              <Share2 className="w-4 h-4 mr-2" />
+              Share with my contacts
+            </Button>
+
             <Button
               variant="outline"
               onClick={() => {
                 navigate('/sharing/campaigns');
                 onOpenChange(false);
               }}
+              className="w-full"
+            >
+              Manage channels & scheduling
+            </Button>
+
+            <Button
+              variant="link"
+              onClick={() => {
+                navigate('/sharing/campaigns');
+                onOpenChange(false);
+              }}
+              className="w-full text-sm"
             >
               <LayoutGrid className="w-4 h-4 mr-2" />
               View Dashboard
             </Button>
-            <Button
-              onClick={() => {
-                navigate('/sharing/content');
-                onOpenChange(false);
-              }}
-              className="bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Content
-            </Button>
           </div>
-
-          <Button
-            variant="link"
-            onClick={() => {
-              // Enable Autopilot optimization
-              onOpenChange(false);
-            }}
-            className="w-full"
-          >
-            <Sparkles className="w-4 h-4 mr-2" />
-            Let Autopilot Optimize
-          </Button>
         </div>
       </DialogContent>
+
+      <ShareCampaignModal
+        open={showShareModal}
+        onOpenChange={setShowShareModal}
+        campaignId={campaign.id}
+        campaignName={campaign.name}
+        campaignDescription={campaign.description}
+        campaignImage={campaign.coverImage}
+      />
     </Dialog>
   );
 }
