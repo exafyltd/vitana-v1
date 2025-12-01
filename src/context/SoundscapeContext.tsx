@@ -71,6 +71,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const [volume, setVolumeState] = useState(DEFAULT_VOLUME);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrack] = useState(AMBIENT_TRACK);
+  const [pendingAutoPlay, setPendingAutoPlay] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const previousVolumeRef = useRef(DEFAULT_VOLUME);
   const [pausedByPriority, setPausedByPriority] = useState(false);
@@ -178,12 +179,23 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     // Attach event listeners
     attachListeners(audio);
 
-  // Auto-play if preference is set AND user hasn't explicitly paused
-    if (savedAutoPlay === 'true' && audio.paused && !userExplicitlyPausedRef.current) {
-      audio.play().catch((err) => {
-        console.warn('[Soundscape] Auto-play blocked:', err);
-      });
-      setIsPlaying(true);
+  // Auto-play if no preference exists (new user) or preference is true
+    const shouldAutoPlay = savedAutoPlay === null || savedAutoPlay === 'true';
+    if (shouldAutoPlay && audio.paused && !userExplicitlyPausedRef.current) {
+      audio.play()
+        .then(() => {
+          console.log('[Soundscape] Auto-play succeeded');
+          setIsPlaying(true);
+          setPendingAutoPlay(false);
+        })
+        .catch((err) => {
+          if (err.name === 'NotAllowedError') {
+            console.log('[Soundscape] Auto-play blocked by browser, waiting for user interaction');
+            setPendingAutoPlay(true);
+          } else {
+            console.warn('[Soundscape] Auto-play failed:', err);
+          }
+        });
     } else {
       // Sync state with actual audio state
       setIsPlaying(!audio.paused);
@@ -230,15 +242,60 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
   }, [attachListeners]); // Only run when attachListeners changes
 
+  // Listen for first user interaction to resume blocked autoplay
+  useEffect(() => {
+    if (!pendingAutoPlay) return;
+    
+    const handleInteraction = () => {
+      console.log('[Soundscape] User interaction detected, attempting to start audio');
+      if (audioRef.current && pendingAutoPlay) {
+        audioRef.current.play()
+          .then(() => {
+            setIsPlaying(true);
+            setPendingAutoPlay(false);
+            console.log('[Soundscape] Audio started after user interaction');
+          })
+          .catch((err) => {
+            console.warn('[Soundscape] Failed to start audio even after interaction:', err);
+          });
+      }
+      
+      // Remove listeners after first interaction
+      document.removeEventListener('click', handleInteraction, true);
+      document.removeEventListener('touchstart', handleInteraction, true);
+      document.removeEventListener('keydown', handleInteraction, true);
+    };
+    
+    // Use capture phase to catch events early
+    document.addEventListener('click', handleInteraction, true);
+    document.addEventListener('touchstart', handleInteraction, true);
+    document.addEventListener('keydown', handleInteraction, true);
+    
+    return () => {
+      document.removeEventListener('click', handleInteraction, true);
+      document.removeEventListener('touchstart', handleInteraction, true);
+      document.removeEventListener('keydown', handleInteraction, true);
+    };
+  }, [pendingAutoPlay]);
+
 
   const play = useCallback(() => {
     if (audioRef.current) {
-      audioRef.current.play().catch((err) => {
-        console.warn('[Soundscape] Play failed:', err);
-      });
-      setIsPlaying(true);
-      localStorage.setItem('soundscape_auto_play', 'true');
-      userExplicitlyPausedRef.current = false; // Clear explicit pause flag
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+          setPendingAutoPlay(false);
+          localStorage.setItem('soundscape_auto_play', 'true');
+          userExplicitlyPausedRef.current = false;
+        })
+        .catch((err) => {
+          if (err.name === 'NotAllowedError') {
+            console.log('[Soundscape] Play blocked by browser, waiting for user interaction');
+            setPendingAutoPlay(true);
+          } else {
+            console.warn('[Soundscape] Play failed:', err);
+          }
+        });
     }
   }, []);
 

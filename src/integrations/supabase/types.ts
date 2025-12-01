@@ -3982,6 +3982,8 @@ export type Database = {
       oasis_events: {
         Row: {
           created_at: string
+          event: string | null
+          git_sha: string | null
           id: string
           kind: string | null
           layer: string | null
@@ -3991,18 +3993,23 @@ export type Database = {
           metadata: Json | null
           model: string | null
           module: string | null
+          notes: string | null
           projected: boolean | null
           ref: string | null
+          rid: string | null
           role: string
           service: string
           source: string | null
           status: string
+          tenant: string | null
           title: string | null
           topic: string
           vtid: string | null
         }
         Insert: {
           created_at?: string
+          event?: string | null
+          git_sha?: string | null
           id?: string
           kind?: string | null
           layer?: string | null
@@ -4012,18 +4019,23 @@ export type Database = {
           metadata?: Json | null
           model?: string | null
           module?: string | null
+          notes?: string | null
           projected?: boolean | null
           ref?: string | null
+          rid?: string | null
           role: string
           service: string
           source?: string | null
           status: string
+          tenant?: string | null
           title?: string | null
           topic: string
           vtid?: string | null
         }
         Update: {
           created_at?: string
+          event?: string | null
+          git_sha?: string | null
           id?: string
           kind?: string | null
           layer?: string | null
@@ -4033,12 +4045,15 @@ export type Database = {
           metadata?: Json | null
           model?: string | null
           module?: string | null
+          notes?: string | null
           projected?: boolean | null
           ref?: string | null
+          rid?: string | null
           role?: string
           service?: string
           source?: string | null
           status?: string
+          tenant?: string | null
           title?: string | null
           topic?: string
           vtid?: string | null
@@ -4126,39 +4141,51 @@ export type Database = {
       OasisEvent: {
         Row: {
           created_at: string | null
-          event: string
+          event: string | null
           git_sha: string | null
           id: string
+          message: string | null
           metadata: Json | null
           notes: string | null
-          rid: string
+          projected: boolean | null
+          rid: string | null
           service: string
           status: string
-          tenant: string
+          tenant: string | null
+          topic: string | null
+          vtid: string | null
         }
         Insert: {
           created_at?: string | null
-          event: string
+          event?: string | null
           git_sha?: string | null
           id?: string
+          message?: string | null
           metadata?: Json | null
           notes?: string | null
-          rid: string
+          projected?: boolean | null
+          rid?: string | null
           service: string
           status: string
-          tenant: string
+          tenant?: string | null
+          topic?: string | null
+          vtid?: string | null
         }
         Update: {
           created_at?: string | null
-          event?: string
+          event?: string | null
           git_sha?: string | null
           id?: string
+          message?: string | null
           metadata?: Json | null
           notes?: string | null
-          rid?: string
+          projected?: boolean | null
+          rid?: string | null
           service?: string
           status?: string
-          tenant?: string
+          tenant?: string | null
+          topic?: string | null
+          vtid?: string | null
         }
         Relationships: []
       }
@@ -6182,13 +6209,17 @@ export type Database = {
           created_at: string
           description: string | null
           description_md: string | null
+          environment: string | null
           id: string
           is_test: boolean
+          last_event_at: string | null
+          last_event_id: string | null
           layer: string
           metadata: Json | null
           module: string
           parent_vtid: string | null
           priority: string | null
+          service: string | null
           status: string
           summary: string | null
           task_family: string
@@ -6204,13 +6235,17 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_md?: string | null
+          environment?: string | null
           id: string
           is_test?: boolean
+          last_event_at?: string | null
+          last_event_id?: string | null
           layer: string
           metadata?: Json | null
           module: string
           parent_vtid?: string | null
           priority?: string | null
+          service?: string | null
           status: string
           summary?: string | null
           task_family: string
@@ -6226,13 +6261,17 @@ export type Database = {
           created_at?: string
           description?: string | null
           description_md?: string | null
+          environment?: string | null
           id?: string
           is_test?: boolean
+          last_event_at?: string | null
+          last_event_id?: string | null
           layer?: string
           metadata?: Json | null
           module?: string
           parent_vtid?: string | null
           priority?: string | null
+          service?: string | null
           status?: string
           summary?: string | null
           task_family?: string
