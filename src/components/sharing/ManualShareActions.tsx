@@ -49,14 +49,41 @@ export function ManualShareActions({
     toast.success("Opening WhatsApp...");
   };
 
-  const handleViberShare = () => {
+  const handleViberShare = async () => {
     const viberUrl = `viber://forward?text=${encodedMessage}`;
+    
+    // Track if Viber opened successfully
+    let viberOpened = false;
+    
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        viberOpened = true;
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Try to open Viber
     window.location.href = viberUrl;
     
-    // Fallback if Viber protocol fails
-    setTimeout(() => {
-      toast.info("If Viber didn't open, please share the link manually");
-    }, 1000);
+    // Check after a delay if Viber opened
+    setTimeout(async () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      
+      if (viberOpened) {
+        toast.success("Opening Viber...");
+      } else {
+        // Viber didn't open - copy link to clipboard as fallback
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          toast.info("Viber not detected. Link copied to clipboard!", {
+            description: "Paste it manually in your Viber chat"
+          });
+        } catch {
+          toast.error("Viber not detected. Please copy the link manually.");
+        }
+      }
+    }, 1500);
   };
 
   const handleEmailShare = () => {
