@@ -30,6 +30,27 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://vitana-v1.lovable.app/${url}`;
 }
 
+// Optimize image URL for social media crawlers (convert WebP to JPEG)
+function getOptimizedImageUrl(url: string | null | undefined): string {
+  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  
+  if (!url) return defaultImage;
+  
+  // Make URL absolute first
+  const absoluteUrl = ensureAbsoluteUrl(url);
+  
+  // If it's a Supabase storage URL with WebP, transform to JPEG for WhatsApp compatibility
+  if (absoluteUrl.includes('supabase.co/storage/v1/object/public/') && absoluteUrl.toLowerCase().endsWith('.webp')) {
+    const transformedUrl = absoluteUrl.replace(
+      '/storage/v1/object/public/',
+      '/storage/v1/render/image/public/'
+    ) + '?width=1200&height=630&format=jpeg&quality=85';
+    return transformedUrl;
+  }
+  
+  return absoluteUrl;
+}
+
 // Sanitize text for meta tags
 function sanitizeText(text: string | null | undefined): string {
   if (!text) return '';
@@ -100,7 +121,7 @@ interface CampaignData {
 function generateOGHTML(campaign: CampaignData): string {
   const title = sanitizeText(campaign.name);
   const description = sanitizeText(campaign.description);
-  const imageUrl = ensureAbsoluteUrl(campaign.cover_image_url);
+  const imageUrl = getOptimizedImageUrl(campaign.cover_image_url);
   const imageType = getImageMimeType(imageUrl);
   const campaignUrl = `https://vitana-v1.lovable.app/pub/campaigns/${campaign.id}`;
 
@@ -211,7 +232,7 @@ Deno.serve(async (req) => {
         headers: {
           ...corsHeaders,
           'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'public, max-age=3600',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
         },
       });
     }
