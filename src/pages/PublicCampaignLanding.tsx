@@ -118,9 +118,6 @@ export default function PublicCampaignLanding() {
     campaign.metadata?.cover_image_url ||
     campaign.metadata?.event_image_url ||
     null;
-
-  console.log('PUBLIC CAMPAIGN RAW DATA', campaign);
-  console.log('PUBLIC CAMPAIGN HERO IMAGE (with fallback)', heroImage);
   
   // Check if campaign is draft (hide status badge for draft on public view)
   const isDraft = campaign.status?.toLowerCase() === 'draft';
@@ -137,27 +134,19 @@ export default function PublicCampaignLanding() {
       />
       
       <div className="min-h-screen bg-background">
-        {/* DEBUG: Always show what data we have */}
-        <div className="p-4 bg-yellow-100 text-black text-sm mb-4 max-w-5xl mx-auto">
-          <p><strong>cover_image_url:</strong> {campaign.cover_image_url || 'NULL'}</p>
-          <p><strong>heroImage computed:</strong> {heroImage || 'NULL'}</p>
-          <p><strong>metadata:</strong> {JSON.stringify(campaign.metadata)}</p>
-        </div>
-
-        {/* Hero Section - Always render container with fallback */}
-        <div className="w-full max-w-5xl mx-auto mb-8 rounded-3xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/20 to-primary/5 min-h-[200px]">
-          {heroImage ? (
+        {/* Hero Section - Full-width immersive design */}
+        {heroImage ? (
+          <div className="relative w-full h-64 md:h-96 overflow-hidden">
             <img
               src={heroImage}
               alt={campaign.name}
-              className="w-full h-auto block object-cover"
+              className="w-full h-full object-cover"
             />
-          ) : (
-            <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-              No cover image
-            </div>
-          )}
-        </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+          </div>
+        ) : (
+          <div className="relative w-full h-32 md:h-48 overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
+        )}
 
         {/* Content Section */}
         <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
