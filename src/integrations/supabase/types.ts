@@ -1215,6 +1215,7 @@ export type Database = {
       }
       campaigns: {
         Row: {
+          cover_image_url: string | null
           created_at: string
           description: string | null
           distribution_config: Json | null
@@ -1229,6 +1230,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          cover_image_url?: string | null
           created_at?: string
           description?: string | null
           distribution_config?: Json | null
@@ -1243,6 +1245,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          cover_image_url?: string | null
           created_at?: string
           description?: string | null
           distribution_config?: Json | null
@@ -6649,6 +6652,7 @@ export type Database = {
       get_public_campaign_details: {
         Args: { campaign_id: string }
         Returns: {
+          cover_image_url: string
           created_at: string
           description: string
           end_date: string
