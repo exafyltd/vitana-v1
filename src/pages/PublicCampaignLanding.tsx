@@ -111,30 +111,40 @@ export default function PublicCampaignLanding() {
   const startDate = campaign.start_date ? format(new Date(campaign.start_date), "MMMM d, yyyy") : "";
   const endDate = campaign.end_date ? format(new Date(campaign.end_date), "MMMM d, yyyy") : "";
   const shortDescription = campaign.description?.slice(0, 160) || `Check out ${campaign.name} on VITANA`;
-  const coverImage = campaign.cover_image_url || 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  
+  // Hero image with fallback chain
+  const heroImage = 
+    campaign.cover_image_url || 
+    campaign.metadata?.event_image_url ||
+    campaign.metadata?.image_url ||
+    'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  
+  // Check if campaign is draft (hide status badge for draft on public view)
+  const isDraft = campaign.status?.toLowerCase() === 'draft';
+  const displayStatus = !isDraft ? campaign.status : null;
 
   return (
     <>
       <SEO
         title={campaign.name}
         description={shortDescription}
-        image={coverImage}
+        image={heroImage}
         url={publicCampaignUrl}
         type="website"
       />
       
       <div className="min-h-screen bg-background">
         {/* Hero Section with Cover Image */}
-        {coverImage && !imageError && (
+        {heroImage && !imageError && (
           <div className="relative w-full h-64 md:h-96 overflow-hidden">
             <img
-              src={coverImage}
+              src={heroImage}
               alt={campaign.name}
               className="w-full h-full object-cover"
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
           </div>
         )}
 
@@ -146,9 +156,11 @@ export default function PublicCampaignLanding() {
               <h1 className="text-3xl md:text-4xl font-bold text-foreground">
                 {campaign.name}
               </h1>
-              <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
-                {campaign.status}
-              </div>
+              {displayStatus && (
+                <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
+                  {displayStatus}
+                </div>
+              )}
             </div>
 
             {/* Campaign Details */}
