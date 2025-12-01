@@ -143,3 +143,6 @@ verify_jwt = false
 
 [functions.og-share]
 verify_jwt = false
+
+[functions.og-campaign]
+verify_jwt = false
