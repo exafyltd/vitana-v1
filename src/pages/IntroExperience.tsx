@@ -24,7 +24,7 @@ export default function IntroExperience() {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
-  const { play, setVolume } = useSoundscape();
+  const { startFresh, setVolume } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -35,8 +35,8 @@ export default function IntroExperience() {
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
-    play();
-  }, [play]);
+    startFresh();
+  }, [startFresh]);
 
   // Load video source
   useEffect(() => {
@@ -56,10 +56,9 @@ export default function IntroExperience() {
   // Start soundscape when video loads
   useEffect(() => {
     if (videoSrc) {
-      setVolume(0.04);
-      play();
+      startFresh(0.04);
     }
-  }, [videoSrc, setVolume, play]);
+  }, [videoSrc, startFresh]);
 
   // Fade soundscape volume when TTS is playing
   useEffect(() => {

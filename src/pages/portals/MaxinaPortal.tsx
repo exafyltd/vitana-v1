@@ -30,7 +30,7 @@ const MaxinaPortal = () => {
   const navigate = useNavigate();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
-  const { play, setVolume } = useSoundscape();
+  const { startFresh } = useSoundscape();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -43,8 +43,8 @@ const MaxinaPortal = () => {
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
-    play();
-  }, [play]);
+    startFresh();
+  }, [startFresh]);
 
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
@@ -71,10 +71,9 @@ const MaxinaPortal = () => {
   // Start soundscape when video loads
   useEffect(() => {
     if (videoSrc) {
-      setVolume(0.05);
-      play();
+      startFresh(0.05);
     }
-  }, [videoSrc, setVolume, play]);
+  }, [videoSrc, startFresh]);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
