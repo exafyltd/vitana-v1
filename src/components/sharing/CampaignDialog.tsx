@@ -21,7 +21,7 @@ import {
   ChevronLeft, ChevronRight, CheckCircle, AlertCircle, 
   Settings, Target, Eye, Link2, Lightbulb, 
   Share2, MessageSquare, Home, Info, Moon,
-  ShieldCheck, Rocket, X, Sparkles, Calendar, ChevronDown
+  ShieldCheck, Rocket, X, Sparkles, Calendar, ChevronDown, Image
 } from "lucide-react";
 import { DISTRIBUTION_TEMPLATES, CHANNEL_BEST_TIMES, CHANNEL_INFO } from "@/lib/campaign-templates";
 import { EnhancedStepIndicator } from "./EnhancedStepIndicator";
@@ -82,6 +82,11 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   const [goal, setGoal] = useState("");
   const [linkedSource, setLinkedSource] = useState<any>(null);
   const [lastSaved, setLastSaved] = useState(new Date());
+  
+  // Cover image state
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Step 3 additions (custom template)
   const [customFrequency, setCustomFrequency] = useState("weekly");
@@ -147,12 +152,47 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
     setSelectedTemplate("custom");
     setSmartSchedulingEnabled(true);
     setAudienceData(null);
+    setSelectedImage(null);
+    setImagePreviewUrl(null);
     onOpenChange(false);
   };
 
   const handleSubmit = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
+
+    let coverImageUrl: string | null = null;
+
+    // Upload cover image if one was selected
+    if (selectedImage) {
+      setUploadingImage(true);
+      try {
+        const fileExt = selectedImage.name.split('.').pop();
+        const fileName = `${user.id}/${crypto.randomUUID()}.${fileExt}`;
+        
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('campaign-images')
+          .upload(fileName, selectedImage, {
+            cacheControl: '3600',
+            upsert: false
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('campaign-images')
+          .getPublicUrl(fileName);
+
+        coverImageUrl = publicUrl;
+      } catch (error) {
+        console.error('Image upload failed:', error);
+        toast.error("Failed to upload image");
+        setUploadingImage(false);
+        return;
+      } finally {
+        setUploadingImage(false);
+      }
+    }
 
     const template = DISTRIBUTION_TEMPLATES.find(t => t.id === selectedTemplate);
     
@@ -161,6 +201,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       name,
       description,
       status: "draft",
+      cover_image_url: coverImageUrl,
       target_channels: selectedChannels,
       distribution_config: {
         template_id: selectedTemplate,
@@ -390,6 +431,68 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     <p className="text-xs text-muted-foreground mt-1">
                       Helps Autopilot optimize your posting strategy
                     </p>
+                  </div>
+
+                  {/* Cover Image Upload */}
+                  <div>
+                    <Label>Cover Image (Optional)</Label>
+                    <div className="mt-2">
+                      {imagePreviewUrl ? (
+                        <div className="relative">
+                          <img 
+                            src={imagePreviewUrl} 
+                            alt="Campaign cover preview" 
+                            className="w-full h-48 object-cover rounded-lg border-2 border-border"
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute top-2 right-2"
+                            onClick={() => {
+                              setSelectedImage(null);
+                              setImagePreviewUrl(null);
+                            }}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div 
+                          className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer"
+                          onClick={() => document.getElementById('campaign-image-upload')?.click()}
+                        >
+                          <Image className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
+                          <p className="text-sm text-muted-foreground mb-1">
+                            Click to upload campaign cover image
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            PNG, JPG, WebP up to 5MB
+                          </p>
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        id="campaign-image-upload"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            if (!file.type.startsWith('image/')) {
+                              toast.error("Please select an image file");
+                              return;
+                            }
+                            if (file.size > 5 * 1024 * 1024) {
+                              toast.error("Image must be smaller than 5MB");
+                              return;
+                            }
+                            setSelectedImage(file);
+                            setImagePreviewUrl(URL.createObjectURL(file));
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               )}

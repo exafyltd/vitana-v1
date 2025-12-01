@@ -11,6 +11,7 @@ interface PublicCampaignData {
   id: string;
   name: string;
   description: string | null;
+  cover_image_url: string | null;
   status: string;
   start_date: string | null;
   end_date: string | null;
@@ -108,7 +109,7 @@ export default function PublicCampaignLanding() {
   const startDate = campaign.start_date ? format(new Date(campaign.start_date), "MMMM d, yyyy") : "";
   const endDate = campaign.end_date ? format(new Date(campaign.end_date), "MMMM d, yyyy") : "";
   const shortDescription = campaign.description?.slice(0, 160) || `Check out ${campaign.name} on VITANA`;
-  const coverImage = campaign.metadata?.coverImage || campaign.metadata?.image_url || null;
+  const coverImage = campaign.cover_image_url || 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
 
   return (
     <>
