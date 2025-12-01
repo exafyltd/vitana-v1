@@ -85,7 +85,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   
   // Cover image state
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(
+    prefillData?.coverImage || editingCampaign?.cover_image_url || null
+  );
   const [uploadingImage, setUploadingImage] = useState(false);
 
   // Step 3 additions (custom template)
