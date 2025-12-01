@@ -26,8 +26,8 @@ function isCrawler(userAgent: string): boolean {
 function ensureAbsoluteUrl(url: string | null | undefined): string {
   if (!url) return 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  if (url.startsWith('/')) return `https://vitana.app${url}`;
-  return `https://vitana.app/${url}`;
+  if (url.startsWith('/')) return `https://vitana-v1.lovable.app${url}`;
+  return `https://vitana-v1.lovable.app/${url}`;
 }
 
 // Sanitize text for meta tags
@@ -43,7 +43,7 @@ function sanitizeText(text: string | null | undefined): string {
 // Generate fallback HTML for invalid/missing campaigns
 function generateFallbackHTML(): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
-  const homeUrl = 'https://vitana.app/home';
+  const homeUrl = 'https://vitana-v1.lovable.app/home';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -91,7 +91,7 @@ function generateOGHTML(campaign: CampaignData): string {
   const title = sanitizeText(campaign.name);
   const description = sanitizeText(campaign.description);
   const imageUrl = ensureAbsoluteUrl(campaign.cover_image_url);
-  const campaignUrl = `https://vitana.app/pub/campaigns/${campaign.id}`;
+  const campaignUrl = `https://vitana-v1.lovable.app/pub/campaigns/${campaign.id}`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -205,7 +205,7 @@ Deno.serve(async (req) => {
     }
 
     // For real users, redirect to the app
-    const redirectUrl = `https://vitana.app/pub/campaigns/${campaignId}`;
+    const redirectUrl = `https://vitana-v1.lovable.app/pub/campaigns/${campaignId}`;
     console.log(`og-campaign: Redirecting user to: ${redirectUrl}`);
     
     return Response.redirect(redirectUrl, 302);
