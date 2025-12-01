@@ -110,13 +110,17 @@ export default function PublicCampaignLanding() {
   const endDate = campaign.end_date ? format(new Date(campaign.end_date), "MMMM d, yyyy") : "";
   const shortDescription = campaign.description?.slice(0, 160) || `Check out ${campaign.name} on VITANA`;
   
-  // TEMP: ultra-simple hero image logic – only use cover_image_url
+  // Robust fallback chain matching event card pattern
+  const heroImage = 
+    campaign.cover_image_url ||
+    (campaign as any).image_url ||
+    campaign.metadata?.image_url ||
+    campaign.metadata?.cover_image_url ||
+    campaign.metadata?.event_image_url ||
+    null;
+
   console.log('PUBLIC CAMPAIGN RAW DATA', campaign);
-
-  const heroImage: string | null =
-    (campaign as any).cover_image_url && String((campaign as any).cover_image_url);
-
-  console.log('PUBLIC CAMPAIGN HERO IMAGE (forced)', heroImage);
+  console.log('PUBLIC CAMPAIGN HERO IMAGE (with fallback)', heroImage);
   
   // Check if campaign is draft (hide status badge for draft on public view)
   const isDraft = campaign.status?.toLowerCase() === 'draft';
@@ -133,16 +137,27 @@ export default function PublicCampaignLanding() {
       />
       
       <div className="min-h-screen bg-background">
-        {/* TEMP: always render hero container if heroImage is truthy */}
-        {heroImage && (
-          <div className="w-full max-w-5xl mx-auto mb-8 rounded-3xl overflow-hidden shadow-lg border border-dashed border-rose-400 min-h-[240px] bg-slate-900/40">
+        {/* DEBUG: Always show what data we have */}
+        <div className="p-4 bg-yellow-100 text-black text-sm mb-4 max-w-5xl mx-auto">
+          <p><strong>cover_image_url:</strong> {campaign.cover_image_url || 'NULL'}</p>
+          <p><strong>heroImage computed:</strong> {heroImage || 'NULL'}</p>
+          <p><strong>metadata:</strong> {JSON.stringify(campaign.metadata)}</p>
+        </div>
+
+        {/* Hero Section - Always render container with fallback */}
+        <div className="w-full max-w-5xl mx-auto mb-8 rounded-3xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/20 to-primary/5 min-h-[200px]">
+          {heroImage ? (
             <img
               src={heroImage}
               alt={campaign.name}
               className="w-full h-auto block object-cover"
             />
-          </div>
-        )}
+          ) : (
+            <div className="h-[200px] flex items-center justify-center text-muted-foreground">
+              No cover image
+            </div>
+          )}
+        </div>
 
         {/* Content Section */}
         <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
