@@ -175,10 +175,10 @@ Deno.serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Fetch campaign data using RPC
-    const { data: campaign, error } = await supabase
+    const { data: campaignData, error } = await supabase
       .rpc('get_public_campaign_details', { campaign_id: campaignId });
 
-    if (error || !campaign) {
+    if (error || !campaignData || campaignData.length === 0) {
       console.error('og-campaign: Campaign not found or error:', error);
       const html = generateFallbackHTML();
       return new Response(html, {
@@ -189,6 +189,7 @@ Deno.serve(async (req) => {
       });
     }
 
+    const campaign: CampaignData = campaignData[0];
     console.log(`og-campaign: Fetched campaign: ${campaign.name}`);
 
     // For crawlers, return HTML with OG tags
