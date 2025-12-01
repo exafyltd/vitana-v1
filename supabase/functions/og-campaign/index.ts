@@ -122,8 +122,15 @@ function generateOGHTML(campaign: CampaignData): string {
   const title = sanitizeText(campaign.name);
   const description = sanitizeText(campaign.description);
   
-  // Use the same hero image logic as the public campaign page (campaign first, then default)
-  const baseImage = campaign.cover_image_url || null;
+  // Robust fallback chain matching frontend pattern
+  const baseImage = 
+    campaign.cover_image_url ||
+    (campaign as any).image_url ||
+    (campaign as any).metadata?.image_url ||
+    (campaign as any).metadata?.cover_image_url ||
+    (campaign as any).metadata?.event_image_url ||
+    null;
+  
   const imageUrl = getOptimizedImageUrl(baseImage);
   const imageType = getImageMimeType(imageUrl);
   const campaignUrl = `https://vitana-v1.lovable.app/pub/campaigns/${campaign.id}`;
