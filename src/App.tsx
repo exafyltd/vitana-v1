@@ -123,6 +123,7 @@ import EarthlinksConfirmed from "./pages/portals/EarthlinksConfirmed";
 import CommunityConfirmed from "./pages/portals/CommunityConfirmed";
 import PublicProfilePage from "./pages/PublicProfilePage";
 import PublicEventLanding from "./pages/PublicEventLanding";
+import PublicCampaignLanding from "./pages/PublicCampaignLanding";
 import EditProfilePage from "./pages/EditProfilePage";
 import Wallet from "./pages/Wallet";
 import Sharing from "./pages/Sharing";
@@ -309,6 +310,7 @@ const App = () => {
           
           {/* Public Routes - No Auth Required */}
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
+          <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
