@@ -7,7 +7,7 @@
  * @returns Direct app URL with UTM parameters
  */
 export function getShareUrl(
-  type: 'event' | 'meetup' | 'group' | 'profile' | 'post',
+  type: 'event' | 'meetup' | 'group' | 'profile' | 'post' | 'campaign',
   id: string,
   options?: {
     utm_source?: string;
@@ -15,6 +15,19 @@ export function getShareUrl(
     utm_campaign?: string;
   }
 ): string {
+  // Campaigns use public landing page
+  if (type === 'campaign') {
+    const appUrl = window.location.origin;
+    const params = new URLSearchParams();
+    
+    if (options?.utm_source) params.set('utm_source', options.utm_source);
+    if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
+    if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
+    
+    const queryString = params.toString();
+    return `${appUrl}/pub/campaigns/${encodeURIComponent(id)}${queryString ? '?' + queryString : ''}`;
+  }
+
   // Events use public landing page for proper social previews
   if (type === 'event' || type === 'meetup') {
     const appUrl = window.location.origin;

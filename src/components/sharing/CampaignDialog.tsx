@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useCampaigns, type Campaign } from "@/hooks/useCampaigns";
 import { useChannels } from "@/hooks/useChannels";
 import { useProfile } from "@/context/ProfileProvider";
@@ -20,13 +21,14 @@ import {
   ChevronLeft, ChevronRight, CheckCircle, AlertCircle, 
   Settings, Target, Eye, Link2, Lightbulb, 
   Share2, MessageSquare, Home, Info, Moon,
-  ShieldCheck, Rocket, X, Sparkles, Calendar
+  ShieldCheck, Rocket, X, Sparkles, Calendar, ChevronDown
 } from "lucide-react";
 import { DISTRIBUTION_TEMPLATES, CHANNEL_BEST_TIMES, CHANNEL_INFO } from "@/lib/campaign-templates";
 import { EnhancedStepIndicator } from "./EnhancedStepIndicator";
 import { CampaignCreationHeader } from "./CampaignCreationHeader";
 import { CampaignSuccessModal } from "./CampaignSuccessModal";
 import { InlineChannelConnector } from "./InlineChannelConnector";
+import { ManualShareActions } from "./ManualShareActions";
 import { AudienceSelector } from "./AudienceSelector";
 import type { AudienceData } from "@/types/audience";
 import { cn } from "@/lib/utils";
@@ -98,6 +100,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   // Channel connection modal
   const [connectingChannel, setConnectingChannel] = useState<string | null>(null);
   const [showConnectDialog, setShowConnectDialog] = useState(false);
+  
+  // Advanced channels collapsible state
+  const [showAdvancedChannels, setShowAdvancedChannels] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -382,24 +387,15 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
 
               {/* Step 2: Channel Selection - Enhanced */}
               {step === 2 && (
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Label>Select Distribution Channels</Label>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm" onClick={selectAllChannels}>
-                        Select All
-                      </Button>
-                      <Button variant="ghost" size="sm" onClick={deselectAllChannels}>
-                        Clear
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Social Media Group */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded">
-                      <Share2 className="w-4 h-4 text-muted-foreground" />
-                      <h4 className="text-sm font-semibold text-foreground">Social Media</h4>
+                <div className="space-y-6">
+                  {/* Section 1: Social Media (Auto-Post) */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20">
+                      <Share2 className="w-5 h-5 text-primary" />
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-foreground">Social Media (Auto-Post)</h3>
+                        <p className="text-xs text-muted-foreground">Connect your accounts to auto-publish your campaign on social platforms</p>
+                      </div>
                     </div>
                     <div className="grid gap-3 pl-4">
                       {['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'tiktok'].map((key) => {
@@ -479,85 +475,123 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                     </div>
                   </div>
 
-                  {/* Messaging Group */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded">
-                      <MessageSquare className="w-4 h-4 text-muted-foreground" />
-                      <h4 className="text-sm font-semibold text-foreground">Direct Messaging</h4>
+                  {/* Section 2: Direct Messaging (Manual Share) */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-green-500/10 to-green-500/5 rounded-lg border border-green-500/20">
+                      <MessageSquare className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-foreground">Direct Messaging (Manual Share)</h3>
+                        <p className="text-xs text-muted-foreground">Fast sharing with your personal contacts</p>
+                      </div>
                     </div>
-                    <div className="grid gap-3 pl-4">
-                      {['email', 'sms', 'whatsapp'].map((key) => {
-                        const info = CHANNEL_INFO[key];
-                        const isConnected = getChannelConnectionStatus(key);
-                        const isSelected = selectedChannels[key];
-                        
-                        return (
-                          <div
-                            key={key}
-                            className={cn(
-                              "flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200",
-                              isSelected 
-                                ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-md" 
-                                : "border-border hover:border-muted-foreground/50 hover:bg-muted/50"
-                            )}
-                            onClick={() => toggleChannel(key)}
-                          >
-                            <Checkbox checked={isSelected} />
-                            
-                            <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white", info.color)}>
-                              <span className="font-bold">{info.name.charAt(0)}</span>
-                            </div>
 
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2">
-                                <span className="font-medium">{info.name}</span>
-                                {isConnected ? (
-                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
-                                    <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
-                                    <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">Connected</span>
-                                  </div>
-                                ) : (
-                                  <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
-                                    <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
-                                    <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">Not connected</span>
-                                  </div>
-                                )}
-                              </div>
-                              
-                              {!isConnected && (
-                                <Button
-                                  variant="link"
-                                  size="sm"
-                                  className="h-auto p-0 text-xs text-[hsl(var(--pill-hydration-accent))] hover:text-[hsl(var(--pill-hydration-accent))]/80"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleConnectChannel(key);
-                                  }}
-                                >
-                                  Connect now →
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    <ManualShareActions
+                      campaignId={editingCampaign?.id || "preview"}
+                      campaignTitle={name || "Your Campaign"}
+                      campaignDescription={description || "Check out this campaign!"}
+                    />
                   </div>
 
-                  {/* Email/SMS Consent Warning */}
-                  {(selectedChannels.email || selectedChannels.sms) && (
-                    <Alert className="bg-[hsl(var(--sys-ai-tint))] border-[hsl(var(--sys-ai-accent))]/30">
-                      <AlertCircle className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
-                      <AlertTitle className="text-foreground">Consent Required</AlertTitle>
-                      <AlertDescription className="text-muted-foreground text-sm">
-                        Some audience members may not have given promotional consent for{" "}
-                        {selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS"}.
-                        <Button variant="link" className="h-auto p-0 ml-1 text-foreground underline">
-                          Request consent →
-                        </Button>
-                      </AlertDescription>
-                    </Alert>
-                  )}
+                  {/* Section 3: Advanced Messaging (Business API) - Collapsed */}
+                  <Collapsible open={showAdvancedChannels} onOpenChange={setShowAdvancedChannels}>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full flex items-center justify-between p-3 h-auto hover:bg-muted/50 rounded-lg border border-dashed"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Settings className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">Show advanced channels (Business API)</span>
+                        </div>
+                        <ChevronDown className={cn(
+                          "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                          showAdvancedChannels && "rotate-180"
+                        )} />
+                      </Button>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent className="space-y-3 pt-3">
+                      <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+                        <Info className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <AlertDescription className="text-sm text-blue-900 dark:text-blue-100">
+                          These channels require professional configuration for automated bulk messaging. Regular users can use Manual Share above.
+                        </AlertDescription>
+                      </Alert>
+
+                      <div className="grid gap-3">
+                        {['email', 'sms', 'whatsapp'].map((key) => {
+                          const info = CHANNEL_INFO[key];
+                          const isConnected = getChannelConnectionStatus(key);
+                          const isSelected = selectedChannels[key];
+                          
+                          return (
+                            <div
+                              key={key}
+                              className={cn(
+                                "flex items-center gap-3 p-4 border-2 rounded-xl cursor-pointer transition-all duration-200",
+                                isSelected 
+                                  ? "border-[hsl(var(--gradient-join-start))] bg-gradient-to-br from-[hsl(var(--pill-nutrition-tint))] to-[hsl(var(--pill-hydration-tint))] shadow-md" 
+                                  : "border-border hover:border-muted-foreground/50 hover:bg-muted/50"
+                              )}
+                              onClick={() => toggleChannel(key)}
+                            >
+                              <Checkbox checked={isSelected} />
+                              
+                              <div className={cn("w-10 h-10 rounded-full flex items-center justify-center text-white", info.color)}>
+                                <span className="font-bold">{info.name.charAt(0)}</span>
+                              </div>
+
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium">{info.name}</span>
+                                  {isConnected ? (
+                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--pill-nutrition-accent))]/10 rounded-full">
+                                      <div className="w-2 h-2 rounded-full bg-[hsl(var(--pill-nutrition-accent))]" />
+                                      <span className="text-xs text-[hsl(var(--pill-nutrition-accent))]">Connected</span>
+                                    </div>
+                                  ) : (
+                                    <div className="flex items-center gap-1 px-2 py-0.5 bg-[hsl(var(--sys-autopilot-accent))]/10 rounded-full">
+                                      <AlertCircle className="w-3 h-3 text-[hsl(var(--sys-autopilot-accent))]" />
+                                      <span className="text-xs text-[hsl(var(--sys-autopilot-accent))]">Not connected</span>
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                {!isConnected && (
+                                  <Button
+                                    variant="link"
+                                    size="sm"
+                                    className="h-auto p-0 text-xs text-[hsl(var(--pill-hydration-accent))] hover:text-[hsl(var(--pill-hydration-accent))]/80"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleConnectChannel(key);
+                                    }}
+                                  >
+                                    Connect now →
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Email/SMS Consent Warning */}
+                      {(selectedChannels.email || selectedChannels.sms) && (
+                        <Alert className="bg-[hsl(var(--sys-ai-tint))] border-[hsl(var(--sys-ai-accent))]/30">
+                          <AlertCircle className="w-4 h-4 text-[hsl(var(--sys-ai-accent))]" />
+                          <AlertTitle className="text-foreground">Consent Required</AlertTitle>
+                          <AlertDescription className="text-muted-foreground text-sm">
+                            Some audience members may not have given promotional consent for{" "}
+                            {selectedChannels.email && selectedChannels.sms ? "email and SMS" : selectedChannels.email ? "email" : "SMS"}.
+                            <Button variant="link" className="h-auto p-0 ml-1 text-foreground underline">
+                              Request consent →
+                            </Button>
+                          </AlertDescription>
+                        </Alert>
+                      )}
+                    </CollapsibleContent>
+                  </Collapsible>
                 </div>
               )}
 
