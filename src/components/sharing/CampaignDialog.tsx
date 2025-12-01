@@ -118,6 +118,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       setSelectedTemplate(((editingCampaign.distribution_config as any)?.template_id as string) || "custom");
       setSmartSchedulingEnabled(((editingCampaign.distribution_config as any)?.smart_scheduling_enabled as boolean) ?? true);
       setAudienceData((editingCampaign.distribution_config as any)?.audience_data || null);
+      setImagePreviewUrl((editingCampaign as any).cover_image_url || null);
+      setSelectedImage(null);
       setStep(1);
     } else if (prefillData) {
       // Pre-fill from event promotion
@@ -126,6 +128,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       setGoal(prefillData.goal || "event_promotion");
       setSelectedChannels(prefillData.selectedChannels || { email: true, sms: true, whatsapp: true });
       setAudienceData(prefillData.audienceData || {});
+      setImagePreviewUrl(prefillData.coverImage || null);
+      setSelectedImage(null);
       setSelectedTemplate("custom");
       setSmartSchedulingEnabled(true);
       setStep(1);
@@ -136,6 +140,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       setSelectedTemplate("custom");
       setSmartSchedulingEnabled(true);
       setAudienceData({});
+      setImagePreviewUrl(null);
+      setSelectedImage(null);
       setStep(1);
     }
   }, [open, editingCampaign, prefillData]);
