@@ -815,6 +815,7 @@ const EventsAndMeetups = () => {
             name: `Promotion: ${eventToPromote.title}`,
             description: eventToPromote.description || "",
             goal: "event_promotion",
+            coverImage: eventToPromote.image_url,
             selectedChannels: { email: true, sms: true, whatsapp: true },
             audienceData: {
               eventAttendees: {
