@@ -104,6 +104,14 @@ export const CHANNEL_BEST_TIMES: Record<string, string[]> = {
   whatsapp: ["09:00", "12:00", "18:00", "21:00"],
 };
 
+export const MANUAL_SHARE_CHANNELS = {
+  copy_link: { name: "Copy Link", color: "bg-slate-500" },
+  whatsapp_personal: { name: "WhatsApp (Personal Share)", color: "bg-green-500", recommended: true },
+  viber: { name: "Viber", color: "bg-purple-500" },
+  email_manual: { name: "Email", color: "bg-gray-600" },
+  sms_manual: { name: "SMS", color: "bg-green-600" },
+};
+
 export const CHANNEL_INFO: Record<string, { name: string; color: string }> = {
   instagram: { name: "Instagram", color: "bg-pink-500" },
   linkedin: { name: "LinkedIn", color: "bg-blue-600" },
