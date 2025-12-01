@@ -133,13 +133,12 @@ export function AudienceSelector({
             <div className="flex items-start gap-3 p-3 bg-background rounded-lg">
               <Checkbox
                 id="organizer-followers"
-                checked={audienceData?.eventAttendees?.enabled || false}
+                checked={audienceData?.yourFollowers?.enabled || false}
                 onCheckedChange={(checked) => {
                   onAudienceChange({
                     ...audienceData,
-                    eventAttendees: {
+                    yourFollowers: {
                       enabled: checked as boolean,
-                      eventIds: [eventContext.eventId],
                     },
                   });
                 }}

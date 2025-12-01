@@ -272,7 +272,16 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   const canProceed = () => {
     if (step === 1) return name.trim() !== "";
     if (step === 2) return Object.values(selectedChannels).some(v => v);
-    if (step === 3 && hasDirectMessaging) return audienceData && (audienceData.eligibility?.total || 0) > 0;
+    if (step === 3 && hasDirectMessaging) {
+      // Check if any audience source is selected
+      const hasEventBasedAudience = audienceData?.yourFollowers?.enabled || audienceData?.eventAttendees?.enabled;
+      const hasVitanaContacts = audienceData?.vitanaContacts?.enabled && (audienceData.vitanaContacts.contactIds?.length || 0) > 0;
+      const hasCsvContacts = audienceData?.csvUpload?.enabled && (audienceData.csvUpload.data?.length || 0) > 0;
+      const hasManualContacts = audienceData?.manualContacts?.enabled && (audienceData.manualContacts.data?.length || 0) > 0;
+      const hasSegments = audienceData?.segments?.enabled;
+      
+      return hasEventBasedAudience || hasVitanaContacts || hasCsvContacts || hasManualContacts || hasSegments;
+    }
     if (step === 3 && !hasDirectMessaging) return selectedTemplate !== "";
     if (step === 4 && hasDirectMessaging) return selectedTemplate !== "";
     return true;

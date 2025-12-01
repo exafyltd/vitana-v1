@@ -18,7 +18,12 @@ export interface AudienceData {
     segmentIds: string[];
   };
   
-  // Event Attendees
+  // Event-Based: Your Followers
+  yourFollowers?: {
+    enabled: boolean;
+  };
+  
+  // Event-Based: Past Event Attendees
   eventAttendees?: {
     enabled: boolean;
     eventIds: string[];
