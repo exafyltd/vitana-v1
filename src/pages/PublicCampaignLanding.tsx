@@ -31,7 +31,6 @@ export default function PublicCampaignLanding() {
   const [campaign, setCampaign] = useState<PublicCampaignData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
@@ -124,6 +123,11 @@ export default function PublicCampaignLanding() {
     'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
 
   console.log('PUBLIC CAMPAIGN HERO IMAGE BEFORE FIX', heroImage);
+
+  // Use fallback image if the primary image fails to load
+  const heroImageToUse = !imageError
+    ? heroImage
+    : 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   
   // Check if campaign is draft (hide status badge for draft on public view)
   const isDraft = campaign.status?.toLowerCase() === 'draft';
@@ -134,23 +138,21 @@ export default function PublicCampaignLanding() {
       <SEO
         title={campaign.name}
         description={shortDescription}
-        image={heroImage}
+        image={heroImageToUse}
         url={publicCampaignUrl}
         type="website"
       />
       
       <div className="min-h-screen bg-background">
         {/* Hero Section with Cover Image */}
-        {heroImage && !imageError && (
-          <div className="relative w-full h-64 md:h-96 overflow-hidden">
+        {heroImageToUse && (
+          <div className="w-full max-w-5xl mx-auto mb-8 rounded-3xl overflow-hidden shadow-lg">
             <img
-              src={heroImage}
+              src={heroImageToUse}
               alt={campaign.name}
-              className="w-full h-full object-cover"
-              onLoad={() => setImageLoaded(true)}
+              className="w-full h-auto block object-cover"
               onError={() => setImageError(true)}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
           </div>
         )}
 
