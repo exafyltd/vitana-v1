@@ -31,7 +31,6 @@ export default function PublicCampaignLanding() {
   const [campaign, setCampaign] = useState<PublicCampaignData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const fetchPublicCampaign = async () => {
@@ -111,23 +110,13 @@ export default function PublicCampaignLanding() {
   const endDate = campaign.end_date ? format(new Date(campaign.end_date), "MMMM d, yyyy") : "";
   const shortDescription = campaign.description?.slice(0, 160) || `Check out ${campaign.name} on VITANA`;
   
-  // Log the raw campaign data once for debugging image fields
-  console.log('PUBLIC CAMPAIGN DATA', campaign);
+  // TEMP: ultra-simple hero image logic – only use cover_image_url
+  console.log('PUBLIC CAMPAIGN RAW DATA', campaign);
 
-  // Hero image with explicit fallback chain (campaign first, then metadata, then default)
-  const heroImage =
-    (campaign as any).image_url ||
-    campaign.cover_image_url ||
-    campaign.metadata?.event_image_url ||
-    campaign.metadata?.image_url ||
-    'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  const heroImage: string | null =
+    (campaign as any).cover_image_url && String((campaign as any).cover_image_url);
 
-  console.log('PUBLIC CAMPAIGN HERO IMAGE BEFORE FIX', heroImage);
-
-  // Use fallback image if the primary image fails to load
-  const heroImageToUse = !imageError
-    ? heroImage
-    : 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  console.log('PUBLIC CAMPAIGN HERO IMAGE (forced)', heroImage);
   
   // Check if campaign is draft (hide status badge for draft on public view)
   const isDraft = campaign.status?.toLowerCase() === 'draft';
@@ -138,20 +127,19 @@ export default function PublicCampaignLanding() {
       <SEO
         title={campaign.name}
         description={shortDescription}
-        image={heroImageToUse}
+        image={heroImage || undefined}
         url={publicCampaignUrl}
         type="website"
       />
       
       <div className="min-h-screen bg-background">
-        {/* Hero Section with Cover Image */}
-        {heroImageToUse && (
-          <div className="w-full max-w-5xl mx-auto mb-8 rounded-3xl overflow-hidden shadow-lg">
+        {/* TEMP: always render hero container if heroImage is truthy */}
+        {heroImage && (
+          <div className="w-full max-w-5xl mx-auto mb-8 rounded-3xl overflow-hidden shadow-lg border border-dashed border-rose-400 min-h-[240px] bg-slate-900/40">
             <img
-              src={heroImageToUse}
+              src={heroImage}
               alt={campaign.name}
               className="w-full h-auto block object-cover"
-              onError={() => setImageError(true)}
             />
           </div>
         )}
