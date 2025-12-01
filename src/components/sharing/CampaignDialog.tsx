@@ -485,11 +485,18 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       </div>
                     </div>
 
-                    <ManualShareActions
-                      campaignId={editingCampaign?.id || "preview"}
-                      campaignTitle={name || "Your Campaign"}
-                      campaignDescription={description || "Check out this campaign!"}
-                    />
+                    {editingCampaign?.id ? (
+                      <ManualShareActions
+                        campaignId={editingCampaign.id}
+                        campaignTitle={name || editingCampaign.name || "Your Campaign"}
+                        campaignDescription={description || editingCampaign.description || "Check out this campaign!"}
+                      />
+                    ) : (
+                      <div className="p-6 text-center text-muted-foreground bg-muted/30 rounded-lg border border-dashed">
+                        <p className="text-sm font-medium mb-1">Save your campaign first</p>
+                        <p className="text-xs">Create your campaign to enable direct sharing</p>
+                      </div>
+                    )}
                   </div>
 
                   {/* Section 3: Advanced Messaging (Business API) - Collapsed */}

@@ -40,6 +40,45 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 160);
 }
 
+// Generate fallback HTML for invalid/missing campaigns
+function generateFallbackHTML(): string {
+  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  const homeUrl = 'https://vitana.app/home';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VITANA - Your Wellness Journey</title>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="VITANA" />
+  <meta property="og:title" content="VITANA - Your Wellness Journey" />
+  <meta property="og:description" content="Join the VITANA wellness community and discover your path to optimal health" />
+  <meta property="og:image" content="${defaultImage}" />
+  <meta property="og:image:secure_url" content="${defaultImage}" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="${homeUrl}" />
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="VITANA - Your Wellness Journey" />
+  <meta name="twitter:description" content="Join the VITANA wellness community" />
+  <meta name="twitter:image" content="${defaultImage}" />
+  
+  <meta http-equiv="refresh" content="0;url=${homeUrl}">
+</head>
+<body>
+  <p>Redirecting to VITANA...</p>
+  <a href="${homeUrl}">Click here if you are not redirected</a>
+</body>
+</html>`;
+}
+
 interface CampaignData {
   id: string;
   name: string;
@@ -108,9 +147,25 @@ Deno.serve(async (req) => {
 
     if (!campaignId) {
       console.error('og-campaign: Missing campaign ID');
-      return new Response('Campaign ID required', { 
-        status: 400,
-        headers: corsHeaders 
+      const html = generateFallbackHTML();
+      return new Response(html, { 
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/html; charset=utf-8',
+        }
+      });
+    }
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(campaignId)) {
+      console.error('og-campaign: Invalid UUID format:', campaignId);
+      const html = generateFallbackHTML();
+      return new Response(html, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/html; charset=utf-8',
+        },
       });
     }
 
@@ -123,19 +178,14 @@ Deno.serve(async (req) => {
     const { data: campaign, error } = await supabase
       .rpc('get_public_campaign_details', { campaign_id: campaignId });
 
-    if (error) {
-      console.error('og-campaign: Supabase error:', error);
-      return new Response('Campaign not found', { 
-        status: 404,
-        headers: corsHeaders 
-      });
-    }
-
-    if (!campaign) {
-      console.error('og-campaign: Campaign not found');
-      return new Response('Campaign not found', { 
-        status: 404,
-        headers: corsHeaders 
+    if (error || !campaign) {
+      console.error('og-campaign: Campaign not found or error:', error);
+      const html = generateFallbackHTML();
+      return new Response(html, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/html; charset=utf-8',
+        },
       });
     }
 
