@@ -6646,6 +6646,23 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_public_campaign_details: {
+        Args: { campaign_id: string }
+        Returns: {
+          created_at: string
+          description: string
+          end_date: string
+          id: string
+          metadata: Json
+          name: string
+          owner_avatar: string
+          owner_id: string
+          owner_name: string
+          start_date: string
+          status: string
+          target_channels: Json
+        }[]
+      }
       get_public_event_details: {
         Args: { event_id: string }
         Returns: {

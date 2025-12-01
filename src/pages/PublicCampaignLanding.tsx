@@ -17,6 +17,9 @@ interface PublicCampaignData {
   target_channels: any;
   metadata: any;
   created_at: string;
+  owner_id: string;
+  owner_name: string;
+  owner_avatar: string | null;
 }
 
 export default function PublicCampaignLanding() {
@@ -37,13 +40,10 @@ export default function PublicCampaignLanding() {
       }
 
       try {
-        // Fetch campaign data directly - campaigns table should have RLS configured for public access
-        const { data, error: fetchError } = await supabase
-          .from("campaigns")
-          .select("*")
-          .eq("id", id)
-          .eq("status", "active") // Only show active campaigns publicly
-          .single();
+        // Use RPC function to bypass RLS for public campaign access
+        const { data, error: fetchError } = await supabase.rpc("get_public_campaign_details", {
+          campaign_id: id,
+        });
 
         if (fetchError) {
           console.error("Error fetching campaign:", fetchError);
@@ -52,13 +52,13 @@ export default function PublicCampaignLanding() {
           return;
         }
 
-        if (!data) {
+        if (!data || data.length === 0) {
           setError("Campaign not found");
           setLoading(false);
           return;
         }
 
-        setCampaign(data as PublicCampaignData);
+        setCampaign(data[0] as PublicCampaignData);
       } catch (err) {
         console.error("Error:", err);
         setError("Failed to load campaign");
