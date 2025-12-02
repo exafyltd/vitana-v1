@@ -71,10 +71,29 @@ export default function PublicCampaignLanding() {
     fetchPublicCampaign();
   }, [id]);
 
+  // Helper to extract external ticket/booking URL from campaign
+  const getCampaignTicketUrl = (campaign: PublicCampaignData): string | null => {
+    return (
+      (campaign as any).ticket_url ||
+      (campaign as any).checkout_url ||
+      campaign.metadata?.ticket_url ||
+      campaign.metadata?.booking_url ||
+      campaign.metadata?.external_url ||
+      campaign.metadata?.ticketUrl ||
+      campaign.metadata?.bookingUrl ||
+      campaign.metadata?.externalUrl ||
+      null
+    );
+  };
+
   // Try to detect linked event from campaign metadata
   const linkedEventId = campaign?.metadata?.event_id || campaign?.metadata?.eventId || null;
   const isEventPaid = campaign?.metadata?.is_paid || campaign?.metadata?.isPaid || false;
   const eventPrice = campaign?.metadata?.price || campaign?.metadata?.event_price || null;
+  
+  // Check for external ticket URL
+  const ticketUrl = campaign ? getCampaignTicketUrl(campaign) : null;
+  const hasExternalTicket = !!ticketUrl;
 
   // Determine primary CTA label
   const getPrimaryCTALabel = () => {
@@ -86,19 +105,24 @@ export default function PublicCampaignLanding() {
   };
 
   const handleEventClick = () => {
-    if (!linkedEventId) {
-      // No linked event - same behavior as Join VITANA
-      handleJoinClick();
+    // Priority 1: External ticket/booking URL - open in new tab
+    if (ticketUrl) {
+      window.open(ticketUrl, '_blank', 'noopener,noreferrer');
       return;
     }
     
-    // Navigate to public event page or authenticated event view
-    if (user) {
-      navigate(`/comm/events-meetups?event=${linkedEventId}`);
-    } else {
-      // Go to public event page for non-VITANA visitors
-      navigate(`/pub/events/${linkedEventId}`);
+    // Priority 2: Linked event - navigate internally
+    if (linkedEventId) {
+      if (user) {
+        navigate(`/comm/events-meetups?event=${linkedEventId}`);
+      } else {
+        navigate(`/pub/events/${linkedEventId}`);
+      }
+      return;
     }
+    
+    // Fallback: Same behavior as Join VITANA
+    handleJoinClick();
   };
 
   const handleJoinClick = () => {
@@ -274,9 +298,11 @@ export default function PublicCampaignLanding() {
                 
                 {/* Right: Community CTA */}
                 <div className="flex-1 flex flex-col items-start md:items-end gap-2">
-                  <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    <span>Stay for the community</span>
+                  <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
+                    <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
+                      Discover more events, wellness programs, and communities.
+                    </span>
                   </div>
                   <Button
                     variant="outline"
@@ -284,18 +310,13 @@ export default function PublicCampaignLanding() {
                     onClick={handleJoinClick}
                     className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
                   >
-                    {user ? "View in VITANA" : "Continue in VITANA"}
+                    {user ? "View in VITANA" : "Join in VITANA"}
                   </Button>
-                  <div className="space-y-0.5 text-left md:text-right">
-                    <p className="text-xs text-muted-foreground max-w-xs">
-                      Get your own space to track progress, events & support.
+                  {!user && (
+                    <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
+                      You'll sign in or create an account in the next step.
                     </p>
-                    {!user && (
-                      <p className="text-[11px] text-muted-foreground/70">
-                        You'll sign in or create an account in the next step.
-                      </p>
-                    )}
-                  </div>
+                  )}
                 </div>
                 
               </div>
