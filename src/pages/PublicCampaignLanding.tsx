@@ -86,6 +86,16 @@ export default function PublicCampaignLanding() {
     );
   };
 
+  // Helper to get tenant-specific login route
+  const getTenantLoginRoute = (tenantSlug: string | null): string => {
+    const tenantRoutes: Record<string, string> = {
+      maxina: '/maxina',
+      alkalma: '/alkalma',
+      earthlinks: '/earthlinks',
+    };
+    return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/auth';
+  };
+
   // Try to detect linked event from campaign metadata
   const linkedEventId = campaign?.metadata?.event_id || campaign?.metadata?.eventId || null;
   const isEventPaid = campaign?.metadata?.is_paid || campaign?.metadata?.isPaid || false;
@@ -94,6 +104,9 @@ export default function PublicCampaignLanding() {
   // Check for external ticket URL
   const ticketUrl = campaign ? getCampaignTicketUrl(campaign) : null;
   const hasExternalTicket = !!ticketUrl;
+  
+  // Get tenant from campaign metadata for proper login routing
+  const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || null;
 
   // Determine primary CTA label
   const getPrimaryCTALabel = () => {
@@ -133,9 +146,10 @@ export default function PublicCampaignLanding() {
       const params = new URLSearchParams(searchParams);
       navigate(`/sharing/campaigns/${id}${params.toString() ? '?' + params.toString() : ''}`);
     } else {
-      // User not logged in, redirect to auth with return URL
+      // User not logged in, redirect to tenant-specific login with return URL
       const returnUrl = `/sharing/campaigns/${id}${searchParams.toString() ? '&' + searchParams.toString() : ''}`;
-      navigate(`/auth?redirectTo=${encodeURIComponent(returnUrl)}`);
+      const loginRoute = getTenantLoginRoute(tenantSlug);
+      navigate(`${loginRoute}?redirectTo=${encodeURIComponent(returnUrl)}`);
     }
   };
 

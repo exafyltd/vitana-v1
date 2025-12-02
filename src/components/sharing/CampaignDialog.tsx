@@ -16,6 +16,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { useCampaigns, type Campaign } from "@/hooks/useCampaigns";
 import { useChannels } from "@/hooks/useChannels";
 import { useProfile } from "@/context/ProfileProvider";
+import { useTenant } from "@/hooks/useTenant";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   ChevronLeft, ChevronRight, CheckCircle, AlertCircle, 
@@ -60,6 +61,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   const { createCampaign, updateCampaign } = useCampaigns();
   const { channels } = useChannels();
   const { profile } = useProfile();
+  const { tenant } = useTenant();
   
   // Form state
   const [step, setStep] = useState(1);
@@ -214,6 +216,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       status: "draft",
       cover_image_url: coverImageUrl,
       target_channels: selectedChannels,
+      metadata: {
+        tenant_slug: tenant?.slug || null,
+      },
       distribution_config: {
         template_id: selectedTemplate,
         frequency: template?.frequency || customFrequency,

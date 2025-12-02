@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { getIntroVideoSrc } from "@/utils/introVideo";
@@ -28,6 +28,7 @@ const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
   const { startFresh } = useSoundscape();
@@ -49,11 +50,12 @@ const MaxinaPortal = () => {
   // Switch to maxina tenant if already authenticated
   useEffect(() => {
     if (!authLoading && user) {
+      const redirectTo = searchParams.get('redirectTo');
       setTenantBySlug('maxina').then(() => {
-        navigate("/home");
+        navigate(redirectTo || "/home");
       });
     }
-  }, [user, authLoading, navigate, setTenantBySlug]);
+  }, [user, authLoading, navigate, setTenantBySlug, searchParams]);
 
   // Set tenant theme
   useEffect(() => {
