@@ -9,17 +9,21 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useCampaignActions } from "@/hooks/useCampaignActions";
 import { ActivateCampaignDialog } from "@/components/sharing/ActivateCampaignDialog";
-import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive } from "lucide-react";
+import { ScheduleDialog } from "@/components/sharing/ScheduleDialog";
+import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive, Clock } from "lucide-react";
 import { format } from "date-fns";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { toast } from "sonner";
 
 function CampaignDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { campaigns, isLoading, activateCampaign, pauseCampaign, completeCampaign } = useCampaigns();
-  const { posts } = useDistributionPosts();
+  const { posts, updatePost, blastNow } = useDistributionPosts();
   const { activateAllPosts } = useCampaignActions();
   const [showActivateDialog, setShowActivateDialog] = useState(false);
+  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   const campaign = campaigns?.find(c => c.id === id);
   const campaignPosts = posts?.filter(p => p.campaign_id === id) || [];
@@ -43,6 +47,32 @@ function CampaignDetail() {
   const handleCompleteCampaign = async () => {
     if (!id) return;
     await completeCampaign.mutateAsync(id);
+  };
+
+  const handleSchedulePost = (postId: string) => {
+    setSelectedPostId(postId);
+    setShowScheduleDialog(true);
+  };
+
+  const handleConfirmSchedule = async (scheduledTime: Date) => {
+    if (!selectedPostId) return;
+    
+    await updatePost.mutateAsync({
+      id: selectedPostId,
+      updates: {
+        status: 'scheduled',
+        scheduled_for: scheduledTime.toISOString(),
+      },
+    });
+    
+    setShowScheduleDialog(false);
+    setSelectedPostId(null);
+    toast.success("Post scheduled successfully");
+  };
+
+  const handlePublishNow = async (postId: string) => {
+    await blastNow.mutateAsync(postId);
+    toast.success("Post published!");
   };
 
   const getStatusColor = (status: string) => {
@@ -254,9 +284,30 @@ function CampaignDetail() {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          View
-                        </Button>
+                        {post.status === 'draft' && (
+                          <>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleSchedulePost(post.id)}
+                            >
+                              <Clock className="w-4 h-4 mr-2" />
+                              Schedule
+                            </Button>
+                            <Button 
+                              size="sm"
+                              onClick={() => handlePublishNow(post.id)}
+                            >
+                              <Rocket className="w-4 h-4 mr-2" />
+                              Publish Now
+                            </Button>
+                          </>
+                        )}
+                        {post.status !== 'draft' && (
+                          <Button variant="outline" size="sm">
+                            View
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -292,6 +343,13 @@ function CampaignDetail() {
           audienceData: (campaign?.distribution_config as any)?.audienceData,
           messageContent: (campaign?.distribution_config as any)?.messageContent,
         }}
+      />
+
+      <ScheduleDialog
+        open={showScheduleDialog}
+        onOpenChange={setShowScheduleDialog}
+        onConfirm={handleConfirmSchedule}
+        isLoading={updatePost.isPending}
       />
     </>
   );

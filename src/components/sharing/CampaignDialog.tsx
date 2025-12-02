@@ -801,15 +801,32 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 </div>
               )}
 
+              {!smartSchedulingEnabled && (
+                <div className="space-y-3 p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <Info className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+                    <div className="space-y-2 text-sm">
+                      <p className="font-medium">Posts will be saved as drafts</p>
+                      <p className="text-muted-foreground">
+                        After creating the campaign, you can review and schedule each post individually from the Campaign Detail page.
+                      </p>
+                      <p className="text-xs text-muted-foreground/80">
+                        📍 Go to <span className="font-medium">Campaigns → [Your Campaign]</span> to manage posts
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <p className="text-sm">
                   ✨ Posts will be created as <strong>drafts</strong> and require manual approval before publishing.
                 </p>
               </div>
             </div>
-              )}
-            </div>
-          </div>
+          )}
+        </div>
+      </div>
 
           <div className="flex justify-between gap-3 pt-6 border-t-2 px-1">
             <Button

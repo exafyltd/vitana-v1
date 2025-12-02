@@ -105,7 +105,7 @@ export function CampaignSuccessModal({
             <Button
               variant="outline"
               onClick={() => {
-                navigate('/sharing/campaigns');
+                navigate(`/sharing/campaigns/${campaign.id}`);
                 onOpenChange(false);
               }}
               className="w-full"
