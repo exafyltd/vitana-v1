@@ -11,7 +11,8 @@ import { useCampaignActions } from "@/hooks/useCampaignActions";
 import { ActivateCampaignDialog } from "@/components/sharing/ActivateCampaignDialog";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { ScheduleDialog } from "@/components/sharing/ScheduleDialog";
-import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive, Clock } from "lucide-react";
+import { CreatePostDialog } from "@/components/sharing/CreatePostDialog";
+import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive, Clock, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { toast } from "sonner";
@@ -25,6 +26,7 @@ function CampaignDetail() {
   const [showActivateDialog, setShowActivateDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showScheduleDialog, setShowScheduleDialog] = useState(false);
+  const [showCreatePostDialog, setShowCreatePostDialog] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   const campaign = campaigns?.find(c => c.id === id);
@@ -268,8 +270,8 @@ function CampaignDetail() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Campaign Posts</CardTitle>
-                <Button onClick={() => navigate('/sharing/distribution')}>
-                  <Send className="w-4 h-4 mr-2" />
+                <Button onClick={() => setShowCreatePostDialog(true)}>
+                  <Plus className="w-4 h-4 mr-2" />
                   Create Post
                 </Button>
               </div>
@@ -334,8 +336,8 @@ function CampaignDetail() {
                   <p className="text-sm text-muted-foreground mb-4">
                     Create posts and assign them to this campaign
                   </p>
-                  <Button onClick={() => navigate('/sharing/distribution')}>
-                    <Send className="w-4 h-4 mr-2" />
+                  <Button onClick={() => setShowCreatePostDialog(true)}>
+                    <Plus className="w-4 h-4 mr-2" />
                     Create First Post
                   </Button>
                 </div>
@@ -371,6 +373,13 @@ function CampaignDetail() {
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
         editingCampaign={campaign}
+      />
+
+      <CreatePostDialog
+        open={showCreatePostDialog}
+        onOpenChange={setShowCreatePostDialog}
+        campaignId={campaign?.id || ''}
+        campaignName={campaign?.name || ''}
       />
     </>
   );
