@@ -18,19 +18,16 @@ import {
   Loader2,
   Send,
   Plus,
-  Copy,
-  Check,
-  ExternalLink,
   CheckCircle2,
-  Link2,
+  Share2,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthProvider";
-import { getChannelIcon, getChannelColor, getChannelDisplayName } from "@/utils/channelHelpers";
 import { getShareUrl } from "@/lib/shareUrl";
+import { PersonalShareButtons } from "./PersonalShareButtons";
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
@@ -63,11 +60,9 @@ export function UniversalShareDialog({
   const [message, setMessage] = useState("");
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [isSharing, setIsSharing] = useState(false);
-  const [linkCopied, setLinkCopied] = useState(false);
-  const [showMoreChannels, setShowMoreChannels] = useState(false);
 
-  // Build channels array with all platforms + Vitana Messenger
-  const channels: ShareChannel[] = useMemo(() => {
+  // Build social media channels array (for auto-post)
+  const socialChannels: ShareChannel[] = useMemo(() => {
     const vitanaMessenger: ShareChannel = {
       id: "vitana_messenger",
       name: "Vitana Messenger",
@@ -79,109 +74,34 @@ export function UniversalShareDialog({
       isVitanaMessenger: true,
     };
 
-    return [vitanaMessenger, ...allPlatforms];
+    // Filter to only social platforms (not messaging channels)
+    const socialOnly = allPlatforms.filter(p => 
+      ['linkedin', 'instagram', 'facebook', 'twitter', 'youtube', 'tiktok'].includes(p.id)
+    );
+
+    return [vitanaMessenger, ...socialOnly];
   }, [allPlatforms]);
 
-  // Additional communication channels
-  const moreChannels: ShareChannel[] = useMemo(() => {
-    return [
-      {
-        id: "email",
-        name: getChannelDisplayName("email"),
-        icon: getChannelIcon("email"),
-        color: getChannelColor("email"),
-        connected: false,
-        supportsDirectShare: true,
-        supportsAutomation: true,
-      },
-      {
-        id: "sms",
-        name: getChannelDisplayName("sms"),
-        icon: getChannelIcon("sms"),
-        color: getChannelColor("sms"),
-        connected: false,
-        supportsDirectShare: true,
-        supportsAutomation: true,
-      },
-      {
-        id: "whatsapp",
-        name: getChannelDisplayName("whatsapp"),
-        icon: getChannelIcon("whatsapp"),
-        color: getChannelColor("whatsapp"),
-        connected: false,
-        supportsDirectShare: true,
-        supportsAutomation: true,
-      },
-      {
-        id: "slack",
-        name: getChannelDisplayName("slack"),
-        icon: getChannelIcon("slack"),
-        color: getChannelColor("slack"),
-        connected: false,
-        supportsDirectShare: true,
-        supportsAutomation: true,
-      },
-    ];
-  }, []);
-
-  // Combined channels - show first 7 or all based on state
-  const displayedChannels = useMemo(() => {
-    if (showMoreChannels) {
-      return [...channels, ...moreChannels];
-    }
-    return channels.slice(0, 7); // Show first 7 (Vitana + 6 social platforms)
-  }, [channels, moreChannels, showMoreChannels]);
+  // Get share URL and text for personal sharing
+  const shareUrl = content.url || getShareUrl(
+    content.type as 'event' | 'meetup' | 'group' | 'profile' | 'post',
+    content.id,
+    { utm_source: 'share', utm_medium: 'personal' }
+  );
+  
+  const shareText = `${content.title}${content.description ? '\n' + content.description : ''}`;
 
   const handleChannelClick = (channel: ShareChannel) => {
     if (channel.connected) {
-      // Toggle selection for automated blast
       setSelectedChannels((prev) =>
         prev.includes(channel.id)
           ? prev.filter((id) => id !== channel.id)
           : [...prev, channel.id]
       );
-    } else if (channel.supportsDirectShare) {
-      // Open native share dialog for unconnected platforms
-      openNativeShare(channel.id);
     } else {
-      // Show connect prompt for platforms without direct share
       toast({
         title: "Connect account",
         description: `Connect your ${channel.name} account to share content`,
-      });
-    }
-  };
-
-  const openNativeShare = (platformId: string) => {
-    // Use OG-enabled share URL for rich social media previews
-    const shareUrl = content.url || getShareUrl(
-      content.type as 'event' | 'meetup' | 'group' | 'profile' | 'post',
-      content.id,
-      { utm_source: 'share', utm_medium: platformId }
-    );
-    const shareText = `${content.title}${content.description ? '\n' + content.description : ''}`;
-    
-    const shareUrls: Record<string, string> = {
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-      instagram: `https://www.instagram.com/`, // Instagram doesn't support direct web sharing
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`,
-      email: `mailto:?subject=${encodeURIComponent(content.title)}&body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`,
-      sms: `sms:?body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`,
-      slack: `https://slack.com/intl/en-ae/`, // Slack doesn't have direct web share URL
-    };
-    
-    if (shareUrls[platformId]) {
-      if (platformId === 'email' || platformId === 'sms') {
-        window.location.href = shareUrls[platformId];
-      } else {
-        window.open(shareUrls[platformId], '_blank', 'width=600,height=400');
-      }
-      analytics.trackShare('share_completed', 'universal', content.id, content.type);
-      toast({
-        title: "Share opened",
-        description: `Complete your share on ${platformId}`,
       });
     }
   };
@@ -192,7 +112,6 @@ export function UniversalShareDialog({
   };
 
   const handleBlastNow = async () => {
-    // Filter out vitana_messenger - it's internal only
     const distributionChannels = selectedChannels.filter(
       (id) => id !== "vitana_messenger"
     );
@@ -208,11 +127,9 @@ export function UniversalShareDialog({
 
     setIsSharing(true);
     try {
-      // Get current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("User not authenticated");
 
-      // Create a quick campaign for immediate distribution
       const { data: campaign, error: campaignError } = await supabase
         .from("campaigns")
         .insert({
@@ -244,6 +161,7 @@ export function UniversalShareDialog({
         description: `Your ${content.type} is being shared across ${distributionChannels.length} channel(s)`,
       });
 
+      analytics.trackShare('share_completed', 'universal', content.id, content.type);
       onOpenChange(false);
     } catch (error) {
       console.error("Share error:", error);
@@ -258,7 +176,6 @@ export function UniversalShareDialog({
   };
 
   const handleCreateCampaign = () => {
-    // Navigate to campaigns page with pre-filled data
     window.location.href = `/sharing/campaigns?prefill=${encodeURIComponent(
       JSON.stringify({
         name: `Campaign - ${content.title}`,
@@ -267,22 +184,6 @@ export function UniversalShareDialog({
         content_id: content.id,
       })
     )}`;
-  };
-
-  const handleCopyLink = () => {
-    // Use OG-enabled share URL for rich previews
-    const shareUrl = content.url || getShareUrl(
-      content.type as 'event' | 'meetup' | 'group' | 'profile' | 'post',
-      content.id,
-      { utm_source: 'share', utm_medium: 'copy_link' }
-    );
-    navigator.clipboard.writeText(shareUrl);
-    setLinkCopied(true);
-    toast({
-      title: "Link copied!",
-      description: "Share link has been copied to clipboard",
-    });
-    setTimeout(() => setLinkCopied(false), 2000);
   };
 
   return (
@@ -294,7 +195,7 @@ export function UniversalShareDialog({
             Share {content.type}
           </DialogTitle>
           <DialogDescription>
-            Distribute across your connected channels or create a campaign
+            Share personally or distribute across your connected channels
           </DialogDescription>
         </DialogHeader>
 
@@ -320,24 +221,43 @@ export function UniversalShareDialog({
             </div>
           </div>
 
+          {/* Section 1: Quick Share (Personal) */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <MessageCircle className="w-4 h-4 text-primary" />
+              <h3 className="text-sm font-semibold">Quick Share (Personal)</h3>
+              <Badge variant="secondary" className="text-[10px]">No setup needed</Badge>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Opens your personal apps to share directly with friends and contacts
+            </p>
+            <PersonalShareButtons
+              shareUrl={shareUrl}
+              shareText={message || shareText}
+              title={content.title}
+              variant="grid"
+            />
+          </div>
+
           {/* Message */}
           <div className="space-y-2">
-            <Label htmlFor="message">Share Message (Optional)</Label>
+            <Label htmlFor="message">Custom Message (Optional)</Label>
             <Textarea
               id="message"
               placeholder="Add a custom message to your share..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              rows={3}
+              rows={2}
             />
           </div>
 
-          {/* Channel Selection */}
+          {/* Section 2: Social Media (Auto-Post) */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label htmlFor="channels" className="text-base font-semibold">
-                Share Channels
-              </Label>
+              <div className="flex items-center gap-2">
+                <Share2 className="w-4 h-4 text-primary" />
+                <h3 className="text-sm font-semibold">Social Media (Auto-Post)</h3>
+              </div>
               <Badge variant="secondary" className="text-xs">
                 {selectedChannels.length} selected
               </Badge>
@@ -352,12 +272,12 @@ export function UniversalShareDialog({
                 <Alert className="bg-muted/50">
                   <Info className="h-4 w-4" />
                   <AlertDescription className="text-xs">
-                    <strong>Connected:</strong> Select for automated blast. <strong>Not connected:</strong> Click to share manually.
+                    Select connected accounts to auto-post. Click <strong>+</strong> to connect new accounts.
                   </AlertDescription>
                 </Alert>
                 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {displayedChannels.map((channel) => {
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+                  {socialChannels.map((channel) => {
                     const Icon = channel.icon;
                     const isSelected = selectedChannels.includes(channel.id);
                     const isConnected = channel.connected;
@@ -384,16 +304,6 @@ export function UniversalShareDialog({
                           <span className={`text-xs font-medium text-center ${!isConnected && "text-muted-foreground"}`}>
                             {channel.name}
                           </span>
-                          {isConnected ? (
-                            <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                              Connected
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 gap-1">
-                              <ExternalLink className="h-2.5 w-2.5" />
-                              Share
-                            </Badge>
-                          )}
                         </button>
                         
                         {!isConnected && (
@@ -411,23 +321,6 @@ export function UniversalShareDialog({
                       </div>
                     );
                   })}
-                  
-                  {/* More Channels Card */}
-                  {!showMoreChannels && (
-                    <button
-                      type="button"
-                      onClick={() => setShowMoreChannels(true)}
-                      className="w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-muted-foreground/30 p-3 transition-all hover:border-primary/50 hover:bg-accent/30"
-                    >
-                      <Plus className="h-6 w-6 text-muted-foreground" />
-                      <span className="text-xs font-medium text-muted-foreground">
-                        More
-                      </span>
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                        +4 channels
-                      </Badge>
-                    </button>
-                  )}
                 </div>
               </>
             )}
@@ -435,24 +328,6 @@ export function UniversalShareDialog({
 
           {/* Actions */}
           <div className="flex gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1"
-              onClick={handleCopyLink}
-            >
-              {linkCopied ? (
-                <>
-                  <Check className="mr-2 h-4 w-4" />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="mr-2 h-4 w-4" />
-                  Copy Link
-                </>
-              )}
-            </Button>
             <Button
               type="button"
               variant="outline"

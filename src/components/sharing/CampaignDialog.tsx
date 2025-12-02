@@ -706,6 +706,30 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                       )}
                     </CollapsibleContent>
                   </Collapsible>
+
+                  {/* Section 3: Direct Messaging (Personal Share) - Preview */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-muted/50 rounded-lg border border-border">
+                      <MessageSquare className="w-5 h-5 text-muted-foreground" />
+                      <div className="flex-1">
+                        <h3 className="text-base font-semibold text-foreground">Direct Messaging (Personal Share)</h3>
+                        <p className="text-xs text-muted-foreground">Available after you create the campaign via "Share with my contacts"</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-2 pl-4">
+                      {['WhatsApp', 'Viber', 'Email', 'SMS', 'Copy Link'].map((channel) => (
+                        <div
+                          key={channel}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-dashed border-border"
+                        >
+                          <span className="text-xs text-muted-foreground">{channel}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground pl-4">
+                      Opens your personal apps to share with friends – no account setup needed.
+                    </p>
+                  </div>
                 </div>
               )}
 
