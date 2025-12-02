@@ -133,10 +133,10 @@ export default function PublicCampaignLanding() {
         type="website"
       />
       
-      <div className="min-h-screen bg-background">
-        {/* Hero Section - Full-width immersive design */}
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Hero Section - Compact banner */}
         {heroImage ? (
-          <div className="relative w-full h-64 md:h-96 overflow-hidden">
+          <div className="relative w-full h-48 md:h-[240px] max-h-[260px] overflow-hidden">
             <img
               src={heroImage}
               alt={campaign.name}
@@ -145,17 +145,18 @@ export default function PublicCampaignLanding() {
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
           </div>
         ) : (
-          <div className="relative w-full h-32 md:h-48 overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
+          <div className="relative w-full h-32 md:h-[160px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
         )}
 
         {/* Content Section */}
-        <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
-          <div className="space-y-6">
-            {/* Campaign Title */}
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                {campaign.name}
-              </h1>
+        <div className="flex-1 flex flex-col">
+          <div className="max-w-4xl mx-auto px-4 py-4 md:py-6 -mt-6 md:-mt-8 relative z-10">
+            <div className="space-y-3 md:space-y-4">
+              {/* Campaign Title */}
+              <div className="space-y-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {campaign.name}
+                </h1>
               {displayStatus && (
                 <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
                   {displayStatus}
@@ -163,8 +164,8 @@ export default function PublicCampaignLanding() {
               )}
             </div>
 
-            {/* Campaign Details */}
-            <div className="grid gap-4 md:grid-cols-2">
+              {/* Campaign Details */}
+              <div className="grid gap-2 md:gap-3 md:grid-cols-2">
               {campaign.start_date && (
                 <div className="flex items-start gap-3">
                   <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
@@ -206,35 +207,36 @@ export default function PublicCampaignLanding() {
               </div>
             </div>
 
-            {/* Description */}
-            {campaign.description && (
-              <div className="prose prose-sm max-w-none">
-                <p className="text-foreground/80 leading-relaxed">{campaign.description}</p>
-              </div>
-            )}
-
-            {/* CTA Button */}
-            <div className="pt-4">
-              <Button
-                size="lg"
-                onClick={handleJoinClick}
-                className="w-full md:w-auto px-8"
-              >
-                {user ? "View Campaign in VITANA" : "Join in VITANA"}
-              </Button>
-              {!user && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  You'll be prompted to sign in or create an account
-                </p>
+              {/* Description */}
+              {campaign.description && (
+                <div className="max-w-3xl">
+                  <p className="text-base text-foreground/80 leading-normal">{campaign.description}</p>
+                </div>
               )}
+
+              {/* CTA Button */}
+              <div className="pt-3 md:pt-4">
+                <Button
+                  size="default"
+                  onClick={handleJoinClick}
+                  className="w-full md:w-auto px-5 py-2.5 text-sm"
+                >
+                  {user ? "View Campaign in VITANA" : "Join in VITANA"}
+                </Button>
+                {!user && (
+                  <p className="text-xs text-muted-foreground mt-1.5">
+                    You'll be prompted to sign in or create an account
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="border-t border-border mt-12">
-          <div className="max-w-4xl mx-auto px-4 py-6 text-center">
-            <p className="text-sm text-muted-foreground">
+        <div className="border-t border-border mt-auto">
+          <div className="max-w-4xl mx-auto px-4 py-3 text-center">
+            <p className="text-xs text-muted-foreground">
               Powered by <span className="font-semibold text-foreground">VITANA</span> - Your wellness community
             </p>
           </div>
