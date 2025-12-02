@@ -20,16 +20,22 @@ import { useSocialPlatforms, SocialPlatform } from "@/hooks/useSocialPlatforms";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { PersonalShareButtons } from "@/components/sharing/PersonalShareButtons";
+import { InstagramShareModal } from "@/components/sharing/InstagramShareModal";
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral' | 'live_room';
   data: {
+    id?: string;
     title: string;
     description: string;
     price?: number;
     currency?: string;
     link?: string;
     referralCode?: string;
+    image_url?: string;
+    start_time?: string;
+    end_time?: string;
+    location?: string;
   };
   variant?: 'button' | 'icon';
   size?: 'sm' | 'default' | 'lg';
@@ -44,6 +50,7 @@ export default function SocialShareButton({
   className
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isInstagramModalOpen, setIsInstagramModalOpen] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const { allPlatforms, loading } = useSocialPlatforms();
@@ -114,9 +121,9 @@ export default function SocialShareButton({
         facebook: () => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareLink)}&quote=${encodeURIComponent(shareText)}`, '_blank'),
         twitter: () => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareLink)}`, '_blank'),
         linkedin: () => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareLink)}`, '_blank'),
-        instagram: async () => {
-          await navigator.clipboard.writeText(shareLink);
-          toast({ title: "Instagram", description: "Link copied! Open Instagram to share" });
+        instagram: () => {
+          // Open Instagram share modal for better experience
+          setIsInstagramModalOpen(true);
         },
         youtube: async () => {
           await navigator.clipboard.writeText(shareLink);
@@ -171,6 +178,22 @@ export default function SocialShareButton({
         <Share2 className="w-4 h-4" />
         {variant === 'button' && <span className="ml-2">Share</span>}
       </Button>
+
+      {/* Instagram Share Modal */}
+      <InstagramShareModal
+        open={isInstagramModalOpen}
+        onOpenChange={setIsInstagramModalOpen}
+        event={{
+          id: data.id || "",
+          title: data.title,
+          description: data.description,
+          image_url: data.image_url,
+          start_time: data.start_time,
+          end_time: data.end_time,
+          location: data.location,
+        }}
+        shareUrl={shareLink}
+      />
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-md">
