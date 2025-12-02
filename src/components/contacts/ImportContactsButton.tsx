@@ -1,90 +1,84 @@
-import { Button } from "@/components/ui/button";
-import { Upload, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Users, Loader2, Sparkles } from "lucide-react";
+import { ContactSyncModal } from "./ContactSyncModal";
+import { cn } from "@/lib/utils";
 
 interface ImportContactsButtonProps {
-  onImport: (contacts: Array<{ contact_name: string; contact_phone?: string; contact_email?: string }>) => Promise<void>;
+  variant?: "primary" | "ghost" | "outline";
+  size?: "sm" | "default" | "lg";
+  triggerContext?: "settings" | "invite" | "discovery";
+  onImportComplete?: (result: { totalImported: number; matchesFound: number }) => void;
+  /** @deprecated Use ContactSyncModal directly for full flow */
+  onImport?: (contacts: Array<{ contact_name: string; contact_phone?: string; contact_email?: string }>) => Promise<void>;
 }
 
-export default function ImportContactsButton({ onImport }: ImportContactsButtonProps) {
-  const [isImporting, setIsImporting] = useState(false);
-  const { toast } = useToast();
+export default function ImportContactsButton({
+  variant = "primary",
+  size = "default",
+  triggerContext = "settings",
+  onImportComplete,
+  onImport,
+}: ImportContactsButtonProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleImport = async () => {
-    // Check if Contacts API is available
-    if (!('contacts' in navigator)) {
-      toast({
-        title: "Not Available",
-        description: "Phone contact import is only available on mobile devices with supported browsers.",
-        variant: "destructive",
-      });
-      return;
-    }
+  const handleClick = () => {
+    setIsModalOpen(true);
+  };
 
-    try {
-      setIsImporting(true);
+  const handleComplete = (result: { totalImported: number; matchesFound: number }) => {
+    onImportComplete?.(result);
+  };
 
-      const props = ['name', 'tel', 'email'];
-      const opts = { multiple: true };
+  const buttonVariants = {
+    primary: "bg-gradient-to-r from-[hsl(var(--contact-sync-accent))] to-[hsl(330,70%,50%)] text-white hover:opacity-90 shadow-md",
+    ghost: "hover:bg-[hsl(var(--contact-sync-tint))] text-foreground",
+    outline: "border-[hsl(var(--contact-sync-accent)/0.3)] hover:bg-[hsl(var(--contact-sync-tint))] hover:border-[hsl(var(--contact-sync-accent))]",
+  };
 
-      // @ts-ignore - Contacts API is not yet in TypeScript definitions
-      const contacts = await navigator.contacts.select(props, opts);
-
-      if (!contacts || contacts.length === 0) {
-        toast({
-          title: "No contacts selected",
-          description: "Please select at least one contact to import.",
-        });
-        return;
-      }
-
-      // Transform to our format
-      const formattedContacts = contacts.map((c: any) => ({
-        contact_name: c.name?.[0] || 'Unknown',
-        contact_phone: c.tel?.[0],
-        contact_email: c.email?.[0],
-      }));
-
-      await onImport(formattedContacts);
-
-      toast({
-        title: "Contacts imported!",
-        description: `Successfully imported ${formattedContacts.length} contact(s).`,
-      });
-    } catch (error) {
-      console.error("Error importing contacts:", error);
-      
-      if ((error as Error).name !== 'AbortError') {
-        toast({
-          title: "Import failed",
-          description: "Failed to import contacts. Please try again.",
-          variant: "destructive",
-        });
-      }
-    } finally {
-      setIsImporting(false);
-    }
+  const sizeClasses = {
+    sm: "h-8 px-3 text-xs",
+    default: "h-10 px-4 text-sm",
+    lg: "h-12 px-6 text-base",
   };
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleImport}
-      disabled={isImporting}
-      className="flex items-center gap-2"
-    >
-      {isImporting ? (
-        <>
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Importing...
-        </>
-      ) : (
-        <>
-          <Upload className="w-4 h-4" />
-          Import
-        </>
-      )}
-    </Button>
+    <>
+      <Button
+        variant={variant === "primary" ? "default" : variant}
+        onClick={handleClick}
+        disabled={isLoading}
+        className={cn(
+          "flex items-center gap-2 transition-all duration-200",
+          buttonVariants[variant],
+          sizeClasses[size]
+        )}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Finding...
+          </>
+        ) : (
+          <>
+            <Users className="w-4 h-4" />
+            Find friends
+            {variant === "primary" && (
+              <Sparkles className="w-3 h-3 ml-1 opacity-70" />
+            )}
+          </>
+        )}
+      </Button>
+
+      <ContactSyncModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        triggerContext={triggerContext}
+        onComplete={handleComplete}
+      />
+    </>
   );
 }
+
+export { ImportContactsButton };

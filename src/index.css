@@ -147,6 +147,18 @@ All colors MUST be HSL.
     --profile-text-primary: 210 20% 96%;
     --profile-text-secondary: 210 20% 80%;
     --profile-text-tertiary: 210 20% 70%;
+
+    /* Contact Import Feature Tokens */
+    --contact-sync-accent: 330 80% 55%;
+    --contact-sync-tint: 330 100% 97%;
+    --contact-glass-bg: 0 0% 100%;
+    --contact-card-radius: 1rem;
+    --contact-source-google: 142 70% 45%;
+    --contact-source-apple: 0 0% 10%;
+    --contact-source-phone: 210 90% 55%;
+    --contact-source-whatsapp: 142 70% 45%;
+    --contact-success: 142 76% 36%;
+    --contact-warning: 38 92% 50%;
   }
 
   .dark {
