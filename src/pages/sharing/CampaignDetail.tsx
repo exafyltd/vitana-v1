@@ -19,7 +19,7 @@ import { toast } from "sonner";
 function CampaignDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { campaigns, isLoading, activateCampaign, pauseCampaign, completeCampaign } = useCampaigns();
+  const { campaigns, isLoading, activateCampaign, pauseCampaign, completeCampaign, updateCampaign } = useCampaigns();
   const { posts, updatePost, blastNow } = useDistributionPosts();
   const { activateAllPosts } = useCampaignActions();
   const [showActivateDialog, setShowActivateDialog] = useState(false);
@@ -31,12 +31,21 @@ function CampaignDetail() {
   const campaignPosts = posts?.filter(p => p.campaign_id === id) || [];
   const draftPosts = campaignPosts.filter(p => p.status === 'draft');
 
-  const handleActivateCampaign = async (mode: "instant" | "scheduled") => {
+  const handleActivateCampaign = async (mode: "instant" | "scheduled", scheduledFor?: Date) => {
     if (!id) return;
 
     if (mode === "instant") {
       await activateAllPosts.mutateAsync(id);
       await activateCampaign.mutateAsync(id);
+      setShowActivateDialog(false);
+    } else if (mode === "scheduled" && scheduledFor) {
+      // Schedule the campaign for later
+      await updateCampaign.mutateAsync({
+        id,
+        status: "scheduled",
+        start_date: scheduledFor.toISOString(),
+      });
+      toast.success(`Campaign scheduled for ${format(scheduledFor, "PPP 'at' p")}`);
       setShowActivateDialog(false);
     }
   };

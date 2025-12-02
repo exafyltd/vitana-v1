@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,14 +10,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loader2, Rocket, Calendar, CheckCircle } from "lucide-react";
-import { useCampaignDistribution } from "@/hooks/useCampaignDistribution";
-import { toast } from "sonner";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Loader2, Rocket, Calendar as CalendarIcon, CheckCircle, Clock } from "lucide-react";
+import { format, addDays, setHours, setMinutes } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface ActivateCampaignDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: (mode: "instant" | "scheduled") => void;
+  onConfirm: (mode: "instant" | "scheduled", scheduledFor?: Date) => void;
   isLoading: boolean;
   postsCount: number;
   draftCount: number;
@@ -38,11 +41,20 @@ export function ActivateCampaignDialog({
   draftCount,
 }: ActivateCampaignDialogProps) {
   const [mode, setMode] = useState<"instant" | "scheduled">("instant");
+  const [scheduledDate, setScheduledDate] = useState<Date | undefined>(addDays(new Date(), 1));
+  const [scheduledTime, setScheduledTime] = useState("09:00");
 
   const handleActivate = () => {
-    onConfirm(mode);
+    if (mode === "scheduled" && scheduledDate) {
+      const [hours, minutes] = scheduledTime.split(':').map(Number);
+      const fullDate = setMinutes(setHours(scheduledDate, hours), minutes);
+      onConfirm(mode, fullDate);
+    } else {
+      onConfirm(mode);
+    }
   };
 
+  const isScheduleValid = mode === "instant" || (mode === "scheduled" && scheduledDate);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -88,15 +100,59 @@ export function ActivateCampaignDialog({
               <RadioGroupItem value="scheduled" id="scheduled" />
               <Label htmlFor="scheduled" className="flex-1 cursor-pointer">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span className="font-medium">Smart Schedule</span>
+                  <Clock className="w-4 h-4" />
+                  <span className="font-medium">Schedule for Later</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Distribute posts over time for optimal engagement (coming soon)
+                  Pick a specific date and time to activate the campaign
                 </p>
               </Label>
             </div>
           </RadioGroup>
+
+          {/* Date/Time Picker - shown when "scheduled" is selected */}
+          {mode === "scheduled" && (
+            <div className="p-4 border rounded-lg bg-muted/30 space-y-3">
+              <Label className="text-sm font-medium">Schedule Date & Time</Label>
+              <div className="flex gap-2">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "flex-1 justify-start text-left font-normal",
+                        !scheduledDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {scheduledDate ? format(scheduledDate, "PPP") : "Pick a date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={scheduledDate}
+                      onSelect={setScheduledDate}
+                      disabled={(date) => date < new Date()}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+                <Input
+                  type="time"
+                  value={scheduledTime}
+                  onChange={(e) => setScheduledTime(e.target.value)}
+                  className="w-[120px]"
+                />
+              </div>
+              {scheduledDate && (
+                <p className="text-xs text-muted-foreground">
+                  Campaign will activate on {format(scheduledDate, "MMMM d, yyyy")} at {scheduledTime}
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <DialogFooter>
@@ -105,17 +161,17 @@ export function ActivateCampaignDialog({
           </Button>
           <Button 
             onClick={handleActivate} 
-            disabled={isLoading || mode === "scheduled"}
+            disabled={isLoading || !isScheduleValid}
           >
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Activating...
+                {mode === "scheduled" ? "Scheduling..." : "Activating..."}
               </>
             ) : (
               <>
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Activate Campaign
+                {mode === "scheduled" ? "Schedule Campaign" : "Activate Campaign"}
               </>
             )}
           </Button>
