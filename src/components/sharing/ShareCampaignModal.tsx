@@ -1,8 +1,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Link2, MessageSquare, Mail, Send, Copy, Check } from "lucide-react";
-import { getShareUrl } from "@/lib/shareUrl";
 import { useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -27,10 +27,7 @@ export function ShareCampaignModal({
 }: ShareCampaignModalProps) {
   const [copied, setCopied] = useState(false);
 
-  const publicUrl = getShareUrl('campaign', campaignId, {
-    utm_source: 'share_modal',
-    utm_medium: 'social'
-  });
+  const publicUrl = `${window.location.origin}/pub/campaigns/${campaignId}`;
   
   const shareMessage = `Join me at: ${campaignName}
 ${campaignDescription ? `\n${campaignDescription.slice(0, 150)}${campaignDescription.length > 150 ? '...' : ''}` : ''}
