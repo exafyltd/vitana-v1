@@ -20,12 +20,14 @@ interface CampaignSuccessModalProps {
     description?: string;
     coverImage?: string;
   };
+  smartSchedulingEnabled?: boolean;
 }
 
 export function CampaignSuccessModal({ 
   open, 
   onOpenChange, 
-  campaign 
+  campaign,
+  smartSchedulingEnabled = true
 }: CampaignSuccessModalProps) {
   const navigate = useNavigate();
   const [showShareModal, setShowShareModal] = useState(false);
@@ -47,7 +49,9 @@ export function CampaignSuccessModal({
           <div>
             <h2 className="text-2xl font-bold mb-2">Campaign Created! 🎉</h2>
             <p className="text-sm text-muted-foreground">
-              Now share it with your community
+              {smartSchedulingEnabled 
+                ? "Now share it with your community"
+                : "Your posts are saved as drafts. Schedule them individually below."}
             </p>
           </div>
 
@@ -91,27 +95,56 @@ export function CampaignSuccessModal({
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <Button
-              onClick={() => {
-                setShowShareModal(true);
-              }}
-              className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
-              size="lg"
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              Share with my contacts
-            </Button>
+            {smartSchedulingEnabled ? (
+              <>
+                <Button
+                  onClick={() => {
+                    setShowShareModal(true);
+                  }}
+                  className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
+                  size="lg"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share with my contacts
+                </Button>
 
-            <Button
-              variant="outline"
-              onClick={() => {
-                navigate(`/sharing/campaigns/${campaign.id}`);
-                onOpenChange(false);
-              }}
-              className="w-full"
-            >
-              Manage channels & scheduling
-            </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    navigate(`/sharing/campaigns/${campaign.id}`);
+                    onOpenChange(false);
+                  }}
+                  className="w-full"
+                >
+                  Manage channels & scheduling
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={() => {
+                    navigate(`/sharing/campaigns/${campaign.id}`);
+                    onOpenChange(false);
+                  }}
+                  className="w-full bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:opacity-90"
+                  size="lg"
+                >
+                  <LayoutGrid className="w-4 h-4 mr-2" />
+                  Manage Posts
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowShareModal(true);
+                  }}
+                  className="w-full"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share with my contacts
+                </Button>
+              </>
+            )}
 
             <Button
               variant="link"
