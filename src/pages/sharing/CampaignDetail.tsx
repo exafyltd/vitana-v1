@@ -380,6 +380,10 @@ function CampaignDetail() {
         onOpenChange={setShowCreatePostDialog}
         campaignId={campaign?.id || ''}
         campaignName={campaign?.name || ''}
+        campaignTargetChannels={campaign?.target_channels as Record<string, boolean> | null}
+        onPostCreated={() => {
+          // Posts list will auto-refresh via useDistributionPosts
+        }}
       />
     </>
   );

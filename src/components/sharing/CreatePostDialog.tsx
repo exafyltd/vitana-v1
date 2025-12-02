@@ -23,33 +23,41 @@ import {
   Save,
   Mail,
   MessageSquare,
-  CheckCircle,
-  AlertCircle,
   Loader2,
+  Linkedin,
+  Instagram,
+  Facebook,
+  Twitter,
+  Youtube,
+  Video,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useScheduledPosts } from "@/hooks/useScheduledPosts";
-import { useChannels } from "@/hooks/useChannels";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import { ScheduleDialog } from "./ScheduleDialog";
 
-const CHANNEL_ICONS: Record<string, any> = {
-  email: Mail,
-  sms: MessageSquare,
-  whatsapp: MessageSquare,
-  push: MessageSquare,
-  slack: MessageSquare,
-  discord: MessageSquare,
-  telegram: MessageSquare,
-};
+// Static channel definitions - no database setup required
+const STATIC_CHANNELS = [
+  { key: "email", label: "Email", icon: Mail },
+  { key: "sms", label: "SMS", icon: MessageSquare },
+  { key: "whatsapp", label: "WhatsApp", icon: MessageSquare },
+  { key: "linkedin", label: "LinkedIn", icon: Linkedin },
+  { key: "instagram", label: "Instagram", icon: Instagram },
+  { key: "facebook", label: "Facebook", icon: Facebook },
+  { key: "twitter", label: "Twitter/X", icon: Twitter },
+  { key: "youtube", label: "YouTube", icon: Youtube },
+  { key: "tiktok", label: "TikTok", icon: Video },
+] as const;
 
 interface CreatePostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   campaignId: string;
   campaignName: string;
+  campaignTargetChannels?: Record<string, boolean> | null;
+  onPostCreated?: () => void;
 }
 
 export function CreatePostDialog({
@@ -57,6 +65,8 @@ export function CreatePostDialog({
   onOpenChange,
   campaignId,
   campaignName,
+  campaignTargetChannels,
+  onPostCreated,
 }: CreatePostDialogProps) {
   const [selectedChannels, setSelectedChannels] = useState<Set<string>>(new Set());
   const [entityType, setEntityType] = useState<string>("event");
@@ -68,7 +78,6 @@ export function CreatePostDialog({
 
   const { createPost, blastNow } = useDistributionPosts();
   const { schedulePost } = useScheduledPosts();
-  const { channels, isLoading: channelsLoading } = useChannels();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -78,6 +87,19 @@ export function CreatePostDialog({
     });
   }, []);
 
+  // Pre-select channels from campaign when dialog opens
+  useEffect(() => {
+    if (open && campaignTargetChannels) {
+      const preselected = new Set<string>();
+      Object.entries(campaignTargetChannels).forEach(([key, enabled]) => {
+        if (enabled) {
+          preselected.add(key);
+        }
+      });
+      setSelectedChannels(preselected);
+    }
+  }, [open, campaignTargetChannels]);
+
   const resetForm = () => {
     setTitle("");
     setDescription("");
@@ -85,19 +107,13 @@ export function CreatePostDialog({
     setEntityType("event");
   };
 
-  const toggleChannel = (channelId: string) => {
-    const channel = channels?.find((c) => c.id === channelId);
-    if (!channel?.is_connected) {
-      toast.error("Please connect this channel first.");
-      return;
-    }
-
+  const toggleChannel = (channelKey: string) => {
     setSelectedChannels((prev) => {
       const newSet = new Set(prev);
-      if (newSet.has(channelId)) {
-        newSet.delete(channelId);
+      if (newSet.has(channelKey)) {
+        newSet.delete(channelKey);
       } else {
-        newSet.add(channelId);
+        newSet.add(channelKey);
       }
       return newSet;
     });
@@ -120,9 +136,7 @@ export function CreatePostDialog({
   };
 
   const getChannelTypes = () => {
-    return Array.from(selectedChannels)
-      .map((id) => channels?.find((c) => c.id === id)?.channel_type)
-      .filter(Boolean) as Database["public"]["Enums"]["channel_type"][];
+    return Array.from(selectedChannels) as Database["public"]["Enums"]["channel_type"][];
   };
 
   const handleBlastNow = async () => {
@@ -144,6 +158,7 @@ export function CreatePostDialog({
           blastNow.mutate(post.id);
           resetForm();
           onOpenChange(false);
+          onPostCreated?.();
         },
       }
     );
@@ -172,8 +187,10 @@ export function CreatePostDialog({
       },
       {
         onSuccess: () => {
+          toast.success("Post saved as draft");
           resetForm();
           onOpenChange(false);
+          onPostCreated?.();
         },
       }
     );
@@ -214,10 +231,12 @@ export function CreatePostDialog({
       },
       {
         onSuccess: () => {
+          toast.success("Post scheduled successfully");
           resetForm();
           setPendingPostId(null);
           setShowScheduleDialog(false);
           onOpenChange(false);
+          onPostCreated?.();
         },
       }
     );
@@ -275,54 +294,36 @@ export function CreatePostDialog({
               />
             </div>
 
-            {/* Channel Selector */}
+            {/* Static Channel Selector */}
             <div className="space-y-2">
               <Label>Select Channels</Label>
-              {channelsLoading ? (
-                <div className="flex justify-center py-4">
-                  <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
-                </div>
-              ) : channels && channels.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2">
-                  {channels.map((channel) => {
-                    const Icon = CHANNEL_ICONS[channel.channel_type] || MessageSquare;
-                    const isSelected = selectedChannels.has(channel.id);
-                    const isConnected = channel.is_connected && channel.is_active;
+              <div className="grid grid-cols-3 gap-2">
+                {STATIC_CHANNELS.map((channel) => {
+                  const isSelected = selectedChannels.has(channel.key);
+                  const IconComponent = channel.icon;
 
-                    return (
-                      <button
-                        key={channel.id}
-                        onClick={() => toggleChannel(channel.id)}
-                        className={`
-                          flex items-center gap-2 p-2.5 rounded-lg border transition-all text-left
-                          ${
-                            isSelected
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : isConnected
-                              ? "bg-card hover:bg-accent border-border"
-                              : "bg-muted/50 opacity-60 border-border"
-                          }
-                        `}
-                      >
-                        <Icon className="w-4 h-4 shrink-0" />
-                        <span className="text-sm font-medium flex-1 truncate">
-                          {channel.channel_name}
-                        </span>
-                        {isConnected ? (
-                          <CheckCircle className="w-3.5 h-3.5 text-green-600 shrink-0" />
-                        ) : (
-                          <AlertCircle className="w-3.5 h-3.5 text-yellow-600 shrink-0" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="text-center py-4 border rounded-lg bg-muted/50">
-                  <MessageSquare className="w-6 h-6 mx-auto text-muted-foreground mb-1" />
-                  <p className="text-sm text-muted-foreground">No channels connected</p>
-                </div>
-              )}
+                  return (
+                    <button
+                      key={channel.key}
+                      type="button"
+                      onClick={() => toggleChannel(channel.key)}
+                      className={`
+                        flex items-center gap-2 p-2.5 rounded-lg border transition-all text-left
+                        ${
+                          isSelected
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-card hover:bg-accent border-border"
+                        }
+                      `}
+                    >
+                      <IconComponent className="w-4 h-4 shrink-0" />
+                      <span className="text-xs font-medium truncate">
+                        {channel.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
