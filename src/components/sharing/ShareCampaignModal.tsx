@@ -130,8 +130,9 @@ ${publicUrl}`;
                   role="img"
                   viewBox="0 0 24 24"
                   className="w-5 h-5 fill-white"
-                  dangerouslySetInnerHTML={{ __html: siWhatsapp.path }}
-                />
+                >
+                  <path d={siWhatsapp.path} />
+                </svg>
               </div>
               <span className="text-xs font-medium">WhatsApp</span>
             </Button>
@@ -146,8 +147,9 @@ ${publicUrl}`;
                   role="img"
                   viewBox="0 0 24 24"
                   className="w-5 h-5 fill-white"
-                  dangerouslySetInnerHTML={{ __html: siViber.path }}
-                />
+                >
+                  <path d={siViber.path} />
+                </svg>
               </div>
               <span className="text-xs font-medium">Viber</span>
             </Button>
