@@ -36,56 +36,13 @@ export function ActivateCampaignDialog({
   isLoading,
   postsCount,
   draftCount,
-  campaignId,
-  campaignData,
 }: ActivateCampaignDialogProps) {
   const [mode, setMode] = useState<"instant" | "scheduled">("instant");
-  const { startDistribution, isDistributing } = useCampaignDistribution();
-  const [progress, setProgress] = useState({ sent: 0, total: 0 });
 
   const handleActivate = () => {
-    if (mode === "instant" && campaignData) {
-      // Start instant distribution
-      const channels = campaignData.channels || [];
-      const audienceData = campaignData.audienceData || { vitanaContacts: true };
-      const messageContent = campaignData.messageContent || { body: "Campaign message" };
-
-      startDistribution({
-        campaignId,
-        channels,
-        audienceData,
-        messageContent,
-      });
-
-      // Simulate progress updates (replace with real-time data)
-      const totalRecipients = draftCount;
-      let sent = 0;
-      const interval = setInterval(() => {
-        sent += Math.floor(Math.random() * 5) + 1;
-        if (sent >= totalRecipients) {
-          sent = totalRecipients;
-          clearInterval(interval);
-          setTimeout(() => {
-            onConfirm(mode);
-            onOpenChange(false);
-          }, 1000);
-        }
-        setProgress({ sent, total: totalRecipients });
-      }, 500);
-    } else {
-      // Scheduled mode
-      onConfirm(mode);
-    }
+    onConfirm(mode);
   };
 
-  useEffect(() => {
-    if (!open) {
-      setProgress({ sent: 0, total: 0 });
-    }
-  }, [open]);
-
-  const isProcessing = isLoading || isDistributing;
-  const showProgress = progress.total > 0 && progress.sent > 0;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -142,36 +99,18 @@ export function ActivateCampaignDialog({
           </RadioGroup>
         </div>
 
-        {/* Progress Indicator */}
-        {showProgress && (
-          <div className="py-3 px-4 bg-muted/50 rounded-lg">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Distribution Progress</span>
-              <span className="text-sm font-semibold">
-                {progress.sent} / {progress.total}
-              </span>
-            </div>
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-teal-500 to-blue-500 transition-all duration-300"
-                style={{ width: `${(progress.sent / progress.total) * 100}%` }}
-              />
-            </div>
-          </div>
-        )}
-
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isProcessing}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
             Cancel
           </Button>
           <Button 
             onClick={handleActivate} 
-            disabled={isProcessing || mode === "scheduled"}
+            disabled={isLoading || mode === "scheduled"}
           >
-            {isProcessing ? (
+            {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                {showProgress ? 'Distributing...' : 'Activating...'}
+                Activating...
               </>
             ) : (
               <>

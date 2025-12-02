@@ -9,6 +9,7 @@ import { useCampaigns } from "@/hooks/useCampaigns";
 import { useDistributionPosts } from "@/hooks/useDistributionPosts";
 import { useCampaignActions } from "@/hooks/useCampaignActions";
 import { ActivateCampaignDialog } from "@/components/sharing/ActivateCampaignDialog";
+import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { ScheduleDialog } from "@/components/sharing/ScheduleDialog";
 import { ArrowLeft, Calendar, TrendingUp, Send, Edit, Rocket, Pause, CheckCircle, Archive, Clock } from "lucide-react";
 import { format } from "date-fns";
@@ -22,6 +23,7 @@ function CampaignDetail() {
   const { posts, updatePost, blastNow } = useDistributionPosts();
   const { activateAllPosts } = useCampaignActions();
   const [showActivateDialog, setShowActivateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [showScheduleDialog, setShowScheduleDialog] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
@@ -199,7 +201,11 @@ function CampaignDetail() {
                   Resume
                 </Button>
               )}
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowEditDialog(true)}
+              >
                 <Edit className="w-4 h-4 mr-2" />
                 Edit
               </Button>
@@ -350,6 +356,12 @@ function CampaignDetail() {
         onOpenChange={setShowScheduleDialog}
         onConfirm={handleConfirmSchedule}
         isLoading={updatePost.isPending}
+      />
+
+      <CampaignDialog
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+        editingCampaign={campaign}
       />
     </>
   );
