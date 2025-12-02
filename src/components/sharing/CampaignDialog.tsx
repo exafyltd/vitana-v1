@@ -888,6 +888,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
           description: '',
           coverImage: ''
         }}
+        smartSchedulingEnabled={smartSchedulingEnabled}
       />
 
       <InlineChannelConnector
