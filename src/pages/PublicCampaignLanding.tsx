@@ -71,6 +71,36 @@ export default function PublicCampaignLanding() {
     fetchPublicCampaign();
   }, [id]);
 
+  // Try to detect linked event from campaign metadata
+  const linkedEventId = campaign?.metadata?.event_id || campaign?.metadata?.eventId || null;
+  const isEventPaid = campaign?.metadata?.is_paid || campaign?.metadata?.isPaid || false;
+  const eventPrice = campaign?.metadata?.price || campaign?.metadata?.event_price || null;
+
+  // Determine primary CTA label
+  const getPrimaryCTALabel = () => {
+    if (linkedEventId) {
+      if (isEventPaid && eventPrice) return "Get Ticket";
+      return "Reserve Spot";
+    }
+    return "Join Event";
+  };
+
+  const handleEventClick = () => {
+    if (!linkedEventId) {
+      // No linked event - same behavior as Join VITANA
+      handleJoinClick();
+      return;
+    }
+    
+    // Navigate to public event page or authenticated event view
+    if (user) {
+      navigate(`/comm/events-meetups?event=${linkedEventId}`);
+    } else {
+      // Go to public event page for non-VITANA visitors
+      navigate(`/pub/events/${linkedEventId}`);
+    }
+  };
+
   const handleJoinClick = () => {
     if (!id) return;
 
@@ -149,9 +179,9 @@ export default function PublicCampaignLanding() {
         )}
 
         {/* Content Section */}
-        <div className="flex-1 flex flex-col">
-          <div className="max-w-4xl mx-auto px-4 py-4 md:py-6 -mt-6 md:-mt-8 relative z-10">
-            <div className="space-y-3 md:space-y-4">
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto px-4 py-3 md:py-4 -mt-6 md:-mt-8 relative z-10">
+            <div className="space-y-2 md:space-y-3">
               {/* Campaign Title */}
               <div className="space-y-2">
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground">
@@ -170,8 +200,8 @@ export default function PublicCampaignLanding() {
                 <div className="flex items-start gap-3">
                   <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">Campaign Period</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">Campaign Period</p>
+                    <p className="text-sm font-medium text-foreground">
                       {startDate} {endDate && `- ${endDate}`}
                     </p>
                   </div>
@@ -182,8 +212,8 @@ export default function PublicCampaignLanding() {
                 <div className="flex items-start gap-3">
                   <TrendingUp className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">Channels</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">Channels</p>
+                    <p className="text-sm font-medium text-foreground">
                       {campaign.target_channels.length} channel{campaign.target_channels.length !== 1 ? 's' : ''}
                     </p>
                   </div>
@@ -193,16 +223,16 @@ export default function PublicCampaignLanding() {
               <div className="flex items-start gap-3">
                 <Target className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-foreground">Type</p>
-                  <p className="text-sm text-muted-foreground">Marketing Campaign</p>
+                  <p className="text-xs text-muted-foreground">Type</p>
+                  <p className="text-sm font-medium text-foreground">Marketing Campaign</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-foreground">Community</p>
-                  <p className="text-sm text-muted-foreground">VITANA</p>
+                  <p className="text-xs text-muted-foreground">Community</p>
+                  <p className="text-sm font-medium text-foreground">VITANA</p>
                 </div>
               </div>
             </div>
@@ -214,20 +244,47 @@ export default function PublicCampaignLanding() {
                 </div>
               )}
 
-              {/* CTA Button */}
-              <div className="pt-3 md:pt-4">
-                <Button
-                  size="default"
-                  onClick={handleJoinClick}
-                  className="w-full md:w-auto px-5 py-2.5 text-sm"
-                >
-                  {user ? "View Campaign in VITANA" : "Join in VITANA"}
-                </Button>
-                {!user && (
-                  <p className="text-xs text-muted-foreground mt-1.5">
-                    You'll be prompted to sign in or create an account
-                  </p>
-                )}
+              {/* Dual CTA Panel */}
+              <div className="mt-4 md:mt-5">
+                <div className="rounded-xl border border-border/60 bg-card/50 shadow-sm px-4 md:px-6 py-4">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    
+                    {/* Primary CTA - Event Action */}
+                    <div className="flex-1">
+                      <p className="text-xs text-muted-foreground mb-1.5">Attend this event</p>
+                      <Button
+                        size="default"
+                        onClick={handleEventClick}
+                        className="w-full md:w-auto px-6"
+                      >
+                        {getPrimaryCTALabel()}
+                      </Button>
+                    </div>
+                    
+                    {/* Separator on desktop */}
+                    <div className="hidden md:block w-px h-12 bg-border/60" />
+                    <p className="text-xs text-muted-foreground text-center md:hidden">or</p>
+                    
+                    {/* Secondary CTA - Join VITANA */}
+                    <div className="flex-1 md:text-right">
+                      <p className="text-xs text-muted-foreground mb-1.5">Explore the community</p>
+                      <Button
+                        variant="outline"
+                        size="default"
+                        onClick={handleJoinClick}
+                        className="w-full md:w-auto px-6 border-primary/30 text-primary hover:bg-primary/5"
+                      >
+                        {user ? "View in VITANA" : "Join in VITANA"}
+                      </Button>
+                      {!user && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          You'll be prompted to sign in or create an account
+                        </p>
+                      )}
+                    </div>
+                    
+                  </div>
+                </div>
               </div>
             </div>
           </div>
