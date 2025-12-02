@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Calendar, Target, TrendingUp, Users } from "lucide-react";
+import { Calendar, CalendarDays, Target, TrendingUp, Users, Sparkles } from "lucide-react";
 import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
@@ -244,48 +244,63 @@ export default function PublicCampaignLanding() {
                 </div>
               )}
 
-              {/* Dual CTA Panel */}
-              <div className="mt-4 md:mt-5">
-                <div className="rounded-xl border border-border/60 bg-card/50 shadow-sm px-4 md:px-6 py-4">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    
-                    {/* Primary CTA - Event Action */}
-                    <div className="flex-1">
-                      <p className="text-xs text-muted-foreground mb-1.5">Attend this event</p>
-                      <Button
-                        size="default"
-                        onClick={handleEventClick}
-                        className="w-full md:w-auto px-6"
-                      >
-                        {getPrimaryCTALabel()}
-                      </Button>
-                    </div>
-                    
-                    {/* Separator on desktop */}
-                    <div className="hidden md:block w-px h-12 bg-border/60" />
-                    <p className="text-xs text-muted-foreground text-center md:hidden">or</p>
-                    
-                    {/* Secondary CTA - Join VITANA */}
-                    <div className="flex-1 md:text-right">
-                      <p className="text-xs text-muted-foreground mb-1.5">Explore the community</p>
-                      <Button
-                        variant="outline"
-                        size="default"
-                        onClick={handleJoinClick}
-                        className="w-full md:w-auto px-6 border-primary/30 text-primary hover:bg-primary/5"
-                      >
-                        {user ? "View in VITANA" : "Join in VITANA"}
-                      </Button>
-                      {!user && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          You'll be prompted to sign in or create an account
-                        </p>
-                      )}
-                    </div>
-                    
+          {/* Dual CTA Panel */}
+          <div className="mt-5 md:mt-6">
+            <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
+              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
+                
+                {/* Left: Event CTA */}
+                <div className="flex-1 flex flex-col gap-2">
+                  <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                    <CalendarDays className="h-4 w-4 text-primary" />
+                    <span>Join this event</span>
+                  </div>
+                  <Button
+                    size="default"
+                    onClick={handleEventClick}
+                    className="w-full md:w-auto px-6"
+                  >
+                    {getPrimaryCTALabel()}
+                  </Button>
+                </div>
+                
+                {/* Divider */}
+                <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
+                <div className="flex items-center justify-center gap-3 md:hidden">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
+                  <span className="text-xs text-muted-foreground font-medium">or</span>
+                  <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
+                </div>
+                
+                {/* Right: Community CTA */}
+                <div className="flex-1 flex flex-col items-start md:items-end gap-2">
+                  <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <span>Stay for the community</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="default"
+                    onClick={handleJoinClick}
+                    className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
+                  >
+                    {user ? "View in VITANA" : "Continue in VITANA"}
+                  </Button>
+                  <div className="space-y-0.5 text-left md:text-right">
+                    <p className="text-xs text-muted-foreground max-w-xs">
+                      Get your own space to track progress, events & support.
+                    </p>
+                    {!user && (
+                      <p className="text-[11px] text-muted-foreground/70">
+                        You'll sign in or create an account in the next step.
+                      </p>
+                    )}
                   </div>
                 </div>
+                
               </div>
+            </div>
+          </div>
             </div>
           </div>
         </div>
