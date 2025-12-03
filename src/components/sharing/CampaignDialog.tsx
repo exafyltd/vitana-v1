@@ -31,7 +31,6 @@ import { CampaignCreationHeader } from "./CampaignCreationHeader";
 import { CampaignSuccessModal } from "./CampaignSuccessModal";
 import { InlineChannelConnector } from "./InlineChannelConnector";
 import { ManualShareActions } from "./ManualShareActions";
-import { AudienceSelector } from "./AudienceSelector";
 import type { AudienceData } from "@/types/audience";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
@@ -156,8 +155,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   }, [open, editingCampaign, prefillData]);
 
   const isEditMode = !!editingCampaign;
-  const hasDirectMessaging = ['email', 'sms', 'whatsapp'].some(ch => selectedChannels[ch]);
-  const totalSteps = hasDirectMessaging ? 5 : 4; // Add audience selection step if direct messaging
+  const totalSteps = 4; // Fixed 4-step flow: Basics → Channels → Template → Schedule
 
   const handleClose = () => {
     setStep(1);
@@ -373,18 +371,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   const canProceed = () => {
     if (step === 1) return name.trim() !== "";
     if (step === 2) return Object.values(selectedChannels).some(v => v);
-    if (step === 3 && hasDirectMessaging) {
-      // Check if any audience source is selected
-      const hasEventBasedAudience = audienceData?.yourFollowers?.enabled || audienceData?.eventAttendees?.enabled;
-      const hasVitanaContacts = audienceData?.vitanaContacts?.enabled && (audienceData.vitanaContacts.contactIds?.length || 0) > 0;
-      const hasCsvContacts = audienceData?.csvUpload?.enabled && (audienceData.csvUpload.data?.length || 0) > 0;
-      const hasManualContacts = audienceData?.manualContacts?.enabled && (audienceData.manualContacts.data?.length || 0) > 0;
-      const hasSegments = audienceData?.segments?.enabled;
-      
-      return hasEventBasedAudience || hasVitanaContacts || hasCsvContacts || hasManualContacts || hasSegments;
-    }
-    if (step === 3 && !hasDirectMessaging) return selectedTemplate !== "";
-    if (step === 4 && hasDirectMessaging) return selectedTemplate !== "";
+    if (step === 3) return selectedTemplate !== "";
     return true;
   };
 
@@ -436,7 +423,6 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
           <EnhancedStepIndicator 
             currentStep={step}
             totalSteps={totalSteps}
-            hasAudienceStep={hasDirectMessaging}
             onStepClick={(s) => s <= step && setStep(s)}
           />
 
@@ -774,20 +760,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 </div>
               )}
 
-              {/* Step 3: Audience Selection (only for direct messaging channels) */}
-              {step === 3 && hasDirectMessaging && (
-                <div className="space-y-4">
-                  <AudienceSelector 
-                    selectedChannels={Object.keys(selectedChannels).filter(ch => selectedChannels[ch])}
-                    audienceData={audienceData}
-                    onAudienceChange={setAudienceData}
-                    eventContext={prefillData?.eventContext}
-                  />
-                </div>
-              )}
-
-              {/* Step 3 or 4: Template Selection - Enhanced */}
-              {((step === 3 && !hasDirectMessaging) || (step === 4 && hasDirectMessaging)) && (
+              {/* Step 3: Template Selection */}
+              {step === 3 && (
                 <div className="space-y-4">
                   <Label className="text-lg font-semibold">Choose Your Campaign Template</Label>
                   <RadioGroup value={selectedTemplate} onValueChange={applyTemplate}>
@@ -830,8 +804,8 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
             </div>
           )}
 
-          {/* Step 4 or 5: Smart Scheduling */}
-          {((step === 4 && !hasDirectMessaging) || (step === 5 && hasDirectMessaging)) && (
+          {/* Step 4: Smart Scheduling */}
+          {step === 4 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
