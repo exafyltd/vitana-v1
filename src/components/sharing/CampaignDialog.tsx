@@ -14,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useCampaigns, type Campaign } from "@/hooks/useCampaigns";
+import { useCampaignActions } from "@/hooks/useCampaignActions";
 import { useChannels } from "@/hooks/useChannels";
 import { useProfile } from "@/context/ProfileProvider";
 import { useTenant } from "@/hooks/useTenant";
@@ -58,7 +59,8 @@ interface CampaignDialogProps {
 }
 
 export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillData }: CampaignDialogProps) {
-  const { createCampaign, updateCampaign } = useCampaigns();
+  const { createCampaign, updateCampaign, activateCampaign } = useCampaigns();
+  const { activateAllPosts } = useCampaignActions();
   const { channels } = useChannels();
   const { profile } = useProfile();
   const { tenant } = useTenant();
@@ -109,6 +111,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   // Channel connection modal
   const [connectingChannel, setConnectingChannel] = useState<string | null>(null);
   const [showConnectDialog, setShowConnectDialog] = useState(false);
+  
+  // Activation state
+  const [isActivating, setIsActivating] = useState(false);
   
   // Advanced channels collapsible state
   const [showAdvancedChannels, setShowAdvancedChannels] = useState(false);
@@ -167,9 +172,10 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
     onOpenChange(false);
   };
 
-  const handleSubmit = async () => {
+  // Core save function that doesn't close the dialog - returns campaign ID
+  const saveCampaignData = async (): Promise<string | null> => {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) return null;
 
     let coverImageUrl: string | null = null;
 
@@ -198,7 +204,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
         console.error('Image upload failed:', error);
         toast.error("Failed to upload image");
         setUploadingImage(false);
-        return;
+        return null;
       } finally {
         setUploadingImage(false);
       }
@@ -242,7 +248,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
         id: editingCampaign.id,
         ...campaignData,
       });
-      handleClose();
+      return editingCampaign.id;
     } else {
       const result = await createCampaign.mutateAsync(campaignData);
       
@@ -259,6 +265,14 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
         firstPostDate: customStartDate || addDays(new Date(), 1)
       });
       setShowSuccessModal(true);
+      return result?.id || null;
+    }
+  };
+
+  // Standard submit - saves and closes
+  const handleSubmit = async () => {
+    const campaignId = await saveCampaignData();
+    if (campaignId) {
       handleClose();
     }
   };
@@ -326,6 +340,33 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
         return acc;
       }, {} as Record<string, boolean>);
       setSelectedChannels(channels);
+    }
+  };
+
+  const handleSaveAndActivate = async () => {
+    if (!editingCampaign) return;
+    setIsActivating(true);
+    try {
+      // Save the campaign without closing
+      const campaignId = await saveCampaignData();
+      if (!campaignId) {
+        throw new Error("Failed to save campaign");
+      }
+      // Then activate the campaign
+      await activateCampaign.mutateAsync(campaignId);
+      // Also activate all draft posts if any
+      try {
+        await activateAllPosts.mutateAsync(campaignId);
+      } catch {
+        // No draft posts to activate is fine
+      }
+      toast.success("Campaign saved and activated!");
+      handleClose();
+    } catch (error) {
+      console.error('Activation failed:', error);
+      toast.error("Failed to activate campaign");
+    } finally {
+      setIsActivating(false);
     }
   };
 
@@ -884,17 +925,44 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
-              <Button
-                onClick={handleSubmit}
-                disabled={createCampaign.isPending || updateCampaign.isPending || !canProceed()}
-                size="lg"
-                className="min-w-[180px] bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-xl transition-all"
-              >
-                {createCampaign.isPending || updateCampaign.isPending
-                  ? (isEditMode ? "Updating..." : "Creating Campaign...")
-                  : (isEditMode ? "Update Campaign" : "Create Campaign")}
-                <Rocket className="w-4 h-4 ml-2" />
-              </Button>
+              <>
+                {/* Editing a DRAFT campaign - show both options */}
+                {isEditMode && editingCampaign?.status === "draft" ? (
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleSubmit}
+                      variant="outline"
+                      disabled={updateCampaign.isPending || isActivating || !canProceed()}
+                      size="lg"
+                      className="min-w-[120px]"
+                    >
+                      {updateCampaign.isPending ? "Saving..." : "Save Draft"}
+                    </Button>
+                    <Button
+                      onClick={handleSaveAndActivate}
+                      disabled={updateCampaign.isPending || isActivating || !canProceed()}
+                      size="lg"
+                      className="min-w-[180px] bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white hover:shadow-xl transition-all"
+                    >
+                      {isActivating ? "Activating..." : "Save & Activate"}
+                      <Rocket className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                ) : (
+                  /* New campaign or editing non-draft - current behavior */
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={createCampaign.isPending || updateCampaign.isPending || !canProceed()}
+                    size="lg"
+                    className="min-w-[180px] bg-gradient-to-r from-[hsl(var(--gradient-join-start))] to-[hsl(var(--gradient-join-end))] hover:shadow-xl transition-all"
+                  >
+                    {createCampaign.isPending || updateCampaign.isPending
+                      ? (isEditMode ? "Updating..." : "Creating Campaign...")
+                      : (isEditMode ? "Update Campaign" : "Create Campaign")}
+                    <Rocket className="w-4 h-4 ml-2" />
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </DialogContent>

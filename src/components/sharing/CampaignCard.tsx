@@ -30,6 +30,7 @@ import {
   ChevronDown,
   ChevronUp,
   Share2,
+  Rocket,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -37,11 +38,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import type { Campaign } from "@/hooks/useCampaigns";
 import { useCampaigns } from "@/hooks/useCampaigns";
+import { useCampaignActions } from "@/hooks/useCampaignActions";
 import { CHANNEL_INFO, DISTRIBUTION_TEMPLATES } from "@/lib/campaign-templates";
 import type { LucideIcon } from "lucide-react";
 import { DeleteCampaignDialog } from "./DeleteCampaignDialog";
 import { CampaignAnalyticsExpanded } from "./CampaignAnalyticsExpanded";
 import { ShareCampaignModal } from "./ShareCampaignModal";
+import { ActivateCampaignDialog } from "./ActivateCampaignDialog";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -127,11 +130,13 @@ export function CampaignCard({
   onToggleSelect,
 }: CampaignCardProps) {
   const navigate = useNavigate();
-  const { duplicateCampaign, deleteCampaign } = useCampaigns();
+  const { duplicateCampaign, deleteCampaign, activateCampaign, updateCampaign } = useCampaigns();
+  const { activateAllPosts } = useCampaignActions();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showAllSchedules, setShowAllSchedules] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showActivateDialog, setShowActivateDialog] = useState(false);
 
   // Parse campaign data
   const selectedChannels = Object.entries(
@@ -139,6 +144,11 @@ export function CampaignCard({
   )
     .filter(([_, selected]) => selected)
     .map(([key]) => key);
+
+  // Check if campaign can be activated (must be after selectedChannels)
+  const canActivate = campaign.status === "draft" && 
+    campaign.name && 
+    selectedChannels.length > 0;
 
   const templateId =
     (campaign.distribution_config as any)?.template_id || "custom";
@@ -172,6 +182,29 @@ export function CampaignCard({
 
   const confirmDelete = () => {
     deleteCampaign.mutate(campaign.id);
+  };
+
+  const handleActivateCampaign = async (mode: "instant" | "scheduled", scheduledTime?: Date) => {
+    try {
+      if (mode === "scheduled" && scheduledTime) {
+        await updateCampaign.mutateAsync({
+          id: campaign.id,
+          status: "scheduled",
+          start_date: scheduledTime.toISOString(),
+        });
+      } else {
+        await activateCampaign.mutateAsync(campaign.id);
+        // Also activate all draft posts
+        try {
+          await activateAllPosts.mutateAsync(campaign.id);
+        } catch {
+          // No draft posts to activate is fine
+        }
+      }
+      setShowActivateDialog(false);
+    } catch (error) {
+      console.error('Activation failed:', error);
+    }
   };
 
   return (
@@ -584,6 +617,30 @@ export function CampaignCard({
         )}
       >
         <div className="flex items-center justify-end gap-2">
+          {/* Activate button - only for draft campaigns */}
+          {canActivate && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="h-7 w-7 p-0 rounded-lg bg-white/80 backdrop-blur-sm hover:bg-teal-100 shadow-sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowActivateDialog(true);
+                    }}
+                  >
+                    <Rocket className="w-3.5 h-3.5 text-teal-600" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Activate Campaign</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -718,6 +775,21 @@ export function CampaignCard({
       campaignName={campaign.name}
       campaignDescription={campaign.description || undefined}
       campaignImage={campaign.cover_image_url || undefined}
+    />
+
+    {/* Activate Campaign Dialog */}
+    <ActivateCampaignDialog
+      open={showActivateDialog}
+      onOpenChange={setShowActivateDialog}
+      onConfirm={handleActivateCampaign}
+      isLoading={activateCampaign.isPending || activateAllPosts.isPending}
+      postsCount={stats.total}
+      draftCount={stats.drafts}
+      campaignId={campaign.id}
+      campaignData={{
+        channels: selectedChannels,
+      }}
+      targetChannels={(campaign.target_channels as Record<string, boolean>) || null}
     />
   </>
   );
