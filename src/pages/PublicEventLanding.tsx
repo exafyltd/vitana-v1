@@ -20,7 +20,18 @@ interface PublicEventData {
   image_url: string | null;
   organizer_name: string;
   organizer_avatar: string | null;
+  metadata?: Record<string, any> | null;
 }
+
+// Helper to get tenant-specific login route
+const getTenantLoginRoute = (tenantSlug: string | null): string => {
+  const tenantRoutes: Record<string, string> = {
+    maxina: '/maxina',
+    alkalma: '/alkalma',
+    earthlinks: '/earthlinks',
+  };
+  return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/auth';
+};
 
 export default function PublicEventLanding() {
   const { id } = useParams<{ id: string }>();
@@ -70,6 +81,12 @@ export default function PublicEventLanding() {
     fetchPublicEvent();
   }, [id]);
 
+  // Get tenant from event metadata for proper login routing
+  const tenantSlug = event?.metadata?.tenant_slug || 
+                     event?.metadata?.tenantSlug || 
+                     localStorage.getItem('tenant_slug') || 
+                     null;
+
   const handleJoinClick = () => {
     if (!id) return;
 
@@ -78,9 +95,10 @@ export default function PublicEventLanding() {
       const params = new URLSearchParams(searchParams);
       navigate(`/comm/events-meetups?event=${id}${params.toString() ? '&' + params.toString() : ''}`);
     } else {
-      // User not logged in, redirect to auth with return URL
+      // User not logged in, redirect to tenant-specific login with return URL
       const returnUrl = `/comm/events-meetups?event=${id}${searchParams.toString() ? '&' + searchParams.toString() : ''}`;
-      navigate(`/auth?redirectTo=${encodeURIComponent(returnUrl)}`);
+      const loginRoute = getTenantLoginRoute(tenantSlug);
+      navigate(`${loginRoute}?redirectTo=${encodeURIComponent(returnUrl)}`);
     }
   };
 
@@ -225,7 +243,15 @@ export default function PublicEventLanding() {
                     <Button
                       variant="outline"
                       size="default"
-                      onClick={() => navigate(user ? '/comm/events-meetups' : '/auth')}
+                      onClick={() => {
+                        if (user) {
+                          navigate('/comm/events-meetups');
+                        } else {
+                          const returnUrl = '/comm/events-meetups';
+                          const loginRoute = getTenantLoginRoute(tenantSlug);
+                          navigate(`${loginRoute}?redirectTo=${encodeURIComponent(returnUrl)}`);
+                        }
+                      }}
                       className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
                     >
                       {user ? "Explore VITANA" : "Join in VITANA"}
