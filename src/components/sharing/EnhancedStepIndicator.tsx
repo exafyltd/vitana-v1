@@ -1,4 +1,4 @@
-import { FileText, Share2, Zap, Calendar, CheckCircle, Users } from "lucide-react";
+import { FileText, Share2, Zap, Calendar, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface StepConfig {
@@ -10,25 +10,17 @@ interface StepConfig {
 interface EnhancedStepIndicatorProps {
   currentStep: number;
   totalSteps: number;
-  hasAudienceStep?: boolean;
   onStepClick?: (step: number) => void;
 }
 
-export function EnhancedStepIndicator({ currentStep, totalSteps, hasAudienceStep, onStepClick }: EnhancedStepIndicatorProps) {
-  // Build dynamic steps based on whether audience selection is needed
+export function EnhancedStepIndicator({ currentStep, totalSteps, onStepClick }: EnhancedStepIndicatorProps) {
+  // Fixed 4-step flow: Basics → Channels → Template → Schedule
   const steps: StepConfig[] = [
     { number: 1, label: "Basics", icon: <FileText className="w-4 h-4" /> },
     { number: 2, label: "Channels", icon: <Share2 className="w-4 h-4" /> },
+    { number: 3, label: "Template", icon: <Zap className="w-4 h-4" /> },
+    { number: 4, label: "Schedule", icon: <Calendar className="w-4 h-4" /> },
   ];
-  
-  if (hasAudienceStep) {
-    steps.push({ number: 3, label: "Audience", icon: <Users className="w-4 h-4" /> });
-    steps.push({ number: 4, label: "Template", icon: <Zap className="w-4 h-4" /> });
-    steps.push({ number: 5, label: "Schedule", icon: <Calendar className="w-4 h-4" /> });
-  } else {
-    steps.push({ number: 3, label: "Template", icon: <Zap className="w-4 h-4" /> });
-    steps.push({ number: 4, label: "Schedule", icon: <Calendar className="w-4 h-4" /> });
-  }
 
   return (
     <div className="relative py-6">
