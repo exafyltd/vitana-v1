@@ -344,7 +344,7 @@ export default function PublicCampaignLanding() {
         <div className="border-t border-border mt-auto">
           <div className="max-w-4xl mx-auto px-4 py-3 text-center">
             <p className="text-xs text-muted-foreground">
-              Powered by <span className="font-semibold text-foreground">VITANA</span> - Your wellness community
+              Powered by <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
             </p>
           </div>
         </div>
