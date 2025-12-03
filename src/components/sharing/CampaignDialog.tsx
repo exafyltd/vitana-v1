@@ -32,6 +32,7 @@ import { CampaignSuccessModal } from "./CampaignSuccessModal";
 import { InlineChannelConnector } from "./InlineChannelConnector";
 import { ManualShareActions } from "./ManualShareActions";
 import type { AudienceData } from "@/types/audience";
+import { AudienceSelector } from "./AudienceSelector";
 import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { toast } from "sonner";
@@ -730,6 +731,20 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
                             </Button>
                           </AlertDescription>
                         </Alert>
+                      )}
+
+                      {/* Inline Audience Selection when Business API channels selected */}
+                      {(selectedChannels.email || selectedChannels.sms || selectedChannels.whatsapp) && (
+                        <div className="pt-4 border-t border-border mt-4">
+                          <AudienceSelector
+                            audienceData={audienceData}
+                            onAudienceChange={setAudienceData}
+                            selectedChannels={Object.entries(selectedChannels)
+                              .filter(([key, val]) => val && ['email', 'sms', 'whatsapp'].includes(key))
+                              .map(([key]) => key)}
+                            eventContext={prefillData?.eventContext}
+                          />
+                        </div>
                       )}
                     </CollapsibleContent>
                   </Collapsible>
