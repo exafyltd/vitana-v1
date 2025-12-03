@@ -30,6 +30,7 @@ interface ActivateCampaignDialogProps {
     audienceData?: any;
     messageContent?: any;
   };
+  targetChannels?: Record<string, boolean> | null;
 }
 
 export function ActivateCampaignDialog({
@@ -39,7 +40,15 @@ export function ActivateCampaignDialog({
   isLoading,
   postsCount,
   draftCount,
+  targetChannels,
 }: ActivateCampaignDialogProps) {
+  // Count selected channels
+  const selectedChannelNames = targetChannels 
+    ? Object.entries(targetChannels)
+        .filter(([_, selected]) => selected)
+        .map(([channel]) => channel.charAt(0).toUpperCase() + channel.slice(1))
+    : [];
+  const channelCount = selectedChannelNames.length;
   const [mode, setMode] = useState<"instant" | "scheduled">("instant");
   const [scheduledDate, setScheduledDate] = useState<Date | undefined>(addDays(new Date(), 1));
   const [scheduledTime, setScheduledTime] = useState("09:00");
@@ -62,24 +71,42 @@ export function ActivateCampaignDialog({
         <DialogHeader>
           <DialogTitle>Activate Campaign</DialogTitle>
           <DialogDescription>
-            Choose how you want to activate this campaign and distribute all posts.
+            {postsCount > 0 
+              ? "Choose how you want to activate this campaign and distribute all posts."
+              : "Choose how you want to activate and distribute this campaign."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="grid gap-4 p-4 bg-muted/50 rounded-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Total Posts</span>
-              <span className="font-semibold">{postsCount}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Draft Posts</span>
-              <span className="font-semibold text-yellow-600">{draftCount}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Ready to Publish</span>
-              <span className="font-semibold text-green-600">{draftCount}</span>
-            </div>
+            {postsCount > 0 ? (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Total Posts</span>
+                  <span className="font-semibold">{postsCount}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Draft Posts</span>
+                  <span className="font-semibold text-yellow-600">{draftCount}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Ready to Publish</span>
+                  <span className="font-semibold text-green-600">{draftCount}</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Selected Channels</span>
+                  <span className="font-semibold">{channelCount}</span>
+                </div>
+                {selectedChannelNames.length > 0 && (
+                  <div className="text-xs text-muted-foreground">
+                    {selectedChannelNames.join(', ')}
+                  </div>
+                )}
+              </>
+            )}
           </div>
 
           <RadioGroup value={mode} onValueChange={(v) => setMode(v as "instant" | "scheduled")}>
@@ -88,10 +115,12 @@ export function ActivateCampaignDialog({
               <Label htmlFor="instant" className="flex-1 cursor-pointer">
                 <div className="flex items-center gap-2">
                   <Rocket className="w-4 h-4" />
-                  <span className="font-medium">Blast All Now</span>
+                  <span className="font-medium">Activate Now</span>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Publish all draft posts immediately across all selected channels
+                  {postsCount > 0 
+                    ? "Publish all draft posts immediately across all selected channels"
+                    : "Activate campaign immediately across all selected channels"}
                 </p>
               </Label>
             </div>
