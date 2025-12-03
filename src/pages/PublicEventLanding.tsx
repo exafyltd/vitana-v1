@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, Clock } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, CalendarDays, Sparkles } from "lucide-react";
 import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
@@ -119,10 +119,10 @@ export default function PublicEventLanding() {
         type="event"
       />
       
-      <div className="min-h-screen bg-background">
-        {/* Hero Section with Cover Image */}
-        {event.image_url && (
-          <div className="relative w-full h-64 md:h-96 overflow-hidden">
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Hero Section - Compact banner */}
+        {event.image_url ? (
+          <div className="relative w-full h-36 md:h-[180px] overflow-hidden">
             <img
               src={event.image_url}
               alt={event.title}
@@ -130,91 +130,125 @@ export default function PublicEventLanding() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
           </div>
+        ) : (
+          <div className="relative w-full h-24 md:h-[120px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
         )}
 
         {/* Content Section */}
-        <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
-          <div className="space-y-6">
-            {/* Event Title */}
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                {event.title}
-              </h1>
-              <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                {event.event_type}
+        <div className="flex-1 flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-8 md:-mt-10 relative z-10">
+            <div className="space-y-1.5 md:space-y-2">
+              {/* Event Title */}
+              <div className="space-y-1">
+                <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+                  {event.title}
+                </h1>
+                <div className="inline-block px-2.5 py-0.5 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                  {event.event_type}
+                </div>
               </div>
-            </div>
 
-            {/* Event Details */}
-            <div className="grid gap-4 md:grid-cols-2">
-              {event.start_time && (
-                <div className="flex items-start gap-3">
-                  <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{eventDate}</p>
-                    <p className="text-sm text-muted-foreground">{eventTime}</p>
+              {/* Event Details - Compact grid */}
+              <div className="grid gap-2 md:grid-cols-2">
+                {event.start_time && (
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-medium text-foreground">{eventDate}</span>
+                      <span className="text-xs text-muted-foreground">at {eventTime}</span>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {event.location && (
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Location</p>
-                    <p className="text-sm text-muted-foreground">{event.location}</p>
+                {event.location && (
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-xs text-muted-foreground">{event.location}</span>
                   </div>
-                </div>
-              )}
+                )}
 
-              <div className="flex items-start gap-3">
-                <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">Participants</p>
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
                     {event.participant_count} {event.max_participants ? `/ ${event.max_participants}` : ''} attending
-                  </p>
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">Hosted by {event.organizer_name}</span>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">Hosted by</p>
-                  <p className="text-sm text-muted-foreground">{event.organizer_name}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Description */}
-            {event.description && (
-              <div className="prose prose-sm max-w-none">
-                <p className="text-foreground/80 leading-relaxed">{event.description}</p>
-              </div>
-            )}
-
-            {/* CTA Button */}
-            <div className="pt-4">
-              <Button
-                size="lg"
-                onClick={handleJoinClick}
-                className="w-full md:w-auto px-8"
-              >
-                {user ? "View Event in VITANA" : "Join in VITANA"}
-              </Button>
-              {!user && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  You'll be prompted to sign in or create an account
+              {/* Description - Compact */}
+              {event.description && (
+                <p className="text-xs text-foreground/80 leading-relaxed line-clamp-3">
+                  {event.description}
                 </p>
               )}
+
+              {/* Dual CTA Panel */}
+              <div className="mt-3 md:mt-4">
+                <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
+                  <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
+                    
+                    {/* Left: Primary Event CTA */}
+                    <div className="flex-1 flex flex-col gap-2">
+                      <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                        <CalendarDays className="h-4 w-4 text-primary" />
+                        <span>Join this event</span>
+                      </div>
+                      <Button
+                        size="default"
+                        onClick={handleJoinClick}
+                        className="w-full md:w-auto px-6"
+                      >
+                        {user ? "View Event Details" : "Reserve My Spot"}
+                      </Button>
+                    </div>
+                    
+                    {/* Divider */}
+                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
+                    <div className="flex items-center justify-center gap-3 md:hidden">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
+                      <span className="text-xs text-muted-foreground font-medium">or</span>
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
+                    </div>
+                    
+                    {/* Right: Community CTA */}
+                    <div className="flex-1 flex flex-col items-start md:items-end gap-2">
+                      <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
+                        <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
+                          Discover more events and longevity communities.
+                        </span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="default"
+                        onClick={() => navigate(user ? '/comm/events-meetups' : '/auth')}
+                        className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
+                      >
+                        {user ? "Explore VITANA" : "Join in VITANA"}
+                      </Button>
+                      {!user && (
+                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
+                          You'll sign in or create an account in the next step.
+                        </p>
+                      )}
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="border-t border-border mt-12">
-          <div className="max-w-4xl mx-auto px-4 py-6 text-center">
-            <p className="text-sm text-muted-foreground">
+        <div className="border-t border-border mt-auto">
+          <div className="max-w-4xl mx-auto px-4 py-3 text-center">
+            <p className="text-xs text-muted-foreground">
               Powered by <span className="font-semibold text-foreground">VITANA</span> - Your longevity community
             </p>
           </div>
