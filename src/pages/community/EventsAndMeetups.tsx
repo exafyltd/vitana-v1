@@ -143,8 +143,13 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
       <SocialShareButton
         type="event"
         data={{
+          id: event.id,
           title: event.title,
           description: event.description,
+          image_url: imageUrl,
+          start_time: event.start_time,
+          end_time: event.end_time,
+          location: event.location,
           link: getShareUrl('event', event.id, { 
             utm_source: 'event_card', 
             utm_medium: 'social',
