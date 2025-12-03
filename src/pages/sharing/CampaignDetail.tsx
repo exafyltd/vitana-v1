@@ -33,11 +33,19 @@ function CampaignDetail() {
   const campaignPosts = posts?.filter(p => p.campaign_id === id) || [];
   const draftPosts = campaignPosts.filter(p => p.status === 'draft');
 
+  // Check if campaign can be activated (has name and at least one channel selected)
+  const targetChannels = campaign?.target_channels as Record<string, boolean> | null;
+  const hasSelectedChannels = targetChannels && Object.values(targetChannels).some(v => v);
+  const canActivateCampaign = campaign?.name && hasSelectedChannels;
+
   const handleActivateCampaign = async (mode: "instant" | "scheduled", scheduledFor?: Date) => {
     if (!id) return;
 
     if (mode === "instant") {
-      await activateAllPosts.mutateAsync(id);
+      // Only activate posts if there are draft posts
+      if (draftPosts.length > 0) {
+        await activateAllPosts.mutateAsync(id);
+      }
       await activateCampaign.mutateAsync(id);
       setShowActivateDialog(false);
     } else if (mode === "scheduled" && scheduledFor) {
@@ -174,7 +182,7 @@ function CampaignDetail() {
                 <Button 
                   size="sm"
                   onClick={() => setShowActivateDialog(true)}
-                  disabled={draftPosts.length === 0}
+                  disabled={!canActivateCampaign}
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Activate Campaign
@@ -355,6 +363,7 @@ function CampaignDetail() {
         postsCount={campaignPosts.length}
         draftCount={draftPosts.length}
         campaignId={campaign?.id || ''}
+        targetChannels={campaign?.target_channels as Record<string, boolean> | null}
         campaignData={{
           channels: (campaign?.target_channels as string[]) || [],
           audienceData: (campaign?.distribution_config as any)?.audienceData,
