@@ -120,24 +120,24 @@ export default function PublicEventLanding() {
       />
       
       <div className="min-h-screen bg-background flex flex-col">
-        {/* Hero Section - Compact banner */}
+        {/* Hero Section - Extended banner */}
         {event.image_url ? (
-          <div className="relative w-full h-36 md:h-[180px] overflow-hidden">
+          <div className="relative w-full h-48 md:h-[280px] overflow-hidden">
             <img
               src={event.image_url}
               alt={event.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
           </div>
         ) : (
-          <div className="relative w-full h-24 md:h-[120px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
+          <div className="relative w-full h-36 md:h-[200px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
         )}
 
-        {/* Content Section */}
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-8 md:-mt-10 relative z-10">
-            <div className="space-y-1.5 md:space-y-2">
+        {/* Content Section - Floating card over hero */}
+        <div className="flex-1 flex flex-col">
+          <div className="max-w-4xl mx-auto px-4 -mt-20 md:-mt-28 relative z-10">
+            <div className="bg-card/95 dark:bg-card/90 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 p-4 md:p-6 space-y-2 md:space-y-3">
               {/* Event Title */}
               <div className="space-y-1">
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground">
@@ -187,58 +187,56 @@ export default function PublicEventLanding() {
                 </p>
               )}
 
-              {/* Dual CTA Panel */}
-              <div className="mt-3 md:mt-4">
-                <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
-                  <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
-                    
-                    {/* Left: Primary Event CTA */}
-                    <div className="flex-1 flex flex-col gap-2">
-                      <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                        <CalendarDays className="h-4 w-4 text-primary" />
-                        <span>Join this event</span>
-                      </div>
-                      <Button
-                        size="default"
-                        onClick={handleJoinClick}
-                        className="w-full md:w-auto px-6"
-                      >
-                        {user ? "View Event Details" : "Reserve My Spot"}
-                      </Button>
+              {/* Dual CTA Panel - Simplified inside card */}
+              <div className="pt-3 border-t border-border/50">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-8">
+                  
+                  {/* Left: Primary Event CTA */}
+                  <div className="flex-1 flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                      <CalendarDays className="h-4 w-4 text-primary" />
+                      <span>Join this event</span>
                     </div>
-                    
-                    {/* Divider */}
-                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
-                    <div className="flex items-center justify-center gap-3 md:hidden">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
-                      <span className="text-xs text-muted-foreground font-medium">or</span>
-                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
-                    </div>
-                    
-                    {/* Right: Community CTA */}
-                    <div className="flex-1 flex flex-col items-start md:items-end gap-2">
-                      <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
-                        <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
-                          Discover more events and longevity communities.
-                        </span>
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="default"
-                        onClick={() => navigate(user ? '/comm/events-meetups' : '/auth')}
-                        className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
-                      >
-                        {user ? "Explore VITANA" : "Join in VITANA"}
-                      </Button>
-                      {!user && (
-                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
-                          You'll sign in or create an account in the next step.
-                        </p>
-                      )}
-                    </div>
-                    
+                    <Button
+                      size="default"
+                      onClick={handleJoinClick}
+                      className="w-full md:w-auto px-6"
+                    >
+                      {user ? "View Event Details" : "Reserve My Spot"}
+                    </Button>
                   </div>
+                  
+                  {/* Divider */}
+                  <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-border to-transparent" />
+                  <div className="flex items-center justify-center gap-3 md:hidden">
+                    <div className="flex-1 h-px bg-gradient-to-r from-transparent to-border" />
+                    <span className="text-xs text-muted-foreground font-medium">or</span>
+                    <div className="flex-1 h-px bg-gradient-to-l from-transparent to-border" />
+                  </div>
+                  
+                  {/* Right: Community CTA */}
+                  <div className="flex-1 flex flex-col items-start md:items-end gap-2">
+                    <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
+                      <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
+                        Discover more events and longevity communities.
+                      </span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="default"
+                      onClick={() => navigate(user ? '/comm/events-meetups' : '/auth')}
+                      className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
+                    >
+                      {user ? "Explore VITANA" : "Join in VITANA"}
+                    </Button>
+                    {!user && (
+                      <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
+                        You'll sign in or create an account in the next step.
+                      </p>
+                    )}
+                  </div>
+                  
                 </div>
               </div>
             </div>
