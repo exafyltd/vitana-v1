@@ -23,6 +23,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { getShareUrl } from "@/lib/shareUrl";
+import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,10 +59,6 @@ import {
   CheckCircle2,
   AlertCircle,
   Car,
-  Link2,
-  Twitter,
-  Linkedin,
-  Mail,
   Download,
   UserPlus,
   Timer,
@@ -177,6 +174,7 @@ export function MeetupDetailsDrawer({
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [isCreatingThread, setIsCreatingThread] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
   
   const { addEvent, removeEvent } = useCalendarEvents();
   const navigate = useNavigate();
@@ -302,30 +300,11 @@ export function MeetupDetailsDrawer({
     });
   };
 
-  const handleShare = (platform?: string) => {
-    // Use OG-enabled share URL for rich social media previews
-    const url = getShareUrl('event', event.id, {
-      utm_source: 'event_details',
-      utm_medium: platform || 'copy_link'
-    });
-    const text = `Check out this meetup: ${event.title}`;
-    
-    if (platform === 'twitter') {
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-    } else if (platform === 'linkedin') {
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
-    } else if (platform === 'whatsapp') {
-      window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-    } else if (platform === 'email') {
-      window.location.href = `mailto:?subject=${encodeURIComponent(event.title)}&body=${encodeURIComponent(text + '\n\n' + url)}`;
-    } else {
-      navigator.clipboard.writeText(url);
-      toast({
-        title: "Link copied",
-        description: "Meetup link copied to clipboard",
-      });
-    }
-  };
+  // Share URL for the dialog
+  const shareUrl = getShareUrl('event', event.id, {
+    utm_source: 'event_details',
+    utm_medium: 'share_dialog'
+  });
 
   const handleExportToCalendar = (type: string) => {
     const startDate = new Date(event.start_time);
@@ -1079,50 +1058,24 @@ export function MeetupDetailsDrawer({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-12 w-12 shrink-0"
-                      aria-label="Share meetup"
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Share event</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => handleShare()}>
-                <Link2 className="h-4 w-4 mr-2" />
-                Copy link
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleShare('twitter')}>
-                <Twitter className="h-4 w-4 mr-2" />
-                X (Twitter)
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleShare('linkedin')}>
-                <Linkedin className="h-4 w-4 mr-2" />
-                LinkedIn
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleShare('whatsapp')}>
-                <MessageCircle className="h-4 w-4 mr-2" />
-                WhatsApp
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleShare('email')}>
-                <Mail className="h-4 w-4 mr-2" />
-                Email
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="h-12 w-12 shrink-0"
+                  onClick={() => setShareDialogOpen(true)}
+                  aria-label="Share meetup"
+                >
+                  <Share2 className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Share event</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
           <TooltipProvider>
             <Tooltip>
@@ -1169,6 +1122,20 @@ export function MeetupDetailsDrawer({
           onSend={handleSendMessageToHost}
         />
       )}
+
+      {/* Share Dialog */}
+      <UniversalShareDialog
+        open={shareDialogOpen}
+        onOpenChange={setShareDialogOpen}
+        content={{
+          type: "event",
+          id: event.id,
+          title: event.title,
+          description: event.description,
+          image_url: event.image_url || event.cover_image_url,
+          url: shareUrl
+        }}
+      />
       
       {/* Profile Preview Dialog */}
       <ProfilePreviewDialog />
