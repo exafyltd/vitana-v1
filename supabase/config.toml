@@ -45,6 +45,9 @@ verify_jwt = true
 [functions.stripe-create-booking-checkout]
 verify_jwt = true
 
+[functions.stripe-create-ticket-checkout]
+verify_jwt = false
+
 [functions.stripe-webhook]
 verify_jwt = false
 

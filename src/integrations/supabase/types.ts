@@ -2100,6 +2100,199 @@ export type Database = {
           },
         ]
       }
+      event_ticket_purchases: {
+        Row: {
+          buyer_email: string
+          buyer_id: string | null
+          buyer_name: string
+          checked_in_at: string | null
+          checked_in_by: string | null
+          created_at: string
+          currency: string
+          event_id: string
+          id: string
+          metadata: Json | null
+          qr_code_token: string
+          quantity: number
+          refund_reason: string | null
+          refunded_at: string | null
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          ticket_number: string
+          ticket_type_id: string
+          total_amount: number
+          unit_price: number
+          updated_at: string
+        }
+        Insert: {
+          buyer_email: string
+          buyer_id?: string | null
+          buyer_name: string
+          checked_in_at?: string | null
+          checked_in_by?: string | null
+          created_at?: string
+          currency?: string
+          event_id: string
+          id?: string
+          metadata?: Json | null
+          qr_code_token: string
+          quantity?: number
+          refund_reason?: string | null
+          refunded_at?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          ticket_number: string
+          ticket_type_id: string
+          total_amount: number
+          unit_price: number
+          updated_at?: string
+        }
+        Update: {
+          buyer_email?: string
+          buyer_id?: string | null
+          buyer_name?: string
+          checked_in_at?: string | null
+          checked_in_by?: string | null
+          created_at?: string
+          currency?: string
+          event_id?: string
+          id?: string
+          metadata?: Json | null
+          qr_code_token?: string
+          quantity?: number
+          refund_reason?: string | null
+          refunded_at?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          ticket_number?: string
+          ticket_type_id?: string
+          total_amount?: number
+          unit_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_ticket_purchases_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_ticket_purchases_ticket_type_id_fkey"
+            columns: ["ticket_type_id"]
+            isOneToOne: false
+            referencedRelation: "event_ticket_types"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_ticket_scans: {
+        Row: {
+          device_info: Json | null
+          id: string
+          is_valid: boolean
+          rejection_reason: string | null
+          scan_location: string | null
+          scanned_at: string
+          scanned_by: string | null
+          ticket_purchase_id: string
+        }
+        Insert: {
+          device_info?: Json | null
+          id?: string
+          is_valid?: boolean
+          rejection_reason?: string | null
+          scan_location?: string | null
+          scanned_at?: string
+          scanned_by?: string | null
+          ticket_purchase_id: string
+        }
+        Update: {
+          device_info?: Json | null
+          id?: string
+          is_valid?: boolean
+          rejection_reason?: string | null
+          scan_location?: string | null
+          scanned_at?: string
+          scanned_by?: string | null
+          ticket_purchase_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_ticket_scans_ticket_purchase_id_fkey"
+            columns: ["ticket_purchase_id"]
+            isOneToOne: false
+            referencedRelation: "event_ticket_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_ticket_types: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          event_id: string
+          id: string
+          is_active: boolean
+          metadata: Json | null
+          name: string
+          price: number
+          quantity_available: number
+          quantity_sold: number
+          sale_end_date: string | null
+          sale_start_date: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          event_id: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          name: string
+          price?: number
+          quantity_available?: number
+          quantity_sold?: number
+          sale_end_date?: string | null
+          sale_start_date?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          event_id?: string
+          id?: string
+          is_active?: boolean
+          metadata?: Json | null
+          name?: string
+          price?: number
+          quantity_available?: number
+          quantity_sold?: number
+          sale_end_date?: string | null
+          sale_start_date?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_ticket_types_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           actor: string
@@ -6646,6 +6839,7 @@ export type Database = {
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
+      generate_ticket_number: { Args: never; Returns: string }
       generate_unique_handle: {
         Args: {
           p_display_name?: string
@@ -6796,6 +6990,24 @@ export type Database = {
           last_read_at: string
           role: string
           user_id: string
+        }[]
+      }
+      get_ticket_by_qr_token: {
+        Args: { token: string }
+        Returns: {
+          buyer_email: string
+          buyer_name: string
+          checked_in_at: string
+          event_id: string
+          event_image_url: string
+          event_location: string
+          event_start_time: string
+          event_title: string
+          id: string
+          quantity: number
+          status: string
+          ticket_number: string
+          ticket_type_name: string
         }[]
       }
       get_unread_match_count: { Args: { p_user_id: string }; Returns: number }

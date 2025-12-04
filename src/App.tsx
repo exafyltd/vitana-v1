@@ -108,6 +108,8 @@ import HealthTracker from "./pages/HealthTracker";
 import Calendar from "./pages/Calendar";
 import Cart from "./pages/Cart";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
+import TicketPurchaseSuccess from "./pages/TicketPurchaseSuccess";
+import MyTickets from "./pages/MyTickets";
 import Community from "./pages/Community";
 import AI from "./pages/AI";
 import Messages from "./pages/Messages";
@@ -464,6 +466,12 @@ const App = () => {
           <Route path="/checkout/success" element={
             <AuthGuard>
               <CheckoutSuccess />
+            </AuthGuard>
+          } />
+          <Route path="/tickets/success" element={<TicketPurchaseSuccess />} />
+          <Route path="/my-tickets" element={
+            <AuthGuard>
+              <MyTickets />
             </AuthGuard>
           } />
           
