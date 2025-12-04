@@ -89,7 +89,7 @@ export function EventTicket({
       <div
         ref={ticketRef}
         className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-xl"
-        style={{ minHeight: "520px" }}
+        style={{ minHeight: "440px" }}
       >
         {/* Full-bleed Background Image with Desaturation */}
         {eventImageUrl ? (
@@ -113,7 +113,7 @@ export function EventTicket({
         <div className="absolute inset-0 bg-amber-50/15" />
 
         {/* Content Overlay */}
-        <div className="relative z-10 h-full flex flex-col p-5">
+        <div className="relative z-10 h-full flex flex-col p-4">
           {/* Header - Simplified Text-Only */}
           <div className="flex items-center justify-between pb-3 border-b border-gray-300/50">
             <div>
@@ -130,13 +130,13 @@ export function EventTicket({
           </div>
           
           {/* Event Title - Large Hero */}
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-5 leading-tight"
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-3 leading-tight"
               style={{ textShadow: '0 1px 2px rgba(255,255,255,0.5)' }}>
             {eventTitle}
           </h2>
           
           {/* Event Details - Clean Label+Value Typography */}
-          <div className="grid grid-cols-2 gap-x-6 gap-y-4 mb-4">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-3 mb-3">
             {/* Date */}
             <div>
               <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
@@ -159,7 +159,7 @@ export function EventTicket({
           </div>
           
           {/* Location */}
-          <div className="mb-5">
+          <div className="mb-3">
             <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
               Venue
             </div>
@@ -170,13 +170,13 @@ export function EventTicket({
           
           {/* Thin Divider Line with Cutouts */}
           <div className="relative flex items-center my-2">
-            <div className="absolute -left-5 w-4 h-4 bg-background rounded-full shadow-inner" />
+            <div className="absolute -left-4 w-4 h-4 bg-background rounded-full shadow-inner" />
             <div className="flex-1 border-t border-gray-300/60" />
-            <div className="absolute -right-5 w-4 h-4 bg-background rounded-full shadow-inner" />
+            <div className="absolute -right-4 w-4 h-4 bg-background rounded-full shadow-inner" />
           </div>
           
           {/* Two-Column Attendee Row */}
-          <div className="flex items-start justify-between mt-4 mb-5">
+          <div className="flex items-start justify-between mt-3 mb-3">
             <div>
                 <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
                   Attendee
@@ -197,10 +197,10 @@ export function EventTicket({
           
           {/* Huge Centered QR Code */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="p-3 rounded-xl bg-white shadow-lg border border-gray-100">
+            <div className="p-2 rounded-xl bg-white shadow-lg border border-gray-100">
               <QRCodeSVG
                 value={qrCodeData}
-                size={180}
+                size={140}
                 level="H"
                 includeMargin={false}
               />
@@ -211,7 +211,7 @@ export function EventTicket({
           </div>
           
           {/* Compact Footer */}
-          <div className="mt-4 pt-3 border-t border-gray-200/50 flex items-center justify-between text-[10px] text-gray-400 font-mono">
+          <div className="mt-2 pt-2 border-t border-gray-200/50 flex items-center justify-between text-[10px] text-gray-400 font-mono">
             <span>{ticketNumber}</span>
             <span>SEQ {String(sequence).padStart(4, "0")}</span>
           </div>
