@@ -30,7 +30,7 @@ const getTenantLoginRoute = (tenantSlug: string | null): string => {
     alkalma: '/alkalma',
     earthlinks: '/earthlinks',
   };
-  return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/auth';
+  return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/maxina';
 };
 
 export default function PublicEventLanding() {

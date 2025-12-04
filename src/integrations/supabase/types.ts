@@ -2580,8 +2580,42 @@ export type Database = {
           },
         ]
       }
+      governance_catalog: {
+        Row: {
+          categories_count: number | null
+          commit_hash: string
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          rules_count: number | null
+          updated_at: string | null
+          version: string
+        }
+        Insert: {
+          categories_count?: number | null
+          commit_hash: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rules_count?: number | null
+          updated_at?: string | null
+          version: string
+        }
+        Update: {
+          categories_count?: number | null
+          commit_hash?: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          rules_count?: number | null
+          updated_at?: string | null
+          version?: string
+        }
+        Relationships: []
+      }
       governance_categories: {
         Row: {
+          code: string | null
           created_at: string | null
           description: string | null
           id: string
@@ -2590,6 +2624,7 @@ export type Database = {
           tenant_id: string
         }
         Insert: {
+          code?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -2598,6 +2633,7 @@ export type Database = {
           tenant_id: string
         }
         Update: {
+          code?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -2733,34 +2769,55 @@ export type Database = {
       }
       governance_rules: {
         Row: {
+          catalog_version: string | null
           category_id: string | null
+          commit_hash: string | null
           created_at: string | null
           description: string | null
+          enforcement: string[] | null
           id: string
           is_active: boolean | null
+          level: string | null
           logic: Json
           name: string
+          rule_id: string | null
+          sources: string[] | null
           tenant_id: string
+          vtids: string[] | null
         }
         Insert: {
+          catalog_version?: string | null
           category_id?: string | null
+          commit_hash?: string | null
           created_at?: string | null
           description?: string | null
+          enforcement?: string[] | null
           id?: string
           is_active?: boolean | null
+          level?: string | null
           logic: Json
           name: string
+          rule_id?: string | null
+          sources?: string[] | null
           tenant_id: string
+          vtids?: string[] | null
         }
         Update: {
+          catalog_version?: string | null
           category_id?: string | null
+          commit_hash?: string | null
           created_at?: string | null
           description?: string | null
+          enforcement?: string[] | null
           id?: string
           is_active?: boolean | null
+          level?: string | null
           logic?: Json
           name?: string
+          rule_id?: string | null
+          sources?: string[] | null
           tenant_id?: string
+          vtids?: string[] | null
         }
         Relationships: [
           {
