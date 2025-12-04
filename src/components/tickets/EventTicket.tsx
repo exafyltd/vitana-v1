@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { format } from "date-fns";
-import { Calendar, MapPin, User, Ticket, Download, Share2 } from "lucide-react";
+import { Calendar, MapPin, User, Ticket, Download, Share2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
@@ -75,7 +75,6 @@ export function EventTicket({
             files: [file],
           });
         } else {
-          // Fallback to download
           handleDownload();
         }
       }, "image/png");
@@ -89,125 +88,160 @@ export function EventTicket({
       {/* Ticket Card */}
       <div
         ref={ticketRef}
-        className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-2xl"
+        className="relative w-full max-w-md mx-auto overflow-hidden rounded-3xl shadow-2xl"
+        style={{
+          background: "linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--background)) 100%)",
+        }}
       >
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0">
-          {eventImageUrl ? (
-            <img
-              src={eventImageUrl}
-              alt=""
-              className="w-full h-full object-cover opacity-20"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-primary/30 via-primary/10 to-background" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-b from-card/95 via-card/90 to-card/95 backdrop-blur-sm" />
-        </div>
-
-        {/* Content */}
-        <div className="relative p-6 space-y-5">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-primary font-bold text-sm">V</span>
-              </div>
-              <span className="text-sm font-medium text-muted-foreground">VITANA</span>
-            </div>
-            <div className="text-xs font-mono text-muted-foreground">
-              #{ticketNumber}
-            </div>
-          </div>
-
-          {/* Decorative Line */}
-          <div className="border-t border-dashed border-border/60" />
-
-          {/* Event Title */}
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-foreground leading-tight line-clamp-2">
-              {eventTitle}
-            </h2>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-              <Ticket className="h-3 w-3" />
-              {ticketType}
-            </div>
-          </div>
-
-          {/* Event Details Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-muted-foreground">
-                <Calendar className="h-3.5 w-3.5" />
-                <span className="text-xs uppercase tracking-wide">Date</span>
-              </div>
-              <div className="text-sm font-medium text-foreground">
-                {format(eventDate, "EEE, MMM d, yyyy")}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                {format(eventDate, "h:mm a")}
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5 text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5" />
-                <span className="text-xs uppercase tracking-wide">Location</span>
-              </div>
-              <div className="text-sm font-medium text-foreground line-clamp-2">
-                {eventLocation || "TBA"}
-              </div>
-            </div>
-          </div>
-
-          {/* Perforation Line */}
-          <div className="relative">
-            <div className="absolute -left-6 top-1/2 -translate-y-1/2 w-4 h-8 bg-background rounded-r-full" />
-            <div className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-8 bg-background rounded-l-full" />
-            <div className="border-t border-dashed border-border/60" />
-          </div>
-
-          {/* Attendee Info */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 flex-1">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="h-5 w-5 text-primary" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                  Attendee
+        {/* Gradient Border Glow */}
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-sky-500/20 via-purple-500/20 to-pink-500/20 blur-sm" />
+        
+        {/* Inner Container */}
+        <div className="relative rounded-3xl border border-white/10 overflow-hidden">
+          
+          {/* Hero Event Image Section */}
+          <div className="relative h-48 overflow-hidden">
+            {eventImageUrl ? (
+              <>
+                <img
+                  src={eventImageUrl}
+                  alt={eventTitle}
+                  className="w-full h-full object-cover"
+                />
+                {/* Gradient overlay for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              </>
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-sky-600 via-purple-600 to-pink-600" />
+            )}
+            
+            {/* Event Pass Header */}
+            <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {/* VITANA Logo with Gradient */}
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                  <span className="text-white font-bold text-lg">V</span>
                 </div>
-                <div className="text-sm font-semibold text-foreground truncate">
-                  {buyerName}
+                <div>
+                  <span className="text-white/90 text-xs font-medium tracking-wider">VITANA</span>
+                  <div className="text-white text-[10px] font-light tracking-widest">EVENT PASS</div>
                 </div>
               </div>
+              
+              {/* Ticket Type Badge */}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-sky-500/90 via-purple-500/90 to-pink-500/90 backdrop-blur-sm shadow-lg">
+                <Sparkles className="h-3 w-3 text-white" />
+                <span className="text-white text-xs font-semibold">{ticketType}</span>
+              </div>
             </div>
-            {quantity > 1 && (
-              <div className="text-right">
-                <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                  Qty
+            
+            {/* Event Title on Image */}
+            <div className="absolute bottom-4 left-4 right-4">
+              <h2 className="text-xl font-bold text-white leading-tight line-clamp-2 drop-shadow-lg">
+                {eventTitle}
+              </h2>
+            </div>
+          </div>
+
+          {/* Glassmorphic Content Area */}
+          <div className="relative bg-card/80 backdrop-blur-xl p-5 space-y-4">
+            
+            {/* Decorative Top Border */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+
+            {/* Event Details Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5 p-3 rounded-xl bg-background/50 border border-border/50">
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <Calendar className="h-3.5 w-3.5 text-sky-500" />
+                  <span className="text-[10px] uppercase tracking-wider font-medium">Date & Time</span>
                 </div>
                 <div className="text-sm font-semibold text-foreground">
-                  {quantity}
+                  {format(eventDate, "EEE, MMM d")}
+                </div>
+                <div className="text-xs text-muted-foreground font-medium">
+                  {format(eventDate, "h:mm a")}
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* QR Code Section */}
-          <div className="flex flex-col items-center gap-3 pt-2">
-            <div className="bg-white p-3 rounded-xl shadow-sm">
-              <QRCodeSVG
-                value={qrCodeData}
-                size={120}
-                level="H"
-                includeMargin={false}
-              />
+              <div className="space-y-1.5 p-3 rounded-xl bg-background/50 border border-border/50">
+                <div className="flex items-center gap-1.5 text-muted-foreground">
+                  <MapPin className="h-3.5 w-3.5 text-pink-500" />
+                  <span className="text-[10px] uppercase tracking-wider font-medium">Location</span>
+                </div>
+                <div className="text-sm font-semibold text-foreground line-clamp-2">
+                  {eventLocation || "TBA"}
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-              <span>ADMIT {quantity}</span>
-              <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
-              <span>SEQ: {String(sequence).padStart(4, "0")}</span>
+
+            {/* Perforation Line with Cutouts */}
+            <div className="relative py-2">
+              <div className="absolute -left-5 top-1/2 -translate-y-1/2 w-5 h-10 bg-background rounded-r-full" />
+              <div className="absolute -right-5 top-1/2 -translate-y-1/2 w-5 h-10 bg-background rounded-l-full" />
+              <div className="border-t-2 border-dashed border-border/60 mx-2" />
+              {/* Decorative dots */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-sky-500/40" />
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-500/40" />
+                <div className="w-1.5 h-1.5 rounded-full bg-pink-500/40" />
+              </div>
+            </div>
+
+            {/* Attendee & QR Section */}
+            <div className="flex items-center gap-4">
+              {/* Attendee Info */}
+              <div className="flex-1 space-y-3">
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-background/50 border border-border/50">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400/20 via-purple-400/20 to-pink-400/20 flex items-center justify-center border border-primary/20">
+                    <User className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+                      Attendee
+                    </div>
+                    <div className="text-sm font-bold text-foreground truncate">
+                      {buyerName}
+                    </div>
+                  </div>
+                  {quantity > 1 && (
+                    <div className="text-right px-2">
+                      <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Qty</div>
+                      <div className="text-lg font-bold text-primary">{quantity}</div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Ticket Number */}
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono px-1">
+                  <span>#{ticketNumber}</span>
+                  <span>SEQ: {String(sequence).padStart(4, "0")}</span>
+                </div>
+              </div>
+
+              {/* QR Code */}
+              <div className="flex flex-col items-center gap-2">
+                <div className="p-2.5 rounded-xl bg-white shadow-lg shadow-black/10 border border-gray-100">
+                  <QRCodeSVG
+                    value={qrCodeData}
+                    size={80}
+                    level="H"
+                    includeMargin={false}
+                  />
+                </div>
+                <div className="flex items-center gap-1 text-[10px] font-semibold text-primary">
+                  <Ticket className="h-3 w-3" />
+                  <span>ADMIT {quantity}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Branding */}
+            <div className="flex items-center justify-center gap-2 pt-2 border-t border-border/30">
+              <div className="h-4 w-0.5 rounded-full bg-gradient-to-b from-sky-500 via-purple-500 to-pink-500" />
+              <span className="text-[10px] text-muted-foreground font-medium tracking-wide">
+                Powered by VITANA
+              </span>
             </div>
           </div>
         </div>
@@ -217,14 +251,14 @@ export function EventTicket({
       <div className="flex gap-3 justify-center max-w-md mx-auto">
         <Button
           variant="outline"
-          className="flex-1"
+          className="flex-1 rounded-xl border-border/50 hover:border-primary/50 hover:bg-primary/5"
           onClick={handleDownload}
         >
           <Download className="h-4 w-4 mr-2" />
           Download
         </Button>
         <Button
-          className="flex-1"
+          className="flex-1 rounded-xl bg-gradient-to-r from-sky-500 via-purple-500 to-pink-500 hover:from-sky-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20"
           onClick={handleShare}
         >
           <Share2 className="h-4 w-4 mr-2" />
