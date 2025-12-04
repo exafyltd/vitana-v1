@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { format } from "date-fns";
-import { CalendarDays, MapPin, Clock, User, Ticket, Download, Share2 } from "lucide-react";
+import { Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
@@ -85,11 +85,11 @@ export function EventTicket({
 
   return (
     <div className="space-y-4">
-      {/* Ticket Card - Airline Boarding Pass Style */}
+      {/* Ticket Card - Condor Boarding Pass Style */}
       <div
         ref={ticketRef}
         className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-xl"
-        style={{ minHeight: "420px" }}
+        style={{ minHeight: "520px" }}
       >
         {/* Full-bleed Background Image with Desaturation */}
         {eventImageUrl ? (
@@ -114,121 +114,109 @@ export function EventTicket({
 
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-5">
-          {/* Header with VITANA Branding */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-md">
-                <span className="text-primary-foreground font-bold text-base">V</span>
-              </div>
-              <div>
-                <span className="text-gray-700 text-xs font-semibold tracking-wider">VITANA</span>
-                <div className="text-gray-500 text-[10px] font-medium tracking-widest">EVENT PASS</div>
-              </div>
+          {/* Header - Simplified Text-Only */}
+          <div className="flex items-center justify-between pb-3 border-b border-gray-300/50">
+            <div>
+              <span className="text-gray-800 text-sm font-bold tracking-wide">VITANA</span>
+              <span className="text-gray-500 text-xs font-medium tracking-widest ml-2">EVENT PASS</span>
             </div>
             
             {/* Ticket Type Badge */}
-            <div className="px-3 py-1.5 rounded-full bg-primary shadow-md">
-              <span className="text-primary-foreground text-xs font-semibold uppercase tracking-wide">
+            <div className="px-3 py-1 rounded-full bg-primary shadow-sm">
+              <span className="text-primary-foreground text-[10px] font-semibold uppercase tracking-wide">
                 {ticketType}
               </span>
             </div>
           </div>
           
-          {/* Event Title */}
-          <h2 className="text-xl font-bold text-gray-900 mb-4 leading-tight">
+          {/* Event Title - Large Hero */}
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-4 mb-5 leading-tight"
+              style={{ textShadow: '0 1px 2px rgba(255,255,255,0.5)' }}>
             {eventTitle}
           </h2>
           
-          {/* Event Details Grid */}
-          <div className="grid grid-cols-2 gap-3 mb-3">
+          {/* Event Details - Clean Label+Value Typography */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-4 mb-4">
             {/* Date */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-gray-200/60 shadow-sm">
-              <div className="flex items-center gap-1.5 mb-1">
-                <CalendarDays className="w-3.5 h-3.5 text-primary" />
-                <span className="text-gray-500 text-[10px] uppercase tracking-wider font-medium">Date</span>
+            <div>
+              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+                Date
               </div>
-              <p className="text-gray-900 font-semibold text-sm">{format(eventDate, "EEE, MMM d, yyyy")}</p>
+              <p className="text-gray-900 font-semibold text-sm">
+                {format(eventDate, "EEE, MMM d, yyyy")}
+              </p>
             </div>
             
             {/* Time */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-gray-200/60 shadow-sm">
-              <div className="flex items-center gap-1.5 mb-1">
-                <Clock className="w-3.5 h-3.5 text-primary" />
-                <span className="text-gray-500 text-[10px] uppercase tracking-wider font-medium">Time</span>
+            <div>
+              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+                Time
               </div>
-              <p className="text-gray-900 font-semibold text-sm">{format(eventDate, "h:mm a")}</p>
+              <p className="text-gray-900 font-semibold text-sm">
+                {format(eventDate, "h:mm a")}
+              </p>
             </div>
           </div>
           
           {/* Location */}
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-gray-200/60 shadow-sm mb-4">
-            <div className="flex items-center gap-1.5 mb-1">
-              <MapPin className="w-3.5 h-3.5 text-primary" />
-              <span className="text-gray-500 text-[10px] uppercase tracking-wider font-medium">Location</span>
+          <div className="mb-5">
+            <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+              Venue
             </div>
-            <p className="text-gray-900 font-semibold text-sm">{eventLocation || "TBA"}</p>
+            <p className="text-gray-900 font-semibold text-sm">
+              {eventLocation || "TBA"}
+            </p>
           </div>
           
-          {/* Perforation Line */}
-          <div className="relative flex items-center my-3">
+          {/* Thin Divider Line with Cutouts */}
+          <div className="relative flex items-center my-2">
             <div className="absolute -left-5 w-4 h-4 bg-background rounded-full shadow-inner" />
-            <div className="flex-1 border-t-2 border-dashed border-gray-300" />
+            <div className="flex-1 border-t border-gray-300/60" />
             <div className="absolute -right-5 w-4 h-4 bg-background rounded-full shadow-inner" />
           </div>
           
-          {/* Bottom Section - Attendee & QR */}
-          <div className="flex-1 flex items-center justify-between gap-4 mt-2">
-            {/* Attendee Info */}
-            <div className="flex-1 space-y-3">
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-gray-200/60 shadow-sm">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
-                    <User className="h-5 w-5 text-gray-600" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[10px] text-gray-500 uppercase tracking-wider font-medium">
-                      Attendee
-                    </div>
-                    <div className="text-sm font-bold text-gray-900 truncate">
-                      {buyerName}
-                    </div>
-                  </div>
-                  {quantity > 1 && (
-                    <div className="text-right">
-                      <div className="text-[10px] text-gray-500 uppercase tracking-wider">Qty</div>
-                      <div className="text-lg font-bold text-gray-900">{quantity}</div>
-                    </div>
-                  )}
-                </div>
+          {/* Two-Column Attendee Row */}
+          <div className="flex items-start justify-between mt-4 mb-5">
+            <div>
+              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+                Passenger
               </div>
-              
-              {/* Ticket Number */}
-              <div className="flex items-center justify-between text-[10px] text-gray-500 font-mono px-1">
-                <span>{ticketNumber}</span>
-                <span>SEQ: {String(sequence).padStart(4, "0")}</span>
-              </div>
+              <p className="text-gray-900 font-bold text-base uppercase tracking-wide">
+                {buyerName}
+              </p>
             </div>
-
-            {/* QR Code - Large and Prominent */}
-            <div className="flex flex-col items-center gap-2">
-              <div className="p-3 rounded-xl bg-white shadow-lg border border-gray-100">
-                <QRCodeSVG
-                  value={qrCodeData}
-                  size={140}
-                  level="H"
-                  includeMargin={false}
-                />
+            <div className="text-right">
+              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+                Qty
               </div>
-              <div className="flex items-center gap-1 text-[10px] font-semibold text-gray-600">
-                <Ticket className="h-3 w-3" />
-                <span>ADMIT {quantity}</span>
-              </div>
+              <p className="text-gray-900 font-bold text-xl">
+                {quantity}
+              </p>
             </div>
           </div>
           
-          {/* Footer */}
-          <div className="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-center">
-            <span className="text-gray-400 text-[10px] font-medium tracking-wide">
+          {/* Huge Centered QR Code */}
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="p-3 rounded-xl bg-white shadow-lg border border-gray-100">
+              <QRCodeSVG
+                value={qrCodeData}
+                size={180}
+                level="H"
+                includeMargin={false}
+              />
+            </div>
+            <div className="mt-2 text-[10px] font-semibold text-gray-500 uppercase tracking-widest">
+              Scan for Entry
+            </div>
+          </div>
+          
+          {/* Compact Footer */}
+          <div className="mt-4 pt-3 border-t border-gray-200/50 flex items-center justify-between text-[10px] text-gray-400 font-mono">
+            <span>{ticketNumber}</span>
+            <span>SEQ {String(sequence).padStart(4, "0")}</span>
+          </div>
+          <div className="text-center mt-1">
+            <span className="text-gray-400 text-[9px] font-medium tracking-wide">
               Powered by VITANA
             </span>
           </div>
