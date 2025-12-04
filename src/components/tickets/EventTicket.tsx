@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { format } from "date-fns";
-import { Calendar, MapPin, Clock, User, Ticket, Download, Share2, Sparkles } from "lucide-react";
+import { Calendar, MapPin, Clock, User, Ticket, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ export function EventTicket({
     try {
       const canvas = await html2canvas(ticketRef.current, {
         scale: 2,
-        backgroundColor: null,
+        backgroundColor: "#ffffff",
         useCORS: true,
       });
       
@@ -60,7 +60,7 @@ export function EventTicket({
     try {
       const canvas = await html2canvas(ticketRef.current, {
         scale: 2,
-        backgroundColor: null,
+        backgroundColor: "#ffffff",
         useCORS: true,
       });
       
@@ -85,135 +85,113 @@ export function EventTicket({
 
   return (
     <div className="space-y-4">
-      {/* Ticket Card with Full Background Image */}
+      {/* Ticket Card - Clean Boarding Pass Style */}
       <div
         ref={ticketRef}
-        className="relative w-full max-w-md mx-auto overflow-hidden rounded-3xl shadow-2xl"
+        className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl bg-card border border-border shadow-lg"
       >
-        {/* Full-bleed Background Image */}
-        {eventImageUrl ? (
-          <img
-            src={eventImageUrl}
-            alt={eventTitle}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-600 via-purple-600 to-pink-600" />
+        {/* Washed-out Background Image */}
+        {eventImageUrl && (
+          <>
+            <img
+              src={eventImageUrl}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover brightness-110 saturate-[0.3] opacity-30"
+              crossOrigin="anonymous"
+            />
+            {/* Light overlay for washed-out effect */}
+            <div className="absolute inset-0 bg-background/85" />
+          </>
         )}
         
-        {/* Gradient Overlay for Readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/55 to-black/70" />
-        
-        {/* Content Overlay */}
-        <div className="relative z-10 p-6">
+        {/* Content */}
+        <div className="relative z-10 p-5">
           {/* Header with VITANA Branding */}
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              {/* VITANA Gradient Logo */}
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <span className="text-white font-bold text-lg">V</span>
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-sm">V</span>
               </div>
               <div>
-                <span className="text-white/90 text-xs font-medium tracking-wider">VITANA</span>
-                <div className="text-white/70 text-[10px] font-light tracking-widest">EVENT PASS</div>
+                <span className="text-foreground text-xs font-semibold tracking-wider">VITANA</span>
+                <div className="text-muted-foreground text-[10px] tracking-widest">EVENT PASS</div>
               </div>
             </div>
             
             {/* Ticket Type Badge */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-sky-500/80 via-purple-500/80 to-pink-500/80 backdrop-blur-sm shadow-lg">
-              <Sparkles className="h-3 w-3 text-white" />
-              <span className="text-white text-xs font-semibold uppercase tracking-wide">
-                {ticketType}
-              </span>
-            </div>
+            <span className="px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-primary/10 text-primary border border-primary/20">
+              {ticketType}
+            </span>
           </div>
           
           {/* Event Title */}
-          <h2 className="text-2xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+          <h2 className="text-xl font-bold text-foreground mb-5 leading-tight">
             {eventTitle}
           </h2>
           
           {/* Event Details Grid */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-2 gap-4 mb-4">
             {/* Date */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-              <div className="flex items-center gap-1.5 mb-1">
-                <Calendar className="w-3.5 h-3.5 text-sky-300" />
-                <span className="text-white/60 text-[10px] uppercase tracking-wider font-medium">Date</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <Calendar className="w-3.5 h-3.5" />
+                <span className="text-[10px] uppercase tracking-wider font-medium">Date</span>
               </div>
-              <p className="text-white font-semibold text-sm">{format(eventDate, "EEE, MMM d")}</p>
+              <p className="text-foreground font-semibold text-sm">{format(eventDate, "EEE, MMM d, yyyy")}</p>
             </div>
             
             {/* Time */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-              <div className="flex items-center gap-1.5 mb-1">
-                <Clock className="w-3.5 h-3.5 text-purple-300" />
-                <span className="text-white/60 text-[10px] uppercase tracking-wider font-medium">Time</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <Clock className="w-3.5 h-3.5" />
+                <span className="text-[10px] uppercase tracking-wider font-medium">Time</span>
               </div>
-              <p className="text-white font-semibold text-sm">{format(eventDate, "h:mm a")}</p>
+              <p className="text-foreground font-semibold text-sm">{format(eventDate, "h:mm a")}</p>
             </div>
           </div>
           
           {/* Location */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10 mb-5">
-            <div className="flex items-center gap-1.5 mb-1">
-              <MapPin className="w-3.5 h-3.5 text-pink-300" />
-              <span className="text-white/60 text-[10px] uppercase tracking-wider font-medium">Location</span>
+          <div className="mb-5">
+            <div className="flex items-center gap-1.5 text-muted-foreground mb-1">
+              <MapPin className="w-3.5 h-3.5" />
+              <span className="text-[10px] uppercase tracking-wider font-medium">Location</span>
             </div>
-            <p className="text-white font-semibold text-sm">{eventLocation || "TBA"}</p>
+            <p className="text-foreground font-semibold text-sm">{eventLocation || "TBA"}</p>
           </div>
           
           {/* Perforation Line */}
           <div className="relative flex items-center my-5">
-            {/* Left cutout */}
-            <div className="absolute -left-6 w-5 h-5 bg-background rounded-full" />
-            
-            {/* Dashed line with gradient dots */}
-            <div className="flex-1 flex items-center justify-center gap-1">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div 
-                  key={i} 
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{
-                    background: `hsl(${200 + i * 8}, 80%, 70%)`,
-                    opacity: 0.5
-                  }}
-                />
-              ))}
-            </div>
-            
-            {/* Right cutout */}
-            <div className="absolute -right-6 w-5 h-5 bg-background rounded-full" />
+            <div className="absolute -left-5 w-4 h-4 bg-background rounded-full border-r border-border" />
+            <div className="flex-1 border-t border-dashed border-border" />
+            <div className="absolute -right-5 w-4 h-4 bg-background rounded-full border-l border-border" />
           </div>
           
           {/* Attendee Section */}
           <div className="flex items-start justify-between gap-4">
             {/* Attendee Info */}
             <div className="flex-1 space-y-3">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                    <User className="h-5 w-5 text-white/80" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[10px] text-white/60 uppercase tracking-wider font-medium">
-                      Attendee
-                    </div>
-                    <div className="text-sm font-bold text-white truncate">
-                      {buyerName}
-                    </div>
-                  </div>
-                  {quantity > 1 && (
-                    <div className="text-right">
-                      <div className="text-[10px] text-white/60 uppercase tracking-wider">Qty</div>
-                      <div className="text-lg font-bold text-white">{quantity}</div>
-                    </div>
-                  )}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                  <User className="h-5 w-5 text-muted-foreground" />
                 </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+                    Attendee
+                  </div>
+                  <div className="text-sm font-bold text-foreground truncate">
+                    {buyerName}
+                  </div>
+                </div>
+                {quantity > 1 && (
+                  <div className="text-right">
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Qty</div>
+                    <div className="text-lg font-bold text-foreground">{quantity}</div>
+                  </div>
+                )}
               </div>
               
               {/* Ticket Number */}
-              <div className="flex items-center justify-between text-[10px] text-white/50 font-mono px-1">
+              <div className="flex items-center justify-between text-[10px] text-muted-foreground font-mono">
                 <span>#{ticketNumber}</span>
                 <span>SEQ: {String(sequence).padStart(4, "0")}</span>
               </div>
@@ -221,15 +199,15 @@ export function EventTicket({
 
             {/* QR Code */}
             <div className="flex flex-col items-center gap-2">
-              <div className="p-2.5 rounded-xl bg-white shadow-lg">
+              <div className="p-2 rounded-lg bg-white border border-border shadow-sm">
                 <QRCodeSVG
                   value={qrCodeData}
-                  size={80}
+                  size={72}
                   level="H"
                   includeMargin={false}
                 />
               </div>
-              <div className="flex items-center gap-1 text-[10px] font-semibold text-white/80">
+              <div className="flex items-center gap-1 text-[10px] font-semibold text-muted-foreground">
                 <Ticket className="h-3 w-3" />
                 <span>ADMIT {quantity}</span>
               </div>
@@ -237,9 +215,8 @@ export function EventTicket({
           </div>
           
           {/* Footer */}
-          <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-center gap-2">
-            <div className="h-4 w-0.5 rounded-full bg-gradient-to-b from-sky-400 via-purple-500 to-pink-500" />
-            <span className="text-white/40 text-[10px] font-medium tracking-wide">
+          <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-center">
+            <span className="text-muted-foreground text-[10px] font-medium tracking-wide">
               Powered by VITANA
             </span>
           </div>
@@ -250,14 +227,14 @@ export function EventTicket({
       <div className="flex gap-3 justify-center max-w-md mx-auto">
         <Button
           variant="outline"
-          className="flex-1 rounded-xl border-border/50 hover:border-primary/50 hover:bg-primary/5"
+          className="flex-1 rounded-xl"
           onClick={handleDownload}
         >
           <Download className="h-4 w-4 mr-2" />
           Download
         </Button>
         <Button
-          className="flex-1 rounded-xl bg-gradient-to-r from-sky-500 via-purple-500 to-pink-500 hover:from-sky-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/20"
+          className="flex-1 rounded-xl"
           onClick={handleShare}
         >
           <Share2 className="h-4 w-4 mr-2" />
