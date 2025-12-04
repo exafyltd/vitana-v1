@@ -140,21 +140,21 @@ export default function PublicEventLanding() {
       <div className="min-h-screen bg-background flex flex-col">
         {/* Hero Section - Compact banner */}
         {event.image_url ? (
-          <div className="relative w-full h-36 md:h-[180px] overflow-hidden">
+          <div className="relative w-full h-[300px] md:h-[380px] overflow-hidden">
             <img
               src={event.image_url}
               alt={event.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background from-30% via-background/80 via-60% to-transparent" />
           </div>
         ) : (
-          <div className="relative w-full h-24 md:h-[120px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
+          <div className="relative w-full h-[200px] md:h-[260px] overflow-hidden bg-gradient-to-br from-primary/20 via-primary/10 to-background" />
         )}
 
         {/* Content Section */}
         <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-8 md:-mt-10 relative z-10">
+          <div className="max-w-4xl mx-auto px-4 py-2 md:py-3 -mt-36 md:-mt-48 relative z-10">
             <div className="space-y-1.5 md:space-y-2">
               {/* Event Title */}
               <div className="space-y-2">
