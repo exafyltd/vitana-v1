@@ -37,9 +37,134 @@ export default function Orders() {
   const { tickets, loading: ticketsLoading } = useMyTickets();
   const latestActions = getLatestActions(2);
 
+  // Mock ticket data for preview
+  const mockTickets: TicketPurchase[] = [
+    {
+      id: "mock-1",
+      event_id: "evt-1",
+      ticket_type_id: "tt-1",
+      buyer_id: user?.id || null,
+      buyer_email: "user@example.com",
+      buyer_name: "Sarah Johnson",
+      quantity: 2,
+      unit_price: 75,
+      total_amount: 150,
+      currency: "usd",
+      status: "completed",
+      qr_code_token: "MOCK-QR-TOKEN-001",
+      ticket_number: "VTN-20250115-000042",
+      checked_in_at: null,
+      created_at: new Date().toISOString(),
+      metadata: {},
+      ticket_type: {
+        id: "tt-1",
+        event_id: "evt-1",
+        name: "VIP Access",
+        description: "Front row seating with meet & greet",
+        price: 75,
+        currency: "usd",
+        quantity_available: 50,
+        quantity_sold: 23,
+        sale_start_date: null,
+        sale_end_date: null,
+        is_active: true,
+        sort_order: 1
+      },
+      event: {
+        id: "evt-1",
+        title: "VITANA Wellness Summit 2025",
+        start_time: "2025-01-15T18:00:00Z",
+        location: "The Grand Wellness Center, San Francisco, CA",
+        image_url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800"
+      }
+    },
+    {
+      id: "mock-2",
+      event_id: "evt-2",
+      ticket_type_id: "tt-2",
+      buyer_id: user?.id || null,
+      buyer_email: "user@example.com",
+      buyer_name: "Sarah Johnson",
+      quantity: 1,
+      unit_price: 25,
+      total_amount: 25,
+      currency: "usd",
+      status: "completed",
+      qr_code_token: "MOCK-QR-TOKEN-002",
+      ticket_number: "VTN-20250120-000108",
+      checked_in_at: null,
+      created_at: new Date().toISOString(),
+      metadata: {},
+      ticket_type: {
+        id: "tt-2",
+        event_id: "evt-2",
+        name: "General Admission",
+        description: "Standard entry to the event",
+        price: 25,
+        currency: "usd",
+        quantity_available: 100,
+        quantity_sold: 67,
+        sale_start_date: null,
+        sale_end_date: null,
+        is_active: true,
+        sort_order: 1
+      },
+      event: {
+        id: "evt-2",
+        title: "Morning Yoga Flow",
+        start_time: "2025-01-20T07:00:00Z",
+        location: "Zen Garden Studio, Oakland, CA",
+        image_url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800"
+      }
+    },
+    {
+      id: "mock-3",
+      event_id: "evt-3",
+      ticket_type_id: "tt-3",
+      buyer_id: user?.id || null,
+      buyer_email: "user@example.com",
+      buyer_name: "Sarah Johnson",
+      quantity: 1,
+      unit_price: 45,
+      total_amount: 45,
+      currency: "usd",
+      status: "completed",
+      qr_code_token: "MOCK-QR-TOKEN-003",
+      ticket_number: "VTN-20241201-000015",
+      checked_in_at: "2024-12-01T09:15:00Z",
+      created_at: "2024-11-15T10:00:00Z",
+      metadata: {},
+      ticket_type: {
+        id: "tt-3",
+        event_id: "evt-3",
+        name: "Early Bird",
+        description: "Discounted early registration",
+        price: 45,
+        currency: "usd",
+        quantity_available: 30,
+        quantity_sold: 30,
+        sale_start_date: null,
+        sale_end_date: null,
+        is_active: false,
+        sort_order: 1
+      },
+      event: {
+        id: "evt-3",
+        title: "New Year Meditation Retreat",
+        start_time: "2024-12-01T09:00:00Z",
+        location: "Mountain Lodge Retreat Center, Lake Tahoe",
+        image_url: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800"
+      }
+    }
+  ];
+
+  // Use mock data when no real tickets exist
+  const displayTickets = tickets.length > 0 ? tickets : mockTickets;
+  const isShowingMockData = tickets.length === 0 && !ticketsLoading;
+
   // Categorize tickets
-  const upcomingTickets = tickets.filter(t => t.event && !isPast(new Date(t.event.start_time)));
-  const pastTickets = tickets.filter(t => t.event && isPast(new Date(t.event.start_time)));
+  const upcomingTickets = displayTickets.filter(t => t.event && !isPast(new Date(t.event.start_time)));
+  const pastTickets = displayTickets.filter(t => t.event && isPast(new Date(t.event.start_time)));
 
   useEffect(() => {
     if (user) {
@@ -321,7 +446,7 @@ export default function Orders() {
                 ✅ History ({completedOrders.length})
               </TabsTrigger>
               <TabsTrigger value="tickets" className="flex items-center gap-2">
-                🎫 Tickets ({tickets.length})
+                🎫 Tickets ({displayTickets.length})
               </TabsTrigger>
             </TabsList>
             
@@ -373,8 +498,20 @@ export default function Orders() {
                     </div>
                   </CardContent>
                 </Card>
-              ) : tickets.length > 0 ? (
+              ) : displayTickets.length > 0 ? (
                 <div className="space-y-6">
+                  {/* Mock data indicator */}
+                  {isShowingMockData && (
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center gap-2">
+                      <Badge variant="outline" className="bg-amber-100 text-amber-700 border-amber-300">
+                        Sample Data
+                      </Badge>
+                      <span className="text-sm text-amber-700">
+                        These are preview tickets. Your purchased tickets will appear here.
+                      </span>
+                    </div>
+                  )}
+                  
                   {/* Upcoming Tickets */}
                   {upcomingTickets.length > 0 && (
                     <div className="space-y-3">
