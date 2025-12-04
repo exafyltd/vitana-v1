@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
-import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw, Clock, CheckCircle } from "lucide-react";
+import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw, Clock, CheckCircle, Ticket } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState, useEffect } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -18,6 +18,10 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverOrderActionPopup } from "@/components/discover/DiscoverOrderActionPopup";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
+import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { EventTicket } from "@/components/tickets/EventTicket";
+import { format, isPast } from "date-fns";
 
 export default function Orders() {
   const navigate = useNavigate();
@@ -28,8 +32,14 @@ export default function Orders() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [cjOrders, setCjOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTicket, setSelectedTicket] = useState<TicketPurchase | null>(null);
 
+  const { tickets, loading: ticketsLoading } = useMyTickets();
   const latestActions = getLatestActions(2);
+
+  // Categorize tickets
+  const upcomingTickets = tickets.filter(t => t.event && !isPast(new Date(t.event.start_time)));
+  const pastTickets = tickets.filter(t => t.event && isPast(new Date(t.event.start_time)));
 
   useEffect(() => {
     if (user) {
@@ -274,7 +284,7 @@ export default function Orders() {
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title="Your Orders"
-            description="Track your wellness service bookings and product orders"
+            description="Track your product orders and event tickets"
             emoji="📦"
           />
 
@@ -303,12 +313,15 @@ export default function Orders() {
 
           {/* Orders Content */}
           <Tabs defaultValue="active" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
               <TabsTrigger value="active" className="flex items-center gap-2">
-                ⏰ Active Orders ({activeOrders.length})
+                ⏰ Active ({activeOrders.length})
               </TabsTrigger>
               <TabsTrigger value="completed" className="flex items-center gap-2">
-                ✅ Order History ({completedOrders.length})
+                ✅ History ({completedOrders.length})
+              </TabsTrigger>
+              <TabsTrigger value="tickets" className="flex items-center gap-2">
+                🎫 Tickets ({tickets.length})
               </TabsTrigger>
             </TabsList>
             
@@ -349,7 +362,188 @@ export default function Orders() {
                 </Card>
               )}
             </TabsContent>
+
+            <TabsContent value="tickets" className="space-y-4">
+              {ticketsLoading ? (
+                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                  <CardContent className="p-8 text-center">
+                    <div className="animate-pulse space-y-4">
+                      <div className="h-12 w-12 bg-muted rounded-full mx-auto" />
+                      <div className="h-4 bg-muted rounded w-32 mx-auto" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : tickets.length > 0 ? (
+                <div className="space-y-6">
+                  {/* Upcoming Tickets */}
+                  {upcomingTickets.length > 0 && (
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
+                        Upcoming Events ({upcomingTickets.length})
+                      </h3>
+                      <div className="grid gap-4">
+                        {upcomingTickets.map((ticket) => (
+                          <Card 
+                            key={ticket.id} 
+                            className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-white/80 backdrop-blur-sm border-white/20"
+                            onClick={() => setSelectedTicket(ticket)}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start gap-4">
+                                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary/20 to-primary/5">
+                                  {ticket.event?.image_url ? (
+                                    <img 
+                                      src={ticket.event.image_url} 
+                                      alt={ticket.event.title}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center">
+                                      <Ticket className="h-8 w-8 text-primary/50" />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between mb-1">
+                                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                                      {ticket.event?.title || 'Event'}
+                                    </h3>
+                                    <Badge className="bg-green-100 text-green-700 text-xs flex-shrink-0 ml-2">
+                                      {ticket.ticket_type?.name || 'Ticket'}
+                                    </Badge>
+                                  </div>
+                                  <div className="space-y-1 text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-2">
+                                      <Calendar className="h-3.5 w-3.5" />
+                                      <span>
+                                        {ticket.event?.start_time 
+                                          ? format(new Date(ticket.event.start_time), 'EEE, MMM d • h:mm a')
+                                          : 'Date TBD'}
+                                      </span>
+                                    </div>
+                                    {ticket.event?.location && (
+                                      <div className="flex items-center gap-2">
+                                        <MapPin className="h-3.5 w-3.5" />
+                                        <span className="line-clamp-1">{ticket.event.location}</span>
+                                      </div>
+                                    )}
+                                    <div className="flex items-center gap-2">
+                                      <Ticket className="h-3.5 w-3.5" />
+                                      <span>Qty: {ticket.quantity} × ${ticket.unit_price}</span>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-muted">
+                                    <span className="text-xs text-muted-foreground">#{ticket.ticket_number}</span>
+                                    <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); setSelectedTicket(ticket); }}>
+                                      View Ticket
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Past Tickets */}
+                  {pastTickets.length > 0 && (
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
+                        Past Events ({pastTickets.length})
+                      </h3>
+                      <div className="grid gap-4">
+                        {pastTickets.map((ticket) => (
+                          <Card 
+                            key={ticket.id} 
+                            className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-white/60 backdrop-blur-sm border-white/20 opacity-75"
+                            onClick={() => setSelectedTicket(ticket)}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start gap-4">
+                                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-muted/20 to-muted/5 grayscale">
+                                  {ticket.event?.image_url ? (
+                                    <img 
+                                      src={ticket.event.image_url} 
+                                      alt={ticket.event.title}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-full h-full flex items-center justify-center">
+                                      <Ticket className="h-8 w-8 text-muted-foreground/50" />
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between mb-1">
+                                    <h3 className="font-semibold text-foreground/70 line-clamp-1">
+                                      {ticket.event?.title || 'Event'}
+                                    </h3>
+                                    <Badge variant="secondary" className="text-xs flex-shrink-0 ml-2">
+                                      Attended
+                                    </Badge>
+                                  </div>
+                                  <div className="space-y-1 text-sm text-muted-foreground">
+                                    <div className="flex items-center gap-2">
+                                      <Calendar className="h-3.5 w-3.5" />
+                                      <span>
+                                        {ticket.event?.start_time 
+                                          ? format(new Date(ticket.event.start_time), 'EEE, MMM d, yyyy')
+                                          : 'Date TBD'}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-muted">
+                                    <span className="text-xs text-muted-foreground">#{ticket.ticket_number}</span>
+                                    <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); setSelectedTicket(ticket); }}>
+                                      View Details
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                  <CardContent className="p-8 text-center">
+                    <Ticket className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-foreground mb-2">No Event Tickets</h3>
+                    <p className="text-muted-foreground mb-4">Your purchased event tickets will appear here.</p>
+                    <Button onClick={() => navigate('/comm/events-meetups')}>
+                      Discover Events
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
           </Tabs>
+
+          {/* Ticket Detail Dialog */}
+          <Dialog open={!!selectedTicket} onOpenChange={(open) => !open && setSelectedTicket(null)}>
+            <DialogContent className="max-w-md p-0 overflow-hidden">
+              {selectedTicket && selectedTicket.event && (
+                <EventTicket
+                  eventTitle={selectedTicket.event.title}
+                  eventDate={new Date(selectedTicket.event.start_time)}
+                  eventLocation={selectedTicket.event.location || 'Location TBD'}
+                  ticketType={selectedTicket.ticket_type?.name || 'General'}
+                  ticketNumber={selectedTicket.ticket_number}
+                  buyerName={selectedTicket.buyer_name}
+                  quantity={selectedTicket.quantity}
+                  qrCodeData={selectedTicket.qr_code_token}
+                  eventImageUrl={selectedTicket.event.image_url}
+                />
+              )}
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
