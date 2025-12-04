@@ -47,11 +47,67 @@ serve(async (req) => {
       
       console.log('Processing completed session:', session.id);
 
-      // Check if this is a booking payment or cart payment
+      // Check the type of checkout
+      const checkoutType = session.metadata?.type;
       const bookingType = session.metadata?.booking_type;
       
-      if (bookingType === 'provider_appointment') {
-        // Handle provider appointment booking
+      // Handle EVENT TICKET purchases
+      if (checkoutType === 'event_ticket') {
+        const purchaseId = session.metadata?.purchase_id;
+        const ticketTypeId = session.metadata?.ticket_type_id;
+        const quantity = parseInt(session.metadata?.quantity || '1');
+        
+        if (purchaseId) {
+          console.log('Processing ticket purchase:', purchaseId);
+          
+          // Update ticket purchase status to completed
+          const { error: purchaseError } = await supabaseClient
+            .from('event_ticket_purchases')
+            .update({
+              status: 'completed',
+              stripe_payment_intent_id: session.payment_intent as string,
+              metadata: {
+                stripe_session_id: session.id,
+                payment_completed_at: new Date().toISOString(),
+              }
+            })
+            .eq('id', purchaseId);
+
+          if (purchaseError) {
+            console.error('Error updating ticket purchase status:', purchaseError);
+          } else {
+            console.log('Ticket purchase completed:', purchaseId);
+            
+            // Update quantity_sold on the ticket type
+            if (ticketTypeId) {
+              const { error: updateError } = await supabaseClient
+                .rpc('increment_ticket_sold', { 
+                  p_ticket_type_id: ticketTypeId, 
+                  p_quantity: quantity 
+                });
+              
+              // Fallback if RPC doesn't exist - direct update
+              if (updateError) {
+                console.log('RPC not found, using direct update');
+                const { data: ticketType } = await supabaseClient
+                  .from('event_ticket_types')
+                  .select('quantity_sold')
+                  .eq('id', ticketTypeId)
+                  .single();
+                
+                if (ticketType) {
+                  await supabaseClient
+                    .from('event_ticket_types')
+                    .update({ quantity_sold: ticketType.quantity_sold + quantity })
+                    .eq('id', ticketTypeId);
+                }
+              }
+            }
+          }
+        }
+      }
+      // Handle PROVIDER APPOINTMENT bookings
+      else if (bookingType === 'provider_appointment') {
         const appointmentId = session.metadata?.appointment_id;
         
         if (appointmentId) {
@@ -75,8 +131,9 @@ serve(async (req) => {
             console.log('Appointment status updated to scheduled:', appointmentId);
           }
         }
-      } else {
-        // Handle cart checkout (existing logic)
+      }
+      // Handle CART checkout (existing logic)
+      else {
         // Update checkout session status
         const { error: updateError } = await supabaseClient
           .from('checkout_sessions')

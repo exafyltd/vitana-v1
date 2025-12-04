@@ -25,7 +25,9 @@ import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog"
 import { getShareUrl } from "@/lib/shareUrl";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
+import { EventSalesDashboard } from "@/components/tickets/EventSalesDashboard";
 import { useEventTicketTypes } from "@/hooks/useEventTickets";
+import { useIsEventOrganizer } from "@/hooks/useEventSales";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,6 +69,7 @@ import {
   MapPinned,
   Megaphone,
   Ticket,
+  BarChart3,
 } from "lucide-react";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
@@ -186,6 +189,10 @@ export function MeetupDetailsDrawer({
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
   const isPaidEventWithTickets = event?.metadata?.has_tickets && ticketTypes.length > 0;
+  
+  // Check if current user is the organizer
+  const { isOrganizer } = useIsEventOrganizer(event?.id || '');
+  const [showSalesDashboard, setShowSalesDashboard] = useState(false);
   
   // Determine context based on event
   const messageContext = event?.tenant_id ? 'tenant' : 'global';
@@ -957,14 +964,39 @@ export function MeetupDetailsDrawer({
             {/* Ticket Sales Section */}
             {isPaidEventWithTickets && (
               <div className="space-y-4 pt-5 border-t border-border/50" data-section="tickets">
-                <div className="flex items-center gap-2">
-                  <Ticket className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">Tickets</h3>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Ticket className="h-4 w-4 text-muted-foreground" />
+                    <h3 className="font-semibold text-[17px]">Tickets</h3>
+                  </div>
+                  {isOrganizer && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setShowSalesDashboard(!showSalesDashboard)}
+                      className="gap-1.5"
+                    >
+                      <BarChart3 className="h-4 w-4" />
+                      {showSalesDashboard ? "Hide Sales" : "View Sales"}
+                    </Button>
+                  )}
                 </div>
-                <EventTicketSelector 
-                  eventId={event.id} 
-                  eventTitle={event.title}
-                />
+                
+                {/* Organizer Sales Dashboard */}
+                {isOrganizer && showSalesDashboard && (
+                  <EventSalesDashboard 
+                    eventId={event.id} 
+                    eventTitle={event.title}
+                  />
+                )}
+                
+                {/* Ticket Selector for buyers (hide for organizer when dashboard is shown) */}
+                {(!isOrganizer || !showSalesDashboard) && (
+                  <EventTicketSelector 
+                    eventId={event.id} 
+                    eventTitle={event.title}
+                  />
+                )}
               </div>
             )}
 
