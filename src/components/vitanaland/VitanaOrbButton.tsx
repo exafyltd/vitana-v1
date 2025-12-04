@@ -84,8 +84,16 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
             </motion.div>
           </div>
         </TooltipTrigger>
-        <TooltipContent side="right">
-          <p>Ask VITANA for guidance (⌘K)</p>
+        <TooltipContent 
+          side="right" 
+          className="bg-transparent border-none p-0 shadow-none"
+        >
+          <div className="bg-gradient-to-r from-sky-400/70 via-purple-500/70 to-pink-500/70 rounded-full p-[1px] shadow-xl shadow-black/40">
+            <div className="rounded-full px-4 py-2 bg-black/65 backdrop-blur-xl text-xs text-white whitespace-nowrap flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-300 animate-pulse" />
+              <span>Your VITANA guide awaits inside</span>
+            </div>
+          </div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
