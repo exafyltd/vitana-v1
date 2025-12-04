@@ -89,7 +89,7 @@ export function EventTicket({
       {/* Ticket Card */}
       <div
         ref={ticketRef}
-        className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-2xl"
+        className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-2xl ring-1 ring-black/5"
       >
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
@@ -97,12 +97,12 @@ export function EventTicket({
             <img
               src={eventImageUrl}
               alt=""
-              className="w-full h-full object-cover opacity-20"
+              className="w-full h-full object-cover opacity-40 brightness-110 saturate-[0.4] blur-[1px]"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/30 via-primary/10 to-background" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-card/95 via-card/90 to-card/95 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/75" />
         </div>
 
         {/* Content */}
@@ -195,18 +195,18 @@ export function EventTicket({
           </div>
 
           {/* QR Code Section */}
-          <div className="flex flex-col items-center gap-3 pt-2">
-            <div className="bg-white p-3 rounded-xl shadow-sm">
+          <div className="flex flex-col items-center gap-4 pt-3">
+            <div className="bg-white p-4 rounded-xl shadow-md ring-1 ring-black/5">
               <QRCodeSVG
                 value={qrCodeData}
-                size={120}
+                size={160}
                 level="H"
                 includeMargin={false}
               />
             </div>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
               <span>ADMIT {quantity}</span>
-              <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
               <span>SEQ: {String(sequence).padStart(4, "0")}</span>
             </div>
           </div>
