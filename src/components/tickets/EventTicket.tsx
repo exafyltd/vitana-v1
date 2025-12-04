@@ -107,10 +107,10 @@ export function EventTicket({
         )}
         
         {/* Light Cream Overlay for Readability - Paper Effect */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/75 to-white/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-white/60 to-white/70" />
         
         {/* Warm Paper Tint */}
-        <div className="absolute inset-0 bg-amber-50/25" />
+        <div className="absolute inset-0 bg-amber-50/15" />
 
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-5">
@@ -178,9 +178,9 @@ export function EventTicket({
           {/* Two-Column Attendee Row */}
           <div className="flex items-start justify-between mt-4 mb-5">
             <div>
-              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-                Passenger
-              </div>
+                <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+                  Attendee
+                </div>
               <p className="text-gray-900 font-bold text-base uppercase tracking-wide">
                 {buyerName}
               </p>
