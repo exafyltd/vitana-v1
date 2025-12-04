@@ -253,6 +253,9 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
 
   const canEdit = !!currentUserId && (event.created_by === currentUserId || event.createdBy === currentUserId) && !String(event.id || '').startsWith('dummy');
 
+  // Check if event has ticket sales enabled
+  const hasTickets = event.metadata?.has_tickets === true;
+
   return {
     title: event.title,
     description: event.description,
@@ -263,7 +266,10 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     location: event.location || 'TBA',
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
+    price: event.metadata?.is_paid ? Number(event.metadata?.price || 0) : ('free' as const),
     showSmartAction: true,
+    hasTickets,
+    onBuyTicket: hasTickets ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
     ...(String(event.id || '').startsWith('dummy')

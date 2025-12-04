@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
-import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus, Loader2 } from "lucide-react";
+import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus, Loader2, Ticket } from "lucide-react";
 import { useEventParticipation } from "@/hooks/useEventParticipation";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
@@ -42,6 +42,8 @@ interface NewsCardProps {
   rewardPosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
   eventId?: string; // For event participation
   eventType?: string; // The specific event_type value (e.g., 'meetup', 'event', 'community')
+  hasTickets?: boolean; // Whether event has ticket sales enabled
+  onBuyTicket?: () => void; // Handler for buy ticket action
   "data-event-id"?: string; // For deep linking
 }
 
@@ -75,6 +77,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     rewardPosition = "top-right",
     eventId,
     eventType,
+    hasTickets,
+    onBuyTicket,
     "data-event-id": dataEventId
   }, ref) => {
     // Always call the hook, but only use it for event cards
@@ -114,10 +118,16 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       
       let buttonText = "View";
       let buttonIcon = null;
-      let buttonType: "join" | "follow" | "following" | "play" | "secondary" = "secondary";
+      let buttonType: "join" | "follow" | "following" | "play" | "secondary" | "ticket" = "secondary";
       
-        // For events, use participation state
-        if (category === "event" && eventId) {
+        // For events with tickets, show Buy Ticket button
+        if (category === "event" && hasTickets) {
+          buttonText = "Buy Ticket";
+          buttonIcon = Ticket;
+          buttonType = "ticket";
+        }
+        // For events without tickets, use participation state
+        else if (category === "event" && eventId) {
           // Check if it's a meetup vs event
           const isMeetup = eventType?.toLowerCase() === 'meetup';
           
@@ -173,6 +183,8 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         const baseClasses = "rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105";
         
         switch (buttonType) {
+          case "ticket":
+            return `${baseClasses} bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-emerald-500/50 hover:shadow-2xl`;
           case "join":
             return `${baseClasses} bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl`;
           case "follow":
@@ -196,7 +208,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           disabled={isLoading}
           onClick={(e) => {
             e.stopPropagation();
-            if (eventId && category === "event") {
+            if (hasTickets && onBuyTicket) {
+              onBuyTicket();
+            } else if (eventId && category === "event") {
               eventParticipation?.toggleParticipation();
             } else {
               onActionClick?.();

@@ -7,11 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
+import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketTypeForm";
 
 interface CreateEventPopupProps {
   isOpen: boolean;
@@ -31,6 +32,8 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
   const [customTime, setCustomTime] = useState("");
   const [customEndTime, setCustomEndTime] = useState("");
   const [customDuration, setCustomDuration] = useState("");
+  const [enableTicketSales, setEnableTicketSales] = useState(false);
+  const [ticketTypes, setTicketTypes] = useState<TicketTypeInput[]>([]);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -73,6 +76,8 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
     }
     setSelectedImage(null);
     setImagePreviewUrl("");
+    setEnableTicketSales(false);
+    setTicketTypes([]);
     setFormData({
       title: "",
       description: "",
@@ -227,7 +232,11 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
           end_time: endTime,
           max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
           image_url: uploadedImageUrl,
-          metadata: formData.isPaid ? { 
+          metadata: enableTicketSales && ticketTypes.length > 0 ? { 
+            is_paid: true, 
+            has_tickets: true,
+            price: ticketTypes[0]?.price || 0 
+          } : formData.isPaid ? { 
             is_paid: true, 
             price: parseFloat(formData.price) || 0 
           } : { is_paid: false }
@@ -245,6 +254,29 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
         }
 
         eventId = result.eventId;
+
+        // Create ticket types if enabled
+        if (enableTicketSales && ticketTypes.length > 0 && eventId) {
+          for (const ticket of ticketTypes) {
+            const { error: ticketError } = await supabase.from('event_ticket_types').insert({
+              event_id: eventId,
+              name: ticket.name,
+              description: ticket.description || null,
+              price: ticket.price,
+              currency: 'USD',
+              quantity_available: ticket.quantity,
+              sale_start_date: ticket.saleStartDate ? new Date(ticket.saleStartDate).toISOString() : null,
+              sale_end_date: ticket.saleEndDate ? new Date(ticket.saleEndDate).toISOString() : null,
+              is_active: true,
+              sort_order: ticketTypes.indexOf(ticket)
+            });
+            
+            if (ticketError) {
+              console.error('Error creating ticket type:', ticketError);
+            }
+          }
+          console.log('✅ Ticket types created for event:', eventId);
+        }
 
         // Auto-generate image if enabled and no manual image was uploaded
         if (autoGenerateImage && !uploadedImageUrl && eventId) {
@@ -731,36 +763,85 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                 </div>
               )}
 
-              {/* Pricing (Optional) */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="isPaid"
-                    checked={formData.isPaid}
-                    onChange={(e) => setFormData({...formData, isPaid: e.target.checked})}
-                    className="rounded"
-                  />
-                  <Label htmlFor="isPaid">This is a paid event</Label>
-                </div>
-                
-                {formData.isPaid && (
-                  <div>
-                    <Label htmlFor="price">Event Price</Label>
-                    <Input
-                      id="price"
-                      type="number"
-                      value={formData.price}
-                      onChange={(e) => setFormData({...formData, price: e.target.value})}
-                      placeholder="0.00"
-                      className="mt-1"
-                    />
-                  </div>
-                )}
-              </div>
             </CardContent>
           </Card>
 
+          {/* Ticket Sales Section - Only for community events */}
+          {eventContext === 'community' && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Ticket className="w-5 h-5" />
+                  Ticket Sales
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Enable Ticket Sales</Label>
+                    <p className="text-sm text-muted-foreground">Sell tickets through Stripe checkout</p>
+                  </div>
+                  <Switch 
+                    checked={enableTicketSales}
+                    onCheckedChange={(checked) => {
+                      setEnableTicketSales(checked);
+                      if (checked && ticketTypes.length === 0) {
+                        // Add a default ticket type
+                        setTicketTypes([{
+                          name: "General Admission",
+                          description: "Standard entry ticket",
+                          price: 25,
+                          quantity: 50,
+                          saleStartDate: new Date().toISOString().split('T')[0],
+                          saleEndDate: formData.date || "",
+                        }]);
+                      }
+                    }}
+                  />
+                </div>
+                
+                {enableTicketSales && (
+                  <TicketTypeForm
+                    ticketTypes={ticketTypes}
+                    onChange={setTicketTypes}
+                    eventDate={formData.date}
+                  />
+                )}
+
+                {!enableTicketSales && (
+                  <div className="space-y-3 pt-2 border-t border-border/50">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="isPaid"
+                        checked={formData.isPaid}
+                        onChange={(e) => setFormData({...formData, isPaid: e.target.checked})}
+                        className="rounded"
+                      />
+                      <Label htmlFor="isPaid">This is a paid event (external payment)</Label>
+                    </div>
+                    
+                    {formData.isPaid && (
+                      <div>
+                        <Label htmlFor="price">Display Price</Label>
+                        <Input
+                          id="price"
+                          type="number"
+                          value={formData.price}
+                          onChange={(e) => setFormData({...formData, price: e.target.value})}
+                          placeholder="0.00"
+                          className="mt-1"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          For display only. Enable ticket sales above for integrated payments.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
           <div className="flex gap-3 pt-4">
             <Button variant="outline" onClick={onClose} className="flex-1">
               Cancel
