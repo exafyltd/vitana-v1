@@ -108,6 +108,9 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     usingFallback: !safeImage
   });
   
+  // Check if event has ticket sales enabled
+  const hasTickets = event.metadata?.has_tickets === true;
+  
   return {
     title: event.title,
     description: event.description,
@@ -124,6 +127,8 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     price: event.metadata?.is_paid ? Number(event.metadata?.price || 0) : ('free' as const),
     eventId: event.id,
     showSmartAction: true,
+    hasTickets,
+    onBuyTicket: hasTickets ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
     utilityTopRight: canEdit && onEdit ? (

@@ -24,6 +24,8 @@ import { useProfilePreview } from "@/hooks/useProfilePreview";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { getShareUrl } from "@/lib/shareUrl";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
+import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
+import { useEventTicketTypes } from "@/hooks/useEventTickets";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,6 +66,7 @@ import {
   Timer,
   MapPinned,
   Megaphone,
+  Ticket,
 } from "lucide-react";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
@@ -179,6 +182,10 @@ export function MeetupDetailsDrawer({
   const { addEvent, removeEvent } = useCalendarEvents();
   const navigate = useNavigate();
   const { user } = useAuth();
+  
+  // Fetch ticket types for the event
+  const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
+  const isPaidEventWithTickets = event?.metadata?.has_tickets && ticketTypes.length > 0;
   
   // Determine context based on event
   const messageContext = event?.tenant_id ? 'tenant' : 'global';
@@ -947,6 +954,20 @@ export function MeetupDetailsDrawer({
               </div>
             )}
 
+            {/* Ticket Sales Section */}
+            {isPaidEventWithTickets && (
+              <div className="space-y-4 pt-5 border-t border-border/50" data-section="tickets">
+                <div className="flex items-center gap-2">
+                  <Ticket className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-semibold text-[17px]">Tickets</h3>
+                </div>
+                <EventTicketSelector 
+                  eventId={event.id} 
+                  eventTitle={event.title}
+                />
+              </div>
+            )}
+
             {/* Policies */}
             {(event.requirements || event.cancellation_policy) && (
               <div className="space-y-4 pt-5 border-t border-border/50">
@@ -975,25 +996,40 @@ export function MeetupDetailsDrawer({
       {/* Sticky Action Bar */}
       <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center gap-2">
-          <Button
-            className="flex-1 h-12 font-semibold text-[15px]"
-            onClick={handleJoin}
-            disabled={isJoining || isJoined}
-          >
-            {isJoining ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Joining...
-              </>
-            ) : isJoined ? (
-              <>
-                <Check className="h-4 w-4 mr-2" />
-                Joined
-              </>
-            ) : (
-              'Join Meetup'
-            )}
-          </Button>
+          {/* Show different button for paid events with tickets */}
+          {isPaidEventWithTickets ? (
+            <Button
+              className="flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
+              onClick={() => {
+                // Scroll to tickets section
+                const ticketsSection = document.querySelector('[data-section="tickets"]');
+                ticketsSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <Ticket className="h-4 w-4 mr-2" />
+              Buy Ticket
+            </Button>
+          ) : (
+            <Button
+              className="flex-1 h-12 font-semibold text-[15px]"
+              onClick={handleJoin}
+              disabled={isJoining || isJoined}
+            >
+              {isJoining ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Joining...
+                </>
+              ) : isJoined ? (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Joined
+                </>
+              ) : (
+                'Join Meetup'
+              )}
+            </Button>
+          )}
 
           {/* Promote Button (only for event creators) */}
           {user && event.created_by === user.id && onPromoteEvent && (
