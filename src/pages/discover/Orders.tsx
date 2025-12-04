@@ -7,6 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
 import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw, Clock, CheckCircle, Ticket } from "lucide-react";
+import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
+import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
+import { transformTicketToVisualCard } from "@/lib/ticketCardTransformers";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState, useEffect } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -490,14 +493,7 @@ export default function Orders() {
 
             <TabsContent value="tickets" className="space-y-4">
               {ticketsLoading ? (
-                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                  <CardContent className="p-8 text-center">
-                    <div className="animate-pulse space-y-4">
-                      <div className="h-12 w-12 bg-muted rounded-full mx-auto" />
-                      <div className="h-4 bg-muted rounded w-32 mx-auto" />
-                    </div>
-                  </CardContent>
-                </Card>
+                <HorizontalCardSkeleton variant="visual" count={3} />
               ) : displayTickets.length > 0 ? (
                 <div className="space-y-6">
                   {/* Mock data indicator */}
@@ -519,69 +515,13 @@ export default function Orders() {
                         <Calendar className="h-4 w-4" />
                         Upcoming Events ({upcomingTickets.length})
                       </h3>
-                      <div className="grid gap-4">
-                        {upcomingTickets.map((ticket) => (
-                          <Card 
-                            key={ticket.id} 
-                            className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-white/80 backdrop-blur-sm border-white/20"
-                            onClick={() => setSelectedTicket(ticket)}
-                          >
-                            <CardContent className="p-4">
-                              <div className="flex items-start gap-4">
-                                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary/20 to-primary/5">
-                                  {ticket.event?.image_url ? (
-                                    <img 
-                                      src={ticket.event.image_url} 
-                                      alt={ticket.event.title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                      <Ticket className="h-8 w-8 text-primary/50" />
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-start justify-between mb-1">
-                                    <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                                      {ticket.event?.title || 'Event'}
-                                    </h3>
-                                    <Badge className="bg-green-100 text-green-700 text-xs flex-shrink-0 ml-2">
-                                      {ticket.ticket_type?.name || 'Ticket'}
-                                    </Badge>
-                                  </div>
-                                  <div className="space-y-1 text-sm text-muted-foreground">
-                                    <div className="flex items-center gap-2">
-                                      <Calendar className="h-3.5 w-3.5" />
-                                      <span>
-                                        {ticket.event?.start_time 
-                                          ? format(new Date(ticket.event.start_time), 'EEE, MMM d • h:mm a')
-                                          : 'Date TBD'}
-                                      </span>
-                                    </div>
-                                    {ticket.event?.location && (
-                                      <div className="flex items-center gap-2">
-                                        <MapPin className="h-3.5 w-3.5" />
-                                        <span className="line-clamp-1">{ticket.event.location}</span>
-                                      </div>
-                                    )}
-                                    <div className="flex items-center gap-2">
-                                      <Ticket className="h-3.5 w-3.5" />
-                                      <span>Qty: {ticket.quantity} × ${ticket.unit_price}</span>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-muted">
-                                    <span className="text-xs text-muted-foreground">#{ticket.ticket_number}</span>
-                                    <Button size="sm" variant="outline" onClick={(e) => { e.stopPropagation(); setSelectedTicket(ticket); }}>
-                                      View Ticket
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </div>
+                      <HorizontalCardList
+                        items={upcomingTickets.map(ticket => transformTicketToVisualCard(ticket, setSelectedTicket))}
+                        variant="visual"
+                        layout="stack"
+                        screenId="orders-upcoming-tickets"
+                        gap="md"
+                      />
                     </div>
                   )}
 
@@ -592,58 +532,14 @@ export default function Orders() {
                         <Clock className="h-4 w-4" />
                         Past Events ({pastTickets.length})
                       </h3>
-                      <div className="grid gap-4">
-                        {pastTickets.map((ticket) => (
-                          <Card 
-                            key={ticket.id} 
-                            className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-white/60 backdrop-blur-sm border-white/20 opacity-75"
-                            onClick={() => setSelectedTicket(ticket)}
-                          >
-                            <CardContent className="p-4">
-                              <div className="flex items-start gap-4">
-                                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-gradient-to-br from-muted/20 to-muted/5 grayscale">
-                                  {ticket.event?.image_url ? (
-                                    <img 
-                                      src={ticket.event.image_url} 
-                                      alt={ticket.event.title}
-                                      className="w-full h-full object-cover"
-                                    />
-                                  ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                      <Ticket className="h-8 w-8 text-muted-foreground/50" />
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-start justify-between mb-1">
-                                    <h3 className="font-semibold text-foreground/70 line-clamp-1">
-                                      {ticket.event?.title || 'Event'}
-                                    </h3>
-                                    <Badge variant="secondary" className="text-xs flex-shrink-0 ml-2">
-                                      Attended
-                                    </Badge>
-                                  </div>
-                                  <div className="space-y-1 text-sm text-muted-foreground">
-                                    <div className="flex items-center gap-2">
-                                      <Calendar className="h-3.5 w-3.5" />
-                                      <span>
-                                        {ticket.event?.start_time 
-                                          ? format(new Date(ticket.event.start_time), 'EEE, MMM d, yyyy')
-                                          : 'Date TBD'}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-muted">
-                                    <span className="text-xs text-muted-foreground">#{ticket.ticket_number}</span>
-                                    <Button size="sm" variant="ghost" onClick={(e) => { e.stopPropagation(); setSelectedTicket(ticket); }}>
-                                      View Details
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
+                      <div className="opacity-75">
+                        <HorizontalCardList
+                          items={pastTickets.map(ticket => transformTicketToVisualCard(ticket, setSelectedTicket))}
+                          variant="visual"
+                          layout="stack"
+                          screenId="orders-past-tickets"
+                          gap="md"
+                        />
                       </div>
                     </div>
                   )}
