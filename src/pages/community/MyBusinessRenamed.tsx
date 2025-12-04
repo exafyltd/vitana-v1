@@ -188,141 +188,10 @@ export default function MyBusiness() {
               <SplitBarTrigger value="clients">
                 👤 Clients
               </SplitBarTrigger>
-              <SplitBarTrigger value="ticket-sales">
-                🎫 Ticket Sales
-              </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="management" className="space-y-4">
-              <div className="grid gap-4">
-                <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 to-pink-500" />
-                  <div className="p-5 pb-3">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold">Morning Yoga Flow</h3>
-                          <div className="flex items-center gap-1">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
-                            <span className="text-xs text-green-600 font-medium">Active</span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Recurring • Mon, Wed, Fri at 7:00 AM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-5 py-3 border-t border-border/50 bg-gradient-to-r from-white/50 to-pink-50/30">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1.5">
-                          <Users className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-medium">12/15</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-medium">$25</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <TrendingUp className="w-3.5 h-3.5 text-yellow-500" />
-                          <span className="font-medium">4.8</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="rounded-full px-4 py-1 h-8 text-xs hover:bg-pink-50 border-pink-200">
-                          Edit
-                        </Button>
-                        <Button size="sm" className="rounded-full px-4 py-1 h-8 text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600">
-                          Manage
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-400 to-emerald-500" />
-                  <div className="p-5 pb-3">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold">Nutrition Consultation</h3>
-                          <div className="flex items-center gap-1">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
-                            <span className="text-xs text-green-600 font-medium">Active</span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground">One-on-one • 60 minutes</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-5 py-3 border-t border-border/50 bg-gradient-to-r from-white/50 to-emerald-50/30">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-medium">Available</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-medium">$80</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <TrendingUp className="w-3.5 h-3.5 text-yellow-500" />
-                          <span className="font-medium">5.0</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="rounded-full px-4 py-1 h-8 text-xs hover:bg-pink-50 border-pink-200">
-                          Edit
-                        </Button>
-                        <Button size="sm" className="rounded-full px-4 py-1 h-8 text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600">
-                          Manage
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-[0_0_20px_rgba(236,72,153,0.1)] hover:shadow-[0_0_30px_rgba(236,72,153,0.2)] transition-all duration-300 overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-purple-400 to-indigo-500" />
-                  <div className="p-5 pb-3">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-semibold">Weekend Wellness Workshop</h3>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-blue-500" />
-                            <span className="text-xs text-blue-600 font-medium">In 5 days</span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground">Saturday, Dec 16 • 10:00 AM - 4:00 PM</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-5 py-3 border-t border-border/50 bg-gradient-to-r from-white/50 to-purple-50/30">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1.5">
-                          <Users className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-medium">8/20</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          <DollarSign className="w-3.5 h-3.5 text-muted-foreground" />
-                          <span className="font-medium">$150</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="rounded-full px-4 py-1 h-8 text-xs hover:bg-pink-50 border-pink-200">
-                          Edit
-                        </Button>
-                        <Button size="sm" className="rounded-full px-4 py-1 h-8 text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 hover:from-pink-600 hover:to-fuchsia-600">
-                          Manage
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <OrganizerEventsSection />
             </SplitBarContent>
 
             <SplitBarContent value="referrals" className="space-y-6">
@@ -429,9 +298,6 @@ export default function MyBusiness() {
               </Card>
             </SplitBarContent>
 
-            <SplitBarContent value="ticket-sales" className="space-y-4">
-              <OrganizerEventsSection />
-            </SplitBarContent>
           </SplitBar>
         </div>
       </div>
