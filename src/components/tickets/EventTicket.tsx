@@ -97,12 +97,12 @@ export function EventTicket({
             <img
               src={eventImageUrl}
               alt=""
-              className="w-full h-full object-cover opacity-40 brightness-110 saturate-[0.4] blur-[1px]"
+              className="w-full h-full object-cover opacity-50 brightness-110 saturate-[0.6]"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary/30 via-primary/10 to-background" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/65" />
         </div>
 
         {/* Content */}
