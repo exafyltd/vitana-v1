@@ -110,6 +110,7 @@ import Cart from "./pages/Cart";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import TicketPurchaseSuccess from "./pages/TicketPurchaseSuccess";
 import MyTickets from "./pages/MyTickets";
+import TicketDemo from "./pages/TicketDemo";
 import Community from "./pages/Community";
 import AI from "./pages/AI";
 import Messages from "./pages/Messages";
@@ -469,6 +470,7 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/tickets/success" element={<TicketPurchaseSuccess />} />
+          <Route path="/tickets/demo" element={<TicketDemo />} />
           <Route path="/my-tickets" element={
             <AuthGuard>
               <MyTickets />
