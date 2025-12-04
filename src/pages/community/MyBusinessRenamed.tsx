@@ -17,6 +17,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 
 import { communityNavigation } from "@/config/navigation";
+import { OrganizerEventsSection } from "@/components/business/OrganizerEventsSection";
 
 export default function MyBusiness() {
   const navigate = useNavigate();
@@ -186,6 +187,9 @@ export default function MyBusiness() {
               </SplitBarTrigger>
               <SplitBarTrigger value="clients">
                 👤 Clients
+              </SplitBarTrigger>
+              <SplitBarTrigger value="ticket-sales">
+                🎫 Ticket Sales
               </SplitBarTrigger>
             </SplitBarList>
 
@@ -423,6 +427,10 @@ export default function MyBusiness() {
                   <p className="text-sm text-muted-foreground">Client list and communication tools</p>
                 </CardContent>
               </Card>
+            </SplitBarContent>
+
+            <SplitBarContent value="ticket-sales" className="space-y-4">
+              <OrganizerEventsSection />
             </SplitBarContent>
           </SplitBar>
         </div>
