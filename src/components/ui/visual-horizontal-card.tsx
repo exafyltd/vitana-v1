@@ -163,8 +163,8 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         ref={ref || cardRef}
         className={cn(
           "group relative overflow-hidden",
-          "rounded-xl border border-white/10",
-          "bg-background/60 backdrop-blur-sm",
+          "rounded-xl border border-border/40",
+          "bg-card/95 backdrop-blur-sm",
           "hover:border-[hsl(var(--accent))]/40",
           "transition-all duration-200 ease-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60",
@@ -194,8 +194,6 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           className
         )}
         style={{
-          background: 'rgba(255,255,255,0.4)',
-          backdropFilter: 'blur(6px)',
           color: category.color || undefined
         }}
         aria-label={title}
