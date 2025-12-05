@@ -6,10 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
-import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plane, Plus, RefreshCw, Clock, CheckCircle, Ticket } from "lucide-react";
-import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
-import { HorizontalCardSkeleton } from "@/components/ui/horizontal-card-skeleton";
-import { transformTicketToVisualCard } from "@/lib/ticketCardTransformers";
+import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plus, RefreshCw, Clock, CheckCircle, Ticket } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useState, useEffect } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -25,20 +22,56 @@ import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { format, isPast } from "date-fns";
+import { cn } from "@/lib/utils";
+
+// Unified order type that handles products, services, and tickets
+interface UnifiedOrder {
+  id: string;
+  title: string;
+  provider: string;
+  providerImage: string;
+  price: string;
+  status: string;
+  type: 'product' | 'service' | 'ticket';
+  orderDate: string;
+  // Product-specific
+  trackingNumber?: string;
+  estimatedDelivery?: string;
+  shippingAddress?: string;
+  deliveredDate?: string;
+  cjOrderId?: string;
+  // Service-specific
+  date?: string;
+  location?: string;
+  notes?: string;
+  completedDate?: string;
+  // Ticket-specific
+  eventDate?: Date;
+  eventLocation?: string;
+  ticketType?: string;
+  ticketNumber?: string;
+  quantity?: number;
+  qrCodeToken?: string;
+  ticketPurchase?: TicketPurchase;
+  // Shared
+  rating?: number;
+  myRating?: number;
+}
+
+type HistoryFilter = 'all' | 'products' | 'services' | 'tickets' | 'refunds';
 
 export default function Orders() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [cjOrders, setCjOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<TicketPurchase | null>(null);
+  const [historyFilter, setHistoryFilter] = useState<HistoryFilter>('all');
 
   const { tickets, loading: ticketsLoading } = useMyTickets();
-  const latestActions = getLatestActions(2);
 
   // Mock ticket data for preview
   const mockTickets: TicketPurchase[] = [
@@ -165,10 +198,6 @@ export default function Orders() {
   const displayTickets = tickets.length > 0 ? tickets : mockTickets;
   const isShowingMockData = tickets.length === 0 && !ticketsLoading;
 
-  // Categorize tickets
-  const upcomingTickets = displayTickets.filter(t => t.event && !isPast(new Date(t.event.start_time)));
-  const pastTickets = displayTickets.filter(t => t.event && isPast(new Date(t.event.start_time)));
-
   useEffect(() => {
     if (user) {
       fetchCjOrders();
@@ -199,16 +228,36 @@ export default function Orders() {
       });
 
       if (error) throw error;
-      
-      // Refresh orders to show updated tracking info
       await fetchCjOrders();
     } catch (error) {
       console.error('Error tracking order:', error);
     }
   };
 
-  // Transform CJ orders to display format
-  const activeOrders = cjOrders
+  // Transform ticket to unified order format
+  const transformTicketToUnifiedOrder = (ticket: TicketPurchase): UnifiedOrder => {
+    const isUpcoming = ticket.event && !isPast(new Date(ticket.event.start_time));
+    return {
+      id: ticket.id,
+      title: ticket.event?.title || 'Event Ticket',
+      provider: ticket.ticket_type?.name || 'Event',
+      providerImage: ticket.event?.image_url || '/placeholder.svg',
+      price: `$${ticket.total_amount}`,
+      status: isUpcoming ? 'upcoming' : (ticket.checked_in_at ? 'used' : 'expired'),
+      type: 'ticket',
+      orderDate: format(new Date(ticket.created_at), 'MMM d, yyyy'),
+      eventDate: ticket.event ? new Date(ticket.event.start_time) : undefined,
+      eventLocation: ticket.event?.location || 'Location TBD',
+      ticketType: ticket.ticket_type?.name,
+      ticketNumber: ticket.ticket_number,
+      quantity: ticket.quantity,
+      qrCodeToken: ticket.qr_code_token,
+      ticketPurchase: ticket,
+    };
+  };
+
+  // Transform CJ orders to unified format - Active
+  const activeCjOrders: UnifiedOrder[] = cjOrders
     .filter(order => !['delivered', 'cancelled'].includes(order.status))
     .map(order => ({
       id: order.id,
@@ -219,13 +268,14 @@ export default function Orders() {
       estimatedDelivery: 'Processing',
       price: `$${order.total_amount}`,
       status: order.status,
-      type: 'product',
+      type: 'product' as const,
       orderDate: new Date(order.created_at).toLocaleDateString(),
       shippingAddress: `${order.shipping_address?.city}, ${order.shipping_address?.state}`,
       cjOrderId: order.cj_order_id,
     }));
 
-  const completedOrders = cjOrders
+  // Transform CJ orders to unified format - Completed
+  const completedCjOrders: UnifiedOrder[] = cjOrders
     .filter(order => ['delivered', 'cancelled'].includes(order.status))
     .map(order => ({
       id: order.id,
@@ -236,19 +286,69 @@ export default function Orders() {
       price: `$${order.total_amount}`,
       status: order.status,
       rating: 4.8,
-      myRating: null,
-      type: 'product',
+      myRating: undefined,
+      type: 'product' as const,
       orderDate: new Date(order.created_at).toLocaleDateString(),
     }));
 
-  const renderOrderCard = (order: any, isActive = true) => (
-    <Card key={order.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-white/80 backdrop-blur-sm border-white/20">
+  // Transform tickets - separate by upcoming/past
+  const upcomingTicketOrders: UnifiedOrder[] = displayTickets
+    .filter(t => t.event && !isPast(new Date(t.event.start_time)))
+    .map(transformTicketToUnifiedOrder);
+
+  const pastTicketOrders: UnifiedOrder[] = displayTickets
+    .filter(t => t.event && isPast(new Date(t.event.start_time)))
+    .map(transformTicketToUnifiedOrder);
+
+  // Unified Active Orders (CJ active + upcoming tickets)
+  const unifiedActiveOrders: UnifiedOrder[] = [...activeCjOrders, ...upcomingTicketOrders];
+
+  // Unified History Orders (CJ completed + past tickets), filtered
+  const allHistoryOrders: UnifiedOrder[] = [...completedCjOrders, ...pastTicketOrders];
+  const unifiedHistoryOrders = allHistoryOrders.filter(order => {
+    if (historyFilter === 'all') return true;
+    if (historyFilter === 'products') return order.type === 'product';
+    if (historyFilter === 'services') return order.type === 'service';
+    if (historyFilter === 'tickets') return order.type === 'ticket';
+    if (historyFilter === 'refunds') return order.status === 'refunded' || order.status === 'cancelled';
+    return true;
+  });
+
+  // Get status badge styling
+  const getStatusStyles = (status: string, type: string) => {
+    if (type === 'ticket') {
+      if (status === 'upcoming') return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+      if (status === 'used') return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+      if (status === 'expired') return 'bg-muted text-muted-foreground';
+    }
+    if (status === 'confirmed') return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
+    if (status === 'shipped') return 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400';
+    if (status === 'completed' || status === 'delivered') return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
+    if (status === 'cancelled' || status === 'refunded') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
+    return 'bg-muted text-muted-foreground';
+  };
+
+  const getStatusIcon = (status: string, type: string) => {
+    if (type === 'ticket') {
+      if (status === 'upcoming') return <Calendar className="h-3 w-3 mr-1" />;
+      if (status === 'used') return <CheckCircle className="h-3 w-3 mr-1" />;
+      if (status === 'expired') return <Clock className="h-3 w-3 mr-1" />;
+    }
+    if (status === 'confirmed') return <CheckCircle className="h-3 w-3 mr-1" />;
+    if (status === 'shipped') return <Truck className="h-3 w-3 mr-1" />;
+    if (status === 'completed' || status === 'delivered') return <Package className="h-3 w-3 mr-1" />;
+    if (status === 'cancelled') return <XCircle className="h-3 w-3 mr-1" />;
+    return null;
+  };
+
+  const renderOrderCard = (order: UnifiedOrder, isActive = true) => (
+    <Card key={order.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-card/70 backdrop-blur-xl border-border/30 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
       <CardContent className="p-4 md:p-6">
         <div className="flex items-start gap-4">
           <img 
             src={order.providerImage} 
             alt={order.provider}
-            className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover flex-shrink-0"
+            className="w-12 h-12 md:w-16 md:h-16 rounded-xl object-cover flex-shrink-0"
           />
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between mb-2">
@@ -259,24 +359,35 @@ export default function Orders() {
                 <p className="text-xs md:text-sm text-muted-foreground">{order.provider}</p>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
-                <Badge 
-                  className={`text-xs ${
-                    order.status === 'confirmed' ? 'bg-blue-100 text-blue-700' :
-                    order.status === 'shipped' ? 'bg-orange-100 text-orange-700' :
-                    order.status === 'completed' ? 'bg-green-100 text-green-700' :
-                    order.status === 'delivered' ? 'bg-green-100 text-green-700' :
-                    'bg-gray-100 text-gray-700'
-                  }`}
-                >
-                  {order.status === 'confirmed' && <CheckCircle className="h-3 w-3 mr-1" />}
-                  {order.status === 'shipped' && <Truck className="h-3 w-3 mr-1" />}
-                  {order.status === 'completed' && <CheckCircle className="h-3 w-3 mr-1" />}
-                  {order.status === 'delivered' && <Package className="h-3 w-3 mr-1" />}
+                <Badge className={cn("text-xs", getStatusStyles(order.status, order.type))}>
+                  {getStatusIcon(order.status, order.type)}
                   {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                 </Badge>
                 <span className="text-sm md:text-base font-bold text-foreground">{order.price}</span>
               </div>
             </div>
+
+            {/* Ticket-specific info */}
+            {order.type === 'ticket' && (
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    {order.eventDate ? format(order.eventDate, 'EEE, MMM d • h:mm a') : 'Date TBD'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">{order.eventLocation}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Ticket className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    {order.ticketType} × {order.quantity}
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* Service-specific info */}
             {order.type === 'service' && isActive && (
@@ -290,8 +401,8 @@ export default function Orders() {
                   <span className="text-sm text-muted-foreground">{order.location}</span>
                 </div>
                 {order.notes && (
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <p className="text-xs text-blue-700">{order.notes}</p>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                    <p className="text-xs text-blue-700 dark:text-blue-300">{order.notes}</p>
                   </div>
                 )}
               </div>
@@ -321,8 +432,8 @@ export default function Orders() {
               </div>
             )}
 
-            {/* Completed order info */}
-            {!isActive && (
+            {/* Completed order info (History tab) */}
+            {!isActive && order.type !== 'ticket' && (
               <div className="space-y-2 mb-4">
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
@@ -330,51 +441,90 @@ export default function Orders() {
                     {order.type === 'service' ? `Completed: ${order.completedDate}` : `Delivered: ${order.deliveredDate}`}
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm text-muted-foreground">Provider rating: {order.rating}</span>
-                  {order.myRating && (
-                    <span className="text-sm text-muted-foreground">• Your rating: {order.myRating}/5 ⭐</span>
-                  )}
-                </div>
+                {order.rating && (
+                  <div className="flex items-center gap-2">
+                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm text-muted-foreground">Provider rating: {order.rating}</span>
+                    {order.myRating && (
+                      <span className="text-sm text-muted-foreground">• Your rating: {order.myRating}/5 ⭐</span>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
             {/* Action buttons */}
-            <div className="flex gap-2 mt-4">
-              {isActive ? (
+            <div className="flex gap-2 mt-4 flex-wrap">
+              {/* Ticket actions */}
+              {order.type === 'ticket' && isActive && (
                 <>
-                  {order.type === 'service' && (
-                    <>
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <Phone className="h-3 w-3 mr-1" />
-                        Contact Provider
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <XCircle className="h-3 w-3 mr-1" />
-                        Cancel
-                      </Button>
-                    </>
-                  )}
-                   {order.type === 'product' && (
-                    <>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        className="flex-1"
-                        onClick={() => handleTrackOrder(order.id)}
-                      >
-                        <Truck className="h-3 w-3 mr-1" />
-                        Track Package
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <MessageSquare className="h-3 w-3 mr-1" />
-                        Support
-                      </Button>
-                    </>
-                  )}
+                  <Button 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => order.ticketPurchase && setSelectedTicket(order.ticketPurchase)}
+                  >
+                    <Ticket className="h-3 w-3 mr-1" />
+                    View Ticket
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    <Calendar className="h-3 w-3 mr-1" />
+                    Add to Calendar
+                  </Button>
                 </>
-              ) : (
+              )}
+              {order.type === 'ticket' && !isActive && (
+                <>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => order.ticketPurchase && setSelectedTicket(order.ticketPurchase)}
+                  >
+                    <Ticket className="h-3 w-3 mr-1" />
+                    View Ticket
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    <Star className="h-3 w-3 mr-1" />
+                    Review
+                  </Button>
+                </>
+              )}
+
+              {/* Service actions */}
+              {order.type === 'service' && isActive && (
+                <>
+                  <Button size="sm" variant="outline" className="flex-1">
+                    <Phone className="h-3 w-3 mr-1" />
+                    Contact Provider
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    <XCircle className="h-3 w-3 mr-1" />
+                    Cancel
+                  </Button>
+                </>
+              )}
+
+              {/* Product actions */}
+              {order.type === 'product' && isActive && (
+                <>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={() => handleTrackOrder(order.id)}
+                  >
+                    <Truck className="h-3 w-3 mr-1" />
+                    Track Package
+                  </Button>
+                  <Button size="sm" variant="outline">
+                    <MessageSquare className="h-3 w-3 mr-1" />
+                    Support
+                  </Button>
+                </>
+              )}
+
+              {/* History actions for products/services */}
+              {!isActive && order.type !== 'ticket' && (
                 <>
                   <Button size="sm" variant="outline" className="flex-1">
                     <RotateCcw className="h-3 w-3 mr-1" />
@@ -394,8 +544,10 @@ export default function Orders() {
               )}
             </div>
 
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-muted">
-              <span className="text-xs text-muted-foreground">Order ID: {order.id}</span>
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50">
+              <span className="text-xs text-muted-foreground">
+                {order.type === 'ticket' ? `Ticket: ${order.ticketNumber}` : `Order ID: ${order.id.slice(0, 8)}...`}
+              </span>
               <span className="text-xs text-muted-foreground">Ordered: {order.orderDate}</span>
             </div>
           </div>
@@ -404,11 +556,43 @@ export default function Orders() {
     </Card>
   );
 
+  // Filter chips for History tab
+  const HistoryFilterRow = () => {
+    const filters: { key: HistoryFilter; label: string; icon: string }[] = [
+      { key: 'all', label: 'All', icon: '📋' },
+      { key: 'products', label: 'Products', icon: '📦' },
+      { key: 'services', label: 'Services', icon: '🩺' },
+      { key: 'tickets', label: 'Tickets', icon: '🎫' },
+      { key: 'refunds', label: 'Refunds', icon: '↩️' },
+    ];
+
+    return (
+      <div className="flex flex-wrap gap-2 mb-4">
+        {filters.map(filter => (
+          <Button
+            key={filter.key}
+            variant={historyFilter === filter.key ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setHistoryFilter(filter.key)}
+            className={cn(
+              "rounded-full h-8 px-4 text-xs font-medium transition-all",
+              historyFilter === filter.key 
+                ? "bg-primary text-primary-foreground shadow-md" 
+                : "bg-card/60 backdrop-blur-sm border-border/40 hover:bg-card/80"
+            )}
+          >
+            {filter.icon} {filter.label}
+          </Button>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <AppLayout>
       <SEO title="Orders | Discover" description="Track your wellness service bookings and product orders" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title="My Orders"
@@ -439,117 +623,73 @@ export default function Orders() {
             </Button>
           </UtilityActionButton>
 
+          {/* Mock data indicator */}
+          {isShowingMockData && (
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
+              <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700">
+                Sample Data
+              </Badge>
+              <span className="text-sm text-amber-700 dark:text-amber-400">
+                These are preview orders. Your actual orders and tickets will appear here.
+              </span>
+            </div>
+          )}
+
           {/* Orders Content */}
           <Tabs defaultValue="active" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="active" className="flex items-center gap-2">
-                ⏰ Active ({activeOrders.length})
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-card/60 backdrop-blur-sm rounded-xl p-1 border border-border/30">
+              <TabsTrigger value="active" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm">
+                ⏰ Active ({unifiedActiveOrders.length})
               </TabsTrigger>
-              <TabsTrigger value="completed" className="flex items-center gap-2">
-                ✅ History ({completedOrders.length})
-              </TabsTrigger>
-              <TabsTrigger value="tickets" className="flex items-center gap-2">
-                🎫 Tickets ({displayTickets.length})
+              <TabsTrigger value="history" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm">
+                ✅ History ({allHistoryOrders.length})
               </TabsTrigger>
             </TabsList>
             
             <TabsContent value="active" className="space-y-4">
-              {activeOrders.length > 0 ? (
+              {unifiedActiveOrders.length > 0 ? (
                 <div className="grid gap-4">
-                  {activeOrders.map((order) => renderOrderCard(order, true))}
+                  {unifiedActiveOrders.map((order) => renderOrderCard(order, true))}
                 </div>
               ) : (
-                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
                   <CardContent className="p-8 text-center">
                     <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-semibold text-foreground mb-2">No Active Orders</h3>
-                    <p className="text-muted-foreground mb-4">You don't have any active orders at the moment.</p>
-                    <Button onClick={() => navigate('/discover')}>
-                      Browse Services & Products
-                    </Button>
+                    <p className="text-muted-foreground mb-4">You don't have any active orders or upcoming event tickets.</p>
+                    <div className="flex gap-3 justify-center">
+                      <Button onClick={() => navigate('/discover')}>
+                        Browse Products
+                      </Button>
+                      <Button variant="outline" onClick={() => navigate('/comm/events-meetups')}>
+                        Discover Events
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               )}
             </TabsContent>
             
-            <TabsContent value="completed" className="space-y-4">
-              {completedOrders.length > 0 ? (
+            <TabsContent value="history" className="space-y-4">
+              <HistoryFilterRow />
+              {unifiedHistoryOrders.length > 0 ? (
                 <div className="grid gap-4">
-                  {completedOrders.map((order) => renderOrderCard(order, false))}
+                  {unifiedHistoryOrders.map((order) => renderOrderCard(order, false))}
                 </div>
               ) : (
-                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
+                <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
                   <CardContent className="p-8 text-center">
                     <CheckCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-foreground mb-2">No Order History</h3>
-                    <p className="text-muted-foreground mb-4">Your completed orders will appear here.</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">
+                      {historyFilter === 'all' ? 'No Order History' : `No ${historyFilter.charAt(0).toUpperCase() + historyFilter.slice(1)}`}
+                    </h3>
+                    <p className="text-muted-foreground mb-4">
+                      {historyFilter === 'all' 
+                        ? 'Your completed orders and past events will appear here.'
+                        : `No ${historyFilter} found in your history.`}
+                    </p>
                     <Button onClick={() => navigate('/discover')}>
                       Start Shopping
-                    </Button>
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
-
-            <TabsContent value="tickets" className="space-y-4">
-              {ticketsLoading ? (
-                <HorizontalCardSkeleton variant="visual" count={3} />
-              ) : displayTickets.length > 0 ? (
-                <div className="space-y-6">
-                  {/* Mock data indicator */}
-                  {isShowingMockData && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-center gap-2">
-                      <Badge variant="outline" className="bg-amber-100 text-amber-700 border-amber-300">
-                        Sample Data
-                      </Badge>
-                      <span className="text-sm text-amber-700">
-                        These are preview tickets. Your purchased tickets will appear here.
-                      </span>
-                    </div>
-                  )}
-                  
-                  {/* Upcoming Tickets */}
-                  {upcomingTickets.length > 0 && (
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        Upcoming Events ({upcomingTickets.length})
-                      </h3>
-                      <HorizontalCardList
-                        items={upcomingTickets.map(ticket => transformTicketToVisualCard(ticket, setSelectedTicket))}
-                        variant="visual"
-                        layout="stack"
-                        screenId="orders-upcoming-tickets"
-                        gap="md"
-                      />
-                    </div>
-                  )}
-
-                  {/* Past Tickets */}
-                  {pastTickets.length > 0 && (
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        Past Events ({pastTickets.length})
-                      </h3>
-                      <HorizontalCardList
-                        items={pastTickets.map(ticket => transformTicketToVisualCard(ticket, setSelectedTicket))}
-                        variant="visual"
-                        layout="stack"
-                        screenId="orders-past-tickets"
-                        gap="md"
-                      />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                  <CardContent className="p-8 text-center">
-                    <Ticket className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-foreground mb-2">No Event Tickets</h3>
-                    <p className="text-muted-foreground mb-4">Your purchased event tickets will appear here.</p>
-                    <Button onClick={() => navigate('/comm/events-meetups')}>
-                      Discover Events
                     </Button>
                   </CardContent>
                 </Card>
