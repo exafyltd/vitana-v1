@@ -48,7 +48,7 @@ const TICKET_TENANT_CONFIG: Record<TicketTenant, TicketTenantConfig> = {
       secondary: "ORIGINAL",
     },
     microText: "OFFICIAL • VERIFIED • SECURE",
-    footerText: "Powered by MAXINA",
+    footerText: "Powered by VITANA",
     backgroundGradient: "from-rose-600 via-pink-700 to-orange-800",
   },
   alkalma: {
@@ -61,7 +61,7 @@ const TICKET_TENANT_CONFIG: Record<TicketTenant, TicketTenantConfig> = {
       secondary: "VERIFIED",
     },
     microText: "OFFICIAL • VERIFIED • SECURE",
-    footerText: "Powered by ALKALMA",
+    footerText: "Powered by VITANA",
     backgroundGradient: "from-cyan-700 via-teal-800 to-blue-900",
   },
   earthlinks: {
@@ -74,7 +74,7 @@ const TICKET_TENANT_CONFIG: Record<TicketTenant, TicketTenantConfig> = {
       secondary: "MEMBER PASS",
     },
     microText: "OFFICIAL • VERIFIED • SECURE",
-    footerText: "Powered by EARTHLINKS",
+    footerText: "Powered by VITANA",
     backgroundGradient: "from-emerald-700 via-green-800 to-teal-900",
   },
 };
