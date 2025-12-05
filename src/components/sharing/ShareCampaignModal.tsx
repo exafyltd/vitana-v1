@@ -18,15 +18,9 @@ export function ShareCampaignModal({
   campaignDescription,
   campaignImage,
 }: ShareCampaignModalProps) {
-  // Use OG edge function for rich social previews with images
-  const publicUrl = `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-campaign?id=${campaignId}`;
+  const publicUrl = `${window.location.origin}/pub/campaigns/${campaignId}`;
   
-  // Strip "Promotion: " prefix for cleaner share text
-  const cleanCampaignName = campaignName.startsWith('Promotion: ') 
-    ? campaignName.replace('Promotion: ', '') 
-    : campaignName;
-  
-  const shareText = `Join me at: ${cleanCampaignName}${campaignDescription ? `\n${campaignDescription.slice(0, 150)}${campaignDescription.length > 150 ? '...' : ''}` : ''}`;
+  const shareText = `Join me at: ${campaignName}${campaignDescription ? `\n${campaignDescription.slice(0, 150)}${campaignDescription.length > 150 ? '...' : ''}` : ''}`;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -60,13 +54,13 @@ export function ShareCampaignModal({
         {/* Quick Share Buttons - Using unified component */}
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-muted-foreground">Quick share</h4>
-        <PersonalShareButtons
-          shareUrl={publicUrl}
-          shareText={shareText}
-          title={`Join me: ${cleanCampaignName}`}
-          variant="grid"
-          showCopyLink={true}
-        />
+          <PersonalShareButtons
+            shareUrl={publicUrl}
+            shareText={shareText}
+            title={`Join me: ${campaignName}`}
+            variant="grid"
+            showCopyLink={true}
+          />
           <p className="text-xs text-muted-foreground">
             Opens your personal apps to share directly
           </p>

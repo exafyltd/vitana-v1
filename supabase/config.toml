@@ -149,6 +149,3 @@ verify_jwt = false
 
 [functions.og-campaign]
 verify_jwt = false
-
-[functions.og-event]
-verify_jwt = false
