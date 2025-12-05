@@ -111,14 +111,14 @@ export function EventTicket({
           }}
         />
 
-        {/* Full-bleed Background Image - Softened for premium frosted effect */}
+        {/* Full-bleed Background Image - Muted backdrop */}
         {eventImageUrl ? (
           <img
             src={eventImageUrl}
             alt={eventTitle}
             className="absolute inset-0 w-full h-full object-cover"
             style={{ 
-              filter: 'saturate(1.15) contrast(0.95) brightness(0.92)',
+              filter: 'saturate(0.9) contrast(0.85)',
               transform: 'scale(1.15)',
               transformOrigin: 'center center',
             }}
@@ -128,10 +128,10 @@ export function EventTicket({
           <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-zinc-900" />
         )}
         
-        {/* Subtle dark wash overlay for improved text focus */}
+        {/* Dark overlay at 20% opacity for content focus */}
         <div 
           className="absolute inset-0 pointer-events-none"
-          style={{ backgroundColor: 'rgba(0,0,0,0.12)' }}
+          style={{ backgroundColor: 'rgba(0,0,0,0.20)' }}
         />
         
         {/* Vignette effect - dark edges */}
