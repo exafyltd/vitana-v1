@@ -175,6 +175,9 @@ export function EventTicket({
         className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl"
         style={{ 
           minHeight: "440px",
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          transform: 'translateZ(0)',
           boxShadow: `
             0 25px 50px -12px rgba(0,0,0,0.35),
             inset 0 1px 0 rgba(255,255,255,0.15),
@@ -387,9 +390,9 @@ export function EventTicket({
           
           {/* Strong Divider Line with Cutouts - Boarding Pass Style */}
           <div className="relative flex items-center my-3">
-            <div className="absolute -left-4 w-5 h-5 bg-background rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]" />
+            <div className="absolute -left-4 w-5 h-5 bg-black/80 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]" />
             <div className="flex-1 border-t-2 border-dashed border-white/40" />
-            <div className="absolute -right-4 w-5 h-5 bg-background rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]" />
+            <div className="absolute -right-4 w-5 h-5 bg-black/80 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]" />
           </div>
           
           {/* Two-Column Attendee Row - with subtle dark backing */}
