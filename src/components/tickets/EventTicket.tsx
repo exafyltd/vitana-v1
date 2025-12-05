@@ -6,6 +6,79 @@ import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
 
+// Tenant Types
+export type TicketTenant = "vitana" | "maxina" | "alkalma" | "earthlinks";
+
+interface TicketTenantConfig {
+  brandName: string;
+  passLabel: string;
+  accentColor: string;
+  tenantCode: string;
+  hologramText: {
+    primary: string;
+    secondary: string;
+  };
+  microText: string;
+  footerText: string;
+  backgroundGradient: string;
+}
+
+// Tenant-specific branding configuration
+const TICKET_TENANT_CONFIG: Record<TicketTenant, TicketTenantConfig> = {
+  vitana: {
+    brandName: "VITANA",
+    passLabel: "EVENT PASS",
+    accentColor: "#E8CFAF", // Champagne gold
+    tenantCode: "VTN",
+    hologramText: {
+      primary: "VITANA",
+      secondary: "AUTHENTIC",
+    },
+    microText: "OFFICIAL • VERIFIED • SECURE",
+    footerText: "Powered by VITANA",
+    backgroundGradient: "from-slate-700 via-slate-800 to-zinc-900",
+  },
+  maxina: {
+    brandName: "MAXINA",
+    passLabel: "EVENT PASS",
+    accentColor: "#FF6FAF", // Pink/coral
+    tenantCode: "MAX",
+    hologramText: {
+      primary: "MAXINA",
+      secondary: "ORIGINAL",
+    },
+    microText: "OFFICIAL • VERIFIED • SECURE",
+    footerText: "Powered by MAXINA",
+    backgroundGradient: "from-rose-600 via-pink-700 to-orange-800",
+  },
+  alkalma: {
+    brandName: "ALKALMA",
+    passLabel: "EVENT PASS",
+    accentColor: "#3AB5D0", // Blue/teal
+    tenantCode: "ALK",
+    hologramText: {
+      primary: "ALKALMA",
+      secondary: "VERIFIED",
+    },
+    microText: "OFFICIAL • VERIFIED • SECURE",
+    footerText: "Powered by ALKALMA",
+    backgroundGradient: "from-cyan-700 via-teal-800 to-blue-900",
+  },
+  earthlinks: {
+    brandName: "EARTHLINKS",
+    passLabel: "EVENT PASS",
+    accentColor: "#58A676", // Earthy green
+    tenantCode: "ELX",
+    hologramText: {
+      primary: "EARTHLINKS",
+      secondary: "MEMBER PASS",
+    },
+    microText: "OFFICIAL • VERIFIED • SECURE",
+    footerText: "Powered by EARTHLINKS",
+    backgroundGradient: "from-emerald-700 via-green-800 to-teal-900",
+  },
+};
+
 interface EventTicketProps {
   ticketNumber: string;
   eventTitle: string;
@@ -17,6 +90,7 @@ interface EventTicketProps {
   quantity: number;
   qrCodeData: string;
   sequence?: number;
+  tenant?: TicketTenant;
 }
 
 export function EventTicket({
@@ -30,8 +104,12 @@ export function EventTicket({
   quantity,
   qrCodeData,
   sequence = 1,
+  tenant = "vitana",
 }: EventTicketProps) {
   const ticketRef = useRef<HTMLDivElement>(null);
+  
+  // Get tenant-specific configuration
+  const config = TICKET_TENANT_CONFIG[tenant] || TICKET_TENANT_CONFIG.vitana;
 
   const handleDownload = async () => {
     if (!ticketRef.current) return;
@@ -85,10 +163,13 @@ export function EventTicket({
 
   // Decorative barcode heights
   const barcodeHeights = [3, 5, 2, 6, 4, 2, 5, 3, 6, 2, 4, 5, 3, 2, 6, 4];
+  
+  // Generate tenant-formatted serial
+  const serialNumber = `VTN-${config.tenantCode}-${format(eventDate, "yyyyMMdd")}-${String(sequence).padStart(5, "0")}`;
 
   return (
     <div className="space-y-4">
-      {/* Ticket Card - Premium VITANA Boarding Pass */}
+      {/* Ticket Card - Premium Boarding Pass */}
       <div
         ref={ticketRef}
         className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl"
@@ -126,7 +207,7 @@ export function EventTicket({
             crossOrigin="anonymous"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-zinc-900" />
+          <div className={`absolute inset-0 bg-gradient-to-br ${config.backgroundGradient}`} />
         )}
         
         {/* Dark overlay at 20% opacity for content focus */}
@@ -143,7 +224,7 @@ export function EventTicket({
           }}
         />
 
-        {/* VITANA Branded Pattern Layer - Subtle Orb & Geometric Lines */}
+        {/* Branded Pattern Layer - Subtle Orb & Geometric Lines */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.08]">
           {/* Large subtle orb - top right */}
           <div 
@@ -194,25 +275,30 @@ export function EventTicket({
           }}
         />
 
-        {/* Holographic VITANA Seal - Bottom Right */}
+        {/* Holographic Seal - Bottom Right - Tenant Branded */}
         <div className="absolute bottom-24 right-4 w-16 h-16 pointer-events-none z-10">
-          {/* Outer glow ring */}
+          {/* Outer glow ring with tenant accent */}
           <div 
             className="absolute inset-0 rounded-full opacity-40"
             style={{
-              background: 'conic-gradient(from 0deg, rgba(255,255,255,0.1), rgba(200,220,255,0.3), rgba(255,200,255,0.2), rgba(255,255,255,0.1))',
+              background: `conic-gradient(from 0deg, ${config.accentColor}20, ${config.accentColor}60, ${config.accentColor}30, ${config.accentColor}20)`,
             }}
           />
           {/* Inner seal circle */}
           <div 
-            className="absolute inset-1 rounded-full border border-white/20 flex items-center justify-center"
+            className="absolute inset-1 rounded-full border flex items-center justify-center"
             style={{
+              borderColor: `${config.accentColor}40`,
               background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 80%)',
             }}
           >
             <div className="text-center">
-              <span className="text-white/50 text-[6px] font-bold tracking-widest block">VITANA</span>
-              <span className="text-white/30 text-[4px] tracking-wider block mt-0.5">AUTHENTIC</span>
+              <span className="text-white/50 text-[6px] font-bold tracking-widest block">
+                {config.hologramText.primary}
+              </span>
+              <span className="text-white/30 text-[4px] tracking-wider block mt-0.5">
+                {config.hologramText.secondary}
+              </span>
             </div>
           </div>
           {/* Shimmer effect */}
@@ -226,21 +312,35 @@ export function EventTicket({
 
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-4">
-          {/* Header - Enhanced with micro-text */}
+          {/* Header - Enhanced with micro-text and tenant branding */}
           <div className="flex items-center justify-between pb-3 border-b border-white/30">
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="text-white text-sm font-bold tracking-wide drop-shadow-sm">VITANA</span>
-                <span className="text-white/70 text-xs font-medium tracking-widest">EVENT PASS</span>
+                <span className="text-white text-sm font-bold tracking-wide drop-shadow-sm">
+                  {config.brandName}
+                </span>
+                <span className="text-white/70 text-xs font-medium tracking-widest">
+                  {config.passLabel}
+                </span>
               </div>
+              {/* Accent underline */}
+              <div 
+                className="h-[2px] w-14 mt-1 rounded-full"
+                style={{ backgroundColor: config.accentColor }}
+              />
               {/* Micro-text accent for official feel */}
-              <span className="text-white/30 text-[7px] tracking-[0.3em] font-medium mt-0.5">
-                OFFICIAL • VERIFIED • SECURE
+              <span className="text-white/30 text-[7px] tracking-[0.3em] font-medium mt-1">
+                {config.microText}
               </span>
             </div>
             
-            {/* Ticket Type Badge */}
-            <div className="px-3 py-1 rounded-full bg-white/90 shadow-md backdrop-blur-sm">
+            {/* Ticket Type Badge with tenant accent glow */}
+            <div 
+              className="px-3 py-1 rounded-full bg-white/90 shadow-md backdrop-blur-sm"
+              style={{
+                boxShadow: `0 0 12px ${config.accentColor}40, 0 4px 6px -1px rgba(0, 0, 0, 0.1)`,
+              }}
+            >
               <span className="text-gray-900 text-[10px] font-semibold uppercase tracking-wide">
                 {ticketType}
               </span>
@@ -327,7 +427,7 @@ export function EventTicket({
             </div>
           </div>
           
-          {/* Enhanced Compact Footer with micro-details */}
+          {/* Enhanced Compact Footer with tenant branding */}
           <div className="mt-2 pt-2 border-t border-white/20">
             {/* Main footer row */}
             <div className="flex items-center justify-between text-[10px] text-white/60 font-mono">
@@ -335,7 +435,7 @@ export function EventTicket({
               <span>SEQ {String(sequence).padStart(4, "0")}</span>
             </div>
             
-            {/* Decorative barcode + batch ID row */}
+            {/* Decorative barcode + tenant serial row */}
             <div className="flex items-center justify-between mt-1.5">
               {/* Mini decorative barcode (non-functional) */}
               <div className="flex gap-[1px] items-end h-3 opacity-30">
@@ -348,16 +448,16 @@ export function EventTicket({
                 ))}
               </div>
               
-              {/* Batch ID / Serial */}
+              {/* Tenant Serial Number */}
               <span className="text-white/40 text-[8px] font-mono tracking-wider">
-                BATCH-{format(eventDate, "yyyyMMdd")}-V1
+                {serialNumber}
               </span>
             </div>
             
-            {/* Powered by VITANA */}
+            {/* Powered by Tenant */}
             <div className="text-center mt-1.5">
               <span className="text-white/50 text-[9px] font-medium tracking-wide">
-                Powered by VITANA
+                {config.footerText}
               </span>
             </div>
           </div>
