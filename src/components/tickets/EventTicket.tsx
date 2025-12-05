@@ -91,14 +91,16 @@ export function EventTicket({
         className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-xl"
         style={{ minHeight: "440px" }}
       >
-        {/* Full-bleed Background Image with Desaturation */}
+        {/* Full-bleed Background Image - Premium Airline Style */}
         {eventImageUrl ? (
           <img
             src={eventImageUrl}
             alt={eventTitle}
             className="absolute inset-0 w-full h-full object-cover"
             style={{ 
-              filter: 'grayscale(0.3) saturate(0.6) brightness(1.1)',
+              filter: 'blur(2px) saturate(1.2) contrast(1.15) brightness(1.05)',
+              transform: 'scale(1.2)',
+              transformOrigin: 'center center',
             }}
             crossOrigin="anonymous"
           />
@@ -106,11 +108,14 @@ export function EventTicket({
           <div className="absolute inset-0 bg-gradient-to-br from-slate-200 via-stone-200 to-zinc-300" />
         )}
         
-        {/* Light Cream Overlay for Readability - Paper Effect */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-white/60 to-white/70" />
+        {/* Strategic Gradients - Top area for header/title readability */}
+        <div className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-white/75 via-white/60 to-transparent" />
         
-        {/* Warm Paper Tint */}
-        <div className="absolute inset-0 bg-amber-50/15" />
+        {/* Strategic Gradients - Bottom area for QR/footer readability */}
+        <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-white/70 via-white/50 to-transparent" />
+        
+        {/* Ultra-subtle warm tint for cohesion */}
+        <div className="absolute inset-0 bg-amber-50/5" />
 
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-4">
