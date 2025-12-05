@@ -411,7 +411,7 @@ export default function Orders() {
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="Your Orders"
+            title="My Orders"
             description="Track your product orders and event tickets"
             emoji="📦"
           />
