@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { format } from "date-fns";
 import { Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
+import { TicketShareSheet } from "./TicketShareSheet";
 
 // Tenant Types
 export type TicketTenant = "vitana" | "maxina" | "alkalma" | "earthlinks";
@@ -107,6 +108,7 @@ export function EventTicket({
   tenant = "vitana",
 }: EventTicketProps) {
   const ticketRef = useRef<HTMLDivElement>(null);
+  const [shareSheetOpen, setShareSheetOpen] = useState(false);
   
   // Get tenant-specific configuration
   const config = TICKET_TENANT_CONFIG[tenant] || TICKET_TENANT_CONFIG.vitana;
@@ -132,58 +134,7 @@ export function EventTicket({
     }
   };
 
-  const handleShare = async () => {
-    if (!ticketRef.current) return;
-    
-    try {
-      const canvas = await html2canvas(ticketRef.current, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true,
-      });
-      
-      const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob(resolve, "image/png");
-      });
-      
-      if (!blob) {
-        toast.error("Failed to generate ticket image");
-        return;
-      }
-      
-      const file = new File([blob], `ticket-${ticketNumber}.png`, { type: "image/png" });
-      
-      // Check if Web Share API with file support is available (primarily mobile)
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            title: `Ticket for ${eventTitle}`,
-            text: `My ticket for ${eventTitle}`,
-            files: [file],
-          });
-          toast.success("Ticket shared!");
-        } catch (shareError: any) {
-          // User cancelled the share dialog - not an error
-          if (shareError.name === 'AbortError') {
-            return;
-          }
-          throw shareError;
-        }
-      } else {
-        // Desktop fallback: Download the ticket and show helpful message
-        const link = document.createElement("a");
-        link.download = `ticket-${ticketNumber}.png`;
-        link.href = URL.createObjectURL(blob);
-        link.click();
-        URL.revokeObjectURL(link.href);
-        
-        toast.success("Ticket downloaded! You can now share it via your preferred app.");
-      }
-    } catch (error) {
-      console.error("Share error:", error);
-      toast.error("Failed to share ticket");
-    }
-  };
+  // Removed inline handleShare - now uses TicketShareSheet
 
   // Decorative barcode heights
   const barcodeHeights = [3, 5, 2, 6, 4, 2, 5, 3, 6, 2, 4, 5, 3, 2, 6, 4];
@@ -503,12 +454,23 @@ export function EventTicket({
         </Button>
         <Button
           className="flex-1 rounded-xl"
-          onClick={handleShare}
+          onClick={() => setShareSheetOpen(true)}
         >
           <Share2 className="h-4 w-4 mr-2" />
           Share
         </Button>
       </div>
+
+      {/* Share Sheet */}
+      <TicketShareSheet
+        open={shareSheetOpen}
+        onOpenChange={setShareSheetOpen}
+        ticketRef={ticketRef}
+        eventTitle={eventTitle}
+        ticketNumber={ticketNumber}
+        eventDate={format(eventDate, "EEE, MMM d, yyyy 'at' h:mm a")}
+        eventLocation={eventLocation}
+      />
     </div>
   );
 }
