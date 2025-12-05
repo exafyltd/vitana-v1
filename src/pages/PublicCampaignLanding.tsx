@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Calendar, CalendarDays, Target, TrendingUp, Users, Sparkles } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Calendar, CalendarDays, Target, TrendingUp, Users, Sparkles, Ticket } from "lucide-react";
 import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
+import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 
 interface PublicCampaignData {
   id: string;
@@ -23,6 +25,13 @@ interface PublicCampaignData {
   owner_avatar: string | null;
 }
 
+interface LinkedEventTicketInfo {
+  has_tickets: boolean;
+  lowest_ticket_price: number | null;
+  is_paid_event: boolean;
+  event_title: string;
+}
+
 export default function PublicCampaignLanding() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -31,6 +40,8 @@ export default function PublicCampaignLanding() {
   const [campaign, setCampaign] = useState<PublicCampaignData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showTicketDialog, setShowTicketDialog] = useState(false);
+  const [linkedEventTickets, setLinkedEventTickets] = useState<LinkedEventTicketInfo | null>(null);
 
   useEffect(() => {
     const fetchPublicCampaign = async () => {
@@ -59,7 +70,26 @@ export default function PublicCampaignLanding() {
           return;
         }
 
-        setCampaign(data[0] as PublicCampaignData);
+        const campaignData = data[0] as PublicCampaignData;
+        setCampaign(campaignData);
+
+        // Fetch linked event ticket info if campaign has event_id
+        const linkedEventId = campaignData.metadata?.event_id || campaignData.metadata?.eventId;
+        if (linkedEventId) {
+          const { data: eventData } = await supabase.rpc("get_public_event_details", {
+            event_id: linkedEventId,
+          });
+          
+          if (eventData && eventData.length > 0) {
+            const event = eventData[0];
+            setLinkedEventTickets({
+              has_tickets: event.has_tickets || false,
+              lowest_ticket_price: event.lowest_ticket_price ?? null,
+              is_paid_event: event.is_paid_event || false,
+              event_title: event.title || campaignData.name,
+            });
+          }
+        }
       } catch (err) {
         console.error("Error:", err);
         setError("Failed to load campaign");
@@ -93,28 +123,35 @@ export default function PublicCampaignLanding() {
       alkalma: '/alkalma',
       earthlinks: '/earthlinks',
     };
-    return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/auth';
+    return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/maxina';
   };
 
   // Try to detect linked event from campaign metadata
   const linkedEventId = campaign?.metadata?.event_id || campaign?.metadata?.eventId || null;
-  const isEventPaid = campaign?.metadata?.is_paid || campaign?.metadata?.isPaid || false;
-  const eventPrice = campaign?.metadata?.price || campaign?.metadata?.event_price || null;
+  const isEventPaid = linkedEventTickets?.is_paid_event || campaign?.metadata?.is_paid || campaign?.metadata?.isPaid || false;
+  const eventPrice = linkedEventTickets?.lowest_ticket_price ?? campaign?.metadata?.price ?? campaign?.metadata?.event_price ?? null;
+  const hasTickets = linkedEventTickets?.has_tickets || false;
   
   // Check for external ticket URL
   const ticketUrl = campaign ? getCampaignTicketUrl(campaign) : null;
   const hasExternalTicket = !!ticketUrl;
   
   // Get tenant from campaign metadata for proper login routing
-  const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || null;
+  const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || localStorage.getItem('tenant_slug') || null;
 
   // Determine primary CTA label
   const getPrimaryCTALabel = () => {
-    if (linkedEventId) {
-      if (isEventPaid && eventPrice) return "Get Ticket";
-      return "Reserve Spot";
-    }
+    if (user) return "View Event Details";
+    if (hasTickets && isEventPaid) return "Buy Ticket";
+    if (hasTickets) return "Get Free Ticket";
+    if (linkedEventId) return "Reserve My Spot";
     return "Join Event";
+  };
+
+  // Determine CTA icon
+  const getPrimaryCTAIcon = () => {
+    if (hasTickets) return <Ticket className="h-4 w-4 mr-2" />;
+    return <CalendarDays className="h-4 w-4 mr-2" />;
   };
 
   const handleEventClick = () => {
@@ -124,7 +161,13 @@ export default function PublicCampaignLanding() {
       return;
     }
     
-    // Priority 2: Linked event - navigate internally
+    // Priority 2: Linked event with tickets - show ticket dialog (supports guest checkout)
+    if (linkedEventId && hasTickets && !user) {
+      setShowTicketDialog(true);
+      return;
+    }
+    
+    // Priority 3: Linked event - navigate internally
     if (linkedEventId) {
       if (user) {
         navigate(`/comm/events-meetups?event=${linkedEventId}`);
@@ -225,55 +268,63 @@ export default function PublicCampaignLanding() {
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                   {campaign.name}
                 </h1>
-              {displayStatus && (
-                <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
-                  {displayStatus}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {displayStatus && (
+                    <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
+                      {displayStatus}
+                    </div>
+                  )}
+                  {hasTickets && eventPrice !== null && (
+                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
+                      <Ticket className="h-3.5 w-3.5" />
+                      {eventPrice === 0 ? "Free" : `From $${eventPrice}`}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
 
               {/* Campaign Details */}
               <div className="grid gap-2 md:gap-3 md:grid-cols-2">
-              {campaign.start_date && (
+                {campaign.start_date && (
+                  <div className="flex items-start gap-3">
+                    <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Campaign Period</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {startDate} {endDate && `- ${endDate}`}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {campaign.target_channels && Array.isArray(campaign.target_channels) && (
+                  <div className="flex items-start gap-3">
+                    <TrendingUp className="h-5 w-5 text-muted-foreground mt-0.5" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Channels</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {campaign.target_channels.length} channel{campaign.target_channels.length !== 1 ? 's' : ''}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex items-start gap-3">
-                  <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
+                  <Target className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Campaign Period</p>
-                    <p className="text-sm font-medium text-foreground">
-                      {startDate} {endDate && `- ${endDate}`}
-                    </p>
+                    <p className="text-xs text-muted-foreground">Type</p>
+                    <p className="text-sm font-medium text-foreground">Marketing Campaign</p>
                   </div>
                 </div>
-              )}
 
-              {campaign.target_channels && Array.isArray(campaign.target_channels) && (
                 <div className="flex items-start gap-3">
-                  <TrendingUp className="h-5 w-5 text-muted-foreground mt-0.5" />
+                  <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Channels</p>
-                    <p className="text-sm font-medium text-foreground">
-                      {campaign.target_channels.length} channel{campaign.target_channels.length !== 1 ? 's' : ''}
-                    </p>
+                    <p className="text-xs text-muted-foreground">Community</p>
+                    <p className="text-sm font-medium text-foreground">VITANA</p>
                   </div>
                 </div>
-              )}
-
-              <div className="flex items-start gap-3">
-                <Target className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Type</p>
-                  <p className="text-sm font-medium text-foreground">Marketing Campaign</p>
-                </div>
               </div>
-
-              <div className="flex items-start gap-3">
-                <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
-                <div>
-                  <p className="text-xs text-muted-foreground">Community</p>
-                  <p className="text-sm font-medium text-foreground">VITANA</p>
-                </div>
-              </div>
-            </div>
 
               {/* Description */}
               {campaign.description && (
@@ -282,60 +333,73 @@ export default function PublicCampaignLanding() {
                 </div>
               )}
 
-          {/* Dual CTA Panel */}
-          <div className="mt-3 md:mt-4">
-            <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
-              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
-                
-                {/* Left: Event CTA */}
-                <div className="flex-1 flex flex-col gap-2">
-                  <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    <CalendarDays className="h-4 w-4 text-primary" />
-                    <span>Join this event</span>
+              {/* Dual CTA Panel */}
+              <div className="mt-3 md:mt-4">
+                <div className="rounded-2xl border border-white/60 bg-white/70 dark:bg-white/10 dark:border-white/20 backdrop-blur-sm shadow-md px-6 md:px-8 py-5">
+                  <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 md:gap-8">
+                    
+                    {/* Left: Event CTA */}
+                    <div className="flex-1 flex flex-col gap-2">
+                      <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                        {hasTickets ? (
+                          <Ticket className="h-4 w-4 text-primary" />
+                        ) : (
+                          <CalendarDays className="h-4 w-4 text-primary" />
+                        )}
+                        <span>{hasTickets ? "Get your ticket" : "Join this event"}</span>
+                      </div>
+                      <Button
+                        size="default"
+                        onClick={handleEventClick}
+                        className="w-full md:w-auto px-6"
+                      >
+                        {getPrimaryCTAIcon()}
+                        {getPrimaryCTALabel()}
+                      </Button>
+                    </div>
+                    
+                    {/* Divider */}
+                    <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
+                    <div className="flex items-center justify-center gap-3 md:hidden">
+                      <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
+                      <span className="text-xs text-muted-foreground font-medium">or</span>
+                      <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
+                    </div>
+                    
+                    {/* Right: Community CTA */}
+                    <div className="flex-1 flex flex-col items-start md:items-end gap-2">
+                      <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
+                        <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                        <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
+                          Discover more events and longevity communities.
+                        </span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="default"
+                        onClick={() => {
+                          if (user) {
+                            navigate('/comm/events-meetups');
+                          } else {
+                            const returnUrl = '/comm/events-meetups';
+                            const loginRoute = getTenantLoginRoute(tenantSlug);
+                            navigate(`${loginRoute}?redirectTo=${encodeURIComponent(returnUrl)}`);
+                          }
+                        }}
+                        className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
+                      >
+                        {user ? "Explore VITANA" : "Join in VITANA"}
+                      </Button>
+                      {!user && (
+                        <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
+                          You'll sign in or create an account in the next step.
+                        </p>
+                      )}
+                    </div>
+                    
                   </div>
-                  <Button
-                    size="default"
-                    onClick={handleEventClick}
-                    className="w-full md:w-auto px-6"
-                  >
-                    {getPrimaryCTALabel()}
-                  </Button>
                 </div>
-                
-                {/* Divider */}
-                <div className="hidden md:block w-px h-14 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent" />
-                <div className="flex items-center justify-center gap-3 md:hidden">
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent to-slate-200 dark:to-slate-700" />
-                  <span className="text-xs text-muted-foreground font-medium">or</span>
-                  <div className="flex-1 h-px bg-gradient-to-l from-transparent to-slate-200 dark:to-slate-700" />
-                </div>
-                
-                {/* Right: Community CTA */}
-                <div className="flex-1 flex flex-col items-start md:items-end gap-2">
-                  <div className="flex items-start gap-1.5 max-w-[280px] md:max-w-xs text-left md:text-right">
-                    <Sparkles className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-xs font-medium tracking-wide text-muted-foreground leading-relaxed">
-                      Discover more events, wellness programs, and communities.
-                    </span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="default"
-                    onClick={handleJoinClick}
-                    className="w-full md:w-auto border-primary/40 text-primary bg-transparent hover:bg-primary/5 rounded-full px-5"
-                  >
-                    {user ? "View in VITANA" : "Join in VITANA"}
-                  </Button>
-                  {!user && (
-                    <p className="text-[11px] text-muted-foreground/70 text-left md:text-right max-w-xs">
-                      You'll sign in or create an account in the next step.
-                    </p>
-                  )}
-                </div>
-                
               </div>
-            </div>
-          </div>
             </div>
           </div>
         </div>
@@ -349,6 +413,25 @@ export default function PublicCampaignLanding() {
           </div>
         </div>
       </div>
+
+      {/* Ticket Purchase Dialog */}
+      {linkedEventId && (
+        <Dialog open={showTicketDialog} onOpenChange={setShowTicketDialog}>
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Ticket className="h-5 w-5 text-primary" />
+                Get Tickets for {linkedEventTickets?.event_title || campaign.name}
+              </DialogTitle>
+            </DialogHeader>
+            <EventTicketSelector 
+              eventId={linkedEventId} 
+              eventTitle={linkedEventTickets?.event_title || campaign.name}
+              forceGuestMode={!user}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }
