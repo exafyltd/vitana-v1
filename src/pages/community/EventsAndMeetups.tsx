@@ -822,7 +822,7 @@ const EventsAndMeetups = () => {
           open={promoteCampaignOpen}
           onOpenChange={setPromoteCampaignOpen}
           prefillData={{
-            name: `Promotion: ${eventToPromote.title}`,
+            name: eventToPromote.title,
             description: eventToPromote.description || "",
             goal: "event_promotion",
             coverImage: eventToPromote.image_url || eventToPromote.imageUrl || eventToPromote.metadata?.image_url,
