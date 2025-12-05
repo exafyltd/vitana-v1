@@ -83,14 +83,34 @@ export function EventTicket({
     }
   };
 
+  // Decorative barcode heights
+  const barcodeHeights = [3, 5, 2, 6, 4, 2, 5, 3, 6, 2, 4, 5, 3, 2, 6, 4];
+
   return (
     <div className="space-y-4">
-      {/* Ticket Card - Condor Boarding Pass Style */}
+      {/* Ticket Card - Premium VITANA Boarding Pass */}
       <div
         ref={ticketRef}
-        className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-xl"
-        style={{ minHeight: "440px" }}
+        className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl"
+        style={{ 
+          minHeight: "440px",
+          boxShadow: `
+            0 25px 50px -12px rgba(0,0,0,0.35),
+            inset 0 1px 0 rgba(255,255,255,0.15),
+            inset 0 -1px 0 rgba(255,255,255,0.05),
+            inset 1px 0 0 rgba(255,255,255,0.08),
+            inset -1px 0 0 rgba(255,255,255,0.08)
+          `,
+        }}
       >
+        {/* Metallic Inner Frame Highlight */}
+        <div 
+          className="absolute inset-0 rounded-2xl pointer-events-none z-20"
+          style={{
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 3%, transparent 97%, rgba(255,255,255,0.05) 100%)',
+          }}
+        />
+
         {/* Full-bleed Background Image - Sharp with Vignette */}
         {eventImageUrl ? (
           <img
@@ -115,20 +135,88 @@ export function EventTicket({
             background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
           }}
         />
+
+        {/* VITANA Branded Pattern Layer - Subtle Orb & Geometric Lines */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.08]">
+          {/* Large subtle orb - top right */}
+          <div 
+            className="absolute -top-20 -right-20 w-64 h-64 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%)',
+            }}
+          />
+          {/* Smaller orb - bottom left */}
+          <div 
+            className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
+            }}
+          />
+          {/* Geometric accent lines */}
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+            <line x1="0" y1="30%" x2="100%" y2="25%" stroke="white" strokeWidth="0.5" opacity="0.4" />
+            <line x1="0" y1="70%" x2="100%" y2="75%" stroke="white" strokeWidth="0.5" opacity="0.3" />
+            <line x1="85%" y1="0" x2="90%" y2="100%" stroke="white" strokeWidth="0.5" opacity="0.25" />
+          </svg>
+        </div>
         
         {/* Dark gradient - Top info section (60-75% opacity) */}
         <div className="absolute inset-x-0 top-0 h-[52%] bg-gradient-to-b from-black/70 via-black/55 to-transparent" />
+
+        {/* Spotlight gradient behind title area */}
+        <div 
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[120%] h-[45%] pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.12) 0%, transparent 60%)',
+          }}
+        />
         
         {/* Dark gradient - Bottom QR/footer area (30-40% opacity) */}
         <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/50 via-black/35 to-transparent" />
 
+        {/* Holographic VITANA Seal - Bottom Right */}
+        <div className="absolute bottom-24 right-4 w-16 h-16 pointer-events-none z-10">
+          {/* Outer glow ring */}
+          <div 
+            className="absolute inset-0 rounded-full opacity-40"
+            style={{
+              background: 'conic-gradient(from 0deg, rgba(255,255,255,0.1), rgba(200,220,255,0.3), rgba(255,200,255,0.2), rgba(255,255,255,0.1))',
+            }}
+          />
+          {/* Inner seal circle */}
+          <div 
+            className="absolute inset-1 rounded-full border border-white/20 flex items-center justify-center"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 80%)',
+            }}
+          >
+            <div className="text-center">
+              <span className="text-white/50 text-[6px] font-bold tracking-widest block">VITANA</span>
+              <span className="text-white/30 text-[4px] tracking-wider block mt-0.5">AUTHENTIC</span>
+            </div>
+          </div>
+          {/* Shimmer effect */}
+          <div 
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%)',
+            }}
+          />
+        </div>
+
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-4">
-          {/* Header - Simplified Text-Only */}
+          {/* Header - Enhanced with micro-text */}
           <div className="flex items-center justify-between pb-3 border-b border-white/30">
-            <div>
-              <span className="text-white text-sm font-bold tracking-wide drop-shadow-sm">VITANA</span>
-              <span className="text-white/70 text-xs font-medium tracking-widest ml-2">EVENT PASS</span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <span className="text-white text-sm font-bold tracking-wide drop-shadow-sm">VITANA</span>
+                <span className="text-white/70 text-xs font-medium tracking-widest">EVENT PASS</span>
+              </div>
+              {/* Micro-text accent for official feel */}
+              <span className="text-white/30 text-[7px] tracking-[0.3em] font-medium mt-0.5">
+                OFFICIAL • VERIFIED • SECURE
+              </span>
             </div>
             
             {/* Ticket Type Badge */}
@@ -219,15 +307,39 @@ export function EventTicket({
             </div>
           </div>
           
-          {/* Compact Footer */}
-          <div className="mt-2 pt-2 border-t border-white/20 flex items-center justify-between text-[10px] text-white/60 font-mono">
-            <span>{ticketNumber}</span>
-            <span>SEQ {String(sequence).padStart(4, "0")}</span>
-          </div>
-          <div className="text-center mt-1">
-            <span className="text-white/50 text-[9px] font-medium tracking-wide">
-              Powered by VITANA
-            </span>
+          {/* Enhanced Compact Footer with micro-details */}
+          <div className="mt-2 pt-2 border-t border-white/20">
+            {/* Main footer row */}
+            <div className="flex items-center justify-between text-[10px] text-white/60 font-mono">
+              <span>{ticketNumber}</span>
+              <span>SEQ {String(sequence).padStart(4, "0")}</span>
+            </div>
+            
+            {/* Decorative barcode + batch ID row */}
+            <div className="flex items-center justify-between mt-1.5">
+              {/* Mini decorative barcode (non-functional) */}
+              <div className="flex gap-[1px] items-end h-3 opacity-30">
+                {barcodeHeights.map((h, i) => (
+                  <div 
+                    key={i} 
+                    className="w-[2px] bg-white rounded-sm" 
+                    style={{ height: `${h * 2}px` }} 
+                  />
+                ))}
+              </div>
+              
+              {/* Batch ID / Serial */}
+              <span className="text-white/40 text-[8px] font-mono tracking-wider">
+                BATCH-{format(eventDate, "yyyyMMdd")}-V1
+              </span>
+            </div>
+            
+            {/* Powered by VITANA */}
+            <div className="text-center mt-1.5">
+              <span className="text-white/50 text-[9px] font-medium tracking-wide">
+                Powered by VITANA
+              </span>
+            </div>
           </div>
         </div>
       </div>
