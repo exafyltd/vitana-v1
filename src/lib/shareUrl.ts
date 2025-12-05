@@ -27,18 +27,16 @@ export function getShareUrl(
     return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-campaign?${params.toString()}`;
   }
 
-  // Events use public landing page for proper social previews
+  // Events use OG edge function for rich social previews
   if (type === 'event' || type === 'meetup') {
-    const appUrl = window.location.origin;
     const params = new URLSearchParams();
+    params.set('id', id);
     
-    // Add UTM parameters if provided
     if (options?.utm_source) params.set('utm_source', options.utm_source);
     if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
     if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
-    const queryString = params.toString();
-    return `${appUrl}/pub/events/${encodeURIComponent(id)}${queryString ? '?' + queryString : ''}`;
+    return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?${params.toString()}`;
   }
   
   // Other content types use direct app URLs
