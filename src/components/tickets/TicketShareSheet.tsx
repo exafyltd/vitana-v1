@@ -1,10 +1,16 @@
-import React, { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Download, Link2, Mail, MessageSquare, Share2 } from "lucide-react";
-import { toast } from "sonner";
+import { useState, useRef } from "react";
 import html2canvas from "html2canvas";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Mail, MessageSquare, Download, Link2, Check, Calendar, MapPin, Ticket } from "lucide-react";
 import { siWhatsapp, siViber } from "simple-icons";
+import { cn } from "@/lib/utils";
 
 interface TicketShareSheetProps {
   open: boolean;
@@ -14,6 +20,9 @@ interface TicketShareSheetProps {
   ticketNumber: string;
   eventDate?: string;
   eventLocation?: string;
+  eventImageUrl?: string;
+  ticketType?: string;
+  buyerName?: string;
 }
 
 export function TicketShareSheet({
@@ -24,344 +33,276 @@ export function TicketShareSheet({
   ticketNumber,
   eventDate,
   eventLocation,
+  eventImageUrl,
+  ticketType,
+  buyerName,
 }: TicketShareSheetProps) {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const imageCache = useRef<Blob | null>(null);
 
-  const generateTicketImage = async (): Promise<{ blob: Blob; file: File } | null> => {
-    if (!ticketRef.current) return null;
-    
+  const shareText = `🎟️ I'm going to ${eventTitle}!${eventDate ? `\n📅 ${eventDate}` : ""}${eventLocation ? `\n📍 ${eventLocation}` : ""}`;
+
+  const generateTicketImage = async (): Promise<Blob | null> => {
+    if (imageCache.current) return imageCache.current;
+    if (!ticketRef.current) {
+      toast.error("Unable to generate ticket image");
+      return null;
+    }
+
+    setIsGenerating(true);
     try {
       const canvas = await html2canvas(ticketRef.current, {
         scale: 2,
-        backgroundColor: "#ffffff",
+        backgroundColor: null,
         useCORS: true,
+        allowTaint: true,
       });
-      
-      const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob(resolve, "image/png");
+
+      return new Promise((resolve) => {
+        canvas.toBlob((blob) => {
+          imageCache.current = blob;
+          setIsGenerating(false);
+          resolve(blob);
+        }, "image/png", 0.95);
       });
-      
-      if (!blob) return null;
-      
-      const file = new File([blob], `ticket-${ticketNumber}.png`, { type: "image/png" });
-      return { blob, file };
     } catch (error) {
       console.error("Error generating ticket image:", error);
+      setIsGenerating(false);
+      toast.error("Failed to generate ticket image");
       return null;
     }
   };
 
-  const getShareText = () => {
-    let text = `🎟️ My ticket for ${eventTitle}`;
-    if (eventDate) text += `\n📅 ${eventDate}`;
-    if (eventLocation) text += `\n📍 ${eventLocation}`;
-    return text;
-  };
+  const downloadTicket = async () => {
+    const blob = await generateTicketImage();
+    if (!blob) return;
 
-  const handleNativeShare = async () => {
-    setIsGenerating(true);
-    try {
-      const result = await generateTicketImage();
-      if (!result) {
-        toast.error("Failed to generate ticket image");
-        return;
-      }
-
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [result.file] })) {
-        await navigator.share({
-          title: `Ticket for ${eventTitle}`,
-          text: getShareText(),
-          files: [result.file],
-        });
-        toast.success("Ticket shared!");
-        onOpenChange(false);
-      } else {
-        toast.error("Native sharing not supported on this device");
-      }
-    } catch (error: any) {
-      if (error.name !== "AbortError") {
-        toast.error("Failed to share ticket");
-      }
-    } finally {
-      setIsGenerating(false);
-    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ticket-${ticketNumber}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    return blob;
   };
 
   const handleWhatsApp = async () => {
-    setIsGenerating(true);
-    try {
-      const result = await generateTicketImage();
-      if (!result) {
-        toast.error("Failed to generate ticket image");
-        return;
-      }
-
-      // Try native share with file on mobile
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [result.file] })) {
-        await navigator.share({
-          title: `Ticket for ${eventTitle}`,
-          text: getShareText(),
-          files: [result.file],
-        });
-        toast.success("Ticket shared!");
-        onOpenChange(false);
-      } else {
-        // Desktop: Download image and open WhatsApp with text
-        const link = document.createElement("a");
-        link.download = `ticket-${ticketNumber}.png`;
-        link.href = URL.createObjectURL(result.blob);
-        link.click();
-        URL.revokeObjectURL(link.href);
-        
-        const text = encodeURIComponent(getShareText() + "\n\n(Ticket image downloaded - attach it to your message)");
-        window.open(`https://wa.me/?text=${text}`, "_blank");
-        toast.success("Ticket downloaded! Attach it in WhatsApp.");
-        onOpenChange(false);
-      }
-    } catch (error: any) {
-      if (error.name !== "AbortError") {
-        toast.error("Failed to share via WhatsApp");
-      }
-    } finally {
-      setIsGenerating(false);
-    }
+    const blob = await downloadTicket();
+    if (!blob) return;
+    
+    toast.success("Ticket downloaded! Opening WhatsApp...");
+    const url = `https://wa.me/?text=${encodeURIComponent(shareText + "\n\n(Ticket image attached separately)")}`;
+    window.open(url, "_blank");
   };
 
   const handleViber = async () => {
-    setIsGenerating(true);
-    try {
-      const result = await generateTicketImage();
-      if (!result) {
-        toast.error("Failed to generate ticket image");
-        return;
+    const blob = await downloadTicket();
+    if (!blob) return;
+
+    const viberUrl = `viber://forward?text=${encodeURIComponent(shareText)}`;
+    window.location.href = viberUrl;
+
+    let hasOpened = false;
+    const checkTimer = setTimeout(() => {
+      if (!hasOpened) {
+        navigator.clipboard.writeText(shareText);
+        toast.info("Ticket downloaded! Message copied – paste it into Viber");
       }
+    }, 1500);
 
-      // Download image first
-      const link = document.createElement("a");
-      link.download = `ticket-${ticketNumber}.png`;
-      link.href = URL.createObjectURL(result.blob);
-      link.click();
-      URL.revokeObjectURL(link.href);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        hasOpened = true;
+        clearTimeout(checkTimer);
+        toast.success("Ticket downloaded! Opening Viber...");
+      }
+    };
 
-      const text = encodeURIComponent(getShareText());
-      
-      // Try to open Viber
-      const viberUrl = `viber://forward?text=${text}`;
-      const startTime = Date.now();
-      window.location.href = viberUrl;
-      
-      // Check if Viber opened
-      setTimeout(() => {
-        if (Date.now() - startTime < 1500) {
-          toast.success("Ticket downloaded! Attach it in Viber.");
-        } else {
-          toast.success("Opening Viber... Attach the downloaded ticket.");
-        }
-        onOpenChange(false);
-      }, 1000);
-    } catch (error) {
-      toast.error("Failed to share via Viber");
-    } finally {
-      setIsGenerating(false);
-    }
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    setTimeout(() => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    }, 2000);
   };
 
   const handleEmail = async () => {
-    setIsGenerating(true);
-    try {
-      const result = await generateTicketImage();
-      if (!result) {
-        toast.error("Failed to generate ticket image");
-        return;
-      }
+    const blob = await downloadTicket();
+    if (!blob) return;
 
-      // Download image first
-      const link = document.createElement("a");
-      link.download = `ticket-${ticketNumber}.png`;
-      link.href = URL.createObjectURL(result.blob);
-      link.click();
-      URL.revokeObjectURL(link.href);
-
-      const subject = encodeURIComponent(`My Ticket for ${eventTitle}`);
-      const body = encodeURIComponent(
-        `${getShareText()}\n\n(Please attach the downloaded ticket image to this email)`
-      );
-      
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-      toast.success("Ticket downloaded! Attach it to your email.");
-      onOpenChange(false);
-    } catch (error) {
-      toast.error("Failed to prepare email");
-    } finally {
-      setIsGenerating(false);
-    }
+    toast.success("Ticket downloaded! Opening email...");
+    const subject = encodeURIComponent(`My ticket for ${eventTitle}`);
+    const body = encodeURIComponent(`${shareText}\n\n(Please attach the downloaded ticket image)`);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
   const handleSMS = async () => {
-    setIsGenerating(true);
-    try {
-      const result = await generateTicketImage();
-      if (!result) {
-        toast.error("Failed to generate ticket image");
-        return;
-      }
+    const blob = await downloadTicket();
+    if (!blob) return;
 
-      // Try native share with file on mobile
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [result.file] })) {
-        await navigator.share({
-          title: `Ticket for ${eventTitle}`,
-          text: getShareText(),
-          files: [result.file],
-        });
-        toast.success("Ticket shared!");
-        onOpenChange(false);
-      } else {
-        // Desktop: Download and open SMS
-        const link = document.createElement("a");
-        link.download = `ticket-${ticketNumber}.png`;
-        link.href = URL.createObjectURL(result.blob);
-        link.click();
-        URL.revokeObjectURL(link.href);
-
-        const text = encodeURIComponent(getShareText());
-        window.location.href = `sms:?body=${text}`;
-        toast.success("Ticket downloaded! Attach it to your message.");
-        onOpenChange(false);
-      }
-    } catch (error: any) {
-      if (error.name !== "AbortError") {
-        toast.error("Failed to share via SMS");
-      }
-    } finally {
-      setIsGenerating(false);
-    }
+    toast.success("Ticket downloaded! Opening messages...");
+    const body = encodeURIComponent(shareText);
+    window.location.href = `sms:?&body=${body}`;
   };
 
   const handleDownload = async () => {
-    setIsGenerating(true);
-    try {
-      const result = await generateTicketImage();
-      if (!result) {
-        toast.error("Failed to generate ticket image");
-        return;
-      }
-
-      const link = document.createElement("a");
-      link.download = `ticket-${ticketNumber}.png`;
-      link.href = URL.createObjectURL(result.blob);
-      link.click();
-      URL.revokeObjectURL(link.href);
-      
-      toast.success("Ticket downloaded!");
-      onOpenChange(false);
-    } catch (error) {
-      toast.error("Failed to download ticket");
-    } finally {
-      setIsGenerating(false);
-    }
+    await downloadTicket();
+    toast.success("Ticket saved!");
   };
 
-  const handleCopyDetails = async () => {
-    try {
-      await navigator.clipboard.writeText(getShareText());
-      toast.success("Event details copied!");
-    } catch (error) {
-      toast.error("Failed to copy details");
-    }
+  const handleCopyDetails = () => {
+    navigator.clipboard.writeText(shareText);
+    setCopied(true);
+    toast.success("Event details copied!");
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  // Check if native file sharing is supported (primarily mobile)
-  const supportsNativeFileShare = typeof navigator !== "undefined" && 
-    navigator.share && 
-    navigator.canShare;
-
-  const shareOptions = [
-    ...(supportsNativeFileShare ? [{
-      id: "native",
-      label: "Share...",
-      icon: Share2,
-      description: "Open share menu",
-      onClick: handleNativeShare,
-    }] : []),
+  const buttons = [
     {
       id: "whatsapp",
       label: "WhatsApp",
-      icon: () => (
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-          <path d={siWhatsapp.path} />
-        </svg>
-      ),
-      description: "Share via WhatsApp",
       onClick: handleWhatsApp,
+      icon: (
+        <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center">
+          <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-white">
+            <path d={siWhatsapp.path} />
+          </svg>
+        </div>
+      ),
     },
     {
       id: "viber",
       label: "Viber",
-      icon: () => (
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-          <path d={siViber.path} />
-        </svg>
-      ),
-      description: "Share via Viber",
       onClick: handleViber,
+      icon: (
+        <div className="w-8 h-8 rounded-full bg-[#7360F2] flex items-center justify-center">
+          <svg role="img" viewBox="0 0 24 24" className="w-5 h-5 fill-white">
+            <path d={siViber.path} />
+          </svg>
+        </div>
+      ),
     },
     {
       id: "email",
       label: "Email",
-      icon: Mail,
-      description: "Send via email",
       onClick: handleEmail,
+      icon: (
+        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+          <Mail className="w-5 h-5 text-primary-foreground" />
+        </div>
+      ),
     },
     {
       id: "sms",
       label: "SMS",
-      icon: MessageSquare,
-      description: "Send via text",
       onClick: handleSMS,
+      icon: (
+        <div className="w-8 h-8 rounded-full bg-green-600 flex items-center justify-center">
+          <MessageSquare className="w-5 h-5 text-white" />
+        </div>
+      ),
     },
     {
       id: "download",
       label: "Download",
-      icon: Download,
-      description: "Save image",
       onClick: handleDownload,
+      icon: (
+        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+          <Download className="w-5 h-5 text-secondary-foreground" />
+        </div>
+      ),
     },
     {
       id: "copy",
-      label: "Copy Details",
-      icon: Link2,
-      description: "Copy event info",
+      label: copied ? "Copied!" : "Copy Link",
       onClick: handleCopyDetails,
+      icon: (
+        <div className={cn(
+          "w-8 h-8 rounded-full flex items-center justify-center",
+          copied ? "bg-green-600" : "bg-muted"
+        )}>
+          {copied ? (
+            <Check className="w-5 h-5 text-white" />
+          ) : (
+            <Link2 className="w-5 h-5 text-muted-foreground" />
+          )}
+        </div>
+      ),
     },
   ];
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-2xl">
-        <SheetHeader className="pb-4">
-          <SheetTitle className="text-center">Share Ticket</SheetTitle>
-        </SheetHeader>
-        
-        <div className="grid grid-cols-4 gap-3 pb-6">
-          {shareOptions.map((option) => {
-            const IconComponent = option.icon;
-            return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Share your ticket</DialogTitle>
+          <p className="text-sm text-muted-foreground">
+            Send your ticket to friends or save for easy access.
+          </p>
+        </DialogHeader>
+
+        {/* Ticket Preview Card */}
+        <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg border">
+          {eventImageUrl ? (
+            <img
+              src={eventImageUrl}
+              alt={eventTitle}
+              className="w-16 h-16 rounded-lg object-cover shrink-0"
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center shrink-0">
+              <Ticket className="w-6 h-6 text-muted-foreground" />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-sm truncate">{eventTitle}</h4>
+            {(ticketType || buyerName) && (
+              <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                <Ticket className="w-3 h-3" />
+                {[ticketType, buyerName].filter(Boolean).join(" • ")}
+              </p>
+            )}
+            <div className="flex flex-col gap-0.5 mt-1">
+              {eventDate && (
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  {eventDate}
+                </p>
+              )}
+              {eventLocation && (
+                <p className="text-xs text-muted-foreground flex items-center gap-1 truncate">
+                  <MapPin className="w-3 h-3 shrink-0" />
+                  <span className="truncate">{eventLocation}</span>
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Share Buttons Grid */}
+        <div className="space-y-3">
+          <p className="text-xs font-medium text-muted-foreground">Quick share</p>
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {buttons.map((btn) => (
               <Button
-                key={option.id}
-                variant="ghost"
-                className="flex flex-col items-center gap-2 h-auto py-4 hover:bg-accent/50"
-                onClick={option.onClick}
+                key={btn.id}
+                variant="outline"
+                className="h-auto py-3 flex flex-col gap-2 items-center justify-center"
+                onClick={btn.onClick}
                 disabled={isGenerating}
               >
-                <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-                  <IconComponent className="h-5 w-5 text-foreground" />
-                </div>
-                <span className="text-xs text-muted-foreground">{option.label}</span>
+                {btn.icon}
+                <span className="text-xs font-medium">{btn.label}</span>
               </Button>
-            );
-          })}
+            ))}
+          </div>
         </div>
-      </SheetContent>
-    </Sheet>
+
+        <p className="text-xs text-muted-foreground text-center">
+          Opens your personal apps to share directly
+        </p>
+      </DialogContent>
+    </Dialog>
   );
 }

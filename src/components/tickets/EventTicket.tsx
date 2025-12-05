@@ -470,6 +470,9 @@ export function EventTicket({
         ticketNumber={ticketNumber}
         eventDate={format(eventDate, "EEE, MMM d, yyyy 'at' h:mm a")}
         eventLocation={eventLocation}
+        eventImageUrl={eventImageUrl}
+        ticketType={ticketType}
+        buyerName={buyerName}
       />
     </div>
   );
