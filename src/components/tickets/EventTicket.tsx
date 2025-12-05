@@ -118,7 +118,7 @@ export function EventTicket({
             alt={eventTitle}
             className="absolute inset-0 w-full h-full object-cover"
             style={{ 
-              filter: 'saturate(0.9) contrast(0.85)',
+              filter: 'saturate(0.93) contrast(0.75) brightness(1.10)',
               transform: 'scale(1.15)',
               transformOrigin: 'center center',
             }}
