@@ -142,21 +142,45 @@ export function EventTicket({
         useCORS: true,
       });
       
-      canvas.toBlob(async (blob) => {
-        if (!blob) return;
-        
-        if (navigator.share && navigator.canShare) {
-          const file = new File([blob], `ticket-${ticketNumber}.png`, { type: "image/png" });
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, "image/png");
+      });
+      
+      if (!blob) {
+        toast.error("Failed to generate ticket image");
+        return;
+      }
+      
+      const file = new File([blob], `ticket-${ticketNumber}.png`, { type: "image/png" });
+      
+      // Check if Web Share API with file support is available (primarily mobile)
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
           await navigator.share({
             title: `Ticket for ${eventTitle}`,
             text: `My ticket for ${eventTitle}`,
             files: [file],
           });
-        } else {
-          handleDownload();
+          toast.success("Ticket shared!");
+        } catch (shareError: any) {
+          // User cancelled the share dialog - not an error
+          if (shareError.name === 'AbortError') {
+            return;
+          }
+          throw shareError;
         }
-      }, "image/png");
+      } else {
+        // Desktop fallback: Download the ticket and show helpful message
+        const link = document.createElement("a");
+        link.download = `ticket-${ticketNumber}.png`;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        
+        toast.success("Ticket downloaded! You can now share it via your preferred app.");
+      }
     } catch (error) {
+      console.error("Share error:", error);
       toast.error("Failed to share ticket");
     }
   };
