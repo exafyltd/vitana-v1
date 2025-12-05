@@ -91,52 +91,56 @@ export function EventTicket({
         className="relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-xl"
         style={{ minHeight: "440px" }}
       >
-        {/* Full-bleed Background Image - Premium Airline Style */}
+        {/* Full-bleed Background Image - Sharp with Vignette */}
         {eventImageUrl ? (
           <img
             src={eventImageUrl}
             alt={eventTitle}
             className="absolute inset-0 w-full h-full object-cover"
             style={{ 
-              filter: 'blur(2px) saturate(1.2) contrast(1.15) brightness(1.05)',
-              transform: 'scale(1.2)',
+              filter: 'saturate(1.25) contrast(1.1) brightness(0.95)',
+              transform: 'scale(1.15)',
               transformOrigin: 'center center',
             }}
             crossOrigin="anonymous"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-200 via-stone-200 to-zinc-300" />
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-800 to-zinc-900" />
         )}
         
-        {/* Strategic Gradients - Top area for header/title readability */}
-        <div className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-b from-white/75 via-white/60 to-transparent" />
+        {/* Vignette effect - dark edges */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%)',
+          }}
+        />
         
-        {/* Strategic Gradients - Bottom area for QR/footer readability */}
-        <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-white/70 via-white/50 to-transparent" />
+        {/* Dark gradient - Top info section (60-75% opacity) */}
+        <div className="absolute inset-x-0 top-0 h-[52%] bg-gradient-to-b from-black/70 via-black/55 to-transparent" />
         
-        {/* Ultra-subtle warm tint for cohesion */}
-        <div className="absolute inset-0 bg-amber-50/5" />
+        {/* Dark gradient - Bottom QR/footer area (30-40% opacity) */}
+        <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/50 via-black/35 to-transparent" />
 
         {/* Content Overlay */}
         <div className="relative z-10 h-full flex flex-col p-4">
           {/* Header - Simplified Text-Only */}
-          <div className="flex items-center justify-between pb-3 border-b border-gray-300/50">
+          <div className="flex items-center justify-between pb-3 border-b border-white/30">
             <div>
-              <span className="text-gray-800 text-sm font-bold tracking-wide">VITANA</span>
-              <span className="text-gray-500 text-xs font-medium tracking-widest ml-2">EVENT PASS</span>
+              <span className="text-white text-sm font-bold tracking-wide drop-shadow-sm">VITANA</span>
+              <span className="text-white/70 text-xs font-medium tracking-widest ml-2">EVENT PASS</span>
             </div>
             
             {/* Ticket Type Badge */}
-            <div className="px-3 py-1 rounded-full bg-primary shadow-sm">
-              <span className="text-primary-foreground text-[10px] font-semibold uppercase tracking-wide">
+            <div className="px-3 py-1 rounded-full bg-white/90 shadow-md backdrop-blur-sm">
+              <span className="text-gray-900 text-[10px] font-semibold uppercase tracking-wide">
                 {ticketType}
               </span>
             </div>
           </div>
           
           {/* Event Title - Large Hero */}
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-3 leading-tight"
-              style={{ textShadow: '0 1px 2px rgba(255,255,255,0.5)' }}>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mt-3 mb-3 leading-tight drop-shadow-md">
             {eventTitle}
           </h2>
           
@@ -144,20 +148,20 @@ export function EventTicket({
           <div className="grid grid-cols-2 gap-x-6 gap-y-3 mb-3">
             {/* Date */}
             <div>
-              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+              <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
                 Date
               </div>
-              <p className="text-gray-900 font-semibold text-sm">
+              <p className="text-white font-semibold text-sm drop-shadow-sm">
                 {format(eventDate, "EEE, MMM d, yyyy")}
               </p>
             </div>
             
             {/* Time */}
             <div>
-              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+              <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
                 Time
               </div>
-              <p className="text-gray-900 font-semibold text-sm">
+              <p className="text-white font-semibold text-sm drop-shadow-sm">
                 {format(eventDate, "h:mm a")}
               </p>
             </div>
@@ -165,44 +169,44 @@ export function EventTicket({
           
           {/* Location */}
           <div className="mb-3">
-            <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+            <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
               Venue
             </div>
-            <p className="text-gray-900 font-semibold text-sm">
+            <p className="text-white font-semibold text-sm drop-shadow-sm">
               {eventLocation || "TBA"}
             </p>
           </div>
           
-          {/* Thin Divider Line with Cutouts */}
-          <div className="relative flex items-center my-2">
-            <div className="absolute -left-4 w-4 h-4 bg-background rounded-full shadow-inner" />
-            <div className="flex-1 border-t border-gray-300/60" />
-            <div className="absolute -right-4 w-4 h-4 bg-background rounded-full shadow-inner" />
+          {/* Strong Divider Line with Cutouts - Boarding Pass Style */}
+          <div className="relative flex items-center my-3">
+            <div className="absolute -left-4 w-5 h-5 bg-background rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]" />
+            <div className="flex-1 border-t-2 border-dashed border-white/40" />
+            <div className="absolute -right-4 w-5 h-5 bg-background rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]" />
           </div>
           
-          {/* Two-Column Attendee Row */}
-          <div className="flex items-start justify-between mt-3 mb-3">
+          {/* Two-Column Attendee Row - with subtle dark backing */}
+          <div className="flex items-start justify-between mt-3 mb-3 px-3 py-2 rounded-lg bg-black/30 backdrop-blur-sm">
             <div>
-                <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
-                  Attendee
-                </div>
-              <p className="text-gray-900 font-bold text-base uppercase tracking-wide">
+              <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+                Attendee
+              </div>
+              <p className="text-white font-bold text-base uppercase tracking-wide drop-shadow-sm">
                 {buyerName}
               </p>
             </div>
             <div className="text-right">
-              <div className="text-gray-500 text-[10px] uppercase tracking-widest font-medium mb-0.5">
+              <div className="text-white/60 text-[10px] uppercase tracking-widest font-medium mb-0.5">
                 Qty
               </div>
-              <p className="text-gray-900 font-bold text-xl">
+              <p className="text-white font-bold text-xl drop-shadow-sm">
                 {quantity}
               </p>
             </div>
           </div>
           
-          {/* Huge Centered QR Code */}
+          {/* Huge Centered QR Code - Enhanced white container */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="p-2 rounded-xl bg-white shadow-lg border border-gray-100">
+            <div className="p-3 rounded-2xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.25)] border border-white/50">
               <QRCodeSVG
                 value={qrCodeData}
                 size={140}
@@ -210,18 +214,18 @@ export function EventTicket({
                 includeMargin={false}
               />
             </div>
-            <div className="mt-2 text-[10px] font-semibold text-gray-500 uppercase tracking-widest">
+            <div className="mt-2 text-[10px] font-semibold text-white/80 uppercase tracking-widest drop-shadow-sm">
               Scan for Entry
             </div>
           </div>
           
           {/* Compact Footer */}
-          <div className="mt-2 pt-2 border-t border-gray-200/50 flex items-center justify-between text-[10px] text-gray-400 font-mono">
+          <div className="mt-2 pt-2 border-t border-white/20 flex items-center justify-between text-[10px] text-white/60 font-mono">
             <span>{ticketNumber}</span>
             <span>SEQ {String(sequence).padStart(4, "0")}</span>
           </div>
           <div className="text-center mt-1">
-            <span className="text-gray-400 text-[9px] font-medium tracking-wide">
+            <span className="text-white/50 text-[9px] font-medium tracking-wide">
               Powered by VITANA
             </span>
           </div>
