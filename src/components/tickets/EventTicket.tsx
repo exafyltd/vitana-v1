@@ -177,8 +177,21 @@ export function EventTicket({
           }}
         />
         
-        {/* Dark gradient - Bottom QR/footer area (30-40% opacity) */}
-        <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/50 via-black/35 to-transparent" />
+        {/* Dark gradient - Lower section (ATTENDEE to bottom): 5-10% start, 25-30% end */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[48%] pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.28) 100%)',
+          }}
+        />
+        
+        {/* Additional contrast reduction layer for lower section */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[48%] pointer-events-none"
+          style={{
+            background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.10) 100%)',
+          }}
+        />
 
         {/* Holographic VITANA Seal - Bottom Right */}
         <div className="absolute bottom-24 right-4 w-16 h-16 pointer-events-none z-10">
@@ -300,7 +313,7 @@ export function EventTicket({
           
           {/* Huge Centered QR Code - Enhanced white container */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <div className="p-3 rounded-2xl bg-white shadow-[0_8px_32px_rgba(0,0,0,0.25)] border border-white/50">
+            <div className="p-3 rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.25)] border border-white/10">
               <QRCodeSVG
                 value={qrCodeData}
                 size={140}
