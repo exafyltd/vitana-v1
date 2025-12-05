@@ -164,7 +164,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
         className={cn(
           "group relative overflow-hidden",
           "rounded-xl border border-border/40",
-          "bg-card/95 backdrop-blur-sm",
+          "bg-card",
           "hover:border-[hsl(var(--accent))]/40",
           "transition-all duration-200 ease-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60",
@@ -232,7 +232,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             
             <Badge 
               variant="secondary" 
-              className="absolute top-1.5 left-1.5 bg-white/25 backdrop-blur-sm border border-white/40 text-[11px] px-2 py-0.5 h-5 z-10"
+              className="absolute top-1.5 left-1.5 bg-black/50 backdrop-blur-sm border border-white/30 text-white text-[11px] px-2 py-0.5 h-5 z-10"
             >
               {category.icon} {category.label}
             </Badge>
@@ -343,7 +343,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
 
           {/* Right Badge Zone - Fixed width, single medal + cadence text */}
         <div className={cn(
-          "flex flex-col items-end justify-center bg-muted/20",
+          "flex flex-col items-end justify-center bg-muted/50",
           "px-3 py-3 xl:px-2.5 xl:py-2.5",
           "shrink-0 w-full lg:w-[112px] xl:w-[104px] min-w-[100px]",
           "lg:mt-0 mt-2"
