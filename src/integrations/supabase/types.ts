@@ -6924,12 +6924,15 @@ export type Database = {
           description: string
           end_time: string
           event_type: string
+          has_tickets: boolean
           id: string
           image_url: string
+          is_paid_event: boolean
           location: string
+          lowest_ticket_price: number
           max_participants: number
+          metadata: Json
           organizer_avatar: string
-          organizer_id: string
           organizer_name: string
           participant_count: number
           start_time: string

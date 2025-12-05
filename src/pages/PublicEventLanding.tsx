@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users, Clock, CalendarDays, Sparkles } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Calendar, MapPin, Users, Clock, CalendarDays, Sparkles, Ticket } from "lucide-react";
 import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
+import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
 
 interface PublicEventData {
   id: string;
@@ -21,6 +23,9 @@ interface PublicEventData {
   organizer_name: string;
   organizer_avatar: string | null;
   metadata?: Record<string, any> | null;
+  has_tickets?: boolean;
+  lowest_ticket_price?: number;
+  is_paid_event?: boolean;
 }
 
 // Helper to get tenant-specific login route
@@ -41,6 +46,7 @@ export default function PublicEventLanding() {
   const [event, setEvent] = useState<PublicEventData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showTicketDialog, setShowTicketDialog] = useState(false);
 
   useEffect(() => {
     const fetchPublicEvent = async () => {
@@ -86,6 +92,36 @@ export default function PublicEventLanding() {
                      event?.metadata?.tenantSlug || 
                      localStorage.getItem('tenant_slug') || 
                      null;
+
+  // Determine primary CTA text based on event type
+  const getPrimaryCTAText = (): string => {
+    if (user) return "View Event Details";
+    if (event?.has_tickets && event?.is_paid_event) return "Buy Ticket";
+    if (event?.has_tickets) return "Get Free Ticket";
+    return "Reserve My Spot";
+  };
+
+  // Determine CTA icon
+  const getPrimaryCTAIcon = () => {
+    if (event?.has_tickets) return <Ticket className="h-4 w-4 mr-2" />;
+    return <CalendarDays className="h-4 w-4 mr-2" />;
+  };
+
+  const handlePrimaryClick = () => {
+    if (!id) return;
+
+    if (user) {
+      // User is logged in, go directly to event page
+      const params = new URLSearchParams(searchParams);
+      navigate(`/comm/events-meetups?event=${id}${params.toString() ? '&' + params.toString() : ''}`);
+    } else if (event?.has_tickets) {
+      // Event has tickets - show ticket purchase dialog (supports guest checkout)
+      setShowTicketDialog(true);
+    } else {
+      // Free event without tickets - redirect to login
+      handleJoinClick();
+    }
+  };
 
   const handleJoinClick = () => {
     if (!id) return;
@@ -161,8 +197,16 @@ export default function PublicEventLanding() {
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                   {event.title}
                 </h1>
-                <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                  {event.event_type}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                    {event.event_type}
+                  </div>
+                  {event.has_tickets && event.lowest_ticket_price !== null && (
+                    <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
+                      <Ticket className="h-3.5 w-3.5" />
+                      {event.lowest_ticket_price === 0 ? "Free" : `From $${event.lowest_ticket_price}`}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -224,15 +268,20 @@ export default function PublicEventLanding() {
                     {/* Left: Primary Event CTA */}
                     <div className="flex-1 flex flex-col gap-2">
                       <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                        <CalendarDays className="h-4 w-4 text-primary" />
-                        <span>Join this event</span>
+                        {event.has_tickets ? (
+                          <Ticket className="h-4 w-4 text-primary" />
+                        ) : (
+                          <CalendarDays className="h-4 w-4 text-primary" />
+                        )}
+                        <span>{event.has_tickets ? "Get your ticket" : "Join this event"}</span>
                       </div>
                       <Button
                         size="default"
-                        onClick={handleJoinClick}
+                        onClick={handlePrimaryClick}
                         className="w-full md:w-auto px-6"
                       >
-                        {user ? "View Event Details" : "Reserve My Spot"}
+                        {getPrimaryCTAIcon()}
+                        {getPrimaryCTAText()}
                       </Button>
                     </div>
                     
@@ -291,6 +340,23 @@ export default function PublicEventLanding() {
           </div>
         </div>
       </div>
+
+      {/* Ticket Purchase Dialog */}
+      <Dialog open={showTicketDialog} onOpenChange={setShowTicketDialog}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Ticket className="h-5 w-5 text-primary" />
+              Get Tickets for {event.title}
+            </DialogTitle>
+          </DialogHeader>
+          <EventTicketSelector 
+            eventId={event.id} 
+            eventTitle={event.title}
+            forceGuestMode={!user}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
