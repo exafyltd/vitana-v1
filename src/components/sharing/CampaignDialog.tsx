@@ -223,6 +223,9 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
       target_channels: selectedChannels,
       metadata: {
         tenant_slug: tenant?.slug || null,
+        event_id: prefillData?.eventContext?.eventId || null,
+        event_type: prefillData?.eventContext?.eventType || null,
+        event_location: prefillData?.eventContext?.location || null,
       },
       distribution_config: {
         template_id: selectedTemplate,
