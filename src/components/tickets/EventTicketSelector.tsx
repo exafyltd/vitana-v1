@@ -10,16 +10,19 @@ import { format } from "date-fns";
 interface EventTicketSelectorProps {
   eventId: string;
   eventTitle: string;
+  /** Force guest checkout mode (for public pages where user is not logged in) */
+  forceGuestMode?: boolean;
 }
 
-export function EventTicketSelector({ eventId, eventTitle }: EventTicketSelectorProps) {
+export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false }: EventTicketSelectorProps) {
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
   
   const [selectedTickets, setSelectedTickets] = useState<Record<string, number>>({});
   const [guestEmail, setGuestEmail] = useState("");
   const [guestName, setGuestName] = useState("");
-  const [showGuestForm, setShowGuestForm] = useState(false);
+  // Start with guest form visible if forceGuestMode is true
+  const [showGuestForm, setShowGuestForm] = useState(forceGuestMode);
 
   const updateQuantity = (ticketId: string, delta: number) => {
     setSelectedTickets((prev) => {
@@ -86,10 +89,12 @@ export function EventTicketSelector({ eventId, eventTitle }: EventTicketSelector
 
   return (
     <div className="space-y-4">
-      <h3 className="font-semibold text-foreground flex items-center gap-2">
-        <Ticket className="h-5 w-5" />
-        Get Tickets
-      </h3>
+      {!forceGuestMode && (
+        <h3 className="font-semibold text-foreground flex items-center gap-2">
+          <Ticket className="h-5 w-5" />
+          Get Tickets
+        </h3>
+      )}
 
       {/* Ticket Types */}
       <div className="space-y-3">
@@ -106,16 +111,24 @@ export function EventTicketSelector({ eventId, eventTitle }: EventTicketSelector
       {/* Guest Checkout Form */}
       {totalTickets > 0 && (
         <div className="space-y-4 pt-4 border-t">
-          <button
-            type="button"
-            className="text-sm text-primary hover:underline"
-            onClick={() => setShowGuestForm(!showGuestForm)}
-          >
-            {showGuestForm ? "Use my account email" : "Buy as guest (no account)"}
-          </button>
+          {/* Only show toggle if not forced into guest mode */}
+          {!forceGuestMode && (
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+              onClick={() => setShowGuestForm(!showGuestForm)}
+            >
+              {showGuestForm ? "Use my account email" : "Buy as guest (no account)"}
+            </button>
+          )}
 
           {showGuestForm && (
             <div className="space-y-3">
+              {forceGuestMode && (
+                <p className="text-sm text-muted-foreground">
+                  Enter your details to receive your ticket. No account required.
+                </p>
+              )}
               <div className="space-y-1.5">
                 <Label htmlFor="guest-name">Full Name</Label>
                 <Input
@@ -134,6 +147,9 @@ export function EventTicketSelector({ eventId, eventTitle }: EventTicketSelector
                   value={guestEmail}
                   onChange={(e) => setGuestEmail(e.target.value)}
                 />
+                <p className="text-xs text-muted-foreground">
+                  Your ticket and confirmation will be sent to this email.
+                </p>
               </div>
             </div>
           )}
@@ -148,7 +164,7 @@ export function EventTicketSelector({ eventId, eventTitle }: EventTicketSelector
               {totalTickets} ticket{totalTickets !== 1 ? "s" : ""}
             </span>
             <span className="font-semibold text-foreground">
-              ${totalAmount.toFixed(2)}
+              {totalAmount === 0 ? "Free" : `$${totalAmount.toFixed(2)}`}
             </span>
           </div>
 
@@ -165,7 +181,7 @@ export function EventTicketSelector({ eventId, eventTitle }: EventTicketSelector
               </>
             ) : (
               <>
-                Buy Tickets - ${totalAmount.toFixed(2)}
+                {totalAmount === 0 ? "Get Free Ticket" : `Buy Tickets - $${totalAmount.toFixed(2)}`}
               </>
             )}
           </Button>
