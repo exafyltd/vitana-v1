@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
-import { Package, XCircle, Truck, Calendar, MapPin, Star, Phone, MessageSquare, RotateCcw, Plus, RefreshCw, Clock, CheckCircle, Ticket } from "lucide-react";
+import { Package, RefreshCw, Clock, CheckCircle, Ticket, Receipt } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
 import StandardHeader from "@/components/StandardHeader";
@@ -23,6 +23,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { format, isPast } from "date-fns";
 import { cn } from "@/lib/utils";
+import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
@@ -34,18 +35,8 @@ interface UnifiedOrder {
   status: string;
   type: 'product' | 'service' | 'ticket';
   orderDate: string;
-  // Product-specific
+  rawDate: Date;
   trackingNumber?: string;
-  estimatedDelivery?: string;
-  shippingAddress?: string;
-  deliveredDate?: string;
-  cjOrderId?: string;
-  // Service-specific
-  date?: string;
-  location?: string;
-  notes?: string;
-  completedDate?: string;
-  // Ticket-specific
   eventDate?: Date;
   eventLocation?: string;
   ticketType?: string;
@@ -53,12 +44,9 @@ interface UnifiedOrder {
   quantity?: number;
   qrCodeToken?: string;
   ticketPurchase?: TicketPurchase;
-  // Shared
-  rating?: number;
-  myRating?: number;
 }
 
-type HistoryFilter = 'all' | 'products' | 'services' | 'tickets' | 'refunds';
+type HistoryFilter = 'all' | 'events' | 'products' | 'services' | 'refunds';
 
 export default function Orders() {
   const navigate = useNavigate();
@@ -221,32 +209,29 @@ export default function Orders() {
     }
   };
 
-  const handleTrackOrder = async (orderId: string) => {
-    try {
-      const { data, error } = await supabase.functions.invoke('cj-track-shipment', {
-        body: { orderId },
-      });
-
-      if (error) throw error;
-      await fetchCjOrders();
-    } catch (error) {
-      console.error('Error tracking order:', error);
-    }
-  };
-
   // Transform ticket to unified order format
   const transformTicketToUnifiedOrder = (ticket: TicketPurchase): UnifiedOrder => {
-    const isUpcoming = ticket.event && !isPast(new Date(ticket.event.start_time));
+    const eventDate = ticket.event ? new Date(ticket.event.start_time) : new Date();
+    const isUpcoming = ticket.event && !isPast(eventDate);
+    
+    let status = 'upcoming';
+    if (!isUpcoming) {
+      status = ticket.checked_in_at ? 'attended' : 'expired';
+    }
+    if (ticket.status === 'refunded') status = 'refunded';
+    if (ticket.status === 'cancelled') status = 'cancelled';
+    
     return {
       id: ticket.id,
       title: ticket.event?.title || 'Event Ticket',
-      provider: ticket.ticket_type?.name || 'Event',
+      provider: ticket.ticket_type?.name || 'General Admission',
       providerImage: ticket.event?.image_url || '/placeholder.svg',
       price: `$${ticket.total_amount}`,
-      status: isUpcoming ? 'upcoming' : (ticket.checked_in_at ? 'used' : 'expired'),
+      status,
       type: 'ticket',
       orderDate: format(new Date(ticket.created_at), 'MMM d, yyyy'),
-      eventDate: ticket.event ? new Date(ticket.event.start_time) : undefined,
+      rawDate: new Date(ticket.created_at),
+      eventDate,
       eventLocation: ticket.event?.location || 'Location TBD',
       ticketType: ticket.ticket_type?.name,
       ticketNumber: ticket.ticket_number,
@@ -256,337 +241,184 @@ export default function Orders() {
     };
   };
 
-  // Transform CJ orders to unified format - Active
-  const activeCjOrders: UnifiedOrder[] = cjOrders
-    .filter(order => !['delivered', 'cancelled'].includes(order.status))
-    .map(order => ({
+  // Transform CJ order to unified format
+  const transformCJOrder = (order: any, isActive: boolean): UnifiedOrder => {
+    return {
       id: order.id,
       title: order.order_items[0]?.item_name || 'CJ Product',
       provider: 'CJDropshipping',
       providerImage: order.order_items[0]?.item_image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png',
       trackingNumber: order.tracking_number,
-      estimatedDelivery: 'Processing',
       price: `$${order.total_amount}`,
       status: order.status,
-      type: 'product' as const,
-      orderDate: new Date(order.created_at).toLocaleDateString(),
-      shippingAddress: `${order.shipping_address?.city}, ${order.shipping_address?.state}`,
-      cjOrderId: order.cj_order_id,
-    }));
-
-  // Transform CJ orders to unified format - Completed
-  const completedCjOrders: UnifiedOrder[] = cjOrders
-    .filter(order => ['delivered', 'cancelled'].includes(order.status))
-    .map(order => ({
-      id: order.id,
-      title: order.order_items[0]?.item_name || 'CJ Product',
-      provider: 'CJDropshipping',
-      providerImage: order.order_items[0]?.item_image_url || '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png',
-      deliveredDate: order.delivered_at ? new Date(order.delivered_at).toLocaleDateString() : 'N/A',
-      price: `$${order.total_amount}`,
-      status: order.status,
-      rating: 4.8,
-      myRating: undefined,
-      type: 'product' as const,
-      orderDate: new Date(order.created_at).toLocaleDateString(),
-    }));
-
-  // Transform tickets - separate by upcoming/past
-  const upcomingTicketOrders: UnifiedOrder[] = displayTickets
-    .filter(t => t.event && !isPast(new Date(t.event.start_time)))
-    .map(transformTicketToUnifiedOrder);
-
-  const pastTicketOrders: UnifiedOrder[] = displayTickets
-    .filter(t => t.event && isPast(new Date(t.event.start_time)))
-    .map(transformTicketToUnifiedOrder);
-
-  // Unified Active Orders (CJ active + upcoming tickets)
-  const unifiedActiveOrders: UnifiedOrder[] = [...activeCjOrders, ...upcomingTicketOrders];
-
-  // Unified History Orders (CJ completed + past tickets), filtered
-  const allHistoryOrders: UnifiedOrder[] = [...completedCjOrders, ...pastTicketOrders];
-  const unifiedHistoryOrders = allHistoryOrders.filter(order => {
-    if (historyFilter === 'all') return true;
-    if (historyFilter === 'products') return order.type === 'product';
-    if (historyFilter === 'services') return order.type === 'service';
-    if (historyFilter === 'tickets') return order.type === 'ticket';
-    if (historyFilter === 'refunds') return order.status === 'refunded' || order.status === 'cancelled';
-    return true;
-  });
-
-  // Get status badge styling
-  const getStatusStyles = (status: string, type: string) => {
-    if (type === 'ticket') {
-      if (status === 'upcoming') return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-      if (status === 'used') return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
-      if (status === 'expired') return 'bg-muted text-muted-foreground';
-    }
-    if (status === 'confirmed') return 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
-    if (status === 'shipped') return 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400';
-    if (status === 'completed' || status === 'delivered') return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400';
-    if (status === 'cancelled' || status === 'refunded') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400';
-    return 'bg-muted text-muted-foreground';
+      type: 'product',
+      orderDate: format(new Date(order.created_at), 'MMM d, yyyy'),
+      rawDate: new Date(order.created_at),
+    };
   };
 
-  const getStatusIcon = (status: string, type: string) => {
-    if (type === 'ticket') {
-      if (status === 'upcoming') return <Calendar className="h-3 w-3 mr-1" />;
-      if (status === 'used') return <CheckCircle className="h-3 w-3 mr-1" />;
-      if (status === 'expired') return <Clock className="h-3 w-3 mr-1" />;
-    }
-    if (status === 'confirmed') return <CheckCircle className="h-3 w-3 mr-1" />;
-    if (status === 'shipped') return <Truck className="h-3 w-3 mr-1" />;
-    if (status === 'completed' || status === 'delivered') return <Package className="h-3 w-3 mr-1" />;
-    if (status === 'cancelled') return <XCircle className="h-3 w-3 mr-1" />;
-    return null;
-  };
+  // Build unified order lists
+  const { unifiedActiveOrders, allHistoryOrders } = useMemo(() => {
+    const activeCjOrders = cjOrders
+      .filter(order => !['delivered', 'cancelled'].includes(order.status))
+      .map(o => transformCJOrder(o, true));
 
-  const renderOrderCard = (order: UnifiedOrder, isActive = true) => (
-    <Card key={order.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-card/70 backdrop-blur-xl border-border/30 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-2xl">
-      <CardContent className="p-4 md:p-6">
-        <div className="flex items-start gap-4">
+    const completedCjOrders = cjOrders
+      .filter(order => ['delivered', 'cancelled'].includes(order.status))
+      .map(o => transformCJOrder(o, false));
+
+    const upcomingTickets = displayTickets
+      .filter(t => t.event && !isPast(new Date(t.event.start_time)))
+      .map(transformTicketToUnifiedOrder);
+
+    const pastTickets = displayTickets
+      .filter(t => t.event && isPast(new Date(t.event.start_time)))
+      .map(transformTicketToUnifiedOrder);
+
+    const active = [...activeCjOrders, ...upcomingTickets]
+      .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
+
+    const history = [...completedCjOrders, ...pastTickets]
+      .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
+
+    return { unifiedActiveOrders: active, allHistoryOrders: history };
+  }, [cjOrders, displayTickets]);
+
+  // Apply history filter
+  const unifiedHistoryOrders = useMemo(() => {
+    return allHistoryOrders.filter(order => {
+      if (historyFilter === 'all') return true;
+      if (historyFilter === 'events') return order.type === 'ticket';
+      if (historyFilter === 'products') return order.type === 'product';
+      if (historyFilter === 'services') return order.type === 'service';
+      if (historyFilter === 'refunds') return order.status === 'refunded' || order.status === 'cancelled';
+      return true;
+    });
+  }, [allHistoryOrders, historyFilter]);
+
+  // Transform to StandardHorizontalCard props
+  const transformToCardProps = (order: UnifiedOrder): StandardHorizontalCardProps => {
+    const categoryLabel = order.type === 'ticket' ? 'Event' : 
+                          order.type === 'product' ? 'Product' : 'Service';
+    
+    const dateInfo = order.type === 'ticket' && order.eventDate
+      ? format(order.eventDate, 'MMM d, yyyy • h:mm a')
+      : order.orderDate;
+    
+    const orderId = order.type === 'ticket' 
+      ? order.ticketNumber?.slice(0, 12) 
+      : order.id.slice(0, 8);
+
+    const description = `${categoryLabel} • ${dateInfo} • #${orderId}`;
+
+    // Status badge mapping
+    const getStatusBadge = (): { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' } => {
+      const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' }> = {
+        upcoming: { label: 'Upcoming', variant: 'default' },
+        attended: { label: 'Attended', variant: 'secondary' },
+        expired: { label: 'Expired', variant: 'outline' },
+        completed: { label: 'Completed', variant: 'secondary' },
+        delivered: { label: 'Delivered', variant: 'secondary' },
+        cancelled: { label: 'Cancelled', variant: 'destructive' },
+        refunded: { label: 'Refunded', variant: 'destructive' },
+        shipped: { label: 'In Transit', variant: 'default' },
+        confirmed: { label: 'Confirmed', variant: 'default' },
+        pending: { label: 'Pending', variant: 'outline' },
+        processing: { label: 'Processing', variant: 'outline' },
+      };
+      return statusMap[order.status] || { label: order.status, variant: 'outline' };
+    };
+
+    const statusBadge = getStatusBadge();
+
+    // Primary action based on type
+    const getPrimaryAction = () => {
+      if (order.type === 'ticket' && order.ticketPurchase) {
+        return {
+          label: 'View Ticket',
+          onClick: () => setSelectedTicket(order.ticketPurchase!),
+          variant: 'ghost' as const,
+          icon: <Ticket className="h-3.5 w-3.5" />,
+        };
+      }
+      return {
+        label: 'Details',
+        onClick: () => console.log('View details', order.id),
+        variant: 'ghost' as const,
+        icon: <Receipt className="h-3.5 w-3.5" />,
+      };
+    };
+
+    // Icon based on type
+    const getIcon = () => {
+      if (order.providerImage && order.providerImage !== '/placeholder.svg') {
+        return (
           <img 
             src={order.providerImage} 
-            alt={order.provider}
-            className="w-12 h-12 md:w-16 md:h-16 rounded-xl object-cover flex-shrink-0"
+            alt={order.title}
+            className="w-10 h-10 rounded-lg object-cover shadow-sm"
           />
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm md:text-base">
-                  {order.title}
-                </h3>
-                <p className="text-xs md:text-sm text-muted-foreground">{order.provider}</p>
-              </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <Badge className={cn("text-xs", getStatusStyles(order.status, order.type))}>
-                  {getStatusIcon(order.status, order.type)}
-                  {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                </Badge>
-                <span className="text-sm md:text-base font-bold text-foreground">{order.price}</span>
-              </div>
-            </div>
+        );
+      }
+      if (order.type === 'ticket') return '🎫';
+      if (order.type === 'product') return '📦';
+      return '🩺';
+    };
 
-            {/* Ticket-specific info */}
-            {order.type === 'ticket' && (
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
-                    {order.eventDate ? format(order.eventDate, 'EEE, MMM d • h:mm a') : 'Date TBD'}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{order.eventLocation}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Ticket className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
-                    {order.ticketType} × {order.quantity}
-                  </span>
-                </div>
-              </div>
-            )}
+    return {
+      id: order.id,
+      screenId: 'ORDERS',
+      icon: getIcon(),
+      title: order.title,
+      description,
+      badges: [statusBadge],
+      metadata: [{ icon: null, text: order.price }],
+      primaryAction: getPrimaryAction(),
+      layoutMode: 'stack',
+      density: 'compact',
+    };
+  };
 
-            {/* Service-specific info */}
-            {order.type === 'service' && isActive && (
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{order.date}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{order.location}</span>
-                </div>
-                {order.notes && (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                    <p className="text-xs text-blue-700 dark:text-blue-300">{order.notes}</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Product-specific info */}
-            {order.type === 'product' && isActive && (
-              <div className="space-y-2 mb-4">
-                {order.trackingNumber && (
-                  <div className="flex items-center gap-2">
-                    <Truck className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Tracking: {order.trackingNumber}</span>
-                  </div>
-                )}
-                {order.estimatedDelivery && (
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Estimated delivery: {order.estimatedDelivery}</span>
-                  </div>
-                )}
-                {order.shippingAddress && (
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">{order.shippingAddress}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Completed order info (History tab) */}
-            {!isActive && order.type !== 'ticket' && (
-              <div className="space-y-2 mb-4">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">
-                    {order.type === 'service' ? `Completed: ${order.completedDate}` : `Delivered: ${order.deliveredDate}`}
-                  </span>
-                </div>
-                {order.rating && (
-                  <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-muted-foreground">Provider rating: {order.rating}</span>
-                    {order.myRating && (
-                      <span className="text-sm text-muted-foreground">• Your rating: {order.myRating}/5 ⭐</span>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Action buttons */}
-            <div className="flex gap-2 mt-4 flex-wrap">
-              {/* Ticket actions */}
-              {order.type === 'ticket' && isActive && (
-                <>
-                  <Button 
-                    size="sm" 
-                    className="flex-1"
-                    onClick={() => order.ticketPurchase && setSelectedTicket(order.ticketPurchase)}
-                  >
-                    <Ticket className="h-3 w-3 mr-1" />
-                    View Ticket
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Calendar className="h-3 w-3 mr-1" />
-                    Add to Calendar
-                  </Button>
-                </>
-              )}
-              {order.type === 'ticket' && !isActive && (
-                <>
-                  <Button 
-                    size="sm" 
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => order.ticketPurchase && setSelectedTicket(order.ticketPurchase)}
-                  >
-                    <Ticket className="h-3 w-3 mr-1" />
-                    View Ticket
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Star className="h-3 w-3 mr-1" />
-                    Review
-                  </Button>
-                </>
-              )}
-
-              {/* Service actions */}
-              {order.type === 'service' && isActive && (
-                <>
-                  <Button size="sm" variant="outline" className="flex-1">
-                    <Phone className="h-3 w-3 mr-1" />
-                    Contact Provider
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <XCircle className="h-3 w-3 mr-1" />
-                    Cancel
-                  </Button>
-                </>
-              )}
-
-              {/* Product actions */}
-              {order.type === 'product' && isActive && (
-                <>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="flex-1"
-                    onClick={() => handleTrackOrder(order.id)}
-                  >
-                    <Truck className="h-3 w-3 mr-1" />
-                    Track Package
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <MessageSquare className="h-3 w-3 mr-1" />
-                    Support
-                  </Button>
-                </>
-              )}
-
-              {/* History actions for products/services */}
-              {!isActive && order.type !== 'ticket' && (
-                <>
-                  <Button size="sm" variant="outline" className="flex-1">
-                    <RotateCcw className="h-3 w-3 mr-1" />
-                    Reorder
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Star className="h-3 w-3 mr-1" />
-                    Review
-                  </Button>
-                  {order.type === 'service' && (
-                    <Button size="sm" variant="outline">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      Book Again
-                    </Button>
-                  )}
-                </>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50">
-              <span className="text-xs text-muted-foreground">
-                {order.type === 'ticket' ? `Ticket: ${order.ticketNumber}` : `Order ID: ${order.id.slice(0, 8)}...`}
-              </span>
-              <span className="text-xs text-muted-foreground">Ordered: {order.orderDate}</span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
-  // Filter chips for History tab
+  // Segmented filter controls for History tab
   const HistoryFilterRow = () => {
-    const filters: { key: HistoryFilter; label: string; icon: string }[] = [
-      { key: 'all', label: 'All', icon: '📋' },
-      { key: 'products', label: 'Products', icon: '📦' },
-      { key: 'services', label: 'Services', icon: '🩺' },
-      { key: 'tickets', label: 'Tickets', icon: '🎫' },
-      { key: 'refunds', label: 'Refunds', icon: '↩️' },
+    const filters: { key: HistoryFilter; label: string }[] = [
+      { key: 'all', label: 'All' },
+      { key: 'events', label: 'Events' },
+      { key: 'products', label: 'Products' },
+      { key: 'services', label: 'Services' },
+      { key: 'refunds', label: 'Refunds' },
     ];
 
     return (
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex gap-1 p-1 bg-card/40 backdrop-blur-xl rounded-xl border border-border/20 w-fit mb-4">
         {filters.map(filter => (
-          <Button
+          <button
             key={filter.key}
-            variant={historyFilter === filter.key ? 'default' : 'outline'}
-            size="sm"
             onClick={() => setHistoryFilter(filter.key)}
             className={cn(
-              "rounded-full h-8 px-4 text-xs font-medium transition-all",
+              "px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200",
               historyFilter === filter.key 
-                ? "bg-primary text-primary-foreground shadow-md" 
-                : "bg-card/60 backdrop-blur-sm border-border/40 hover:bg-card/80"
+                ? "bg-background shadow-sm text-foreground" 
+                : "text-muted-foreground hover:text-foreground hover:bg-background/50"
             )}
           >
-            {filter.icon} {filter.label}
-          </Button>
+            {filter.label}
+          </button>
         ))}
       </div>
     );
   };
+
+  // Loading skeleton
+  const LoadingSkeleton = () => (
+    <div className="space-y-3">
+      {[1, 2, 3].map(i => (
+        <div key={i} className="h-[88px] rounded-xl bg-muted/20 animate-pulse" />
+      ))}
+    </div>
+  );
+
+  const isLoading = loading || ticketsLoading;
 
   return (
     <AppLayout>
@@ -605,13 +437,6 @@ export default function Orders() {
               placeholder="Search your orders…"
             />
             <UniversalCalendarButton />
-            <Button 
-              size="sm"
-              onClick={() => setMasterActionOpen(true)}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Action
-            </Button>
             <Button 
               variant="ghost"
               size="icon"
@@ -637,24 +462,42 @@ export default function Orders() {
 
           {/* Orders Content */}
           <Tabs defaultValue="active" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6 bg-card/60 backdrop-blur-sm rounded-xl p-1 border border-border/30">
-              <TabsTrigger value="active" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm">
-                ⏰ Active ({unifiedActiveOrders.length})
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-card/60 backdrop-blur-sm rounded-xl p-1 border border-border/20">
+              <TabsTrigger 
+                value="active" 
+                className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                <Clock className="h-4 w-4" />
+                Active ({unifiedActiveOrders.length})
               </TabsTrigger>
-              <TabsTrigger value="history" className="flex items-center gap-2 rounded-lg data-[state=active]:bg-card data-[state=active]:shadow-sm">
-                ✅ History ({allHistoryOrders.length})
+              <TabsTrigger 
+                value="history" 
+                className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                <CheckCircle className="h-4 w-4" />
+                History ({allHistoryOrders.length})
               </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="active" className="space-y-4">
-              {unifiedActiveOrders.length > 0 ? (
-                <div className="grid gap-4">
-                  {unifiedActiveOrders.map((order) => renderOrderCard(order, true))}
+            {/* Active Orders Tab */}
+            <TabsContent value="active" className="space-y-3">
+              {isLoading ? (
+                <LoadingSkeleton />
+              ) : unifiedActiveOrders.length > 0 ? (
+                <div className="space-y-3">
+                  {unifiedActiveOrders.map(order => (
+                    <StandardHorizontalCard
+                      key={order.id}
+                      {...transformToCardProps(order)}
+                    />
+                  ))}
                 </div>
               ) : (
                 <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
                   <CardContent className="p-8 text-center">
-                    <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
+                      <Package className="w-8 h-8 text-muted-foreground/60" />
+                    </div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">No Active Orders</h3>
                     <p className="text-muted-foreground mb-4">You don't have any active orders or upcoming event tickets.</p>
                     <div className="flex gap-3 justify-center">
@@ -670,16 +513,27 @@ export default function Orders() {
               )}
             </TabsContent>
             
-            <TabsContent value="history" className="space-y-4">
+            {/* History Tab */}
+            <TabsContent value="history" className="space-y-3">
               <HistoryFilterRow />
-              {unifiedHistoryOrders.length > 0 ? (
-                <div className="grid gap-4">
-                  {unifiedHistoryOrders.map((order) => renderOrderCard(order, false))}
+              
+              {isLoading ? (
+                <LoadingSkeleton />
+              ) : unifiedHistoryOrders.length > 0 ? (
+                <div className="space-y-3">
+                  {unifiedHistoryOrders.map(order => (
+                    <StandardHorizontalCard
+                      key={order.id}
+                      {...transformToCardProps(order)}
+                    />
+                  ))}
                 </div>
               ) : (
                 <Card className="bg-card/70 backdrop-blur-xl border-border/30 rounded-2xl">
                   <CardContent className="p-8 text-center">
-                    <CheckCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="w-8 h-8 text-muted-foreground/60" />
+                    </div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">
                       {historyFilter === 'all' ? 'No Order History' : `No ${historyFilter.charAt(0).toUpperCase() + historyFilter.slice(1)}`}
                     </h3>
