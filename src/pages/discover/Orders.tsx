@@ -532,15 +532,13 @@ export default function Orders() {
                         <Clock className="h-4 w-4" />
                         Past Events ({pastTickets.length})
                       </h3>
-                      <div className="opacity-75">
-                        <HorizontalCardList
-                          items={pastTickets.map(ticket => transformTicketToVisualCard(ticket, setSelectedTicket))}
-                          variant="visual"
-                          layout="stack"
-                          screenId="orders-past-tickets"
-                          gap="md"
-                        />
-                      </div>
+                      <HorizontalCardList
+                        items={pastTickets.map(ticket => transformTicketToVisualCard(ticket, setSelectedTicket))}
+                        variant="visual"
+                        layout="stack"
+                        screenId="orders-past-tickets"
+                        gap="md"
+                      />
                     </div>
                   )}
                 </div>
