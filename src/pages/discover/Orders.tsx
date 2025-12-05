@@ -553,7 +553,7 @@ export default function Orders() {
 
           {/* Ticket Detail Dialog */}
           <Dialog open={!!selectedTicket} onOpenChange={(open) => !open && setSelectedTicket(null)}>
-            <DialogContent className="max-w-md p-0 overflow-hidden">
+            <DialogContent className="max-w-md p-0 overflow-hidden rounded-2xl border-0 bg-transparent shadow-none [&>button]:hidden">
               {selectedTicket && selectedTicket.event && (
                 <EventTicket
                   eventTitle={selectedTicket.event.title}
