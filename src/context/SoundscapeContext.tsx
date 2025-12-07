@@ -180,12 +180,13 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     // Attach event listeners
     attachListeners(audio);
 
-  // Auto-play if no preference exists (new user) or preference is true
-    const shouldAutoPlay = savedAutoPlay === null || savedAutoPlay === 'true';
+    // Only auto-play if user explicitly enabled it previously (not for new users)
+    // Music should only start when explicitly entering a portal via startFresh()
+    const shouldAutoPlay = savedAutoPlay === 'true';
     if (shouldAutoPlay && audio.paused && !userExplicitlyPausedRef.current) {
       audio.play()
         .then(() => {
-          console.log('[Soundscape] Auto-play succeeded');
+          console.log('[Soundscape] Auto-play succeeded (user previously enabled)');
           setIsPlaying(true);
           setPendingAutoPlay(false);
         })
