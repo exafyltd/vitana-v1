@@ -1811,6 +1811,605 @@ Potential gaps or outdated references:
 
 ---
 
+# Section 7: API Dependency Graph
+
+This section visualizes the dependency relationships between APIs, hooks, and database tables to help understand data flow and identify critical paths.
+
+## 7.1 Module Dependency Diagrams
+
+### 7.1.1 Wallet & Payments Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[useWallet]
+        H2[useWalletRealtime]
+        H3[useCheckout]
+    end
+    
+    subgraph "Edge Functions"
+        EF1[stripe-create-checkout-session]
+        EF2[stripe-webhook]
+        EF3[stripe-create-ticket-checkout]
+        EF4[stripe-create-booking-checkout]
+    end
+    
+    subgraph "Database RPCs"
+        RPC1[process_wallet_transfer]
+        RPC2[process_wallet_exchange]
+        RPC3[process_wallet_exchange_and_send]
+        RPC4[get_user_balance]
+        RPC5[update_user_balance]
+        RPC6[initialize_user_wallet]
+    end
+    
+    subgraph "Database Tables"
+        T1[(user_wallets)]
+        T2[(wallet_transactions)]
+        T3[(checkout_sessions)]
+    end
+    
+    subgraph "External"
+        EXT1{{Stripe API}}
+    end
+    
+    H1 --> RPC4
+    H1 --> RPC1
+    H2 --> T1
+    H2 --> T2
+    H3 --> EF1
+    
+    EF1 --> EXT1
+    EF1 --> T3
+    EF2 --> EXT1
+    EF2 --> RPC5
+    EF2 --> T3
+    
+    RPC1 --> T1
+    RPC1 --> T2
+    RPC2 --> T1
+    RPC2 --> T2
+    RPC4 --> T1
+    RPC5 --> T1
+    RPC6 --> T1
+```
+
+### 7.1.2 Events & Tickets Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[useCommunityEvents]
+        H2[useEventTickets]
+        H3[useEventSales]
+        H4[useEventAttendees]
+    end
+    
+    subgraph "Edge Functions"
+        EF1[stripe-create-ticket-checkout]
+        EF2[stripe-webhook]
+        EF3[generate-maxina-summer-events]
+        EF4[og-event]
+    end
+    
+    subgraph "Database Tables"
+        T1[(global_community_events)]
+        T2[(event_ticket_types)]
+        T3[(event_ticket_purchases)]
+        T4[(event_ticket_scans)]
+        T5[(event_attendees)]
+    end
+    
+    subgraph "External"
+        EXT1{{Stripe API}}
+    end
+    
+    H1 --> T1
+    H2 --> T2
+    H2 --> T3
+    H3 --> T3
+    H3 --> T4
+    H4 --> T5
+    
+    EF1 --> EXT1
+    EF1 --> T2
+    EF1 --> T3
+    EF2 --> T3
+    EF3 --> T1
+    EF4 --> T1
+```
+
+### 7.1.3 Campaigns & Sharing Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[useCampaigns]
+        H2[useCampaignActions]
+        H3[useCampaignDistribution]
+        H4[usePostAnalytics]
+    end
+    
+    subgraph "Edge Functions"
+        EF1[distribute-post]
+        EF2[queue-campaign-recipients]
+        EF3[process-campaign-queue]
+        EF4[og-campaign]
+        EF5[send-sms]
+        EF6[send-whatsapp]
+        EF7[send-campaign-email]
+    end
+    
+    subgraph "Database Tables"
+        T1[(campaigns)]
+        T2[(distribution_posts)]
+        T3[(campaign_recipients)]
+        T4[(post_analytics)]
+        T5[(distribution_channels)]
+    end
+    
+    subgraph "External"
+        EXT1{{Twilio SMS}}
+        EXT2{{WhatsApp Business}}
+        EXT3{{Resend Email}}
+    end
+    
+    H1 --> T1
+    H2 --> T2
+    H2 --> EF1
+    H3 --> T3
+    H4 --> T4
+    
+    EF1 --> T2
+    EF1 --> T5
+    EF2 --> T3
+    EF3 --> EF5
+    EF3 --> EF6
+    EF3 --> EF7
+    
+    EF5 --> EXT1
+    EF6 --> EXT2
+    EF7 --> EXT3
+```
+
+### 7.1.4 AI & Voice Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[useVertexLive]
+        H2[useVitanalandLive]
+        H3[useTextToSpeech]
+        H4[useIntelligentGreeting]
+        H5[usePatternDiscovery]
+    end
+    
+    subgraph "Edge Functions"
+        EF1[vertex-live]
+        EF2[vitanaland-live]
+        EF3[google-cloud-tts]
+        EF4[openai-tts]
+        EF5[generate-personalized-plan]
+        EF6[analyze-patterns]
+        EF7[generate-memory-embedding]
+    end
+    
+    subgraph "Database Tables"
+        T1[(ai_conversations)]
+        T2[(ai_messages)]
+        T3[(ai_memory)]
+    end
+    
+    subgraph "External"
+        EXT1{{Vertex AI Gemini}}
+        EXT2{{Google Cloud TTS}}
+        EXT3{{OpenAI}}
+    end
+    
+    H1 --> EF1
+    H2 --> EF2
+    H3 --> EF3
+    H3 --> EF4
+    H4 --> EF5
+    H5 --> EF6
+    
+    EF1 --> EXT1
+    EF1 --> T1
+    EF1 --> T2
+    EF2 --> EXT1
+    EF3 --> EXT2
+    EF4 --> EXT3
+    EF7 --> EXT1
+    EF7 --> T3
+```
+
+### 7.1.5 Messaging Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[useGlobalMessages]
+        H2[useTenantMessages]
+        H3[useHybridMessages]
+        H4[useLiveChat]
+        H5[useTypingIndicator]
+    end
+    
+    subgraph "Database RPCs"
+        RPC1[create_or_get_global_dm]
+        RPC2[create_global_direct_thread]
+        RPC3[create_tenant_direct_thread]
+        RPC4[get_thread_participants]
+        RPC5[toggle_message_reaction]
+        RPC6[get_message_reactions]
+    end
+    
+    subgraph "Database Tables"
+        T1[(global_message_threads)]
+        T2[(global_messages)]
+        T3[(global_thread_participants)]
+        T4[(message_threads)]
+        T5[(messages)]
+        T6[(thread_participants)]
+        T7[(message_reactions)]
+        T8[(typing_indicators)]
+    end
+    
+    H1 --> RPC1
+    H1 --> T2
+    H2 --> RPC3
+    H2 --> T5
+    H3 --> H1
+    H3 --> H2
+    H4 --> T2
+    H5 --> T8
+    
+    RPC1 --> T1
+    RPC1 --> T3
+    RPC2 --> T1
+    RPC2 --> T3
+    RPC3 --> T4
+    RPC3 --> T6
+    RPC4 --> T3
+    RPC4 --> T6
+    RPC5 --> T7
+    RPC6 --> T7
+```
+
+### 7.1.6 Admin & Tenant Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[usePermissions]
+        H2[useTenantSettings]
+        H3[useAuditEvents]
+        H4[useAdminUsers]
+    end
+    
+    subgraph "Edge Functions"
+        EF1[bootstrap_admin]
+    end
+    
+    subgraph "Database RPCs"
+        RPC1[bootstrap_admin_user]
+        RPC2[switch_to_tenant_by_slug]
+        RPC3[set_role_preference]
+        RPC4[validate_role_assignment]
+        RPC5[is_exafy_admin]
+        RPC6[get_user_admin_status]
+    end
+    
+    subgraph "Database Tables"
+        T1[(tenants)]
+        T2[(memberships)]
+        T3[(role_preferences)]
+        T4[(audit_events)]
+    end
+    
+    H1 --> RPC5
+    H1 --> RPC6
+    H2 --> T1
+    H3 --> T4
+    H4 --> T2
+    
+    EF1 --> RPC1
+    RPC1 --> T2
+    RPC1 --> T4
+    RPC2 --> T1
+    RPC2 --> T2
+    RPC2 --> T4
+    RPC3 --> T3
+    RPC3 --> T4
+    RPC4 --> T2
+```
+
+### 7.1.7 Commerce (CJ Dropshipping) Flow
+
+```mermaid
+graph TD
+    subgraph "Frontend Hooks"
+        H1[useProducts]
+        H2[useCart]
+        H3[useOrders]
+    end
+    
+    subgraph "Edge Functions"
+        EF1[cj-search-products]
+        EF2[cj-get-product-details]
+        EF3[cj-create-order]
+        EF4[cj-track-shipment]
+        EF5[cj-sync-products]
+        EF6[cj-webhook]
+    end
+    
+    subgraph "Database Tables"
+        T1[(cj_products)]
+        T2[(cart_items)]
+        T3[(cj_orders)]
+        T4[(cj_webhook_logs)]
+    end
+    
+    subgraph "External"
+        EXT1{{CJ Dropshipping API}}
+    end
+    
+    H1 --> EF1
+    H1 --> T1
+    H2 --> T2
+    H3 --> T3
+    
+    EF1 --> EXT1
+    EF2 --> EXT1
+    EF2 --> T1
+    EF3 --> EXT1
+    EF3 --> T3
+    EF4 --> EXT1
+    EF4 --> T3
+    EF5 --> EXT1
+    EF5 --> T1
+    EF6 --> T4
+    EF6 --> T3
+```
+
+---
+
+## 7.2 API Dependency Matrix
+
+### Critical APIs Dependency Table
+
+| API ID | Type | Depends On (RPC/Edge/External) | Used By Hooks | Used By Screens |
+|--------|------|--------------------------------|---------------|-----------------|
+| **Wallet & Payments** |||||
+| `stripe-create-checkout-session` | Edge | Stripe API, `cart_items`, `checkout_sessions` | `useCheckout` | `SCR-CART-001`, `SCR-CHECKOUT-001` |
+| `stripe-webhook` | Edge | Stripe API, `process_wallet_transfer`, `checkout_sessions` | - | Webhook endpoint |
+| `stripe-create-ticket-checkout` | Edge | Stripe API, `event_ticket_types`, `event_ticket_purchases` | `useEventTickets` | `SCR-EVENT-002`, `SCR-TICKETS-001` |
+| `process_wallet_transfer` | RPC | `user_wallets`, `wallet_transactions` | `useWallet` | `SCR-WALLET-001` |
+| `process_wallet_exchange` | RPC | `user_wallets`, `wallet_transactions` | `useWallet` | `SCR-WALLET-002` |
+| `get_user_balance` | RPC | `user_wallets` | `useWallet` | `SCR-WALLET-001` |
+| **Events & Tickets** |||||
+| `generate-maxina-summer-events` | Edge | Vertex AI, `global_community_events` | `useCommunityEvents` | `SCR-EVENTS-001` |
+| `og-event` | Edge | `global_community_events` | - | Public OG endpoints |
+| **Campaigns & Sharing** |||||
+| `distribute-post` | Edge | `distribution_posts`, `distribution_channels` | `useCampaignActions` | `SCR-CAMPAIGNS-001` |
+| `queue-campaign-recipients` | Edge | `campaign_recipients`, `contacts` | `useCampaignDistribution` | `SCR-CAMPAIGNS-002` |
+| `send-sms` | Edge | Twilio API, `campaign_recipients` | `useCampaigns` | `SCR-CAMPAIGNS-001` |
+| `send-whatsapp` | Edge | WhatsApp Business API | `useCampaigns` | `SCR-CAMPAIGNS-001` |
+| `og-campaign` | Edge | `campaigns` | - | Public OG endpoints |
+| **AI & Voice** |||||
+| `vertex-live` | Edge | Vertex AI Gemini | `useVertexLive` | `SCR-AI-001`, `SCR-VOICE-001` |
+| `vitanaland-live` | Edge | Vertex AI Gemini, navigation tools | `useVitanalandLive` | `SCR-ORBS-001` |
+| `google-cloud-tts` | Edge | Google Cloud TTS API | `useTextToSpeech` | `SCR-VOICE-001` |
+| `generate-personalized-plan` | Edge | Vertex AI, `health_data` | `useHealthPlans` | `SCR-HEALTH-001` |
+| `analyze-patterns` | Edge | Vertex AI, biomarker tables | `usePatternDiscovery` | `SCR-BIOMARKERS-001` |
+| `generate-memory-embedding` | Edge | Vertex AI, `ai_memory` | `useAIMemory` | `SCR-AI-002` |
+| **Messaging** |||||
+| `create_or_get_global_dm` | RPC | `global_message_threads`, `global_thread_participants` | `useGlobalMessages` | `SCR-MSG-001` |
+| `create_global_direct_thread` | RPC | `global_message_threads`, `global_thread_participants` | `useGlobalMessages` | `SCR-MSG-001` |
+| `get_thread_participants` | RPC | `global_thread_participants`, `profiles` | `useGlobalMessages` | `SCR-MSG-001` |
+| `toggle_message_reaction` | RPC | `message_reactions` | `useGlobalMessages` | `SCR-MSG-001` |
+| **Admin & Tenant** |||||
+| `bootstrap_admin_user` | RPC | `memberships`, `audit_events`, `auth.users` | `useAdminBootstrap` | `SCR-ADMIN-001` |
+| `switch_to_tenant_by_slug` | RPC | `tenants`, `memberships`, `audit_events` | `useTenantSwitcher` | `SCR-TENANT-001` |
+| `set_role_preference` | RPC | `role_preferences`, `memberships` | `usePermissions` | `SCR-SETTINGS-001` |
+| `is_exafy_admin` | RPC | `auth.users` | `usePermissions` | All admin screens |
+| `validate_role_assignment` | RPC | `memberships` | `usePermissions` | `SCR-ADMIN-002` |
+| **Commerce** |||||
+| `cj-search-products` | Edge | CJ Dropshipping API | `useProducts` | `SCR-DISCOVER-001` |
+| `cj-create-order` | Edge | CJ Dropshipping API, `cj_orders` | `useOrders` | `SCR-CHECKOUT-001` |
+| `cj-track-shipment` | Edge | CJ Dropshipping API, `cj_orders` | `useOrders` | `SCR-ORDERS-001` |
+| `cj-webhook` | Edge | `cj_orders`, `cj_webhook_logs` | - | Webhook endpoint |
+| **Profiles & Social** |||||
+| `get_minimal_profiles_by_ids` | RPC | `global_community_profiles`, `profiles` | `useProfiles` | Multiple screens |
+| `search_minimal_profiles` | RPC | `global_community_profiles` | `useUserSearch` | `SCR-SEARCH-001` |
+| `follow_user` / `unfollow_user` | RPC | `user_follows` | `useFollow` | `SCR-PROFILE-001` |
+
+---
+
+# Section 8: API Health & Monitoring
+
+This section defines monitoring requirements, risk levels, and recommended alert configurations for all API types.
+
+## 8.1 Monitoring Requirements by API Type
+
+### 8.1.1 Supabase Edge Functions
+
+| Metric | What to Monitor | Where Logs Live | Suggested Alerts |
+|--------|-----------------|-----------------|------------------|
+| **Invocation Count** | Total calls per function per hour | Supabase Dashboard → Edge Functions | Spike > 3x normal rate |
+| **Error Rate** | 4xx/5xx responses | Supabase Function Logs | Error rate > 5% for 5 min |
+| **Latency (p50/p95/p99)** | Response time distribution | Supabase Dashboard | p95 > 3s, p99 > 10s |
+| **Cold Starts** | Function initialization time | Supabase Logs | Cold start rate > 20% |
+| **Memory Usage** | Peak memory per invocation | Supabase Dashboard | Memory > 256MB |
+| **Timeout Rate** | Functions exceeding 10s limit | Function Logs | Timeout rate > 1% |
+
+### 8.1.2 Database RPC Functions
+
+| Metric | What to Monitor | Where Logs Live | Suggested Alerts |
+|--------|-----------------|-----------------|------------------|
+| **Query Time** | Execution duration | Supabase Postgres Logs | Query time > 500ms |
+| **Row Operations** | Rows read/written | `pg_stat_statements` | > 10k rows per query |
+| **Lock Waits** | Blocked transactions | Postgres Logs | Lock wait > 5s |
+| **Deadlocks** | Circular lock dependencies | Postgres Logs | Any deadlock |
+| **Connection Pool** | Active connections | Supabase Dashboard | Connections > 80% pool |
+| **Transaction Duration** | Long-running transactions | Postgres Logs | Transaction > 30s |
+
+### 8.1.3 External Integrations
+
+#### Stripe
+
+| Metric | What to Monitor | Where Logs Live | Suggested Alerts |
+|--------|-----------------|-----------------|------------------|
+| **Webhook Delivery** | Successful/failed webhooks | Stripe Dashboard → Webhooks | Failed webhooks > 3 |
+| **Payment Success** | Successful payments vs failures | Stripe Dashboard | Payment failure rate > 5% |
+| **Checkout Abandonment** | Started vs completed sessions | `checkout_sessions` table | Abandonment > 50% |
+| **Dispute Rate** | Chargebacks and disputes | Stripe Dashboard | Any dispute |
+
+#### Vertex AI / Google Gemini
+
+| Metric | What to Monitor | Where Logs Live | Suggested Alerts |
+|--------|-----------------|-----------------|------------------|
+| **WebSocket Connections** | Active connections | GCP Logging | Connection drops > 3/min |
+| **Token Usage** | Input/output tokens | GCP Billing | Daily usage > threshold |
+| **API Quota** | Requests per minute | GCP Console | Quota > 80% |
+| **Error Responses** | 4xx/5xx from Vertex | Edge Function Logs | Error rate > 10% |
+
+#### CJ Dropshipping
+
+| Metric | What to Monitor | Where Logs Live | Suggested Alerts |
+|--------|-----------------|-----------------|------------------|
+| **API Errors** | Failed API calls | `cj_webhook_logs` | Error rate > 5% |
+| **Order Sync** | Order creation success | `cj_orders` | Failed orders > 3 |
+| **Inventory Sync** | Product availability updates | Edge Function Logs | Sync failures |
+| **Tracking Updates** | Shipment status updates | `cj_orders` | No update > 48h |
+
+### 8.1.4 Frontend Hooks (React Query)
+
+| Metric | What to Monitor | Where Logs Live | Suggested Alerts |
+|--------|-----------------|-----------------|------------------|
+| **Query Failures** | Failed Supabase queries | Browser Console | Retry exhausted |
+| **Cache Hit Rate** | Data served from cache | React Query Devtools | Hit rate < 60% |
+| **Stale Data** | Time since last fresh fetch | Client-side | Stale > 5 min for critical data |
+| **Refetch Storms** | Excessive refetching | Network tab | > 10 refetches/min |
+
+---
+
+## 8.2 Risk Classification
+
+### Risk Level Criteria
+
+| Risk Level | Criteria | Examples |
+|------------|----------|----------|
+| 🔴 **High** | Money movement, PHI/health data, privilege escalation, atomic transactions, external money APIs | Stripe webhooks, wallet RPCs, admin bootstrap |
+| 🟡 **Medium** | User data mutations, external API dependencies, bulk operations, real-time features | Messaging, campaigns, AI voice |
+| 🟢 **Low** | Read-only queries, caching, public endpoints, non-sensitive data | Profile views, event listings, search |
+
+### Risk Factors
+
+1. **Financial Impact**: APIs that move money or affect billing
+2. **Data Sensitivity**: PHI, PII, authentication credentials
+3. **Privilege Level**: Admin operations, role changes
+4. **Atomicity Requirements**: Multi-step transactions that must succeed or fail together
+5. **External Dependencies**: APIs relying on third-party services
+6. **User Impact**: Features affecting many users simultaneously
+
+---
+
+## 8.3 API Risk Register (Top 10 High-Risk APIs)
+
+| API ID | Module | Risk Level | Risk Reason | Mitigation |
+|--------|--------|------------|-------------|------------|
+| `stripe-webhook` | Payments | 🔴 High | Money movement, webhook failures can cause data inconsistency | Stripe signature verification, idempotency keys, retry logic, comprehensive logging |
+| `process_wallet_transfer` | Wallet | 🔴 High | Balance mutations, race conditions, atomic transactions | SERIALIZABLE isolation, balance validation before transfer, transaction logging |
+| `stripe-create-ticket-checkout` | Tickets | 🔴 High | Ticket payments, inventory management, overselling risk | Quantity validation, session expiry, inventory locks, webhook confirmation |
+| `cj-create-order` | Commerce | 🔴 High | External order creation, payment processing, fulfillment | Order idempotency, inventory pre-check, status tracking, webhook logging |
+| `bootstrap_admin_user` | Admin | 🔴 High | Privilege escalation, super-admin creation | exafy_admin check required, comprehensive audit logging, single-use tokens |
+| `process_wallet_exchange` | Wallet | 🔴 High | Currency conversion, rate manipulation, balance atomicity | Rate validation, atomic updates, exchange rate source verification |
+| `process_wallet_exchange_and_send` | Wallet | 🔴 High | Combined exchange + transfer, complex atomic operation | Single transaction, rollback on failure, comprehensive validation |
+| `vertex-live` | AI/Voice | 🟡 Medium | WebSocket stability, token costs, session management | Reconnection logic, rate limiting, session timeout, cost monitoring |
+| `generate-personalized-plan` | Health | 🟡 Medium | Health data processing, AI-generated recommendations | Input validation, output sanitization, no PHI in AI prompts, user consent |
+| `distribute-post` | Campaigns | 🟡 Medium | Mass messaging, external API quotas, spam potential | Rate limiting, queue processing, recipient consent verification |
+
+---
+
+## 8.4 Recommended Monitoring Stack
+
+### Primary Monitoring Sources
+
+| Source | Purpose | APIs Covered |
+|--------|---------|--------------|
+| **Supabase Dashboard** | Edge function invocations, database queries, RLS errors | All Edge Functions, RPCs |
+| **GCP Cloud Logging** | Vertex AI sessions, TTS usage, quota | AI & Voice functions |
+| **Stripe Dashboard** | Payment events, webhook health, disputes | Stripe integrations |
+| **Custom Tables** | Application-level metrics, audit trails | All critical operations |
+
+### Custom Monitoring Tables
+
+| Table | Purpose | Key Fields |
+|-------|---------|------------|
+| `api_performance_metrics` | Track API latency and success rates | `integration_id`, `response_time`, `error_count` |
+| `api_test_logs` | Automated API health checks | `integration_id`, `status`, `error_log` |
+| `audit_events` | Security-sensitive operations | `user_id`, `event_type`, `event_data` |
+| `cj_webhook_logs` | CJ Dropshipping webhook processing | `event_type`, `payload`, `processed` |
+
+### Alert Configuration Recommendations
+
+```yaml
+# Example alert rules (pseudo-configuration)
+
+alerts:
+  - name: "High Error Rate - Stripe Webhook"
+    condition: error_rate > 5% for 5 minutes
+    severity: critical
+    notify: [pagerduty, slack-payments]
+    
+  - name: "Wallet Transfer Failure"
+    condition: process_wallet_transfer.failures > 3 in 10 minutes
+    severity: critical
+    notify: [pagerduty, slack-payments]
+    
+  - name: "Vertex AI Connection Drops"
+    condition: websocket_disconnects > 5 in 1 minute
+    severity: warning
+    notify: [slack-ai-team]
+    
+  - name: "CJ Order Creation Failed"
+    condition: cj_create_order.failures > 2 in 1 hour
+    severity: high
+    notify: [slack-commerce]
+    
+  - name: "Admin Bootstrap Attempt"
+    condition: bootstrap_admin_user.invocations > 0
+    severity: info
+    notify: [slack-security, audit-log]
+```
+
+---
+
+## 8.5 Health Check Endpoints
+
+### Recommended Health Checks
+
+| Endpoint | Check Type | Frequency | Timeout |
+|----------|------------|-----------|---------|
+| `/api/health` | Basic liveness | 30s | 5s |
+| `/api/health/db` | Database connectivity | 1m | 10s |
+| `/api/health/stripe` | Stripe API reachability | 5m | 15s |
+| `/api/health/vertex` | Vertex AI connectivity | 5m | 30s |
+| `/api/health/cj` | CJ Dropshipping API | 5m | 15s |
+
+### Health Check Implementation Status
+
+| Check | Status | Notes |
+|-------|--------|-------|
+| Basic liveness | 🚧 Not implemented | Recommended for load balancers |
+| Database health | ✅ Via Supabase | Built-in monitoring |
+| Stripe health | 🚧 Not implemented | Use Stripe Dashboard |
+| Vertex health | 🚧 Not implemented | Use GCP monitoring |
+| CJ health | 🚧 Not implemented | Manual verification |
+
+---
+
 # Appendix A: API Status Legend
 
 | Status | Meaning |
