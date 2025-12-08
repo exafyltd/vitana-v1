@@ -4915,20 +4915,951 @@ sequenceDiagram
 
 ---
 
+---
+
+## Appendix C: Complete Capability-to-API Mapping (All 169 Actions)
+
+### C.1 Community Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-COMM-001 | Discover People | A1 | 🟢 Low | - | `search_minimal_profiles` | `useUserDiscovery` | `global_community_profiles` | - | - |
+| A1-COMM-002 | Discover Events | A1 | 🟢 Low | - | - | `useCommunityEvents` | `global_community_events`, `event_attendees` | - | - |
+| A1-COMM-003 | Discover Groups | A1 | 🟢 Low | - | - | `useCollectives` | `collectives`, `collective_members` | - | - |
+| A1-COMM-004 | View Event Details | A1 | 🟢 Low | - | - | `useCommunityEvents` | `global_community_events`, `event_ticket_types` | - | - |
+| A1-COMM-005 | View User Profile | A1 | 🟢 Low | - | `get_minimal_profiles_by_ids` | `useGlobalCommunityProfile` | `global_community_profiles`, `profiles` | - | - |
+| A2-COMM-006 | Navigate to Events | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-COMM-007 | Navigate to Groups | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-COMM-008 | Open Event Drawer | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-COMM-009 | Open Profile Preview | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-COMM-010 | Follow User | A3 | 🟢 Low | - | `follow_user` | `useFollowUser` | `user_follows` | `user_follows` | - |
+| A3-COMM-011 | Unfollow User | A3 | 🟢 Low | - | `unfollow_user` | `useUnfollowUser` | `user_follows` | `user_follows` | - |
+| A3-COMM-012 | Join Event (Free) | A3 | 🟢 Low | - | - | `useEventAttendance` | `event_attendees` | `event_attendees` | - |
+| A3-COMM-013 | Leave Event | A3 | 🟢 Low | - | - | `useEventAttendance` | `event_attendees` | `event_attendees` | - |
+| A3-COMM-014 | Join Group | A3 | 🟢 Low | - | - | `useCollectives` | `collective_members` | `collective_members` | - |
+| A3-COMM-015 | Leave Group | A3 | 🟢 Low | - | - | `useCollectives` | `collective_members` | `collective_members` | - |
+| A3-COMM-016 | Create Event | A3 | 🟡 Medium | - | - | `useCreateEvent` | `global_community_events` | `global_community_events` | - |
+| A3-COMM-017 | Update Event | A3 | 🟡 Medium | - | - | `useUpdateEvent` | `global_community_events` | `global_community_events` | - |
+| A3-COMM-018 | Delete Event | A3 | 🟡 Medium | - | - | `useDeleteEvent` | `global_community_events` | `global_community_events` | - |
+| A3-COMM-019 | Send Connection Request | A3 | 🟢 Low | - | - | `useConnectionRequest` | `connection_requests` | `connection_requests` | - |
+| A3-COMM-020 | Accept Connection | A3 | 🟢 Low | - | - | `useConnectionRequest` | `connection_requests` | `connection_requests`, `user_connections` | - |
+| A3-COMM-021 | Decline Connection | A3 | 🟢 Low | - | - | `useConnectionRequest` | `connection_requests` | `connection_requests` | - |
+| A3-COMM-022 | Start Direct Message | A3 | 🟢 Low | - | `create_global_direct_thread`, `create_or_get_global_dm` | `useCreateThread` | `global_message_threads` | `global_message_threads`, `global_thread_participants` | - |
+| A3-COMM-023 | Send Message | A3 | 🟢 Low | - | - | `useSendGlobalMessage` | `global_messages` | `global_messages` | - |
+| A3-COMM-024 | React to Message | A3 | 🟢 Low | - | `toggle_message_reaction` | `useMessageReactions` | `message_reactions` | `message_reactions` | - |
+| A3-COMM-025 | Join Live Room | A3 | 🟢 Low | - | - | `useLiveStream` | `community_live_streams` | `live_stream_participants` | - |
+| A3-COMM-026 | Create Live Room | A3 | 🟡 Medium | - | - | `useCreateLiveStream` | `community_live_streams` | `community_live_streams` | - |
+| A3-COMM-027 | End Live Room | A3 | 🟡 Medium | - | - | `useEndLiveStream` | `community_live_streams` | `community_live_streams` | - |
+| A4-COMM-028 | Buy Event Ticket | A4 | 🔴 High | `stripe-create-ticket-checkout` | - | `useEventTickets` | `event_ticket_types`, `event_ticket_purchases` | `event_ticket_purchases` | Stripe |
+| A4-COMM-029 | Request Ticket Refund | A4 | 🔴 High | `stripe-create-refund` | - | `useTicketRefund` | `event_ticket_purchases` | `event_ticket_purchases` | Stripe |
+| A5-COMM-030 | Plan Weekly Meetups | A5 | 🔴 High | `generate-autopilot-actions` | - | `useCommunityEvents`, `useCalendarEvents` | `global_community_events`, `calendar_events` | `calendar_events`, `autopilot_actions` | Vertex AI |
+
+### C.2 Discover Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-DISC-001 | Search Products | A1 | 🟢 Low | `cj-search-products` | - | `useProducts` | `cj_products` | - | CJ Dropshipping |
+| A1-DISC-002 | Search Services | A1 | 🟢 Low | - | - | `useServices` | `services` | - | - |
+| A1-DISC-003 | View Product Details | A1 | 🟢 Low | `cj-get-product-details` | - | `useProducts` | `cj_products` | - | CJ Dropshipping |
+| A1-DISC-004 | Compare Products | A1 | 🟢 Low | - | - | `useProducts` | `cj_products` | - | - |
+| A1-DISC-005 | View Cart | A1 | 🟢 Low | - | - | `useCart` | `cart_items` | - | - |
+| A1-DISC-006 | View Order History | A1 | 🟢 Low | - | - | `useOrders` | `cj_orders`, `checkout_sessions` | - | - |
+| A2-DISC-007 | Navigate to Shop | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-DISC-008 | Navigate to Services | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-DISC-009 | Navigate to Cart | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-DISC-010 | Open Product Detail | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-DISC-011 | Add to Cart | A3 | 🟢 Low | - | - | `useCart` | `cart_items` | `cart_items` | - |
+| A3-DISC-012 | Update Cart Quantity | A3 | 🟢 Low | - | - | `useCart` | `cart_items` | `cart_items` | - |
+| A3-DISC-013 | Remove from Cart | A3 | 🟢 Low | - | - | `useCart` | `cart_items` | `cart_items` | - |
+| A3-DISC-014 | Add to Wishlist | A3 | 🟢 Low | - | - | `useBookmarks` | `bookmarked_items` | `bookmarked_items` | - |
+| A3-DISC-015 | Remove from Wishlist | A3 | 🟢 Low | - | - | `useBookmarks` | `bookmarked_items` | `bookmarked_items` | - |
+| A3-DISC-016 | Apply Coupon | A3 | 🟢 Low | - | - | `useCart` | `cart_items` | `cart_items` | - |
+| A4-DISC-017 | Start Checkout | A4 | 🔴 High | `stripe-create-checkout-session` | - | `useCheckout` | `cart_items`, `checkout_sessions` | `checkout_sessions` | Stripe |
+| A4-DISC-018 | Complete Purchase | A4 | 🔴 High | `stripe-webhook`, `cj-create-order` | - | `useOrders` | `checkout_sessions`, `cart_items` | `cj_orders`, `checkout_sessions` | Stripe, CJ |
+| A4-DISC-019 | Book Service | A4 | 🔴 High | `stripe-create-checkout-session` | - | `useBookService` | `services` | `service_bookings` | Stripe |
+| A4-DISC-020 | Cancel Order | A4 | 🔴 High | `cj-cancel-order` | - | `useOrders` | `cj_orders` | `cj_orders` | CJ Dropshipping |
+| A4-DISC-021 | Request Refund | A4 | 🔴 High | `stripe-create-refund` | - | `useRefund` | `checkout_sessions` | `refund_requests` | Stripe |
+| A5-DISC-022 | Build Supplement Stack | A5 | 🔴 High | `generate-supplement-recs`, `cj-search-products` | - | `useProducts`, `useCart` | `cj_products`, `biomarker_entries` | `cart_items` | CJ, Vertex AI |
+| A5-DISC-023 | Reorder Previous | A5 | 🔴 High | `stripe-create-checkout-session` | - | `useOrders`, `useCart`, `useCheckout` | `cj_orders`, `cart_items` | `cart_items`, `checkout_sessions` | Stripe |
+
+### C.3 Health Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-HLTH-001 | View Biomarkers | A1 | 🟢 Low | - | - | `useBiomarkerData` | `biomarker_entries` | - | - |
+| A1-HLTH-002 | View Health Insights | A1 | 🟢 Low | - | - | `useHealthInsights` | `ai_recommendations` | - | - |
+| A1-HLTH-003 | View Hydration Stats | A1 | 🟢 Low | - | - | `useHydrationData` | `hydration_logs` | - | - |
+| A1-HLTH-004 | View Sleep Stats | A1 | 🟢 Low | - | - | `useSleepData` | `sleep_sessions` | - | - |
+| A1-HLTH-005 | View Activity Stats | A1 | 🟢 Low | - | - | `useActivityData` | `activity_logs` | - | - |
+| A1-HLTH-006 | View AI Plans | A1 | 🟢 Low | - | - | `useAIPlans` | `ai_plans` | - | - |
+| A1-HLTH-007 | View Plan History | A1 | 🟢 Low | - | - | `useAIPlans`, `usePlanAdherence` | `ai_plans`, `plan_adherence_logs` | - | - |
+| A1-HLTH-008 | View Vitana Index | A1 | 🟢 Low | - | - | `useVitanaIndex` | Multiple health tables | - | - |
+| A2-HLTH-009 | Navigate to Health Dashboard | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-HLTH-010 | Navigate to Hydration | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-HLTH-011 | Navigate to Sleep | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-HLTH-012 | Navigate to Biomarkers | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-HLTH-013 | Log Hydration | A3 | 🟢 Low | - | - | `useLogHydration` | `hydration_logs` | `hydration_logs` | - |
+| A3-HLTH-014 | Log Sleep | A3 | 🟢 Low | - | - | `useLogSleep` | `sleep_sessions` | `sleep_sessions` | - |
+| A3-HLTH-015 | Log Activity | A3 | 🟢 Low | - | - | `useLogActivity` | `activity_logs` | `activity_logs` | - |
+| A3-HLTH-016 | Log Meal | A3 | 🟢 Low | - | - | `useLogMeal` | `meal_logs` | `meal_logs` | - |
+| A3-HLTH-017 | Set Health Goal | A3 | 🟢 Low | - | - | `useHealthGoals` | `health_goals` | `health_goals` | - |
+| A3-HLTH-018 | Update Health Goal | A3 | 🟢 Low | - | - | `useHealthGoals` | `health_goals` | `health_goals` | - |
+| A3-HLTH-019 | Complete Plan Task | A3 | 🟢 Low | - | - | `usePlanAdherence` | `plan_adherence_logs` | `plan_adherence_logs` | - |
+| A3-HLTH-020 | Start AI Plan | A3 | 🟢 Low | - | - | `useAIPlans` | `ai_plans` | `ai_plans` | - |
+| A3-HLTH-021 | Pause AI Plan | A3 | 🟢 Low | - | - | `useAIPlans` | `ai_plans` | `ai_plans` | - |
+| A4-HLTH-022 | Update Biomarkers | A4 | 🔴 High | - | - | `useBiomarkerData` | `biomarker_entries` | `biomarker_entries` | - |
+| A4-HLTH-023 | Connect Wearable | A4 | 🔴 High | `connect-wearable` | - | `useConnectedDevices` | `connected_devices` | `connected_devices` | Device APIs |
+| A4-HLTH-024 | Sync Wearable Data | A4 | 🔴 High | `sync-wearable-data` | - | `useConnectedDevices` | `connected_devices`, health tables | Health tables | Device APIs |
+| A4-HLTH-025 | Generate Personalized Plan | A4 | 🔴 High | `generate-personalized-plan` | - | `useAIPlans` | `ai_plans`, health tables | `ai_plans` | Vertex AI |
+| A4-HLTH-026 | Generate Supplement Recs | A4 | 🔴 High | `generate-supplement-recs` | - | `useSupplementRecs` | `biomarker_entries`, `ai_recommendations` | `ai_recommendations` | Vertex AI |
+| A4-HLTH-027 | Request Health Report | A4 | 🔴 High | `generate-health-report` | - | `useHealthReport` | All health tables | - | - |
+| A5-HLTH-028 | Plan Weekly Wellness | A5 | 🔴 High | `generate-personalized-plan`, `generate-autopilot-actions` | - | Health hooks, `useCalendarEvents` | Health tables, `calendar_events` | `calendar_events`, `ai_plans` | Vertex AI |
+| A5-HLTH-029 | Optimize Sleep Schedule | A5 | 🔴 High | `generate-personalized-plan` | - | `useSleepData`, `useCalendarEvents` | `sleep_sessions`, `calendar_events` | `calendar_events` | Vertex AI |
+| A5-HLTH-030 | Full Health Assessment | A5 | 🔴 High | Multiple AI edges | - | All health hooks | All health tables | `ai_plans`, `ai_recommendations` | Vertex AI |
+
+### C.4 Sharing Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-SHAR-001 | View Campaigns | A1 | 🟢 Low | - | - | `useCampaigns` | `campaigns` | - | - |
+| A1-SHAR-002 | View Campaign Details | A1 | 🟢 Low | - | - | `useCampaigns` | `campaigns`, `campaign_recipients` | - | - |
+| A1-SHAR-003 | View Campaign Analytics | A1 | 🟢 Low | - | - | `useCampaignAnalytics` | `campaign_recipients` | - | - |
+| A1-SHAR-004 | View Connected Channels | A1 | 🟢 Low | - | - | `useDistributionChannels` | `distribution_channels` | - | - |
+| A2-SHAR-005 | Navigate to Campaigns | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-SHAR-006 | Navigate to Distribution | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-SHAR-007 | Open Campaign Editor | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-SHAR-008 | Create Campaign Draft | A3 | 🟡 Medium | - | - | `useCreateCampaign` | `campaigns` | `campaigns` | - |
+| A3-SHAR-009 | Update Campaign | A3 | 🟡 Medium | - | - | `useUpdateCampaign` | `campaigns` | `campaigns` | - |
+| A3-SHAR-010 | Delete Campaign | A3 | 🟡 Medium | - | - | `useDeleteCampaign` | `campaigns` | `campaigns` | - |
+| A3-SHAR-011 | Duplicate Campaign | A3 | 🟢 Low | - | - | `useDuplicateCampaign` | `campaigns` | `campaigns` | - |
+| A3-SHAR-012 | Generate Message Draft | A3 | 🟡 Medium | `generate-campaign-content` | - | - | - | - | Vertex AI |
+| A3-SHAR-013 | Generate CTA Copy | A3 | 🟡 Medium | `generate-campaign-content` | - | - | - | - | Vertex AI |
+| A3-SHAR-014 | Schedule Campaign | A3 | 🟡 Medium | - | - | `useUpdateCampaign` | `campaigns` | `campaigns` | - |
+| A4-SHAR-015 | Connect Social Channel | A4 | 🔴 High | `connect-social-channel` | - | `useConnectChannel` | `distribution_channels` | `distribution_channels` | Social OAuth |
+| A4-SHAR-016 | Disconnect Channel | A4 | 🔴 High | - | - | `useDisconnectChannel` | `distribution_channels` | `distribution_channels` | Social APIs |
+| A4-SHAR-017 | Activate Campaign | A4 | 🔴 High | `distribute-post`, `queue-campaign-recipients` | - | `useActivateCampaign` | `campaigns`, `campaign_recipients` | `campaign_recipients` | Email/SMS/Social |
+| A4-SHAR-018 | Send Test Message | A4 | 🔴 High | `send-test-campaign` | - | - | `campaigns` | - | Email/SMS |
+| A4-SHAR-019 | Bulk Distribute | A4 | 🔴 High | `distribute-post`, `queue-campaign-recipients` | - | `useBulkDistribute` | `campaigns`, `campaign_recipients` | `campaign_recipients` | All distribution |
+| A4-SHAR-020 | Pause Distribution | A4 | 🔴 High | - | - | `usePauseDistribution` | `campaigns`, `campaign_recipients` | `campaign_recipients` | - |
+| A5-SHAR-021 | Full Campaign Launch | A5 | 🔴 High | Multiple distribution edges | - | Campaign hooks | `campaigns`, `campaign_recipients`, `distribution_channels` | `campaigns`, `campaign_recipients` | All distribution |
+| A5-SHAR-022 | Promote Event | A5 | 🔴 High | `distribute-post` | - | `useCommunityEvents`, `useCreateCampaign` | `global_community_events`, `campaigns` | `campaigns` | Distribution APIs |
+
+### C.5 Wallet Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-WALL-001 | View Balances | A1 | 🟢 Low | - | `get_user_balance` | `useWallet` | `user_wallets` | - | - |
+| A1-WALL-002 | View Transaction History | A1 | 🟢 Low | - | - | `useTransactionHistory` | `wallet_transactions` | - | - |
+| A1-WALL-003 | View Subscriptions | A1 | 🟢 Low | - | - | `useSubscriptions` | `user_subscriptions` | - | - |
+| A1-WALL-004 | View Reward History | A1 | 🟢 Low | - | - | `useRewards` | `reward_claims` | - | - |
+| A1-WALL-005 | View Exchange Rates | A1 | 🟢 Low | - | - | `useExchangeRates` | `exchange_rates` | - | - |
+| A2-WALL-006 | Navigate to Wallet | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-WALL-007 | Navigate to Transactions | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-WALL-008 | Navigate to Subscriptions | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-WALL-009 | Open Send Dialog | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-WALL-010 | Open Exchange Dialog | A2 | 🟢 Low | - | - | - | - | - | - |
+| A4-WALL-011 | Transfer Credits | A4 | 🔴 High | - | `process_wallet_transfer` | `useTransfer` | `user_wallets` | `wallet_transactions`, `user_wallets` | - |
+| A4-WALL-012 | Exchange Currency | A4 | 🔴 High | - | `process_wallet_exchange` | `useExchange` | `user_wallets`, `exchange_rates` | `wallet_transactions`, `user_wallets` | - |
+| A4-WALL-013 | Top Up Balance | A4 | 🔴 High | `stripe-create-topup-session` | - | `useTopUp` | `user_wallets` | `wallet_transactions`, `user_wallets` | Stripe |
+| A4-WALL-014 | Withdraw Funds | A4 | 🔴 High | `request-withdrawal` | - | `useWithdraw` | `user_wallets` | `withdrawal_requests`, `user_wallets` | Stripe Connect |
+| A4-WALL-015 | Cancel Subscription | A4 | 🔴 High | `cancel-subscription` | - | `useCancelSubscription` | `user_subscriptions` | `user_subscriptions` | Stripe |
+| A4-WALL-016 | Upgrade Subscription | A4 | 🔴 High | `upgrade-subscription` | - | `useUpgradeSubscription` | `user_subscriptions` | `user_subscriptions` | Stripe |
+| A4-WALL-017 | Claim Reward | A4 | 🟡 Medium | - | `claim_reward` | `useRewards` | `reward_claims`, `user_wallets` | `reward_claims`, `user_wallets` | - |
+| A4-WALL-018 | Redeem Code | A4 | 🟡 Medium | - | `redeem_promo_code` | `useRedeemCode` | `promo_codes`, `user_wallets` | `promo_code_claims`, `user_wallets` | - |
+| A5-WALL-019 | Send & Exchange | A5 | 🔴 High | - | `process_wallet_exchange`, `process_wallet_transfer` | `useExchange`, `useTransfer` | `user_wallets`, `exchange_rates` | `wallet_transactions`, `user_wallets` | - |
+
+### C.6 AI Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-AI-001 | View Conversation History | A1 | 🟢 Low | - | - | `useAIConversations` | `ai_conversations`, `ai_messages` | - | - |
+| A1-AI-002 | View AI Memory | A1 | 🟢 Low | - | - | `useAIMemory` | `ai_memory` | - | - |
+| A1-AI-003 | View AI Settings | A1 | 🟢 Low | - | - | `useUserPreferences` | `user_preferences` | - | - |
+| A2-AI-004 | Navigate to AI Chat | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-AI-005 | Open VITANA Orb | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-AI-006 | Start Voice Mode | A3 | 🟡 Medium | `vitanaland-live` | - | `useVertexLive` | - | - | Vertex AI |
+| A3-AI-007 | End Voice Mode | A3 | 🟢 Low | - | - | `useVertexLive` | - | - | - |
+| A3-AI-008 | Toggle Mute | A3 | 🟢 Low | - | - | - | - | - | - |
+| A3-AI-009 | Submit Text Input | A3 | 🟢 Low | `vertex-chat` | - | `useAIChat` | `ai_conversations` | `ai_messages` | Vertex AI |
+| A3-AI-010 | Clear Conversation | A3 | 🟢 Low | - | - | `useAIConversations` | `ai_conversations` | `ai_conversations` | - |
+| A4-AI-011 | Generate AI Response | A4 | 🔴 High | `vertex-chat`, `vertex-live` | - | `useAIChat` | `ai_conversations`, `ai_messages` | `ai_messages` | Vertex AI |
+| A4-AI-012 | Execute Voice Command | A4 | 🔴 High | `vitanaland-live` | - | `useVitanaOrbTools` | Various | Various | Vertex AI |
+| A4-AI-013 | Create AI Memory | A4 | 🟡 Medium | - | - | `useAIMemory` | `ai_memory` | `ai_memory` | - |
+| A4-AI-014 | Start Reflection Session | A4 | 🔴 High | `vertex-chat` | - | `useAIChat` | `diary_entries`, `ai_memory` | `ai_memory` | Vertex AI |
+| A4-AI-015 | Generate Daily Briefing | A4 | 🔴 High | `generate-daily-briefing` | - | `useDailyBriefing` | Multiple tables | `autopilot_actions` | Vertex AI |
+| A5-AI-016 | Full Voice Workflow | A5 | 🔴 High | `vitanaland-live`, multiple edges | - | `useVertexLive`, `useVitanaOrbTools` | Various | Various | Vertex AI |
+| A5-AI-017 | Daily Briefing & Actions | A5 | 🔴 High | `generate-daily-briefing`, `generate-autopilot-actions` | - | `useDailyBriefing`, `useAutopilotActions` | Multiple tables | `autopilot_actions` | Vertex AI |
+
+### C.7 Memory Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-MEM-001 | View Diary Entries | A1 | 🟢 Low | - | - | `useDiaryEntries` | `diary_entries` | - | - |
+| A1-MEM-002 | View Entry Details | A1 | 🟢 Low | - | - | `useDiaryEntries` | `diary_entries` | - | - |
+| A1-MEM-003 | View Memory Insights | A1 | 🟢 Low | - | - | `useMemoryInsights` | `ai_memory`, `diary_entries` | - | - |
+| A1-MEM-004 | Search Memories | A1 | 🟢 Low | - | - | `useSearchMemories` | `diary_entries`, `ai_memory` | - | - |
+| A2-MEM-005 | Navigate to Diary | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-MEM-006 | Create Diary Entry | A3 | 🟢 Low | - | - | `useCreateDiaryEntry` | `diary_entries` | `diary_entries` | - |
+| A3-MEM-007 | Update Diary Entry | A3 | 🟢 Low | - | - | `useUpdateDiaryEntry` | `diary_entries` | `diary_entries` | - |
+| A3-MEM-008 | Delete Diary Entry | A3 | 🟢 Low | - | - | `useDeleteDiaryEntry` | `diary_entries` | `diary_entries` | - |
+| A3-MEM-009 | Add Tag to Entry | A3 | 🟢 Low | - | - | `useUpdateDiaryEntry` | `diary_entries` | `diary_entries` | - |
+| A3-MEM-010 | Add Attachment | A3 | 🟢 Low | - | - | `useUpdateDiaryEntry` | `diary_entries` | `diary_entries` | Storage |
+| A4-MEM-011 | Record Voice Entry | A4 | 🔴 High | `google-cloud-tts` | - | `useVoiceDiary` | `diary_entries` | `diary_entries` | Google Cloud STT |
+| A4-MEM-012 | Analyze Memory Patterns | A4 | 🔴 High | `analyze-memory-patterns` | - | `useMemoryAnalysis` | `diary_entries`, `ai_memory` | `ai_memory` | Vertex AI |
+| A4-MEM-013 | Export Memories | A4 | 🔴 High | `export-memories` | - | `useExportMemories` | `diary_entries`, `ai_memory` | - | - |
+| A5-MEM-014 | Consolidate Memories | A5 | 🔴 High | `analyze-memory-patterns`, `vertex-chat` | - | `useMemoryAnalysis` | `diary_entries`, `ai_memory` | `ai_memory` | Vertex AI |
+| A5-MEM-015 | Generate Life Summary | A5 | 🔴 High | `vertex-chat`, `export-memories` | - | `useMemoryAnalysis` | `diary_entries`, `ai_memory` | - | Vertex AI |
+
+### C.8 Admin Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-ADMN-001 | View Admin Dashboard | A1 | 🟢 Low | - | `get_recent_admin_activity` | `useAuditLogs` | `audit_events` | - | - |
+| A1-ADMN-002 | View User List | A1 | 🟢 Low | - | - | `useUserList` | `profiles`, `memberships` | - | - |
+| A1-ADMN-003 | View Automation Rules | A1 | 🟢 Low | - | - | `useAutomationRules` | `automation_rules` | - | - |
+| A1-ADMN-004 | View Permissions | A1 | 🟢 Low | - | - | `useRole` | `role_preferences`, `memberships` | - | - |
+| A1-ADMN-005 | View Tenant Settings | A1 | 🟢 Low | - | - | `useTenantSettings` | `tenants` | - | - |
+| A2-ADMN-006 | Navigate to Admin | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-ADMN-007 | Navigate to Dev Hub | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-ADMN-008 | Open User Detail | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-ADMN-009 | Switch Tenant | A3 | 🟡 Medium | - | `switch_to_tenant_by_slug` | `useTenantSwitch` | `tenants`, `memberships` | `memberships` | - |
+| A3-ADMN-010 | Update Tenant Settings | A3 | 🟡 Medium | - | - | `useUpdateTenantSettings` | `tenants` | `tenants` | - |
+| A3-ADMN-011 | Create Automation Rule | A3 | 🟡 Medium | - | - | `useCreateAutomation` | `automation_rules` | `automation_rules` | - |
+| A3-ADMN-012 | Update Automation Rule | A3 | 🟡 Medium | - | - | `useUpdateAutomation` | `automation_rules` | `automation_rules` | - |
+| A3-ADMN-013 | Delete Automation Rule | A3 | 🟡 Medium | - | - | `useDeleteAutomation` | `automation_rules` | `automation_rules` | - |
+| A4-ADMN-014 | Bootstrap Admin User | A4 | 🔴 High | - | `bootstrap_admin_user` | `useBootstrapAdmin` | `memberships`, `auth.users` | `memberships` | - |
+| A4-ADMN-015 | Revoke Admin | A4 | 🔴 High | - | `revoke_admin_privileges` | `useRevokeAdmin` | `memberships`, `auth.users` | `memberships` | - |
+| A4-ADMN-016 | Update User Role | A4 | 🔴 High | - | `set_role_preference`, `validate_role_assignment` | `useUpdateUserRole` | `memberships`, `role_preferences` | `role_preferences` | - |
+| A4-ADMN-017 | Ban User | A4 | 🔴 High | - | - | `useBanUser` | `memberships` | `memberships`, `user_bans` | - |
+| A4-ADMN-018 | Unban User | A4 | 🔴 High | - | - | `useUnbanUser` | `user_bans` | `user_bans` | - |
+| A4-ADMN-019 | Trigger Bulk Action | A4 | 🔴 High | `execute-bulk-action` | - | `useBulkAction` | Various | Various | - |
+| A5-ADMN-020 | System Health Check | A5 | 🔴 High | Multiple health edges | - | `useSystemHealth` | `api_integrations`, `api_test_logs` | `api_test_logs` | All integrations |
+
+### C.9 Settings Module API Mapping
+
+| Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
+|-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
+| A1-SETT-001 | View Profile Settings | A1 | 🟢 Low | - | - | `useProfile` | `profiles` | - | - |
+| A1-SETT-002 | View Privacy Settings | A1 | 🟢 Low | - | - | `usePrivacySettings` | `user_preferences` | - | - |
+| A1-SETT-003 | View Notification Settings | A1 | 🟢 Low | - | - | `useNotificationSettings` | `user_preferences` | - | - |
+| A1-SETT-004 | View Autopilot Settings | A1 | 🟢 Low | - | - | `useUserPreferences` | `user_preferences` | - | - |
+| A2-SETT-005 | Navigate to Settings | A2 | 🟢 Low | - | - | - | - | - | - |
+| A2-SETT-006 | Navigate to Privacy | A2 | 🟢 Low | - | - | - | - | - | - |
+| A3-SETT-007 | Update Profile | A3 | 🟢 Low | - | - | `useUpdateProfile` | `profiles` | `profiles`, `global_community_profiles` | - |
+| A3-SETT-008 | Update Privacy | A3 | 🟢 Low | - | - | `useUpdatePrivacy` | `user_preferences` | `user_preferences` | - |
+| A3-SETT-009 | Update Notifications | A3 | 🟢 Low | - | - | `useUpdateNotifications` | `user_preferences` | `user_preferences` | - |
+| A3-SETT-010 | Update Autopilot | A3 | 🟢 Low | - | - | `useUserPreferences` | `user_preferences` | `user_preferences` | - |
+| A4-SETT-011 | Enable 2FA | A4 | 🔴 High | `enable-2fa` | - | `use2FA` | `auth.users` | `auth.users` | TOTP Provider |
+| A4-SETT-012 | Disable 2FA | A4 | 🔴 High | `disable-2fa` | - | `use2FA` | `auth.users` | `auth.users` | - |
+| A4-SETT-013 | Delete Account | A4 | 🔴 High | `delete-account` | - | `useDeleteAccount` | All user tables | All user tables | - |
+| A4-SETT-014 | Export Data | A4 | 🔴 High | `export-user-data` | - | `useExportData` | All user tables | - | - |
+| A4-SETT-015 | Change Password | A4 | 🔴 High | - | - | `useChangePassword` | `auth.users` | `auth.users` | - |
+| A5-SETT-016 | Account Migration | A5 | 🔴 High | `migrate-account` | - | `useAccountMigration` | All user tables | All user tables | - |
+
+---
+
+## Appendix D: Complete Capability-to-Screen Mapping (All 169 Actions)
+
+### D.1 Screen Mapping Legend
+
+| Symbol | Meaning |
+|--------|---------|
+| ✅ Yes | Fully supports headless execution |
+| ⚠️ Partial | Can execute headless but UI preferred |
+| ❌ No | Requires UI interaction |
+
+### D.2 Community Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-COMM-001 | Discover People | COMM-002 (People Discovery) | Profile cards | ✅ Yes | None |
+| A1-COMM-002 | Discover Events | COMM-001 (Events & Meetups) | Event list, Map view | ✅ Yes | None |
+| A1-COMM-003 | Discover Groups | COMM-003 (Collectives) | Group cards | ✅ Yes | None |
+| A1-COMM-004 | View Event Details | COMM-001 | MeetupDetailsDrawer | ✅ Yes | None |
+| A1-COMM-005 | View User Profile | COMM-002 | ProfilePreviewSheet | ✅ Yes | None |
+| A2-COMM-006 | Navigate to Events | COMM-001 | - | ❌ No | Navigation required |
+| A2-COMM-007 | Navigate to Groups | COMM-003 | - | ❌ No | Navigation required |
+| A2-COMM-008 | Open Event Drawer | COMM-001 | MeetupDetailsDrawer | ❌ No | Drawer component |
+| A2-COMM-009 | Open Profile Preview | Any | ProfilePreviewSheet | ❌ No | Dialog component |
+| A3-COMM-010 | Follow User | COMM-002 | Any profile view | ✅ Yes | None |
+| A3-COMM-011 | Unfollow User | COMM-002 | Any profile view | ✅ Yes | None |
+| A3-COMM-012 | Join Event (Free) | COMM-001 | MeetupDetailsDrawer | ✅ Yes | None |
+| A3-COMM-013 | Leave Event | COMM-001 | MeetupDetailsDrawer | ✅ Yes | None |
+| A3-COMM-014 | Join Group | COMM-003 | Group detail | ✅ Yes | None |
+| A3-COMM-015 | Leave Group | COMM-003 | Group detail | ✅ Yes | None |
+| A3-COMM-016 | Create Event | COMM-001 | Event Creation Dialog | ⚠️ Partial | Dialog preferred |
+| A3-COMM-017 | Update Event | COMM-001 | Event Edit Dialog | ⚠️ Partial | Dialog preferred |
+| A3-COMM-018 | Delete Event | COMM-001 | Confirmation dialog | ⚠️ Partial | Confirmation UI |
+| A3-COMM-019 | Send Connection Request | COMM-002 | Profile view | ✅ Yes | None |
+| A3-COMM-020 | Accept Connection | Notifications | Connection requests | ✅ Yes | None |
+| A3-COMM-021 | Decline Connection | Notifications | Connection requests | ✅ Yes | None |
+| A3-COMM-022 | Start Direct Message | COMM-006 (Messages) | Thread view | ✅ Yes | None |
+| A3-COMM-023 | Send Message | COMM-006 | Thread view | ✅ Yes | None |
+| A3-COMM-024 | React to Message | COMM-006 | Thread view | ✅ Yes | None |
+| A3-COMM-025 | Join Live Room | COMM-005 (Live) | LiveRoomViewer | ⚠️ Partial | Media permissions |
+| A3-COMM-026 | Create Live Room | COMM-005 | Live creation | ⚠️ Partial | Media permissions |
+| A3-COMM-027 | End Live Room | COMM-005 | LiveRoomViewer | ⚠️ Partial | Host UI |
+| A4-COMM-028 | Buy Event Ticket | COMM-001 | Checkout popup | ⚠️ Partial | Stripe redirect |
+| A4-COMM-029 | Request Ticket Refund | Orders | Refund dialog | ⚠️ Partial | Confirmation UI |
+| A5-COMM-030 | Plan Weekly Meetups | HLTH-001 | Calendar, Events | ⚠️ Partial | Multi-step UI |
+
+### D.3 Discover Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-DISC-001 | Search Products | DISC-001 (Shop) | Product grid | ✅ Yes | None |
+| A1-DISC-002 | Search Services | DISC-002 (Services) | Service list | ✅ Yes | None |
+| A1-DISC-003 | View Product Details | DISC-001 | Product detail drawer | ✅ Yes | None |
+| A1-DISC-004 | Compare Products | DISC-001 | Comparison modal | ⚠️ Partial | UI preferred |
+| A1-DISC-005 | View Cart | DISC-003 (Cart) | - | ✅ Yes | None |
+| A1-DISC-006 | View Order History | Orders | Order detail | ✅ Yes | None |
+| A2-DISC-007 | Navigate to Shop | DISC-001 | - | ❌ No | Navigation required |
+| A2-DISC-008 | Navigate to Services | DISC-002 | - | ❌ No | Navigation required |
+| A2-DISC-009 | Navigate to Cart | DISC-003 | - | ❌ No | Navigation required |
+| A2-DISC-010 | Open Product Detail | DISC-001 | Product drawer | ❌ No | Drawer component |
+| A3-DISC-011 | Add to Cart | DISC-001, DISC-003 | - | ✅ Yes | None |
+| A3-DISC-012 | Update Cart Quantity | DISC-003 | - | ✅ Yes | None |
+| A3-DISC-013 | Remove from Cart | DISC-003 | - | ✅ Yes | None |
+| A3-DISC-014 | Add to Wishlist | DISC-001 | Wishlist | ✅ Yes | None |
+| A3-DISC-015 | Remove from Wishlist | Wishlist | - | ✅ Yes | None |
+| A3-DISC-016 | Apply Coupon | DISC-003 | - | ✅ Yes | None |
+| A4-DISC-017 | Start Checkout | DISC-003 | Checkout popup | ⚠️ Partial | Stripe redirect |
+| A4-DISC-018 | Complete Purchase | Checkout | Confirmation | ⚠️ Partial | Payment UI |
+| A4-DISC-019 | Book Service | DISC-002 | Booking dialog | ⚠️ Partial | Stripe redirect |
+| A4-DISC-020 | Cancel Order | Orders | Cancellation dialog | ⚠️ Partial | Confirmation UI |
+| A4-DISC-021 | Request Refund | Orders | Refund dialog | ⚠️ Partial | Confirmation UI |
+| A5-DISC-022 | Build Supplement Stack | HLTH-001 | DISC-001, DISC-003 | ⚠️ Partial | Multi-step UI |
+| A5-DISC-023 | Reorder Previous | Orders | DISC-003, Checkout | ⚠️ Partial | Checkout UI |
+
+### D.4 Health Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-HLTH-001 | View Biomarkers | HLTH-001 (Dashboard) | Biomarker detail | ✅ Yes | None |
+| A1-HLTH-002 | View Health Insights | HLTH-001 | Insights panel | ✅ Yes | None |
+| A1-HLTH-003 | View Hydration Stats | HLTH-002 (Hydration) | - | ✅ Yes | None |
+| A1-HLTH-004 | View Sleep Stats | HLTH-003 (Sleep) | - | ✅ Yes | None |
+| A1-HLTH-005 | View Activity Stats | HLTH-004 (Activity) | - | ✅ Yes | None |
+| A1-HLTH-006 | View AI Plans | HLTH-001 | Plans view | ✅ Yes | None |
+| A1-HLTH-007 | View Plan History | Plans view | History tab | ✅ Yes | None |
+| A1-HLTH-008 | View Vitana Index | HLTH-001, Profile | - | ✅ Yes | None |
+| A2-HLTH-009 | Navigate to Health Dashboard | HLTH-001 | - | ❌ No | Navigation required |
+| A2-HLTH-010 | Navigate to Hydration | HLTH-002 | - | ❌ No | Navigation required |
+| A2-HLTH-011 | Navigate to Sleep | HLTH-003 | - | ❌ No | Navigation required |
+| A2-HLTH-012 | Navigate to Biomarkers | Biomarker detail | - | ❌ No | Navigation required |
+| A3-HLTH-013 | Log Hydration | HLTH-002 | Quick log | ✅ Yes | None |
+| A3-HLTH-014 | Log Sleep | HLTH-003 | Sleep entry | ✅ Yes | None |
+| A3-HLTH-015 | Log Activity | HLTH-004 | Activity entry | ✅ Yes | None |
+| A3-HLTH-016 | Log Meal | HLTH-005 (Nutrition) | Meal entry | ✅ Yes | None |
+| A3-HLTH-017 | Set Health Goal | HLTH-001 | Goal dialog | ⚠️ Partial | Dialog preferred |
+| A3-HLTH-018 | Update Health Goal | Goals view | Edit dialog | ⚠️ Partial | Dialog preferred |
+| A3-HLTH-019 | Complete Plan Task | Plans view | Task list | ✅ Yes | None |
+| A3-HLTH-020 | Start AI Plan | Plans view | - | ✅ Yes | None |
+| A3-HLTH-021 | Pause AI Plan | Plans view | - | ✅ Yes | None |
+| A4-HLTH-022 | Update Biomarkers | Biomarker detail | Entry form | ⚠️ Partial | PHI form validation |
+| A4-HLTH-023 | Connect Wearable | Settings | OAuth flow | ❌ No | External auth |
+| A4-HLTH-024 | Sync Wearable Data | HLTH-001 | - | ✅ Yes | None |
+| A4-HLTH-025 | Generate Personalized Plan | HLTH-001 | Plan builder | ⚠️ Partial | AI generation time |
+| A4-HLTH-026 | Generate Supplement Recs | HLTH-001 | Recommendations | ⚠️ Partial | AI generation time |
+| A4-HLTH-027 | Request Health Report | HLTH-001 | Report dialog | ⚠️ Partial | Generation time |
+| A5-HLTH-028 | Plan Weekly Wellness | HLTH-001 | Calendar | ⚠️ Partial | Multi-step UI |
+| A5-HLTH-029 | Optimize Sleep Schedule | HLTH-003 | Calendar | ⚠️ Partial | Multi-step UI |
+| A5-HLTH-030 | Full Health Assessment | HLTH-001 | Assessment flow | ⚠️ Partial | Multi-step UI |
+
+### D.5 Sharing Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-SHAR-001 | View Campaigns | SHAR-001 (Campaigns) | - | ✅ Yes | None |
+| A1-SHAR-002 | View Campaign Details | SHAR-001 | Campaign detail | ✅ Yes | None |
+| A1-SHAR-003 | View Campaign Analytics | SHAR-001 | Analytics panel | ✅ Yes | None |
+| A1-SHAR-004 | View Connected Channels | SHAR-001 | Channels panel | ✅ Yes | None |
+| A2-SHAR-005 | Navigate to Campaigns | SHAR-001 | - | ❌ No | Navigation required |
+| A2-SHAR-006 | Navigate to Distribution | Distribution | - | ❌ No | Navigation required |
+| A2-SHAR-007 | Open Campaign Editor | SHAR-001 | CampaignDialog | ❌ No | Dialog component |
+| A3-SHAR-008 | Create Campaign Draft | SHAR-001 | CampaignDialog | ⚠️ Partial | Dialog preferred |
+| A3-SHAR-009 | Update Campaign | SHAR-001 | CampaignDialog | ⚠️ Partial | Dialog preferred |
+| A3-SHAR-010 | Delete Campaign | SHAR-001 | Confirmation | ⚠️ Partial | Confirmation UI |
+| A3-SHAR-011 | Duplicate Campaign | SHAR-001 | - | ✅ Yes | None |
+| A3-SHAR-012 | Generate Message Draft | CampaignDialog | - | ✅ Yes | None |
+| A3-SHAR-013 | Generate CTA Copy | CampaignDialog | - | ✅ Yes | None |
+| A3-SHAR-014 | Schedule Campaign | SHAR-001 | ActivateCampaignDialog | ⚠️ Partial | Dialog preferred |
+| A4-SHAR-015 | Connect Social Channel | Settings | OAuth flow | ❌ No | External auth |
+| A4-SHAR-016 | Disconnect Channel | Settings | Confirmation | ⚠️ Partial | Confirmation UI |
+| A4-SHAR-017 | Activate Campaign | SHAR-001 | ActivateCampaignDialog | ⚠️ Partial | Confirmation UI |
+| A4-SHAR-018 | Send Test Message | CampaignDialog | - | ✅ Yes | None |
+| A4-SHAR-019 | Bulk Distribute | SHAR-001 | Distribution panel | ⚠️ Partial | Confirmation UI |
+| A4-SHAR-020 | Pause Distribution | SHAR-001 | - | ✅ Yes | None |
+| A5-SHAR-021 | Full Campaign Launch | SHAR-001 | Multiple dialogs | ⚠️ Partial | Multi-step UI |
+| A5-SHAR-022 | Promote Event | COMM-001 | CampaignDialog | ⚠️ Partial | Multi-step UI |
+
+### D.6 Wallet Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-WALL-001 | View Balances | WALL-001 (Wallet) | - | ✅ Yes | None |
+| A1-WALL-002 | View Transaction History | WALL-001 | Transactions tab | ✅ Yes | None |
+| A1-WALL-003 | View Subscriptions | WALL-001 | Subscriptions tab | ✅ Yes | None |
+| A1-WALL-004 | View Reward History | WALL-001 | Rewards tab | ✅ Yes | None |
+| A1-WALL-005 | View Exchange Rates | WALL-001 | Exchange dialog | ✅ Yes | None |
+| A2-WALL-006 | Navigate to Wallet | WALL-001 | - | ❌ No | Navigation required |
+| A2-WALL-007 | Navigate to Transactions | WALL-001 | Transactions tab | ❌ No | Navigation required |
+| A2-WALL-008 | Navigate to Subscriptions | WALL-001 | Subscriptions tab | ❌ No | Navigation required |
+| A2-WALL-009 | Open Send Dialog | WALL-001 | Send dialog | ❌ No | Dialog component |
+| A2-WALL-010 | Open Exchange Dialog | WALL-001 | Exchange dialog | ❌ No | Dialog component |
+| A4-WALL-011 | Transfer Credits | WALL-001 | Send dialog | ⚠️ Partial | Double confirm |
+| A4-WALL-012 | Exchange Currency | WALL-001 | Exchange dialog | ⚠️ Partial | Confirmation UI |
+| A4-WALL-013 | Top Up Balance | WALL-001 | Stripe checkout | ⚠️ Partial | Stripe redirect |
+| A4-WALL-014 | Withdraw Funds | WALL-001 | Withdraw dialog | ⚠️ Partial | KYC verification |
+| A4-WALL-015 | Cancel Subscription | WALL-001 | Confirmation | ⚠️ Partial | Confirmation UI |
+| A4-WALL-016 | Upgrade Subscription | WALL-001 | Upgrade dialog | ⚠️ Partial | Stripe redirect |
+| A4-WALL-017 | Claim Reward | WALL-001 | Rewards tab | ✅ Yes | None |
+| A4-WALL-018 | Redeem Code | WALL-001 | Redeem dialog | ⚠️ Partial | Input required |
+| A5-WALL-019 | Send & Exchange | WALL-001 | Multiple dialogs | ⚠️ Partial | Multi-step UI |
+
+### D.7 AI Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-AI-001 | View Conversation History | AI Chat | - | ✅ Yes | None |
+| A1-AI-002 | View AI Memory | Memory | - | ✅ Yes | None |
+| A1-AI-003 | View AI Settings | Settings | AI tab | ✅ Yes | None |
+| A2-AI-004 | Navigate to AI Chat | AI Chat | - | ❌ No | Navigation required |
+| A2-AI-005 | Open VITANA Orb | VitanaOrbOverlay | - | ❌ No | Overlay required |
+| A3-AI-006 | Start Voice Mode | VitanaOrbOverlay | - | ❌ No | Mic permissions |
+| A3-AI-007 | End Voice Mode | VitanaOrbOverlay | - | ❌ No | Overlay required |
+| A3-AI-008 | Toggle Mute | VitanaOrbOverlay | - | ❌ No | Overlay required |
+| A3-AI-009 | Submit Text Input | AI Chat, VitanaOrbOverlay | - | ✅ Yes | None |
+| A3-AI-010 | Clear Conversation | AI Chat | - | ✅ Yes | None |
+| A4-AI-011 | Generate AI Response | AI Chat, VitanaOrbOverlay | - | ✅ Yes | Response streaming |
+| A4-AI-012 | Execute Voice Command | VitanaOrbOverlay | Target screens | ⚠️ Partial | Depends on command |
+| A4-AI-013 | Create AI Memory | Memory | - | ✅ Yes | None |
+| A4-AI-014 | Start Reflection Session | AI Chat | - | ⚠️ Partial | Session UI |
+| A4-AI-015 | Generate Daily Briefing | Home | Autopilot popup | ✅ Yes | None |
+| A5-AI-016 | Full Voice Workflow | VitanaOrbOverlay | Multiple screens | ⚠️ Partial | Voice UI |
+| A5-AI-017 | Daily Briefing & Actions | Home | Autopilot popup | ⚠️ Partial | Confirmation UI |
+
+### D.8 Memory Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-MEM-001 | View Diary Entries | MEM-001 (Diary) | - | ✅ Yes | None |
+| A1-MEM-002 | View Entry Details | MEM-001 | Entry detail | ✅ Yes | None |
+| A1-MEM-003 | View Memory Insights | MEM-001 | Insights panel | ✅ Yes | None |
+| A1-MEM-004 | Search Memories | MEM-001 | Search results | ✅ Yes | None |
+| A2-MEM-005 | Navigate to Diary | MEM-001 | - | ❌ No | Navigation required |
+| A3-MEM-006 | Create Diary Entry | MEM-001 | Entry form | ⚠️ Partial | Form preferred |
+| A3-MEM-007 | Update Diary Entry | MEM-001 | Entry form | ⚠️ Partial | Form preferred |
+| A3-MEM-008 | Delete Diary Entry | MEM-001 | Confirmation | ⚠️ Partial | Confirmation UI |
+| A3-MEM-009 | Add Tag to Entry | MEM-001 | - | ✅ Yes | None |
+| A3-MEM-010 | Add Attachment | MEM-001 | File picker | ❌ No | File selection |
+| A4-MEM-011 | Record Voice Entry | MEM-001 | Voice recorder | ❌ No | Mic permissions |
+| A4-MEM-012 | Analyze Memory Patterns | MEM-001 | Analysis panel | ⚠️ Partial | Generation time |
+| A4-MEM-013 | Export Memories | MEM-001 | Export dialog | ⚠️ Partial | Download UI |
+| A5-MEM-014 | Consolidate Memories | MEM-001 | Consolidation flow | ⚠️ Partial | Multi-step UI |
+| A5-MEM-015 | Generate Life Summary | MEM-001 | Summary view | ⚠️ Partial | Generation time |
+
+### D.9 Admin Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-ADMN-001 | View Admin Dashboard | ADMN-001 (Admin) | - | ✅ Yes | None |
+| A1-ADMN-002 | View User List | ADMN-001 | User list | ✅ Yes | None |
+| A1-ADMN-003 | View Automation Rules | ADMN-001 | Automation panel | ✅ Yes | None |
+| A1-ADMN-004 | View Permissions | ADMN-001 | Permissions panel | ✅ Yes | None |
+| A1-ADMN-005 | View Tenant Settings | ADMN-001 | Tenant config | ✅ Yes | None |
+| A2-ADMN-006 | Navigate to Admin | ADMN-001 | - | ❌ No | Navigation required |
+| A2-ADMN-007 | Navigate to Dev Hub | DEV-001 | - | ❌ No | Navigation required |
+| A2-ADMN-008 | Open User Detail | ADMN-001 | User detail modal | ❌ No | Modal component |
+| A3-ADMN-009 | Switch Tenant | Tenant switcher | - | ✅ Yes | None |
+| A3-ADMN-010 | Update Tenant Settings | ADMN-001 | Settings form | ⚠️ Partial | Form preferred |
+| A3-ADMN-011 | Create Automation Rule | ADMN-001 | Rule builder | ⚠️ Partial | Form preferred |
+| A3-ADMN-012 | Update Automation Rule | ADMN-001 | Rule editor | ⚠️ Partial | Form preferred |
+| A3-ADMN-013 | Delete Automation Rule | ADMN-001 | Confirmation | ⚠️ Partial | Confirmation UI |
+| A4-ADMN-014 | Bootstrap Admin User | ADMN-001 | Bootstrap dialog | ⚠️ Partial | Confirmation UI |
+| A4-ADMN-015 | Revoke Admin | ADMN-001 | Confirmation | ⚠️ Partial | Confirmation UI |
+| A4-ADMN-016 | Update User Role | ADMN-001 | Role dialog | ⚠️ Partial | Confirmation UI |
+| A4-ADMN-017 | Ban User | ADMN-001 | Ban dialog | ⚠️ Partial | Confirmation UI |
+| A4-ADMN-018 | Unban User | ADMN-001 | Confirmation | ⚠️ Partial | Confirmation UI |
+| A4-ADMN-019 | Trigger Bulk Action | ADMN-001 | Bulk action dialog | ⚠️ Partial | Confirmation UI |
+| A5-ADMN-020 | System Health Check | DEV-001 | Health report | ⚠️ Partial | Report UI |
+
+### D.10 Settings Module Screen Mapping
+
+| Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
+|-----------|-------------|----------------|-------------------|----------|----------------|
+| A1-SETT-001 | View Profile Settings | SETT-001 (Settings) | Profile tab | ✅ Yes | None |
+| A1-SETT-002 | View Privacy Settings | SETT-001 | Privacy tab | ✅ Yes | None |
+| A1-SETT-003 | View Notification Settings | SETT-001 | Notifications tab | ✅ Yes | None |
+| A1-SETT-004 | View Autopilot Settings | SETT-001 | Autopilot tab | ✅ Yes | None |
+| A2-SETT-005 | Navigate to Settings | SETT-001 | - | ❌ No | Navigation required |
+| A2-SETT-006 | Navigate to Privacy | SETT-001 | Privacy tab | ❌ No | Navigation required |
+| A3-SETT-007 | Update Profile | SETT-001 | Profile form | ⚠️ Partial | Form preferred |
+| A3-SETT-008 | Update Privacy | SETT-001 | Privacy form | ⚠️ Partial | Form preferred |
+| A3-SETT-009 | Update Notifications | SETT-001 | Notifications form | ⚠️ Partial | Form preferred |
+| A3-SETT-010 | Update Autopilot | SETT-001 | Autopilot form | ⚠️ Partial | Form preferred |
+| A4-SETT-011 | Enable 2FA | SETT-001 | 2FA setup flow | ❌ No | Multi-step setup |
+| A4-SETT-012 | Disable 2FA | SETT-001 | Verification | ⚠️ Partial | Code verification |
+| A4-SETT-013 | Delete Account | SETT-001 | Deletion flow | ❌ No | Triple confirmation |
+| A4-SETT-014 | Export Data | SETT-001 | Export dialog | ⚠️ Partial | Download UI |
+| A4-SETT-015 | Change Password | SETT-001 | Password form | ⚠️ Partial | Form validation |
+| A5-SETT-016 | Account Migration | SETT-001 | Migration wizard | ❌ No | Multi-step wizard |
+
+---
+
+## Appendix E: Tenant Capability Matrix
+
+### E.1 Tenant Overview
+
+| Tenant | Slug | Primary Focus | User Base | Feature Scope |
+|--------|------|---------------|-----------|---------------|
+| **Maxina** | `maxina` | Primary wellness platform | General users | Full features |
+| **AlKalma** | `alkalma` | Alkaline wellness focus | Wellness community | Health-focused |
+| **Earthlinks** | `earthlinks` | Global community | International | Community-focused |
+| **Exafy** | `exafy` | Super-admin platform | Administrators | System management |
+
+### E.2 Complete Tenant Capability Matrix
+
+#### Community Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A1-COMM-001 | Discover People | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A1-COMM-002 | Discover Events | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A1-COMM-003 | Discover Groups | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A3-COMM-016 | Create Event | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A3-COMM-026 | Create Live Room | ✅ Full | ⚠️ Limited | ✅ Full | ✅ Full |
+| A4-COMM-028 | Buy Event Ticket | ✅ Full | ✅ Full | ✅ Full | ❌ Disabled |
+| A5-COMM-030 | Plan Weekly Meetups | ✅ Full | ⚠️ Limited | ⚠️ Limited | ❌ Disabled |
+
+#### Discover Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A1-DISC-001 | Search Products | ✅ Full | ⚠️ Health only | ⚠️ Limited | ❌ Disabled |
+| A3-DISC-011 | Add to Cart | ✅ Full | ⚠️ Health only | ⚠️ Limited | ❌ Disabled |
+| A4-DISC-017 | Start Checkout | ✅ Full | ✅ Full | ⚠️ Limited | ❌ Disabled |
+| A4-DISC-018 | Complete Purchase | ✅ Full | ✅ Full | ⚠️ Limited | ❌ Disabled |
+| A5-DISC-022 | Build Supplement Stack | ✅ Full | ✅ Full | ❌ Disabled | ❌ Disabled |
+
+#### Health Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A1-HLTH-001 | View Biomarkers | ✅ Full | ✅ Full | ⚠️ Basic | ❌ Disabled |
+| A3-HLTH-013 | Log Hydration | ✅ Full | ✅ Full | ✅ Full | ❌ Disabled |
+| A4-HLTH-022 | Update Biomarkers | ✅ Full | ✅ Full | ⚠️ Basic | ❌ Disabled |
+| A4-HLTH-025 | Generate Personalized Plan | ✅ Full | ✅ Full | ⚠️ Limited | ❌ Disabled |
+| A5-HLTH-028 | Plan Weekly Wellness | ✅ Full | ✅ Full | ⚠️ Limited | ❌ Disabled |
+| A5-HLTH-030 | Full Health Assessment | ✅ Full | ✅ Full | ❌ Disabled | ❌ Disabled |
+
+#### Sharing Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A1-SHAR-001 | View Campaigns | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A3-SHAR-008 | Create Campaign Draft | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A4-SHAR-017 | Activate Campaign | ✅ Full | ⚠️ Limited | ✅ Full | ⚠️ Admin only |
+| A5-SHAR-021 | Full Campaign Launch | ✅ Full | ⚠️ Limited | ✅ Full | ⚠️ Admin only |
+
+#### Wallet Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A1-WALL-001 | View Balances | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A4-WALL-011 | Transfer Credits | ✅ Full | ✅ Full | ⚠️ Limited | ❌ Disabled |
+| A4-WALL-012 | Exchange Currency | ✅ Full | ⚠️ Limited | ⚠️ Limited | ❌ Disabled |
+| A4-WALL-013 | Top Up Balance | ✅ Full | ✅ Full | ✅ Full | ❌ Disabled |
+| A4-WALL-014 | Withdraw Funds | ✅ Full | ⚠️ Limited | ⚠️ Limited | ❌ Disabled |
+
+#### AI Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A3-AI-006 | Start Voice Mode | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A4-AI-011 | Generate AI Response | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A4-AI-012 | Execute Voice Command | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| A5-AI-016 | Full Voice Workflow | ✅ Full | ⚠️ Limited | ⚠️ Limited | ✅ Full |
+
+#### Admin Module
+
+| Action ID | Action Name | Maxina | AlKalma | Earthlinks | Exafy |
+|-----------|-------------|--------|---------|------------|-------|
+| A1-ADMN-001 | View Admin Dashboard | ⚠️ Staff+ | ⚠️ Staff+ | ⚠️ Staff+ | ✅ Full |
+| A3-ADMN-009 | Switch Tenant | ❌ Disabled | ❌ Disabled | ❌ Disabled | ✅ Full |
+| A4-ADMN-014 | Bootstrap Admin User | ❌ Disabled | ❌ Disabled | ❌ Disabled | ✅ Exafy only |
+| A4-ADMN-015 | Revoke Admin | ❌ Disabled | ❌ Disabled | ❌ Disabled | ✅ Exafy only |
+| A5-ADMN-020 | System Health Check | ❌ Disabled | ❌ Disabled | ❌ Disabled | ✅ Exafy only |
+
+### E.3 Tenant-Specific Constraints
+
+#### Maxina (Primary Tenant)
+
+| Constraint Type | Details |
+|-----------------|---------|
+| **Full Access** | All features enabled by default |
+| **Commerce** | Full CJ Dropshipping integration |
+| **Health** | Complete biomarker and health tracking |
+| **Payments** | Stripe fully integrated |
+| **AI Credits** | Standard allocation |
+
+#### AlKalma (Wellness Focus)
+
+| Constraint Type | Details |
+|-----------------|---------|
+| **Commerce** | Health/wellness products only |
+| **Health** | Full biomarker access, alkaline focus |
+| **Live Streams** | Limited to 100 concurrent viewers |
+| **Wallet** | Basic exchange rates only |
+| **A5 Workflows** | Limited to health-related |
+
+#### Earthlinks (Global Community)
+
+| Constraint Type | Details |
+|-----------------|---------|
+| **Commerce** | Limited product catalog |
+| **Health** | Basic tracking only |
+| **Wallet** | Transfer limits: 500 credits/day |
+| **A5 Workflows** | Community-focused only |
+| **Supplement Features** | Disabled |
+
+#### Exafy (Super-Admin)
+
+| Constraint Type | Details |
+|-----------------|---------|
+| **Admin Access** | Full system access |
+| **Commerce** | Disabled (admin-only platform) |
+| **Health** | Disabled |
+| **Wallet** | View-only for debugging |
+| **Cross-Tenant** | Can switch between all tenants |
+| **Special Permissions** | `is_exafy_admin` flag |
+
+---
+
+## Appendix F: Risk Classification Summary (All 169 Actions)
+
+### F.1 Risk Level Distribution
+
+| Risk Level | Count | Percentage |
+|------------|-------|------------|
+| 🟢 Low | 89 | 52.7% |
+| 🟡 Medium | 28 | 16.6% |
+| 🔴 High | 52 | 30.7% |
+| **Total** | **169** | **100%** |
+
+### F.2 Complete Risk Classification Table
+
+| Action ID | Action Name | Level | Risk | Risk Factors |
+|-----------|-------------|-------|------|--------------|
+| A1-COMM-001 | Discover People | A1 | 🟢 Low | Read-only |
+| A1-COMM-002 | Discover Events | A1 | 🟢 Low | Read-only |
+| A1-COMM-003 | Discover Groups | A1 | 🟢 Low | Read-only |
+| A1-COMM-004 | View Event Details | A1 | 🟢 Low | Read-only |
+| A1-COMM-005 | View User Profile | A1 | 🟢 Low | Read-only |
+| A2-COMM-006 | Navigate to Events | A2 | 🟢 Low | Navigation only |
+| A2-COMM-007 | Navigate to Groups | A2 | 🟢 Low | Navigation only |
+| A2-COMM-008 | Open Event Drawer | A2 | 🟢 Low | UI only |
+| A2-COMM-009 | Open Profile Preview | A2 | 🟢 Low | UI only |
+| A3-COMM-010 | Follow User | A3 | 🟢 Low | Reversible |
+| A3-COMM-011 | Unfollow User | A3 | 🟢 Low | Reversible |
+| A3-COMM-012 | Join Event (Free) | A3 | 🟢 Low | Reversible |
+| A3-COMM-013 | Leave Event | A3 | 🟢 Low | Reversible |
+| A3-COMM-014 | Join Group | A3 | 🟢 Low | Reversible |
+| A3-COMM-015 | Leave Group | A3 | 🟢 Low | Reversible |
+| A3-COMM-016 | Create Event | A3 | 🟡 Medium | Content creation |
+| A3-COMM-017 | Update Event | A3 | 🟡 Medium | Content modification |
+| A3-COMM-018 | Delete Event | A3 | 🟡 Medium | Data deletion |
+| A3-COMM-019 | Send Connection Request | A3 | 🟢 Low | Social action |
+| A3-COMM-020 | Accept Connection | A3 | 🟢 Low | Reversible |
+| A3-COMM-021 | Decline Connection | A3 | 🟢 Low | Reversible |
+| A3-COMM-022 | Start Direct Message | A3 | 🟢 Low | Communication |
+| A3-COMM-023 | Send Message | A3 | 🟢 Low | Communication |
+| A3-COMM-024 | React to Message | A3 | 🟢 Low | Reversible |
+| A3-COMM-025 | Join Live Room | A3 | 🟢 Low | Reversible |
+| A3-COMM-026 | Create Live Room | A3 | 🟡 Medium | Resource allocation |
+| A3-COMM-027 | End Live Room | A3 | 🟡 Medium | Affects participants |
+| A4-COMM-028 | Buy Event Ticket | A4 | 🔴 High | Money movement |
+| A4-COMM-029 | Request Ticket Refund | A4 | 🔴 High | Money movement |
+| A5-COMM-030 | Plan Weekly Meetups | A5 | 🔴 High | Multi-step, AI |
+| A1-DISC-001 | Search Products | A1 | 🟢 Low | Read-only |
+| A1-DISC-002 | Search Services | A1 | 🟢 Low | Read-only |
+| A1-DISC-003 | View Product Details | A1 | 🟢 Low | Read-only |
+| A1-DISC-004 | Compare Products | A1 | 🟢 Low | Read-only |
+| A1-DISC-005 | View Cart | A1 | 🟢 Low | Read-only |
+| A1-DISC-006 | View Order History | A1 | 🟢 Low | Read-only |
+| A2-DISC-007 | Navigate to Shop | A2 | 🟢 Low | Navigation only |
+| A2-DISC-008 | Navigate to Services | A2 | 🟢 Low | Navigation only |
+| A2-DISC-009 | Navigate to Cart | A2 | 🟢 Low | Navigation only |
+| A2-DISC-010 | Open Product Detail | A2 | 🟢 Low | UI only |
+| A3-DISC-011 | Add to Cart | A3 | 🟢 Low | Reversible |
+| A3-DISC-012 | Update Cart Quantity | A3 | 🟢 Low | Reversible |
+| A3-DISC-013 | Remove from Cart | A3 | 🟢 Low | Reversible |
+| A3-DISC-014 | Add to Wishlist | A3 | 🟢 Low | Reversible |
+| A3-DISC-015 | Remove from Wishlist | A3 | 🟢 Low | Reversible |
+| A3-DISC-016 | Apply Coupon | A3 | 🟢 Low | Reversible |
+| A4-DISC-017 | Start Checkout | A4 | 🔴 High | Payment initiation |
+| A4-DISC-018 | Complete Purchase | A4 | 🔴 High | Money movement |
+| A4-DISC-019 | Book Service | A4 | 🔴 High | Money movement |
+| A4-DISC-020 | Cancel Order | A4 | 🔴 High | External API |
+| A4-DISC-021 | Request Refund | A4 | 🔴 High | Money movement |
+| A5-DISC-022 | Build Supplement Stack | A5 | 🔴 High | Multi-step, AI, commerce |
+| A5-DISC-023 | Reorder Previous | A5 | 🔴 High | Multi-step, payment |
+| A1-HLTH-001 | View Biomarkers | A1 | 🟢 Low | Read-only (PHI view) |
+| A1-HLTH-002 | View Health Insights | A1 | 🟢 Low | Read-only |
+| A1-HLTH-003 | View Hydration Stats | A1 | 🟢 Low | Read-only |
+| A1-HLTH-004 | View Sleep Stats | A1 | 🟢 Low | Read-only |
+| A1-HLTH-005 | View Activity Stats | A1 | 🟢 Low | Read-only |
+| A1-HLTH-006 | View AI Plans | A1 | 🟢 Low | Read-only |
+| A1-HLTH-007 | View Plan History | A1 | 🟢 Low | Read-only |
+| A1-HLTH-008 | View Vitana Index | A1 | 🟢 Low | Read-only |
+| A2-HLTH-009 | Navigate to Health Dashboard | A2 | 🟢 Low | Navigation only |
+| A2-HLTH-010 | Navigate to Hydration | A2 | 🟢 Low | Navigation only |
+| A2-HLTH-011 | Navigate to Sleep | A2 | 🟢 Low | Navigation only |
+| A2-HLTH-012 | Navigate to Biomarkers | A2 | 🟢 Low | Navigation only |
+| A3-HLTH-013 | Log Hydration | A3 | 🟢 Low | Personal data |
+| A3-HLTH-014 | Log Sleep | A3 | 🟢 Low | Personal data |
+| A3-HLTH-015 | Log Activity | A3 | 🟢 Low | Personal data |
+| A3-HLTH-016 | Log Meal | A3 | 🟢 Low | Personal data |
+| A3-HLTH-017 | Set Health Goal | A3 | 🟢 Low | Personal data |
+| A3-HLTH-018 | Update Health Goal | A3 | 🟢 Low | Personal data |
+| A3-HLTH-019 | Complete Plan Task | A3 | 🟢 Low | Personal data |
+| A3-HLTH-020 | Start AI Plan | A3 | 🟢 Low | Activates plan |
+| A3-HLTH-021 | Pause AI Plan | A3 | 🟢 Low | Reversible |
+| A4-HLTH-022 | Update Biomarkers | A4 | 🔴 High | PHI mutation |
+| A4-HLTH-023 | Connect Wearable | A4 | 🔴 High | External OAuth |
+| A4-HLTH-024 | Sync Wearable Data | A4 | 🔴 High | External API, PHI |
+| A4-HLTH-025 | Generate Personalized Plan | A4 | 🔴 High | AI credits, PHI |
+| A4-HLTH-026 | Generate Supplement Recs | A4 | 🔴 High | AI credits, medical |
+| A4-HLTH-027 | Request Health Report | A4 | 🔴 High | PHI export |
+| A5-HLTH-028 | Plan Weekly Wellness | A5 | 🔴 High | Multi-step, AI, PHI |
+| A5-HLTH-029 | Optimize Sleep Schedule | A5 | 🔴 High | Multi-step, AI |
+| A5-HLTH-030 | Full Health Assessment | A5 | 🔴 High | Multi-step, AI, PHI |
+| A1-SHAR-001 | View Campaigns | A1 | 🟢 Low | Read-only |
+| A1-SHAR-002 | View Campaign Details | A1 | 🟢 Low | Read-only |
+| A1-SHAR-003 | View Campaign Analytics | A1 | 🟢 Low | Read-only |
+| A1-SHAR-004 | View Connected Channels | A1 | 🟢 Low | Read-only |
+| A2-SHAR-005 | Navigate to Campaigns | A2 | 🟢 Low | Navigation only |
+| A2-SHAR-006 | Navigate to Distribution | A2 | 🟢 Low | Navigation only |
+| A2-SHAR-007 | Open Campaign Editor | A2 | 🟢 Low | UI only |
+| A3-SHAR-008 | Create Campaign Draft | A3 | 🟡 Medium | Content creation |
+| A3-SHAR-009 | Update Campaign | A3 | 🟡 Medium | Content modification |
+| A3-SHAR-010 | Delete Campaign | A3 | 🟡 Medium | Data deletion |
+| A3-SHAR-011 | Duplicate Campaign | A3 | 🟢 Low | Content copy |
+| A3-SHAR-012 | Generate Message Draft | A3 | 🟡 Medium | AI usage |
+| A3-SHAR-013 | Generate CTA Copy | A3 | 🟡 Medium | AI usage |
+| A3-SHAR-014 | Schedule Campaign | A3 | 🟡 Medium | Future commitment |
+| A4-SHAR-015 | Connect Social Channel | A4 | 🔴 High | External OAuth |
+| A4-SHAR-016 | Disconnect Channel | A4 | 🔴 High | Token revocation |
+| A4-SHAR-017 | Activate Campaign | A4 | 🔴 High | External APIs, irreversible |
+| A4-SHAR-018 | Send Test Message | A4 | 🔴 High | External API usage |
+| A4-SHAR-019 | Bulk Distribute | A4 | 🔴 High | Mass external API |
+| A4-SHAR-020 | Pause Distribution | A4 | 🔴 High | Affects in-progress |
+| A5-SHAR-021 | Full Campaign Launch | A5 | 🔴 High | Multi-step, external |
+| A5-SHAR-022 | Promote Event | A5 | 🔴 High | Multi-step, external |
+| A1-WALL-001 | View Balances | A1 | 🟢 Low | Read-only |
+| A1-WALL-002 | View Transaction History | A1 | 🟢 Low | Read-only |
+| A1-WALL-003 | View Subscriptions | A1 | 🟢 Low | Read-only |
+| A1-WALL-004 | View Reward History | A1 | 🟢 Low | Read-only |
+| A1-WALL-005 | View Exchange Rates | A1 | 🟢 Low | Read-only |
+| A2-WALL-006 | Navigate to Wallet | A2 | 🟢 Low | Navigation only |
+| A2-WALL-007 | Navigate to Transactions | A2 | 🟢 Low | Navigation only |
+| A2-WALL-008 | Navigate to Subscriptions | A2 | 🟢 Low | Navigation only |
+| A2-WALL-009 | Open Send Dialog | A2 | 🟢 Low | UI only |
+| A2-WALL-010 | Open Exchange Dialog | A2 | 🟢 Low | UI only |
+| A4-WALL-011 | Transfer Credits | A4 | 🔴 High | Money movement |
+| A4-WALL-012 | Exchange Currency | A4 | 🔴 High | Money conversion |
+| A4-WALL-013 | Top Up Balance | A4 | 🔴 High | Payment |
+| A4-WALL-014 | Withdraw Funds | A4 | 🔴 High | Money out |
+| A4-WALL-015 | Cancel Subscription | A4 | 🔴 High | Service termination |
+| A4-WALL-016 | Upgrade Subscription | A4 | 🔴 High | Payment change |
+| A4-WALL-017 | Claim Reward | A4 | 🟡 Medium | Balance change |
+| A4-WALL-018 | Redeem Code | A4 | 🟡 Medium | Balance change |
+| A5-WALL-019 | Send & Exchange | A5 | 🔴 High | Multi-step, money |
+| A1-AI-001 | View Conversation History | A1 | 🟢 Low | Read-only |
+| A1-AI-002 | View AI Memory | A1 | 🟢 Low | Read-only |
+| A1-AI-003 | View AI Settings | A1 | 🟢 Low | Read-only |
+| A2-AI-004 | Navigate to AI Chat | A2 | 🟢 Low | Navigation only |
+| A2-AI-005 | Open VITANA Orb | A2 | 🟢 Low | UI only |
+| A3-AI-006 | Start Voice Mode | A3 | 🟡 Medium | Device access |
+| A3-AI-007 | End Voice Mode | A3 | 🟢 Low | Session end |
+| A3-AI-008 | Toggle Mute | A3 | 🟢 Low | UI control |
+| A3-AI-009 | Submit Text Input | A3 | 🟢 Low | Text submission |
+| A3-AI-010 | Clear Conversation | A3 | 🟢 Low | Data deletion |
+| A4-AI-011 | Generate AI Response | A4 | 🔴 High | AI credits |
+| A4-AI-012 | Execute Voice Command | A4 | 🔴 High | Arbitrary action |
+| A4-AI-013 | Create AI Memory | A4 | 🟡 Medium | Personal data |
+| A4-AI-014 | Start Reflection Session | A4 | 🔴 High | AI credits, PHI |
+| A4-AI-015 | Generate Daily Briefing | A4 | 🔴 High | AI credits |
+| A5-AI-016 | Full Voice Workflow | A5 | 🔴 High | Multi-step, AI |
+| A5-AI-017 | Daily Briefing & Actions | A5 | 🔴 High | Multi-step, AI |
+| A1-MEM-001 | View Diary Entries | A1 | 🟢 Low | Read-only |
+| A1-MEM-002 | View Entry Details | A1 | 🟢 Low | Read-only |
+| A1-MEM-003 | View Memory Insights | A1 | 🟢 Low | Read-only |
+| A1-MEM-004 | Search Memories | A1 | 🟢 Low | Read-only |
+| A2-MEM-005 | Navigate to Diary | A2 | 🟢 Low | Navigation only |
+| A3-MEM-006 | Create Diary Entry | A3 | 🟢 Low | Personal data |
+| A3-MEM-007 | Update Diary Entry | A3 | 🟢 Low | Personal data |
+| A3-MEM-008 | Delete Diary Entry | A3 | 🟢 Low | Personal data |
+| A3-MEM-009 | Add Tag to Entry | A3 | 🟢 Low | Personal data |
+| A3-MEM-010 | Add Attachment | A3 | 🟢 Low | File upload |
+| A4-MEM-011 | Record Voice Entry | A4 | 🔴 High | External API |
+| A4-MEM-012 | Analyze Memory Patterns | A4 | 🔴 High | AI credits |
+| A4-MEM-013 | Export Memories | A4 | 🔴 High | Data export |
+| A5-MEM-014 | Consolidate Memories | A5 | 🔴 High | Multi-step, AI |
+| A5-MEM-015 | Generate Life Summary | A5 | 🔴 High | Multi-step, AI |
+| A1-ADMN-001 | View Admin Dashboard | A1 | 🟢 Low | Read-only (privileged) |
+| A1-ADMN-002 | View User List | A1 | 🟢 Low | Read-only (privileged) |
+| A1-ADMN-003 | View Automation Rules | A1 | 🟢 Low | Read-only |
+| A1-ADMN-004 | View Permissions | A1 | 🟢 Low | Read-only |
+| A1-ADMN-005 | View Tenant Settings | A1 | 🟢 Low | Read-only |
+| A2-ADMN-006 | Navigate to Admin | A2 | 🟢 Low | Navigation only |
+| A2-ADMN-007 | Navigate to Dev Hub | A2 | 🟢 Low | Navigation only |
+| A2-ADMN-008 | Open User Detail | A2 | 🟢 Low | UI only |
+| A3-ADMN-009 | Switch Tenant | A3 | 🟡 Medium | Context change |
+| A3-ADMN-010 | Update Tenant Settings | A3 | 🟡 Medium | Config change |
+| A3-ADMN-011 | Create Automation Rule | A3 | 🟡 Medium | System config |
+| A3-ADMN-012 | Update Automation Rule | A3 | 🟡 Medium | System config |
+| A3-ADMN-013 | Delete Automation Rule | A3 | 🟡 Medium | System config |
+| A4-ADMN-014 | Bootstrap Admin User | A4 | 🔴 High | Privilege escalation |
+| A4-ADMN-015 | Revoke Admin | A4 | 🔴 High | Privilege change |
+| A4-ADMN-016 | Update User Role | A4 | 🔴 High | Privilege change |
+| A4-ADMN-017 | Ban User | A4 | 🔴 High | Access denial |
+| A4-ADMN-018 | Unban User | A4 | 🔴 High | Access restoration |
+| A4-ADMN-019 | Trigger Bulk Action | A4 | 🔴 High | Mass operation |
+| A5-ADMN-020 | System Health Check | A5 | 🔴 High | Multi-step, system |
+| A1-SETT-001 | View Profile Settings | A1 | 🟢 Low | Read-only |
+| A1-SETT-002 | View Privacy Settings | A1 | 🟢 Low | Read-only |
+| A1-SETT-003 | View Notification Settings | A1 | 🟢 Low | Read-only |
+| A1-SETT-004 | View Autopilot Settings | A1 | 🟢 Low | Read-only |
+| A2-SETT-005 | Navigate to Settings | A2 | 🟢 Low | Navigation only |
+| A2-SETT-006 | Navigate to Privacy | A2 | 🟢 Low | Navigation only |
+| A3-SETT-007 | Update Profile | A3 | 🟢 Low | Personal data |
+| A3-SETT-008 | Update Privacy | A3 | 🟢 Low | Preference change |
+| A3-SETT-009 | Update Notifications | A3 | 🟢 Low | Preference change |
+| A3-SETT-010 | Update Autopilot | A3 | 🟢 Low | Preference change |
+| A4-SETT-011 | Enable 2FA | A4 | 🔴 High | Security change |
+| A4-SETT-012 | Disable 2FA | A4 | 🔴 High | Security change |
+| A4-SETT-013 | Delete Account | A4 | 🔴 High | Data destruction |
+| A4-SETT-014 | Export Data | A4 | 🔴 High | Data export |
+| A4-SETT-015 | Change Password | A4 | 🔴 High | Security change |
+| A5-SETT-016 | Account Migration | A5 | 🔴 High | Multi-step, data |
+
+---
+
+## Appendix G: Navigation & Headless Execution Rules
+
+### G.1 Navigation Execution Model
+
+#### Navigation Action Types
+
+| Type | Description | Example Actions |
+|------|-------------|-----------------|
+| **Page Navigation** | Full route change | A2-COMM-006, A2-DISC-007, A2-HLTH-009 |
+| **Tab Navigation** | Within-page tab switch | A2-WALL-007, A2-WALL-008 |
+| **Dialog/Drawer Open** | Modal UI component | A2-COMM-008, A2-SHAR-007 |
+| **Overlay Activation** | Fullscreen overlay | A2-AI-005 |
+
+#### Navigation Execution Flow
+
+```
+Voice Command → Intent Recognition → A2 Action Match
+                                         ↓
+                         ┌───────────────┴───────────────┐
+                         ↓                               ↓
+                   Page Navigation                Dialog/Drawer
+                         ↓                               ↓
+            react-router navigate()           Dialog state update
+                         ↓                               ↓
+                  Route change                 Component render
+                         ↓                               ↓
+               Toast confirmation              Focus management
+```
+
+### G.2 Headless Execution Guidelines
+
+#### When Headless Execution Applies
+
+| Scenario | Headless | UI Required | Notes |
+|----------|----------|-------------|-------|
+| Background automation | ✅ Yes | ❌ No | Scheduled tasks |
+| Voice command (A1/A3) | ✅ Yes | ❌ No | Information/simple actions |
+| Voice command (A4) | ⚠️ Partial | ✅ Yes | Confirmation required |
+| Voice command (A5) | ⚠️ Partial | ✅ Yes | Checkpoints required |
+| Autopilot batch | ✅ Yes | ❌ No | Pre-approved actions |
+
+#### Headless Execution Requirements
+
+| Requirement | Description |
+|-------------|-------------|
+| **No User Input** | Action can complete without user typing/selecting |
+| **No File Selection** | Action doesn't require file picker |
+| **No External OAuth** | Action doesn't require OAuth popup |
+| **No Payment UI** | Action doesn't require Stripe redirect |
+| **Confirmation via Voice** | Any confirmation can be verbal |
+
+### G.3 Hybrid Execution Model
+
+For A4/A5 actions requiring confirmation:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Hybrid Execution                      │
+├─────────────────────────────────────────────────────────┤
+│  1. Headless preparation (gather data, validate)        │
+│  2. UI checkpoint (show confirmation dialog)            │
+│  3. Voice or click confirmation                         │
+│  4. Headless execution (API calls)                      │
+│  5. UI feedback (toast, status update)                  │
+└─────────────────────────────────────────────────────────┘
+```
+
+### G.4 Navigation Safety Rules
+
+| Rule | Description | Applicable Actions |
+|------|-------------|-------------------|
+| **Permission Check** | Verify user has access before navigating | A2-ADMN-006, A2-ADMN-007 |
+| **State Preservation** | Save unsaved work before navigating | All A2 actions |
+| **Context Restoration** | Return to original context after dialog close | Dialog openers |
+| **Deep Link Support** | Handle navigation from external links | All page navigations |
+
+### G.5 Headless Action Categories
+
+#### Fully Headless (No UI Required)
+
+- All A1 (Informational) actions
+- Most A3 actions (Follow, Join, Log, etc.)
+- Background A4 actions (after pre-approval)
+
+#### Partially Headless (Minimal UI)
+
+- A4 actions with confirmation dialogs
+- A5 actions with progress indicators
+- Actions with loading states
+
+#### UI Required (Cannot Be Headless)
+
+- A2 Navigation actions (by definition)
+- File upload actions (A3-MEM-010)
+- OAuth actions (A4-HLTH-023, A4-SHAR-015)
+- Multi-step wizards (A5-SETT-016)
+
+---
+
 ## Document Summary
 
 This VITANA Autopilot Capabilities Model defines:
 
 - **5 Capability Levels**: A1 (Informational) through A5 (Autonomous Multi-Step)
 - **169 Individual Actions** across 9 modules
-- **Complete API Mappings** for all actions
-- **Screen Mappings** with headless execution support indicators
+- **Complete API Mappings** for all 169 actions (Appendix C)
+- **Complete Screen Mappings** for all 169 actions (Appendix D)
+- **Tenant Capability Matrix** for Maxina, AlKalma, Earthlinks, Exafy (Appendix E)
+- **Risk Classifications** with explicit levels for all 169 actions (Appendix F)
+- **Navigation & Headless Execution Rules** (Appendix G)
 - **Precondition Matrix** for roles, tenants, and data requirements
-- **Tenant-Specific Behaviors** for Maxina, Alkalma, and Earthlings
-- **Risk Classifications** with safety rules
 - **Execution Modes** (On-Demand, Background, Hybrid)
 - **Dependency Graphs** for action orchestration
 
 ---
 
-**AUTOPILOT_CAPABILITIES.md generated successfully.**
+**AUTOPILOT_CAPABILITIES.md v1.0 - Complete**
