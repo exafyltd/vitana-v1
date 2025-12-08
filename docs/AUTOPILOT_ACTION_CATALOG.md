@@ -2,9 +2,9 @@
 
 > **Complete Reference Guide for All Autopilot Actions**
 > 
-> Version: 1.0.0 | Last Updated: 2024-12-08
+> Version: 1.1.0 | Last Updated: 2024-12-08
 > 
-> This document provides the authoritative catalog of all Autopilot actions available in the VITANA system, including detailed execution specifications for AI agents.
+> This document provides the authoritative catalog of all Autopilot actions available in the VITANA system, including detailed execution specifications for AI agents and comprehensive voice grammar.
 
 ---
 
@@ -15,9 +15,10 @@
 3. [Module Summaries](#3-module-summaries)
 4. [Dependency Mapping](#4-dependency-mapping)
 5. [Risk Classification Summary](#5-risk-classification-summary)
-6. [Appendix A: Action → APIs Table](#appendix-a-action--apis-table)
-7. [Appendix B: Action → Screens Table](#appendix-b-action--screens-table)
-8. [Appendix C: Orchestration Diagrams](#appendix-c-orchestration-diagrams)
+6. [Autopilot Voice Grammar](#6-autopilot-voice-grammar)
+7. [Appendix A: Action → APIs Table](#appendix-a-action--apis-table)
+8. [Appendix B: Action → Screens Table](#appendix-b-action--screens-table)
+9. [Appendix C: Orchestration Diagrams](#appendix-c-orchestration-diagrams)
 
 ---
 
@@ -497,52 +498,21 @@
 - **Screens Touched**: DISC-020 (Cart), DISC-021 (Checkout), External (Stripe)
 - **Preconditions**:
   - Role: `community` or higher
-  - Data: Cart not empty
+  - Data: Non-empty cart
   - Data: All items in stock
-- **Inputs**:
-  - shipping_address (object)
-  - billing_address (object, optional)
+- **Inputs**: Shipping address (optional for digital items)
 - **Outputs**: Stripe checkout URL, session_id
-- **Failure Modes**: Cart empty, items unavailable, Stripe error, payment declined
+- **Failure Modes**: Empty cart, out of stock, Stripe error
 - **Tenant-Specific Behavior**: Available on all tenants
 - **Risk Level & Safety Rules**:
-  - HIGH RISK: Involves payment
-  - MUST require explicit user confirmation
-  - Display cart total before checkout
-  - Validate shipping address
-  - Log transaction for audit
+  - HIGH RISK: Payment processing
+  - Confirm cart contents and total
+  - Validate stock before checkout
 - **Notes for AI Agents**:
-  - ALWAYS show cart summary before checkout
-  - Confirm shipping address with user
-  - Open Stripe checkout in popup
-  - Clear cart only after successful payment
-  - Handle out-of-stock gracefully during checkout
-
----
-
-#### A5-DISC-023: Compare Products
-- **Name**: AI Product Comparison
-- **Level**: A5 (Autonomous Multi-Step)
-- **Module**: Discover
-- **Description**: AI-powered comparison of multiple products with recommendations.
-- **Primary APIs Used**:
-  - Edge Function: `ai-product-compare`
-  - Hook: `useProductDetails` (multiple calls)
-  - External: Vertex AI
-- **Screens Touched**: DISC-003 (Product Detail)
-- **Preconditions**:
-  - Role: `community` or higher
-  - Data: 2-5 valid product IDs
-- **Inputs**: Array of product_ids (2-5 items)
-- **Outputs**: Comparison table, AI recommendation, pros/cons
-- **Failure Modes**: Products not found, AI service unavailable
-- **Tenant-Specific Behavior**: Available on all tenants
-- **Risk Level & Safety Rules**: Low risk; read-only with AI processing
-- **Notes for AI Agents**:
-  - Gather product details for all items first
-  - Generate comparison across: price, rating, features
-  - Provide clear recommendation with reasoning
-  - Consider user's previous purchases if available
+  - Show cart summary before checkout
+  - Verify all items still available
+  - Open checkout in popup
+  - Clear cart on successful payment
 
 ---
 
@@ -550,34 +520,35 @@
 
 ---
 
-#### A1-HLTH-002: Get Biomarker Data
-- **Name**: Get Biomarker Data
-- **Level**: A1 (Informational)
+#### A3-HLTH-015: Log Hydration
+- **Name**: Log Hydration
+- **Level**: A3 (Transactional, Low-Risk)
 - **Module**: Health
-- **Description**: Retrieve user's latest biomarker values and reference ranges.
+- **Description**: Record water intake for hydration tracking.
 - **Primary APIs Used**:
-  - Hook: `useBiomarkers`
-  - Table: `biomarkers`, `biomarker_values`
-- **Screens Touched**: HLTH-002 (Biomarker Viewer)
+  - Hook: `useLogHydration`
+  - Table: `hydration_logs`
+- **Screens Touched**: HLTH-020 (Hydration Tracker)
 - **Preconditions**:
   - Role: `patient` or higher
-  - Tenant: Maxina only
-- **Inputs**: Optional category filter
-- **Outputs**: Array of biomarker objects with values, ranges, trends
-- **Failure Modes**: No data available, network error
-- **Tenant-Specific Behavior**: Maxina only (clinical data)
-- **Risk Level & Safety Rules**: Low risk; read-only PHI access
+- **Inputs**:
+  - amount (number, ml or oz)
+  - unit (enum: ml|oz)
+  - timestamp (datetime, default: now)
+- **Outputs**: Log entry ID, updated daily total
+- **Failure Modes**: Invalid amount, network error
+- **Tenant-Specific Behavior**: Available on all tenants
+- **Risk Level & Safety Rules**: Low risk
 - **Notes for AI Agents**:
-  - Handle missing biomarker data gracefully
-  - Do NOT send raw biomarker values to external LLMs
-  - Provide context about what biomarkers mean
-  - Suggest relevant health plans based on values
+  - Accept natural language: "I drank a glass of water" → 250ml
+  - Convert units as needed
+  - Show progress toward daily goal
 
 ---
 
 #### A3-HLTH-021: Generate AI Plan
 - **Name**: Generate AI Health Plan
-- **Level**: A3 (Transactional, Low-Risk)
+- **Level**: A3 (Transactional, Medium-Risk)
 - **Module**: Health
 - **Description**: Request AI to generate personalized health plan based on biomarkers and goals.
 - **Primary APIs Used**:
@@ -589,15 +560,15 @@
 - **Preconditions**:
   - Role: `patient` or higher
   - Tenant: Maxina only
-  - Data: Some health data available (biomarkers or trackers)
+  - Data: Biomarkers or health goals exist
 - **Inputs**:
-  - plan_type (enum: nutrition|exercise|sleep|hydration|supplement|holistic)
-  - goals (array of strings)
-  - duration (days)
-- **Outputs**: Generated plan object with daily tasks
+  - plan_type (enum: nutrition|exercise|sleep|comprehensive)
+  - duration_weeks (number, 1-12)
+  - focus_areas (array)
+- **Outputs**: Plan ID, plan summary
 - **Failure Modes**: Insufficient data, AI service unavailable
 - **Tenant-Specific Behavior**: Maxina only
-- **Risk Level & Safety Rules**: 
+- **Risk Level & Safety Rules**:
   - Medium risk: AI-generated health advice
   - Disclaimer required: "AI-generated, consult healthcare provider"
   - Do NOT make medical claims
@@ -1544,65 +1515,1444 @@ Actions recommended to have confirmation or rate limiting.
 | Action ID | Name | Risk Reason | Safety Requirements |
 |-----------|------|-------------|---------------------|
 | A3-COMM-018 | Cancel Event | Affects attendees | Notify attendees, confirm |
-| A3-DISC-020 | Cancel Booking | Service commitment | Confirm cancellation |
-| A3-HLTH-021 | Generate AI Plan | AI-generated advice | Add disclaimer |
-| A4-HLTH-023 | Connect Wearable | External data access | Permission confirmation |
-| A4-HLTH-024 | Sync Wearable Data | External data | Review sync scope |
-| A5-HLTH-028 | Plan Wellness Week | Calendar modification | Preview before adding events |
-| A5-HLTH-030 | Generate Supplement Plan | Product recommendations | Disclosure, not medical advice |
+| A3-DISC-020 | Cancel Booking | Service impact | Confirm cancellation |
+| A3-HLTH-021 | Generate AI Plan | AI-generated health advice | Disclaimer required |
+| A4-HLTH-023 | Connect Wearable | External data access | Permission consent |
+| A4-HLTH-024 | Sync Wearable Data | PHI import | Data validation |
 | A3-SHAR-012 | Delete Campaign | Content loss | Confirm deletion |
-| A4-SHAR-019 | Activate Campaign | Bulk messaging | Show recipient count |
+| A4-SHAR-019 | Activate Campaign | Bulk messaging | Show recipient count, confirm |
+| A4-AI-011 | Start Vertex Live | API costs, streaming | Mic permission |
+| A5-AI-015 | Multi-Action Autopilot | Batch execution | Progress feedback, stop on error |
+| A5-AI-016 | Contextual AI Planning | AI decisions | Review before execution |
+| A5-AI-017 | Voice Command Workflow | Multi-step via voice | Confirm complex actions |
+| A5-HLTH-028 | Plan Wellness Week | Multi-step, calendar | Confirm before adding events |
+| A5-HLTH-029 | Analyze Health Trends | AI health analysis | Disclaimer |
+| A5-HLTH-030 | Generate Supplement Plan | AI recommendations | Disclaimer, not medical advice |
 | A5-SHAR-021 | Full Campaign Workflow | Multi-step | Review before activation |
-| A5-SHAR-022 | Promote Event Campaign | Auto-create content | Preview before save |
-| A4-AI-011 | Start Vertex Live | API costs, streaming | Warn about costs |
-| A5-AI-015 | Multi-Action Autopilot | Batch operations | Progress tracking |
-| A5-AI-016 | Contextual AI Planning | AI decisions | Review plan before execute |
-| A5-AI-017 | Voice Command Workflow | Multi-step voice | Confirm voice commands |
-| A3-ADMN-010 | Create Automation Rule | Affects users | Preview scope |
-| A3-ADMN-013 | Send System Notification | Broadcast | Preview, confirm recipients |
-| A4-SETT-014 | Export Data | Data extraction | Verify identity |
+| A5-SHAR-022 | Promote Event Campaign | Multi-step | Preview campaign |
+| A5-WALL-020 | Auto-Renew Setup | Recurring payments | Confirm settings |
+| A3-ADMN-010 | Create Automation Rule | Affects users | Preview rule behavior |
+| A3-ADMN-011 | Update Automation Rule | Affects users | Preview changes |
+| A3-ADMN-012 | Toggle Automation Rule | Affects users | Confirm toggle |
+| A3-ADMN-013 | Send System Notification | Broadcast | Confirm recipients |
+| A3-ADMN-018 | Review AI Recommendation | Approval flow | Audit decision |
+| A4-SETT-014 | Export Data | Data extraction | Confirm scope |
 
 ### Low-Risk Actions (🟢)
 
-Actions that can execute without explicit confirmation.
+Actions that can be executed without confirmation.
 
-| Action ID | Name | Risk Category |
-|-----------|------|---------------|
-| A1-COMM-001 through A1-COMM-010 | Community Informational | Read-only |
-| A2-COMM-011 through A2-COMM-015 | Community Navigation | UI only |
-| A3-COMM-016, A3-COMM-017 | Create/Update Event | User's own content |
-| A3-COMM-019 through A3-COMM-027 | RSVP, Groups, Rooms | Reversible |
-| A3-COMM-029, A3-COMM-030 | Connections | Social features |
-| A1-DISC-001 through A1-DISC-008 | Discover Informational | Read-only |
-| A2-DISC-009 through A2-DISC-012 | Discover Navigation | UI only |
-| A3-DISC-013 through A3-DISC-019 | Cart, Wishlist, Booking | Reversible |
-| A5-DISC-023 | Compare Products | Read-only analysis |
-| A1-HLTH-001 through A1-HLTH-010 | Health Informational | Read-only |
-| A2-HLTH-011 through A2-HLTH-014 | Health Navigation | UI only |
-| A3-HLTH-015 through A3-HLTH-020 | Health Logging | User's own data |
-| A3-HLTH-025 through A3-HLTH-027 | Plan Tasks, Education | User actions |
-| A1-SHAR-001 through A1-SHAR-006 | Sharing Informational | Read-only |
-| A2-SHAR-007 through A2-SHAR-009 | Sharing Navigation | UI only |
-| A3-SHAR-010, A3-SHAR-011 | Create/Update Campaign | Draft mode |
-| A3-SHAR-013 through A3-SHAR-018 | Campaign Config | Reversible |
-| A3-SHAR-020 | Send Test Message | Self only |
-| A1-WALL-001 through A1-WALL-008 | Wallet Informational | Read-only |
-| A2-WALL-009, A2-WALL-010 | Wallet Navigation | UI only |
-| A3-WALL-019 | Redeem Reward | User-initiated |
-| A1-AI-001 through A1-AI-005 | AI Informational | Read-only |
-| A2-AI-006, A2-AI-007 | AI Navigation | UI only |
-| A3-AI-008 through A3-AI-014 | AI Chat, Autopilot | User-initiated |
-| A1-MEM-001 through A1-MEM-004 | Memory Informational | Read-only |
-| A2-MEM-005, A2-MEM-006 | Memory Navigation | UI only |
-| A3-MEM-007 through A3-MEM-011 | Diary Entries | User's own data |
-| A5-MEM-012, A5-MEM-013 | AI Memory Processing | Background |
-| A1-ADMN-001 through A1-ADMN-006 | Admin Informational | Read-only |
-| A2-ADMN-007 through A2-ADMN-009 | Admin Navigation | UI only |
+| Action ID Range | Description | Reason Safe |
+|-----------------|-------------|-------------|
+| All A1-* actions | Informational/read-only | No data modification |
+| All A2-* actions | Navigation only | UI state only |
+| A3-COMM-016 | Create Event | User's own content, rate limited |
+| A3-COMM-019, A3-COMM-020 | RSVP/Cancel RSVP | User's own attendance |
+| A3-COMM-021-024, A3-COMM-029-030 | Group, Post, Connection | User-initiated social |
+| A3-COMM-025-027 | Live Room | Real-time, user-controlled |
+| A3-DISC-013-018 | Cart, Wishlist | No payment |
+| A3-DISC-019 | Book Service | User-initiated |
+| A3-HLTH-015-020, A3-HLTH-025-027 | Health Logging, Goals, Education | User's own data |
+| A3-SHAR-010, A3-SHAR-011, A3-SHAR-013-018 | Campaign CRUD | Draft operations |
+| A4-SHAR-020 | Send Test Message | Self-only recipient |
+| A3-WALL-019 | Redeem Reward | User's own points |
+| A3-AI-008-010, A3-AI-012-014 | AI Chat, Autopilot | User-initiated |
+| A3-MEM-007-011 | Diary operations | User's own content |
+| A5-MEM-012, A5-MEM-013 | Memory, Summary | Background/read-only AI |
+| A5-DISC-023 | Compare Products | Read-only AI |
 | A3-ADMN-011, A3-ADMN-012 | Automation Toggle | Reversible |
 | A3-ADMN-018 | Review AI Recommendation | Approval flow |
 | A1-SETT-001 through A1-SETT-004 | Settings Informational | Read-only |
 | A2-SETT-005, A2-SETT-006 | Settings Navigation | UI only |
 | A3-SETT-007 through A3-SETT-012 | Profile, Preferences | User's own settings |
+
+---
+
+## 6. Autopilot Voice Grammar
+
+This section defines the complete voice grammar for the VITANA Autopilot system, enabling natural language understanding for all 169 actions.
+
+### 6.1 Grammar Overview
+
+The VITANA Voice Grammar System processes spoken commands through a multi-stage pipeline:
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  Voice Input    │ →  │  Intent         │ →  │  Parameter      │ →  │  Action         │
+│  (Speech-to-    │    │  Detection      │    │  Extraction     │    │  Execution      │
+│   Text)         │    │  (NLU)          │    │  (Slot Fill)    │    │  (API Call)     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+**Key Components**:
+1. **Utterance**: Raw speech text from STT
+2. **Intent**: Mapped action ID (e.g., `A3-COMM-019`)
+3. **Slots/Parameters**: Extracted entities (event name, quantity, date)
+4. **Confidence Score**: NLU confidence threshold (min 0.75)
+
+**Fallback Hierarchy**:
+1. Exact phrase match → Execute immediately
+2. Intent match with missing params → Prompt for parameters
+3. Ambiguous intent → Request clarification
+4. No match → Offer suggestions or help
+
+---
+
+### 6.2 Universal Grammar Rules
+
+#### 6.2.1 Verb Patterns
+
+| Pattern | Meaning | Example Actions |
+|---------|---------|-----------------|
+| `show`, `display`, `list`, `get` | A1 (Informational) | "Show my events" |
+| `go to`, `open`, `take me to`, `navigate` | A2 (Navigational) | "Go to settings" |
+| `create`, `add`, `make`, `start`, `new` | A3 (Transactional) | "Create an event" |
+| `update`, `change`, `edit`, `modify` | A3 (Transactional) | "Update my profile" |
+| `delete`, `remove`, `cancel` | A3/A4 (Caution) | "Cancel my RSVP" |
+| `buy`, `purchase`, `pay`, `checkout` | A4 (High-Risk) | "Buy a ticket" |
+| `transfer`, `send` | A4 (High-Risk) | "Send 50 credits" |
+| `plan`, `schedule`, `organize` | A5 (Multi-Step) | "Plan my wellness week" |
+
+#### 6.2.2 Noun Objects
+
+| Category | Keywords | Maps To |
+|----------|----------|---------|
+| Events | event, meetup, gathering, workshop, class | Community module |
+| Groups | group, community, circle, club | Community module |
+| Products | product, item, supplement, thing | Discover module |
+| Services | service, appointment, booking | Discover module |
+| Health | biomarker, health, hydration, sleep, activity, nutrition | Health module |
+| Campaigns | campaign, promotion, blast, distribution | Sharing module |
+| Wallet | wallet, balance, credits, money, subscription | Wallet module |
+| Memory | diary, journal, entry, memory, timeline | Memory module |
+| Settings | profile, preferences, settings, notifications | Settings module |
+
+#### 6.2.3 Parameter Extraction Rules
+
+**Entity Types**:
+
+| Entity | Pattern | Examples |
+|--------|---------|----------|
+| `{event_name}` | Quoted string or proper noun | "Yoga Sunrise", the meditation event |
+| `{quantity}` | Number words or digits | one, 2, three, 10 |
+| `{date}` | Relative or absolute | today, tomorrow, next Monday, December 15th |
+| `{time}` | Time expressions | 3pm, at noon, in the evening |
+| `{amount}` | Currency amounts | 50 dollars, $100, twenty credits |
+| `{recipient}` | Name or username | to John, @sarah |
+| `{duration}` | Time spans | 1 week, 30 days, 3 months |
+
+**Extraction Priority**:
+1. Explicit named slots ("for {event_name}")
+2. Positional inference ("buy 2 tickets" → quantity=2)
+3. Context from conversation history
+4. User profile defaults
+
+#### 6.2.4 Temporal Rules
+
+| Expression | Interpretation |
+|------------|----------------|
+| "today" | Current date, 00:00-23:59 |
+| "tomorrow" | Current date + 1 day |
+| "this week" | Current week Mon-Sun |
+| "next week" | Following week Mon-Sun |
+| "next {weekday}" | Next occurrence of that day |
+| "in {X} days" | Current date + X days |
+| "on {date}" | Specific date |
+| "at {time}" | Specific time today or next occurrence |
+| "in the morning" | 06:00-11:59 |
+| "in the afternoon" | 12:00-17:59 |
+| "in the evening" | 18:00-21:59 |
+| "tonight" | 18:00-23:59 today |
+
+#### 6.2.5 Quantity Parsing
+
+| Expression | Value |
+|------------|-------|
+| "a", "one", "single" | 1 |
+| "a couple", "two" | 2 |
+| "a few", "some" | 3 (default) |
+| "several" | 4 |
+| Number words | Literal (one=1, ten=10) |
+| Digits | Literal |
+| "half a dozen" | 6 |
+| "a dozen" | 12 |
+
+**Range Limits by Action**:
+- Ticket quantity: 1-10
+- Cart quantity: 1-99
+- Transfer amount: 1-10000
+- Water intake: 50-2000ml
+
+#### 6.2.6 Confirmation Grammar
+
+**Affirmative Confirmations**:
+- "yes", "yeah", "yep", "yup", "uh-huh"
+- "confirm", "confirmed", "confirmed"
+- "go ahead", "do it", "proceed"
+- "that's right", "correct", "exactly"
+- "sounds good", "perfect", "OK"
+- "please do", "yes please"
+
+**Negative Confirmations**:
+- "no", "nope", "nah", "uh-uh"
+- "cancel", "stop", "abort", "nevermind"
+- "wait", "hold on", "not yet"
+- "that's wrong", "incorrect"
+- "go back", "start over"
+
+**Modification During Confirmation**:
+- "change the quantity to {X}"
+- "actually, make it {X}"
+- "use a different card"
+- "pick a different time"
+
+---
+
+### 6.3 Module-Level Grammar
+
+#### 6.3.1 Community Module Commands
+
+**Event Commands**:
+```
+- "Show me my events"
+- "What events do I have coming up?"
+- "Find events near me"
+- "Search for {category} events"
+- "Tell me about {event_name}"
+- "Create a new event"
+- "Make an event called {title}"
+- "RSVP to {event_name}"
+- "Sign me up for {event_name}"
+- "Buy tickets for {event_name}"
+- "Get {quantity} tickets for {event_name}"
+- "Cancel my RSVP for {event_name}"
+```
+
+**Group Commands**:
+```
+- "Show my groups"
+- "What groups am I in?"
+- "Find groups about {topic}"
+- "Create a new group"
+- "Join {group_name}"
+- "Leave {group_name}"
+- "Post to {group_name}"
+```
+
+**Live Room Commands**:
+```
+- "Show live rooms"
+- "What's happening live?"
+- "Start a live room"
+- "Create a room called {title}"
+- "Join {room_name}"
+- "Leave the room"
+```
+
+**Connection Commands**:
+```
+- "Show my daily matches"
+- "Who matched with me today?"
+- "Show my connection requests"
+- "Connect with {username}"
+- "Accept connection from {username}"
+```
+
+#### 6.3.2 Discover Module Commands
+
+**Product Commands**:
+```
+- "Search for {product}"
+- "Find supplements under {price}"
+- "Show me {category}"
+- "Tell me about {product_name}"
+- "Compare {product1} and {product2}"
+- "Add {product} to my cart"
+- "Add {quantity} {product} to cart"
+- "Remove {product} from cart"
+- "Clear my cart"
+- "Add {product} to my wishlist"
+```
+
+**Shopping Commands**:
+```
+- "Show my cart"
+- "What's in my cart?"
+- "Checkout"
+- "Pay for my cart"
+- "Show my orders"
+- "Track my order"
+- "Request a refund for {order}"
+```
+
+**Service Commands**:
+```
+- "Find services near me"
+- "Book {service_name}"
+- "Schedule an appointment for {service}"
+- "Cancel my booking for {service}"
+```
+
+#### 6.3.3 Health Module Commands
+
+**Overview Commands**:
+```
+- "Show my health dashboard"
+- "How am I doing health-wise?"
+- "Show my biomarkers"
+- "What's my {biomarker_name}?"
+- "Show my health insights"
+- "What does the AI say about my health?"
+```
+
+**Tracking Commands**:
+```
+- "Log {amount} of water"
+- "I drank a glass of water"
+- "I drank {amount} ml"
+- "Log my sleep"
+- "I slept {hours} hours"
+- "Log my activity"
+- "I walked {steps} steps"
+- "I exercised for {duration}"
+- "Log my meal"
+- "I ate {food_description}"
+```
+
+**Plan Commands**:
+```
+- "Show my health plans"
+- "Generate a health plan"
+- "Create a {type} plan for me"
+- "Plan my wellness week"
+- "Activate {plan_name}"
+- "Complete {task_name}"
+- "Mark {task} as done"
+```
+
+**Goal Commands**:
+```
+- "Set a health goal"
+- "My goal is to {goal_description}"
+- "Update my {goal_name} goal"
+- "Show my health goals"
+```
+
+#### 6.3.4 Sharing Module Commands
+
+**Campaign Commands**:
+```
+- "Show my campaigns"
+- "Create a new campaign"
+- "Make a campaign called {name}"
+- "Edit {campaign_name}"
+- "Delete {campaign_name}"
+- "Duplicate {campaign_name}"
+- "Schedule {campaign_name} for {date}"
+- "Activate {campaign_name}"
+- "Send a test of {campaign_name}"
+- "Promote {event_name}"
+```
+
+**Channel Commands**:
+```
+- "Show my connected channels"
+- "Connect my {platform} account"
+- "Disconnect {platform}"
+- "Check if {platform} is connected"
+```
+
+**Audience Commands**:
+```
+- "Show my audience segments"
+- "Create a new segment"
+- "Who are my followers?"
+```
+
+#### 6.3.5 Wallet Module Commands
+
+**Balance Commands**:
+```
+- "Show my balance"
+- "What's my wallet balance?"
+- "How many credits do I have?"
+- "Show my rewards"
+- "How many reward points do I have?"
+- "Show my transactions"
+- "Show my transaction history"
+```
+
+**Transfer Commands**:
+```
+- "Send {amount} credits to {recipient}"
+- "Transfer {amount} to {recipient}"
+- "Pay {recipient} {amount}"
+```
+
+**Top-Up Commands**:
+```
+- "Add {amount} to my wallet"
+- "Top up {amount}"
+- "Buy {amount} credits"
+```
+
+**Subscription Commands**:
+```
+- "Show my subscriptions"
+- "Subscribe to {plan_name}"
+- "Cancel my subscription"
+- "Change my subscription to {plan}"
+- "Update my subscription"
+```
+
+**Reward Commands**:
+```
+- "Redeem my rewards"
+- "Use my reward points"
+- "Exchange {amount} points"
+```
+
+#### 6.3.6 AI Module Commands
+
+**Chat Commands**:
+```
+- "Talk to the AI"
+- "Open AI assistant"
+- "Start a new conversation"
+- "Show my chat history"
+- "Summarize {content}"
+```
+
+**Autopilot Commands**:
+```
+- "Show autopilot actions"
+- "What should I do next?"
+- "Run the autopilot"
+- "Execute all pending actions"
+- "Skip {action_name}"
+- "Dismiss all suggestions"
+```
+
+**Voice Commands**:
+```
+- "Hey VITANA"
+- "Open the orb"
+- "Start voice mode"
+- "Stop listening"
+- "Mute"
+```
+
+#### 6.3.7 Memory Module Commands
+
+**Diary Commands**:
+```
+- "Open my diary"
+- "Show my journal"
+- "Create a diary entry"
+- "Write in my journal"
+- "Record a voice entry"
+- "What did I write yesterday?"
+- "Delete today's entry"
+```
+
+**Memory Commands**:
+```
+- "Show what you remember about me"
+- "What do you know about my {topic}?"
+- "Show my life timeline"
+- "Add a life event"
+- "Generate my life summary"
+```
+
+#### 6.3.8 Admin Module Commands
+
+**User Management**:
+```
+- "Show all users"
+- "Find user {name}"
+- "Show {username}'s details"
+- "Change {username}'s role to {role}"
+- "Suspend {username}"
+- "Delete user {username}"
+```
+
+**System Commands**:
+```
+- "Show system health"
+- "Check API status"
+- "Show audit logs"
+- "Show automation rules"
+- "Create an automation rule"
+- "Send a system notification"
+```
+
+#### 6.3.9 Settings Module Commands
+
+**Profile Commands**:
+```
+- "Open my settings"
+- "Go to my profile"
+- "Update my profile"
+- "Change my name to {name}"
+- "Update my bio"
+- "Change my avatar"
+```
+
+**Preference Commands**:
+```
+- "Update my preferences"
+- "Change my notification settings"
+- "Turn off notifications"
+- "Enable email notifications"
+```
+
+**Account Commands**:
+```
+- "Change my password"
+- "Export my data"
+- "Delete my account"
+- "Show connected apps"
+- "Connect {app_name}"
+- "Disconnect {app_name}"
+```
+
+---
+
+### 6.4 Per-Action Grammar
+
+#### Community Module (30 Actions)
+
+---
+
+##### A1-COMM-001: List My Events
+**Phrases**:
+- "show my events"
+- "what events do I have"
+- "list my upcoming events"
+- "events I've registered for"
+- "my calendar events"
+- "what am I attending"
+- "show me what I'm going to"
+
+**Parameter Rules**: None required
+
+**Ambiguity Resolution**:
+- If user says "events", assume they mean their own events
+- Clarify if they want upcoming only vs all
+
+---
+
+##### A1-COMM-002: Discover Events
+**Phrases**:
+- "find events"
+- "search for events"
+- "show events near me"
+- "what's happening"
+- "events this weekend"
+- "find {category} events"
+- "look for workshops"
+- "discover community events"
+
+**Parameter Extraction**:
+- `{category}` → filter by event_type
+- `{location}` → filter by location
+- `{date_range}` → filter by start_time
+
+---
+
+##### A1-COMM-003: Get Event Details
+**Phrases**:
+- "tell me about {event_name}"
+- "show details for {event_name}"
+- "what is {event_name} about"
+- "more info on {event_name}"
+- "when is {event_name}"
+- "where is {event_name}"
+
+**Parameter Extraction**:
+- `{event_name}` → fuzzy match to event title
+
+**Ambiguity Resolution**:
+- If multiple matches, present options to user
+
+---
+
+##### A2-COMM-011: Navigate to Events Hub
+**Phrases**:
+- "go to events"
+- "open events page"
+- "take me to events"
+- "show the events hub"
+- "events section"
+
+**Parameter Rules**: None
+
+---
+
+##### A3-COMM-016: Create Event
+**Phrases**:
+- "create an event"
+- "make a new event"
+- "I want to host an event"
+- "schedule an event called {title}"
+- "create {title} event for {date}"
+- "new meetup on {date}"
+- "organize an event"
+
+**Parameter Extraction**:
+- `{title}` → event title (required if provided)
+- `{date}` → start_time
+- `{time}` → start_time hour
+- `{location}` → location field
+- `{event_type}` → infer from context
+
+**Notes for AI Agents**:
+- If title not provided, open dialog and let user fill
+- Parse "tomorrow at 3pm" as start_time
+
+---
+
+##### A3-COMM-019: RSVP to Event
+**Phrases**:
+- "RSVP to {event_name}"
+- "sign me up for {event_name}"
+- "I want to attend {event_name}"
+- "join {event_name}"
+- "register for {event_name}"
+- "add me to {event_name}"
+- "I'll be there"
+- "count me in for {event_name}"
+
+**Parameter Extraction**:
+- `{event_name}` → event_id via fuzzy match
+
+**Safety**:
+- Check if event is free; if paid, suggest A4-COMM-028
+
+---
+
+##### A4-COMM-028: Purchase Event Ticket
+**Phrases**:
+- "buy a ticket for {event_name}"
+- "purchase tickets for {event_name}"
+- "get {quantity} tickets for {event_name}"
+- "I want to buy tickets"
+- "book {event_name}"
+- "pay for {event_name}"
+- "how much is {event_name}"
+
+**Parameter Extraction**:
+- `{event_name}` → event_id
+- `{quantity}` → number of tickets (default: 1)
+- `{ticket_type}` → if multiple types available
+
+**Safety**:
+- MUST confirm price before executing
+- "That's ${total} for {quantity} tickets. Shall I proceed?"
+
+**Negative Commands**:
+- "don't buy", "cancel purchase" → abort
+
+---
+
+##### A3-COMM-021: Create Group
+**Phrases**:
+- "create a group"
+- "make a new group"
+- "start a group called {name}"
+- "I want to start a community for {topic}"
+
+**Parameter Extraction**:
+- `{name}` → group name
+- `{topic}` → infer category
+
+---
+
+##### A3-COMM-022: Join Group
+**Phrases**:
+- "join {group_name}"
+- "become a member of {group_name}"
+- "I want to join {group_name}"
+- "add me to {group_name}"
+
+**Parameter Extraction**:
+- `{group_name}` → group_id
+
+---
+
+##### A3-COMM-025: Start Live Room
+**Phrases**:
+- "start a live room"
+- "go live"
+- "create a room called {title}"
+- "I want to host a live session"
+- "start streaming"
+
+**Parameter Extraction**:
+- `{title}` → room title
+- `{type}` → audio/video
+
+---
+
+##### A3-COMM-026: Join Live Room
+**Phrases**:
+- "join {room_name}"
+- "enter the live room"
+- "listen to {room_name}"
+- "join the conversation"
+
+**Parameter Extraction**:
+- `{room_name}` → room_id
+
+---
+
+#### Discover Module (23 Actions)
+
+---
+
+##### A1-DISC-001: Search Products
+**Phrases**:
+- "search for {product}"
+- "find {product}"
+- "show me {product}"
+- "look for {category} products"
+- "what supplements do you have"
+- "find products under ${price}"
+- "search {product} under ${price}"
+
+**Parameter Extraction**:
+- `{product}` → search query
+- `{category}` → category filter
+- `{price}` → max_price filter
+
+---
+
+##### A3-DISC-013: Add to Cart
+**Phrases**:
+- "add {product} to my cart"
+- "add to cart"
+- "put {product} in my cart"
+- "I want {quantity} {product}"
+- "add {quantity} of {product}"
+- "buy {product}"
+
+**Parameter Extraction**:
+- `{product}` → product_id via match
+- `{quantity}` → quantity (default: 1)
+
+---
+
+##### A4-DISC-021: Checkout Cart
+**Phrases**:
+- "checkout"
+- "pay for my cart"
+- "complete my order"
+- "I'm ready to pay"
+- "buy everything in my cart"
+- "proceed to checkout"
+
+**Safety**:
+- Confirm cart total: "Your cart total is ${amount}. Ready to checkout?"
+
+**Negative Commands**:
+- "wait", "not yet" → pause
+- "cancel checkout" → abort
+
+---
+
+##### A5-DISC-023: Compare Products
+**Phrases**:
+- "compare {product1} and {product2}"
+- "what's the difference between {product1} and {product2}"
+- "which is better, {product1} or {product2}"
+- "help me choose between {product1} and {product2}"
+
+**Parameter Extraction**:
+- `{product1}`, `{product2}` → product_ids
+
+---
+
+#### Health Module (30 Actions)
+
+---
+
+##### A1-HLTH-001: Get Health Overview
+**Phrases**:
+- "show my health dashboard"
+- "how am I doing health-wise"
+- "health summary"
+- "my health overview"
+- "show my health status"
+
+---
+
+##### A1-HLTH-002: Get Biomarker Data
+**Phrases**:
+- "show my biomarkers"
+- "what are my biomarkers"
+- "what's my {biomarker_name}"
+- "show my vitamin D level"
+- "check my cholesterol"
+
+**Parameter Extraction**:
+- `{biomarker_name}` → specific biomarker filter
+
+---
+
+##### A3-HLTH-015: Log Hydration
+**Phrases**:
+- "log water"
+- "I drank water"
+- "I drank {amount} ml of water"
+- "I drank a glass of water"
+- "log {amount} ounces of water"
+- "add water intake"
+- "I had a bottle of water"
+
+**Parameter Extraction**:
+- `{amount}` → ml (convert if oz)
+- Default amounts: "glass" = 250ml, "bottle" = 500ml
+
+---
+
+##### A3-HLTH-016: Log Sleep
+**Phrases**:
+- "log my sleep"
+- "I slept {hours} hours"
+- "I went to bed at {time}"
+- "I woke up at {time}"
+- "log sleep from {start} to {end}"
+- "record last night's sleep"
+
+**Parameter Extraction**:
+- `{hours}` → duration
+- `{start}`, `{end}` → sleep window
+
+---
+
+##### A3-HLTH-017: Log Activity
+**Phrases**:
+- "log activity"
+- "I exercised for {duration}"
+- "I walked {steps} steps"
+- "I ran for {duration}"
+- "record my workout"
+- "I did {exercise_type} for {duration}"
+
+**Parameter Extraction**:
+- `{duration}` → exercise duration
+- `{steps}` → step count
+- `{exercise_type}` → activity type
+
+---
+
+##### A3-HLTH-021: Generate AI Plan
+**Phrases**:
+- "generate a health plan"
+- "create a wellness plan"
+- "make me a {plan_type} plan"
+- "I need a nutrition plan"
+- "help me plan my fitness"
+- "give me health recommendations"
+
+**Parameter Extraction**:
+- `{plan_type}` → nutrition/exercise/sleep/comprehensive
+- `{duration}` → weeks
+
+**Safety**:
+- Include disclaimer in response
+
+---
+
+##### A4-HLTH-022: Update Biomarkers
+**Phrases**:
+- "update my biomarkers"
+- "log my lab results"
+- "my {biomarker} is {value}"
+- "record my cholesterol as {value}"
+- "update my vitamin D to {value}"
+
+**Parameter Extraction**:
+- `{biomarker}` → biomarker_id
+- `{value}` → numeric value
+- `{unit}` → measurement unit
+
+**Safety**:
+- MUST confirm values: "You're updating {biomarker} to {value}. Is that correct?"
+- Warn if outside normal range
+
+---
+
+##### A5-HLTH-028: Plan Wellness Week
+**Phrases**:
+- "plan my wellness week"
+- "create a weekly wellness plan"
+- "schedule my wellness for next week"
+- "plan my health for the week starting {date}"
+- "help me plan a healthy week"
+
+**Parameter Extraction**:
+- `{date}` → start_date
+- `{intensity}` → light/moderate/intense
+- `{focus}` → areas to focus on
+
+**Safety**:
+- Show plan summary before adding to calendar
+- Get explicit confirmation
+
+---
+
+#### Sharing Module (22 Actions)
+
+---
+
+##### A1-SHAR-001: List Campaigns
+**Phrases**:
+- "show my campaigns"
+- "list my campaigns"
+- "what campaigns do I have"
+- "my marketing campaigns"
+
+---
+
+##### A3-SHAR-010: Create Campaign
+**Phrases**:
+- "create a campaign"
+- "new campaign"
+- "make a campaign called {name}"
+- "start a promotion for {event}"
+- "I want to promote {content}"
+
+**Parameter Extraction**:
+- `{name}` → campaign name
+- `{event}` → linked event
+
+---
+
+##### A4-SHAR-019: Activate Campaign
+**Phrases**:
+- "activate {campaign_name}"
+- "send {campaign_name}"
+- "start the campaign"
+- "launch {campaign_name}"
+- "go live with {campaign_name}"
+
+**Parameter Extraction**:
+- `{campaign_name}` → campaign_id
+
+**Safety**:
+- MUST confirm: "This will send to {count} recipients. Proceed?"
+
+**Negative Commands**:
+- "wait", "don't send yet" → pause
+- "cancel" → abort
+
+---
+
+##### A5-SHAR-022: Promote Event Campaign
+**Phrases**:
+- "promote {event_name}"
+- "create a campaign for {event_name}"
+- "market my event"
+- "share {event_name} with everyone"
+- "help me promote {event_name}"
+
+**Parameter Extraction**:
+- `{event_name}` → event_id
+
+---
+
+#### Wallet Module (20 Actions)
+
+---
+
+##### A1-WALL-001: Get Wallet Balance
+**Phrases**:
+- "show my balance"
+- "what's my wallet balance"
+- "how many credits do I have"
+- "check my balance"
+- "my wallet"
+
+---
+
+##### A4-WALL-011: Transfer Credits
+**Phrases**:
+- "send {amount} credits to {recipient}"
+- "transfer {amount} to {recipient}"
+- "pay {recipient} {amount}"
+- "give {recipient} {amount} credits"
+
+**Parameter Extraction**:
+- `{amount}` → credit amount
+- `{recipient}` → user_id via username match
+
+**Safety**:
+- MUST double confirm: "Send {amount} credits to {recipient}? This cannot be undone."
+- Verify recipient name
+
+**Negative Commands**:
+- "cancel", "don't send" → abort
+
+---
+
+##### A4-WALL-015: Top Up Balance
+**Phrases**:
+- "add {amount} to my wallet"
+- "top up {amount}"
+- "buy {amount} credits"
+- "add money to my wallet"
+- "I want to buy credits"
+
+**Parameter Extraction**:
+- `{amount}` → top-up amount
+
+**Safety**:
+- Confirm amount before Stripe checkout
+
+---
+
+##### A4-WALL-016: Subscribe to Plan
+**Phrases**:
+- "subscribe to {plan_name}"
+- "upgrade to {plan_name}"
+- "I want the {plan_name} subscription"
+- "start a subscription"
+
+**Parameter Extraction**:
+- `{plan_name}` → subscription plan
+
+**Safety**:
+- Show recurring cost before proceeding
+
+---
+
+##### A4-WALL-017: Cancel Subscription
+**Phrases**:
+- "cancel my subscription"
+- "unsubscribe"
+- "stop my subscription"
+- "end my {plan_name} subscription"
+
+**Safety**:
+- Confirm: "Your subscription will end on {date}. Cancel?"
+
+---
+
+#### AI Module (17 Actions)
+
+---
+
+##### A2-AI-007: Open VITANA Orb
+**Phrases**:
+- "hey VITANA"
+- "open the orb"
+- "start voice mode"
+- "talk to VITANA"
+- "wake up"
+
+---
+
+##### A3-AI-009: Send AI Message
+**Phrases**:
+- (Any conversational input is processed as AI message)
+- "tell me about {topic}"
+- "explain {concept}"
+- "what do you think about {topic}"
+- "help me with {task}"
+
+---
+
+##### A4-AI-011: Start Vertex Live Session
+**Phrases**:
+- "start voice chat"
+- "let's talk"
+- "begin voice session"
+- "I want to talk to you"
+
+---
+
+##### A5-AI-015: Multi-Action Autopilot
+**Phrases**:
+- "run all autopilot actions"
+- "execute the autopilot"
+- "do everything"
+- "complete all pending tasks"
+- "run selected actions"
+
+**Safety**:
+- Show actions before executing
+- Report progress
+
+---
+
+#### Memory Module (13 Actions)
+
+---
+
+##### A3-MEM-007: Create Diary Entry
+**Phrases**:
+- "write in my diary"
+- "create a journal entry"
+- "I want to journal"
+- "record my thoughts"
+- "dear diary..."
+- "note to self..."
+
+**Notes for AI Agents**:
+- Capture following text as diary content
+- Auto-timestamp
+
+---
+
+##### A3-MEM-011: Voice Diary Entry
+**Phrases**:
+- "record a voice entry"
+- "voice journal"
+- "let me record something"
+- "transcribe my thoughts"
+
+---
+
+##### A5-MEM-012: AI Memory Consolidation
+**Phrases**:
+- "consolidate my memories"
+- "what do you remember about me"
+- "update your memory"
+- "remember this"
+- "store this for later"
+
+---
+
+#### Admin Module (20 Actions)
+
+---
+
+##### A4-ADMN-014: Update User Role
+**Phrases**:
+- "change {username}'s role to {role}"
+- "make {username} an admin"
+- "promote {username}"
+- "demote {username} to {role}"
+
+**Parameter Extraction**:
+- `{username}` → user_id
+- `{role}` → new role
+
+**Safety**:
+- ADMIN ONLY
+- Confirm: "Change {username} from {old_role} to {new_role}?"
+
+---
+
+##### A4-ADMN-016: Delete User
+**Phrases**:
+- "delete user {username}"
+- "remove {username}'s account"
+- "permanently delete {username}"
+
+**Parameter Extraction**:
+- `{username}` → user_id
+- `{reason}` → deletion reason (required)
+
+**Safety**:
+- ADMIN ONLY
+- Double confirmation required
+- "This will permanently delete {username} and all their data. Type DELETE to confirm."
+
+---
+
+#### Settings Module (15 Actions)
+
+---
+
+##### A3-SETT-007: Update Profile
+**Phrases**:
+- "update my profile"
+- "change my name to {name}"
+- "update my bio"
+- "set my bio to {text}"
+- "change my display name"
+
+**Parameter Extraction**:
+- `{name}` → display_name
+- `{text}` → bio
+
+---
+
+##### A4-SETT-013: Delete Account
+**Phrases**:
+- "delete my account"
+- "I want to delete my account"
+- "remove my account"
+- "close my account permanently"
+
+**Safety**:
+- Triple confirmation required
+- Must re-authenticate
+- "This will permanently delete all your data. Type DELETE to confirm."
+
+**Negative Commands**:
+- "cancel", "nevermind" → abort immediately
+
+---
+
+##### A4-SETT-015: Change Password
+**Phrases**:
+- "change my password"
+- "update my password"
+- "I want a new password"
+- "reset my password"
+
+**Safety**:
+- Requires current password verification
+- Navigate to secure form
+
+---
+
+### 6.5 Disambiguation Logic
+
+#### 6.5.1 Multiple Item References
+
+When user mentions multiple items:
+
+```
+User: "Buy tickets for the yoga event and the meditation workshop"
+```
+
+**Resolution Strategy**:
+1. Parse as separate intents
+2. Execute sequentially
+3. Confirm each: "First, I'll get tickets for Yoga Sunrise. Then for Meditation Workshop."
+
+#### 6.5.2 Entity Not Found
+
+When event/product name doesn't match:
+
+```
+User: "Sign me up for the yoga thing"
+```
+
+**Resolution Strategy**:
+1. Fuzzy search for matches
+2. If 1 match: "Did you mean 'Yoga Sunrise' on Saturday?"
+3. If multiple: "I found several yoga events: [list]. Which one?"
+4. If none: "I couldn't find any yoga events. Would you like to search for events?"
+
+#### 6.5.3 Missing Required Parameters
+
+When required slots are empty:
+
+```
+User: "Send credits"
+```
+
+**Resolution Strategy**:
+1. Prompt for missing: "How many credits would you like to send, and to whom?"
+2. Partial: "Send {amount} credits to whom?"
+3. Use conversation context if available
+
+#### 6.5.4 Conflicting Parameters
+
+When parameters conflict:
+
+```
+User: "Buy 100 tickets for the private event"
+```
+
+**Resolution Strategy**:
+1. Identify conflict: quantity exceeds limit
+2. Explain: "The maximum is 10 tickets per purchase. Would you like 10?"
+3. Offer alternative: "Would you like me to purchase 10 now?"
+
+#### 6.5.5 Ambiguous Intent
+
+When multiple intents could match:
+
+```
+User: "Show events"
+```
+
+Could mean: A1-COMM-001 (my events) or A1-COMM-002 (discover events)
+
+**Resolution Strategy**:
+1. Check conversation context
+2. If unclear: "Would you like to see your events, or discover new ones?"
+3. Default to more common action (discover)
+
+---
+
+### 6.6 Confirmation Grammar
+
+#### 6.6.1 Explicit Confirmation Patterns
+
+**Strong Yes**:
+- "yes"
+- "yes please"
+- "confirm"
+- "confirmed"
+- "that's correct"
+- "exactly"
+- "proceed"
+- "go ahead"
+- "do it"
+
+**Weak Yes** (may require follow-up):
+- "sure"
+- "ok"
+- "I guess"
+- "fine"
+- "whatever"
+
+**Strong No**:
+- "no"
+- "cancel"
+- "stop"
+- "abort"
+- "don't do that"
+- "nevermind"
+
+**Weak No** (request clarification):
+- "wait"
+- "hold on"
+- "let me think"
+- "not yet"
+
+#### 6.6.2 Modification During Confirmation
+
+**Quantity Changes**:
+- "change quantity to {X}"
+- "make it {X} instead"
+- "actually, I want {X}"
+
+**Target Changes**:
+- "use a different {entity}"
+- "pick another one"
+- "not that one, the other one"
+
+**Time Changes**:
+- "change the time to {time}"
+- "make it {date} instead"
+- "reschedule to {datetime}"
+
+#### 6.6.3 High-Risk Action Confirmations
+
+For A4 actions, require explicit confirmation:
+
+**Payment Actions**:
+```
+AI: "You're about to purchase 2 tickets for $50. Say 'confirm purchase' to proceed."
+User: "confirm purchase"
+```
+
+**Transfer Actions**:
+```
+AI: "Transfer 100 credits to @john? This cannot be undone. Say 'yes, transfer' to confirm."
+User: "yes, transfer"
+```
+
+**Deletion Actions**:
+```
+AI: "This will permanently delete your account. Type 'DELETE' to confirm."
+User: "DELETE"
+```
+
+---
+
+### 6.7 Error & Recovery Grammar
+
+#### 6.7.1 Misheard Commands
+
+When STT produces unclear text:
+
+**Strategies**:
+1. Request repeat: "I didn't catch that. Could you repeat?"
+2. Offer confirmation: "Did you say '{utterance}'?"
+3. Show alternatives: "Did you mean A, B, or something else?"
+
+**Recovery Phrases**:
+- "I didn't understand. Can you say that again?"
+- "Could you rephrase that?"
+- "I heard '{text}'. Is that right?"
+
+#### 6.7.2 Unavailable Actions for Role
+
+When user lacks permission:
+
+```
+User: "Delete user john"
+AI: "That action requires admin privileges. You're currently a community member."
+```
+
+**Response Templates**:
+- "Sorry, {action} is only available to {required_role} users."
+- "You don't have permission to {action}. Would you like to request access?"
+- "That feature isn't available on your current plan."
+
+#### 6.7.3 Missing Permissions
+
+When system permission needed:
+
+```
+User: "Record a voice entry"
+AI: "I need microphone access to record. Please enable it in your browser settings."
+```
+
+**Response Templates**:
+- "I need {permission} to do that. Would you like to enable it?"
+- "Please grant {permission} access to continue."
+
+#### 6.7.4 High-Risk Rejection Recovery
+
+When user rejects high-risk confirmation:
+
+```
+User: "Actually, cancel"
+AI: "No problem. I've cancelled the purchase. Is there anything else I can help with?"
+```
+
+**Recovery Phrases**:
+- "Cancelled. Let me know if you change your mind."
+- "I've stopped the {action}. Would you like to try something else?"
+- "That's fine. Is there anything else you'd like to do?"
+
+#### 6.7.5 System Errors
+
+When API or network fails:
+
+**Templates**:
+- "Something went wrong. Would you like me to try again?"
+- "I'm having trouble connecting. Please try again in a moment."
+- "The service is temporarily unavailable. Can I help with something else?"
+
+**Retry Logic**:
+- Offer retry for transient errors
+- Suggest alternatives for persistent failures
+- Log error for debugging
+
+#### 6.7.6 Negative Command Handling
+
+**Cancel Previous**:
+- "cancel that"
+- "undo"
+- "go back"
+- "never mind"
+
+**Stop Current Action**:
+- "stop"
+- "wait"
+- "hold on"
+- "that's not what I wanted"
+
+**Correct Mistake**:
+- "I meant {correct_intent}"
+- "not {wrong_entity}, {right_entity}"
+- "wrong one"
+
+**Response**:
+```
+AI: "Okay, I've cancelled that. What would you like to do instead?"
+```
 
 ---
 
@@ -2156,6 +3506,55 @@ sequenceDiagram
     UI-->>User: "Your event is being promoted!"
 ```
 
+### Voice Command Processing Pipeline
+
+```mermaid
+flowchart TD
+    subgraph VoiceInput
+        MIC[Microphone]
+        STT[Speech-to-Text]
+        UTTERANCE[Raw Utterance]
+    end
+    
+    subgraph NLU
+        TOKENIZE[Tokenization]
+        INTENT_CLASSIFY[Intent Classification]
+        SLOT_FILL[Slot Filling]
+        CONFIDENCE[Confidence Score]
+    end
+    
+    subgraph Validation
+        ROLE_CHECK{Role Check}
+        PARAM_VALID{Params Valid?}
+        RISK_CHECK{Risk Level?}
+    end
+    
+    subgraph Execution
+        LOW_RISK[Execute Immediately]
+        HIGH_RISK[Request Confirmation]
+        AMBIGUOUS[Request Clarification]
+    end
+    
+    MIC --> STT
+    STT --> UTTERANCE
+    UTTERANCE --> TOKENIZE
+    TOKENIZE --> INTENT_CLASSIFY
+    INTENT_CLASSIFY --> SLOT_FILL
+    SLOT_FILL --> CONFIDENCE
+    
+    CONFIDENCE -->|≥0.75| ROLE_CHECK
+    CONFIDENCE -->|<0.75| AMBIGUOUS
+    
+    ROLE_CHECK -->|Has Permission| PARAM_VALID
+    ROLE_CHECK -->|No Permission| AMBIGUOUS
+    
+    PARAM_VALID -->|Complete| RISK_CHECK
+    PARAM_VALID -->|Missing| AMBIGUOUS
+    
+    RISK_CHECK -->|A1/A2/A3| LOW_RISK
+    RISK_CHECK -->|A4/A5| HIGH_RISK
+```
+
 ---
 
 ## Document Metadata
@@ -2163,12 +3562,14 @@ sequenceDiagram
 | Property | Value |
 |----------|-------|
 | Document ID | VITANA-AUTOPILOT-CATALOG-001 |
-| Version | 1.0.0 |
+| Version | 1.1.0 |
 | Created | 2024-12-08 |
+| Last Updated | 2024-12-08 |
 | Author | Lovable AI |
 | Status | Active |
 | Total Actions | 169 |
 | Modules Covered | 9 |
+| Voice Grammar Phrases | 500+ |
 | Cross-References | SCREEN_REGISTRY.md, API_INVENTORY.md, ROLE_SCREEN_MATRIX.md, TENANT_SCREEN_AVAILABILITY.md, AUTOPILOT_CAPABILITIES.md |
 
 ---
