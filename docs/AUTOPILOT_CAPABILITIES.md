@@ -5095,7 +5095,7 @@ sequenceDiagram
 | Action ID | Action Name | Level | Risk | Edge Functions | RPC Functions | Hooks | Tables Read | Tables Write | External APIs |
 |-----------|-------------|-------|------|----------------|---------------|-------|-------------|--------------|---------------|
 | A1-MEM-001 | View Diary Entries | A1 | 🟢 Low | - | - | `useDiaryEntries` | `diary_entries` | - | - |
-| A1-MEM-002 | View Entry Details | A1 | 🟢 Low | - | - | `useDiaryEntries` | `diary_entries` | - | - |
+| A1-MEM-002 | View Life Events | A1 | 🟢 Low | - | - | `useLifeEvents` | `life_events` | - | - |
 | A1-MEM-003 | View Memory Insights | A1 | 🟢 Low | - | - | `useMemoryInsights` | `ai_memory`, `diary_entries` | - | - |
 | A1-MEM-004 | Search Memories | A1 | 🟢 Low | - | - | `useSearchMemories` | `diary_entries`, `ai_memory` | - | - |
 | A2-MEM-005 | Navigate to Diary | A2 | 🟢 Low | - | - | - | - | - | - |
@@ -5344,7 +5344,7 @@ sequenceDiagram
 | Action ID | Action Name | Primary Screen | Secondary Screens | Headless | UI Constraints |
 |-----------|-------------|----------------|-------------------|----------|----------------|
 | A1-MEM-001 | View Diary Entries | MEM-001 (Diary) | - | ✅ Yes | None |
-| A1-MEM-002 | View Entry Details | MEM-001 | Entry detail | ✅ Yes | None |
+| A1-MEM-002 | View Life Events | MEM-002 (Life Events) | Entry detail | ✅ Yes | None |
 | A1-MEM-003 | View Memory Insights | MEM-001 | Insights panel | ✅ Yes | None |
 | A1-MEM-004 | Search Memories | MEM-001 | Search results | ✅ Yes | None |
 | A2-MEM-005 | Navigate to Diary | MEM-001 | - | ❌ No | Navigation required |
@@ -5693,7 +5693,7 @@ sequenceDiagram
 | A5-AI-016 | Full Voice Workflow | A5 | 🔴 High | Multi-step, AI |
 | A5-AI-017 | Daily Briefing & Actions | A5 | 🔴 High | Multi-step, AI |
 | A1-MEM-001 | View Diary Entries | A1 | 🟢 Low | Read-only |
-| A1-MEM-002 | View Entry Details | A1 | 🟢 Low | Read-only |
+| A1-MEM-002 | View Life Events | A1 | 🟢 Low | Read-only |
 | A1-MEM-003 | View Memory Insights | A1 | 🟢 Low | Read-only |
 | A1-MEM-004 | Search Memories | A1 | 🟢 Low | Read-only |
 | A2-MEM-005 | Navigate to Diary | A2 | 🟢 Low | Navigation only |
