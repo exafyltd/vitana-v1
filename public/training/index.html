@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VITANA Autopilot Training Files</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding: 2rem;
+      background: #f8fafc;
+      color: #1e293b;
+    }
+    h1 { color: #0f172a; margin-bottom: 0.5rem; }
+    .subtitle { color: #64748b; margin-bottom: 2rem; }
+    .file-grid { display: grid; gap: 1rem; }
+    .file-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: box-shadow 0.2s;
+    }
+    .file-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .file-info h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+    .file-info p { margin: 0; font-size: 0.875rem; color: #64748b; }
+    .file-actions a {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-left: 0.5rem;
+    }
+    .file-actions a:hover { background: #2563eb; }
+    .file-actions a.secondary { background: #64748b; }
+    .file-actions a.secondary:hover { background: #475569; }
+    .category { 
+      margin-top: 2rem; 
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+    .category h2 { font-size: 1.125rem; color: #475569; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>VITANA Autopilot Training Files</h1>
+  <p class="subtitle">Training data for the VITANA AI Autopilot system - 15 files, ~750 training examples</p>
+
+  <div class="category">
+    <h2>📚 Module-Specific Training</h2>
+    <div class="file-grid">
+      <div class="file-card">
+        <div class="file-info">
+          <h3>HLTH_AUTOPILOT_TRAINING.json</h3>
+          <p>Health module - biomarkers, sleep, hydration, plans</p>
+        </div>
+        <div class="file-actions">
+          <a href="HLTH_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>COMM_AUTOPILOT_TRAINING.json</h3>
+          <p>Community module - events, groups, live rooms</p>
+        </div>
+        <div class="file-actions">
+          <a href="COMM_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>DISC_AUTOPILOT_TRAINING.json</h3>
+          <p>Discover module - products, cart, checkout</p>
+        </div>
+        <div class="file-actions">
+          <a href="DISC_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>WALL_AUTOPILOT_TRAINING.json</h3>
+          <p>Wallet module - credits, transfers, rewards</p>
+        </div>
+        <div class="file-actions">
+          <a href="WALL_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>SHAR_AUTOPILOT_TRAINING.json</h3>
+          <p>Sharing module - campaigns, distribution</p>
+        </div>
+        <div class="file-actions">
+          <a href="SHAR_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AI_AUTOPILOT_TRAINING.json</h3>
+          <p>AI module - conversations, autopilot actions</p>
+        </div>
+        <div class="file-actions">
+          <a href="AI_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>MEM_AUTOPILOT_TRAINING.json</h3>
+          <p>Memory module - diary, entries, consolidation</p>
+        </div>
+        <div class="file-actions">
+          <a href="MEM_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>ADMN_AUTOPILOT_TRAINING.json</h3>
+          <p>Admin module - tenant config, automation rules</p>
+        </div>
+        <div class="file-actions">
+          <a href="ADMN_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>SETT_AUTOPILOT_TRAINING.json</h3>
+          <p>Settings module - profile, preferences</p>
+        </div>
+        <div class="file-actions">
+          <a href="SETT_AUTOPILOT_TRAINING.json">View JSON</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>🔗 Cross-Module & Full Datasets</h2>
+    <div class="file-grid">
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AUTOPILOT_TRAINING_MULTI_MODULE.json</h3>
+          <p>Cross-module workflows combining multiple domains</p>
+        </div>
+        <div class="file-actions">
+          <a href="AUTOPILOT_TRAINING_MULTI_MODULE.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AUTOPILOT_TRAINING_FULL.json</h3>
+          <p>Complete combined dataset - all modules</p>
+        </div>
+        <div class="file-actions">
+          <a href="AUTOPILOT_TRAINING_FULL.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AUTOPILOT_TRAINING_FULL_LANGPATCHED.json</h3>
+          <p>Full dataset with language handling patches</p>
+        </div>
+        <div class="file-actions">
+          <a href="AUTOPILOT_TRAINING_FULL_LANGPATCHED.json">View JSON</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>🧪 Specialized Training Sets</h2>
+    <div class="file-grid">
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AUTOPILOT_TRAINING_STRESSTEST.json</h3>
+          <p>Edge cases, safety scenarios, stress tests</p>
+        </div>
+        <div class="file-actions">
+          <a href="AUTOPILOT_TRAINING_STRESSTEST.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AUTOPILOT_TRAINING_TOOL_VARIANTS.json</h3>
+          <p>Tool parameter variations and edge cases</p>
+        </div>
+        <div class="file-actions">
+          <a href="AUTOPILOT_TRAINING_TOOL_VARIANTS.json">View JSON</a>
+        </div>
+      </div>
+      <div class="file-card">
+        <div class="file-info">
+          <h3>AUTOPILOT_VOICE_GRAMMAR_MAPPING.json</h3>
+          <p>Voice command to action mappings</p>
+        </div>
+        <div class="file-actions">
+          <a href="AUTOPILOT_VOICE_GRAMMAR_MAPPING.json">View JSON</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>📖 Documentation</h2>
+    <div class="file-grid">
+      <div class="file-card">
+        <div class="file-info">
+          <h3>README.md</h3>
+          <p>Documentation about the training files</p>
+        </div>
+        <div class="file-actions">
+          <a href="README.md">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

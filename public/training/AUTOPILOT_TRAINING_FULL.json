@@ -1,0 +1,6 @@
+[
+{"intent_id":"hlth-biomarker-status-001","user_utterance":"What are my vitamin D levels?","context_summary":"User has recent biomarker data","app_state":{"user_id":"usr_abc123","biomarkers":{"vitamin_d":{"value":32,"unit":"ng/mL","status":"normal"}}},"selected_action":{"action_id":"A1-HLTH-001","action_name":"View Biomarker Summary"},"assistant_response":"Your vitamin D level is 32 ng/mL, within the normal range.","safety_notes":{"risk_level":"low","requires_confirmation":false}},
+{"intent_id":"comm-discover-events-001","user_utterance":"Show me events this weekend","selected_action":{"action_id":"A1-COMM-002","action_name":"Discover Events"},"assistant_response":"I found 4 events this weekend!","safety_notes":{"risk_level":"low"}},
+{"intent_id":"disc-search-products-001","user_utterance":"Show me magnesium supplements","selected_action":{"action_id":"A1-DISC-001","action_name":"Search Products"},"assistant_response":"I found 8 magnesium supplements.","safety_notes":{"risk_level":"low"}},
+{"intent_id":"wall-balance-001","user_utterance":"How many credits do I have?","selected_action":{"action_id":"A1-WALL-001","action_name":"Get Wallet Balance"},"assistant_response":"You have 245.50 credits.","safety_notes":{"risk_level":"low"}}
+]

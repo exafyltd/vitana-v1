@@ -1,0 +1,10 @@
+[
+{"voice_phrase":"show my events","normalized_intent":"list_my_events","action_id":"A1-COMM-001","slot_values":{},"language":"en"},
+{"voice_phrase":"zeige meine Veranstaltungen","normalized_intent":"list_my_events","action_id":"A1-COMM-001","slot_values":{},"language":"de"},
+{"voice_phrase":"find events near me","normalized_intent":"discover_events","action_id":"A1-COMM-002","slot_values":{"location":"user_current_location"},"language":"en"},
+{"voice_phrase":"sign me up for the morning yoga","normalized_intent":"rsvp_event","action_id":"A3-COMM-019","slot_values":{"event_name":"morning yoga"},"language":"en"},
+{"voice_phrase":"log water","normalized_intent":"log_hydration","action_id":"A3-HLTH-015","slot_values":{"amount_ml":250},"language":"en"},
+{"voice_phrase":"ich habe Wasser getrunken","normalized_intent":"log_hydration","action_id":"A3-HLTH-015","slot_values":{"amount_ml":250},"language":"de"},
+{"voice_phrase":"checkout","normalized_intent":"checkout_cart","action_id":"A4-DISC-021","slot_values":{},"language":"en"},
+{"voice_phrase":"send 50 credits to Alex","normalized_intent":"transfer_credits","action_id":"A4-WALL-011","slot_values":{"recipient":"Alex","amount":50},"language":"en"}
+]

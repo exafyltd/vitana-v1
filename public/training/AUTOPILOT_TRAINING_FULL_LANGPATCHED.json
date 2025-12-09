@@ -1,0 +1,5 @@
+[
+{"intent_id":"hlth-biomarker-status-001","user_utterance":"What are my vitamin D levels?","selected_action":{"action_id":"A1-HLTH-001"},"assistant_response":"Your vitamin D level is 32 ng/mL.","safety_notes":{"risk_level":"low"}},
+{"intent_id":"hlth-german-biomarker-001","user_utterance":"Wie sind meine Vitamin D Werte?","language":"de","selected_action":{"action_id":"A1-HLTH-001"},"assistant_response":"Dein Vitamin D Wert liegt bei 28 ng/mL.","safety_notes":{"risk_level":"low"}},
+{"intent_id":"hlth-bosnian-001","user_utterance":"Koliko kalorija sam unesao danas?","language":"bs","selected_action":{"action_id":"CLARIFY"},"assistant_response":"I currently support English and German. Shall we continue in one of these languages?","safety_notes":{"risk_level":"low"}}
+]

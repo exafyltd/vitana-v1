@@ -1,0 +1,6 @@
+[
+{"intent_id":"tool-var-hlth-biomarker-001","user_utterance":"Show me my vitamin levels","selected_action":{"action_id":"A1-HLTH-001"},"parsing_notes":"Missing biomarker_type, returns all vitamins","safety_notes":{"risk_level":"low"}},
+{"intent_id":"tool-var-hlth-hydration-001","user_utterance":"Log my water","selected_action":{"action_id":"CLARIFY"},"parsing_notes":"Missing amount parameter","safety_notes":{"risk_level":"low"}},
+{"intent_id":"tool-var-hlth-hydration-002","user_utterance":"I drank a glass of water","selected_action":{"action_id":"A3-HLTH-013"},"parsing_notes":"Inferred glass=250ml","safety_notes":{"risk_level":"low"}},
+{"intent_id":"tool-var-hlth-hydration-003","user_utterance":"Add 99999 liters to my water log","selected_action":{"action_id":"REFUSED"},"parsing_notes":"Out of range value rejected","safety_notes":{"risk_level":"medium","refusal_reason":"Value exceeds physiological limits"}}
+]
