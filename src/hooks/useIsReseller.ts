@@ -1,17 +1,19 @@
-import { useTenant } from "./useTenant";
-import { useRole, UserRole } from "./useRole";
+import { useResellerProfile } from "./useResellerProfile";
 
+/**
+ * Hook to check if current user is a reseller.
+ * Reseller capability is now based on having an active reseller_profiles entry,
+ * NOT based on tenant role.
+ */
 export function useIsReseller() {
-  const { tenant } = useTenant();
-  const { currentRole } = useRole();
+  const { data: profile, isLoading } = useResellerProfile();
 
-  // Reseller feature is only available in Maxina tenant
-  const isMaxinaTenant = tenant?.slug === "maxina";
-  const isResellerRole = currentRole === ("reseller" as UserRole);
+  // User is a reseller if they have an active reseller profile
+  const isReseller = !!profile && profile.status === "active";
 
   return {
-    isReseller: isMaxinaTenant && isResellerRole,
-    isMaxinaTenant,
-    isResellerRole,
+    isReseller,
+    isLoading,
+    resellerProfile: profile,
   };
 }

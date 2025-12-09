@@ -32,7 +32,6 @@ const ROLE_LABELS: Record<UserRole, string> = {
   community: "Community",
   patient: "Patient", 
   professional: "Professional",
-  reseller: "Reseller",
   staff: "Staff",
   admin: "Admin",
 };

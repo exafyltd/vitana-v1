@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
 import CreateServicePopup from "@/components/CreateServicePopup";
+import { BusinessTypeSelector } from "@/components/business/BusinessTypeSelector";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -32,6 +33,7 @@ export default function MyBusiness() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [showCreateService, setShowCreateService] = useState(false);
+  const [showBusinessTypeSelector, setShowBusinessTypeSelector] = useState(false);
   const [resellerSearchQuery, setResellerSearchQuery] = useState("");
   
   const { isReseller } = useIsReseller();
@@ -122,7 +124,7 @@ export default function MyBusiness() {
             <Button
               variant="default" 
               size="sm"
-              onClick={() => setShowCreateService(true)}
+              onClick={() => setShowBusinessTypeSelector(true)}
             >
               <Plus className="w-4 h-4 mr-2" />
               Business
@@ -355,6 +357,14 @@ export default function MyBusiness() {
       <CreateServicePopup 
         isOpen={showCreateService}
         onClose={() => setShowCreateService(false)}
+      />
+
+      {/* Business Type Selector */}
+      <BusinessTypeSelector
+        isOpen={showBusinessTypeSelector}
+        onClose={() => setShowBusinessTypeSelector(false)}
+        onSelectEvent={() => setShowCreatePopup(true)}
+        onSelectService={() => setShowCreateService(true)}
       />
     </AppLayout>
   );
