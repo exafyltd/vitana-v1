@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -18,6 +19,11 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 
 import { communityNavigation } from "@/config/navigation";
 import { OrganizerEventsSection } from "@/components/business/OrganizerEventsSection";
+import { useIsReseller } from "@/hooks/useIsReseller";
+import { ResellerHeader } from "@/components/reseller/ResellerHeader";
+import { ResellerEventsTab } from "@/components/reseller/ResellerEventsTab";
+import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
+import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
 
 export default function MyBusiness() {
   const navigate = useNavigate();
@@ -26,7 +32,9 @@ export default function MyBusiness() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [showCreateService, setShowCreateService] = useState(false);
+  const [resellerSearchQuery, setResellerSearchQuery] = useState("");
   
+  const { isReseller } = useIsReseller();
   const latestActions = getLatestActions(2);
 
   return (
@@ -179,6 +187,11 @@ export default function MyBusiness() {
               <SplitBarTrigger value="management">
                 💼 Management
               </SplitBarTrigger>
+              {isReseller && (
+                <SplitBarTrigger value="reseller">
+                  🎫 Events & Sales
+                </SplitBarTrigger>
+              )}
               <SplitBarTrigger value="referrals">
                 👥 Referrals
               </SplitBarTrigger>
@@ -193,6 +206,29 @@ export default function MyBusiness() {
             <SplitBarContent value="management" className="space-y-4">
               <OrganizerEventsSection />
             </SplitBarContent>
+
+            {isReseller && (
+              <SplitBarContent value="reseller" className="space-y-6">
+                <ResellerHeader />
+                
+                <Tabs defaultValue="events" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3 mb-4">
+                    <TabsTrigger value="events">Events</TabsTrigger>
+                    <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
+                    <TabsTrigger value="sales">Sales</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="events">
+                    <ResellerEventsTab searchQuery={resellerSearchQuery} />
+                  </TabsContent>
+                  <TabsContent value="campaigns">
+                    <ResellerCampaignsTab searchQuery={resellerSearchQuery} />
+                  </TabsContent>
+                  <TabsContent value="sales">
+                    <ResellerSalesTab />
+                  </TabsContent>
+                </Tabs>
+              </SplitBarContent>
+            )}
 
             <SplitBarContent value="referrals" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

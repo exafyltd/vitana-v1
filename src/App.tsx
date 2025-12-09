@@ -173,7 +173,6 @@ import Plans from "./pages/health/Plans";
 // Community sub-pages
 import EventsAndMeetups from "./pages/community/EventsAndMeetups";
 import MyBusiness from "./pages/community/MyBusinessRenamed";
-import MyEventsSales from "./pages/community/MyEventsSales";
 import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
 import AIInsights from "./pages/community/AIInsights";
@@ -574,11 +573,6 @@ const App = () => {
           <Route path="/comm/my-business" element={
             <AuthGuard>
               <MyBusiness />
-            </AuthGuard>
-          } />
-          <Route path="/comm/my-events-sales" element={
-            <AuthGuard>
-              <MyEventsSales />
             </AuthGuard>
           } />
           
