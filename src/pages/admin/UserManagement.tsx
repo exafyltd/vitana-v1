@@ -51,9 +51,12 @@ const ROLE_OPTIONS = [
   { value: "community", label: "Community Member", description: "Basic community access" },
   { value: "patient", label: "Patient", description: "Patient portal access" },
   { value: "professional", label: "Professional", description: "Healthcare professional access" },
+  { value: "reseller", label: "Reseller", description: "Event promotion and ticket sales" },
   { value: "staff", label: "Staff", description: "Staff portal access" },
   { value: "admin", label: "Admin", description: "Full tenant administration" },
 ];
+
+type TenantRole = "community" | "patient" | "professional" | "reseller" | "staff" | "admin";
 
 export default function UserManagement() {
   const { session } = useAuth();
@@ -168,7 +171,7 @@ export default function UserManagement() {
         const { error } = await supabase
           .from("memberships")
           .update({ 
-            role: selectedRole as "community" | "patient" | "professional" | "staff" | "admin",
+            role: selectedRole as TenantRole,
             status: "active" 
           })
           .eq("id", existingMembership.id);
@@ -177,6 +180,11 @@ export default function UserManagement() {
           console.error("Error updating membership:", error);
           throw error;
         }
+        
+        // Auto-create reseller profile if assigning reseller role
+        if (selectedRole === "reseller") {
+          await createResellerProfileIfNeeded(assigningTo.id, targetTenantId);
+        }
       } else {
         // Create new membership
         const { error } = await supabase
@@ -184,13 +192,18 @@ export default function UserManagement() {
           .insert({
             user_id: assigningTo.id,
             tenant_id: targetTenantId,
-            role: selectedRole as "community" | "patient" | "professional" | "staff" | "admin",
+            role: selectedRole as TenantRole,
             status: "active"
           });
           
         if (error) {
           console.error("Error creating membership:", error);
           throw error;
+        }
+        
+        // Auto-create reseller profile if assigning reseller role
+        if (selectedRole === "reseller") {
+          await createResellerProfileIfNeeded(assigningTo.id, targetTenantId);
         }
       }
       
@@ -267,9 +280,80 @@ export default function UserManagement() {
   const canAssignRole = (targetRole: string): boolean => {
     if (isExafyAdmin) return true; // Exafy admins can assign any role
     
-    // Client admins can assign community, patient, professional, staff roles within their tenant
-    const restrictedRoles = ["community", "patient", "professional", "staff"];
+    // Client admins can assign community, patient, professional, reseller, staff roles within their tenant
+    const restrictedRoles = ["community", "patient", "professional", "reseller", "staff"];
     return restrictedRoles.includes(targetRole);
+  };
+
+  // Generate a unique reseller code
+  const generateResellerCode = async (userId: string): Promise<string> => {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("user_id", userId)
+      .single();
+    
+    const namePart = profile?.full_name?.split(" ")[0]?.toUpperCase().slice(0, 4) || "RES";
+    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `${namePart}_${randomPart}`;
+  };
+
+  // Create reseller profile if it doesn't exist
+  const createResellerProfileIfNeeded = async (userId: string, tenantId: string) => {
+    const { data: existing } = await supabase
+      .from("reseller_profiles")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("tenant_id", tenantId)
+      .maybeSingle();
+
+    if (!existing) {
+      const resellerCode = await generateResellerCode(userId);
+      await supabase.from("reseller_profiles").insert({
+        user_id: userId,
+        tenant_id: tenantId,
+        reseller_code: resellerCode,
+        commission_rate: 10,
+        status: "active",
+        metadata: {}
+      });
+    }
+  };
+
+  // Handle quick role change from inline dropdown
+  const handleQuickRoleChange = async (
+    membershipId: string, 
+    userId: string,
+    tenantId: string,
+    newRole: TenantRole,
+    userEmail: string
+  ) => {
+    try {
+      const { error } = await supabase
+        .from("memberships")
+        .update({ role: newRole })
+        .eq("id", membershipId);
+
+      if (error) throw error;
+
+      // Auto-create reseller profile if assigning reseller role
+      if (newRole === "reseller") {
+        await createResellerProfileIfNeeded(userId, tenantId);
+      }
+
+      toast({
+        title: "Role Updated",
+        description: `${userEmail} is now ${newRole}`,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update role",
+        variant: "destructive",
+      });
+    }
   };
 
   if (usersLoading) {
@@ -439,41 +523,72 @@ export default function UserManagement() {
                         {user.memberships.filter(m => m.status === "active").length > 0 ? (
                           user.memberships
                             .filter(m => m.status === "active")
-                            .map((membership) => (
-                              <div key={membership.id} className="flex items-center gap-2">
-                                <Badge variant="secondary" className="flex items-center gap-1">
-                                  <Shield className="h-3 w-3" />
-                                  {membership.role} @ {membership.tenant.name}
-                                </Badge>
-                                {(isExafyAdmin || (membership.tenant_id === activeTenantId && membership.role !== "admin")) && (
-                                  <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                                        <Trash2 className="h-3 w-3" />
-                                      </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                      <AlertDialogHeader>
-                                        <AlertDialogTitle>Revoke Role</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                          Are you sure you want to revoke the {membership.role} role from {user.email} 
-                                          at {membership.tenant.name}? This action cannot be undone.
-                                        </AlertDialogDescription>
-                                      </AlertDialogHeader>
-                                      <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction 
-                                          onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
-                                          className="bg-destructive text-destructive-foreground"
-                                        >
-                                          Revoke Role
-                                        </AlertDialogAction>
-                                      </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                  </AlertDialog>
-                                )}
-                              </div>
-                            ))
+                            .map((membership) => {
+                              const canEdit = isExafyAdmin || (membership.tenant_id === activeTenantId && membership.role !== "admin");
+                              
+                              return (
+                                <div key={membership.id} className="flex items-center gap-2">
+                                  <div className="flex items-center gap-1.5 bg-secondary/50 rounded-md px-2 py-1">
+                                    <Shield className="h-3 w-3 text-muted-foreground" />
+                                    <span className="text-xs text-muted-foreground">{membership.tenant.name}:</span>
+                                    {canEdit ? (
+                                      <Select
+                                        value={membership.role}
+                                        onValueChange={(value) => 
+                                          handleQuickRoleChange(
+                                            membership.id, 
+                                            user.id, 
+                                            membership.tenant_id,
+                                            value as TenantRole, 
+                                            user.email
+                                          )
+                                        }
+                                      >
+                                        <SelectTrigger className="h-6 w-auto min-w-[100px] text-xs border-0 bg-transparent p-0 px-1">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          {ROLE_OPTIONS.filter(role => canAssignRole(role.value)).map((role) => (
+                                            <SelectItem key={role.value} value={role.value}>
+                                              {role.label}
+                                            </SelectItem>
+                                          ))}
+                                        </SelectContent>
+                                      </Select>
+                                    ) : (
+                                      <span className="text-xs font-medium">{membership.role}</span>
+                                    )}
+                                  </div>
+                                  {canEdit && (
+                                    <AlertDialog>
+                                      <AlertDialogTrigger asChild>
+                                        <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                          <Trash2 className="h-3 w-3" />
+                                        </Button>
+                                      </AlertDialogTrigger>
+                                      <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                          <AlertDialogTitle>Revoke Role</AlertDialogTitle>
+                                          <AlertDialogDescription>
+                                            Are you sure you want to revoke the {membership.role} role from {user.email} 
+                                            at {membership.tenant.name}? This action cannot be undone.
+                                          </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                          <AlertDialogAction 
+                                            onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
+                                            className="bg-destructive text-destructive-foreground"
+                                          >
+                                            Revoke Role
+                                          </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                    </AlertDialog>
+                                  )}
+                                </div>
+                              );
+                            })
                         ) : (
                           <Badge variant="outline">No active roles</Badge>
                         )}
