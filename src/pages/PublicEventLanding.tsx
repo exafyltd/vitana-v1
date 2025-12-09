@@ -48,6 +48,13 @@ export default function PublicEventLanding() {
   const [error, setError] = useState<string | null>(null);
   const [showTicketDialog, setShowTicketDialog] = useState(false);
 
+  // Extract UTM params from URL for reseller attribution
+  const utmParams = {
+    utm_source: searchParams.get('utm_source') || undefined,
+    utm_medium: searchParams.get('utm_medium') || undefined,
+    utm_campaign: searchParams.get('utm_campaign') || undefined,
+  };
+
   useEffect(() => {
     const fetchPublicEvent = async () => {
       if (!id) {
@@ -354,6 +361,7 @@ export default function PublicEventLanding() {
             eventId={event.id} 
             eventTitle={event.title}
             forceGuestMode={!user}
+            utmParams={utmParams}
           />
         </DialogContent>
       </Dialog>

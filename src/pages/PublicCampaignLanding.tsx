@@ -43,6 +43,13 @@ export default function PublicCampaignLanding() {
   const [showTicketDialog, setShowTicketDialog] = useState(false);
   const [linkedEventTickets, setLinkedEventTickets] = useState<LinkedEventTicketInfo | null>(null);
 
+  // Extract UTM params from URL for reseller attribution
+  const utmParams = {
+    utm_source: searchParams.get('utm_source') || undefined,
+    utm_medium: searchParams.get('utm_medium') || undefined,
+    utm_campaign: searchParams.get('utm_campaign') || undefined,
+  };
+
   useEffect(() => {
     const fetchPublicCampaign = async () => {
       if (!id) {
@@ -428,6 +435,7 @@ export default function PublicCampaignLanding() {
               eventId={linkedEventId} 
               eventTitle={linkedEventTickets?.event_title || campaign.name}
               forceGuestMode={!user}
+              utmParams={utmParams}
             />
           </DialogContent>
         </Dialog>
