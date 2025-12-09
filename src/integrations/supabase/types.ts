@@ -5329,33 +5329,48 @@ export type Database = {
       }
       reseller_attributions: {
         Row: {
+          commission_amount: number | null
+          commission_rate: number | null
           created_at: string | null
           event_id: string
           id: string
+          paid_at: string | null
           reseller_id: string
           sale_amount: number
+          status: string
           ticket_purchase_id: string
           utm_campaign: string | null
+          utm_medium: string | null
           utm_source: string | null
         }
         Insert: {
+          commission_amount?: number | null
+          commission_rate?: number | null
           created_at?: string | null
           event_id: string
           id?: string
+          paid_at?: string | null
           reseller_id: string
           sale_amount: number
+          status?: string
           ticket_purchase_id: string
           utm_campaign?: string | null
+          utm_medium?: string | null
           utm_source?: string | null
         }
         Update: {
+          commission_amount?: number | null
+          commission_rate?: number | null
           created_at?: string | null
           event_id?: string
           id?: string
+          paid_at?: string | null
           reseller_id?: string
           sale_amount?: number
+          status?: string
           ticket_purchase_id?: string
           utm_campaign?: string | null
+          utm_medium?: string | null
           utm_source?: string | null
         }
         Relationships: [

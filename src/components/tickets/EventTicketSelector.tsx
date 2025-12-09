@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEventTicketTypes, usePurchaseTicket, TicketType } from "@/hooks/useEventTickets";
+import { useEventTicketTypes, usePurchaseTicket, TicketType, UtmParams } from "@/hooks/useEventTickets";
 import { format } from "date-fns";
 
 interface EventTicketSelectorProps {
@@ -12,9 +12,11 @@ interface EventTicketSelectorProps {
   eventTitle: string;
   /** Force guest checkout mode (for public pages where user is not logged in) */
   forceGuestMode?: boolean;
+  /** UTM params for reseller attribution tracking */
+  utmParams?: UtmParams;
 }
 
-export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false }: EventTicketSelectorProps) {
+export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams }: EventTicketSelectorProps) {
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
   
@@ -57,7 +59,8 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
       firstSelectedId,
       selectedTickets[firstSelectedId],
       showGuestForm ? guestEmail : undefined,
-      showGuestForm ? guestName : undefined
+      showGuestForm ? guestName : undefined,
+      utmParams // Pass UTM params for reseller attribution
     );
   };
 

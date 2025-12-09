@@ -169,6 +169,12 @@ export function useTicketPurchase(purchaseId: string) {
   return { purchase, loading, error };
 }
 
+export interface UtmParams {
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+}
+
 export function usePurchaseTicket() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -178,7 +184,8 @@ export function usePurchaseTicket() {
     ticketTypeId: string,
     quantity: number,
     buyerEmail?: string,
-    buyerName?: string
+    buyerName?: string,
+    utmParams?: UtmParams
   ) => {
     setLoading(true);
 
@@ -192,6 +199,10 @@ export function usePurchaseTicket() {
           quantity,
           buyer_email: buyerEmail,
           buyer_name: buyerName,
+          // Pass UTM params for reseller attribution
+          utm_source: utmParams?.utm_source,
+          utm_medium: utmParams?.utm_medium,
+          utm_campaign: utmParams?.utm_campaign,
         },
       });
 
