@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket, Share2, Percent } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
@@ -34,6 +34,11 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
   const [customDuration, setCustomDuration] = useState("");
   const [enableTicketSales, setEnableTicketSales] = useState(false);
   const [ticketTypes, setTicketTypes] = useState<TicketTypeInput[]>([]);
+  
+  // Reseller options state
+  const [enableReselling, setEnableReselling] = useState(false);
+  const [resaleScope, setResaleScope] = useState<'tenant' | 'public'>('tenant');
+  const [resellerCommission, setResellerCommission] = useState(10);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -78,6 +83,9 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
     setImagePreviewUrl("");
     setEnableTicketSales(false);
     setTicketTypes([]);
+    setEnableReselling(false);
+    setResaleScope('tenant');
+    setResellerCommission(10);
     setFormData({
       title: "",
       description: "",
@@ -239,7 +247,11 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
           } : formData.isPaid ? { 
             is_paid: true, 
             price: parseFloat(formData.price) || 0 
-          } : { is_paid: false }
+          } : { is_paid: false },
+          // Reseller options
+          resellable: enableReselling,
+          resale_scope: enableReselling ? resaleScope : 'none' as const,
+          default_reseller_commission_rate: enableReselling ? resellerCommission : undefined,
         };
 
         const result = await createEvent(communityEventData);
@@ -837,6 +849,71 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                         </p>
                       </div>
                     )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Reseller Options Section - Only for community events */}
+          {eventContext === 'community' && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Share2 className="w-5 h-5" />
+                  Reseller Options
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Allow Resellers to Sell Tickets</Label>
+                    <p className="text-sm text-muted-foreground">Let resellers promote and sell tickets for this event</p>
+                  </div>
+                  <Switch 
+                    checked={enableReselling}
+                    onCheckedChange={setEnableReselling}
+                  />
+                </div>
+                
+                {enableReselling && (
+                  <div className="space-y-4 pt-3 border-t border-border/50">
+                    <div>
+                      <Label>Resale Visibility</Label>
+                      <Select value={resaleScope} onValueChange={(v) => setResaleScope(v as 'tenant' | 'public')}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="tenant">This community only</SelectItem>
+                          <SelectItem value="public">All resellers (public)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Who can see and resell this event
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <Label className="flex items-center gap-2">
+                        <Percent className="w-4 h-4" />
+                        Default Reseller Commission
+                      </Label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Input
+                          type="number"
+                          min={0}
+                          max={50}
+                          value={resellerCommission}
+                          onChange={(e) => setResellerCommission(Math.min(50, Math.max(0, parseInt(e.target.value) || 0)))}
+                          className="w-24"
+                        />
+                        <span className="text-sm text-muted-foreground">%</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Commission resellers earn per ticket sold (0-50%)
+                      </p>
+                    </div>
                   </div>
                 )}
               </CardContent>

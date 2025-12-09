@@ -25,6 +25,7 @@ import { ResellerHeader } from "@/components/reseller/ResellerHeader";
 import { ResellerEventsTab } from "@/components/reseller/ResellerEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
 import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
+import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
 
 export default function MyBusiness() {
   const navigate = useNavigate();
@@ -226,13 +227,17 @@ export default function MyBusiness() {
                 <ResellerHeader />
                 
                 <Tabs defaultValue="events" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 mb-4">
-                    <TabsTrigger value="events">Events</TabsTrigger>
+                  <TabsList className="grid w-full grid-cols-4 mb-4">
+                    <TabsTrigger value="events">My Events</TabsTrigger>
+                    <TabsTrigger value="available">Available to Sell</TabsTrigger>
                     <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
                     <TabsTrigger value="sales">Sales</TabsTrigger>
                   </TabsList>
                   <TabsContent value="events">
                     <ResellerEventsTab searchQuery={resellerSearchQuery} />
+                  </TabsContent>
+                  <TabsContent value="available">
+                    <ResellerAvailableEventsTab />
                   </TabsContent>
                   <TabsContent value="campaigns">
                     <ResellerCampaignsTab searchQuery={resellerSearchQuery} />
