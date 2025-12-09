@@ -2369,6 +2369,7 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string
+          default_reseller_commission_rate: number | null
           description: string | null
           end_time: string | null
           event_type: string
@@ -2381,6 +2382,9 @@ export type Database = {
           moderated_by: string | null
           moderation_notes: string | null
           participant_count: number
+          resale_scope: string
+          resellable: boolean
+          reseller_config: Json | null
           start_time: string
           title: string
           updated_at: string
@@ -2389,6 +2393,7 @@ export type Database = {
         Insert: {
           created_at?: string
           created_by: string
+          default_reseller_commission_rate?: number | null
           description?: string | null
           end_time?: string | null
           event_type?: string
@@ -2401,6 +2406,9 @@ export type Database = {
           moderated_by?: string | null
           moderation_notes?: string | null
           participant_count?: number
+          resale_scope?: string
+          resellable?: boolean
+          reseller_config?: Json | null
           start_time: string
           title: string
           updated_at?: string
@@ -2409,6 +2417,7 @@ export type Database = {
         Update: {
           created_at?: string
           created_by?: string
+          default_reseller_commission_rate?: number | null
           description?: string | null
           end_time?: string | null
           event_type?: string
@@ -2421,6 +2430,9 @@ export type Database = {
           moderated_by?: string | null
           moderation_notes?: string | null
           participant_count?: number
+          resale_scope?: string
+          resellable?: boolean
+          reseller_config?: Json | null
           start_time?: string
           title?: string
           updated_at?: string

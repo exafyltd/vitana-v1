@@ -33,6 +33,10 @@ interface CreateEventData {
   max_participants?: number;
   image_url?: string;
   metadata?: any;
+  // Reseller options
+  resellable?: boolean;
+  resale_scope?: 'none' | 'tenant' | 'public';
+  default_reseller_commission_rate?: number;
 }
 
 export function useCommunityEvents() {
@@ -141,6 +145,10 @@ export function useCommunityEvents() {
         image_url: eventData.image_url,
         metadata: eventData.metadata || {},
         created_by: user.id,
+        // Reseller fields
+        resellable: eventData.resellable || false,
+        resale_scope: eventData.resellable ? (eventData.resale_scope || 'tenant') : 'none',
+        default_reseller_commission_rate: eventData.resellable ? (eventData.default_reseller_commission_rate || 10) : null,
       }])
       .select()
       .single();
