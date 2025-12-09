@@ -9,8 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, DollarSign, Users, Calendar, TrendingUp, BarChart3, Plane, Copy, Filter, ExternalLink, Clock, Share2, Search } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
 import CreateServicePopup from "@/components/CreateServicePopup";
 import { BusinessTypeSelector } from "@/components/business/BusinessTypeSelector";
@@ -28,6 +28,7 @@ import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
 
 export default function MyBusiness() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -35,9 +36,20 @@ export default function MyBusiness() {
   const [showCreateService, setShowCreateService] = useState(false);
   const [showBusinessTypeSelector, setShowBusinessTypeSelector] = useState(false);
   const [resellerSearchQuery, setResellerSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("management");
   
   const { isReseller } = useIsReseller();
   const latestActions = getLatestActions(2);
+
+  // Handle URL param for tab selection (e.g., ?tab=reseller)
+  useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "reseller" && isReseller) {
+      setActiveTab("reseller");
+    } else if (tabParam && ["management", "referrals", "analytics", "clients"].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams, isReseller]);
 
   return (
     <AppLayout>
@@ -184,7 +196,7 @@ export default function MyBusiness() {
 
 
           {/* Split Bar Navigation */}
-          <SplitBar defaultValue="management" className="w-full mb-6">
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full mb-6">
             <SplitBarList>
               <SplitBarTrigger value="management">
                 💼 Management
