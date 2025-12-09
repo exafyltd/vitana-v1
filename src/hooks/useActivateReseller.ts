@@ -31,7 +31,7 @@ export function useActivateReseller() {
 
   /**
    * Activate reseller capability for the current user.
-   * Creates reseller_profile if missing, then redirects to My Business → Events & Sales tab.
+   * Creates reseller_profile if missing, then redirects to My Business → Sell & Earn tab.
    */
   const activateResellerForCurrentUser = async (options?: { 
     redirectAfter?: boolean;
@@ -107,7 +107,7 @@ export function useActivateReseller() {
         if (showToast) {
           toast({
             title: "Welcome, Reseller! 🎉",
-            description: "You can now promote events and earn commissions. Check out your Events & Sales dashboard.",
+            description: "You can now promote events and earn commissions. Check out your Sell & Earn dashboard.",
           });
         }
       }

@@ -204,7 +204,7 @@ export default function MyBusiness() {
               </SplitBarTrigger>
               {isReseller && (
                 <SplitBarTrigger value="reseller">
-                  🎫 Events & Sales
+                  🎫 Sell & Earn
                 </SplitBarTrigger>
               )}
               <SplitBarTrigger value="referrals">

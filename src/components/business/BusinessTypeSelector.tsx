@@ -107,7 +107,7 @@ export function BusinessTypeSelector({
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {isAlreadyReseller ? "You're already a reseller! Check the Events & Sales tab." : type.subtitle}
+                      {isAlreadyReseller ? "You're already a reseller! Check the Sell & Earn tab." : type.subtitle}
                     </p>
                   </div>
                 </CardContent>
