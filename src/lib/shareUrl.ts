@@ -60,3 +60,23 @@ export function getShareUrl(
   const queryString = params.toString();
   return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
 }
+
+/**
+ * Generate a reseller-specific share URL with attribution UTM parameters
+ * 
+ * @param type Content type (event or campaign)
+ * @param id Content ID
+ * @param resellerCode Unique reseller code for attribution
+ * @returns Share URL with reseller attribution parameters
+ */
+export function getResellerShareUrl(
+  type: 'event' | 'campaign',
+  id: string,
+  resellerCode: string
+): string {
+  return getShareUrl(type, id, {
+    utm_source: `reseller_${resellerCode}`,
+    utm_medium: 'reseller',
+    utm_campaign: id
+  });
+}

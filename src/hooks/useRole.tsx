@@ -2,12 +2,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useTenant } from "./useTenant";
 
-export type UserRole = "community" | "patient" | "professional" | "staff" | "admin";
+export type UserRole = "community" | "patient" | "professional" | "reseller" | "staff" | "admin";
 
 const ROLE_HIERARCHY: Record<UserRole, number> = {
   community: 1,
   patient: 2, 
   professional: 3,
+  reseller: 3, // Same level as professional
   staff: 4,
   admin: 5,
 };

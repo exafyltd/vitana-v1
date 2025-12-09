@@ -5315,6 +5315,112 @@ export type Database = {
           },
         ]
       }
+      reseller_attributions: {
+        Row: {
+          created_at: string | null
+          event_id: string
+          id: string
+          reseller_id: string
+          sale_amount: number
+          ticket_purchase_id: string
+          utm_campaign: string | null
+          utm_source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_id: string
+          id?: string
+          reseller_id: string
+          sale_amount: number
+          ticket_purchase_id: string
+          utm_campaign?: string | null
+          utm_source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string
+          id?: string
+          reseller_id?: string
+          sale_amount?: number
+          ticket_purchase_id?: string
+          utm_campaign?: string | null
+          utm_source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reseller_attributions_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reseller_attributions_reseller_id_fkey"
+            columns: ["reseller_id"]
+            isOneToOne: false
+            referencedRelation: "reseller_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reseller_attributions_ticket_purchase_id_fkey"
+            columns: ["ticket_purchase_id"]
+            isOneToOne: true
+            referencedRelation: "event_ticket_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reseller_profiles: {
+        Row: {
+          commission_rate: number | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          reseller_code: string
+          status: string | null
+          tenant_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          commission_rate?: number | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          reseller_code: string
+          status?: string | null
+          tenant_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          commission_rate?: number | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          reseller_code?: string
+          status?: string | null
+          tenant_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reseller_profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "reseller_profiles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       role_preferences: {
         Row: {
           id: string
@@ -7272,7 +7378,13 @@ export type Database = {
         | "completed"
         | "cancelled"
       post_status: "draft" | "scheduled" | "published" | "failed"
-      tenant_role: "community" | "patient" | "professional" | "staff" | "admin"
+      tenant_role:
+        | "community"
+        | "patient"
+        | "professional"
+        | "reseller"
+        | "staff"
+        | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -7438,7 +7550,14 @@ export const Constants = {
         "cancelled",
       ],
       post_status: ["draft", "scheduled", "published", "failed"],
-      tenant_role: ["community", "patient", "professional", "staff", "admin"],
+      tenant_role: [
+        "community",
+        "patient",
+        "professional",
+        "reseller",
+        "staff",
+        "admin",
+      ],
     },
   },
 } as const

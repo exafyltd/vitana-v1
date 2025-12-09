@@ -25,6 +25,8 @@ export const communityNavigation = [
   { id: "live-rooms", name: "Live Rooms", path: "/comm/live-rooms" },
   { id: "media-hub", name: "Media Hub", path: "/comm/media-hub" },
   { id: "my-business", name: "My Business", path: "/comm/my-business" },
+  // Reseller-only item (filtered by role + tenant in SubNavigation)
+  { id: "my-events-sales", name: "My Events & Sales", path: "/comm/my-events-sales" },
 ];
 
 export const discoverNavigation = [
