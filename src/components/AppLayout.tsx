@@ -73,8 +73,28 @@ function AppSidebar({
   const sidebarCategories = getRoleNavigation(currentRole);
 
   // Check if current path matches category (including subpages)
+  // But exclude parent paths if a more specific sibling path matches
   const isActivePath = (categoryPath: string) => {
-    return location.pathname === categoryPath || location.pathname.startsWith(categoryPath + "/");
+    const exactMatch = location.pathname === categoryPath;
+    const prefixMatch = location.pathname.startsWith(categoryPath + "/");
+    
+    if (exactMatch) return true;
+    
+    if (prefixMatch) {
+      // Check if there's a more specific navigation item that matches
+      const hasMoreSpecificMatch = sidebarCategories.some(cat => 
+        cat.path !== categoryPath && 
+        cat.path.startsWith(categoryPath + "/") &&
+        (location.pathname === cat.path || location.pathname.startsWith(cat.path + "/"))
+      );
+      
+      // If a more specific item matches, don't highlight this (less specific) item
+      if (hasMoreSpecificMatch) return false;
+      
+      return true;
+    }
+    
+    return false;
   };
 
   const handleLogoClick = async () => {
