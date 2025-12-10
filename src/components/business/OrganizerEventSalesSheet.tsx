@@ -1,12 +1,24 @@
+/**
+ * ORGANIZER EVENT SALES SHEET
+ * 
+ * Displays a comprehensive sales dashboard for event organizers:
+ * - Sales tab: Revenue, tickets sold, buyers, check-ins, order table
+ * - Operations tab: Attendee list, check-in mode, CSV export, client info
+ * 
+ * Supports events with client metadata (for agency/producer workflow).
+ */
+
 import { useState } from "react";
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Download, MapPin, Calendar, DollarSign, Ticket, Users, UserCheck } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Download, MapPin, Calendar, DollarSign, Ticket, Users, UserCheck, Settings, Building2 } from "lucide-react";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
 import { OrderManagementTable } from "./OrderManagementTable";
 import { OrderDetailView } from "./OrderDetailView";
+import { OperationsPanel } from "./OperationsPanel";
 import { TicketOrder } from "@/hooks/useOrderManagement";
 
 interface OrganizerEventSalesSheetProps {
@@ -21,6 +33,7 @@ export function OrganizerEventSalesSheet({
   onOpenChange,
 }: OrganizerEventSalesSheetProps) {
   const [selectedOrder, setSelectedOrder] = useState<TicketOrder | null>(null);
+  const [activeTab, setActiveTab] = useState("sales");
 
   if (!event) return null;
 
@@ -37,6 +50,10 @@ export function OrganizerEventSalesSheet({
     console.log("Export CSV for event:", event.id);
   };
 
+  // Check if event has client info
+  const clientInfo = (event as any).metadata?.client;
+  const hasClientInfo = clientInfo && (clientInfo.name || clientInfo.company);
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-full sm:max-w-2xl lg:max-w-4xl overflow-y-auto">
@@ -46,7 +63,7 @@ export function OrganizerEventSalesSheet({
               <ArrowLeft className="w-4 h-4" />
             </Button>
             <SheetTitle className="text-lg">
-              {selectedOrder ? `Order ${selectedOrder.ticket_number}` : "Sales Dashboard"}
+              {selectedOrder ? `Order ${selectedOrder.ticket_number}` : "Event Dashboard"}
             </SheetTitle>
           </div>
         </SheetHeader>
@@ -82,71 +99,101 @@ export function OrganizerEventSalesSheet({
                     {format(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}
                   </span>
                 </div>
+                {hasClientInfo && (
+                  <Badge variant="outline" className="mt-2 gap-1">
+                    <Building2 className="w-3 h-3" />
+                    Client: {clientInfo.company || clientInfo.name}
+                  </Badge>
+                )}
               </div>
-              <Button variant="outline" size="sm" onClick={handleExportCSV}>
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
             </div>
 
-            {/* Summary Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-4 border border-green-200/50 dark:border-green-800/50">
-                <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
+            {/* Tabs: Sales / Operations */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="sales" className="gap-2">
                   <DollarSign className="w-4 h-4" />
-                  <span className="text-xs font-medium">Revenue</span>
-                </div>
-                <p className="text-2xl font-bold text-green-700 dark:text-green-300">
-                  ${event.totalRevenue.toLocaleString()}
-                </p>
-              </div>
+                  Sales
+                </TabsTrigger>
+                <TabsTrigger value="operations" className="gap-2">
+                  <Settings className="w-4 h-4" />
+                  Operations
+                </TabsTrigger>
+              </TabsList>
 
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-4 border border-blue-200/50 dark:border-blue-800/50">
-                <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
-                  <Ticket className="w-4 h-4" />
-                  <span className="text-xs font-medium">Tickets Sold</span>
-                </div>
-                <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
-                  {event.ticketsSold}
-                  {event.totalCapacity > 0 && (
-                    <span className="text-sm font-normal text-muted-foreground">
-                      /{event.totalCapacity}
-                    </span>
-                  )}
-                </p>
-              </div>
+              <TabsContent value="sales" className="space-y-6 mt-4">
+                {/* Summary Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-4 border border-green-200/50 dark:border-green-800/50">
+                    <div className="flex items-center gap-2 text-green-600 dark:text-green-400 mb-1">
+                      <DollarSign className="w-4 h-4" />
+                      <span className="text-xs font-medium">Revenue</span>
+                    </div>
+                    <p className="text-2xl font-bold text-green-700 dark:text-green-300">
+                      ${(event.totalRevenue ?? 0).toLocaleString()}
+                    </p>
+                  </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30 rounded-xl p-4 border border-purple-200/50 dark:border-purple-800/50">
-                <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 mb-1">
-                  <Users className="w-4 h-4" />
-                  <span className="text-xs font-medium">Buyers</span>
-                </div>
-                <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-                  {event.buyerCount}
-                </p>
-              </div>
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 rounded-xl p-4 border border-blue-200/50 dark:border-blue-800/50">
+                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1">
+                      <Ticket className="w-4 h-4" />
+                      <span className="text-xs font-medium">Tickets Sold</span>
+                    </div>
+                    <p className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+                      {event.ticketsSold ?? 0}
+                      {(event.totalCapacity ?? 0) > 0 && (
+                        <span className="text-sm font-normal text-muted-foreground">
+                          /{event.totalCapacity}
+                        </span>
+                      )}
+                    </p>
+                  </div>
 
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/50">
-                <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
-                  <UserCheck className="w-4 h-4" />
-                  <span className="text-xs font-medium">Checked In</span>
-                </div>
-                <p className="text-2xl font-bold text-amber-700 dark:text-amber-300">
-                  {event.checkedInCount}
-                  {event.ticketsSold > 0 && (
-                    <span className="text-sm font-normal text-muted-foreground">
-                      /{event.ticketsSold}
-                    </span>
-                  )}
-                </p>
-              </div>
-            </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/30 dark:to-fuchsia-950/30 rounded-xl p-4 border border-purple-200/50 dark:border-purple-800/50">
+                    <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 mb-1">
+                      <Users className="w-4 h-4" />
+                      <span className="text-xs font-medium">Buyers</span>
+                    </div>
+                    <p className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                      {event.buyerCount ?? 0}
+                    </p>
+                  </div>
 
-            {/* Orders Table */}
-            <OrderManagementTable
-              eventId={event.id}
-              onSelectOrder={setSelectedOrder}
-            />
+                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 rounded-xl p-4 border border-amber-200/50 dark:border-amber-800/50">
+                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 mb-1">
+                      <UserCheck className="w-4 h-4" />
+                      <span className="text-xs font-medium">Checked In</span>
+                    </div>
+                    <p className="text-2xl font-bold text-amber-700 dark:text-amber-300">
+                      {event.checkedInCount ?? 0}
+                      {(event.ticketsSold ?? 0) > 0 && (
+                        <span className="text-sm font-normal text-muted-foreground">
+                          /{event.ticketsSold}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Export Button */}
+                <div className="flex justify-end">
+                  <Button variant="outline" size="sm" onClick={handleExportCSV}>
+                    <Download className="w-4 h-4 mr-2" />
+                    Export CSV
+                  </Button>
+                </div>
+
+                {/* Orders Table */}
+                <OrderManagementTable
+                  eventId={event.id}
+                  onSelectOrder={setSelectedOrder}
+                />
+              </TabsContent>
+
+              <TabsContent value="operations" className="mt-4">
+                <OperationsPanel event={event as any} />
+              </TabsContent>
+            </Tabs>
           </div>
         )}
       </SheetContent>

@@ -1,11 +1,22 @@
+/**
+ * RESELLER HEADER
+ * 
+ * Displays 4 KPI cards for the reseller/producer dashboard:
+ * 1. Upcoming Events - count + next event date + reseller code
+ * 2. Tickets Sold (30 days) - recent ticket sales
+ * 3. Revenue (30 days) - recent earnings
+ * 4. Top Performing Event - best selling event with metrics
+ */
+
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, Ticket, DollarSign } from "lucide-react";
-import { useResellerEventStats } from "@/hooks/useResellerEvents";
+import { CalendarDays, Ticket, DollarSign, TrendingUp } from "lucide-react";
+import { useResellerEventStats, useResellerEvents } from "@/hooks/useResellerEvents";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { format } from "date-fns";
 
 export function ResellerHeader() {
   const { data: profile } = useResellerProfile();
+  const { data: events = [] } = useResellerEvents();
   const stats = useResellerEventStats();
 
   const formatCurrency = (amount: number) => {
@@ -17,9 +28,17 @@ export function ResellerHeader() {
     }).format(amount);
   };
 
+  // Find top performing event (highest gross revenue)
+  const topEvent = events.reduce((best, event) => {
+    if (!best || event.gross_revenue > best.gross_revenue) {
+      return event;
+    }
+    return best;
+  }, null as (typeof events)[0] | null);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {/* Card 1: Welcome + Reseller Code */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Card 1: Upcoming Events + Reseller Code */}
       <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
         <CardContent className="p-6">
           <div className="flex items-center gap-3">
@@ -78,6 +97,40 @@ export function ResellerHeader() {
                 {formatCurrency(stats.revenue30Days)}
               </p>
               <p className="text-xs text-muted-foreground">Last 30 days</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Card 4: Top Performing Event */}
+      <Card className="bg-gradient-to-br from-purple-500/10 to-fuchsia-500/5 border-purple-500/20">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-purple-500/20 flex items-center justify-center overflow-hidden">
+              {topEvent?.image_url ? (
+                <img 
+                  src={topEvent.image_url} 
+                  alt="" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <TrendingUp className="h-5 w-5 text-purple-600" />
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-foreground">Top Performer</h3>
+              {topEvent ? (
+                <>
+                  <p className="text-sm font-medium text-purple-600 truncate">
+                    {topEvent.title}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {topEvent.tickets_sold} tickets • {formatCurrency(topEvent.gross_revenue)}
+                  </p>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground">No events yet</p>
+              )}
             </div>
           </div>
         </CardContent>
