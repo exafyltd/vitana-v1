@@ -137,20 +137,19 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
               }
             ]}
             primaryAction={{
-              label: 'View Sales',
-              onClick: () => handleViewSales(event),
+              label: 'Sell This Event',
+              onClick: () => handleSellEvent(event),
               variant: 'ghost' as const,
-              icon: <Ticket className="h-3.5 w-3.5" />,
+              icon: <Share2 className="h-3.5 w-3.5" />,
             }}
             secondaryActions={[
               {
-                label: 'Sell This Event',
-                onClick: () => handleSellEvent(event),
-                icon: <Share2 className="h-3.5 w-3.5" />,
-                variant: 'outline' as const,
+                label: 'View Sales',
+                onClick: () => handleViewSales(event),
+                icon: <Ticket className="h-3.5 w-3.5" />,
               }
             ]}
-            onClick={() => handleViewSales(event)}
+            onClick={() => handleSellEvent(event)}
             layoutMode="stack"
             density="compact"
           />
