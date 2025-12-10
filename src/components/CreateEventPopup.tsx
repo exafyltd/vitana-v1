@@ -21,9 +21,18 @@ interface CreateEventPopupProps {
   onClose: () => void;
   eventContext?: 'personal' | 'community';
   onEventCreated?: (eventId: string) => void;
+  defaultProducerMode?: boolean;
+  defaultProducerClientName?: string;
 }
 
-export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated }: CreateEventPopupProps) {
+export function CreateEventPopup({ 
+  isOpen, 
+  onClose, 
+  eventContext, 
+  onEventCreated,
+  defaultProducerMode = false,
+  defaultProducerClientName = ""
+}: CreateEventPopupProps) {
   const { toast } = useToast();
   const { session } = useAuth();
   const { addEvent } = useCalendarEvents();
@@ -39,14 +48,14 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
   const [enableTicketSales, setEnableTicketSales] = useState(false);
   const [ticketTypes, setTicketTypes] = useState<TicketTypeInput[]>([]);
   
-  // Reseller options state
-  const [enableReselling, setEnableReselling] = useState(false);
-  const [resaleScope, setResaleScope] = useState<'tenant' | 'public'>('tenant');
+  // Reseller options state - auto-enable if defaultProducerMode is true
+  const [enableReselling, setEnableReselling] = useState(defaultProducerMode);
+  const [resaleScope, setResaleScope] = useState<'tenant' | 'public'>(defaultProducerMode ? 'public' : 'tenant');
   const [resellerCommission, setResellerCommission] = useState(10);
   
   // Producer Mode state (only for resellers)
-  const [producerMode, setProducerMode] = useState(false);
-  const [producerClientName, setProducerClientName] = useState("");
+  const [producerMode, setProducerMode] = useState(defaultProducerMode);
+  const [producerClientName, setProducerClientName] = useState(defaultProducerClientName);
   
   const [formData, setFormData] = useState({
     title: "",
