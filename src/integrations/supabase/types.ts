@@ -4266,6 +4266,7 @@ export type Database = {
           service: string
           source: string | null
           status: string
+          task_stage: string | null
           tenant: string | null
           title: string | null
           topic: string
@@ -4292,6 +4293,7 @@ export type Database = {
           service: string
           source?: string | null
           status: string
+          task_stage?: string | null
           tenant?: string | null
           title?: string | null
           topic: string
@@ -4318,6 +4320,7 @@ export type Database = {
           service?: string
           source?: string | null
           status?: string
+          task_stage?: string | null
           tenant?: string | null
           title?: string | null
           topic?: string
@@ -6954,6 +6957,13 @@ export type Database = {
       cleanup_abandoned_transactions: { Args: never; Returns: undefined }
       cleanup_old_presence_records: { Args: never; Returns: undefined }
       cleanup_old_typing_indicators: { Args: never; Returns: undefined }
+      count_events_by_stage: {
+        Args: { since_time?: string }
+        Returns: {
+          count: number
+          task_stage: string
+        }[]
+      }
       create_global_direct_thread: {
         Args: { p_recipient_id: string }
         Returns: string
