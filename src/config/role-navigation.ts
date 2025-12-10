@@ -5,7 +5,7 @@ import {
   Heart, Wallet, Share2, Database, Settings, Shield,
   Stethoscope, TestTube, Target, BookOpen, Bell,
   ClipboardList, UserCheck, BarChart3, Clock,
-  MessageSquare, Search, Zap, Flag, Video, Sparkles, Radio
+  MessageSquare, Search, Zap, Flag, Video, Sparkles, Radio, Briefcase
 } from "lucide-react";
 
 interface NavigationItem {
@@ -19,6 +19,7 @@ export const communityNavigation: NavigationItem[] = [
   { title: "Home", path: "/home", icon: LayoutDashboard },
   { title: "Community", path: "/comm", icon: MessageSquare },
   { title: "Discover", path: "/discover", icon: Search },
+  { title: "Business Hub", path: "/comm/my-business", icon: Briefcase },
   { title: "Inbox", path: "/inbox", icon: MessageSquare },
   { title: "Health", path: "/health", icon: Heart },
   { title: "AI Assistant", path: "/assistant", icon: Sparkles },
