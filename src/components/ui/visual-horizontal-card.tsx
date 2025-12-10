@@ -158,6 +158,21 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       return `${dateStr} at ${timeStr}`;
     };
 
+    const handleCardClick = () => {
+      if (expandedContent) {
+        handleExpand();
+      } else if (onClick) {
+        onClick();
+      }
+    };
+
+    const handleCardKeyDown = (e: React.KeyboardEvent) => {
+      if ((e.key === 'Enter' || e.key === ' ') && (onClick || expandedContent)) {
+        e.preventDefault();
+        handleCardClick();
+      }
+    };
+
     return (
       <article
         ref={ref || cardRef}
@@ -191,12 +206,19 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
           "before:bg-transparent before:transition-all before:duration-200",
           "before:left-0 before:rounded-l-xl hover:before:bg-current focus-within:before:bg-current",
           
+          // Clickable styling
+          (onClick || expandedContent) && "cursor-pointer",
+          
           className
         )}
         style={{
           color: category.color || undefined
         }}
         aria-label={title}
+        onClick={handleCardClick}
+        onKeyDown={handleCardKeyDown}
+        tabIndex={(onClick || expandedContent) ? 0 : undefined}
+        role={(onClick || expandedContent) ? "button" : undefined}
       >
       <div className={cn(
         "grid items-stretch grid-cols-1",
@@ -244,20 +266,11 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
             )}
           </div>
 
-          <button
+          <div
             className={cn(
               "flex-1 flex flex-col justify-center gap-1.5 text-left",
-              "px-4 py-3 xl:px-3.5 xl:py-2.5",
-              "focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/60 focus:ring-inset"
+              "px-4 py-3 xl:px-3.5 xl:py-2.5"
             )}
-            onClick={() => {
-              if (expandedContent) {
-                handleExpand();
-              } else if (onClick) {
-                onClick();
-              }
-            }}
-            tabIndex={0}
           >
             <div className="flex items-baseline gap-2 flex-nowrap">
               <h3 className="text-[15px] font-semibold leading-tight xl:leading-[1.2] tracking-tight line-clamp-2 flex-1 min-w-0 text-foreground" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -304,7 +317,7 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
                 )}
               </div>
             )}
-          </button>
+          </div>
 
           {/* CTA Column - Dedicated fixed-width space for primary action */}
           {primaryAction && (
