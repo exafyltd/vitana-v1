@@ -1,0 +1,142 @@
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { BarChart3, DollarSign, TrendingUp, Wallet, Share2, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useResellerSales } from "@/hooks/useResellerSales";
+import { useIsReseller } from "@/hooks/useIsReseller";
+
+export function AnalyticsSubTabs() {
+  const navigate = useNavigate();
+  const { isReseller } = useIsReseller();
+  const { data: resellerSales } = useResellerSales();
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  return (
+    <Tabs defaultValue="performance" className="w-full">
+      <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsTrigger value="performance">Performance</TabsTrigger>
+        <TabsTrigger value="earnings">Earnings</TabsTrigger>
+        <TabsTrigger value="growth">Growth</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="performance" className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <BarChart3 className="w-5 h-5" />
+                Bookings Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center py-8">
+                Booking analytics coming soon
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Users className="w-5 h-5" />
+                Attendance Rates
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center py-8">
+                Attendance metrics coming soon
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="earnings" className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-green-400/20 to-emerald-500/20">
+                  <DollarSign className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Services & Events</p>
+                  <p className="text-2xl font-bold">$2,450</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {isReseller && resellerSales && (
+            <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-xl bg-gradient-to-br from-purple-400/20 to-fuchsia-500/20">
+                    <TrendingUp className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Reseller Commission</p>
+                    <p className="text-2xl font-bold">{formatCurrency(resellerSales.totalCommissionEarned)}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+          
+          <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-blue-400/20 to-cyan-500/20">
+                  <Wallet className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Wallet Balance</p>
+                  <Button 
+                    variant="link" 
+                    className="p-0 h-auto text-lg font-semibold"
+                    onClick={() => navigate("/wallet")}
+                  >
+                    View in Wallet →
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="growth" className="space-y-4">
+        <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <TrendingUp className="w-5 h-5" />
+              Client Growth
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center py-8 space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Growth analytics will show new clients over time and traffic sources.
+            </p>
+            <Button 
+              variant="outline" 
+              className="gap-2"
+              onClick={() => navigate("/sharing")}
+            >
+              <Share2 className="w-4 h-4" />
+              Create Campaign in Sharing
+            </Button>
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
+  );
+}

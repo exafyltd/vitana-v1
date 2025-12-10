@@ -115,9 +115,9 @@ export function useActivateReseller() {
       // Invalidate reseller profile cache
       queryClient.invalidateQueries({ queryKey: ["reseller-profile"] });
 
-      // Redirect to My Business with reseller tab
+      // Redirect to Business Hub with sell-earn tab
       if (redirectAfter) {
-        navigate("/comm/my-business?tab=reseller");
+        navigate("/comm/my-business?tab=sell-earn");
       }
 
       return true;
