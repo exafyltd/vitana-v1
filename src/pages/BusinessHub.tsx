@@ -6,8 +6,8 @@ import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/comp
 import { Plus, Plane } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
 import CreateServicePopup from "@/components/CreateServicePopup";
 import { BusinessTypeSelector } from "@/components/business/BusinessTypeSelector";
@@ -29,7 +29,7 @@ type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
 export default function BusinessHub() {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -37,36 +37,30 @@ export default function BusinessHub() {
   const [showCreateService, setShowCreateService] = useState(false);
   const [showBusinessTypeSelector, setShowBusinessTypeSelector] = useState(false);
   const [showCampaignDialog, setShowCampaignDialog] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabValue>("overview");
   
   const { isReseller } = useIsReseller();
   const latestActions = getLatestActions(2);
 
-  // Handle URL param for tab selection
-  useEffect(() => {
-    const tabParam = searchParams.get("tab") as TabValue | null;
-    const validTabs: TabValue[] = ["overview", "services", "clients", "sell-earn", "analytics"];
-    
-    if (tabParam && validTabs.includes(tabParam)) {
-      // Only allow sell-earn tab if user is reseller
-      if (tabParam === "sell-earn" && !isReseller) {
-        setActiveTab("overview");
-      } else {
-        setActiveTab(tabParam);
-      }
-    } else {
-      setActiveTab("overview");
+  // Derive active tab from URL path
+  const activeTab = useMemo((): TabValue => {
+    const path = location.pathname;
+    if (path === "/business/services") return "services";
+    if (path === "/business/clients") return "clients";
+    if (path === "/business/sell-earn") {
+      // Only allow sell-earn if user is reseller
+      return isReseller ? "sell-earn" : "overview";
     }
-  }, [searchParams, isReseller]);
+    if (path === "/business/analytics") return "analytics";
+    return "overview";
+  }, [location.pathname, isReseller]);
 
-  // Update URL when tab changes
+  // Navigate when tab changes
   const handleTabChange = (value: string) => {
     const newTab = value as TabValue;
-    setActiveTab(newTab);
     if (newTab === "overview") {
-      setSearchParams({});
+      navigate("/business");
     } else {
-      setSearchParams({ tab: newTab });
+      navigate(`/business/${newTab}`);
     }
   };
 

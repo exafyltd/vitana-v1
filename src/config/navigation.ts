@@ -29,10 +29,10 @@ export const communityNavigation = [
 // Business Hub - standalone section (separate from Community)
 export const businessHubNavigation = [
   { id: "overview", name: "Overview", path: "/business" },
-  { id: "services", name: "Services", path: "/business?tab=services" },
-  { id: "clients", name: "Clients", path: "/business?tab=clients" },
-  { id: "sell-earn", name: "Sell & Earn", path: "/business?tab=sell-earn" },
-  { id: "analytics", name: "Analytics", path: "/business?tab=analytics" },
+  { id: "services", name: "Services", path: "/business/services" },
+  { id: "clients", name: "Clients", path: "/business/clients" },
+  { id: "sell-earn", name: "Sell & Earn", path: "/business/sell-earn" },
+  { id: "analytics", name: "Analytics", path: "/business/analytics" },
 ];
 
 export const discoverNavigation = [

@@ -571,12 +571,18 @@ const App = () => {
               <MediaHub />
             </AuthGuard>
           } />
-          {/* Business Hub - Standalone Section */}
+          {/* Business Hub - Standalone Section with nested routes */}
           <Route path="/business" element={
             <AuthGuard>
               <BusinessHub />
             </AuthGuard>
-          } />
+          }>
+            <Route index element={null} />
+            <Route path="services" element={null} />
+            <Route path="clients" element={null} />
+            <Route path="sell-earn" element={null} />
+            <Route path="analytics" element={null} />
+          </Route>
           
           {/* Redirect old my-business routes to new Business Hub */}
           <Route path="/comm/my-business" element={<Navigate to="/business" replace />} />
