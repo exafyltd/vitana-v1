@@ -59,6 +59,7 @@ export function ResellerAvailableEventsTab() {
         `)
         .gte("start_time", nowIso)
         .eq("resellable", true)
+        .neq("created_by", session.user.id)
         .order("start_time", { ascending: true });
 
       if (error) {
