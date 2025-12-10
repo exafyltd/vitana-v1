@@ -1,10 +1,28 @@
+/**
+ * RESELLER EVENTS TAB
+ * 
+ * Displays events created by the reseller/producer with:
+ * - Sales metrics (tickets sold, revenue)
+ * - "View Sales" action to open OrganizerEventSalesSheet
+ * - "Sell This Event" action to open SellEventModal for sharing
+ * 
+ * COMMISSION FLOW:
+ * Producers CAN earn commission on their own events. When they share using
+ * their reseller link (utm_source=reseller_<code>) and a buyer purchases
+ * through that link, commission is calculated normally.
+ */
+
 import { useState } from "react";
 import { useResellerEvents, ResellerEvent } from "@/hooks/useResellerEvents";
+import { useResellerProfile } from "@/hooks/useResellerProfile";
+import { useActivateReseller } from "@/hooks/useActivateReseller";
 import { format } from "date-fns";
-import { Loader2, Ticket, DollarSign } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Share2 } from "lucide-react";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { OrganizerEventSalesSheet } from "@/components/business/OrganizerEventSalesSheet";
+import { SellEventModal } from "./SellEventModal";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
+import { toast } from "sonner";
 
 interface ResellerEventsTabProps {
   searchQuery: string;
@@ -29,8 +47,12 @@ function toOrganizerEvent(event: ResellerEvent): OrganizerEvent {
 
 export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
   const { data: events = [], isLoading } = useResellerEvents();
+  const { data: resellerProfile } = useResellerProfile();
+  const { activateResellerForCurrentUser, isActivating } = useActivateReseller();
+  
   const [selectedEvent, setSelectedEvent] = useState<OrganizerEvent | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [sellModalEvent, setSellModalEvent] = useState<ResellerEvent | null>(null);
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -47,6 +69,16 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
   const handleViewSales = (event: ResellerEvent) => {
     setSelectedEvent(toOrganizerEvent(event));
     setSheetOpen(true);
+  };
+
+  const handleSellEvent = async (event: ResellerEvent) => {
+    // If not a reseller yet, activate first
+    if (!resellerProfile?.reseller_code) {
+      toast.info("Activating your reseller profile...");
+      const success = await activateResellerForCurrentUser({ showToast: true, redirectAfter: false });
+      if (!success) return;
+    }
+    setSellModalEvent(event);
   };
 
   if (isLoading) {
@@ -110,6 +142,14 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
               variant: 'ghost' as const,
               icon: <Ticket className="h-3.5 w-3.5" />,
             }}
+            secondaryActions={[
+              {
+                label: 'Sell This Event',
+                onClick: () => handleSellEvent(event),
+                icon: <Share2 className="h-3.5 w-3.5" />,
+                variant: 'outline' as const,
+              }
+            ]}
             onClick={() => handleViewSales(event)}
             layoutMode="stack"
             density="compact"
@@ -121,6 +161,13 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
         event={selectedEvent}
         open={sheetOpen}
         onOpenChange={setSheetOpen}
+      />
+
+      <SellEventModal
+        open={!!sellModalEvent}
+        onOpenChange={(open) => !open && setSellModalEvent(null)}
+        event={sellModalEvent}
+        resellerCode={resellerProfile?.reseller_code || ""}
       />
     </>
   );

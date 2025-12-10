@@ -26,6 +26,7 @@ import { ResellerEventsTab } from "@/components/reseller/ResellerEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
 import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
 import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
+import { AutopilotSuggestionsBanner } from "@/components/reseller/AutopilotSuggestionsBanner";
 
 export default function MyBusiness() {
   const navigate = useNavigate();
@@ -224,6 +225,7 @@ export default function MyBusiness() {
 
             {isReseller && (
               <SplitBarContent value="reseller" className="space-y-6">
+                <AutopilotSuggestionsBanner />
                 <ResellerHeader />
                 
                 <Tabs defaultValue="events" className="w-full">
