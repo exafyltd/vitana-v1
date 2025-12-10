@@ -19,7 +19,7 @@ export const communityNavigation: NavigationItem[] = [
   { title: "Home", path: "/home", icon: LayoutDashboard },
   { title: "Community", path: "/comm", icon: MessageSquare },
   { title: "Discover", path: "/discover", icon: Search },
-  { title: "Business Hub", path: "/comm/my-business", icon: Briefcase },
+  { title: "Business Hub", path: "/business", icon: Briefcase },
   { title: "Inbox", path: "/inbox", icon: MessageSquare },
   { title: "Health", path: "/health", icon: Heart },
   { title: "AI Assistant", path: "/assistant", icon: Sparkles },

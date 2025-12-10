@@ -117,7 +117,7 @@ export function useActivateReseller() {
 
       // Redirect to Business Hub with sell-earn tab
       if (redirectAfter) {
-        navigate("/comm/my-business?tab=sell-earn");
+        navigate("/business?tab=sell-earn");
       }
 
       return true;
