@@ -1,110 +1,200 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/context/AuthProvider";
+import { useResellerProfile } from "./useResellerProfile";
+
+/**
+ * RESELLER SALES HOOK
+ * 
+ * Fetches attributed sales from reseller_attributions table.
+ * Shows ONLY sales that the reseller earned commission on,
+ * NOT sales from events they created (that's for organizers).
+ */
+
+export interface ResellerEventSale {
+  eventId: string;
+  eventTitle: string;
+  eventDate: string;
+  ticketsSold: number;
+  saleAmount: number;
+  commissionAmount: number;
+  commissionRate: number;
+  lastSaleAt: string;
+}
 
 export interface ResellerSalesSummary {
   totalTicketsSold: number;
-  totalGrossRevenue: number;
+  totalSaleAmount: number;
+  totalCommissionEarned: number;
   ticketsSold30Days: number;
-  revenue30Days: number;
-  eventSales: {
-    eventId: string;
-    eventTitle: string;
-    eventDate: string;
-    ticketsSold: number;
-    grossRevenue: number;
-  }[];
+  saleAmount30Days: number;
+  commission30Days: number;
+  eventSales: ResellerEventSale[];
 }
 
 export function useResellerSales() {
-  const { session } = useAuth();
+  const { data: resellerProfile } = useResellerProfile();
 
   return useQuery({
-    queryKey: ["reseller-sales", session?.user?.id],
+    queryKey: ["reseller-attributed-sales", resellerProfile?.id],
     queryFn: async (): Promise<ResellerSalesSummary> => {
-      if (!session?.user?.id) {
+      if (!resellerProfile?.id) {
         return {
           totalTicketsSold: 0,
-          totalGrossRevenue: 0,
+          totalSaleAmount: 0,
+          totalCommissionEarned: 0,
           ticketsSold30Days: 0,
-          revenue30Days: 0,
+          saleAmount30Days: 0,
+          commission30Days: 0,
           eventSales: [],
         };
       }
 
-      // Get all events created by this user
-      const { data: events } = await supabase
+      // Fetch all attributions for this reseller
+      const { data: attributions, error: attrError } = await supabase
+        .from("reseller_attributions")
+        .select(`
+          id,
+          event_id,
+          sale_amount,
+          commission_amount,
+          commission_rate,
+          created_at,
+          ticket_purchase_id
+        `)
+        .eq("reseller_id", resellerProfile.id)
+        .order("created_at", { ascending: false });
+
+      if (attrError) {
+        console.error("Error fetching reseller attributions:", attrError);
+        throw attrError;
+      }
+
+      if (!attributions || attributions.length === 0) {
+        return {
+          totalTicketsSold: 0,
+          totalSaleAmount: 0,
+          totalCommissionEarned: 0,
+          ticketsSold30Days: 0,
+          saleAmount30Days: 0,
+          commission30Days: 0,
+          eventSales: [],
+        };
+      }
+
+      // Get unique event IDs
+      const eventIds = [...new Set(attributions.map((a) => a.event_id))];
+
+      // Fetch event details
+      const { data: events, error: eventsError } = await supabase
         .from("global_community_events")
         .select("id, title, start_time")
-        .eq("created_by", session.user.id);
+        .in("id", eventIds);
 
-      if (!events || events.length === 0) {
-        return {
-          totalTicketsSold: 0,
-          totalGrossRevenue: 0,
-          ticketsSold30Days: 0,
-          revenue30Days: 0,
-          eventSales: [],
-        };
+      if (eventsError) {
+        console.error("Error fetching event details:", eventsError);
+        throw eventsError;
       }
 
-      const eventIds = events.map((e) => e.id);
+      const eventMap = new Map(events?.map((e) => [e.id, e]) || []);
 
-      // Get all completed purchases for these events
-      const { data: purchases } = await supabase
+      // Fetch ticket purchase quantities
+      const purchaseIds = attributions.map((a) => a.ticket_purchase_id);
+      const { data: purchases, error: purchasesError } = await supabase
         .from("event_ticket_purchases")
-        .select("event_id, total_amount, quantity, created_at")
-        .in("event_id", eventIds)
-        .eq("status", "completed");
+        .select("id, quantity")
+        .in("id", purchaseIds);
 
+      if (purchasesError) {
+        console.error("Error fetching purchase details:", purchasesError);
+        throw purchasesError;
+      }
+
+      const purchaseMap = new Map(purchases?.map((p) => [p.id, p.quantity || 1]) || []);
+
+      // Calculate totals and group by event
       const now = new Date();
       const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
       let totalTicketsSold = 0;
-      let totalGrossRevenue = 0;
+      let totalSaleAmount = 0;
+      let totalCommissionEarned = 0;
       let ticketsSold30Days = 0;
-      let revenue30Days = 0;
+      let saleAmount30Days = 0;
+      let commission30Days = 0;
 
-      const eventSalesMap = new Map<string, { ticketsSold: number; grossRevenue: number }>();
+      const eventSalesMap = new Map<string, {
+        ticketsSold: number;
+        saleAmount: number;
+        commissionAmount: number;
+        commissionRate: number;
+        lastSaleAt: string;
+      }>();
 
-      purchases?.forEach((purchase) => {
-        const qty = purchase.quantity || 0;
-        const amount = Number(purchase.total_amount) || 0;
+      attributions.forEach((attr) => {
+        const quantity = purchaseMap.get(attr.ticket_purchase_id) || 1;
+        const saleAmount = Number(attr.sale_amount) || 0;
+        const commissionAmount = Number(attr.commission_amount) || 0;
+        const createdAt = new Date(attr.created_at);
 
-        totalTicketsSold += qty;
-        totalGrossRevenue += amount;
+        totalTicketsSold += quantity;
+        totalSaleAmount += saleAmount;
+        totalCommissionEarned += commissionAmount;
 
-        if (new Date(purchase.created_at) >= thirtyDaysAgo) {
-          ticketsSold30Days += qty;
-          revenue30Days += amount;
+        if (createdAt >= thirtyDaysAgo) {
+          ticketsSold30Days += quantity;
+          saleAmount30Days += saleAmount;
+          commission30Days += commissionAmount;
         }
 
-        const existing = eventSalesMap.get(purchase.event_id) || { ticketsSold: 0, grossRevenue: 0 };
-        eventSalesMap.set(purchase.event_id, {
-          ticketsSold: existing.ticketsSold + qty,
-          grossRevenue: existing.grossRevenue + amount,
+        // Group by event
+        const existing = eventSalesMap.get(attr.event_id);
+        if (existing) {
+          existing.ticketsSold += quantity;
+          existing.saleAmount += saleAmount;
+          existing.commissionAmount += commissionAmount;
+          if (attr.created_at > existing.lastSaleAt) {
+            existing.lastSaleAt = attr.created_at;
+          }
+        } else {
+          eventSalesMap.set(attr.event_id, {
+            ticketsSold: quantity,
+            saleAmount,
+            commissionAmount,
+            commissionRate: Number(attr.commission_rate) || 0,
+            lastSaleAt: attr.created_at,
+          });
+        }
+      });
+
+      // Build event sales array
+      const eventSales: ResellerEventSale[] = [];
+      eventSalesMap.forEach((sales, eventId) => {
+        const event = eventMap.get(eventId);
+        eventSales.push({
+          eventId,
+          eventTitle: event?.title || "Unknown Event",
+          eventDate: event?.start_time || "",
+          ticketsSold: sales.ticketsSold,
+          saleAmount: sales.saleAmount,
+          commissionAmount: sales.commissionAmount,
+          commissionRate: sales.commissionRate,
+          lastSaleAt: sales.lastSaleAt,
         });
       });
 
-      const eventSales = events.map((event) => {
-        const sales = eventSalesMap.get(event.id) || { ticketsSold: 0, grossRevenue: 0 };
-        return {
-          eventId: event.id,
-          eventTitle: event.title,
-          eventDate: event.start_time,
-          ticketsSold: sales.ticketsSold,
-          grossRevenue: sales.grossRevenue,
-        };
-      });
+      // Sort by commission earned (highest first)
+      eventSales.sort((a, b) => b.commissionAmount - a.commissionAmount);
 
       return {
         totalTicketsSold,
-        totalGrossRevenue,
+        totalSaleAmount,
+        totalCommissionEarned,
         ticketsSold30Days,
-        revenue30Days,
-        eventSales: eventSales.sort((a, b) => b.grossRevenue - a.grossRevenue),
+        saleAmount30Days,
+        commission30Days,
+        eventSales,
       };
     },
-    enabled: !!session?.user?.id,
+    enabled: !!resellerProfile?.id,
   });
 }

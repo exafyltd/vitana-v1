@@ -25,7 +25,70 @@ import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card
 import { SellEventModal } from "./SellEventModal";
 import { toast } from "sonner";
 
+interface ResellableEvent {
+  id: string;
+  title: string;
+  start_time: string;
+  end_time: string | null;
+  location: string | null;
+  image_url: string | null;
+  created_by: string;
+  resellable: boolean | null;
+  resale_scope: string | null;
+  default_reseller_commission_rate: number | null;
+}
+
 type FilterType = "all" | "high-commission" | "ending-soon" | "popular";
+
+const RESELLABLE_EVENT_COLUMNS = `
+  id,
+  title,
+  start_time,
+  end_time,
+  location,
+  image_url,
+  created_by,
+  resellable,
+  resale_scope,
+  default_reseller_commission_rate
+`;
+
+async function fetchPublicResellableEvents(userId: string, nowIso: string): Promise<ResellableEvent[]> {
+  // Using explicit any to avoid TS2589 with long Supabase query chains
+  const baseQuery = supabase.from("global_community_events").select(RESELLABLE_EVENT_COLUMNS) as any;
+  
+  const { data, error } = await baseQuery
+    .gte("start_time", nowIso)
+    .eq("resellable", true)
+    .eq("resale_scope", "public")
+    .neq("created_by", userId)
+    .order("start_time", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching public resellable events:", error);
+    throw error;
+  }
+  return (data as ResellableEvent[]) || [];
+}
+
+async function fetchTenantResellableEvents(userId: string, tenantId: string, nowIso: string): Promise<ResellableEvent[]> {
+  // Using explicit any to avoid TS2589 with long Supabase query chains
+  const baseQuery = supabase.from("global_community_events").select(RESELLABLE_EVENT_COLUMNS) as any;
+  
+  const { data, error } = await baseQuery
+    .gte("start_time", nowIso)
+    .eq("resellable", true)
+    .eq("resale_scope", "tenant")
+    .eq("tenant_id", tenantId)
+    .neq("created_by", userId)
+    .order("start_time", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching tenant resellable events:", error);
+    throw error;
+  }
+  return (data as ResellableEvent[]) || [];
+}
 
 export function ResellerAvailableEventsTab() {
   const { session } = useAuth();
@@ -36,38 +99,26 @@ export function ResellerAvailableEventsTab() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [sellModalEvent, setSellModalEvent] = useState<any | null>(null);
 
-  const { data: events = [], isLoading } = useQuery({
+  const { data: events = [], isLoading } = useQuery<ResellableEvent[]>({
     queryKey: ["reseller-available-events", session?.user?.id, activeTenantId],
-    queryFn: async () => {
+    queryFn: async (): Promise<ResellableEvent[]> => {
       if (!session?.user?.id) return [];
 
       const nowIso = new Date().toISOString();
 
-      const { data, error } = await supabase
-        .from("global_community_events")
-        .select(`
-          id,
-          title,
-          start_time,
-          end_time,
-          location,
-          image_url,
-          created_by,
-          resellable,
-          resale_scope,
-          default_reseller_commission_rate
-        `)
-        .gte("start_time", nowIso)
-        .eq("resellable", true)
-        .neq("created_by", session.user.id)
-        .order("start_time", { ascending: true });
+      // Fetch public events (visible to all tenants)
+      const publicEvents = await fetchPublicResellableEvents(session.user.id, nowIso);
 
-      if (error) {
-        console.error("Error fetching resellable events:", error);
-        throw error;
-      }
+      // Fetch tenant-only events (only for current tenant)
+      const tenantEvents = activeTenantId 
+        ? await fetchTenantResellableEvents(session.user.id, activeTenantId, nowIso)
+        : [];
 
-      return data || [];
+      // Merge and sort by start_time
+      const allEvents = [...publicEvents, ...tenantEvents];
+      allEvents.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
+      
+      return allEvents;
     },
     enabled: !!session?.user?.id && !!resellerProfile,
   });
