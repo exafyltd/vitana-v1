@@ -57,6 +57,7 @@ export function OrganizerEventsSection() {
             imageUrl={event.image_url || "/placeholder.svg"}
             imageAlt={event.title}
             layoutMode="stack"
+            onClick={() => handleViewSales(event)}
             category={{
               icon: "🎫",
               label: "My Event",
