@@ -1,8 +1,7 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
-import SubNavigation from "@/components/SubNavigation";
 import { Badge } from "@/components/ui/badge";
-import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { SplitBar, SplitBarContent } from "@/components/ui/split-bar";
 import { Plus, Plane } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -15,8 +14,8 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-import { businessHubNavigation } from "@/config/navigation";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { BusinessHubOverview } from "@/components/business/BusinessHubOverview";
 import { ServicesSubTabs } from "@/components/business/ServicesSubTabs";
@@ -77,7 +76,7 @@ export default function BusinessHub() {
         description="Grow your wellness business and manage clients effortlessly" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={businessHubNavigation} />
+      
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
@@ -166,28 +165,32 @@ export default function BusinessHub() {
             </Button>
           </UtilityActionButton>
 
-          {/* Main Tab Navigation - 5 Tabs */}
-          <SplitBar value={activeTab} onValueChange={handleTabChange} className="w-full mb-6">
-            <SplitBarList className="bg-transparent p-0 gap-1">
-              <SplitBarTrigger value="overview" className="rounded-xl px-4 py-2 bg-transparent shadow-none data-[state=active]:!bg-muted data-[state=active]:!shadow-md data-[state=inactive]:!bg-transparent data-[state=inactive]:text-muted-foreground">
-                📊 Overview
-              </SplitBarTrigger>
-              <SplitBarTrigger value="services" className="rounded-xl px-4 py-2 bg-transparent shadow-none data-[state=active]:!bg-muted data-[state=active]:!shadow-md data-[state=inactive]:!bg-transparent data-[state=inactive]:text-muted-foreground">
-                💼 Services
-              </SplitBarTrigger>
-              <SplitBarTrigger value="clients" className="rounded-xl px-4 py-2 bg-transparent shadow-none data-[state=active]:!bg-muted data-[state=active]:!shadow-md data-[state=inactive]:!bg-transparent data-[state=inactive]:text-muted-foreground">
-                👥 Clients
-              </SplitBarTrigger>
-              {isReseller && (
-                <SplitBarTrigger value="sell-earn" className="rounded-xl px-4 py-2 bg-transparent shadow-none data-[state=active]:!bg-muted data-[state=active]:!shadow-md data-[state=inactive]:!bg-transparent data-[state=inactive]:text-muted-foreground">
-                  🎫 Sell & Earn
-                </SplitBarTrigger>
-              )}
-              <SplitBarTrigger value="analytics" className="rounded-xl px-4 py-2 bg-transparent shadow-none data-[state=active]:!bg-muted data-[state=active]:!shadow-md data-[state=inactive]:!bg-transparent data-[state=inactive]:text-muted-foreground">
-                📈 Analytics
-              </SplitBarTrigger>
-            </SplitBarList>
+          {/* Main Tab Navigation - 5 Tabs (styled like SubNavigation) */}
+          <div className="flex items-center gap-1 overflow-x-auto mb-6">
+            {[
+              { id: "overview", name: "📊 Overview" },
+              { id: "services", name: "💼 Services" },
+              { id: "clients", name: "👥 Clients" },
+              ...(isReseller ? [{ id: "sell-earn", name: "🎫 Sell & Earn" }] : []),
+              { id: "analytics", name: "📈 Analytics" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => handleTabChange(tab.id)}
+                className={cn(
+                  "inline-flex items-center justify-center whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-all",
+                  activeTab === tab.id
+                    ? "bg-muted text-foreground shadow-md"
+                    : "bg-transparent text-muted-foreground hover:bg-muted hover:shadow-md hover:text-foreground"
+                )}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </div>
 
+          {/* Tab Content */}
+          <SplitBar value={activeTab} onValueChange={handleTabChange} className="w-full">
             {/* Overview Tab */}
             <SplitBarContent value="overview">
               <BusinessHubOverview 
