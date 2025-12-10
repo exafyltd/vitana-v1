@@ -24,7 +24,15 @@ export const communityNavigation = [
   { id: "events-meetups", name: "Events & MeetUps", path: "/comm/events-meetups" },
   { id: "live-rooms", name: "Live Rooms", path: "/comm/live-rooms" },
   { id: "media-hub", name: "Media Hub", path: "/comm/media-hub" },
-  { id: "my-business", name: "My Business", path: "/comm/my-business" },
+];
+
+// Business Hub - standalone section (separate from Community)
+export const businessHubNavigation = [
+  { id: "overview", name: "Overview", path: "/business" },
+  { id: "services", name: "Services", path: "/business?tab=services" },
+  { id: "clients", name: "Clients", path: "/business?tab=clients" },
+  { id: "sell-earn", name: "Sell & Earn", path: "/business?tab=sell-earn" },
+  { id: "analytics", name: "Analytics", path: "/business?tab=analytics" },
 ];
 
 export const discoverNavigation = [

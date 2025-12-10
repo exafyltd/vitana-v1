@@ -173,6 +173,7 @@ import Plans from "./pages/health/Plans";
 // Community sub-pages
 import EventsAndMeetups from "./pages/community/EventsAndMeetups";
 import MyBusiness from "./pages/community/MyBusinessRenamed";
+import BusinessHub from "./pages/BusinessHub";
 import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
 import AIInsights from "./pages/community/AIInsights";
@@ -570,11 +571,17 @@ const App = () => {
               <MediaHub />
             </AuthGuard>
           } />
-          <Route path="/comm/my-business" element={
+          {/* Business Hub - Standalone Section */}
+          <Route path="/business" element={
             <AuthGuard>
-              <MyBusiness />
+              <BusinessHub />
             </AuthGuard>
           } />
+          
+          {/* Redirect old my-business routes to new Business Hub */}
+          <Route path="/comm/my-business" element={<Navigate to="/business" replace />} />
+          <Route path="/comm/my-business/*" element={<Navigate to="/business" replace />} />
+          <Route path="/community/my-business" element={<Navigate to="/business" replace />} />
           
           {/* Redirect old community routes */}
           <Route path="/community/my-groups" element={<Navigate to="/inbox" replace />} />
@@ -584,7 +591,6 @@ const App = () => {
           <Route path="/community/meetups" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
           <Route path="/community/live-rooms" element={<Navigate to="/comm/live-rooms" replace />} />
           <Route path="/community/media-hub" element={<Navigate to="/comm/media-hub" replace />} />
-          <Route path="/community/my-business" element={<Navigate to="/comm/my-business" replace />} />
           
           <Route path="/ai" element={
             <AuthGuard>
