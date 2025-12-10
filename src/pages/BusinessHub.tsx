@@ -168,22 +168,22 @@ export default function BusinessHub() {
 
           {/* Main Tab Navigation - 5 Tabs */}
           <SplitBar value={activeTab} onValueChange={handleTabChange} className="w-full mb-6">
-            <SplitBarList>
-              <SplitBarTrigger value="overview">
+            <SplitBarList className="bg-transparent p-0 gap-1">
+              <SplitBarTrigger value="overview" className="rounded-xl px-4 py-2 data-[state=active]:bg-muted data-[state=active]:shadow-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground">
                 📊 Overview
               </SplitBarTrigger>
-              <SplitBarTrigger value="services">
+              <SplitBarTrigger value="services" className="rounded-xl px-4 py-2 data-[state=active]:bg-muted data-[state=active]:shadow-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground">
                 💼 Services
               </SplitBarTrigger>
-              <SplitBarTrigger value="clients">
+              <SplitBarTrigger value="clients" className="rounded-xl px-4 py-2 data-[state=active]:bg-muted data-[state=active]:shadow-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground">
                 👥 Clients
               </SplitBarTrigger>
               {isReseller && (
-                <SplitBarTrigger value="sell-earn">
+                <SplitBarTrigger value="sell-earn" className="rounded-xl px-4 py-2 data-[state=active]:bg-muted data-[state=active]:shadow-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground">
                   🎫 Sell & Earn
                 </SplitBarTrigger>
               )}
-              <SplitBarTrigger value="analytics">
+              <SplitBarTrigger value="analytics" className="rounded-xl px-4 py-2 data-[state=active]:bg-muted data-[state=active]:shadow-md data-[state=inactive]:bg-transparent data-[state=inactive]:text-muted-foreground">
                 📈 Analytics
               </SplitBarTrigger>
             </SplitBarList>
