@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getResellerShareUrl } from "@/lib/shareUrl";
 import { SellEventModal } from "./SellEventModal";
 import { useNavigate } from "react-router-dom";
+import { CreateEventPopup } from "@/components/CreateEventPopup";
 
 interface ClientEvent {
   id: string;
@@ -38,7 +39,9 @@ export function ResellerClientEventsTab() {
   const { data: resellerProfile, isLoading: profileLoading } = useResellerProfile();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [selectedEventForSell, setSelectedEventForSell] = useState<ClientEvent | null>(null);
+  const [showCreateEventPopup, setShowCreateEventPopup] = useState(false);
 
   const { data: clientEvents, isLoading } = useQuery({
     queryKey: ["reseller-client-events", session?.user?.id],
@@ -122,27 +125,35 @@ export function ResellerClientEventsTab() {
 
   if (!clientEvents || clientEvents.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="mx-auto w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mb-4">
-          <Briefcase className="h-8 w-8 text-amber-600" />
+      <>
+        <div className="text-center py-12">
+          <div className="mx-auto w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mb-4">
+            <Briefcase className="h-8 w-8 text-amber-600" />
+          </div>
+          <h3 className="text-lg font-semibold mb-2">No client events yet</h3>
+          <p className="text-muted-foreground mb-4 max-w-md mx-auto">
+            Create an event on behalf of a client using Producer Mode in the event creation flow.
+          </p>
+          <Button onClick={() => setShowCreateEventPopup(true)}>
+            Create Client Event
+          </Button>
         </div>
-        <h3 className="text-lg font-semibold mb-2">No client events yet</h3>
-        <p className="text-muted-foreground mb-4 max-w-md mx-auto">
-          Create an event on behalf of a client using Producer Mode in the event creation flow.
-        </p>
-        <Button
-          onClick={() => {
-            // Navigate to create event - the popup should open with producer mode hints
-            navigate("/comm/events-meetups");
+
+        <CreateEventPopup
+          isOpen={showCreateEventPopup}
+          onClose={() => setShowCreateEventPopup(false)}
+          eventContext="community"
+          defaultProducerMode={true}
+          onEventCreated={(eventId) => {
+            setShowCreateEventPopup(false);
+            queryClient.invalidateQueries({ queryKey: ["reseller-client-events"] });
             toast({
-              title: "Create a Client Event",
-              description: "Click 'Create Event' and enable Producer Mode in the Reseller Options section.",
+              title: "Client event created!",
+              description: "Your client event is now ready for promotion.",
             });
           }}
-        >
-          Create Client Event
-        </Button>
-      </div>
+        />
+      </>
     );
   }
 
