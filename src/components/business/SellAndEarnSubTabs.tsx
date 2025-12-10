@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
+import { ResellerClientEventsTab } from "@/components/reseller/ResellerClientEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
 import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
 import { ResellerHeader } from "@/components/reseller/ResellerHeader";
@@ -60,21 +61,26 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
     );
   }
 
-  // Reseller view
+  // Reseller view with 4 tabs: Available to Sell | Client Events | Promotions | Sales
   return (
     <div className="space-y-6">
       <AutopilotSuggestionsBanner />
       <ResellerHeader />
       
       <Tabs defaultValue="available" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsList className="grid w-full grid-cols-4 mb-4">
           <TabsTrigger value="available">Available to Sell</TabsTrigger>
+          <TabsTrigger value="client-events">Client Events</TabsTrigger>
           <TabsTrigger value="promotions">Promotions</TabsTrigger>
           <TabsTrigger value="sales">Sales</TabsTrigger>
         </TabsList>
         
         <TabsContent value="available">
           <ResellerAvailableEventsTab />
+        </TabsContent>
+
+        <TabsContent value="client-events">
+          <ResellerClientEventsTab />
         </TabsContent>
         
         <TabsContent value="promotions">

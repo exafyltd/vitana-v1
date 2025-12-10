@@ -3,7 +3,7 @@ import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format } from "date-fns";
-import { Loader2, Ticket, DollarSign, TrendingUp, Award } from "lucide-react";
+import { Loader2, Ticket, DollarSign, TrendingUp, Award, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 /**
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
  * 
  * Displays attributed sales from reseller_attributions table.
  * Shows commissions earned, NOT organizer revenue.
+ * Client Events (Producer Mode) are highlighted with a badge.
  */
 export function ResellerSalesTab() {
   const { data: sales, isLoading } = useResellerSales();
@@ -130,7 +131,22 @@ export function ResellerSalesTab() {
               <TableBody>
                 {sales.eventSales.map((event) => (
                   <TableRow key={event.eventId}>
-                    <TableCell className="font-medium">{event.eventTitle}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{event.eventTitle}</span>
+                          {event.isClientEvent && (
+                            <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs gap-1">
+                              <Briefcase className="h-3 w-3" />
+                              Client Event
+                            </Badge>
+                          )}
+                        </div>
+                        {event.clientName && (
+                          <span className="text-xs text-muted-foreground">Client: {event.clientName}</span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell className="text-muted-foreground">
                       {event.eventDate ? format(new Date(event.eventDate), "MMM d, yyyy") : "-"}
                     </TableCell>

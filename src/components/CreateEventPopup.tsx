@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket, Share2, Percent } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket, Share2, Percent, Briefcase } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
 import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketTypeForm";
+import { useResellerProfile } from "@/hooks/useResellerProfile";
+import { useAuth } from "@/context/AuthProvider";
 
 interface CreateEventPopupProps {
   isOpen: boolean;
@@ -23,8 +25,10 @@ interface CreateEventPopupProps {
 
 export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated }: CreateEventPopupProps) {
   const { toast } = useToast();
+  const { session } = useAuth();
   const { addEvent } = useCalendarEvents();
   const { createEvent } = useCommunityEvents();
+  const { data: resellerProfile } = useResellerProfile();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>("");
@@ -39,6 +43,10 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
   const [enableReselling, setEnableReselling] = useState(false);
   const [resaleScope, setResaleScope] = useState<'tenant' | 'public'>('tenant');
   const [resellerCommission, setResellerCommission] = useState(10);
+  
+  // Producer Mode state (only for resellers)
+  const [producerMode, setProducerMode] = useState(false);
+  const [producerClientName, setProducerClientName] = useState("");
   
   const [formData, setFormData] = useState({
     title: "",
@@ -86,6 +94,8 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
     setEnableReselling(false);
     setResaleScope('tenant');
     setResellerCommission(10);
+    setProducerMode(false);
+    setProducerClientName("");
     setFormData({
       title: "",
       description: "",
@@ -230,6 +240,33 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
       // If community context: create in both tables (community + personal calendar)
       if (eventContext === 'community') {
         // 1. Create in global_community_events (visible to everyone)
+        // Build metadata with optional producer mode fields
+        const baseMetadata = enableTicketSales && ticketTypes.length > 0 ? { 
+          is_paid: true, 
+          has_tickets: true,
+          price: ticketTypes[0]?.price || 0 
+        } : formData.isPaid ? { 
+          is_paid: true, 
+          price: parseFloat(formData.price) || 0 
+        } : { is_paid: false };
+
+        // Add producer mode metadata if enabled
+        const metadata = producerMode && resellerProfile?.id ? {
+          ...baseMetadata,
+          producer_mode: true,
+          producer_user_id: session?.user?.id || null,
+          producer_reseller_profile_id: resellerProfile.id,
+          producer_reseller_code: resellerProfile.reseller_code || null,
+          ...(producerClientName ? { producer_client_name: producerClientName } : {}),
+        } : baseMetadata;
+
+        // When producer mode is enabled, force reselling on with public scope
+        const effectiveEnableReselling = producerMode ? true : enableReselling;
+        const effectiveResaleScope = producerMode ? 'public' : (enableReselling ? resaleScope : 'none');
+        const effectiveCommission = producerMode 
+          ? (resellerCommission || resellerProfile?.commission_rate || 10) 
+          : (enableReselling ? resellerCommission : undefined);
+
         const communityEventData = {
           title: formData.title,
           description: formData.description || undefined,
@@ -240,18 +277,11 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
           end_time: endTime,
           max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
           image_url: uploadedImageUrl,
-          metadata: enableTicketSales && ticketTypes.length > 0 ? { 
-            is_paid: true, 
-            has_tickets: true,
-            price: ticketTypes[0]?.price || 0 
-          } : formData.isPaid ? { 
-            is_paid: true, 
-            price: parseFloat(formData.price) || 0 
-          } : { is_paid: false },
+          metadata,
           // Reseller options
-          resellable: enableReselling,
-          resale_scope: enableReselling ? resaleScope : 'none' as const,
-          default_reseller_commission_rate: enableReselling ? resellerCommission : undefined,
+          resellable: effectiveEnableReselling,
+          resale_scope: effectiveResaleScope as 'none' | 'tenant' | 'public',
+          default_reseller_commission_rate: effectiveCommission,
         };
 
         const result = await createEvent(communityEventData);
@@ -865,22 +895,75 @@ export function CreateEventPopup({ isOpen, onClose, eventContext, onEventCreated
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Producer Mode - Only visible to users with active reseller profile */}
+                {resellerProfile?.id && (
+                  <div className="space-y-4 pb-4 border-b border-border/50">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Briefcase className="w-4 h-4 text-amber-600" />
+                        <div>
+                          <Label>Create on behalf of a client</Label>
+                          <p className="text-sm text-muted-foreground">Producer / Agency mode</p>
+                        </div>
+                      </div>
+                      <Switch 
+                        checked={producerMode}
+                        onCheckedChange={(checked) => {
+                          setProducerMode(checked);
+                          if (checked) {
+                            // Auto-enable reselling with public scope when producer mode is on
+                            setEnableReselling(true);
+                            setResaleScope('public');
+                            // Set commission to reseller's default if not already set
+                            if (!resellerCommission || resellerCommission === 10) {
+                              setResellerCommission(resellerProfile.commission_rate || 10);
+                            }
+                          }
+                        }}
+                      />
+                    </div>
+
+                    {producerMode && (
+                      <div className="space-y-3 pl-6">
+                        <div>
+                          <Label htmlFor="producerClientName">Client name / brand (optional)</Label>
+                          <Input
+                            id="producerClientName"
+                            value={producerClientName}
+                            onChange={(e) => setProducerClientName(e.target.value)}
+                            placeholder="e.g., Acme Wellness Co."
+                            className="mt-1"
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground bg-amber-50 border border-amber-200 rounded-md p-2">
+                          You'll act as the primary reseller for this event. Your client receives organizer revenue; you earn commissions from tickets sold via your reseller links.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label>Allow Resellers to Sell Tickets</Label>
                     <p className="text-sm text-muted-foreground">Let resellers promote and sell tickets for this event</p>
                   </div>
                   <Switch 
-                    checked={enableReselling}
+                    checked={enableReselling || producerMode}
                     onCheckedChange={setEnableReselling}
+                    disabled={producerMode} // Cannot disable when producer mode is on
                   />
                 </div>
                 
-                {enableReselling && (
+                {(enableReselling || producerMode) && (
                   <div className="space-y-4 pt-3 border-t border-border/50">
                     <div>
                       <Label>Resale Visibility</Label>
-                      <Select value={resaleScope} onValueChange={(v) => setResaleScope(v as 'tenant' | 'public')}>
+                      <Select 
+                        value={producerMode ? 'public' : resaleScope} 
+                        onValueChange={(v) => setResaleScope(v as 'tenant' | 'public')}
+                        disabled={producerMode} // Default to public in producer mode
+                      >
                         <SelectTrigger className="mt-1">
                           <SelectValue />
                         </SelectTrigger>

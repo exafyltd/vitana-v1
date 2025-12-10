@@ -19,6 +19,8 @@ export interface ResellerEventSale {
   commissionAmount: number;
   commissionRate: number;
   lastSaleAt: string;
+  isClientEvent: boolean;
+  clientName: string | null;
 }
 
 export interface ResellerSalesSummary {
