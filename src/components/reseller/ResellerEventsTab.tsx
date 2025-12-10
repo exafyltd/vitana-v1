@@ -1,17 +1,35 @@
 import { useState } from "react";
-import { useResellerEvents } from "@/hooks/useResellerEvents";
+import { useResellerEvents, ResellerEvent } from "@/hooks/useResellerEvents";
 import { format } from "date-fns";
-import { Loader2, MapPin, Calendar, Ticket, DollarSign } from "lucide-react";
+import { Loader2, Ticket, DollarSign } from "lucide-react";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { OrganizerEventSalesSheet } from "@/components/business/OrganizerEventSalesSheet";
+import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
 
 interface ResellerEventsTabProps {
   searchQuery: string;
 }
 
+// Adapter to convert ResellerEvent to OrganizerEvent format for the sales sheet
+function toOrganizerEvent(event: ResellerEvent): OrganizerEvent {
+  return {
+    id: event.id,
+    title: event.title,
+    start_time: event.start_time,
+    end_time: event.end_time,
+    location: event.location,
+    image_url: event.image_url,
+    ticketsSold: event.tickets_sold,
+    totalCapacity: event.tickets_available + event.tickets_sold,
+    totalRevenue: event.gross_revenue,
+    buyerCount: event.tickets_sold, // Approximate - each ticket = 1 buyer
+    checkedInCount: 0, // Not tracked in ResellerEvent
+  };
+}
+
 export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
   const { data: events = [], isLoading } = useResellerEvents();
-  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<OrganizerEvent | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const filteredEvents = events.filter((event) =>
@@ -26,8 +44,8 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
     }).format(amount);
   };
 
-  const handleViewSales = (event: any) => {
-    setSelectedEvent(event);
+  const handleViewSales = (event: ResellerEvent) => {
+    setSelectedEvent(toOrganizerEvent(event));
     setSheetOpen(true);
   };
 
