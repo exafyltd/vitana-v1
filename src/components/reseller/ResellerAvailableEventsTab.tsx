@@ -36,6 +36,7 @@ interface ResellableEvent {
   resellable: boolean | null;
   resale_scope: string | null;
   default_reseller_commission_rate: number | null;
+  metadata: Record<string, unknown> | null;
 }
 
 type FilterType = "all" | "high-commission" | "ending-soon" | "popular";
@@ -50,7 +51,8 @@ const RESELLABLE_EVENT_COLUMNS = `
   created_by,
   resellable,
   resale_scope,
-  default_reseller_commission_rate
+  default_reseller_commission_rate,
+  metadata
 `;
 
 async function fetchPublicResellableEvents(userId: string, nowIso: string): Promise<ResellableEvent[]> {
@@ -105,20 +107,32 @@ export function ResellerAvailableEventsTab() {
       if (!session?.user?.id) return [];
 
       const nowIso = new Date().toISOString();
+      const currentUserId = session.user.id;
 
       // Fetch public events (visible to all tenants)
-      const publicEvents = await fetchPublicResellableEvents(session.user.id, nowIso);
+      const publicEvents = await fetchPublicResellableEvents(currentUserId, nowIso);
 
       // Fetch tenant-only events (only for current tenant)
       const tenantEvents = activeTenantId 
-        ? await fetchTenantResellableEvents(session.user.id, activeTenantId, nowIso)
+        ? await fetchTenantResellableEvents(currentUserId, activeTenantId, nowIso)
         : [];
 
       // Merge and sort by start_time
       const allEvents = [...publicEvents, ...tenantEvents];
       allEvents.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
       
-      return allEvents;
+      // Filter out producer-only events where the producer is someone else
+      // Producer-only events should only be visible to the producer in "Client Events" tab
+      const visibleEvents = allEvents.filter((event) => {
+        const meta = event.metadata as Record<string, unknown> | null;
+        if (meta?.producer_mode && meta?.producer_only_reseller) {
+          // Only show to the producer themselves (but they use Client Events tab anyway)
+          return meta.producer_user_id === currentUserId;
+        }
+        return true; // Normal resellable events are visible to all
+      });
+      
+      return visibleEvents;
     },
     enabled: !!session?.user?.id && !!resellerProfile,
   });
