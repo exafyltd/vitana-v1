@@ -43,6 +43,7 @@ export default function PublicCampaignLanding() {
   const [error, setError] = useState<string | null>(null);
   const [showTicketDialog, setShowTicketDialog] = useState(false);
   const [linkedEventTickets, setLinkedEventTickets] = useState<LinkedEventTicketInfo | null>(null);
+  const [userHasTicket, setUserHasTicket] = useState(false);
 
   // Extract UTM params from URL for reseller attribution
   const utmParams = {
@@ -109,6 +110,29 @@ export default function PublicCampaignLanding() {
     fetchPublicCampaign();
   }, [id]);
 
+  // Check if user has a ticket for linked event
+  useEffect(() => {
+    const checkUserTicket = async () => {
+      const linkedEventId = campaign?.metadata?.event_id || campaign?.metadata?.eventId;
+      if (!user || !linkedEventId) {
+        setUserHasTicket(false);
+        return;
+      }
+      
+      const { data } = await supabase
+        .from("event_ticket_purchases")
+        .select("id")
+        .eq("event_id", linkedEventId)
+        .eq("buyer_id", user.id)
+        .eq("status", "completed")
+        .limit(1);
+      
+      setUserHasTicket(!!data && data.length > 0);
+    };
+    
+    checkUserTicket();
+  }, [user, campaign?.metadata]);
+
   // Helper to extract external ticket/booking URL from campaign
   const getCampaignTicketUrl = (campaign: PublicCampaignData): string | null => {
     return (
@@ -155,7 +179,7 @@ export default function PublicCampaignLanding() {
     lowestPrice: eventPrice,
     currency: 'USD',
     isAuthenticated: !!user,
-    userHasTicket: false, // TODO: Check user's tickets
+    userHasTicket,
   });
 
   // Determine CTA icon

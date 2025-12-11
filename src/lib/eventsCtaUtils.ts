@@ -296,7 +296,7 @@ export function getPublicLandingCta(options: {
     userHasTicket = false
   } = options;
   
-  // Authenticated user with ticket
+  // Priority 1: User has ticket (authenticated with ticket)
   if (isAuthenticated && userHasTicket) {
     return {
       label: 'View Ticket',
@@ -306,17 +306,7 @@ export function getPublicLandingCta(options: {
     };
   }
   
-  // Authenticated user viewing event
-  if (isAuthenticated) {
-    return {
-      label: 'View Event Details',
-      icon: 'calendar',
-      variant: 'join',
-      action: 'join',
-    };
-  }
-  
-  // Unauthenticated user - ticketed events
+  // Priority 2: Ticketed events - same logic for authenticated and unauthenticated
   if (hasTickets) {
     if (isSoldOut) {
       return {
@@ -350,7 +340,7 @@ export function getPublicLandingCta(options: {
     };
   }
   
-  // Non-ticketed event
+  // Priority 3: Non-ticketed event
   return {
     label: 'Reserve My Spot',
     icon: 'calendar',
