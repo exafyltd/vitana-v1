@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, RefreshCw, Loader2, DollarSign } from "lucide-react";
+import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, RefreshCw, Loader2, DollarSign, Share } from "lucide-react";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,6 +29,9 @@ interface CommunityEvent {
   updated_at: string;
   image_url?: string;
   metadata?: any;
+  resellable?: boolean;
+  resale_scope?: string;
+  default_reseller_commission_rate?: number;
 }
 
 interface EditMeetupPopupProps {
@@ -66,6 +69,11 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [generatedImagePreview, setGeneratedImagePreview] = useState<string | null>(null);
   const [generationError, setGenerationError] = useState<string | null>(null);
+  
+  // Reselling options
+  const [resellable, setResellable] = useState(false);
+  const [resaleScope, setResaleScope] = useState<"public" | "tenant" | "none">("public");
+  const [resellerCommission, setResellerCommission] = useState(10);
   
   const availableTags = [
     'Beginner Friendly', 'Outdoor', 'Indoor', 'Free', 'Family Friendly', 
@@ -111,6 +119,11 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       
       setGeneratedImagePreview(event.image_url || null);
       setErrors({});
+      
+      // Initialize reselling options
+      setResellable(event.resellable || false);
+      setResaleScope((event.resale_scope as "public" | "tenant" | "none") || "public");
+      setResellerCommission(event.default_reseller_commission_rate || 10);
     }
   }, [event, isOpen]);
 
@@ -297,10 +310,16 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         end_time: endTime,
         max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
         image_url: uploadedImageUrl,
-        metadata: formData.isPaid ? {
-          is_paid: true,
-          price: parseFloat(formData.price) || 0
-        } : { is_paid: false }
+        // Preserve ALL existing metadata and update only is_paid/price
+        metadata: {
+          ...(event.metadata || {}),
+          is_paid: formData.isPaid,
+          ...(formData.isPaid ? { price: parseFloat(formData.price) || 0 } : {})
+        },
+        // Reselling options
+        resellable: resellable,
+        resale_scope: resellable ? resaleScope : 'none',
+        default_reseller_commission_rate: resellable ? resellerCommission : null
       };
 
       const result = await updateEvent(event.id, eventData);
@@ -653,6 +672,64 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                       </p>
                     )}
                   </div>
+                )}
+              </CardContent>
+          </Card>
+          )}
+
+          {/* Reseller Options - Only for Events */}
+          {event.event_type === 'event' && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Share className="w-5 h-5 text-green-600" />
+                  Reseller Options
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Allow Resellers to Sell Tickets</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Let other resellers promote and sell tickets for this event
+                    </p>
+                  </div>
+                  <Switch 
+                    checked={resellable}
+                    onCheckedChange={setResellable}
+                  />
+                </div>
+
+                {resellable && (
+                  <>
+                    <div>
+                      <Label>Resale Visibility</Label>
+                      <Select value={resaleScope} onValueChange={(v) => setResaleScope(v as typeof resaleScope)}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="public">Public (All resellers)</SelectItem>
+                          <SelectItem value="tenant">Tenant only</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label>Default Commission Rate (%)</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="50"
+                        value={resellerCommission}
+                        onChange={(e) => setResellerCommission(Number(e.target.value))}
+                        className="mt-1"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Resellers earn this percentage of each ticket sale
+                      </p>
+                    </div>
+                  </>
                 )}
               </CardContent>
             </Card>
