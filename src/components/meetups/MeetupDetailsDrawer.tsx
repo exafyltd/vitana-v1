@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Drawer,
   DrawerContent,
@@ -186,6 +187,7 @@ export function MeetupDetailsDrawer({
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [previousEventId, setPreviousEventId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [userHasTicket, setUserHasTicket] = useState(false);
   
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
@@ -206,6 +208,28 @@ export function MeetupDetailsDrawer({
   const lowestPrice = getLowestAvailableTicketPrice(ticketTypes);
   const ticketCurrency = ticketTypes[0]?.currency || 'USD';
   
+  // Check if user has a ticket for this event
+  useEffect(() => {
+    const checkUserTicket = async () => {
+      if (!user || !event?.id) {
+        setUserHasTicket(false);
+        return;
+      }
+      
+      const { data } = await supabase
+        .from("event_ticket_purchases")
+        .select("id")
+        .eq("event_id", event.id)
+        .eq("buyer_id", user.id)
+        .eq("status", "completed")
+        .limit(1);
+      
+      setUserHasTicket(!!data && data.length > 0);
+    };
+    
+    checkUserTicket();
+  }, [user, event?.id]);
+  
   // Get CTA config using unified logic
   const ctaConfig = getEventCta({
     event: event ? {
@@ -214,7 +238,7 @@ export function MeetupDetailsDrawer({
       metadata: event.metadata,
     } : null,
     ticketTypes,
-    userHasTicket: false, // TODO: Check user's tickets
+    userHasTicket,
     isParticipating: isJoined,
     context: 'drawer',
   });
@@ -1093,7 +1117,7 @@ export function MeetupDetailsDrawer({
               }
             };
 
-            const handleCtaClick = () => {
+            const handleCtaClick = async () => {
               switch (ctaConfig.action) {
                 case 'buy-ticket':
                 case 'get-free-ticket':
@@ -1101,7 +1125,9 @@ export function MeetupDetailsDrawer({
                   ticketsSection?.scrollIntoView({ behavior: 'smooth' });
                   break;
                 case 'view-ticket':
-                  // TODO: Navigate to user's ticket
+                  // Navigate to user's tickets
+                  navigate('/discover/orders?tab=active');
+                  onOpenChange(false);
                   break;
                 case 'join':
                 case 'reserve':
@@ -1109,7 +1135,24 @@ export function MeetupDetailsDrawer({
                   break;
                 case 'leave':
                 case 'cancel':
-                  // TODO: Handle leave logic
+                  // Handle leave/cancel
+                  setIsJoining(true);
+                  try {
+                    setIsJoined(false);
+                    toast({
+                      title: ctaConfig.action === 'leave' ? "Left MeetUp" : "Reservation Cancelled",
+                      description: "You've been removed from this event.",
+                    });
+                  } catch (error) {
+                    console.error('Failed to leave event:', error);
+                    toast({
+                      title: "Error",
+                      description: "Failed to leave the event. Please try again.",
+                      variant: "destructive",
+                    });
+                  } finally {
+                    setIsJoining(false);
+                  }
                   break;
               }
             };
