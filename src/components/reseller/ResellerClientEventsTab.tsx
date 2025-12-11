@@ -5,22 +5,28 @@ import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Calendar, MapPin, Copy, Share2, ExternalLink, Briefcase } from "lucide-react";
+import { Loader2, Calendar, MapPin, Share2, Eye, Briefcase } from "lucide-react";
 import { format } from "date-fns";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { getResellerShareUrl } from "@/lib/shareUrl";
 import { SellEventModal } from "./SellEventModal";
-import { useNavigate } from "react-router-dom";
 import { CreateEventPopup } from "@/components/CreateEventPopup";
+import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 
 interface ClientEvent {
   id: string;
   title: string;
+  description: string | null;
   start_time: string;
   end_time: string | null;
   location: string | null;
   image_url: string | null;
+  event_type: string;
+  created_by: string;
+  participant_count: number;
+  max_participants: number | null;
+  virtual_link: string | null;
   resellable: boolean;
   resale_scope: string;
   default_reseller_commission_rate: number | null;
@@ -38,9 +44,9 @@ export function ResellerClientEventsTab() {
   const { session } = useAuth();
   const { data: resellerProfile, isLoading: profileLoading } = useResellerProfile();
   const { toast } = useToast();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [selectedEventForSell, setSelectedEventForSell] = useState<ClientEvent | null>(null);
+  const [selectedEventForView, setSelectedEventForView] = useState<ClientEvent | null>(null);
   const [showCreateEventPopup, setShowCreateEventPopup] = useState(false);
 
   const { data: clientEvents, isLoading } = useQuery({
@@ -56,10 +62,16 @@ export function ResellerClientEventsTab() {
         .select(`
           id,
           title,
+          description,
           start_time,
           end_time,
           location,
           image_url,
+          event_type,
+          created_by,
+          participant_count,
+          max_participants,
+          virtual_link,
           resellable,
           resale_scope,
           default_reseller_commission_rate,
@@ -245,10 +257,10 @@ export function ResellerClientEventsTab() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate(`/comm/events-meetups?event=${event.id}`)}
+                      onClick={() => setSelectedEventForView(event)}
                       className="gap-1.5"
                     >
-                      <ExternalLink className="h-3.5 w-3.5" />
+                      <Eye className="h-3.5 w-3.5" />
                       View
                     </Button>
                   </div>
@@ -269,6 +281,13 @@ export function ResellerClientEventsTab() {
           image_url: selectedEventForSell.image_url,
         } : null}
         resellerCode={resellerProfile?.reseller_code || ""}
+      />
+
+      {/* Event Details Drawer */}
+      <MeetupDetailsDrawer
+        event={selectedEventForView}
+        open={!!selectedEventForView}
+        onOpenChange={(open) => !open && setSelectedEventForView(null)}
       />
     </div>
   );
