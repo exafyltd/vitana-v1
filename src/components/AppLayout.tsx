@@ -123,11 +123,6 @@ function AppSidebar({
   const getTenantDisplayName = () => {
     console.log('getTenantDisplayName called - isExafyAdmin:', isExafyAdmin, 'tenant:', tenant, 'path:', window.location.pathname);
     
-    // Show "Exafy" for Exafy admins
-    if (isExafyAdmin) {
-      return 'Exafy';
-    }
-    
     // For portal routes, prioritize URL-based detection
     const currentPath = window.location.pathname;
     if (currentPath.startsWith('/maxina')) {
@@ -184,9 +179,17 @@ function AppSidebar({
                   {open ? "VITANA" : "V"}
                 </span>
                 {open && (
-                  <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
-                    {getTenantDisplayName()}
-                  </span>
+                  <>
+                    <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
+                      {getTenantDisplayName()}
+                    </span>
+                    {isExafyAdmin && (
+                      <div className="flex items-center gap-1 text-[10px] text-slate-500 mt-0.5">
+                        <Shield className="h-3 w-3" />
+                        <span>Exafy Admin</span>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </button>
