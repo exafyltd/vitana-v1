@@ -22,7 +22,22 @@ export interface ProducerModeMetadata {
   producer_client_name?: string;
 }
 
-export interface EventMetadataWithProducer extends ProducerModeMetadata {
+export interface OrganizerMetadata {
+  /** UUID if organizer has a VITANA account (optional) */
+  organizer_user_id?: string | null;
+  /** Contact email for the client/company */
+  organizer_contact_email?: string | null;
+  /** Contact phone (optional) */
+  organizer_contact_phone?: string | null;
+  /** Legal/company name for invoicing */
+  organizer_legal_name?: string | null;
+  /** Payout method: manual, bank_transfer, invoice, other */
+  organizer_payout_method?: 'manual' | 'bank_transfer' | 'invoice' | 'other' | null;
+  /** Free text for internal notes (e.g., invoice terms) */
+  organizer_notes?: string | null;
+}
+
+export interface EventMetadataWithProducer extends ProducerModeMetadata, OrganizerMetadata {
   is_paid?: boolean;
   has_tickets?: boolean;
   price?: number;
@@ -57,10 +72,46 @@ export function isClientEvent(
 
 /**
  * Helper to get client name from metadata
+ * Prefers organizer_legal_name over producer_client_name
  */
 export function getClientName(
   metadata: Record<string, unknown> | null | undefined
 ): string | null {
   if (!metadata || typeof metadata !== 'object') return null;
-  return (metadata.producer_client_name as string) || null;
+  return (metadata.organizer_legal_name as string) || 
+         (metadata.producer_client_name as string) || 
+         null;
+}
+
+/**
+ * Helper to get organizer display name from metadata
+ * Prefers organizer_legal_name over producer_client_name
+ */
+export function getOrganizerName(
+  metadata: Record<string, unknown> | null | undefined
+): string | null {
+  if (!metadata || typeof metadata !== 'object') return null;
+  return (metadata.organizer_legal_name as string) || 
+         (metadata.producer_client_name as string) || 
+         null;
+}
+
+/**
+ * Helper to get organizer contact email from metadata
+ */
+export function getOrganizerEmail(
+  metadata: Record<string, unknown> | null | undefined
+): string | null {
+  if (!metadata || typeof metadata !== 'object') return null;
+  return (metadata.organizer_contact_email as string) || null;
+}
+
+/**
+ * Helper to get organizer payout method from metadata
+ */
+export function getOrganizerPayoutMethod(
+  metadata: Record<string, unknown> | null | undefined
+): string | null {
+  if (!metadata || typeof metadata !== 'object') return null;
+  return (metadata.organizer_payout_method as string) || null;
 }
