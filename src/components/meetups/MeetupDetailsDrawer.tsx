@@ -29,6 +29,14 @@ import { EventSalesDashboard } from "@/components/tickets/EventSalesDashboard";
 import { useEventTicketTypes } from "@/hooks/useEventTickets";
 import { useIsEventOrganizer } from "@/hooks/useEventSales";
 import {
+  getEventCta,
+  isTicketedEvent,
+  isPaidEvent,
+  isEventSoldOut,
+  getLowestAvailableTicketPrice,
+  formatTicketPrice,
+} from "@/lib/eventsCtaUtils";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -65,11 +73,13 @@ import {
   Car,
   Download,
   UserPlus,
+  UserMinus,
   Timer,
   MapPinned,
   Megaphone,
   Ticket,
   BarChart3,
+  Eye,
 } from "lucide-react";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
@@ -188,7 +198,26 @@ export function MeetupDetailsDrawer({
   
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
-  const isPaidEventWithTickets = event?.metadata?.has_tickets && ticketTypes.length > 0;
+  
+  // Use unified CTA logic
+  const isTicketed = isTicketedEvent(event);
+  const isPaid = isPaidEvent(event, ticketTypes);
+  const isSoldOut = isEventSoldOut(ticketTypes);
+  const lowestPrice = getLowestAvailableTicketPrice(ticketTypes);
+  const ticketCurrency = ticketTypes[0]?.currency || 'USD';
+  
+  // Get CTA config using unified logic
+  const ctaConfig = getEventCta({
+    event: event ? {
+      id: event.id,
+      event_type: event.event_type,
+      metadata: event.metadata,
+    } : null,
+    ticketTypes,
+    userHasTicket: false, // TODO: Check user's tickets
+    isParticipating: isJoined,
+    context: 'drawer',
+  });
   
   // Check if current user is the organizer
   const { isOrganizer } = useIsEventOrganizer(event?.id || '');
@@ -962,12 +991,15 @@ export function MeetupDetailsDrawer({
             )}
 
             {/* Ticket Sales Section */}
-            {isPaidEventWithTickets && (
+            {isTicketed && ticketTypes.length > 0 && (
               <div className="space-y-4 pt-5 border-t border-border/50" data-section="tickets">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Ticket className="h-4 w-4 text-muted-foreground" />
                     <h3 className="font-semibold text-[17px]">Tickets</h3>
+                    {isSoldOut && (
+                      <Badge variant="secondary" className="ml-2">Sold Out</Badge>
+                    )}
                   </div>
                   {isOrganizer && (
                     <Button 
@@ -981,6 +1013,13 @@ export function MeetupDetailsDrawer({
                     </Button>
                   )}
                 </div>
+                
+                {/* Price preview */}
+                {!isSoldOut && lowestPrice !== null && (
+                  <div className="text-sm text-muted-foreground">
+                    {isPaid ? `From ${formatTicketPrice(lowestPrice, ticketCurrency)}` : 'Free tickets available'}
+                  </div>
+                )}
                 
                 {/* Organizer Sales Dashboard */}
                 {isOrganizer && showSalesDashboard && (
@@ -1028,40 +1067,73 @@ export function MeetupDetailsDrawer({
       {/* Sticky Action Bar */}
       <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="flex items-center gap-2">
-          {/* Show different button for paid events with tickets */}
-          {isPaidEventWithTickets ? (
-            <Button
-              className="flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
-              onClick={() => {
-                // Scroll to tickets section
-                const ticketsSection = document.querySelector('[data-section="tickets"]');
-                ticketsSection?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              <Ticket className="h-4 w-4 mr-2" />
-              Buy Ticket
-            </Button>
-          ) : (
-            <Button
-              className="flex-1 h-12 font-semibold text-[15px]"
-              onClick={handleJoin}
-              disabled={isJoining || isJoined}
-            >
-              {isJoining ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Joining...
-                </>
-              ) : isJoined ? (
-                <>
-                  <Check className="h-4 w-4 mr-2" />
-                  Joined
-                </>
-              ) : (
-                'Join Meetup'
-              )}
-            </Button>
-          )}
+          {/* Use unified CTA logic */}
+          {(() => {
+            const getCtaButtonClasses = () => {
+              switch (ctaConfig.variant) {
+                case 'ticket':
+                  return "flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white";
+                case 'view-ticket':
+                  return "flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white";
+                case 'disabled':
+                  return "flex-1 h-12 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed";
+                case 'join':
+                default:
+                  return "flex-1 h-12 font-semibold text-[15px]";
+              }
+            };
+
+            const getCtaIcon = () => {
+              switch (ctaConfig.icon) {
+                case 'ticket': return <Ticket className="h-4 w-4 mr-2" />;
+                case 'eye': return <Eye className="h-4 w-4 mr-2" />;
+                case 'user-plus': return <UserPlus className="h-4 w-4 mr-2" />;
+                case 'user-minus': return <UserMinus className="h-4 w-4 mr-2" />;
+                default: return null;
+              }
+            };
+
+            const handleCtaClick = () => {
+              switch (ctaConfig.action) {
+                case 'buy-ticket':
+                case 'get-free-ticket':
+                  const ticketsSection = document.querySelector('[data-section="tickets"]');
+                  ticketsSection?.scrollIntoView({ behavior: 'smooth' });
+                  break;
+                case 'view-ticket':
+                  // TODO: Navigate to user's ticket
+                  break;
+                case 'join':
+                case 'reserve':
+                  handleJoin();
+                  break;
+                case 'leave':
+                case 'cancel':
+                  // TODO: Handle leave logic
+                  break;
+              }
+            };
+
+            return (
+              <Button
+                className={getCtaButtonClasses()}
+                onClick={handleCtaClick}
+                disabled={ctaConfig.disabled || isJoining}
+              >
+                {isJoining ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    {ctaConfig.action === 'join' || ctaConfig.action === 'reserve' ? 'Joining...' : 'Processing...'}
+                  </>
+                ) : (
+                  <>
+                    {getCtaIcon()}
+                    {ctaConfig.label}
+                  </>
+                )}
+              </Button>
+            );
+          })()}
 
           {/* Promote Button (only for event creators) */}
           {user && event.created_by === user.id && onPromoteEvent && (

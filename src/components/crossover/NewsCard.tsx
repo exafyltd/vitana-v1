@@ -4,11 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Button } from "@/components/ui/button";
 import { RewardDot } from "@/components/ui/reward-dot";
-import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus, Loader2, Ticket } from "lucide-react";
+import { Clock, MapPin, Users, Play, Headphones, Music, UserPlus, Calendar, PlayCircle, UserMinus, Loader2, Ticket, Eye } from "lucide-react";
 import { useEventParticipation } from "@/hooks/useEventParticipation";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
 import { useMeetupSelection } from "@/context/MeetupSelectionContext";
+import { getEventCta, CtaConfig } from "@/lib/eventsCtaUtils";
+import { TicketType } from "@/hooks/useEventTickets";
 
 interface NewsCardProps {
   title: string;
@@ -40,11 +42,15 @@ interface NewsCardProps {
   rewardDescription?: string;
   showReward?: boolean;
   rewardPosition?: "top-right" | "top-left" | "bottom-right" | "bottom-left";
-  eventId?: string; // For event participation
-  eventType?: string; // The specific event_type value (e.g., 'meetup', 'event', 'community')
-  hasTickets?: boolean; // Whether event has ticket sales enabled
-  onBuyTicket?: () => void; // Handler for buy ticket action
-  "data-event-id"?: string; // For deep linking
+  eventId?: string;
+  eventType?: string;
+  hasTickets?: boolean;
+  isPaidEvent?: boolean;
+  ticketTypes?: TicketType[];
+  userHasTicket?: boolean;
+  onBuyTicket?: () => void;
+  onViewTicket?: () => void;
+  "data-event-id"?: string;
 }
 
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
@@ -78,10 +84,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     eventId,
     eventType,
     hasTickets,
+    isPaidEvent,
+    ticketTypes,
+    userHasTicket,
     onBuyTicket,
+    onViewTicket,
     "data-event-id": dataEventId
   }, ref) => {
-    // Always call the hook, but only use it for event cards
     const { selectedMeetupId } = useMeetupSelection();
     const isSelected = category === 'event' && dataEventId ? selectedMeetupId === dataEventId : false;
     
@@ -103,43 +112,83 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
     const MediaIcon = getMediaIcon();
     
-    // Use event participation hook if eventId is provided
     const eventParticipation = useEventParticipation(
       eventId || '', 
       attendees || 0
     );
     
-    // Only use participation data if eventId exists
     const displayAttendees = eventId ? eventParticipation.participantCount : attendees;
 
-    // Smart action button logic based on content type
+    // Use unified CTA logic for events
     const getSmartAction = () => {
       if (!showSmartAction) return null;
       
       let buttonText = "View";
       let buttonIcon = null;
-      let buttonType: "join" | "follow" | "following" | "play" | "secondary" | "ticket" = "secondary";
+      let buttonType: "join" | "follow" | "following" | "play" | "secondary" | "ticket" | "view-ticket" | "disabled" = "secondary";
+      let isDisabled = false;
+      let ctaAction: (() => void) | undefined = onActionClick;
       
-        // For events with tickets, show Buy Ticket button
-        if (category === "event" && hasTickets) {
-          buttonText = "Buy Ticket";
-          buttonIcon = Ticket;
-          buttonType = "ticket";
+      // Use unified CTA logic for event cards
+      if (category === "event" && eventId) {
+        const ctaConfig = getEventCta({
+          event: {
+            id: eventId,
+            event_type: eventType,
+            metadata: {
+              has_tickets: hasTickets,
+              is_paid: isPaidEvent,
+            }
+          },
+          ticketTypes: ticketTypes,
+          userHasTicket: userHasTicket,
+          isParticipating: eventParticipation?.isParticipating,
+          context: 'card',
+        });
+        
+        buttonText = ctaConfig.label;
+        isDisabled = ctaConfig.disabled || false;
+        
+        // Map icon
+        switch (ctaConfig.icon) {
+          case 'ticket': buttonIcon = Ticket; break;
+          case 'eye': buttonIcon = Eye; break;
+          case 'user-plus': buttonIcon = UserPlus; break;
+          case 'user-minus': buttonIcon = UserMinus; break;
+          case 'calendar': buttonIcon = Calendar; break;
+          default: buttonIcon = Calendar;
         }
-        // For events without tickets, use participation state
-        else if (category === "event" && eventId) {
-          // Check if it's a meetup vs event
-          const isMeetup = eventType?.toLowerCase() === 'meetup';
-          
-          if (isMeetup) {
-            buttonText = eventParticipation?.isParticipating ? "Leave MeetUp" : "Join MeetUp";
-          } else {
-            buttonText = eventParticipation?.isParticipating ? "Leave Event" : "Join Event";
-          }
-          
-          buttonIcon = eventParticipation?.isParticipating ? UserMinus : UserPlus;
-          buttonType = "join";
-        } else {
+        
+        // Map variant
+        switch (ctaConfig.variant) {
+          case 'ticket': buttonType = 'ticket'; break;
+          case 'view-ticket': buttonType = 'view-ticket'; break;
+          case 'disabled': buttonType = 'disabled'; break;
+          case 'join': buttonType = 'join'; break;
+          default: buttonType = 'secondary';
+        }
+        
+        // Map action
+        switch (ctaConfig.action) {
+          case 'buy-ticket':
+          case 'get-free-ticket':
+            ctaAction = onBuyTicket;
+            break;
+          case 'view-ticket':
+            ctaAction = onViewTicket;
+            break;
+          case 'join':
+          case 'leave':
+          case 'reserve':
+          case 'cancel':
+            ctaAction = () => eventParticipation?.toggleParticipation();
+            break;
+          case 'sold-out':
+            ctaAction = undefined;
+            break;
+        }
+      } else {
+        // Non-event cards - use original logic
         switch (category) {
           case "event":
           case "community":
@@ -174,17 +223,20 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             buttonText = "View";
             buttonType = "secondary";
         }
-        }
+      }
         
-        const ButtonIcon = buttonIcon;
+      const ButtonIcon = buttonIcon;
       
-      // Get gradient classes based on button type
       const getButtonClasses = () => {
         const baseClasses = "rounded-full font-bold text-white border-0 shadow-lg transition-all duration-300 hover:scale-105";
         
         switch (buttonType) {
           case "ticket":
             return `${baseClasses} bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-emerald-500/50 hover:shadow-2xl`;
+          case "view-ticket":
+            return `${baseClasses} bg-gradient-to-r from-violet-500 to-purple-600 hover:shadow-violet-500/50 hover:shadow-2xl`;
+          case "disabled":
+            return "rounded-full font-bold text-muted-foreground bg-muted border-0 shadow-sm cursor-not-allowed opacity-60";
           case "join":
             return `${baseClasses} bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl`;
           case "follow":
@@ -205,15 +257,11 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         <Button
           size="sm"
           className={getButtonClasses()}
-          disabled={isLoading}
+          disabled={isLoading || isDisabled}
           onClick={(e) => {
             e.stopPropagation();
-            if (hasTickets && onBuyTicket) {
-              onBuyTicket();
-            } else if (eventId && category === "event") {
-              eventParticipation?.toggleParticipation();
-            } else {
-              onActionClick?.();
+            if (ctaAction) {
+              ctaAction();
             }
           }}
         >

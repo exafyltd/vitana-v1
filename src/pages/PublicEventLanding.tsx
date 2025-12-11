@@ -3,11 +3,12 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Calendar, MapPin, Users, Clock, CalendarDays, Sparkles, Ticket } from "lucide-react";
+import { Calendar, MapPin, Users, Clock, CalendarDays, Sparkles, Ticket, Eye, UserPlus } from "lucide-react";
 import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
+import { getPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 
 interface PublicEventData {
   id: string;
@@ -26,6 +27,7 @@ interface PublicEventData {
   has_tickets?: boolean;
   lowest_ticket_price?: number;
   is_paid_event?: boolean;
+  is_sold_out?: boolean;
 }
 
 // Helper to get tenant-specific login route
@@ -47,6 +49,7 @@ export default function PublicEventLanding() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showTicketDialog, setShowTicketDialog] = useState(false);
+  const [userHasTicket, setUserHasTicket] = useState(false);
 
   // Extract UTM params from URL for reseller attribution
   const utmParams = {
@@ -94,39 +97,81 @@ export default function PublicEventLanding() {
     fetchPublicEvent();
   }, [id]);
 
+  // Check if user has a ticket for this event
+  useEffect(() => {
+    const checkUserTicket = async () => {
+      if (!user || !id) return;
+      
+      const { data } = await supabase
+        .from("event_ticket_purchases")
+        .select("id")
+        .eq("event_id", id)
+        .eq("buyer_id", user.id)
+        .eq("status", "completed")
+        .limit(1);
+      
+      setUserHasTicket(data && data.length > 0);
+    };
+    
+    checkUserTicket();
+  }, [user, id]);
+
   // Get tenant from event metadata for proper login routing
   const tenantSlug = event?.metadata?.tenant_slug || 
                      event?.metadata?.tenantSlug || 
                      localStorage.getItem('tenant_slug') || 
                      null;
 
-  // Determine primary CTA text based on event type
-  const getPrimaryCTAText = (): string => {
-    if (user) return "View Event Details";
-    if (event?.has_tickets && event?.is_paid_event) return "Buy Ticket";
-    if (event?.has_tickets) return "Get Free Ticket";
-    return "Reserve My Spot";
-  };
+  // Use unified CTA logic
+  const ctaConfig = getPublicLandingCta({
+    hasTickets: event?.has_tickets || false,
+    isPaid: event?.is_paid_event || false,
+    isSoldOut: event?.is_sold_out || false,
+    lowestPrice: event?.lowest_ticket_price,
+    currency: 'USD',
+    isAuthenticated: !!user,
+    userHasTicket,
+  });
 
-  // Determine CTA icon
+  // Get CTA icon based on config
   const getPrimaryCTAIcon = () => {
-    if (event?.has_tickets) return <Ticket className="h-4 w-4 mr-2" />;
-    return <CalendarDays className="h-4 w-4 mr-2" />;
+    switch (ctaConfig.icon) {
+      case 'ticket': return <Ticket className="h-4 w-4 mr-2" />;
+      case 'eye': return <Eye className="h-4 w-4 mr-2" />;
+      case 'user-plus': return <UserPlus className="h-4 w-4 mr-2" />;
+      default: return <CalendarDays className="h-4 w-4 mr-2" />;
+    }
   };
 
   const handlePrimaryClick = () => {
     if (!id) return;
 
-    if (user) {
-      // User is logged in, go directly to event page
-      const params = new URLSearchParams(searchParams);
-      navigate(`/comm/events-meetups?event=${id}${params.toString() ? '&' + params.toString() : ''}`);
-    } else if (event?.has_tickets) {
-      // Event has tickets - show ticket purchase dialog (supports guest checkout)
-      setShowTicketDialog(true);
-    } else {
-      // Free event without tickets - redirect to login
-      handleJoinClick();
+    switch (ctaConfig.action) {
+      case 'view-ticket':
+        // Navigate to user's tickets
+        navigate('/discover/orders?tab=active');
+        break;
+      case 'buy-ticket':
+      case 'get-free-ticket':
+        if (user) {
+          // Show ticket dialog for logged-in users
+          setShowTicketDialog(true);
+        } else {
+          // Show ticket dialog with guest checkout
+          setShowTicketDialog(true);
+        }
+        break;
+      case 'join':
+        // Authenticated user - go to event page
+        navigate(`/comm/events-meetups?event=${id}`);
+        break;
+      case 'reserve':
+        // Non-ticketed event - redirect to login then event
+        handleJoinClick();
+        break;
+      case 'sold-out':
+        // Disabled - do nothing
+        break;
     }
   };
 
@@ -275,21 +320,41 @@ export default function PublicEventLanding() {
                     {/* Left: Primary Event CTA */}
                     <div className="flex-1 flex flex-col gap-2">
                       <div className="flex items-center gap-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                        {event.has_tickets ? (
+                        {ctaConfig.icon === 'ticket' ? (
                           <Ticket className="h-4 w-4 text-primary" />
+                        ) : ctaConfig.icon === 'eye' ? (
+                          <Eye className="h-4 w-4 text-primary" />
                         ) : (
                           <CalendarDays className="h-4 w-4 text-primary" />
                         )}
-                        <span>{event.has_tickets ? "Get your ticket" : "Join this event"}</span>
+                        <span>
+                          {ctaConfig.action === 'view-ticket' ? 'Your ticket' : 
+                           ctaConfig.action === 'sold-out' ? 'Sold out' :
+                           event.has_tickets ? 'Get your ticket' : 'Join this event'}
+                        </span>
                       </div>
                       <Button
                         size="default"
                         onClick={handlePrimaryClick}
-                        className="w-full md:w-auto px-6"
+                        disabled={ctaConfig.disabled}
+                        className={`w-full md:w-auto px-6 ${
+                          ctaConfig.variant === 'ticket' 
+                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' 
+                            : ctaConfig.variant === 'view-ticket'
+                            ? 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700'
+                            : ctaConfig.variant === 'disabled'
+                            ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                            : ''
+                        }`}
                       >
                         {getPrimaryCTAIcon()}
-                        {getPrimaryCTAText()}
+                        {ctaConfig.label}
                       </Button>
+                      {ctaConfig.priceLabel && !ctaConfig.disabled && (
+                        <p className="text-xs text-muted-foreground">
+                          From {ctaConfig.priceLabel}
+                        </p>
+                      )}
                     </div>
                     
                     {/* Divider */}

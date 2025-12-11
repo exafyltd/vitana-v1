@@ -3,11 +3,12 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Calendar, CalendarDays, Target, TrendingUp, Users, Sparkles, Ticket } from "lucide-react";
+import { Calendar, CalendarDays, Target, TrendingUp, Users, Sparkles, Ticket, Eye, UserPlus } from "lucide-react";
 import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
+import { getPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
 
 interface PublicCampaignData {
   id: string;
@@ -146,19 +147,25 @@ export default function PublicCampaignLanding() {
   // Get tenant from campaign metadata for proper login routing
   const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || localStorage.getItem('tenant_slug') || null;
 
-  // Determine primary CTA label
-  const getPrimaryCTALabel = () => {
-    if (user) return "View Event Details";
-    if (hasTickets && isEventPaid) return "Buy Ticket";
-    if (hasTickets) return "Get Free Ticket";
-    if (linkedEventId) return "Reserve My Spot";
-    return "Join Event";
-  };
+  // Use unified CTA logic
+  const ctaConfig = getPublicLandingCta({
+    hasTickets,
+    isPaid: isEventPaid,
+    isSoldOut: false, // TODO: Fetch from event data
+    lowestPrice: eventPrice,
+    currency: 'USD',
+    isAuthenticated: !!user,
+    userHasTicket: false, // TODO: Check user's tickets
+  });
 
   // Determine CTA icon
   const getPrimaryCTAIcon = () => {
-    if (hasTickets) return <Ticket className="h-4 w-4 mr-2" />;
-    return <CalendarDays className="h-4 w-4 mr-2" />;
+    switch (ctaConfig.icon) {
+      case 'ticket': return <Ticket className="h-4 w-4 mr-2" />;
+      case 'eye': return <Eye className="h-4 w-4 mr-2" />;
+      case 'user-plus': return <UserPlus className="h-4 w-4 mr-2" />;
+      default: return <CalendarDays className="h-4 w-4 mr-2" />;
+    }
   };
 
   const handleEventClick = () => {
@@ -358,10 +365,19 @@ export default function PublicCampaignLanding() {
                       <Button
                         size="default"
                         onClick={handleEventClick}
-                        className="w-full md:w-auto px-6"
+                        disabled={ctaConfig.disabled}
+                        className={`w-full md:w-auto px-6 ${
+                          ctaConfig.variant === 'ticket' 
+                            ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700' 
+                            : ctaConfig.variant === 'view-ticket'
+                            ? 'bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700'
+                            : ctaConfig.variant === 'disabled'
+                            ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                            : ''
+                        }`}
                       >
                         {getPrimaryCTAIcon()}
-                        {getPrimaryCTALabel()}
+                        {ctaConfig.label}
                       </Button>
                     </div>
                     
