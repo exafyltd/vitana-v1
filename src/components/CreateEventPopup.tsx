@@ -373,6 +373,19 @@ export function CreateEventPopup({
             if (imageData?.imageUrl) {
               uploadedImageUrl = imageData.imageUrl;
               console.log('✅ AI image generated:', uploadedImageUrl);
+              
+              // Save the generated image URL to the event record
+              const { error: updateImageError } = await supabase
+                .from('global_community_events')
+                .update({ image_url: uploadedImageUrl })
+                .eq('id', eventId);
+              
+              if (updateImageError) {
+                console.error('Failed to update event with generated image:', updateImageError);
+              } else {
+                console.log('✅ Event updated with AI-generated image');
+              }
+              
               toast({
                 title: "Image Generated!",
                 description: "AI-generated image added to your event.",
