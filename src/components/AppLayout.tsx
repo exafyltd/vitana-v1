@@ -179,17 +179,10 @@ function AppSidebar({
                   {open ? "VITANA" : "V"}
                 </span>
                 {open && (
-                  <>
-                    <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1">
-                      {getTenantDisplayName()}
-                    </span>
-                    {isExafyAdmin && (
-                      <div className="flex items-center gap-1 text-[10px] text-slate-500 mt-0.5">
-                        <Shield className="h-3 w-3" />
-                        <span>Exafy Admin</span>
-                      </div>
-                    )}
-                  </>
+                  <span className="text-xs text-sidebar-foreground/50 font-normal -mt-1 flex items-center gap-1">
+                    {getTenantDisplayName()}
+                    {isExafyAdmin && <Shield className="h-3 w-3 text-slate-400" />}
+                  </span>
                 )}
               </div>
             </button>
