@@ -57,6 +57,13 @@ export function CreateEventPopup({
   const [producerMode, setProducerMode] = useState(defaultProducerMode);
   const [producerClientName, setProducerClientName] = useState(defaultProducerClientName);
   
+  // Organizer information (only used when producer mode is active)
+  const [organizerLegalName, setOrganizerLegalName] = useState("");
+  const [organizerContactEmail, setOrganizerContactEmail] = useState("");
+  const [organizerContactPhone, setOrganizerContactPhone] = useState("");
+  const [organizerPayoutMethod, setOrganizerPayoutMethod] = useState<"manual" | "bank_transfer" | "invoice" | "other">("manual");
+  const [organizerNotes, setOrganizerNotes] = useState("");
+  
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -105,6 +112,12 @@ export function CreateEventPopup({
     setResellerCommission(10);
     setProducerMode(false);
     setProducerClientName("");
+    // Reset organizer fields
+    setOrganizerLegalName("");
+    setOrganizerContactEmail("");
+    setOrganizerContactPhone("");
+    setOrganizerPayoutMethod("manual");
+    setOrganizerNotes("");
     setFormData({
       title: "",
       description: "",
@@ -267,6 +280,12 @@ export function CreateEventPopup({
           producer_reseller_profile_id: resellerProfile.id,
           producer_reseller_code: resellerProfile.reseller_code || null,
           ...(producerClientName ? { producer_client_name: producerClientName } : {}),
+          // Organizer fields
+          ...(organizerLegalName ? { organizer_legal_name: organizerLegalName } : {}),
+          ...(organizerContactEmail ? { organizer_contact_email: organizerContactEmail } : {}),
+          ...(organizerContactPhone ? { organizer_contact_phone: organizerContactPhone } : {}),
+          organizer_payout_method: organizerPayoutMethod || "manual",
+          ...(organizerNotes ? { organizer_notes: organizerNotes } : {}),
         } : baseMetadata;
 
         // When producer mode is enabled, force reselling on with public scope
@@ -950,6 +969,89 @@ export function CreateEventPopup({
                       </div>
                     )}
                   </div>
+                )}
+
+                {/* Organizer / Client Information - Only when Producer Mode is active */}
+                {producerMode && resellerProfile?.id && (
+                  <Card className="border-amber-200 bg-amber-50/30">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        <Users className="w-4 h-4 text-amber-600" />
+                        Organizer / Client Information
+                      </CardTitle>
+                      <p className="text-xs text-muted-foreground">
+                        Used for revenue reporting and payouts. This is your client, not you.
+                      </p>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="organizerLegalName">Organizer / Client legal name</Label>
+                          <Input
+                            id="organizerLegalName"
+                            value={organizerLegalName}
+                            onChange={(e) => setOrganizerLegalName(e.target.value)}
+                            placeholder="Wellness & Co. Ltd."
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="organizerContactEmail">Contact Email</Label>
+                          <Input
+                            id="organizerContactEmail"
+                            type="email"
+                            value={organizerContactEmail}
+                            onChange={(e) => setOrganizerContactEmail(e.target.value)}
+                            placeholder="client@example.com"
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="organizerContactPhone">Contact Phone (optional)</Label>
+                          <Input
+                            id="organizerContactPhone"
+                            type="tel"
+                            value={organizerContactPhone}
+                            onChange={(e) => setOrganizerContactPhone(e.target.value)}
+                            placeholder="+1 555 123 4567"
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="organizerPayoutMethod">Preferred Payout Method</Label>
+                          <Select 
+                            value={organizerPayoutMethod} 
+                            onValueChange={(v) => setOrganizerPayoutMethod(v as typeof organizerPayoutMethod)}
+                          >
+                            <SelectTrigger className="mt-1">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="manual">Manual</SelectItem>
+                              <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
+                              <SelectItem value="invoice">Invoice</SelectItem>
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="organizerNotes">Internal Notes (optional)</Label>
+                        <Textarea
+                          id="organizerNotes"
+                          value={organizerNotes}
+                          onChange={(e) => setOrganizerNotes(e.target.value)}
+                          placeholder="IBAN, payment terms, invoicing notes…"
+                          className="mt-1"
+                          rows={2}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
                 )}
 
                 <div className="flex items-center justify-between">

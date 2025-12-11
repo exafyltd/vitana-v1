@@ -112,7 +112,15 @@ export function ResellerClientEventsTab() {
 
   const getClientName = (event: ClientEvent): string => {
     const meta = event.metadata as Record<string, unknown> | null;
-    return (meta?.producer_client_name as string) || "Not specified";
+    // Prefer organizer_legal_name over producer_client_name
+    return (meta?.organizer_legal_name as string) || 
+           (meta?.producer_client_name as string) || 
+           "Not specified";
+  };
+
+  const getOrganizerEmail = (event: ClientEvent): string | null => {
+    const meta = event.metadata as Record<string, unknown> | null;
+    return (meta?.organizer_contact_email as string) || null;
   };
 
   if (isLoading || profileLoading) {
@@ -212,6 +220,11 @@ export function ResellerClientEventsTab() {
                       <span className="text-muted-foreground">
                         Client: <span className="font-medium text-foreground">{getClientName(event)}</span>
                       </span>
+                      {getOrganizerEmail(event) && (
+                        <span className="text-muted-foreground">
+                          <span className="font-medium text-foreground/80">{getOrganizerEmail(event)}</span>
+                        </span>
+                      )}
                       <span className="text-muted-foreground">
                         My commission: <span className="font-medium text-accent">{getCommissionRate(event)}%</span>
                       </span>
