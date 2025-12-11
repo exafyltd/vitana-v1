@@ -273,12 +273,15 @@ export function CreateEventPopup({
         } : { is_paid: false };
 
         // Add producer mode metadata if enabled
+        // producer_only_reseller = true means only the producer can resell, not other resellers
         const metadata = producerMode && resellerProfile?.id ? {
           ...baseMetadata,
           producer_mode: true,
           producer_user_id: session?.user?.id || null,
           producer_reseller_profile_id: resellerProfile.id,
           producer_reseller_code: resellerProfile.reseller_code || null,
+          // If enableReselling is OFF, this is a producer-only event (not visible to other resellers)
+          producer_only_reseller: !enableReselling,
           ...(producerClientName ? { producer_client_name: producerClientName } : {}),
           // Organizer fields
           ...(organizerLegalName ? { organizer_legal_name: organizerLegalName } : {}),
@@ -288,7 +291,8 @@ export function CreateEventPopup({
           ...(organizerNotes ? { organizer_notes: organizerNotes } : {}),
         } : baseMetadata;
 
-        // When producer mode is enabled, force reselling on with public scope
+        // When producer mode is enabled, always set resellable=true so producer can sell
+        // The producer_only_reseller flag controls whether OTHER resellers can see it
         const effectiveEnableReselling = producerMode ? true : enableReselling;
         const effectiveResaleScope = producerMode ? 'public' : (enableReselling ? resaleScope : 'none');
         const effectiveCommission = producerMode 
@@ -1056,24 +1060,26 @@ export function CreateEventPopup({
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Allow Resellers to Sell Tickets</Label>
-                    <p className="text-sm text-muted-foreground">Let resellers promote and sell tickets for this event</p>
+                    <Label>Allow {producerMode ? "Other " : ""}Resellers to Sell Tickets</Label>
+                    <p className="text-sm text-muted-foreground">
+                      {producerMode 
+                        ? "Allow other resellers to also promote and sell tickets for this event"
+                        : "Let resellers promote and sell tickets for this event"}
+                    </p>
                   </div>
                   <Switch 
-                    checked={enableReselling || producerMode}
+                    checked={enableReselling}
                     onCheckedChange={setEnableReselling}
-                    disabled={producerMode} // Cannot disable when producer mode is on
                   />
                 </div>
                 
-                {(enableReselling || producerMode) && (
+                {enableReselling && (
                   <div className="space-y-4 pt-3 border-t border-border/50">
                     <div>
                       <Label>Resale Visibility</Label>
                       <Select 
-                        value={producerMode ? 'public' : resaleScope} 
+                        value={resaleScope} 
                         onValueChange={(v) => setResaleScope(v as 'tenant' | 'public')}
-                        disabled={producerMode} // Default to public in producer mode
                       >
                         <SelectTrigger className="mt-1">
                           <SelectValue />
@@ -1108,6 +1114,15 @@ export function CreateEventPopup({
                         Commission resellers earn per ticket sold (0-50%)
                       </p>
                     </div>
+                  </div>
+                )}
+
+                {/* Producer-only info box when producer mode ON but enableReselling OFF */}
+                {producerMode && !enableReselling && (
+                  <div className="pt-3 border-t border-border/50">
+                    <p className="text-xs text-muted-foreground bg-blue-50 border border-blue-200 rounded-md p-2">
+                      <strong>Producer-only event:</strong> Only you can generate reseller links for this event. It won't appear in the marketplace for other resellers.
+                    </p>
                   </div>
                 )}
               </CardContent>

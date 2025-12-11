@@ -20,6 +20,8 @@ export interface ProducerModeMetadata {
   producer_reseller_code?: string;
   /** Free-text label of the client/company */
   producer_client_name?: string;
+  /** If true, only the producer can resell this event (other resellers cannot see it) */
+  producer_only_reseller?: boolean;
 }
 
 export interface OrganizerMetadata {
