@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Ticket, Loader2 } from "lucide-react";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
+import { isMockResellerSalesEnabled } from "@/lib/mocks/mockResellerSales";
 
 interface SellAndEarnSubTabsProps {
   searchQuery?: string;
@@ -17,9 +18,10 @@ interface SellAndEarnSubTabsProps {
 export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps) {
   const { isReseller, isLoading: isLoadingReseller } = useIsReseller();
   const { activateResellerForCurrentUser, isActivating } = useActivateReseller();
+  const mockEnabled = isMockResellerSalesEnabled();
 
-  // Loading state
-  if (isLoadingReseller) {
+  // Loading state (skip if mock mode)
+  if (isLoadingReseller && !mockEnabled) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -27,8 +29,8 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
     );
   }
 
-  // Not a reseller - show activation card
-  if (!isReseller) {
+  // Not a reseller - show activation card (bypass if mock mode)
+  if (!isReseller && !mockEnabled) {
     return (
       <div className="flex items-center justify-center py-12">
         <Card className="max-w-md bg-white/70 backdrop-blur-sm border border-white/20">
