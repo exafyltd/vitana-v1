@@ -2,10 +2,8 @@ import { useState, useMemo } from "react";
 import { useResellerSales, ResellerEventSale } from "@/hooks/useResellerSales";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, FlaskConical, Clock, Eye, MoreHorizontal } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, Clock, Eye, Settings2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { SalesDetailDrawer } from "./SalesDetailDrawer";
@@ -21,6 +19,9 @@ import {
   type MockEventSale 
 } from "@/lib/mocks/mockResellerSales";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
+import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type TimeRange = "all" | "30d" | "7d";
 
@@ -226,104 +227,120 @@ export function ResellerSalesTab() {
     );
   }
 
+  const timeRangeOptions: { value: TimeRange; label: string }[] = [
+    { value: "all", label: "All time" },
+    { value: "30d", label: "Last 30 days" },
+    { value: "7d", label: "Last 7 days" },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* Mock Data Badge */}
-      {shouldUseMock && (
-        <div className="flex justify-end">
-          <Badge variant="outline" className="gap-1.5 text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
-            <FlaskConical className="h-3 w-3" />
-            Mock data
-          </Badge>
-        </div>
-      )}
-
-      {/* KPI Header - Compact Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Card className="bg-card/80 backdrop-blur-sm border-border/40">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center">
-                <Ticket className="h-4 w-4 text-muted-foreground" />
+    <div className="space-y-5">
+      {/* Unified KPI Strip */}
+      <Card className="bg-card/70 backdrop-blur-sm border-border/40 rounded-2xl shadow-sm overflow-hidden">
+        <CardContent className="p-0">
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/40">
+            {/* Tickets Sold */}
+            <div className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-muted/80 flex items-center justify-center shrink-0">
+                <Ticket className="h-5 w-5 text-muted-foreground" />
               </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Tickets Sold</p>
-                <p className="text-xl font-semibold">{filteredTotals.ticketsSold}</p>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground font-medium">Tickets Sold</p>
+                <p className="text-2xl font-semibold tracking-tight">{filteredTotals.ticketsSold}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
 
-        <Card className="bg-card/80 backdrop-blur-sm border-border/40">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+            {/* Gross Sales */}
+            <div className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-muted/80 flex items-center justify-center shrink-0">
+                <DollarSign className="h-5 w-5 text-muted-foreground" />
               </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Gross Sales</p>
-                <p className="text-xl font-semibold">{formatCurrency(filteredTotals.grossSales)}</p>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground font-medium">Gross Sales</p>
+                <p className="text-2xl font-semibold tracking-tight">{formatCurrency(filteredTotals.grossSales)}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Commission Card with accent */}
-        <Card className="bg-card/80 backdrop-blur-sm border-accent/30 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent to-accent/60" />
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-accent/10 flex items-center justify-center">
-                <Award className="h-4 w-4 text-accent" />
+            {/* Commission Earned - Accent Styling */}
+            <div className="p-4 flex items-center gap-3 relative">
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-accent/80 to-accent/40" />
+              <div className="h-10 w-10 rounded-xl bg-accent/15 flex items-center justify-center shrink-0">
+                <Award className="h-5 w-5 text-accent" />
               </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Commission Earned</p>
-                <p className="text-xl font-semibold text-accent">{formatCurrency(filteredTotals.commission)}</p>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground font-medium">Commission Earned</p>
+                <p className="text-2xl font-semibold tracking-tight text-accent">{formatCurrency(filteredTotals.commission)}</p>
+                <p className="text-[10px] text-muted-foreground/70">Paid manually by finance</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
 
-        <Card className="bg-card/80 backdrop-blur-sm border-border/40">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center">
-                <Wallet className="h-4 w-4 text-muted-foreground" />
+            {/* Last Payout */}
+            <div className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-muted/80 flex items-center justify-center shrink-0">
+                <Wallet className="h-5 w-5 text-muted-foreground" />
               </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Last Payout</p>
-                <p className="text-sm font-medium text-muted-foreground">Pending</p>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground font-medium">Last Payout</p>
+                <p className="text-lg font-medium text-muted-foreground">Pending</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Filter Bar */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="flex gap-1">
-          {(["all", "30d", "7d"] as TimeRange[]).map((range) => (
-            <Button
-              key={range}
-              variant={timeRange === range ? "secondary" : "ghost"}
-              size="sm"
-              className="rounded-full h-8 px-3 text-xs"
-              onClick={() => setTimeRange(range)}
+      {/* Filter Bar - Segmented Control */}
+      <div className="flex items-center justify-between gap-4">
+        {/* Time Range Segmented Control */}
+        <div className="inline-flex items-center bg-muted/50 rounded-full p-1 border border-border/40">
+          {timeRangeOptions.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => setTimeRange(option.value)}
+              className={cn(
+                "px-3 py-1.5 text-xs font-medium rounded-full transition-all",
+                timeRange === option.value
+                  ? "bg-background text-foreground shadow-sm border border-border/60"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
-              {range === "all" ? "All time" : range === "30d" ? "Last 30 days" : "Last 7 days"}
-            </Button>
+              {option.label}
+            </button>
           ))}
         </div>
-        
-        <div className="flex items-center gap-2 ml-auto">
-          <Checkbox 
-            id="client-only" 
-            checked={clientEventsOnly}
-            onCheckedChange={(checked) => setClientEventsOnly(checked === true)}
-          />
-          <Label htmlFor="client-only" className="text-xs text-muted-foreground cursor-pointer">
-            Client Events only
-          </Label>
+
+        {/* Right side: Client Events toggle + Dev settings */}
+        <div className="flex items-center gap-2">
+          {/* Client Events Toggle Pill */}
+          <button
+            onClick={() => setClientEventsOnly(!clientEventsOnly)}
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-all border",
+              clientEventsOnly
+                ? "bg-accent/10 text-accent border-accent/30"
+                : "bg-muted/30 text-muted-foreground border-border/40 hover:bg-muted/50"
+            )}
+          >
+            <Briefcase className="h-3 w-3" />
+            Client Events
+          </button>
+
+          {/* Mock Data Toggle (Dev only) */}
+          {shouldUseMock && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                  <Settings2 className="h-4 w-4 text-muted-foreground" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-auto p-2">
+                <div className="flex items-center gap-2 text-xs text-amber-600">
+                  <Badge variant="outline" className="gap-1 text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
+                    Mock data active
+                  </Badge>
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
       </div>
 
@@ -332,7 +349,7 @@ export function ResellerSalesTab() {
         <h3 className="text-sm font-medium text-muted-foreground">Attributed Sales by Event</h3>
         
         {filteredSales.length === 0 ? (
-          <Card className="bg-card/50">
+          <Card className="bg-card/50 rounded-2xl">
             <CardContent className="py-8 text-center">
               <p className="text-sm text-muted-foreground">No sales match the current filters</p>
             </CardContent>
@@ -340,61 +357,105 @@ export function ResellerSalesTab() {
         ) : (
           <div className="space-y-2">
             {filteredSales.map((event) => (
-              <StandardHorizontalCard
-                key={event.eventId}
-                id={event.eventId}
-                screenId="SELL_AND_EARN_SALES"
-                icon={
-                  (event as any).eventImageUrl ? (
-                    <img 
-                      src={(event as any).eventImageUrl} 
-                      alt={event.eventTitle} 
-                      className="w-10 h-10 rounded-lg object-cover" 
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                      <Calendar className="h-5 w-5 text-accent" />
+              <Card 
+                key={event.eventId} 
+                className="bg-card/70 backdrop-blur-sm border-border/40 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    {/* Event Image */}
+                    {(event as any).eventImageUrl ? (
+                      <img 
+                        src={(event as any).eventImageUrl} 
+                        alt={event.eventTitle} 
+                        className="w-12 h-12 rounded-xl object-cover shrink-0" 
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                        <Calendar className="h-6 w-6 text-accent" />
+                      </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          {/* Title + Badge Row */}
+                          <div className="flex items-center gap-2 flex-wrap mb-1">
+                            <h4 className="font-semibold text-sm truncate">{event.eventTitle}</h4>
+                            {event.isClientEvent ? (
+                              <Badge 
+                                variant="outline" 
+                                className="text-[10px] px-1.5 py-0 h-5 rounded-md bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800 font-medium gap-1"
+                              >
+                                <Briefcase className="h-2.5 w-2.5" />
+                                Client Event
+                              </Badge>
+                            ) : (
+                              <Badge 
+                                variant="outline" 
+                                className="text-[10px] px-1.5 py-0 h-5 rounded-md font-medium"
+                              >
+                                Public Resale
+                              </Badge>
+                            )}
+                          </div>
+
+                          {/* Stats Line */}
+                          <p className="text-xs text-muted-foreground">
+                            {event.ticketsSold} tickets · {formatCurrency(event.saleAmount)} sales · {event.commissionRate}% commission
+                          </p>
+
+                          {/* Earned + Last Sale Line */}
+                          <div className="flex items-center gap-3 mt-1.5 text-xs">
+                            <span className="inline-flex items-center gap-1 text-accent font-medium">
+                              <Award className="h-3 w-3" />
+                              {formatCurrency(event.commissionAmount)} earned
+                            </span>
+                            <span className="inline-flex items-center gap-1 text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              Last sale {formatDistanceToNow(new Date(event.lastSaleAt), { addSuffix: false })} ago
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-1 shrink-0">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                className="h-8 w-8 rounded-full"
+                                onClick={() => {
+                                  setSelectedEventForSell({
+                                    id: event.eventId,
+                                    title: event.eventTitle,
+                                    image_url: (event as any).eventImageUrl,
+                                  });
+                                }}
+                              >
+                                <Share2 className="h-4 w-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>Share reseller link</TooltipContent>
+                          </Tooltip>
+
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="h-8 px-3 rounded-full text-xs gap-1"
+                            onClick={() => setSelectedEvent(event)}
+                          >
+                            View details
+                            <ChevronRight className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
                     </div>
-                  )
-                }
-                title={event.eventTitle}
-                description={`${event.ticketsSold} tickets · ${formatCurrency(event.saleAmount)} sales · ${event.commissionRate}% commission`}
-                badges={[
-                  event.isClientEvent 
-                    ? { label: "Client Event", variant: "outline" as const, icon: <Briefcase className="h-3 w-3" /> }
-                    : { label: "Public Resale", variant: "outline" as const }
-                ]}
-                metadata={[
-                  { icon: <Award className="h-3.5 w-3.5 text-accent" />, text: `${formatCurrency(event.commissionAmount)} earned` },
-                  { icon: <Clock className="h-3.5 w-3.5" />, text: formatDistanceToNow(new Date(event.lastSaleAt), { addSuffix: true }) }
-                ]}
-                primaryAction={{
-                  label: "View details",
-                  onClick: () => setSelectedEvent(event),
-                  variant: "ghost",
-                  icon: <ChevronRight className="h-3.5 w-3.5" />
-                }}
-                secondaryActions={[
-                  {
-                    label: "Share reseller link",
-                    onClick: () => {
-                      setSelectedEventForSell({
-                        id: event.eventId,
-                        title: event.eventTitle,
-                        image_url: (event as any).eventImageUrl,
-                      });
-                    },
-                    icon: <Share2 className="h-3.5 w-3.5" />,
-                  },
-                  {
-                    label: "View event",
-                    onClick: () => navigate(`/comm/events-meetups?event=${event.eventId}`),
-                    icon: <Eye className="h-3.5 w-3.5" />,
-                  },
-                ]}
-                layoutMode="stack"
-                density="compact"
-              />
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
@@ -406,6 +467,62 @@ export function ResellerSalesTab() {
         onOpenChange={(open) => !open && setSelectedEvent(null)}
         event={selectedEvent}
         useMock={shouldUseMock}
+      />
+
+      {/* Event Picker Dialog (for share reseller link) */}
+      <Dialog open={showEventPicker} onOpenChange={setShowEventPicker}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Select an event to share</DialogTitle>
+            <DialogDescription>Pick an event to generate your reseller link</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 max-h-[400px] overflow-y-auto">
+            {isLoadingEvents ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+              </div>
+            ) : resellableEvents && resellableEvents.length > 0 ? (
+              resellableEvents.map((event) => (
+                <button
+                  key={event.id}
+                  onClick={() => handleSelectEvent(event)}
+                  className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-muted/50 transition-colors text-left"
+                >
+                  {event.image_url ? (
+                    <img src={event.image_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                      <Calendar className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{event.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {event.start_time && format(new Date(event.start_time), "MMM d, yyyy")}
+                      {event.default_reseller_commission_rate && ` · ${event.default_reseller_commission_rate}% commission`}
+                    </p>
+                  </div>
+                </button>
+              ))
+            ) : (
+              <p className="text-center text-sm text-muted-foreground py-8">
+                No events available to sell
+              </p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <SellEventModal
+        open={!!selectedEventForSell}
+        onOpenChange={(open) => !open && setSelectedEventForSell(null)}
+        event={selectedEventForSell}
+        resellerCode={resellerProfile?.reseller_code || ""}
+      />
+
+      <CampaignDialog
+        open={showCampaignDialog}
+        onOpenChange={setShowCampaignDialog}
       />
     </div>
   );
