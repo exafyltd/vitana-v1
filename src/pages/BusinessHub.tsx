@@ -2,7 +2,7 @@ import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Badge } from "@/components/ui/badge";
-import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+
 import { Plus, Plane } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -160,49 +160,30 @@ export default function BusinessHub() {
             </Button>
           </UtilityActionButton>
 
-          {/* Main Tab Navigation - 5 Tabs */}
-          <SplitBar value={activeTab} onValueChange={handleTabChange} className="w-full mb-6">
-            <SplitBarList>
-              <SplitBarTrigger value="overview">📊 Overview</SplitBarTrigger>
-              <SplitBarTrigger value="services">💼 Services</SplitBarTrigger>
-              <SplitBarTrigger value="clients">👥 Clients</SplitBarTrigger>
-              {isReseller && (
-                <SplitBarTrigger value="sell-earn">🎫 Sell & Earn</SplitBarTrigger>
-              )}
-              <SplitBarTrigger value="analytics">📈 Analytics</SplitBarTrigger>
-            </SplitBarList>
+          {/* Tab Content - Rendered based on active route */}
+          {activeTab === "overview" && (
+            <BusinessHubOverview 
+              onCreateService={() => setShowCreateService(true)}
+              onCreateEvent={() => setShowCreatePopup(true)}
+              onCreateCampaign={() => setShowCampaignDialog(true)}
+            />
+          )}
 
-            {/* Overview Tab */}
-            <SplitBarContent value="overview">
-              <BusinessHubOverview 
-                onCreateService={() => setShowCreateService(true)}
-                onCreateEvent={() => setShowCreatePopup(true)}
-                onCreateCampaign={() => setShowCampaignDialog(true)}
-              />
-            </SplitBarContent>
+          {activeTab === "services" && (
+            <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
+          )}
 
-            {/* Services Tab */}
-            <SplitBarContent value="services">
-              <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
-            </SplitBarContent>
+          {activeTab === "clients" && (
+            <ClientsSubTabs />
+          )}
 
-            {/* Clients Tab */}
-            <SplitBarContent value="clients">
-              <ClientsSubTabs />
-            </SplitBarContent>
+          {activeTab === "sell-earn" && isReseller && (
+            <SellAndEarnSubTabs />
+          )}
 
-            {/* Sell & Earn Tab (Reseller Only) */}
-            {isReseller && (
-              <SplitBarContent value="sell-earn">
-                <SellAndEarnSubTabs />
-              </SplitBarContent>
-            )}
-
-            {/* Analytics Tab */}
-            <SplitBarContent value="analytics">
-              <AnalyticsSubTabs />
-            </SplitBarContent>
-          </SplitBar>
+          {activeTab === "analytics" && (
+            <AnalyticsSubTabs />
+          )}
         </div>
       </div>
 
