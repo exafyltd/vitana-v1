@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, FlaskConical, Clock } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, FlaskConical, Clock, Eye, MoreHorizontal } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { SalesDetailDrawer } from "./SalesDetailDrawer";
 import { SellEventModal } from "./SellEventModal";
@@ -24,6 +25,7 @@ import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card
 type TimeRange = "all" | "30d" | "7d";
 
 export function ResellerSalesTab() {
+  const navigate = useNavigate();
   const { data: sales, isLoading } = useResellerSales();
   const { data: resellerProfile } = useResellerProfile();
   
@@ -343,9 +345,17 @@ export function ResellerSalesTab() {
                 id={event.eventId}
                 screenId="SELL_AND_EARN_SALES"
                 icon={
-                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
-                  </div>
+                  (event as any).eventImageUrl ? (
+                    <img 
+                      src={(event as any).eventImageUrl} 
+                      alt={event.eventTitle} 
+                      className="w-10 h-10 rounded-lg object-cover" 
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                      <Calendar className="h-5 w-5 text-accent" />
+                    </div>
+                  )
                 }
                 title={event.eventTitle}
                 description={`${event.ticketsSold} tickets · ${formatCurrency(event.saleAmount)} sales · ${event.commissionRate}% commission`}
@@ -364,6 +374,24 @@ export function ResellerSalesTab() {
                   variant: "ghost",
                   icon: <ChevronRight className="h-3.5 w-3.5" />
                 }}
+                secondaryActions={[
+                  {
+                    label: "Share reseller link",
+                    onClick: () => {
+                      setSelectedEventForSell({
+                        id: event.eventId,
+                        title: event.eventTitle,
+                        image_url: (event as any).eventImageUrl,
+                      });
+                    },
+                    icon: <Share2 className="h-3.5 w-3.5" />,
+                  },
+                  {
+                    label: "View event",
+                    onClick: () => navigate(`/comm/events-meetups?event=${event.eventId}`),
+                    icon: <Eye className="h-3.5 w-3.5" />,
+                  },
+                ]}
                 layoutMode="stack"
                 density="compact"
               />
