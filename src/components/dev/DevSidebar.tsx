@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { PlatformIconsRow } from "./PlatformIconsRow";
+import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 
 const DEV_NAV_ITEMS = [
   { title: "Home", url: "/dev/dashboard", icon: Home },
@@ -95,6 +96,9 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
 
   const footerContent = (
     <>
+      {/* Soundscape Control */}
+      <SoundscapeControl />
+      
       {/* User Profile */}
       {open ? (
         <ProfileDrawer
