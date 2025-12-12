@@ -376,13 +376,14 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       setIsMuted(false);
       localStorage.setItem('soundscape_muted', 'false');
     } else {
-      // MUTE - silence but keep playing
-      console.log('[Soundscape] Muting, keeping playback active');
+      // MUTE - silence but keep playing, also kill orphaned audio
+      console.log('[Soundscape] Muting, keeping playback active, killing orphans');
       audioRef.current.muted = true;
+      killOrphanedAudio();
       setIsMuted(true);
       localStorage.setItem('soundscape_muted', 'true');
     }
-  }, []);
+  }, [killOrphanedAudio]);
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
     console.log('[Soundscape] handoffAudio called with external audio:', {
@@ -469,11 +470,19 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
 
   const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
     if (audioRef.current) {
-      // Force unmute for fresh start on entry screens
-      console.log('[Soundscape] startFresh: forcing unmute and starting playback');
-      audioRef.current.muted = false;
-      setIsMuted(false);
-      localStorage.setItem('soundscape_muted', 'false');
+      // Check if user explicitly muted - respect that preference!
+      const savedMuted = localStorage.getItem('soundscape_muted');
+      const shouldBeMuted = savedMuted === 'true';
+      
+      if (shouldBeMuted) {
+        console.log('[Soundscape] startFresh: respecting user mute preference');
+        audioRef.current.muted = true;
+        setIsMuted(true);
+      } else {
+        console.log('[Soundscape] startFresh: starting unmuted');
+        audioRef.current.muted = false;
+        setIsMuted(false);
+      }
       
       // Set volume
       audioRef.current.volume = initialVolume;
