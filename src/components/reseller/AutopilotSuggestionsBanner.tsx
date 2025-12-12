@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { Sparkles, X, ChevronRight, Calendar, TrendingUp, Rocket } from "lucide-react";
+import { Plane, X, ChevronRight, Calendar, TrendingUp, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useResellerEventStats } from "@/hooks/useResellerEvents";
@@ -120,7 +120,7 @@ export function AutopilotSuggestionsBanner() {
       <div className="flex items-start gap-4">
         {/* Icon in soft pill */}
         <div className={`p-3 rounded-xl ${iconBgMap[activeSuggestion.type]} shadow-sm flex-shrink-0`}>
-          <Sparkles className={`h-5 w-5 ${accentColorMap[activeSuggestion.type]}`} />
+          <Plane className={`h-5 w-5 ${accentColorMap[activeSuggestion.type]}`} />
         </div>
 
         <div className="flex-1 min-w-0 pr-8">
