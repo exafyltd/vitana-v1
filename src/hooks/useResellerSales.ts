@@ -31,6 +31,16 @@ export interface ResellerSalesSummary {
   saleAmount30Days: number;
   commission30Days: number;
   eventSales: ResellerEventSale[];
+  // Payout-related fields
+  commissionPaidToWallet: number;
+  commissionPendingPayout: number;
+  lastPayout: {
+    id: string;
+    amount: number;
+    status: string;
+    paid_at: string | null;
+    created_at: string;
+  } | null;
 }
 
 export function useResellerSales() {
@@ -48,10 +58,13 @@ export function useResellerSales() {
           saleAmount30Days: 0,
           commission30Days: 0,
           eventSales: [],
+          commissionPaidToWallet: 0,
+          commissionPendingPayout: 0,
+          lastPayout: null,
         };
       }
 
-      // Fetch all attributions for this reseller
+      // Fetch all attributions for this reseller (with payout info)
       const { data: attributions, error: attrError } = await supabase
         .from("reseller_attributions")
         .select(`
@@ -61,9 +74,17 @@ export function useResellerSales() {
           commission_amount,
           commission_rate,
           created_at,
-          ticket_purchase_id
+          ticket_purchase_id,
+          payout_id
         `)
         .eq("reseller_id", resellerProfile.id)
+        .order("created_at", { ascending: false });
+      
+      // Fetch payouts for this reseller
+      const { data: payouts } = await supabase
+        .from("reseller_payouts")
+        .select("*")
+        .eq("reseller_profile_id", resellerProfile.id)
         .order("created_at", { ascending: false });
 
       if (attrError) {
@@ -72,6 +93,13 @@ export function useResellerSales() {
       }
 
       if (!attributions || attributions.length === 0) {
+        // Calculate payout stats even if no attributions
+        const validPayouts = (payouts || []) as any[];
+        const paidToWallet = validPayouts
+          .filter((p) => p.status === "paid_to_wallet")
+          .reduce((sum: number, p: any) => sum + Number(p.total_commission_amount), 0);
+        const lastPaidPayout = validPayouts.find((p) => p.status === "paid_to_wallet");
+        
         return {
           totalTicketsSold: 0,
           totalSaleAmount: 0,
@@ -80,6 +108,15 @@ export function useResellerSales() {
           saleAmount30Days: 0,
           commission30Days: 0,
           eventSales: [],
+          commissionPaidToWallet: paidToWallet,
+          commissionPendingPayout: 0,
+          lastPayout: lastPaidPayout ? {
+            id: lastPaidPayout.id,
+            amount: Number(lastPaidPayout.total_commission_amount),
+            status: lastPaidPayout.status,
+            paid_at: lastPaidPayout.paid_at,
+            created_at: lastPaidPayout.created_at,
+          } : null,
         };
       }
 
@@ -195,6 +232,19 @@ export function useResellerSales() {
       // Sort by commission earned (highest first)
       eventSales.sort((a, b) => b.commissionAmount - a.commissionAmount);
 
+      // Calculate payout-related fields
+      const validPayouts = (payouts || []) as any[];
+      const paidToWallet = validPayouts
+        .filter((p) => p.status === "paid_to_wallet")
+        .reduce((sum: number, p: any) => sum + Number(p.total_commission_amount), 0);
+      
+      // Calculate pending: attributions without payout_id, or with pending/approved payout
+      const pendingPayout = attributions
+        .filter((attr) => !attr.payout_id)
+        .reduce((sum, attr) => sum + (Number(attr.commission_amount) || 0), 0);
+      
+      const lastPaidPayout = validPayouts.find((p) => p.status === "paid_to_wallet");
+
       return {
         totalTicketsSold,
         totalSaleAmount,
@@ -203,6 +253,15 @@ export function useResellerSales() {
         saleAmount30Days,
         commission30Days,
         eventSales,
+        commissionPaidToWallet: paidToWallet,
+        commissionPendingPayout: pendingPayout,
+        lastPayout: lastPaidPayout ? {
+          id: lastPaidPayout.id,
+          amount: Number(lastPaidPayout.total_commission_amount),
+          status: lastPaidPayout.status,
+          paid_at: lastPaidPayout.paid_at,
+          created_at: lastPaidPayout.created_at,
+        } : null,
       };
     },
     enabled: !!resellerProfile?.id,
