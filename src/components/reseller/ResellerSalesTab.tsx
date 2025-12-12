@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, FlaskConical } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, FlaskConical, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SalesDetailDrawer } from "./SalesDetailDrawer";
 import { SellEventModal } from "./SellEventModal";
@@ -19,6 +19,7 @@ import {
   isMockResellerSalesEnabled,
   type MockEventSale 
 } from "@/lib/mocks/mockResellerSales";
+import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 
 type TimeRange = "all" | "30d" | "7d";
 
@@ -337,70 +338,35 @@ export function ResellerSalesTab() {
         ) : (
           <div className="space-y-2">
             {filteredSales.map((event) => (
-              <Card 
-                key={event.eventId} 
-                className="bg-card/80 backdrop-blur-sm border-border/40 hover:border-border/60 transition-colors"
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    {/* Event thumbnail placeholder */}
-                    <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                      <Calendar className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    
-                    <div className="flex-1 min-w-0 space-y-2">
-                      {/* Title and badges */}
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="space-y-1">
-                          <h4 className="font-medium leading-tight">{event.eventTitle}</h4>
-                          {event.eventDate && (
-                            <p className="text-xs text-muted-foreground">
-                              {format(new Date(event.eventDate), "MMM d, yyyy")}
-                            </p>
-                          )}
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground"
-                          onClick={() => setSelectedEvent(event)}
-                        >
-                          View details
-                          <ChevronRight className="h-3 w-3 ml-1" />
-                        </Button>
-                      </div>
-                      
-                      {/* Badges */}
-                      <div className="flex items-center gap-2 flex-wrap">
-                        {event.isClientEvent && (
-                          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 text-xs gap-1 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
-                            <Briefcase className="h-3 w-3" />
-                            Client Event
-                          </Badge>
-                        )}
-                        {!event.isClientEvent && (
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-800">
-                            Public Resale
-                          </Badge>
-                        )}
-                      </div>
-                      
-                      {/* Stats */}
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
-                        <span><span className="font-medium text-foreground">{event.ticketsSold}</span> tickets</span>
-                        <span><span className="font-medium text-foreground">{formatCurrency(event.saleAmount)}</span> sales</span>
-                        <span><span className="font-medium text-foreground">{event.commissionRate}%</span> commission</span>
-                        <span className="font-medium text-accent">{formatCurrency(event.commissionAmount)} earned</span>
-                      </div>
-                      
-                      {/* Last sale */}
-                      <p className="text-xs text-muted-foreground">
-                        Last sale: {formatDistanceToNow(new Date(event.lastSaleAt), { addSuffix: true })}
-                      </p>
-                    </div>
+              <StandardHorizontalCard
+                key={event.eventId}
+                id={event.eventId}
+                screenId="SELL_AND_EARN_SALES"
+                icon={
+                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-muted-foreground" />
                   </div>
-                </CardContent>
-              </Card>
+                }
+                title={event.eventTitle}
+                description={`${event.ticketsSold} tickets · ${formatCurrency(event.saleAmount)} sales · ${event.commissionRate}% commission`}
+                badges={[
+                  event.isClientEvent 
+                    ? { label: "Client Event", variant: "outline" as const, icon: <Briefcase className="h-3 w-3" /> }
+                    : { label: "Public Resale", variant: "outline" as const }
+                ]}
+                metadata={[
+                  { icon: <Award className="h-3.5 w-3.5 text-accent" />, text: `${formatCurrency(event.commissionAmount)} earned` },
+                  { icon: <Clock className="h-3.5 w-3.5" />, text: formatDistanceToNow(new Date(event.lastSaleAt), { addSuffix: true }) }
+                ]}
+                primaryAction={{
+                  label: "View details",
+                  onClick: () => setSelectedEvent(event),
+                  variant: "ghost",
+                  icon: <ChevronRight className="h-3.5 w-3.5" />
+                }}
+                layoutMode="stack"
+                density="compact"
+              />
             ))}
           </div>
         )}
