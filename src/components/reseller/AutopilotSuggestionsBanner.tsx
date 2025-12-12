@@ -1,17 +1,11 @@
 /**
  * AUTOPILOT SUGGESTIONS BANNER
  * 
- * Displays AI-powered suggestions for resellers/producers to optimize their sales.
- * Suggestions are based on:
- * - Upcoming event timing (e.g., "Your event starts in 5 days")
- * - Sales velocity (e.g., "Ticket sales are low")
- * - Trending opportunities (e.g., "Top trending event to resell")
- * 
- * Pressing "Apply suggestion" triggers autopilot.runSuggestion() with context.
+ * Premium glassy insight card for reseller suggestions.
  */
 
 import { useState, useEffect } from "react";
-import { Sparkles, X, ChevronRight, Calendar, TrendingUp, AlertTriangle } from "lucide-react";
+import { Sparkles, X, ChevronRight, Calendar, TrendingUp, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useResellerEventStats } from "@/hooks/useResellerEvents";
@@ -45,8 +39,8 @@ export function AutopilotSuggestionsBanner() {
         suggestions.push({
           id: "event-soon",
           type: "timing",
-          title: `Your event starts in ${daysUntil} day${daysUntil > 1 ? 's' : ''}`,
-          description: "Consider launching a campaign to boost last-minute ticket sales.",
+          title: `Event starting in ${daysUntil} day${daysUntil > 1 ? 's' : ''}`,
+          description: "Launch a quick campaign to maximize last-minute ticket sales.",
           icon: <Calendar className="h-4 w-4" />,
           actionLabel: "Create Campaign",
           payload: { action: "create_campaign", context: "upcoming_event" }
@@ -54,15 +48,15 @@ export function AutopilotSuggestionsBanner() {
       }
     }
 
-    // Suggestion: Low ticket sales
+    // Suggestion: Low ticket sales - softer messaging
     if (stats.totalEvents > 0 && stats.ticketsSold30Days < 5) {
       suggestions.push({
         id: "low-sales",
         type: "sales",
-        title: "Ticket sales are low",
-        description: "Boost visibility with a targeted promotion or social media campaign.",
-        icon: <AlertTriangle className="h-4 w-4" />,
-        actionLabel: "Boost Visibility",
+        title: "Boost ticket momentum",
+        description: "Launch a targeted promotion or share to social in 1 click.",
+        icon: <Rocket className="h-4 w-4" />,
+        actionLabel: "Create Promotion",
         payload: { action: "boost_visibility", context: "low_sales" }
       });
     }
@@ -72,7 +66,7 @@ export function AutopilotSuggestionsBanner() {
       suggestions.push({
         id: "multi-event",
         type: "opportunity",
-        title: "You have multiple upcoming events",
+        title: "Multiple events ready to promote",
         description: "Create a series campaign to promote all events together.",
         icon: <TrendingUp className="h-4 w-4" />,
         actionLabel: "Create Series",
@@ -88,8 +82,6 @@ export function AutopilotSuggestionsBanner() {
   const handleApplySuggestion = () => {
     if (!activeSuggestion) return;
     
-    // Run autopilot action (frontend only for now)
-    // Note: In future, this will trigger actual autopilot execution
     console.log("Autopilot suggestion applied:", activeSuggestion.payload);
     toast.success(`Applying: ${activeSuggestion.actionLabel}`);
     setDismissed(prev => [...prev, activeSuggestion.id]);
@@ -103,45 +95,56 @@ export function AutopilotSuggestionsBanner() {
 
   if (!activeSuggestion) return null;
 
-  const iconColorMap = {
-    timing: "text-blue-500",
-    sales: "text-amber-500", 
-    opportunity: "text-emerald-500"
+  const accentColorMap = {
+    timing: "text-blue-600 dark:text-blue-400",
+    sales: "text-primary", 
+    opportunity: "text-emerald-600 dark:text-emerald-400"
   };
 
-  const bgColorMap = {
-    timing: "from-blue-50 to-cyan-50 border-blue-200/50 dark:from-blue-950/30 dark:to-cyan-950/30 dark:border-blue-800/50",
-    sales: "from-amber-50 to-orange-50 border-amber-200/50 dark:from-amber-950/30 dark:to-orange-950/30 dark:border-amber-800/50",
-    opportunity: "from-emerald-50 to-green-50 border-emerald-200/50 dark:from-emerald-950/30 dark:to-green-950/30 dark:border-emerald-800/50"
+  const iconBgMap = {
+    timing: "bg-blue-100/80 dark:bg-blue-900/30",
+    sales: "bg-primary/10", 
+    opportunity: "bg-emerald-100/80 dark:bg-emerald-900/30"
   };
 
   return (
-    <div className={`relative bg-gradient-to-r ${bgColorMap[activeSuggestion.type]} rounded-2xl p-4 border mb-4`}>
+    <div className="relative bg-white/70 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.06)] p-5">
+      {/* Dismiss button */}
       <button 
         onClick={handleDismiss}
-        className="absolute top-3 right-3 p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+        className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-muted/50 transition-colors"
       >
-        <X className="h-4 w-4 text-muted-foreground" />
+        <X className="h-4 w-4 text-muted-foreground/60" />
       </button>
 
-      <div className="flex items-start gap-3">
-        <div className="p-2 rounded-xl bg-red-100 dark:bg-red-900/30 flex-shrink-0">
-          <Sparkles className="h-5 w-5 text-red-500" />
+      <div className="flex items-start gap-4">
+        {/* Icon in soft pill */}
+        <div className={`p-3 rounded-xl ${iconBgMap[activeSuggestion.type]} shadow-sm flex-shrink-0`}>
+          <Sparkles className={`h-5 w-5 ${accentColorMap[activeSuggestion.type]}`} />
         </div>
 
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 pr-8">
+          {/* Label */}
+          <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-1 block">
+            Autopilot Suggestion
+          </span>
+          
+          {/* Title with icon */}
           <div className="flex items-center gap-2 mb-1">
-            <span className={iconColorMap[activeSuggestion.type]}>
+            <span className={accentColorMap[activeSuggestion.type]}>
               {activeSuggestion.icon}
             </span>
-            <h4 className="font-semibold text-foreground">{activeSuggestion.title}</h4>
+            <h4 className="font-medium text-foreground">{activeSuggestion.title}</h4>
           </div>
+          
+          {/* Description */}
           <p className="text-sm text-muted-foreground">{activeSuggestion.description}</p>
         </div>
 
+        {/* CTA Button */}
         <Button 
           size="sm" 
-          className="flex-shrink-0 gap-1"
+          className="flex-shrink-0 gap-1.5 rounded-xl shadow-sm"
           onClick={handleApplySuggestion}
         >
           {activeSuggestion.actionLabel}
