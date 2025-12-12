@@ -1,9 +1,10 @@
 import { useState, useMemo } from "react";
 import { useResellerSales, ResellerEventSale } from "@/hooks/useResellerSales";
+import { useResellerPayouts } from "@/hooks/useResellerPayouts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, Clock, Eye, Settings2 } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, Clock, Eye, Settings2, ArrowDownToLine, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { SalesDetailDrawer } from "./SalesDetailDrawer";
@@ -22,6 +23,7 @@ import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { TransferToWalletDialog } from "./TransferToWalletDialog";
 
 type TimeRange = "all" | "30d" | "7d";
 
@@ -29,6 +31,7 @@ export function ResellerSalesTab() {
   const navigate = useNavigate();
   const { data: sales, isLoading } = useResellerSales();
   const { data: resellerProfile } = useResellerProfile();
+  const { transferToWallet, isTransferring } = useResellerPayouts();
   
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
   const [clientEventsOnly, setClientEventsOnly] = useState(false);
@@ -38,6 +41,7 @@ export function ResellerSalesTab() {
   const [showEventPicker, setShowEventPicker] = useState(false);
   const [showCampaignDialog, setShowCampaignDialog] = useState(false);
   const [selectedEventForSell, setSelectedEventForSell] = useState<{ id: string; title: string; image_url?: string | null } | null>(null);
+  const [showTransferDialog, setShowTransferDialog] = useState(false);
 
   // Mock mode detection
   const mockEnabled = isMockResellerSalesEnabled();
@@ -52,6 +56,15 @@ export function ResellerSalesTab() {
         totalSaleAmount: mockResellerSales.totalSaleAmount,
         totalCommissionEarned: mockResellerSales.totalCommissionEarned,
         eventSales: mockResellerSales.eventSales as unknown as ResellerEventSale[],
+        commissionPaidToWallet: 200,
+        commissionPendingPayout: 112.50,
+        lastPayout: {
+          id: "mock-payout-1",
+          amount: 200,
+          status: "paid_to_wallet",
+          paid_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        },
       };
     }
     return sales;
@@ -239,28 +252,6 @@ export function ResellerSalesTab() {
       <Card className="bg-card/70 backdrop-blur-sm border-border/40 rounded-2xl shadow-sm overflow-hidden">
         <CardContent className="p-0">
           <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/40">
-            {/* Tickets Sold */}
-            <div className="p-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-muted/80 flex items-center justify-center shrink-0">
-                <Ticket className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">Tickets Sold</p>
-                <p className="text-2xl font-semibold tracking-tight">{filteredTotals.ticketsSold}</p>
-              </div>
-            </div>
-
-            {/* Gross Sales */}
-            <div className="p-4 flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-muted/80 flex items-center justify-center shrink-0">
-                <DollarSign className="h-5 w-5 text-muted-foreground" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs text-muted-foreground font-medium">Gross Sales</p>
-                <p className="text-2xl font-semibold tracking-tight">{formatCurrency(filteredTotals.grossSales)}</p>
-              </div>
-            </div>
-
             {/* Commission Earned - Accent Styling */}
             <div className="p-4 flex items-center gap-3 relative">
               <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-accent/80 to-accent/40" />
@@ -270,23 +261,74 @@ export function ResellerSalesTab() {
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground font-medium">Commission Earned</p>
                 <p className="text-2xl font-semibold tracking-tight text-accent">{formatCurrency(filteredTotals.commission)}</p>
-                <p className="text-[10px] text-muted-foreground/70">Paid manually by finance</p>
+              </div>
+            </div>
+
+            {/* Pending Payout */}
+            <div className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-amber-100/80 dark:bg-amber-950/40 flex items-center justify-center shrink-0">
+                <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground font-medium">Pending Payout</p>
+                <p className="text-2xl font-semibold tracking-tight text-amber-600 dark:text-amber-400">
+                  {formatCurrency(activeSales?.commissionPendingPayout || 0)}
+                </p>
+              </div>
+            </div>
+
+            {/* In Wallet */}
+            <div className="p-4 flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/40 flex items-center justify-center shrink-0">
+                <Wallet className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground font-medium">In Wallet</p>
+                <p className="text-2xl font-semibold tracking-tight text-emerald-600 dark:text-emerald-400">
+                  {formatCurrency(activeSales?.commissionPaidToWallet || 0)}
+                </p>
               </div>
             </div>
 
             {/* Last Payout */}
             <div className="p-4 flex items-center gap-3">
               <div className="h-10 w-10 rounded-xl bg-muted/80 flex items-center justify-center shrink-0">
-                <Wallet className="h-5 w-5 text-muted-foreground" />
+                <ArrowDownToLine className="h-5 w-5 text-muted-foreground" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs text-muted-foreground font-medium">Last Payout</p>
-                <p className="text-lg font-medium text-muted-foreground">Pending</p>
+                {activeSales?.lastPayout ? (
+                  <>
+                    <p className="text-lg font-semibold tracking-tight">
+                      {formatCurrency(activeSales.lastPayout.amount)}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {formatDistanceToNow(new Date(activeSales.lastPayout.paid_at || activeSales.lastPayout.created_at), { addSuffix: true })}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-lg font-medium text-muted-foreground/60">No payouts yet</p>
+                )}
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* View in Wallet link */}
+      {(activeSales?.commissionPaidToWallet || 0) > 0 && (
+        <div className="flex justify-end">
+          <Button
+            variant="link"
+            size="sm"
+            className="text-xs text-muted-foreground hover:text-foreground gap-1 h-auto p-0"
+            onClick={() => navigate("/wallet?filter=reseller_commission")}
+          >
+            View in Wallet
+            <ChevronRight className="h-3 w-3" />
+          </Button>
+        </div>
+      )}
 
       {/* Filter Bar - Segmented Control */}
       <div className="flex items-center justify-between gap-4">
@@ -308,8 +350,24 @@ export function ResellerSalesTab() {
           ))}
         </div>
 
-        {/* Right side: Client Events toggle + Dev settings */}
+        {/* Right side: Transfer to Wallet + Client Events toggle + Dev settings */}
         <div className="flex items-center gap-2">
+          {/* Transfer to Wallet CTA */}
+          {(activeSales?.commissionPendingPayout || 0) > 0 && (
+            <Button
+              size="sm"
+              className="rounded-full gap-1.5 bg-accent hover:bg-accent/90"
+              onClick={() => setShowTransferDialog(true)}
+              disabled={isTransferring}
+            >
+              {isTransferring ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Wallet className="h-3.5 w-3.5" />
+              )}
+              Transfer to Wallet
+            </Button>
+          )}
           {/* Client Events Toggle Pill */}
           <button
             onClick={() => setClientEventsOnly(!clientEventsOnly)}
@@ -523,6 +581,17 @@ export function ResellerSalesTab() {
       <CampaignDialog
         open={showCampaignDialog}
         onOpenChange={setShowCampaignDialog}
+      />
+
+      <TransferToWalletDialog
+        open={showTransferDialog}
+        onOpenChange={setShowTransferDialog}
+        pendingAmount={activeSales?.commissionPendingPayout || 0}
+        onConfirm={() => {
+          transferToWallet();
+          setShowTransferDialog(false);
+        }}
+        isLoading={isTransferring}
       />
     </div>
   );

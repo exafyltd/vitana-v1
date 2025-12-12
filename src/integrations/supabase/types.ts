@@ -5338,6 +5338,7 @@ export type Database = {
           event_id: string
           id: string
           paid_at: string | null
+          payout_id: string | null
           reseller_id: string
           sale_amount: number
           status: string
@@ -5353,6 +5354,7 @@ export type Database = {
           event_id: string
           id?: string
           paid_at?: string | null
+          payout_id?: string | null
           reseller_id: string
           sale_amount: number
           status?: string
@@ -5368,6 +5370,7 @@ export type Database = {
           event_id?: string
           id?: string
           paid_at?: string | null
+          payout_id?: string | null
           reseller_id?: string
           sale_amount?: number
           status?: string
@@ -5385,6 +5388,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "reseller_attributions_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "reseller_payouts"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "reseller_attributions_reseller_id_fkey"
             columns: ["reseller_id"]
             isOneToOne: false
@@ -5396,6 +5406,57 @@ export type Database = {
             columns: ["ticket_purchase_id"]
             isOneToOne: true
             referencedRelation: "event_ticket_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reseller_payouts: {
+        Row: {
+          created_at: string
+          currency: string
+          id: string
+          notes: string | null
+          paid_at: string | null
+          reseller_profile_id: string
+          status: string
+          total_commission_amount: number
+          wallet_transaction_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          reseller_profile_id: string
+          status?: string
+          total_commission_amount: number
+          wallet_transaction_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          id?: string
+          notes?: string | null
+          paid_at?: string | null
+          reseller_profile_id?: string
+          status?: string
+          total_commission_amount?: number
+          wallet_transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reseller_payouts_reseller_profile_id_fkey"
+            columns: ["reseller_profile_id"]
+            isOneToOne: false
+            referencedRelation: "reseller_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reseller_payouts_wallet_transaction_id_fkey"
+            columns: ["wallet_transaction_id"]
+            isOneToOne: false
+            referencedRelation: "wallet_transactions"
             referencedColumns: ["id"]
           },
         ]

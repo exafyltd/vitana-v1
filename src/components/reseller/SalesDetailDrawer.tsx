@@ -1,10 +1,13 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { format, formatDistanceToNow } from "date-fns";
-import { Calendar, Briefcase, Info, Receipt, Loader2 } from "lucide-react";
+import { Calendar, Briefcase, Info, Receipt, Loader2, Wallet, Clock, CheckCircle2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { mockTransactionsByEventId } from "@/lib/mocks/mockResellerSales";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface SalesDetailDrawerProps {
   open: boolean;
@@ -33,6 +36,7 @@ interface Transaction {
 
 export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesDetailDrawerProps) {
   const { data: resellerProfile } = useResellerProfile();
+  const navigate = useNavigate();
 
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["reseller-event-transactions", event?.eventId, resellerProfile?.id, useMock],
@@ -126,10 +130,41 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
             <p className="text-sm text-muted-foreground leading-relaxed">
               You earn <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
               Commission is calculated on gross ticket price before platform fees.
-            </p>
+          </p>
           </div>
 
-          {/* Transactions */}
+          {/* Payout Status */}
+          <div className="bg-muted/50 rounded-xl p-4 space-y-2">
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <Wallet className="h-4 w-4 text-muted-foreground" />
+              <span>Payout Status</span>
+            </div>
+            {useMock ? (
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800">
+                  <CheckCircle2 className="h-3 w-3 mr-1" />
+                  Paid to Wallet
+                </Badge>
+                <span className="text-xs text-muted-foreground">Sep 12, 2024</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
+                  <Clock className="h-3 w-3 mr-1" />
+                  Pending
+                </Badge>
+                <span className="text-xs text-muted-foreground">Included in next payout cycle</span>
+              </div>
+            )}
+            <Button
+              variant="link"
+              size="sm"
+              className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
+              onClick={() => navigate("/wallet?filter=reseller_commission")}
+            >
+              View in Wallet →
+            </Button>
+          </div>
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Receipt className="h-4 w-4 text-muted-foreground" />

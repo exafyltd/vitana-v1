@@ -149,3 +149,9 @@ verify_jwt = false
 
 [functions.og-campaign]
 verify_jwt = false
+
+[functions.create-reseller-payout]
+verify_jwt = true
+
+[functions.credit-reseller-payout]
+verify_jwt = true
