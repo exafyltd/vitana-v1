@@ -1,23 +1,22 @@
 /**
- * RESELLER HEADER
+ * RESELLER HEADER - KPI Cards
  * 
- * Displays 4 KPI cards for the reseller/producer dashboard:
- * 1. Upcoming Events - count + next event date + reseller code
- * 2. Tickets Sold (30 days) - recent ticket sales
- * 3. Revenue (30 days) - recent earnings
- * 4. Top Performing Event - best selling event with metrics
+ * Premium glassy KPI cards for reseller dashboard.
  */
 
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, Ticket, DollarSign, TrendingUp } from "lucide-react";
+import { CalendarDays, Ticket, DollarSign, TrendingUp, Copy, Check } from "lucide-react";
 import { useResellerEventStats, useResellerEvents } from "@/hooks/useResellerEvents";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { format } from "date-fns";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function ResellerHeader() {
   const { data: profile } = useResellerProfile();
   const { data: events = [] } = useResellerEvents();
   const stats = useResellerEventStats();
+  const [copied, setCopied] = useState(false);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -28,6 +27,15 @@ export function ResellerHeader() {
     }).format(amount);
   };
 
+  const handleCopyCode = () => {
+    if (profile?.reseller_code) {
+      navigator.clipboard.writeText(profile.reseller_code);
+      setCopied(true);
+      toast.success("Reseller code copied!");
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   // Find top performing event (highest gross revenue)
   const topEvent = events.reduce((best, event) => {
     if (!best || event.gross_revenue > best.gross_revenue) {
@@ -36,77 +44,94 @@ export function ResellerHeader() {
     return best;
   }, null as (typeof events)[0] | null);
 
+  const cardBase = "bg-white/70 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden";
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
       {/* Card 1: Upcoming Events + Reseller Code */}
-      <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+      <div className={cardBase}>
+        {/* Accent line */}
+        <div className="h-0.5 bg-gradient-to-r from-primary to-primary/50" />
         <CardContent className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
               <CalendarDays className="h-5 w-5 text-primary" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground">Upcoming Events</h3>
-              <p className="text-2xl font-bold text-primary">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-muted-foreground font-medium">Upcoming Events</p>
+              <p className="text-3xl font-bold text-foreground mt-1">
                 {stats.upcomingEventsCount}
               </p>
               {stats.nextEventDate && (
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-1">
                   Next: {format(new Date(stats.nextEventDate), "MMM d, yyyy")}
                 </p>
               )}
             </div>
           </div>
           {profile?.reseller_code && (
-            <div className="mt-3 pt-3 border-t border-primary/20">
-              <p className="text-xs text-muted-foreground">Your reseller code</p>
-              <p className="font-mono font-semibold text-primary">{profile.reseller_code}</p>
+            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/40">
+              <span className="text-xs text-muted-foreground">Reseller code</span>
+              <button 
+                onClick={handleCopyCode}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/50 hover:bg-muted transition-colors"
+              >
+                <span className="font-mono text-xs font-medium text-foreground">{profile.reseller_code}</span>
+                {copied ? (
+                  <Check className="h-3 w-3 text-emerald-500" />
+                ) : (
+                  <Copy className="h-3 w-3 text-muted-foreground" />
+                )}
+              </button>
             </div>
           )}
         </CardContent>
-      </Card>
+      </div>
 
       {/* Card 2: Tickets Sold (30 days) */}
-      <Card className="bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20">
+      <div className={cardBase}>
+        <div className="h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-500/50" />
         <CardContent className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-              <Ticket className="h-5 w-5 text-emerald-600" />
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+              <Ticket className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground">Tickets Sold</h3>
-              <p className="text-2xl font-bold text-emerald-600">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-muted-foreground font-medium">Tickets Sold</p>
+              <p className="text-3xl font-bold text-foreground mt-1">
                 {stats.ticketsSold30Days}
               </p>
-              <p className="text-xs text-muted-foreground">Last 30 days</p>
+              <p className="text-xs text-muted-foreground mt-1">Last 30 days</p>
             </div>
           </div>
         </CardContent>
-      </Card>
+      </div>
 
       {/* Card 3: Revenue (30 days) */}
-      <Card className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border-amber-500/20">
+      <div className={cardBase}>
+        <div className="h-0.5 bg-gradient-to-r from-amber-500 to-amber-500/50" />
         <CardContent className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-amber-500/20 flex items-center justify-center">
-              <DollarSign className="h-5 w-5 text-amber-600" />
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+              <DollarSign className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-foreground">Revenue</h3>
-              <p className="text-2xl font-bold text-amber-600">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-muted-foreground font-medium">Revenue</p>
+              <p className="text-3xl font-bold text-foreground mt-1">
                 {formatCurrency(stats.revenue30Days)}
               </p>
-              <p className="text-xs text-muted-foreground">Last 30 days</p>
+              <p className="text-xs text-muted-foreground mt-1">Last 30 days</p>
             </div>
           </div>
         </CardContent>
-      </Card>
+      </div>
 
       {/* Card 4: Top Performing Event */}
-      <Card className="bg-gradient-to-br from-purple-500/10 to-fuchsia-500/5 border-purple-500/20">
+      <div className={cardBase}>
+        <div className="h-0.5 bg-gradient-to-r from-purple-500 to-fuchsia-500/50" />
         <CardContent className="p-6">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-purple-500/20 flex items-center justify-center overflow-hidden">
+          <div className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
               {topEvent?.image_url ? (
                 <img 
                   src={topEvent.image_url} 
@@ -114,27 +139,35 @@ export function ResellerHeader() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <TrendingUp className="h-5 w-5 text-purple-600" />
+                <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-foreground">Top Performer</h3>
+              <p className="text-sm text-muted-foreground font-medium">Top Performer</p>
               {topEvent ? (
                 <>
-                  <p className="text-sm font-medium text-purple-600 truncate">
+                  <p className="text-sm font-medium text-foreground truncate mt-1">
                     {topEvent.title}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {topEvent.tickets_sold} tickets • {formatCurrency(topEvent.gross_revenue)}
-                  </p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-muted/50 text-xs text-muted-foreground">
+                      {topEvent.tickets_sold} tickets
+                    </span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-muted/50 text-xs text-muted-foreground">
+                      {formatCurrency(topEvent.gross_revenue)}
+                    </span>
+                  </div>
                 </>
               ) : (
-                <p className="text-sm text-muted-foreground">No events yet</p>
+                <div className="mt-1">
+                  <p className="text-sm font-medium text-foreground">No sales yet</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Share a link to start earning.</p>
+                </div>
               )}
             </div>
           </div>
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 }
