@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useResellerSales, ResellerEventSale } from "@/hooks/useResellerSales";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, FlaskConical } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { SalesDetailDrawer } from "./SalesDetailDrawer";
 import { SellEventModal } from "./SellEventModal";
@@ -14,6 +14,11 @@ import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { 
+  mockResellerSales, 
+  isMockResellerSalesEnabled,
+  type MockEventSale 
+} from "@/lib/mocks/mockResellerSales";
 
 type TimeRange = "all" | "30d" | "7d";
 
@@ -29,6 +34,24 @@ export function ResellerSalesTab() {
   const [showEventPicker, setShowEventPicker] = useState(false);
   const [showCampaignDialog, setShowCampaignDialog] = useState(false);
   const [selectedEventForSell, setSelectedEventForSell] = useState<{ id: string; title: string; image_url?: string | null } | null>(null);
+
+  // Mock mode detection
+  const mockEnabled = isMockResellerSalesEnabled();
+  const hasRealSales = sales && sales.eventSales && sales.eventSales.length > 0;
+  const shouldUseMock = mockEnabled && !hasRealSales;
+  
+  // Use mock data as fallback when enabled and no real sales
+  const activeSales = useMemo(() => {
+    if (shouldUseMock) {
+      return {
+        totalTicketsSold: mockResellerSales.totalTicketsSold,
+        totalSaleAmount: mockResellerSales.totalSaleAmount,
+        totalCommissionEarned: mockResellerSales.totalCommissionEarned,
+        eventSales: mockResellerSales.eventSales as unknown as ResellerEventSale[],
+      };
+    }
+    return sales;
+  }, [shouldUseMock, sales]);
 
   // Fetch resellable events for event picker
   const { data: resellableEvents, isLoading: isLoadingEvents } = useQuery({
@@ -58,9 +81,9 @@ export function ResellerSalesTab() {
 
   // Filter sales based on time range and client events toggle
   const getFilteredSales = () => {
-    if (!sales?.eventSales) return [];
+    if (!activeSales?.eventSales) return [];
     
-    let filtered = [...sales.eventSales];
+    let filtered = [...activeSales.eventSales];
     
     // Filter by client events
     if (clientEventsOnly) {
@@ -102,7 +125,7 @@ export function ResellerSalesTab() {
     setShowEventPicker(false);
   };
 
-  if (isLoading) {
+  if (isLoading && !shouldUseMock) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -110,8 +133,8 @@ export function ResellerSalesTab() {
     );
   }
 
-  // Empty state
-  if (!sales || sales.eventSales.length === 0) {
+  // Empty state (only show if not using mock data)
+  if (!activeSales || activeSales.eventSales.length === 0) {
     return (
       <div className="space-y-6">
         <div className="text-center py-16">
@@ -202,6 +225,16 @@ export function ResellerSalesTab() {
 
   return (
     <div className="space-y-6">
+      {/* Mock Data Badge */}
+      {shouldUseMock && (
+        <div className="flex justify-end">
+          <Badge variant="outline" className="gap-1.5 text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
+            <FlaskConical className="h-3 w-3" />
+            Mock data
+          </Badge>
+        </div>
+      )}
+
       {/* KPI Header - Compact Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Card className="bg-card/80 backdrop-blur-sm border-border/40">
@@ -378,6 +411,7 @@ export function ResellerSalesTab() {
         open={!!selectedEvent}
         onOpenChange={(open) => !open && setSelectedEvent(null)}
         event={selectedEvent}
+        useMock={shouldUseMock}
       />
     </div>
   );
