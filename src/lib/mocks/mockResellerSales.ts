@@ -9,10 +9,13 @@ export interface MockTransaction {
   ticketQuantity: number;
 }
 
+// MockEventSale is defined below MockResellerSales interface
+
 export interface MockEventSale {
   eventId: string;
   eventTitle: string;
   eventDate: string;
+  eventImageUrl?: string | null;
   ticketsSold: number;
   saleAmount: number;
   commissionAmount: number;
@@ -46,6 +49,7 @@ export const mockResellerSales: MockResellerSales = {
       eventId: "mock-event-1",
       eventTitle: "Sunrise Yoga & Meditation Retreat",
       eventDate: daysAgo(-14), // Future event
+      eventImageUrl: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=400&h=400&fit=crop",
       ticketsSold: 12,
       saleAmount: 600,
       commissionAmount: 60,
@@ -58,6 +62,7 @@ export const mockResellerSales: MockResellerSales = {
       eventId: "mock-event-2",
       eventTitle: "Holistic Wellness Workshop",
       eventDate: daysAgo(-7), // Future event
+      eventImageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop",
       ticketsSold: 8,
       saleAmount: 400,
       commissionAmount: 20,
@@ -70,6 +75,7 @@ export const mockResellerSales: MockResellerSales = {
       eventId: "mock-event-3",
       eventTitle: "Corporate Mindfulness Day",
       eventDate: daysAgo(-21), // Future event
+      eventImageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop",
       ticketsSold: 15,
       saleAmount: 750,
       commissionAmount: 112.5,
@@ -82,6 +88,7 @@ export const mockResellerSales: MockResellerSales = {
       eventId: "mock-event-4",
       eventTitle: "Annual Health Summit 2024",
       eventDate: daysAgo(-45), // Future event
+      eventImageUrl: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=400&fit=crop",
       ticketsSold: 12,
       saleAmount: 600,
       commissionAmount: 120,
