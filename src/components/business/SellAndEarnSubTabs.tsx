@@ -3,8 +3,7 @@ import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvaila
 import { ResellerClientEventsTab } from "@/components/reseller/ResellerClientEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
 import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
-import { ResellerHeader } from "@/components/reseller/ResellerHeader";
-import { AutopilotSuggestionsBanner } from "@/components/reseller/AutopilotSuggestionsBanner";
+import { ResellerOverviewTab } from "@/components/reseller/ResellerOverviewTab";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Ticket, Loader2 } from "lucide-react";
@@ -61,36 +60,36 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
     );
   }
 
-  // Reseller view with 4 tabs
+  // Reseller view with 5 tabs (Overview as default)
   return (
-    <div className="space-y-6">
-      <AutopilotSuggestionsBanner />
-      <ResellerHeader />
+    <SplitBar defaultValue="overview" className="w-full">
+      <SplitBarList>
+        <SplitBarTrigger value="overview">📊 Overview</SplitBarTrigger>
+        <SplitBarTrigger value="available">🛒 Available to Sell</SplitBarTrigger>
+        <SplitBarTrigger value="client-events">👤 Client Events</SplitBarTrigger>
+        <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
+        <SplitBarTrigger value="sales">💰 Sales</SplitBarTrigger>
+      </SplitBarList>
       
-      <SplitBar defaultValue="available" className="w-full">
-        <SplitBarList>
-          <SplitBarTrigger value="available">🛒 Available to Sell</SplitBarTrigger>
-          <SplitBarTrigger value="client-events">👤 Client Events</SplitBarTrigger>
-          <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
-          <SplitBarTrigger value="sales">💰 Sales</SplitBarTrigger>
-        </SplitBarList>
-        
-        <SplitBarContent value="available" className="mt-4">
-          <ResellerAvailableEventsTab />
-        </SplitBarContent>
+      <SplitBarContent value="overview" className="mt-4">
+        <ResellerOverviewTab />
+      </SplitBarContent>
 
-        <SplitBarContent value="client-events" className="mt-4">
-          <ResellerClientEventsTab />
-        </SplitBarContent>
-        
-        <SplitBarContent value="promotions" className="mt-4">
-          <ResellerCampaignsTab searchQuery={searchQuery} />
-        </SplitBarContent>
-        
-        <SplitBarContent value="sales" className="mt-4">
-          <ResellerSalesTab />
-        </SplitBarContent>
-      </SplitBar>
-    </div>
+      <SplitBarContent value="available" className="mt-4">
+        <ResellerAvailableEventsTab />
+      </SplitBarContent>
+
+      <SplitBarContent value="client-events" className="mt-4">
+        <ResellerClientEventsTab />
+      </SplitBarContent>
+      
+      <SplitBarContent value="promotions" className="mt-4">
+        <ResellerCampaignsTab searchQuery={searchQuery} />
+      </SplitBarContent>
+      
+      <SplitBarContent value="sales" className="mt-4">
+        <ResellerSalesTab />
+      </SplitBarContent>
+    </SplitBar>
   );
 }
