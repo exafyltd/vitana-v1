@@ -1,10 +1,10 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { format, formatDistanceToNow } from "date-fns";
-import { Calendar, MapPin, Briefcase, Info, Receipt } from "lucide-react";
+import { Calendar, Briefcase, Info, Receipt, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
-import { Loader2 } from "lucide-react";
+import { mockTransactionsByEventId } from "@/lib/mocks/mockResellerSales";
 
 interface SalesDetailDrawerProps {
   open: boolean;
@@ -20,6 +20,7 @@ interface SalesDetailDrawerProps {
     isClientEvent: boolean;
     clientName: string | null;
   } | null;
+  useMock?: boolean;
 }
 
 interface Transaction {
@@ -30,12 +31,17 @@ interface Transaction {
   ticketQuantity: number;
 }
 
-export function SalesDetailDrawer({ open, onOpenChange, event }: SalesDetailDrawerProps) {
+export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesDetailDrawerProps) {
   const { data: resellerProfile } = useResellerProfile();
 
   const { data: transactions, isLoading } = useQuery({
-    queryKey: ["reseller-event-transactions", event?.eventId, resellerProfile?.id],
+    queryKey: ["reseller-event-transactions", event?.eventId, resellerProfile?.id, useMock],
     queryFn: async (): Promise<Transaction[]> => {
+      // Return mock transactions if mock mode is enabled
+      if (useMock && event?.eventId) {
+        return mockTransactionsByEventId[event.eventId] || [];
+      }
+
       if (!event?.eventId || !resellerProfile?.id) return [];
 
       const { data: attributions, error } = await supabase
@@ -73,7 +79,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event }: SalesDetailDraw
         ticketQuantity: purchaseMap.get(attr.ticket_purchase_id) || 1,
       }));
     },
-    enabled: open && !!event?.eventId && !!resellerProfile?.id,
+    enabled: open && !!event?.eventId && (useMock || !!resellerProfile?.id),
   });
 
   const formatCurrency = (amount: number) => {
