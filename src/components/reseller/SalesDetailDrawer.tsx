@@ -32,18 +32,34 @@ interface Transaction {
   commissionAmount: number;
   createdAt: string;
   ticketQuantity: number;
+  payoutId: string | null;
+  payoutStatus: string | null;
+  paidAt: string | null;
+}
+
+interface PayoutInfo {
+  isPaid: boolean;
+  paidAt: string | null;
+  payoutId: string | null;
 }
 
 export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesDetailDrawerProps) {
   const { data: resellerProfile } = useResellerProfile();
   const navigate = useNavigate();
 
+  // Fetch transactions with payout info
   const { data: transactions, isLoading } = useQuery({
     queryKey: ["reseller-event-transactions", event?.eventId, resellerProfile?.id, useMock],
     queryFn: async (): Promise<Transaction[]> => {
       // Return mock transactions if mock mode is enabled
       if (useMock && event?.eventId) {
-        return mockTransactionsByEventId[event.eventId] || [];
+        const mockTxs = mockTransactionsByEventId[event.eventId] || [];
+        return mockTxs.map(tx => ({
+          ...tx,
+          payoutId: "mock-payout",
+          payoutStatus: "paid_to_wallet",
+          paidAt: "2024-09-12T10:00:00Z"
+        }));
       }
 
       if (!event?.eventId || !resellerProfile?.id) return [];
@@ -55,7 +71,12 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
           sale_amount,
           commission_amount,
           created_at,
-          ticket_purchase_id
+          ticket_purchase_id,
+          payout_id,
+          reseller_payouts:payout_id (
+            status,
+            paid_at
+          )
         `)
         .eq("reseller_id", resellerProfile.id)
         .eq("event_id", event.eventId)
@@ -75,16 +96,43 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
 
       const purchaseMap = new Map(purchases?.map(p => [p.id, p.quantity || 1]) || []);
 
-      return (attributions || []).map(attr => ({
-        id: attr.id,
-        saleAmount: Number(attr.sale_amount) || 0,
-        commissionAmount: Number(attr.commission_amount) || 0,
-        createdAt: attr.created_at,
-        ticketQuantity: purchaseMap.get(attr.ticket_purchase_id) || 1,
-      }));
+      return (attributions || []).map(attr => {
+        const payout = attr.reseller_payouts as any;
+        return {
+          id: attr.id,
+          saleAmount: Number(attr.sale_amount) || 0,
+          commissionAmount: Number(attr.commission_amount) || 0,
+          createdAt: attr.created_at,
+          ticketQuantity: purchaseMap.get(attr.ticket_purchase_id) || 1,
+          payoutId: attr.payout_id,
+          payoutStatus: payout?.status || null,
+          paidAt: payout?.paid_at || null,
+        };
+      });
     },
     enabled: open && !!event?.eventId && (useMock || !!resellerProfile?.id),
   });
+
+  // Derive payout info from transactions
+  const payoutInfo: PayoutInfo = (() => {
+    if (!transactions || transactions.length === 0) {
+      return { isPaid: false, paidAt: null, payoutId: null };
+    }
+    
+    // Check if all transactions are paid
+    const allPaid = transactions.every(tx => tx.payoutStatus === "paid_to_wallet");
+    const anyPaid = transactions.find(tx => tx.payoutStatus === "paid_to_wallet");
+    
+    if (allPaid && anyPaid) {
+      return {
+        isPaid: true,
+        paidAt: anyPaid.paidAt,
+        payoutId: anyPaid.payoutId
+      };
+    }
+    
+    return { isPaid: false, paidAt: null, payoutId: null };
+  })();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -130,7 +178,7 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
             <p className="text-sm text-muted-foreground leading-relaxed">
               You earn <span className="font-medium text-foreground">{event.commissionRate}%</span> per ticket sold via your reseller link. 
               Commission is calculated on gross ticket price before platform fees.
-          </p>
+            </p>
           </div>
 
           {/* Payout Status */}
@@ -139,13 +187,17 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <Wallet className="h-4 w-4 text-muted-foreground" />
               <span>Payout Status</span>
             </div>
-            {useMock ? (
+            {payoutInfo.isPaid ? (
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800">
                   <CheckCircle2 className="h-3 w-3 mr-1" />
                   Paid to Wallet
                 </Badge>
-                <span className="text-xs text-muted-foreground">Sep 12, 2024</span>
+                {payoutInfo.paidAt && (
+                  <span className="text-xs text-muted-foreground">
+                    {format(new Date(payoutInfo.paidAt), "MMM d, yyyy")}
+                  </span>
+                )}
               </div>
             ) : (
               <div className="flex items-center gap-2">
@@ -165,6 +217,8 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               View in Wallet →
             </Button>
           </div>
+
+          {/* Transactions */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Receipt className="h-4 w-4 text-muted-foreground" />

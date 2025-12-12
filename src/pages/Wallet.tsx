@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield, Send, ArrowUpDown } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield, Send, ArrowUpDown, X, Sparkles } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -34,6 +35,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { useAuth } from "@/context/AuthProvider";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { Badge } from "@/components/ui/badge";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -74,6 +76,9 @@ const quickActionsData = [
 ];
 
 export default function Wallet() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filterType = searchParams.get("filter"); // e.g., "reseller_commission"
+  
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [exchangeStep, setExchangeStep] = useState<'menu' | 'exchange'>('menu');
   const [selectedCurrencyForExchange, setSelectedCurrencyForExchange] = useState<'USD' | 'VTNA' | 'CREDITS' | undefined>();
@@ -92,6 +97,42 @@ export default function Wallet() {
   const { user } = useAuth();
   const { requestPopup, clearPopup } = usePopupCoordination();
   const { logActivity } = useActivityLogger();
+
+  // Auto-switch to Recent Activity tab when filter is active
+  useEffect(() => {
+    if (filterType) {
+      setActiveTab("recent-activity");
+    }
+  }, [filterType]);
+
+  // Filter transactions based on URL filter param
+  const filteredTransactions = useMemo(() => {
+    if (!filterType) return transactions;
+    return transactions.filter(tx => tx.transaction_type === filterType);
+  }, [transactions, filterType]);
+
+  // Clear filter
+  const clearFilter = () => {
+    setSearchParams({});
+  };
+
+  // Get filter display label
+  const getFilterLabel = (filter: string) => {
+    switch (filter) {
+      case "reseller_commission":
+        return "Sell & Earn Commissions";
+      case "transfer":
+        return "Transfers";
+      case "exchange":
+        return "Exchanges";
+      case "reward":
+        return "Rewards";
+      case "purchase":
+        return "Purchases";
+      default:
+        return filter;
+    }
+  };
 
   // Handle opening specific wallet actions
   const handleWalletAction = async (actionType: string, currency?: string) => {
@@ -328,6 +369,25 @@ export default function Wallet() {
 
           <SplitBarContent value="recent-activity">
             <div className="mt-6">
+              {/* Filter Chip */}
+              {filterType && (
+                <div className="flex items-center gap-2 mb-4">
+                  <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-accent" />
+                    <span>Showing: {getFilterLabel(filterType)}</span>
+                    <button 
+                      onClick={clearFilter}
+                      className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </Badge>
+                  <span className="text-sm text-muted-foreground">
+                    {filteredTransactions.length} transaction{filteredTransactions.length !== 1 ? "s" : ""}
+                  </span>
+                </div>
+              )}
+
               {/* Row 1: Intelligent Spending + Transactions */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-6">
@@ -338,22 +398,26 @@ export default function Wallet() {
                     <div className="h-full flex items-center justify-center text-muted-foreground">
                       Loading transactions...
                     </div>
-                  ) : transactions.length > 0 ? (
+                  ) : filteredTransactions.length > 0 ? (
                     <WalletTransactionCard
-                      id={transactions[0].id}
-                      type="reward"
-                      title={`${transactions[0].transaction_type} Transaction`}
-                      description={`${transactions[0].from_currency || ''} ${transactions[0].to_currency ? `→ ${transactions[0].to_currency}` : ''}`}
-                      amount={`${transactions[0].amount > 0 ? '+' : ''}${transactions[0].amount}`}
-                      status={transactions[0].status as any}
-                      timestamp={new Date(transactions[0].created_at).toLocaleDateString()}
-                      transaction={transactions[0]}
+                      id={filteredTransactions[0].id}
+                      type={filteredTransactions[0].transaction_type === "reseller_commission" ? "incoming" : "reward"}
+                      title={filteredTransactions[0].transaction_type === "reseller_commission" 
+                        ? "Reseller Commission" 
+                        : `${filteredTransactions[0].transaction_type} Transaction`}
+                      description={filteredTransactions[0].transaction_type === "reseller_commission"
+                        ? "Sell & Earn · Payout"
+                        : `${filteredTransactions[0].from_currency || ''} ${filteredTransactions[0].to_currency ? `→ ${filteredTransactions[0].to_currency}` : ''}`}
+                      amount={`${filteredTransactions[0].amount > 0 ? '+' : ''}${filteredTransactions[0].amount}`}
+                      status={filteredTransactions[0].status as any}
+                      timestamp={new Date(filteredTransactions[0].created_at).toLocaleDateString()}
+                      transaction={filteredTransactions[0]}
                       currentUserId={user?.id}
                       className="h-full"
                     />
                   ) : (
                     <div className="h-full flex items-center justify-center text-muted-foreground">
-                      No transactions yet
+                      {filterType ? "No matching transactions" : "No transactions yet"}
                     </div>
                   )}
                 </div>
@@ -362,16 +426,20 @@ export default function Wallet() {
                     <div className="h-full flex items-center justify-center text-muted-foreground">
                       Loading transactions...
                     </div>
-                  ) : transactions.length > 1 ? (
+                  ) : filteredTransactions.length > 1 ? (
                     <WalletTransactionCard
-                      id={transactions[1].id}
-                      type="incoming"
-                      title={`${transactions[1].transaction_type} Transaction`}
-                      description={`${transactions[1].from_currency || ''} ${transactions[1].to_currency ? `→ ${transactions[1].to_currency}` : ''}`}
-                      amount={`${transactions[1].amount > 0 ? '+' : ''}${transactions[1].amount}`}
-                      status={transactions[1].status as any}
-                      timestamp={new Date(transactions[1].created_at).toLocaleDateString()}
-                      transaction={transactions[1]}
+                      id={filteredTransactions[1].id}
+                      type={filteredTransactions[1].transaction_type === "reseller_commission" ? "incoming" : "incoming"}
+                      title={filteredTransactions[1].transaction_type === "reseller_commission" 
+                        ? "Reseller Commission" 
+                        : `${filteredTransactions[1].transaction_type} Transaction`}
+                      description={filteredTransactions[1].transaction_type === "reseller_commission"
+                        ? "Sell & Earn · Payout"
+                        : `${filteredTransactions[1].from_currency || ''} ${filteredTransactions[1].to_currency ? `→ ${filteredTransactions[1].to_currency}` : ''}`}
+                      amount={`${filteredTransactions[1].amount > 0 ? '+' : ''}${filteredTransactions[1].amount}`}
+                      status={filteredTransactions[1].status as any}
+                      timestamp={new Date(filteredTransactions[1].created_at).toLocaleDateString()}
+                      transaction={filteredTransactions[1]}
                       currentUserId={user?.id}
                       className="h-full"
                     />
@@ -387,13 +455,17 @@ export default function Wallet() {
 
               {/* Row 2: More Transactions */}
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                {transactions.slice(2, 5).map((transaction, index) => (
+                {filteredTransactions.slice(2, 5).map((transaction, index) => (
                   <div key={transaction.id} className="col-span-4">
                     <WalletTransactionCard
                       id={transaction.id}
-                      type="conversion"
-                      title={`${transaction.transaction_type} Transaction`}
-                      description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
+                      type={transaction.transaction_type === "reseller_commission" ? "incoming" : "conversion"}
+                      title={transaction.transaction_type === "reseller_commission" 
+                        ? "Reseller Commission" 
+                        : `${transaction.transaction_type} Transaction`}
+                      description={transaction.transaction_type === "reseller_commission"
+                        ? "Sell & Earn · Payout"
+                        : `${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
                       amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                       status={transaction.status as any}
                       timestamp={new Date(transaction.created_at).toLocaleDateString()}
@@ -403,8 +475,8 @@ export default function Wallet() {
                     />
                   </div>
                 ))}
-                {transactions.length < 5 && (
-                  Array.from({ length: 3 - Math.max(0, transactions.length - 2) }).map((_, index) => (
+                {filteredTransactions.length < 5 && (
+                  Array.from({ length: 3 - Math.max(0, filteredTransactions.length - 2) }).map((_, index) => (
                     <div key={`empty-${index}`} className="col-span-4">
                       <div className="h-full flex items-center justify-center text-muted-foreground">
                         No additional transactions

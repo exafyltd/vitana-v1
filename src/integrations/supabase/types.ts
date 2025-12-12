@@ -7278,6 +7278,10 @@ export type Database = {
           youtube_url: string
         }[]
       }
+      increment_wallet_balance: {
+        Args: { p_amount: number; p_currency_type: string; p_user_id: string }
+        Returns: number
+      }
       initialize_user_wallet: {
         Args: { user_id_param: string }
         Returns: undefined

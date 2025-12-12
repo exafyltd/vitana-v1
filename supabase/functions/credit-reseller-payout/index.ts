@@ -56,6 +56,7 @@ serve(async (req) => {
         total_commission_amount,
         currency,
         status,
+        wallet_transaction_id,
         reseller_profiles:reseller_profile_id (
           user_id
         )
@@ -80,17 +81,24 @@ serve(async (req) => {
       );
     }
 
-    // Check payout status
-    if (payout.status === "paid_to_wallet") {
+    // IDEMPOTENCY CHECK: If already credited, return success with existing transaction
+    if (payout.wallet_transaction_id) {
+      console.log(`Payout ${payout_id} already credited, returning existing tx: ${payout.wallet_transaction_id}`);
       return new Response(
-        JSON.stringify({ error: "Payout already credited to wallet" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({
+          success: true,
+          already_credited: true,
+          wallet_transaction_id: payout.wallet_transaction_id,
+          message: "Payout was already credited to wallet"
+        }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    if (payout.status === "rejected") {
+    // Check payout status - only allow pending or approved
+    if (payout.status !== "pending" && payout.status !== "approved") {
       return new Response(
-        JSON.stringify({ error: "Payout was rejected" }),
+        JSON.stringify({ error: `Cannot credit payout with status: ${payout.status}` }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -100,12 +108,19 @@ serve(async (req) => {
 
     console.log(`Crediting €${amount} to wallet for user ${userId}`);
 
-    // Create wallet transaction
+    // Count attributions for this payout
+    const { count: attributionCount } = await supabase
+      .from("reseller_attributions")
+      .select("id", { count: "exact", head: true })
+      .eq("payout_id", payout.id);
+
+    // Create wallet transaction with correct semantics
+    // from_user_id = null (platform credit, not from another user)
     const { data: walletTx, error: txError } = await supabase
       .from("wallet_transactions")
       .insert({
         to_user_id: userId,
-        from_user_id: userId, // Self-credit for commission
+        from_user_id: null, // Platform credit - no sender
         amount: amount,
         transaction_type: "reseller_commission",
         from_currency: payout.currency,
@@ -115,6 +130,7 @@ serve(async (req) => {
           source: "sell_and_earn",
           payout_id: payout.id,
           reseller_profile_id: payout.reseller_profile_id,
+          attribution_count: attributionCount || 0,
         },
       })
       .select()
@@ -128,41 +144,18 @@ serve(async (req) => {
       );
     }
 
-    // Update user's wallet balance
-    const { data: existingWallet } = await supabase
-      .from("user_wallets")
-      .select("balance")
-      .eq("user_id", userId)
-      .eq("currency_type", payout.currency)
-      .single();
+    // ATOMIC BALANCE UPDATE using RPC function
+    const { data: newBalance, error: balanceError } = await supabase
+      .rpc('increment_wallet_balance', {
+        p_user_id: userId,
+        p_currency_type: payout.currency,
+        p_amount: amount
+      });
 
-    if (existingWallet) {
-      // Update existing balance
-      const { error: balanceError } = await supabase
-        .from("user_wallets")
-        .update({ 
-          balance: (Number(existingWallet.balance) || 0) + amount,
-          updated_at: new Date().toISOString()
-        })
-        .eq("user_id", userId)
-        .eq("currency_type", payout.currency);
-
-      if (balanceError) {
-        console.error("Error updating wallet balance:", balanceError);
-      }
-    } else {
-      // Create new wallet entry
-      const { error: createError } = await supabase
-        .from("user_wallets")
-        .insert({
-          user_id: userId,
-          currency_type: payout.currency,
-          balance: amount,
-        });
-
-      if (createError) {
-        console.error("Error creating wallet:", createError);
-      }
+    if (balanceError) {
+      console.error("Error updating wallet balance:", balanceError);
+      // Don't fail completely - the transaction was created
+      // but log the error for investigation
     }
 
     // Update payout status
@@ -180,13 +173,13 @@ serve(async (req) => {
       // Don't fail - the wallet credit already happened
     }
 
-    console.log(`Successfully credited €${amount} to wallet, tx: ${walletTx.id}`);
+    console.log(`Successfully credited €${amount} to wallet, tx: ${walletTx.id}, new balance: ${newBalance}`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        wallet_transaction: walletTx,
-        new_balance: (Number(existingWallet?.balance) || 0) + amount,
+        wallet_transaction_id: walletTx.id,
+        new_balance: newBalance,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

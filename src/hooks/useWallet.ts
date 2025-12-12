@@ -17,7 +17,7 @@ export interface UserBalance {
 
 export interface TransactionData {
   id: string;
-  transaction_type: 'transfer' | 'exchange' | 'reward' | 'purchase';
+  transaction_type: 'transfer' | 'exchange' | 'reward' | 'purchase' | 'reseller_commission';
   from_currency?: string;
   to_currency?: string;
   amount: number;
