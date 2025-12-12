@@ -1,8 +1,7 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { OrganizerEventsSection } from "./OrganizerEventsSection";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Briefcase, Calendar, Package, Plus } from "lucide-react";
+import { Briefcase, Package, Plus } from "lucide-react";
 
 interface ServicesSubTabsProps {
   onCreateService: () => void;
@@ -10,15 +9,14 @@ interface ServicesSubTabsProps {
 
 export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
   return (
-    <Tabs defaultValue="services" className="w-full">
-      <TabsList className="grid w-full grid-cols-3 mb-4">
-        <TabsTrigger value="services">My Services</TabsTrigger>
-        <TabsTrigger value="events">My Events</TabsTrigger>
-        <TabsTrigger value="packages">Packages</TabsTrigger>
-      </TabsList>
+    <SplitBar defaultValue="services" className="w-full">
+      <SplitBarList>
+        <SplitBarTrigger value="services">💼 My Services</SplitBarTrigger>
+        <SplitBarTrigger value="events">📅 My Events</SplitBarTrigger>
+        <SplitBarTrigger value="packages">📦 Packages</SplitBarTrigger>
+      </SplitBarList>
 
-      <TabsContent value="services" className="space-y-4">
-        {/* Placeholder for services - to be connected to actual services data */}
+      <SplitBarContent value="services" className="space-y-4 mt-4">
         <div className="text-center py-12">
           <Briefcase className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">No Services Yet</h3>
@@ -30,13 +28,13 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
             Create Service
           </Button>
         </div>
-      </TabsContent>
+      </SplitBarContent>
 
-      <TabsContent value="events">
+      <SplitBarContent value="events" className="mt-4">
         <OrganizerEventsSection />
-      </TabsContent>
+      </SplitBarContent>
 
-      <TabsContent value="packages" className="space-y-4">
+      <SplitBarContent value="packages" className="space-y-4 mt-4">
         <div className="text-center py-12">
           <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">Create Session Packages</h3>
@@ -49,7 +47,7 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
             <span className="text-xs text-muted-foreground">(Coming Soon)</span>
           </Button>
         </div>
-      </TabsContent>
-    </Tabs>
+      </SplitBarContent>
+    </SplitBar>
   );
 }

@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
 import { ResellerClientEventsTab } from "@/components/reseller/ResellerClientEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
@@ -61,36 +61,36 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
     );
   }
 
-  // Reseller view with 4 tabs: Available to Sell | Client Events | Promotions | Sales
+  // Reseller view with 4 tabs
   return (
     <div className="space-y-6">
       <AutopilotSuggestionsBanner />
       <ResellerHeader />
       
-      <Tabs defaultValue="available" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-4">
-          <TabsTrigger value="available">Available to Sell</TabsTrigger>
-          <TabsTrigger value="client-events">Client Events</TabsTrigger>
-          <TabsTrigger value="promotions">Promotions</TabsTrigger>
-          <TabsTrigger value="sales">Sales</TabsTrigger>
-        </TabsList>
+      <SplitBar defaultValue="available" className="w-full">
+        <SplitBarList>
+          <SplitBarTrigger value="available">🛒 Available to Sell</SplitBarTrigger>
+          <SplitBarTrigger value="client-events">👤 Client Events</SplitBarTrigger>
+          <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
+          <SplitBarTrigger value="sales">💰 Sales</SplitBarTrigger>
+        </SplitBarList>
         
-        <TabsContent value="available">
+        <SplitBarContent value="available" className="mt-4">
           <ResellerAvailableEventsTab />
-        </TabsContent>
+        </SplitBarContent>
 
-        <TabsContent value="client-events">
+        <SplitBarContent value="client-events" className="mt-4">
           <ResellerClientEventsTab />
-        </TabsContent>
+        </SplitBarContent>
         
-        <TabsContent value="promotions">
+        <SplitBarContent value="promotions" className="mt-4">
           <ResellerCampaignsTab searchQuery={searchQuery} />
-        </TabsContent>
+        </SplitBarContent>
         
-        <TabsContent value="sales">
+        <SplitBarContent value="sales" className="mt-4">
           <ResellerSalesTab />
-        </TabsContent>
-      </Tabs>
+        </SplitBarContent>
+      </SplitBar>
     </div>
   );
 }
