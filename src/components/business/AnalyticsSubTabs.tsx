@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart3, DollarSign, TrendingUp, Wallet, Share2, Users } from "lucide-react";
@@ -21,14 +21,14 @@ export function AnalyticsSubTabs() {
   };
 
   return (
-    <Tabs defaultValue="performance" className="w-full">
-      <TabsList className="grid w-full grid-cols-3 mb-4">
-        <TabsTrigger value="performance">Performance</TabsTrigger>
-        <TabsTrigger value="earnings">Earnings</TabsTrigger>
-        <TabsTrigger value="growth">Growth</TabsTrigger>
-      </TabsList>
+    <SplitBar defaultValue="performance" className="w-full">
+      <SplitBarList>
+        <SplitBarTrigger value="performance">📊 Performance</SplitBarTrigger>
+        <SplitBarTrigger value="earnings">💵 Earnings</SplitBarTrigger>
+        <SplitBarTrigger value="growth">📈 Growth</SplitBarTrigger>
+      </SplitBarList>
 
-      <TabsContent value="performance" className="space-y-4">
+      <SplitBarContent value="performance" className="space-y-4 mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
             <CardHeader>
@@ -58,9 +58,9 @@ export function AnalyticsSubTabs() {
             </CardContent>
           </Card>
         </div>
-      </TabsContent>
+      </SplitBarContent>
 
-      <TabsContent value="earnings" className="space-y-4">
+      <SplitBarContent value="earnings" className="space-y-4 mt-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
             <CardContent className="p-5">
@@ -112,9 +112,9 @@ export function AnalyticsSubTabs() {
             </CardContent>
           </Card>
         </div>
-      </TabsContent>
+      </SplitBarContent>
 
-      <TabsContent value="growth" className="space-y-4">
+      <SplitBarContent value="growth" className="space-y-4 mt-4">
         <Card className="bg-white/70 backdrop-blur-sm border border-white/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
@@ -136,7 +136,7 @@ export function AnalyticsSubTabs() {
             </Button>
           </CardContent>
         </Card>
-      </TabsContent>
-    </Tabs>
+      </SplitBarContent>
+    </SplitBar>
   );
 }

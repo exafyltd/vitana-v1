@@ -1,5 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { Users, UserPlus, History, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -8,15 +7,14 @@ export function ClientsSubTabs() {
   const navigate = useNavigate();
 
   return (
-    <Tabs defaultValue="active" className="w-full">
-      <TabsList className="grid w-full grid-cols-3 mb-4">
-        <TabsTrigger value="active">Active</TabsTrigger>
-        <TabsTrigger value="prospects">Prospects</TabsTrigger>
-        <TabsTrigger value="history">History</TabsTrigger>
-      </TabsList>
+    <SplitBar defaultValue="active" className="w-full">
+      <SplitBarList>
+        <SplitBarTrigger value="active">✅ Active</SplitBarTrigger>
+        <SplitBarTrigger value="prospects">🎯 Prospects</SplitBarTrigger>
+        <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
+      </SplitBarList>
 
-      <TabsContent value="active" className="space-y-4">
-        {/* Placeholder for active clients */}
+      <SplitBarContent value="active" className="space-y-4 mt-4">
         <div className="text-center py-12">
           <Users className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">No Active Clients</h3>
@@ -24,9 +22,9 @@ export function ClientsSubTabs() {
             Active clients with subscriptions or bookings will appear here.
           </p>
         </div>
-      </TabsContent>
+      </SplitBarContent>
 
-      <TabsContent value="prospects" className="space-y-4">
+      <SplitBarContent value="prospects" className="space-y-4 mt-4">
         <div className="text-center py-12">
           <UserPlus className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">No Prospects Yet</h3>
@@ -38,9 +36,9 @@ export function ClientsSubTabs() {
             Promote via Sharing
           </Button>
         </div>
-      </TabsContent>
+      </SplitBarContent>
 
-      <TabsContent value="history" className="space-y-4">
+      <SplitBarContent value="history" className="space-y-4 mt-4">
         <div className="text-center py-12">
           <History className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">No Past Clients</h3>
@@ -48,7 +46,7 @@ export function ClientsSubTabs() {
             Clients who had past sessions but no active plan will appear here.
           </p>
         </div>
-      </TabsContent>
-    </Tabs>
+      </SplitBarContent>
+    </SplitBar>
   );
 }
