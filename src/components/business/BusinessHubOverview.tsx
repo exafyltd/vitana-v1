@@ -34,9 +34,11 @@ export function BusinessHubOverview({
       {/* 4 KPI Cards */}
       <BusinessHubKPICards />
 
-      {/* Quick Actions - pill buttons, no card wrapper */}
+      {/* Quick Actions - with section anchoring */}
       <div className="space-y-3">
-        <h3 className="text-sm font-medium text-muted-foreground">Quick Actions</h3>
+        {/* Subtle divider */}
+        <div className="h-px bg-border/[0.08]" />
+        <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60 pt-1">Quick Actions</h3>
         <div className="flex flex-wrap gap-3">
           <Button 
             variant="outline" 

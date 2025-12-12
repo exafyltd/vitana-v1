@@ -6,17 +6,9 @@
  */
 
 import { CardContent } from "@/components/ui/card";
-import { DollarSign, Users, Calendar, TrendingUp, Copy, Check } from "lucide-react";
-import { useResellerProfile } from "@/hooks/useResellerProfile";
-import { useIsReseller } from "@/hooks/useIsReseller";
-import { useState } from "react";
-import { toast } from "sonner";
+import { DollarSign, Users, Calendar, TrendingUp } from "lucide-react";
 
 export function BusinessHubKPICards() {
-  const { isReseller } = useIsReseller();
-  const { data: resellerProfile } = useResellerProfile();
-  const [copied, setCopied] = useState(false);
-
   // Mock data - in production, these would come from real hooks
   const stats = {
     revenue: 2450,
@@ -38,24 +30,17 @@ export function BusinessHubKPICards() {
     }).format(amount);
   };
 
-  const handleCopyCode = () => {
-    if (resellerProfile?.reseller_code) {
-      navigator.clipboard.writeText(resellerProfile.reseller_code);
-      setCopied(true);
-      toast.success("Reseller code copied!");
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  const cardBase = "bg-white/70 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden";
+  const cardBase = "relative bg-white/70 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden";
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-      {/* Card 1: Revenue (this month) + Reseller Code if applicable */}
+      {/* Card 1: Revenue (this month) */}
       <div className={cardBase}>
+        {/* Subtle gradient wash */}
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-emerald-500/[0.07] to-transparent pointer-events-none" />
         {/* Accent line */}
-        <div className="h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-500/50" />
-        <CardContent className="p-6">
+        <div className="h-[2px] bg-gradient-to-r from-emerald-500 to-emerald-500/40" />
+        <CardContent className="p-6 relative">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
               <DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
@@ -68,29 +53,15 @@ export function BusinessHubKPICards() {
               <p className="text-xs text-muted-foreground mt-1">This month</p>
             </div>
           </div>
-          {isReseller && resellerProfile?.reseller_code && (
-            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/40">
-              <span className="text-xs text-muted-foreground">Reseller code</span>
-              <button 
-                onClick={handleCopyCode}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/50 hover:bg-muted transition-colors"
-              >
-                <span className="font-mono text-xs font-medium text-foreground">{resellerProfile.reseller_code}</span>
-                {copied ? (
-                  <Check className="h-3 w-3 text-emerald-500" />
-                ) : (
-                  <Copy className="h-3 w-3 text-muted-foreground" />
-                )}
-              </button>
-            </div>
-          )}
         </CardContent>
       </div>
 
       {/* Card 2: Active Clients */}
       <div className={cardBase}>
-        <div className="h-0.5 bg-gradient-to-r from-blue-500 to-blue-500/50" />
-        <CardContent className="p-6">
+        {/* Subtle gradient wash */}
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-blue-500/[0.07] to-transparent pointer-events-none" />
+        <div className="h-[2px] bg-gradient-to-r from-blue-500 to-blue-500/40" />
+        <CardContent className="p-6 relative">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
               <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -108,8 +79,10 @@ export function BusinessHubKPICards() {
 
       {/* Card 3: Upcoming Sessions */}
       <div className={cardBase}>
-        <div className="h-0.5 bg-gradient-to-r from-amber-500 to-amber-500/50" />
-        <CardContent className="p-6">
+        {/* Subtle gradient wash */}
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-amber-500/[0.06] to-transparent pointer-events-none" />
+        <div className="h-[2px] bg-gradient-to-r from-amber-500 to-amber-500/40" />
+        <CardContent className="p-6 relative">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
               <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
@@ -127,11 +100,13 @@ export function BusinessHubKPICards() {
 
       {/* Card 4: Top Performer */}
       <div className={cardBase}>
-        <div className="h-0.5 bg-gradient-to-r from-purple-500 to-fuchsia-500/50" />
-        <CardContent className="p-6">
+        {/* Subtle gradient wash */}
+        <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-violet-500/[0.06] to-transparent pointer-events-none" />
+        <div className="h-[2px] bg-gradient-to-r from-violet-500 to-fuchsia-500/40" />
+        <CardContent className="p-6 relative">
           <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center flex-shrink-0">
-              <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <div className="h-10 w-10 rounded-xl bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+              <TrendingUp className="h-5 w-5 text-violet-600 dark:text-violet-400" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm text-muted-foreground font-medium">Top Performer</p>

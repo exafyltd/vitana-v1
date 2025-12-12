@@ -112,7 +112,7 @@ export function BusinessHubAutopilotBanner() {
   };
 
   return (
-    <div className="relative bg-white/70 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.06)] p-5">
+    <div className="relative bg-white/70 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] p-5">
       {/* Dismiss button */}
       <button 
         onClick={handleDismiss}
@@ -122,33 +122,33 @@ export function BusinessHubAutopilotBanner() {
       </button>
 
       <div className="flex items-start gap-4">
-        {/* Icon in soft pill */}
-        <div className={`p-3 rounded-xl ${iconBgMap[activeSuggestion.type]} shadow-sm flex-shrink-0`}>
-          <Plane className={`h-5 w-5 ${accentColorMap[activeSuggestion.type]}`} />
+        {/* Icon in soft pill - slightly reduced */}
+        <div className={`p-2.5 rounded-xl ${iconBgMap[activeSuggestion.type]} shadow-sm flex-shrink-0`}>
+          <Plane className={`h-4 w-4 ${accentColorMap[activeSuggestion.type]}`} />
         </div>
 
         <div className="flex-1 min-w-0 pr-8">
-          {/* Label */}
-          <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-1 block">
-            Autopilot Suggestion
+          {/* Label - updated text */}
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60 mb-1.5 block">
+            Autopilot · Recommendation
           </span>
           
-          {/* Title with icon */}
+          {/* Title with icon - emphasized */}
           <div className="flex items-center gap-2 mb-1">
             <span className={accentColorMap[activeSuggestion.type]}>
               {activeSuggestion.icon}
             </span>
-            <h4 className="font-medium text-foreground">{activeSuggestion.title}</h4>
+            <h4 className="font-semibold text-foreground">{activeSuggestion.title}</h4>
           </div>
           
           {/* Description */}
           <p className="text-sm text-muted-foreground">{activeSuggestion.description}</p>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA Button - emphasized */}
         <Button 
           size="sm" 
-          className="flex-shrink-0 gap-1.5 rounded-xl shadow-sm"
+          className="flex-shrink-0 gap-1.5 rounded-full shadow-sm font-medium"
           onClick={handleApplySuggestion}
         >
           {activeSuggestion.actionLabel}
