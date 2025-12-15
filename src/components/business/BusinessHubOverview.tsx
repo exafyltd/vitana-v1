@@ -3,8 +3,8 @@
  * Unified dashboard with Snapshot (KPIs + Accelerator CTA) and History tabs
  */
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
 import { BusinessAcceleratorCenterCTA } from "./BusinessAcceleratorCenterCTA";
@@ -71,9 +71,23 @@ export function BusinessHubOverview({
   onCreateEvent,
   onCreateCampaign,
 }: BusinessHubOverviewProps) {
-  const [activeTab, setActiveTab] = useState("snapshot");
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const { earnings, isLoading } = useUnifiedEarnings();
+  
+  // URL-driven tab state
+  const activeTab = searchParams.get("tab") || "snapshot";
+  const dateRange = searchParams.get("range");
+  
+  const setActiveTab = (tab: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("tab", tab);
+    // Clear range filter when switching to snapshot
+    if (tab === "snapshot") {
+      newParams.delete("range");
+    }
+    setSearchParams(newParams);
+  };
 
   const handleCreateEvent = () => {
     onCreateEvent?.();
@@ -122,6 +136,7 @@ export function BusinessHubOverview({
           <EarningsHistoryLedger
             transactions={earnings.recentTransactions.length > 0 ? earnings.recentTransactions : mockTransactions}
             isLoading={isLoading}
+            dateRange={dateRange}
           />
         </SplitBarContent>
       </SplitBar>

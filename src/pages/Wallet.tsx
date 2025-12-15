@@ -108,6 +108,15 @@ export default function Wallet() {
   // Filter transactions based on URL filter param
   const filteredTransactions = useMemo(() => {
     if (!filterType) return transactions;
+    
+    // Handle "pending" filter for pending payouts
+    if (filterType === "pending") {
+      return transactions.filter(tx => 
+        tx.status === "pending" || 
+        (tx.metadata as Record<string, unknown>)?.status === "pending_payout"
+      );
+    }
+    
     return transactions.filter(tx => tx.transaction_type === filterType);
   }, [transactions, filterType]);
 
@@ -129,6 +138,8 @@ export default function Wallet() {
         return "Rewards";
       case "purchase":
         return "Purchases";
+      case "pending":
+        return "Pending Payouts";
       default:
         return filter;
     }
