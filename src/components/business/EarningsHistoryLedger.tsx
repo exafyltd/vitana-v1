@@ -9,7 +9,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Wallet } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Wallet, ChevronDown } from "lucide-react";
 import { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { cn } from "@/lib/utils";
@@ -27,6 +29,11 @@ export function EarningsHistoryLedger({
 }: EarningsHistoryLedgerProps) {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<FilterType>("all");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const handleToggleExpand = (id: string) => {
+    setExpandedId(prev => prev === id ? null : id);
+  };
 
   const filters: { value: FilterType; label: string }[] = [
     { value: "all", label: "All" },
@@ -54,6 +61,57 @@ export function EarningsHistoryLedger({
   const handleViewInWallet = (tx: EarningsTransaction) => {
     const filterParam = tx.type === "reseller_commission" ? "reseller_commission" : "ticket_sale";
     navigate(`/wallet?filter=${filterParam}`);
+  };
+
+  const renderExpandedContent = (tx: EarningsTransaction) => {
+    const isPaid = tx.metadata?.status === "paid_to_wallet";
+    const ticketsSold = tx.metadata?.ticketsSold || 1;
+    const grossAmount = tx.metadata?.grossAmount || tx.amount;
+    
+    return (
+      <div className="space-y-4 py-2">
+        {/* Transaction Summary Grid */}
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="space-y-1">
+            <span className="text-muted-foreground text-xs">Tickets Sold</span>
+            <p className="font-medium">{ticketsSold}</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-muted-foreground text-xs">Gross Amount</span>
+            <p className="font-medium">{formatCurrency(grossAmount)}</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-muted-foreground text-xs">You Earned</span>
+            <p className="font-semibold text-emerald-600">{formatCurrency(tx.amount)}</p>
+          </div>
+          <div className="space-y-1">
+            <span className="text-muted-foreground text-xs">Status</span>
+            <Badge variant={isPaid ? "secondary" : "outline"}>
+              {isPaid ? "Paid to Wallet" : "Pending Payout"}
+            </Badge>
+          </div>
+        </div>
+        
+        {/* Wallet Link Footer */}
+        <div className="flex items-center justify-between pt-2 border-t border-border/30">
+          <span className="text-xs text-muted-foreground">
+            Transaction ID: #{tx.id.slice(0, 12)}
+          </span>
+          <Button 
+            variant="link" 
+            size="sm" 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleViewInWallet(tx);
+            }}
+            className="text-xs h-auto p-0"
+          >
+            <Wallet className="h-3 w-3 mr-1" />
+            View in Wallet
+          </Button>
+        </div>
+      </div>
+    );
   };
 
   const transformToCardProps = (tx: EarningsTransaction): StandardHorizontalCardProps => {
@@ -86,11 +144,19 @@ export function EarningsHistoryLedger({
         icon: null, 
         text: `${formatCurrency(tx.amount)} earned` 
       }],
+      // Expansion props - clicking card expands it
+      expandedContent: renderExpandedContent(tx),
+      isExpanded: expandedId === tx.id,
+      onToggleExpand: handleToggleExpand,
+      // Visual indicator for expandable
       primaryAction: {
-        label: "View",
-        onClick: () => handleViewInWallet(tx),
+        label: expandedId === tx.id ? "Close" : "Details",
+        onClick: () => handleToggleExpand(tx.id),
         variant: "ghost",
-        icon: <Wallet className="h-3.5 w-3.5" />,
+        icon: <ChevronDown className={cn(
+          "h-3.5 w-3.5 transition-transform duration-200",
+          expandedId === tx.id && "rotate-180"
+        )} />,
       },
       layoutMode: "stack",
       density: "compact",
