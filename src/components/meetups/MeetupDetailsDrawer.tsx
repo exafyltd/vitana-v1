@@ -1055,10 +1055,12 @@ export function MeetupDetailsDrawer({
                 
                 {/* Ticket Selector for buyers (hide for organizer when dashboard is shown) */}
                 {(!isOrganizer || !showSalesDashboard) && (
-                  <EventTicketSelector 
-                    eventId={event.id} 
-                    eventTitle={event.title}
-                  />
+                  <div data-section="tickets" className="transition-all duration-300">
+                    <EventTicketSelector 
+                      eventId={event.id} 
+                      eventTitle={event.title}
+                    />
+                  </div>
                 )}
               </div>
             )}
@@ -1122,7 +1124,14 @@ export function MeetupDetailsDrawer({
                 case 'buy-ticket':
                 case 'get-free-ticket':
                   const ticketsSection = document.querySelector('[data-section="tickets"]');
-                  ticketsSection?.scrollIntoView({ behavior: 'smooth' });
+                  if (ticketsSection) {
+                    ticketsSection.scrollIntoView({ behavior: 'smooth' });
+                    // Add highlight effect for 500ms
+                    ticketsSection.classList.add('ring-2', 'ring-primary', 'ring-offset-2', 'rounded-lg');
+                    setTimeout(() => {
+                      ticketsSection.classList.remove('ring-2', 'ring-primary', 'ring-offset-2', 'rounded-lg');
+                    }, 500);
+                  }
                   break;
                 case 'view-ticket':
                   // Navigate to user's tickets
@@ -1171,7 +1180,10 @@ export function MeetupDetailsDrawer({
                 ) : (
                   <>
                     {getCtaIcon()}
-                    {ctaConfig.label}
+                    {/* For ticketed events, show just "Buy Ticket" without price */}
+                    {(ctaConfig.action === 'buy-ticket' || ctaConfig.action === 'get-free-ticket') 
+                      ? 'Buy Ticket' 
+                      : ctaConfig.label}
                   </>
                 )}
               </Button>
