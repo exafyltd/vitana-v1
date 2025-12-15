@@ -1,14 +1,13 @@
 /**
  * Business Hub Overview
- * Unified dashboard with Snapshot (KPIs + Sources + Accelerator) and History tabs
+ * Unified dashboard with Snapshot (KPIs + Accelerator CTA) and History tabs
  */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
-import { EarningsBySourceSection } from "./EarningsBySourceSection";
-import { BusinessAcceleratorSection } from "./BusinessAcceleratorSection";
+import { BusinessAcceleratorCenterCTA } from "./BusinessAcceleratorCenterCTA";
 import { EarningsHistoryLedger } from "./EarningsHistoryLedger";
 import {
   SplitBar,
@@ -100,7 +99,7 @@ export function BusinessHubOverview({
           <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
         </SplitBarList>
 
-        <SplitBarContent value="snapshot" className="space-y-6 pt-4">
+        <SplitBarContent value="snapshot" className="space-y-8 pt-4">
           {/* KPI Strip */}
           <UnifiedEarningsKPIStrip
             totalEarnings={earnings.totalEarnings}
@@ -110,14 +109,8 @@ export function BusinessHubOverview({
             isLoading={isLoading}
           />
 
-          {/* Earnings by Source */}
-          <EarningsBySourceSection
-            bySource={earnings.bySource}
-            isLoading={isLoading}
-          />
-
-          {/* Business Accelerator */}
-          <BusinessAcceleratorSection
+          {/* Business Accelerator Center CTA */}
+          <BusinessAcceleratorCenterCTA
             onCreateEvent={handleCreateEvent}
             onAddToInventory={handleAddToInventory}
             onCreateService={handleCreateService}
