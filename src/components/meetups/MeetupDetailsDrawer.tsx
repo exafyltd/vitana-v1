@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Drawer,
@@ -188,6 +188,7 @@ export function MeetupDetailsDrawer({
   const [previousEventId, setPreviousEventId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [userHasTicket, setUserHasTicket] = useState(false);
+  const [isTicketSectionVisible, setIsTicketSectionVisible] = useState(false);
   
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
@@ -263,6 +264,32 @@ export function MeetupDetailsDrawer({
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
+
+  // Track ticket section visibility with Intersection Observer
+  useEffect(() => {
+    if (!open || !isTicketed) {
+      setIsTicketSectionVisible(false);
+      return;
+    }
+
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      const ticketsSection = document.querySelector('[data-section="tickets"]');
+      if (!ticketsSection) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setIsTicketSectionVisible(entry.isIntersecting);
+        },
+        { threshold: 0.3 } // Trigger when 30% visible
+      );
+
+      observer.observe(ticketsSection);
+      return () => observer.disconnect();
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [open, isTicketed]);
 
   // Track event changes for transitions
   useEffect(() => {
@@ -1166,11 +1193,18 @@ export function MeetupDetailsDrawer({
               }
             };
 
+            const isTicketCta = ctaConfig.action === 'buy-ticket' || ctaConfig.action === 'get-free-ticket';
+            const shouldFade = isTicketCta && isTicketSectionVisible;
+
             return (
               <Button
-                className={getCtaButtonClasses()}
+                className={cn(
+                  getCtaButtonClasses(),
+                  "transition-opacity duration-300",
+                  shouldFade && "opacity-0 pointer-events-none"
+                )}
                 onClick={handleCtaClick}
-                disabled={ctaConfig.disabled || isJoining}
+                disabled={ctaConfig.disabled || isJoining || shouldFade}
               >
                 {isJoining ? (
                   <>
@@ -1181,9 +1215,7 @@ export function MeetupDetailsDrawer({
                   <>
                     {getCtaIcon()}
                     {/* For ticketed events, show just "Buy Ticket" without price */}
-                    {(ctaConfig.action === 'buy-ticket' || ctaConfig.action === 'get-free-ticket') 
-                      ? 'Buy Ticket' 
-                      : ctaConfig.label}
+                    {isTicketCta ? 'Buy Ticket' : ctaConfig.label}
                   </>
                 )}
               </Button>
