@@ -1,17 +1,21 @@
 /**
- * BUSINESS HUB OVERVIEW
- * 
- * Unified dashboard for ALL income sources (direct sales + reselling).
- * Split into Snapshot (KPIs) and History (transaction ledger) tabs.
+ * Business Hub Overview
+ * Unified dashboard with Snapshot (KPIs + Sources + Accelerator) and History tabs
  */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
-import { BusinessStarterPanel } from "./BusinessStarterPanel";
-import { EarningsHistoryLedger } from "./EarningsHistoryLedger";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
+import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
+import { EarningsBySourceSection } from "./EarningsBySourceSection";
+import { BusinessAcceleratorSection } from "./BusinessAcceleratorSection";
+import { EarningsHistoryLedger } from "./EarningsHistoryLedger";
+import {
+  SplitBar,
+  SplitBarList,
+  SplitBarTrigger,
+  SplitBarContent,
+} from "@/components/ui/split-bar";
 
 interface BusinessHubOverviewProps {
   onCreateService: () => void;
@@ -61,44 +65,43 @@ const mockTransactions = [
     timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     metadata: { ticketsSold: 7, grossAmount: 420, status: "paid_to_wallet" },
   },
-  {
-    id: "mock-5",
-    type: "direct_sale" as const,
-    title: "Ice Bath Experience",
-    source: "My Event",
-    amount: 150,
-    currency: "EUR",
-    timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-    metadata: { ticketsSold: 5, grossAmount: 250, status: "pending_payout" },
-  },
 ];
 
-export function BusinessHubOverview({ 
-  onCreateService, 
-  onCreateEvent, 
-  onCreateCampaign 
+export function BusinessHubOverview({
+  onCreateService,
+  onCreateEvent,
+  onCreateCampaign,
 }: BusinessHubOverviewProps) {
+  const [activeTab, setActiveTab] = useState("snapshot");
   const navigate = useNavigate();
   const { earnings, isLoading } = useUnifiedEarnings();
-  const [activeTab, setActiveTab] = useState("snapshot");
 
-  const handleStartGuidedFlow = () => {
-    // TODO: Open guided flow modal/drawer
-    console.log("Guided flow - to be implemented");
+  const handleCreateEvent = () => {
+    onCreateEvent?.();
+  };
+
+  const handleAddToInventory = () => {
+    navigate("/business/sell-earn");
+  };
+
+  const handleCreateService = () => {
+    onCreateService?.();
+  };
+
+  const handleCreatePromotion = () => {
+    onCreateCampaign?.();
   };
 
   return (
     <div className="space-y-6">
-      {/* Tabs */}
       <SplitBar value={activeTab} onValueChange={setActiveTab}>
         <SplitBarList>
           <SplitBarTrigger value="snapshot">📊 Snapshot</SplitBarTrigger>
           <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
         </SplitBarList>
 
-        {/* Snapshot Tab */}
-        <SplitBarContent value="snapshot" className="mt-6 space-y-6">
-          {/* Unified Earnings KPI Strip */}
+        <SplitBarContent value="snapshot" className="space-y-6 pt-4">
+          {/* KPI Strip */}
           <UnifiedEarningsKPIStrip
             totalEarnings={earnings.totalEarnings}
             earnings30Days={earnings.earnings30Days}
@@ -107,16 +110,22 @@ export function BusinessHubOverview({
             isLoading={isLoading}
           />
 
-          {/* Earning Momentum Panel */}
-          <BusinessStarterPanel
-            onCreateEvent={onCreateEvent}
-            onBrowseEvents={() => navigate("/business/sell-earn")}
-            onStartGuidedSetup={handleStartGuidedFlow}
+          {/* Earnings by Source */}
+          <EarningsBySourceSection
+            bySource={earnings.bySource}
+            isLoading={isLoading}
+          />
+
+          {/* Business Accelerator */}
+          <BusinessAcceleratorSection
+            onCreateEvent={handleCreateEvent}
+            onAddToInventory={handleAddToInventory}
+            onCreateService={handleCreateService}
+            onCreatePromotion={handleCreatePromotion}
           />
         </SplitBarContent>
 
-        {/* History Tab */}
-        <SplitBarContent value="history" className="mt-6">
+        <SplitBarContent value="history" className="pt-4">
           <EarningsHistoryLedger
             transactions={earnings.recentTransactions.length > 0 ? earnings.recentTransactions : mockTransactions}
             isLoading={isLoading}

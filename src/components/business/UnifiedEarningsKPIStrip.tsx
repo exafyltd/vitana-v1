@@ -1,11 +1,8 @@
 /**
- * UNIFIED EARNINGS KPI STRIP
- * 
- * Horizontal 4-card KPI display for Business Hub Overview.
- * Shows: Total Earnings, Earnings (30 days), Pending, In Wallet
+ * Unified Earnings KPI Strip
+ * Premium KPI cards with gradient bar, icon bubble, large value display
  */
 
-import { Card, CardContent } from "@/components/ui/card";
 import { DollarSign, TrendingUp, Clock, Wallet } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +14,70 @@ interface UnifiedEarningsKPIStripProps {
   isLoading?: boolean;
 }
 
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("en-EU", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+};
+
+interface KPICardProps {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  gradientFrom: string;
+  gradientTo: string;
+  onClick?: () => void;
+  isLoading?: boolean;
+}
+
+function KPICard({ icon, label, value, gradientFrom, gradientTo, onClick, isLoading }: KPICardProps) {
+  return (
+    <button
+      onClick={onClick}
+      className="relative flex-1 min-w-[140px] bg-card rounded-2xl border border-border/40 shadow-sm overflow-hidden text-left transition-all duration-200 hover:shadow-md hover:border-border/60 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+    >
+      {/* Gradient top bar */}
+      <div 
+        className="h-1.5 w-full"
+        style={{ 
+          background: `linear-gradient(90deg, ${gradientFrom}, ${gradientTo})` 
+        }}
+      />
+      
+      <div className="p-4 pt-3">
+        {/* Icon bubble */}
+        <div 
+          className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+          style={{ 
+            background: `linear-gradient(135deg, ${gradientFrom}20, ${gradientTo}15)` 
+          }}
+        >
+          <div style={{ color: gradientFrom }}>
+            {icon}
+          </div>
+        </div>
+        
+        {/* Value */}
+        <div className="text-2xl font-bold text-foreground mb-0.5">
+          {isLoading ? (
+            <div className="h-8 w-20 bg-muted/50 rounded animate-pulse" />
+          ) : (
+            formatCurrency(value)
+          )}
+        </div>
+        
+        {/* Label */}
+        <div className="text-xs text-muted-foreground font-medium">
+          {label}
+        </div>
+      </div>
+    </button>
+  );
+}
+
 export function UnifiedEarningsKPIStrip({
   totalEarnings,
   earnings30Days,
@@ -26,75 +87,55 @@ export function UnifiedEarningsKPIStrip({
 }: UnifiedEarningsKPIStripProps) {
   const navigate = useNavigate();
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "EUR",
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
+  const kpiCards = [
+    {
+      icon: <DollarSign className="h-5 w-5" />,
+      label: "Total Earnings",
+      value: totalEarnings,
+      gradientFrom: "hsl(142, 76%, 36%)", // emerald
+      gradientTo: "hsl(158, 64%, 52%)",
+      onClick: () => navigate("/business?tab=history"),
+    },
+    {
+      icon: <TrendingUp className="h-5 w-5" />,
+      label: "Last 30 Days",
+      value: earnings30Days,
+      gradientFrom: "hsl(217, 91%, 60%)", // blue
+      gradientTo: "hsl(199, 89%, 48%)",
+      onClick: () => navigate("/business?tab=history&period=30d"),
+    },
+    {
+      icon: <Clock className="h-5 w-5" />,
+      label: "Pending Payout",
+      value: pendingPayout,
+      gradientFrom: "hsl(38, 92%, 50%)", // amber
+      gradientTo: "hsl(45, 93%, 47%)",
+      onClick: () => navigate("/business?tab=history&status=pending"),
+    },
+    {
+      icon: <Wallet className="h-5 w-5" />,
+      label: "In Wallet",
+      value: inWallet,
+      gradientFrom: "hsl(271, 91%, 65%)", // purple
+      gradientTo: "hsl(292, 84%, 61%)",
+      onClick: () => navigate("/wallet"),
+    },
+  ];
 
   return (
-    <Card className="bg-card/70 backdrop-blur-sm border-border/40 rounded-2xl shadow-sm overflow-hidden">
-      <CardContent className="p-0">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/40">
-          {/* Total Earnings - Accent Styling */}
-          <div className="p-4 flex items-center gap-3 relative">
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-accent/80 to-accent/40" />
-            <div className="h-10 w-10 rounded-xl bg-accent/15 flex items-center justify-center shrink-0">
-              <DollarSign className="h-5 w-5 text-accent" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs text-muted-foreground font-medium">Total Earnings</p>
-              <p className="text-2xl font-semibold tracking-tight text-accent">
-                {isLoading ? "..." : formatCurrency(totalEarnings)}
-              </p>
-            </div>
-          </div>
-
-          {/* Earnings 30 Days */}
-          <div className="p-4 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/40 flex items-center justify-center shrink-0">
-              <TrendingUp className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs text-muted-foreground font-medium">Earnings (30 days)</p>
-              <p className="text-2xl font-semibold tracking-tight text-emerald-600 dark:text-emerald-400">
-                {isLoading ? "..." : formatCurrency(earnings30Days)}
-              </p>
-            </div>
-          </div>
-
-          {/* Pending Payout */}
-          <div className="p-4 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-amber-100/80 dark:bg-amber-950/40 flex items-center justify-center shrink-0">
-              <Clock className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs text-muted-foreground font-medium">Pending Payout</p>
-              <p className="text-2xl font-semibold tracking-tight text-amber-600 dark:text-amber-400">
-                {isLoading ? "..." : formatCurrency(pendingPayout)}
-              </p>
-            </div>
-          </div>
-
-          {/* In Wallet */}
-          <div 
-            className="p-4 flex items-center gap-3 cursor-pointer hover:bg-muted/30 transition-colors"
-            onClick={() => navigate("/wallet")}
-          >
-            <div className="h-10 w-10 rounded-xl bg-emerald-100/80 dark:bg-emerald-950/40 flex items-center justify-center shrink-0">
-              <Wallet className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs text-muted-foreground font-medium">In Wallet</p>
-              <p className="text-2xl font-semibold tracking-tight text-emerald-600 dark:text-emerald-400">
-                {isLoading ? "..." : formatCurrency(inWallet)}
-              </p>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="flex gap-3 overflow-x-auto pb-1">
+      {kpiCards.map((card, index) => (
+        <KPICard
+          key={index}
+          icon={card.icon}
+          label={card.label}
+          value={card.value}
+          gradientFrom={card.gradientFrom}
+          gradientTo={card.gradientTo}
+          onClick={card.onClick}
+          isLoading={isLoading}
+        />
+      ))}
+    </div>
   );
 }
