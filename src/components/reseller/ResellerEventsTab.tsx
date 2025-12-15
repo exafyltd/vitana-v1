@@ -13,6 +13,7 @@
  */
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useResellerEvents, ResellerEvent } from "@/hooks/useResellerEvents";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
@@ -46,6 +47,7 @@ function toOrganizerEvent(event: ResellerEvent): OrganizerEvent {
 }
 
 export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
+  const navigate = useNavigate();
   const { data: events = [], isLoading } = useResellerEvents();
   const { data: resellerProfile } = useResellerProfile();
   const { activateResellerForCurrentUser, isActivating } = useActivateReseller();
