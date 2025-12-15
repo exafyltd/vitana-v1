@@ -110,6 +110,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
   
   // Check if event has ticket sales enabled
   const hasTickets = event.metadata?.has_tickets === true;
+  const isPaidEvent = event.metadata?.is_paid === true;
   
   return {
     title: event.title,
@@ -128,6 +129,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     eventId: event.id,
     showSmartAction: true,
     hasTickets,
+    isPaidEvent,
     onBuyTicket: hasTickets ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
