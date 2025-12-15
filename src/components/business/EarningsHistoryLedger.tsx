@@ -2,17 +2,17 @@
  * EARNINGS HISTORY LEDGER
  * 
  * Unified chronological ledger of all earnings transactions.
- * Displays full-width horizontal cards with transaction details.
+ * Uses StandardHorizontalCard for consistent styling with Orders page.
  */
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Ticket, Calendar, ArrowRight, Wallet, Clock } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
+import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { cn } from "@/lib/utils";
 
 interface EarningsHistoryLedgerProps {
   transactions: EarningsTransaction[];
@@ -51,54 +51,64 @@ export function EarningsHistoryLedger({
     }).format(amount);
   };
 
-  const getSourceBadge = (type: EarningsTransaction["type"]) => {
-    if (type === "reseller_commission") {
-      return (
-        <Badge variant="outline" className="text-[10px] bg-accent/10 text-accent-foreground border-accent/30">
-          Reseller
-        </Badge>
-      );
-    }
-    return (
-      <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
-        Direct sale
-      </Badge>
-    );
-  };
-
-  const getStatusBadge = (status?: string) => {
-    if (status === "paid_to_wallet") {
-      return (
-        <Badge variant="outline" className="text-[10px] bg-green-500/10 text-green-600 border-green-500/30">
-          Paid to wallet
-        </Badge>
-      );
-    }
-    return (
-      <Badge variant="outline" className="text-[10px] bg-amber-500/10 text-amber-600 border-amber-500/30">
-        <Clock className="h-2.5 w-2.5 mr-1" />
-        Pending payout
-      </Badge>
-    );
-  };
-
   const handleViewInWallet = (tx: EarningsTransaction) => {
     const filterParam = tx.type === "reseller_commission" ? "reseller_commission" : "ticket_sale";
     navigate(`/wallet?filter=${filterParam}`);
   };
 
+  const transformToCardProps = (tx: EarningsTransaction): StandardHorizontalCardProps => {
+    const typeLabel = tx.type === "reseller_commission" ? "Reseller" : "Direct Sale";
+    const dateInfo = format(new Date(tx.timestamp), "MMM d, yyyy • h:mm a");
+    const txId = tx.id.slice(0, 8);
+    
+    const description = `${typeLabel} • ${dateInfo} • #${txId}`;
+    
+    // Status badge (single inline badge like Orders)
+    const getStatusBadge = (): { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' } => {
+      if (tx.metadata?.status === "paid_to_wallet") {
+        return { label: "Paid", variant: "secondary" };
+      }
+      return { label: "Pending", variant: "outline" };
+    };
+    
+    return {
+      id: tx.id,
+      screenId: "BUSINESS_HISTORY",
+      icon: (
+        <div className="w-10 h-10 rounded-lg bg-muted/30 flex items-center justify-center text-lg">
+          {tx.type === "reseller_commission" ? "🎫" : "📅"}
+        </div>
+      ),
+      title: tx.title,
+      description,
+      badges: [getStatusBadge()],
+      metadata: [{ 
+        icon: null, 
+        text: `${formatCurrency(tx.amount)} earned` 
+      }],
+      primaryAction: {
+        label: "View",
+        onClick: () => handleViewInWallet(tx),
+        variant: "ghost",
+        icon: <Wallet className="h-3.5 w-3.5" />,
+      },
+      layoutMode: "stack",
+      density: "compact",
+    };
+  };
+
   if (isLoading) {
     return (
       <div className="space-y-3">
-        <div className="flex gap-2">
+        <div className="flex gap-1 p-1 bg-card/40 backdrop-blur-xl rounded-xl border border-border/20 w-fit">
           {filters.map((f) => (
-            <Skeleton key={f.value} className="h-8 w-24 rounded-full" />
+            <Skeleton key={f.value} className="h-8 w-24 rounded-lg" />
           ))}
         </div>
         {[1, 2, 3].map((i) => (
-          <div key={i} className="p-4 bg-card/70 rounded-xl border border-border/40">
+          <div key={i} className="p-4 bg-background/60 backdrop-blur-sm rounded-xl border border-white/10">
             <div className="flex items-start gap-3">
-              <Skeleton className="h-10 w-10 rounded-full" />
+              <Skeleton className="h-10 w-10 rounded-lg" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-48" />
                 <Skeleton className="h-3 w-32" />
@@ -112,18 +122,21 @@ export function EarningsHistoryLedger({
 
   return (
     <div className="space-y-4">
-      {/* Filter chips */}
-      <div className="flex gap-2">
+      {/* Filter chips - segmented control style */}
+      <div className="flex gap-1 p-1 bg-card/40 backdrop-blur-xl rounded-xl border border-border/20 w-fit">
         {filters.map((f) => (
-          <Button
+          <button
             key={f.value}
-            variant={filter === f.value ? "default" : "outline"}
-            size="sm"
-            className="rounded-full text-xs"
             onClick={() => setFilter(f.value)}
+            className={cn(
+              "px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200",
+              filter === f.value 
+                ? "bg-background shadow-sm text-foreground" 
+                : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+            )}
           >
             {f.label}
-          </Button>
+          </button>
         ))}
       </div>
 
@@ -139,55 +152,10 @@ export function EarningsHistoryLedger({
       ) : (
         <div className="space-y-3">
           {filteredTransactions.map((tx) => (
-            <div
+            <StandardHorizontalCard
               key={tx.id}
-              className="p-4 bg-card/70 backdrop-blur-sm rounded-xl border border-border/40 hover:border-border/60 transition-colors"
-            >
-              <div className="flex items-start gap-3">
-                {/* Icon */}
-                <div className="h-10 w-10 rounded-full bg-muted/50 flex items-center justify-center shrink-0">
-                  {tx.type === "reseller_commission" ? (
-                    <Ticket className="h-5 w-5 text-muted-foreground" />
-                  ) : (
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="font-medium text-foreground truncate">
-                        {tx.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {tx.metadata?.ticketsSold || 1} ticket{(tx.metadata?.ticketsSold || 1) > 1 ? "s" : ""} · {formatCurrency(tx.metadata?.grossAmount || tx.amount)} gross · {formatCurrency(tx.amount)} earned
-                      </p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="shrink-0 text-xs gap-1"
-                      onClick={() => handleViewInWallet(tx)}
-                    >
-                      View
-                      <ArrowRight className="h-3 w-3" />
-                    </Button>
-                  </div>
-
-                  {/* Badges and timestamp */}
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center gap-2">
-                      {getSourceBadge(tx.type)}
-                      {getStatusBadge(tx.metadata?.status)}
-                    </div>
-                    <span className="text-[10px] text-muted-foreground">
-                      {format(new Date(tx.timestamp), "MMM d, yyyy")}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              {...transformToCardProps(tx)}
+            />
           ))}
         </div>
       )}
