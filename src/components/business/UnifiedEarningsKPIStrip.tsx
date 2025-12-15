@@ -102,7 +102,7 @@ export function UnifiedEarningsKPIStrip({
       value: earnings30Days,
       gradientFrom: "hsl(217, 91%, 60%)", // blue
       gradientTo: "hsl(199, 89%, 48%)",
-      onClick: () => navigate("/business?tab=history&period=30d"),
+      onClick: () => navigate("/business?tab=history&range=30d"),
     },
     {
       icon: <Clock className="h-5 w-5" />,
@@ -110,7 +110,7 @@ export function UnifiedEarningsKPIStrip({
       value: pendingPayout,
       gradientFrom: "hsl(38, 92%, 50%)", // amber
       gradientTo: "hsl(45, 93%, 47%)",
-      onClick: () => navigate("/business?tab=history&status=pending"),
+      onClick: () => navigate("/wallet?filter=pending"),
     },
     {
       icon: <Wallet className="h-5 w-5" />,

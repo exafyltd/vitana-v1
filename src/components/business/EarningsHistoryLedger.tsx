@@ -5,13 +5,13 @@
  * Uses StandardHorizontalCard for consistent styling with Orders page.
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { format, subDays, isAfter } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Wallet, ChevronDown } from "lucide-react";
+import { Wallet, ChevronDown, X } from "lucide-react";
 import { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 interface EarningsHistoryLedgerProps {
   transactions: EarningsTransaction[];
   isLoading?: boolean;
+  dateRange?: string | null;
 }
 
 type FilterType = "all" | "direct_sale" | "reseller_commission";
@@ -26,6 +27,7 @@ type FilterType = "all" | "direct_sale" | "reseller_commission";
 export function EarningsHistoryLedger({
   transactions,
   isLoading,
+  dateRange,
 }: EarningsHistoryLedgerProps) {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<FilterType>("all");
@@ -41,13 +43,50 @@ export function EarningsHistoryLedger({
     { value: "reseller_commission", label: "Reseller" },
   ];
 
-  const filteredTransactions = transactions.filter((tx) => {
+  // Apply date range filter
+  const dateFilteredTransactions = useMemo(() => {
+    if (!dateRange) return transactions;
+    
+    const now = new Date();
+    let cutoffDate: Date;
+    
+    switch (dateRange) {
+      case "30d":
+        cutoffDate = subDays(now, 30);
+        break;
+      case "7d":
+        cutoffDate = subDays(now, 7);
+        break;
+      case "90d":
+        cutoffDate = subDays(now, 90);
+        break;
+      default:
+        return transactions;
+    }
+    
+    return transactions.filter(tx => isAfter(new Date(tx.timestamp), cutoffDate));
+  }, [transactions, dateRange]);
+
+  const filteredTransactions = dateFilteredTransactions.filter((tx) => {
     if (filter === "all") return true;
     if (filter === "direct_sale") {
       return tx.type === "ticket_sale" || tx.type === "direct_sale";
     }
     return tx.type === "reseller_commission";
   });
+  
+  const getDateRangeLabel = (range: string) => {
+    switch (range) {
+      case "30d": return "Last 30 Days";
+      case "7d": return "Last 7 Days";
+      case "90d": return "Last 90 Days";
+      default: return range;
+    }
+  };
+  
+  const clearDateRange = () => {
+    navigate("/business?tab=history");
+  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-EU", {
@@ -188,6 +227,24 @@ export function EarningsHistoryLedger({
 
   return (
     <div className="space-y-4">
+      {/* Active date range chip */}
+      {dateRange && (
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
+            <span>{getDateRangeLabel(dateRange)}</span>
+            <button 
+              onClick={clearDateRange}
+              className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </Badge>
+          <span className="text-sm text-muted-foreground">
+            {filteredTransactions.length} transaction{filteredTransactions.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+      )}
+      
       {/* Filter chips - segmented control style */}
       <div className="flex gap-1 p-1 bg-card/40 backdrop-blur-xl rounded-xl border border-border/20 w-fit">
         {filters.map((f) => (
