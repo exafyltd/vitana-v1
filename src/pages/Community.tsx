@@ -793,7 +793,7 @@ const renderEventGrid = (
         {isEvenRow ? (
           // Row pattern: big + small + small (1+2)
           <>
-            <div className="col-span-6">
+          <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
                 title={rowEvents[0]?.title || ""}
@@ -811,7 +811,7 @@ const renderEventGrid = (
                 timestamp={rowEvents[0]?.timestamp}
                 rewardPoints={rowEvents[0]?.rewardPoints}
                 rewardDescription={rowEvents[0]?.rewardDescription}
-                className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
+                className={`h-full min-h-[320px] md:min-h-[360px] ${getAISpotlightStyling(rowEvents[0])}`}
                 showSmartAction={true}
                 onActionClick={() => handleActionClick(rowEvents[0])}
                 eventId={rowEvents[0]?.id}
@@ -837,7 +837,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[1].timestamp}
                   rewardPoints={rowEvents[1]?.rewardPoints}
                   rewardDescription={rowEvents[1]?.rewardDescription}
-                  className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
+                  className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
                   eventId={rowEvents[1]?.id}
@@ -864,7 +864,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[2].timestamp}
                   rewardPoints={rowEvents[2]?.rewardPoints}
                   rewardDescription={rowEvents[2]?.rewardDescription}
-                  className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
+                  className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
                   eventId={rowEvents[2]?.id}
@@ -895,7 +895,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[0].timestamp}
                   rewardPoints={rowEvents[0]?.rewardPoints}
                   rewardDescription={rowEvents[0]?.rewardDescription}
-                  className={`h-full ${getAISpotlightStyling(rowEvents[0])}`}
+                  className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[0])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[0])}
                   eventId={rowEvents[0]?.id}
@@ -922,7 +922,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[1].timestamp}
                   rewardPoints={rowEvents[1]?.rewardPoints}
                   rewardDescription={rowEvents[1]?.rewardDescription}
-                  className={`h-full ${getAISpotlightStyling(rowEvents[1])}`}
+                  className={`h-full min-h-[280px] ${getAISpotlightStyling(rowEvents[1])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[1])}
                   eventId={rowEvents[1]?.id}
@@ -949,7 +949,7 @@ const renderEventGrid = (
                   timestamp={rowEvents[2].timestamp}
                   rewardPoints={rowEvents[2]?.rewardPoints}
                   rewardDescription={rowEvents[2]?.rewardDescription}
-                  className={`h-full ${getAISpotlightStyling(rowEvents[2])}`}
+                  className={`h-full min-h-[320px] md:min-h-[360px] ${getAISpotlightStyling(rowEvents[2])}`}
                   showSmartAction={true}
                   onActionClick={() => handleActionClick(rowEvents[2])}
                   eventId={rowEvents[2]?.id}

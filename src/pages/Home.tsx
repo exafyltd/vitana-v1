@@ -720,7 +720,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[280px]"
                       eventId={[...todayEvents, ...upcomingEvents][0]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][0]?.id)}
                     />
@@ -740,7 +740,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[280px]"
                       eventId={[...todayEvents, ...upcomingEvents][1]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][1]?.id)}
                     />
@@ -766,7 +766,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[280px]"
                       eventId={[...todayEvents, ...upcomingEvents][2]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][2]?.id)}
                     />
@@ -786,7 +786,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[280px]"
                       eventId={[...todayEvents, ...upcomingEvents][3]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][3]?.id)}
                     />
@@ -806,7 +806,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[320px] md:min-h-[360px]"
                       eventId={[...todayEvents, ...upcomingEvents][4]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][4]?.id)}
                     />
@@ -839,7 +839,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[280px]"
                       eventId={[...todayEvents, ...upcomingEvents][5]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][5]?.id)}
                     />
@@ -859,7 +859,7 @@ export default function Home() {
                       showReward={true}
                       rewardPoints={5}
                       rewardDescription="Join this community event"
-                      className="h-full"
+                      className="h-full min-h-[280px]"
                       eventId={[...todayEvents, ...upcomingEvents][6]?.id}
                       onClick={() => handleEventClick([...todayEvents, ...upcomingEvents][6]?.id)}
                     />
@@ -886,7 +886,7 @@ export default function Home() {
                     rewardDescription="Earn credits for joining meetup"
                     eventId={todayEventsAndMeetups[0]?.id}
                     onClick={() => handleEventClick(todayEventsAndMeetups[0]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[320px] md:min-h-[360px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -904,7 +904,7 @@ export default function Home() {
                     rewardDescription="Earn credits for hydration challenge"
                     eventId={todayEventsAndMeetups[1]?.id}
                     onClick={() => handleEventClick(todayEventsAndMeetups[1]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -919,7 +919,7 @@ export default function Home() {
                     timestamp={todayEventsAndMeetups[2]?.timestamp}
                     eventId={todayEventsAndMeetups[2]?.id}
                     onClick={() => handleEventClick(todayEventsAndMeetups[2]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
               </div>
@@ -937,7 +937,7 @@ export default function Home() {
                     mediaType={blendedMediaContent[0]?.mediaType}
                     author={blendedMediaContent[0]?.author}
                     timestamp={blendedMediaContent[0]?.timestamp}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -949,7 +949,7 @@ export default function Home() {
                     mediaType={blendedMediaContent[1]?.mediaType}
                     author={blendedMediaContent[1]?.author}
                     timestamp={blendedMediaContent[1]?.timestamp}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-6">
@@ -961,7 +961,7 @@ export default function Home() {
                     mediaType={blendedMediaContent[2]?.mediaType}
                     author={blendedMediaContent[2]?.author}
                     timestamp={blendedMediaContent[2]?.timestamp}
-                    className="h-full"
+                    className="h-full min-h-[320px] md:min-h-[360px]"
                   />
                 </div>
               </div>
@@ -985,7 +985,7 @@ export default function Home() {
                     price={guideInspirationalEvents[0]?.price}
                     eventId={guideInspirationalEvents[0]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[0]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[320px] md:min-h-[360px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -1001,7 +1001,7 @@ export default function Home() {
                     price={guideInspirationalEvents[1]?.price}
                     eventId={guideInspirationalEvents[1]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[1]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -1017,7 +1017,7 @@ export default function Home() {
                     price={guideInspirationalEvents[2]?.price}
                     eventId={guideInspirationalEvents[2]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[2]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
               </div>
@@ -1039,7 +1039,7 @@ export default function Home() {
                     price={guideInspirationalEvents[3]?.price}
                     eventId={guideInspirationalEvents[3]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[3]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -1053,7 +1053,7 @@ export default function Home() {
                     timestamp={guideDailyMatches[0]?.timestamp}
                     eventId={guideDailyMatches[0]?.id}
                     onClick={() => handleEventClick(guideDailyMatches[0]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-6">
@@ -1067,7 +1067,7 @@ export default function Home() {
                     timestamp={guideDailyMatches[1]?.timestamp}
                     eventId={guideDailyMatches[1]?.id}
                     onClick={() => handleEventClick(guideDailyMatches[1]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[320px] md:min-h-[360px]"
                   />
                 </div>
               </div>
@@ -1087,7 +1087,7 @@ export default function Home() {
                     timestamp={guideDailyMatches[2]?.timestamp}
                     eventId={guideDailyMatches[2]?.id}
                     onClick={() => handleEventClick(guideDailyMatches[2]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[320px] md:min-h-[360px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -1101,7 +1101,7 @@ export default function Home() {
                     timestamp={guideDailyMatches[3]?.timestamp}
                     eventId={guideDailyMatches[3]?.id}
                     onClick={() => handleEventClick(guideDailyMatches[3]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -1115,7 +1115,7 @@ export default function Home() {
                     timestamp={guideDailyMatches[4]?.timestamp}
                     eventId={guideDailyMatches[4]?.id}
                     onClick={() => handleEventClick(guideDailyMatches[4]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
               </div>
@@ -1137,7 +1137,7 @@ export default function Home() {
                     price={guideInspirationalEvents[0]?.price}
                     eventId={guideInspirationalEvents[0]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[0]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-3">
@@ -1153,7 +1153,7 @@ export default function Home() {
                     price={guideInspirationalEvents[1]?.price}
                     eventId={guideInspirationalEvents[1]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[1]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[280px]"
                   />
                 </div>
                 <div className="col-span-6">
@@ -1169,7 +1169,7 @@ export default function Home() {
                     price={guideInspirationalEvents[2]?.price}
                     eventId={guideInspirationalEvents[2]?.id}
                     onClick={() => handleEventClick(guideInspirationalEvents[2]?.id)}
-                    className="h-full"
+                    className="h-full min-h-[320px] md:min-h-[360px]"
                   />
                 </div>
               </div>
