@@ -22,6 +22,60 @@ interface BusinessHubOverviewProps {
   onCreateCampaign: () => void;
 }
 
+// Mock data for visual preview
+const mockTransactions = [
+  {
+    id: "mock-1",
+    type: "direct_sale" as const,
+    title: "Breathwork Masterclass",
+    source: "My Event",
+    amount: 85,
+    currency: "EUR",
+    timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    metadata: { ticketsSold: 2, grossAmount: 120, status: "paid_to_wallet" },
+  },
+  {
+    id: "mock-2",
+    type: "reseller_commission" as const,
+    title: "Yoga Retreat Weekend",
+    source: "Sell & Earn",
+    amount: 18,
+    currency: "EUR",
+    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    metadata: { ticketsSold: 3, grossAmount: 180, status: "pending_payout" },
+  },
+  {
+    id: "mock-3",
+    type: "direct_sale" as const,
+    title: "Sound Healing Session",
+    source: "My Event",
+    amount: 45,
+    currency: "EUR",
+    timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    metadata: { ticketsSold: 1, grossAmount: 45, status: "paid_to_wallet" },
+  },
+  {
+    id: "mock-4",
+    type: "reseller_commission" as const,
+    title: "Longevity Summit 2025",
+    source: "Sell & Earn",
+    amount: 42,
+    currency: "EUR",
+    timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    metadata: { ticketsSold: 7, grossAmount: 420, status: "paid_to_wallet" },
+  },
+  {
+    id: "mock-5",
+    type: "direct_sale" as const,
+    title: "Ice Bath Experience",
+    source: "My Event",
+    amount: 150,
+    currency: "EUR",
+    timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+    metadata: { ticketsSold: 5, grossAmount: 250, status: "pending_payout" },
+  },
+];
+
 export function BusinessHubOverview({ 
   onCreateService, 
   onCreateEvent, 
@@ -117,7 +171,7 @@ export function BusinessHubOverview({
         {/* History Tab */}
         <SplitBarContent value="history" className="mt-6">
           <EarningsHistoryLedger
-            transactions={earnings.recentTransactions}
+            transactions={earnings.recentTransactions.length > 0 ? earnings.recentTransactions : mockTransactions}
             isLoading={isLoading}
           />
         </SplitBarContent>
