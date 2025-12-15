@@ -34,10 +34,11 @@ export interface CtaConfig {
 
 /**
  * Check if event has ticketing enabled
+ * Returns true if has_tickets is true OR if is_paid is true (implies ticketed)
  */
 export function isTicketedEvent(event: EventCtaEvent | null | undefined): boolean {
   if (!event) return false;
-  return event.metadata?.has_tickets === true;
+  return event.metadata?.has_tickets === true || event.metadata?.is_paid === true;
 }
 
 /**
