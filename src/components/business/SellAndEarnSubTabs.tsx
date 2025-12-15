@@ -1,8 +1,13 @@
+/**
+ * SELL AND EARN SUB TABS (Simplified for v1)
+ * 
+ * Only 2 tabs: Available to Sell | Promotions
+ * Sales and Overview moved to Business Hub Overview.
+ */
+
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { ResellerOverviewTab } from "@/components/reseller/ResellerOverviewTab";
 import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
-import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Ticket, Loader2 } from "lucide-react";
@@ -64,17 +69,11 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
   }
 
   return (
-    <SplitBar defaultValue="overview" className="w-full">
+    <SplitBar defaultValue="available" className="w-full">
       <SplitBarList>
-        <SplitBarTrigger value="overview">📊 Overview</SplitBarTrigger>
         <SplitBarTrigger value="available">🛒 Available to Sell</SplitBarTrigger>
         <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
-        <SplitBarTrigger value="sales">💰 Sales</SplitBarTrigger>
       </SplitBarList>
-
-      <SplitBarContent value="overview" className="pt-4">
-        <ResellerOverviewTab />
-      </SplitBarContent>
 
       <SplitBarContent value="available" className="pt-4">
         <ResellerAvailableEventsTab />
@@ -82,10 +81,6 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
 
       <SplitBarContent value="promotions" className="pt-4">
         <ResellerCampaignsTab searchQuery={searchQuery} />
-      </SplitBarContent>
-
-      <SplitBarContent value="sales" className="pt-4">
-        <ResellerSalesTab />
       </SplitBarContent>
     </SplitBar>
   );

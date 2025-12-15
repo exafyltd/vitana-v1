@@ -1,17 +1,18 @@
 /**
  * BUSINESS HUB OVERVIEW
  * 
- * Unified styling matching Sell & Earn Overview:
- * - Autopilot suggestion banner
- * - 4 premium glassy KPI cards
- * - Quick action pill buttons
+ * Unified dashboard for ALL income sources (direct sales + reselling).
+ * Single source of truth backed by Wallet.
  */
 
 import { Button } from "@/components/ui/button";
-import { Plus, Users, Megaphone } from "lucide-react";
+import { Plus, Users, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { BusinessHubAutopilotBanner } from "./BusinessHubAutopilotBanner";
-import { BusinessHubKPICards } from "./BusinessHubKPICards";
-import { useIsReseller } from "@/hooks/useIsReseller";
+import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
+import { EarningsActivityFeed } from "./EarningsActivityFeed";
+import { EarningsBySourceCards } from "./EarningsBySourceCards";
+import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 
 interface BusinessHubOverviewProps {
   onCreateService: () => void;
@@ -24,19 +25,38 @@ export function BusinessHubOverview({
   onCreateEvent, 
   onCreateCampaign 
 }: BusinessHubOverviewProps) {
-  const { isReseller } = useIsReseller();
+  const navigate = useNavigate();
+  const { earnings, isLoading } = useUnifiedEarnings();
 
   return (
     <div className="space-y-8">
       {/* Autopilot Suggestion Strip */}
       <BusinessHubAutopilotBanner />
       
-      {/* 4 KPI Cards */}
-      <BusinessHubKPICards />
+      {/* Unified Earnings KPI Strip */}
+      <UnifiedEarningsKPIStrip
+        totalEarnings={earnings.totalEarnings}
+        earnings30Days={earnings.earnings30Days}
+        pendingPayout={earnings.pendingPayout}
+        inWallet={earnings.inWallet}
+        isLoading={isLoading}
+      />
 
-      {/* Quick Actions - with section anchoring */}
+      {/* Earnings Activity Feed */}
+      <EarningsActivityFeed
+        transactions={earnings.recentTransactions}
+        isLoading={isLoading}
+      />
+
+      {/* Earnings by Source */}
+      <EarningsBySourceCards
+        directSales={earnings.bySource.directSales}
+        resellerCommissions={earnings.bySource.resellerCommissions}
+        isLoading={isLoading}
+      />
+
+      {/* Quick Actions */}
       <div className="space-y-3">
-        {/* Subtle divider */}
         <div className="h-px bg-border/[0.08]" />
         <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60 pt-1">Quick Actions</h3>
         <div className="flex flex-wrap gap-3">
@@ -58,17 +78,14 @@ export function BusinessHubOverview({
             <Users className="h-4 w-4" />
             Add a client
           </Button>
-          {isReseller && (
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="rounded-full gap-2"
-              onClick={onCreateCampaign}
-            >
-              <Megaphone className="h-4 w-4" />
-              Create a promotion
-            </Button>
-          )}
+          <Button 
+            size="sm" 
+            className="rounded-full gap-2"
+            onClick={() => navigate("/business/sell-earn")}
+          >
+            Go to Sell & Earn
+            <ArrowRight className="h-4 w-4" />
+          </Button>
         </div>
       </div>
     </div>
