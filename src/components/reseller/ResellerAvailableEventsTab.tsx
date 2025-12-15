@@ -20,9 +20,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { format, differenceInDays } from "date-fns";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Ticket, Percent, Clock, TrendingUp, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CreateEventPopup } from "@/components/CreateEventPopup";
 import { Badge } from "@/components/ui/badge";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { SellEventModal } from "./SellEventModal";
@@ -96,7 +96,7 @@ async function fetchTenantResellableEvents(userId: string, tenantId: string, now
 }
 
 export function ResellerAvailableEventsTab() {
-  const navigate = useNavigate();
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
   const { session } = useAuth();
   const { activeTenantId } = useTenant();
   const { data: resellerProfile } = useResellerProfile();
@@ -192,10 +192,15 @@ export function ResellerAvailableEventsTab() {
         <p className="text-sm text-muted-foreground max-w-md mb-6">
           Once you add events to your inventory, you'll be able to promote them, share reseller links, and earn from every ticket sold.
         </p>
-        <Button onClick={() => navigate("/comm/events-meetups")}>
+        <Button onClick={() => setIsCreateEventOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add first event
         </Button>
+        <CreateEventPopup
+          isOpen={isCreateEventOpen}
+          onClose={() => setIsCreateEventOpen(false)}
+          eventContext="community"
+        />
       </div>
     );
   }
