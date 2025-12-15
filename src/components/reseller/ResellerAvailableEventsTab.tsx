@@ -1,7 +1,8 @@
 /**
- * RESELLER AVAILABLE EVENTS TAB
+ * RESELLER INVENTORY TAB
  * 
- * Displays events that resellers can sell tickets for. Events must have:
+ * Displays your resale inventory - events you can promote and earn commission on.
+ * Events must have:
  * - resellable = true
  * - start_time in the future
  * 
@@ -165,8 +166,8 @@ export function ResellerAvailableEventsTab() {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Ticket className="h-12 w-12 text-muted-foreground/50 mb-4" />
-        <p className="text-sm text-muted-foreground">
-          Activate <strong>Sell Event Tickets</strong> in the Business popup to see events you can resell.
+        <p className="text-sm text-muted-foreground max-w-md">
+          Activate reseller mode to access your inventory of events available for commission-based selling.
         </p>
       </div>
     );
@@ -185,7 +186,7 @@ export function ResellerAvailableEventsTab() {
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Ticket className="h-12 w-12 text-muted-foreground/50 mb-4" />
         <p className="text-sm text-muted-foreground max-w-md">
-          There are currently no events opened for reselling. Check back later or create your own event to start selling.
+          Your inventory is empty. New resellable events from organizers will appear here when available.
         </p>
       </div>
     );
@@ -212,7 +213,7 @@ export function ResellerAvailableEventsTab() {
       <div className="space-y-3">
         {filteredEvents.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-sm text-muted-foreground">No events match this filter</p>
+            <p className="text-sm text-muted-foreground">No inventory items match this filter</p>
           </div>
         ) : (
           filteredEvents.map((event) => {
