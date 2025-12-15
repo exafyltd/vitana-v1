@@ -1,7 +1,7 @@
 /**
  * SELL AND EARN SUB TABS (Simplified for v1)
  * 
- * Only 2 tabs: Available to Sell | Promotions
+ * Only 2 tabs: Inventory | Promotions
  * Sales and Overview moved to Business Hub Overview.
  */
 
@@ -71,7 +71,7 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
   return (
     <SplitBar defaultValue="available" className="w-full">
       <SplitBarList>
-        <SplitBarTrigger value="available">🛒 Available to Sell</SplitBarTrigger>
+        <SplitBarTrigger value="available">📦 Inventory</SplitBarTrigger>
         <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
       </SplitBarList>
 
