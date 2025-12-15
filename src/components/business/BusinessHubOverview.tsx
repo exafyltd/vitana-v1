@@ -6,13 +6,10 @@
  */
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Plus, Users, ArrowRight, Megaphone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
-import { BusinessHubAutopilotBanner } from "./BusinessHubAutopilotBanner";
 import { UnifiedEarningsKPIStrip } from "./UnifiedEarningsKPIStrip";
-import { TopPerformerCard } from "./TopPerformerCard";
+import { BusinessStarterPanel } from "./BusinessStarterPanel";
 import { EarningsHistoryLedger } from "./EarningsHistoryLedger";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 
@@ -85,21 +82,10 @@ export function BusinessHubOverview({
   const { earnings, isLoading } = useUnifiedEarnings();
   const [activeTab, setActiveTab] = useState("snapshot");
 
-  // Calculate top performer from transactions
-  const topPerformer = earnings.recentTransactions.reduce(
-    (best, tx) => {
-      if (tx.amount > (best?.revenue || 0)) {
-        return {
-          name: tx.title,
-          type: "event" as const,
-          revenue: tx.amount,
-          ticketsSold: tx.metadata?.ticketsSold || 1,
-        };
-      }
-      return best;
-    },
-    null as { name: string; type: "event" | "service"; revenue: number; ticketsSold?: number } | null
-  );
+  const handleStartGuidedFlow = () => {
+    // TODO: Open guided flow modal/drawer
+    console.log("Guided flow - to be implemented");
+  };
 
   return (
     <div className="space-y-6">
@@ -112,9 +98,6 @@ export function BusinessHubOverview({
 
         {/* Snapshot Tab */}
         <SplitBarContent value="snapshot" className="mt-6 space-y-6">
-          {/* Autopilot Suggestion Strip */}
-          <BusinessHubAutopilotBanner />
-          
           {/* Unified Earnings KPI Strip */}
           <UnifiedEarningsKPIStrip
             totalEarnings={earnings.totalEarnings}
@@ -124,48 +107,13 @@ export function BusinessHubOverview({
             isLoading={isLoading}
           />
 
-          {/* Top Performer Card */}
-          <TopPerformerCard
-            name={topPerformer?.name || ""}
-            type={topPerformer?.type || "event"}
-            revenue={topPerformer?.revenue || 0}
-            ticketsSold={topPerformer?.ticketsSold}
-            isLoading={isLoading}
+          {/* Business Starter Panel */}
+          <BusinessStarterPanel
+            onCreateEventOrService={onCreateEvent}
+            onCreatePromotion={onCreateCampaign}
+            onViewWallet={() => navigate("/wallet")}
+            onStartGuidedFlow={handleStartGuidedFlow}
           />
-
-          {/* Quick Actions */}
-          <div className="space-y-3">
-            <div className="h-px bg-border/[0.08]" />
-            <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground/60 pt-1">Quick Actions</h3>
-            <div className="flex flex-wrap gap-3">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="rounded-full gap-2"
-                onClick={onCreateService}
-              >
-                <Plus className="h-4 w-4" />
-                Create a service
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="rounded-full gap-2"
-                onClick={onCreateCampaign}
-              >
-                <Megaphone className="h-4 w-4" />
-                Create promotion
-              </Button>
-              <Button 
-                size="sm" 
-                className="rounded-full gap-2"
-                onClick={() => navigate("/business/sell-earn")}
-              >
-                Go to Sell & Earn
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
         </SplitBarContent>
 
         {/* History Tab */}
