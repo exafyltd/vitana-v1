@@ -107,12 +107,11 @@ export function BusinessHubOverview({
             isLoading={isLoading}
           />
 
-          {/* Business Starter Panel */}
+          {/* Earning Momentum Panel */}
           <BusinessStarterPanel
-            onCreateEventOrService={onCreateEvent}
-            onCreatePromotion={onCreateCampaign}
-            onViewWallet={() => navigate("/wallet")}
-            onStartGuidedFlow={handleStartGuidedFlow}
+            onCreateEvent={onCreateEvent}
+            onBrowseEvents={() => navigate("/business/sell-earn")}
+            onStartGuidedSetup={handleStartGuidedFlow}
           />
         </SplitBarContent>
 
