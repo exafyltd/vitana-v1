@@ -4,7 +4,7 @@ import { useResellerPayouts } from "@/hooks/useResellerPayouts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Briefcase, Clock, Eye, Settings2, ArrowDownToLine, CheckCircle2 } from "lucide-react";
+import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Clock, Eye, Settings2, ArrowDownToLine, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { SalesDetailDrawer } from "./SalesDetailDrawer";
@@ -34,7 +34,7 @@ export function ResellerSalesTab() {
   const { transferToWallet, isTransferring } = useResellerPayouts();
   
   const [timeRange, setTimeRange] = useState<TimeRange>("all");
-  const [clientEventsOnly, setClientEventsOnly] = useState(false);
+  
   const [selectedEvent, setSelectedEvent] = useState<ResellerEventSale | null>(null);
   
   // Empty state CTAs
@@ -96,16 +96,11 @@ export function ResellerSalesTab() {
     }).format(amount);
   };
 
-  // Filter sales based on time range and client events toggle
+  // Filter sales based on time range
   const getFilteredSales = () => {
     if (!activeSales?.eventSales) return [];
     
     let filtered = [...activeSales.eventSales];
-    
-    // Filter by client events
-    if (clientEventsOnly) {
-      filtered = filtered.filter(e => e.isClientEvent);
-    }
     
     // Filter by time range (based on lastSaleAt)
     if (timeRange !== "all") {
@@ -350,7 +345,7 @@ export function ResellerSalesTab() {
           ))}
         </div>
 
-        {/* Right side: Transfer to Wallet + Client Events toggle + Dev settings */}
+        {/* Right side: Transfer to Wallet + Dev settings */}
         <div className="flex items-center gap-2">
           {/* Transfer to Wallet CTA */}
           {(activeSales?.commissionPendingPayout || 0) > 0 && (
@@ -368,19 +363,6 @@ export function ResellerSalesTab() {
               Transfer to Wallet
             </Button>
           )}
-          {/* Client Events Toggle Pill */}
-          <button
-            onClick={() => setClientEventsOnly(!clientEventsOnly)}
-            className={cn(
-              "inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-all border",
-              clientEventsOnly
-                ? "bg-accent/10 text-accent border-accent/30"
-                : "bg-muted/30 text-muted-foreground border-border/40 hover:bg-muted/50"
-            )}
-          >
-            <Briefcase className="h-3 w-3" />
-            Client Events
-          </button>
 
           {/* Mock Data Toggle (Dev only) */}
           {shouldUseMock && (
@@ -438,25 +420,15 @@ export function ResellerSalesTab() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          {/* Title + Badge Row */}
+                          {/* Title Row */}
                           <div className="flex items-center gap-2 flex-wrap mb-1">
                             <h4 className="font-semibold text-sm truncate">{event.eventTitle}</h4>
-                            {event.isClientEvent ? (
-                              <Badge 
-                                variant="outline" 
-                                className="text-[10px] px-1.5 py-0 h-5 rounded-md bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800 font-medium gap-1"
-                              >
-                                <Briefcase className="h-2.5 w-2.5" />
-                                Client Event
-                              </Badge>
-                            ) : (
-                              <Badge 
-                                variant="outline" 
-                                className="text-[10px] px-1.5 py-0 h-5 rounded-md font-medium"
-                              >
-                                Public Resale
-                              </Badge>
-                            )}
+                            <Badge 
+                              variant="outline" 
+                              className="text-[10px] px-1.5 py-0 h-5 rounded-md font-medium"
+                            >
+                              Reseller Sale
+                            </Badge>
                           </div>
 
                           {/* Stats Line */}

@@ -121,18 +121,7 @@ export function ResellerAvailableEventsTab() {
       const allEvents = [...publicEvents, ...tenantEvents];
       allEvents.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
       
-      // Filter out producer-only events where the producer is someone else
-      // Producer-only events should only be visible to the producer in "Client Events" tab
-      const visibleEvents = allEvents.filter((event) => {
-        const meta = event.metadata as Record<string, unknown> | null;
-        if (meta?.producer_mode && meta?.producer_only_reseller) {
-          // Only show to the producer themselves (but they use Client Events tab anyway)
-          return meta.producer_user_id === currentUserId;
-        }
-        return true; // Normal resellable events are visible to all
-      });
-      
-      return visibleEvents;
+      return allEvents;
     },
     enabled: !!session?.user?.id && !!resellerProfile,
   });

@@ -19,8 +19,6 @@ export interface ResellerEventSale {
   commissionAmount: number;
   commissionRate: number;
   lastSaleAt: string;
-  isClientEvent: boolean;
-  clientName: string | null;
 }
 
 export interface ResellerSalesSummary {
@@ -207,13 +205,9 @@ export function useResellerSales() {
 
       // Build event sales array
       const eventSales: ResellerEventSale[] = [];
-      const currentUserId = resellerProfile?.user_id;
       
       eventSalesMap.forEach((sales, eventId) => {
         const event = eventMap.get(eventId);
-        const eventMetadata = (event as any)?.metadata;
-        const isClientEvent = eventMetadata?.producer_mode === true && 
-                              eventMetadata?.producer_user_id === currentUserId;
         
         eventSales.push({
           eventId,
@@ -224,8 +218,6 @@ export function useResellerSales() {
           commissionAmount: sales.commissionAmount,
           commissionRate: sales.commissionRate,
           lastSaleAt: sales.lastSaleAt,
-          isClientEvent,
-          clientName: isClientEvent ? (eventMetadata?.producer_client_name || null) : null,
         });
       });
 

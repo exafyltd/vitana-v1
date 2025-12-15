@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { format, formatDistanceToNow } from "date-fns";
-import { Calendar, Briefcase, Info, Receipt, Loader2, Wallet, Clock, CheckCircle2 } from "lucide-react";
+import { Calendar, Info, Receipt, Loader2, Wallet, Clock, CheckCircle2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
@@ -20,8 +20,6 @@ interface SalesDetailDrawerProps {
     saleAmount: number;
     commissionAmount: number;
     commissionRate: number;
-    isClientEvent: boolean;
-    clientName: string | null;
   } | null;
   useMock?: boolean;
 }
@@ -159,12 +157,6 @@ export function SalesDetailDrawer({ open, onOpenChange, event, useMock }: SalesD
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar className="h-4 w-4" />
                 <span>{format(new Date(event.eventDate), "MMMM d, yyyy")}</span>
-              </div>
-            )}
-            {event.isClientEvent && event.clientName && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Briefcase className="h-4 w-4" />
-                <span>Client: {event.clientName}</span>
               </div>
             )}
           </div>

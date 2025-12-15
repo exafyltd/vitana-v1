@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket, Share2, Percent, Briefcase } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, Image as ImageIcon, X, Ticket, Share2, Percent } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
@@ -21,17 +21,13 @@ interface CreateEventPopupProps {
   onClose: () => void;
   eventContext?: 'personal' | 'community';
   onEventCreated?: (eventId: string) => void;
-  defaultProducerMode?: boolean;
-  defaultProducerClientName?: string;
 }
 
 export function CreateEventPopup({ 
   isOpen, 
   onClose, 
   eventContext, 
-  onEventCreated,
-  defaultProducerMode = false,
-  defaultProducerClientName = ""
+  onEventCreated
 }: CreateEventPopupProps) {
   const { toast } = useToast();
   const { session } = useAuth();
@@ -48,21 +44,10 @@ export function CreateEventPopup({
   const [enableTicketSales, setEnableTicketSales] = useState(false);
   const [ticketTypes, setTicketTypes] = useState<TicketTypeInput[]>([]);
   
-  // Reseller options state - auto-enable if defaultProducerMode is true
-  const [enableReselling, setEnableReselling] = useState(defaultProducerMode);
-  const [resaleScope, setResaleScope] = useState<'tenant' | 'public'>(defaultProducerMode ? 'public' : 'tenant');
+  // Reseller options state
+  const [enableReselling, setEnableReselling] = useState(false);
+  const [resaleScope, setResaleScope] = useState<'tenant' | 'public'>('tenant');
   const [resellerCommission, setResellerCommission] = useState(10);
-  
-  // Producer Mode state (only for resellers)
-  const [producerMode, setProducerMode] = useState(defaultProducerMode);
-  const [producerClientName, setProducerClientName] = useState(defaultProducerClientName);
-  
-  // Organizer information (only used when producer mode is active)
-  const [organizerLegalName, setOrganizerLegalName] = useState("");
-  const [organizerContactEmail, setOrganizerContactEmail] = useState("");
-  const [organizerContactPhone, setOrganizerContactPhone] = useState("");
-  const [organizerPayoutMethod, setOrganizerPayoutMethod] = useState<"manual" | "bank_transfer" | "invoice" | "other">("manual");
-  const [organizerNotes, setOrganizerNotes] = useState("");
   
   const [formData, setFormData] = useState({
     title: "",
@@ -110,14 +95,6 @@ export function CreateEventPopup({
     setEnableReselling(false);
     setResaleScope('tenant');
     setResellerCommission(10);
-    setProducerMode(false);
-    setProducerClientName("");
-    // Reset organizer fields
-    setOrganizerLegalName("");
-    setOrganizerContactEmail("");
-    setOrganizerContactPhone("");
-    setOrganizerPayoutMethod("manual");
-    setOrganizerNotes("");
     setFormData({
       title: "",
       description: "",
@@ -262,8 +239,8 @@ export function CreateEventPopup({
       // If community context: create in both tables (community + personal calendar)
       if (eventContext === 'community') {
         // 1. Create in global_community_events (visible to everyone)
-        // Build metadata with optional producer mode fields
-        const baseMetadata = enableTicketSales && ticketTypes.length > 0 ? { 
+        // Build metadata
+        const metadata = enableTicketSales && ticketTypes.length > 0 ? { 
           is_paid: true, 
           has_tickets: true,
           price: ticketTypes[0]?.price || 0 
@@ -271,33 +248,6 @@ export function CreateEventPopup({
           is_paid: true, 
           price: parseFloat(formData.price) || 0 
         } : { is_paid: false };
-
-        // Add producer mode metadata if enabled
-        // producer_only_reseller = true means only the producer can resell, not other resellers
-        const metadata = producerMode && resellerProfile?.id ? {
-          ...baseMetadata,
-          producer_mode: true,
-          producer_user_id: session?.user?.id || null,
-          producer_reseller_profile_id: resellerProfile.id,
-          producer_reseller_code: resellerProfile.reseller_code || null,
-          // If enableReselling is OFF, this is a producer-only event (not visible to other resellers)
-          producer_only_reseller: !enableReselling,
-          ...(producerClientName ? { producer_client_name: producerClientName } : {}),
-          // Organizer fields
-          ...(organizerLegalName ? { organizer_legal_name: organizerLegalName } : {}),
-          ...(organizerContactEmail ? { organizer_contact_email: organizerContactEmail } : {}),
-          ...(organizerContactPhone ? { organizer_contact_phone: organizerContactPhone } : {}),
-          organizer_payout_method: organizerPayoutMethod || "manual",
-          ...(organizerNotes ? { organizer_notes: organizerNotes } : {}),
-        } : baseMetadata;
-
-        // When producer mode is enabled, always set resellable=true so producer can sell
-        // The producer_only_reseller flag controls whether OTHER resellers can see it
-        const effectiveEnableReselling = producerMode ? true : enableReselling;
-        const effectiveResaleScope = producerMode ? 'public' : (enableReselling ? resaleScope : 'none');
-        const effectiveCommission = producerMode 
-          ? (resellerCommission || resellerProfile?.commission_rate || 10) 
-          : (enableReselling ? resellerCommission : undefined);
 
         const communityEventData = {
           title: formData.title,
@@ -311,9 +261,9 @@ export function CreateEventPopup({
           image_url: uploadedImageUrl,
           metadata,
           // Reseller options
-          resellable: effectiveEnableReselling,
-          resale_scope: effectiveResaleScope as 'none' | 'tenant' | 'public',
-          default_reseller_commission_rate: effectiveCommission,
+          resellable: enableReselling,
+          resale_scope: enableReselling ? resaleScope : 'none' as 'none' | 'tenant' | 'public',
+          default_reseller_commission_rate: enableReselling ? resellerCommission : undefined,
         };
 
         const result = await createEvent(communityEventData);
@@ -940,144 +890,11 @@ export function CreateEventPopup({
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Producer Mode - Only visible to users with active reseller profile */}
-                {resellerProfile?.id && (
-                  <div className="space-y-4 pb-4 border-b border-border/50">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Briefcase className="w-4 h-4 text-amber-600" />
-                        <div>
-                          <Label>Create on behalf of a client</Label>
-                          <p className="text-sm text-muted-foreground">Producer / Agency mode</p>
-                        </div>
-                      </div>
-                      <Switch 
-                        checked={producerMode}
-                        onCheckedChange={(checked) => {
-                          setProducerMode(checked);
-                          if (checked) {
-                            // Auto-enable reselling with public scope when producer mode is on
-                            setEnableReselling(true);
-                            setResaleScope('public');
-                            // Set commission to reseller's default if not already set
-                            if (!resellerCommission || resellerCommission === 10) {
-                              setResellerCommission(resellerProfile.commission_rate || 10);
-                            }
-                          }
-                        }}
-                      />
-                    </div>
-
-                    {producerMode && (
-                      <div className="space-y-3 pl-6">
-                        <div>
-                          <Label htmlFor="producerClientName">Client name / brand (optional)</Label>
-                          <Input
-                            id="producerClientName"
-                            value={producerClientName}
-                            onChange={(e) => setProducerClientName(e.target.value)}
-                            placeholder="e.g., Acme Wellness Co."
-                            className="mt-1"
-                          />
-                        </div>
-                        <p className="text-xs text-muted-foreground bg-amber-50 border border-amber-200 rounded-md p-2">
-                          You'll act as the primary reseller for this event. Your client receives organizer revenue; you earn commissions from tickets sold via your reseller links.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Organizer / Client Information - Only when Producer Mode is active */}
-                {producerMode && resellerProfile?.id && (
-                  <Card className="border-amber-200 bg-amber-50/30">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base flex items-center gap-2">
-                        <Users className="w-4 h-4 text-amber-600" />
-                        Organizer / Client Information
-                      </CardTitle>
-                      <p className="text-xs text-muted-foreground">
-                        Used for revenue reporting and payouts. This is your client, not you.
-                      </p>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="organizerLegalName">Organizer / Client legal name</Label>
-                          <Input
-                            id="organizerLegalName"
-                            value={organizerLegalName}
-                            onChange={(e) => setOrganizerLegalName(e.target.value)}
-                            placeholder="Wellness & Co. Ltd."
-                            className="mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="organizerContactEmail">Contact Email</Label>
-                          <Input
-                            id="organizerContactEmail"
-                            type="email"
-                            value={organizerContactEmail}
-                            onChange={(e) => setOrganizerContactEmail(e.target.value)}
-                            placeholder="client@example.com"
-                            className="mt-1"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="organizerContactPhone">Contact Phone (optional)</Label>
-                          <Input
-                            id="organizerContactPhone"
-                            type="tel"
-                            value={organizerContactPhone}
-                            onChange={(e) => setOrganizerContactPhone(e.target.value)}
-                            placeholder="+1 555 123 4567"
-                            className="mt-1"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="organizerPayoutMethod">Preferred Payout Method</Label>
-                          <Select 
-                            value={organizerPayoutMethod} 
-                            onValueChange={(v) => setOrganizerPayoutMethod(v as typeof organizerPayoutMethod)}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="manual">Manual</SelectItem>
-                              <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                              <SelectItem value="invoice">Invoice</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="organizerNotes">Internal Notes (optional)</Label>
-                        <Textarea
-                          id="organizerNotes"
-                          value={organizerNotes}
-                          onChange={(e) => setOrganizerNotes(e.target.value)}
-                          placeholder="IBAN, payment terms, invoicing notes…"
-                          className="mt-1"
-                          rows={2}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Allow {producerMode ? "Other " : ""}Resellers to Sell Tickets</Label>
+                    <Label>Allow Resellers to Sell Tickets</Label>
                     <p className="text-sm text-muted-foreground">
-                      {producerMode 
-                        ? "Allow other resellers to also promote and sell tickets for this event"
-                        : "Let resellers promote and sell tickets for this event"}
+                      Let resellers promote and sell tickets for this event
                     </p>
                   </div>
                   <Switch 
@@ -1127,15 +944,6 @@ export function CreateEventPopup({
                         Commission resellers earn per ticket sold (0-50%)
                       </p>
                     </div>
-                  </div>
-                )}
-
-                {/* Producer-only info box when producer mode ON but enableReselling OFF */}
-                {producerMode && !enableReselling && (
-                  <div className="pt-3 border-t border-border/50">
-                    <p className="text-xs text-muted-foreground bg-blue-50 border border-blue-200 rounded-md p-2">
-                      <strong>Producer-only event:</strong> Only you can generate reseller links for this event. It won't appear in the marketplace for other resellers.
-                    </p>
                   </div>
                 )}
               </CardContent>

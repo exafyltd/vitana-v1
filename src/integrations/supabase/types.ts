@@ -3152,6 +3152,45 @@ export type Database = {
         }
         Relationships: []
       }
+      knowledge_docs: {
+        Row: {
+          content: string
+          content_tsv: unknown
+          created_at: string | null
+          id: string
+          path: string
+          source_type: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+          word_count: number | null
+        }
+        Insert: {
+          content: string
+          content_tsv?: unknown
+          created_at?: string | null
+          id?: string
+          path: string
+          source_type?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+          word_count?: number | null
+        }
+        Update: {
+          content?: string
+          content_tsv?: unknown
+          created_at?: string | null
+          id?: string
+          path?: string
+          source_type?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+          word_count?: number | null
+        }
+        Relationships: []
+      }
       lab_test_orders: {
         Row: {
           collection_method: Database["public"]["Enums"]["collection_method"]
@@ -7391,6 +7430,18 @@ export type Database = {
           user_id: string
         }[]
       }
+      search_knowledge_docs: {
+        Args: { max_results?: number; search_query: string }
+        Returns: {
+          id: string
+          path: string
+          score: number
+          snippet: string
+          source_type: string
+          tags: string[]
+          title: string
+        }[]
+      }
       search_minimal_profiles_text: {
         Args: { search_query: string; search_scope?: string }
         Returns: {
@@ -7439,6 +7490,16 @@ export type Database = {
           user_id_param: string
         }
         Returns: number
+      }
+      upsert_knowledge_doc: {
+        Args: {
+          p_content: string
+          p_path: string
+          p_source_type?: string
+          p_tags?: string[]
+          p_title: string
+        }
+        Returns: string
       }
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }

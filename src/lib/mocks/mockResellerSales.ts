@@ -21,8 +21,6 @@ export interface MockEventSale {
   commissionAmount: number;
   commissionRate: number;
   lastSaleAt: string;
-  isClientEvent: boolean;
-  clientName: string | null;
 }
 
 export interface MockResellerSales {
@@ -55,8 +53,6 @@ export const mockResellerSales: MockResellerSales = {
       commissionAmount: 60,
       commissionRate: 10,
       lastSaleAt: daysAgo(2), // 2 days ago - within 7 days
-      isClientEvent: false,
-      clientName: null,
     },
     {
       eventId: "mock-event-2",
@@ -68,8 +64,6 @@ export const mockResellerSales: MockResellerSales = {
       commissionAmount: 20,
       commissionRate: 5,
       lastSaleAt: daysAgo(5), // 5 days ago - within 7 days
-      isClientEvent: false,
-      clientName: null,
     },
     {
       eventId: "mock-event-3",
@@ -81,8 +75,6 @@ export const mockResellerSales: MockResellerSales = {
       commissionAmount: 112.5,
       commissionRate: 15,
       lastSaleAt: daysAgo(18), // 18 days ago - within 30 days, outside 7 days
-      isClientEvent: true,
-      clientName: "TechCorp Inc.",
     },
     {
       eventId: "mock-event-4",
@@ -94,8 +86,6 @@ export const mockResellerSales: MockResellerSales = {
       commissionAmount: 120,
       commissionRate: 20,
       lastSaleAt: daysAgo(40), // 40 days ago - outside 30 days
-      isClientEvent: true,
-      clientName: "Wellness Foundation",
     },
   ],
 };

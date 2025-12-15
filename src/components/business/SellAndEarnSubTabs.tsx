@@ -1,11 +1,10 @@
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
+import { ResellerOverviewTab } from "@/components/reseller/ResellerOverviewTab";
 import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
-import { ResellerClientEventsTab } from "@/components/reseller/ResellerClientEventsTab";
 import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
 import { ResellerSalesTab } from "@/components/reseller/ResellerSalesTab";
-import { ResellerOverviewTab } from "@/components/reseller/ResellerOverviewTab";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Ticket, Loader2 } from "lucide-react";
 import { useIsReseller } from "@/hooks/useIsReseller";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
@@ -34,26 +33,28 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
     return (
       <div className="flex items-center justify-center py-12">
         <Card className="max-w-md bg-white/70 backdrop-blur-sm border border-white/20">
-          <CardContent className="p-8 text-center space-y-4">
-            <div className="mx-auto w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center">
-              <Ticket className="h-8 w-8 text-accent" />
+          <CardHeader className="text-center">
+            <div className="mx-auto w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-2">
+              <Ticket className="h-6 w-6 text-accent" />
             </div>
-            <h3 className="text-xl font-semibold">Enable Sell & Earn</h3>
-            <p className="text-muted-foreground">
-              Activate reseller mode to sell tickets for partner events and earn commission on every sale.
-            </p>
+            <CardTitle>Start Selling Event Tickets</CardTitle>
+            <CardDescription>
+              Become a reseller to earn commissions by promoting and selling tickets for events.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
             <Button 
-              onClick={() => activateResellerForCurrentUser({ redirectAfter: false })}
+              onClick={() => activateResellerForCurrentUser({ showToast: true, redirectAfter: false })}
               disabled={isActivating}
-              className="gap-2"
+              className="rounded-full"
             >
               {isActivating ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Activating...
                 </>
               ) : (
-                "Activate Sell & Earn"
+                "Activate Reseller Mode"
               )}
             </Button>
           </CardContent>
@@ -62,34 +63,28 @@ export function SellAndEarnSubTabs({ searchQuery = "" }: SellAndEarnSubTabsProps
     );
   }
 
-  // Reseller view with 5 tabs (Overview as default)
   return (
     <SplitBar defaultValue="overview" className="w-full">
       <SplitBarList>
         <SplitBarTrigger value="overview">📊 Overview</SplitBarTrigger>
         <SplitBarTrigger value="available">🛒 Available to Sell</SplitBarTrigger>
-        <SplitBarTrigger value="client-events">👤 Client Events</SplitBarTrigger>
         <SplitBarTrigger value="promotions">📢 Promotions</SplitBarTrigger>
         <SplitBarTrigger value="sales">💰 Sales</SplitBarTrigger>
       </SplitBarList>
-      
-      <SplitBarContent value="overview" className="mt-4">
+
+      <SplitBarContent value="overview" className="pt-4">
         <ResellerOverviewTab />
       </SplitBarContent>
 
-      <SplitBarContent value="available" className="mt-4">
+      <SplitBarContent value="available" className="pt-4">
         <ResellerAvailableEventsTab />
       </SplitBarContent>
 
-      <SplitBarContent value="client-events" className="mt-4">
-        <ResellerClientEventsTab />
-      </SplitBarContent>
-      
-      <SplitBarContent value="promotions" className="mt-4">
+      <SplitBarContent value="promotions" className="pt-4">
         <ResellerCampaignsTab searchQuery={searchQuery} />
       </SplitBarContent>
-      
-      <SplitBarContent value="sales" className="mt-4">
+
+      <SplitBarContent value="sales" className="pt-4">
         <ResellerSalesTab />
       </SplitBarContent>
     </SplitBar>
