@@ -159,37 +159,37 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
         </div>
       )}
 
-      {/* Summary & Purchase */}
-      {totalTickets > 0 && (
-        <div className="pt-4 border-t space-y-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">
-              {totalTickets} ticket{totalTickets !== 1 ? "s" : ""}
-            </span>
-            <span className="font-semibold text-foreground">
-              {totalAmount === 0 ? "Free" : `$${totalAmount.toFixed(2)}`}
-            </span>
-          </div>
-
-          <Button
-            className="w-full"
-            size="lg"
-            onClick={handlePurchase}
-            disabled={purchasing || (showGuestForm && (!guestEmail || !guestName))}
-          >
-            {purchasing ? (
-              <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              <>
-                {totalAmount === 0 ? "Get Free Ticket" : `Buy Tickets - $${totalAmount.toFixed(2)}`}
-              </>
-            )}
-          </Button>
+      {/* Summary & Purchase - Always visible, disabled until tickets selected */}
+      <div className="pt-4 border-t space-y-4">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">
+            {totalTickets} ticket{totalTickets !== 1 ? "s" : ""} selected
+          </span>
+          <span className="font-semibold text-foreground">
+            {totalTickets === 0 ? "$0.00" : totalAmount === 0 ? "Free" : `$${totalAmount.toFixed(2)}`}
+          </span>
         </div>
-      )}
+
+        <Button
+          className="w-full"
+          size="lg"
+          onClick={handlePurchase}
+          disabled={totalTickets === 0 || purchasing || (showGuestForm && (!guestEmail || !guestName))}
+        >
+          {purchasing ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              Processing...
+            </>
+          ) : totalTickets === 0 ? (
+            "Select Tickets"
+          ) : totalAmount === 0 ? (
+            "Get Free Ticket"
+          ) : (
+            `Buy Tickets – $${totalAmount.toFixed(2)}`
+          )}
+        </Button>
+      </div>
     </div>
   );
 }

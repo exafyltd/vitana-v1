@@ -123,9 +123,11 @@ export function isMeetupType(event: EventCtaEvent | null | undefined): boolean {
 
 /**
  * Format price for display
+ * Note: Prices in event_ticket_types are stored in dollars (not cents)
  */
-export function formatTicketPrice(priceInCents: number, currency: string = 'USD'): string {
-  const amount = priceInCents / 100;
+export function formatTicketPrice(price: number, currency: string = 'USD'): string {
+  // Price is already in dollars, NOT cents
+  const amount = price;
   
   // For common currencies, use symbol
   const currencySymbols: Record<string, string> = {
