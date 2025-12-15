@@ -8,7 +8,9 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import CreateBusinessEventPopup from "@/components/CreateBusinessEventPopup";
+import { CreateSelectionDialog } from "@/components/CreateSelectionDialog";
+import { CreateEventPopup } from "@/components/CreateEventPopup";
+import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
 import CreateServicePopup from "@/components/CreateServicePopup";
 import { BusinessTypeSelector } from "@/components/business/BusinessTypeSelector";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -31,7 +33,9 @@ export default function MyBusiness() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
-  const [showCreatePopup, setShowCreatePopup] = useState(false);
+  const [showSelectionDialog, setShowSelectionDialog] = useState(false);
+  const [showCreateEvent, setShowCreateEvent] = useState(false);
+  const [showCreateMeetup, setShowCreateMeetup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [showCreateService, setShowCreateService] = useState(false);
@@ -188,7 +192,7 @@ export default function MyBusiness() {
             <SplitBarContent value="overview">
               <BusinessHubOverview 
                 onCreateService={() => setShowCreateService(true)}
-                onCreateEvent={() => setShowCreatePopup(true)}
+                onCreateEvent={() => setShowSelectionDialog(true)}
                 onCreateCampaign={() => setShowCampaignDialog(true)}
               />
             </SplitBarContent>
@@ -219,12 +223,28 @@ export default function MyBusiness() {
       </div>
 
       {/* Popups and Dialogs */}
-      {showCreatePopup && (
-        <CreateBusinessEventPopup 
-          isOpen={showCreatePopup}
-          onClose={() => setShowCreatePopup(false)}
-        />
-      )}
+      <CreateSelectionDialog
+        open={showSelectionDialog}
+        onOpenChange={setShowSelectionDialog}
+        onSelectEvent={() => {
+          setShowSelectionDialog(false);
+          setShowCreateEvent(true);
+        }}
+        onSelectMeetup={() => {
+          setShowSelectionDialog(false);
+          setShowCreateMeetup(true);
+        }}
+      />
+
+      <CreateEventPopup
+        isOpen={showCreateEvent}
+        onClose={() => setShowCreateEvent(false)}
+      />
+
+      <CreateMeetupPopup
+        isOpen={showCreateMeetup}
+        onClose={() => setShowCreateMeetup(false)}
+      />
       
       <AutopilotPopup 
         open={autopilotOpen} 
@@ -239,7 +259,7 @@ export default function MyBusiness() {
       <BusinessTypeSelector
         isOpen={showBusinessTypeSelector}
         onClose={() => setShowBusinessTypeSelector(false)}
-        onSelectEvent={() => setShowCreatePopup(true)}
+        onSelectEvent={() => setShowSelectionDialog(true)}
         onSelectService={() => setShowCreateService(true)}
       />
 
