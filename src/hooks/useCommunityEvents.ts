@@ -17,6 +17,11 @@ interface CommunityEvent {
   created_at: string;
   updated_at: string;
   image_url?: string;
+  /**
+   * JSON metadata from `global_community_events.metadata`.
+   * Expected keys for ticket CTA logic: has_tickets, is_paid, price.
+   */
+  metadata?: any;
   is_co_creator?: boolean;
   creator_display_name?: string;
   creator_avatar_url?: string;
