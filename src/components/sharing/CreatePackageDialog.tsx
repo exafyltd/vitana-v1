@@ -65,10 +65,14 @@ const PACKAGE_TYPES_V1: { value: PackageType; label: string; description: string
   },
 ];
 
-// V1: Only service and event item types
-const ITEM_TYPES_V1 = [
-  { value: 'service', label: '1:1 Session' },
-  { value: 'event', label: 'Event Access' },
+// Comprehensive item types
+const ITEM_TYPES = [
+  { value: 'service', label: '1:1 Session', description: 'Individual coaching or therapy session', hasDuration: true },
+  { value: 'group_session', label: 'Group Session', description: 'Group class or workshop', hasDuration: true },
+  { value: 'event', label: 'Event Access', description: 'Access to a specific event', hasDuration: false },
+  { value: 'course', label: 'Course Access', description: 'Digital course or learning program', hasDuration: false },
+  { value: 'digital', label: 'Digital Download', description: 'Ebook, guide, or PDF resource', hasDuration: false },
+  { value: 'resource', label: 'Resource Access', description: 'Library or community access', hasDuration: false },
 ];
 
 interface ServiceOption {
@@ -76,6 +80,18 @@ interface ServiceOption {
   title: string;
   duration?: number;
   price?: number;
+}
+
+// Helper to get placeholder text for each item type
+function getItemPlaceholder(itemType: string): string {
+  switch (itemType) {
+    case 'service': return 'Session name (e.g., 60-min Coaching Session)';
+    case 'group_session': return 'Group session name (e.g., Weekly Yoga Class)';
+    case 'course': return 'Course name (e.g., Mindfulness Fundamentals)';
+    case 'digital': return 'Download name (e.g., Wellness Guide PDF)';
+    case 'resource': return 'Resource name (e.g., Member Library Access)';
+    default: return 'Item name';
+  }
 }
 
 interface EventOption {
@@ -359,13 +375,14 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                           service_key: undefined,
                           event_id: undefined,
                           item_title: '',
+                          item_duration_min: ITEM_TYPES.find(t => t.value === v)?.hasDuration ? 60 : undefined,
                         })}
                       >
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[160px]">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {ITEM_TYPES_V1.map((type) => (
+                          {ITEM_TYPES.map((type) => (
                             <SelectItem key={type.value} value={type.value}>
                               {type.label}
                             </SelectItem>
@@ -383,37 +400,8 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                       </Button>
                     </div>
 
-                    {/* Service selector */}
-                    {item.item_type === 'service' && (
-                      <div className="space-y-2">
-                        {serviceOptions.length > 0 ? (
-                          <Select
-                            value={item.service_key || ''}
-                            onValueChange={(v) => handleServiceSelect(index, v)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a service..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {serviceOptions.map((service) => (
-                                <SelectItem key={service.key} value={service.key}>
-                                  {service.title} {service.duration && `(${service.duration} min)`}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        ) : (
-                          <Input
-                            placeholder="Session name (e.g., 60-min Coaching Session)"
-                            value={item.item_title || ''}
-                            onChange={(e) => updateItem(index, { item_title: e.target.value })}
-                          />
-                        )}
-                      </div>
-                    )}
-
-                    {/* Event selector */}
-                    {item.item_type === 'event' && (
+                    {/* Event selector - only for event type */}
+                    {item.item_type === 'event' ? (
                       <div className="space-y-2">
                         {eventOptions.length > 0 ? (
                           <Select
@@ -442,6 +430,13 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                           />
                         )}
                       </div>
+                    ) : (
+                      /* Manual entry for all other types */
+                      <Input
+                        placeholder={getItemPlaceholder(item.item_type)}
+                        value={item.item_title || ''}
+                        onChange={(e) => updateItem(index, { item_title: e.target.value })}
+                      />
                     )}
 
                     <div className="flex gap-2">
@@ -454,7 +449,8 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                           onChange={(e) => updateItem(index, { quantity: parseInt(e.target.value) || 1 })}
                         />
                       </div>
-                      {item.item_type === 'service' && (
+                      {/* Duration only for session-based types */}
+                      {(item.item_type === 'service' || item.item_type === 'group_session') && (
                         <div className="flex-1">
                           <Label className="text-xs text-muted-foreground">Duration (min)</Label>
                           <Input

@@ -7,7 +7,7 @@ import type { Json } from "@/integrations/supabase/types";
 
 export type PackageType = 'bundle' | 'subscription' | 'program';
 export type PackageStatus = 'draft' | 'published' | 'archived';
-export type PackageItemType = 'service' | 'event'; // v1: service + event only
+export type PackageItemType = 'service' | 'group_session' | 'event' | 'course' | 'digital' | 'resource';
 export type BillingInterval = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
 export interface PackageItem {
