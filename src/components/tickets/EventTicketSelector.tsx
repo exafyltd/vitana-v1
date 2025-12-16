@@ -14,9 +14,11 @@ interface EventTicketSelectorProps {
   forceGuestMode?: boolean;
   /** UTM params for reseller attribution tracking */
   utmParams?: UtmParams;
+  /** Event price from metadata (fallback for legacy events) */
+  eventPrice?: number;
 }
 
-export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams }: EventTicketSelectorProps) {
+export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams, eventPrice }: EventTicketSelectorProps) {
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
   
@@ -83,9 +85,16 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
 
   if (ticketTypes.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        <Ticket className="h-12 w-12 mx-auto mb-2 opacity-30" />
-        <p>No tickets available for this event</p>
+      <div className="text-center py-8 space-y-3">
+        <Ticket className="h-12 w-12 mx-auto text-muted-foreground/30" />
+        <div className="space-y-1">
+          <p className="text-muted-foreground font-medium">Tickets coming soon</p>
+          <p className="text-sm text-muted-foreground/70">
+            {eventPrice && eventPrice > 0 
+              ? `This event costs $${eventPrice}. Contact the organizer for ticket availability.`
+              : "Contact the event organizer for ticket information."}
+          </p>
+        </div>
       </div>
     );
   }
