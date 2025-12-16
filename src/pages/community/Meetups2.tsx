@@ -271,7 +271,7 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     showSmartAction: true,
     hasTickets,
     isPaidEvent,
-    onBuyTicket: hasTickets ? () => onClick?.(event) : undefined,
+    onBuyTicket: (hasTickets || isPaidEvent) ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
     ...(String(event.id || '').startsWith('dummy')

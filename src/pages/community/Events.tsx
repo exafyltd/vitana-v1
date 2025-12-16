@@ -256,7 +256,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void) =>
     showSmartAction: true,
     hasTickets,
     isPaidEvent,
-    onBuyTicket: hasTickets ? () => onClick?.(event) : undefined,
+    onBuyTicket: (hasTickets || isPaidEvent) ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
     actionButton: (
