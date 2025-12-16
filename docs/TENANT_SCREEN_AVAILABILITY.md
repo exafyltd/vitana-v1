@@ -103,13 +103,13 @@ Available to all tenants (199 screens)
 | WLLT-005 | Receive Money | Wallet | `/wallet/receive` | src/pages/wallet/Receive.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
 | WLLT-006 | Payment Methods | Wallet | `/wallet/payment-methods` | src/pages/wallet/PaymentMethods.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
 | WLLT-007 | Currency Exchange | Wallet | `/wallet/exchange` | src/pages/wallet/Exchange.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
-| SHRG-001 | Sharing Overview | Sharing | `/sharing` | src/pages/Sharing.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
-| SHRG-002 | Distribution | Sharing | `/sharing/distribution` | src/pages/sharing/Distribution.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
-| SHRG-003 | Posts | Sharing | `/sharing/posts` | src/pages/sharing/Posts.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
-| SHRG-004 | Campaigns | Sharing | `/sharing/campaigns` | src/pages/sharing/Campaigns.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
-| SHRG-005 | Channels | Sharing | `/sharing/channels` | src/pages/sharing/Channels.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
-| SHRG-006 | Analytics | Sharing | `/sharing/analytics` | src/pages/sharing/Analytics.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
-| SHRG-007 | Planner | Sharing | `/sharing/planner` | src/pages/sharing/Planner.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
+| SHAR-001 | Sharing Overview | Sharing | `/sharing` | src/pages/Sharing.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
+| SHAR-002 | Distribution | Sharing | `/sharing/distribution` | src/pages/sharing/Distribution.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
+| SHAR-003 | Posts | Sharing | `/sharing/posts` | src/pages/sharing/Posts.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
+| SHAR-004 | Campaigns | Sharing | `/sharing/campaigns` | src/pages/sharing/Campaigns.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
+| SHAR-005 | Channels | Sharing | `/sharing/channels` | src/pages/sharing/Channels.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
+| SHAR-006 | Analytics | Sharing | `/sharing/analytics` | src/pages/sharing/Analytics.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
+| SHAR-007 | Planner | Sharing | `/sharing/planner` | src/pages/sharing/Planner.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
 | MEMR-001 | Memory Overview | Memory | `/memory` | src/pages/Memory.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
 | MEMR-002 | Diary | Memory | `/memory/diary` | src/pages/memory/Diary.tsx | Community, Patient, Professional, Staff, Admin | ✅ |
 | MEMR-003 | Photos | Memory | `/memory/photos` | src/pages/memory/Photos.tsx | Community, Patient, Professional, Staff, Admin | 🚧 |
