@@ -193,6 +193,71 @@ export function useBusinessPackages() {
     },
   });
 
+  // Full update including items (delete old + insert new)
+  const updatePackageWithItemsMutation = useMutation({
+    mutationFn: async (updateData: Partial<Omit<BusinessPackage, 'items'>> & { id: string; items?: PackageItem[] }) => {
+      const { id, items, ...data } = updateData;
+      
+      // Update package
+      const { data: pkg, error: pkgError } = await supabase
+        .from('business_packages')
+        .update(data)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (pkgError) throw pkgError;
+
+      // If items provided, replace all items
+      if (items && activeTenantId) {
+        // Delete existing items
+        await supabase
+          .from('package_items')
+          .delete()
+          .eq('package_id', id);
+
+        // Insert new items
+        if (items.length > 0) {
+          const itemsToInsert = items.map((item, index) => ({
+            package_id: id,
+            tenant_id: activeTenantId,
+            item_type: item.item_type,
+            service_key: item.service_key,
+            event_id: item.event_id,
+            item_title: item.item_title,
+            item_description: item.item_description,
+            item_duration_min: item.item_duration_min,
+            item_value_cents: item.item_value_cents || 0,
+            quantity: item.quantity,
+            sort_order: index,
+          }));
+
+          const { error: itemsError } = await supabase
+            .from('package_items')
+            .insert(itemsToInsert);
+
+          if (itemsError) throw itemsError;
+        }
+      }
+
+      return pkg;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['business-packages'] });
+      toast({
+        title: "Package updated",
+        description: "Your package and items have been updated successfully.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update package",
+        variant: "destructive",
+      });
+    },
+  });
+
   const deletePackageMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
@@ -217,7 +282,9 @@ export function useBusinessPackages() {
     error: packagesQuery.error,
     createPackage: createPackageMutation.mutate,
     updatePackage: updatePackageMutation.mutate,
+    updatePackageWithItems: updatePackageWithItemsMutation.mutate,
     deletePackage: deletePackageMutation.mutate,
     isCreating: createPackageMutation.isPending,
+    isUpdating: updatePackageWithItemsMutation.isPending,
   };
 }
