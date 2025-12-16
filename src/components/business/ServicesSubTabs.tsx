@@ -4,8 +4,9 @@ import { OrganizerEventsSection } from "./OrganizerEventsSection";
 import { Button } from "@/components/ui/button";
 import { Briefcase, Package, Plus, Loader2 } from "lucide-react";
 import { CreatePackageDialog } from "@/components/sharing/CreatePackageDialog";
+import { EditPackageDialog } from "@/components/sharing/EditPackageDialog";
 import { PackageCard } from "./PackageCard";
-import { useBusinessPackages } from "@/hooks/useBusinessPackages";
+import { useBusinessPackages, BusinessPackage, PackageItem } from "@/hooks/useBusinessPackages";
 
 interface ServicesSubTabsProps {
   onCreateService: () => void;
@@ -13,7 +14,17 @@ interface ServicesSubTabsProps {
 
 export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
   const [showCreatePackage, setShowCreatePackage] = useState(false);
-  const { packages, isLoading } = useBusinessPackages();
+  const [editingPackage, setEditingPackage] = useState<BusinessPackage | null>(null);
+  const { packages, isLoading, updatePackageWithItems, isUpdating } = useBusinessPackages();
+
+  const handleEditPackage = (pkg: BusinessPackage) => {
+    setEditingPackage(pkg);
+  };
+
+  const handleSavePackage = (packageId: string, data: any, items: PackageItem[]) => {
+    updatePackageWithItems({ id: packageId, ...data, items });
+    setEditingPackage(null);
+  };
 
   return (
     <>
@@ -72,7 +83,7 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
               </div>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {packages.map((pkg) => (
-                  <PackageCard key={pkg.id} pkg={pkg} />
+                  <PackageCard key={pkg.id} pkg={pkg} onEdit={handleEditPackage} />
                 ))}
               </div>
             </>
@@ -84,6 +95,16 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
         open={showCreatePackage} 
         onOpenChange={setShowCreatePackage} 
       />
+
+      {editingPackage && (
+        <EditPackageDialog
+          open={!!editingPackage}
+          onOpenChange={(open) => !open && setEditingPackage(null)}
+          package_={editingPackage}
+          onSave={handleSavePackage}
+          isSaving={isUpdating}
+        />
+      )}
     </>
   );
 }

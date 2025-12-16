@@ -35,40 +35,33 @@ import {
   ImagePlus,
   X
 } from "lucide-react";
-import { useBusinessPackages, PackageType, PackageItem, BillingInterval, dollarsToCents, formatCents } from "@/hooks/useBusinessPackages";
+import { 
+  BusinessPackage, 
+  PackageType, 
+  PackageItem, 
+  BillingInterval, 
+  dollarsToCents, 
+  formatCents 
+} from "@/hooks/useBusinessPackages";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-interface CreatePackageDialogProps {
+interface EditPackageDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  package_: BusinessPackage;
+  onSave: (packageId: string, data: any, items: PackageItem[]) => void;
+  isSaving?: boolean;
 }
 
-// All three package types with v1 item restrictions (service/event only)
-const PACKAGE_TYPES_V1: { value: PackageType; label: string; description: string; icon: React.ReactNode }[] = [
-  {
-    value: 'bundle',
-    label: 'Session Bundle',
-    description: 'One-time purchase with fixed set of sessions',
-    icon: <Package className="w-5 h-5" />,
-  },
-  {
-    value: 'subscription',
-    label: 'Subscription',
-    description: 'Recurring access with monthly or annual billing',
-    icon: <RefreshCw className="w-5 h-5" />,
-  },
-  {
-    value: 'program',
-    label: 'Program',
-    description: 'Structured multi-week journey with milestones',
-    icon: <GraduationCap className="w-5 h-5" />,
-  },
+const PACKAGE_TYPES = [
+  { value: 'bundle', label: 'Session Bundle', description: 'One-time purchase with fixed set of sessions', icon: <Package className="w-5 h-5" /> },
+  { value: 'subscription', label: 'Subscription', description: 'Recurring access with monthly or annual billing', icon: <RefreshCw className="w-5 h-5" /> },
+  { value: 'program', label: 'Program', description: 'Structured multi-week journey with milestones', icon: <GraduationCap className="w-5 h-5" /> },
 ];
 
-// Comprehensive item types
 const ITEM_TYPES = [
   { value: 'service', label: '1:1 Session', description: 'Individual coaching or therapy session', hasDuration: true },
   { value: 'group_session', label: 'Group Session', description: 'Group class or workshop', hasDuration: true },
@@ -78,14 +71,6 @@ const ITEM_TYPES = [
   { value: 'resource', label: 'Resource Access', description: 'Library or community access', hasDuration: false },
 ];
 
-interface ServiceOption {
-  key: string;
-  title: string;
-  duration?: number;
-  price?: number;
-}
-
-// Helper to get placeholder text for each item type
 function getItemPlaceholder(itemType: string): string {
   switch (itemType) {
     case 'service': return 'Session name (e.g., 60-min Coaching Session)';
@@ -103,8 +88,7 @@ interface EventOption {
   start_time?: string;
 }
 
-export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogProps) {
-  const { createPackage, isCreating } = useBusinessPackages();
+export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSaving }: EditPackageDialogProps) {
   const { user } = useAuth();
   const [step, setStep] = useState(1);
   
@@ -118,7 +102,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
   // Step 2: Items
   const [items, setItems] = useState<PackageItem[]>([]);
   
-  // Step 3: Pricing & Settings (prices in dollars for input, converted to cents on save)
+  // Step 3: Pricing & Settings
   const [price, setPrice] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [validityDays, setValidityDays] = useState("180");
@@ -126,20 +110,46 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
   const [durationWeeks, setDurationWeeks] = useState("");
   const [publishImmediately, setPublishImmediately] = useState(false);
 
-  // Service and event options from user's data
-  const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([]);
   const [eventOptions, setEventOptions] = useState<EventOption[]>([]);
 
-  // Fetch user's services and events
+  // Pre-populate form with existing package data
+  useEffect(() => {
+    if (package_ && open) {
+      setTitle(package_.title);
+      setDescription(package_.description || "");
+      setPackageType(package_.package_type);
+      setImageUrl(package_.image_url || null);
+      setPrice((package_.price_cents / 100).toString());
+      setOriginalPrice(package_.original_price_cents ? (package_.original_price_cents / 100).toString() : "");
+      setValidityDays(package_.validity_days?.toString() || "180");
+      setBillingInterval(package_.billing_interval || 'monthly');
+      setDurationWeeks(package_.duration_weeks?.toString() || "");
+      setPublishImmediately(package_.status === 'published');
+      
+      // Transform items from DB format
+      if (package_.items) {
+        setItems(package_.items.map(item => ({
+          id: item.id,
+          item_type: item.item_type,
+          service_key: item.service_key,
+          event_id: item.event_id,
+          item_title: item.item_title,
+          item_description: item.item_description,
+          item_duration_min: item.item_duration_min,
+          item_value_cents: item.item_value_cents || 0,
+          quantity: item.quantity,
+          sort_order: item.sort_order,
+        })));
+      }
+      setStep(1);
+    }
+  }, [package_, open]);
+
+  // Fetch user's events
   useEffect(() => {
     if (!user?.id || !open) return;
 
-    const fetchOptions = async () => {
-      // V1: Services are entered manually (no services table yet)
-      // Future: fetch from services table when implemented
-      setServiceOptions([]);
-
-      // Fetch user's events
+    const fetchEvents = async () => {
       const { data: events } = await supabase
         .from('global_community_events')
         .select('id, title, start_time')
@@ -152,26 +162,10 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
       }
     };
 
-    fetchOptions();
+    fetchEvents();
   }, [user?.id, open]);
 
-  const resetForm = () => {
-    setStep(1);
-    setTitle("");
-    setDescription("");
-    setPackageType('bundle');
-    setImageUrl(null);
-    setItems([]);
-    setPrice("");
-    setOriginalPrice("");
-    setValidityDays("180");
-    setBillingInterval('monthly');
-    setDurationWeeks("");
-    setPublishImmediately(false);
-  };
-
   const handleClose = () => {
-    resetForm();
     onOpenChange(false);
   };
 
@@ -237,18 +231,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const handleServiceSelect = (index: number, serviceKey: string) => {
-    const service = serviceOptions.find(s => s.key === serviceKey);
-    if (service) {
-      updateItem(index, {
-        service_key: serviceKey,
-        item_title: service.title,
-        item_duration_min: service.duration || 60,
-        item_value_cents: service.price ? dollarsToCents(service.price) : 0,
-      });
-    }
-  };
-
   const handleEventSelect = (index: number, eventId: string) => {
     const event = eventOptions.find(e => e.id === eventId);
     if (event) {
@@ -269,27 +251,29 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
     return 0;
   };
 
-  // Calculate total item value in cents
   const totalItemValueCents = items.reduce((sum, item) => sum + (item.item_value_cents || 0) * item.quantity, 0);
 
   const handleSubmit = () => {
-    createPackage({
-      title,
-      description,
-      image_url: imageUrl || undefined,
-      package_type: packageType,
-      price_cents: dollarsToCents(parseFloat(price) || 0),
-      original_price_cents: originalPrice ? dollarsToCents(parseFloat(originalPrice)) : undefined,
-      validity_days: parseInt(validityDays) || 180,
-      billing_interval: packageType === 'subscription' ? billingInterval : undefined,
-      duration_weeks: packageType === 'program' ? parseInt(durationWeeks) || undefined : undefined,
-      status: publishImmediately ? 'published' : 'draft',
-      items: items.filter(item => item.item_title).map(item => ({
+    onSave(
+      package_.id,
+      {
+        title,
+        description,
+        image_url: imageUrl,
+        package_type: packageType,
+        price_cents: dollarsToCents(parseFloat(price) || 0),
+        original_price_cents: originalPrice ? dollarsToCents(parseFloat(originalPrice)) : null,
+        validity_days: parseInt(validityDays) || 180,
+        billing_interval: packageType === 'subscription' ? billingInterval : null,
+        duration_weeks: packageType === 'program' ? parseInt(durationWeeks) || null : null,
+        status: publishImmediately ? 'published' : 'draft',
+      },
+      items.filter(item => item.item_title).map((item, index) => ({
         ...item,
         item_value_cents: item.item_value_cents || 0,
-      })),
-    });
-    handleClose();
+        sort_order: index,
+      }))
+    );
   };
 
   const canProceed = () => {
@@ -305,12 +289,12 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="w-5 h-5 text-primary" />
-            Create Package
+            Edit Package
           </DialogTitle>
           <DialogDescription>
-            {step === 1 && "Choose a package type and add basic details"}
-            {step === 2 && "Add sessions or events to include"}
-            {step === 3 && "Set your pricing and launch settings"}
+            {step === 1 && "Update package details and cover image"}
+            {step === 2 && "Modify included items"}
+            {step === 3 && "Adjust pricing and settings"}
           </DialogDescription>
         </DialogHeader>
 
@@ -336,14 +320,51 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
         {/* Step 1: Basic Info */}
         {step === 1 && (
           <div className="space-y-4 py-4">
+            {/* Cover Image Upload */}
+            <div className="grid gap-2">
+              <Label>Cover Image</Label>
+              {imageUrl ? (
+                <div className="relative w-full h-40 rounded-lg overflow-hidden">
+                  <img src={imageUrl} alt="Package cover" className="w-full h-full object-cover" />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2 h-8 w-8"
+                    onClick={() => setImageUrl(null)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div 
+                  className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer"
+                  onClick={() => document.getElementById('edit-package-image-upload')?.click()}
+                >
+                  <ImagePlus className="h-10 w-10 mx-auto text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    {uploadingImage ? "Uploading..." : "Click to upload cover image"}
+                  </p>
+                </div>
+              )}
+              <input
+                type="file"
+                id="edit-package-image-upload"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageUpload}
+                disabled={uploadingImage}
+              />
+            </div>
+
             <div className="grid gap-2">
               <Label>Package Type</Label>
               <div className="grid gap-2">
-                {PACKAGE_TYPES_V1.map((type) => (
+                {PACKAGE_TYPES.map((type) => (
                   <button
                     key={type.value}
                     type="button"
-                    onClick={() => setPackageType(type.value)}
+                    onClick={() => setPackageType(type.value as PackageType)}
                     className={cn(
                       "flex items-start gap-3 p-3 rounded-lg border text-left transition-colors",
                       packageType === type.value
@@ -364,43 +385,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* Cover Image Upload */}
-            <div className="grid gap-2">
-              <Label>Cover Image (optional)</Label>
-              {imageUrl ? (
-                <div className="relative w-full h-40 rounded-lg overflow-hidden">
-                  <img src={imageUrl} alt="Package cover" className="w-full h-full object-cover" />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2 h-8 w-8"
-                    onClick={() => setImageUrl(null)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div 
-                  className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer"
-                  onClick={() => document.getElementById('create-package-image-upload')?.click()}
-                >
-                  <ImagePlus className="h-10 w-10 mx-auto text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground">
-                    {uploadingImage ? "Uploading..." : "Click to upload cover image"}
-                  </p>
-                </div>
-              )}
-              <input
-                type="file"
-                id="create-package-image-upload"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageUpload}
-                disabled={uploadingImage}
-              />
             </div>
 
             <div className="grid gap-2">
@@ -485,7 +469,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                       </Button>
                     </div>
 
-                    {/* Event selector - only for event type */}
                     {item.item_type === 'event' ? (
                       <div className="space-y-2">
                         {eventOptions.length > 0 ? (
@@ -516,7 +499,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                         )}
                       </div>
                     ) : (
-                      /* Manual entry for all other types */
                       <Input
                         placeholder={getItemPlaceholder(item.item_type)}
                         value={item.item_title || ''}
@@ -534,7 +516,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                           onChange={(e) => updateItem(index, { quantity: parseInt(e.target.value) || 1 })}
                         />
                       </div>
-                      {/* Duration only for session-based types */}
                       {(item.item_type === 'service' || item.item_type === 'group_session') && (
                         <div className="flex-1">
                           <Label className="text-xs text-muted-foreground">Duration (min)</Label>
@@ -567,9 +548,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
             {items.length > 0 && (
               <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                 <span className="text-sm text-muted-foreground">Total item value:</span>
-                <span className="font-semibold">
-                  {formatCents(totalItemValueCents)}
-                </span>
+                <span className="font-semibold">{formatCents(totalItemValueCents)}</span>
               </div>
             )}
           </div>
@@ -630,7 +609,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               </div>
             )}
 
-            {/* Subscription: Billing Interval */}
             {packageType === 'subscription' && (
               <div className="grid gap-2">
                 <Label>Billing Interval</Label>
@@ -644,13 +622,9 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                     <SelectItem value="yearly">Yearly</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
-                  How often subscribers will be billed
-                </p>
               </div>
             )}
 
-            {/* Program: Duration Weeks */}
             {packageType === 'program' && (
               <div className="grid gap-2">
                 <Label>Program Duration (weeks)</Label>
@@ -661,9 +635,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                   value={durationWeeks}
                   onChange={(e) => setDurationWeeks(e.target.value)}
                 />
-                <p className="text-xs text-muted-foreground">
-                  How many weeks the program runs
-                </p>
               </div>
             )}
 
@@ -682,17 +653,14 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                     <SelectItem value="365">1 year</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
-                  How long buyers have to use included items
-                </p>
               </div>
             )}
 
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <div>
-                <Label htmlFor="publish" className="cursor-pointer">Publish immediately</Label>
+                <Label htmlFor="publish" className="cursor-pointer">Published</Label>
                 <p className="text-xs text-muted-foreground">
-                  Make this package visible to clients right away
+                  Make this package visible to clients
                 </p>
               </div>
               <Switch
@@ -730,9 +698,9 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               <Button 
                 type="button" 
                 onClick={handleSubmit}
-                disabled={!canProceed() || isCreating}
+                disabled={!canProceed() || isSaving}
               >
-                {isCreating ? "Creating..." : "Create Package"}
+                {isSaving ? "Saving..." : "Save Changes"}
               </Button>
             )}
           </div>
