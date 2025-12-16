@@ -1,14 +1,14 @@
 # VITANA Role-Based Screen Access Matrix
 
-**Version**: 2.0  
-**Last Updated**: 2025-11-27  
-**Source of Truth**: docs/SCREEN_REGISTRY.md (546 screens)
+**Version**: 2.1  
+**Last Updated**: 2025-12-16  
+**Source of Truth**: docs/SCREEN_REGISTRY.md (451 screens)
 
 ---
 
 ## Overview
 
-This document explicitly maps every screen in the VITANA platform (546 total) to the user roles that can access it. All assignments are derived from the "Roles with access" field in SCREEN_REGISTRY.md.
+This document explicitly maps every screen in the VITANA platform (451 total) to the user roles that can access it. All assignments are derived from the "Roles with access" field in SCREEN_REGISTRY.md.
 
 **No inheritance shortcuts** — every screen is explicitly listed for each role.
 
@@ -18,27 +18,27 @@ This document explicitly maps every screen in the VITANA platform (546 total) to
 
 | Role | Description | Screen Count |
 |------|-------------|--------------|
-| **Community** | Base authenticated user; social, wellness, business, and core platform features | 200 |
-| **Patient** | Community + patient health management and clinical tools | 209 |
-| **Professional** | Community + professional practice and business tools | 218 |
-| **Staff** | Community + staff operational and clinical support tools | 218 |
-| **Admin** | Community + full platform administration + Dev Hub access | 465 |
+| **Community** | Base authenticated user; social, wellness, business, and core platform features | 186 |
+| **Patient** | Community + patient health management and clinical tools | 195 |
+| **Professional** | Community + professional practice and business tools | 200 |
+| **Staff** | Community + staff operational and clinical support tools | 200 |
+| **Admin** | Community + full platform administration + Dev Hub access | 451 |
 
 ---
 
 ## Table of Contents
 
-- [Community Role (200 screens)](#community-role-200-screens)
-- [Patient Role (209 screens)](#patient-role-209-screens)
-- [Professional Role (218 screens)](#professional-role-218-screens)
-- [Staff Role (218 screens)](#staff-role-218-screens)
-- [Admin Role (465 screens)](#admin-role-465-screens)
+- [Community Role (186 screens)](#community-role-186-screens)
+- [Patient Role (195 screens)](#patient-role-195-screens)
+- [Professional Role (200 screens)](#professional-role-200-screens)
+- [Staff Role (200 screens)](#staff-role-200-screens)
+- [Admin Role (451 screens)](#admin-role-451-screens)
 - [Summary Statistics](#summary-statistics)
 - [Validation](#validation)
 
 ---
 
-# Community Role: 200 Screens
+# Community Role: 186 Screens
 
 All authenticated base users (Community role) have access to these screens (including 5 Business Hub screens):
 
@@ -191,9 +191,9 @@ All authenticated base users (Community role) have access to these screens (incl
 
 ---
 
-# Patient Role: 190 Screens
+# Patient Role: 195 Screens
 
-Patient role has access to **all 181 Community screens** (listed above) **PLUS** the following 9 patient-specific screens:
+Patient role has access to **all 186 Community screens** (listed above) **PLUS** the following 9 patient-specific screens:
 
 | Screen ID | Screen Name | Module | External Route | Status |
 |-----------|-------------|--------|----------------|--------|
@@ -211,9 +211,9 @@ Patient role has access to **all 181 Community screens** (listed above) **PLUS**
 
 ---
 
-# Professional Role: 199 Screens
+# Professional Role: 200 Screens
 
-Professional role has access to **all 181 Community screens** (see Community Role table) **PLUS** the following 18 professional-specific screens (9 main + 9 overlays):
+Professional role has access to **all 186 Community screens** (see Community Role table) **PLUS** the following 14 professional-specific screens:
 
 | Screen ID | Screen Name | Module | External Route | Status |
 |-----------|-------------|--------|----------------|--------|
@@ -236,9 +236,9 @@ Professional role has access to **all 181 Community screens** (see Community Rol
 
 ---
 
-# Staff Role: 199 Screens
+# Staff Role: 200 Screens
 
-Staff role has access to **all 181 Community screens** (see Community Role table) **PLUS** the following 18 staff-specific screens (9 main + 9 overlays):
+Staff role has access to **all 186 Community screens** (see Community Role table) **PLUS** the following 14 staff-specific screens:
 
 | Screen ID | Screen Name | Module | External Route | Status |
 |-----------|-------------|--------|----------------|--------|
@@ -262,7 +262,7 @@ Staff role has access to **all 181 Community screens** (see Community Role table
 
 ---
 
-# Admin Role: 446 Screens
+# Admin Role: 451 Screens
 
 Admin role has access to **all 186 Community screens** (see Community Role table, including 5 Business Hub screens: BIZ-001 to BIZ-005) **PLUS** 117 Admin management screens **PLUS** 136 Dev Hub screens **PLUS** 12 admin-specific overlays.
 
@@ -454,8 +454,8 @@ All Professional and Staff overlays listed in those sections, PLUS:
 
 ## Verification Against SCREEN_REGISTRY.md
 
-✅ **Registry Total**: 546 screens  
-✅ **Matrix Total**: 546 screens  
+✅ **Registry Total**: 451 screens  
+✅ **Matrix Total**: 451 screens  
 ✅ **Missing Screens**: 0  
 ✅ **Orphaned Screens**: 0  
 ✅ **Coverage**: 100%
@@ -482,8 +482,8 @@ All Professional and Staff overlays listed in those sections, PLUS:
 | ADMN | 117 | 117 | ✅ |
 | DEV | 136 | 136 | ✅ |
 | OVRL | 53 | 53 | ✅ |
-| **BIZ** | **19** | **19** | ✅ |
-| **TOTAL** | **565** | **565** | ✅ |
+| **BIZ** | **5** | **5** | ✅ |
+| **TOTAL** | **451** | **451** | ✅ |
 
 ---
 
@@ -492,7 +492,8 @@ All Professional and Staff overlays listed in those sections, PLUS:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2025-11-26 | Initial matrix (215 screens, used inheritance shortcuts) |
-| 2.0 | 2025-11-27 | **Complete regeneration from SCREEN_REGISTRY.md (546 screens)**; removed all inheritance shortcuts; explicit screen listings for all roles; 100% coverage verified |
+| 2.0 | 2025-11-27 | Complete regeneration from SCREEN_REGISTRY.md; removed all inheritance shortcuts |
+| 2.1 | 2025-12-16 | **Reconciled totals**: Fixed Business Hub to 5 screens (not 19); corrected all role counts; total 451 screens |
 
 ---
 
