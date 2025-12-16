@@ -1,8 +1,8 @@
 # VITANA Tenant Screen Availability Map
 
-**Version**: 1.1  
+**Version**: 1.2  
 **Last Updated**: 2025-12-16  
-**Source**: SCREEN_REGISTRY.md (451 screens)
+**Source**: SCREEN_REGISTRY.md (551 screens)
 
 ---
 
@@ -37,17 +37,17 @@ This document maps which screens are available to each tenant portal based on th
 
 | Tenant | Total Screens | Business Hub | Notes |
 |--------|--------------|--------------|-------|
-| Global | 199 | +5 → 204 | Base screens + 5 BIZ screens |
-| Maxina | 202 | +5 → 207 | Full Business Hub access |
-| Alkalma | 202 | +4 → 206 | No Sell & Earn (BIZ-004 restricted) |
-| Earthlinks | 202 | +3 → 205 | No Sell & Earn or Analytics (BIZ-004, BIZ-005 restricted) |
-| Exafy | 206 | +5 → 211 | Full Business Hub access |
+| Global | 299 | +5 → 304 | Base screens + 100 module screens + 5 BIZ screens |
+| Maxina | 302 | +5 → 307 | Full Business Hub access |
+| Alkalma | 302 | +4 → 306 | No Sell & Earn (BIZ-004 restricted) |
+| Earthlinks | 302 | +3 → 305 | No Sell & Earn or Analytics (BIZ-004, BIZ-005 restricted) |
+| Exafy | 306 | +5 → 311 | Full Business Hub access |
 
 ---
 
 # Global Screens
 
-Available to all tenants (204 screens including 5 Business Hub screens)
+Available to all tenants (304 screens including 100 module screens + 5 Business Hub screens)
 
 | Screen ID | Screen Name | Module | External Route | Dev Component Path | Roles with Access | Status |
 |-----------|-------------|--------|----------------|-------------------|-------------------|--------|

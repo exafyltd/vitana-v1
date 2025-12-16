@@ -10,9 +10,9 @@
 
 | Metric | Count | Percentage |
 |--------|-------|------------|
-| **Total Screens** | 546 | 100% |
-| **Complete Screens** | 78 | 14.3% |
-| **Incomplete Screens** | 468 | 85.7% |
+| **Total Screens** | 551 | 100% |
+| **Complete Screens** | 78 | 14.2% |
+| **Incomplete Screens** | 473 | 85.8% |
 
 ### Breakdown by Reason
 
@@ -36,6 +36,7 @@
 | **Admin** | 117 | 16 | 13.7% | APIs, Events |
 | **Dev Hub** | 136 | 136 | 100% | All D1 fields TBD |
 | **Global Overlays** | 53 | 51 | 96.2% | APIs, DB, Events |
+| **Business Hub** | 5 | 5 | 100% | All D1 fields TBD |
 | **Home** | 20 | 18 | 90.0% | APIs, DB, Events |
 | **Discover** | 10 | 9 | 90.0% | APIs, DB, Events |
 | **Health** | 12 | 10 | 83.3% | APIs, DB, Events |
