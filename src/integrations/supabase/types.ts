@@ -977,6 +977,66 @@ export type Database = {
         }
         Relationships: []
       }
+      business_packages: {
+        Row: {
+          billing_interval: string | null
+          created_at: string | null
+          creator_id: string
+          currency: string
+          description: string | null
+          duration_weeks: number | null
+          id: string
+          image_url: string | null
+          metadata: Json | null
+          original_price: number | null
+          package_type: string
+          price: number
+          start_date: string | null
+          status: string
+          title: string
+          updated_at: string | null
+          validity_days: number | null
+        }
+        Insert: {
+          billing_interval?: string | null
+          created_at?: string | null
+          creator_id: string
+          currency?: string
+          description?: string | null
+          duration_weeks?: number | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          original_price?: number | null
+          package_type?: string
+          price?: number
+          start_date?: string | null
+          status?: string
+          title: string
+          updated_at?: string | null
+          validity_days?: number | null
+        }
+        Update: {
+          billing_interval?: string | null
+          created_at?: string | null
+          creator_id?: string
+          currency?: string
+          description?: string | null
+          duration_weeks?: number | null
+          id?: string
+          image_url?: string | null
+          metadata?: Json | null
+          original_price?: number | null
+          package_type?: string
+          price?: number
+          start_date?: string | null
+          status?: string
+          title?: string
+          updated_at?: string | null
+          validity_days?: number | null
+        }
+        Relationships: []
+      }
       calendar_events: {
         Row: {
           attendees_count: number | null
@@ -4495,6 +4555,201 @@ export type Database = {
           vtid?: string | null
         }
         Relationships: []
+      }
+      package_item_redemptions: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          notes: string | null
+          package_item_id: string
+          purchase_id: string
+          redemption_number: number
+          scheduled_at: string | null
+          status: string
+          ticket_purchase_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          package_item_id: string
+          purchase_id: string
+          redemption_number?: number
+          scheduled_at?: string | null
+          status?: string
+          ticket_purchase_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          notes?: string | null
+          package_item_id?: string
+          purchase_id?: string
+          redemption_number?: number
+          scheduled_at?: string | null
+          status?: string
+          ticket_purchase_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_item_redemptions_package_item_id_fkey"
+            columns: ["package_item_id"]
+            isOneToOne: false
+            referencedRelation: "package_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_item_redemptions_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "package_purchases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_item_redemptions_ticket_purchase_id_fkey"
+            columns: ["ticket_purchase_id"]
+            isOneToOne: false
+            referencedRelation: "event_ticket_purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      package_items: {
+        Row: {
+          access_duration_days: number | null
+          access_type: string | null
+          created_at: string | null
+          event_id: string | null
+          id: string
+          item_description: string | null
+          item_duration_min: number | null
+          item_title: string | null
+          item_type: string
+          item_value: number | null
+          metadata: Json | null
+          package_id: string
+          quantity: number
+          sort_order: number | null
+        }
+        Insert: {
+          access_duration_days?: number | null
+          access_type?: string | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          item_description?: string | null
+          item_duration_min?: number | null
+          item_title?: string | null
+          item_type: string
+          item_value?: number | null
+          metadata?: Json | null
+          package_id: string
+          quantity?: number
+          sort_order?: number | null
+        }
+        Update: {
+          access_duration_days?: number | null
+          access_type?: string | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          item_description?: string | null
+          item_duration_min?: number | null
+          item_title?: string | null
+          item_type?: string
+          item_value?: number | null
+          metadata?: Json | null
+          package_id?: string
+          quantity?: number
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_items_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "global_community_events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_items_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "business_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      package_purchases: {
+        Row: {
+          amount_paid: number
+          buyer_email: string
+          buyer_id: string | null
+          buyer_name: string | null
+          created_at: string | null
+          currency: string
+          expires_at: string | null
+          id: string
+          metadata: Json | null
+          package_id: string
+          purchased_at: string | null
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount_paid: number
+          buyer_email: string
+          buyer_id?: string | null
+          buyer_name?: string | null
+          created_at?: string | null
+          currency?: string
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          package_id: string
+          purchased_at?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount_paid?: number
+          buyer_email?: string
+          buyer_id?: string | null
+          buyer_name?: string | null
+          created_at?: string | null
+          currency?: string
+          expires_at?: string | null
+          id?: string
+          metadata?: Json | null
+          package_id?: string
+          purchased_at?: string | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_purchases_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "business_packages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       patient_provider_assignments: {
         Row: {
