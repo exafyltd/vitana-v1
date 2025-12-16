@@ -323,6 +323,123 @@ Available to Exafy (internal only) tenant (206 screens = 199 Global + 7 Exafy-sp
 
 ---
 
+# Business Hub Screens by Tenant
+
+The Business Hub is available across all tenants with the following restrictions:
+
+## Exafy (Full Access)
+
+| Screen ID | Screen Name | Route | Status |
+|-----------|-------------|-------|--------|
+| BIZ-001 | Business Hub Overview | `/business` | ✅ |
+| BIZ-001-A | Business Hub Snapshot | `/business?tab=snapshot` | ✅ |
+| BIZ-001-B | Business Hub History | `/business?tab=history` | ✅ |
+| BIZ-002 | Business Services | `/business/services` | ✅ |
+| BIZ-002-A | My Services Tab | `/business/services?tab=services` | ✅ |
+| BIZ-002-B | My Events Tab | `/business/services?tab=events` | ✅ |
+| BIZ-002-C | Packages Tab | `/business/services?tab=packages` | ✅ |
+| BIZ-003 | Business Clients | `/business/clients` | ✅ |
+| BIZ-003-A | Active Clients Tab | `/business/clients?tab=active` | 🚧 |
+| BIZ-003-B | Prospects Tab | `/business/clients?tab=prospects` | 🚧 |
+| BIZ-003-C | Client History Tab | `/business/clients?tab=history` | 🚧 |
+| BIZ-004 | Sell & Earn | `/business/sell-earn` | ✅ |
+| BIZ-004-A | Inventory Tab | `/business/sell-earn?tab=inventory` | ✅ |
+| BIZ-004-B | Promotions Tab | `/business/sell-earn?tab=promotions` | ✅ |
+| BIZ-005 | Business Analytics | `/business/analytics` | ✅ |
+| BIZ-005-A | Performance Tab | `/business/analytics?tab=performance` | 🚧 |
+| BIZ-005-B | Earnings Tab | `/business/analytics?tab=earnings` | ✅ |
+| BIZ-005-C | Growth Tab | `/business/analytics?tab=growth` | 🚧 |
+
+**Exafy Business Hub Total: 19 screens**
+
+## Maxina (Full Access - Monetization Focus)
+
+| Screen ID | Screen Name | Route | Status |
+|-----------|-------------|-------|--------|
+| BIZ-001 | Business Hub Overview | `/business` | ✅ |
+| BIZ-001-A | Business Hub Snapshot | `/business?tab=snapshot` | ✅ |
+| BIZ-001-B | Business Hub History | `/business?tab=history` | ✅ |
+| BIZ-002 | Business Services | `/business/services` | ✅ |
+| BIZ-002-A | My Services Tab | `/business/services?tab=services` | ✅ |
+| BIZ-002-B | My Events Tab | `/business/services?tab=events` | ✅ |
+| BIZ-002-C | Packages Tab | `/business/services?tab=packages` | ✅ |
+| BIZ-003 | Business Clients | `/business/clients` | ✅ |
+| BIZ-003-A | Active Clients Tab | `/business/clients?tab=active` | 🚧 |
+| BIZ-003-B | Prospects Tab | `/business/clients?tab=prospects` | 🚧 |
+| BIZ-003-C | Client History Tab | `/business/clients?tab=history` | 🚧 |
+| BIZ-004 | Sell & Earn | `/business/sell-earn` | ✅ |
+| BIZ-004-A | Inventory Tab | `/business/sell-earn?tab=inventory` | ✅ |
+| BIZ-004-B | Promotions Tab | `/business/sell-earn?tab=promotions` | ✅ |
+| BIZ-005 | Business Analytics | `/business/analytics` | ✅ |
+| BIZ-005-A | Performance Tab | `/business/analytics?tab=performance` | 🚧 |
+| BIZ-005-B | Earnings Tab | `/business/analytics?tab=earnings` | ✅ |
+| BIZ-005-C | Growth Tab | `/business/analytics?tab=growth` | 🚧 |
+
+**Maxina Business Hub Total: 19 screens**
+
+## AlKalma (Limited - Clinical Constraints)
+
+| Screen ID | Screen Name | Route | Status | Notes |
+|-----------|-------------|-------|--------|-------|
+| BIZ-001 | Business Hub Overview | `/business` | ✅ | |
+| BIZ-001-A | Business Hub Snapshot | `/business?tab=snapshot` | ✅ | |
+| BIZ-001-B | Business Hub History | `/business?tab=history` | ✅ | |
+| BIZ-002 | Business Services | `/business/services` | ✅ | |
+| BIZ-002-A | My Services Tab | `/business/services?tab=services` | ✅ | |
+| BIZ-002-B | My Events Tab | `/business/services?tab=events` | ✅ | |
+| BIZ-002-C | Packages Tab | `/business/services?tab=packages` | ✅ | |
+| BIZ-003 | Business Clients | `/business/clients` | ✅ | |
+| BIZ-003-A | Active Clients Tab | `/business/clients?tab=active` | 🚧 | |
+| BIZ-003-B | Prospects Tab | `/business/clients?tab=prospects` | 🚧 | |
+| BIZ-003-C | Client History Tab | `/business/clients?tab=history` | 🚧 | |
+| BIZ-004 | Sell & Earn | `/business/sell-earn` | ❌ | Clinical constraints - not available |
+| BIZ-004-A | Inventory Tab | `/business/sell-earn?tab=inventory` | ❌ | Clinical constraints - not available |
+| BIZ-004-B | Promotions Tab | `/business/sell-earn?tab=promotions` | ❌ | Clinical constraints - not available |
+| BIZ-005 | Business Analytics | `/business/analytics` | ✅ | Limited to Performance only |
+| BIZ-005-A | Performance Tab | `/business/analytics?tab=performance` | 🚧 | |
+| BIZ-005-B | Earnings Tab | `/business/analytics?tab=earnings` | ❌ | Reseller features not available |
+| BIZ-005-C | Growth Tab | `/business/analytics?tab=growth` | 🚧 | |
+
+**AlKalma Business Hub Total: 13 screens** (Sell & Earn and Earnings Tab restricted)
+
+## Earthlinks (Selective - Community-Based)
+
+| Screen ID | Screen Name | Route | Status | Notes |
+|-----------|-------------|-------|--------|-------|
+| BIZ-001 | Business Hub Overview | `/business` | ✅ | |
+| BIZ-001-A | Business Hub Snapshot | `/business?tab=snapshot` | ✅ | |
+| BIZ-001-B | Business Hub History | `/business?tab=history` | ✅ | |
+| BIZ-002 | Business Services | `/business/services` | ✅ | |
+| BIZ-002-A | My Services Tab | `/business/services?tab=services` | ✅ | |
+| BIZ-002-B | My Events Tab | `/business/services?tab=events` | ✅ | |
+| BIZ-002-C | Packages Tab | `/business/services?tab=packages` | ✅ | |
+| BIZ-003 | Business Clients | `/business/clients` | ✅ | |
+| BIZ-003-A | Active Clients Tab | `/business/clients?tab=active` | 🚧 | |
+| BIZ-003-B | Prospects Tab | `/business/clients?tab=prospects` | 🚧 | |
+| BIZ-003-C | Client History Tab | `/business/clients?tab=history` | 🚧 | |
+| BIZ-004 | Sell & Earn | `/business/sell-earn` | ❌ | Community-based - not available |
+| BIZ-004-A | Inventory Tab | `/business/sell-earn?tab=inventory` | ❌ | Community-based - not available |
+| BIZ-004-B | Promotions Tab | `/business/sell-earn?tab=promotions` | ❌ | Community-based - not available |
+| BIZ-005 | Business Analytics | `/business/analytics` | ❌ | Community-based - not available |
+| BIZ-005-A | Performance Tab | `/business/analytics?tab=performance` | ❌ | Community-based - not available |
+| BIZ-005-B | Earnings Tab | `/business/analytics?tab=earnings` | ❌ | Community-based - not available |
+| BIZ-005-C | Growth Tab | `/business/analytics?tab=growth` | ❌ | Community-based - not available |
+
+**Earthlinks Business Hub Total: 11 screens** (Sell & Earn and Analytics restricted)
+
+---
+
+## Business Hub Tenant Summary
+
+| Tenant | Business Hub Screens | Restrictions |
+|--------|---------------------|--------------|
+| Exafy | 19 (full) | None |
+| Maxina | 19 (full) | None |
+| AlKalma | 13 | No Sell & Earn, limited Analytics |
+| Earthlinks | 11 | No Sell & Earn, no Analytics |
+
+---
+
 ## Notes
 
 - **Global screens** are the base set available to all tenants

@@ -385,7 +385,36 @@ Yes─┼─No          │  A3  │  │ Multiple steps │
 | WALL-019 | Send and Exchange | A5 | Convert + transfer in one flow |
 | WALL-020 | Setup Auto-Top-Up | A5 | Configure automatic balance refill |
 
-### 3.6 AI Module
+### 3.6 Business Hub Module
+
+| ID | Capability | Level | Description |
+|----|------------|-------|-------------|
+| BIZ-001 | View Business Overview | A1 | Display business dashboard with KPIs |
+| BIZ-002 | View Earnings History | A1 | List earnings transactions |
+| BIZ-003 | View Services | A1 | List user's services and packages |
+| BIZ-004 | View Events | A1 | List user's created events |
+| BIZ-005 | View Packages | A1 | List user's service packages |
+| BIZ-006 | View Clients | A1 | List active clients |
+| BIZ-007 | View Inventory | A1 | List resellable events in inventory |
+| BIZ-008 | View Promotions | A1 | List reseller campaigns |
+| BIZ-009 | View Business Analytics | A1 | Display performance metrics |
+| BIZ-010 | Navigate to Business Hub | A2 | Go to Business Hub Overview |
+| BIZ-011 | Navigate to Services | A2 | Go to Services tab |
+| BIZ-012 | Navigate to Clients | A2 | Go to Clients tab |
+| BIZ-013 | Navigate to Sell & Earn | A2 | Go to Sell & Earn tab |
+| BIZ-014 | Navigate to Analytics | A2 | Go to Analytics tab |
+| BIZ-015 | Create Service | A3 | Create new service offering |
+| BIZ-016 | Create Package | A3 | Create service bundle |
+| BIZ-017 | Update Package | A3 | Modify existing package |
+| BIZ-018 | Delete Package | A3 | Remove package |
+| BIZ-019 | Create Business Event | A3 | Create event with ticket sales |
+| BIZ-020 | Add to Inventory | A3 | Add event to reseller inventory |
+| BIZ-021 | Create Promotion | A3 | Create reseller campaign |
+| BIZ-022 | Activate Reseller Mode | A3 | Enable reseller capabilities |
+| BIZ-023 | Transfer to Wallet | A4 | Process reseller payout to wallet |
+| BIZ-024 | Full Business Setup | A5 | Create service + package + event flow |
+
+### 3.7 AI Module
 
 | ID | Capability | Level | Description |
 |----|------------|-------|-------------|

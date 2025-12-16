@@ -647,4 +647,95 @@ Based on the navigation flows above, the most highly connected screens are:
 
 ---
 
+## Business Hub Flows
+
+**Description**: Navigation paths for Business Hub, the unified business performance dashboard.
+
+### Business Hub Overview
+
+```mermaid
+graph TB
+    HOME-001(Home) --> BIZ-001(Business Hub Overview)
+    
+    BIZ-001 --> BIZ-002(Services)
+    BIZ-001 --> BIZ-003(Clients)
+    BIZ-001 --> BIZ-004(Sell & Earn)
+    BIZ-001 --> BIZ-005(Analytics)
+```
+
+### Business Hub Internal Navigation
+
+```mermaid
+graph TB
+    subgraph "Business Hub Overview (BIZ-001)"
+        BIZ-001-A(Snapshot Tab) --> BIZ-001-B(History Tab)
+    end
+    
+    subgraph "Services (BIZ-002)"
+        BIZ-002-A(My Services) --> BIZ-002-B(My Events)
+        BIZ-002-B --> BIZ-002-C(Packages)
+    end
+    
+    subgraph "Clients (BIZ-003)"
+        BIZ-003-A(Active) --> BIZ-003-B(Prospects)
+        BIZ-003-B --> BIZ-003-C(History)
+    end
+    
+    subgraph "Sell & Earn (BIZ-004)"
+        BIZ-004-A(Inventory) --> BIZ-004-B(Promotions)
+    end
+    
+    subgraph "Analytics (BIZ-005)"
+        BIZ-005-A(Performance) --> BIZ-005-B(Earnings)
+        BIZ-005-B --> BIZ-005-C(Growth)
+    end
+```
+
+### Business Hub Cross-Module Navigation
+
+```mermaid
+graph TB
+    BIZ-001-A(Snapshot) --> WLLT-001(Wallet)
+    BIZ-001-B(History) --> WLLT-001
+    
+    BIZ-002-C(Packages) --> OVRL-040(Create Package Dialog)
+    BIZ-002-B(My Events) --> OVRL-017(Create Event Dialog)
+    BIZ-002-A(My Services) --> OVRL-039(Create Service Popup)
+    
+    BIZ-003-B(Prospects) --> SHAR-001(Sharing Hub)
+    
+    BIZ-004-B(Promotions) --> SHAR-002(Campaigns)
+    
+    BIZ-005-B(Earnings) --> WLLT-001(Wallet)
+    BIZ-005-C(Growth) --> SHAR-001(Sharing Hub)
+```
+
+### Business Hub Sidebar Position
+
+```mermaid
+graph TB
+    subgraph "Sidebar Hierarchy"
+        HOME(Home)
+        COMM(Community)
+        DISC(Discover)
+        HLTH(Health)
+        BIZ(Business Hub)
+        WLLT(Wallet)
+        SHAR(Sharing)
+        MEMO(Memory)
+        SETT(Settings)
+    end
+    
+    HOME --> COMM
+    COMM --> DISC
+    DISC --> HLTH
+    HLTH --> BIZ
+    BIZ --> WLLT
+    WLLT --> SHAR
+    SHAR --> MEMO
+    MEMO --> SETT
+```
+
+---
+
 **End of Navigation Map**

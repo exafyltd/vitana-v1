@@ -18,29 +18,29 @@ This document explicitly maps every screen in the VITANA platform (546 total) to
 
 | Role | Description | Screen Count |
 |------|-------------|--------------|
-| **Community** | Base authenticated user; social, wellness, and core platform features | 181 |
-| **Patient** | Community + patient health management and clinical tools | 190 |
-| **Professional** | Community + professional practice and business tools | 199 |
-| **Staff** | Community + staff operational and clinical support tools | 199 |
-| **Admin** | Community + full platform administration + Dev Hub access | 446 |
+| **Community** | Base authenticated user; social, wellness, business, and core platform features | 200 |
+| **Patient** | Community + patient health management and clinical tools | 209 |
+| **Professional** | Community + professional practice and business tools | 218 |
+| **Staff** | Community + staff operational and clinical support tools | 218 |
+| **Admin** | Community + full platform administration + Dev Hub access | 465 |
 
 ---
 
 ## Table of Contents
 
-- [Community Role (181 screens)](#community-role-181-screens)
-- [Patient Role (190 screens)](#patient-role-190-screens)
-- [Professional Role (199 screens)](#professional-role-199-screens)
-- [Staff Role (199 screens)](#staff-role-199-screens)
-- [Admin Role (446 screens)](#admin-role-446-screens)
+- [Community Role (200 screens)](#community-role-200-screens)
+- [Patient Role (209 screens)](#patient-role-209-screens)
+- [Professional Role (218 screens)](#professional-role-218-screens)
+- [Staff Role (218 screens)](#staff-role-218-screens)
+- [Admin Role (465 screens)](#admin-role-465-screens)
 - [Summary Statistics](#summary-statistics)
 - [Validation](#validation)
 
 ---
 
-# Community Role: 181 Screens
+# Community Role: 200 Screens
 
-All authenticated base users (Community role) have access to these screens:
+All authenticated base users (Community role) have access to these screens (including 19 Business Hub screens):
 
 | Screen ID | Screen Name | Module | External Route | Status |
 |-----------|-------------|--------|----------------|--------|
@@ -181,8 +181,26 @@ All authenticated base users (Community role) have access to these screens:
 | OVRL-050 | Community Filters Popup | Community | N/A (Popover) | ✅ |
 | OVRL-052 | Match Filters Popup | Home | N/A (Popover) | ✅ |
 | OVRL-053 | Create Selection Dialog | Utility | N/A (Dialog) | ✅ |
+| BIZ-001 | Business Hub Overview | Business Hub | `/business` | ✅ |
+| BIZ-001-A | Business Hub Snapshot | Business Hub | `/business?tab=snapshot` | ✅ |
+| BIZ-001-B | Business Hub History | Business Hub | `/business?tab=history` | ✅ |
+| BIZ-002 | Business Services | Business Hub | `/business/services` | ✅ |
+| BIZ-002-A | My Services Tab | Business Hub | `/business/services?tab=services` | ✅ |
+| BIZ-002-B | My Events Tab | Business Hub | `/business/services?tab=events` | ✅ |
+| BIZ-002-C | Packages Tab | Business Hub | `/business/services?tab=packages` | ✅ |
+| BIZ-003 | Business Clients | Business Hub | `/business/clients` | ✅ |
+| BIZ-003-A | Active Clients Tab | Business Hub | `/business/clients?tab=active` | 🚧 |
+| BIZ-003-B | Prospects Tab | Business Hub | `/business/clients?tab=prospects` | 🚧 |
+| BIZ-003-C | Client History Tab | Business Hub | `/business/clients?tab=history` | 🚧 |
+| BIZ-004 | Sell & Earn | Business Hub | `/business/sell-earn` | ✅ |
+| BIZ-004-A | Inventory Tab | Business Hub | `/business/sell-earn?tab=inventory` | ✅ |
+| BIZ-004-B | Promotions Tab | Business Hub | `/business/sell-earn?tab=promotions` | ✅ |
+| BIZ-005 | Business Analytics | Business Hub | `/business/analytics` | ✅ |
+| BIZ-005-A | Performance Tab | Business Hub | `/business/analytics?tab=performance` | 🚧 |
+| BIZ-005-B | Earnings Tab | Business Hub | `/business/analytics?tab=earnings` | ✅ |
+| BIZ-005-C | Growth Tab | Business Hub | `/business/analytics?tab=growth` | 🚧 |
 
-**Community Role Total: 181 screens**
+**Community Role Total: 200 screens** (181 + 19 Business Hub)
 
 ---
 
@@ -202,7 +220,7 @@ Patient role has access to **all 181 Community screens** (listed above) **PLUS**
 | PTNT-008 | Portal | Patient | `/patient/portal` | 🚧 |
 | PTNT-009 | Settings | Patient | `/patient/settings` | 🚧 |
 
-**Patient Role Total: 190 screens** (181 Community + 9 Patient-specific)
+**Patient Role Total: 209 screens** (200 Community including Business Hub + 9 Patient-specific)
 
 ---
 
@@ -227,7 +245,7 @@ Professional role has access to **all 181 Community screens** (see Community Rol
 | OVRL-042 | Create Business Event Popup | Professional | N/A (Dialog) | ✅ |
 | OVRL-051 | Business Filters Popup | Professional | N/A (Popover) | ✅ |
 
-**Professional Role Total: 199 screens** (181 Community + 18 Professional-specific)
+**Professional Role Total: 218 screens** (200 Community including Business Hub + 18 Professional-specific)
 
 ---
 
@@ -253,13 +271,13 @@ Staff role has access to **all 181 Community screens** (see Community Role table
 | OVRL-042 | Create Business Event Popup | Staff | N/A (Dialog) | ✅ |
 | OVRL-051 | Business Filters Popup | Staff | N/A (Popover) | ✅ |
 
-**Staff Role Total: 199 screens** (181 Community + 18 Staff-specific)
+**Staff Role Total: 218 screens** (200 Community including Business Hub + 18 Staff-specific)
 
 ---
 
 # Admin Role: 446 Screens
 
-Admin role has access to **all 181 Community screens** (see Community Role table) **PLUS** 117 Admin management screens **PLUS** 136 Dev Hub screens **PLUS** 12 admin-specific overlays.
+Admin role has access to **all 200 Community screens** (see Community Role table, including 19 Business Hub screens) **PLUS** 117 Admin management screens **PLUS** 136 Dev Hub screens **PLUS** 12 admin-specific overlays.
 
 ## Admin Management Screens (117 screens)
 
@@ -477,7 +495,8 @@ All Professional and Staff overlays listed in those sections, PLUS:
 | ADMN | 117 | 117 | ✅ |
 | DEV | 136 | 136 | ✅ |
 | OVRL | 53 | 53 | ✅ |
-| **TOTAL** | **546** | **546** | ✅ |
+| **BIZ** | **19** | **19** | ✅ |
+| **TOTAL** | **565** | **565** | ✅ |
 
 ---
 

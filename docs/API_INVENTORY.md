@@ -2437,6 +2437,26 @@ alerts:
 | Integrations | External service connections |
 | Calendar | Events, appointments, scheduling |
 | Discovery | Matching, recommendations |
+| Business | Business Hub, earnings, packages, reseller |
+
+---
+
+## Business Hub API Cross-Reference
+
+The Business Hub module reuses existing APIs rather than requiring new ones:
+
+| Screen | APIs Used | Notes |
+|--------|-----------|-------|
+| BIZ-001 (Overview) | `useUnifiedEarnings`, wallet APIs | Unified earnings dashboard |
+| BIZ-002 (Services) | `useBusinessPackages`, `useUserEvents` | Package and event management |
+| BIZ-003 (Clients) | TBD | Client management pending |
+| BIZ-004 (Sell & Earn) | `useIsReseller`, `useActivateReseller`, `useResellableEvents` | Reseller features |
+| BIZ-005 (Analytics) | `useResellerSales` | Performance metrics |
+
+**Edge Functions Used:**
+- `stripe-create-package-checkout` - Package purchases
+- `verify-package-payment` - Payment verification
+- `credit-reseller-payout` - Reseller commission payouts
 
 ---
 
