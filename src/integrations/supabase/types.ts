@@ -7809,6 +7809,24 @@ export type Database = {
         Args: { p_integration_id: string }
         Returns: undefined
       }
+      update_package_with_items: {
+        Args: {
+          p_billing_interval?: string
+          p_description?: string
+          p_duration_weeks?: number
+          p_image_url?: string
+          p_items?: Json
+          p_original_price_cents?: number
+          p_package_id: string
+          p_package_type?: string
+          p_price_cents?: number
+          p_status?: string
+          p_tenant_id: string
+          p_title: string
+          p_validity_days?: number
+        }
+        Returns: string
+      }
       update_user_balance: {
         Args: {
           amount_param: number

@@ -7,6 +7,7 @@ import type { Json } from "@/integrations/supabase/types";
 
 export type PackageType = 'bundle' | 'subscription' | 'program';
 export type PackageStatus = 'draft' | 'published' | 'archived';
+// V1: Only service and event are supported
 export type PackageItemType = 'service' | 'group_session' | 'event' | 'course' | 'digital' | 'resource';
 export type BillingInterval = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
@@ -171,8 +172,8 @@ export function useBusinessPackages() {
   });
 
   const updatePackageMutation = useMutation({
-    mutationFn: async (updateData: Partial<Omit<BusinessPackage, 'items'>> & { id: string }) => {
-      const { id, ...data } = updateData;
+    mutationFn: async (updateData: Partial<BusinessPackage> & { id: string }) => {
+      const { id, items, ...data } = updateData;
       // Exclude items from update - they're managed separately
       const { data: pkg, error } = await supabase
         .from('business_packages')
@@ -193,54 +194,41 @@ export function useBusinessPackages() {
     },
   });
 
-  // Full update including items (delete old + insert new)
+  // Atomic update using RPC function
   const updatePackageWithItemsMutation = useMutation({
-    mutationFn: async (updateData: Partial<Omit<BusinessPackage, 'items'>> & { id: string; items?: PackageItem[] }) => {
+    mutationFn: async (updateData: Partial<BusinessPackage> & { id: string; items?: PackageItem[] }) => {
+      if (!activeTenantId) throw new Error('No active tenant');
+      
       const { id, items, ...data } = updateData;
       
-      // Update package
-      const { data: pkg, error: pkgError } = await supabase
-        .from('business_packages')
-        .update(data)
-        .eq('id', id)
-        .select()
-        .single();
+      // Call the RPC function for atomic update
+      const { data: result, error } = await supabase.rpc('update_package_with_items', {
+        p_package_id: id,
+        p_tenant_id: activeTenantId,
+        p_title: data.title || '',
+        p_description: data.description || null,
+        p_image_url: data.image_url || null,
+        p_price_cents: data.price_cents || 0,
+        p_original_price_cents: data.original_price_cents || null,
+        p_package_type: data.package_type || 'bundle',
+        p_billing_interval: data.billing_interval || null,
+        p_duration_weeks: data.duration_weeks || null,
+        p_validity_days: data.validity_days || 180,
+        p_status: data.status || 'draft',
+        p_items: items ? JSON.stringify(items.map((item, index) => ({
+          item_type: item.item_type,
+          service_key: item.service_key || null,
+          event_id: item.event_id || null,
+          item_title: item.item_title || null,
+          item_description: item.item_description || null,
+          item_duration_min: item.item_duration_min || null,
+          item_value_cents: item.item_value_cents || 0,
+          quantity: item.quantity || 1,
+        }))) : '[]',
+      });
 
-      if (pkgError) throw pkgError;
-
-      // If items provided, replace all items
-      if (items && activeTenantId) {
-        // Delete existing items
-        await supabase
-          .from('package_items')
-          .delete()
-          .eq('package_id', id);
-
-        // Insert new items
-        if (items.length > 0) {
-          const itemsToInsert = items.map((item, index) => ({
-            package_id: id,
-            tenant_id: activeTenantId,
-            item_type: item.item_type,
-            service_key: item.service_key,
-            event_id: item.event_id,
-            item_title: item.item_title,
-            item_description: item.item_description,
-            item_duration_min: item.item_duration_min,
-            item_value_cents: item.item_value_cents || 0,
-            quantity: item.quantity,
-            sort_order: index,
-          }));
-
-          const { error: itemsError } = await supabase
-            .from('package_items')
-            .insert(itemsToInsert);
-
-          if (itemsError) throw itemsError;
-        }
-      }
-
-      return pkg;
+      if (error) throw error;
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['business-packages'] });
