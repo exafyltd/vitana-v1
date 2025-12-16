@@ -1,8 +1,8 @@
 # VITANA Screen Registry
 
-**Version**: 1.0  
-**Last Updated**: 2025-11-26  
-**Total Screens**: 546
+**Version**: 1.1  
+**Last Updated**: 2025-12-16  
+**Total Screens**: 451
 
 ---
 
@@ -43,7 +43,8 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 | Admin Role Screens | 117 |
 | Dev Hub Screens | 136 |
 | Global Overlays | 53 |
-| **TOTAL** | **546** |
+| Business Hub Screens | 5 |
+| **TOTAL** | **451** |
 
 ---
 
