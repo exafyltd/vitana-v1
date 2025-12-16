@@ -988,11 +988,12 @@ export type Database = {
           id: string
           image_url: string | null
           metadata: Json | null
-          original_price: number | null
+          original_price_cents: number | null
           package_type: string
-          price: number
+          price_cents: number
           start_date: string | null
           status: string
+          tenant_id: string | null
           title: string
           updated_at: string | null
           validity_days: number | null
@@ -1007,11 +1008,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           metadata?: Json | null
-          original_price?: number | null
+          original_price_cents?: number | null
           package_type?: string
-          price?: number
+          price_cents?: number
           start_date?: string | null
           status?: string
+          tenant_id?: string | null
           title: string
           updated_at?: string | null
           validity_days?: number | null
@@ -1026,16 +1028,32 @@ export type Database = {
           id?: string
           image_url?: string | null
           metadata?: Json | null
-          original_price?: number | null
+          original_price_cents?: number | null
           package_type?: string
-          price?: number
+          price_cents?: number
           start_date?: string | null
           status?: string
+          tenant_id?: string | null
           title?: string
           updated_at?: string | null
           validity_days?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "business_packages_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "business_packages_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       calendar_events: {
         Row: {
@@ -4568,6 +4586,7 @@ export type Database = {
           redemption_number: number
           scheduled_at: string | null
           status: string
+          tenant_id: string | null
           ticket_purchase_id: string | null
         }
         Insert: {
@@ -4581,6 +4600,7 @@ export type Database = {
           redemption_number?: number
           scheduled_at?: string | null
           status?: string
+          tenant_id?: string | null
           ticket_purchase_id?: string | null
         }
         Update: {
@@ -4594,6 +4614,7 @@ export type Database = {
           redemption_number?: number
           scheduled_at?: string | null
           status?: string
+          tenant_id?: string | null
           ticket_purchase_id?: string | null
         }
         Relationships: [
@@ -4609,6 +4630,20 @@ export type Database = {
             columns: ["purchase_id"]
             isOneToOne: false
             referencedRelation: "package_purchases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_item_redemptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "package_item_redemptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
           {
@@ -4631,11 +4666,13 @@ export type Database = {
           item_duration_min: number | null
           item_title: string | null
           item_type: string
-          item_value: number | null
+          item_value_cents: number | null
           metadata: Json | null
           package_id: string
           quantity: number
+          service_key: string | null
           sort_order: number | null
+          tenant_id: string | null
         }
         Insert: {
           access_duration_days?: number | null
@@ -4647,11 +4684,13 @@ export type Database = {
           item_duration_min?: number | null
           item_title?: string | null
           item_type: string
-          item_value?: number | null
+          item_value_cents?: number | null
           metadata?: Json | null
           package_id: string
           quantity?: number
+          service_key?: string | null
           sort_order?: number | null
+          tenant_id?: string | null
         }
         Update: {
           access_duration_days?: number | null
@@ -4663,11 +4702,13 @@ export type Database = {
           item_duration_min?: number | null
           item_title?: string | null
           item_type?: string
-          item_value?: number | null
+          item_value_cents?: number | null
           metadata?: Json | null
           package_id?: string
           quantity?: number
+          service_key?: string | null
           sort_order?: number | null
+          tenant_id?: string | null
         }
         Relationships: [
           {
@@ -4684,11 +4725,25 @@ export type Database = {
             referencedRelation: "business_packages"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "package_items_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "package_items_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
         ]
       }
       package_purchases: {
         Row: {
-          amount_paid: number
+          amount_paid_cents: number | null
           buyer_email: string
           buyer_id: string | null
           buyer_name: string | null
@@ -4703,10 +4758,11 @@ export type Database = {
           stripe_payment_intent_id: string | null
           stripe_session_id: string | null
           stripe_subscription_id: string | null
+          tenant_id: string | null
           updated_at: string | null
         }
         Insert: {
-          amount_paid: number
+          amount_paid_cents?: number | null
           buyer_email: string
           buyer_id?: string | null
           buyer_name?: string | null
@@ -4721,10 +4777,11 @@ export type Database = {
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
           stripe_subscription_id?: string | null
+          tenant_id?: string | null
           updated_at?: string | null
         }
         Update: {
-          amount_paid?: number
+          amount_paid_cents?: number | null
           buyer_email?: string
           buyer_id?: string | null
           buyer_name?: string | null
@@ -4739,6 +4796,7 @@ export type Database = {
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
           stripe_subscription_id?: string | null
+          tenant_id?: string | null
           updated_at?: string | null
         }
         Relationships: [
@@ -4747,6 +4805,20 @@ export type Database = {
             columns: ["package_id"]
             isOneToOne: false
             referencedRelation: "business_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_purchases_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "package_purchases_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
             referencedColumns: ["id"]
           },
         ]

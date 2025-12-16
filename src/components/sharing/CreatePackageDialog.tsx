@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,17 +22,18 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { 
   Package, 
-  CalendarDays, 
-  Repeat, 
   Plus, 
   Trash2, 
   ChevronLeft, 
   ChevronRight,
   Clock,
   DollarSign,
-  Sparkles
+  Sparkles,
+  Calendar
 } from "lucide-react";
-import { useBusinessPackages, PackageType, PackageItem, BillingInterval } from "@/hooks/useBusinessPackages";
+import { useBusinessPackages, PackageType, PackageItem, BillingInterval, dollarsToCents, formatCents } from "@/hooks/useBusinessPackages";
+import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 interface CreatePackageDialogProps {
@@ -40,36 +41,38 @@ interface CreatePackageDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const PACKAGE_TYPES: { value: PackageType; label: string; description: string; icon: React.ReactNode }[] = [
+// V1: Only bundle type (subscription/program hidden)
+const PACKAGE_TYPES_V1: { value: PackageType; label: string; description: string; icon: React.ReactNode }[] = [
   {
     value: 'bundle',
     label: 'Session Bundle',
     description: 'One-time purchase with fixed set of sessions',
     icon: <Package className="w-5 h-5" />,
   },
-  {
-    value: 'subscription',
-    label: 'Monthly Membership',
-    description: 'Recurring access to services & events',
-    icon: <Repeat className="w-5 h-5" />,
-  },
-  {
-    value: 'program',
-    label: 'Transformation Program',
-    description: 'Time-bound journey with milestones',
-    icon: <CalendarDays className="w-5 h-5" />,
-  },
 ];
 
-const ITEM_TYPES = [
+// V1: Only service and event item types
+const ITEM_TYPES_V1 = [
   { value: 'service', label: '1:1 Session' },
   { value: 'event', label: 'Event Access' },
-  { value: 'access', label: 'Membership Perk' },
-  { value: 'digital_asset', label: 'Digital Content' },
 ];
+
+interface ServiceOption {
+  key: string;
+  title: string;
+  duration?: number;
+  price?: number;
+}
+
+interface EventOption {
+  id: string;
+  title: string;
+  start_time?: string;
+}
 
 export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogProps) {
   const { createPackage, isCreating } = useBusinessPackages();
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
   
   // Step 1: Basic Info
@@ -80,13 +83,42 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
   // Step 2: Items
   const [items, setItems] = useState<PackageItem[]>([]);
   
-  // Step 3: Pricing & Settings
+  // Step 3: Pricing & Settings (prices in dollars for input, converted to cents on save)
   const [price, setPrice] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [validityDays, setValidityDays] = useState("180");
   const [billingInterval, setBillingInterval] = useState<BillingInterval>('monthly');
   const [durationWeeks, setDurationWeeks] = useState("");
   const [publishImmediately, setPublishImmediately] = useState(false);
+
+  // Service and event options from user's data
+  const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([]);
+  const [eventOptions, setEventOptions] = useState<EventOption[]>([]);
+
+  // Fetch user's services and events
+  useEffect(() => {
+    if (!user?.id || !open) return;
+
+    const fetchOptions = async () => {
+      // V1: Services are entered manually (no services table yet)
+      // Future: fetch from services table when implemented
+      setServiceOptions([]);
+
+      // Fetch user's events
+      const { data: events } = await supabase
+        .from('global_community_events')
+        .select('id, title, start_time')
+        .eq('created_by', user.id)
+        .order('start_time', { ascending: false })
+        .limit(50);
+
+      if (events) {
+        setEventOptions(events);
+      }
+    };
+
+    fetchOptions();
+  }, [user?.id, open]);
 
   const resetForm = () => {
     setStep(1);
@@ -113,7 +145,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
       item_title: '',
       item_description: '',
       item_duration_min: 60,
-      item_value: 0,
+      item_value_cents: 0,
       quantity: 1,
     }]);
   };
@@ -128,6 +160,28 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
     setItems(items.filter((_, i) => i !== index));
   };
 
+  const handleServiceSelect = (index: number, serviceKey: string) => {
+    const service = serviceOptions.find(s => s.key === serviceKey);
+    if (service) {
+      updateItem(index, {
+        service_key: serviceKey,
+        item_title: service.title,
+        item_duration_min: service.duration || 60,
+        item_value_cents: service.price ? dollarsToCents(service.price) : 0,
+      });
+    }
+  };
+
+  const handleEventSelect = (index: number, eventId: string) => {
+    const event = eventOptions.find(e => e.id === eventId);
+    if (event) {
+      updateItem(index, {
+        event_id: eventId,
+        item_title: event.title,
+      });
+    }
+  };
+
   const calculateSavings = () => {
     const bundlePrice = parseFloat(price) || 0;
     const original = parseFloat(originalPrice) || 0;
@@ -138,18 +192,24 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
     return 0;
   };
 
+  // Calculate total item value in cents
+  const totalItemValueCents = items.reduce((sum, item) => sum + (item.item_value_cents || 0) * item.quantity, 0);
+
   const handleSubmit = () => {
     createPackage({
       title,
       description,
       package_type: packageType,
-      price: parseFloat(price) || 0,
-      original_price: parseFloat(originalPrice) || undefined,
+      price_cents: dollarsToCents(parseFloat(price) || 0),
+      original_price_cents: originalPrice ? dollarsToCents(parseFloat(originalPrice)) : undefined,
       validity_days: parseInt(validityDays) || 180,
       billing_interval: packageType === 'subscription' ? billingInterval : undefined,
       duration_weeks: packageType === 'program' ? parseInt(durationWeeks) || undefined : undefined,
       status: publishImmediately ? 'published' : 'draft',
-      items: items.filter(item => item.item_title),
+      items: items.filter(item => item.item_title).map(item => ({
+        ...item,
+        item_value_cents: item.item_value_cents || 0,
+      })),
     });
     handleClose();
   };
@@ -171,7 +231,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
           </DialogTitle>
           <DialogDescription>
             {step === 1 && "Choose a package type and add basic details"}
-            {step === 2 && "Add sessions, events, or perks to include"}
+            {step === 2 && "Add sessions or events to include"}
             {step === 3 && "Set your pricing and launch settings"}
           </DialogDescription>
         </DialogHeader>
@@ -201,7 +261,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
             <div className="grid gap-2">
               <Label>Package Type</Label>
               <div className="grid gap-2">
-                {PACKAGE_TYPES.map((type) => (
+                {PACKAGE_TYPES_V1.map((type) => (
                   <button
                     key={type.value}
                     type="button"
@@ -266,7 +326,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               <div className="text-center py-8 border border-dashed rounded-lg">
                 <Package className="w-10 h-10 mx-auto text-muted-foreground/50 mb-2" />
                 <p className="text-sm text-muted-foreground mb-3">
-                  Add sessions, events, or perks to your package
+                  Add sessions or events to your package
                 </p>
                 <Button type="button" variant="outline" size="sm" onClick={addItem}>
                   <Plus className="w-4 h-4 mr-1" />
@@ -280,13 +340,18 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                     <div className="flex items-center justify-between">
                       <Select
                         value={item.item_type}
-                        onValueChange={(v) => updateItem(index, { item_type: v as PackageItem['item_type'] })}
+                        onValueChange={(v) => updateItem(index, { 
+                          item_type: v as PackageItem['item_type'],
+                          service_key: undefined,
+                          event_id: undefined,
+                          item_title: '',
+                        })}
                       >
                         <SelectTrigger className="w-[140px]">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {ITEM_TYPES.map((type) => (
+                          {ITEM_TYPES_V1.map((type) => (
                             <SelectItem key={type.value} value={type.value}>
                               {type.label}
                             </SelectItem>
@@ -304,11 +369,66 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                       </Button>
                     </div>
 
-                    <Input
-                      placeholder="Item name (e.g., 60-min Coaching Session)"
-                      value={item.item_title || ''}
-                      onChange={(e) => updateItem(index, { item_title: e.target.value })}
-                    />
+                    {/* Service selector */}
+                    {item.item_type === 'service' && (
+                      <div className="space-y-2">
+                        {serviceOptions.length > 0 ? (
+                          <Select
+                            value={item.service_key || ''}
+                            onValueChange={(v) => handleServiceSelect(index, v)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a service..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {serviceOptions.map((service) => (
+                                <SelectItem key={service.key} value={service.key}>
+                                  {service.title} {service.duration && `(${service.duration} min)`}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Input
+                            placeholder="Session name (e.g., 60-min Coaching Session)"
+                            value={item.item_title || ''}
+                            onChange={(e) => updateItem(index, { item_title: e.target.value })}
+                          />
+                        )}
+                      </div>
+                    )}
+
+                    {/* Event selector */}
+                    {item.item_type === 'event' && (
+                      <div className="space-y-2">
+                        {eventOptions.length > 0 ? (
+                          <Select
+                            value={item.event_id || ''}
+                            onValueChange={(v) => handleEventSelect(index, v)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select an event..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {eventOptions.map((event) => (
+                                <SelectItem key={event.id} value={event.id}>
+                                  <div className="flex items-center gap-2">
+                                    <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+                                    {event.title}
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <Input
+                            placeholder="Event name"
+                            value={item.item_title || ''}
+                            onChange={(e) => updateItem(index, { item_title: e.target.value })}
+                          />
+                        )}
+                      </div>
+                    )}
 
                     <div className="flex gap-2">
                       <div className="flex-1">
@@ -337,9 +457,10 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                         <Input
                           type="number"
                           min={0}
-                          value={item.item_value || ''}
-                          onChange={(e) => updateItem(index, { item_value: parseFloat(e.target.value) || 0 })}
-                          placeholder="0"
+                          step={0.01}
+                          value={item.item_value_cents ? (item.item_value_cents / 100).toFixed(2) : ''}
+                          onChange={(e) => updateItem(index, { item_value_cents: dollarsToCents(parseFloat(e.target.value) || 0) })}
+                          placeholder="0.00"
                         />
                       </div>
                     </div>
@@ -352,7 +473,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                 <span className="text-sm text-muted-foreground">Total item value:</span>
                 <span className="font-semibold">
-                  ${items.reduce((sum, item) => sum + (item.item_value || 0) * item.quantity, 0).toFixed(2)}
+                  {formatCents(totalItemValueCents)}
                 </span>
               </div>
             )}
@@ -373,7 +494,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                   type="number"
                   min={0}
                   step={0.01}
-                  placeholder="299"
+                  placeholder="299.00"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
@@ -387,7 +508,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                   type="number"
                   min={0}
                   step={0.01}
-                  placeholder="375"
+                  placeholder="375.00"
                   value={originalPrice}
                   onChange={(e) => setOriginalPrice(e.target.value)}
                 />
@@ -400,40 +521,6 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                 <span className="text-sm text-emerald-700 dark:text-emerald-400">
                   Clients save {calculateSavings()}% with this bundle!
                 </span>
-              </div>
-            )}
-
-            {packageType === 'subscription' && (
-              <div className="grid gap-2">
-                <Label>Billing Interval</Label>
-                <Select value={billingInterval} onValueChange={(v) => setBillingInterval(v as BillingInterval)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="quarterly">Quarterly</SelectItem>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {packageType === 'program' && (
-              <div className="grid gap-2">
-                <Label htmlFor="durationWeeks" className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  Program Duration (weeks)
-                </Label>
-                <Input
-                  id="durationWeeks"
-                  type="number"
-                  min={1}
-                  placeholder="12"
-                  value={durationWeeks}
-                  onChange={(e) => setDurationWeeks(e.target.value)}
-                />
               </div>
             )}
 
@@ -474,7 +561,7 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
           </div>
         )}
 
-        <DialogFooter className="flex-row justify-between sm:justify-between">
+        <DialogFooter className="flex justify-between">
           <div>
             {step > 1 && (
               <Button type="button" variant="ghost" onClick={() => setStep(step - 1)}>
@@ -488,13 +575,21 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
               Cancel
             </Button>
             {step < 3 ? (
-              <Button type="button" onClick={() => setStep(step + 1)} disabled={!canProceed()}>
+              <Button 
+                type="button" 
+                onClick={() => setStep(step + 1)}
+                disabled={!canProceed()}
+              >
                 Next
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             ) : (
-              <Button type="button" onClick={handleSubmit} disabled={!canProceed() || isCreating}>
-                {isCreating ? "Creating..." : publishImmediately ? "Publish Package" : "Save Draft"}
+              <Button 
+                type="button" 
+                onClick={handleSubmit}
+                disabled={!canProceed() || isCreating}
+              >
+                {isCreating ? "Creating..." : "Create Package"}
               </Button>
             )}
           </div>
