@@ -21,7 +21,7 @@ export function ServicesSubTabs({ onCreateService }: ServicesSubTabsProps) {
     setEditingPackage(pkg);
   };
 
-  const handleSavePackage = (packageId: string, data: any, items: PackageItem[]) => {
+  const handleSavePackage = (packageId: string, data: Partial<BusinessPackage>, items: PackageItem[]) => {
     updatePackageWithItems({ id: packageId, ...data, items });
     setEditingPackage(null);
   };

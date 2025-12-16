@@ -7,7 +7,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const logStep = (step: string, details?: any) => {
+const logStep = (step: string, details?: unknown) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[STRIPE-PACKAGE-CHECKOUT] ${step}${detailsStr}`);
 };
@@ -33,7 +33,7 @@ serve(async (req) => {
 
     const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
 
-    // Get authenticated user
+    // Get authenticated user (optional for guest checkout)
     const authHeader = req.headers.get("Authorization");
     let user = null;
     let buyerEmail = "";
@@ -49,17 +49,22 @@ serve(async (req) => {
       }
     }
 
-    // Parse request body
+    // Parse request body - tenant_id is REQUIRED
     const { 
       package_id, 
+      tenant_id,
       buyer_email, 
       buyer_name,
     } = await req.json();
     
-    logStep("Request received", { package_id });
+    logStep("Request received", { package_id, tenant_id });
 
     if (!package_id) {
       throw new Error("Missing required field: package_id");
+    }
+
+    if (!tenant_id) {
+      throw new Error("Missing required field: tenant_id");
     }
 
     // Use provided buyer info or authenticated user info
@@ -70,7 +75,7 @@ serve(async (req) => {
       throw new Error("Buyer email is required");
     }
 
-    // Fetch package details with items
+    // Fetch package details with items - MUST match both id AND tenant_id
     const { data: pkg, error: pkgError } = await supabaseAdmin
       .from("business_packages")
       .select(`
@@ -78,18 +83,40 @@ serve(async (req) => {
         items:package_items(*)
       `)
       .eq("id", package_id)
+      .eq("tenant_id", tenant_id)
       .single();
 
     if (pkgError || !pkg) {
-      logStep("Package not found", { error: pkgError });
-      throw new Error("Package not found");
+      logStep("Package not found or tenant mismatch", { error: pkgError, package_id, tenant_id });
+      throw new Error("Package not found or tenant mismatch");
+    }
+
+    // Verify tenant_id matches
+    if (pkg.tenant_id !== tenant_id) {
+      logStep("Tenant mismatch detected", { pkg_tenant: pkg.tenant_id, request_tenant: tenant_id });
+      throw new Error("Tenant mismatch - access denied");
     }
 
     if (pkg.status !== 'published') {
       throw new Error("This package is not available for purchase");
     }
 
-    logStep("Package found", { title: pkg.title, price_cents: pkg.price_cents });
+    // If user is authenticated, optionally validate membership in tenant
+    if (user) {
+      const { data: membership } = await supabaseAdmin
+        .from("memberships")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("tenant_id", tenant_id)
+        .eq("status", "active")
+        .single();
+
+      // Note: We allow purchase even without membership (guest checkout)
+      // but log the membership status for audit purposes
+      logStep("User membership check", { userId: user.id, hasMembership: !!membership });
+    }
+
+    logStep("Package found", { title: pkg.title, price_cents: pkg.price_cents, tenant_id: pkg.tenant_id });
 
     // Initialize Stripe
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
@@ -104,14 +131,20 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://vitana.app";
 
-    // Determine checkout mode based on package type
+    // V1: Bundle only - no subscription support
+    // Subscriptions are disabled in V1, but keep code path for future
     const isSubscription = pkg.package_type === 'subscription';
     
-    // Create pending purchase record
+    if (isSubscription) {
+      throw new Error("Subscription packages are not supported in V1");
+    }
+
+    // Create pending purchase record - include tenant_id
     const { data: purchase, error: purchaseError } = await supabaseAdmin
       .from("package_purchases")
       .insert({
         package_id: pkg.id,
+        tenant_id: tenant_id, // Include tenant_id in purchase record
         buyer_id: user?.id || null,
         buyer_email: finalBuyerEmail,
         buyer_name: finalBuyerName,
@@ -123,6 +156,7 @@ serve(async (req) => {
           package_title: pkg.title,
           package_type: pkg.package_type,
           items_count: pkg.items?.length || 0,
+          tenant_id: tenant_id,
         }
       })
       .select()
@@ -137,85 +171,39 @@ serve(async (req) => {
 
     // Build line item description from included items
     const itemDescriptions = (pkg.items || [])
-      .map((item: any) => `${item.quantity}x ${item.item_title}`)
+      .map((item: { quantity: number; item_title: string }) => `${item.quantity}x ${item.item_title}`)
       .join(', ');
 
-    // Create Stripe Checkout session
-    let session;
-    
-    if (isSubscription) {
-      // For subscriptions, we need to create a price first or use price_data
-      const billingIntervalMap: Record<string, 'day' | 'week' | 'month' | 'year'> = {
-        'weekly': 'week',
-        'monthly': 'month',
-        'quarterly': 'month', // Will set interval_count to 3
-        'yearly': 'year',
-      };
-      
-      const interval = billingIntervalMap[pkg.billing_interval || 'monthly'] || 'month';
-      const intervalCount = pkg.billing_interval === 'quarterly' ? 3 : 1;
-
-      session = await stripe.checkout.sessions.create({
-        customer: customerId,
-        customer_email: customerId ? undefined : finalBuyerEmail,
-        line_items: [
-          {
-            price_data: {
-              currency: pkg.currency.toLowerCase(),
-              product_data: {
-                name: pkg.title,
-                description: itemDescriptions || pkg.description || `Subscription package`,
-                images: pkg.image_url ? [pkg.image_url] : [],
-              },
-              unit_amount: pkg.price_cents,
-              recurring: {
-                interval,
-                interval_count: intervalCount,
-              },
+    // One-time payment for bundles (V1)
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      customer_email: customerId ? undefined : finalBuyerEmail,
+      line_items: [
+        {
+          price_data: {
+            currency: pkg.currency.toLowerCase(),
+            product_data: {
+              name: pkg.title,
+              description: itemDescriptions || pkg.description || `Package includes ${pkg.items?.length || 0} items`,
+              images: pkg.image_url ? [pkg.image_url] : [],
             },
-            quantity: 1,
+            unit_amount: pkg.price_cents,
           },
-        ],
-        mode: "subscription",
-        success_url: `${origin}/packages/success?purchase_id=${purchase.id}&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/business/services?cancelled=true`,
-        metadata: {
-          purchase_id: purchase.id,
-          package_id: pkg.id,
-          type: "package_subscription",
+          quantity: 1,
         },
-      });
-    } else {
-      // One-time payment for bundles and programs
-      session = await stripe.checkout.sessions.create({
-        customer: customerId,
-        customer_email: customerId ? undefined : finalBuyerEmail,
-        line_items: [
-          {
-            price_data: {
-              currency: pkg.currency.toLowerCase(),
-              product_data: {
-                name: pkg.title,
-                description: itemDescriptions || pkg.description || `Package includes ${pkg.items?.length || 0} items`,
-                images: pkg.image_url ? [pkg.image_url] : [],
-              },
-              unit_amount: pkg.price_cents,
-            },
-            quantity: 1,
-          },
-        ],
-        mode: "payment",
-        success_url: `${origin}/packages/success?purchase_id=${purchase.id}&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${origin}/business/services?cancelled=true`,
-        metadata: {
-          purchase_id: purchase.id,
-          package_id: pkg.id,
-          type: "package_purchase",
-        },
-      });
-    }
+      ],
+      mode: "payment",
+      success_url: `${origin}/packages/success?purchase_id=${purchase.id}&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/business/services?cancelled=true`,
+      metadata: {
+        purchase_id: purchase.id,
+        package_id: pkg.id,
+        tenant_id: tenant_id,
+        type: "package_purchase",
+      },
+    });
 
-    logStep("Stripe session created", { sessionId: session.id, mode: isSubscription ? 'subscription' : 'payment' });
+    logStep("Stripe session created", { sessionId: session.id, mode: 'payment' });
 
     // Update purchase with stripe session id
     await supabaseAdmin
@@ -224,7 +212,7 @@ serve(async (req) => {
         stripe_session_id: session.id,
         metadata: {
           ...purchase.metadata,
-          stripe_mode: isSubscription ? 'subscription' : 'payment',
+          stripe_mode: 'payment',
         }
       })
       .eq("id", purchase.id);

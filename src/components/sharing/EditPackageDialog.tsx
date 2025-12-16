@@ -29,17 +29,12 @@ import {
   Clock,
   DollarSign,
   Sparkles,
-  Calendar,
-  RefreshCw,
-  GraduationCap,
   ImagePlus,
   X
 } from "lucide-react";
 import { 
   BusinessPackage, 
-  PackageType, 
   PackageItem, 
-  BillingInterval, 
   dollarsToCents, 
   formatCents 
 } from "@/hooks/useBusinessPackages";
@@ -52,35 +47,23 @@ interface EditPackageDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   package_: BusinessPackage;
-  onSave: (packageId: string, data: any, items: PackageItem[]) => void;
+  onSave: (packageId: string, data: Partial<BusinessPackage>, items: PackageItem[]) => void;
   isSaving?: boolean;
 }
 
-const PACKAGE_TYPES = [
-  { value: 'bundle', label: 'Session Bundle', description: 'One-time purchase with fixed set of sessions', icon: <Package className="w-5 h-5" /> },
-  { value: 'subscription', label: 'Subscription', description: 'Recurring access with monthly or annual billing', icon: <RefreshCw className="w-5 h-5" /> },
-  { value: 'program', label: 'Program', description: 'Structured multi-week journey with milestones', icon: <GraduationCap className="w-5 h-5" /> },
-];
+// V1: Bundle type is fixed
+const PACKAGE_TYPE_V1 = {
+  value: 'bundle' as const,
+  label: 'Session Bundle',
+  description: 'One-time purchase with fixed set of sessions',
+  icon: <Package className="w-5 h-5" />,
+};
 
-const ITEM_TYPES = [
+// V1: Service and Event only
+const ITEM_TYPES_V1 = [
   { value: 'service', label: '1:1 Session', description: 'Individual coaching or therapy session', hasDuration: true },
-  { value: 'group_session', label: 'Group Session', description: 'Group class or workshop', hasDuration: true },
   { value: 'event', label: 'Event Access', description: 'Access to a specific event', hasDuration: false },
-  { value: 'course', label: 'Course Access', description: 'Digital course or learning program', hasDuration: false },
-  { value: 'digital', label: 'Digital Download', description: 'Ebook, guide, or PDF resource', hasDuration: false },
-  { value: 'resource', label: 'Resource Access', description: 'Library or community access', hasDuration: false },
 ];
-
-function getItemPlaceholder(itemType: string): string {
-  switch (itemType) {
-    case 'service': return 'Session name (e.g., 60-min Coaching Session)';
-    case 'group_session': return 'Group session name (e.g., Weekly Yoga Class)';
-    case 'course': return 'Course name (e.g., Mindfulness Fundamentals)';
-    case 'digital': return 'Download name (e.g., Wellness Guide PDF)';
-    case 'resource': return 'Resource name (e.g., Member Library Access)';
-    default: return 'Item name';
-  }
-}
 
 interface EventOption {
   id: string;
@@ -95,7 +78,6 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
   // Step 1: Basic Info
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [packageType, setPackageType] = useState<PackageType>('bundle');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   
@@ -106,8 +88,6 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
   const [price, setPrice] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [validityDays, setValidityDays] = useState("180");
-  const [billingInterval, setBillingInterval] = useState<BillingInterval>('monthly');
-  const [durationWeeks, setDurationWeeks] = useState("");
   const [publishImmediately, setPublishImmediately] = useState(false);
 
   const [eventOptions, setEventOptions] = useState<EventOption[]>([]);
@@ -117,29 +97,28 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
     if (package_ && open) {
       setTitle(package_.title);
       setDescription(package_.description || "");
-      setPackageType(package_.package_type);
       setImageUrl(package_.image_url || null);
       setPrice((package_.price_cents / 100).toString());
       setOriginalPrice(package_.original_price_cents ? (package_.original_price_cents / 100).toString() : "");
       setValidityDays(package_.validity_days?.toString() || "180");
-      setBillingInterval(package_.billing_interval || 'monthly');
-      setDurationWeeks(package_.duration_weeks?.toString() || "");
       setPublishImmediately(package_.status === 'published');
       
-      // Transform items from DB format
+      // Transform items from DB format - filter to V1 types only
       if (package_.items) {
-        setItems(package_.items.map(item => ({
-          id: item.id,
-          item_type: item.item_type,
-          service_key: item.service_key,
-          event_id: item.event_id,
-          item_title: item.item_title,
-          item_description: item.item_description,
-          item_duration_min: item.item_duration_min,
-          item_value_cents: item.item_value_cents || 0,
-          quantity: item.quantity,
-          sort_order: item.sort_order,
-        })));
+        setItems(package_.items
+          .filter(item => item.item_type === 'service' || item.item_type === 'event')
+          .map(item => ({
+            id: item.id,
+            item_type: item.item_type,
+            service_key: item.service_key,
+            event_id: item.event_id,
+            item_title: item.item_title,
+            item_description: item.item_description,
+            item_duration_min: item.item_duration_min,
+            item_value_cents: item.item_value_cents || 0,
+            quantity: item.quantity,
+            sort_order: item.sort_order,
+          })));
       }
       setStep(1);
     }
@@ -183,24 +162,16 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
         .upload(filePath, file);
 
       if (uploadError) {
-        // Bucket might not exist, try avatars bucket as fallback
-        const { error: fallbackError } = await supabase.storage
-          .from('avatars')
-          .upload(filePath, file);
-        
-        if (fallbackError) throw fallbackError;
-        
-        const { data: { publicUrl } } = supabase.storage
-          .from('avatars')
-          .getPublicUrl(filePath);
-        setImageUrl(publicUrl);
-      } else {
-        const { data: { publicUrl } } = supabase.storage
-          .from('package-images')
-          .getPublicUrl(filePath);
-        setImageUrl(publicUrl);
+        // Show clear error - no fallback to avatars bucket
+        console.error('Image upload failed:', uploadError);
+        toast.error("Failed to upload image. Please ensure the package-images storage bucket exists.");
+        return;
       }
-      
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('package-images')
+        .getPublicUrl(filePath);
+      setImageUrl(publicUrl);
       toast.success("Image uploaded");
     } catch (error) {
       console.error('Image upload failed:', error);
@@ -260,12 +231,10 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
         title,
         description,
         image_url: imageUrl,
-        package_type: packageType,
+        package_type: 'bundle', // V1: Always bundle
         price_cents: dollarsToCents(parseFloat(price) || 0),
         original_price_cents: originalPrice ? dollarsToCents(parseFloat(originalPrice)) : null,
         validity_days: parseInt(validityDays) || 180,
-        billing_interval: packageType === 'subscription' ? billingInterval : null,
-        duration_weeks: packageType === 'program' ? parseInt(durationWeeks) || null : null,
         status: publishImmediately ? 'published' : 'draft',
       },
       items.filter(item => item.item_title).map((item, index) => ({
@@ -357,33 +326,14 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
               />
             </div>
 
-            <div className="grid gap-2">
-              <Label>Package Type</Label>
-              <div className="grid gap-2">
-                {PACKAGE_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => setPackageType(type.value as PackageType)}
-                    className={cn(
-                      "flex items-start gap-3 p-3 rounded-lg border text-left transition-colors",
-                      packageType === type.value
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
-                    )}
-                  >
-                    <div className={cn(
-                      "p-2 rounded-md",
-                      packageType === type.value ? "bg-primary text-primary-foreground" : "bg-muted"
-                    )}>
-                      {type.icon}
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium">{type.label}</div>
-                      <div className="text-sm text-muted-foreground">{type.description}</div>
-                    </div>
-                  </button>
-                ))}
+            {/* V1: Bundle type is fixed - show info badge */}
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/20">
+              <div className="p-2 rounded-md bg-primary text-primary-foreground">
+                {PACKAGE_TYPE_V1.icon}
+              </div>
+              <div className="flex-1">
+                <div className="font-medium">{PACKAGE_TYPE_V1.label}</div>
+                <div className="text-sm text-muted-foreground">{PACKAGE_TYPE_V1.description}</div>
               </div>
             </div>
 
@@ -444,14 +394,14 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                           service_key: undefined,
                           event_id: undefined,
                           item_title: '',
-                          item_duration_min: ITEM_TYPES.find(t => t.value === v)?.hasDuration ? 60 : undefined,
+                          item_duration_min: ITEM_TYPES_V1.find(t => t.value === v)?.hasDuration ? 60 : undefined,
                         })}
                       >
                         <SelectTrigger className="w-[160px]">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {ITEM_TYPES.map((type) => (
+                          {ITEM_TYPES_V1.map((type) => (
                             <SelectItem key={type.value} value={type.value}>
                               {type.label}
                             </SelectItem>
@@ -477,190 +427,148 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                             onValueChange={(v) => handleEventSelect(index, v)}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder="Select an event..." />
+                              <SelectValue placeholder="Select an event" />
                             </SelectTrigger>
                             <SelectContent>
                               {eventOptions.map((event) => (
                                 <SelectItem key={event.id} value={event.id}>
-                                  <div className="flex items-center gap-2">
-                                    <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
-                                    {event.title}
-                                  </div>
+                                  {event.title}
                                 </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         ) : (
-                          <Input
-                            placeholder="Event name"
-                            value={item.item_title || ''}
-                            onChange={(e) => updateItem(index, { item_title: e.target.value })}
-                          />
+                          <div className="text-sm text-muted-foreground p-2 bg-muted rounded">
+                            No events found. Create an event first.
+                          </div>
                         )}
                       </div>
                     ) : (
-                      <Input
-                        placeholder={getItemPlaceholder(item.item_type)}
-                        value={item.item_title || ''}
-                        onChange={(e) => updateItem(index, { item_title: e.target.value })}
-                      />
+                      /* Service - manual entry in V1 */
+                      <div className="space-y-2">
+                        <Input
+                          placeholder="Session name (e.g., 60-min Coaching Session)"
+                          value={item.item_title || ''}
+                          onChange={(e) => updateItem(index, { item_title: e.target.value })}
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <Label className="text-xs">Duration (min)</Label>
+                            <Input
+                              type="number"
+                              value={item.item_duration_min || ''}
+                              onChange={(e) => updateItem(index, { item_duration_min: parseInt(e.target.value) || undefined })}
+                              placeholder="60"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">Value ($)</Label>
+                            <Input
+                              type="number"
+                              step="0.01"
+                              value={item.item_value_cents ? (item.item_value_cents / 100).toFixed(2) : ''}
+                              onChange={(e) => updateItem(index, { item_value_cents: dollarsToCents(parseFloat(e.target.value) || 0) })}
+                              placeholder="0.00"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     )}
 
-                    <div className="flex gap-2">
-                      <div className="flex-1">
-                        <Label className="text-xs text-muted-foreground">Quantity</Label>
-                        <Input
-                          type="number"
-                          min={1}
-                          value={item.quantity}
-                          onChange={(e) => updateItem(index, { quantity: parseInt(e.target.value) || 1 })}
-                        />
-                      </div>
-                      {(item.item_type === 'service' || item.item_type === 'group_session') && (
-                        <div className="flex-1">
-                          <Label className="text-xs text-muted-foreground">Duration (min)</Label>
-                          <Input
-                            type="number"
-                            min={15}
-                            step={15}
-                            value={item.item_duration_min || 60}
-                            onChange={(e) => updateItem(index, { item_duration_min: parseInt(e.target.value) || 60 })}
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1">
-                        <Label className="text-xs text-muted-foreground">Value ($)</Label>
-                        <Input
-                          type="number"
-                          min={0}
-                          step={0.01}
-                          value={item.item_value_cents ? (item.item_value_cents / 100).toFixed(2) : ''}
-                          onChange={(e) => updateItem(index, { item_value_cents: dollarsToCents(parseFloat(e.target.value) || 0) })}
-                          placeholder="0.00"
-                        />
-                      </div>
+                    {/* Quantity */}
+                    <div className="flex items-center gap-2">
+                      <Label className="text-xs">Quantity:</Label>
+                      <Input
+                        type="number"
+                        min="1"
+                        className="w-20 h-8"
+                        value={item.quantity}
+                        onChange={(e) => updateItem(index, { quantity: parseInt(e.target.value) || 1 })}
+                      />
                     </div>
                   </div>
                 ))}
               </div>
             )}
 
-            {items.length > 0 && (
-              <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                <span className="text-sm text-muted-foreground">Total item value:</span>
-                <span className="font-semibold">{formatCents(totalItemValueCents)}</span>
+            {totalItemValueCents > 0 && (
+              <div className="p-3 bg-muted rounded-lg">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Total individual value:</span>
+                  <span className="font-medium">{formatCents(totalItemValueCents)}</span>
+                </div>
               </div>
             )}
           </div>
         )}
 
-        {/* Step 3: Pricing & Settings */}
+        {/* Step 3: Pricing */}
         {step === 3 && (
           <div className="space-y-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="price" className="flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5" />
-                  Package Price
-                </Label>
-                <Input
-                  id="price"
-                  type="number"
-                  min={0}
-                  step={0.01}
-                  placeholder="299.00"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
+            <div className="grid gap-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="price">Bundle Price ($)</Label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      id="price"
+                      type="number"
+                      step="0.01"
+                      className="pl-9"
+                      placeholder="0.00"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="originalPrice">Original Value ($)</Label>
+                  <div className="relative">
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      id="originalPrice"
+                      type="number"
+                      step="0.01"
+                      className="pl-9"
+                      placeholder="0.00"
+                      value={originalPrice}
+                      onChange={(e) => setOriginalPrice(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="originalPrice" className="text-muted-foreground">
-                  Original Value (optional)
-                </Label>
-                <Input
-                  id="originalPrice"
-                  type="number"
-                  min={0}
-                  step={0.01}
-                  placeholder="375.00"
-                  value={originalPrice}
-                  onChange={(e) => setOriginalPrice(e.target.value)}
-                />
-                {totalItemValueCents > 0 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="text-xs text-muted-foreground h-auto py-1 px-2 justify-start"
-                    onClick={() => setOriginalPrice((totalItemValueCents / 100).toFixed(2))}
-                  >
-                    Use total item value ({formatCents(totalItemValueCents)})
-                  </Button>
-                )}
-              </div>
+
+              {calculateSavings() > 0 && (
+                <Badge variant="secondary" className="w-fit">
+                  <Sparkles className="w-3 h-3 mr-1" />
+                  {calculateSavings()}% Savings
+                </Badge>
+              )}
             </div>
 
-            {calculateSavings() > 0 && (
-              <div className="flex items-center gap-2 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                <Sparkles className="w-4 h-4 text-emerald-600" />
-                <span className="text-sm text-emerald-700 dark:text-emerald-400">
-                  Clients save {calculateSavings()}% with this bundle!
-                </span>
-              </div>
-            )}
-
-            {packageType === 'subscription' && (
-              <div className="grid gap-2">
-                <Label>Billing Interval</Label>
-                <Select value={billingInterval} onValueChange={(v) => setBillingInterval(v as BillingInterval)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="quarterly">Quarterly</SelectItem>
-                    <SelectItem value="yearly">Yearly</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {packageType === 'program' && (
-              <div className="grid gap-2">
-                <Label>Program Duration (weeks)</Label>
+            <div className="grid gap-2">
+              <Label htmlFor="validity">Validity Period (days)</Label>
+              <div className="relative">
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
+                  id="validity"
                   type="number"
-                  min={1}
-                  placeholder="e.g., 8"
-                  value={durationWeeks}
-                  onChange={(e) => setDurationWeeks(e.target.value)}
+                  className="pl-9"
+                  value={validityDays}
+                  onChange={(e) => setValidityDays(e.target.value)}
                 />
               </div>
-            )}
+              <p className="text-xs text-muted-foreground">
+                How long the buyer has to redeem all sessions
+              </p>
+            </div>
 
-            {packageType !== 'subscription' && (
-              <div className="grid gap-2">
-                <Label htmlFor="validityDays">Redemption Window (days)</Label>
-                <Select value={validityDays} onValueChange={setValidityDays}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="30">30 days</SelectItem>
-                    <SelectItem value="60">60 days</SelectItem>
-                    <SelectItem value="90">90 days</SelectItem>
-                    <SelectItem value="180">6 months</SelectItem>
-                    <SelectItem value="365">1 year</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            <div className="flex items-center justify-between p-3 border rounded-lg">
+            <div className="flex items-center justify-between p-3 rounded-lg border">
               <div>
-                <Label htmlFor="publish" className="cursor-pointer">Published</Label>
+                <Label htmlFor="publish">Publish immediately</Label>
                 <p className="text-xs text-muted-foreground">
-                  Make this package visible to clients
+                  Make available for purchase right away
                 </p>
               </div>
               <Switch
@@ -669,41 +577,60 @@ export function EditPackageDialog({ open, onOpenChange, package_, onSave, isSavi
                 onCheckedChange={setPublishImmediately}
               />
             </div>
+
+            {/* Summary */}
+            <div className="p-4 bg-muted rounded-lg space-y-2">
+              <h4 className="font-medium">Package Summary</h4>
+              <div className="text-sm space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Items:</span>
+                  <span>{items.filter(i => i.item_title).length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Bundle price:</span>
+                  <span className="font-medium">{formatCents(dollarsToCents(parseFloat(price) || 0))}</span>
+                </div>
+                {parseFloat(originalPrice) > 0 && (
+                  <div className="flex justify-between text-emerald-600">
+                    <span>Savings:</span>
+                    <span>{formatCents(dollarsToCents(parseFloat(originalPrice) - parseFloat(price)))}</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
-        <DialogFooter className="flex justify-between">
-          <div>
-            {step > 1 && (
-              <Button type="button" variant="ghost" onClick={() => setStep(step - 1)}>
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                Back
-              </Button>
-            )}
-          </div>
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={handleClose}>
-              Cancel
+        <DialogFooter className="gap-2 sm:gap-0">
+          {step > 1 && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setStep(step - 1)}
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              Back
             </Button>
-            {step < 3 ? (
-              <Button 
-                type="button" 
-                onClick={() => setStep(step + 1)}
-                disabled={!canProceed()}
-              >
-                Next
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            ) : (
-              <Button 
-                type="button" 
-                onClick={handleSubmit}
-                disabled={!canProceed() || isSaving}
-              >
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
-            )}
-          </div>
+          )}
+          
+          {step < 3 ? (
+            <Button
+              type="button"
+              onClick={() => setStep(step + 1)}
+              disabled={!canProceed()}
+            >
+              Next
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canProceed() || isSaving}
+            >
+              {isSaving ? "Saving..." : "Save Changes"}
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
