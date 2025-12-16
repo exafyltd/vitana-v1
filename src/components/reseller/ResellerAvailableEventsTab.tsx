@@ -117,9 +117,16 @@ export function ResellerAvailableEventsTab() {
       const publicEvents = await fetchPublicResellableEvents(currentUserId, nowIso);
 
       // Fetch tenant-only events (only for current tenant)
-      const tenantEvents = activeTenantId 
-        ? await fetchTenantResellableEvents(currentUserId, activeTenantId, nowIso)
-        : [];
+      // Wrapped in try-catch because tenant_id column may not exist
+      let tenantEvents: ResellableEvent[] = [];
+      if (activeTenantId) {
+        try {
+          tenantEvents = await fetchTenantResellableEvents(currentUserId, activeTenantId, nowIso);
+        } catch (err) {
+          // Tenant filtering not available - continue with public events only
+          console.warn("Tenant events fetch skipped (tenant_id column may not exist):", err);
+        }
+      }
 
       // Merge and sort by start_time
       const allEvents = [...publicEvents, ...tenantEvents];
