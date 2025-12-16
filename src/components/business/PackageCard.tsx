@@ -19,7 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BusinessPackage, useBusinessPackages } from "@/hooks/useBusinessPackages";
+import { BusinessPackage, useBusinessPackages, formatCents } from "@/hooks/useBusinessPackages";
 import { cn } from "@/lib/utils";
 
 interface PackageCardProps {
@@ -61,8 +61,9 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
   const itemCount = pkg.items?.length || 0;
   const totalQuantity = pkg.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
   
-  const savings = pkg.original_price && pkg.original_price > pkg.price
-    ? Math.round(((pkg.original_price - pkg.price) / pkg.original_price) * 100)
+  // Calculate savings using cents
+  const savings = pkg.original_price_cents && pkg.original_price_cents > pkg.price_cents
+    ? Math.round(((pkg.original_price_cents - pkg.price_cents) / pkg.original_price_cents) * 100)
     : 0;
 
   const handleToggleStatus = () => {
@@ -138,12 +139,12 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
       <CardFooter className="flex items-center justify-between pt-3 border-t">
         <div className="flex items-baseline gap-2">
           <span className="text-xl font-bold text-foreground">
-            ${pkg.price.toFixed(2)}
+            {formatCents(pkg.price_cents, pkg.currency)}
           </span>
-          {pkg.original_price && pkg.original_price > pkg.price && (
+          {pkg.original_price_cents && pkg.original_price_cents > pkg.price_cents && (
             <>
               <span className="text-sm text-muted-foreground line-through">
-                ${pkg.original_price.toFixed(2)}
+                {formatCents(pkg.original_price_cents, pkg.currency)}
               </span>
               <Badge variant="secondary" className="text-xs bg-emerald-500/10 text-emerald-600">
                 Save {savings}%
