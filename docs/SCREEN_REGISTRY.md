@@ -8353,6 +8353,8 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 
 The Business Hub is a first-class sidebar category providing unified business performance, earnings, services management, and reseller capabilities.
 
+**Screen Count**: 5 parent screens (tabs are subroutes, not separate screens per VITANA registry policy)
+
 ---
 
 ## BIZ-001: Business Hub Overview
@@ -8366,67 +8368,17 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Dev Route (current project path)**: src/pages/BusinessHub.tsx
 - **Component Path**: src/pages/BusinessHub.tsx
 - **UI Pattern**: sub-page-header with split-bar tabs
-- **Tenant Availability**: Global (with restrictions)
-- **Subscreens / Tabs / Modals**: Overview, Services, Clients, Sell & Earn, Analytics
+- **Tenant Availability**: Global
+- **Subscreens / Tabs / Modals**: Snapshot (`?tab=snapshot`), History (`?tab=history`)
 - **Status**: ✅ Implemented
 - **Purpose**: Unified business performance dashboard consolidating earnings, KPIs, and transaction history
-- **Primary APIs Used**: useUnifiedEarnings, useBusinessPackages, wallet APIs
-- **DB Tables / Models Used**: wallet_transactions, reseller_attributions, reseller_payouts, business_packages
+- **Primary APIs Used**: useUnifiedEarnings, wallet APIs
+- **DB Tables / Models Used**: wallet_transactions, reseller_attributions, reseller_payouts
 - **Compliance Notes**: Financial data display; earnings must reconcile with wallet
 - **Event Triggers**: business_hub_viewed, kpi_card_clicked, tab_changed
 - **Dependencies**: UnifiedEarningsKPIStrip, BusinessAcceleratorCenterCTA, EarningsHistoryLedger
 - **Autopilot Eligibility**: Yes (A1-A2)
-- **Notes**: Primary entry point for Business Hub; contains SubNavigation to child screens
-
----
-
-## BIZ-001-A: Business Hub Snapshot
-
-- **CanonicalId**: BIZ.00.001.A.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business?tab=snapshot`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/BusinessHubOverview.tsx
-- **Component Path**: src/components/business/BusinessHubOverview.tsx (SplitBar tab)
-- **UI Pattern**: KPI cards + action CTA
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Display business KPIs (Total Earnings, Last 30 Days, Pending Payout, In Wallet) and activation CTAs
-- **Primary APIs Used**: useUnifiedEarnings
-- **DB Tables / Models Used**: wallet_transactions, reseller_attributions, reseller_payouts
-- **Compliance Notes**: Financial data; amounts in cents/dollars must be clearly formatted
-- **Event Triggers**: snapshot_viewed, kpi_clicked, activation_cta_clicked
-- **Dependencies**: UnifiedEarningsKPIStrip, BusinessAcceleratorCenterCTA
-- **Autopilot Eligibility**: Yes (A1)
-- **Notes**: Default tab when Overview is selected
-
----
-
-## BIZ-001-B: Business Hub History
-
-- **CanonicalId**: BIZ.00.001.B.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business?tab=history`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/BusinessHubOverview.tsx
-- **Component Path**: src/components/business/BusinessHubOverview.tsx (SplitBar tab)
-- **UI Pattern**: data-table with filters
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Display unified earnings history ledger with transaction details
-- **Primary APIs Used**: useUnifiedEarnings
-- **DB Tables / Models Used**: wallet_transactions, reseller_attributions, reseller_payouts
-- **Compliance Notes**: Financial transaction history; audit trail required
-- **Event Triggers**: history_viewed, transaction_expanded, filter_changed
-- **Dependencies**: EarningsHistoryLedger, StandardHorizontalCard
-- **Autopilot Eligibility**: Yes (A1)
-- **Notes**: Shows expandable transaction cards with inline details
+- **Notes**: Primary entry point; Snapshot shows KPIs, History shows transaction ledger
 
 ---
 
@@ -8442,7 +8394,7 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Component Path**: src/components/business/ServicesSubTabs.tsx
 - **UI Pattern**: sub-page-header with split-bar tabs
 - **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: My Services, My Events, Packages
+- **Subscreens / Tabs / Modals**: My Services (`?tab=services`), My Events (`?tab=events`), Packages (`?tab=packages`)
 - **Status**: ✅ Implemented
 - **Purpose**: Manage business services, events, and packages
 - **Primary APIs Used**: useBusinessPackages, useUserEvents
@@ -8452,81 +8404,6 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Dependencies**: CreatePackageDialog, EditPackageDialog, PackageCard, OrganizerEventsSection
 - **Autopilot Eligibility**: Yes (A2-A3)
 - **Notes**: Primary service/package management interface
-
----
-
-## BIZ-002-A: My Services Tab
-
-- **CanonicalId**: BIZ.00.002.A.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/services?tab=services`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/ServicesSubTabs.tsx
-- **Component Path**: src/components/business/ServicesSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid with empty state
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Display and manage user's created services
-- **Primary APIs Used**: TBD (pending service entity implementation)
-- **DB Tables / Models Used**: TBD (services table pending)
-- **Compliance Notes**: N/A
-- **Event Triggers**: my_services_viewed, create_service_clicked
-- **Dependencies**: CreateServicePopup (via props)
-- **Autopilot Eligibility**: Yes (A1-A3)
-- **Notes**: Currently shows placeholder; service entity integration pending
-
----
-
-## BIZ-002-B: My Events Tab
-
-- **CanonicalId**: BIZ.00.002.B.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/services?tab=events`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/ServicesSubTabs.tsx
-- **Component Path**: src/components/business/ServicesSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Display and manage events created by the user
-- **Primary APIs Used**: useUserEvents
-- **DB Tables / Models Used**: global_community_events, event_ticket_types
-- **Compliance Notes**: Event creation may require tenant approval for certain types
-- **Event Triggers**: my_events_viewed, event_card_clicked
-- **Dependencies**: OrganizerEventsSection
-- **Autopilot Eligibility**: Yes (A1-A3)
-- **Notes**: Shows events where user is organizer/creator
-
----
-
-## BIZ-002-C: Packages Tab
-
-- **CanonicalId**: BIZ.00.002.C.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/services?tab=packages`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/ServicesSubTabs.tsx
-- **Component Path**: src/components/business/ServicesSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid with loading/empty states
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: CreatePackageDialog, EditPackageDialog
-- **Status**: ✅ Implemented
-- **Purpose**: Create and manage service bundles/packages
-- **Primary APIs Used**: useBusinessPackages
-- **DB Tables / Models Used**: business_packages, package_items
-- **Compliance Notes**: Package pricing in cents; Stripe integration for checkout
-- **Event Triggers**: packages_viewed, package_created, package_edited
-- **Dependencies**: PackageCard, CreatePackageDialog, EditPackageDialog
-- **Autopilot Eligibility**: Yes (A1-A3)
-- **Notes**: V1 supports bundle type only; subscriptions deferred
 
 ---
 
@@ -8542,8 +8419,8 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Component Path**: src/components/business/ClientsSubTabs.tsx
 - **UI Pattern**: sub-page-header with split-bar tabs
 - **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: Active, Prospects, History
-- **Status**: ✅ Implemented
+- **Subscreens / Tabs / Modals**: Active (`?tab=active`), Prospects (`?tab=prospects`), History (`?tab=history`)
+- **Status**: 🚧 Placeholder
 - **Purpose**: Manage business clients and prospects
 - **Primary APIs Used**: TBD (client management APIs pending)
 - **DB Tables / Models Used**: TBD (client relationships pending)
@@ -8552,81 +8429,6 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Dependencies**: N/A
 - **Autopilot Eligibility**: Yes (A1-A2)
 - **Notes**: Currently shows placeholder content; client entity integration pending
-
----
-
-## BIZ-003-A: Active Clients Tab
-
-- **CanonicalId**: BIZ.00.003.A.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/clients?tab=active`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/ClientsSubTabs.tsx
-- **Component Path**: src/components/business/ClientsSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid with empty state
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: 🚧 Placeholder
-- **Purpose**: Display active client relationships
-- **Primary APIs Used**: TBD
-- **DB Tables / Models Used**: TBD
-- **Compliance Notes**: Client PII protection required
-- **Event Triggers**: active_clients_viewed
-- **Dependencies**: N/A
-- **Autopilot Eligibility**: Yes (A1)
-- **Notes**: Placeholder; shows when clients book services
-
----
-
-## BIZ-003-B: Prospects Tab
-
-- **CanonicalId**: BIZ.00.003.B.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/clients?tab=prospects`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/ClientsSubTabs.tsx
-- **Component Path**: src/components/business/ClientsSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid with CTA
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: 🚧 Placeholder
-- **Purpose**: Display potential clients from sharing/referrals
-- **Primary APIs Used**: TBD
-- **DB Tables / Models Used**: TBD
-- **Compliance Notes**: Lead data requires consent tracking
-- **Event Triggers**: prospects_viewed, invite_clicked
-- **Dependencies**: Navigation to /sharing
-- **Autopilot Eligibility**: Yes (A1-A2)
-- **Notes**: Placeholder; links to Sharing for outreach
-
----
-
-## BIZ-003-C: Client History Tab
-
-- **CanonicalId**: BIZ.00.003.C.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/clients?tab=history`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/ClientsSubTabs.tsx
-- **Component Path**: src/components/business/ClientsSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: data-table
-- **Tenant Availability**: Global
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: 🚧 Placeholder
-- **Purpose**: Display historical client interactions
-- **Primary APIs Used**: TBD
-- **DB Tables / Models Used**: TBD
-- **Compliance Notes**: Interaction history retention policies
-- **Event Triggers**: client_history_viewed
-- **Dependencies**: N/A
-- **Autopilot Eligibility**: Yes (A1)
-- **Notes**: Placeholder; shows past clients
 
 ---
 
@@ -8642,66 +8444,16 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Component Path**: src/components/business/SellAndEarnSubTabs.tsx
 - **UI Pattern**: sub-page-header with split-bar tabs
 - **Tenant Availability**: Maxina, Exafy (restricted for AlKalma, Earthlinks)
-- **Subscreens / Tabs / Modals**: Inventory, Promotions
+- **Subscreens / Tabs / Modals**: Inventory (`?tab=inventory`), Promotions (`?tab=promotions`)
 - **Status**: ✅ Implemented
 - **Purpose**: Reseller hub for browsing resellable events and managing promotions
-- **Primary APIs Used**: useIsReseller, useActivateReseller
-- **DB Tables / Models Used**: reseller_profiles, reseller_attributions
+- **Primary APIs Used**: useIsReseller, useActivateReseller, useResellableEvents, useCampaigns
+- **DB Tables / Models Used**: reseller_profiles, reseller_attributions, global_community_events, campaigns
 - **Compliance Notes**: Reseller activation requires acceptance of terms
 - **Event Triggers**: sell_earn_viewed, reseller_activated
 - **Dependencies**: ResellerAvailableEventsTab, ResellerCampaignsTab
 - **Autopilot Eligibility**: Yes (A2-A3)
 - **Notes**: Requires reseller mode activation; shows activation prompt if not reseller
-
----
-
-## BIZ-004-A: Inventory Tab
-
-- **CanonicalId**: BIZ.00.004.A.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/sell-earn?tab=inventory`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/SellAndEarnSubTabs.tsx
-- **Component Path**: src/components/business/SellAndEarnSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid with search
-- **Tenant Availability**: Maxina, Exafy
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Browse and add resellable events to inventory
-- **Primary APIs Used**: useResellableEvents
-- **DB Tables / Models Used**: global_community_events (where resellable=true)
-- **Compliance Notes**: Only events marked resellable appear
-- **Event Triggers**: inventory_viewed, event_added_to_inventory
-- **Dependencies**: ResellerAvailableEventsTab
-- **Autopilot Eligibility**: Yes (A1-A3)
-- **Notes**: Filtered by resellable flag; supports search
-
----
-
-## BIZ-004-B: Promotions Tab
-
-- **CanonicalId**: BIZ.00.004.B.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/sell-earn?tab=promotions`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/SellAndEarnSubTabs.tsx
-- **Component Path**: src/components/business/SellAndEarnSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: card-grid with CTA
-- **Tenant Availability**: Maxina, Exafy
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Create and manage promotional campaigns for reselling
-- **Primary APIs Used**: useCampaigns
-- **DB Tables / Models Used**: campaigns
-- **Compliance Notes**: Campaign content subject to moderation
-- **Event Triggers**: promotions_viewed, campaign_created
-- **Dependencies**: ResellerCampaignsTab, CampaignDialog
-- **Autopilot Eligibility**: Yes (A1-A3)
-- **Notes**: Links to campaign creation for event promotion
 
 ---
 
@@ -8717,7 +8469,7 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Component Path**: src/components/business/AnalyticsSubTabs.tsx
 - **UI Pattern**: sub-page-header with split-bar tabs
 - **Tenant Availability**: Maxina, Exafy (restricted for AlKalma, Earthlinks)
-- **Subscreens / Tabs / Modals**: Performance, Earnings, Growth
+- **Subscreens / Tabs / Modals**: Performance (`?tab=performance`), Earnings (`?tab=earnings`), Growth (`?tab=growth`)
 - **Status**: ✅ Implemented
 - **Purpose**: Business performance analytics and metrics
 - **Primary APIs Used**: useResellerSales
@@ -8727,81 +8479,6 @@ The Business Hub is a first-class sidebar category providing unified business pe
 - **Dependencies**: N/A
 - **Autopilot Eligibility**: Yes (A1)
 - **Notes**: Displays performance metrics, earnings breakdown, and growth indicators
-
----
-
-## BIZ-005-A: Performance Tab
-
-- **CanonicalId**: BIZ.00.005.A.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/analytics?tab=performance`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/AnalyticsSubTabs.tsx
-- **Component Path**: src/components/business/AnalyticsSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: KPI cards
-- **Tenant Availability**: Maxina, Exafy
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: 🚧 Placeholder
-- **Purpose**: Display bookings and attendance rate metrics
-- **Primary APIs Used**: TBD
-- **DB Tables / Models Used**: TBD
-- **Compliance Notes**: N/A
-- **Event Triggers**: performance_viewed
-- **Dependencies**: N/A
-- **Autopilot Eligibility**: Yes (A1)
-- **Notes**: Placeholder; shows booking overview and attendance rates
-
----
-
-## BIZ-005-B: Earnings Tab
-
-- **CanonicalId**: BIZ.00.005.B.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/analytics?tab=earnings`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/AnalyticsSubTabs.tsx
-- **Component Path**: src/components/business/AnalyticsSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: KPI cards with navigation
-- **Tenant Availability**: Maxina, Exafy
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: ✅ Implemented
-- **Purpose**: Display earnings breakdown by source (services, events, reseller commissions)
-- **Primary APIs Used**: useResellerSales
-- **DB Tables / Models Used**: reseller_attributions, wallet_transactions
-- **Compliance Notes**: Financial data display
-- **Event Triggers**: earnings_viewed, wallet_clicked
-- **Dependencies**: Navigation to /wallet
-- **Autopilot Eligibility**: Yes (A1-A2)
-- **Notes**: Shows reseller commission conditionally if user is reseller
-
----
-
-## BIZ-005-C: Growth Tab
-
-- **CanonicalId**: BIZ.00.005.C.COMM.CLI
-- **Module**: Business Hub
-- **Portal(s)**: All
-- **Roles with access**: Community, Professional, Staff, Admin
-- **External Route (client URL)**: `/business/analytics?tab=growth`
-- **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/business/AnalyticsSubTabs.tsx
-- **Component Path**: src/components/business/AnalyticsSubTabs.tsx (SplitBar tab)
-- **UI Pattern**: KPI cards with CTA
-- **Tenant Availability**: Maxina, Exafy
-- **Subscreens / Tabs / Modals**: N/A (leaf screen)
-- **Status**: 🚧 Placeholder
-- **Purpose**: Display client growth metrics and sharing tools
-- **Primary APIs Used**: TBD
-- **DB Tables / Models Used**: TBD
-- **Compliance Notes**: N/A
-- **Event Triggers**: growth_viewed, sharing_clicked
-- **Dependencies**: Navigation to /sharing
-- **Autopilot Eligibility**: Yes (A1-A2)
-- **Notes**: Placeholder; links to Sharing for audience growth
 
 ---
 
@@ -8821,7 +8498,7 @@ The Business Hub is a first-class sidebar category providing unified business pe
 | Role | Screen Count | Key Modules |
 |------|-------------|-------------|
 | Public (unauthenticated) | 15 | Auth, Landing, Portals |
-| Community | 55 | Home, Community, Discover, Health, Inbox, AI, Wallet, Sharing, Memory, Settings |
+| Community | 55 | Home, Community, Discover, Health, Inbox, AI, Wallet, Sharing, Memory, Settings, Business Hub |
 | Patient | 9 | Patient Dashboard, Health, Appointments, Care Team |
 | Professional | 9 | Professional Dashboard, Patients, Schedule, Clinical Tools |
 | Staff | 9 | Staff Dashboard, Queue, Tasks, Schedule |
@@ -8845,6 +8522,7 @@ The Business Hub is a first-class sidebar category providing unified business pe
 | Sharing | 5 | 60% Implemented |
 | Memory | 5 | 40% Implemented |
 | Settings | 8 | 25% Implemented |
+| Business Hub | 5 | 60% Implemented |
 | Patient | 9 | 11% Implemented |
 | Professional | 9 | 11% Implemented |
 | Staff | 9 | 11% Implemented |

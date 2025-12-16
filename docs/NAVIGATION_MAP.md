@@ -668,26 +668,31 @@ graph TB
 ```mermaid
 graph TB
     subgraph "Business Hub Overview (BIZ-001)"
-        BIZ-001-A(Snapshot Tab) --> BIZ-001-B(History Tab)
+        BIZ-001-Snapshot[Snapshot Tab]
+        BIZ-001-History[History Tab]
     end
     
     subgraph "Services (BIZ-002)"
-        BIZ-002-A(My Services) --> BIZ-002-B(My Events)
-        BIZ-002-B --> BIZ-002-C(Packages)
+        BIZ-002-Services[My Services Tab]
+        BIZ-002-Events[My Events Tab]
+        BIZ-002-Packages[Packages Tab]
     end
     
     subgraph "Clients (BIZ-003)"
-        BIZ-003-A(Active) --> BIZ-003-B(Prospects)
-        BIZ-003-B --> BIZ-003-C(History)
+        BIZ-003-Active[Active Tab]
+        BIZ-003-Prospects[Prospects Tab]
+        BIZ-003-History[History Tab]
     end
     
     subgraph "Sell & Earn (BIZ-004)"
-        BIZ-004-A(Inventory) --> BIZ-004-B(Promotions)
+        BIZ-004-Inventory[Inventory Tab]
+        BIZ-004-Promotions[Promotions Tab]
     end
     
     subgraph "Analytics (BIZ-005)"
-        BIZ-005-A(Performance) --> BIZ-005-B(Earnings)
-        BIZ-005-B --> BIZ-005-C(Growth)
+        BIZ-005-Performance[Performance Tab]
+        BIZ-005-Earnings[Earnings Tab]
+        BIZ-005-Growth[Growth Tab]
     end
 ```
 
@@ -695,19 +700,17 @@ graph TB
 
 ```mermaid
 graph TB
-    BIZ-001-A(Snapshot) --> WLLT-001(Wallet)
-    BIZ-001-B(History) --> WLLT-001
+    BIZ-001(Overview) --> WLLT-001(Wallet)
     
-    BIZ-002-C(Packages) --> OVRL-040(Create Package Dialog)
-    BIZ-002-B(My Events) --> OVRL-017(Create Event Dialog)
-    BIZ-002-A(My Services) --> OVRL-039(Create Service Popup)
+    BIZ-002(Services) --> OVRL-040(Create Package Dialog)
+    BIZ-002 --> OVRL-017(Create Event Dialog)
     
-    BIZ-003-B(Prospects) --> SHAR-001(Sharing Hub)
+    BIZ-003(Clients) --> SHAR-001(Sharing Hub)
     
-    BIZ-004-B(Promotions) --> SHAR-002(Campaigns)
+    BIZ-004(Sell & Earn) --> SHAR-002(Campaigns)
     
-    BIZ-005-B(Earnings) --> WLLT-001(Wallet)
-    BIZ-005-C(Growth) --> SHAR-001(Sharing Hub)
+    BIZ-005(Analytics) --> WLLT-001(Wallet)
+    BIZ-005 --> SHAR-001(Sharing Hub)
 ```
 
 ### Business Hub Sidebar Position

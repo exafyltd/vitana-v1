@@ -182,25 +182,12 @@ All authenticated base users (Community role) have access to these screens (incl
 | OVRL-052 | Match Filters Popup | Home | N/A (Popover) | ✅ |
 | OVRL-053 | Create Selection Dialog | Utility | N/A (Dialog) | ✅ |
 | BIZ-001 | Business Hub Overview | Business Hub | `/business` | ✅ |
-| BIZ-001-A | Business Hub Snapshot | Business Hub | `/business?tab=snapshot` | ✅ |
-| BIZ-001-B | Business Hub History | Business Hub | `/business?tab=history` | ✅ |
 | BIZ-002 | Business Services | Business Hub | `/business/services` | ✅ |
-| BIZ-002-A | My Services Tab | Business Hub | `/business/services?tab=services` | ✅ |
-| BIZ-002-B | My Events Tab | Business Hub | `/business/services?tab=events` | ✅ |
-| BIZ-002-C | Packages Tab | Business Hub | `/business/services?tab=packages` | ✅ |
-| BIZ-003 | Business Clients | Business Hub | `/business/clients` | ✅ |
-| BIZ-003-A | Active Clients Tab | Business Hub | `/business/clients?tab=active` | 🚧 |
-| BIZ-003-B | Prospects Tab | Business Hub | `/business/clients?tab=prospects` | 🚧 |
-| BIZ-003-C | Client History Tab | Business Hub | `/business/clients?tab=history` | 🚧 |
+| BIZ-003 | Business Clients | Business Hub | `/business/clients` | 🚧 |
 | BIZ-004 | Sell & Earn | Business Hub | `/business/sell-earn` | ✅ |
-| BIZ-004-A | Inventory Tab | Business Hub | `/business/sell-earn?tab=inventory` | ✅ |
-| BIZ-004-B | Promotions Tab | Business Hub | `/business/sell-earn?tab=promotions` | ✅ |
 | BIZ-005 | Business Analytics | Business Hub | `/business/analytics` | ✅ |
-| BIZ-005-A | Performance Tab | Business Hub | `/business/analytics?tab=performance` | 🚧 |
-| BIZ-005-B | Earnings Tab | Business Hub | `/business/analytics?tab=earnings` | ✅ |
-| BIZ-005-C | Growth Tab | Business Hub | `/business/analytics?tab=growth` | 🚧 |
 
-**Community Role Total: 200 screens** (181 + 19 Business Hub)
+**Community Role Total: 186 screens** (181 base + 5 Business Hub)
 
 ---
 
