@@ -109,6 +109,7 @@ import Calendar from "./pages/Calendar";
 import Cart from "./pages/Cart";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import TicketPurchaseSuccess from "./pages/TicketPurchaseSuccess";
+import PackagePurchaseSuccess from "./pages/PackagePurchaseSuccess";
 import MyTickets from "./pages/MyTickets";
 import TicketDemo from "./pages/TicketDemo";
 import Community from "./pages/Community";
@@ -471,6 +472,7 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/tickets/success" element={<TicketPurchaseSuccess />} />
+          <Route path="/packages/success" element={<PackagePurchaseSuccess />} />
           <Route path="/tickets/demo" element={<TicketDemo />} />
           <Route path="/my-tickets" element={
             <AuthGuard>
