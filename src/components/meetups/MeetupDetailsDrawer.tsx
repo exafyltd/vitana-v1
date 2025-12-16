@@ -1042,7 +1042,7 @@ export function MeetupDetailsDrawer({
             )}
 
             {/* Ticket Sales Section */}
-            {isTicketed && ticketTypes.length > 0 && (
+            {isTicketed && (
               <div className="space-y-4 pt-5 border-t border-border/50" data-section="tickets">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
