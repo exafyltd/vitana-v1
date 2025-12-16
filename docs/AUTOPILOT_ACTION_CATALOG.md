@@ -154,29 +154,29 @@
 | A3-WALL-019 | Redeem Reward | A3 | Wallet | Use reward points | `useRedeemReward` | WALL-010 | Global | community | Low |
 | A5-WALL-020 | Auto-Renew Setup | A5 | Wallet | Configure auto-renewal | Multi-API | WALL-030 | Global | community | Medium |
 | A1-BIZ-001 | Get Business Overview | A1 | Business | Retrieve business dashboard summary | `useUnifiedEarnings` | BIZ-001 | Global | community | Low |
-| A1-BIZ-002 | Get Earnings History | A1 | Business | Retrieve earnings transaction history | `useUnifiedEarnings` | BIZ-001-B | Global | community | Low |
-| A1-BIZ-003 | List Services | A1 | Business | Get user's services | `useServices` | BIZ-002-A | Global | community | Low |
-| A1-BIZ-004 | List Events | A1 | Business | Get user's created events | `useUserEvents` | BIZ-002-B | Global | community | Low |
-| A1-BIZ-005 | List Packages | A1 | Business | Get user's packages | `useBusinessPackages` | BIZ-002-C | Global | community | Low |
-| A1-BIZ-006 | List Clients | A1 | Business | Get active clients | `useClients` | BIZ-003-A | Global | community | Low |
-| A1-BIZ-007 | List Reseller Inventory | A1 | Business | Get resellable events | `useResellableEvents` | BIZ-004-A | Global | community | Low |
-| A1-BIZ-008 | List Promotions | A1 | Business | Get reseller campaigns | `useCampaigns` | BIZ-004-B | Global | community | Low |
+| A1-BIZ-002 | Get Earnings History | A1 | Business | Retrieve earnings transaction history | `useUnifiedEarnings` | BIZ-001 | Global | community | Low |
+| A1-BIZ-003 | List Services | A1 | Business | Get user's services | `useServices` | BIZ-002 | Global | community | Low | ⚠️ API placeholder |
+| A1-BIZ-004 | List Events | A1 | Business | Get user's created events | `useUserEvents` | BIZ-002 | Global | community | Low |
+| A1-BIZ-005 | List Packages | A1 | Business | Get user's packages | `useBusinessPackages` | BIZ-002 | Global | community | Low |
+| A1-BIZ-006 | List Clients | A1 | Business | Get active clients | `useClients` | BIZ-003 | Global | community | Low | ⚠️ API placeholder |
+| A1-BIZ-007 | List Reseller Inventory | A1 | Business | Get resellable events | `useResellableEvents` | BIZ-004 | Global | community | Low |
+| A1-BIZ-008 | List Promotions | A1 | Business | Get reseller campaigns | `useCampaigns` | BIZ-004 | Global | community | Low |
 | A1-BIZ-009 | Get Business Analytics | A1 | Business | Retrieve performance metrics | `useResellerSales` | BIZ-005 | Global | community | Low |
 | A2-BIZ-010 | Navigate to Business Hub | A2 | Business | Open Business Hub dashboard | router.navigate | BIZ-001 | Global | community | Low |
 | A2-BIZ-011 | Navigate to Services | A2 | Business | Open Services tab | router.navigate | BIZ-002 | Global | community | Low |
 | A2-BIZ-012 | Navigate to Clients | A2 | Business | Open Clients tab | router.navigate | BIZ-003 | Global | community | Low |
 | A2-BIZ-013 | Navigate to Sell & Earn | A2 | Business | Open Sell & Earn tab | router.navigate | BIZ-004 | Global | community | Low |
 | A2-BIZ-014 | Navigate to Analytics | A2 | Business | Open Analytics tab | router.navigate | BIZ-005 | Global | community | Low |
-| A3-BIZ-015 | Create Package | A3 | Business | Create service bundle | `useCreatePackage` | BIZ-002-C | Global | community | Low |
-| A3-BIZ-016 | Update Package | A3 | Business | Modify existing package | `useUpdatePackage` | BIZ-002-C | Global | community | Low |
-| A3-BIZ-017 | Delete Package | A3 | Business | Remove package | `useDeletePackage` | BIZ-002-C | Global | community | Medium |
-| A3-BIZ-018 | Create Business Event | A3 | Business | Create ticketed event | `useCreateEvent` | BIZ-002-B | Global | community | Low |
-| A3-BIZ-019 | Add to Inventory | A3 | Business | Add event to reseller inventory | `useAddToInventory` | BIZ-004-A | Global | community | Low |
-| A3-BIZ-020 | Create Promotion | A3 | Business | Create reseller campaign | `useCreateCampaign` | BIZ-004-B | Global | community | Low |
+| A3-BIZ-015 | Create Package | A3 | Business | Create service bundle | `useCreatePackage` | BIZ-002 | Global | community | Low |
+| A3-BIZ-016 | Update Package | A3 | Business | Modify existing package | `useUpdatePackage` | BIZ-002 | Global | community | Low |
+| A3-BIZ-017 | Delete Package | A3 | Business | Remove package | `useDeletePackage` | BIZ-002 | Global | community | Medium |
+| A3-BIZ-018 | Create Business Event | A3 | Business | Create ticketed event | `useCreateEvent` | BIZ-002 | Global | community | Low |
+| A3-BIZ-019 | Add to Inventory | A3 | Business | Add event to reseller inventory | `useAddToInventory` | BIZ-004 | Global | community | Low | ⚠️ API placeholder |
+| A3-BIZ-020 | Create Promotion | A3 | Business | Create reseller campaign | `useCreateCampaign` | BIZ-004 | Global | community | Low |
 | A3-BIZ-021 | Activate Reseller | A3 | Business | Enable reseller mode | `useActivateReseller` | BIZ-004 | Global | community | Low |
-| A4-BIZ-022 | Transfer to Wallet | A4 | Business | Process reseller payout | `credit-reseller-payout` | BIZ-001-A | Global | community | High |
-| A4-BIZ-023 | Purchase Package | A4 | Business | Checkout package via Stripe | `stripe-create-package-checkout` | BIZ-002-C | Global | community | High |
-| A5-BIZ-024 | Full Business Setup | A5 | Business | Create service + package + event | Multi-API | BIZ-002 | Global | community | Medium |
+| A4-BIZ-022 | Transfer to Wallet | A4 | Business | Process reseller payout | `credit-reseller-payout` | BIZ-001 | Global | community | High |
+| A4-BIZ-023 | Purchase Package | A4 | Business | Checkout package via Stripe | `stripe-create-package-checkout` | BIZ-002 | Global | community | High |
+| A5-BIZ-024 | Full Business Setup | A5 | Business | Create service + package + event | Multi-API | BIZ-002 | Global | community | Medium | ⚠️ Orchestration placeholder |
 | A1-AI-001 | Get AI Conversation History | A1 | AI | Retrieve past conversations | `useAIConversations` | AI-001 | Global | community | Low |
 | A1-AI-002 | Get Conversation Messages | A1 | AI | Retrieve specific chat history | `useConversationMessages` | AI-002 | Global | community | Low |
 | A1-AI-003 | Get AI Insights | A1 | AI | Retrieve generated insights | `useAIInsights` | AI-003 | Global | community | Low |
