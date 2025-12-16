@@ -9,7 +9,7 @@
  * Features:
  * - Filter chips (All, High Commission, Ending Soon, Popular)
  * - StandardHorizontalCard layout for consistency
- * - Start Selling button opens SellEventModal
+ * - Earning-focused CTAs and badges
  */
 
 import { useAuth } from "@/context/AuthProvider";
@@ -20,13 +20,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { format, differenceInDays } from "date-fns";
 import { useState } from "react";
-import { Ticket, Percent, Clock, TrendingUp, Loader2, Plus } from "lucide-react";
+import { Ticket, Coins, Clock, TrendingUp, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreateEventPopup } from "@/components/CreateEventPopup";
 import { Badge } from "@/components/ui/badge";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { SellEventModal } from "./SellEventModal";
 import { toast } from "sonner";
+
+// Format currency for earnings display
+const formatEarning = (amount: number): string => {
+  if (amount <= 0) return "";
+  return amount % 1 === 0 ? `€${amount}` : `€${amount.toFixed(2)}`;
+};
 
 interface ResellableEvent {
   id: string;
@@ -167,7 +173,7 @@ export function ResellerAvailableEventsTab() {
 
   const filterOptions: { value: FilterType; label: string; icon: React.ReactNode }[] = [
     { value: "all", label: "All", icon: <Ticket className="h-3 w-3" /> },
-    { value: "high-commission", label: "High Commission", icon: <Percent className="h-3 w-3" /> },
+    { value: "high-commission", label: "High Earnings", icon: <Coins className="h-3 w-3" /> },
     { value: "ending-soon", label: "Ending Soon", icon: <Clock className="h-3 w-3" /> },
     { value: "popular", label: "Popular Now", icon: <TrendingUp className="h-3 w-3" /> },
   ];
@@ -238,7 +244,16 @@ export function ResellerAvailableEventsTab() {
         ) : (
           filteredEvents.map((event) => {
             const commissionRate = event.default_reseller_commission_rate ?? 0;
+            const ticketPrice = (event.metadata?.price as number) ?? 0;
+            const earningPerTicket = ticketPrice * (commissionRate / 100);
+            const earningFormatted = formatEarning(earningPerTicket);
+            const scaledEarning = formatEarning(earningPerTicket * 10);
             const daysUntil = differenceInDays(new Date(event.start_time), new Date());
+            
+            // Determine CTA label based on earning potential
+            const ctaLabel = earningPerTicket > 0 
+              ? `Earn ${earningFormatted} / ticket` 
+              : "Start Selling";
 
             return (
               <StandardHorizontalCard
@@ -261,11 +276,15 @@ export function ResellerAvailableEventsTab() {
                 title={event.title}
                 description={`${format(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}${event.location ? ` • ${event.location}` : ""}`}
                 badges={[
+                  // Earnings-focused badge
                   ...(commissionRate > 0 ? [{
-                    label: `${commissionRate}% commission`,
+                    label: earningPerTicket > 0 
+                      ? `💰 ${commissionRate}% · Earn ${earningFormatted} / ticket`
+                      : `${commissionRate}% commission`,
                     variant: 'secondary' as const,
-                    icon: <Percent className="h-3 w-3" />
+                    icon: <Coins className="h-3 w-3 text-emerald-500" />
                   }] : []),
+                  // Urgency badge
                   ...(daysUntil <= 7 ? [{
                     label: daysUntil <= 1 ? 'Tomorrow' : `${daysUntil} days left`,
                     variant: 'outline' as const,
@@ -276,10 +295,16 @@ export function ResellerAvailableEventsTab() {
                   { 
                     icon: <Ticket className="h-3.5 w-3.5" />, 
                     text: event.resale_scope === "tenant" ? "This community" : "Public"
-                  }
+                  },
+                  // Scale motivation: show potential earnings for 10 tickets
+                  ...(earningPerTicket > 0 ? [{
+                    icon: <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />,
+                    text: `Sell 10 → ${scaledEarning}`,
+                    color: 'text-emerald-600 dark:text-emerald-400'
+                  }] : [])
                 ]}
                 primaryAction={{
-                  label: 'Start Selling',
+                  label: ctaLabel,
                   onClick: () => handleStartSelling(event),
                   variant: 'default' as const,
                 }}
