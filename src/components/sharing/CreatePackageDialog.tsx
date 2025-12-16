@@ -29,7 +29,9 @@ import {
   Clock,
   DollarSign,
   Sparkles,
-  Calendar
+  Calendar,
+  RefreshCw,
+  GraduationCap
 } from "lucide-react";
 import { useBusinessPackages, PackageType, PackageItem, BillingInterval, dollarsToCents, formatCents } from "@/hooks/useBusinessPackages";
 import { useAuth } from "@/context/AuthProvider";
@@ -41,13 +43,25 @@ interface CreatePackageDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// V1: Only bundle type (subscription/program hidden)
+// All three package types with v1 item restrictions (service/event only)
 const PACKAGE_TYPES_V1: { value: PackageType; label: string; description: string; icon: React.ReactNode }[] = [
   {
     value: 'bundle',
     label: 'Session Bundle',
     description: 'One-time purchase with fixed set of sessions',
     icon: <Package className="w-5 h-5" />,
+  },
+  {
+    value: 'subscription',
+    label: 'Subscription',
+    description: 'Recurring access with monthly or annual billing',
+    icon: <RefreshCw className="w-5 h-5" />,
+  },
+  {
+    value: 'program',
+    label: 'Program',
+    description: 'Structured multi-week journey with milestones',
+    icon: <GraduationCap className="w-5 h-5" />,
   },
 ];
 
@@ -512,6 +526,17 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                   value={originalPrice}
                   onChange={(e) => setOriginalPrice(e.target.value)}
                 />
+                {totalItemValueCents > 0 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-muted-foreground h-auto py-1 px-2 justify-start"
+                    onClick={() => setOriginalPrice((totalItemValueCents / 100).toFixed(2))}
+                  >
+                    Use total item value ({formatCents(totalItemValueCents)})
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -521,6 +546,43 @@ export function CreatePackageDialog({ open, onOpenChange }: CreatePackageDialogP
                 <span className="text-sm text-emerald-700 dark:text-emerald-400">
                   Clients save {calculateSavings()}% with this bundle!
                 </span>
+              </div>
+            )}
+
+            {/* Subscription: Billing Interval */}
+            {packageType === 'subscription' && (
+              <div className="grid gap-2">
+                <Label>Billing Interval</Label>
+                <Select value={billingInterval} onValueChange={(v) => setBillingInterval(v as BillingInterval)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="quarterly">Quarterly</SelectItem>
+                    <SelectItem value="yearly">Yearly</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  How often subscribers will be billed
+                </p>
+              </div>
+            )}
+
+            {/* Program: Duration Weeks */}
+            {packageType === 'program' && (
+              <div className="grid gap-2">
+                <Label>Program Duration (weeks)</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  placeholder="e.g., 8"
+                  value={durationWeeks}
+                  onChange={(e) => setDurationWeeks(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  How many weeks the program runs
+                </p>
               </div>
             )}
 
