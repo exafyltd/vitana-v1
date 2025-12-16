@@ -40,7 +40,7 @@ This document explicitly maps every screen in the VITANA platform (546 total) to
 
 # Community Role: 200 Screens
 
-All authenticated base users (Community role) have access to these screens (including 19 Business Hub screens):
+All authenticated base users (Community role) have access to these screens (including 5 Business Hub screens):
 
 | Screen ID | Screen Name | Module | External Route | Status |
 |-----------|-------------|--------|----------------|--------|
@@ -187,7 +187,7 @@ All authenticated base users (Community role) have access to these screens (incl
 | BIZ-004 | Sell & Earn | Business Hub | `/business/sell-earn` | ✅ |
 | BIZ-005 | Business Analytics | Business Hub | `/business/analytics` | ✅ |
 
-**Community Role Total: 186 screens** (181 base + 5 Business Hub)
+**Community Role Total: 186 screens** (181 base screens + 5 Business Hub screens: BIZ-001 to BIZ-005)
 
 ---
 
@@ -207,7 +207,7 @@ Patient role has access to **all 181 Community screens** (listed above) **PLUS**
 | PTNT-008 | Portal | Patient | `/patient/portal` | 🚧 |
 | PTNT-009 | Settings | Patient | `/patient/settings` | 🚧 |
 
-**Patient Role Total: 209 screens** (200 Community including Business Hub + 9 Patient-specific)
+**Patient Role Total: 195 screens** (186 Community including 5 Business Hub + 9 Patient-specific)
 
 ---
 
@@ -232,7 +232,7 @@ Professional role has access to **all 181 Community screens** (see Community Rol
 | OVRL-042 | Create Business Event Popup | Professional | N/A (Dialog) | ✅ |
 | OVRL-051 | Business Filters Popup | Professional | N/A (Popover) | ✅ |
 
-**Professional Role Total: 218 screens** (200 Community including Business Hub + 18 Professional-specific)
+**Professional Role Total: 200 screens** (186 Community including 5 Business Hub + 14 Professional-specific)
 
 ---
 
@@ -258,13 +258,13 @@ Staff role has access to **all 181 Community screens** (see Community Role table
 | OVRL-042 | Create Business Event Popup | Staff | N/A (Dialog) | ✅ |
 | OVRL-051 | Business Filters Popup | Staff | N/A (Popover) | ✅ |
 
-**Staff Role Total: 218 screens** (200 Community including Business Hub + 18 Staff-specific)
+**Staff Role Total: 200 screens** (186 Community including 5 Business Hub + 14 Staff-specific)
 
 ---
 
 # Admin Role: 446 Screens
 
-Admin role has access to **all 200 Community screens** (see Community Role table, including 19 Business Hub screens) **PLUS** 117 Admin management screens **PLUS** 136 Dev Hub screens **PLUS** 12 admin-specific overlays.
+Admin role has access to **all 186 Community screens** (see Community Role table, including 5 Business Hub screens: BIZ-001 to BIZ-005) **PLUS** 117 Admin management screens **PLUS** 136 Dev Hub screens **PLUS** 12 admin-specific overlays.
 
 ## Admin Management Screens (117 screens)
 

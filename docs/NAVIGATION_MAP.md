@@ -56,7 +56,7 @@ graph TB
     HOME-001 --> INBX-001(Inbox)
     HOME-001 --> AI-001(AI Assistant)
     HOME-001 --> WLLT-001(Wallet)
-    HOME-001 --> SHRE-001(Sharing Hub)
+    HOME-001 --> SHAR-001(Sharing Hub)
     HOME-001 --> MEMR-001(Memory)
     HOME-001 --> STGS-001(Settings)
     
