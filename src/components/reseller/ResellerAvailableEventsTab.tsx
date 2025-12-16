@@ -20,7 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { format, differenceInDays } from "date-fns";
 import { useState } from "react";
-import { Ticket, Coins, Clock, TrendingUp, Loader2, Plus } from "lucide-react";
+import { Ticket, Coins, Clock, TrendingUp, Loader2, Plus, ArrowRight, MapPin, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreateEventPopup } from "@/components/CreateEventPopup";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,13 @@ import { toast } from "sonner";
 const formatEarning = (amount: number): string => {
   if (amount <= 0) return "";
   return amount % 1 === 0 ? `€${amount}` : `€${amount.toFixed(2)}`;
+};
+
+// Determine event type based on location
+const getEventType = (location?: string | null): 'in-person' | 'online' => {
+  if (!location || location.trim() === '') return 'online';
+  const onlineKeywords = ['online', 'zoom', 'virtual', 'webinar', 'livestream', 'remote'];
+  return onlineKeywords.some(kw => location.toLowerCase().includes(kw)) ? 'online' : 'in-person';
 };
 
 interface ResellableEvent {
@@ -249,6 +256,7 @@ export function ResellerAvailableEventsTab() {
             const earningFormatted = formatEarning(earningPerTicket);
             const scaledEarning = formatEarning(earningPerTicket * 10);
             const daysUntil = differenceInDays(new Date(event.start_time), new Date());
+            const eventType = getEventType(event.location);
             
             // Determine CTA label based on earning potential
             const ctaLabel = earningPerTicket > 0 
@@ -276,13 +284,15 @@ export function ResellerAvailableEventsTab() {
                 title={event.title}
                 description={`${format(new Date(event.start_time), "MMM d, yyyy 'at' h:mm a")}${event.location ? ` • ${event.location}` : ""}`}
                 badges={[
-                  // Earnings-focused badge
+                  // Event type + commission badge
                   ...(commissionRate > 0 ? [{
-                    label: earningPerTicket > 0 
-                      ? `💰 ${commissionRate}% · Earn ${earningFormatted} / ticket`
-                      : `${commissionRate}% commission`,
+                    label: eventType === 'in-person' 
+                      ? `In-person · ${commissionRate}% commission`
+                      : `Online · ${commissionRate}% commission`,
                     variant: 'secondary' as const,
-                    icon: <Coins className="h-3 w-3 text-emerald-500" />
+                    icon: eventType === 'in-person' 
+                      ? <MapPin className="h-3 w-3" /> 
+                      : <Monitor className="h-3 w-3" />
                   }] : []),
                   // Urgency badge
                   ...(daysUntil <= 7 ? [{
@@ -307,6 +317,7 @@ export function ResellerAvailableEventsTab() {
                   label: ctaLabel,
                   onClick: () => handleStartSelling(event),
                   variant: 'default' as const,
+                  icon: earningPerTicket > 0 ? <ArrowRight className="h-4 w-4" /> : undefined,
                 }}
                 onClick={() => handleStartSelling(event)}
                 layoutMode="stack"

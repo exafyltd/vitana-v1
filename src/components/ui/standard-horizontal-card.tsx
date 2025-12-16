@@ -360,19 +360,24 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
                 className={cn(
                   "h-9 text-[13px] transition-all duration-200",
                   "relative z-30 pointer-events-auto",
-                  "whitespace-nowrap",
-                  // Use green gradient for "Join" buttons to match event cards
-                  primaryAction.label?.toLowerCase().includes('join')
-                    ? "rounded-full font-bold text-white border-0 shadow-lg hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl px-4"
-                    : "font-medium opacity-80 hover:opacity-100 hover:bg-accent hover:text-accent-foreground px-3"
+                  "whitespace-nowrap group/btn",
+                  // Earning CTAs - soft emerald emphasis, harmonized with card
+                  primaryAction.label?.toLowerCase().includes('earn')
+                    ? "rounded-full font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 hover:border-emerald-500/30 shadow-sm hover:shadow-md hover:shadow-emerald-500/10 px-4"
+                    // Join CTAs - green gradient
+                    : primaryAction.label?.toLowerCase().includes('join')
+                      ? "rounded-full font-bold text-white border-0 shadow-lg hover:scale-105 bg-gradient-to-r from-gradient-join-start to-gradient-join-end hover:shadow-gradient-join-start/50 hover:shadow-2xl px-4"
+                      : "font-medium opacity-80 hover:opacity-100 hover:bg-accent hover:text-accent-foreground px-3"
                 )}
                 aria-label={primaryAction.label}
                 title={primaryAction.label}
               >
-                {primaryAction.icon}
-                <span className="ml-1">
-                  {primaryAction.label}
-                </span>
+                <span>{primaryAction.label}</span>
+                {primaryAction.icon && (
+                  <span className="ml-1.5 transition-transform duration-200 group-hover/btn:translate-x-0.5">
+                    {primaryAction.icon}
+                  </span>
+                )}
               </Button>
             )}
 
