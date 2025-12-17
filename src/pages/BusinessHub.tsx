@@ -49,7 +49,8 @@ export default function BusinessHub() {
 
   // Add subtle earnings indicator to Sell & Earn tab
   const navigationWithIndicator = useMemo(() => {
-    const hasEarnings = (earnings?.totalEarnings ?? 0) > 0 || (earnings?.pendingPayout ?? 0) > 0;
+    // TEMP: Force indicator to show for preview (revert to actual logic later)
+    const hasEarnings = true; // (earnings?.totalEarnings ?? 0) > 0 || (earnings?.pendingPayout ?? 0) > 0;
     
     return businessHubNavigation.map(item => {
       if (item.id === 'sell-earn' && hasEarnings) {
