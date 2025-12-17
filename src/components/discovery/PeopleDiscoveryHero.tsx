@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { WavingHandIcon } from "@/components/icons/WavingHandIcon";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
@@ -332,20 +333,38 @@ export function PeopleDiscoveryHero() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
-        {/* Hero Header */}
-        <div className="text-center space-y-1.5">
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-3xl inline-block animate-[wave_0.6s_ease-in-out_infinite]">👋</span>
-            <h2 className="text-3xl font-bold text-foreground">
-              Meet Vitanaland Citizens
-            </h2>
+        {/* Hero Header - Premium Glass Surface */}
+        <div className="text-center space-y-3">
+          {/* Premium Card Container */}
+          <div className="relative inline-block mx-auto">
+            {/* Soft glass background */}
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-background/90 via-background/70 to-background/50 backdrop-blur-xl rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] border border-border/30" />
+            
+            <div className="px-8 py-5">
+              {/* Muted Label */}
+              <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-muted-foreground/70 mb-2">
+                Today's Introduction
+              </p>
+              
+              {/* Title with Custom Hand Icon */}
+              <div className="flex items-center justify-center gap-3">
+                <WavingHandIcon 
+                  className="h-7 w-7 text-foreground/80 animate-[wave-premium_3.5s_ease-in-out_infinite] origin-bottom" 
+                />
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.01em] text-foreground">
+                  Meet Vitanaland Citizens
+                </h2>
+              </div>
+            </div>
           </div>
-          <p className="text-base text-emerald-600 dark:text-emerald-400 font-medium tracking-tight animate-[fadeIn_0.6s_ease-out]">
+          
+          {/* Subtitle - static, calm */}
+          <p className="text-base text-muted-foreground font-medium">
             You have{" "}
-            <span className="text-xl font-bold">
+            <span className="text-lg font-semibold text-foreground">
               {totalCount - viewedCount}
             </span>
-            <span className="font-semibold"> new matches</span> today
+            <span className="font-medium"> new matches</span> today
             <Button variant="ghost" size="sm" onClick={() => refetch()} className="ml-2">
               <RefreshCw className="h-3.5 w-3.5" />
             </Button>

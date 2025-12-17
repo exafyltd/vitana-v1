@@ -587,6 +587,15 @@ All colors MUST be HSL.
     75% { transform: rotate(-15deg); }
   }
   
+  /* Premium Wave Animation - slow, elegant, with pauses */
+  @keyframes wave-premium {
+    0%, 50%, 100% { transform: rotate(0deg); }
+    10% { transform: rotate(10deg); }
+    20% { transform: rotate(-6deg); }
+    30% { transform: rotate(8deg); }
+    40% { transform: rotate(-4deg); }
+  }
+  
   .diary-pulse {
     animation: diary-pulse 2s infinite;
   }
