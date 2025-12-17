@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { SculpturalHandIcon } from "@/components/icons/SculpturalHandIcon";
+import { WavingHandIcon } from "@/components/icons/WavingHandIcon";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
@@ -333,29 +333,19 @@ export function PeopleDiscoveryHero() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
-        {/* Hero Header - Premium, gallery-like */}
-        <div className="text-center pt-4 pb-2">
-          {/* Sculptural hand with atmospheric glow */}
-          <div className="relative inline-flex items-center justify-center mb-5">
-            {/* Soft atmospheric glow */}
-            <div className="absolute inset-0 w-16 h-16 mx-auto rounded-full bg-gradient-to-b from-accent/8 via-accent/4 to-transparent blur-xl" />
-            <div className="absolute inset-0 w-12 h-12 mx-auto rounded-full bg-foreground/[0.02] blur-md" />
-            
-            <SculpturalHandIcon 
-              className="relative h-9 w-9 animate-[wave-gentle_1.8s_ease-in-out_forwards] origin-bottom opacity-70" 
-            />
-          </div>
-          
-          {/* Title - editorial, refined */}
-          <h2 className="font-editorial text-xl md:text-2xl font-medium tracking-[0.02em] text-foreground/90">
+        {/* Hero Header - System block */}
+        <div className="text-center pt-2 pb-1">
+          {/* Title with inline waving hand */}
+          <h2 className="text-lg font-semibold text-foreground inline-flex items-center justify-center gap-2">
             Meet Vitanaland Citizens
+            <WavingHandIcon className="h-5 w-5 text-foreground/70 animate-[wave-gentle_1.8s_ease-in-out_forwards] origin-bottom" />
           </h2>
           
-          {/* Status line - quiet system status */}
-          <p className="text-[11px] text-muted-foreground/40 tracking-[0.04em] mt-2">
+          {/* Status line - standard metadata */}
+          <p className="text-xs text-muted-foreground mt-1">
             {totalCount - viewedCount} new today · {viewedCount}/{totalCount} viewed
-            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-4 w-4 p-0 ml-1 opacity-20 hover:opacity-60 inline-flex items-center justify-center">
-              <RefreshCw className="h-2 w-2" />
+            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-4 w-4 p-0 ml-1.5 opacity-40 hover:opacity-80 inline-flex items-center justify-center">
+              <RefreshCw className="h-2.5 w-2.5" />
             </Button>
           </p>
         </div>
