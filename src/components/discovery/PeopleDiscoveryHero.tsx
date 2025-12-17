@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import { WavingHandIcon } from "@/components/icons/WavingHandIcon";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
@@ -335,10 +334,9 @@ export function PeopleDiscoveryHero() {
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
         {/* Hero Header - System block */}
         <div className="text-center pt-2 pb-1">
-          {/* Title with inline waving hand */}
-          <h2 className="text-lg font-semibold text-foreground inline-flex items-center justify-center gap-2">
-            Meet Vitanaland Citizens
-            <WavingHandIcon className="h-5 w-5 text-foreground/70 animate-[wave-gentle_1.8s_ease-in-out_forwards] origin-bottom" />
+          {/* Title with inline emoji */}
+          <h2 className="text-lg font-semibold text-foreground">
+            Meet Vitanaland Citizens 👋
           </h2>
           
           {/* Status line - standard metadata */}
