@@ -8,6 +8,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useMemo } from "react";
+import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { CreateSelectionDialog } from "@/components/CreateSelectionDialog";
 import { CreateEventPopup } from "@/components/CreateEventPopup";
 import { CreateMeetupPopup } from "@/components/CreateMeetupPopup";
@@ -43,7 +44,28 @@ export default function BusinessHub() {
   const [showCampaignDialog, setShowCampaignDialog] = useState(false);
   
   const { isReseller } = useIsReseller();
+  const { earnings } = useUnifiedEarnings();
   const latestActions = getLatestActions(2);
+
+  // Add subtle earnings indicator to Sell & Earn tab
+  const navigationWithIndicator = useMemo(() => {
+    const hasEarnings = (earnings?.totalEarnings ?? 0) > 0 || (earnings?.pendingPayout ?? 0) > 0;
+    
+    return businessHubNavigation.map(item => {
+      if (item.id === 'sell-earn' && hasEarnings) {
+        return {
+          ...item,
+          indicator: (
+            <span 
+              className="ml-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500/15"
+              aria-hidden="true"
+            />
+          )
+        };
+      }
+      return item;
+    });
+  }, [earnings]);
 
   // Derive active tab from URL path
   const activeTab = useMemo((): TabValue => {
@@ -75,7 +97,7 @@ export default function BusinessHub() {
         description="Grow your wellness business and manage clients effortlessly" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={businessHubNavigation} />
+      <SubNavigation items={navigationWithIndicator} />
       
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">

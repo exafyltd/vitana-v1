@@ -6,6 +6,7 @@ interface SubNavItem {
   id: string;
   name: string;
   path: string;
+  indicator?: React.ReactNode;
 }
 
 interface SubNavigationProps {
@@ -39,6 +40,7 @@ export default function SubNavigation({ items, className, rightActions }: SubNav
                 }
               >
                 {item.name}
+                {item.indicator}
               </NavLink>
             ))}
           </div>
