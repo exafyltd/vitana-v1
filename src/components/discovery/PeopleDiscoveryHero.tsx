@@ -333,56 +333,35 @@ export function PeopleDiscoveryHero() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
-        {/* Hero Header - Premium Glass Surface */}
-        <div className="text-center space-y-3">
-          {/* Premium Card Container */}
-          <div className="relative inline-block mx-auto">
-            {/* Soft glass background */}
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-background/90 via-background/70 to-background/50 backdrop-blur-xl rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] border border-border/30" />
-            
-            <div className="px-8 py-5">
-              {/* Muted Label */}
-              <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-muted-foreground/70 mb-2">
-                Today's Introduction
-              </p>
-              
-              {/* Title with Custom Hand Icon */}
-              <div className="flex items-center justify-center gap-3">
-                <WavingHandIcon 
-                  className="h-7 w-7 text-foreground/80 animate-[wave-premium_3.5s_ease-in-out_infinite] origin-bottom" 
-                />
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.01em] text-foreground">
-                  Meet Vitanaland Citizens
-                </h2>
-              </div>
-            </div>
+        {/* Hero Header - Natural, understated */}
+        <div className="space-y-2 pl-1">
+          {/* Title with inline hand */}
+          <h2 className="text-2xl md:text-[1.7rem] font-medium tracking-[-0.01em] text-foreground">
+            Meet Vitanaland Citizens{" "}
+            <WavingHandIcon 
+              className="inline-block h-5 w-5 text-foreground/60 animate-[wave-once_1s_ease-out_forwards] origin-bottom align-baseline ml-0.5" 
+            />
+          </h2>
+          
+          {/* Status line - quiet, system-level */}
+          <div className="flex items-center gap-3 text-sm text-muted-foreground/70">
+            <span>
+              {totalCount - viewedCount} new today
+            </span>
+            <span className="text-muted-foreground/30">·</span>
+            <span>{viewedCount}/{totalCount} viewed</span>
+            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-6 w-6 p-0 opacity-50 hover:opacity-100">
+              <RefreshCw className="h-3 w-3" />
+            </Button>
           </div>
           
-          {/* Subtitle - static, calm */}
-          <p className="text-base text-muted-foreground font-medium">
-            You have{" "}
-            <span className="text-lg font-semibold text-foreground">
-              {totalCount - viewedCount}
-            </span>
-            <span className="font-medium"> new matches</span> today
-            <Button variant="ghost" size="sm" onClick={() => refetch()} className="ml-2">
-              <RefreshCw className="h-3.5 w-3.5" />
-            </Button>
-          </p>
-          
-          {/* Progress Bar with Gradient - aligned horizontally */}
-          <div className="max-w-2xl mx-auto flex items-center gap-4">
-            <div className="flex-1 space-y-1">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground font-medium">Today's Discovery</span>
-                <span className="font-bold text-foreground">{viewedCount}/{totalCount} viewed</span>
-              </div>
-              <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden backdrop-blur">
-                <div 
-                  className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
+          {/* Progress Bar - subtle */}
+          <div className="max-w-md">
+            <div className="w-full h-1 bg-muted/30 rounded-full overflow-hidden">
+              <div 
+                className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
         </div>
