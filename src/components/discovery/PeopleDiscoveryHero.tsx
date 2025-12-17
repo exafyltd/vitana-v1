@@ -346,8 +346,8 @@ export function PeopleDiscoveryHero() {
             />
           </div>
           
-          {/* Title - lighter weight, refined spacing */}
-          <h2 className="text-lg md:text-xl font-light tracking-[0.02em] text-foreground/90">
+          {/* Title - editorial, refined */}
+          <h2 className="font-editorial text-xl md:text-2xl font-medium tracking-[0.02em] text-foreground/90">
             Meet Vitanaland Citizens
           </h2>
           
