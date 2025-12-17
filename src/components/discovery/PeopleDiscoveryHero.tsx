@@ -333,25 +333,29 @@ export function PeopleDiscoveryHero() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
-        {/* Hero Header - Premium, human presence */}
-        <div className="text-center space-y-1">
-          {/* Sculptural hand - floating above title */}
-          <div className="pb-2">
+        {/* Hero Header - Premium, gallery-like */}
+        <div className="text-center pt-4 pb-2">
+          {/* Sculptural hand with atmospheric glow */}
+          <div className="relative inline-flex items-center justify-center mb-5">
+            {/* Soft atmospheric glow */}
+            <div className="absolute inset-0 w-16 h-16 mx-auto rounded-full bg-gradient-to-b from-accent/8 via-accent/4 to-transparent blur-xl" />
+            <div className="absolute inset-0 w-12 h-12 mx-auto rounded-full bg-foreground/[0.02] blur-md" />
+            
             <SculpturalHandIcon 
-              className="h-12 w-12 mx-auto animate-[wave-gentle_1.8s_ease-in-out_forwards] origin-bottom opacity-90" 
+              className="relative h-9 w-9 animate-[wave-gentle_1.8s_ease-in-out_forwards] origin-bottom opacity-70" 
             />
           </div>
           
-          {/* Title - clean, confident */}
-          <h2 className="text-xl md:text-2xl font-medium tracking-[-0.02em] text-foreground">
+          {/* Title - lighter weight, refined spacing */}
+          <h2 className="text-lg md:text-xl font-light tracking-[0.02em] text-foreground/90">
             Meet Vitanaland Citizens
           </h2>
           
-          {/* Status line - quiet, minimal */}
-          <p className="text-xs text-muted-foreground/50 tracking-wide pt-1">
+          {/* Status line - quiet system status */}
+          <p className="text-[11px] text-muted-foreground/40 tracking-[0.04em] mt-2">
             {totalCount - viewedCount} new today · {viewedCount}/{totalCount} viewed
-            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-5 w-5 p-0 ml-1.5 opacity-30 hover:opacity-80 inline-flex items-center justify-center">
-              <RefreshCw className="h-2.5 w-2.5" />
+            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-4 w-4 p-0 ml-1 opacity-20 hover:opacity-60 inline-flex items-center justify-center">
+              <RefreshCw className="h-2 w-2" />
             </Button>
           </p>
         </div>
