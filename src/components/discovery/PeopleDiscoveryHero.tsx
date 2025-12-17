@@ -333,37 +333,25 @@ export function PeopleDiscoveryHero() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
-        {/* Hero Header - Natural, understated */}
-        <div className="space-y-2 pl-1">
-          {/* Title with inline hand */}
-          <h2 className="text-2xl md:text-[1.7rem] font-medium tracking-[-0.01em] text-foreground">
-            Meet Vitanaland Citizens{" "}
-            <WavingHandIcon 
-              className="inline-block h-5 w-5 text-foreground/60 animate-[wave-once_1s_ease-out_forwards] origin-bottom align-baseline ml-0.5" 
-            />
+        {/* Hero Header - Gallery-like category title */}
+        <div className="text-center space-y-2">
+          {/* Title */}
+          <h2 className="text-xl md:text-2xl font-medium tracking-[-0.02em] text-foreground">
+            Meet Vitanaland Citizens
           </h2>
           
-          {/* Status line - quiet, system-level */}
-          <div className="flex items-center gap-3 text-sm text-muted-foreground/70">
-            <span>
-              {totalCount - viewedCount} new today
-            </span>
-            <span className="text-muted-foreground/30">·</span>
-            <span>{viewedCount}/{totalCount} viewed</span>
-            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-6 w-6 p-0 opacity-50 hover:opacity-100">
-              <RefreshCw className="h-3 w-3" />
-            </Button>
-          </div>
+          {/* Subtle hand icon below title */}
+          <WavingHandIcon 
+            className="h-4 w-4 mx-auto text-muted-foreground/40 animate-[wave-once_1s_ease-out_forwards] origin-bottom" 
+          />
           
-          {/* Progress Bar - subtle */}
-          <div className="max-w-md">
-            <div className="w-full h-1 bg-muted/30 rounded-full overflow-hidden">
-              <div 
-                className={`h-full bg-gradient-to-r ${getProgressBarGradient(averageMatchScore)} transition-all duration-500 ease-out rounded-full`}
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
+          {/* Status line - quiet, minimal */}
+          <p className="text-xs text-muted-foreground/60 tracking-wide">
+            {totalCount - viewedCount} new today · {viewedCount}/{totalCount} viewed
+            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-5 w-5 p-0 ml-1.5 opacity-40 hover:opacity-100 inline-flex items-center justify-center">
+              <RefreshCw className="h-2.5 w-2.5" />
+            </Button>
+          </p>
         </div>
 
         {/* Book Flip View (Desktop) / Card Stack (Mobile) */}
