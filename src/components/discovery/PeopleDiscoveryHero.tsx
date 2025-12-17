@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { WavingHandIcon } from "@/components/icons/WavingHandIcon";
+import { SculpturalHandIcon } from "@/components/icons/SculpturalHandIcon";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
@@ -333,22 +333,24 @@ export function PeopleDiscoveryHero() {
       />
 
       <div className="max-w-7xl mx-auto px-4 py-2 space-y-2">
-        {/* Hero Header - Gallery-like category title */}
-        <div className="text-center space-y-2">
-          {/* Title */}
+        {/* Hero Header - Premium, human presence */}
+        <div className="text-center space-y-1">
+          {/* Sculptural hand - floating above title */}
+          <div className="pb-2">
+            <SculpturalHandIcon 
+              className="h-12 w-12 mx-auto animate-[wave-gentle_1.8s_ease-in-out_forwards] origin-bottom opacity-90" 
+            />
+          </div>
+          
+          {/* Title - clean, confident */}
           <h2 className="text-xl md:text-2xl font-medium tracking-[-0.02em] text-foreground">
             Meet Vitanaland Citizens
           </h2>
           
-          {/* Subtle hand icon below title */}
-          <WavingHandIcon 
-            className="h-4 w-4 mx-auto text-muted-foreground/40 animate-[wave-once_1s_ease-out_forwards] origin-bottom" 
-          />
-          
           {/* Status line - quiet, minimal */}
-          <p className="text-xs text-muted-foreground/60 tracking-wide">
+          <p className="text-xs text-muted-foreground/50 tracking-wide pt-1">
             {totalCount - viewedCount} new today · {viewedCount}/{totalCount} viewed
-            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-5 w-5 p-0 ml-1.5 opacity-40 hover:opacity-100 inline-flex items-center justify-center">
+            <Button variant="ghost" size="sm" onClick={() => refetch()} className="h-5 w-5 p-0 ml-1.5 opacity-30 hover:opacity-80 inline-flex items-center justify-center">
               <RefreshCw className="h-2.5 w-2.5" />
             </Button>
           </p>
