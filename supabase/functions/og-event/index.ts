@@ -214,7 +214,7 @@ Deno.serve(async (req) => {
     // Try to resolve by slug first, then by ID
     if (slug) {
       console.log('Resolving event by slug:', slug);
-      const { data, error } = await supabase.rpc('resolve_event_by_slug', { event_slug: slug });
+      const { data, error } = await supabase.rpc('resolve_event_by_slug', { identifier: slug });
       
       if (error) {
         console.error('Error resolving event by slug:', error);
