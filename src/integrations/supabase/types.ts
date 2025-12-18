@@ -2463,6 +2463,7 @@ export type Database = {
           resale_scope: string
           resellable: boolean
           reseller_config: Json | null
+          slug: string | null
           start_time: string
           title: string
           updated_at: string
@@ -2487,6 +2488,7 @@ export type Database = {
           resale_scope?: string
           resellable?: boolean
           reseller_config?: Json | null
+          slug?: string | null
           start_time: string
           title: string
           updated_at?: string
@@ -2511,6 +2513,7 @@ export type Database = {
           resale_scope?: string
           resellable?: boolean
           reseller_config?: Json | null
+          slug?: string | null
           start_time?: string
           title?: string
           updated_at?: string
@@ -7409,6 +7412,10 @@ export type Database = {
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
+      generate_event_slug: {
+        Args: { event_id?: string; event_title: string }
+        Returns: string
+      }
       generate_ticket_number: { Args: never; Returns: string }
       generate_unique_handle: {
         Args: {
@@ -7729,6 +7736,29 @@ export type Database = {
           from_balance: number
           to_balance: number
           transaction_id: string
+        }[]
+      }
+      resolve_event_by_slug: {
+        Args: { identifier: string }
+        Returns: {
+          description: string
+          end_time: string
+          event_type: string
+          has_tickets: boolean
+          id: string
+          image_url: string
+          is_paid_event: boolean
+          is_sold_out: boolean
+          location: string
+          lowest_ticket_price: number
+          max_participants: number
+          metadata: Json
+          organizer_avatar: string
+          organizer_name: string
+          participant_count: number
+          slug: string
+          start_time: string
+          title: string
         }[]
       }
       rpc_board_list_scheduled: {

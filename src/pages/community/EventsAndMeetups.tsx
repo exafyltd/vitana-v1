@@ -160,7 +160,8 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
           link: getShareUrl('event', event.id, { 
             utm_source: 'event_card', 
             utm_medium: 'social',
-            utm_campaign: 'events_meetups_v2'
+            utm_campaign: 'events_meetups_v2',
+            slug: event.slug
           })
         }}
         variant="icon"

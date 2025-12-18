@@ -32,6 +32,7 @@ interface SellEventModalProps {
     id: string;
     title: string;
     image_url?: string | null;
+    slug?: string | null;
   } | null;
   resellerCode: string;
 }
@@ -47,7 +48,7 @@ export function SellEventModal({
 
   if (!event) return null;
 
-  const shareUrl = getResellerShareUrl("event", event.id, resellerCode);
+  const shareUrl = getResellerShareUrl("event", event.id, resellerCode, event.slug || undefined);
 
   const handleCopyLink = async () => {
     try {

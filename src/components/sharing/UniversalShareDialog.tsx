@@ -40,6 +40,7 @@ interface ShareableContent {
   description?: string;
   image_url?: string;
   url?: string;
+  slug?: string; // Event slug for clean URLs
 }
 
 interface UniversalShareDialogProps {
@@ -86,7 +87,7 @@ export function UniversalShareDialog({
   const shareUrl = content.url || getShareUrl(
     content.type as 'event' | 'meetup' | 'group' | 'profile' | 'post',
     content.id,
-    { utm_source: 'share', utm_medium: 'personal' }
+    { utm_source: 'share', utm_medium: 'personal', slug: content.slug }
   );
   
   const shareText = `${content.title}${content.description ? '\n' + content.description : ''}`;

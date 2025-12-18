@@ -21,6 +21,7 @@ interface PublicEventData {
   max_participants: number | null;
   participant_count: number;
   image_url: string | null;
+  slug: string | null;
   organizer_name: string;
   organizer_avatar: string | null;
   metadata?: Record<string, any> | null;
@@ -40,10 +41,19 @@ const getTenantLoginRoute = (tenantSlug: string | null): string => {
   return tenantSlug && tenantRoutes[tenantSlug] ? tenantRoutes[tenantSlug] : '/maxina';
 };
 
+// Check if a string is a valid UUID
+const isUUID = (str: string): boolean => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+};
+
 export default function PublicEventLanding() {
-  const { id } = useParams<{ id: string }>();
+  // Support both :slug (new clean URLs) and :id (legacy URLs)
+  const { slug, id } = useParams<{ slug?: string; id?: string }>();
+  const identifier = slug || id;
+  
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const [event, setEvent] = useState<PublicEventData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +61,7 @@ export default function PublicEventLanding() {
   const [showTicketDialog, setShowTicketDialog] = useState(false);
   const [userHasTicket, setUserHasTicket] = useState(false);
 
-  // Extract UTM params from URL for reseller attribution
+  // Extract UTM params from URL for reseller attribution (capture before cleaning)
   const utmParams = {
     utm_source: searchParams.get('utm_source') || undefined,
     utm_medium: searchParams.get('utm_medium') || undefined,
@@ -60,16 +70,16 @@ export default function PublicEventLanding() {
 
   useEffect(() => {
     const fetchPublicEvent = async () => {
-      if (!id) {
-        setError("Event ID is missing");
+      if (!identifier) {
+        setError("Event identifier is missing");
         setLoading(false);
         return;
       }
 
       try {
-        // Fetch event data via public RPC function (bypasses RLS)
+        // Use the new resolve_event_by_slug function that handles both slugs and UUIDs
         const { data, error: fetchError } = await supabase
-          .rpc("get_public_event_details", { event_id: id });
+          .rpc("resolve_event_by_slug", { identifier });
 
         if (fetchError) {
           console.error("Error fetching event:", fetchError);
@@ -84,8 +94,26 @@ export default function PublicEventLanding() {
           return;
         }
 
-        // RPC returns an array, take the first item
-        setEvent(data[0] as PublicEventData);
+        const eventData = data[0] as PublicEventData;
+        setEvent(eventData);
+
+        // If accessed via UUID and event has a slug, redirect to clean URL
+        if (id && isUUID(id) && eventData.slug) {
+          // Preserve UTM params during redirect for tracking
+          const currentParams = searchParams.toString();
+          const redirectUrl = `/e/${eventData.slug}${currentParams ? '?' + currentParams : ''}`;
+          navigate(redirectUrl, { replace: true });
+          return;
+        }
+
+        // Clean UTM params from URL after capturing (server-side tracking would happen here)
+        // This keeps the URL clean for sharing while we've already captured the attribution
+        if (utmParams.utm_source || utmParams.utm_medium || utmParams.utm_campaign) {
+          // Remove UTM params from URL without causing a navigation
+          const cleanUrl = eventData.slug ? `/e/${eventData.slug}` : `/pub/events/${eventData.id}`;
+          window.history.replaceState({}, '', cleanUrl);
+        }
+
       } catch (err) {
         console.error("Error:", err);
         setError("Failed to load event");
@@ -95,17 +123,17 @@ export default function PublicEventLanding() {
     };
 
     fetchPublicEvent();
-  }, [id]);
+  }, [identifier, id, navigate]);
 
   // Check if user has a ticket for this event
   useEffect(() => {
     const checkUserTicket = async () => {
-      if (!user || !id) return;
+      if (!user || !event?.id) return;
       
       const { data } = await supabase
         .from("event_ticket_purchases")
         .select("id")
-        .eq("event_id", id)
+        .eq("event_id", event.id)
         .eq("buyer_id", user.id)
         .eq("status", "completed")
         .limit(1);
@@ -114,7 +142,7 @@ export default function PublicEventLanding() {
     };
     
     checkUserTicket();
-  }, [user, id]);
+  }, [user, event?.id]);
 
   // Get tenant from event metadata for proper login routing
   const tenantSlug = event?.metadata?.tenant_slug || 
@@ -144,7 +172,7 @@ export default function PublicEventLanding() {
   };
 
   const handlePrimaryClick = () => {
-    if (!id) return;
+    if (!event?.id) return;
 
     switch (ctaConfig.action) {
       case 'view-ticket':
@@ -163,7 +191,7 @@ export default function PublicEventLanding() {
         break;
       case 'join':
         // Authenticated user - go to event page
-        navigate(`/comm/events-meetups?event=${id}`);
+        navigate(`/comm/events-meetups?event=${event.id}`);
         break;
       case 'reserve':
         // Non-ticketed event - redirect to login then event
@@ -176,15 +204,14 @@ export default function PublicEventLanding() {
   };
 
   const handleJoinClick = () => {
-    if (!id) return;
+    if (!event?.id) return;
 
     if (user) {
       // User is logged in, go directly to event page
-      const params = new URLSearchParams(searchParams);
-      navigate(`/comm/events-meetups?event=${id}${params.toString() ? '&' + params.toString() : ''}`);
+      navigate(`/comm/events-meetups?event=${event.id}`);
     } else {
       // User not logged in, redirect to tenant-specific login with return URL
-      const returnUrl = `/comm/events-meetups?event=${id}${searchParams.toString() ? '&' + searchParams.toString() : ''}`;
+      const returnUrl = `/comm/events-meetups?event=${event.id}`;
       const loginRoute = getTenantLoginRoute(tenantSlug);
       navigate(`${loginRoute}?redirectTo=${encodeURIComponent(returnUrl)}`);
     }
@@ -210,7 +237,9 @@ export default function PublicEventLanding() {
     );
   }
 
-  const publicEventUrl = `${window.location.origin}/pub/events/${event.id}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+  // Use clean canonical URL for SEO and sharing
+  const canonicalPath = event.slug ? `/e/${event.slug}` : `/pub/events/${event.id}`;
+  const publicEventUrl = `${window.location.origin}${canonicalPath}`;
   const eventDate = event.start_time ? format(new Date(event.start_time), "EEEE, MMMM d, yyyy") : "";
   const eventTime = event.start_time ? format(new Date(event.start_time), "h:mm a") : "";
   const shortDescription = event.description?.slice(0, 160) || `Join us for ${event.title}`;
