@@ -10,6 +10,7 @@ export interface ResellerEvent {
   location: string | null;
   image_url: string | null;
   created_by: string;
+  slug: string | null;
   tickets_sold: number;
   tickets_available: number;
   gross_revenue: number;
@@ -33,7 +34,8 @@ export function useResellerEvents() {
           end_time,
           location,
           image_url,
-          created_by
+          created_by,
+          slug
         `)
         .eq("created_by", session.user.id)
         .order("start_time", { ascending: false });
@@ -80,6 +82,7 @@ export function useResellerEvents() {
           location: event.location,
           image_url: event.image_url,
           created_by: event.created_by,
+          slug: event.slug,
           tickets_sold,
           tickets_available,
           gross_revenue,

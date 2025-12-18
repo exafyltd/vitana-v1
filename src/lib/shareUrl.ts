@@ -3,7 +3,7 @@
  * 
  * @param type Content type (event, meetup, group, profile, post)
  * @param id Content ID
- * @param options Optional UTM parameters for tracking
+ * @param options Optional UTM parameters and slug for clean URLs
  * @returns Direct app URL with UTM parameters
  */
 export function getShareUrl(
@@ -13,6 +13,7 @@ export function getShareUrl(
     utm_source?: string;
     utm_medium?: string;
     utm_campaign?: string;
+    slug?: string; // Event slug for clean URLs
   }
 ): string {
   // Campaigns use OG edge function for rich social previews
@@ -27,18 +28,24 @@ export function getShareUrl(
     return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-campaign?${params.toString()}`;
   }
 
-  // Events use public landing page for proper social previews
+  // Events use clean /e/:slug URLs when slug is available
   if (type === 'event' || type === 'meetup') {
     const appUrl = window.location.origin;
     const params = new URLSearchParams();
     
-    // Add UTM parameters if provided
+    // Add UTM parameters if provided (will be captured server-side then cleaned from URL)
     if (options?.utm_source) params.set('utm_source', options.utm_source);
     if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
     if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
     const queryString = params.toString();
-    return `${appUrl}/pub/events/${encodeURIComponent(id)}${queryString ? '?' + queryString : ''}`;
+    
+    // Use clean /e/:slug URL if slug is available, otherwise fall back to /pub/events/:id
+    const basePath = options?.slug 
+      ? `/e/${encodeURIComponent(options.slug)}`
+      : `/pub/events/${encodeURIComponent(id)}`;
+    
+    return `${appUrl}${basePath}${queryString ? '?' + queryString : ''}`;
   }
   
   // Other content types use direct app URLs
@@ -67,16 +74,37 @@ export function getShareUrl(
  * @param type Content type (event or campaign)
  * @param id Content ID
  * @param resellerCode Unique reseller code for attribution
+ * @param slug Optional event slug for clean URLs
  * @returns Share URL with reseller attribution parameters
  */
 export function getResellerShareUrl(
   type: 'event' | 'campaign',
   id: string,
-  resellerCode: string
+  resellerCode: string,
+  slug?: string
 ): string {
   return getShareUrl(type, id, {
     utm_source: `reseller_${resellerCode}`,
     utm_medium: 'reseller',
-    utm_campaign: id
+    utm_campaign: id,
+    slug
   });
+}
+
+/**
+ * Generate a clean event URL without UTM parameters (for display/copying)
+ * 
+ * @param slug Event slug
+ * @param id Event ID (fallback if no slug)
+ * @returns Clean event URL
+ */
+export function getCleanEventUrl(slug?: string | null, id?: string): string {
+  const appUrl = window.location.origin;
+  if (slug) {
+    return `${appUrl}/e/${encodeURIComponent(slug)}`;
+  }
+  if (id) {
+    return `${appUrl}/pub/events/${encodeURIComponent(id)}`;
+  }
+  return appUrl;
 }

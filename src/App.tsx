@@ -314,6 +314,7 @@ const App = () => {
           <Route path="/community/confirmed" element={<CommunityConfirmed />} />
           
           {/* Public Routes - No Auth Required */}
+          <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
           
