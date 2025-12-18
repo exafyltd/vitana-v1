@@ -218,16 +218,21 @@ Deno.serve(async (req) => {
       
       if (error) {
         console.error('Error resolving event by slug:', error);
-      } else if (data) {
+      } else if (data && Array.isArray(data) && data.length > 0) {
+        // RPC returning TABLE returns an array - access first row
+        const row = data[0];
+        console.log('Resolved event data:', JSON.stringify(row));
         event = {
-          id: data.id,
-          title: data.title,
-          description: data.description,
-          image_url: data.image_url,
-          slug: data.slug,
-          start_time: data.start_time,
-          location: data.location
+          id: row.id,
+          title: row.title,
+          description: row.description,
+          image_url: row.image_url,
+          slug: row.slug,
+          start_time: row.start_time,
+          location: row.location
         };
+      } else {
+        console.log('No event data returned from RPC, data:', JSON.stringify(data));
       }
     }
 
