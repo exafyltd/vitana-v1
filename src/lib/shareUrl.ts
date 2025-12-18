@@ -28,24 +28,23 @@ export function getShareUrl(
     return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-campaign?${params.toString()}`;
   }
 
-  // Events use clean /e/:slug URLs when slug is available
+  // Events use OG edge function for rich social previews (same pattern as campaigns)
   if (type === 'event' || type === 'meetup') {
-    const appUrl = window.location.origin;
     const params = new URLSearchParams();
     
-    // Add UTM parameters if provided (will be captured server-side then cleaned from URL)
+    // Use slug if available, otherwise ID
+    if (options?.slug) {
+      params.set('slug', options.slug);
+    } else {
+      params.set('id', id);
+    }
+    
+    // UTM params are captured server-side for attribution, users see clean URLs
     if (options?.utm_source) params.set('utm_source', options.utm_source);
     if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
     if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
-    const queryString = params.toString();
-    
-    // Use clean /e/:slug URL if slug is available, otherwise fall back to /pub/events/:id
-    const basePath = options?.slug 
-      ? `/e/${encodeURIComponent(options.slug)}`
-      : `/pub/events/${encodeURIComponent(id)}`;
-    
-    return `${appUrl}${basePath}${queryString ? '?' + queryString : ''}`;
+    return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?${params.toString()}`;
   }
   
   // Other content types use direct app URLs

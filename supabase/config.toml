@@ -158,3 +158,6 @@ verify_jwt = true
 
 [functions.verify-package-payment]
 verify_jwt = false
+
+[functions.og-event]
+verify_jwt = false
