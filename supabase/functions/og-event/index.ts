@@ -30,25 +30,15 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://vitana-v1.lovable.app/${url}`;
 }
 
-// Optimize image URL for social media crawlers (convert WebP to JPEG)
+// Use direct storage URL without transformation for reliability
+// WhatsApp crawler works better with direct URLs than transformation endpoints
 function getOptimizedImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   
   if (!url) return defaultImage;
   
-  // Make URL absolute first
-  const absoluteUrl = ensureAbsoluteUrl(url);
-  
-  // If it's a Supabase storage URL with WebP, transform to JPEG for WhatsApp compatibility
-  if (absoluteUrl.includes('supabase.co/storage/v1/object/public/') && absoluteUrl.toLowerCase().endsWith('.webp')) {
-    const transformedUrl = absoluteUrl.replace(
-      '/storage/v1/object/public/',
-      '/storage/v1/render/image/public/'
-    ) + '?width=1200&height=630&format=jpeg&quality=85';
-    return transformedUrl;
-  }
-  
-  return absoluteUrl;
+  // Just ensure URL is absolute - no transformation
+  return ensureAbsoluteUrl(url);
 }
 
 // Sanitize text for meta tags
@@ -61,20 +51,18 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 160);
 }
 
-// Detect image MIME type from URL (handles transformed images)
+// Detect image MIME type from actual file extension
 function getImageMimeType(url: string): string {
   const lowerUrl = url.toLowerCase();
   
-  // If URL contains format=jpeg or format=jpg, it's been transformed to JPEG
-  if (lowerUrl.includes('format=jpeg') || lowerUrl.includes('format=jpg')) {
-    return 'image/jpeg';
-  }
+  // Check file extension for actual format
+  if (lowerUrl.includes('.webp')) return 'image/webp';
+  if (lowerUrl.includes('.png')) return 'image/png';
+  if (lowerUrl.includes('.gif')) return 'image/gif';
+  if (lowerUrl.includes('.jpg') || lowerUrl.includes('.jpeg')) return 'image/jpeg';
+  if (lowerUrl.includes('.svg')) return 'image/svg+xml';
   
-  if (lowerUrl.endsWith('.webp')) return 'image/webp';
-  if (lowerUrl.endsWith('.png')) return 'image/png';
-  if (lowerUrl.endsWith('.gif')) return 'image/gif';
-  if (lowerUrl.endsWith('.svg')) return 'image/svg+xml';
-  return 'image/jpeg';
+  return 'image/jpeg'; // default fallback
 }
 
 // Generate fallback HTML for invalid/missing events
