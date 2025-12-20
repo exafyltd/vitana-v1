@@ -6991,31 +6991,61 @@ export type Database = {
       }
       vtid_ledger: {
         Row: {
+          assigned_to: string
           created_at: string | null
+          description: string | null
+          id: string
+          is_test: boolean
           layer: string
+          metadata: Json
           module: string
+          parent_vtid: string | null
           status: string
           summary: string | null
+          task_family: string
+          task_module: string
+          task_type: string
+          tenant: string
           title: string | null
           updated_at: string | null
           vtid: string
         }
         Insert: {
+          assigned_to?: string
           created_at?: string | null
+          description?: string | null
+          id?: string
+          is_test?: boolean
           layer: string
+          metadata?: Json
           module: string
+          parent_vtid?: string | null
           status: string
           summary?: string | null
+          task_family?: string
+          task_module?: string
+          task_type?: string
+          tenant?: string
           title?: string | null
           updated_at?: string | null
           vtid: string
         }
         Update: {
+          assigned_to?: string
           created_at?: string | null
+          description?: string | null
+          id?: string
+          is_test?: boolean
           layer?: string
+          metadata?: Json
           module?: string
+          parent_vtid?: string | null
           status?: string
           summary?: string | null
+          task_family?: string
+          task_module?: string
+          task_type?: string
+          tenant?: string
           title?: string | null
           updated_at?: string | null
           vtid?: string
@@ -7369,6 +7399,14 @@ export type Database = {
       }
     }
     Functions: {
+      allocate_global_vtid: {
+        Args: { p_layer?: string; p_module?: string; p_source?: string }
+        Returns: {
+          id: string
+          num: number
+          vtid: string
+        }[]
+      }
       archive_old_activity_logs: { Args: never; Returns: undefined }
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
@@ -7407,6 +7445,28 @@ export type Database = {
       create_tenant_direct_thread: {
         Args: { p_recipient_id: string; p_tenant_id: string }
         Returns: string
+      }
+      create_vtid_atomic: {
+        Args: {
+          p_family: string
+          p_is_test?: boolean
+          p_metadata?: Json
+          p_module: string
+          p_status?: string
+          p_summary?: string
+          p_tenant?: string
+          p_title: string
+        }
+        Returns: {
+          created_at: string
+          id: string
+          layer: string
+          module: string
+          status: string
+          tenant: string
+          title: string
+          vtid: string
+        }[]
       }
       current_tenant: { Args: never; Returns: string }
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }

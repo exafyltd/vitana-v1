@@ -61,9 +61,15 @@ function sanitizeText(text: string | null | undefined): string {
     .substring(0, 160);
 }
 
-// Detect image MIME type from URL
+// Detect image MIME type from URL (handles transformed images)
 function getImageMimeType(url: string): string {
   const lowerUrl = url.toLowerCase();
+  
+  // If URL contains format=jpeg or format=jpg, it's been transformed to JPEG
+  if (lowerUrl.includes('format=jpeg') || lowerUrl.includes('format=jpg')) {
+    return 'image/jpeg';
+  }
+  
   if (lowerUrl.endsWith('.webp')) return 'image/webp';
   if (lowerUrl.endsWith('.png')) return 'image/png';
   if (lowerUrl.endsWith('.gif')) return 'image/gif';
@@ -126,11 +132,18 @@ function generateOGHTML(event: EventData, destinationUrl: string): string {
   const description = sanitizeText(event.description) || 'Join us for this event on VITANA';
   const imageUrl = getOptimizedImageUrl(event.image_url);
   const imageMimeType = getImageMimeType(imageUrl);
+  
+  // Image dimensions for social media (WhatsApp requires these for reliability)
+  const imageWidth = 1200;
+  const imageHeight = 630;
 
   console.log('Generating OG HTML for event:', {
     title,
     description: description.substring(0, 50) + '...',
     imageUrl,
+    imageMimeType,
+    imageWidth,
+    imageHeight,
     destinationUrl
   });
 
@@ -149,8 +162,8 @@ function generateOGHTML(event: EventData, destinationUrl: string): string {
   <meta property="og:image" content="${imageUrl}" />
   <meta property="og:image:secure_url" content="${imageUrl}" />
   <meta property="og:image:type" content="${imageMimeType}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="${imageWidth}" />
+  <meta property="og:image:height" content="${imageHeight}" />
   <meta property="og:url" content="${destinationUrl}" />
   
   <!-- Twitter -->

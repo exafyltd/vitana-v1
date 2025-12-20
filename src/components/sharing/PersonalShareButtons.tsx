@@ -27,7 +27,9 @@ export function PersonalShareButtons({
   const fullMessage = `${shareText}\n\n${shareUrl}`;
 
   const handleWhatsApp = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+    // Simple message for WhatsApp - OG tags in URL provide rich preview
+    const whatsappMessage = title ? `🎉 ${title}\n${shareUrl}` : shareUrl;
+    const url = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(url, '_blank');
   };
 
