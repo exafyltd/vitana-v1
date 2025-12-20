@@ -161,6 +161,3 @@ verify_jwt = false
 
 [functions.og-event]
 verify_jwt = false
-
-[functions.serve-event]
-verify_jwt = false
