@@ -28,23 +28,20 @@ export function getShareUrl(
     return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-campaign?${params.toString()}`;
   }
 
-  // Events use OG edge function for rich social previews (same pattern as campaigns)
+  // Events use serve-event edge function with clean path-based URLs
+  // Format: /functions/v1/serve-event/:slug (cleaner than query params)
   if (type === 'event' || type === 'meetup') {
+    const identifier = options?.slug || id;
+    const baseUrl = `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/serve-event/${encodeURIComponent(identifier)}`;
+    
+    // UTM params are optional for attribution tracking
     const params = new URLSearchParams();
-    
-    // Use slug if available, otherwise ID
-    if (options?.slug) {
-      params.set('slug', options.slug);
-    } else {
-      params.set('id', id);
-    }
-    
-    // UTM params are captured server-side for attribution, users see clean URLs
     if (options?.utm_source) params.set('utm_source', options.utm_source);
     if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
     if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
-    return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?${params.toString()}`;
+    const queryString = params.toString();
+    return queryString ? `${baseUrl}?${queryString}` : baseUrl;
   }
   
   // Other content types use direct app URLs
