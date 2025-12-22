@@ -68,6 +68,43 @@ export async function prefetchForPath(
       },
       staleTime,
     });
+
+    // Community Music - matches MediaHub.tsx queryFn exactly
+    await queryClient.prefetchQuery({
+      queryKey: ['community-music'],
+      queryFn: async () => {
+        const { data } = await supabase
+          .from('media_uploads')
+          .select(`
+            id, title, description, tags, file_url, duration, plays_count, created_at,
+            music_metadata (genre, mood, artist_name)
+          `)
+          .eq('media_type', 'music')
+          .eq('status', 'approved')
+          .eq('is_public', true)
+          .order('created_at', { ascending: false })
+          .limit(10);
+        return data || [];
+      },
+      staleTime,
+    });
+
+    // Community Podcasts - matches MediaHub.tsx queryFn exactly
+    await queryClient.prefetchQuery({
+      queryKey: ['community-podcasts'],
+      queryFn: async () => {
+        const { data } = await supabase
+          .from('media_uploads')
+          .select('*, podcast_metadata(*)')
+          .eq('media_type', 'podcast')
+          .eq('status', 'approved')
+          .eq('is_public', true)
+          .order('created_at', { ascending: false })
+          .limit(10);
+        return data || [];
+      },
+      staleTime,
+    });
   }
 
   if (path.startsWith('/discover')) {
