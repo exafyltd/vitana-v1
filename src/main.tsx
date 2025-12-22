@@ -33,8 +33,8 @@ const queryClient = new QueryClient({
       // Refetch when reconnecting after offline
       refetchOnReconnect: true,
       
-      // Cache-first: render cached data immediately, background prefetch handles freshness
-      refetchOnMount: false,
+      // Stale-while-revalidate: render cache immediately, refetch in background if stale
+      refetchOnMount: true,
       
       // Single retry on failure
       retry: 1,
