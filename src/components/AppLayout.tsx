@@ -33,6 +33,8 @@ import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
+import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
+import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -393,6 +395,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
+  
+  // Background loading system
+  useBackgroundPrefetch();
+  useBackgroundRefresh();
   
   // Controlled sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
