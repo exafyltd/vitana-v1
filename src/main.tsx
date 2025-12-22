@@ -33,8 +33,7 @@ const queryClient = new QueryClient({
       // Refetch when reconnecting after offline
       refetchOnReconnect: true,
       
-      // CRITICAL: Don't refetch on every mount if cache exists
-      // Only refetch if data is stale (older than staleTime)
+      // Cache-first: render cached data immediately, background prefetch handles freshness
       refetchOnMount: false,
       
       // Single retry on failure

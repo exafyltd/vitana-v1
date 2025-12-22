@@ -28,14 +28,17 @@ export interface Short {
   };
 }
 
-interface FetchShortsParams {
+export interface FetchShortsParams {
   tag?: string;
   tags?: string[]; // Multiple tags (OR condition)
   category?: string;
   limit?: number;
 }
 
-export const useShorts = (params: FetchShortsParams = {}) => {
+// Stable empty params constant for cache key consistency
+export const EMPTY_SHORTS_PARAMS: FetchShortsParams = {};
+
+export const useShorts = (params: FetchShortsParams = EMPTY_SHORTS_PARAMS) => {
   return useQuery({
     queryKey: ['shorts', params],
     queryFn: async () => {

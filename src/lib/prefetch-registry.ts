@@ -4,14 +4,16 @@
 
 import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
+ * Routes must match actual app routes (/comm not /community)
  */
 export const ADJACENT_PILLARS: Record<string, string[]> = {
-  '/home': ['/community', '/discover', '/health', '/business', '/wallet'],
-  '/community': ['/home', '/discover'],
-  '/discover': ['/home', '/community', '/calendar'],
+  '/home': ['/comm', '/discover', '/health', '/business', '/wallet'],
+  '/comm': ['/home', '/discover'],
+  '/discover': ['/home', '/comm', '/calendar'],
   '/health': ['/home', '/calendar'],
   '/business': ['/home', '/wallet'],
   '/wallet': ['/home', '/business'],
@@ -55,11 +57,13 @@ export async function prefetchForPath(
     });
   }
 
-  if (path.startsWith('/community')) {
+  // Community prefetch - uses /comm route
+  if (path.startsWith('/comm')) {
+    // Shorts - use stable EMPTY_SHORTS_PARAMS for exact cache key match
     await queryClient.prefetchQuery({
-      queryKey: ['shorts', {}],
+      queryKey: ['shorts', EMPTY_SHORTS_PARAMS],
       queryFn: async () => {
-        const { data } = await supabase.from('media_videos').select('*').eq('status', 'published').limit(20);
+        const { data } = await supabase.from('media_videos').select('*').eq('status', 'published').order('created_at', { ascending: false }).limit(20);
         return data || [];
       },
       staleTime,
