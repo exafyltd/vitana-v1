@@ -6,6 +6,16 @@
 
 ---
 
+## AI Guidance Principle
+
+**Always suggest one next best action.**
+
+After completing any step, the AI should recommend the most logical next move to keep the user progressing. If context is unclear or the user seems stuck, the default fallback is:
+
+> "Ready to start earning? Let's set up your first event, service, or reseller link."
+
+---
+
 ## Intent Map
 
 | User Says | Route To |
@@ -39,9 +49,9 @@
 Present 4 options:
 
 1. **Create an Event** — Host your own event or meetup and sell tickets directly.
-2. **Add Events to Inventory** — Resell other creators' events and earn commission.
+2. **Add Events to Inventory** — Resell other event hosts' events and earn commission.
 3. **Create a Service** — Offer bookable sessions (coaching, yoga, consulting, etc.).
-4. **Create a Promotion** — Generate shareable links and campaigns for your offerings.
+4. **Create a Promotion** — Amplify your reach and sell more of what you've already created.
 
 ### Step 2: Route to Path
 
@@ -135,7 +145,7 @@ Your earnings = ticket revenue collected. Track in:
 
 ## Path C: Reselling (Inventory)
 
-> User wants to earn commissions by selling other creators' events.
+> User wants to earn commissions by selling other event hosts' events.
 
 **Navigation:** Business Hub → Sell & Earn → Inventory
 
@@ -148,11 +158,18 @@ Inventory is a curated list of events available for reselling. Each event shows:
 
 ### How Commission Works
 
+**The outcome**: You earn a portion of each ticket sale. The more you sell, the more you earn.
+
+**The formula**:
 ```
 Your earnings per ticket = Ticket price × Commission rate
 ```
 
-The commission rate is set by the event creator. Your earnings per ticket is displayed on each Inventory card.
+**Real examples**:
+- A **€99 in-person workshop** with 20% commission → You earn **€19.80 per ticket**
+- A **€10 online event** with 20% commission → You earn **€2 per ticket**
+
+The commission rate is set by the event host. Your exact earnings per ticket is displayed on each Inventory card—no math required.
 
 ### Steps
 
@@ -186,7 +203,7 @@ The commission rate is set by the event creator. Your earnings per ticket is dis
 
 ## Promotions Flow
 
-> User wants to create shareable campaigns for their events, services, or reseller links.
+> Promotions amplify your earnings. They help you sell more of what you've already created—events, services, or reseller items.
 
 **Navigation:** Business Hub → Sell & Earn → Promotions
 
@@ -302,6 +319,8 @@ View and manage:
 > ```
 > Earnings per ticket = Ticket price × Commission rate
 > ```
+> For example, a €50 ticket with 20% commission = €10 earnings per ticket.
+>
 > Verify the ticket price and commission rate on the event details. If the calculation still seems off, contact support.
 
 ---
