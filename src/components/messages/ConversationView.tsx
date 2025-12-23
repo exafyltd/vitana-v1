@@ -74,6 +74,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     virtualizationThreshold: 200,
   });
 
+  // CRITICAL: Only pass real threadId, never recipientId (prevents wrong cache key)
   const {
     threads,
     messages: hybridMessagesFromHook,
@@ -85,7 +86,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     stopTyping,
     fetchMessages,
     context: messageContext
-  } = useHybridMessages(context, threadId || recipientId);
+  } = useHybridMessages(context, threadId);
 
   // Debug logging
   console.log('ConversationView render:', {
