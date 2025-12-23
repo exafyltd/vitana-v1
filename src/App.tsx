@@ -21,6 +21,7 @@ import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationCont
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import Index from "./pages/Index";
+import ShareEntry from "./pages/ShareEntry";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
@@ -300,7 +301,7 @@ const App = () => {
                         <VitanaAudioOverlay />
                         <TenantDetector />
                   <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<ShareEntry fallback={<Index />} />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Navigate to="/auth" replace />} />

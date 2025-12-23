@@ -260,11 +260,21 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Build the clean destination URL (no UTMs for users)
+    // Build the safe destination URL (preserve UTMs for attribution)
+    // IMPORTANT: Use a root-path + query approach to avoid deep-link 404s on hosts
+    // that don't rewrite arbitrary SPA routes to index.html.
     const appBaseUrl = 'https://vitana.exafy.io';
-    const destinationUrl = event.slug 
-      ? `${appBaseUrl}/e/${encodeURIComponent(event.slug)}`
-      : `${appBaseUrl}/pub/events/${encodeURIComponent(event.id)}`;
+
+    const shareParams = new URLSearchParams();
+    shareParams.set('share', 'event');
+    if (event.slug) shareParams.set('slug', event.slug);
+    else shareParams.set('id', event.id);
+
+    if (utmSource) shareParams.set('utm_source', utmSource);
+    if (utmMedium) shareParams.set('utm_medium', utmMedium);
+    if (utmCampaign) shareParams.set('utm_campaign', utmCampaign);
+
+    const destinationUrl = `${appBaseUrl}/?${shareParams.toString()}`;
 
     console.log('Event found:', { 
       id: event.id, 
