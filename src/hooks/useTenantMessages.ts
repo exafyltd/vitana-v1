@@ -47,13 +47,12 @@ export interface TenantMessageThread {
   unread_count: number;
 }
 
-export function useTenantMessages() {
+export function useTenantMessages(activeThreadId?: string | null) {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
   const { addEvent } = useCalendarEvents();
   const queryClient = useQueryClient();
-  const [messages, setMessages] = useState<TenantMessage[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
@@ -194,8 +193,55 @@ export function useTenantMessages() {
     staleTime: 2 * 60 * 1000,
   });
 
+  // React Query for messages - per-thread caching
+  const {
+    data: messages = [],
+    isLoading: isMessagesLoading,
+    isFetching: isMessagesFetching,
+    refetch: refetchMessages,
+  } = useQuery({
+    queryKey: ['tenant-messages', activeThreadId, activeTenantId],
+    queryFn: async () => {
+      if (!user || !activeTenantId || !isTenantContext || !activeThreadId) return [];
+
+      const [messagesResponse, profilesResponse] = await Promise.all([
+        supabase
+          .from('messages')
+          .select('*')
+          .eq('tenant_id', activeTenantId)
+          .eq('thread_id', activeThreadId)
+          .order('created_at', { ascending: true }),
+        supabase
+          .from('profiles')
+          .select('user_id, full_name, display_name, avatar_url')
+          .eq('tenant_id', activeTenantId)
+      ]);
+
+      if (messagesResponse.error) throw messagesResponse.error;
+      
+      const messagesData = messagesResponse.data || [];
+      const senderIds = messagesData.map(m => m.sender_id);
+      
+      const senderProfiles = profilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+
+      return messagesData.map(message => ({
+        ...message,
+        sender: senderProfiles.find(p => p.user_id === message.sender_id) || null
+      }));
+    },
+    enabled: !!user && !!activeTenantId && !!activeThreadId && !!isTenantContext,
+    staleTime: 2 * 60 * 1000,
+  });
+
   // Derived loading state for backwards compatibility
-  const isLoading = isThreadsLoading;
+  const isLoading = isThreadsLoading || isMessagesLoading;
+
+  // Helper to optimistically update messages in React Query cache
+  const updateMessagesOptimistically = useCallback((threadId: string, updater: (prev: TenantMessage[]) => TenantMessage[]) => {
+    queryClient.setQueryData(['tenant-messages', threadId, activeTenantId], (prev: TenantMessage[] | undefined) => {
+      return updater(prev || []);
+    });
+  }, [queryClient, activeTenantId]);
 
   // Helper to optimistically update threads in React Query cache
   const updateThreadsOptimistically = useCallback((updater: (prev: TenantMessageThread[]) => TenantMessageThread[]) => {
@@ -209,86 +255,13 @@ export function useTenantMessages() {
     await refetchThreads();
   }, [refetchThreads]);
 
+  // Legacy fetchMessages for backwards compatibility - now triggers refetch
   const fetchMessages = useCallback(async (threadId?: string, recipientId?: string) => {
-    if (!user || !activeTenantId || !isTenantContext) {
-      setMessages([]);
-      return;
+    if (threadId === activeThreadId) {
+      await refetchMessages();
     }
-
-    try {
-      const cacheKey = threadId || `direct:${recipientId}`;
-      
-      // Check cache first
-      const cached = messageCache.get<TenantMessage>(cacheKey, 'tenant', activeTenantId);
-      if (cached) {
-        setMessages(cached);
-        
-        // Start background refresh if stale
-        if (messageCache.isStale(cacheKey, 'tenant', activeTenantId)) {
-          // Continue with background fetch without clearing messages
-        } else {
-          return; // Fresh cache, no need to fetch
-        }
-      }
-
-      // Check for in-flight request
-      const inFlight = messageCache.getInFlight(cacheKey, 'tenant', activeTenantId);
-      if (inFlight) {
-        await inFlight;
-        return;
-      }
-      
-      // Mark as in-flight
-      const fetchPromise = (async () => {
-        let query = supabase
-          .from('messages')
-          .select('*')
-          .eq('tenant_id', activeTenantId)
-          .order('created_at', { ascending: true });
-
-        if (threadId) {
-          query = query.eq('thread_id', threadId);
-        } else if (recipientId) {
-          query = query.or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`);
-        }
-
-        // Parallel fetch of messages and profiles
-        const [messagesResponse, profilesResponse] = await Promise.all([
-          query,
-          supabase
-            .from('profiles')
-            .select('user_id, full_name, display_name, avatar_url')
-            .eq('tenant_id', activeTenantId) // Optimize by filtering profiles to tenant
-        ]);
-
-        if (messagesResponse.error) throw messagesResponse.error;
-        
-        const messagesData = messagesResponse.data || [];
-        const senderIds = messagesData.map(m => m.sender_id);
-        
-        // Filter profiles to only needed senders
-        const senderProfiles = profilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
-
-        // Combine messages with sender data
-        const messagesWithSenders = messagesData.map(message => ({
-          ...message,
-          sender: senderProfiles.find(p => p.user_id === message.sender_id) || null
-        }));
-
-        return messagesWithSenders;
-      })();
-
-      messageCache.setInFlight(cacheKey, 'tenant', fetchPromise, activeTenantId);
-      const messagesWithSenders = await fetchPromise;
-
-      // Cache the results
-      messageCache.set(cacheKey, 'tenant', messagesWithSenders, activeTenantId);
-      setMessages(messagesWithSenders);
-    } catch (error) {
-      console.error('Error fetching tenant messages:', error);
-      setMessages([]);
-    }
-  }, [user, activeTenantId, isTenantContext]);
+    // For different thread, the queryKey change will trigger automatic fetch
+  }, [activeThreadId, refetchMessages]);
 
 
   // Legacy sendMessage for backwards compatibility - will be removed
@@ -328,10 +301,12 @@ export function useTenantMessages() {
         sender: userProfile || null
       };
 
-      // Add optimistic message immediately
-      setMessages(prev => [...prev, optimisticMessage]);
+      // Add optimistic message immediately to React Query cache
+      if (threadId) {
+        updateMessagesOptimistically(threadId, prev => [...prev, optimisticMessage]);
+      }
 
-      // Update cache with optimistic message
+      // Update legacy cache for compatibility
       const optimisticCacheKey = threadId || `direct:${recipientId}`;
       messageCache.addMessage(optimisticCacheKey, 'tenant', optimisticMessage, activeTenantId);
 
@@ -354,19 +329,23 @@ export function useTenantMessages() {
 
       if (error) {
         // Remove optimistic message on error
-        setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
+        if (threadId) {
+          updateMessagesOptimistically(threadId, prev => prev.filter(msg => msg.id !== optimisticMessage.id));
+        }
         // Normalize error to standard Error object
         throw new Error(error.message || error.hint || 'Failed to send message');
       }
 
       // Replace optimistic message with real message
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === optimisticMessage.id 
-            ? { ...data, sender: userProfile } 
-            : msg
-        )
-      );
+      if (threadId) {
+        updateMessagesOptimistically(threadId, prev => 
+          prev.map(msg => 
+            msg.id === optimisticMessage.id 
+              ? { ...data, sender: userProfile } 
+              : msg
+          )
+        );
+      }
 
       // Update cache with real message
       const realCacheKey = threadId || `direct:${recipientId}`;
@@ -626,7 +605,7 @@ export function useTenantMessages() {
           
           // If this is our own message, replace any temp message with the real one
           if (newMessage.sender_id === user.id) {
-            setMessages(prev => {
+            updateMessagesOptimistically(newMessage.thread_id, prev => {
               // Find and remove any temp messages for this user that might be stuck
               const tempMessageIndex = prev.findIndex(msg => 
                 msg.id.startsWith('temp-') && 
@@ -661,8 +640,8 @@ export function useTenantMessages() {
             .eq('user_id', newMessage.sender_id)
             .maybeSingle();
 
-          // Add message with sender data
-          setMessages(prev => [...prev, {
+          // Add message with sender data to the specific thread's cache
+          updateMessagesOptimistically(newMessage.thread_id, prev => [...prev, {
             ...newMessage,
             sender: senderProfile
           }]);
@@ -701,8 +680,8 @@ export function useTenantMessages() {
           // Only update messages for our tenant
           if (updatedMessage.tenant_id !== activeTenantId) return;
           
-          // Update the message status in local state for real-time read receipts
-          setMessages(prev => prev.map(msg => 
+          // Update the message status in React Query cache for real-time read receipts
+          updateMessagesOptimistically(updatedMessage.thread_id, prev => prev.map(msg => 
             msg.id === updatedMessage.id 
               ? {
                   ...msg,
@@ -740,12 +719,8 @@ export function useTenantMessages() {
     };
   }, [user, activeTenantId, isTenantContext, fetchThreads]);
 
-  // React Query handles initial fetch - just clear messages when switching context
-  useEffect(() => {
-    if (!isTenantContext || !activeTenantId) {
-      setMessages([]);
-    }
-  }, [isTenantContext, activeTenantId]);
+  // React Query handles initial fetch via enabled flag - no manual useEffect needed
+  // No need to clear messages when context changes - React Query handles per-thread caching
 
   const startTyping = useCallback(async (threadId?: string) => {
     if (!user || !activeTenantId || !isTenantContext || !threadId) return;
@@ -793,7 +768,7 @@ export function useTenantMessages() {
     messages,
     threads,
     isLoading,
-    isFetching: isThreadsFetching,
+    isFetching: isThreadsFetching || isMessagesFetching,
     isSending,
     typingUsers,
     sendMessage,

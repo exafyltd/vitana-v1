@@ -297,12 +297,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     fetchRecipientData();
   }, [recipientId, context]);
 
-  // Ensure messages are fetched when switching threads
-  useEffect(() => {
-    if (threadId) {
-      fetchMessages(threadId);
-    }
-  }, [threadId, fetchMessages]);
+  // React Query handles message fetching automatically via threadId in useHybridMessages
+  // No manual fetchMessages call needed - removing to prevent duplicate fetches
 
   useEffect(() => {
     if (threadId) {
