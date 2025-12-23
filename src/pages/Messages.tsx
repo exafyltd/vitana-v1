@@ -1,3 +1,4 @@
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -50,23 +51,32 @@ export default function Messages() {
   const isMobile = useIsMobile();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
   const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
-  const globalMessages = useHybridMessages('global');
-  const tenantMessages = useHybridMessages('tenant');
   const isGlobalContext = context === 'global';
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
-  const [localThreads, setLocalThreads] = useState(threads);
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
   const [conversationFilter, setConversationFilter] = useState<'all' | 'groups' | 'direct' | 'contacts'>('all');
+  
+  // Track optimistic unread updates (threadId -> 0)
+  const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
+
+  // SINGLE SOURCE OF TRUTH: Derive displayThreads from React Query threads + optimistic updates
+  const displayThreads = React.useMemo(() => {
+    return threads.map(thread => ({
+      ...thread,
+      // Apply optimistic unread updates if they exist
+      unread_count: optimisticUnreadUpdates[thread.id] ?? thread.unread_count
+    }));
+  }, [threads, optimisticUnreadUpdates]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
   useEffect(() => {
-    if (localThreads.length > 0 && !selectedThreadId) {
+    if (displayThreads.length > 0 && !selectedThreadId) {
       // Get the most recent conversation from the sorted and deduplicated list
-      const sortedThreads = [...localThreads]
+      const sortedThreads = [...displayThreads]
         .sort((a, b) => {
           const ap = pinnedThreads.has(a.id) ? 1 : 0;
           const bp = pinnedThreads.has(b.id) ? 1 : 0;
@@ -90,92 +100,57 @@ export default function Messages() {
             acc.push({ ...thread, _dedupeKey: thread.id });
             return acc;
           }
-        }, [] as (typeof localThreads[0] & { _dedupeKey: string })[]);
+        }, [] as (typeof displayThreads[0] & { _dedupeKey: string })[]);
 
       if (sortedThreads.length > 0) {
         setSelectedThreadId(sortedThreads[0].id);
         setSelectedRecipientId(null);
       }
     }
-  }, [localThreads, selectedThreadId, pinnedThreads, user?.id]);
+  }, [displayThreads, selectedThreadId, pinnedThreads, user?.id]);
 
   // Reset selection when context changes
   useEffect(() => {
     setSelectedThreadId(null);
     setSelectedRecipientId(null);
+    setOptimisticUnreadUpdates({}); // Clear optimistic updates
   }, [messageContext]);
 
-  // Handle real-time unread sync across tabs/devices
-  const handleThreadRead = useCallback((threadId: string, context: 'global' | 'tenant') => {
-    console.log('📖 Messages.tsx: handleThreadRead called', { threadId, context, messageContext });
-    if (context === messageContext) {
-      setLocalThreads(prev => {
-        const updated = prev.map(thread => 
-          thread.id === threadId 
-            ? { ...thread, unread_count: 0 }
-            : thread
-        );
-        console.log('📖 Messages.tsx: Local threads updated for read', { threadId, updated: updated.find(t => t.id === threadId) });
-        return updated;
-      });
+  // Handle real-time unread sync across tabs/devices - update optimistic state
+  const handleThreadRead = useCallback((threadId: string, ctx: 'global' | 'tenant') => {
+    console.log('📖 Messages.tsx: handleThreadRead called', { threadId, ctx, messageContext });
+    if (ctx === messageContext) {
+      setOptimisticUnreadUpdates(prev => ({
+        ...prev,
+        [threadId]: 0
+      }));
     }
   }, [messageContext]);
 
   // Immediate optimistic unread update when conversation is opened
   const handleConversationOpened = useCallback((threadId: string) => {
     console.log('🚀 Messages.tsx: Conversation opened immediately', { threadId, messageContext });
-    setLocalThreads(prev => {
-      const updated = prev.map(thread => 
-        thread.id === threadId 
-          ? { ...thread, unread_count: 0 }
-          : thread
-      );
-      const updatedThread = updated.find(t => t.id === threadId);
-      console.log('🚀 Messages.tsx: Immediate unread count update', { 
-        threadId, 
-        before: prev.find(t => t.id === threadId)?.unread_count,
-        after: updatedThread?.unread_count 
-      });
-      return updated;
-    });
-  }, [messageContext]);
+    setOptimisticUnreadUpdates(prev => ({
+      ...prev,
+      [threadId]: 0
+    }));
+  }, []);
 
-  // Move the just-sent conversation to the top instantly (independent of hook instance)
+  // Move the just-sent conversation to the top instantly via React Query cache
   const handleMessageSent = useCallback((threadId: string, newMessage: any, ctx: 'global' | 'tenant') => {
-    if (ctx !== messageContext) return;
-    setLocalThreads(prev => {
-      const existing = prev.find(t => t.id === threadId);
-      if (!existing) return prev;
-      const updatedThread = {
-        ...existing,
-        updated_at: newMessage?.created_at || new Date().toISOString(),
-        last_message: newMessage ? { ...newMessage } : existing.last_message,
-      } as any;
-      const others = prev.filter(t => t.id !== threadId);
-      return [updatedThread, ...others];
-    });
-  }, [messageContext]);
+    // The hooks already update the React Query cache optimistically
+    // No need for local state manipulation
+    console.log('📨 Messages.tsx: Message sent', { threadId, ctx });
+  }, []);
 
-  const handleUnreadChange = useCallback((threadId: string, context: 'global' | 'tenant') => {
-    if (context === messageContext) {
-      // Use the fetchThreads function from the appropriate hook
-      setTimeout(() => {
-        if (isGlobalContext) {
-          globalMessages.fetchThreads();
-        } else {
-          tenantMessages.fetchThreads();
-        }
-      }, 100); // Small delay to ensure DB is updated
-    }
-  }, [messageContext, isGlobalContext, globalMessages, tenantMessages]);
+  const handleUnreadChange = useCallback((threadId: string, ctx: 'global' | 'tenant') => {
+    // React Query will refetch on stale time or when invalidated
+    // No aggressive setTimeout refetch needed
+    console.log('🔔 Messages.tsx: Unread change detected', { threadId, ctx });
+  }, []);
 
   // Initialize unread sync
   useUnreadSync(handleThreadRead, handleUnreadChange);
-
-  // Keep local threads in sync with fetched threads
-  useEffect(() => {
-    setLocalThreads(threads);
-  }, [threads]);
 
   const handleConversationCreated = (threadId: string, recipientId: string) => {
     setSelectedThreadId(threadId);
@@ -230,15 +205,15 @@ export default function Messages() {
     return 57; // 57% on desktop - chat remains wider
   };
 
-  const getFilteredThreads = (threads: typeof localThreads, filter: typeof conversationFilter) => {
-    if (filter === 'all') return threads;
-    if (filter === 'groups') return threads.filter(t => t.type === 'group');
-    if (filter === 'direct') return threads.filter(t => t.type === 'direct');
+  const getFilteredThreads = (threadsList: typeof displayThreads, filter: typeof conversationFilter) => {
+    if (filter === 'all') return threadsList;
+    if (filter === 'groups') return threadsList.filter(t => t.type === 'group');
+    if (filter === 'direct') return threadsList.filter(t => t.type === 'direct');
     return [];
   };
 
-  const renderConversationList = (threads: typeof localThreads) => {
-    const filteredThreads = getFilteredThreads(threads, conversationFilter);
+  const renderConversationList = (threadsList: typeof displayThreads) => {
+    const filteredThreads = getFilteredThreads(threadsList, conversationFilter);
 
     return (
       <Tabs value={conversationFilter} onValueChange={(v) => setConversationFilter(v as any)} className="w-full">
@@ -275,7 +250,7 @@ export default function Messages() {
               <EmptyStateIllustration 
                 type="inbox"
                 context={messageContext}
-                threads={threads}
+                threads={threadsList}
                 onAction={() => setShowNewConversation(true)}
                 onCreateGroup={() => setShowCreateGroup(true)}
               />
@@ -304,7 +279,7 @@ export default function Messages() {
                     acc.push({ ...thread, _dedupeKey: thread.id });
                     return acc;
                   }
-                }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+                }, [] as (typeof displayThreads[0] & { _dedupeKey: string })[])
                 .map((thread) => {
                   const isPinned = pinnedThreads.has(thread.id);
                   const isActive = selectedThreadId === thread.id;
@@ -571,7 +546,7 @@ export default function Messages() {
                     return filtered;
                   }
                   return acc;
-                }, [] as (typeof localThreads[0] & { _dedupeKey: string })[])
+                }, [] as (typeof displayThreads[0] & { _dedupeKey: string })[])
                 .map((thread) => {
                   const isPinned = pinnedThreads.has(thread.id);
                   const isActive = selectedThreadId === thread.id;
@@ -677,7 +652,7 @@ export default function Messages() {
             <div className="h-full bg-card/50 backdrop-blur-sm">
               <ScrollArea className="flex-1">
                 <div className="p-4 pr-12">
-                  {renderConversationList(localThreads)}
+                  {renderConversationList(displayThreads)}
                 </div>
               </ScrollArea>
             </div>
@@ -716,7 +691,7 @@ export default function Messages() {
             <div className="h-full border-r bg-card/50 backdrop-blur-sm">
               <ScrollArea className="h-full">
                 <div className="p-4 pr-12">
-                  {renderConversationList(localThreads)}
+                  {renderConversationList(displayThreads)}
                 </div>
               </ScrollArea>
             </div>
