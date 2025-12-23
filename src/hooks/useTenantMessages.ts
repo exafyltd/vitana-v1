@@ -204,29 +204,33 @@ export function useTenantMessages(activeThreadId?: string | null) {
     queryFn: async () => {
       if (!user || !activeTenantId || !isTenantContext || !activeThreadId) return [];
 
-      const [messagesResponse, profilesResponse] = await Promise.all([
-        supabase
-          .from('messages')
-          .select('*')
-          .eq('tenant_id', activeTenantId)
-          .eq('thread_id', activeThreadId)
-          .order('created_at', { ascending: true }),
-        supabase
-          .from('profiles')
-          .select('user_id, full_name, display_name, avatar_url')
-          .eq('tenant_id', activeTenantId)
-      ]);
+      const { data: messagesData = [], error: messagesError } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('tenant_id', activeTenantId)
+        .eq('thread_id', activeThreadId)
+        .order('created_at', { ascending: true });
 
-      if (messagesResponse.error) throw messagesResponse.error;
-      
-      const messagesData = messagesResponse.data || [];
-      const senderIds = messagesData.map(m => m.sender_id);
-      
-      const senderProfiles = profilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+      if (messagesError) throw messagesError;
+
+      const senderIds = Array.from(new Set(messagesData.map(m => m.sender_id).filter(Boolean)));
+      if (senderIds.length === 0) {
+        return messagesData.map(message => ({ ...message, sender: null }));
+      }
+
+      const { data: senderProfiles = [], error: profilesError } = await supabase
+        .from('profiles')
+        .select('user_id, full_name, display_name, avatar_url')
+        .eq('tenant_id', activeTenantId)
+        .in('user_id', senderIds);
+
+      if (profilesError) throw profilesError;
+
+      const profileMap = new Map(senderProfiles.map(p => [p.user_id, p] as const));
 
       return messagesData.map(message => ({
         ...message,
-        sender: senderProfiles.find(p => p.user_id === message.sender_id) || null
+        sender: profileMap.get(message.sender_id) || null,
       }));
     },
     enabled: !!user && !!activeTenantId && !!activeThreadId && !!isTenantContext,
@@ -769,6 +773,10 @@ export function useTenantMessages(activeThreadId?: string | null) {
     threads,
     isLoading,
     isFetching: isThreadsFetching || isMessagesFetching,
+    isThreadsLoading,
+    isThreadsFetching,
+    isMessagesLoading,
+    isMessagesFetching,
     isSending,
     typingUsers,
     sendMessage,

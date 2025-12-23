@@ -183,43 +183,55 @@ export function useGlobalMessages(activeThreadId?: string | null) {
     queryFn: async () => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
 
-      const [messagesResponse, globalProfilesResponse, mainProfilesResponse] = await Promise.all([
-        supabase
-          .from('global_messages')
-          .select('*')
-          .eq('thread_id', activeThreadId)
-          .order('created_at', { ascending: true }),
+      const { data: messagesData = [], error: messagesError } = await supabase
+        .from('global_messages')
+        .select('*')
+        .eq('thread_id', activeThreadId)
+        .order('created_at', { ascending: true });
+
+      if (messagesError) throw messagesError;
+
+      const senderIds = Array.from(new Set(messagesData.map(m => m.sender_id).filter(Boolean)));
+      if (senderIds.length === 0) {
+        return messagesData.map(message => ({ ...message, sender: null }));
+      }
+
+      const [globalProfilesResponse, mainProfilesResponse] = await Promise.all([
         supabase
           .from('global_community_profiles')
-          .select('user_id, display_name, avatar_url'),
+          .select('user_id, display_name, avatar_url')
+          .in('user_id', senderIds),
         supabase
           .from('profiles')
           .select('user_id, display_name, full_name, avatar_url')
+          .in('user_id', senderIds),
       ]);
 
-      if (messagesResponse.error) throw messagesResponse.error;
-      
-      const messagesData = messagesResponse.data || [];
-      const senderIds = messagesData.map(m => m.sender_id);
+      if (globalProfilesResponse.error) throw globalProfilesResponse.error;
+      if (mainProfilesResponse.error) throw mainProfilesResponse.error;
 
-      const globalProfiles = globalProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
-      const mainProfiles = mainProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+      const globalProfiles = globalProfilesResponse.data || [];
+      const mainProfiles = mainProfilesResponse.data || [];
 
       const profileMap: Record<string, any> = {};
       senderIds.forEach(userId => {
         const globalProfile = globalProfiles.find(p => p.user_id === userId);
         const mainProfile = mainProfiles.find(p => p.user_id === userId);
-        
+
         profileMap[userId] = {
           user_id: userId,
-          display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
-          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+          display_name:
+            globalProfile?.display_name ||
+            mainProfile?.display_name ||
+            mainProfile?.full_name ||
+            'Unknown User',
+          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null,
         };
       });
 
       return messagesData.map(message => ({
         ...message,
-        sender: profileMap[message.sender_id] || null
+        sender: profileMap[message.sender_id] || null,
       }));
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
@@ -762,6 +774,10 @@ export function useGlobalMessages(activeThreadId?: string | null) {
     threads,
     isLoading,
     isFetching: isThreadsFetching || isMessagesFetching,
+    isThreadsLoading,
+    isThreadsFetching,
+    isMessagesLoading,
+    isMessagesFetching,
     isSending,
     typingUsers,
     sendMessage,
