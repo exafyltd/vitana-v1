@@ -26,8 +26,8 @@ function isCrawler(userAgent: string): boolean {
 function ensureAbsoluteUrl(url: string | null | undefined): string {
   if (!url) return 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  if (url.startsWith('/')) return `https://vitana-v1.lovable.app${url}`;
-  return `https://vitana-v1.lovable.app/${url}`;
+  if (url.startsWith('/')) return `https://vitana.exafy.io${url}`;
+  return `https://vitana.exafy.io/${url}`;
 }
 
 // Use direct storage URL without transformation for reliability
@@ -68,7 +68,7 @@ function getImageMimeType(url: string): string {
 // Generate fallback HTML for invalid/missing events
 function generateFallbackHTML(): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
-  const homeUrl = 'https://vitana-v1.lovable.app/home';
+  const homeUrl = 'https://vitana.exafy.io/home';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -261,7 +261,7 @@ Deno.serve(async (req) => {
     }
 
     // Build the clean destination URL (no UTMs for users)
-    const appBaseUrl = 'https://vitana-v1.lovable.app';
+    const appBaseUrl = 'https://vitana.exafy.io';
     const destinationUrl = event.slug 
       ? `${appBaseUrl}/e/${encodeURIComponent(event.slug)}`
       : `${appBaseUrl}/pub/events/${encodeURIComponent(event.id)}`;
