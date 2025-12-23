@@ -73,6 +73,7 @@ export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?:
       startTyping,
       stopTyping,
       context: 'global' as const,
+      isFetching: globalMessages.isFetching,
     };
   } else {
     return {
@@ -83,6 +84,7 @@ export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?:
       startTyping,
       stopTyping,
       context: 'tenant' as const,
+      isFetching: tenantMessages.isFetching,
     };
   }
 }

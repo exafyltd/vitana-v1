@@ -49,7 +49,7 @@ export default function Messages() {
   const { currentRole } = useRole();
   const isMobile = useIsMobile();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
-  const { threads, isLoading, context, ...hybridMessages } = useHybridMessages(messageContext);
+  const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const globalMessages = useHybridMessages('global');
   const tenantMessages = useHybridMessages('tenant');
   const isGlobalContext = context === 'global';
@@ -188,7 +188,8 @@ export default function Messages() {
     setSelectedRecipientId(null);
   };
 
-  if (isLoading) {
+  // Only show skeleton when loading AND no cached data
+  if (isLoading && threads.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
         <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
