@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { useTenant } from "./useTenant";
@@ -51,113 +52,25 @@ export function useTenantMessages() {
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
   const { addEvent } = useCalendarEvents();
+  const queryClient = useQueryClient();
   const [messages, setMessages] = useState<TenantMessage[]>([]);
-  const [threads, setThreads] = useState<TenantMessageThread[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
   // Only use tenant messages for professional roles
   const isTenantContext = currentRole && ['patient', 'professional', 'staff', 'admin'].includes(currentRole);
 
-  const fetchMessages = useCallback(async (threadId?: string, recipientId?: string) => {
-    if (!user || !activeTenantId || !isTenantContext) {
-      setMessages([]);
-      setIsLoading(false);
-      return;
-    }
+  // React Query for threads - cache-first rendering
+  const {
+    data: threads = [],
+    isLoading: isThreadsLoading,
+    isFetching: isThreadsFetching,
+    refetch: refetchThreads,
+  } = useQuery({
+    queryKey: ['tenant-threads', user?.id, activeTenantId],
+    queryFn: async () => {
+      if (!user || !activeTenantId || !isTenantContext) return [];
 
-    try {
-      const cacheKey = threadId || `direct:${recipientId}`;
-      
-      // Check cache first
-      const cached = messageCache.get<TenantMessage>(cacheKey, 'tenant', activeTenantId);
-      if (cached) {
-        setMessages(cached);
-        setIsLoading(false);
-        
-        // Start background refresh if stale
-        if (messageCache.isStale(cacheKey, 'tenant', activeTenantId)) {
-          // Continue with background fetch without clearing messages
-        } else {
-          return; // Fresh cache, no need to fetch
-        }
-      } else {
-        // No cache, show loading
-        setIsLoading(true);
-      }
-
-      // Check for in-flight request
-      const inFlight = messageCache.getInFlight(cacheKey, 'tenant', activeTenantId);
-      if (inFlight) {
-        await inFlight;
-        return;
-      }
-      
-      // Mark as in-flight
-      const fetchPromise = (async () => {
-        let query = supabase
-          .from('messages')
-          .select('*')
-          .eq('tenant_id', activeTenantId)
-          .order('created_at', { ascending: true });
-
-        if (threadId) {
-          query = query.eq('thread_id', threadId);
-        } else if (recipientId) {
-          query = query.or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`);
-        }
-
-        // Parallel fetch of messages and profiles
-        const [messagesResponse, profilesResponse] = await Promise.all([
-          query,
-          supabase
-            .from('profiles')
-            .select('user_id, full_name, display_name, avatar_url')
-            .eq('tenant_id', activeTenantId) // Optimize by filtering profiles to tenant
-        ]);
-
-        if (messagesResponse.error) throw messagesResponse.error;
-        
-        const messagesData = messagesResponse.data || [];
-        const senderIds = messagesData.map(m => m.sender_id);
-        
-        // Filter profiles to only needed senders
-        const senderProfiles = profilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
-
-        // Combine messages with sender data
-        const messagesWithSenders = messagesData.map(message => ({
-          ...message,
-          sender: senderProfiles.find(p => p.user_id === message.sender_id) || null
-        }));
-
-        return messagesWithSenders;
-      })();
-
-      messageCache.setInFlight(cacheKey, 'tenant', fetchPromise, activeTenantId);
-      const messagesWithSenders = await fetchPromise;
-
-      // Cache the results
-      messageCache.set(cacheKey, 'tenant', messagesWithSenders, activeTenantId);
-      setMessages(messagesWithSenders);
-    } catch (error) {
-      console.error('Error fetching tenant messages:', error);
-      setMessages([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [user, activeTenantId, isTenantContext]);
-
-  const fetchThreads = useCallback(async () => {
-    if (!user || !activeTenantId || !isTenantContext) {
-      setThreads([]);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      
       // First get thread IDs where user participates
       const { data: myParticipation, error: partErr } = await supabase
         .from('thread_participants')
@@ -168,11 +81,7 @@ export function useTenantMessages() {
       if (partErr) throw partErr;
 
       const threadIds = (myParticipation || []).map((p: any) => p.thread_id);
-      if (threadIds.length === 0) {
-        setThreads([]);
-        setIsLoading(false);
-        return;
-      }
+      if (threadIds.length === 0) return [];
 
       // Get threads by IDs
       const { data: threadRows, error: threadError } = await supabase
@@ -270,7 +179,7 @@ export function useTenantMessages() {
         })
       );
 
-      // Deduplicate threads by ID to prevent duplicates
+      // Deduplicate threads by ID
       const uniqueThreads = threadsWithDetails.reduce((acc: any[], thread: any) => {
         const existing = acc.find(t => t.id === thread.id);
         if (!existing) {
@@ -279,14 +188,108 @@ export function useTenantMessages() {
         return acc;
       }, []);
 
-      setThreads(uniqueThreads);
-      setIsLoading(false);
+      return uniqueThreads;
+    },
+    enabled: !!user && !!activeTenantId && !!isTenantContext,
+    staleTime: 2 * 60 * 1000,
+  });
+
+  // Derived loading state for backwards compatibility
+  const isLoading = isThreadsLoading;
+
+  // Helper to optimistically update threads in React Query cache
+  const updateThreadsOptimistically = useCallback((updater: (prev: TenantMessageThread[]) => TenantMessageThread[]) => {
+    queryClient.setQueryData(['tenant-threads', user?.id, activeTenantId], (prev: TenantMessageThread[] | undefined) => {
+      return updater(prev || []);
+    });
+  }, [queryClient, user?.id, activeTenantId]);
+
+  // Legacy fetchThreads for backwards compatibility - now triggers refetch
+  const fetchThreads = useCallback(async () => {
+    await refetchThreads();
+  }, [refetchThreads]);
+
+  const fetchMessages = useCallback(async (threadId?: string, recipientId?: string) => {
+    if (!user || !activeTenantId || !isTenantContext) {
+      setMessages([]);
+      return;
+    }
+
+    try {
+      const cacheKey = threadId || `direct:${recipientId}`;
+      
+      // Check cache first
+      const cached = messageCache.get<TenantMessage>(cacheKey, 'tenant', activeTenantId);
+      if (cached) {
+        setMessages(cached);
+        
+        // Start background refresh if stale
+        if (messageCache.isStale(cacheKey, 'tenant', activeTenantId)) {
+          // Continue with background fetch without clearing messages
+        } else {
+          return; // Fresh cache, no need to fetch
+        }
+      }
+
+      // Check for in-flight request
+      const inFlight = messageCache.getInFlight(cacheKey, 'tenant', activeTenantId);
+      if (inFlight) {
+        await inFlight;
+        return;
+      }
+      
+      // Mark as in-flight
+      const fetchPromise = (async () => {
+        let query = supabase
+          .from('messages')
+          .select('*')
+          .eq('tenant_id', activeTenantId)
+          .order('created_at', { ascending: true });
+
+        if (threadId) {
+          query = query.eq('thread_id', threadId);
+        } else if (recipientId) {
+          query = query.or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`);
+        }
+
+        // Parallel fetch of messages and profiles
+        const [messagesResponse, profilesResponse] = await Promise.all([
+          query,
+          supabase
+            .from('profiles')
+            .select('user_id, full_name, display_name, avatar_url')
+            .eq('tenant_id', activeTenantId) // Optimize by filtering profiles to tenant
+        ]);
+
+        if (messagesResponse.error) throw messagesResponse.error;
+        
+        const messagesData = messagesResponse.data || [];
+        const senderIds = messagesData.map(m => m.sender_id);
+        
+        // Filter profiles to only needed senders
+        const senderProfiles = profilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+
+        // Combine messages with sender data
+        const messagesWithSenders = messagesData.map(message => ({
+          ...message,
+          sender: senderProfiles.find(p => p.user_id === message.sender_id) || null
+        }));
+
+        return messagesWithSenders;
+      })();
+
+      messageCache.setInFlight(cacheKey, 'tenant', fetchPromise, activeTenantId);
+      const messagesWithSenders = await fetchPromise;
+
+      // Cache the results
+      messageCache.set(cacheKey, 'tenant', messagesWithSenders, activeTenantId);
+      setMessages(messagesWithSenders);
     } catch (error) {
-      console.error('Error fetching tenant threads:', error);
-      setThreads([]);
-      setIsLoading(false);
+      console.error('Error fetching tenant messages:', error);
+      setMessages([]);
     }
   }, [user, activeTenantId, isTenantContext]);
+
 
   // Legacy sendMessage for backwards compatibility - will be removed
   const sendMessageLegacy = useCallback(async (
@@ -431,7 +434,7 @@ export function useTenantMessages() {
           .eq('tenant_id', activeTenantId);
 
         // Immediately move this thread to the top locally for instant feedback
-        setThreads(prev => {
+        updateThreadsOptimistically(prev => {
           const threadToMove = prev.find(t => t.id === threadId);
           if (!threadToMove) return prev;
           
@@ -566,7 +569,7 @@ export function useTenantMessages() {
 
           if (!error) {
             // Optimistically update local state immediately
-            setThreads(prev => prev.map(thread => 
+            updateThreadsOptimistically(prev => prev.map(thread => 
               thread.id === threadId 
                 ? { ...thread, unread_count: 0 }
                 : thread
@@ -665,7 +668,7 @@ export function useTenantMessages() {
           }]);
           
           // Immediately move the thread with new message to the top
-          setThreads(prev => {
+          updateThreadsOptimistically(prev => {
             const threadToMove = prev.find(t => t.id === newMessage.thread_id);
             if (!threadToMove) return prev;
             
@@ -737,16 +740,12 @@ export function useTenantMessages() {
     };
   }, [user, activeTenantId, isTenantContext, fetchThreads]);
 
-  // Initial data fetch
+  // React Query handles initial fetch - just clear messages when switching context
   useEffect(() => {
-    if (isTenantContext && activeTenantId) {
-      fetchThreads();
-    } else {
-      setThreads([]);
+    if (!isTenantContext || !activeTenantId) {
       setMessages([]);
-      setIsLoading(false);
     }
-  }, [isTenantContext, activeTenantId, fetchThreads]);
+  }, [isTenantContext, activeTenantId]);
 
   const startTyping = useCallback(async (threadId?: string) => {
     if (!user || !activeTenantId || !isTenantContext || !threadId) return;
@@ -794,6 +793,7 @@ export function useTenantMessages() {
     messages,
     threads,
     isLoading,
+    isFetching: isThreadsFetching,
     isSending,
     typingUsers,
     sendMessage,

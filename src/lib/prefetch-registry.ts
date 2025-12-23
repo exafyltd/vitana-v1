@@ -11,13 +11,14 @@ import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
  * Routes must match actual app routes (/comm not /community)
  */
 export const ADJACENT_PILLARS: Record<string, string[]> = {
-  '/home': ['/comm', '/discover', '/health', '/business', '/wallet'],
-  '/comm': ['/home', '/discover'],
+  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox'],
+  '/comm': ['/home', '/discover', '/inbox'],
   '/discover': ['/home', '/comm', '/calendar'],
   '/health': ['/home', '/calendar'],
   '/business': ['/home', '/wallet'],
   '/wallet': ['/home', '/business'],
   '/calendar': ['/home', '/health'],
+  '/inbox': ['/home', '/comm'],
 };
 
 /**
@@ -116,5 +117,61 @@ export async function prefetchForPath(
       },
       staleTime,
     });
+  }
+
+  // Inbox prefetch - uses exact queryKeys from hooks
+  if (path.startsWith('/inbox')) {
+    // Global threads
+    await queryClient.prefetchQuery({
+      queryKey: ['global-threads', userId],
+      queryFn: async () => {
+        const { data: myParticipation } = await supabase
+          .from('global_thread_participants')
+          .select('thread_id')
+          .eq('user_id', userId)
+          .eq('is_active', true);
+        
+        const threadIds = (myParticipation || []).map(p => p.thread_id);
+        if (threadIds.length === 0) return [];
+        
+        const { data: threads } = await supabase
+          .from('global_message_threads')
+          .select('*')
+          .in('id', threadIds)
+          .order('updated_at', { ascending: false })
+          .limit(20);
+        
+        return threads || [];
+      },
+      staleTime,
+    });
+
+    // Tenant threads (if tenantId available)
+    if (tenantId) {
+      await queryClient.prefetchQuery({
+        queryKey: ['tenant-threads', userId, tenantId],
+        queryFn: async () => {
+          const { data: myParticipation } = await supabase
+            .from('thread_participants')
+            .select('thread_id')
+            .eq('user_id', userId)
+            .eq('is_active', true);
+          
+          const threadIds = (myParticipation || []).map(p => p.thread_id);
+          if (threadIds.length === 0) return [];
+          
+          const { data: threads } = await supabase
+            .from('message_threads')
+            .select('*')
+            .eq('tenant_id', tenantId)
+            .in('id', threadIds)
+            .order('updated_at', { ascending: false })
+            .limit(20);
+          
+          return threads || [];
+        },
+        staleTime,
+      });
+    }
   }
 }
