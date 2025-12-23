@@ -78,14 +78,16 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const {
     threads,
     messages: hybridMessagesFromHook,
-    sendMessage, 
-    markAsRead, 
+    sendMessage,
+    markAsRead,
     isSending,
     typingUsers,
     startTyping,
     stopTyping,
     fetchMessages,
-    context: messageContext
+    context: messageContext,
+    isMessagesLoading,
+    isMessagesFetching,
   } = useHybridMessages(context, threadId);
 
   // Debug logging
@@ -1023,11 +1025,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           onScroll={handleScroll}
         >
           {messages.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground">No messages yet</p>
-              <p className="text-sm text-muted-foreground">Start the conversation!</p>
-            </div>
+            isMessagesLoading || isMessagesFetching ? (
+              <div className="flex flex-col items-center justify-center py-10">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <p className="mt-3 text-sm text-muted-foreground">Loading messages…</p>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No messages yet</p>
+                <p className="text-sm text-muted-foreground">Start the conversation!</p>
+              </div>
+            )
           ) : (
+
             <>
               {messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
