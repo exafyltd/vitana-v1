@@ -231,6 +231,7 @@ export default function BusinessHub() {
       <CreateEventPopup
         isOpen={showCreateEvent}
         onClose={() => setShowCreateEvent(false)}
+        eventContext="community"
       />
 
       <CreateMeetupPopup
