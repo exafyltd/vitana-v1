@@ -41,12 +41,11 @@ export interface GlobalMessageThread {
   unread_count: number;
 }
 
-export function useGlobalMessages() {
+export function useGlobalMessages(activeThreadId?: string | null) {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { addEvent } = useCalendarEvents();
   const queryClient = useQueryClient();
-  const [messages, setMessages] = useState<GlobalMessage[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
@@ -173,8 +172,69 @@ export function useGlobalMessages() {
     staleTime: 2 * 60 * 1000,
   });
 
+  // React Query for messages - per-thread caching
+  const {
+    data: messages = [],
+    isLoading: isMessagesLoading,
+    isFetching: isMessagesFetching,
+    refetch: refetchMessages,
+  } = useQuery({
+    queryKey: ['global-messages', activeThreadId],
+    queryFn: async () => {
+      if (!user || !isGlobalContext || !activeThreadId) return [];
+
+      const [messagesResponse, globalProfilesResponse, mainProfilesResponse] = await Promise.all([
+        supabase
+          .from('global_messages')
+          .select('*')
+          .eq('thread_id', activeThreadId)
+          .order('created_at', { ascending: true }),
+        supabase
+          .from('global_community_profiles')
+          .select('user_id, display_name, avatar_url'),
+        supabase
+          .from('profiles')
+          .select('user_id, display_name, full_name, avatar_url')
+      ]);
+
+      if (messagesResponse.error) throw messagesResponse.error;
+      
+      const messagesData = messagesResponse.data || [];
+      const senderIds = messagesData.map(m => m.sender_id);
+
+      const globalProfiles = globalProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+      const mainProfiles = mainProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
+
+      const profileMap: Record<string, any> = {};
+      senderIds.forEach(userId => {
+        const globalProfile = globalProfiles.find(p => p.user_id === userId);
+        const mainProfile = mainProfiles.find(p => p.user_id === userId);
+        
+        profileMap[userId] = {
+          user_id: userId,
+          display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
+          avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
+        };
+      });
+
+      return messagesData.map(message => ({
+        ...message,
+        sender: profileMap[message.sender_id] || null
+      }));
+    },
+    enabled: !!user && !!activeThreadId && isGlobalContext,
+    staleTime: 2 * 60 * 1000,
+  });
+
   // Derived loading state for backwards compatibility
-  const isLoading = isThreadsLoading;
+  const isLoading = isThreadsLoading || isMessagesLoading;
+
+  // Helper to optimistically update messages in React Query cache
+  const updateMessagesOptimistically = useCallback((threadId: string, updater: (prev: GlobalMessage[]) => GlobalMessage[]) => {
+    queryClient.setQueryData(['global-messages', threadId], (prev: GlobalMessage[] | undefined) => {
+      return updater(prev || []);
+    });
+  }, [queryClient]);
 
   // Helper function to find existing direct thread between two users
   const findExistingDirectThread = useCallback(async (participantIds: string[]) => {
@@ -183,7 +243,6 @@ export function useGlobalMessages() {
     const allParticipants = [user.id, ...participantIds].sort();
     
     try {
-      // Find threads where current user participates
       const { data: myThreads } = await supabase
         .from('global_thread_participants')
         .select('thread_id')
@@ -194,7 +253,6 @@ export function useGlobalMessages() {
 
       const threadIds = myThreads.map(t => t.thread_id);
 
-      // For each thread, check if it's a direct thread with exactly the same participants
       for (const threadId of threadIds) {
         const { data: threadParticipants } = await supabase
           .from('global_thread_participants')
@@ -206,11 +264,9 @@ export function useGlobalMessages() {
 
         const threadUserIds = threadParticipants.map(p => p.user_id).sort();
         
-        // Check if participants match exactly
         if (threadUserIds.length === allParticipants.length && 
             threadUserIds.every((id, index) => id === allParticipants[index])) {
           
-          // Verify it's a direct thread
           const { data: thread } = await supabase
             .from('global_message_threads')
             .select('id, type')
@@ -241,97 +297,13 @@ export function useGlobalMessages() {
     await refetchThreads();
   }, [refetchThreads]);
 
+  // Legacy fetchMessages for backwards compatibility - now triggers refetch
   const fetchMessages = useCallback(async (threadId?: string) => {
-    if (!user || !isGlobalContext) {
-      setMessages([]);
-      return;
+    if (threadId === activeThreadId) {
+      await refetchMessages();
     }
-
-    try {
-      // Check cache first
-      const cached = messageCache.get<GlobalMessage>(threadId || 'general', 'global');
-      if (cached) {
-        setMessages(cached);
-        
-        // Start background refresh if stale
-        if (messageCache.isStale(threadId || 'general', 'global')) {
-          // Continue with background fetch without clearing messages
-        } else {
-          return; // Fresh cache, no need to fetch
-        }
-      }
-
-      // Check for in-flight request
-      const inFlight = messageCache.getInFlight(threadId || 'general', 'global');
-      if (inFlight) {
-        await inFlight;
-        return;
-      }
-      
-      // Mark as in-flight
-      const fetchPromise = (async () => {
-        let query = supabase
-          .from('global_messages')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (threadId) {
-          query = query.eq('thread_id', threadId);
-        }
-
-        const [messagesResponse, globalProfilesResponse, mainProfilesResponse] = await Promise.all([
-          query,
-          // Parallel profile fetches - get all profiles first, then filter
-          supabase
-            .from('global_community_profiles')
-            .select('user_id, display_name, avatar_url'),
-          supabase
-            .from('profiles')
-            .select('user_id, display_name, full_name, avatar_url')
-        ]);
-
-        if (messagesResponse.error) throw messagesResponse.error;
-        
-        const messagesData = messagesResponse.data || [];
-        const senderIds = messagesData.map(m => m.sender_id);
-
-        // Filter profiles to only needed ones
-        const globalProfiles = globalProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
-        const mainProfiles = mainProfilesResponse.data?.filter(p => senderIds.includes(p.user_id)) || [];
-
-        // Create profile map with fallback logic
-        const profileMap: Record<string, any> = {};
-        senderIds.forEach(userId => {
-          const globalProfile = globalProfiles.find(p => p.user_id === userId);
-          const mainProfile = mainProfiles.find(p => p.user_id === userId);
-          
-          profileMap[userId] = {
-            user_id: userId,
-            display_name: globalProfile?.display_name || mainProfile?.display_name || mainProfile?.full_name || 'Unknown User',
-            avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
-          };
-        });
-
-        // Combine messages with sender data
-        const messagesWithSenders = messagesData.map(message => ({
-          ...message,
-          sender: profileMap[message.sender_id] || null
-        }));
-
-        return messagesWithSenders;
-      })();
-
-      messageCache.setInFlight(threadId || 'general', 'global', fetchPromise);
-      const messagesWithSenders = await fetchPromise;
-
-      // Cache the results
-      messageCache.set(threadId || 'general', 'global', messagesWithSenders);
-      setMessages(messagesWithSenders);
-    } catch (error) {
-      console.error('Error fetching global messages:', error);
-      setMessages([]);
-    }
-  }, [user, isGlobalContext]);
+    // For different thread, the queryKey change will trigger automatic fetch
+  }, [activeThreadId, refetchMessages]);
 
 
   // Legacy sendMessage for backwards compatibility - will be removed
@@ -368,10 +340,10 @@ export function useGlobalMessages() {
         sender: userProfile || null
       };
 
-      // Add optimistic message immediately
-      setMessages(prev => [...prev, optimisticMessage]);
+      // Add optimistic message immediately to React Query cache
+      updateMessagesOptimistically(threadId, prev => [...prev, optimisticMessage]);
 
-      // Update cache with optimistic message
+      // Update legacy cache for compatibility
       messageCache.addMessage(threadId || 'general', 'global', optimisticMessage);
 
       const { data, error } = await supabase
@@ -391,13 +363,13 @@ export function useGlobalMessages() {
 
       if (error) {
         // Remove optimistic message on error
-        setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
+        updateMessagesOptimistically(threadId, prev => prev.filter(msg => msg.id !== optimisticMessage.id));
         // Normalize error to standard Error object
         throw new Error(error.message || error.hint || 'Failed to send message');
       }
 
       // Update optimistic message with real message
-      setMessages(prev => 
+      updateMessagesOptimistically(threadId, prev => 
         prev.map(msg => 
           msg.id === optimisticMessage.id 
             ? { ...data, sender: userProfile } 
@@ -621,7 +593,7 @@ export function useGlobalMessages() {
           
           // If this is our own message, replace any temp message with the real one
           if (newMessage.sender_id === user.id) {
-            setMessages(prev => {
+            updateMessagesOptimistically(newMessage.thread_id, prev => {
               // Find and remove any temp messages for this user that might be stuck
               const tempMessageIndex = prev.findIndex(msg => 
                 msg.id.startsWith('temp-') && 
@@ -668,8 +640,8 @@ export function useGlobalMessages() {
             avatar_url: globalProfile?.avatar_url || mainProfile?.avatar_url || null
           };
 
-          // Add message with sender data
-          setMessages(prev => [...prev, {
+          // Add message with sender data to the specific thread's cache
+          updateMessagesOptimistically(newMessage.thread_id, prev => [...prev, {
             ...newMessage,
             sender: senderProfile
           }]);
@@ -705,8 +677,8 @@ export function useGlobalMessages() {
           console.log('Global message updated (read receipt):', payload.new);
           const updatedMessage = payload.new as any;
           
-          // Update the message status in local state for real-time read receipts
-          setMessages(prev => prev.map(msg => 
+          // Update the message status in React Query cache for real-time read receipts
+          updateMessagesOptimistically(updatedMessage.thread_id, prev => prev.map(msg => 
             msg.id === updatedMessage.id 
               ? {
                   ...msg,
@@ -743,12 +715,7 @@ export function useGlobalMessages() {
   }, [user, isGlobalContext, fetchThreads]);
 
   // React Query handles initial fetch via enabled flag - no manual useEffect needed
-  // Just clear messages when switching away from global context
-  useEffect(() => {
-    if (!isGlobalContext) {
-      setMessages([]);
-    }
-  }, [isGlobalContext]);
+  // No need to clear messages when context changes - React Query handles per-thread caching
 
   const startTyping = useCallback(async (threadId?: string) => {
     if (!user || !isGlobalContext || !threadId) return;
@@ -794,7 +761,7 @@ export function useGlobalMessages() {
     messages,
     threads,
     isLoading,
-    isFetching: isThreadsFetching,
+    isFetching: isThreadsFetching || isMessagesFetching,
     isSending,
     typingUsers,
     sendMessage,

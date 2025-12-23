@@ -21,10 +21,10 @@ export type SendMessageArgs = {
  * Unified messaging hook that automatically routes to global or tenant context
  * based on the user's current role with WhatsApp-like message persistence
  */
-export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?: string) {
+export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?: string | null) {
   const { currentRole } = useRole();
-  const globalMessages = useGlobalMessages();
-  const tenantMessages = useTenantMessages();
+  const globalMessages = useGlobalMessages(threadId);
+  const tenantMessages = useTenantMessages(threadId);
 
   // Route to appropriate context based on role or forced context
   const isGlobalContext = forceContext === 'global' || 
