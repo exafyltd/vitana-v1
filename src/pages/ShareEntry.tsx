@@ -16,24 +16,18 @@ export default function ShareEntry({ fallback }: { fallback: ReactNode }) {
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
-  // Check for domain-based redirect SYNCHRONOUSLY (before render)
+  // Check for share links FIRST (highest priority)
+  const shareType = params.get("share");
+  const hasShareLink = !!shareType;
+
+  // Only consider domain redirect if NO share link present
   const hostname = window.location.hostname;
   const tenantForDomain = DOMAIN_TENANT_MAP[hostname];
-  const shouldRedirectForDomain = tenantForDomain && window.location.pathname === '/';
+  const shouldRedirectForDomain = !hasShareLink && tenantForDomain && window.location.pathname === '/';
 
   useEffect(() => {
-    // 1. Handle domain-based tenant redirect
-    if (shouldRedirectForDomain && tenantForDomain) {
-      const qs = params.toString();
-      navigate(`/_intro/${tenantForDomain}${qs ? `?${qs}` : ''}`, { replace: true });
-      return;
-    }
-
-    // 2. Handle share links
-    const share = params.get("share");
-    if (!share) return;
-
-    if (share === "event") {
+    // 1. Handle share links FIRST (takes priority over domain redirect)
+    if (shareType === "event") {
       const slug = params.get("slug");
       const id = params.get("id");
 
@@ -53,11 +47,19 @@ export default function ShareEntry({ fallback }: { fallback: ReactNode }) {
 
       const qs = nextParams.toString();
       navigate(`${nextPath}${qs ? `?${qs}` : ""}`, { replace: true });
+      return;
     }
-  }, [navigate, params, shouldRedirectForDomain, tenantForDomain]);
 
-  // Don't render fallback if we're about to redirect for domain
-  if (shouldRedirectForDomain) {
+    // 2. Handle domain-based tenant redirect (only if no share link)
+    if (shouldRedirectForDomain && tenantForDomain) {
+      const qs = params.toString();
+      navigate(`/_intro/${tenantForDomain}${qs ? `?${qs}` : ''}`, { replace: true });
+      return;
+    }
+  }, [navigate, params, shareType, shouldRedirectForDomain, tenantForDomain]);
+
+  // Don't render fallback if we're about to redirect for domain or share link
+  if (shouldRedirectForDomain || hasShareLink) {
     return null;
   }
 
