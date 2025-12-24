@@ -16,13 +16,14 @@ export default function ShareEntry({ fallback }: { fallback: ReactNode }) {
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
+  // Check for domain-based redirect SYNCHRONOUSLY (before render)
+  const hostname = window.location.hostname;
+  const tenantForDomain = DOMAIN_TENANT_MAP[hostname];
+  const shouldRedirectForDomain = tenantForDomain && window.location.pathname === '/';
+
   useEffect(() => {
-    // 1. Check for domain-based tenant redirect (only on root path)
-    const hostname = window.location.hostname;
-    const tenantForDomain = DOMAIN_TENANT_MAP[hostname];
-    
-    if (tenantForDomain && window.location.pathname === '/') {
-      // Preserve UTM params for attribution
+    // 1. Handle domain-based tenant redirect
+    if (shouldRedirectForDomain && tenantForDomain) {
       const qs = params.toString();
       navigate(`/_intro/${tenantForDomain}${qs ? `?${qs}` : ''}`, { replace: true });
       return;
@@ -53,7 +54,12 @@ export default function ShareEntry({ fallback }: { fallback: ReactNode }) {
       const qs = nextParams.toString();
       navigate(`${nextPath}${qs ? `?${qs}` : ""}`, { replace: true });
     }
-  }, [navigate, params]);
+  }, [navigate, params, shouldRedirectForDomain, tenantForDomain]);
+
+  // Don't render fallback if we're about to redirect for domain
+  if (shouldRedirectForDomain) {
+    return null;
+  }
 
   return <>{fallback}</>;
 }
