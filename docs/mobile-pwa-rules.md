@@ -266,10 +266,69 @@ const BOTTOM_NAV_ELIGIBLE = [
 
 ---
 
+## 12. Context-Aware Floating Input Bar
+
+### Purpose
+Text alternative to ORB voice input, enabling silent interaction without microphone activation.
+
+### Visual Specifications
+- **Shape**: Pill-shaped with rounded corners
+- **Background**: `bg-gray-800/60 backdrop-blur-md` (frosted glass effect)
+- **Position**: Fixed, 16px above bottom navigation
+- **Elements**: Text input + emoji button + send button
+
+### Layer Order (z-index hierarchy)
+```
+Bottom Nav:     z-50 (base)
+Floating Input: z-40 (above content, below nav)
+ORB Panel:      z-60 (above nav when expanded)
+Overlays:       z-70 (full-screen sheets)
+```
+
+### Context-Aware Visibility Matrix
+
+| Surface | Input Bar | Rationale |
+|---------|-----------|-----------|
+| Community | Optional | Filtering available via pills |
+| Live Rooms | ✅ Yes | Comment/chat without mic |
+| Messages | ✅ Yes | Primary input method |
+| Shorts | ✅ Yes | Comment while viewing |
+| Events | ❌ No | Browse-only, detail sheet has input |
+| Wallet | ❌ No | Transaction-focused |
+| Profile | ❌ No | View/edit mode sufficient |
+| Health | ❌ No | Dashboard, no text input needed |
+| Business | ❌ No | Action-based, not conversational |
+| Calendar | ❌ No | Date selection, not text |
+| Discover | ❌ No | Browse services, no chat |
+
+### ORB Relationship
+- Text input routes to **same ORB processing pipeline** as voice
+- Enables "type → filter" with same logic as "speak → filter"
+- Response appears in ORB panel or inline depending on context
+
+### Live Room Special Case
+- Input bar **stays visible** in Live Rooms
+- ORB collapses to text-only pill above input
+- Both serve different purposes:
+  - Input bar → room chat/comments
+  - ORB → AI assistant queries (text-only in live mode)
+
+```tsx
+// Component structure
+<MobileLayout>
+  <Outlet />                    {/* Full-screen content */}
+  <MobileFloatingInput />       {/* Context-aware input */}
+  <MobileBottomNav />           {/* Fixed bottom nav */}
+</MobileLayout>
+```
+
+---
+
 ## Changelog
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2024-12-26 | Added Context-Aware Floating Input Bar rule (Section 12) | — |
 | 2024-12-26 | Added Community Sticky Pills rule (Section 10) | — |
 | 2024-12-26 | Added Bottom Navigation Customization rule (Section 11) | — |
 | 2024-12-22 | Initial version from Implementation Plan v2 | — |
