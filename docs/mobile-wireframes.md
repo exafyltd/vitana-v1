@@ -972,6 +972,60 @@
 
 ## 20. ORB States
 
+> **⚠️ VISUAL PARITY REQUIREMENT**: Mobile ORB must use the identical `VitanalandPortalSeed` component from desktop. No simplified variants allowed. See [Section 13 of Mobile PWA Rules](./mobile-pwa-rules.md#13-orb-visual-parity).
+
+### Desktop Component Reference
+
+```typescript
+// REQUIRED: Use exact desktop component
+import { VitanalandPortalSeed } from '@/components/vitanaland/VitanalandPortalSeed';
+
+// Bottom nav (48px)
+<VitanalandPortalSeed size="sm" layoutId="vitana-orb" />
+
+// Expanded listening (80px)
+<VitanalandPortalSeed size="md" audioState="listening" />
+```
+
+### Visual Architecture (All Layers Required)
+
+```
+┌─────────────────────────────────────────────────────┐
+│                   OUTER HALO                        │  ← Ethereal purple gradient
+│   ┌─────────────────────────────────────────────┐   │
+│   │              SECOND HALO                    │   │  ← Inner glow
+│   │   ┌─────────────────────────────────────┐   │   │
+│   │   │           THIN RING                 │   │   │  ← Crisp edge
+│   │   │   ┌─────────────────────────────┐   │   │   │
+│   │   │   │        GLASS SHELL          │   │   │   │  ← Radial gradient sphere
+│   │   │   │   ┌─────────────────────┐   │   │   │   │
+│   │   │   │   │    NEBULA CLOUDS    │   │   │   │   │  ← 3 rotating layers
+│   │   │   │   │   ┌─────────────┐   │   │   │   │   │
+│   │   │   │   │   │   AURORA    │   │   │   │   │   │  ← 4 animated bands
+│   │   │   │   │   │  ┌───────┐  │   │   │   │   │   │
+│   │   │   │   │   │  │ CORE  │  │   │   │   │   │   │  ← Triple light core
+│   │   │   │   │   │  └───────┘  │   │   │   │   │   │
+│   │   │   │   │   └─────────────┘   │   │   │   │   │
+│   │   │   │   └─────────────────────┘   │   │   │   │
+│   │   │   └─────────────────────────────┘   │   │   │
+│   │   └─────────────────────────────────────┘   │   │
+│   └─────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────┘
+         + MICRO-FRAGMENTS (10+ floating particles)
+```
+
+### Animation Specifications (Preserved from Desktop)
+
+| Animation | Timing | Easing |
+|-----------|--------|--------|
+| Breathing scale | 4s loop, 0.98–1.02 | ease-in-out |
+| Nebula layer 1 | 35s rotation | linear |
+| Nebula layer 2 | 45s rotation | linear |
+| Nebula layer 3 | 60s rotation | linear |
+| Aurora flow | 8s cycle | ease-in-out |
+| Micro-fragments | Random drift, 10–20s | linear |
+| Halo pulse (listening) | 2s cycle | ease-in-out |
+
 ### Browse Mode (Default)
 ```
 ┌────────────────────────────────────────────────────┐
@@ -981,11 +1035,13 @@
 ├────────────────────────────────────────────────────┤
 │    [📅]     [👥]     (ORB)     [💰]     [👤]      │
 │                      ╭───╮                         │
-│                      │ ◉ │  ← Crystal orb          │
-│                      ╰───╯    with subtle glow     │
+│                      │ ◉ │  ← VitanalandPortalSeed │
+│                      ╰───╯    size="sm" (48px)     │
 └────────────────────────────────────────────────────┘
 ```
-- **Appearance**: Crystal orb with ambient glow
+- **Component**: `<VitanalandPortalSeed size="sm" />`
+- **Appearance**: Full 3D glass orb with all visual layers
+- **Animations**: Breathing + nebula rotation + micro-fragments
 - **Tap action**: Opens listening panel
 - **Voice**: Enabled, ready for input
 - **Filtering**: Can speak to filter feed content
@@ -1008,10 +1064,26 @@
 │    [📅]     [👥]     (ORB)     [💰]     [👤]      │
 └────────────────────────────────────────────────────┘
 ```
-- **Appearance**: Expanded panel with visualizer
+- **Component**: `<VitanalandPortalSeed size="md" audioState="listening" />`
+- **Appearance**: Expanded panel with enhanced orb glow
+- **Animations**: Faster rotation, halo pulse, audio wave visualization
 - **Audio waves**: Show voice input activity
 - **Transcript**: Real-time text display
 - **Exit**: Tap outside or ORB button
+
+### Processing State
+```
+- **Component**: `<VitanalandPortalSeed size="md" audioState="processing" />`
+- **Visual**: Rainbow gradient shift through orb layers
+- **Animations**: Wave patterns emanating from core
+```
+
+### Error State
+```
+- **Component**: `<VitanalandPortalSeed size="md" audioState="error" />`
+- **Visual**: Red tint flash across orb
+- **Animations**: Subtle shake micro-animation
+```
 
 ### Action Mode (Suggestions)
 ```
@@ -1048,12 +1120,13 @@
 │                                                    │
 ├────────────────────────────────────────────────────┤
 │    [🎤]     [📷]    ┌─────────┐   [❤️]    [🚪]    │
-│                     │ORB text │                    │ ← ORB collapsed to pill
-│                     │  only   │                    │    mic blocked
+│                     │ORB pill │                    │ ← ORB collapsed to pill
+│                     │text only│                    │    mic blocked
 │                     └─────────┘                    │
 └────────────────────────────────────────────────────┘
 ```
-- **Collapsed**: Text-only pill display
+- **Component**: `<OrbPill />` (text-only collapsed state)
+- **Collapsed**: Text-only pill display (exception to visual parity)
 - **Mic blocked**: Room owns audio, ORB cannot listen
 - **Text input**: Type to interact with ORB
 - **Switch confirmation**: Dialog required before enabling ORB mic

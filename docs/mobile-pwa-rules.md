@@ -324,10 +324,81 @@ Overlays:       z-70 (full-screen sheets)
 
 ---
 
+## 13. ORB Visual Parity
+
+> **Mandatory**: Mobile ORB must be visually and behaviorally identical to desktop ORB.
+
+### Component Requirement
+
+The mobile ORB **MUST** use the exact same `VitanalandPortalSeed` component from desktop:
+
+```typescript
+import { VitanalandPortalSeed } from '@/components/vitanaland/VitanalandPortalSeed';
+
+// Mobile bottom nav ORB
+<VitanalandPortalSeed size="sm" layoutId="vitana-orb" />
+```
+
+### Size Configuration
+
+| Context | Size | Dimensions |
+|---------|------|------------|
+| Bottom Navigation | `sm` | 48×48px |
+| Expanded Listening | `md` | 80×80px |
+| Full-screen overlay | `lg` | 240×240px |
+
+### Visual Layers (Preserved)
+
+All desktop visual layers must render on mobile:
+
+1. **Outer Halo** - Ethereal purple gradient ring
+2. **Second Halo** - Inner glow layer
+3. **Thin Ring** - Crisp edge definition
+4. **Glass Shell** - Radial gradient sphere
+5. **Nebula Clouds** - 3-layer rotating nebula (35s, 45s, 60s cycles)
+6. **Aurora Strands** - 4 animated aurora bands
+7. **Triple Core** - Central light core
+8. **Micro-fragments** - 10+ floating particles
+
+### Audio State Animations (Preserved)
+
+| State | Visual Behavior |
+|-------|-----------------|
+| `idle` | Subtle breathing (scale 0.98–1.02), slow nebula rotation |
+| `listening` | Enhanced glow, faster rotation, halo pulse |
+| `processing` | Rainbow gradient shift, wave patterns |
+| `error` | Red tint flash, shake micro-animation |
+
+### Behavior Parity
+
+| Behavior | Desktop | Mobile |
+|----------|---------|--------|
+| Click sound | `spark-chime.mp3` at 0.12 volume | ✅ Same |
+| Hover glow | Scale + glow increase | Touch feedback equivalent |
+| Expansion | Overlay fade + orb grow | ✅ Same |
+| Keyboard shortcut | `Ctrl+Shift+V` | N/A (mobile) |
+
+### Prohibited Modifications
+
+❌ No mobile-specific visual changes  
+❌ No simplified "mobile orb" variant  
+❌ No removal of animation layers for performance  
+❌ No static orb fallback  
+
+### Performance Note
+
+If mobile performance is insufficient for full ORB rendering:
+- Optimize the shared component, not fork it
+- Use `will-change: transform` for GPU acceleration
+- Consider reduced `micro-fragments` count (not removal)
+
+---
+
 ## Changelog
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2024-12-26 | Added ORB Visual Parity rule (Section 13) | — |
 | 2024-12-26 | Added Context-Aware Floating Input Bar rule (Section 12) | — |
 | 2024-12-26 | Added Community Sticky Pills rule (Section 10) | — |
 | 2024-12-26 | Added Bottom Navigation Customization rule (Section 11) | — |
