@@ -9,10 +9,10 @@
 
 | Category | Count |
 |----------|-------|
-| Primary Surfaces | 14 |
+| Primary Surfaces | 15 |
 | Full-Screen Overlays | 7 |
 | Public Share Routes | 4 |
-| **Total Unique Screens** | **25** |
+| **Total Unique Screens** | **26** |
 
 Users perceive 14 core experiences. Overlays and share routes extend functionality without adding navigation complexity.
 
@@ -22,7 +22,7 @@ Users perceive 14 core experiences. Overlays and share routes extend functionali
 
 | # | Surface | Route | Navigation | Description | Phase |
 |---|---------|-------|------------|-------------|-------|
-| 1 | **Community Feed** | `/m/community` | Bottom Nav | Social feed with posts, updates | 2 |
+| 1 | **Community Feed** | `/m/community` | Bottom Nav | Social feed with sticky pills (Events \| Meetups \| Live \| People) | 2 |
 | 2 | **Events** | `/m/events` | Horizontal swipe | Event cards with swipe browsing | 1 |
 | 3 | **Meetups** | `/m/meetups` | Horizontal swipe | 1:1 and small group meetups | 2 |
 | 4 | **Live Rooms** | `/m/live` | Bottom Nav | Audio/video rooms, streaming | 3 |
@@ -30,12 +30,18 @@ Users perceive 14 core experiences. Overlays and share routes extend functionali
 | 6 | **Wallet** | `/m/wallet` | Bottom Nav | VITA tokens, transactions | 2 |
 | 7 | **Calendar** | `/m/calendar` | Bottom Nav | Personal schedule, bookings | 2 |
 | 8 | **Health Dashboard** | `/m/health` | Bottom Nav | Pillars, scores, tracking | 2 |
-| 9 | **Services Hub** | `/m/services` | Grid/List | Browse health services | 2 |
-| 10 | **Profile** | `/m/profile` | Menu | User profile, settings | 1 |
-| 11 | **Notifications** | `/m/notifications` | Menu | Activity feed, alerts | 2 |
-| 12 | **Search** | `/m/search` | Header | Global search across content | 2 |
-| 13 | **Messages** | `/m/messages` | Bottom Nav | DMs, group chats | 3 |
-| 14 | **Ticket Success** | `/m/ticket/:id` | Post-purchase | Ticket confirmation, QR code | 1 |
+| 9 | **Business Hub** | `/m/business` | Menu | Simplified KPIs, listings, monetization | 3 |
+| 10 | **Services Hub** | `/m/services` | Grid/List | Browse health services | 2 |
+| 11 | **Profile** | `/m/profile` | Menu | User profile, settings (via sidebar) | 1 |
+| 12 | **Notifications** | `/m/notifications` | Menu | Activity feed, alerts | 2 |
+| 13 | **Search** | `/m/search` | Header | Global search across content | 2 |
+| 14 | **Messages** | `/m/messages` | Bottom Nav | DMs, group chats | 3 |
+| 15 | **Ticket Success** | `/m/ticket/:id` | Post-purchase | Ticket confirmation, QR code | 1 |
+
+### Navigation Notes
+- **Community Sticky Pills**: Community surface includes sticky filter pills (Events | Meetups | Live | People) that filter content without changing routes
+- **Profile via Sidebar**: Profile is accessible via the full-screen sidebar menu, not the bottom nav
+- **Business Hub**: Simplified mobile version of desktop Business Hub with essential KPIs and quick actions
 
 ---
 
