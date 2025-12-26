@@ -204,8 +204,72 @@ src/components/mobile/surfaces/
 
 ---
 
+## 10. Community Surface Special Case
+
+Community is a **social aggregation lens**, not a standalone category.
+
+### Sticky Pills
+- Top sticky bar with filter pills: `Events | Meetups | Live | People`
+- Pills switch content filter, **not routes**
+- All content remains within `/m/community` route
+- Reset scroll position on pill switch
+
+### Purpose
+"What is happening with people right now?" — Community aggregates social activity across events, meetups, live rooms, and people into a single lens.
+
+```tsx
+// ✅ Correct - Pills filter within same route
+<CommunityPills 
+  options={['Events', 'Meetups', 'Live', 'People']}
+  activeFilter={filter}
+  onFilterChange={setFilter}
+/>
+
+// ❌ Wrong - Navigating to separate routes
+<Link to="/m/events">Events</Link>
+```
+
+---
+
+## 11. Bottom Navigation Customization
+
+### Default Configuration
+| Position | Default | Fixed |
+|----------|---------|-------|
+| 1 | Events | No |
+| 2 | Community | No |
+| CENTER | **ORB** | **Yes** |
+| 3 | Wallet | No |
+| 4 | Profile | No |
+
+### Customization Rules
+- **ORB is permanently fixed** in center position
+- User can customize 4 tab positions via Settings
+- Suggestions are **never automatic** — user-initiated only
+- Available destinations: Events, Community, Wallet, Profile, Health, Calendar, Messages, Live, Shorts, Services
+
+### Eligible Tab Destinations
+```typescript
+const BOTTOM_NAV_ELIGIBLE = [
+  { id: 'events', label: 'Events', route: '/m/events' },
+  { id: 'community', label: 'Community', route: '/m/community' },
+  { id: 'wallet', label: 'Wallet', route: '/m/wallet' },
+  { id: 'profile', label: 'Profile', route: '/m/profile' },
+  { id: 'health', label: 'Health', route: '/m/health' },
+  { id: 'calendar', label: 'Calendar', route: '/m/calendar' },
+  { id: 'messages', label: 'Messages', route: '/m/messages' },
+  { id: 'live', label: 'Live', route: '/m/live' },
+  { id: 'shorts', label: 'Shorts', route: '/m/shorts' },
+  { id: 'services', label: 'Services', route: '/m/services' },
+];
+```
+
+---
+
 ## Changelog
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2024-12-26 | Added Community Sticky Pills rule (Section 10) | — |
+| 2024-12-26 | Added Bottom Navigation Customization rule (Section 11) | — |
 | 2024-12-22 | Initial version from Implementation Plan v2 | — |
