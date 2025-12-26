@@ -31,7 +31,7 @@ Users perceive 14 core experiences. Overlays and share routes extend functionali
 | 7 | **Calendar** | `/m/calendar` | Bottom Nav | ❌ | Personal schedule, bookings | 2 |
 | 8 | **Health Dashboard** | `/m/health` | Bottom Nav | ❌ | Pillars, scores, tracking | 2 |
 | 9 | **Business Hub** | `/m/business` | Menu | ❌ | Simplified KPIs, listings, monetization | 3 |
-| 10 | **Services Hub** | `/m/services` | Grid/List | ❌ | Browse health services | 2 |
+| 10 | **Discover** | `/m/discover` | Grid/List | ❌ | Browse services, programs, workshops | 2 |
 | 11 | **Profile** | `/m/profile` | Menu | ❌ | User profile, settings (via sidebar) | 1 |
 | 12 | **Notifications** | `/m/notifications` | Menu | ❌ | Activity feed, alerts | 2 |
 | 13 | **Search** | `/m/search` | Header | ❌ | Global search across content | 2 |
