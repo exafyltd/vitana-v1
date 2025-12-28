@@ -67,9 +67,9 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       } else {
         // Fallback to first available tenant
         const fallbackTenantQuery = async () => {
-          const { data } = await supabase.from('tenants').select('id').limit(1).single();
+          const { data } = await supabase.from('tenants').select('tenant_id').limit(1).single();
           if (data) {
-            setActiveTenantIdState(data.id);
+            setActiveTenantIdState(data.tenant_id);
           }
         };
         fallbackTenantQuery();
@@ -85,7 +85,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       const { data, error } = await supabase
         .from('tenants')
         .select('*')
-        .eq('id', activeTenantId)
+        .eq('tenant_id', activeTenantId)
         .single();
       
       if (error) throw error;
@@ -165,18 +165,18 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
       // Get the updated tenant ID and invalidate cache
       const { data } = await supabase
         .from('tenants')
-        .select('id, name')
+        .select('tenant_id, name')
         .eq('slug', slug)
         .single();
       
       if (data) {
-        setActiveTenantIdState(data.id);
+        setActiveTenantIdState(data.tenant_id);
         
         // Force invalidate all tenant-related queries
         const queryClient = (window as any).queryClient;
         if (queryClient) {
           await queryClient.invalidateQueries({ queryKey: ["tenant"] });
-          await queryClient.refetchQueries({ queryKey: ["tenant", data.id] });
+          await queryClient.refetchQueries({ queryKey: ["tenant", data.tenant_id] });
         }
         
         // Store tenant slug in localStorage for persistence
@@ -184,7 +184,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         
         // Emit tenant change event
         window.dispatchEvent(new CustomEvent("tenant.changed", {
-          detail: { from: activeTenantId, to: data.id, slug: slug }
+          detail: { from: activeTenantId, to: data.tenant_id, slug: slug }
         }));
       }
     } catch (error) {
