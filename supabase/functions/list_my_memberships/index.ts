@@ -47,7 +47,7 @@ serve(async (req) => {
         status,
         tenant_id,
         tenants (
-          id,
+          tenant_id,
           name,
           slug
         )
