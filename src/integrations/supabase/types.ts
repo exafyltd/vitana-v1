@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      access_audit_log: {
+        Row: {
+          action: string
+          actor_role: string
+          actor_user_id: string
+          audit_id: string
+          created_at: string
+          metadata: Json
+          object_id: string
+          object_type: string
+          reason: string | null
+          tenant_id: string
+        }
+        Insert: {
+          action: string
+          actor_role: string
+          actor_user_id: string
+          audit_id?: string
+          created_at?: string
+          metadata?: Json
+          object_id: string
+          object_type: string
+          reason?: string | null
+          tenant_id: string
+        }
+        Update: {
+          action?: string
+          actor_role?: string
+          actor_user_id?: string
+          audit_id?: string
+          created_at?: string
+          metadata?: Json
+          object_id?: string
+          object_type?: string
+          reason?: string | null
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "access_audit_log_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "access_audit_log_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       admin_proactive_settings: {
         Row: {
           created_at: string
@@ -112,7 +166,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -313,7 +367,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -382,7 +436,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -608,6 +662,48 @@ export type Database = {
           },
         ]
       }
+      app_users: {
+        Row: {
+          created_at: string
+          profile: Json
+          status: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          profile?: Json
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          profile?: Json
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_users_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "app_users_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       audit_events: {
         Row: {
           created_at: string
@@ -646,7 +742,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -713,7 +809,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -899,7 +995,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -1051,7 +1147,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -1701,6 +1797,63 @@ export type Database = {
         }
         Relationships: []
       }
+      consents: {
+        Row: {
+          consent_id: string
+          created_at: string
+          data_scope: string
+          expires_at: string | null
+          grantee_id: string
+          grantee_type: string
+          proof: Json
+          revoked_at: string | null
+          status: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          consent_id?: string
+          created_at?: string
+          data_scope: string
+          expires_at?: string | null
+          grantee_id: string
+          grantee_type: string
+          proof?: Json
+          revoked_at?: string | null
+          status?: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          consent_id?: string
+          created_at?: string
+          data_scope?: string
+          expires_at?: string | null
+          grantee_id?: string
+          grantee_type?: string
+          proof?: Json
+          revoked_at?: string | null
+          status?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consents_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "consents_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       contacts: {
         Row: {
           contact_email: string | null
@@ -1791,6 +1944,69 @@ export type Database = {
         }
         Relationships: []
       }
+      contradiction_flags: {
+        Row: {
+          contradiction_id: string
+          created_at: string
+          domain: string
+          left_source_id: string
+          left_source_table: string
+          module: string
+          resolution: Json
+          right_source_id: string
+          right_source_table: string
+          status: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contradiction_id?: string
+          created_at?: string
+          domain: string
+          left_source_id: string
+          left_source_table: string
+          module: string
+          resolution?: Json
+          right_source_id: string
+          right_source_table: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contradiction_id?: string
+          created_at?: string
+          domain?: string
+          left_source_id?: string
+          left_source_table?: string
+          module?: string
+          resolution?: Json
+          right_source_id?: string
+          right_source_table?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contradiction_flags_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "contradiction_flags_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       crew_memory: {
         Row: {
           agent: string
@@ -1850,6 +2066,107 @@ export type Database = {
           work_item_id?: string | null
         }
         Relationships: []
+      }
+      curated_memories: {
+        Row: {
+          allowed_roles: string[]
+          confidence_score: number | null
+          consent_id: string | null
+          created_at: string
+          domain: string
+          expires_at: string | null
+          fact_payload: Json
+          is_active: boolean
+          memory_id: string
+          module: string
+          reinforcement_log: Json
+          scope: Database["public"]["Enums"]["memory_scope"]
+          sensitivity: Database["public"]["Enums"]["memory_sensitivity"]
+          source_event_id: string | null
+          status: string
+          subject_id: string | null
+          subject_type: string
+          summary_text: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allowed_roles?: string[]
+          confidence_score?: number | null
+          consent_id?: string | null
+          created_at?: string
+          domain: string
+          expires_at?: string | null
+          fact_payload?: Json
+          is_active?: boolean
+          memory_id?: string
+          module: string
+          reinforcement_log?: Json
+          scope?: Database["public"]["Enums"]["memory_scope"]
+          sensitivity?: Database["public"]["Enums"]["memory_sensitivity"]
+          source_event_id?: string | null
+          status?: string
+          subject_id?: string | null
+          subject_type?: string
+          summary_text: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allowed_roles?: string[]
+          confidence_score?: number | null
+          consent_id?: string | null
+          created_at?: string
+          domain?: string
+          expires_at?: string | null
+          fact_payload?: Json
+          is_active?: boolean
+          memory_id?: string
+          module?: string
+          reinforcement_log?: Json
+          scope?: Database["public"]["Enums"]["memory_scope"]
+          sensitivity?: Database["public"]["Enums"]["memory_sensitivity"]
+          source_event_id?: string | null
+          status?: string
+          subject_id?: string | null
+          subject_type?: string
+          summary_text?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "curated_memories_consent_id_fkey"
+            columns: ["consent_id"]
+            isOneToOne: false
+            referencedRelation: "consents"
+            referencedColumns: ["consent_id"]
+          },
+          {
+            foreignKeyName: "curated_memories_source_event_id_fkey"
+            columns: ["source_event_id"]
+            isOneToOne: false
+            referencedRelation: "memory_events"
+            referencedColumns: ["event_id"]
+          },
+          {
+            foreignKeyName: "curated_memories_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "curated_memories_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
       }
       daily_matches: {
         Row: {
@@ -2033,6 +2350,63 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "campaigns"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      entity_relationships: {
+        Row: {
+          created_at: string
+          metadata: Json
+          object_id: string
+          object_type: string
+          rel_id: string
+          relationship_type: string
+          status: string
+          subject_id: string
+          subject_type: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          metadata?: Json
+          object_id: string
+          object_type: string
+          rel_id?: string
+          relationship_type: string
+          status?: string
+          subject_id: string
+          subject_type: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          metadata?: Json
+          object_id?: string
+          object_type?: string
+          rel_id?: string
+          relationship_type?: string
+          status?: string
+          subject_id?: string
+          subject_type?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entity_relationships_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "entity_relationships_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -3913,7 +4287,118 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
+      memory_embeddings: {
+        Row: {
+          created_at: string
+          domain: string
+          embedding: string
+          embedding_id: string
+          module: string
+          scope: Database["public"]["Enums"]["memory_scope"]
+          sensitivity: Database["public"]["Enums"]["memory_sensitivity"]
+          source_id: string
+          source_table: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          embedding: string
+          embedding_id?: string
+          module: string
+          scope: Database["public"]["Enums"]["memory_scope"]
+          sensitivity: Database["public"]["Enums"]["memory_sensitivity"]
+          source_id: string
+          source_table: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          embedding?: string
+          embedding_id?: string
+          module?: string
+          scope?: Database["public"]["Enums"]["memory_scope"]
+          sensitivity?: Database["public"]["Enums"]["memory_sensitivity"]
+          source_id?: string
+          source_table?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_embeddings_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "memory_embeddings_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
+      memory_events: {
+        Row: {
+          created_at: string
+          domain: string
+          event_id: string
+          module: string
+          payload: Json
+          source: string
+          subject_id: string | null
+          subject_type: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain: string
+          event_id?: string
+          module: string
+          payload?: Json
+          source: string
+          subject_id?: string | null
+          subject_type: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          event_id?: string
+          module?: string
+          payload?: Json
+          source?: string
+          subject_id?: string | null
+          subject_type?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_events_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "memory_events_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -4189,7 +4674,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
           {
             foreignKeyName: "messages_thread_id_fkey"
@@ -4647,7 +5132,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
           {
             foreignKeyName: "package_item_redemptions_ticket_purchase_id_fkey"
@@ -4740,7 +5225,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -4822,7 +5307,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -4879,7 +5364,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -4967,7 +5452,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -5446,7 +5931,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -5877,7 +6362,64 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
+      retrieval_traces: {
+        Row: {
+          actor_role: string
+          actor_user_id: string
+          blocked: Json
+          created_at: string
+          domain: string
+          module: string
+          query_text: string | null
+          request_id: string
+          retrieved: Json
+          tenant_id: string
+          trace_id: string
+        }
+        Insert: {
+          actor_role: string
+          actor_user_id: string
+          blocked?: Json
+          created_at?: string
+          domain: string
+          module: string
+          query_text?: string | null
+          request_id?: string
+          retrieved?: Json
+          tenant_id: string
+          trace_id?: string
+        }
+        Update: {
+          actor_role?: string
+          actor_user_id?: string
+          blocked?: Json
+          created_at?: string
+          domain?: string
+          module?: string
+          query_text?: string | null
+          request_id?: string
+          retrieved?: Json
+          tenant_id?: string
+          trace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retrieval_traces_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "retrieval_traces_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -5916,7 +6458,43 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
+      role_sessions: {
+        Row: {
+          active_role: Database["public"]["Enums"]["vitana_role"]
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_role: Database["public"]["Enums"]["vitana_role"]
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_role?: Database["public"]["Enums"]["vitana_role"]
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_sessions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "role_sessions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -6235,22 +6813,34 @@ export type Database = {
       }
       tenants: {
         Row: {
+          branding: Json
           created_at: string | null
-          id: string
+          is_active: boolean
           name: string
+          policy_profile: Json
           slug: string | null
+          tenant_id: string
+          updated_at: string
         }
         Insert: {
+          branding?: Json
           created_at?: string | null
-          id?: string
+          is_active?: boolean
           name: string
+          policy_profile?: Json
           slug?: string | null
+          tenant_id?: string
+          updated_at?: string
         }
         Update: {
+          branding?: Json
           created_at?: string | null
-          id?: string
+          is_active?: boolean
           name?: string
+          policy_profile?: Json
           slug?: string | null
+          tenant_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -6361,7 +6951,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
           {
             foreignKeyName: "typing_indicators_thread_id_fkey"
@@ -6828,6 +7418,48 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          granted_at: string
+          granted_by: string | null
+          is_enabled: boolean
+          role: Database["public"]["Enums"]["vitana_role"]
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          granted_at?: string
+          granted_by?: string | null
+          is_enabled?: boolean
+          role: Database["public"]["Enums"]["vitana_role"]
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          granted_at?: string
+          granted_by?: string | null
+          is_enabled?: boolean
+          role?: Database["public"]["Enums"]["vitana_role"]
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_roles_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       user_supplements: {
         Row: {
           category: string
@@ -7171,7 +7803,7 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
-            referencedColumns: ["id"]
+            referencedColumns: ["tenant_id"]
           },
         ]
       }
@@ -7408,6 +8040,16 @@ export type Database = {
         }[]
       }
       archive_old_activity_logs: { Args: never; Returns: undefined }
+      audit_access: {
+        Args: {
+          p_action: string
+          p_metadata?: Json
+          p_object_id: string
+          p_object_type: string
+          p_reason?: string
+        }
+        Returns: undefined
+      }
       bootstrap_admin_user: {
         Args: { p_user_email: string; p_user_id: string }
         Returns: undefined
@@ -7468,8 +8110,14 @@ export type Database = {
           vtid: string
         }[]
       }
+      current_active_role: { Args: never; Returns: string }
       current_tenant: { Args: never; Returns: string }
+      current_tenant_id: { Args: never; Returns: string }
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
+      dev_set_request_context: {
+        Args: { p_active_role: string; p_tenant_id: string }
+        Returns: Json
+      }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
       generate_event_slug: {
@@ -7485,6 +8133,7 @@ export type Database = {
         }
         Returns: string
       }
+      get_active_role: { Args: never; Returns: string }
       get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
       get_conversation_participants: {
         Args: { p_user_id: string }
@@ -7711,6 +8360,25 @@ export type Database = {
           youtube_url: string
         }[]
       }
+      has_active_consent: {
+        Args: {
+          p_data_scope: string
+          p_grantee_id: string
+          p_grantee_type: string
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      has_active_relationship: {
+        Args: {
+          p_object_id: string
+          p_object_type: string
+          p_relationship_type: string
+          p_subject_id: string
+          p_subject_type: string
+        }
+        Returns: boolean
+      }
       increment_wallet_balance: {
         Args: { p_amount: number; p_currency_type: string; p_user_id: string }
         Returns: number
@@ -7725,6 +8393,7 @@ export type Database = {
         Args: { thread_id_param: string }
         Returns: boolean
       }
+      is_platform_admin: { Args: never; Returns: boolean }
       is_tenant_scoped_user: { Args: never; Returns: boolean }
       list_roles_for_active_tenant: {
         Args: { p_tenant_id: string }
@@ -7750,6 +8419,26 @@ export type Database = {
           user_id: string
         }[]
       }
+      match_memories_v2: {
+        Args: {
+          p_domain: string
+          p_limit?: number
+          p_module: string
+          p_query_embedding: string
+          p_query_text?: string
+          p_threshold?: number
+          p_user_id: string
+        }
+        Returns: {
+          fact_payload: Json
+          memory_id: string
+          similarity: number
+          summary_text: string
+        }[]
+      }
+      me_context: { Args: never; Returns: Json }
+      me_set_active_role: { Args: { p_role: string }; Returns: Json }
+      me_tenant_id: { Args: { p_user_id: string }; Returns: string }
       next_vtid: {
         Args: { p_family: string; p_module: string }
         Returns: string
@@ -7878,6 +8567,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      set_active_role: { Args: { p_role: string }; Returns: Json }
       set_role_preference: {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
@@ -7960,6 +8650,18 @@ export type Database = {
         | "cancer"
         | "specialized"
       match_interaction_type: "like" | "pass" | "block" | "report"
+      memory_scope:
+        | "PERSONAL"
+        | "ROLE_PRIVATE"
+        | "RELATIONSHIP"
+        | "COMMUNITY"
+        | "SYSTEM"
+      memory_sensitivity:
+        | "general"
+        | "health"
+        | "genomic"
+        | "financial"
+        | "private"
       notification_type:
         | "test_results"
         | "appointment_reminder"
@@ -7983,6 +8685,13 @@ export type Database = {
         | "reseller"
         | "staff"
         | "admin"
+      vitana_role:
+        | "community"
+        | "patient"
+        | "professional"
+        | "staff"
+        | "admin"
+        | "developer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -8130,6 +8839,20 @@ export const Constants = {
         "specialized",
       ],
       match_interaction_type: ["like", "pass", "block", "report"],
+      memory_scope: [
+        "PERSONAL",
+        "ROLE_PRIVATE",
+        "RELATIONSHIP",
+        "COMMUNITY",
+        "SYSTEM",
+      ],
+      memory_sensitivity: [
+        "general",
+        "health",
+        "genomic",
+        "financial",
+        "private",
+      ],
       notification_type: [
         "test_results",
         "appointment_reminder",
@@ -8155,6 +8878,14 @@ export const Constants = {
         "reseller",
         "staff",
         "admin",
+      ],
+      vitana_role: [
+        "community",
+        "patient",
+        "professional",
+        "staff",
+        "admin",
+        "developer",
       ],
     },
   },

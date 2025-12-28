@@ -6,7 +6,9 @@ import { useSmartRouting } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, BookOpen, Leaf, Shield, Terminal } from "lucide-react";
+import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink } from "lucide-react";
+import { getCommandHubUrl } from "@/config/devHub.config";
+import { toast } from "sonner";
 
 
 const Index = () => {
@@ -112,14 +114,28 @@ const Index = () => {
               </Card>
             </Link>
 
-            {/* Vitana DEV Portal */}
-            <Link to="/dev">
+            {/* Vitana DEV Portal - External Gateway Command Hub */}
+            <a 
+              href={getCommandHubUrl() || "#"}
+              onClick={(e) => {
+                const url = getCommandHubUrl();
+                if (!url) {
+                  e.preventDefault();
+                  toast.error("Vitana Dev Gateway URL not configured", {
+                    description: "VITE_GATEWAY_BASE must point to the Gateway Cloud Run service.",
+                  });
+                }
+              }}
+            >
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-blue-200 bg-gradient-to-br from-blue-50/50 to-slate-50/50">
                 <CardHeader className="text-center">
                   <div className="flex justify-center mb-4">
                     <Terminal className="h-12 w-12 text-blue-600 group-hover:scale-110 transition-transform" />
                   </div>
-                  <CardTitle className="text-xl text-blue-700">Vitana DEV</CardTitle>
+                  <CardTitle className="text-xl text-blue-700 flex items-center justify-center gap-2">
+                    Vitana DEV
+                    <ExternalLink className="h-4 w-4 opacity-50" />
+                  </CardTitle>
                   <CardDescription>Developer & Command Hub</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -128,7 +144,7 @@ const Index = () => {
                   </p>
                 </CardContent>
               </Card>
-            </Link>
+            </a>
           </div>
 
           {/* Footer Info */}
