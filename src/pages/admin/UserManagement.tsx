@@ -97,7 +97,7 @@ export default function UserManagement() {
           role,
           status,
           tenants!inner(
-            id,
+            tenant_id,
             name,
             slug
           )
@@ -406,7 +406,7 @@ export default function UserManagement() {
                             </SelectTrigger>
                             <SelectContent>
                               {tenants?.map((tenant) => (
-                                <SelectItem key={tenant.id} value={tenant.id}>
+                                <SelectItem key={tenant.tenant_id} value={tenant.tenant_id}>
                                   {tenant.name}
                                 </SelectItem>
                               ))}
