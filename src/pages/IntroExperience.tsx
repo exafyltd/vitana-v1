@@ -6,7 +6,7 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
-import { VitanaGuideOrbIntro } from '@/components/vitanaland/VitanaGuideOrbIntro';
+import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -225,9 +225,9 @@ export default function IntroExperience() {
           Where your wellness, connection, and purpose come together.
         </p>
 
-        {/* Controls */}
+        {/* Controls - add bottom padding on mobile to avoid ORB overlap */}
         <div 
-          className="flex flex-col items-center gap-6 animate-fade-in"
+          className="flex flex-col items-center gap-6 animate-fade-in pb-32 md:pb-0"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Play Button */}
@@ -285,8 +285,8 @@ export default function IntroExperience() {
         </p>
       </div>
 
-      {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
-      <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={1} />
+      {/* Mobile-only fixed ORB - centered, docked above bottom nav */}
+      <MobileFixedOrb />
     </div>
   );
 }

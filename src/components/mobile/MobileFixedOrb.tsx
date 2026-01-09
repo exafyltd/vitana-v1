@@ -38,8 +38,8 @@ export function MobileFixedOrb() {
       transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
       className="fixed left-1/2 -translate-x-1/2 z-40"
       style={{
-        // Dock 12px above the bottom + safe area inset
-        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)'
+        // Dock above bottom nav (64px) + safe area + 10px gap
+        bottom: 'calc(64px + env(safe-area-inset-bottom, 0px) + 10px)'
       }}
     >
       <div
