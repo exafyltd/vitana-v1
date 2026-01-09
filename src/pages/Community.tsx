@@ -36,6 +36,9 @@ import { useEventSelection } from '@/context/EventSelectionContext';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { useEventRecommendations } from '@/hooks/useEventRecommendations';
 import { HorizontalCardList } from '@/components/ui/horizontal-card-list';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileCommunityNav } from '@/components/community/MobileCommunityNav';
+import { MobileEntryCard } from '@/components/community/MobileEntryCard';
 import { 
   transformMemberRankingToCard,
   transformGroupRankingToCard,
@@ -968,6 +971,7 @@ const renderEventGrid = (
 };
 
 export default withScreenId(function Community() {
+  const isMobile = useIsMobile();
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
@@ -1208,6 +1212,78 @@ export default withScreenId(function Community() {
   // Global row counter for continuous alternating pattern
   let globalRowIndex = 0;
 
+  // Mobile-specific minimal Community dashboard
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO title="Community" description="Connect with the community" canonical={window.location.href} />
+        <MobileCommunityNav items={communityNavigation} />
+        
+        <div className="flex flex-col gap-4 p-4 pb-32 min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+          {/* Compact Header */}
+          <div className="space-y-1 pt-2">
+            <h1 className="text-xl font-bold text-foreground">Community</h1>
+            <p className="text-sm text-muted-foreground">Connect, share, and grow together</p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                🧬 Vitana {activityMetrics.totalMembers || 742}
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                Live
+              </span>
+            </div>
+          </div>
+          
+          {/* Quick Entry Cards - 3 deep links */}
+          <div className="space-y-3 mt-4">
+            <MobileEntryCard
+              icon={<Calendar className="h-5 w-5" />}
+              title="Browse Events & MeetUps"
+              subtitle="Discover local wellness gatherings"
+              to="/comm/events-meetups"
+            />
+            <MobileEntryCard
+              icon={<Radio className="h-5 w-5" />}
+              title="Join Live Rooms"
+              subtitle="Drop into real-time conversations"
+              to="/comm/live-rooms"
+            />
+            <MobileEntryCard
+              icon={<Play className="h-5 w-5" />}
+              title="Watch Shorts"
+              subtitle="Quick wellness inspiration"
+              to="/comm/media-hub?tab=shorts"
+            />
+          </div>
+        </div>
+        
+        {/* Popups */}
+        {autopilotOpen && (
+          <AutopilotPopup 
+            open={autopilotOpen} 
+            onOpenChange={setAutopilotOpen}
+          />
+        )}
+        
+        {communityFiltersOpen && (
+          <CommunityFiltersPopup 
+            open={communityFiltersOpen} 
+            onOpenChange={setCommunityFiltersOpen}
+          />
+        )}
+        
+        {/* Event Details Drawer */}
+        {selectedEventData && (
+          <MeetupDetailsDrawer
+            event={selectedEventData}
+            open={!!selectedEventId}
+            onOpenChange={handleDrawerClose}
+          />
+        )}
+      </AppLayout>
+    );
+  }
+
+  // Desktop layout
   return (
     <AppLayout>
       <SEO title="Community" description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
