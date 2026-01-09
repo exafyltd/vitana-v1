@@ -278,8 +278,8 @@ export default function IntroExperience() {
         </div>
       </div>
 
-      {/* Keyboard Hints */}
-      <div className="absolute bottom-6 left-0 right-0 text-center">
+      {/* Keyboard Hints - Desktop only */}
+      <div className="absolute bottom-6 left-0 right-0 text-center hidden md:block">
         <p className="text-white/40 text-xs">
           Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Space</kbd> to play • <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Esc</kbd> to skip
         </p>
