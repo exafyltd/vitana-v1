@@ -47,6 +47,10 @@ import { BulkVideoUploadModal } from '@/components/community/BulkVideoUploadModa
 import { EditShortVideoModal } from '@/components/community/EditShortVideoModal';
 import { useShortsDensity } from '@/hooks/useShortsDensity';
 import { DensityControl } from '@/components/community/DensityControl';
+import { MobileShortsFeed } from '@/components/community/MobileShortsFeed';
+import { MobileMusicList } from '@/components/community/MobileMusicList';
+import { MobilePodcastList } from '@/components/community/MobilePodcastList';
+import { useIsMobile } from '@/hooks/use-mobile';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -200,6 +204,7 @@ export default function MediaHub() {
   const { playMedia, currentMedia, isPlaying, togglePlay, pause } = useAudioPlayer();
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
   const {
     pendingCount,
     getLatestActions
@@ -212,6 +217,7 @@ export default function MediaHub() {
   const [isVideoPlayerOpen, setIsVideoPlayerOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [mobileShortsFeedOpen, setMobileShortsFeedOpen] = useState(false);
   
   // Read tab parameter from URL and set initial active tab
   const [searchParams] = useSearchParams();
@@ -546,100 +552,163 @@ export default function MediaHub() {
       <SubNavigation items={communityNavigation} />
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Shortened Header Bar - Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Media Hub ✨</h1>
-                <p className="text-muted-foreground">Discover and share inspiring wellness content with your community.</p>
-              </div>
-            </div>
-            
-            {/* Autopilot Card with Live Badge Counter */}
-            <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
-              {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
-                  {pendingCount}
-                </Badge>}
-              <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
-                </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
-              </div>
+          
+          {/* Mobile Header */}
+          {isMobile ? (
+            <>
+              <StandardHeader
+                title="Media Hub"
+                description="Discover and share inspiring wellness content"
+                emoji="✨"
+              />
               
-              {/* Hover Preview */}
-              {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
-                  {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
-                      <span>{action.icon}</span>
-                      <span className="truncate">{action.title}</span>
-                    </div>)}
-                  {pendingCount > 2 && <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+              {/* Compact Mobile Action Rail */}
+              <UtilityActionButton className="min-w-0">
+                <div className="flex items-center gap-2 min-w-max">
+                  <ExpandableSearchButton 
+                    placeholder="Search Media…"
+                    onSearch={(query) => console.log('Search Media:', query)}
+                  />
+                  
+                  {/* Upload - PRIMARY ACTION */}
+                  <Button 
+                    onClick={() => setIsUnifiedUploadOpen(true)}
+                    size="sm"
+                    className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                  
+                  {/* Vitana Index - subtle chip on mobile */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => navigate('/health')}
+                    className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-primary">742</span>
+                    </div>
+                  </Button>
+                  
+                  {/* Autopilot - subtle chip on mobile */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setAutopilotOpen(true)}
+                    className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0"
+                  >
+                    <Plane className="h-4 w-4 text-muted-foreground" />
+                    {pendingCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                      >
+                        {pendingCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </div>
+              </UtilityActionButton>
+            </>
+          ) : (
+            <>
+              {/* Desktop Header Section with Perfect Symmetry - Three Cards Layout */}
+              <div className="flex flex-col lg:flex-row gap-4 mb-8">
+                {/* Shortened Header Bar - Welcome Message */}
+                <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+                  <div>
+                    <h1 className="text-3xl font-bold text-foreground mb-2">Media Hub ✨</h1>
+                    <p className="text-muted-foreground">Discover and share inspiring wellness content with your community.</p>
+                  </div>
+                </div>
+                
+                {/* Autopilot Card with Live Badge Counter */}
+                <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
+                  {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
+                      {pendingCount}
+                    </Badge>}
+                  <div className="flex flex-col items-center justify-center h-full space-y-3">
+                    <div>
+                      <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                    </div>
+                    <span className="text-sm font-medium text-red-400">Autopilot</span>
+                  </div>
+                  
+                  {/* Hover Preview */}
+                  {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                      <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                      {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                          <span>{action.icon}</span>
+                          <span className="truncate">{action.title}</span>
+                        </div>)}
+                      {pendingCount > 2 && <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                          +{pendingCount - 2} more actions
+                        </div>}
                     </div>}
-                </div>}
-            </div>
-            
-            {/* Vitana Index Card - Circle with 742 */}
-            <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
-              <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+                
+                {/* Vitana Index Card - Circle with 742 */}
+                <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
+                  <div className="flex items-center justify-center h-full">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                      <span className="text-xl font-bold text-green-600">742</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Action Buttons Utility Bar */}
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search Media…"
-              onSearch={(query) => console.log('Search Media:', query)}
-            />
-            <UniversalCalendarButton />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Upload
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <Video className="w-4 h-4 mr-2" />
-                    Video
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
+              {/* Desktop Action Buttons Utility Bar */}
+              <UtilityActionButton>
+                <ExpandableSearchButton 
+                  placeholder="Search Media…"
+                  onSearch={(query) => console.log('Search Media:', query)}
+                />
+                <UniversalCalendarButton />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Upload
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        <Video className="w-4 h-4 mr-2" />
+                        Video
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
+                        <DropdownMenuItem onClick={() => {
+                          setInitialMediaType('video');
+                          setIsUnifiedUploadOpen(true);
+                        }}>
+                          Single Upload
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
+                          Bulk Upload
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
                     <DropdownMenuItem onClick={() => {
-                      setInitialMediaType('video');
+                      setInitialMediaType('music');
                       setIsUnifiedUploadOpen(true);
                     }}>
-                      Single Upload
+                      <Music className="w-4 h-4 mr-2" />
+                      Music
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
-                      Bulk Upload
+                    <DropdownMenuItem onClick={() => {
+                      setInitialMediaType('podcast');
+                      setIsUnifiedUploadOpen(true);
+                    }}>
+                      <Mic className="w-4 h-4 mr-2" />
+                      Podcast
                     </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-                <DropdownMenuItem onClick={() => {
-                  setInitialMediaType('music');
-                  setIsUnifiedUploadOpen(true);
-                }}>
-                  <Music className="w-4 h-4 mr-2" />
-                  Music
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => {
-                  setInitialMediaType('podcast');
-                  setIsUnifiedUploadOpen(true);
-                }}>
-                  <Mic className="w-4 h-4 mr-2" />
-                  Podcast
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </UtilityActionButton>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </UtilityActionButton>
+            </>
+          )}
 
           {/* Media Hub Subtabs */}
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
@@ -656,6 +725,66 @@ export default function MediaHub() {
             </SplitBarList>
 
             <SplitBarContent value="shorts">
+              {/* Mobile TikTok-style immersive feed */}
+              {isMobile ? (
+                <div className="space-y-4">
+                  {/* Mobile Shorts Preview Grid - tap to enter immersive mode */}
+                  <div className="text-center py-4">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {videoShorts.length} shorts available
+                    </p>
+                    <Button
+                      onClick={() => setMobileShortsFeedOpen(true)}
+                      className="bg-gradient-to-r from-violet-500 to-pink-500 text-white rounded-full px-6"
+                    >
+                      <Play className="h-4 w-4 mr-2" />
+                      Watch Shorts
+                    </Button>
+                  </div>
+                  
+                  {/* Preview grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {videoShorts.slice(0, 4).map((video, index) => (
+                      <div
+                        key={video.id || index}
+                        onClick={() => {
+                          setSelectedVideoIndex(index);
+                          setMobileShortsFeedOpen(true);
+                        }}
+                        className="relative aspect-[9/16] rounded-xl overflow-hidden bg-muted cursor-pointer group"
+                      >
+                        <img
+                          src={video.thumbnail_url || video.thumbnailImage}
+                          alt={video.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                            <Play className="h-6 w-6 text-white ml-0.5" />
+                          </div>
+                        </div>
+                        <div className="absolute bottom-2 left-2 right-2">
+                          <p className="text-white text-xs font-medium line-clamp-2 drop-shadow-lg">
+                            {video.title}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {videoShorts.length > 4 && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => setMobileShortsFeedOpen(true)}
+                      className="w-full text-muted-foreground"
+                    >
+                      View all {videoShorts.length} shorts
+                    </Button>
+                  )}
+                </div>
+              ) : (
+              /* Desktop Grid Layout */
               <div className="space-y-6">
                 {/* Trending Shorts Section */}
                 <div className="bg-gradient-to-b from-white/0 to-white/5 rounded-t-3xl p-6 -mx-6 -mt-6">
