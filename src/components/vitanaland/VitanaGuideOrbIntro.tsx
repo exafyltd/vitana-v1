@@ -66,7 +66,7 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: initialDelay, duration: 0.5 }}
-      className="fixed bottom-[20px] left-[104px] z-50 group"
+      className="fixed bottom-[80px] left-1/2 -translate-x-1/2 md:bottom-[20px] md:left-[104px] md:translate-x-0 z-50 group"
     >
       <div
         role="button"
