@@ -23,13 +23,17 @@ import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
 import { getShareUrl } from "@/lib/shareUrl";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileEventCarousel } from "@/components/community/MobileEventCarousel";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -350,6 +354,8 @@ const EventsAndMeetups = () => {
   const { events: dbEvents, loading, fetchEvents } = useCommunityEvents();
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { pendingCount } = useAutopilot();
   
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
@@ -361,6 +367,7 @@ const EventsAndMeetups = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [promoteCampaignOpen, setPromoteCampaignOpen] = useState(false);
   const [eventToPromote, setEventToPromote] = useState<any>(null);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
 
   // Use the mobile hook
   const isMobile = useIsMobile();
@@ -606,6 +613,41 @@ const EventsAndMeetups = () => {
               onSearch={(query) => setSearchQuery(query)}
             />
             <UniversalCalendarButton />
+            
+            {/* Vitana Index - compact on mobile */}
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate('/health')}
+                className="relative p-1"
+              >
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center">
+                  <span className="text-xs font-bold text-primary">742</span>
+                </div>
+              </Button>
+            )}
+            
+            {/* Autopilot - compact on mobile */}
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setAutopilotOpen(true)}
+                className="relative p-1"
+              >
+                <Plane className="h-5 w-5 text-destructive" />
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                  >
+                    {pendingCount}
+                  </Badge>
+                )}
+              </Button>
+            )}
+            
             <Button 
               onClick={() => setCreateSelectionOpen(true)}
               size="sm"
@@ -892,6 +934,12 @@ const EventsAndMeetups = () => {
           }}
         />
       )}
+
+      {/* Autopilot Popup (mobile) */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
+      />
     </>
   );
 };
