@@ -608,55 +608,58 @@ const EventsAndMeetups = () => {
             description="Discover formal events and casual meetups in your community"
           />
           
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search events and meetups..." 
-              onSearch={(query) => setSearchQuery(query)}
-            />
-            <UniversalCalendarButton />
-            
-            {/* Vitana Index - compact on mobile */}
-            {isMobile && (
+          <UtilityActionButton className="min-w-0">
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton 
+                placeholder="Search events and meetups..." 
+                onSearch={(query) => setSearchQuery(query)}
+              />
+              <UniversalCalendarButton />
+              
+              {/* Create - PRIMARY ACTION, always visible */}
               <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => navigate('/health')}
-                className="relative p-1"
+                onClick={() => setCreateSelectionOpen(true)}
+                size="sm"
+                className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center">
-                  <span className="text-xs font-bold text-primary">742</span>
-                </div>
+                <Plus className="h-4 w-4" />
+                {!isMobile && <span>Create</span>}
               </Button>
-            )}
-            
-            {/* Autopilot - compact on mobile */}
-            {isMobile && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setAutopilotOpen(true)}
-                className="relative p-1"
-              >
-                <Plane className="h-5 w-5 text-destructive" />
-                {pendingCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
-                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
-                  >
-                    {pendingCount}
-                  </Badge>
-                )}
-              </Button>
-            )}
-            
-            <Button 
-              onClick={() => setCreateSelectionOpen(true)}
-              size="sm"
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Create</span>
-            </Button>
+              
+              {/* Vitana Index - subtle chip on mobile */}
+              {isMobile && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => navigate('/health')}
+                  className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
+                >
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
+                    <span className="text-[10px] font-bold text-primary">742</span>
+                  </div>
+                </Button>
+              )}
+              
+              {/* Autopilot - subtle chip on mobile */}
+              {isMobile && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setAutopilotOpen(true)}
+                  className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0"
+                >
+                  <Plane className="h-4 w-4 text-muted-foreground" />
+                  {pendingCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                    >
+                      {pendingCount}
+                    </Badge>
+                  )}
+                </Button>
+              )}
+            </div>
           </UtilityActionButton>
 
           <div className="flex-1 overflow-y-auto">
