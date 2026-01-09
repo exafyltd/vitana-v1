@@ -19,7 +19,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileLiveRoomCarousel } from "@/components/community/MobileLiveRoomCarousel";
 import { GoLivePopup } from "@/components/GoLivePopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { LiveRoomCard } from "@/components/liverooms/LiveRoomCard";
@@ -36,7 +38,7 @@ import type { LiveStream } from "@/hooks/useLiveStreams";
 import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
-import { useMemo } from "react";
+
 import { supabase } from "@/integrations/supabase/client";
 
 export default function LiveRooms() {
@@ -44,11 +46,11 @@ export default function LiveRooms() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('live');
   const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
@@ -156,15 +158,6 @@ export default function LiveRooms() {
     );
   }, [scheduledRooms, searchQuery]);
 
-  // Detect mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // Handle deep linking
   useEffect(() => {
@@ -606,7 +599,8 @@ export default function LiveRooms() {
         description="Join live conversations and discussions"
         canonical={window.location.href}
       />
-      <SubNavigation items={communityNavigation} />
+      {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
+      {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 pb-24 md:pb-32 scroll-smooth" style={{ scrollPaddingBottom: "96px" }}>
         <StandardHeader
           title="Live Rooms"
@@ -621,6 +615,28 @@ export default function LiveRooms() {
             onSearch={(query) => setSearchQuery(query)}
           />
           <UniversalCalendarButton />
+          
+          {/* Vitana Index - compact on mobile */}
+          {isMobile && (
+            <Button variant="ghost" size="sm" onClick={() => navigate('/health')} className="relative p-1">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center">
+                <span className="text-xs font-bold text-primary">742</span>
+              </div>
+            </Button>
+          )}
+          
+          {/* Autopilot - compact on mobile */}
+          {isMobile && (
+            <Button variant="ghost" size="sm" onClick={() => setAutopilotOpen(true)} className="relative p-1">
+              <Plane className="h-5 w-5 text-destructive" />
+              {pendingCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 text-[10px] flex items-center justify-center">
+                  {pendingCount}
+                </Badge>
+              )}
+            </Button>
+          )}
+          
           <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Go Live
@@ -660,23 +676,36 @@ export default function LiveRooms() {
                 <p className="text-muted-foreground">Loading live rooms...</p>
               </div>
             ) : filteredLiveRooms.length > 0 ? (
-              <>
-                {chunkRooms(filteredLiveRooms).map((chunk, chunkIndex) => (
-                  <div key={`live-chunk-${chunkIndex}`}>
-                    {renderMosaicGrid(chunk)}
-                    {chunkIndex < chunkRooms(filteredLiveRooms).length - 1 && (
-                      <div className="mb-8 mt-2">
-                        <MotivationalBanner variant="encouragement" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {filteredLiveRooms.length > 0 && (
-                  <div className="mb-8 mt-2">
-                    <MotivationalBanner variant="partnership" />
-                  </div>
-                )}
-              </>
+              isMobile ? (
+                <MobileLiveRoomCarousel
+                  rooms={filteredLiveRooms}
+                  onCardClick={handleCardClick}
+                  onJoinRoom={handleJoinRoom}
+                  onNotifyClick={handleNotifyClick}
+                  notifyingRooms={notifyingRooms}
+                  currentUserId={user?.id}
+                  onEdit={handleCardEdit}
+                  onDelete={handleCardDelete}
+                />
+              ) : (
+                <>
+                  {chunkRooms(filteredLiveRooms).map((chunk, chunkIndex) => (
+                    <div key={`live-chunk-${chunkIndex}`}>
+                      {renderMosaicGrid(chunk)}
+                      {chunkIndex < chunkRooms(filteredLiveRooms).length - 1 && (
+                        <div className="mb-8 mt-2">
+                          <MotivationalBanner variant="encouragement" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredLiveRooms.length > 0 && (
+                    <div className="mb-8 mt-2">
+                      <MotivationalBanner variant="partnership" />
+                    </div>
+                  )}
+                </>
+              )
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No live rooms at the moment</p>
@@ -699,23 +728,36 @@ export default function LiveRooms() {
                 <p className="text-muted-foreground">Loading scheduled rooms...</p>
               </div>
             ) : filteredScheduledRooms.length > 0 ? (
-              <>
-                {chunkRooms(filteredScheduledRooms).map((chunk, chunkIndex) => (
-                  <div key={`scheduled-chunk-${chunkIndex}`}>
-                    {renderMosaicGrid(chunk)}
-                    {chunkIndex < chunkRooms(filteredScheduledRooms).length - 1 && (
-                      <div className="mb-8 mt-2">
-                        <MotivationalBanner variant="achievement" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {filteredScheduledRooms.length > 0 && (
-                  <div className="mb-8 mt-2">
-                    <MotivationalBanner variant="guidance" />
-                  </div>
-                )}
-              </>
+              isMobile ? (
+                <MobileLiveRoomCarousel
+                  rooms={filteredScheduledRooms}
+                  onCardClick={handleCardClick}
+                  onJoinRoom={handleJoinRoom}
+                  onNotifyClick={handleNotifyClick}
+                  notifyingRooms={notifyingRooms}
+                  currentUserId={user?.id}
+                  onEdit={handleCardEdit}
+                  onDelete={handleCardDelete}
+                />
+              ) : (
+                <>
+                  {chunkRooms(filteredScheduledRooms).map((chunk, chunkIndex) => (
+                    <div key={`scheduled-chunk-${chunkIndex}`}>
+                      {renderMosaicGrid(chunk)}
+                      {chunkIndex < chunkRooms(filteredScheduledRooms).length - 1 && (
+                        <div className="mb-8 mt-2">
+                          <MotivationalBanner variant="achievement" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredScheduledRooms.length > 0 && (
+                    <div className="mb-8 mt-2">
+                      <MotivationalBanner variant="guidance" />
+                    </div>
+                  )}
+                </>
+              )
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No scheduled rooms</p>
