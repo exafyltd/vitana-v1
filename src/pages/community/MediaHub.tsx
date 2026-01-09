@@ -549,7 +549,7 @@ export default function MediaHub() {
   return (
     <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
+      {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           
@@ -568,6 +568,15 @@ export default function MediaHub() {
                   <ExpandableSearchButton 
                     placeholder="Search Media…"
                     onSearch={(query) => console.log('Search Media:', query)}
+                  />
+                  
+                  {/* Calendar - consistent with Events & MeetUps */}
+                  <UniversalCalendarButton 
+                    variant="ghost"
+                    size="sm"
+                    showText={false}
+                    showEventCount={false}
+                    className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
                   />
                   
                   {/* Upload - PRIMARY ACTION */}
