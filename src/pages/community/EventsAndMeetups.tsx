@@ -28,6 +28,8 @@ import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
 import { getShareUrl } from "@/lib/shareUrl";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileEventCarousel } from "@/components/community/MobileEventCarousel";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -355,19 +357,13 @@ const EventsAndMeetups = () => {
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [activeTab, setActiveTab] = useState("today");
-  const [isMobile, setIsMobile] = useState(false);
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [promoteCampaignOpen, setPromoteCampaignOpen] = useState(false);
   const [eventToPromote, setEventToPromote] = useState<any>(null);
 
-  // Detect mobile
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Use the mobile hook
+  const isMobile = useIsMobile();
 
   // Filter events by time
   const todayEvents = useMemo(() => {
@@ -643,6 +639,34 @@ const EventsAndMeetups = () => {
                     <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
                     <p className="text-muted-foreground">Loading today's events...</p>
                   </div>
+                ) : isMobile ? (
+                  <MobileEventCarousel
+                    events={filteredTodayEvents}
+                    onCardClick={handleCardClick}
+                    currentUserId={user?.id}
+                    onEdit={handleEditEvent}
+                    initialEventId={selectedEventId || undefined}
+                    onSlideChange={(eventId) => {
+                      setFocusedCardId(eventId);
+                    }}
+                    emptyState={
+                      <div className="text-center py-12">
+                        <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-semibold mb-2">No Events Today</h3>
+                        <p className="text-muted-foreground mb-4">
+                          There are no events scheduled for today. Check upcoming events or create your own!
+                        </p>
+                        <div className="flex flex-col gap-3">
+                          <Button onClick={() => setCreateSelectionOpen(true)}>
+                            Create Event
+                          </Button>
+                          <Button variant="outline" onClick={() => setActiveTab('upcoming')}>
+                            View Upcoming Events
+                          </Button>
+                        </div>
+                      </div>
+                    }
+                  />
                 ) : (
                   <>
                     {filteredTodayEvents.length === 0 ? (
@@ -692,6 +716,29 @@ const EventsAndMeetups = () => {
                     <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
                     <p className="text-muted-foreground">Loading upcoming events...</p>
                   </div>
+                ) : isMobile ? (
+                  <MobileEventCarousel
+                    events={filteredUpcomingEvents}
+                    onCardClick={handleCardClick}
+                    currentUserId={user?.id}
+                    onEdit={handleEditEvent}
+                    initialEventId={selectedEventId || undefined}
+                    onSlideChange={(eventId) => {
+                      setFocusedCardId(eventId);
+                    }}
+                    emptyState={
+                      <div className="text-center py-12">
+                        <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-semibold mb-2">No Upcoming Events</h3>
+                        <p className="text-muted-foreground mb-4">
+                          There are no events scheduled. Be the first to create one!
+                        </p>
+                        <Button onClick={() => setCreateSelectionOpen(true)}>
+                          Create Event
+                        </Button>
+                      </div>
+                    }
+                  />
                 ) : (
                   <>
                     {filteredUpcomingEvents.length === 0 ? (

@@ -440,6 +440,81 @@ export type Database = {
           },
         ]
       }
+      anticipatory_guidance: {
+        Row: {
+          confidence: number
+          created_at: string
+          dismissed_at: string | null
+          dismissible: boolean
+          domain: string
+          engaged_at: string | null
+          generation_rules_version: string | null
+          guidance_mode: string
+          guidance_text: string
+          id: string
+          metadata: Json
+          originating_signal_ids: Json | null
+          relevance_score: number | null
+          source_window_id: string | null
+          status: string
+          surfaced_at: string | null
+          tenant_id: string
+          timing_hint: string
+          updated_at: string
+          user_id: string
+          user_preferences_snapshot: Json | null
+          why_this_matters: string
+        }
+        Insert: {
+          confidence: number
+          created_at?: string
+          dismissed_at?: string | null
+          dismissible?: boolean
+          domain: string
+          engaged_at?: string | null
+          generation_rules_version?: string | null
+          guidance_mode: string
+          guidance_text: string
+          id?: string
+          metadata?: Json
+          originating_signal_ids?: Json | null
+          relevance_score?: number | null
+          source_window_id?: string | null
+          status?: string
+          surfaced_at?: string | null
+          tenant_id: string
+          timing_hint: string
+          updated_at?: string
+          user_id: string
+          user_preferences_snapshot?: Json | null
+          why_this_matters: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          dismissed_at?: string | null
+          dismissible?: boolean
+          domain?: string
+          engaged_at?: string | null
+          generation_rules_version?: string | null
+          guidance_mode?: string
+          guidance_text?: string
+          id?: string
+          metadata?: Json
+          originating_signal_ids?: Json | null
+          relevance_score?: number | null
+          source_window_id?: string | null
+          status?: string
+          surfaced_at?: string | null
+          tenant_id?: string
+          timing_hint?: string
+          updated_at?: string
+          user_id?: string
+          user_preferences_snapshot?: Json | null
+          why_this_matters?: string
+        }
+        Relationships: []
+      }
       api_integrations: {
         Row: {
           active_connections: number | null
@@ -665,6 +740,8 @@ export type Database = {
       app_users: {
         Row: {
           created_at: string
+          display_name: string | null
+          email: string | null
           profile: Json
           status: string
           tenant_id: string
@@ -673,6 +750,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          display_name?: string | null
+          email?: string | null
           profile?: Json
           status?: string
           tenant_id: string
@@ -681,6 +760,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          display_name?: string | null
+          email?: string | null
           profile?: Json
           status?: string
           tenant_id?: string
@@ -1033,6 +1114,59 @@ export type Database = {
             columns: ["action_id"]
             isOneToOne: false
             referencedRelation: "autopilot_actions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      biomarker_results: {
+        Row: {
+          biomarker_code: string | null
+          id: string
+          lab_report_id: string | null
+          measured_at: string
+          name: string | null
+          ref_range_high: number | null
+          ref_range_low: number | null
+          status: string | null
+          tenant_id: string
+          unit: string | null
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          biomarker_code?: string | null
+          id?: string
+          lab_report_id?: string | null
+          measured_at: string
+          name?: string | null
+          ref_range_high?: number | null
+          ref_range_low?: number | null
+          status?: string | null
+          tenant_id: string
+          unit?: string | null
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          biomarker_code?: string | null
+          id?: string
+          lab_report_id?: string | null
+          measured_at?: string
+          name?: string | null
+          ref_range_high?: number | null
+          ref_range_low?: number | null
+          status?: string | null
+          tenant_id?: string
+          unit?: string | null
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "biomarker_results_lab_report_id_fkey"
+            columns: ["lab_report_id"]
+            isOneToOne: false
+            referencedRelation: "lab_reports"
             referencedColumns: ["id"]
           },
         ]
@@ -3571,6 +3705,39 @@ export type Database = {
           },
         ]
       }
+      health_features_daily: {
+        Row: {
+          created_at: string | null
+          date: string
+          feature_key: string
+          feature_value: number
+          id: string
+          provenance: Json | null
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          feature_key: string
+          feature_value: number
+          id?: string
+          provenance?: Json | null
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          feature_key?: string
+          feature_value?: number
+          id?: string
+          provenance?: Json | null
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       invite_analytics: {
         Row: {
           channel: string
@@ -3643,6 +3810,42 @@ export type Database = {
           title?: string
           updated_at?: string | null
           word_count?: number | null
+        }
+        Relationships: []
+      }
+      lab_reports: {
+        Row: {
+          created_at: string
+          id: string
+          parsed_json: Json | null
+          raw_file_ref: string | null
+          raw_text: string | null
+          report_date: string | null
+          source: string | null
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          parsed_json?: Json | null
+          raw_file_ref?: string | null
+          raw_text?: string | null
+          report_date?: string | null
+          source?: string | null
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          parsed_json?: Json | null
+          raw_file_ref?: string | null
+          raw_text?: string | null
+          report_date?: string | null
+          source?: string | null
+          tenant_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -3876,6 +4079,140 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      location_preferences: {
+        Row: {
+          allow_location_personalization: boolean
+          allow_sharing_in_meetups: boolean
+          home_area: string | null
+          home_city: string | null
+          id: string
+          preferred_radius_km: number
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allow_location_personalization?: boolean
+          allow_sharing_in_meetups?: boolean
+          home_area?: string | null
+          home_city?: string | null
+          id?: string
+          preferred_radius_km?: number
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allow_location_personalization?: boolean
+          allow_sharing_in_meetups?: boolean
+          home_area?: string | null
+          home_city?: string | null
+          id?: string
+          preferred_radius_km?: number
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      location_visits: {
+        Row: {
+          created_at: string
+          id: string
+          location_id: string
+          metadata: Json
+          notes: string | null
+          tenant_id: string
+          user_id: string
+          visit_time: string
+          visit_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location_id: string
+          metadata?: Json
+          notes?: string | null
+          tenant_id: string
+          user_id: string
+          visit_time?: string
+          visit_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location_id?: string
+          metadata?: Json
+          notes?: string | null
+          tenant_id?: string
+          user_id?: string
+          visit_time?: string
+          visit_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "location_visits_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          area: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          created_by: string
+          id: string
+          lat: number | null
+          lng: number | null
+          location_type: string
+          metadata: Json
+          name: string
+          privacy_level: string
+          tenant_id: string
+          topic_keys: string[]
+          updated_at: string
+        }
+        Insert: {
+          area?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location_type: string
+          metadata?: Json
+          name: string
+          privacy_level?: string
+          tenant_id: string
+          topic_keys?: string[]
+          updated_at?: string
+        }
+        Update: {
+          area?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location_type?: string
+          metadata?: Json
+          name?: string
+          privacy_level?: string
+          tenant_id?: string
+          topic_keys?: string[]
+          updated_at?: string
+        }
+        Relationships: []
       }
       match_notifications: {
         Row: {
@@ -4291,6 +4628,69 @@ export type Database = {
           },
         ]
       }
+      memory_categories: {
+        Row: {
+          created_at: string
+          is_active: boolean
+          key: string
+          label: string
+        }
+        Insert: {
+          created_at?: string
+          is_active?: boolean
+          key: string
+          label: string
+        }
+        Update: {
+          created_at?: string
+          is_active?: boolean
+          key?: string
+          label?: string
+        }
+        Relationships: []
+      }
+      memory_diary_entries: {
+        Row: {
+          created_at: string
+          energy_level: number | null
+          entry_date: string
+          entry_type: string
+          id: string
+          mood: string | null
+          raw_text: string
+          tags: string[] | null
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          energy_level?: number | null
+          entry_date: string
+          entry_type: string
+          id?: string
+          mood?: string | null
+          raw_text: string
+          tags?: string[] | null
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          energy_level?: number | null
+          entry_date?: string
+          entry_type?: string
+          id?: string
+          mood?: string | null
+          raw_text?: string
+          tags?: string[] | null
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       memory_embeddings: {
         Row: {
           created_at: string
@@ -4399,6 +4799,134 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
+      memory_garden_nodes: {
+        Row: {
+          confidence: number
+          created_at: string
+          domain: string
+          first_seen: string
+          id: string
+          last_seen: string
+          node_type: string
+          source: string
+          summary: string
+          tenant_id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          domain: string
+          first_seen?: string
+          id?: string
+          last_seen?: string
+          node_type: string
+          source: string
+          summary: string
+          tenant_id: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          domain?: string
+          first_seen?: string
+          id?: string
+          last_seen?: string
+          node_type?: string
+          source?: string
+          summary?: string
+          tenant_id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      memory_items: {
+        Row: {
+          active_role: string | null
+          category_key: string
+          content: string
+          content_json: Json | null
+          created_at: string
+          id: string
+          importance: number
+          occurred_at: string
+          source: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          active_role?: string | null
+          category_key: string
+          content: string
+          content_json?: Json | null
+          created_at?: string
+          id?: string
+          importance?: number
+          occurred_at?: string
+          source: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          active_role?: string | null
+          category_key?: string
+          content?: string
+          content_json?: Json | null
+          created_at?: string
+          id?: string
+          importance?: number
+          occurred_at?: string
+          source?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_items_category_key_fkey"
+            columns: ["category_key"]
+            isOneToOne: false
+            referencedRelation: "memory_categories"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
+      memory_node_sources: {
+        Row: {
+          created_at: string
+          diary_entry_id: string
+          node_id: string
+        }
+        Insert: {
+          created_at?: string
+          diary_entry_id: string
+          node_id: string
+        }
+        Update: {
+          created_at?: string
+          diary_entry_id?: string
+          node_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_node_sources_diary_entry_id_fkey"
+            columns: ["diary_entry_id"]
+            isOneToOne: false
+            referencedRelation: "memory_diary_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memory_node_sources_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "memory_garden_nodes"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4978,33 +5506,42 @@ export type Database = {
       oasis_tasks: {
         Row: {
           assignee: string | null
+          column: string | null
           created_at: string
           description: string | null
           id: number
+          is_terminal: boolean | null
           metadata: Json | null
           status: string
+          terminal_outcome: string | null
           title: string
           updated_at: string
           vtid: string
         }
         Insert: {
           assignee?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          is_terminal?: boolean | null
           metadata?: Json | null
           status?: string
+          terminal_outcome?: string | null
           title: string
           updated_at?: string
           vtid: string
         }
         Update: {
           assignee?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          is_terminal?: boolean | null
           metadata?: Json | null
           status?: string
+          terminal_outcome?: string | null
           title?: string
           updated_at?: string
           vtid?: string
@@ -6184,6 +6721,90 @@ export type Database = {
           },
         ]
       }
+      recommendations: {
+        Row: {
+          based_on: Json | null
+          body: string | null
+          category: string | null
+          created_at: string | null
+          evidence_refs: Json | null
+          id: string
+          safety_checked: boolean | null
+          status: string | null
+          tenant_id: string
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          based_on?: Json | null
+          body?: string | null
+          category?: string | null
+          created_at?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          safety_checked?: boolean | null
+          status?: string | null
+          tenant_id: string
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          based_on?: Json | null
+          body?: string | null
+          category?: string | null
+          created_at?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          safety_checked?: boolean | null
+          status?: string | null
+          tenant_id?: string
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      relationship_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          id: string
+          last_interaction: string
+          metadata: Json
+          source_id: string
+          source_type: string
+          strength: number
+          target_id: string
+          target_type: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          edge_type: string
+          id?: string
+          last_interaction?: string
+          metadata?: Json
+          source_id: string
+          source_type: string
+          strength?: number
+          target_id: string
+          target_type: string
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          id?: string
+          last_interaction?: string
+          metadata?: Json
+          source_id?: string
+          source_type?: string
+          strength?: number
+          target_id?: string
+          target_type?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       reseller_attributions: {
         Row: {
           commission_amount: number | null
@@ -6497,6 +7118,42 @@ export type Database = {
             referencedColumns: ["tenant_id"]
           },
         ]
+      }
+      safety_constraints: {
+        Row: {
+          constraint_key: string | null
+          constraint_value: string | null
+          created_at: string | null
+          id: string
+          severity: string | null
+          source: string | null
+          tenant_id: string
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          constraint_key?: string | null
+          constraint_value?: string | null
+          created_at?: string | null
+          id?: string
+          severity?: string | null
+          source?: string | null
+          tenant_id: string
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          constraint_key?: string | null
+          constraint_value?: string | null
+          created_at?: string | null
+          id?: string
+          severity?: string | null
+          source?: string | null
+          tenant_id?: string
+          type?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       scheduled_posts: {
         Row: {
@@ -6961,6 +7618,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_active_roles: {
+        Row: {
+          active_role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_role?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_activity_log: {
         Row: {
@@ -7502,6 +8177,58 @@ export type Database = {
         }
         Relationships: []
       }
+      user_tenants: {
+        Row: {
+          active_role: string
+          created_at: string
+          id: string
+          is_primary: boolean
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_tenants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_tenants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_tenants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       user_wallets: {
         Row: {
           balance: number
@@ -7621,12 +8348,65 @@ export type Database = {
         }
         Relationships: []
       }
+      vitana_index_scores: {
+        Row: {
+          created_at: string | null
+          date: string
+          id: string
+          model_version: string | null
+          provenance: Json | null
+          score_exercise: number | null
+          score_hydration: number | null
+          score_mental: number | null
+          score_nutrition: number | null
+          score_sleep: number | null
+          score_total: number
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          id?: string
+          model_version?: string | null
+          provenance?: Json | null
+          score_exercise?: number | null
+          score_hydration?: number | null
+          score_mental?: number | null
+          score_nutrition?: number | null
+          score_sleep?: number | null
+          score_total: number
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          id?: string
+          model_version?: string | null
+          provenance?: Json | null
+          score_exercise?: number | null
+          score_hydration?: number | null
+          score_mental?: number | null
+          score_nutrition?: number | null
+          score_sleep?: number | null
+          score_total?: number
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       vtid_ledger: {
         Row: {
           assigned_to: string
+          completed_at: string | null
           created_at: string | null
+          delete_reason: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           description: string | null
           id: string
+          is_terminal: boolean | null
           is_test: boolean
           layer: string
           metadata: Json
@@ -7638,15 +8418,23 @@ export type Database = {
           task_module: string
           task_type: string
           tenant: string
+          terminal_outcome: string | null
           title: string | null
           updated_at: string | null
+          voided_at: string | null
+          voided_reason: string | null
           vtid: string
         }
         Insert: {
           assigned_to?: string
+          completed_at?: string | null
           created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string | null
           id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           layer: string
           metadata?: Json
@@ -7658,15 +8446,23 @@ export type Database = {
           task_module?: string
           task_type?: string
           tenant?: string
+          terminal_outcome?: string | null
           title?: string | null
           updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
           vtid: string
         }
         Update: {
           assigned_to?: string
+          completed_at?: string | null
           created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string | null
           id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           layer?: string
           metadata?: Json
@@ -7678,20 +8474,25 @@ export type Database = {
           task_module?: string
           task_type?: string
           tenant?: string
+          terminal_outcome?: string | null
           title?: string | null
           updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
           vtid?: string
         }
         Relationships: []
       }
-      VtidLedger: {
+      vtidledger_wrong_backup: {
         Row: {
           assigned_to: string | null
+          column: string | null
           created_at: string
           description: string | null
           description_md: string | null
           environment: string | null
           id: string
+          is_terminal: boolean | null
           is_test: boolean
           last_event_at: string | null
           last_event_id: string | null
@@ -7707,17 +8508,20 @@ export type Database = {
           task_module: string | null
           task_type: string | null
           tenant: string
+          terminal_outcome: string | null
           title: string
           updated_at: string
           vtid: string
         }
         Insert: {
           assigned_to?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           description_md?: string | null
           environment?: string | null
-          id: string
+          id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           last_event_at?: string | null
           last_event_id?: string | null
@@ -7733,17 +8537,20 @@ export type Database = {
           task_module?: string | null
           task_type?: string | null
           tenant: string
+          terminal_outcome?: string | null
           title: string
           updated_at?: string
           vtid: string
         }
         Update: {
           assigned_to?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           description_md?: string | null
           environment?: string | null
           id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           last_event_at?: string | null
           last_event_id?: string | null
@@ -7759,6 +8566,7 @@ export type Database = {
           task_module?: string | null
           task_type?: string | null
           tenant?: string
+          terminal_outcome?: string | null
           title?: string
           updated_at?: string
           vtid?: string
@@ -7852,6 +8660,42 @@ export type Database = {
           to_user_id?: string | null
           transaction_type?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      wearable_samples: {
+        Row: {
+          id: string
+          metric: string | null
+          provider: string | null
+          raw_json: Json | null
+          tenant_id: string
+          ts: string
+          unit: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          id?: string
+          metric?: string | null
+          provider?: string | null
+          raw_json?: Json | null
+          tenant_id: string
+          ts: string
+          unit?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          id?: string
+          metric?: string | null
+          provider?: string | null
+          raw_json?: Json | null
+          tenant_id?: string
+          ts?: string
+          unit?: string | null
+          user_id?: string
+          value?: number
         }
         Relationships: []
       }
@@ -7973,38 +8817,23 @@ export type Database = {
       }
       commandhub_board_visible: {
         Row: {
-          created_at: string | null
-          is_test: boolean | null
+          is_terminal: boolean | null
           status: string | null
-          summary: string | null
-          task_family: string | null
-          task_type: string | null
-          tenant: string | null
-          title: string | null
+          terminal_outcome: string | null
           updated_at: string | null
           vtid: string | null
         }
         Insert: {
-          created_at?: string | null
-          is_test?: boolean | null
+          is_terminal?: boolean | null
           status?: string | null
-          summary?: never
-          task_family?: string | null
-          task_type?: string | null
-          tenant?: string | null
-          title?: never
+          terminal_outcome?: string | null
           updated_at?: string | null
           vtid?: string | null
         }
         Update: {
-          created_at?: string | null
-          is_test?: boolean | null
+          is_terminal?: boolean | null
           status?: string | null
-          summary?: never
-          task_family?: string | null
-          task_type?: string | null
-          tenant?: string | null
-          title?: never
+          terminal_outcome?: string | null
           updated_at?: string | null
           vtid?: string | null
         }
@@ -8026,6 +8855,84 @@ export type Database = {
           followers_count: number | null
           following_count: number | null
           user_id: string | null
+        }
+        Relationships: []
+      }
+      VtidLedger: {
+        Row: {
+          assigned_to: string | null
+          created_at: string | null
+          delete_reason: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          description: string | null
+          id: string | null
+          is_test: boolean | null
+          layer: string | null
+          metadata: Json | null
+          module: string | null
+          parent_vtid: string | null
+          status: string | null
+          summary: string | null
+          task_family: string | null
+          task_module: string | null
+          task_type: string | null
+          tenant: string | null
+          title: string | null
+          updated_at: string | null
+          voided_at: string | null
+          voided_reason: string | null
+          vtid: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          id?: string | null
+          is_test?: boolean | null
+          layer?: string | null
+          metadata?: Json | null
+          module?: string | null
+          parent_vtid?: string | null
+          status?: string | null
+          summary?: string | null
+          task_family?: string | null
+          task_module?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: string | null
+          updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          id?: string | null
+          is_test?: boolean | null
+          layer?: string | null
+          metadata?: Json | null
+          module?: string | null
+          parent_vtid?: string | null
+          status?: string | null
+          summary?: string | null
+          task_family?: string | null
+          task_module?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: string | null
+          updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
+          vtid?: string | null
         }
         Relationships: []
       }
@@ -8113,11 +9020,25 @@ export type Database = {
       current_active_role: { Args: never; Returns: string }
       current_tenant: { Args: never; Returns: string }
       current_tenant_id: { Args: never; Returns: string }
+      current_user_id: { Args: never; Returns: string }
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
-      dev_set_request_context: {
+      dev_bootstrap_request_context: {
         Args: { p_active_role: string; p_tenant_id: string }
         Returns: Json
       }
+      dev_set_request_context:
+        | {
+            Args: { p_active_role: string; p_tenant_id: string }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_active_role: string
+              p_tenant_id: string
+              p_user_id: string
+            }
+            Returns: Json
+          }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
       generate_event_slug: {
@@ -8379,6 +9300,24 @@ export type Database = {
         }
         Returns: boolean
       }
+      health_compute_features_daily: { Args: { p_date: string }; Returns: Json }
+      health_compute_vitana_index: {
+        Args: { p_date: string; p_model_version?: string }
+        Returns: Json
+      }
+      health_generate_recommendations: {
+        Args: { p_from: string; p_model_version?: string; p_to: string }
+        Returns: Json
+      }
+      health_get_summary: {
+        Args: { p_from: string; p_to: string }
+        Returns: Json
+      }
+      health_ingest_lab_report: { Args: { p_payload: Json }; Returns: Json }
+      health_ingest_wearable_samples: {
+        Args: { p_payload: Json }
+        Returns: Json
+      }
       increment_wallet_balance: {
         Args: { p_amount: number; p_currency_type: string; p_user_id: string }
         Returns: number
@@ -8439,6 +9378,48 @@ export type Database = {
       me_context: { Args: never; Returns: Json }
       me_set_active_role: { Args: { p_role: string }; Returns: Json }
       me_tenant_id: { Args: { p_user_id: string }; Returns: string }
+      memory_add_diary_entry: {
+        Args: {
+          p_energy_level?: number
+          p_entry_date: string
+          p_entry_type: string
+          p_mood?: string
+          p_raw_text: string
+          p_tags?: string[]
+        }
+        Returns: Json
+      }
+      memory_extract_garden_nodes: {
+        Args: { p_diary_entry_id: string }
+        Returns: Json
+      }
+      memory_garden_node_upsert: {
+        Args: {
+          p_confidence: number
+          p_domain: string
+          p_node_type: string
+          p_seen_date: string
+          p_source: string
+          p_summary: string
+          p_tenant_id: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: {
+          id: string
+          is_new: boolean
+        }[]
+      }
+      memory_get_context: {
+        Args: { p_categories?: string[]; p_limit?: number; p_since?: string }
+        Returns: Json
+      }
+      memory_get_diary_entries: {
+        Args: { p_from?: string; p_limit?: number; p_to?: string }
+        Returns: Json
+      }
+      memory_get_garden_summary: { Args: never; Returns: Json }
+      memory_write_item: { Args: { p_payload: Json }; Returns: Json }
       next_vtid: {
         Args: { p_family: string; p_module: string }
         Returns: string
