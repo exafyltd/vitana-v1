@@ -7,12 +7,12 @@ import { cn } from '@/lib/utils';
 
 interface MobileShortSlideProps {
   video: {
-    id: string;
+    id?: string;
     title: string;
     description?: string;
     creator: string;
     creatorAvatar?: string | null;
-    src_url: string;
+    src_url?: string;
     thumbnail_url?: string;
     thumbnailImage?: string;
     likes: number;

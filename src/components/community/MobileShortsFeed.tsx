@@ -4,12 +4,12 @@ import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
 interface VideoShort {
-  id: string;
+  id?: string;
   title: string;
   description?: string;
   creator: string;
   creatorAvatar?: string | null;
-  src_url: string;
+  src_url?: string;
   thumbnail_url?: string;
   thumbnailImage?: string;
   likes: number;
@@ -123,10 +123,10 @@ export function MobileShortsFeed({
           key={video.id || index}
           video={video}
           isActive={index === activeIndex}
-          onLike={() => handleLike(video.id)}
+          onLike={() => video.id && handleLike(video.id)}
           onShare={() => handleShare(video)}
           onBack={onClose}
-          isLiked={likedVideos.has(video.id)}
+          isLiked={video.id ? likedVideos.has(video.id) : false}
         />
       ))}
 

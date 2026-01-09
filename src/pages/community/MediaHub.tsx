@@ -885,9 +885,13 @@ export default function MediaHub() {
                   </div>
                 </div>
               </div>
+              )}
             </SplitBarContent>
 
             <SplitBarContent value="music">
+              {isMobile ? (
+                <MobileMusicList tracks={approvedMusic} />
+              ) : (
               <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
                 {/* Trending Music - Left Column (~62%) */}
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
@@ -1205,6 +1209,7 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
               </div>
+              )}
 
               {/* Custom Animations */}
               <style>{`
@@ -1236,6 +1241,9 @@ export default function MediaHub() {
             </SplitBarContent>
 
             <SplitBarContent value="podcasts">
+              {isMobile ? (
+                <MobilePodcastList podcasts={approvedPodcasts} currentUserId={user?.id} />
+              ) : (
               <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
                 {/* Latest Episodes - Left Column (~60%) */}
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
@@ -1299,11 +1307,22 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
               </div>
+              )}
             </SplitBarContent>
           </SplitBar>
         </div>
       </div>
 
+
+      {/* Mobile TikTok-style Shorts Feed */}
+      {mobileShortsFeedOpen && isMobile && (
+        <MobileShortsFeed
+          shorts={videoShorts}
+          currentUserId={user?.id}
+          onClose={() => setMobileShortsFeedOpen(false)}
+          initialIndex={selectedVideoIndex >= 0 ? selectedVideoIndex : 0}
+        />
+      )}
 
       <VideoPlayerModal
         isOpen={isVideoPlayerOpen}
