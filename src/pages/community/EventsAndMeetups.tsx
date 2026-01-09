@@ -599,7 +599,8 @@ const EventsAndMeetups = () => {
         type={eventSEO?.type || 'website'}
       />
       <AppLayout>
-        <SubNavigation items={communityNavigation} />
+        {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
+        {!isMobile && <SubNavigation items={communityNavigation} />}
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="flex-1 overflow-hidden">
           <StandardHeader
