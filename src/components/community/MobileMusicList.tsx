@@ -17,7 +17,11 @@ interface MusicTrack {
     genre?: string;
     mood?: string;
     artist_name?: string;
-  }>;
+  }> | {
+    genre?: string;
+    mood?: string;
+    artist_name?: string;
+  };
 }
 
 interface MobileMusicListProps {
@@ -89,8 +93,11 @@ export function MobileMusicList({ tracks }: MobileMusicListProps) {
     <div className="space-y-3 px-4 pb-24">
       {tracks.map((track, index) => {
         const isCurrentlyPlaying = currentMedia?.id === track.id && isPlaying;
-        const artistName = track.music_metadata?.[0]?.artist_name || 'Unknown Artist';
-        const genre = track.music_metadata?.[0]?.genre;
+        const metadata = Array.isArray(track.music_metadata) 
+          ? track.music_metadata[0] 
+          : track.music_metadata;
+        const artistName = metadata?.artist_name || 'Unknown Artist';
+        const genre = metadata?.genre;
 
         return (
           <div
