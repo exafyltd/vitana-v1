@@ -35,6 +35,8 @@ import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
 import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -465,6 +467,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
          {/* Keep DOM clean while mounting the processor */}
          {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
        </div>
+       
+       {/* Mobile-only fixed ORB - docked above bottom nav */}
+       <MobileFixedOrb />
     </div>
   );
 }
