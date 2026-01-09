@@ -609,38 +609,58 @@ export default function LiveRooms() {
         />
 
         {/* Utility Action Button */}
-        <UtilityActionButton>
-          <ExpandableSearchButton
-            placeholder="Search Live Rooms…"
-            onSearch={(query) => setSearchQuery(query)}
-          />
-          <UniversalCalendarButton />
-          
-          {/* Vitana Index - compact on mobile */}
-          {isMobile && (
-            <Button variant="ghost" size="sm" onClick={() => navigate('/health')} className="relative p-1">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center">
-                <span className="text-xs font-bold text-primary">742</span>
-              </div>
+        <UtilityActionButton className="min-w-0">
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton
+              placeholder="Search Live Rooms…"
+              onSearch={(query) => setSearchQuery(query)}
+            />
+            <UniversalCalendarButton />
+            
+            {/* Go Live - PRIMARY ACTION, always visible */}
+            <Button 
+              onClick={() => setIsGoLiveOpen(true)}
+              size="sm"
+              className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              {!isMobile && <span>Go Live</span>}
             </Button>
-          )}
-          
-          {/* Autopilot - compact on mobile */}
-          {isMobile && (
-            <Button variant="ghost" size="sm" onClick={() => setAutopilotOpen(true)} className="relative p-1">
-              <Plane className="h-5 w-5 text-destructive" />
-              {pendingCount > 0 && (
-                <Badge variant="destructive" className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 text-[10px] flex items-center justify-center">
-                  {pendingCount}
-                </Badge>
-              )}
-            </Button>
-          )}
-          
-          <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Go Live
-          </Button>
+            
+            {/* Vitana Index - subtle chip on mobile */}
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate('/health')}
+                className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
+              >
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
+                  <span className="text-[10px] font-bold text-primary">742</span>
+                </div>
+              </Button>
+            )}
+            
+            {/* Autopilot - subtle chip on mobile */}
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setAutopilotOpen(true)}
+                className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0"
+              >
+                <Plane className="h-4 w-4 text-muted-foreground" />
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                  >
+                    {pendingCount}
+                  </Badge>
+                )}
+              </Button>
+            )}
+          </div>
         </UtilityActionButton>
 
         {/* Split Bar for Live/Scheduled */}
