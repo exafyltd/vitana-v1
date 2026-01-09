@@ -14,10 +14,10 @@ interface UtilityActionButtonProps {
 export function UtilityActionButton({ children, className }: UtilityActionButtonProps) {
   return (
     <div className={cn(
-      "px-0 py-4 mb-6",
+      "px-0 py-3 mb-4",
       className
     )}>
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center overflow-x-auto">
         {children}
       </div>
     </div>
