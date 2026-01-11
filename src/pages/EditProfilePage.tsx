@@ -15,8 +15,15 @@ import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-
 import { useAuth } from "@/context/AuthProvider";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileProfileHeader } from "@/components/profile/mobile/MobileProfileHeader";
+import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileStats";
+import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
+import { MobileAutopilotBanner } from "@/components/profile/mobile/MobileAutopilotBanner";
+import { MobileShowcaseHeader } from "@/components/profile/mobile/MobileShowcaseHeader";
+import { MobileSocialGrid } from "@/components/profile/mobile/MobileSocialGrid";
+import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
 
 export default function EditProfilePage() {
   const navigate = useNavigate();
@@ -235,6 +242,152 @@ export default function EditProfilePage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [viewAs, hasUnsavedChanges]);
 
+  const isMobile = useIsMobile();
+  const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
+  const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
+
+  // Build social platforms from profile data
+  const socialPlatforms = [
+    { id: "linkedin", name: "LinkedIn", icon: <span className="text-sm font-bold text-[#0A66C2]">in</span>, connected: !!profile.linkedin_url },
+    { id: "instagram", name: "Instagram", icon: <span className="text-sm">📸</span>, connected: !!profile.instagram_url },
+    { id: "tiktok", name: "TikTok", icon: <span className="text-sm">🎵</span>, connected: !!profile.tiktok_url },
+    { id: "youtube", name: "YouTube", icon: <span className="text-sm text-red-600">▶</span>, connected: !!profile.youtube_url },
+    { id: "facebook", name: "Facebook", icon: <span className="text-sm font-bold text-[#1877F2]">f</span>, connected: !!profile.facebook_url },
+    { id: "twitter", name: "X", icon: <span className="text-sm font-bold">𝕏</span>, connected: !!profile.x_url },
+  ];
+
+  // Mobile-specific layout - early return pattern
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO 
+          title="Edit Profile – VITANA" 
+          description="Edit your VITANA profile and customize your public presence" 
+        />
+        
+        {/* NO EditToolbar on mobile! */}
+        
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
+          {/* Mobile Profile Header (identity block) */}
+          <MobileProfileHeader
+            avatarUrl={profile.avatarUrl}
+            displayName={profile.name}
+            handle={profile.handle}
+            archetype={profile.longevityArchetype}
+            bio={profile.bio}
+            vitanaIndex={profile.vitanaIndex}
+            editMode={true}
+            onEdit={handleEditIdentity}
+          />
+          
+          {/* Compact Stats Strip */}
+          <MobileProfileStats
+            postsCount={profile.stats?.posts}
+            mediaCount={profile.stats?.mediaUploads}
+            groupsCount={profile.stats?.groupsJoined}
+          />
+          
+          {/* Sticky Tab Bar */}
+          <MobileProfileTabs
+            activeTab={mobileActiveTab}
+            onTabChange={setMobileActiveTab}
+          />
+          
+          {/* Tab Content */}
+          <div className="flex-1">
+            {mobileActiveTab === "posts" && (
+              <div className="p-4">
+                {/* Showcase Section */}
+                <MobileShowcaseHeader onManage={handleEditShowcase} />
+                <div className="px-4 py-2 text-sm text-muted-foreground">
+                  Select posts and content to feature at the top of your profile
+                </div>
+                
+                {/* Autopilot Banner */}
+                <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
+              </div>
+            )}
+            
+            {mobileActiveTab === "about" && (
+              <div className="p-4 space-y-4">
+                {/* About content - tap to edit */}
+                <button 
+                  onClick={handleEditAbout}
+                  className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
+                >
+                  <h3 className="text-sm font-semibold mb-2">About</h3>
+                  <p className="text-sm text-muted-foreground">{profile.bio || "Add a bio..."}</p>
+                  <p className="text-xs text-primary mt-2">Tap to edit</p>
+                </button>
+                
+                {/* Social Presence Grid */}
+                <MobileSocialGrid
+                  platforms={socialPlatforms}
+                  onConnect={(platformId) => console.log('Connect:', platformId)}
+                  onManage={handleEditAbout}
+                />
+              </div>
+            )}
+            
+            {mobileActiveTab === "media" && (
+              <div className="p-4">
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  {profile.stats?.mediaUploads || 0} media uploads
+                </p>
+              </div>
+            )}
+            
+            {mobileActiveTab === "groups" && (
+              <div className="p-4">
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  {profile.stats?.groupsJoined || 0} groups joined
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Drawers - same on mobile */}
+        <IdentityDrawer
+          open={identityDrawerOpen}
+          onOpenChange={setIdentityDrawerOpen}
+        />
+
+        <AboutDrawer
+          open={aboutDrawerOpen}
+          onOpenChange={setAboutDrawerOpen}
+        />
+
+        <ServicesDrawer
+          open={servicesDrawerOpen}
+          onOpenChange={setServicesDrawerOpen}
+        />
+
+        <ComplianceDrawer
+          open={complianceDrawerOpen}
+          onOpenChange={setComplianceDrawerOpen}
+        />
+
+        <ShowcaseDrawer
+          open={showcaseDrawerOpen}
+          onOpenChange={setShowcaseDrawerOpen}
+        />
+
+        <VisibilityDrawer
+          open={visibilityDrawerOpen}
+          onOpenChange={setVisibilityDrawerOpen}
+        />
+
+        {/* Autopilot Popup */}
+        <AutopilotProfilePopup
+          open={showAutopilotPopup}
+          onOpenChange={setShowAutopilotPopup}
+        />
+      </AppLayout>
+    );
+  }
+
+  // Desktop layout (unchanged)
   return (
     <AppLayout>
       <SEO 
