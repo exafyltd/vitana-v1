@@ -21,6 +21,12 @@ import { ProfileProgressCard } from "../editor/ProfileProgressCard";
 import { useAutoSave } from "@/hooks/useAutoSave";
 import { useState, useCallback } from "react";
 import { shouldShowField } from "@/lib/profileScope";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileProfileHeader } from "../mobile/MobileProfileHeader";
+import { MobileProfileStats } from "../mobile/MobileProfileStats";
+import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs";
+import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
+import { MobileShowcaseHeader } from "../mobile/MobileShowcaseHeader";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -113,6 +119,90 @@ export function ProfileLayout({
 
   const effectiveEditMode = editMode && !isPreviewMode;
 
+  const isMobile = useIsMobile();
+  const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
+
+  // Mobile-specific layout for public profile view
+  if (isMobile) {
+    return (
+      <div className="min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
+        {/* NO SmartEditingToolbar on mobile! */}
+        
+        {/* Mobile Profile Header */}
+        <MobileProfileHeader
+          avatarUrl={profile.avatarUrl}
+          displayName={profile.name}
+          handle={profile.handle}
+          archetype={profile.longevityArchetype}
+          bio={profile.bio}
+          vitanaIndex={profile.vitanaIndex}
+          editMode={effectiveEditMode}
+          onEdit={onEditIdentity}
+        />
+        
+        {/* Compact Stats Strip */}
+        <MobileProfileStats
+          postsCount={profile.stats?.posts}
+          mediaCount={profile.stats?.mediaUploads}
+          groupsCount={profile.stats?.groupsJoined}
+        />
+        
+        {/* Sticky Tab Bar */}
+        <MobileProfileTabs
+          activeTab={mobileActiveTab}
+          onTabChange={setMobileActiveTab}
+        />
+        
+        {/* Tab Content */}
+        <div className="flex-1">
+          {mobileActiveTab === "posts" && effectiveEditMode && (
+            <div className="p-4">
+              <MobileShowcaseHeader onManage={onEditShowcase} />
+              <div className="px-4 py-2 text-sm text-muted-foreground">
+                Select posts and content to feature
+              </div>
+              <MobileAutopilotBanner onTry={() => {
+                const autopilotElement = document.querySelector('[data-autopilot-trigger]') as HTMLElement;
+                if (autopilotElement) {
+                  autopilotElement.click();
+                }
+              }} />
+            </div>
+          )}
+          
+          {mobileActiveTab === "about" && (
+            <div className="p-4 space-y-4">
+              <button 
+                onClick={onEditAbout}
+                className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
+              >
+                <h3 className="text-sm font-semibold mb-2">About</h3>
+                <p className="text-sm text-muted-foreground">{profile.bio || "No bio yet"}</p>
+                {effectiveEditMode && <p className="text-xs text-primary mt-2">Tap to edit</p>}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Popups still work on mobile */}
+        <CredentialUploadPopup
+          open={showCredentialUpload}
+          onOpenChange={setShowCredentialUpload}
+          existingCredentials={profile.professionalCredentials?.coachingSpecialties}
+          onSave={(credentials) => {
+            console.log('Saving credentials:', credentials);
+          }}
+        />
+
+        <GoLivePopup
+          open={showGoLive}
+          onOpenChange={setShowGoLive}
+        />
+      </div>
+    );
+  }
+
+  // Desktop layout (unchanged)
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
       {/* Smart Editing Toolbar */}
