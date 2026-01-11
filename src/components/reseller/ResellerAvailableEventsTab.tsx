@@ -16,6 +16,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { format, differenceInDays } from "date-fns";
@@ -25,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { CreateEventPopup } from "@/components/CreateEventPopup";
 import { Badge } from "@/components/ui/badge";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
+import { MobileInventoryCard } from "./MobileInventoryCard";
 import { SellEventModal } from "./SellEventModal";
 import { toast } from "sonner";
 
@@ -114,6 +116,7 @@ export function ResellerAvailableEventsTab() {
   const { activeTenantId } = useTenant();
   const { data: resellerProfile } = useResellerProfile();
   const { activateResellerForCurrentUser, isActivating } = useActivateReseller();
+  const isMobile = useIsMobile();
   
   const [filter, setFilter] = useState<FilterType>("all");
   const [sellModalEvent, setSellModalEvent] = useState<any | null>(null);
@@ -258,7 +261,27 @@ export function ResellerAvailableEventsTab() {
             const daysUntil = differenceInDays(new Date(event.start_time), new Date());
             const eventType = getEventType(event.location);
             
-            // Determine CTA label based on earning potential
+            // Mobile: Use compact MobileInventoryCard
+            if (isMobile) {
+              return (
+                <MobileInventoryCard
+                  key={event.id}
+                  id={event.id}
+                  imageUrl={event.image_url}
+                  title={event.title}
+                  startTime={new Date(event.start_time)}
+                  eventType={eventType}
+                  commissionRate={commissionRate}
+                  ticketPrice={ticketPrice}
+                  earningPerTicket={earningPerTicket}
+                  resaleScope={event.resale_scope === "tenant" ? "tenant" : "public"}
+                  quantity={10}
+                  onSell={() => handleStartSelling(event)}
+                />
+              );
+            }
+            
+            // Desktop: Keep existing StandardHorizontalCard
             const ctaLabel = earningPerTicket > 0 
               ? `Earn ${earningFormatted} / ticket` 
               : "Start Selling";
