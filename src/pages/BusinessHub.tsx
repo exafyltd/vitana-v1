@@ -3,7 +3,7 @@ import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
 import { Badge } from "@/components/ui/badge";
 
-import { Plus, Plane } from "lucide-react";
+import { Plus, Plane, Briefcase, Users, TrendingUp, BarChart3 } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,12 +27,16 @@ import { ClientsSubTabs } from "@/components/business/ClientsSubTabs";
 import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
 import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileBusinessNav } from "@/components/business/MobileBusinessNav";
+import { MobileBusinessEntryCard } from "@/components/business/MobileBusinessEntryCard";
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
 export default function BusinessHub() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [showSelectionDialog, setShowSelectionDialog] = useState(false);
   const [showCreateEvent, setShowCreateEvent] = useState(false);
@@ -98,121 +102,187 @@ export default function BusinessHub() {
         description="Grow your wellness business and manage clients effortlessly" 
         canonical={window.location.href} 
       />
-      <SubNavigation items={navigationWithIndicator} />
+      {isMobile ? (
+        <MobileBusinessNav items={navigationWithIndicator} />
+      ) : (
+        <SubNavigation items={navigationWithIndicator} />
+      )}
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          {/* Header Section with Three Cards Layout */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">
-                  Business Hub 💼
-                </h1>
-                <p className="text-muted-foreground">
-                  Grow your wellness business and manage clients effortlessly
-                </p>
-              </div>
-            </div>
-            
-            {/* Autopilot Card */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
-              onClick={() => setAutopilotOpen(true)}
-              onMouseEnter={() => setShowPreview(true)}
-              onMouseLeave={() => setShowPreview(false)}
-            >
-              {pendingCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs z-10"
-                >
-                  {pendingCount}
-                </Badge>
-              )}
-              <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+      {isMobile ? (
+        /* Mobile Layout */
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-purple-50/50 to-background">
+          {activeTab === "overview" ? (
+            /* Mobile Overview - Entry Cards Dashboard */
+            <div className="flex flex-col gap-4 p-4 pb-32">
+              {/* Compact Header */}
+              <div className="space-y-1">
+                <h1 className="text-xl font-bold text-foreground">Business Hub</h1>
+                <p className="text-sm text-muted-foreground">Grow your wellness business</p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span className="inline-flex items-center gap-1">
+                    🧬 Vitana 742 
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    Live
+                  </span>
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
               </div>
               
-              {/* Hover Preview */}
-              {showPreview && pendingCount > 0 && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
-                  {latestActions.map((action) => (
-                    <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
-                      <span>{action.icon}</span>
-                      <span className="truncate">{action.title}</span>
-                    </div>
-                  ))}
-                  {pendingCount > 2 && (
-                    <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
-                    </div>
-                  )}
-                </div>
-              )}
+              {/* Quick Entry Cards */}
+              <div className="space-y-3 mt-4">
+                <MobileBusinessEntryCard
+                  icon={<Briefcase className="h-5 w-5" />}
+                  title="Manage Services"
+                  subtitle="Create and edit your offerings"
+                  to="/business/services"
+                />
+                <MobileBusinessEntryCard
+                  icon={<TrendingUp className="h-5 w-5" />}
+                  title="Sell & Earn"
+                  subtitle="Reseller commissions and promotions"
+                  to="/business/sell-earn"
+                />
+                <MobileBusinessEntryCard
+                  icon={<Users className="h-5 w-5" />}
+                  title="Client Management"
+                  subtitle="Track active clients and prospects"
+                  to="/business/clients"
+                />
+                <MobileBusinessEntryCard
+                  icon={<BarChart3 className="h-5 w-5" />}
+                  title="View Analytics"
+                  subtitle="Performance insights and growth"
+                  to="/business/analytics"
+                />
+              </div>
             </div>
-            
-            {/* Vitana Index Card */}
-            <div 
-              className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
-              onClick={() => navigate('/health-tracker/vitana-index')}
-            >
-              <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
+          ) : (
+            /* Mobile Sub-Tab Content */
+            <div className="p-4 pb-32">
+              {activeTab === "services" && (
+                <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
+              )}
+              {activeTab === "clients" && <ClientsSubTabs />}
+              {activeTab === "sell-earn" && isReseller && <SellAndEarnSubTabs />}
+              {activeTab === "analytics" && <AnalyticsSubTabs />}
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Desktop Layout - unchanged */
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto">
+            {/* Header Section with Three Cards Layout */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-8">
+              {/* Welcome Message */}
+              <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground mb-2">
+                    Business Hub 💼
+                  </h1>
+                  <p className="text-muted-foreground">
+                    Grow your wellness business and manage clients effortlessly
+                  </p>
+                </div>
+              </div>
+              
+              {/* Autopilot Card */}
+              <div 
+                className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative"
+                onClick={() => setAutopilotOpen(true)}
+                onMouseEnter={() => setShowPreview(true)}
+                onMouseLeave={() => setShowPreview(false)}
+              >
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs z-10"
+                  >
+                    {pendingCount}
+                  </Badge>
+                )}
+                <div className="flex flex-col items-center justify-center h-full space-y-3">
+                  <div>
+                    <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                  </div>
+                  <span className="text-sm font-medium text-red-400">Autopilot</span>
+                </div>
+                
+                {/* Hover Preview */}
+                {showPreview && pendingCount > 0 && (
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                    <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                    {latestActions.map((action) => (
+                      <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                        <span>{action.icon}</span>
+                        <span className="truncate">{action.title}</span>
+                      </div>
+                    ))}
+                    {pendingCount > 2 && (
+                      <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                        +{pendingCount - 2} more actions
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              
+              {/* Vitana Index Card */}
+              <div 
+                className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl"
+                onClick={() => navigate('/health-tracker/vitana-index')}
+              >
+                <div className="flex items-center justify-center h-full">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                    <span className="text-xl font-bold text-green-600">742</span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Action Buttons */}
+            <UtilityActionButton>
+              <ExpandableSearchButton 
+                placeholder="Search Business…"
+                onSearch={(query) => console.log('Search Business:', query)}
+              />
+              <UniversalCalendarButton />
+              <Button
+                variant="default" 
+                size="sm"
+                onClick={() => setShowBusinessTypeSelector(true)}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Business
+              </Button>
+            </UtilityActionButton>
+
+            {/* Tab Content - Rendered based on active route */}
+            {activeTab === "overview" && (
+              <BusinessHubOverview 
+                onCreateService={() => setShowCreateService(true)}
+                onCreateEvent={() => setShowSelectionDialog(true)}
+                onCreateCampaign={() => setShowCampaignDialog(true)}
+              />
+            )}
+
+            {activeTab === "services" && (
+              <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
+            )}
+
+            {activeTab === "clients" && (
+              <ClientsSubTabs />
+            )}
+
+            {activeTab === "sell-earn" && isReseller && (
+              <SellAndEarnSubTabs />
+            )}
+
+            {activeTab === "analytics" && (
+              <AnalyticsSubTabs />
+            )}
           </div>
-
-          {/* Action Buttons */}
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search Business…"
-              onSearch={(query) => console.log('Search Business:', query)}
-            />
-            <UniversalCalendarButton />
-            <Button
-              variant="default" 
-              size="sm"
-              onClick={() => setShowBusinessTypeSelector(true)}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Business
-            </Button>
-          </UtilityActionButton>
-
-          {/* Tab Content - Rendered based on active route */}
-          {activeTab === "overview" && (
-            <BusinessHubOverview 
-              onCreateService={() => setShowCreateService(true)}
-              onCreateEvent={() => setShowSelectionDialog(true)}
-              onCreateCampaign={() => setShowCampaignDialog(true)}
-            />
-          )}
-
-          {activeTab === "services" && (
-            <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
-          )}
-
-          {activeTab === "clients" && (
-            <ClientsSubTabs />
-          )}
-
-          {activeTab === "sell-earn" && isReseller && (
-            <SellAndEarnSubTabs />
-          )}
-
-          {activeTab === "analytics" && (
-            <AnalyticsSubTabs />
-          )}
         </div>
-      </div>
+      )}
 
       {/* Popups and Dialogs */}
       <CreateSelectionDialog
