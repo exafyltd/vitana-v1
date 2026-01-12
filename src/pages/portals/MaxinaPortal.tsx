@@ -574,6 +574,21 @@ const MaxinaPortal = () => {
               </Link>
             </div>
             
+            {/* Portal Navigation - Desktop only */}
+            <div className="hidden md:flex justify-center items-center space-x-4 text-sm mt-3">
+              <Link to="/alkalma" className="text-white/70 hover:text-white transition-colors">
+                AlKalma
+              </Link>
+              <span className="text-white/40">·</span>
+              <Link to="/earthlinks" className="text-white/70 hover:text-white transition-colors">
+                Earthlinks
+              </Link>
+              <span className="text-white/40">·</span>
+              <Link to="/" className="text-white/70 hover:text-white transition-colors">
+                All Portals
+              </Link>
+            </div>
+            
           </div>
         </div>
         
@@ -581,6 +596,29 @@ const MaxinaPortal = () => {
 
         {/* VITANA Orb - positioned via global CSS */}
         <MobileFixedOrb />
+
+        {/* Desktop ORB - bottom-left matching sidebar position */}
+        <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleOrbClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleOrbClick();
+              }
+            }}
+            className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+          >
+            <VitanalandPortalSeed 
+              audioState="idle"
+              volumeLevel={0}
+              size="sm"
+              layoutId="vitana-orb-desktop-portal"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
