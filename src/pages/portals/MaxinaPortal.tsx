@@ -221,40 +221,44 @@ const MaxinaPortal = () => {
         />
       )}
       
-      {/* Dark overlay for readability */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
+      {/* Premium multi-layer gradient overlay for readability */}
+      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
+      <div className="fixed inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
       
-      {/* Content layer */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4 maxina-page-content maxina-signin-page" data-maxina-app="true">
+      {/* Content layer - pulled up with safe bottom spacing */}
+      <div className="relative z-20 flex flex-col items-center justify-start min-h-screen px-4 pt-8 md:pt-16 md:justify-center md:px-6 pb-28 md:pb-6 maxina-page-content maxina-signin-page" data-maxina-app="true">
         <div className="max-w-md w-full">
-          {/* Auth Tabs */}
+          {/* Auth Tabs - Compact card */}
           <Card 
-            className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20"
+            className="bg-white/75 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_8px_40px_rgba(0,0,0,0.25)]"
             onClick={ensureSoundscapePlaying}
           >
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Join Maxina</TabsTrigger>
+              {/* Compact tab bar */}
+              <TabsList className="grid w-full grid-cols-2 h-10 md:h-11">
+                <TabsTrigger value="signin" className="text-sm md:text-base py-1.5">Sign In</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm md:text-base py-1.5">Join Maxina</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl">Welcome back to Maxina.</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Sign in to continue your Vitanaland journey.
+                {/* Compact header */}
+                <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
+                  <CardTitle className="text-lg md:text-xl">Welcome back to Maxina.</CardTitle>
+                  <CardDescription className="text-sm md:text-base mt-1">
+                    Sign in to continue your journey.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSignIn} className="space-y-3">
+                {/* Compact form content */}
+                <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
+                  <form onSubmit={handleSignIn} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant="destructive">
-                        <AlertDescription>{error}</AlertDescription>
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
                     )}
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm">Email</Label>
                         <Input
                           id="email"
                           type="email"
@@ -264,11 +268,12 @@ const MaxinaPortal = () => {
                           onFocus={ensureSoundscapePlaying}
                           required
                           disabled={loading}
+                          className="h-10 md:h-11"
                         />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="password" className="text-sm">Password</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -278,7 +283,7 @@ const MaxinaPortal = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           disabled={loading}
-                          className="pr-10"
+                          className="pr-10 h-10 md:h-11"
                         />
                         <button
                           type="button"
@@ -295,34 +300,33 @@ const MaxinaPortal = () => {
                       </div>
                       </div>
                       
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                      {/* Compact row: Keep me logged in + Forgot password */}
+                      <div className="flex items-center justify-between py-1">
+                        <div className="flex items-center space-x-1.5">
                           <Checkbox
                             id="keep-logged-in"
                             checked={keepLoggedIn}
                             onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
+                            className="h-3.5 w-3.5"
                           />
                           <Label
                             htmlFor="keep-logged-in"
-                            className="text-sm font-normal cursor-pointer"
+                            className="text-xs font-normal cursor-pointer"
                           >
                             Keep me logged in
                           </Label>
                         </div>
                         <Link
                           to="/reset-password" 
-                          className="text-sm text-muted-foreground hover:text-[#FF7BAC] transition-colors"
+                          className="text-xs text-muted-foreground hover:text-[#FF7BAC] transition-colors"
                         >
                           Forgot password?
                         </Link>
                       </div>
-                      
-                      <div>
-                    </div>
                     
                       <Button 
                         type="submit" 
-                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300" 
+                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
                         disabled={loading}
                       >
                         {loading ? (
@@ -335,24 +339,26 @@ const MaxinaPortal = () => {
                         )}
                       </Button>
 
-                      <div className="relative my-6">
+                      {/* Compact social login divider */}
+                      <div className="relative my-3 md:my-4">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-border/50" />
+                          <div className="w-full border-t border-border/40" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                        <div className="relative flex justify-center">
+                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">Or continue with</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      {/* Compact social buttons */}
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => handleSocialLogin('google')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M21.35 11.1h-9.17v2.98h5.44c-.24 1.38-1.65 4.04-5.44 4.04-3.28 0-5.96-2.71-5.96-6.05s2.68-6.05 5.96-6.05c1.87 0 3.12.79 3.84 1.47l2.62-2.53C17.51 3.26 15.35 2.4 13 2.4 7.98 2.4 3.94 6.46 3.94 11.5S7.98 20.6 13 20.6c7.47 0 8.94-6.05 8.34-9.5z"
@@ -365,9 +371,9 @@ const MaxinaPortal = () => {
                           variant="outline"
                           onClick={() => handleSocialLogin('apple')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M16.365 1.43c0 1.14-.42 2.13-1.26 2.97-.96.96-2.06 1.52-3.3 1.47-.06-1.17.42-2.19 1.26-3.03.9-.9 2.1-1.47 3.3-1.41zm5.22 16.29c-.6 1.47-1.38 2.73-2.28 3.69-1.02 1.08-2.16 1.65-3.42 1.68-1.02.03-1.71-.3-2.49-.66-.6-.3-1.23-.6-2.04-.6-.84 0-1.47.3-2.1.6-.78.36-1.53.72-2.55.69-1.29-.03-2.4-.57-3.42-1.65-1.14-1.2-2.07-2.76-2.82-4.74-.96-2.49-1.44-4.89-1.44-7.17 0-2.1.48-3.93 1.47-5.46C1.965 3.9 3.315 3 4.845 2.97c.96-.03 1.86.33 2.67.78.6.33 1.17.63 1.77.63.57 0 1.11-.3 1.74-.63.84-.45 1.77-.93 2.94-.81 1.89.18 3.24 1.02 4.17 2.52-1.65 1.02-2.49 2.46-2.46 4.32.03 1.77.96 3.27 2.43 4.11.72.42 1.53.66 2.43.69-.21.66-.45 1.29-.78 1.95z"
@@ -381,22 +387,24 @@ const MaxinaPortal = () => {
               </TabsContent>
               
               <TabsContent value="signup">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl">Join the Maxina community.</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Create your account and begin your wellness journey.
+                {/* Compact header */}
+                <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
+                  <CardTitle className="text-lg md:text-xl">Join the Maxina community.</CardTitle>
+                  <CardDescription className="text-sm md:text-base mt-1">
+                    Create your account and begin your journey.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSignUp} className="space-y-3">
+                {/* Compact form content */}
+                <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
+                  <form onSubmit={handleSignUp} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant="destructive">
-                        <AlertDescription>{error}</AlertDescription>
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
                     )}
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="fullName">Full Name</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="fullName" className="text-sm">Full Name</Label>
                       <Input
                         id="fullName"
                         type="text"
@@ -405,11 +413,12 @@ const MaxinaPortal = () => {
                         onChange={(e) => setFullName(e.target.value)}
                         required
                         disabled={loading}
+                        className="h-10 md:h-11"
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm">Email</Label>
                       <Input
                         id="email"
                         type="email"
@@ -418,11 +427,12 @@ const MaxinaPortal = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         disabled={loading}
+                        className="h-10 md:h-11"
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="password" className="text-sm">Password</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -432,7 +442,7 @@ const MaxinaPortal = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           disabled={loading}
-                          className="pr-10"
+                          className="pr-10 h-10 md:h-11"
                         />
                         <button
                           type="button"
@@ -449,52 +459,52 @@ const MaxinaPortal = () => {
                       </div>
                     </div>
 
-                    {/* Role Selection */}
-                    <div className="space-y-3">
-                      <Label>I am joining as:</Label>
-                      <div className="grid grid-cols-2 gap-2">
+                    {/* Compact Role Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-sm">I am joining as:</Label>
+                      <div className="grid grid-cols-4 gap-1.5 md:gap-2">
                         <Button
                           type="button"
                           variant={selectedRole === "community" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("community")}
                         >
-                          <Users className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Community</span>
+                          <Users className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">Community</span>
                         </Button>
                         <Button
                           type="button"
                           variant={selectedRole === "patient" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("patient")}
                         >
-                          <Heart className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Patient</span>
+                          <Heart className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">Patient</span>
                         </Button>
                         <Button
                           type="button"
                           variant={selectedRole === "professional" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("professional")}
                         >
-                          <Stethoscope className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Professional</span>
+                          <Stethoscope className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">Pro</span>
                         </Button>
                         <Button
                           type="button"
                           variant={selectedRole === "admin" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("admin")}
                         >
-                          <Shield className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Admin</span>
+                          <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">Admin</span>
                         </Button>
                       </div>
                     </div>
                     
                       <Button 
                         type="submit" 
-                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300" 
+                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
                         disabled={loading}
                       >
                         {loading ? (
@@ -507,24 +517,26 @@ const MaxinaPortal = () => {
                         )}
                       </Button>
 
-                      <div className="relative my-6">
+                      {/* Compact social login divider */}
+                      <div className="relative my-3 md:my-4">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-border/50" />
+                          <div className="w-full border-t border-border/40" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                        <div className="relative flex justify-center">
+                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">Or continue with</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      {/* Compact social buttons */}
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => handleSocialLogin('google')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M21.35 11.1h-9.17v2.98h5.44c-.24 1.38-1.65 4.04-5.44 4.04-3.28 0-5.96-2.71-5.96-6.05s2.68-6.05 5.96-6.05c1.87 0 3.12.79 3.84 1.47l2.62-2.53C17.51 3.26 15.35 2.4 13 2.4 7.98 2.4 3.94 6.46 3.94 11.5S7.98 20.6 13 20.6c7.47 0 8.94-6.05 8.34-9.5z"
@@ -537,9 +549,9 @@ const MaxinaPortal = () => {
                           variant="outline"
                           onClick={() => handleSocialLogin('apple')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M16.365 1.43c0 1.14-.42 2.13-1.26 2.97-.96.96-2.06 1.52-3.3 1.47-.06-1.17.42-2.19 1.26-3.03.9-.9 2.1-1.47 3.3-1.41zm5.22 16.29c-.6 1.47-1.38 2.73-2.28 3.69-1.02 1.08-2.16 1.65-3.42 1.68-1.02.03-1.71-.3-2.49-.66-.6-.3-1.23-.6-2.04-.6-.84 0-1.47.3-2.1.6-.78.36-1.53.72-2.55.69-1.29-.03-2.4-.57-3.42-1.65-1.14-1.2-2.07-2.76-2.82-4.74-.96-2.49-1.44-4.89-1.44-7.17 0-2.1.48-3.93 1.47-5.46C1.965 3.9 3.315 3 4.845 2.97c.96-.03 1.86.33 2.67.78.6.33 1.17.63 1.77.63.57 0 1.11-.3 1.74-.63.84-.45 1.77-.93 2.94-.81 1.89.18 3.24 1.02 4.17 2.52-1.65 1.02-2.49 2.46-2.46 4.32.03 1.77.96 3.27 2.43 4.11.72.42 1.53.66 2.43.69-.21.66-.45 1.29-.78 1.95z"
@@ -554,37 +566,37 @@ const MaxinaPortal = () => {
             </Tabs>
           </Card>
 
-          {/* Trust & Navigation Footer */}
-          <div className="space-y-3" data-maxina-footer="true">
-            <p className="text-center text-white/70 text-xs">
+          {/* Compact Trust & Navigation Footer */}
+          <div className="space-y-2 mt-3 md:mt-4" data-maxina-footer="true">
+            <p className="text-center text-white/60 text-[10px] md:text-xs tracking-wide">
               Maxina is part of the VITANA ecosystem.
             </p>
             
-            <div className="flex justify-center items-center space-x-4 text-sm">
-              <Link to="/privacy" className="text-white/80 hover:text-white font-medium transition-colors">
+            <div className="flex justify-center items-center space-x-3 text-xs md:text-sm">
+              <Link to="/privacy" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Privacy
               </Link>
-              <span className="text-white/40">·</span>
-              <Link to="/terms" className="text-white/80 hover:text-white font-medium transition-colors">
+              <span className="text-white/30">·</span>
+              <Link to="/terms" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Terms
               </Link>
-              <span className="text-white/40">·</span>
-              <Link to="/help" className="text-white/80 hover:text-white font-medium transition-colors">
+              <span className="text-white/30">·</span>
+              <Link to="/help" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Help
               </Link>
             </div>
             
             {/* Portal Navigation - Desktop only */}
-            <div className="hidden md:flex justify-center items-center space-x-4 text-sm mt-3">
-              <Link to="/alkalma" className="text-white/70 hover:text-white transition-colors">
+            <div className="hidden md:flex justify-center items-center space-x-4 text-sm mt-2">
+              <Link to="/alkalma" className="text-white/60 hover:text-white transition-colors">
                 AlKalma
               </Link>
-              <span className="text-white/40">·</span>
-              <Link to="/earthlinks" className="text-white/70 hover:text-white transition-colors">
+              <span className="text-white/30">·</span>
+              <Link to="/earthlinks" className="text-white/60 hover:text-white transition-colors">
                 Earthlinks
               </Link>
-              <span className="text-white/40">·</span>
-              <Link to="/" className="text-white/70 hover:text-white transition-colors">
+              <span className="text-white/30">·</span>
+              <Link to="/" className="text-white/60 hover:text-white transition-colors">
                 All Portals
               </Link>
             </div>

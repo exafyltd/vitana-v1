@@ -195,61 +195,64 @@ export default function IntroExperience() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       
-      {/* Stronger Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+      {/* Premium multi-layer gradient overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      {/* Subtle vignette effect */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
-      {/* Content */}
+      {/* Content - positioned higher with safe bottom spacing for Orb */}
       <div 
-        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-opacity duration-[1000ms] maxina-page-content ${
+        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-32 md:pb-6 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={ensureSoundscapePlaying}
         data-maxina-app="true"
       >
-        {/* Title - Lighter */}
+        {/* Eyebrow - Small, uppercase, tracking-wide */}
         <p 
-          className="text-lg md:text-xl font-medium text-white/80 text-center mb-2 animate-fade-in tracking-wide"
+          className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
           style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
         >
           Welcome to Vitanaland
         </p>
 
-        {/* Primary - Maxina Experience */}
+        {/* Primary Title - Bold, clean, centered */}
         <h1 
-          className="text-4xl md:text-5xl font-bold text-white text-center mb-6 animate-fade-in"
+          className="text-3xl md:text-5xl font-bold text-white text-center mb-4 animate-fade-in leading-tight"
           style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
         >
           Maxina Experience
         </h1>
 
-        {/* Caption - Shortened */}
+        {/* Subtitle - One line, tighter */}
         <p 
-          className="text-base text-white/70 text-center max-w-xs mb-10 animate-fade-in"
+          className="text-sm md:text-base text-white/70 text-center max-w-[280px] mb-10 animate-fade-in leading-snug"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
           Your longevity, health, and community — guided.
         </p>
 
-        {/* Controls */}
+        {/* CTA Stack - Premium glass buttons */}
         <div 
-          className="flex flex-col items-center gap-6 animate-fade-in"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Play Button */}
+          {/* Primary Play Button - Premium glass style */}
           <Button
             onClick={handlePlayAudio}
             disabled={isPlayingAudio || isPreparingAudio}
             size="lg"
-            className="relative bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/20 px-8 py-6 text-lg shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] transition-all duration-300"
+            className="relative w-full bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white border border-white/30 rounded-2xl px-8 py-5 text-base font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300"
           >
             {isPreparingAudio ? (
               <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Preparing audio...
+                <Loader2 className="w-5 h-5 mr-2.5 animate-spin" />
+                Preparing...
               </>
             ) : isPlayingAudio ? (
               <>
-                <div className="w-5 h-5 mr-2 relative">
+                <div className="w-5 h-5 mr-2.5 relative">
                   <div className="absolute inset-0 border-2 border-white/30 rounded-full animate-ping" />
                   <div className="absolute inset-0 border-2 border-white rounded-full" />
                 </div>
@@ -257,28 +260,28 @@ export default function IntroExperience() {
               </>
             ) : (
               <>
-                <Play className="w-5 h-5 mr-2 fill-current" />
+                <Play className="w-5 h-5 mr-2.5 fill-current" />
                 Play Welcome
               </>
             )}
           </Button>
 
-          {/* Continue and Skip */}
-          <div className="flex items-center gap-4">
+          {/* Secondary buttons - Small pill style */}
+          <div className="flex items-center justify-center gap-3 w-full">
             <Button
               onClick={continueToMaxina}
               variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-white/10"
+              className="flex-1 text-white/90 hover:text-white bg-white/5 hover:bg-white/15 border border-white/20 rounded-full px-5 py-2.5 text-sm font-medium backdrop-blur-sm transition-all duration-200"
             >
               Continue
             </Button>
-            <span className="text-white/40">•</span>
-            <button
+            <Button
               onClick={handleSkip}
-              className="text-white/60 hover:text-white/90 text-sm underline-offset-4 hover:underline transition-colors"
+              variant="ghost"
+              className="flex-1 text-white/70 hover:text-white/90 bg-transparent hover:bg-white/10 border border-white/10 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200"
             >
               Skip
-            </button>
+            </Button>
           </div>
         </div>
       </div>
