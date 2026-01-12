@@ -562,7 +562,7 @@ All colors MUST be HSL.
 
   /* VITANA ORB - Appilix bottom nav anchoring */
   /* Contract: Appilix sets these via Custom CSS. We provide fallbacks only. */
-  --appilix-bottom-nav-h: 16px; /* fallback if Appilix doesn't set it */
+  --appilix-bottom-nav-h: 80px; /* fallback if Appilix doesn't set it */
   --orb-gap: 4px; /* breathing space above nav */
   --appilix-orb-offset: -280px; /* negative = lower orb (tune in Appilix) */
 }
