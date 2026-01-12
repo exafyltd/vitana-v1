@@ -564,7 +564,7 @@ All colors MUST be HSL.
   /* Appilix may override via injected CSS vars. Defaults match our expected native bar size. */
   --appilix-bottom-nav-height: 72px; /* fallback if Appilix doesn't set it */
   --appilix-bottom-nav-h: var(--appilix-bottom-nav-height);
-  --orb-gap: 8px; /* small breathing space above nav */
+  --orb-gap: 4px; /* reduced gap to dock orb closer to bottom nav (~4cm lower) */
 }
 
 /* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
@@ -577,14 +577,14 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* DO NOT TOUCH X; Appilix anchor is Y only */
+    /* Y-axis ONLY: safe-area + native nav height + small gap */
     bottom: calc(
       env(safe-area-inset-bottom, 0px) +
       var(--appilix-bottom-nav-height, 72px) +
-      8px
+      var(--orb-gap, 4px)
     ) !important;
     margin: 0 !important;
-    z-index: 9999 !important;
+    z-index: 40 !important; /* above content, below modals */
     pointer-events: auto !important;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
