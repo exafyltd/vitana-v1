@@ -225,7 +225,7 @@ const MaxinaPortal = () => {
       <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
       
       {/* Content layer */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4 maxina-page-content" data-maxina-app="true">
+      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4 maxina-page-content maxina-signin-page" data-maxina-app="true">
         <div className="max-w-md w-full">
           {/* Auth Tabs */}
           <Card 
