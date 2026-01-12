@@ -51,12 +51,17 @@ const MaxinaPortal = () => {
   // Default post-login redirect to Events → Upcoming on mobile
   useEffect(() => {
     if (!authLoading && user) {
-      const redirectTo = searchParams.get('redirectTo');
-      const isMobile = window.innerWidth < 768;
-      // Default to Events Upcoming on mobile if no explicit redirect
-      const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
-      setTenantBySlug('maxina').then(() => {
-        navigate(redirectTo || defaultRedirect);
+      // Verify session is still valid before redirecting
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          const redirectTo = searchParams.get('redirectTo');
+          const isMobile = window.innerWidth < 768;
+          // Default to Events Upcoming on mobile if no explicit redirect
+          const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
+          setTenantBySlug('maxina').then(() => {
+            navigate(redirectTo || defaultRedirect);
+          });
+        }
       });
     }
   }, [user, authLoading, navigate, setTenantBySlug, searchParams]);
