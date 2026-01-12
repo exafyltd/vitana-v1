@@ -572,6 +572,8 @@ const MaxinaPortal = () => {
             
           </div>
         </div>
+        
+        <div className="pb-20 md:pb-0" />
 
         {/* VITANA Orb - positioned via global CSS */}
         <MobileFixedOrb />
