@@ -36,7 +36,18 @@ export function MobileShortSlide({
 }: MobileShortSlideProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  // Start unmuted on mobile - user preference stored in sessionStorage
+  // This ensures Shorts have sound by default when user opens them
+  const [isMuted, setIsMuted] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('shorts_audio_enabled');
+      // Default to FALSE (unmuted/sound ON) if user hasn't set preference
+      // This fixes the "no audio" issue on mobile
+      return saved === 'false';
+    } catch {
+      return false; // Default: sound ON
+    }
+  });
   const [showPlayIcon, setShowPlayIcon] = useState(false);
   const [showHeartAnimation, setShowHeartAnimation] = useState(false);
   const lastTapRef = useRef<number>(0);
@@ -47,8 +58,18 @@ export function MobileShortSlide({
 
     if (isActive) {
       videoRef.current.currentTime = 0;
+      // Apply current mute state and volume
+      videoRef.current.muted = isMuted;
+      videoRef.current.volume = 1;
+      
       videoRef.current.play().then(() => {
         setIsPlaying(true);
+        // If playing with sound, notify Soundscape to pause
+        if (!isMuted) {
+          window.dispatchEvent(new CustomEvent('foreground-audio-intent', { 
+            detail: { source: 'shorts-autoplay' } 
+          }));
+        }
       }).catch(() => {
         // Autoplay blocked, user needs to tap
         setIsPlaying(false);
@@ -58,7 +79,7 @@ export function MobileShortSlide({
       videoRef.current.currentTime = 0;
       setIsPlaying(false);
     }
-  }, [isActive]);
+  }, [isActive, isMuted]);
 
   // Handle tap to play/pause
   const handleTap = useCallback(() => {
@@ -103,6 +124,13 @@ export function MobileShortSlide({
       const newMutedState = !isMuted;
       console.log('[MobileShortSlide] Toggling mute:', { from: isMuted, to: newMutedState });
       
+      // Save preference
+      try {
+        sessionStorage.setItem('shorts_audio_enabled', (!newMutedState).toString());
+      } catch {
+        // sessionStorage may be unavailable
+      }
+      
       videoRef.current.muted = newMutedState;
       setIsMuted(newMutedState);
       
@@ -120,7 +148,7 @@ export function MobileShortSlide({
             console.warn('[MobileShortSlide] Play on unmute failed:', err);
           });
         
-        // Also dispatch custom event as backup for Soundscape precedence on flaky WebViews
+        // Dispatch event to pause Soundscape (handled by AudioManager)
         window.dispatchEvent(new CustomEvent('foreground-audio-intent', { 
           detail: { source: 'shorts' } 
         }));
