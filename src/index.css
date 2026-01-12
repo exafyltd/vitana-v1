@@ -566,15 +566,11 @@ All colors MUST be HSL.
       position: fixed !important;
       left: 50% !important;
       transform: translateX(-50%) !important;
-      /* Move ORB DOWN closer to bottom nav */
-      bottom: calc(
-        var(--appilix-bottom-nav, 84px)
-        + env(safe-area-inset-bottom, 0px)
-        - 18px
-      ) !important;
+      bottom: 88px !important; /* anchor above Appilix bottom navigation */
       margin: 0 !important;
       z-index: 9999 !important;
       pointer-events: auto !important;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
     }
   }
 
