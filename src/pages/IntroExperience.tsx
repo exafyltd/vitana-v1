@@ -7,7 +7,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
-import { MobileBottomNav } from '@/components/mobile/MobileBottomNav';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -289,9 +288,6 @@ export default function IntroExperience() {
 
       {/* Mobile-only fixed ORB - centered, docked above bottom nav */}
       <MobileFixedOrb />
-      
-      {/* Bottom Navigation */}
-      <MobileBottomNav />
     </div>
   );
 }
