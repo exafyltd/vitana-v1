@@ -48,11 +48,15 @@ const MaxinaPortal = () => {
   }, [startFresh]);
 
   // Switch to maxina tenant if already authenticated
+  // Default post-login redirect to Events → Upcoming on mobile
   useEffect(() => {
     if (!authLoading && user) {
       const redirectTo = searchParams.get('redirectTo');
+      const isMobile = window.innerWidth < 768;
+      // Default to Events Upcoming on mobile if no explicit redirect
+      const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
       setTenantBySlug('maxina').then(() => {
-        navigate(redirectTo || "/home");
+        navigate(redirectTo || defaultRedirect);
       });
     }
   }, [user, authLoading, navigate, setTenantBySlug, searchParams]);
