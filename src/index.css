@@ -561,12 +561,17 @@ All colors MUST be HSL.
   }
 
   /* VITANA ORB - Mobile positioning above Appilix bottom nav */
+  /* CSS variables for ORB positioning - adjust --orb-gap to tune */
+  --appilix-bottom-nav-height: 56px;
+  --orb-gap: 8px;
+  --orb-bottom: calc(var(--appilix-bottom-nav-height) + var(--orb-gap) + env(safe-area-inset-bottom, 0px));
+
   @media (max-width: 767px) {
     [data-orb="vitana"] {
       position: fixed !important;
       left: 50% !important;
       transform: translateX(-50%) !important;
-      bottom: 88px !important; /* anchor above Appilix bottom navigation */
+      bottom: var(--orb-bottom, 64px) !important;
       margin: 0 !important;
       z-index: 9999 !important;
       pointer-events: auto !important;

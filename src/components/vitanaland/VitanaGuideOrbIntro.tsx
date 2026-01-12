@@ -69,8 +69,8 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       className="fixed left-1/2 -translate-x-1/2 z-40 group md:bottom-5 md:left-[104px] md:translate-x-0"
       data-orb="vitana"
       style={{
-        // Anchor above Appilix bottom navigation (mobile CSS in index.css takes precedence)
-        bottom: '88px'
+        // Uses CSS variable from index.css, falls back to 64px
+        bottom: 'var(--orb-bottom, 64px)'
       }}
     >
       <div
