@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
+import { MobileBottomNav } from '@/components/mobile/MobileBottomNav';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -177,6 +178,7 @@ export default function IntroExperience() {
       className={`fixed inset-0 bg-black overflow-hidden transition-opacity duration-[800ms] ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
+      style={{ '--bottom-nav-h': '64px' } as React.CSSProperties}
     >
       {/* Video Background */}
       <video
@@ -191,38 +193,38 @@ export default function IntroExperience() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+      {/* Stronger Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
       {/* Content */}
       <div 
-        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-opacity duration-[1000ms] ${
+        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-32 transition-opacity duration-[1000ms] ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={ensureSoundscapePlaying}
       >
-        {/* Title */}
-        <h1 
-          className="text-5xl md:text-6xl font-bold text-white text-center mb-6 animate-fade-in"
+        {/* Title - Lighter */}
+        <p 
+          className="text-lg md:text-xl font-medium text-white/80 text-center mb-2 animate-fade-in tracking-wide"
           style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
         >
-          Welcome to Vitanaland.
-        </h1>
-
-        {/* Subtitle */}
-        <p 
-          className="text-xl md:text-2xl text-white/90 text-center max-w-2xl mb-8 animate-fade-in"
-          style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
-        >
-          You're entering the Maxina experience.
+          Welcome to Vitanaland
         </p>
 
-        {/* Caption */}
-        <p 
-          className="text-base text-white/70 text-center max-w-xl mb-12 animate-fade-in"
-          style={{ animationDelay: '2400ms', animationFillMode: 'both' }}
+        {/* Primary - Maxina Experience */}
+        <h1 
+          className="text-4xl md:text-5xl font-bold text-white text-center mb-6 animate-fade-in"
+          style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
         >
-          Where your wellness, connection, and purpose come together.
+          Maxina Experience
+        </h1>
+
+        {/* Caption - Shortened */}
+        <p 
+          className="text-base text-white/70 text-center max-w-xs mb-10 animate-fade-in"
+          style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
+        >
+          Your longevity, health, and community — guided.
         </p>
 
         {/* Controls - add bottom padding on mobile to avoid ORB overlap */}
@@ -287,6 +289,9 @@ export default function IntroExperience() {
 
       {/* Mobile-only fixed ORB - centered, docked above bottom nav */}
       <MobileFixedOrb />
+      
+      {/* Bottom Navigation */}
+      <MobileBottomNav />
     </div>
   );
 }
