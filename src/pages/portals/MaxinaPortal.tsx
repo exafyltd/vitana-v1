@@ -226,7 +226,7 @@ const MaxinaPortal = () => {
       <div className="fixed inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
       
       {/* Content layer - pulled up with safe bottom spacing */}
-      <div className="relative z-20 flex flex-col items-center justify-start min-h-screen px-4 pt-8 md:pt-16 md:justify-center md:px-6 pb-28 md:pb-6 maxina-page-content maxina-signin-page" data-maxina-app="true">
+      <div className="relative z-20 flex flex-col items-center justify-start min-h-screen px-4 pt-16 md:pt-16 md:justify-center md:px-6 pb-32 md:pb-6 maxina-page-content maxina-signin-page" data-maxina-app="true">
         <div className="max-w-md w-full">
           {/* Auth Tabs - Compact card */}
           <Card 
@@ -604,7 +604,7 @@ const MaxinaPortal = () => {
           </div>
         </div>
         
-        <div className="pb-20 md:pb-0" />
+        <div className="pb-6 md:pb-0" />
 
         {/* VITANA Orb - positioned via global CSS */}
         <MobileFixedOrb />
