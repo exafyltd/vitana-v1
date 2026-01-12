@@ -177,7 +177,7 @@ export function UniversalShareDialog({
   };
 
   const handleCreateCampaign = () => {
-    window.location.href = `/sharing/campaigns?prefill=${encodeURIComponent(
+    const url = `/sharing/campaigns?prefill=${encodeURIComponent(
       JSON.stringify({
         name: `Campaign - ${content.title}`,
         description: message,
@@ -185,6 +185,9 @@ export function UniversalShareDialog({
         content_id: content.id,
       })
     )}`;
+    // SPA-safe navigation
+    window.history.pushState({}, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (

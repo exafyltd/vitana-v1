@@ -267,7 +267,7 @@ export default function BiomarkerResults() {
                 <p className="text-muted-foreground mb-6">
                   Your lab test results will appear here once they're ready.
                 </p>
-                <Button onClick={() => window.location.href = '/discover'}>
+                <Button onClick={() => { window.history.pushState({}, '', '/discover'); window.dispatchEvent(new PopStateEvent('popstate')); }}>
                   Order Lab Tests
                 </Button>
               </CardContent>

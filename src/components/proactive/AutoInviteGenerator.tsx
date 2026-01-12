@@ -107,8 +107,9 @@ export function AutoInviteGenerator() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  // Navigate to contacts to send
-                  window.location.href = '/contacts';
+                  // Navigate to contacts to send (SPA-safe navigation)
+                  window.history.pushState({}, '', '/contacts');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
                 }}
                 className="gap-2"
               >

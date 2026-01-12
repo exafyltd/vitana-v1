@@ -79,12 +79,9 @@ const MaxinaPortal = () => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
 
-  // Start soundscape when video loads
-  useEffect(() => {
-    if (videoSrc) {
-      startFresh(0.05);
-    }
-  }, [videoSrc, startFresh]);
+  // NOTE: Do NOT auto-start soundscape on mount/video load
+  // Soundscape should only start on explicit user gesture (click)
+  // The ensureSoundscapePlaying callback handles this correctly
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);

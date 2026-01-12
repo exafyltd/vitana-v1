@@ -111,7 +111,7 @@ export default function DiaryButton() {
       if (text) {
         await saveDiary({ text, source: "voice" });
         toastWithActions("Diary saved", [
-          { label: "View", onClick: () => window.location.href = '/memory/diary' },
+          { label: "View", onClick: () => { window.history.pushState({}, '', '/memory/diary'); window.dispatchEvent(new PopStateEvent('popstate')); } },
           { label: "Undo", onClick: () => undoLastDiary() }
         ]);
       } else {
@@ -157,7 +157,7 @@ export default function DiaryButton() {
           if (text) {
             saveDiary({ text, source: "voice" }).then(() => {
               toastWithActions("Diary saved", [
-                { label: "View", onClick: () => window.location.href = '/memory/diary' },
+                { label: "View", onClick: () => { window.history.pushState({}, '', '/memory/diary'); window.dispatchEvent(new PopStateEvent('popstate')); } },
                 { label: "Undo", onClick: () => undoLastDiary() }
               ]);
             });

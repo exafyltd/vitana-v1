@@ -57,12 +57,9 @@ export default function IntroExperience() {
     }
   }, [videoSrc]);
 
-  // Start soundscape when video loads
-  useEffect(() => {
-    if (videoSrc) {
-      startFresh(0.04);
-    }
-  }, [videoSrc, startFresh]);
+  // NOTE: Do NOT auto-start soundscape on mount/video load
+  // Soundscape should only start on explicit user gesture (click)
+  // The ensureSoundscapePlaying callback handles this correctly
 
   // Fade soundscape volume when TTS is playing
   useEffect(() => {
