@@ -577,8 +577,8 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* Anchored just above Appilix bottom nav: nav height + safe area + small gap */
-    bottom: calc(var(--appilix-bottom-nav-h, 84px) + env(safe-area-inset-bottom, 0px) + 10px) !important;
+    /* Anchored just above Appilix bottom nav: small gap above native nav */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
     margin: 0 !important;
     z-index: 9999 !important;
     pointer-events: auto !important;
