@@ -36,12 +36,9 @@ export function MobileFixedOrb() {
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
-      className="fixed left-1/2 -translate-x-1/2 z-40"
+      className="vitana-orb"
       data-orb="vitana"
-      style={{
-        // Uses CSS variable from index.css, falls back to 64px
-        bottom: 'var(--orb-bottom, 64px)'
-      }}
+      data-vitana-orb="true"
     >
       <div
         role="button"

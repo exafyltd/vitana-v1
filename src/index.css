@@ -561,23 +561,42 @@ All colors MUST be HSL.
   }
 
   /* VITANA ORB - Mobile positioning above Appilix bottom nav */
-  /* CSS variables for ORB positioning - adjust --orb-gap to tune */
-  --appilix-bottom-nav-height: 56px;
-  --orb-gap: 8px;
-  --orb-bottom: calc(var(--appilix-bottom-nav-height) + var(--orb-gap) + env(safe-area-inset-bottom, 0px));
+  /* Appilix bottom nav height - single source of truth */
+  --appilix-bottom-nav-h: 76px; /* fallback if not set by Appilix */
+  --orb-gap: 10px; /* breathing space above nav */
 
-  @media (max-width: 767px) {
-    [data-orb="vitana"] {
-      position: fixed !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-      bottom: var(--orb-bottom, 64px) !important;
-      margin: 0 !important;
-      z-index: 9999 !important;
-      pointer-events: auto !important;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
-    }
+/* MOBILE ONLY - ORB fixed positioning */
+@media (max-width: 768px) {
+  .vitana-orb,
+  [data-orb="vitana"],
+  [data-vitana-orb="true"],
+  #vitana-orb,
+  .OrbFloatingButton {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    bottom: calc(
+      var(--appilix-bottom-nav-h, 76px) +
+      env(safe-area-inset-bottom, 0px) +
+      var(--orb-gap, 10px)
+    ) !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
+
+  /* Footer spacing to prevent orb overlap */
+  .maxina-footer,
+  [data-maxina-footer="true"] {
+    padding-bottom: calc(
+      var(--appilix-bottom-nav-h, 76px) +
+      env(safe-area-inset-bottom, 0px) +
+      56px /* orb radius space */
+    ) !important;
+  }
+}
 
   /* Fade In Up Animation */
   @keyframes fadeInUp {
