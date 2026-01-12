@@ -80,9 +80,10 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const wasPlayingBeforePriorityRef = useRef(false);
   const userExplicitlyPausedRef = useRef(false);
   
-  // Use refs for state that callbacks need to access
+  // Use refs for state that callbacks need to access (avoids stale closures)
   const isMutedRef = useRef(isMuted);
   const isPlayingRef = useRef(isPlaying);
+  const pausedByPriorityRef = useRef(pausedByPriority);
 
   // Store event handler refs for proper cleanup
   const handleVolumeChangeRef = useRef<(() => void) | null>(null);
@@ -97,6 +98,10 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     isPlayingRef.current = isPlaying;
   }, [isPlaying]);
+
+  useEffect(() => {
+    pausedByPriorityRef.current = pausedByPriority;
+  }, [pausedByPriority]);
 
   // Helper to attach event listeners to an audio element
   const attachListeners = useCallback((audio: HTMLAudioElement) => {
@@ -449,17 +454,23 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     });
   }, [volume, attachListeners]);
 
+  // Use refs to avoid stale closures - these callbacks are passed to useGlobalMediaPrecedence
+  // and need to always access the current state values
   const pauseForPriorityAudio = useCallback(() => {
-    if (isPlaying && audioRef.current && !pausedByPriority) {
+    console.log('[Soundscape] pauseForPriorityAudio called, isPlaying:', isPlayingRef.current, 'pausedByPriority:', pausedByPriorityRef.current);
+    
+    if (isPlayingRef.current && audioRef.current && !pausedByPriorityRef.current) {
       wasPlayingBeforePriorityRef.current = true;
       audioRef.current.pause();
       setIsPlaying(false);
       setPausedByPriority(true);
       console.log('[Soundscape] Paused for priority audio');
     }
-  }, [isPlaying, pausedByPriority]);
+  }, []); // No dependencies - uses refs
 
   const resumeAfterPriorityAudio = useCallback(() => {
+    console.log('[Soundscape] resumeAfterPriorityAudio called, pausedByPriority:', pausedByPriorityRef.current, 'wasPlaying:', wasPlayingBeforePriorityRef.current);
+    
     // Don't resume if user explicitly paused the music
     if (userExplicitlyPausedRef.current) {
       console.log('[Soundscape] Not resuming - user explicitly paused');
@@ -468,7 +479,15 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       return;
     }
     
-    if (pausedByPriority && wasPlayingBeforePriorityRef.current && audioRef.current) {
+    // Don't resume if user muted
+    if (isMutedRef.current) {
+      console.log('[Soundscape] Not resuming - user muted');
+      setPausedByPriority(false);
+      wasPlayingBeforePriorityRef.current = false;
+      return;
+    }
+    
+    if (pausedByPriorityRef.current && wasPlayingBeforePriorityRef.current && audioRef.current) {
       audioRef.current.play().catch((err) => {
         console.warn('[Soundscape] Resume after priority audio failed:', err);
       });
@@ -477,7 +496,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       wasPlayingBeforePriorityRef.current = false;
       console.log('[Soundscape] Resumed after priority audio ended');
     }
-  }, [pausedByPriority]);
+  }, []); // No dependencies - uses refs
 
   const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
     if (audioRef.current) {
