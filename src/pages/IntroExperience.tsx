@@ -286,10 +286,8 @@ export default function IntroExperience() {
         </p>
       </div>
 
-      {/* Mobile-only fixed ORB - centered, docked above Appilix bottom nav */}
-      <div className="vitana-orb-appilix-anchor md:hidden" data-maxina-app="true">
-        <MobileFixedOrb />
-      </div>
+      {/* Mobile-only fixed ORB - positioned via global CSS */}
+      <MobileFixedOrb />
     </div>
   );
 }

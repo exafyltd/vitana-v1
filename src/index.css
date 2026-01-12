@@ -560,31 +560,15 @@ All colors MUST be HSL.
     }
   }
 
-  /* VITANA ORB - Mobile positioning above Appilix bottom nav */
-  /* Appilix bottom nav height - single source of truth (set by Appilix Custom CSS) */
-  --appilix-bottom-nav-height: 76px; /* fallback if not set by Appilix */
+  /* VITANA ORB - Appilix bottom nav anchoring */
+  /* Single source of truth - Appilix sets this via Custom CSS */
+  --appilix-bottom-nav-h: 76px; /* fallback if not set by Appilix */
   --orb-gap: 10px; /* breathing space above nav */
 }
 
-/* Shared Appilix-anchored ORB wrapper - pointer-events pass through */
-.vitana-orb-appilix-anchor {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(var(--appilix-bottom-nav-height, 76px) + env(safe-area-inset-bottom, 0px) + 10px);
-  z-index: 60;
-  width: 72px;
-  height: 72px;
-  pointer-events: none;
-}
-.vitana-orb-appilix-anchor > * {
-  pointer-events: auto;
-}
-
-/* MOBILE ONLY - ORB fixed positioning */
+/* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
 @media (max-width: 768px) {
   .vitana-orb,
-  [data-orb="vitana"],
   [data-vitana-orb="true"],
   #vitana-orb,
   .OrbFloatingButton {
@@ -593,24 +577,24 @@ All colors MUST be HSL.
     right: auto !important;
     transform: translateX(-50%) !important;
     bottom: calc(
-      var(--appilix-bottom-nav-height, 76px) +
+      var(--appilix-bottom-nav-h, 76px) +
       env(safe-area-inset-bottom, 0px) +
       var(--orb-gap, 10px)
     ) !important;
     margin: 0 !important;
-    z-index: 60 !important;
+    z-index: 9999 !important;
     pointer-events: auto !important;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
 
-  /* Footer/page spacing to prevent orb overlap - Maxina pages */
+  /* Footer spacing - keep Privacy/Terms/Help visible above orb */
   .maxina-footer,
-  [data-maxina-footer="true"],
-  .maxina-page-content {
+  footer,
+  [data-maxina-footer="true"] {
     padding-bottom: calc(
-      var(--appilix-bottom-nav-height, 76px) +
+      var(--appilix-bottom-nav-h, 76px) +
       env(safe-area-inset-bottom, 0px) +
-      110px /* orb + breathing space */
+      56px /* orb radius space */
     ) !important;
   }
 

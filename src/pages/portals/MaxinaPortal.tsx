@@ -573,10 +573,8 @@ const MaxinaPortal = () => {
           </div>
         </div>
 
-        {/* VITANA Orb - Centered above Appilix nav */}
-        <div className="vitana-orb-appilix-anchor md:hidden">
-          <MobileFixedOrb />
-        </div>
+        {/* VITANA Orb - positioned via global CSS */}
+        <MobileFixedOrb />
       </div>
     </div>
   );
