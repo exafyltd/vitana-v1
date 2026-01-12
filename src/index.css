@@ -8,8 +8,9 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Bottom navigation height - 0 by default, set by layouts with bottom nav */
-    --bottom-nav-h: 0px;
+    /* Appilix bottom navigation offset - injected by Appilix, fallback values here */
+    --appilix-bottom-nav: 84px;
+    --orb-gap: 10px;
     
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -556,6 +557,21 @@ All colors MUST be HSL.
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* VITANA ORB - Mobile positioning above Appilix bottom nav */
+  @media (max-width: 767px) {
+    [data-orb="vitana"] {
+      position: fixed !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      bottom: calc(
+        var(--appilix-bottom-nav, 84px)
+        + var(--orb-gap, 10px)
+        + env(safe-area-inset-bottom, 0px)
+      ) !important;
+      z-index: 9999 !important;
     }
   }
 
