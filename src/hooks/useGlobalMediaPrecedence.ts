@@ -34,16 +34,13 @@ export function useGlobalMediaPrecedence({
   // Track all currently active foreground media elements
   const activeForegroundMediaRef = useRef<Set<HTMLMediaElement>>(new Set());
   
-  // Stable callback refs
+  // Stable callback refs - these are updated synchronously, no useEffect needed
   const onStartRef = useRef(onForegroundMediaStart);
   const onStopRef = useRef(onForegroundMediaStop);
-  
-  // Keep refs updated
-  useEffect(() => {
-    onStartRef.current = onForegroundMediaStart;
-    onStopRef.current = onForegroundMediaStop;
-  }, [onForegroundMediaStart, onForegroundMediaStop]);
+  onStartRef.current = onForegroundMediaStart;
+  onStopRef.current = onForegroundMediaStop;
 
+  // Check if an element is the soundscape audio (should be excluded from precedence)
   const isSoundscapeElement = useCallback((element: HTMLMediaElement): boolean => {
     // Check if it's our soundscape element
     if (soundscapeAudioRef.current && element === soundscapeAudioRef.current) {
@@ -60,7 +57,7 @@ export function useGlobalMediaPrecedence({
     return false;
   }, [soundscapeAudioRef]);
 
-
+  // Main effect for attaching global media event listeners
   useEffect(() => {
     if (!enabled) return;
 
