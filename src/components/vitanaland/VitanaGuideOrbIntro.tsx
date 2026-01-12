@@ -66,12 +66,9 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: initialDelay, duration: 0.5 }}
-      className="fixed left-1/2 -translate-x-1/2 z-40 group md:bottom-5 md:left-[104px] md:translate-x-0"
+      className="vitana-orb md:bottom-5 md:left-[104px] md:translate-x-0 md:fixed md:z-40"
       data-orb="vitana"
-      style={{
-        // Uses CSS variable from index.css, falls back to 64px
-        bottom: 'var(--orb-bottom, 64px)'
-      }}
+      data-vitana-orb="true"
     >
       <div
         role="button"

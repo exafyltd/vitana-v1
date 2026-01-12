@@ -551,7 +551,7 @@ const MaxinaPortal = () => {
           </Card>
 
           {/* Trust & Navigation Footer */}
-          <div className="space-y-3 pb-20 md:pb-0">
+          <div className="space-y-3" data-maxina-footer="true">
             <p className="text-center text-white/70 text-xs">
               Maxina is part of the VITANA ecosystem.
             </p>
