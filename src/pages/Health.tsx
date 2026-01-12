@@ -27,6 +27,11 @@ import NextBestActionCard from "@/components/health/NextBestActionCard";
 
 import { healthNavigation } from "@/config/navigation";
 import { useProfile } from "@/context/ProfileProvider";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileHealthSnapshot } from "@/components/health/mobile/MobileHealthSnapshot";
+import { MobilePriorityFocus } from "@/components/health/mobile/MobilePriorityFocus";
+import { MobileAutopilotGuidance } from "@/components/health/mobile/MobileAutopilotGuidance";
+import { MobileHealthActionStrip } from "@/components/health/mobile/MobileHealthActionStrip";
 
 const overviewCards = [
   {
@@ -71,6 +76,7 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 export default withScreenId(function Health() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -80,6 +86,29 @@ export default withScreenId(function Health() {
   const [selectedPillar, setSelectedPillar] = useState("overview");
   
   const latestActions = getLatestActions(2);
+
+  // Health pillar data
+  const pillars = {
+    nutrition: 85,
+    exercise: 68,
+    sleep: 90,
+    hydration: 72,
+    mental: 78
+  };
+
+  // Find weakest pillar for priority focus
+  const pillarEntries = Object.entries(pillars) as [string, number][];
+  const weakestPillar = pillarEntries.reduce((min, curr) => 
+    curr[1] < min[1] ? curr : min
+  , pillarEntries[0]);
+  
+  const pillarLabels: Record<string, { label: string; emoji: string }> = {
+    nutrition: { label: 'Nutrition', emoji: '🥗' },
+    exercise: { label: 'Exercise', emoji: '🏃' },
+    sleep: { label: 'Sleep', emoji: '😴' },
+    hydration: { label: 'Hydration', emoji: '💧' },
+    mental: { label: 'Mental', emoji: '🧠' }
+  };
 
   const smartSuggestions = [
     {
@@ -146,11 +175,59 @@ export default withScreenId(function Health() {
     }
   ];
 
+  // Mobile-specific single-screen dashboard
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO title="Health" description="Your personal health dashboard" canonical={window.location.href} />
+        
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
+          {/* 1. Health Snapshot (Hero) */}
+          <MobileHealthSnapshot
+            vitanaIndex={vitanaScore}
+            vitanaPercentile={15}
+            trend="up"
+            pillars={pillars}
+          />
+          
+          {/* 2. Priority Focus (Single) */}
+          <MobilePriorityFocus
+            pillarName={pillarLabels[weakestPillar[0]].label}
+            pillarScore={weakestPillar[1]}
+            pillarEmoji={pillarLabels[weakestPillar[0]].emoji}
+            explanation="This area currently has the biggest impact on your long-term healthspan."
+          />
+          
+          {/* 3. Autopilot Guidance (Condensed) */}
+          <MobileAutopilotGuidance
+            suggestions={[
+              "Upload blood test results",
+              "Start 30-Day Fitness Challenge"
+            ]}
+            onTakeAction={() => setHealthActionsOpen(true)}
+          />
+          
+          {/* 4. Action Strip (Bottom) */}
+          <MobileHealthActionStrip
+            onUploadBloodTest={() => navigate('/health/biomarker-results')}
+            onOrderBloodTest={() => navigate('/health/services-hub')}
+            onViewPlans={() => navigate('/health/plans')}
+          />
+        </div>
+        
+        <HealthMasterActionPopup
+          open={healthActionsOpen}
+          onOpenChange={setHealthActionsOpen}
+        />
+      </AppLayout>
+    );
+  }
+
+  // Desktop layout (unchanged)
   return (
     <AppLayout>
       <SEO title="Health" description="Discover health services, programs, and educational resources" canonical={window.location.href} />
       <SubNavigation items={healthNavigation} />
-      
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <StandardHeader
