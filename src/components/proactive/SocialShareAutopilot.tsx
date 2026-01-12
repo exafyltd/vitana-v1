@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -173,7 +174,7 @@ export function SocialShareAutopilot() {
           <div className="p-4 rounded-lg border border-yellow-500/20 bg-yellow-500/5">
             <p className="text-sm font-medium mb-2">⚠️ No platforms connected</p>
             <Button variant="outline" size="sm" asChild>
-              <a href="/sharing">Connect Social Media</a>
+              <Link to="/sharing">Connect Social Media</Link>
             </Button>
           </div>
         )}

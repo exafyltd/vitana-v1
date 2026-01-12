@@ -6,11 +6,14 @@
  * 2. Global media precedence listeners (foreground media always wins)
  * 3. State persistence to sessionStorage for continuity
  * 4. Separation of Soundscape mute from video/audio mute
+ * 5. Full page reload detection and recovery
  */
 
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
 const SESSION_KEY_TIME = 'soundscape_currentTime';
 const SESSION_KEY_PLAYING = 'soundscape_wasPlaying';
+const SESSION_KEY_VOLUME = 'soundscape_volume';
+const SESSION_KEY_TRACK = 'soundscape_track';
 
 // Module-level state (survives across component mounts)
 let audioElement: HTMLAudioElement | null = null;
@@ -52,11 +55,13 @@ function startPersisting() {
       try {
         sessionStorage.setItem(SESSION_KEY_TIME, audioElement.currentTime.toString());
         sessionStorage.setItem(SESSION_KEY_PLAYING, 'true');
+        sessionStorage.setItem(SESSION_KEY_VOLUME, audioElement.volume.toString());
+        sessionStorage.setItem(SESSION_KEY_TRACK, audioElement.src || AMBIENT_TRACK);
       } catch (e) {
         // sessionStorage may be unavailable
       }
     }
-  }, 1000);
+  }, 500); // Persist every 500ms for better recovery
 }
 
 function stopPersisting() {
@@ -64,6 +69,21 @@ function stopPersisting() {
     clearInterval(persistInterval);
     persistInterval = null;
   }
+}
+
+/**
+ * Detect if this is a full page reload vs SPA navigation
+ */
+function detectNavigationType(): 'reload' | 'navigate' | 'back_forward' | 'prerender' | 'unknown' {
+  try {
+    const navEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+    if (navEntries.length > 0) {
+      return navEntries[0].type as 'reload' | 'navigate' | 'back_forward' | 'prerender';
+    }
+  } catch (e) {
+    // Fallback
+  }
+  return 'unknown';
 }
 
 /**
@@ -80,20 +100,40 @@ export function getAudio(): HTMLAudioElement {
     return audioElement;
   }
   
-  console.log('[AudioManager] Creating new audio element');
+  const navType = detectNavigationType();
+  console.log('[AudioManager] Creating new audio element, navigation type:', navType);
+  
   audioElement = new Audio(AMBIENT_TRACK);
   audioElement.loop = true;
   audioElement.preload = 'auto';
   
-  // Restore currentTime from sessionStorage if available
+  // Restore state from sessionStorage if this is a reload or new navigation
   try {
     const savedTime = sessionStorage.getItem(SESSION_KEY_TIME);
+    const savedVolume = sessionStorage.getItem(SESSION_KEY_VOLUME);
+    const wasPlaying = sessionStorage.getItem(SESSION_KEY_PLAYING);
+    
     if (savedTime) {
       const time = parseFloat(savedTime);
       if (!isNaN(time) && time > 0) {
         audioElement.currentTime = time;
         console.log('[AudioManager] Restored currentTime:', time);
       }
+    }
+    
+    if (savedVolume) {
+      const vol = parseFloat(savedVolume);
+      if (!isNaN(vol) && vol >= 0 && vol <= 1) {
+        audioElement.volume = vol;
+        console.log('[AudioManager] Restored volume:', vol);
+      }
+    }
+    
+    // If was playing and this is a reload, we'll need user gesture to resume
+    if (wasPlaying === 'true' && navType === 'reload') {
+      console.log('[AudioManager] Was playing before reload, will resume on interaction');
+      // Mark for auto-resume on interaction
+      userExplicitlyPaused = false;
     }
   } catch (e) {
     // sessionStorage may be unavailable

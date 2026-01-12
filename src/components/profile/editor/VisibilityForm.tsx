@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
@@ -192,7 +193,7 @@ export function VisibilityForm() {
             </p>
           </div>
           <Button variant="outline" asChild>
-            <a href="/settings/privacy">Open Settings</a>
+            <Link to="/settings/privacy">Open Settings</Link>
           </Button>
         </div>
       </Card>

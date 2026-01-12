@@ -277,7 +277,9 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     ...(String(event.id || '').startsWith('dummy')
       ? {
           onActionClick: () => {
-            window.location.assign('/community/meetups');
+            // Use SPA-safe navigation to avoid full page reload
+            window.history.pushState({}, '', '/community/meetups');
+            window.dispatchEvent(new PopStateEvent('popstate'));
           }
         }
       : { eventId: String(event.id) }
