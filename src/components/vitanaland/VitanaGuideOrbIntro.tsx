@@ -67,9 +67,10 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: initialDelay, duration: 0.5 }}
       className="fixed left-1/2 -translate-x-1/2 z-40 group md:bottom-5 md:left-[104px] md:translate-x-0"
+      data-orb="vitana"
       style={{
-        // Appilix native bottom nav (~56px) + safe area + 12px gap
-        bottom: 'calc(56px + env(safe-area-inset-bottom, 0px) + 12px)'
+        // Mobile: Appilix bottom nav + gap + safe area (desktop overridden by md: classes)
+        bottom: 'calc(var(--appilix-bottom-nav, 84px) + var(--orb-gap, 10px) + env(safe-area-inset-bottom, 0px))'
       }}
     >
       <div
