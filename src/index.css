@@ -566,12 +566,15 @@ All colors MUST be HSL.
       position: fixed !important;
       left: 50% !important;
       transform: translateX(-50%) !important;
+      /* Move ORB DOWN closer to bottom nav */
       bottom: calc(
         var(--appilix-bottom-nav, 84px)
-        + var(--orb-gap, 10px)
         + env(safe-area-inset-bottom, 0px)
+        - 18px
       ) !important;
+      margin: 0 !important;
       z-index: 9999 !important;
+      pointer-events: auto !important;
     }
   }
 

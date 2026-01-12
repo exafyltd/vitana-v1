@@ -39,8 +39,8 @@ export function MobileFixedOrb() {
       className="fixed left-1/2 -translate-x-1/2 z-40"
       data-orb="vitana"
       style={{
-        // Appilix bottom nav + gap + safe area (variables injected by Appilix)
-        bottom: 'calc(var(--appilix-bottom-nav, 84px) + var(--orb-gap, 10px) + env(safe-area-inset-bottom, 0px))'
+        // Appilix bottom nav + safe area - tuning offset (pushes orb down)
+        bottom: 'calc(var(--appilix-bottom-nav, 84px) + env(safe-area-inset-bottom, 0px) - 18px)'
       }}
     >
       <div
