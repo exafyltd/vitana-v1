@@ -95,12 +95,15 @@ export function MobileShortSlide({
     }, 300);
   }, [isPlaying, onLike]);
 
-  // Toggle mute
+  // Toggle mute - this should trigger volumechange event for global media precedence
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+      const newMutedState = !isMuted;
+      console.log('[MobileShortSlide] Toggling mute:', { from: isMuted, to: newMutedState });
+      videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
+      console.log('[MobileShortSlide] Video muted state after toggle:', videoRef.current.muted);
     }
   }, [isMuted]);
 
