@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
-import { VitanaGuideOrbIntro } from "@/components/vitanaland/VitanaGuideOrbIntro";
+import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
@@ -570,25 +570,11 @@ const MaxinaPortal = () => {
               </Link>
             </div>
             
-            <div className="w-16 h-px bg-white/30 mx-auto" />
-            
-            {/* Secondary navigation */}
-            <div className="flex justify-center space-x-6 text-sm pt-1">
-              <Link to="/alkalma" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
-                AlKalma Portal
-              </Link>
-              <Link to="/earthlinks" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
-                Earthlinks Portal
-              </Link>
-              <Link to="/" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
-                ← Back to All Portals
-              </Link>
-            </div>
           </div>
         </div>
 
-        {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
-        <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={0.8} />
+        {/* VITANA Orb - Centered at bottom */}
+        <MobileFixedOrb />
       </div>
     </div>
   );
