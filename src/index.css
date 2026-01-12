@@ -562,9 +562,9 @@ All colors MUST be HSL.
 
   /* VITANA ORB - Appilix bottom nav anchoring */
   /* Contract: Appilix sets these via Custom CSS. We provide fallbacks only. */
-  --appilix-bottom-nav-h: 28px; /* fallback if Appilix doesn't set it */
-  --orb-gap: 8px; /* breathing space above nav */
-  --appilix-orb-offset: -120px; /* negative = lower orb (tune in Appilix) */
+  --appilix-bottom-nav-h: 16px; /* fallback if Appilix doesn't set it */
+  --orb-gap: 4px; /* breathing space above nav */
+  --appilix-orb-offset: -200px; /* negative = lower orb (tune in Appilix) */
 }
 
 /* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
@@ -589,6 +589,12 @@ All colors MUST be HSL.
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
 
+  /* /maxina sign-in: push orb down so it sits below the footer links, visually anchored to nav */
+  body[data-route="/maxina"] {
+    --orb-gap: 2px;
+    --appilix-orb-offset: -240px;
+  }
+
   /* Footer spacing - keep Privacy/Terms/Help visible above orb */
   .maxina-footer,
   footer,
@@ -600,6 +606,16 @@ All colors MUST be HSL.
     ) !important;
   }
 
+  /* /maxina: extra footer clearance so links never collide with the orb */
+  body[data-route="/maxina"] .maxina-footer,
+  body[data-route="/maxina"] [data-maxina-footer="true"] {
+    padding-bottom: calc(
+      var(--appilix-bottom-nav-h, 76px) +
+      env(safe-area-inset-bottom, 0px) +
+      96px
+    ) !important;
+  }
+
   /* Hide irrelevant tenant links for Maxina app users */
   [data-maxina-app="true"] .tenant-footer-links,
   [data-maxina-app="true"] [data-tenant-switcher],
@@ -607,6 +623,7 @@ All colors MUST be HSL.
     display: none !important;
   }
 }
+
 
   /* Fade In Up Animation */
   @keyframes fadeInUp {
