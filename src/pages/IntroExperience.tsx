@@ -11,7 +11,6 @@ import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
-import { motion } from 'framer-motion';
 
 const MAXINA_WELCOME_SSML = `<speak>
   Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
@@ -22,8 +21,13 @@ const MAXINA_WELCOME_SSML = `<speak>
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { expandToFull } = useVitanalandNavigation();
+  const { expandToFull, showOrb } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
+  
+  // Ensure orb is visible on intro page (fix "sometimes missing" orb)
+  useEffect(() => {
+    showOrb();
+  }, [showOrb]);
   const { startFresh, setVolume } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
