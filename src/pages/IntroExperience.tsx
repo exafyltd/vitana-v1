@@ -177,7 +177,6 @@ export default function IntroExperience() {
       className={`fixed inset-0 bg-black overflow-hidden transition-opacity duration-[800ms] ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
-      style={{ '--bottom-nav-h': '64px' } as React.CSSProperties}
     >
       {/* Video Background */}
       <video

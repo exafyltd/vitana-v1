@@ -38,8 +38,8 @@ export function MobileFixedOrb() {
       transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
       className="fixed left-1/2 -translate-x-1/2 z-40"
       style={{
-        // Dock above bottom nav (uses CSS var, 0 when no nav) + safe area + 10px gap
-        bottom: 'calc(var(--bottom-nav-h, 0px) + env(safe-area-inset-bottom, 0px) + 10px)'
+        // Appilix native bottom nav (~56px) + safe area + 12px gap
+        bottom: 'calc(56px + env(safe-area-inset-bottom, 0px) + 12px)'
       }}
     >
       <div

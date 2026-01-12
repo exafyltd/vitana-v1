@@ -68,8 +68,8 @@ export function VitanaGuideOrbIntro({ onOrbClick, initialDelay }: VitanaGuideOrb
       transition={{ delay: initialDelay, duration: 0.5 }}
       className="fixed left-1/2 -translate-x-1/2 z-40 group md:bottom-5 md:left-[104px] md:translate-x-0"
       style={{
-        // Dock above bottom nav (uses CSS var, 0 when no nav) + safe area + 12px gap
-        bottom: 'calc(var(--bottom-nav-h, 0px) + env(safe-area-inset-bottom, 0px) + 12px)'
+        // Appilix native bottom nav (~56px) + safe area + 12px gap
+        bottom: 'calc(56px + env(safe-area-inset-bottom, 0px) + 12px)'
       }}
     >
       <div
