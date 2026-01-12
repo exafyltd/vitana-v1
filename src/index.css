@@ -561,10 +561,10 @@ All colors MUST be HSL.
   }
 
   /* VITANA ORB - Appilix bottom nav anchoring */
-  /* Contract: Appilix sets these via Custom CSS. We provide fallbacks only. */
-  --appilix-bottom-nav-h: 80px; /* fallback if Appilix doesn't set it */
-  --orb-gap: 4px; /* breathing space above nav */
-  --appilix-orb-offset: -280px; /* negative = lower orb (tune in Appilix) */
+  /* Contract: Appilix may override these via injected CSS variables. */
+  --appilix-bottom-nav-height: 84px; /* default assumed native nav height */
+  --appilix-bottom-nav-h: var(--appilix-bottom-nav-height); /* legacy alias */
+  --orb-gap: 10px; /* breathing space above nav */
 }
 
 /* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
@@ -577,32 +577,24 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* Anchored just above Appilix bottom nav: small gap above native nav */
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 8px) !important;
+    /* Appilix anchor: safe-area + native bottom nav height + small gap */
+    bottom: calc(
+      env(safe-area-inset-bottom, 0px) +
+      var(--appilix-bottom-nav-height, 72px) +
+      var(--orb-gap, 10px)
+    ) !important;
     margin: 0 !important;
     z-index: 9999 !important;
     pointer-events: auto !important;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
 
-  /* Footer spacing - keep Privacy/Terms/Help visible above orb */
-  .maxina-footer,
-  footer,
-  [data-maxina-footer="true"] {
+  /* /maxina: create enough space so the footer links never collide with the fixed orb */
+  .maxina-page-content[data-maxina-app="true"] {
     padding-bottom: calc(
-      var(--appilix-bottom-nav-h, 84px) +
+      var(--appilix-bottom-nav-height, 72px) +
       env(safe-area-inset-bottom, 0px) +
-      70px /* orb radius space */
-    ) !important;
-  }
-
-  /* /maxina: extra footer clearance so links never collide with the orb */
-  body[data-route="/maxina"] .maxina-footer,
-  body[data-route="/maxina"] [data-maxina-footer="true"] {
-    padding-bottom: calc(
-      var(--appilix-bottom-nav-h, 84px) +
-      env(safe-area-inset-bottom, 0px) +
-      110px
+      90px
     ) !important;
   }
 
