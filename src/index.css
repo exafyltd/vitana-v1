@@ -577,8 +577,8 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* Lower position: closer to Appilix bottom nav bar */
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 24px) !important;
+    /* Anchored just above Appilix bottom nav: nav height + safe area + small gap */
+    bottom: calc(var(--appilix-bottom-nav-h, 84px) + env(safe-area-inset-bottom, 0px) + 10px) !important;
     margin: 0 !important;
     z-index: 9999 !important;
     pointer-events: auto !important;
@@ -590,9 +590,9 @@ All colors MUST be HSL.
   footer,
   [data-maxina-footer="true"] {
     padding-bottom: calc(
-      var(--appilix-bottom-nav-h, 76px) +
+      var(--appilix-bottom-nav-h, 84px) +
       env(safe-area-inset-bottom, 0px) +
-      56px /* orb radius space */
+      70px /* orb radius space */
     ) !important;
   }
 
@@ -600,9 +600,9 @@ All colors MUST be HSL.
   body[data-route="/maxina"] .maxina-footer,
   body[data-route="/maxina"] [data-maxina-footer="true"] {
     padding-bottom: calc(
-      var(--appilix-bottom-nav-h, 76px) +
+      var(--appilix-bottom-nav-h, 84px) +
       env(safe-area-inset-bottom, 0px) +
-      96px
+      110px
     ) !important;
   }
 
