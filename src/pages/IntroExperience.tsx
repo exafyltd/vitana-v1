@@ -196,10 +196,11 @@ export default function IntroExperience() {
 
       {/* Content */}
       <div 
-        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-32 transition-opacity duration-[1000ms] ${
+        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={ensureSoundscapePlaying}
+        data-maxina-app="true"
       >
         {/* Title - Lighter */}
         <p 
@@ -225,9 +226,9 @@ export default function IntroExperience() {
           Your longevity, health, and community — guided.
         </p>
 
-        {/* Controls - add bottom padding on mobile to avoid ORB overlap */}
+        {/* Controls */}
         <div 
-          className="flex flex-col items-center gap-6 animate-fade-in pb-32 md:pb-0"
+          className="flex flex-col items-center gap-6 animate-fade-in"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Play Button */}
@@ -285,8 +286,10 @@ export default function IntroExperience() {
         </p>
       </div>
 
-      {/* Mobile-only fixed ORB - centered, docked above bottom nav */}
-      <MobileFixedOrb />
+      {/* Mobile-only fixed ORB - centered, docked above Appilix bottom nav */}
+      <div className="vitana-orb-appilix-anchor md:hidden" data-maxina-app="true">
+        <MobileFixedOrb />
+      </div>
     </div>
   );
 }
