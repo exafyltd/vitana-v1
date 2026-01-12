@@ -95,15 +95,42 @@ export function MobileShortSlide({
     }, 300);
   }, [isPlaying, onLike]);
 
-  // Toggle mute - this should trigger volumechange event for global media precedence
+  // Toggle mute - ensure audio activation on unmute via user gesture
+  // On mobile WebViews, calling play() inside a click handler is required for audio
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
       const newMutedState = !isMuted;
       console.log('[MobileShortSlide] Toggling mute:', { from: isMuted, to: newMutedState });
+      
       videoRef.current.muted = newMutedState;
       setIsMuted(newMutedState);
-      console.log('[MobileShortSlide] Video muted state after toggle:', videoRef.current.muted);
+      
+      // CRITICAL: On mobile WebViews, unmuting requires a user-gesture play() call
+      // to actually enable audio output. Just setting muted=false is not enough.
+      if (!newMutedState) {
+        // Unmuting - ensure volume is audible and call play() for mobile audio activation
+        videoRef.current.volume = 1;
+        videoRef.current.play()
+          .then(() => {
+            console.log('[MobileShortSlide] Audio activated via user gesture play()');
+            setIsPlaying(true);
+          })
+          .catch(err => {
+            console.warn('[MobileShortSlide] Play on unmute failed:', err);
+          });
+        
+        // Also dispatch custom event as backup for Soundscape precedence on flaky WebViews
+        window.dispatchEvent(new CustomEvent('foreground-audio-intent', { 
+          detail: { source: 'shorts' } 
+        }));
+      }
+      
+      console.log('[MobileShortSlide] Video state after toggle:', {
+        muted: videoRef.current.muted,
+        volume: videoRef.current.volume,
+        paused: videoRef.current.paused
+      });
     }
   }, [isMuted]);
 

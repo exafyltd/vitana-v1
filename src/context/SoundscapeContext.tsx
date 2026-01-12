@@ -370,19 +370,29 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     if (!audioRef.current) return;
     
     if (isMutedRef.current) {
-      // UNMUTE - restore volume
+      // UNMUTE - restore volume and resume playback
       console.log('[Soundscape] Unmuting, restoring volume:', previousVolumeRef.current);
       audioRef.current.muted = false;
       audioRef.current.volume = previousVolumeRef.current;
       setIsMuted(false);
       localStorage.setItem('soundscape_muted', 'false');
+      
+      // Resume playback if it was paused due to muting
+      if (audioRef.current.paused && !userExplicitlyPausedRef.current) {
+        audioRef.current.play().catch(err => console.warn('[Soundscape] Unmute resume failed:', err));
+      }
     } else {
-      // MUTE - silence but keep playing, also kill orphaned audio
-      console.log('[Soundscape] Muting, keeping playback active, killing orphans');
+      // MUTE - pause the audio element to release audio focus on mobile WebViews
+      // This is critical: on mobile, a muted-but-playing audio can still block other media
+      console.log('[Soundscape] Muting and PAUSING to release audio focus');
       audioRef.current.muted = true;
+      audioRef.current.pause(); // Release audio focus!
       killOrphanedAudio();
       setIsMuted(true);
+      setIsPlaying(false);
       localStorage.setItem('soundscape_muted', 'true');
+      // Don't set userExplicitlyPausedRef - this is a mute, not a pause
+      // So when unmuted, playback can resume
     }
   }, [killOrphanedAudio]);
 
@@ -516,6 +526,21 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     onForegroundMediaStop: resumeAfterPriorityAudio,
     enabled: true,
   });
+
+  // Backup listener for mobile WebViews where standard media events may be flaky
+  // This catches the custom event dispatched when Shorts are unmuted
+  useEffect(() => {
+    const handleForegroundIntent = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      console.log('[Soundscape] Received foreground-audio-intent event:', detail);
+      pauseForPriorityAudio();
+    };
+
+    window.addEventListener('foreground-audio-intent', handleForegroundIntent);
+    return () => {
+      window.removeEventListener('foreground-audio-intent', handleForegroundIntent);
+    };
+  }, [pauseForPriorityAudio]);
 
   const value: SoundscapeContextType = {
     isPlaying,
