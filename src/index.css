@@ -577,22 +577,12 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    bottom: calc(
-      var(--appilix-bottom-nav-h, 76px) +
-      env(safe-area-inset-bottom, 0px) +
-      var(--orb-gap, 10px) +
-      var(--appilix-orb-offset, 0px)
-    ) !important;
+    /* Simple formula: 72px above viewport bottom + safe area */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 72px) !important;
     margin: 0 !important;
     z-index: 9999 !important;
     pointer-events: auto !important;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
-  }
-
-  /* /maxina sign-in: push orb down so it sits below the footer links, visually anchored to nav */
-  body[data-route="/maxina"] {
-    --orb-gap: 2px;
-    --appilix-orb-offset: -320px;
   }
 
   /* Footer spacing - keep Privacy/Terms/Help visible above orb */
