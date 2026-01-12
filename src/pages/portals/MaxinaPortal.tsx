@@ -198,7 +198,7 @@ const MaxinaPortal = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ '--bottom-nav-h': '64px' } as React.CSSProperties}>
+    <div className="min-h-screen relative overflow-hidden">
       <SEO 
         title="Maxina Health Platform - VITANA" 
         description="Join Maxina's comprehensive health and wellness community. Connect with healthcare professionals and take control of your health journey." 
