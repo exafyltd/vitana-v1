@@ -14,7 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
-import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
