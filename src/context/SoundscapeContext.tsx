@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
+import { useGlobalMediaPrecedence } from '@/hooks/useGlobalMediaPrecedence';
 
 // Store audio element on window to survive HMR module reloads
 declare global {
@@ -507,6 +508,14 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
         });
     }
   }, []);
+
+  // Global media precedence: automatically pause when any video/audio plays
+  useGlobalMediaPrecedence({
+    soundscapeAudioRef: audioRef,
+    onForegroundMediaStart: pauseForPriorityAudio,
+    onForegroundMediaStop: resumeAfterPriorityAudio,
+    enabled: true,
+  });
 
   const value: SoundscapeContextType = {
     isPlaying,
