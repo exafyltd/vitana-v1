@@ -71,6 +71,9 @@ function stopPersisting() {
   }
 }
 
+// Boot ID for detecting full page reloads (changes on every app boot)
+const BOOT_ID = `boot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
 /**
  * Detect if this is a full page reload vs SPA navigation
  */
@@ -78,11 +81,14 @@ function detectNavigationType(): 'reload' | 'navigate' | 'back_forward' | 'prere
   try {
     const navEntries = window.performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
     if (navEntries.length > 0) {
-      return navEntries[0].type as 'reload' | 'navigate' | 'back_forward' | 'prerender';
+      const navType = navEntries[0].type as 'reload' | 'navigate' | 'back_forward' | 'prerender';
+      console.log('[AudioManager] Navigation type:', navType, '| Boot ID:', BOOT_ID);
+      return navType;
     }
   } catch (e) {
     // Fallback
   }
+  console.log('[AudioManager] Navigation type: unknown | Boot ID:', BOOT_ID);
   return 'unknown';
 }
 
@@ -418,22 +424,41 @@ export function subscribe(listener: StateListener): () => void {
 
 /**
  * Start fresh (for portal entry etc.)
+ * IDEMPOTENT: If already playing the ambient track, do nothing.
+ * This prevents route changes from restarting music.
  */
 export function startFresh(initialVolume = 0.05) {
   const audio = getAudio();
+  
+  // IDEMPOTENT: If already playing, do not restart
+  if (!audio.paused && audio.src.includes('maxina-ambient-music')) {
+    console.log('[AudioManager] startFresh skipped - already playing');
+    return;
+  }
+  
+  // If user explicitly paused, don't auto-start
+  if (userExplicitlyPaused) {
+    console.log('[AudioManager] startFresh skipped - user explicitly paused');
+    return;
+  }
   
   // Respect saved mute preference
   const savedMuted = localStorage.getItem('soundscape_muted');
   if (savedMuted === 'true') {
     soundscapeMuted = true;
     audio.muted = true;
-  } else {
-    soundscapeMuted = false;
-    audio.muted = false;
+    console.log('[AudioManager] startFresh skipped - soundscape is muted');
+    return;
   }
   
-  audio.volume = initialVolume;
-  userExplicitlyPaused = false;
+  soundscapeMuted = false;
+  audio.muted = false;
+  
+  // Only set volume if not already set (don't overwrite user preference)
+  const savedVolume = localStorage.getItem('soundscape_volume');
+  if (!savedVolume) {
+    audio.volume = initialVolume;
+  }
   
   audio.play()
     .then(() => {

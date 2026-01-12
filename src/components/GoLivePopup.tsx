@@ -338,10 +338,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           description: "Joining your stream room...",
         });
 
-        // Navigate creator to viewer as host
+        // Navigate creator to viewer as host (SPA-safe navigation)
         setTimeout(() => {
-          window.location.href = `/comm/live-rooms/${stream.id}/view`;
-          window.history.replaceState({
+          const path = `/comm/live-rooms/${stream.id}/view`;
+          window.history.pushState({
             roomId: stream.id,
             userId: user.id,
             userName: user.email?.split('@')[0] || 'Host',
@@ -351,7 +351,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               title: stream.title,
               isLive: true,
             }
-          }, '', `/comm/live-rooms/${stream.id}/view`);
+          }, '', path);
+          window.dispatchEvent(new PopStateEvent('popstate'));
         }, 500);
       }
       
