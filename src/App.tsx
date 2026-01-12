@@ -20,6 +20,7 @@ import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
+import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
 import Login from "./pages/Login";
@@ -299,6 +300,7 @@ const App = () => {
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
                         <VitanaAudioOverlay />
+                        <MobileMuteButton />
                         <TenantDetector />
                   <Routes>
           <Route path="/" element={<ShareEntry fallback={<Index />} />} />
