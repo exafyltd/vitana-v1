@@ -561,10 +561,10 @@ All colors MUST be HSL.
   }
 
   /* VITANA ORB - Appilix bottom nav anchoring */
-  /* Contract: Appilix may override these via injected CSS variables. */
-  --appilix-bottom-nav-height: 84px; /* default assumed native nav height */
-  --appilix-bottom-nav-h: var(--appilix-bottom-nav-height); /* legacy alias */
-  --orb-gap: 10px; /* breathing space above nav */
+  /* Appilix may override via injected CSS vars. Defaults match our expected native bar size. */
+  --appilix-bottom-nav-height: 72px; /* fallback if Appilix doesn't set it */
+  --appilix-bottom-nav-h: var(--appilix-bottom-nav-height);
+  --orb-gap: 8px; /* small breathing space above nav */
 }
 
 /* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
@@ -577,11 +577,11 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* Appilix anchor: safe-area + native bottom nav height + small gap */
+    /* DO NOT TOUCH X; Appilix anchor is Y only */
     bottom: calc(
       env(safe-area-inset-bottom, 0px) +
       var(--appilix-bottom-nav-height, 72px) +
-      var(--orb-gap, 10px)
+      8px
     ) !important;
     margin: 0 !important;
     z-index: 9999 !important;
@@ -589,8 +589,8 @@ All colors MUST be HSL.
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
 
-  /* /maxina: create enough space so the footer links never collide with the fixed orb */
-  .maxina-page-content[data-maxina-app="true"] {
+  /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */
+  .maxina-signin-page {
     padding-bottom: calc(
       var(--appilix-bottom-nav-height, 72px) +
       env(safe-area-inset-bottom, 0px) +
