@@ -577,12 +577,8 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* Y-axis ONLY: safe-area + native nav height + small gap */
-    bottom: calc(
-      env(safe-area-inset-bottom, 0px) +
-      var(--appilix-bottom-nav-height, 72px) +
-      var(--orb-gap, 4px)
-    ) !important;
+    /* Y-axis ONLY: dock tight to bottom with safe-area */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
     margin: 0 !important;
     z-index: 40 !important; /* above content, below modals */
     pointer-events: auto !important;
