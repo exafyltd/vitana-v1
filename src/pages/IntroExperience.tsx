@@ -288,6 +288,29 @@ export default function IntroExperience() {
 
       {/* Mobile-only fixed ORB - positioned via global CSS */}
       <MobileFixedOrb />
+
+      {/* Desktop ORB - bottom-left matching sidebar position */}
+      <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={handleOrbClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleOrbClick();
+            }
+          }}
+          className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+        >
+          <VitanalandPortalSeed 
+            audioState="idle"
+            volumeLevel={0}
+            size="sm"
+            layoutId="vitana-orb-desktop-intro"
+          />
+        </div>
+      </div>
     </div>
   );
 }
