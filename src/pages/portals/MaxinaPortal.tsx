@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
@@ -198,7 +199,7 @@ const MaxinaPortal = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ '--bottom-nav-h': '64px' } as React.CSSProperties}>
       <SEO 
         title="Maxina Health Platform - VITANA" 
         description="Join Maxina's comprehensive health and wellness community. Connect with healthcare professionals and take control of your health journey." 
