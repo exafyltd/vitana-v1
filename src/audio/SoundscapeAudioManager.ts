@@ -4,16 +4,32 @@
  * This module provides:
  * 1. A singleton audio element that persists across navigation
  * 2. Global media precedence listeners (foreground media always wins)
- * 3. State persistence to sessionStorage for continuity
+ * 3. State persistence to localStorage for continuity across reloads
  * 4. Separation of Soundscape mute from video/audio mute
  * 5. Full page reload detection and recovery
+ * 6. Boot ID and mount counter for debugging SPA remount issues
  */
 
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
-const SESSION_KEY_TIME = 'soundscape_currentTime';
-const SESSION_KEY_PLAYING = 'soundscape_wasPlaying';
-const SESSION_KEY_VOLUME = 'soundscape_volume';
-const SESSION_KEY_TRACK = 'soundscape_track';
+
+// Use localStorage for persistence across reloads (not sessionStorage)
+const STORAGE_KEY_TIME = 'soundscape_currentTime';
+const STORAGE_KEY_PLAYING = 'soundscape_wasPlaying';
+const STORAGE_KEY_VOLUME = 'soundscape_volume';
+const STORAGE_KEY_TRACK = 'soundscape_track';
+const STORAGE_KEY_USER_ENABLED = 'soundscape_userEnabled';
+
+// === Boot ID & Mount Counter for debugging SPA remounts ===
+// Boot ID changes only on full page reload, not SPA navigation
+const BOOT_ID = (window as any).__APP_BOOT_ID__ ?? 
+  ((window as any).__APP_BOOT_ID__ = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6));
+
+// Store boot ID in localStorage for debugging
+try {
+  localStorage.setItem('app_boot_id', BOOT_ID);
+} catch (e) {
+  // localStorage may be unavailable
+}
 
 // Module-level state (survives across component mounts)
 let audioElement: HTMLAudioElement | null = null;
@@ -38,6 +54,8 @@ export interface SoundscapeState {
   volume: number;
   currentTime: number;
   pausedByForeground: boolean;
+  bootId: string;
+  mountCount: number;
 }
 
 function notifyListeners() {
@@ -53,12 +71,14 @@ function startPersisting() {
   persistInterval = setInterval(() => {
     if (audioElement && !audioElement.paused) {
       try {
-        sessionStorage.setItem(SESSION_KEY_TIME, audioElement.currentTime.toString());
-        sessionStorage.setItem(SESSION_KEY_PLAYING, 'true');
-        sessionStorage.setItem(SESSION_KEY_VOLUME, audioElement.volume.toString());
-        sessionStorage.setItem(SESSION_KEY_TRACK, audioElement.src || AMBIENT_TRACK);
+        // Use localStorage for persistence across reloads
+        localStorage.setItem(STORAGE_KEY_TIME, audioElement.currentTime.toString());
+        localStorage.setItem(STORAGE_KEY_PLAYING, 'true');
+        localStorage.setItem(STORAGE_KEY_VOLUME, audioElement.volume.toString());
+        localStorage.setItem(STORAGE_KEY_TRACK, audioElement.src || AMBIENT_TRACK);
+        localStorage.setItem(STORAGE_KEY_USER_ENABLED, 'true');
       } catch (e) {
-        // sessionStorage may be unavailable
+        // localStorage may be unavailable
       }
     }
   }, 500); // Persist every 500ms for better recovery
@@ -70,9 +90,6 @@ function stopPersisting() {
     persistInterval = null;
   }
 }
-
-// Boot ID for detecting full page reloads (changes on every app boot)
-const BOOT_ID = `boot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 /**
  * Detect if this is a full page reload vs SPA navigation
@@ -93,32 +110,64 @@ function detectNavigationType(): 'reload' | 'navigate' | 'back_forward' | 'prere
 }
 
 /**
+ * Increment and get mount count (for debugging provider remounts)
+ */
+export function incrementMountCount(): number {
+  const count = ((window as any).__SOUNDSCAPE_MOUNT_COUNT__ || 0) + 1;
+  (window as any).__SOUNDSCAPE_MOUNT_COUNT__ = count;
+  return count;
+}
+
+/**
+ * Get current mount count
+ */
+export function getMountCount(): number {
+  return (window as any).__SOUNDSCAPE_MOUNT_COUNT__ || 0;
+}
+
+/**
+ * Get boot ID
+ */
+export function getBootId(): string {
+  return BOOT_ID;
+}
+
+/**
  * Get or create the singleton audio element
+ * CRITICAL: This must be truly singleton - audio never recreated on SPA navigation
  */
 export function getAudio(): HTMLAudioElement {
-  // Check window singleton first (survives HMR)
+  // ABSOLUTE PRIORITY: Check window singleton first (survives HMR and SPA navigation)
   if (window.__SOUNDSCAPE_AUDIO__) {
-    audioElement = window.__SOUNDSCAPE_AUDIO__;
+    // Ensure local ref is synced
+    if (!audioElement || audioElement !== window.__SOUNDSCAPE_AUDIO__) {
+      audioElement = window.__SOUNDSCAPE_AUDIO__;
+      console.log('[AudioManager] Reusing existing audio singleton');
+    }
     return audioElement;
   }
   
+  // Secondary check: module-level ref
   if (audioElement) {
+    window.__SOUNDSCAPE_AUDIO__ = audioElement;
     return audioElement;
   }
   
+  // Only create new audio element if no singleton exists (true reload scenario)
   const navType = detectNavigationType();
-  console.log('[AudioManager] Creating new audio element, navigation type:', navType);
+  console.log('[AudioManager] Creating NEW audio element | Boot ID:', BOOT_ID, '| Nav type:', navType);
   
   audioElement = new Audio(AMBIENT_TRACK);
   audioElement.loop = true;
   audioElement.preload = 'auto';
   
-  // Restore state from sessionStorage if this is a reload or new navigation
+  // Restore state from localStorage (survives reloads)
   try {
-    const savedTime = sessionStorage.getItem(SESSION_KEY_TIME);
-    const savedVolume = sessionStorage.getItem(SESSION_KEY_VOLUME);
-    const wasPlaying = sessionStorage.getItem(SESSION_KEY_PLAYING);
+    const savedTime = localStorage.getItem(STORAGE_KEY_TIME);
+    const savedVolume = localStorage.getItem(STORAGE_KEY_VOLUME);
+    const wasPlaying = localStorage.getItem(STORAGE_KEY_PLAYING);
     
+    // CRITICAL: Restore currentTime BEFORE any play attempt
     if (savedTime) {
       const time = parseFloat(savedTime);
       if (!isNaN(time) && time > 0) {
@@ -135,17 +184,16 @@ export function getAudio(): HTMLAudioElement {
       }
     }
     
-    // If was playing and this is a reload, we'll need user gesture to resume
-    if (wasPlaying === 'true' && navType === 'reload') {
+    // If was playing, mark for auto-resume on interaction
+    if (wasPlaying === 'true') {
       console.log('[AudioManager] Was playing before reload, will resume on interaction');
-      // Mark for auto-resume on interaction
       userExplicitlyPaused = false;
     }
   } catch (e) {
-    // sessionStorage may be unavailable
+    // localStorage may be unavailable
   }
   
-  // Persist on window for HMR survival
+  // Persist on window for HMR/SPA survival
   window.__SOUNDSCAPE_AUDIO__ = audioElement;
   
   return audioElement;
@@ -394,6 +442,8 @@ export function getState(): SoundscapeState {
     volume: audio.volume,
     currentTime: audio.currentTime,
     pausedByForeground: currentlyPausedByForeground,
+    bootId: BOOT_ID,
+    mountCount: getMountCount(),
   };
 }
 
@@ -475,5 +525,7 @@ export function startFresh(initialVolume = 0.05) {
 declare global {
   interface Window {
     __SOUNDSCAPE_AUDIO__?: HTMLAudioElement;
+    __APP_BOOT_ID__?: string;
+    __SOUNDSCAPE_MOUNT_COUNT__?: number;
   }
 }
