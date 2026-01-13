@@ -10,33 +10,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-// ===== RELOAD DETECTION LOGGING =====
-// Proves whether tab switches cause full WebView reloads
-const BOOT_ID = Math.random().toString(36).slice(2, 8);
-const bootCount = parseInt(localStorage.getItem('__BOOT_COUNT__') || '0', 10) + 1;
-localStorage.setItem('__BOOT_COUNT__', bootCount.toString());
-
-const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
-console.log(`[BOOT] #${bootCount} | Type: ${navEntry?.type || 'unknown'} | ID: ${BOOT_ID} | URL: ${location.pathname}`);
-// ===== END RELOAD DETECTION =====
-
-// ===== APPILIX NAVIGATION BRIDGE =====
-// Allows Appilix native tabs to route within the SPA without reloading
-// Configure Appilix tabs to call: javascript:window.__APP_NAVIGATE__('/path')
-(window as any).__APP_NAVIGATE__ = (path: string) => {
-  console.log('[Bridge] __APP_NAVIGATE__ called with:', path);
-  
-  if (path && path.startsWith('/')) {
-    // Use history API to navigate without reload
-    window.history.pushState({}, '', path);
-    // Trigger React Router to respond to the URL change
-    window.dispatchEvent(new PopStateEvent('popstate', { state: {} }));
-  }
-};
-
-console.log('[Bridge] __APP_NAVIGATE__ available for Appilix');
-// ===== END APPILIX NAVIGATION BRIDGE =====
-
 /**
  * Global QueryClient Configuration
  * 
