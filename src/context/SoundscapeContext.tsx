@@ -73,18 +73,33 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     setIsMuted(state.isMuted);
     
     // Handle auto-play if enabled AND not muted
+    // ON MOBILE: Skip provider auto-play - let AudioManager.attemptMobileResume() handle it
+    // This prevents race conditions where play() starts at t=0 before restore completes
+    const userAgent = navigator.userAgent || (navigator as any).vendor || '';
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+    const isMobileDevice = isMobileUA || isNarrowViewport;
+    
     if (savedAutoPlay === 'true' && savedMuted !== 'true' && audioRef.current.paused) {
-      audioRef.current.play()
-        .then(() => {
-          console.log('[SoundscapeProvider] Auto-play succeeded');
-          setIsPlaying(true);
-        })
-        .catch((err) => {
-          if (err.name === 'NotAllowedError') {
-            console.log('[SoundscapeProvider] Auto-play blocked, waiting for interaction');
-            setPendingAutoPlay(true);
-          }
-        });
+      if (!isMobileDevice) {
+        // Desktop only: direct auto-play
+        audioRef.current.play()
+          .then(() => {
+            console.log('[SoundscapeProvider] Auto-play succeeded');
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            if (err.name === 'NotAllowedError') {
+              console.log('[SoundscapeProvider] Auto-play blocked, waiting for interaction');
+              setPendingAutoPlay(true);
+            }
+          });
+      } else {
+        // Mobile: let AudioManager handle resume after state is fully restored
+        setTimeout(() => {
+          AudioManager.attemptMobileResume();
+        }, 100);
+      }
     }
     
     // Attach play/pause listeners for state sync
@@ -106,9 +121,17 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Handle pending auto-play on first interaction
+  // Handle pending auto-play on first interaction (desktop only)
   useEffect(() => {
     if (!pendingAutoPlay) return;
+    
+    // On mobile, don't use this interaction handler - AudioManager handles resume via banner
+    const userAgent = navigator.userAgent || (navigator as any).vendor || '';
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+    if (isMobileUA || isNarrowViewport) {
+      return;
+    }
     
     const handleInteraction = () => {
       // Check if user has muted - don't auto-play if muted

@@ -18,9 +18,26 @@ const SESSION_KEY_TRACK = 'soundscape_track';
 const MOBILE_PERSIST_KEY_TIME = 'soundscape_mobile_currentTime';
 const MOBILE_PERSIST_KEY_PLAYING = 'soundscape_mobile_wasPlaying';
 const MOBILE_PERSIST_KEY_TRACK = 'soundscape_mobile_track';
+const MOBILE_PERSIST_KEY_TRACK_SRC = 'soundscape_mobile_trackSrc';
+const MOBILE_PERSIST_KEY_VOLUME = 'soundscape_mobile_volume';
+const MOBILE_PERSIST_KEY_MUTED = 'soundscape_mobile_muted';
 
-// Mobile detection (static, checked once)
-const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+// Proper mobile detection: user agent + viewport check (runs once at module load)
+function detectMobileDevice(): boolean {
+  if (typeof window === 'undefined') return false;
+  
+  // Check user agent for mobile devices
+  const userAgent = navigator.userAgent || (navigator as any).vendor || '';
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  
+  // Also check viewport as backup
+  const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+  
+  // Consider mobile if either condition is true (UA is more reliable for tablets)
+  return isMobileUA || isNarrowViewport;
+}
+
+const isMobileDevice = detectMobileDevice();
 
 // Module-level state (survives across component mounts)
 let audioElement: HTMLAudioElement | null = null;
@@ -94,11 +111,14 @@ function startPersisting() {
         sessionStorage.setItem(SESSION_KEY_VOLUME, volume);
         sessionStorage.setItem(SESSION_KEY_TRACK, track);
         
-        // On mobile, also persist to localStorage for app resume
+        // On mobile, also persist full state to localStorage for app resume/reload
         if (isMobileDevice) {
           localStorage.setItem(MOBILE_PERSIST_KEY_TIME, currentTime);
           localStorage.setItem(MOBILE_PERSIST_KEY_PLAYING, 'true');
           localStorage.setItem(MOBILE_PERSIST_KEY_TRACK, currentTrackId);
+          localStorage.setItem(MOBILE_PERSIST_KEY_TRACK_SRC, audioElement.src || AMBIENT_TRACK);
+          localStorage.setItem(MOBILE_PERSIST_KEY_VOLUME, volume);
+          localStorage.setItem(MOBILE_PERSIST_KEY_MUTED, soundscapeMuted.toString());
         }
       } catch (e) {
         // Storage may be unavailable
@@ -156,36 +176,85 @@ export function getAudio(): HTMLAudioElement {
   audioElement.loop = true;
   audioElement.preload = 'auto';
   
-  // Restore state from sessionStorage if this is a reload or new navigation
-  try {
-    const savedTime = sessionStorage.getItem(SESSION_KEY_TIME);
-    const savedVolume = sessionStorage.getItem(SESSION_KEY_VOLUME);
-    const wasPlaying = sessionStorage.getItem(SESSION_KEY_PLAYING);
-    
-    if (savedTime) {
-      const time = parseFloat(savedTime);
-      if (!isNaN(time) && time > 0) {
-        audioElement.currentTime = time;
-        console.log('[AudioManager] Restored currentTime:', time);
+  // MOBILE: Restore full state from localStorage IMMEDIATELY (before any play attempts)
+  // This is critical for instant resume after WebView reloads
+  if (isMobileDevice) {
+    try {
+      const mobileTrackSrc = localStorage.getItem(MOBILE_PERSIST_KEY_TRACK_SRC);
+      const mobileTime = localStorage.getItem(MOBILE_PERSIST_KEY_TIME);
+      const mobileVolume = localStorage.getItem(MOBILE_PERSIST_KEY_VOLUME);
+      const mobileMuted = localStorage.getItem(MOBILE_PERSIST_KEY_MUTED);
+      const mobileTrackId = localStorage.getItem(MOBILE_PERSIST_KEY_TRACK);
+      
+      // Restore track src if saved
+      if (mobileTrackSrc) {
+        audioElement.src = mobileTrackSrc;
+        console.log('[AudioManager] Mobile: restored track src:', mobileTrackSrc);
       }
-    }
-    
-    if (savedVolume) {
-      const vol = parseFloat(savedVolume);
-      if (!isNaN(vol) && vol >= 0 && vol <= 1) {
-        audioElement.volume = vol;
-        console.log('[AudioManager] Restored volume:', vol);
+      
+      // Restore track ID
+      if (mobileTrackId) {
+        currentTrackId = mobileTrackId;
       }
+      
+      // Restore currentTime BEFORE any play attempts
+      if (mobileTime) {
+        const time = parseFloat(mobileTime);
+        if (!isNaN(time) && time > 0) {
+          audioElement.currentTime = time;
+          console.log('[AudioManager] Mobile: pre-restored time to', time);
+        }
+      }
+      
+      // Restore volume
+      if (mobileVolume) {
+        const vol = parseFloat(mobileVolume);
+        if (!isNaN(vol) && vol >= 0 && vol <= 1) {
+          audioElement.volume = vol;
+          console.log('[AudioManager] Mobile: restored volume:', vol);
+        }
+      }
+      
+      // Restore muted state
+      if (mobileMuted === 'true') {
+        audioElement.muted = true;
+        soundscapeMuted = true;
+        console.log('[AudioManager] Mobile: restored muted state');
+      }
+    } catch (e) {
+      console.warn('[AudioManager] Mobile restore failed:', e);
     }
-    
-    // If was playing and this is a reload, we'll need user gesture to resume
-    if (wasPlaying === 'true' && navType === 'reload') {
-      console.log('[AudioManager] Was playing before reload, will resume on interaction');
-      // Mark for auto-resume on interaction
-      userExplicitlyPaused = false;
+  } else {
+    // DESKTOP: Restore state from sessionStorage
+    try {
+      const savedTime = sessionStorage.getItem(SESSION_KEY_TIME);
+      const savedVolume = sessionStorage.getItem(SESSION_KEY_VOLUME);
+      const wasPlaying = sessionStorage.getItem(SESSION_KEY_PLAYING);
+      
+      if (savedTime) {
+        const time = parseFloat(savedTime);
+        if (!isNaN(time) && time > 0) {
+          audioElement.currentTime = time;
+          console.log('[AudioManager] Restored currentTime:', time);
+        }
+      }
+      
+      if (savedVolume) {
+        const vol = parseFloat(savedVolume);
+        if (!isNaN(vol) && vol >= 0 && vol <= 1) {
+          audioElement.volume = vol;
+          console.log('[AudioManager] Restored volume:', vol);
+        }
+      }
+      
+      // If was playing and this is a reload, we'll need user gesture to resume
+      if (wasPlaying === 'true' && navType === 'reload') {
+        console.log('[AudioManager] Was playing before reload, will resume on interaction');
+        userExplicitlyPaused = false;
+      }
+    } catch (e) {
+      // sessionStorage may be unavailable
     }
-  } catch (e) {
-    // sessionStorage may be unavailable
   }
   
   // Persist on window for HMR survival
@@ -509,6 +578,7 @@ export function attemptMobileResume(): void {
   if (!isMobileDevice) return;
   
   const savedTime = localStorage.getItem(MOBILE_PERSIST_KEY_TIME);
+  const savedTrackSrc = localStorage.getItem(MOBILE_PERSIST_KEY_TRACK_SRC);
   const wasPlaying = localStorage.getItem(MOBILE_PERSIST_KEY_PLAYING);
   const savedMuted = localStorage.getItem('soundscape_muted');
   
@@ -518,7 +588,23 @@ export function attemptMobileResume(): void {
     return;
   }
   
+  // Don't resume if foreground media is active
+  if (activeForegroundMedia.size > 0) {
+    console.log('[AudioManager] Mobile resume skipped: foreground media active');
+    return;
+  }
+  
   const audio = getAudio();
+  
+  // Restore track src if needed (canonical comparison)
+  if (savedTrackSrc) {
+    const currentFilename = audio.src ? audio.src.split('/').pop() : '';
+    const savedFilename = savedTrackSrc.split('/').pop();
+    if (currentFilename !== savedFilename) {
+      audio.src = savedTrackSrc;
+      console.log('[AudioManager] Mobile: restored track src:', savedTrackSrc);
+    }
+  }
   
   // Restore position
   if (savedTime) {
@@ -529,19 +615,28 @@ export function attemptMobileResume(): void {
     }
   }
   
-  // Try to play
-  audio.play()
-    .then(() => {
-      console.log('[AudioManager] Mobile resume succeeded');
-      notifyResumeBannerListeners(false);
-      notifyListeners();
-    })
-    .catch((err) => {
-      if (err.name === 'NotAllowedError') {
-        console.log('[AudioManager] Mobile resume blocked, showing banner');
-        notifyResumeBannerListeners(true);
-      }
-    });
+  // Wait for audio to be ready before playing
+  const tryPlay = () => {
+    audio.play()
+      .then(() => {
+        console.log('[AudioManager] Mobile resume succeeded');
+        notifyResumeBannerListeners(false);
+        notifyListeners();
+      })
+      .catch((err) => {
+        if (err.name === 'NotAllowedError') {
+          console.log('[AudioManager] Mobile resume blocked, showing banner');
+          notifyResumeBannerListeners(true);
+        }
+      });
+  };
+  
+  // If audio is ready, play immediately; otherwise wait for canplay
+  if (audio.readyState >= 2) {
+    tryPlay();
+  } else {
+    audio.addEventListener('canplay', tryPlay, { once: true });
+  }
 }
 
 /**
