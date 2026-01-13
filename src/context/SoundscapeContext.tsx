@@ -213,6 +213,12 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, [isMuted, killOrphanedAudio]);
 
   const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
+    // On mobile, use engine guard - don't restart if already playing same track
+    if (AudioManager.isMobile() && !AudioManager.shouldLoadTrack('ambient')) {
+      console.log('[SoundscapeProvider] Mobile: skipping startFresh, same track active');
+      return;
+    }
+    
     AudioManager.startFresh(initialVolume);
     setVolumeState(initialVolume);
     previousVolumeRef.current = initialVolume;
