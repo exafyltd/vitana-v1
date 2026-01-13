@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Play, Loader2 } from 'lucide-react';
+import { Play, Pause, Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -100,10 +100,25 @@ export default function IntroExperience() {
     }, 100);
   };
 
-  const handlePlayAudio = useCallback(async () => {
+  const handlePlayPauseAudio = useCallback(async () => {
     // Ensure soundscape starts on user click
     ensureSoundscapePlaying();
     
+    // If currently playing, pause it
+    if (isPlayingAudio && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlayingAudio(false);
+      return;
+    }
+    
+    // If audio exists and was paused, resume it
+    if (audioRef.current && audioRef.current.paused && audioRef.current.currentTime > 0) {
+      audioRef.current.play();
+      setIsPlayingAudio(true);
+      return;
+    }
+    
+    // Otherwise, fetch and play new audio
     setIsPreparingAudio(true);
     
     try {
@@ -145,15 +160,15 @@ export default function IntroExperience() {
       setIsPreparingAudio(false);
       toast.error('Audio unavailable now');
     }
-  }, [continueToMaxina, ensureSoundscapePlaying]);
+  }, [isPlayingAudio, continueToMaxina, ensureSoundscapePlaying]);
 
   // Keyboard shortcuts - must be after function declarations
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
-        if (!isPlayingAudio && !isPreparingAudio) {
-          handlePlayAudio();
+        if (!isPreparingAudio) {
+          handlePlayPauseAudio();
         }
       } else if (e.key === 'Escape') {
         e.preventDefault();
@@ -163,7 +178,7 @@ export default function IntroExperience() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPlayingAudio, isPreparingAudio, handlePlayAudio, handleSkip]);
+  }, [isPreparingAudio, handlePlayPauseAudio, handleSkip]);
 
   if (!videoSrc) {
     return (
@@ -214,20 +229,28 @@ export default function IntroExperience() {
           Welcome to Vitanaland
         </p>
 
-        {/* Primary Title - Bold, clean, centered */}
+        {/* Primary Title - MAXINA in ALL CAPS */}
         <h1 
-          className="text-3xl md:text-5xl font-bold text-white text-center mb-4 animate-fade-in leading-tight"
+          className="text-4xl md:text-5xl font-bold text-white text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase"
           style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
         >
-          Maxina Experience
+          MAXINA
         </h1>
 
-        {/* Subtitle - One line, tighter */}
+        {/* Signature Subtitle */}
         <p 
-          className="text-sm md:text-base text-white/70 text-center max-w-[280px] mb-10 animate-fade-in leading-snug"
+          className="text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
+          style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
+        >
+          Experience
+        </p>
+
+        {/* Longevity Tagline - Single line */}
+        <p 
+          className="text-sm md:text-base text-white/70 text-center mb-10 animate-fade-in whitespace-nowrap"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
-          Your longevity, health, and community — guided.
+          Your longevity journey, guided.
         </p>
 
         {/* CTA Stack - Premium glass buttons */}
@@ -235,10 +258,10 @@ export default function IntroExperience() {
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Primary Play Button - Premium glass style */}
+          {/* Primary Play/Pause Button - Premium glass style */}
           <Button
-            onClick={handlePlayAudio}
-            disabled={isPlayingAudio || isPreparingAudio}
+            onClick={handlePlayPauseAudio}
+            disabled={isPreparingAudio}
             size="lg"
             className="relative w-full bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white border border-white/30 rounded-2xl px-8 py-5 text-base font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300"
           >
@@ -249,11 +272,23 @@ export default function IntroExperience() {
               </>
             ) : isPlayingAudio ? (
               <>
-                <div className="w-5 h-5 mr-2.5 relative">
-                  <div className="absolute inset-0 border-2 border-white/30 rounded-full animate-ping" />
-                  <div className="absolute inset-0 border-2 border-white rounded-full" />
+                <Pause className="w-5 h-5 mr-2.5" />
+                Playing
+                {/* Animated Equalizer Bars */}
+                <div className="flex gap-0.5 items-end h-4 ml-3">
+                  <div 
+                    className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0s_infinite]"
+                    style={{ height: '4px' }}
+                  />
+                  <div 
+                    className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.15s_infinite]"
+                    style={{ height: '4px' }}
+                  />
+                  <div 
+                    className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.3s_infinite]"
+                    style={{ height: '4px' }}
+                  />
                 </div>
-                Playing...
               </>
             ) : (
               <>
@@ -263,24 +298,22 @@ export default function IntroExperience() {
             )}
           </Button>
 
-          {/* Secondary buttons - Small pill style */}
-          <div className="flex items-center justify-center gap-3 w-full">
-            <Button
-              onClick={continueToMaxina}
-              variant="ghost"
-              className="flex-1 text-white/90 hover:text-white bg-white/5 hover:bg-white/15 border border-white/20 rounded-full px-5 py-2.5 text-sm font-medium backdrop-blur-sm transition-all duration-200"
-            >
-              Continue
-            </Button>
-            <Button
-              onClick={handleSkip}
-              variant="ghost"
-              className="flex-1 text-white/70 hover:text-white/90 bg-transparent hover:bg-white/10 border border-white/10 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-200"
-            >
-              Skip
-            </Button>
-          </div>
+          {/* Skip intro - secondary text button */}
+          <button
+            onClick={handleSkip}
+            className="text-white/50 hover:text-white/80 text-sm font-medium transition-colors duration-200 underline-offset-4 hover:underline"
+          >
+            Skip intro
+          </button>
         </div>
+
+        {/* Equalizer animation keyframes */}
+        <style>{`
+          @keyframes equalizer {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+          }
+        `}</style>
       </div>
 
       {/* Keyboard Hints - Desktop only */}
