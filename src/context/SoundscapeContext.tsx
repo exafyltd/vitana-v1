@@ -37,51 +37,11 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
 
   // Initialize AudioManager on mount
   useEffect(() => {
-    // Increment mount counter for debugging
-    const mountCount = AudioManager.incrementMountCount();
-    const bootId = AudioManager.getBootId();
-    
-    console.log(`[SoundscapeProvider] Mount #${mountCount} | Boot ID: ${bootId}`);
-    
-    // Get audio element reference FIRST
-    audioRef.current = AudioManager.getAudio();
-    
-    // REMOUNT DETECTION: If audio is already playing from a previous mount, just sync state
-    if (mountCount > 1 && audioRef.current && !audioRef.current.paused) {
-      console.log('[SoundscapeProvider] Remount detected - audio already playing, syncing state only');
-      setIsPlaying(true);
-      setVolumeState(audioRef.current.volume);
-      setIsMuted(AudioManager.getIsMuted());
-      
-      // Still subscribe to updates
-      const unsubscribe = AudioManager.subscribe((state) => {
-        setIsPlaying(state.isPlaying);
-        setVolumeState(state.volume);
-        setIsMuted(state.isMuted);
-      });
-      
-      // Attach listeners for state sync
-      const handlePlay = () => setIsPlaying(true);
-      const handlePause = () => setIsPlaying(false);
-      const handleVolumeChange = () => setVolumeState(audioRef.current?.volume ?? DEFAULT_VOLUME);
-      
-      audioRef.current.addEventListener('play', handlePlay);
-      audioRef.current.addEventListener('pause', handlePause);
-      audioRef.current.addEventListener('volumechange', handleVolumeChange);
-      
-      return () => {
-        unsubscribe();
-        if (audioRef.current) {
-          audioRef.current.removeEventListener('play', handlePlay);
-          audioRef.current.removeEventListener('pause', handlePause);
-          audioRef.current.removeEventListener('volumechange', handleVolumeChange);
-        }
-      };
-    }
-    
-    // First mount or audio not playing - full initialization
     console.log('[SoundscapeProvider] Initializing AudioManager');
     AudioManager.initialize();
+    
+    // Get audio element reference
+    audioRef.current = AudioManager.getAudio();
     
     // Load saved preferences
     const savedVolume = localStorage.getItem('soundscape_volume');
@@ -112,8 +72,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     setVolumeState(state.volume);
     setIsMuted(state.isMuted);
     
-    // Handle auto-play if enabled (only on first mount)
-    if (mountCount === 1 && savedAutoPlay === 'true' && audioRef.current.paused) {
+    // Handle auto-play if enabled
+    if (savedAutoPlay === 'true' && audioRef.current.paused) {
       audioRef.current.play()
         .then(() => {
           console.log('[SoundscapeProvider] Auto-play succeeded');
@@ -309,12 +269,3 @@ export function useSoundscape() {
   }
   return context;
 }
-
-/**
- * Optional variant for components that may render outside the provider
- * (e.g. global overlays). Returns undefined instead of throwing.
- */
-export function useOptionalSoundscape() {
-  return useContext(SoundscapeContext);
-}
-

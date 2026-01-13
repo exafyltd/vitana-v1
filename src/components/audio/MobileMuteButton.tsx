@@ -1,5 +1,5 @@
 import { Volume2, VolumeX } from 'lucide-react';
-import { useOptionalSoundscape } from '@/context/SoundscapeContext';
+import { useSoundscape } from '@/context/SoundscapeContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -10,15 +10,10 @@ import { cn } from '@/lib/utils';
  * - Glass-morphism styling matching VITANA premium aesthetic
  */
 export function MobileMuteButton() {
-  const soundscape = useOptionalSoundscape();
+  const { isMuted, toggleMute, isPlaying } = useSoundscape();
   const isMobile = useIsMobile();
 
-  // If the provider isn't mounted (or during route-level error boundaries), don't crash the app.
-  if (!soundscape) return null;
-
-  const { isMuted, toggleMute, isPlaying } = soundscape;
-
-  // Only show on mobile
+  // Only show on mobile and when soundscape is active/playing
   if (!isMobile) return null;
 
   return (
@@ -43,14 +38,11 @@ export function MobileMuteButton() {
       {isMuted ? (
         <VolumeX className="h-5 w-5 text-muted-foreground" />
       ) : (
-        <Volume2
-          className={cn(
-            "h-5 w-5 transition-colors",
-            isPlaying ? "text-accent" : "text-muted-foreground"
-          )}
-        />
+        <Volume2 className={cn(
+          "h-5 w-5 transition-colors",
+          isPlaying ? "text-accent" : "text-muted-foreground"
+        )} />
       )}
     </button>
   );
 }
-

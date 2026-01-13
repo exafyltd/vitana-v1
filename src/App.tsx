@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
@@ -266,7 +266,6 @@ import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 
 // Component to initialize global hooks inside provider tree
-// IMPORTANT: This must be rendered INSIDE SoundscapeProvider since useAudioPriority uses useSoundscape
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useMessageNotifications();
@@ -296,7 +295,7 @@ const App = () => {
                     <Toaster />
                     <PresenceDebugPanel />
                     <AppHooksInitializer />
-                    <HashRouter>
+                    <BrowserRouter>
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
@@ -1314,7 +1313,7 @@ const App = () => {
         </Routes>
                   </GreetingProviderWrapper>
                 </VitanalandNavigationProvider>
-              </HashRouter>
+              </BrowserRouter>
             </TooltipProvider>
         </ProfilePreviewProvider>
       </StreamingStateProvider>
