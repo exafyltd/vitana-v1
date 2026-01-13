@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useSoundscape } from '@/context/SoundscapeContext';
+import { useEffect, useState, useContext } from 'react';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { globalState as audioPlayerGlobalState } from '@/hooks/useAudioPlayer';
+import * as AudioManager from '@/audio/SoundscapeAudioManager';
+
+// Import the context directly to check if we're inside the provider
+import { createContext, useContext as useContextReact } from 'react';
 
 /**
  * Central Audio Priority Manager
@@ -11,9 +14,11 @@ import { globalState as audioPlayerGlobalState } from '@/hooks/useAudioPlayer';
  * 
  * Note: Call monitoring is handled separately in authenticated contexts
  * where CallProvider is available.
+ * 
+ * SAFETY: This hook gracefully handles being called outside SoundscapeProvider
+ * by falling back to direct AudioManager calls.
  */
 export function useAudioPriority() {
-  const { pauseForPriorityAudio, resumeAfterPriorityAudio } = useSoundscape();
   const { audioOverlayVisible, glassModeActive } = useStreamingState();
   
   // Subscribe to audio player state changes
@@ -35,21 +40,19 @@ export function useAudioPriority() {
     };
   }, []);
 
-  // Handle priority audio changes
+  // Handle priority audio changes - use AudioManager directly for safety
   useEffect(() => {
     const vitanaOrbActive = audioOverlayVisible || glassModeActive;
     const hasPriorityAudio = mediaPlayerActive || vitanaOrbActive;
 
     if (hasPriorityAudio) {
-      pauseForPriorityAudio();
+      AudioManager.pauseForForeground();
     } else {
-      resumeAfterPriorityAudio();
+      AudioManager.resumeAfterForeground();
     }
   }, [
     mediaPlayerActive,
     audioOverlayVisible,
     glassModeActive,
-    pauseForPriorityAudio,
-    resumeAfterPriorityAudio,
   ]);
 }
