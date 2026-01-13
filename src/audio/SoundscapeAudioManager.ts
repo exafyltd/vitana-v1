@@ -4,9 +4,10 @@
  * This module provides:
  * 1. A singleton audio element that persists across navigation
  * 2. Global media precedence listeners (foreground media always wins)
- * 3. State persistence to sessionStorage for continuity
+ * 3. State persistence for continuity (localStorage on mobile, sessionStorage on desktop)
  * 4. Separation of Soundscape mute from video/audio mute
  * 5. Full page reload detection and recovery
+ * 6. Mobile engine guard: prevents unnecessary src/load/currentTime resets
  */
 
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
@@ -14,16 +15,40 @@ const SESSION_KEY_TIME = 'soundscape_currentTime';
 const SESSION_KEY_PLAYING = 'soundscape_wasPlaying';
 const SESSION_KEY_VOLUME = 'soundscape_volume';
 const SESSION_KEY_TRACK = 'soundscape_track';
+const MOBILE_PERSIST_KEY_TIME = 'soundscape_mobile_currentTime';
+const MOBILE_PERSIST_KEY_PLAYING = 'soundscape_mobile_wasPlaying';
+const MOBILE_PERSIST_KEY_TRACK = 'soundscape_mobile_track';
+
+// Mobile detection (static, checked once)
+const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
 
 // Module-level state (survives across component mounts)
 let audioElement: HTMLAudioElement | null = null;
 let isInitialized = false;
+let currentTrackId: string = 'ambient'; // Track ID for engine guard
 
 // State refs (module-level to avoid stale closures)
 let soundscapeMuted = false;
 let soundscapeWasPlayingBeforeForeground = false;
 let userExplicitlyPaused = false;
 let currentlyPausedByForeground = false;
+
+// Mobile resume banner state
+let needsUserGestureToResume = false;
+type ResumeBannerListener = (show: boolean) => void;
+const resumeBannerListeners = new Set<ResumeBannerListener>();
+
+export function subscribeToResumeBanner(listener: ResumeBannerListener): () => void {
+  resumeBannerListeners.add(listener);
+  // Immediately notify current state
+  listener(needsUserGestureToResume);
+  return () => resumeBannerListeners.delete(listener);
+}
+
+function notifyResumeBannerListeners(show: boolean) {
+  needsUserGestureToResume = show;
+  resumeBannerListeners.forEach(listener => listener(show));
+}
 
 // Track active foreground media
 const activeForegroundMedia = new Set<HTMLMediaElement>();
@@ -38,6 +63,7 @@ export interface SoundscapeState {
   volume: number;
   currentTime: number;
   pausedByForeground: boolean;
+  needsUserGesture: boolean;
 }
 
 function notifyListeners() {
@@ -50,18 +76,35 @@ let persistInterval: ReturnType<typeof setInterval> | null = null;
 
 function startPersisting() {
   if (persistInterval) return;
+  
+  // On mobile, persist every 1.5s to localStorage for app resume/reload
+  // On desktop, persist every 500ms to sessionStorage
+  const interval = isMobileDevice ? 1500 : 500;
+  
   persistInterval = setInterval(() => {
     if (audioElement && !audioElement.paused) {
       try {
-        sessionStorage.setItem(SESSION_KEY_TIME, audioElement.currentTime.toString());
+        const currentTime = audioElement.currentTime.toString();
+        const volume = audioElement.volume.toString();
+        const track = audioElement.src || AMBIENT_TRACK;
+        
+        // Always persist to sessionStorage
+        sessionStorage.setItem(SESSION_KEY_TIME, currentTime);
         sessionStorage.setItem(SESSION_KEY_PLAYING, 'true');
-        sessionStorage.setItem(SESSION_KEY_VOLUME, audioElement.volume.toString());
-        sessionStorage.setItem(SESSION_KEY_TRACK, audioElement.src || AMBIENT_TRACK);
+        sessionStorage.setItem(SESSION_KEY_VOLUME, volume);
+        sessionStorage.setItem(SESSION_KEY_TRACK, track);
+        
+        // On mobile, also persist to localStorage for app resume
+        if (isMobileDevice) {
+          localStorage.setItem(MOBILE_PERSIST_KEY_TIME, currentTime);
+          localStorage.setItem(MOBILE_PERSIST_KEY_PLAYING, 'true');
+          localStorage.setItem(MOBILE_PERSIST_KEY_TRACK, currentTrackId);
+        }
       } catch (e) {
-        // sessionStorage may be unavailable
+        // Storage may be unavailable
       }
     }
-  }, 500); // Persist every 500ms for better recovery
+  }, interval);
 }
 
 function stopPersisting() {
@@ -396,7 +439,133 @@ export function getState(): SoundscapeState {
     volume: audio.volume,
     currentTime: audio.currentTime,
     pausedByForeground: currentlyPausedByForeground,
+    needsUserGesture: needsUserGestureToResume,
   };
+}
+
+/**
+ * Get current track ID for engine guard
+ */
+export function getCurrentTrackId(): string {
+  return currentTrackId;
+}
+
+/**
+ * Mobile engine guard: Check if requested track is already active
+ * If so, returns false (do not restart). If different, returns true.
+ */
+export function shouldLoadTrack(trackIdOrSrc: string): boolean {
+  if (!isMobileDevice) return true; // Desktop always allows reload
+  
+  const audio = getAudio();
+  
+  // Check by track ID
+  if (trackIdOrSrc === currentTrackId) {
+    console.log('[AudioManager] Mobile engine guard: same trackId, skip reload');
+    return false;
+  }
+  
+  // Check by src
+  if (audio.src && (audio.src === trackIdOrSrc || audio.src.includes(trackIdOrSrc))) {
+    console.log('[AudioManager] Mobile engine guard: same src, skip reload');
+    return false;
+  }
+  
+  return true;
+}
+
+/**
+ * Set track with mobile engine guard
+ * On mobile, skips if same track is already active
+ */
+export function setTrack(trackIdOrSrc: string, trackUrl?: string) {
+  const audio = getAudio();
+  const url = trackUrl || trackIdOrSrc;
+  
+  // Mobile engine guard
+  if (isMobileDevice) {
+    if (trackIdOrSrc === currentTrackId) {
+      console.log('[AudioManager] Mobile: same track, not reloading');
+      return;
+    }
+    if (audio.src && audio.src.includes(trackIdOrSrc)) {
+      console.log('[AudioManager] Mobile: same src, not reloading');
+      return;
+    }
+  }
+  
+  // Actually load the new track
+  currentTrackId = trackIdOrSrc;
+  audio.src = url;
+  audio.load();
+  console.log('[AudioManager] Track changed to:', trackIdOrSrc);
+}
+
+/**
+ * Try to resume audio on mobile after app resume/reload
+ * Shows "Tap to resume" banner if autoplay blocked
+ */
+export function attemptMobileResume(): void {
+  if (!isMobileDevice) return;
+  
+  const savedTime = localStorage.getItem(MOBILE_PERSIST_KEY_TIME);
+  const wasPlaying = localStorage.getItem(MOBILE_PERSIST_KEY_PLAYING);
+  const savedMuted = localStorage.getItem('soundscape_muted');
+  
+  // Don't resume if muted or wasn't playing
+  if (savedMuted === 'true' || wasPlaying !== 'true') {
+    console.log('[AudioManager] Mobile resume skipped: muted or not playing');
+    return;
+  }
+  
+  const audio = getAudio();
+  
+  // Restore position
+  if (savedTime) {
+    const time = parseFloat(savedTime);
+    if (!isNaN(time) && time > 0) {
+      audio.currentTime = time;
+      console.log('[AudioManager] Mobile: restored time to', time);
+    }
+  }
+  
+  // Try to play
+  audio.play()
+    .then(() => {
+      console.log('[AudioManager] Mobile resume succeeded');
+      notifyResumeBannerListeners(false);
+      notifyListeners();
+    })
+    .catch((err) => {
+      if (err.name === 'NotAllowedError') {
+        console.log('[AudioManager] Mobile resume blocked, showing banner');
+        notifyResumeBannerListeners(true);
+      }
+    });
+}
+
+/**
+ * User tapped the resume banner
+ */
+export function handleResumeBannerTap(): void {
+  const audio = getAudio();
+  
+  audio.play()
+    .then(() => {
+      console.log('[AudioManager] Resume from banner succeeded');
+      notifyResumeBannerListeners(false);
+      notifyListeners();
+    })
+    .catch((err) => {
+      console.warn('[AudioManager] Resume from banner failed:', err);
+    });
+}
+
+/**
+ * Check if we're on mobile
+ */
+export function isMobile(): boolean {
+  return isMobileDevice;
 }
 
 export function getIsPlaying(): boolean {
