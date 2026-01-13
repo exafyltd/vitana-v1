@@ -266,6 +266,7 @@ import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 
 // Component to initialize global hooks inside provider tree
+// IMPORTANT: This must be rendered INSIDE SoundscapeProvider since useAudioPriority uses useSoundscape
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useMessageNotifications();
