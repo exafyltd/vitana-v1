@@ -10,11 +10,20 @@ import { cn } from '@/lib/utils';
  * - Glass-morphism styling matching VITANA premium aesthetic
  */
 export function MobileMuteButton() {
-  const { isMuted, toggleMute, isPlaying } = useSoundscape();
   const isMobile = useIsMobile();
+  
+  // Try to get soundscape context - may not be available during initial render
+  let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;
+  try {
+    soundscapeContext = useSoundscape();
+  } catch {
+    // Context not available yet - render nothing
+  }
 
-  // Only show on mobile and when soundscape is active/playing
-  if (!isMobile) return null;
+  // Only show on mobile and when soundscape context is available
+  if (!isMobile || !soundscapeContext) return null;
+  
+  const { isMuted, toggleMute, isPlaying } = soundscapeContext;
 
   return (
     <button
