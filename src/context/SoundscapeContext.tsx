@@ -309,3 +309,12 @@ export function useSoundscape() {
   }
   return context;
 }
+
+/**
+ * Optional variant for components that may render outside the provider
+ * (e.g. global overlays). Returns undefined instead of throwing.
+ */
+export function useOptionalSoundscape() {
+  return useContext(SoundscapeContext);
+}
+
