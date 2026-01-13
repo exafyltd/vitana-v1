@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
@@ -295,7 +295,7 @@ const App = () => {
                     <Toaster />
                     <PresenceDebugPanel />
                     <AppHooksInitializer />
-                    <BrowserRouter>
+                    <HashRouter>
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
@@ -1313,7 +1313,7 @@ const App = () => {
         </Routes>
                   </GreetingProviderWrapper>
                 </VitanalandNavigationProvider>
-              </BrowserRouter>
+              </HashRouter>
             </TooltipProvider>
         </ProfilePreviewProvider>
       </StreamingStateProvider>
