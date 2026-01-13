@@ -36,11 +36,27 @@ export function SoundscapeResumeBanner() {
       }
     };
     
+    // Handle iOS back/forward cache (bfcache)
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        AudioManager.attemptMobileResume();
+      }
+    };
+    
+    // Handle window focus (WebView regains focus)
+    const handleFocus = () => {
+      AudioManager.attemptMobileResume();
+    };
+    
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pageshow', handlePageShow);
+    window.addEventListener('focus', handleFocus);
     
     return () => {
       unsubscribe();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pageshow', handlePageShow);
+      window.removeEventListener('focus', handleFocus);
     };
   }, [isMobile]);
   
