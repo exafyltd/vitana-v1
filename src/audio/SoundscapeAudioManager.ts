@@ -362,6 +362,8 @@ export function setMuted(muted: boolean) {
   if (muted) {
     // Also pause to release audio focus on mobile
     audio.pause();
+    // Clear auto-play flag so it doesn't auto-start on next navigation
+    localStorage.setItem('soundscape_auto_play', 'false');
     console.log('[AudioManager] Muted and paused to release audio focus');
   } else {
     // Unmuting - resume if not explicitly paused

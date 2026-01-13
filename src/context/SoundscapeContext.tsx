@@ -72,8 +72,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     setVolumeState(state.volume);
     setIsMuted(state.isMuted);
     
-    // Handle auto-play if enabled
-    if (savedAutoPlay === 'true' && audioRef.current.paused) {
+    // Handle auto-play if enabled AND not muted
+    if (savedAutoPlay === 'true' && savedMuted !== 'true' && audioRef.current.paused) {
       audioRef.current.play()
         .then(() => {
           console.log('[SoundscapeProvider] Auto-play succeeded');
@@ -111,6 +111,17 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     if (!pendingAutoPlay) return;
     
     const handleInteraction = () => {
+      // Check if user has muted - don't auto-play if muted
+      const isMutedInStorage = localStorage.getItem('soundscape_muted') === 'true';
+      
+      if (isMutedInStorage) {
+        console.log('[SoundscapeProvider] Skipping auto-play - user has muted');
+        setPendingAutoPlay(false);
+        document.removeEventListener('click', handleInteraction, true);
+        document.removeEventListener('touchstart', handleInteraction, true);
+        return;
+      }
+      
       if (audioRef.current && pendingAutoPlay) {
         audioRef.current.play()
           .then(() => {
