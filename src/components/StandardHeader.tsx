@@ -31,18 +31,11 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
   // Beautified mobile header - premium, consistent pattern
   if (isMobile) {
     return (
-      <div className={cn("pt-4 pb-3", className)}>
+      <div className={cn("pt-4 pb-2", className)}>
         <h1 className="text-xl font-bold tracking-tight text-foreground">
           {title} {emoji}
         </h1>
         <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{description}</p>
-        {/* Longevity indicator - quiet context line */}
-        <div className="flex items-center gap-1 mt-2 text-[10px] text-muted-foreground/40">
-          <span className="opacity-60">🧬</span>
-          <span>Vitana 742</span>
-          <span className="opacity-40">•</span>
-          <span className="text-green-600/50">Live</span>
-        </div>
       </div>
     );
   }
