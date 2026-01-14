@@ -31,7 +31,7 @@ import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 // MobileBusinessNav removed - consolidated into single SplitBar
 import { MobileKPIStrip } from "@/components/business/MobileKPIStrip";
-import { MobileQuickActions } from "@/components/business/MobileQuickActions";
+import { MobileEarningPortal } from "@/components/business/MobileEarningPortal";
 import { EarningsHistoryLedger } from "@/components/business/EarningsHistoryLedger";
 import {
   SplitBar,
@@ -192,7 +192,7 @@ export default function BusinessHub() {
                   inWallet={earnings.inWallet}
                   isLoading={false}
                 />
-                <MobileQuickActions 
+                <MobileEarningPortal 
                   onCreateEvent={() => setShowSelectionDialog(true)}
                   onAddToInventory={() => {/* Will switch to sales tab */}}
                   onCreateService={() => setShowCreateService(true)}
