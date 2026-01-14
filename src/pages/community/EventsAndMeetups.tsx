@@ -634,14 +634,15 @@ const EventsAndMeetups = () => {
               />
               <UniversalCalendarButton />
               
-              {/* Create - PRIMARY ACTION, always visible */}
+              {/* Create button - matches pill style */}
               <Button 
                 onClick={() => setCreateSelectionOpen(true)}
+                variant="ghost"
                 size="sm"
-                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
               >
                 <Plus className="h-4 w-4" />
-                {!isMobile && <span className="text-sm">Create</span>}
+                <span className="text-sm">Create</span>
               </Button>
               
               {/* Vitana Index - pill style on mobile */}
@@ -652,12 +653,12 @@ const EventsAndMeetups = () => {
                   onClick={() => navigate('/health')}
                   className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                 >
-                  <span className="text-xs">🧬</span>
+                  <span className="text-xs opacity-60">🧬</span>
                   <span className="text-sm font-medium text-primary">742</span>
                 </Button>
               )}
               
-              {/* Autopilot - pill style on mobile */}
+              {/* Autopilot - pill style with label on mobile */}
               {isMobile && (
                 <Button 
                   variant="ghost" 
@@ -666,10 +667,11 @@ const EventsAndMeetups = () => {
                   className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                 >
                   <Plane className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Autopilot</span>
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 
-                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                     >
                       {pendingCount}
                     </Badge>
