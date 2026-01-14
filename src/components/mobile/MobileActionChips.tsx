@@ -19,11 +19,10 @@ export function VitanaIndexChip({ className }: VitanaIndexChipProps) {
       variant="ghost" 
       size="sm" 
       onClick={() => navigate('/health')}
-      className={`h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0 ${className || ''}`}
+      className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0 ${className || ''}`}
     >
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
-        <span className="text-[10px] font-bold text-primary">742</span>
-      </div>
+      <span className="text-xs">🧬</span>
+      <span className="text-sm font-medium text-primary">742</span>
     </Button>
   );
 }
@@ -44,7 +43,7 @@ export function AutopilotChip({ pendingCount, onClick, className }: AutopilotChi
       variant="ghost" 
       size="sm" 
       onClick={onClick}
-      className={`h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0 ${className || ''}`}
+      className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0 ${className || ''}`}
     >
       <Plane className="h-4 w-4 text-muted-foreground" />
       {pendingCount > 0 && (

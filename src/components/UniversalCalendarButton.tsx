@@ -39,13 +39,13 @@ export function UniversalCalendarButton({
     <>
       <div className="relative">
         <Button 
-          size={size} 
-          variant={variant}
+          variant="ghost"
+          size="sm"
           onClick={() => setCalendarOpen(true)} 
-          className={className}
+          className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 shrink-0 ${className}`}
         >
-          <Calendar className={`w-4 h-4 ${showText ? 'mr-2' : ''}`} />
-          {showText && 'Calendar'}
+          <Calendar className="w-4 h-4" />
+          {showText && <span className="text-sm">Calendar</span>}
         </Button>
         
         {/* Event count badge */}
