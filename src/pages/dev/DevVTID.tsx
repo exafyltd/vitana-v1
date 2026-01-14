@@ -40,7 +40,9 @@ export default function DevVTID() {
           />
 
           {/* Utility Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search VTIDs…"
               onSearch={(query) => console.log('Search:', query)}
@@ -50,7 +52,6 @@ export default function DevVTID() {
               <Plus className="w-4 h-4 mr-2" />
               Issue VTID
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}

@@ -48,7 +48,9 @@ export default function CommandHistory() {
             emoji="📜"
           />
 
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search history…"
               onSearch={(query) => console.log('Search:', query)}
@@ -58,7 +60,6 @@ export default function CommandHistory() {
               <Plus className="w-4 h-4 mr-2" />
               Export Logs
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>

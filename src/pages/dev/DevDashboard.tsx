@@ -60,7 +60,9 @@ export default function DevDashboard() {
           />
 
           {/* Utility Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search events, VTIDs, commands…"
               onSearch={(query) => console.log('Search:', query)}
@@ -70,7 +72,6 @@ export default function DevDashboard() {
               <Plus className="w-4 h-4 mr-2" />
               Action
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar (sub-tabs) */}
