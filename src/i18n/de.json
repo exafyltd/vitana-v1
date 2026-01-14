@@ -1,4 +1,13 @@
 {
+  "intro": {
+    "welcomeTo": "WILLKOMMEN BEI VITANALAND",
+    "experience": "Erlebnis",
+    "tagline": "Deine Langlebigkeitsreise, begleitet.",
+    "playWelcome": "Willkommen abspielen",
+    "preparing": "Vorbereitung...",
+    "playing": "Wird abgespielt",
+    "skipIntro": "Intro überspringen"
+  },
   "sidebar": {
     "home": "Startseite",
     "community": "Gemeinschaft",
