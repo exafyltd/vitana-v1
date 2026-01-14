@@ -8396,6 +8396,197 @@ export type Database = {
         }
         Relationships: []
       }
+      voucher_orders: {
+        Row: {
+          amount_cents: number
+          buyer_email: string
+          buyer_name: string | null
+          buyer_user_id: string | null
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          id: string
+          payment_intent_id: string | null
+          pdf_path: string | null
+          provider: string
+          status: string
+          tenant_id: string
+          updated_at: string
+          voucher_id: string
+        }
+        Insert: {
+          amount_cents: number
+          buyer_email: string
+          buyer_name?: string | null
+          buyer_user_id?: string | null
+          checkout_session_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_intent_id?: string | null
+          pdf_path?: string | null
+          provider?: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          voucher_id: string
+        }
+        Update: {
+          amount_cents?: number
+          buyer_email?: string
+          buyer_name?: string | null
+          buyer_user_id?: string | null
+          checkout_session_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_intent_id?: string | null
+          pdf_path?: string | null
+          provider?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          voucher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voucher_orders_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_orders_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_orders_voucher_id_fkey"
+            columns: ["voucher_id"]
+            isOneToOne: false
+            referencedRelation: "vouchers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      voucher_redemptions: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          event_id: string
+          id: string
+          reason: string | null
+          staff_user_id: string
+          status: string
+          tenant_id: string
+          voucher_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          event_id: string
+          id?: string
+          reason?: string | null
+          staff_user_id: string
+          status: string
+          tenant_id: string
+          voucher_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          event_id?: string
+          id?: string
+          reason?: string | null
+          staff_user_id?: string
+          status?: string
+          tenant_id?: string
+          voucher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voucher_redemptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_redemptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_redemptions_voucher_id_fkey"
+            columns: ["voucher_id"]
+            isOneToOne: false
+            referencedRelation: "vouchers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vouchers: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          redeemed_at: string | null
+          redeemed_by_staff_id: string | null
+          redeemed_event_id: string | null
+          status: string
+          tenant_id: string
+          tier: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          redeemed_at?: string | null
+          redeemed_by_staff_id?: string | null
+          redeemed_event_id?: string | null
+          status?: string
+          tenant_id: string
+          tier: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          redeemed_at?: string | null
+          redeemed_by_staff_id?: string | null
+          redeemed_event_id?: string | null
+          status?: string
+          tenant_id?: string
+          tier?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vouchers_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "vouchers_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       vtid_ledger: {
         Row: {
           assigned_to: string
@@ -9467,6 +9658,16 @@ export type Database = {
           to_balance: number
           transaction_id: string
         }[]
+      }
+      redeem_voucher: {
+        Args: {
+          p_device_id?: string
+          p_event_id: string
+          p_staff_user_id: string
+          p_tenant_id: string
+          p_voucher_id: string
+        }
+        Returns: Json
       }
       resolve_event_by_slug: {
         Args: { identifier: string }
