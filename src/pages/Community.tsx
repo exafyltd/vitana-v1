@@ -1297,7 +1297,19 @@ export default withScreenId(function Community() {
           />
 
           {/* Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                onClick={() => window.location.reload()}
+                title="Refresh page"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            }
+          >
             <ExpandableSearchButton 
               placeholder="Search Community…"
               onSearch={(query) => console.log('Search Community:', query)}
@@ -1306,15 +1318,6 @@ export default withScreenId(function Community() {
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Hub
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              onClick={() => window.location.reload()}
-              title="Refresh page"
-            >
-              <RefreshCw className="h-4 w-4" />
             </Button>
           </UtilityActionButton>
 

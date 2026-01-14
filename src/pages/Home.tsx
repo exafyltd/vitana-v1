@@ -634,7 +634,19 @@ export default function Home() {
           />
 
           {/* Utility Action Button */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                onClick={() => window.location.reload()}
+                title="Refresh page"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            }
+          >
             <ExpandableSearchButton 
               placeholder="Search today's content, events, or media…"
               onSearch={(query) => console.log('Search:', query)}
@@ -643,16 +655,6 @@ export default function Home() {
             <Button size="sm" onClick={() => setMasterActionOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Action
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              onClick={() => window.location.reload()}
-              title="Refresh page"
-            >
-              <RefreshCw className="h-4 w-4" />
             </Button>
           </UtilityActionButton>
 
