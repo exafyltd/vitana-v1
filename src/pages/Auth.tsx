@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import SEO from '@/components/SEO';
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { z } from 'zod';
+import { useTranslation } from '@/hooks/useTranslation';
 
 // Input validation schemas
 const emailSchema = z.string()
@@ -73,6 +74,7 @@ const getAuthErrorMessage = (error: any): string => {
 
 export default function Auth() {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -213,39 +215,39 @@ export default function Auth() {
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Welcome to VITANA
+              {translate('authPage.welcomeTitle', 'Welcome to VITANA')}
             </CardTitle>
             <CardDescription>
-              Your personalized health intelligence platform
+              {translate('authPage.subtitle', 'Your personalized health intelligence platform')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="signin" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                <TabsTrigger value="signin">{translate('authPage.signIn', 'Sign In')}</TabsTrigger>
+                <TabsTrigger value="signup">{translate('authPage.signUp', 'Sign Up')}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{translate('authPage.email', 'Email')}</Label>
                     <Input
                       id="email"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={translate('authPage.enterEmail', 'Enter your email')}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">{translate('authPage.password', 'Password')}</Label>
                     <div className="relative">
                       <Input
                         id="password"
                         type={showPassword ? 'text' : 'password'}
-                        placeholder="Enter your password"
+                        placeholder={translate('authPage.enterPassword', 'Enter your password')}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -273,7 +275,7 @@ export default function Auth() {
                   )}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Sign In
+                    {translate('authPage.signIn', 'Sign In')}
                   </Button>
                   
                   <div className="relative my-4">
@@ -281,7 +283,7 @@ export default function Auth() {
                       <div className="w-full border-t border-border/50" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                      <span className="bg-card px-2 text-muted-foreground">{translate('authPage.orContinueWith', 'Or continue with')}</span>
                     </div>
                   </div>
 
@@ -325,7 +327,7 @@ export default function Auth() {
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
                     >
                       <span>←</span>
-                      <span>Back to all portals</span>
+                      <span>{translate('authPage.backToPortals', 'Back to all portals')}</span>
                     </button>
                   </div>
                 </form>
@@ -334,34 +336,34 @@ export default function Auth() {
               <TabsContent value="signup">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="fullName">{translate('authPage.fullName', 'Full Name')}</Label>
                     <Input
                       id="fullName"
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder={translate('authPage.enterFullName', 'Enter your full name')}
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signupEmail">Email</Label>
+                    <Label htmlFor="signupEmail">{translate('authPage.email', 'Email')}</Label>
                     <Input
                       id="signupEmail"
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={translate('authPage.enterEmail', 'Enter your email')}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signupPassword">Password</Label>
+                    <Label htmlFor="signupPassword">{translate('authPage.password', 'Password')}</Label>
                     <div className="relative">
                       <Input
                         id="signupPassword"
                         type={showPassword ? 'text' : 'password'}
-                        placeholder="Create a password"
+                        placeholder={translate('authPage.createPassword', 'Create a password')}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -390,7 +392,7 @@ export default function Auth() {
                   )}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Create Account
+                    {translate('authPage.createAccount', 'Create Account')}
                   </Button>
                 </form>
               </TabsContent>

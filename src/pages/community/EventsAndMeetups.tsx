@@ -34,6 +34,7 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -356,6 +357,7 @@ const EventsAndMeetups = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { pendingCount } = useAutopilot();
+  const { translate } = useTranslation();
   
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
@@ -636,8 +638,8 @@ const EventsAndMeetups = () => {
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="flex-1 overflow-hidden">
           <StandardHeader
-            title="Events & MeetUps"
-            description="Discover formal events and casual meetups in your community"
+            title={translate('events.title', 'Events & MeetUps')}
+            description={translate('events.description', 'Discover formal events and casual meetups in your community')}
           />
           
           <UtilityActionButton 
@@ -701,16 +703,16 @@ const EventsAndMeetups = () => {
             <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList>
                 <SplitBarTrigger value="today">
-                  ☀️ Today
+                  ☀️ {translate('events.tabs.today', 'Today')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="upcoming">
-                  📅 Upcoming
+                  📅 {translate('events.tabs.upcoming', 'Upcoming')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="following">
-                  👥 Following
+                  👥 {translate('events.tabs.following', 'Following')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="recommended">
-                  ✨ Recommended
+                  ✨ {translate('events.tabs.recommended', 'Recommended')}
                 </SplitBarTrigger>
               </SplitBarList>
 

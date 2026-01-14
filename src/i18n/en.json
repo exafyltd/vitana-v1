@@ -1,4 +1,60 @@
 {
+  "authPage": {
+    "welcomeTitle": "Welcome to VITANA",
+    "subtitle": "Your personalized health intelligence platform",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "enterFullName": "Enter your full name",
+    "createPassword": "Create a password",
+    "createAccount": "Create Account",
+    "orContinueWith": "Or continue with",
+    "backToPortals": "Back to all portals",
+    "keepLoggedIn": "Keep me logged in"
+  },
+  "events": {
+    "title": "Events & Meet-Ups",
+    "description": "Discover local wellness gatherings",
+    "tabs": {
+      "today": "Today",
+      "upcoming": "Upcoming",
+      "following": "Following",
+      "recommended": "Recommended"
+    },
+    "noEvents": "No events scheduled",
+    "checkBack": "Check back soon for upcoming community events!"
+  },
+  "liveRooms": {
+    "title": "Live Rooms",
+    "description": "Join live audio and video discussions",
+    "tabs": {
+      "live": "Live Now",
+      "scheduled": "Scheduled"
+    },
+    "goLive": "Go Live",
+    "joinRoom": "Join Room",
+    "noRooms": "No live rooms available",
+    "demoRoom": "Demo Room",
+    "demoRoomDesc": "This is an example room. Create your own to go live!"
+  },
+  "businessHub": {
+    "title": "Business Hub",
+    "description": "Grow your wellness business",
+    "tabs": {
+      "snapshot": "Snapshot",
+      "services": "Services",
+      "sales": "Sales",
+      "insights": "Insights"
+    },
+    "recentActivity": "Recent Activity",
+    "clients": "Clients",
+    "analytics": "Analytics",
+    "searchBusiness": "Search business..."
+  },
   "intro": {
     "welcomeTo": "WELCOME TO VITANALAND",
     "experience": "Experience",
