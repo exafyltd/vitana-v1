@@ -30,18 +30,40 @@ SplitBarList.displayName = TabsPrimitive.List.displayName;
 const SplitBarTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      "flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 snap-start",
-      "bg-muted/40 text-muted-foreground",
-      "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-md data-[state=active]:font-semibold",
-      className
-    )}
-    {...props}
-  />
-));
+>(({ className, children, ...props }, ref) => {
+  // Process children to soften emojis while keeping text primary
+  const processedChildren = React.Children.map(children, (child) => {
+    if (typeof child === 'string') {
+      // Split text to find emoji patterns and wrap them with softer styling
+      const emojiRegex = /(\p{Emoji_Presentation}|\p{Emoji}\uFE0F)/gu;
+      const parts = child.split(emojiRegex);
+      return parts.map((part, i) => {
+        if (emojiRegex.test(part)) {
+          // Reset regex lastIndex after test
+          emojiRegex.lastIndex = 0;
+          return <span key={i} className="text-xs opacity-60 mr-1">{part}</span>;
+        }
+        return part;
+      });
+    }
+    return child;
+  });
+
+  return (
+    <TabsPrimitive.Trigger
+      ref={ref}
+      className={cn(
+        "flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 snap-start",
+        "bg-muted/40 text-muted-foreground",
+        "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-md data-[state=active]:font-semibold",
+        className
+      )}
+      {...props}
+    >
+      {processedChildren}
+    </TabsPrimitive.Trigger>
+  );
+});
 SplitBarTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
 const SplitBarContent = React.forwardRef<

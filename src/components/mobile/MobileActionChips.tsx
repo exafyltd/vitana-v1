@@ -46,6 +46,7 @@ export function AutopilotChip({ pendingCount, onClick, className }: AutopilotChi
       className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0 ${className || ''}`}
     >
       <Plane className="h-4 w-4 text-muted-foreground" />
+      <span className="text-sm">Autopilot</span>
       {pendingCount > 0 && (
         <Badge 
           variant="destructive" 
