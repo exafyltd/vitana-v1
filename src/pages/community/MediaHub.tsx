@@ -559,7 +559,6 @@ export default function MediaHub() {
               <StandardHeader
                 title="Media Hub"
                 description="Discover and share inspiring wellness content"
-                emoji="✨"
               />
               
               {/* Compact Mobile Action Rail */}
@@ -570,48 +569,44 @@ export default function MediaHub() {
                     onSearch={(query) => console.log('Search Media:', query)}
                   />
                   
-                  {/* Calendar - consistent with Events & MeetUps */}
-                  <UniversalCalendarButton 
-                    variant="ghost"
-                    size="sm"
-                    showText={false}
-                    showEventCount={false}
-                    className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
-                  />
+                  {/* Calendar - default styling */}
+                  <UniversalCalendarButton />
                   
                   {/* Upload - PRIMARY ACTION */}
                   <Button 
                     onClick={() => setIsUnifiedUploadOpen(true)}
+                    variant="ghost"
                     size="sm"
-                    className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                    className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
                   >
                     <Plus className="h-4 w-4" />
+                    <span className="text-sm">Upload</span>
                   </Button>
                   
-                  {/* Vitana Index - subtle chip on mobile */}
+                  {/* Vitana Index - pill with emoji + text */}
                   <Button 
                     variant="ghost" 
                     size="sm" 
                     onClick={() => navigate('/health')}
-                    className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                   >
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-primary">742</span>
-                    </div>
+                    <span className="text-xs opacity-60">🧬</span>
+                    <span className="text-sm font-medium text-primary">742</span>
                   </Button>
                   
-                  {/* Autopilot - subtle chip on mobile */}
+                  {/* Autopilot - pill with icon + text */}
                   <Button 
                     variant="ghost" 
                     size="sm" 
                     onClick={() => setAutopilotOpen(true)}
-                    className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0"
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                   >
                     <Plane className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Autopilot</span>
                     {pendingCount > 0 && (
                       <Badge 
                         variant="destructive" 
-                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                       >
                         {pendingCount}
                       </Badge>
