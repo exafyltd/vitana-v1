@@ -70,8 +70,8 @@ serve(async (req) => {
     const priceId = VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES];
     const tierPriceCents = tier === "experience" ? 9900 : 19900;
 
-    // Use a default tenant_id for voucher purchases
-    const DEFAULT_TENANT_ID = "00000000-0000-0000-0000-000000000001";
+    // Maxina tenant ID for voucher purchases
+    const MAXINA_TENANT_ID = "2e7528b8-472a-4356-88da-0280d4639cce";
 
     // Create voucher record first (expires in 1 year)
     const expiresAt = new Date();
@@ -83,7 +83,7 @@ serve(async (req) => {
         tier,
         type: "gift",
         status: "pending",
-        tenant_id: DEFAULT_TENANT_ID,
+        tenant_id: MAXINA_TENANT_ID,
         expires_at: expiresAt.toISOString(),
       })
       .select()
@@ -106,7 +106,7 @@ serve(async (req) => {
         amount_cents: tierPriceCents,
         currency: "EUR",
         status: "pending",
-        tenant_id: DEFAULT_TENANT_ID,
+        tenant_id: MAXINA_TENANT_ID,
         provider: "stripe",
       })
       .select()
