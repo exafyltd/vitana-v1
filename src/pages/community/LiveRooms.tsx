@@ -605,7 +605,6 @@ export default function LiveRooms() {
         <StandardHeader
           title="Live Rooms"
           description="Join live audio and video discussions with community members."
-          emoji="🎙️"
         />
 
         {/* Utility Action Button */}
@@ -617,43 +616,44 @@ export default function LiveRooms() {
             />
             <UniversalCalendarButton />
             
-            {/* Go Live - PRIMARY ACTION, always visible */}
+            {/* Go Live - PRIMARY ACTION */}
             <Button 
               onClick={() => setIsGoLiveOpen(true)}
+              variant="ghost"
               size="sm"
-              className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
             >
               <Plus className="h-4 w-4" />
-              {!isMobile && <span>Go Live</span>}
+              <span className="text-sm">Go Live</span>
             </Button>
             
-            {/* Vitana Index - subtle chip on mobile */}
+            {/* Vitana Index - pill with emoji + text */}
             {isMobile && (
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={() => navigate('/health')}
-                className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
-                  <span className="text-[10px] font-bold text-primary">742</span>
-                </div>
+                <span className="text-xs opacity-60">🧬</span>
+                <span className="text-sm font-medium text-primary">742</span>
               </Button>
             )}
             
-            {/* Autopilot - subtle chip on mobile */}
+            {/* Autopilot - pill with icon + text */}
             {isMobile && (
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setAutopilotOpen(true)}
-                className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0"
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
               >
                 <Plane className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">Autopilot</span>
                 {pendingCount > 0 && (
                   <Badge 
                     variant="destructive" 
-                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px]"
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
                   >
                     {pendingCount}
                   </Badge>
