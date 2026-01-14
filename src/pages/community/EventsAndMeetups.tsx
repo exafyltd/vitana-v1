@@ -15,7 +15,7 @@ import { communityNavigation } from "@/config/navigation";
 import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
@@ -424,52 +424,66 @@ const EventsAndMeetups = () => {
                         activeTab === "upcoming" ? filteredUpcomingEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
-  // Handle deep linking - read ?event= and ?tab from URL on mount
-  // Mobile: default to "upcoming" if no tab param (since Today is often empty)
+  // Track if we've initialized the tab from URL (prevents resetting on data refresh)
+  const hasInitializedTab = useRef(false);
+
+  // Handle initial tab setup on mount only
   useEffect(() => {
+    if (hasInitializedTab.current) return;
+    hasInitializedTab.current = true;
+    
     const eventParam = searchParams.get('event');
     const tabParam = searchParams.get('tab');
     const isMobileView = window.innerWidth < 768;
+    const validTabs = ['today', 'upcoming', 'following', 'recommended'];
     
-    // On mobile, if no tab specified, set to upcoming and update URL
+    // On mobile, if no tab specified, set to upcoming
     if (isMobileView && !tabParam && !eventParam) {
       setActiveTab('upcoming');
-      setSearchParams(prev => {
-        const newParams = new URLSearchParams(prev);
-        newParams.set('tab', 'upcoming');
-        return newParams;
-      }, { replace: true });
       return;
     }
     
-    if (eventParam) {
-      // Switch to the correct tab if specified
-      if (tabParam && (tabParam === 'today' || tabParam === 'upcoming')) {
-        setActiveTab(tabParam);
-      } else if (!tabParam && dbEvents.length > 0) {
-        // Auto-detect tab if not specified
-        const event = dbEvents.find(e => e.id === eventParam);
-        if (event) {
-          const eventDate = new Date(event.start_time);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          const tomorrow = new Date(today);
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          
-          const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
-          setActiveTab(detectedTab);
-        }
-      }
+    // Respect tab param if valid
+    if (tabParam && validTabs.includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, []);
+
+  // Sync activeTab to URL when user switches tabs
+  useEffect(() => {
+    const currentTab = searchParams.get('tab');
+    if (activeTab && activeTab !== currentTab) {
+      setSearchParams(prev => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set('tab', activeTab);
+        return newParams;
+      }, { replace: true });
+    }
+  }, [activeTab, setSearchParams]);
+
+  // Handle event deep linking when dbEvents loads
+  useEffect(() => {
+    const eventParam = searchParams.get('event');
+    if (!eventParam || dbEvents.length === 0) return;
+    
+    // If event param exists, find and scroll to it
+    const event = dbEvents.find(e => e.id === eventParam);
+    if (event && !selectedEventId) {
+      // Auto-detect tab if not already set correctly
+      const eventDate = new Date(event.start_time);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
       
-      // Select event and scroll into view
+      const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
+      setActiveTab(detectedTab);
+      
       selectEvent(eventParam);
       setTimeout(() => {
         const card = document.querySelector(`[data-event-id="${eventParam}"]`);
         card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
-    } else if (tabParam && (tabParam === 'today' || tabParam === 'upcoming')) {
-      // Just respect the tab param if present
-      setActiveTab(tabParam);
     }
   }, [dbEvents]);
 
