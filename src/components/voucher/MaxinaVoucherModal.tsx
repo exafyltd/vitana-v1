@@ -70,9 +70,25 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     try {
       const result = await createCheckout.mutateAsync({ tier: selectedTier });
       
-      // Redirect to Stripe Checkout
+      // Open Stripe Checkout in popup window (same as ticket purchase flow)
       if (result.url) {
-        window.location.href = result.url;
+        const width = 600;
+        const height = 800;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+        const features = `width=${width},height=${height},left=${left},top=${top},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`;
+        
+        const popup = window.open(result.url, 'stripe-voucher-checkout', features);
+        
+        if (!popup) {
+          toast.error("Please allow popups to complete your voucher purchase");
+          setModalState("selection");
+          return;
+        }
+        
+        // Close modal - user is now in popup
+        setModalState("selection");
+        onOpenChange(false);
       }
     } catch (error) {
       console.error("Checkout error:", error);
@@ -198,7 +214,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               className="p-12 flex flex-col items-center justify-center"
             >
               <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
-              <p className="text-sm text-muted-foreground">Redirecting to secure checkout...</p>
+              <p className="text-sm text-muted-foreground">Opening secure checkout...</p>
             </motion.div>
           )}
 
