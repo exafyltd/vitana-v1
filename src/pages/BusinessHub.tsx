@@ -29,7 +29,7 @@ import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
 import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileBusinessNav } from "@/components/business/MobileBusinessNav";
+// MobileBusinessNav removed - consolidated into single SplitBar
 import { MobileKPIStrip } from "@/components/business/MobileKPIStrip";
 import { MobileQuickActions } from "@/components/business/MobileQuickActions";
 import { EarningsHistoryLedger } from "@/components/business/EarningsHistoryLedger";
@@ -104,7 +104,7 @@ export default function BusinessHub() {
     }
   };
 
-  // Mobile-specific layout - early return (matches Community.tsx pattern)
+  // Mobile-specific layout - single screen with consolidated SplitBar (matches Events/LiveRooms/MediaHub pattern)
   if (isMobile) {
     return (
       <AppLayout>
@@ -113,7 +113,6 @@ export default function BusinessHub() {
           description="Grow your wellness business" 
           canonical={window.location.href} 
         />
-        <MobileBusinessNav items={navigationWithIndicator} />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
           <div className="p-4 pb-32 space-y-4">
@@ -175,45 +174,62 @@ export default function BusinessHub() {
               </div>
             </UtilityActionButton>
             
-            {/* Tab Content */}
-            {activeTab === "overview" && (
-              <SplitBar defaultValue="snapshot">
-                <SplitBarList>
-                  <SplitBarTrigger value="snapshot">📊 Snapshot</SplitBarTrigger>
-                  <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
-                </SplitBarList>
-                
-                <SplitBarContent value="snapshot" className="space-y-4 pt-2">
-                  <MobileKPIStrip 
-                    totalEarnings={earnings.totalEarnings}
-                    earnings30Days={earnings.earnings30Days}
-                    pendingPayout={earnings.pendingPayout}
-                    inWallet={earnings.inWallet}
-                    isLoading={false}
-                  />
-                  <MobileQuickActions 
-                    onCreateEvent={() => setShowSelectionDialog(true)}
-                    onAddToInventory={() => navigate("/business/sell-earn")}
-                    onCreateService={() => setShowCreateService(true)}
-                    onCreatePromotion={() => setShowCampaignDialog(true)}
-                  />
-                </SplitBarContent>
-                
-                <SplitBarContent value="history" className="pt-2">
+            {/* Consolidated SplitBar - All sections in one tab bar */}
+            <SplitBar defaultValue="snapshot" className="w-full">
+              <SplitBarList>
+                <SplitBarTrigger value="snapshot">📊 Snapshot</SplitBarTrigger>
+                <SplitBarTrigger value="services">💼 Services</SplitBarTrigger>
+                {isReseller && <SplitBarTrigger value="sales">🎫 Sales</SplitBarTrigger>}
+                <SplitBarTrigger value="insights">📈 Insights</SplitBarTrigger>
+              </SplitBarList>
+              
+              {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
+              <SplitBarContent value="snapshot" className="space-y-4 pt-2">
+                <MobileKPIStrip 
+                  totalEarnings={earnings.totalEarnings}
+                  earnings30Days={earnings.earnings30Days}
+                  pendingPayout={earnings.pendingPayout}
+                  inWallet={earnings.inWallet}
+                  isLoading={false}
+                />
+                <MobileQuickActions 
+                  onCreateEvent={() => setShowSelectionDialog(true)}
+                  onAddToInventory={() => {/* Will switch to sales tab */}}
+                  onCreateService={() => setShowCreateService(true)}
+                  onCreatePromotion={() => setShowCampaignDialog(true)}
+                />
+                {/* Recent Activity inline */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">Recent Activity</h3>
                   <EarningsHistoryLedger
                     transactions={earnings.recentTransactions}
                     isLoading={false}
                   />
-                </SplitBarContent>
-              </SplitBar>
-            )}
-
-            {activeTab === "services" && (
-              <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
-            )}
-            {activeTab === "clients" && <ClientsSubTabs />}
-            {activeTab === "sell-earn" && isReseller && <SellAndEarnSubTabs />}
-            {activeTab === "analytics" && <AnalyticsSubTabs />}
+                </div>
+              </SplitBarContent>
+              
+              {/* Services Tab - My Services, Packages, Events */}
+              <SplitBarContent value="services" className="pt-2">
+                <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
+              </SplitBarContent>
+              
+              {/* Sales Tab - Inventory + Promotions (Reseller only) */}
+              <SplitBarContent value="sales" className="pt-2">
+                <SellAndEarnSubTabs />
+              </SplitBarContent>
+              
+              {/* Insights Tab - Clients + Analytics combined */}
+              <SplitBarContent value="insights" className="pt-2 space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">Clients</h3>
+                  <ClientsSubTabs />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">Analytics</h3>
+                  <AnalyticsSubTabs />
+                </div>
+              </SplitBarContent>
+            </SplitBar>
           </div>
         </div>
 
