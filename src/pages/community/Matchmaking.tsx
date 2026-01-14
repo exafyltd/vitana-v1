@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -7,9 +7,14 @@ import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { MatchFiltersPopup } from "@/components/MatchFiltersPopup";
 import { MatchNotificationBadge } from "@/components/MatchNotificationBadge";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Import match-specific cards
 import { PeopleMatchCard } from "@/components/crossover/PeopleMatchCard";
@@ -23,11 +28,14 @@ import { communityNavigation } from "@/config/navigation";
 export default function Matchmaking() {
   const [matchFiltersOpen, setMatchFiltersOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("people");
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const { pendingCount } = useAutopilot();
 
   return (
     <AppLayout>
       <SEO title="Matchmaking | Community" description="Find compatible community members" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
+      {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
@@ -39,21 +47,41 @@ export default function Matchmaking() {
             <MatchNotificationBadge />
           </div>
 
-          {/* Utility Action Button */}
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search Matches…"
-              onSearch={(query) => console.log('Search Matches:', query)}
-            />
-            <Button size="sm" onClick={() => setMatchFiltersOpen(true)}>
-              <Plus className="w-4 h-4 mr-2" />
-              Matches
-            </Button>
+          {/* Utility Action Button - Unified Mobile Pattern */}
+          <UtilityActionButton className="min-w-0">
+            <div className="flex items-center gap-2.5 min-w-max">
+              <ExpandableSearchButton 
+                placeholder="Search matches..."
+                onSearch={(query) => console.log('Search Matches:', query)}
+              />
+              <UniversalCalendarButton />
+              
+              {/* Filters - PRIMARY ACTION */}
+              <Button 
+                size="sm" 
+                onClick={() => setMatchFiltersOpen(true)}
+                className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+              >
+                <Plus className="h-4 w-4" />
+                {!isMobile && <span>Filters</span>}
+              </Button>
+              
+              {/* Vitana Index chip (mobile only) */}
+              {isMobile && <VitanaIndexChip />}
+              
+              {/* Autopilot chip (mobile only) */}
+              {isMobile && (
+                <AutopilotChip 
+                  pendingCount={pendingCount} 
+                  onClick={() => setAutopilotOpen(true)} 
+                />
+              )}
+            </div>
           </UtilityActionButton>
 
           {/* Split Navigation */}
           <SplitBar value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <SplitBarList className="grid w-full grid-cols-5">
+            <SplitBarList>
               <SplitBarTrigger value="people">👤 People</SplitBarTrigger>
               <SplitBarTrigger value="groups">👥 Groups</SplitBarTrigger>
               <SplitBarTrigger value="coaches">🏃 Coaches</SplitBarTrigger>
@@ -108,6 +136,12 @@ export default function Matchmaking() {
       <MatchFiltersPopup 
         open={matchFiltersOpen} 
         onOpenChange={setMatchFiltersOpen}
+      />
+      
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
       />
     </AppLayout>
   );
