@@ -468,10 +468,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
          {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
        </div>
        
-        {/* Mobile ORB - lowered to anchor with Appilix bottom nav */}
-        <div data-orb-context="inapp">
-          <MobileFixedOrb />
-        </div>
+        {/* Mobile ORB - centered above bottom nav on all in-app screens */}
+        <MobileFixedOrb />
     </div>
   );
 }

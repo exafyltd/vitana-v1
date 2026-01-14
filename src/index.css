@@ -569,7 +569,6 @@ All colors MUST be HSL.
 
 /* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
 @media (max-width: 768px) {
-  /* Default orb positioning (intro/auth screens) */
   .vitana-orb,
   [data-vitana-orb="true"],
   #vitana-orb,
@@ -584,12 +583,6 @@ All colors MUST be HSL.
     z-index: 40 !important; /* above content, below modals */
     pointer-events: auto !important;
     filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
-  }
-
-  /* In-app screens: lower orb by ~0.5cm to anchor with Appilix nav */
-  [data-orb-context="inapp"] .vitana-orb,
-  [data-orb-context="inapp"] [data-vitana-orb="true"] {
-    bottom: calc(env(safe-area-inset-bottom, 0px) - 16px) !important;
   }
 
   /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */
