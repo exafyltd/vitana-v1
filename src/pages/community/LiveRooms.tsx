@@ -608,27 +608,11 @@ export default function LiveRooms() {
         />
 
         {/* Utility Action Button */}
-        <UtilityActionButton className="min-w-0">
-          <div className="flex items-center gap-2 min-w-max">
-            <ExpandableSearchButton
-              placeholder="Search Live Rooms…"
-              onSearch={(query) => setSearchQuery(query)}
-            />
-            <UniversalCalendarButton />
-            
-            {/* Go Live - PRIMARY ACTION */}
-            <Button 
-              onClick={() => setIsGoLiveOpen(true)}
-              variant="ghost"
-              size="sm"
-              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="text-sm">Go Live</span>
-            </Button>
-            
-            {/* Vitana Index - pill with emoji + text */}
-            {isMobile && (
+        <UtilityActionButton 
+          className="min-w-0"
+          afterGiftVoucherChildren={isMobile && (
+            <>
+              {/* Vitana Index - pill with emoji + text */}
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -638,10 +622,8 @@ export default function LiveRooms() {
                 <span className="text-xs opacity-60">🧬</span>
                 <span className="text-sm font-medium text-primary">742</span>
               </Button>
-            )}
-            
-            {/* Autopilot - pill with icon + text */}
-            {isMobile && (
+              
+              {/* Autopilot - pill with icon + text */}
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -659,7 +641,26 @@ export default function LiveRooms() {
                   </Badge>
                 )}
               </Button>
-            )}
+            </>
+          )}
+        >
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton
+              placeholder="Search Live Rooms…"
+              onSearch={(query) => setSearchQuery(query)}
+            />
+            <UniversalCalendarButton />
+            
+            {/* Go Live - PRIMARY ACTION */}
+            <Button 
+              onClick={() => setIsGoLiveOpen(true)}
+              variant="ghost"
+              size="sm"
+              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="text-sm">Go Live</span>
+            </Button>
           </div>
         </UtilityActionButton>
 
