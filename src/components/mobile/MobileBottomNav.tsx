@@ -81,17 +81,14 @@ export function MobileBottomNav() {
         ))}
         
         {/* Center Orb - elevated "pop-out" design */}
-        <div className="relative flex items-center justify-center" style={{ width: '72px' }}>
+        <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
           {/* Orb container - positioned to pop above the bar */}
           <motion.div 
-            className="absolute -top-5"
+            className="absolute -top-6"
             whileTap={{ scale: 0.95 }}
           >
-            {/* Background circle for visual connection to nav bar */}
-            <div className="absolute inset-0 -m-1.5 rounded-full bg-background border border-border/30 shadow-lg" />
-            
-            {/* The Orb itself */}
-            <div
+            {/* The Orb itself - no frame, floating with drop shadow */}
+            <div 
               role="button"
               tabIndex={0}
               onClick={handleOrbClick}
@@ -102,19 +99,19 @@ export function MobileBottomNav() {
                 }
               }}
               aria-label="Ask VITANA for guidance"
-              className="relative cursor-pointer p-1"
+              className="relative cursor-pointer drop-shadow-lg"
             >
               <VitanalandPortalSeed 
                 audioState="idle"
                 volumeLevel={0}
-                size="sm"
+                size="nav"
                 layoutId="vitana-orb-nav"
               />
             </div>
           </motion.div>
           
           {/* Spacer to maintain layout */}
-          <div className="h-12" />
+          <div className="h-10" />
         </div>
         
         {/* Right nav items: Live, Profile */}
