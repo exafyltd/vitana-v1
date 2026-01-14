@@ -1,12 +1,13 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
 import { Badge } from "@/components/ui/badge";
 
 import { Plus, Plane, Briefcase, Users, TrendingUp, BarChart3 } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { CreateSelectionDialog } from "@/components/CreateSelectionDialog";
@@ -29,7 +30,15 @@ import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileBusinessNav } from "@/components/business/MobileBusinessNav";
-import { MobileBusinessEntryCard } from "@/components/business/MobileBusinessEntryCard";
+import { MobileKPIStrip } from "@/components/business/MobileKPIStrip";
+import { MobileQuickActions } from "@/components/business/MobileQuickActions";
+import { EarningsHistoryLedger } from "@/components/business/EarningsHistoryLedger";
+import {
+  SplitBar,
+  SplitBarList,
+  SplitBarTrigger,
+  SplitBarContent,
+} from "@/components/ui/split-bar";
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
@@ -107,61 +116,105 @@ export default function BusinessHub() {
         <MobileBusinessNav items={navigationWithIndicator} />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
-          {activeTab === "overview" ? (
-            /* Mobile Overview - Entry Cards Dashboard */
-            <div className="flex flex-col gap-4 p-4 pb-32">
-              {/* Compact Header */}
-              <div className="space-y-1 pt-2">
-                <h1 className="text-xl font-bold text-foreground">Business Hub</h1>
-                <p className="text-sm text-muted-foreground">Grow your wellness business</p>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    🧬 Vitana 742 
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                    Live
-                  </span>
-                </div>
+          <div className="p-4 pb-32 space-y-4">
+            {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub */}
+            <StandardHeader
+              title="Business Hub"
+              description="Grow your wellness business"
+            />
+            
+            {/* Action Rail - same pattern */}
+            <UtilityActionButton className="min-w-0">
+              <div className="flex items-center gap-2 min-w-max">
+                <ExpandableSearchButton 
+                  placeholder="Search business..."
+                  onSearch={(query) => console.log('Search:', query)}
+                />
+                <UniversalCalendarButton />
+                
+                {/* Create button - primary action */}
+                <Button 
+                  onClick={() => setShowBusinessTypeSelector(true)}
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="text-sm">Create</span>
+                </Button>
+                
+                {/* Vitana Index - pill style */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => navigate('/health')}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                >
+                  <span className="text-xs opacity-60">🧬</span>
+                  <span className="text-sm font-medium text-primary">742</span>
+                </Button>
+                
+                {/* Autopilot - pill style with label */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setAutopilotOpen(true)}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                >
+                  <Plane className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Autopilot</span>
+                  {pendingCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                    >
+                      {pendingCount}
+                    </Badge>
+                  )}
+                </Button>
               </div>
-              
-              {/* Quick Entry Cards */}
-              <div className="space-y-3 mt-4">
-                <MobileBusinessEntryCard
-                  icon={<Briefcase className="h-5 w-5" />}
-                  title="Manage Services"
-                  subtitle="Create and edit your offerings"
-                  to="/business/services"
-                />
-                <MobileBusinessEntryCard
-                  icon={<TrendingUp className="h-5 w-5" />}
-                  title="Sell & Earn"
-                  subtitle="Reseller commissions and promotions"
-                  to="/business/sell-earn"
-                />
-                <MobileBusinessEntryCard
-                  icon={<Users className="h-5 w-5" />}
-                  title="Client Management"
-                  subtitle="Track active clients and prospects"
-                  to="/business/clients"
-                />
-                <MobileBusinessEntryCard
-                  icon={<BarChart3 className="h-5 w-5" />}
-                  title="View Analytics"
-                  subtitle="Performance insights and growth"
-                  to="/business/analytics"
-                />
-              </div>
-            </div>
-          ) : (
-            /* Mobile Sub-Tab Content */
-            <div className="p-4 pb-32">
-              {activeTab === "services" && (
-                <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
-              )}
-              {activeTab === "clients" && <ClientsSubTabs />}
-              {activeTab === "sell-earn" && isReseller && <SellAndEarnSubTabs />}
-              {activeTab === "analytics" && <AnalyticsSubTabs />}
-            </div>
-          )}
+            </UtilityActionButton>
+            
+            {/* Tab Content */}
+            {activeTab === "overview" && (
+              <SplitBar defaultValue="snapshot">
+                <SplitBarList>
+                  <SplitBarTrigger value="snapshot">📊 Snapshot</SplitBarTrigger>
+                  <SplitBarTrigger value="history">📜 History</SplitBarTrigger>
+                </SplitBarList>
+                
+                <SplitBarContent value="snapshot" className="space-y-4 pt-2">
+                  <MobileKPIStrip 
+                    totalEarnings={earnings.totalEarnings}
+                    earnings30Days={earnings.earnings30Days}
+                    pendingPayout={earnings.pendingPayout}
+                    inWallet={earnings.inWallet}
+                    isLoading={false}
+                  />
+                  <MobileQuickActions 
+                    onCreateEvent={() => setShowSelectionDialog(true)}
+                    onAddToInventory={() => navigate("/business/sell-earn")}
+                    onCreateService={() => setShowCreateService(true)}
+                    onCreatePromotion={() => setShowCampaignDialog(true)}
+                  />
+                </SplitBarContent>
+                
+                <SplitBarContent value="history" className="pt-2">
+                  <EarningsHistoryLedger
+                    transactions={earnings.recentTransactions}
+                    isLoading={false}
+                  />
+                </SplitBarContent>
+              </SplitBar>
+            )}
+
+            {activeTab === "services" && (
+              <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
+            )}
+            {activeTab === "clients" && <ClientsSubTabs />}
+            {activeTab === "sell-earn" && isReseller && <SellAndEarnSubTabs />}
+            {activeTab === "analytics" && <AnalyticsSubTabs />}
+          </div>
         </div>
 
         {/* Dialogs for mobile */}
