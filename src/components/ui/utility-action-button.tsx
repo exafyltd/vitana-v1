@@ -17,7 +17,7 @@ export function UtilityActionButton({ children, className }: UtilityActionButton
       "px-0 py-3 mb-4",
       className
     )}>
-      <div className="flex gap-2 items-center overflow-x-auto">
+      <div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory">
         {children}
       </div>
     </div>

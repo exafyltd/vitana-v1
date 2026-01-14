@@ -28,21 +28,21 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
   
   const latestActions = getLatestActions(2);
 
-  // Compact mobile header - lightweight text header with longevity line
+  // Beautified mobile header - premium, consistent pattern
   if (isMobile) {
     return (
-      <div className={cn("px-0 pt-2 pb-1.5", className)}>
-        <h1 className="text-xl font-semibold text-foreground">
+      <div className={cn("pt-3 pb-2", className)}>
+        <h1 className="text-xl font-bold tracking-tight text-foreground">
           {title} {emoji}
         </h1>
-        <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{description}</p>
-        {/* Subtle longevity indicator line */}
-        <p className="text-xs text-muted-foreground/60 mt-1 flex items-center gap-1.5">
+        <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{description}</p>
+        {/* Longevity indicator with subtle animation */}
+        <div className="flex items-center gap-1.5 mt-1.5 text-xs text-muted-foreground/60">
           <span>🧬</span>
           <span>Vitana 742</span>
           <span>•</span>
-          <span className="text-green-600/70">Live</span>
-        </p>
+          <span className="text-green-600/70 animate-[pulse_3s_ease-in-out_infinite]">Live</span>
+        </div>
       </div>
     );
   }

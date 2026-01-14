@@ -7,39 +7,64 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { communityNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { Plus, MessageSquare, Search } from "lucide-react";
+import { Plus, MessageSquare } from "lucide-react";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 
 export default withScreenId(function Feed() {
   const [createContentOpen, setCreateContentOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("following");
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const { pendingCount } = useAutopilot();
 
   return (
     <AppLayout>
       <SEO title="Feed | Community" description="Stay updated with your community feed" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
-      <div className="p-6">
+      {!isMobile && <SubNavigation items={communityNavigation} />}
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <StandardHeader
           title="Community Feed"
           description="Stay updated with posts, updates, and activities from your community."
           emoji="📱"
         />
 
-        {/* Utility Action Button */}
-        <UtilityActionButton>
-          <ExpandableSearchButton 
-            placeholder="Search Feed…"
-            onSearch={(query) => console.log('Search Feed:', query)}
-          />
-          <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setCreateContentOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Content
-          </Button>
+        {/* Utility Action Button - Unified Mobile Pattern */}
+        <UtilityActionButton className="min-w-0">
+          <div className="flex items-center gap-2.5 min-w-max">
+            <ExpandableSearchButton 
+              placeholder="Search feed..."
+              onSearch={(query) => console.log('Search Feed:', query)}
+            />
+            <UniversalCalendarButton />
+            
+            {/* Create - PRIMARY ACTION */}
+            <Button 
+              size="sm" 
+              onClick={() => setCreateContentOpen(true)}
+              className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              {!isMobile && <span>Content</span>}
+            </Button>
+            
+            {/* Vitana Index chip (mobile only) */}
+            {isMobile && <VitanaIndexChip />}
+            
+            {/* Autopilot chip (mobile only) */}
+            {isMobile && (
+              <AutopilotChip 
+                pendingCount={pendingCount} 
+                onClick={() => setAutopilotOpen(true)} 
+              />
+            )}
+          </div>
         </UtilityActionButton>
 
         {/* Split Navigation */}
@@ -71,6 +96,12 @@ export default withScreenId(function Feed() {
       <CreateContentPopup 
         isOpen={createContentOpen} 
         onClose={() => setCreateContentOpen(false)}
+      />
+      
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
       />
     </AppLayout>
   );

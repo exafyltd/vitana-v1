@@ -16,7 +16,7 @@ const SplitBarList = React.forwardRef<
     <TabsPrimitive.List
       ref={ref}
       className={cn(
-        "flex w-full mb-6 gap-1 overflow-x-auto",
+        "flex w-full mb-6 gap-2 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1",
         className
       )}
       {...props}
@@ -34,7 +34,9 @@ const SplitBarTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+      "flex-1 inline-flex items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 snap-start",
+      "bg-muted/40 text-muted-foreground",
+      "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-md data-[state=active]:font-semibold",
       className
     )}
     {...props}
