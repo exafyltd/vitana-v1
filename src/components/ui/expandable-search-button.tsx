@@ -77,13 +77,16 @@ export function ExpandableSearchButton({
 
   return (
     <Button 
-      variant="outline" 
+      variant="ghost" 
       size="sm" 
       onClick={handleExpand}
-      className={cn("transition-all duration-300 ease-in-out", className)}
+      className={cn(
+        "h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 shrink-0 transition-all duration-300 ease-in-out",
+        className
+      )}
     >
-      <Search className="w-4 h-4 mr-2" />
-      Search
+      <Search className="w-4 h-4" />
+      <span className="text-sm">Search</span>
     </Button>
   );
 }

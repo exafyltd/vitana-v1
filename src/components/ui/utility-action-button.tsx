@@ -14,7 +14,7 @@ interface UtilityActionButtonProps {
 export function UtilityActionButton({ children, className }: UtilityActionButtonProps) {
   return (
     <div className={cn(
-      "px-0 py-3 mb-4",
+      "pt-4 pb-5",
       className
     )}>
       <div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory">

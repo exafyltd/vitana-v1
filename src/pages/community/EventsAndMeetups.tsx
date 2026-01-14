@@ -638,33 +638,32 @@ const EventsAndMeetups = () => {
               <Button 
                 onClick={() => setCreateSelectionOpen(true)}
                 size="sm"
-                className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
               >
                 <Plus className="h-4 w-4" />
-                {!isMobile && <span>Create</span>}
+                {!isMobile && <span className="text-sm">Create</span>}
               </Button>
               
-              {/* Vitana Index - subtle chip on mobile */}
+              {/* Vitana Index - pill style on mobile */}
               {isMobile && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => navigate('/health')}
-                  className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 shrink-0"
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                 >
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-green-400/20 to-blue-500/20 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-primary">742</span>
-                  </div>
+                  <span className="text-xs">🧬</span>
+                  <span className="text-sm font-medium text-primary">742</span>
                 </Button>
               )}
               
-              {/* Autopilot - subtle chip on mobile */}
+              {/* Autopilot - pill style on mobile */}
               {isMobile && (
                 <Button 
                   variant="ghost" 
                   size="sm" 
                   onClick={() => setAutopilotOpen(true)}
-                  className="h-9 w-9 rounded-full bg-muted/50 hover:bg-muted p-0 relative shrink-0"
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                 >
                   <Plane className="h-4 w-4 text-muted-foreground" />
                   {pendingCount > 0 && (
