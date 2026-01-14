@@ -1,4 +1,60 @@
 {
+  "authPage": {
+    "welcomeTitle": "Willkommen bei VITANA",
+    "subtitle": "Ihre personalisierte Gesundheitsplattform",
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "fullName": "Vollständiger Name",
+    "enterEmail": "E-Mail eingeben",
+    "enterPassword": "Passwort eingeben",
+    "enterFullName": "Vollständigen Namen eingeben",
+    "createPassword": "Passwort erstellen",
+    "createAccount": "Konto erstellen",
+    "orContinueWith": "Oder fortfahren mit",
+    "backToPortals": "Zurück zu allen Portalen",
+    "keepLoggedIn": "Angemeldet bleiben"
+  },
+  "events": {
+    "title": "Veranstaltungen & Treffen",
+    "description": "Entdecke lokale Wellness-Treffen",
+    "tabs": {
+      "today": "Heute",
+      "upcoming": "Kommende",
+      "following": "Folgende",
+      "recommended": "Empfohlen"
+    },
+    "noEvents": "Keine Veranstaltungen geplant",
+    "checkBack": "Schau bald wieder für kommende Community-Events!"
+  },
+  "liveRooms": {
+    "title": "Live-Räume",
+    "description": "Nimm an Live-Audio- und Videodiskussionen teil",
+    "tabs": {
+      "live": "Jetzt Live",
+      "scheduled": "Geplant"
+    },
+    "goLive": "Live gehen",
+    "joinRoom": "Raum beitreten",
+    "noRooms": "Keine Live-Räume verfügbar",
+    "demoRoom": "Demo-Raum",
+    "demoRoomDesc": "Dies ist ein Beispielraum. Erstelle deinen eigenen!"
+  },
+  "businessHub": {
+    "title": "Business Hub",
+    "description": "Bauen Sie Ihr Wellness-Geschäft aus",
+    "tabs": {
+      "snapshot": "Übersicht",
+      "services": "Dienste",
+      "sales": "Verkäufe",
+      "insights": "Einblicke"
+    },
+    "recentActivity": "Letzte Aktivitäten",
+    "clients": "Kunden",
+    "analytics": "Analytik",
+    "searchBusiness": "Business durchsuchen..."
+  },
   "intro": {
     "welcomeTo": "WILLKOMMEN BEI VITANALAND",
     "experience": "Erlebnis",

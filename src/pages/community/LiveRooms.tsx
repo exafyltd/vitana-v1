@@ -38,6 +38,7 @@ import type { LiveStream } from "@/hooks/useLiveStreams";
 import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -47,6 +48,7 @@ export default function LiveRooms() {
   const { pendingCount, getLatestActions } = useAutopilot();
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -603,8 +605,8 @@ export default function LiveRooms() {
       {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 pb-24 md:pb-32 scroll-smooth" style={{ scrollPaddingBottom: "96px" }}>
         <StandardHeader
-          title="Live Rooms"
-          description="Join live audio and video discussions with community members."
+          title={translate('liveRooms.title', 'Live Rooms')}
+          description={translate('liveRooms.description', 'Join live audio and video discussions with community members.')}
         />
 
         {/* Utility Action Button */}
@@ -659,7 +661,7 @@ export default function LiveRooms() {
               className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
             >
               <Plus className="h-4 w-4" />
-              <span className="text-sm">Go Live</span>
+              <span className="text-sm">{translate('liveRooms.goLive', 'Go Live')}</span>
             </Button>
           </div>
         </UtilityActionButton>
@@ -668,7 +670,7 @@ export default function LiveRooms() {
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
-              📡 Live
+              📡 {translate('liveRooms.tabs.live', 'Live Now')}
               {filteredLiveRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {filteredLiveRooms.length}
@@ -679,7 +681,7 @@ export default function LiveRooms() {
               )}
             </SplitBarTrigger>
             <SplitBarTrigger value="scheduled">
-              📅 Scheduled
+              📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
               {filteredScheduledRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {filteredScheduledRooms.length}

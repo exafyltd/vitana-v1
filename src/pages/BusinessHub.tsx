@@ -39,6 +39,7 @@ import {
   SplitBarTrigger,
   SplitBarContent,
 } from "@/components/ui/split-bar";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
@@ -47,6 +48,7 @@ export default function BusinessHub() {
   const location = useLocation();
   const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { translate } = useTranslation();
   const [showSelectionDialog, setShowSelectionDialog] = useState(false);
   const [showCreateEvent, setShowCreateEvent] = useState(false);
   const [showCreateMeetup, setShowCreateMeetup] = useState(false);
@@ -118,8 +120,8 @@ export default function BusinessHub() {
           <div className="p-4 pb-32 space-y-4">
             {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub */}
             <StandardHeader
-              title="Business Hub"
-              description="Grow your wellness business"
+              title={translate('businessHub.title', 'Business Hub')}
+              description={translate('businessHub.description', 'Grow your wellness business')}
             />
             
             {/* Action Rail - same pattern */}
@@ -161,7 +163,7 @@ export default function BusinessHub() {
             >
               <div className="flex items-center gap-2 min-w-max">
                 <ExpandableSearchButton 
-                  placeholder="Search business..."
+                  placeholder={translate('businessHub.searchBusiness', 'Search business...')}
                   onSearch={(query) => console.log('Search:', query)}
                 />
                 <UniversalCalendarButton />
@@ -182,10 +184,10 @@ export default function BusinessHub() {
             {/* Consolidated SplitBar - All sections in one tab bar */}
             <SplitBar defaultValue="snapshot" className="w-full">
               <SplitBarList>
-                <SplitBarTrigger value="snapshot">📊 Snapshot</SplitBarTrigger>
-                <SplitBarTrigger value="services">💼 Services</SplitBarTrigger>
-                {isReseller && <SplitBarTrigger value="sales">🎫 Sales</SplitBarTrigger>}
-                <SplitBarTrigger value="insights">📈 Insights</SplitBarTrigger>
+                <SplitBarTrigger value="snapshot">📊 {translate('businessHub.tabs.snapshot', 'Snapshot')}</SplitBarTrigger>
+                <SplitBarTrigger value="services">💼 {translate('businessHub.tabs.services', 'Services')}</SplitBarTrigger>
+                {isReseller && <SplitBarTrigger value="sales">🎫 {translate('businessHub.tabs.sales', 'Sales')}</SplitBarTrigger>}
+                <SplitBarTrigger value="insights">📈 {translate('businessHub.tabs.insights', 'Insights')}</SplitBarTrigger>
               </SplitBarList>
               
               {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
@@ -205,7 +207,7 @@ export default function BusinessHub() {
                 />
                 {/* Recent Activity inline */}
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-1">Recent Activity</h3>
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.recentActivity', 'Recent Activity')}</h3>
                   <EarningsHistoryLedger
                     transactions={earnings.recentTransactions}
                     isLoading={false}
@@ -226,11 +228,11 @@ export default function BusinessHub() {
               {/* Insights Tab - Clients + Analytics combined */}
               <SplitBarContent value="insights" className="pt-2 space-y-6">
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-1">Clients</h3>
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.clients', 'Clients')}</h3>
                   <ClientsSubTabs />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-1">Analytics</h3>
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.analytics', 'Analytics')}</h3>
                   <AnalyticsSubTabs />
                 </div>
               </SplitBarContent>
