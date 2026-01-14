@@ -253,24 +253,38 @@ serve(async (req) => {
       // Handle VOUCHER purchases
       else if (checkoutType === 'voucher') {
         const orderId = meta.order_id;
+        const voucherId = meta.voucher_id;
         
         if (orderId) {
           console.log('Processing voucher purchase:', orderId);
           
           // Update voucher_orders status to completed
-          const { error: voucherError } = await supabaseClient
+          const { error: orderError } = await supabaseClient
             .from('voucher_orders')
             .update({
               status: 'completed',
-              stripe_payment_intent_id: session.payment_intent as string,
-              purchased_at: new Date().toISOString(),
+              payment_intent_id: session.payment_intent as string,
             })
             .eq('id', orderId);
 
-          if (voucherError) {
-            console.error('Error updating voucher order status:', voucherError);
+          if (orderError) {
+            console.error('Error updating voucher order status:', orderError);
           } else {
-            console.log('Voucher purchase completed:', orderId);
+            console.log('Voucher order completed:', orderId);
+          }
+
+          // Update voucher status to active
+          if (voucherId) {
+            const { error: voucherError } = await supabaseClient
+              .from('vouchers')
+              .update({ status: 'active' })
+              .eq('id', voucherId);
+
+            if (voucherError) {
+              console.error('Error updating voucher status:', voucherError);
+            } else {
+              console.log('Voucher activated:', voucherId);
+            }
           }
         }
       }
