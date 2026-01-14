@@ -23,9 +23,7 @@ import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane, Gift } from 'lucide-react';
-import { GiftVoucherButton } from "@/components/voucher/GiftVoucherButton";
-import { MaxinaVoucherModal } from "@/components/voucher/MaxinaVoucherModal";
+import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
@@ -375,7 +373,6 @@ const EventsAndMeetups = () => {
   const [promoteCampaignOpen, setPromoteCampaignOpen] = useState(false);
   const [eventToPromote, setEventToPromote] = useState<any>(null);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
-  const [voucherModalOpen, setVoucherModalOpen] = useState(false);
 
   // Filter events by time
   const todayEvents = useMemo(() => {
@@ -661,9 +658,6 @@ const EventsAndMeetups = () => {
                 <Plus className="h-4 w-4" />
                 <span className="text-sm">Create</span>
               </Button>
-              
-              {/* Gift Voucher button */}
-              <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
               
               {/* Vitana Index - pill style on mobile */}
               {isMobile && (
@@ -984,11 +978,6 @@ const EventsAndMeetups = () => {
         onOpenChange={setAutopilotOpen}
       />
 
-      {/* Gift Voucher Modal */}
-      <MaxinaVoucherModal
-        open={voucherModalOpen}
-        onOpenChange={setVoucherModalOpen}
-      />
     </>
   );
 };
