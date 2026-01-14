@@ -7,12 +7,13 @@ import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { useStreamingState } from "@/context/StreamingStateContext";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const navItems = [
-  { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups' },
-  { id: 'business', icon: Briefcase, label: 'Business', path: '/business' },
-  { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms' },
-  { id: 'profile', icon: User, label: 'Profile', path: '/me/profile' },
+  { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
+  { id: 'business', icon: Briefcase, label: 'Business', path: '/business', i18nKey: 'mobileNav.business' },
+  { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
+  { id: 'profile', icon: User, label: 'Profile', path: '/me/profile', i18nKey: 'mobileNav.profile' },
 ];
 
 /**
@@ -77,7 +78,7 @@ export function MobileBottomNav() {
       <div className="relative flex items-end justify-around bg-background/80 backdrop-blur-xl border-t border-border/50 pb-safe pt-2 px-1">
         {/* Left nav items: Events, Business */}
         {leftItems.map((item) => (
-          <NavItem key={item.id} {...item} />
+          <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
         ))}
         
         {/* Center Orb - elevated "pop-out" design */}
@@ -116,7 +117,7 @@ export function MobileBottomNav() {
         
         {/* Right nav items: Live, Profile */}
         {rightItems.map((item) => (
-          <NavItem key={item.id} {...item} />
+          <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
         ))}
       </div>
     </motion.nav>
@@ -128,9 +129,12 @@ interface NavItemProps {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   path: string;
+  i18nKey?: string;
 }
 
-function NavItem({ icon: Icon, label, path }: NavItemProps) {
+function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
+  const { translate } = useTranslation();
+  
   return (
     <NavLink
       to={path}
@@ -144,7 +148,7 @@ function NavItem({ icon: Icon, label, path }: NavItemProps) {
       }
     >
       <Icon className="w-5 h-5" />
-      <span className="text-[10px] font-medium">{label}</span>
+      <span className="text-[10px] font-medium">{translate(i18nKey ?? '', label)}</span>
     </NavLink>
   );
 }
