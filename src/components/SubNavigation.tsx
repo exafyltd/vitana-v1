@@ -1,12 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ConnectionStatus } from "./ui/ConnectionStatus";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface SubNavItem {
   id: string;
   name: string;
   path: string;
   indicator?: React.ReactNode;
+  i18nKey?: string; // Translation key for internationalization
 }
 
 interface SubNavigationProps {
@@ -16,6 +18,8 @@ interface SubNavigationProps {
 }
 
 export default function SubNavigation({ items, className, rightActions }: SubNavigationProps) {
+  const { translate } = useTranslation();
+  
   return (
     <nav className={cn("border-b bg-background/95 backdrop-blur", className)}>
       <div className="px-6 py-3">
@@ -39,7 +43,7 @@ export default function SubNavigation({ items, className, rightActions }: SubNav
                   )
                 }
               >
-                {item.name}
+                {translate(item.i18nKey ?? '', item.name)}
                 {item.indicator}
               </NavLink>
             ))}

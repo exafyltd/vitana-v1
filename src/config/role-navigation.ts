@@ -12,75 +12,76 @@ interface NavigationItem {
   title: string;
   path: string;
   icon: any;
+  i18nKey?: string; // Translation key for internationalization
 }
 
 // Community Role Navigation - Social platform focused
 export const communityNavigation: NavigationItem[] = [
-  { title: "Home", path: "/home", icon: LayoutDashboard },
-  { title: "Community", path: "/comm", icon: MessageSquare },
-  { title: "Discover", path: "/discover", icon: Search },
-  { title: "Business Hub", path: "/business", icon: Briefcase },
-  { title: "Inbox", path: "/inbox", icon: MessageSquare },
-  { title: "Health", path: "/health", icon: Heart },
-  { title: "AI Assistant", path: "/assistant", icon: Sparkles },
-  { title: "Wallet", path: "/wallet", icon: Wallet },
-  { title: "Sharing", path: "/sharing", icon: Share2 },
-  { title: "Memory", path: "/memory", icon: Database },
-  { title: "Settings", path: "/settings", icon: Settings },
+  { title: "Home", path: "/home", icon: LayoutDashboard, i18nKey: "sidebar.home" },
+  { title: "Community", path: "/comm", icon: MessageSquare, i18nKey: "sidebar.community" },
+  { title: "Discover", path: "/discover", icon: Search, i18nKey: "sidebar.discover" },
+  { title: "Business Hub", path: "/business", icon: Briefcase, i18nKey: "sidebar.businessHub" },
+  { title: "Inbox", path: "/inbox", icon: MessageSquare, i18nKey: "sidebar.inbox" },
+  { title: "Health", path: "/health", icon: Heart, i18nKey: "sidebar.health" },
+  { title: "AI Assistant", path: "/assistant", icon: Sparkles, i18nKey: "sidebar.aiAssistant" },
+  { title: "Wallet", path: "/wallet", icon: Wallet, i18nKey: "sidebar.wallet" },
+  { title: "Sharing", path: "/sharing", icon: Share2, i18nKey: "sidebar.sharing" },
+  { title: "Memory", path: "/memory", icon: Database, i18nKey: "sidebar.memory" },
+  { title: "Settings", path: "/settings", icon: Settings, i18nKey: "sidebar.settings" },
 ];
 
 // Patient Role Navigation - Health management focused
 export const patientNavigation: NavigationItem[] = [
-  { title: "Dashboard", path: "/patient/dashboard", icon: LayoutDashboard },
-  { title: "My Health", path: "/patient/health", icon: Heart },
-  { title: "Appointments", path: "/patient/appointments", icon: Calendar },
-  { title: "Test Results", path: "/patient/results", icon: TestTube },
-  { title: "Care Team", path: "/patient/care-team", icon: Users },
-  { title: "Health Goals", path: "/patient/goals", icon: Target },
-  { title: "Insurance", path: "/patient/insurance", icon: Shield },
-  { title: "Notifications", path: "/patient/notifications", icon: Bell },
-  { title: "Settings", path: "/settings", icon: Settings },
+  { title: "Dashboard", path: "/patient/dashboard", icon: LayoutDashboard, i18nKey: "sidebar.dashboard" },
+  { title: "My Health", path: "/patient/health", icon: Heart, i18nKey: "sidebar.myHealth" },
+  { title: "Appointments", path: "/patient/appointments", icon: Calendar, i18nKey: "sidebar.appointments" },
+  { title: "Test Results", path: "/patient/results", icon: TestTube, i18nKey: "sidebar.testResults" },
+  { title: "Care Team", path: "/patient/care-team", icon: Users, i18nKey: "sidebar.careTeam" },
+  { title: "Health Goals", path: "/patient/goals", icon: Target, i18nKey: "sidebar.healthGoals" },
+  { title: "Insurance", path: "/patient/insurance", icon: Shield, i18nKey: "sidebar.insurance" },
+  { title: "Notifications", path: "/patient/notifications", icon: Bell, i18nKey: "sidebar.notifications" },
+  { title: "Settings", path: "/settings", icon: Settings, i18nKey: "sidebar.settings" },
 ];
 
 // Professional Role Navigation - Healthcare provider focused
 export const professionalNavigation: NavigationItem[] = [
-  { title: "Dashboard", path: "/professional/dashboard", icon: LayoutDashboard },
-  { title: "My Patients", path: "/professional/patients", icon: Users },
-  { title: "Schedule", path: "/professional/schedule", icon: Calendar },
-  { title: "Clinical Tools", path: "/professional/tools", icon: Stethoscope },
-  { title: "Referrals", path: "/professional/referrals", icon: FileText },
-  { title: "Billing", path: "/professional/billing", icon: Wallet },
-  { title: "Professional Profile", path: "/professional/profile", icon: UserCheck },
-  { title: "Education", path: "/professional/education", icon: BookOpen },
-  { title: "Settings", path: "/settings", icon: Settings },
+  { title: "Dashboard", path: "/professional/dashboard", icon: LayoutDashboard, i18nKey: "sidebar.dashboard" },
+  { title: "My Patients", path: "/professional/patients", icon: Users, i18nKey: "sidebar.myPatients" },
+  { title: "Schedule", path: "/professional/schedule", icon: Calendar, i18nKey: "sidebar.schedule" },
+  { title: "Clinical Tools", path: "/professional/tools", icon: Stethoscope, i18nKey: "sidebar.clinicalTools" },
+  { title: "Referrals", path: "/professional/referrals", icon: FileText, i18nKey: "sidebar.referrals" },
+  { title: "Billing", path: "/professional/billing", icon: Wallet, i18nKey: "sidebar.billing" },
+  { title: "Professional Profile", path: "/professional/profile", icon: UserCheck, i18nKey: "sidebar.professionalProfile" },
+  { title: "Education", path: "/professional/education", icon: BookOpen, i18nKey: "sidebar.education" },
+  { title: "Settings", path: "/settings", icon: Settings, i18nKey: "sidebar.settings" },
 ];
 
 // Staff Role Navigation - Healthcare staff focused
 export const staffNavigation: NavigationItem[] = [
-  { title: "Dashboard", path: "/staff/dashboard", icon: LayoutDashboard },
-  { title: "Patient Queue", path: "/staff/queue", icon: ClipboardList },
-  { title: "Daily Tasks", path: "/staff/tasks", icon: Activity },
-  { title: "Schedule", path: "/staff/schedule", icon: Calendar },
-  { title: "Reports", path: "/staff/reports", icon: BarChart3 },
-  { title: "Communications", path: "/staff/communications", icon: MessageSquare },
-  { title: "Staff Tools", path: "/staff/tools", icon: Zap },
-  { title: "Time Tracking", path: "/staff/time", icon: Clock },
-  { title: "Settings", path: "/settings", icon: Settings },
+  { title: "Dashboard", path: "/staff/dashboard", icon: LayoutDashboard, i18nKey: "sidebar.dashboard" },
+  { title: "Patient Queue", path: "/staff/queue", icon: ClipboardList, i18nKey: "sidebar.patientQueue" },
+  { title: "Daily Tasks", path: "/staff/tasks", icon: Activity, i18nKey: "sidebar.dailyTasks" },
+  { title: "Schedule", path: "/staff/schedule", icon: Calendar, i18nKey: "sidebar.schedule" },
+  { title: "Reports", path: "/staff/reports", icon: BarChart3, i18nKey: "sidebar.reports" },
+  { title: "Communications", path: "/staff/communications", icon: MessageSquare, i18nKey: "sidebar.communications" },
+  { title: "Staff Tools", path: "/staff/tools", icon: Zap, i18nKey: "sidebar.staffTools" },
+  { title: "Time Tracking", path: "/staff/time", icon: Clock, i18nKey: "sidebar.timeTracking" },
+  { title: "Settings", path: "/settings", icon: Settings, i18nKey: "sidebar.settings" },
 ];
 
 // Admin Role Navigation - System management focused
 export const adminNavigation: NavigationItem[] = [
-  { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
-  { title: "User Management", path: "/admin/user-management", icon: Users },
-  { title: "Community Supervision", path: "/admin/community", icon: Flag },
-  { title: "Media Management", path: "/admin/media", icon: Video },
-  { title: "AI Assistant", path: "/admin/ai-assistant", icon: Sparkles },
-  { title: "Automation", path: "/admin/automation", icon: Zap },
-  { title: "Live & Stream", path: "/admin/live-stream", icon: Radio },
-  { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield },
-  { title: "System Admin", path: "/admin/system/bootstrap", icon: Settings },
-  { title: "Clinical Ops", path: "/admin/clinical/patient-records", icon: Stethoscope },
-  { title: "Monitoring", path: "/admin/monitoring/reports", icon: Activity },
+  { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard, i18nKey: "sidebar.dashboard" },
+  { title: "User Management", path: "/admin/user-management", icon: Users, i18nKey: "sidebar.userManagement" },
+  { title: "Community Supervision", path: "/admin/community", icon: Flag, i18nKey: "sidebar.communitySupervision" },
+  { title: "Media Management", path: "/admin/media", icon: Video, i18nKey: "sidebar.mediaManagement" },
+  { title: "AI Assistant", path: "/admin/ai-assistant", icon: Sparkles, i18nKey: "sidebar.aiAssistant" },
+  { title: "Automation", path: "/admin/automation", icon: Zap, i18nKey: "sidebar.automation" },
+  { title: "Live & Stream", path: "/admin/live-stream", icon: Radio, i18nKey: "sidebar.liveStream" },
+  { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield, i18nKey: "sidebar.tenantManagement" },
+  { title: "System Admin", path: "/admin/system/bootstrap", icon: Settings, i18nKey: "sidebar.systemAdmin" },
+  { title: "Clinical Ops", path: "/admin/clinical/patient-records", icon: Stethoscope, i18nKey: "sidebar.clinicalOps" },
+  { title: "Monitoring", path: "/admin/monitoring/reports", icon: Activity, i18nKey: "sidebar.monitoring" },
 ];
 
 // Function to get navigation based on user role

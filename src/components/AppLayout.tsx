@@ -38,6 +38,7 @@ import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -73,6 +74,7 @@ function AppSidebar({
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut, user } = useAuth();
   const { cartCount } = useCart();
+  const { translate } = useTranslation();
 
   // Get dynamic navigation based on current role
   const sidebarCategories = getRoleNavigation(currentRole);
@@ -324,7 +326,7 @@ function AppSidebar({
                             <span className={`font-medium transition-colors ${
                               isActive ? "text-primary" : "text-sidebar-foreground group-hover:text-foreground"
                             }`}>
-                              {cat.title}
+                              {translate(cat.i18nKey ?? '', cat.title)}
                             </span>
                           )}
                         </Link>
