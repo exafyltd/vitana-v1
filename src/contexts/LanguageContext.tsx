@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 
 interface LanguageContextType {
@@ -38,6 +39,7 @@ function getInitialLanguage(): string {
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   const { preferences, updatePreferences, isLoading } = useUserPreferences();
   
   // RULE 1: Immediate local state for instant UI effect
@@ -69,7 +71,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // RULE 3.5: Persist to localStorage immediately (works before auth)
     setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, language);
     
-    // RULE 4: Auto-update TTS voice when language changes
+    // RULE 4: Only sync to server if authenticated
+    if (!user) {
+      console.log('[LANG] User not authenticated, skipping server sync');
+      return;
+    }
+    
+    // RULE 5: Auto-update TTS voice when language changes
     const currentVoice = preferences?.tts_voice;
     const shouldUpdateVoice = !currentVoice || !currentVoice.startsWith(language);
     

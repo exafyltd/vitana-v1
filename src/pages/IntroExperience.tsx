@@ -12,7 +12,7 @@ import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 // English welcome SSML
 const MAXINA_WELCOME_SSML_EN = `<speak>
@@ -110,9 +110,8 @@ export default function IntroExperience() {
     }, 100);
   };
 
-  // Get current language for TTS
-  const { selectedLanguage } = useLanguage();
-  const isGerman = selectedLanguage === 'de-DE';
+  // Get current language for TTS and translations
+  const { t, isGerman } = useTranslation();
 
   const handlePlayPauseAudio = useCallback(async () => {
     // Ensure soundscape starts on user click
@@ -245,7 +244,7 @@ export default function IntroExperience() {
           className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
           style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
         >
-          Welcome to Vitanaland
+          {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
         </p>
 
         {/* Primary Title - MAXINA in ALL CAPS */}
@@ -261,7 +260,7 @@ export default function IntroExperience() {
           className="text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
           style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
         >
-          Experience
+          {t.intro?.experience || 'Experience'}
         </p>
 
         {/* Longevity Tagline - Single line */}
@@ -269,7 +268,7 @@ export default function IntroExperience() {
           className="text-sm md:text-base text-white/70 text-center mb-10 animate-fade-in whitespace-nowrap"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
-          Your longevity journey, guided.
+          {t.intro?.tagline || 'Your longevity journey, guided.'}
         </p>
 
         {/* CTA Stack - Premium glass buttons */}
@@ -289,12 +288,12 @@ export default function IntroExperience() {
               {isPreparingAudio ? (
                 <>
                   <Loader2 className="w-5 h-5 mr-2.5 animate-spin" />
-                  {isGerman ? 'Vorbereiten...' : 'Preparing...'}
+                  {t.intro?.preparing || 'Preparing...'}
                 </>
               ) : isPlayingAudio ? (
                 <>
                   <Pause className="w-5 h-5 mr-2.5" />
-                  {isGerman ? 'Wiedergabe' : 'Playing'}
+                  {t.intro?.playing || 'Playing'}
                   {/* Animated Equalizer Bars */}
                   <div className="flex gap-0.5 items-end h-4 ml-3">
                     <div 
@@ -314,7 +313,7 @@ export default function IntroExperience() {
               ) : (
                 <>
                   <Play className="w-5 h-5 mr-2.5 fill-current" />
-                  {isGerman ? 'Willkommen abspielen' : 'Play Welcome'}
+                  {t.intro?.playWelcome || 'Play Welcome'}
                 </>
               )}
             </Button>
@@ -328,7 +327,7 @@ export default function IntroExperience() {
             onClick={handleSkip}
             className="text-white/50 hover:text-white/80 text-sm font-medium transition-colors duration-200 underline-offset-4 hover:underline"
           >
-            {isGerman ? 'Intro überspringen' : 'Skip intro'}
+            {t.intro?.skipIntro || 'Skip intro'}
           </button>
         </div>
 
