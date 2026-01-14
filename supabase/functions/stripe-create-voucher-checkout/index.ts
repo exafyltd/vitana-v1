@@ -68,22 +68,46 @@ serve(async (req) => {
     logStep("Request received", { tier });
 
     const priceId = VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES];
-    const tierPrice = tier === "experience" ? 99 : 199;
+    const tierPriceCents = tier === "experience" ? 9900 : 19900;
 
-    // Generate unique voucher code
-    const voucherCode = `MXN-${tier.toUpperCase().slice(0, 3)}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+    // Use a default tenant_id for voucher purchases
+    const DEFAULT_TENANT_ID = "00000000-0000-0000-0000-000000000001";
 
-    // Create pending voucher order record
+    // Create voucher record first (expires in 1 year)
+    const expiresAt = new Date();
+    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+
+    const { data: voucher, error: voucherError } = await supabaseAdmin
+      .from("vouchers")
+      .insert({
+        tier,
+        type: "gift",
+        status: "pending",
+        tenant_id: DEFAULT_TENANT_ID,
+        expires_at: expiresAt.toISOString(),
+      })
+      .select()
+      .single();
+
+    if (voucherError) {
+      logStep("Failed to create voucher", { error: voucherError });
+      throw new Error("Failed to create voucher");
+    }
+
+    logStep("Voucher created", { voucherId: voucher.id });
+
+    // Create voucher order record
     const { data: order, error: orderError } = await supabaseAdmin
       .from("voucher_orders")
       .insert({
+        voucher_id: voucher.id,
         buyer_user_id: user.id,
         buyer_email: buyerEmail,
-        tier,
-        amount: tierPrice,
+        amount_cents: tierPriceCents,
         currency: "EUR",
         status: "pending",
-        voucher_code: voucherCode,
+        tenant_id: DEFAULT_TENANT_ID,
+        provider: "stripe",
       })
       .select()
       .single();
@@ -93,7 +117,7 @@ serve(async (req) => {
       throw new Error("Failed to create voucher order");
     }
 
-    logStep("Voucher order created", { orderId: order.id, voucherCode });
+    logStep("Voucher order created", { orderId: order.id, voucherId: voucher.id });
 
     // Initialize Stripe
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
@@ -124,17 +148,17 @@ serve(async (req) => {
       metadata: {
         type: "voucher",
         order_id: order.id,
+        voucher_id: voucher.id,
         tier,
-        voucher_code: voucherCode,
       },
     });
 
     logStep("Stripe session created", { sessionId: session.id });
 
-    // Update order with stripe session id
+    // Update order with stripe checkout session id
     await supabaseAdmin
       .from("voucher_orders")
-      .update({ stripe_session_id: session.id })
+      .update({ checkout_session_id: session.id })
       .eq("id", order.id);
 
     return new Response(
