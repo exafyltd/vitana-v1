@@ -11,11 +11,21 @@ import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
+import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-const MAXINA_WELCOME_SSML = `<speak>
+// English welcome SSML
+const MAXINA_WELCOME_SSML_EN = `<speak>
   Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
   You're entering the Maxina experience — where calm begins and energy awakens.
   Let's explore, connect, and feel amazing together.
+</speak>`;
+
+// German welcome SSML
+const MAXINA_WELCOME_SSML_DE = `<speak>
+  Willkommen bei <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> Land.
+  Du betrittst die Maxina Erfahrung — wo Ruhe beginnt und Energie erwacht.
+  Lass uns gemeinsam erkunden, verbinden und uns großartig fühlen.
 </speak>`;
 
 export default function IntroExperience() {
@@ -100,6 +110,10 @@ export default function IntroExperience() {
     }, 100);
   };
 
+  // Get current language for TTS
+  const { selectedLanguage } = useLanguage();
+  const isGerman = selectedLanguage === 'de-DE';
+
   const handlePlayPauseAudio = useCallback(async () => {
     // Ensure soundscape starts on user click
     ensureSoundscapePlaying();
@@ -121,13 +135,18 @@ export default function IntroExperience() {
     // Otherwise, fetch and play new audio
     setIsPreparingAudio(true);
     
+    // Select SSML and voice based on current language
+    const ssml = isGerman ? MAXINA_WELCOME_SSML_DE : MAXINA_WELCOME_SSML_EN;
+    const voiceId = isGerman ? 'de-DE-Wavenet-F' : 'en-US-Wavenet-F';
+    const languageCode = isGerman ? 'de-DE' : 'en-US';
+    
     try {
       // Call Google Cloud TTS edge function
       const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
         body: {
-          text: MAXINA_WELCOME_SSML,
-          voiceId: 'en-US-Wavenet-F',
-          languageCode: 'en-US',
+          text: ssml,
+          voiceId: voiceId,
+          languageCode: languageCode,
           speakingRate: 0.96,
           pitch: 1.0,
           useSSML: true
@@ -160,7 +179,7 @@ export default function IntroExperience() {
       setIsPreparingAudio(false);
       toast.error('Audio unavailable now');
     }
-  }, [isPlayingAudio, continueToMaxina, ensureSoundscapePlaying]);
+  }, [isPlayingAudio, continueToMaxina, ensureSoundscapePlaying, isGerman]);
 
   // Keyboard shortcuts - must be after function declarations
   useEffect(() => {
@@ -258,52 +277,58 @@ export default function IntroExperience() {
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Primary Play/Pause Button - Premium glass style */}
-          <Button
-            onClick={handlePlayPauseAudio}
-            disabled={isPreparingAudio}
-            size="lg"
-            className="relative w-full bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white border border-white/30 rounded-2xl px-8 py-5 text-base font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300"
-          >
-            {isPreparingAudio ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2.5 animate-spin" />
-                Preparing...
-              </>
-            ) : isPlayingAudio ? (
-              <>
-                <Pause className="w-5 h-5 mr-2.5" />
-                Playing
-                {/* Animated Equalizer Bars */}
-                <div className="flex gap-0.5 items-end h-4 ml-3">
-                  <div 
-                    className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0s_infinite]"
-                    style={{ height: '4px' }}
-                  />
-                  <div 
-                    className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.15s_infinite]"
-                    style={{ height: '4px' }}
-                  />
-                  <div 
-                    className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.3s_infinite]"
-                    style={{ height: '4px' }}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <Play className="w-5 h-5 mr-2.5 fill-current" />
-                Play Welcome
-              </>
-            )}
-          </Button>
+          {/* Button row: Play Welcome + Language Toggle */}
+          <div className="flex items-center gap-2.5 w-full">
+            {/* Primary Play/Pause Button - Premium glass style */}
+            <Button
+              onClick={handlePlayPauseAudio}
+              disabled={isPreparingAudio}
+              size="lg"
+              className="relative flex-1 bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white border border-white/30 rounded-2xl px-8 py-5 text-base font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300"
+            >
+              {isPreparingAudio ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2.5 animate-spin" />
+                  {isGerman ? 'Vorbereiten...' : 'Preparing...'}
+                </>
+              ) : isPlayingAudio ? (
+                <>
+                  <Pause className="w-5 h-5 mr-2.5" />
+                  {isGerman ? 'Wiedergabe' : 'Playing'}
+                  {/* Animated Equalizer Bars */}
+                  <div className="flex gap-0.5 items-end h-4 ml-3">
+                    <div 
+                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0s_infinite]"
+                      style={{ height: '4px' }}
+                    />
+                    <div 
+                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.15s_infinite]"
+                      style={{ height: '4px' }}
+                    />
+                    <div 
+                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.3s_infinite]"
+                      style={{ height: '4px' }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Play className="w-5 h-5 mr-2.5 fill-current" />
+                  {isGerman ? 'Willkommen abspielen' : 'Play Welcome'}
+                </>
+              )}
+            </Button>
+            
+            {/* Language Toggle - circular, shows opposite flag */}
+            <LanguageToggleButton size="md" />
+          </div>
 
           {/* Skip intro - secondary text button */}
           <button
             onClick={handleSkip}
             className="text-white/50 hover:text-white/80 text-sm font-medium transition-colors duration-200 underline-offset-4 hover:underline"
           >
-            Skip intro
+            {isGerman ? 'Intro überspringen' : 'Skip intro'}
           </button>
         </div>
 

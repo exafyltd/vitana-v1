@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 
 interface LanguageContextType {
   selectedLanguage: string;
@@ -12,9 +13,9 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const languageOptions = [
+  { label: "German (DE)", value: "de-DE" },  // German first - primary language
   { label: "English (EN)", value: "en-US" },
   { label: "Serbian (SR)", value: "sr-RS" },
-  { label: "German (DE)", value: "de-DE" },
   { label: "Arabic (AR)", value: "ar-XA" },
   { label: "Spanish (ES)", value: "es-ES" },
   { label: "Russian (RU)", value: "ru-RU" },
@@ -25,14 +26,23 @@ export const languageOptions = [
 ];
 
 const ALLOWED_LANGUAGES = languageOptions.map(opt => opt.value);
+const LANGUAGE_STORAGE_KEY = 'selected_language';
+
+// Get initial language: localStorage > de-DE (German default for primary user base)
+function getInitialLanguage(): string {
+  const stored = getLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY);
+  if (stored && ALLOWED_LANGUAGES.includes(stored)) {
+    return stored;
+  }
+  return 'de-DE'; // German as default for new users
+}
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { preferences, updatePreferences, isLoading } = useUserPreferences();
   
   // RULE 1: Immediate local state for instant UI effect
-  const [selectedLanguage, setLocalLanguage] = useState<string>(
-    preferences?.stt_language || "en-US"
-  );
+  // Initialize from localStorage (persisted) or default to German
+  const [selectedLanguage, setLocalLanguage] = useState<string>(getInitialLanguage);
   const [lastLanguageChangeAt, setLastLanguageChangeAt] = useState<number>(0);
 
   // Sync from server preferences on load/change
@@ -46,8 +56,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setSelectedLanguage = (language: string) => {
     // RULE 2: Validate against allowed set
     if (!ALLOWED_LANGUAGES.includes(language)) {
-      console.error('[LANG] Invalid language:', language, '- fallback to en-US');
-      language = "en-US";
+      console.error('[LANG] Invalid language:', language, '- fallback to de-DE');
+      language = "de-DE";
     }
     
     console.log('[LANG] Rule-based change:', language, new Date().toISOString());
@@ -56,6 +66,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLocalLanguage(language);
     setLastLanguageChangeAt(Date.now());
     
+    // RULE 3.5: Persist to localStorage immediately (works before auth)
+    setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, language);
+    
     // RULE 4: Auto-update TTS voice when language changes
     const currentVoice = preferences?.tts_voice;
     const shouldUpdateVoice = !currentVoice || !currentVoice.startsWith(language);
@@ -63,9 +76,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (shouldUpdateVoice) {
       // Default Chirp 3 HD voices for each language
       const defaultVoices: Record<string, string> = {
+        'de-DE': 'de-DE-Chirp3-HD-Achernar',  // German first
         'en-US': 'en-US-Chirp3-HD-Leda',
         'sr-RS': 'sr-RS-Standard-B',  // Serbian uses Google Speech
-        'de-DE': 'de-DE-Chirp3-HD-Achernar',
         'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
         'es-ES': 'es-ES-Chirp3-HD-Gacrux',
         'ru-RU': 'ru-RU-Chirp3-HD-Kore',
