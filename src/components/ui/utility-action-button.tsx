@@ -8,6 +8,7 @@ interface UtilityActionButtonProps {
   className?: string;
   hideGiftVoucher?: boolean;
   trailingElement?: React.ReactNode;
+  afterGiftVoucherChildren?: React.ReactNode;
 }
 
 /**
@@ -15,13 +16,15 @@ interface UtilityActionButtonProps {
  * across community pages. Positions buttons on the left edge, aligned
  * with the header and navigation elements.
  * 
- * Automatically includes the Gift Voucher button at the end of every utility bar.
+ * Automatically includes the Gift Voucher button after children.
+ * Use afterGiftVoucherChildren for elements that should appear after Gift Voucher.
  */
 export function UtilityActionButton({ 
   children, 
   className,
   hideGiftVoucher = false,
-  trailingElement
+  trailingElement,
+  afterGiftVoucherChildren
 }: UtilityActionButtonProps) {
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
 
@@ -31,10 +34,13 @@ export function UtilityActionButton({
         <div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory">
           {children}
           
-          {/* Global Gift Voucher button - appears on all utility bars */}
+          {/* Global Gift Voucher button - appears after main action buttons */}
           {!hideGiftVoucher && (
             <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
           )}
+          
+          {/* Elements that appear after Gift Voucher (e.g., Vitana Index, Autopilot on mobile) */}
+          {afterGiftVoucherChildren}
           
           {/* Trailing element (e.g., refresh button) - always last */}
           {trailingElement}

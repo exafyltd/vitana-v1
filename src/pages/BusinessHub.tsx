@@ -123,7 +123,42 @@ export default function BusinessHub() {
             />
             
             {/* Action Rail - same pattern */}
-            <UtilityActionButton className="min-w-0">
+            <UtilityActionButton 
+              className="min-w-0"
+              afterGiftVoucherChildren={
+                <>
+                  {/* Vitana Index - pill style */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => navigate('/health')}
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                  >
+                    <span className="text-xs opacity-60">🧬</span>
+                    <span className="text-sm font-medium text-primary">742</span>
+                  </Button>
+                  
+                  {/* Autopilot - pill style with label */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setAutopilotOpen(true)}
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                  >
+                    <Plane className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Autopilot</span>
+                    {pendingCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                      >
+                        {pendingCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </>
+              }
+            >
               <div className="flex items-center gap-2 min-w-max">
                 <ExpandableSearchButton 
                   placeholder="Search business..."
@@ -140,36 +175,6 @@ export default function BusinessHub() {
                 >
                   <Plus className="h-4 w-4" />
                   <span className="text-sm">Create</span>
-                </Button>
-                
-                {/* Vitana Index - pill style */}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => navigate('/health')}
-                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-                >
-                  <span className="text-xs opacity-60">🧬</span>
-                  <span className="text-sm font-medium text-primary">742</span>
-                </Button>
-                
-                {/* Autopilot - pill style with label */}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setAutopilotOpen(true)}
-                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
-                >
-                  <Plane className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Autopilot</span>
-                  {pendingCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
-                    >
-                      {pendingCount}
-                    </Badge>
-                  )}
                 </Button>
               </div>
             </UtilityActionButton>
