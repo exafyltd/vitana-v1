@@ -48,7 +48,9 @@ export default function DevPipelines() {
           />
 
           {/* Utility Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search pipelines…"
               onSearch={(query) => console.log('Search:', query)}
@@ -58,7 +60,6 @@ export default function DevPipelines() {
               <Plus className="w-4 h-4 mr-2" />
               New Pipeline
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}

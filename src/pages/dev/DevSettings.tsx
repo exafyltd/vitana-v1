@@ -114,7 +114,9 @@ export default function DevSettings() {
           />
 
           {/* Utility Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search settings…"
               onSearch={(query) => console.log('Search:', query)}
@@ -124,7 +126,6 @@ export default function DevSettings() {
               <Plus className="w-4 h-4 mr-2" />
               Add Config
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}

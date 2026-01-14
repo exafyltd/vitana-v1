@@ -112,7 +112,9 @@ export default function DevDocs() {
           />
 
           {/* Utility Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search docs…"
               onSearch={(query) => console.log('Search:', query)}
@@ -122,7 +124,6 @@ export default function DevDocs() {
               <Plus className="w-4 h-4 mr-2" />
               {getButtonLabel()}
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Content based on active tab */}

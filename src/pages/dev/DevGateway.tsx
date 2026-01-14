@@ -39,7 +39,9 @@ export default function DevGateway() {
           />
 
           {/* Utility Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search endpoints…"
               onSearch={(query) => console.log('Search:', query)}
@@ -49,7 +51,6 @@ export default function DevGateway() {
               <Plus className="w-4 h-4 mr-2" />
               New Endpoint
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           {/* Split-Screen Navigation Bar */}

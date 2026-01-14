@@ -36,7 +36,9 @@ export default function CommandCompose() {
             emoji="✏️"
           />
 
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={<RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />}
+          >
             <ExpandableSearchButton 
               placeholder="Search templates…"
               onSearch={(query) => console.log('Search:', query)}
@@ -46,7 +48,6 @@ export default function CommandCompose() {
               <CheckCircle className="w-4 h-4 mr-2" />
               Validate
             </Button>
-            <RestoreSessionButton onClick={() => setRestoreSessionOpen(true)} />
           </UtilityActionButton>
 
           <SplitBar value={activeTab} onValueChange={setActiveTab}>

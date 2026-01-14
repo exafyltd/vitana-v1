@@ -7,6 +7,7 @@ interface UtilityActionButtonProps {
   children: React.ReactNode;
   className?: string;
   hideGiftVoucher?: boolean;
+  trailingElement?: React.ReactNode;
 }
 
 /**
@@ -19,7 +20,8 @@ interface UtilityActionButtonProps {
 export function UtilityActionButton({ 
   children, 
   className,
-  hideGiftVoucher = false 
+  hideGiftVoucher = false,
+  trailingElement
 }: UtilityActionButtonProps) {
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
 
@@ -33,6 +35,9 @@ export function UtilityActionButton({
           {!hideGiftVoucher && (
             <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
           )}
+          
+          {/* Trailing element (e.g., refresh button) - always last */}
+          {trailingElement}
         </div>
       </div>
       
