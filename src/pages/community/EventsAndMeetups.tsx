@@ -639,7 +639,7 @@ const EventsAndMeetups = () => {
                 onClick={() => setCreateSelectionOpen(true)}
                 variant="ghost"
                 size="sm"
-                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
               >
                 <Plus className="h-4 w-4" />
                 <span className="text-sm">Create</span>
