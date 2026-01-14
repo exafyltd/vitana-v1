@@ -468,7 +468,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
          {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
        </div>
        
-       {/* Mobile ORB removed - now only shown on Intro/Auth screens */}
+        {/* Mobile ORB - centered above bottom nav on all in-app screens */}
+        <MobileFixedOrb />
     </div>
   );
 }
