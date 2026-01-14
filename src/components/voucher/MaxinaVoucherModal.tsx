@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useCreateVoucherCheckout } from "@/hooks/useVouchers";
+import { toast } from "sonner";
 
 type VoucherTier = "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success";
@@ -43,17 +46,39 @@ const tiers = {
 export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalProps) => {
   const [selectedTier, setSelectedTier] = useState<VoucherTier | null>(null);
   const [modalState, setModalState] = useState<ModalState>("selection");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const createCheckout = useCreateVoucherCheckout();
+
+  // Check for success return from Stripe
+  useEffect(() => {
+    const voucherSuccess = searchParams.get("voucher_success");
+    if (voucherSuccess === "true") {
+      setModalState("success");
+      onOpenChange(true);
+      // Clean up URL params
+      searchParams.delete("voucher_success");
+      searchParams.delete("order_id");
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams, onOpenChange]);
 
   const handleBuyVoucher = async () => {
     if (!selectedTier) return;
     
     setModalState("loading");
     
-    // TODO: Call edge function to create Stripe checkout session
-    // For now, simulate a delay then show success
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setModalState("success");
+    try {
+      const result = await createCheckout.mutateAsync({ tier: selectedTier });
+      
+      // Redirect to Stripe Checkout
+      if (result.url) {
+        window.location.href = result.url;
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error("Failed to start checkout. Please try again.");
+      setModalState("selection");
+    }
   };
 
   const handleClose = () => {

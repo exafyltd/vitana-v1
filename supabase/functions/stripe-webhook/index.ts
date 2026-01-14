@@ -250,6 +250,30 @@ serve(async (req) => {
           }
         }
       }
+      // Handle VOUCHER purchases
+      else if (checkoutType === 'voucher') {
+        const orderId = meta.order_id;
+        
+        if (orderId) {
+          console.log('Processing voucher purchase:', orderId);
+          
+          // Update voucher_orders status to completed
+          const { error: voucherError } = await supabaseClient
+            .from('voucher_orders')
+            .update({
+              status: 'completed',
+              stripe_payment_intent_id: session.payment_intent as string,
+              purchased_at: new Date().toISOString(),
+            })
+            .eq('id', orderId);
+
+          if (voucherError) {
+            console.error('Error updating voucher order status:', voucherError);
+          } else {
+            console.log('Voucher purchase completed:', orderId);
+          }
+        }
+      }
       // Handle PROVIDER APPOINTMENT bookings
       else if (bookingType === 'provider_appointment') {
         const appointmentId = meta.appointment_id;
