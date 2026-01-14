@@ -905,3 +905,14 @@ All colors MUST be HSL.
   .safe-bottom { 
     padding-bottom: calc(env(safe-area-inset-bottom) + 12px); 
   }
+
+  /* Mobile bottom nav height for content padding */
+  .mobile-content-padding {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 768px) {
+    .mobile-content-padding {
+      padding-bottom: 0;
+    }
+  }

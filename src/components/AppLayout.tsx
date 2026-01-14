@@ -37,6 +37,7 @@ import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
 import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -468,8 +469,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
          {/* eslint-disable-next-line jsx-a11y/heading-has-content */}
        </div>
        
-        {/* Mobile ORB - centered above bottom nav on all in-app screens */}
-        <MobileFixedOrb />
+        {/* Mobile Bottom Navigation with integrated Orb */}
+        <MobileBottomNav />
     </div>
   );
 }
