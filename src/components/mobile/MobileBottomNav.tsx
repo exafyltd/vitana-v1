@@ -84,18 +84,17 @@ export function MobileBottomNav() {
         
         {/* Center Orb - elevated "pop-out" design */}
         <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
-          {/* Orb container - positioned higher to pop above the bar */}
+          {/* Orb container - positioned ~20px higher for pop-out effect */}
           <motion.div 
-            className="absolute -top-7"
+            className="absolute -top-12"
             whileTap={{ scale: 0.95 }}
           >
-            {/* Invisible aura - heavily blurred, no visible edges */}
+            {/* Invisible aura - stronger contrast boost, heavily blurred, no visible edges */}
             <div 
-              className="absolute inset-0 -m-6 pointer-events-none"
+              className="absolute inset-0 -m-8 pointer-events-none"
               style={{
-                background: 'radial-gradient(ellipse 70% 60% at 50% 55%, hsl(var(--background) / 0.5) 0%, hsl(var(--background) / 0.2) 40%, transparent 70%)',
-                filter: 'blur(12px)',
-                mixBlendMode: 'soft-light',
+                background: 'radial-gradient(ellipse 80% 70% at 50% 50%, hsl(var(--background) / 0.85) 0%, hsl(var(--background) / 0.5) 30%, hsl(var(--background) / 0.15) 55%, transparent 75%)',
+                filter: 'blur(16px)',
               }}
             />
             
