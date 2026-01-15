@@ -610,7 +610,7 @@ export default function MediaHub() {
                   
                   {/* Upload - PRIMARY ACTION with full options menu */}
                   <ResponsivePopover>
-                    <ResponsivePopoverTrigger>
+                    <ResponsivePopoverTrigger asChild>
                       <Button 
                         variant="ghost"
                         size="sm"
