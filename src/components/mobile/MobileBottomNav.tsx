@@ -75,8 +75,8 @@ export function MobileBottomNav() {
       transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      {/* Glass background with improved contrast */}
-      <div className="relative flex items-end justify-around bg-background/90 backdrop-blur-2xl border-t border-border/60 pb-safe pt-2.5 px-1">
+      {/* Glass background with refined quality */}
+      <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2.5 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
         {/* Left nav items: Events, Business */}
         {leftItems.map((item) => (
           <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
@@ -153,23 +153,28 @@ function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
       to={path}
       className={({ isActive }) =>
         cn(
-          "flex flex-col items-center gap-1 px-3 py-1.5 min-w-[60px] transition-all",
+          "flex flex-col items-center gap-1 px-3 py-1.5 min-w-[60px] transition-colors duration-200",
           isActive 
-            ? "text-foreground opacity-100" 
-            : "text-foreground/70 hover:text-foreground/90"
+            ? "text-foreground" 
+            : "text-muted-foreground hover:text-foreground/80"
         )
       }
     >
       {({ isActive }) => (
         <>
-          <Icon className={cn("w-5 h-5", isActive ? "opacity-100" : "opacity-75")} />
+          <Icon 
+            className={cn(
+              "w-5 h-5 transition-opacity duration-200",
+              isActive ? "opacity-100" : "opacity-60"
+            )} 
+          />
           <span 
             className={cn(
-              "text-xs font-medium",
-              isActive ? "opacity-100" : "opacity-75"
+              "text-[11px] font-semibold tracking-wide transition-opacity duration-200",
+              isActive ? "opacity-100" : "opacity-60"
             )}
             style={{
-              textShadow: '0 1px 2px hsl(var(--background) / 0.5)'
+              textShadow: '0 0.5px 1px hsl(var(--background) / 0.6)'
             }}
           >
             {translate(i18nKey ?? '', label)}
