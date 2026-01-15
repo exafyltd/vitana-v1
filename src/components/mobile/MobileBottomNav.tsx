@@ -19,11 +19,11 @@ const navItems = [
 /**
  * Mobile bottom navigation bar with integrated pop-out Vitana Orb.
  * 
- * Features:
- * - 4 navigation items (Events, Business, Live, Profile)
- * - Central Vitana Orb that "pops out" above the bar
- * - Glass/frosted background with blur
- * - Safe area inset support for notched devices
+ * Z-Index Layering:
+ * - Nav container: z-50 (base)
+ * - Orb aura: z-[51] (above container, below labels)
+ * - Nav labels/icons: z-[52] (above aura, readable)
+ * - Orb itself: z-[53] (topmost, always visible)
  */
 export function MobileBottomNav() {
   const isMobile = useIsMobile();
@@ -75,30 +75,38 @@ export function MobileBottomNav() {
       transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      {/* Glass background with refined quality */}
-      <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2.5 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
-        {/* Left nav items: Events, Business */}
-        {leftItems.map((item) => (
-          <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
-        ))}
+      {/* Glass background - base layer */}
+      <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
         
-        {/* Center Orb - elevated "pop-out" design */}
+        {/* Orb aura layer - z-[51], rendered BEHIND nav items */}
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 bottom-[calc(env(safe-area-inset-bottom)+8px)] pointer-events-none z-[51]"
+          style={{ width: '120px', height: '120px' }}
+        >
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 30%, hsl(var(--background) / 0.95) 0%, hsl(var(--background) / 0.7) 30%, hsl(var(--background) / 0.3) 55%, transparent 75%)',
+              filter: 'blur(16px)',
+              transform: 'translateY(-24px)',
+            }}
+          />
+        </div>
+        
+        {/* Left nav items - z-[52], ABOVE aura */}
+        <div className="relative z-[52] flex items-center">
+          {leftItems.map((item) => (
+            <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
+          ))}
+        </div>
+        
+        {/* Center Orb container */}
         <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
-          {/* Orb container - positioned ~20px higher for pop-out effect */}
+          {/* Orb - z-[53], topmost layer */}
           <motion.div 
-            className="absolute -top-12"
+            className="absolute -top-12 z-[53]"
             whileTap={{ scale: 0.95 }}
           >
-            {/* Invisible aura - stronger contrast boost, heavily blurred, no visible edges */}
-            <div 
-              className="absolute inset-0 -m-[47px] pointer-events-none"
-              style={{
-                background: 'radial-gradient(ellipse 107% 96% at 50% 50%, hsl(var(--background) / 1) 0%, hsl(var(--background) / 0.69) 28%, hsl(var(--background) / 0.24) 52%, transparent 80%)',
-                filter: 'blur(24px)',
-              }}
-            />
-            
-            {/* The Orb itself - floating with enhanced shadow for depth */}
             <div 
               role="button"
               tabIndex={0}
@@ -110,9 +118,9 @@ export function MobileBottomNav() {
                 }
               }}
               aria-label="Ask VITANA for guidance"
-              className="relative cursor-pointer z-10"
+              className="relative cursor-pointer"
               style={{
-                filter: 'drop-shadow(0 4px 12px hsl(var(--background) / 0.4)) drop-shadow(0 2px 4px hsl(var(--background) / 0.3))',
+                filter: 'drop-shadow(0 4px 12px hsl(var(--background) / 0.5)) drop-shadow(0 2px 6px hsl(var(--background) / 0.4))',
               }}
             >
               <VitanalandPortalSeed 
@@ -125,13 +133,15 @@ export function MobileBottomNav() {
           </motion.div>
           
           {/* Spacer to maintain layout */}
-          <div className="h-10" />
+          <div className="h-9" />
         </div>
         
-        {/* Right nav items: Live, Profile */}
-        {rightItems.map((item) => (
-          <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
-        ))}
+        {/* Right nav items - z-[52], ABOVE aura */}
+        <div className="relative z-[52] flex items-center">
+          {rightItems.map((item) => (
+            <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
+          ))}
+        </div>
       </div>
     </motion.nav>
   );
@@ -153,33 +163,41 @@ function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
       to={path}
       className={({ isActive }) =>
         cn(
-          "flex flex-col items-center gap-1 px-3 py-1.5 min-w-[60px] transition-colors duration-200",
-          isActive 
-            ? "text-foreground" 
-            : "text-muted-foreground hover:text-foreground/80"
+          "flex flex-col items-center gap-0.5 px-3 py-1 min-w-[60px] transition-all duration-200"
         )
       }
     >
       {({ isActive }) => (
-        <>
+        <div className="relative flex flex-col items-center">
+          {/* Icon - black, opacity varies */}
           <Icon 
             className={cn(
-              "w-5 h-5 transition-opacity duration-200",
-              isActive ? "opacity-100" : "opacity-60"
+              "w-5 h-5 text-black dark:text-white transition-opacity duration-200",
+              isActive ? "opacity-100" : "opacity-50"
             )} 
           />
+          
+          {/* Label - always black, readable */}
           <span 
             className={cn(
-              "text-[11px] font-semibold tracking-wide transition-opacity duration-200",
-              isActive ? "opacity-100" : "opacity-60"
+              "text-[12px] tracking-tight text-black dark:text-white transition-opacity duration-200",
+              isActive ? "font-semibold opacity-100" : "font-medium opacity-60"
             )}
-            style={{
-              textShadow: '0 0.5px 1px hsl(var(--background) / 0.6)'
-            }}
           >
             {translate(i18nKey ?? '', label)}
           </span>
-        </>
+          
+          {/* Active indicator - centered underline */}
+          {isActive && (
+            <motion.div 
+              layoutId="nav-active-indicator"
+              className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-primary"
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.2 }}
+            />
+          )}
+        </div>
       )}
     </NavLink>
   );
