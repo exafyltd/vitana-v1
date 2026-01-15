@@ -104,6 +104,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isUserNearBottom, setIsUserNearBottom] = useState(true);
+  const hasInitialScrolledRef = useRef<string | null>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
@@ -235,6 +236,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (threadId !== previousThreadId.current) {
       console.log('🔄 Thread switching detected:', { from: previousThreadId.current, to: threadId });
       setIsThreadDataLoaded(false); // Reset thread data loaded state
+      hasInitialScrolledRef.current = null; // Reset scroll tracking for new thread
       previousThreadId.current = threadId;
       
       // Remove artificial delay - let cache handle instant display
@@ -408,17 +410,24 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }, [messages, isUserNearBottom, scrollToBottom]);
 
 
-  // Scroll to latest messages after they are loaded (not immediately on threadId change)
+  // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
   useEffect(() => {
-    if (threadId && messages.length > 0) {
-      // Wait for DOM to update, then scroll to bottom to show latest messages
+    if (threadId && messages.length > 0 && hasInitialScrolledRef.current !== threadId) {
+      // Mark this thread as scrolled to prevent re-scrolling
+      hasInitialScrolledRef.current = threadId;
+      
+      // Wait for DOM to fully render, then scroll instantly (no animation)
       setTimeout(() => {
         requestAnimationFrame(() => {
-          scrollToBottom(true);
+          const el = scrollRef.current;
+          if (el) {
+            // Use instant scroll for initial load - shows last message immediately
+            el.scrollTop = el.scrollHeight;
+          }
         });
-      }, 50);
+      }, 100);
     }
-  }, [threadId, messages.length, scrollToBottom]);
+  }, [threadId, messages.length]);
 
 
   const handleSendMessage = async (
