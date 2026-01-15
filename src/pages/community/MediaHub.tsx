@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { LanguageFlag } from "@/components/ui/language-flag";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2, ChevronDown, Mic, Plus } from "lucide-react";
+import { Play, Pause, Heart, Share2, MessageCircle, Volume2, Eye, Clock, TrendingUp, Bookmark, Search, Upload, Plane, Music, Video, Podcast, Trash2, Loader2, ChevronDown, Mic, Plus, Film } from "lucide-react";
+import { ResponsivePopover, ResponsivePopoverTrigger, ResponsivePopoverContent, ResponsivePopoverClose } from "@/components/ui/responsive-popover";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { extractStoragePath } from "@/lib/utils";
 import { PodcastCard } from "@/components/crossover/PodcastCard";
@@ -607,16 +608,67 @@ export default function MediaHub() {
                   {/* Calendar - default styling */}
                   <UniversalCalendarButton />
                   
-                  {/* Upload - PRIMARY ACTION */}
-                  <Button 
-                    onClick={() => setIsUnifiedUploadOpen(true)}
-                    variant="ghost"
-                    size="sm"
-                    className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span className="text-sm">Upload</span>
-                  </Button>
+                  {/* Upload - PRIMARY ACTION with full options menu */}
+                  <ResponsivePopover>
+                    <ResponsivePopoverTrigger>
+                      <Button 
+                        variant="ghost"
+                        size="sm"
+                        className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                      >
+                        <Plus className="h-4 w-4" />
+                        <span className="text-sm">Upload</span>
+                      </Button>
+                    </ResponsivePopoverTrigger>
+                    <ResponsivePopoverContent title="Upload Media" className="w-64">
+                      <div className="space-y-1">
+                        {/* Video section */}
+                        <p className="text-xs text-muted-foreground font-medium px-3 pt-1 pb-2">Video</p>
+                        <ResponsivePopoverClose>
+                          <button 
+                            onClick={() => { setInitialMediaType('video'); setIsUnifiedUploadOpen(true); }}
+                            className="w-full flex items-center gap-3 px-3 py-3 text-sm rounded-lg hover:bg-accent transition-colors"
+                          >
+                            <Film className="h-4 w-4 text-muted-foreground" />
+                            <span>Single Upload</span>
+                          </button>
+                        </ResponsivePopoverClose>
+                        <ResponsivePopoverClose>
+                          <button 
+                            onClick={() => setIsBulkUploadOpen(true)}
+                            className="w-full flex items-center gap-3 px-3 py-3 text-sm rounded-lg hover:bg-accent transition-colors"
+                          >
+                            <Upload className="h-4 w-4 text-muted-foreground" />
+                            <span>Bulk Upload</span>
+                          </button>
+                        </ResponsivePopoverClose>
+                        
+                        <div className="border-t my-2" />
+                        
+                        {/* Music */}
+                        <ResponsivePopoverClose>
+                          <button 
+                            onClick={() => { setInitialMediaType('music'); setIsUnifiedUploadOpen(true); }}
+                            className="w-full flex items-center gap-3 px-3 py-3 text-sm rounded-lg hover:bg-accent transition-colors"
+                          >
+                            <Music className="h-4 w-4 text-muted-foreground" />
+                            <span>Music</span>
+                          </button>
+                        </ResponsivePopoverClose>
+                        
+                        {/* Podcast */}
+                        <ResponsivePopoverClose>
+                          <button 
+                            onClick={() => { setInitialMediaType('podcast'); setIsUnifiedUploadOpen(true); }}
+                            className="w-full flex items-center gap-3 px-3 py-3 text-sm rounded-lg hover:bg-accent transition-colors"
+                          >
+                            <Mic className="h-4 w-4 text-muted-foreground" />
+                            <span>Podcast</span>
+                          </button>
+                        </ResponsivePopoverClose>
+                      </div>
+                    </ResponsivePopoverContent>
+                  </ResponsivePopover>
                 </div>
               </UtilityActionButton>
             </>
