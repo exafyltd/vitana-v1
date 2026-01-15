@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { 
+  ResponsiveDialog, 
+  ResponsiveDialogContent, 
+  ResponsiveDialogDescription, 
+  ResponsiveDialogHeader, 
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+  ResponsiveDialogTitle 
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,46 +74,48 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-md">
+        <ResponsiveDialogHeader>
           <div className="flex items-center gap-2">
             <Linkedin className="h-5 w-5 text-blue-600" />
-            <DialogTitle>Import from LinkedIn</DialogTitle>
+            <ResponsiveDialogTitle>Import from LinkedIn</ResponsiveDialogTitle>
           </div>
-          <DialogDescription>
+          <ResponsiveDialogDescription>
             Import your professional profile to enrich your Vitana profile
-          </DialogDescription>
-        </DialogHeader>
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="linkedin-url">LinkedIn Profile URL *</Label>
-            <Input
-              id="linkedin-url"
-              placeholder="https://linkedin.com/in/yourname"
-              value={linkedinUrl}
-              onChange={(e) => setLinkedinUrl(e.target.value)}
-            />
+        <ResponsiveDialogBody>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="linkedin-url">LinkedIn Profile URL *</Label>
+              <Input
+                id="linkedin-url"
+                placeholder="https://linkedin.com/in/yourname"
+                value={linkedinUrl}
+                onChange={(e) => setLinkedinUrl(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="bio-text">About Section (Optional)</Label>
+              <Textarea
+                id="bio-text"
+                placeholder="Paste your LinkedIn 'About' section here for AI to parse and enrich your profile..."
+                value={bioText}
+                onChange={(e) => setBioText(e.target.value)}
+                rows={6}
+                className="resize-none"
+              />
+              <p className="text-xs text-muted-foreground">
+                Copy your LinkedIn bio for AI-powered parsing of skills, experience, and headline
+              </p>
+            </div>
           </div>
+        </ResponsiveDialogBody>
 
-          <div className="space-y-2">
-            <Label htmlFor="bio-text">About Section (Optional)</Label>
-            <Textarea
-              id="bio-text"
-              placeholder="Paste your LinkedIn 'About' section here for AI to parse and enrich your profile..."
-              value={bioText}
-              onChange={(e) => setBioText(e.target.value)}
-              rows={6}
-              className="resize-none"
-            />
-            <p className="text-xs text-muted-foreground">
-              Copy your LinkedIn bio for AI-powered parsing of skills, experience, and headline
-            </p>
-          </div>
-        </div>
-
-        <div className="flex justify-end gap-3">
+        <ResponsiveDialogFooter>
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
@@ -126,8 +136,8 @@ export function LinkedInImportDialog({ open, onOpenChange, profileId }: LinkedIn
               'Import Profile'
             )}
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }
