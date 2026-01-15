@@ -75,7 +75,8 @@ export function MobileBottomNav() {
       transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      <div className="relative flex items-end justify-around bg-background/80 backdrop-blur-xl border-t border-border/50 pb-safe pt-2 px-1">
+      {/* Glass background with improved contrast */}
+      <div className="relative flex items-end justify-around bg-background/90 backdrop-blur-2xl border-t border-border/60 pb-safe pt-2.5 px-1">
         {/* Left nav items: Events, Business */}
         {leftItems.map((item) => (
           <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
@@ -83,11 +84,20 @@ export function MobileBottomNav() {
         
         {/* Center Orb - elevated "pop-out" design */}
         <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
-          {/* Orb container - positioned to pop above the bar */}
+          {/* Orb container - positioned higher to pop above the bar */}
           <motion.div 
-            className="absolute -top-6"
+            className="absolute -top-8"
             whileTap={{ scale: 0.95 }}
           >
+            {/* Subtle backdrop/halo behind ORB for visibility */}
+            <div 
+              className="absolute inset-0 -m-3 rounded-full bg-background/60 backdrop-blur-md pointer-events-none"
+              style={{
+                background: 'radial-gradient(circle, hsl(var(--background) / 0.7) 0%, hsl(var(--background) / 0.3) 60%, transparent 100%)',
+                filter: 'blur(6px)',
+              }}
+            />
+            
             {/* The Orb itself - no frame, floating with drop shadow */}
             <div 
               role="button"
@@ -100,7 +110,7 @@ export function MobileBottomNav() {
                 }
               }}
               aria-label="Ask VITANA for guidance"
-              className="relative cursor-pointer drop-shadow-lg"
+              className="relative cursor-pointer drop-shadow-lg z-10"
             >
               <VitanalandPortalSeed 
                 audioState="idle"
@@ -140,15 +150,29 @@ function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
       to={path}
       className={({ isActive }) =>
         cn(
-          "flex flex-col items-center gap-0.5 px-3 py-1.5 min-w-[60px] transition-colors",
+          "flex flex-col items-center gap-1 px-3 py-1.5 min-w-[60px] transition-all",
           isActive 
-            ? "text-primary" 
-            : "text-muted-foreground hover:text-foreground"
+            ? "text-foreground opacity-100" 
+            : "text-foreground/70 hover:text-foreground/90"
         )
       }
     >
-      <Icon className="w-5 h-5" />
-      <span className="text-[10px] font-medium">{translate(i18nKey ?? '', label)}</span>
+      {({ isActive }) => (
+        <>
+          <Icon className={cn("w-5 h-5", isActive ? "opacity-100" : "opacity-75")} />
+          <span 
+            className={cn(
+              "text-xs font-medium",
+              isActive ? "opacity-100" : "opacity-75"
+            )}
+            style={{
+              textShadow: '0 1px 2px hsl(var(--background) / 0.5)'
+            }}
+          >
+            {translate(i18nKey ?? '', label)}
+          </span>
+        </>
+      )}
     </NavLink>
   );
 }
