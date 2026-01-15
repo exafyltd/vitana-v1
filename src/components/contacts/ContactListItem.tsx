@@ -5,16 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Send, Trash2, CheckCircle2 } from "lucide-react";
 import { Contact } from "@/hooks/useContacts";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+  ResponsiveConfirmDialogTrigger,
+} from "@/components/ui/responsive-confirm-dialog";
 
 interface ContactListItemProps {
   contact: Contact;
@@ -107,8 +107,8 @@ export default function ContactListItem({
           )}
 
           {onDelete && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
+            <ResponsiveConfirmDialog>
+              <ResponsiveConfirmDialogTrigger asChild>
                 <Button
                   size="sm"
                   variant="ghost"
@@ -116,25 +116,25 @@ export default function ContactListItem({
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Delete Contact</AlertDialogTitle>
-                  <AlertDialogDescription>
+              </ResponsiveConfirmDialogTrigger>
+              <ResponsiveConfirmDialogContent>
+                <ResponsiveConfirmDialogHeader>
+                  <ResponsiveConfirmDialogTitle>Delete Contact</ResponsiveConfirmDialogTitle>
+                  <ResponsiveConfirmDialogDescription>
                     Are you sure you want to delete {displayName}? This action cannot be undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
+                  </ResponsiveConfirmDialogDescription>
+                </ResponsiveConfirmDialogHeader>
+                <ResponsiveConfirmDialogFooter>
+                  <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                  <ResponsiveConfirmDialogAction
                     onClick={() => onDelete(contact.id)}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
                     Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+                  </ResponsiveConfirmDialogAction>
+                </ResponsiveConfirmDialogFooter>
+              </ResponsiveConfirmDialogContent>
+            </ResponsiveConfirmDialog>
           )}
         </div>
       </div>

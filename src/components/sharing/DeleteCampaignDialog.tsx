@@ -1,13 +1,13 @@
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
@@ -39,22 +39,22 @@ export function DeleteCampaignDialog({
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className={cn(
+    <ResponsiveConfirmDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveConfirmDialogContent className={cn(
         "rounded-2xl border-2",
         "bg-white/85 backdrop-blur-xl",
         "shadow-xl shadow-red-100/50",
         "max-w-md"
       )}>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-xl font-bold text-gray-900">
+        <ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogTitle className="text-xl font-bold text-gray-900">
             Delete Campaign?
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-sm text-gray-600 leading-relaxed">
+          </ResponsiveConfirmDialogTitle>
+          <ResponsiveConfirmDialogDescription className="text-sm text-gray-600 leading-relaxed">
             Deleting <span className="font-semibold text-gray-900">"{campaignName}"</span> will 
             permanently remove all related drafts and analytics. This action can't be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+          </ResponsiveConfirmDialogDescription>
+        </ResponsiveConfirmDialogHeader>
 
         {isDraft && (
           <div className="flex items-center gap-2 py-3">
@@ -72,15 +72,15 @@ export function DeleteCampaignDialog({
           </div>
         )}
 
-        <AlertDialogFooter className="gap-3 sm:gap-3">
-          <AlertDialogCancel className={cn(
+        <ResponsiveConfirmDialogFooter className="gap-3 sm:gap-3">
+          <ResponsiveConfirmDialogCancel className={cn(
             "rounded-lg px-4",
             "bg-gray-100 hover:bg-gray-200",
             "text-gray-700 border-gray-300"
           )}>
             Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
+          </ResponsiveConfirmDialogCancel>
+          <ResponsiveConfirmDialogAction
             onClick={handleConfirm}
             className={cn(
               "rounded-lg px-4",
@@ -91,9 +91,9 @@ export function DeleteCampaignDialog({
             )}
           >
             Delete Permanently
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </ResponsiveConfirmDialogAction>
+        </ResponsiveConfirmDialogFooter>
+      </ResponsiveConfirmDialogContent>
+    </ResponsiveConfirmDialog>
   );
 }

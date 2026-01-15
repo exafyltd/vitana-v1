@@ -5,16 +5,16 @@ import { Clock, Sparkles, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { ActivityHistoryItem } from "@/hooks/useActivityHistory";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+  ResponsiveConfirmDialogTrigger,
+} from "@/components/ui/responsive-confirm-dialog";
 
 interface ActivityCardProps {
   activity: ActivityHistoryItem;
@@ -70,8 +70,8 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                 )}
                 
                 {onDelete && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
+                  <ResponsiveConfirmDialog>
+                    <ResponsiveConfirmDialogTrigger asChild>
                       <Button
                         size="sm"
                         variant="ghost"
@@ -79,25 +79,25 @@ export function ActivityCard({ activity, onPromote, onDelete }: ActivityCardProp
                       >
                         <Trash2 className="w-3 h-3" />
                       </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Activity</AlertDialogTitle>
-                        <AlertDialogDescription>
+                    </ResponsiveConfirmDialogTrigger>
+                    <ResponsiveConfirmDialogContent>
+                      <ResponsiveConfirmDialogHeader>
+                        <ResponsiveConfirmDialogTitle>Delete Activity</ResponsiveConfirmDialogTitle>
+                        <ResponsiveConfirmDialogDescription>
                           Are you sure you want to delete this activity? This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
+                        </ResponsiveConfirmDialogDescription>
+                      </ResponsiveConfirmDialogHeader>
+                      <ResponsiveConfirmDialogFooter>
+                        <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                        <ResponsiveConfirmDialogAction
                           onClick={() => onDelete(activity.id, 'activity')}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                           Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                        </ResponsiveConfirmDialogAction>
+                      </ResponsiveConfirmDialogFooter>
+                    </ResponsiveConfirmDialogContent>
+                  </ResponsiveConfirmDialog>
                 )}
               </div>
             </div>
