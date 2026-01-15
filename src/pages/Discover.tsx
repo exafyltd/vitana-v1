@@ -35,6 +35,7 @@ import { AutopilotPopup } from '@/components/AutopilotPopup';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAutopilot } from '@/hooks/use-autopilot';
 import { cn } from '@/lib/utils';
+import { MobileDiscoverView } from '@/components/discover/MobileDiscoverView';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -199,13 +200,14 @@ export default withScreenId(function Discover() {
         description="AI-powered longevity marketplace with personalized recommendations, wellness services, supplements, and community shopping"
         canonical={window.location.href} 
       />
-      <SubNavigation items={discoverNavigation} />
+      {/* Hide SubNavigation on mobile - guided discovery experience */}
+      {!isMobile && <SubNavigation items={discoverNavigation} />}
       
       <div className={cn(
         "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen",
-        isMobile && "pb-32" // Safe area for bottom nav + orb
+        isMobile && "px-4 pb-32" // Mobile: tighter padding + safe area for bottom nav + orb
       )}>
-          <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
             <StandardHeader
               title={isMobile ? "Discover" : "Discover Your Longevity Marketplace"}
               description={isMobile ? "Explore experiences, people, and wellness" : "Personalized recommendations, browse categories, and earn rewards by sharing with your community"}
@@ -247,7 +249,7 @@ export default withScreenId(function Discover() {
                 </Button>
               </>
             ) : undefined}
-            trailingElement={
+            trailingElement={!isMobile ? (
               <Button 
                 variant="ghost"
                 size="icon"
@@ -257,7 +259,7 @@ export default withScreenId(function Discover() {
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
-            }
+            ) : undefined}
           >
             <ExpandableSearchButton 
               placeholder={isMobile ? "Search..." : "Search marketplace products, services, and experiences…"}
@@ -275,19 +277,23 @@ export default withScreenId(function Discover() {
             </Button>
           </UtilityActionButton>
 
-          {/* Split Bar Navigation */}
-          <SplitBar value={activeTab} onValueChange={setActiveTab}>
-            <SplitBarList>
-              <SplitBarTrigger value="suggested">
-                💡 Suggested for You
-              </SplitBarTrigger>
-              <SplitBarTrigger value="categories">
-                📂 Categories
-              </SplitBarTrigger>
-              <SplitBarTrigger value="share">
-                💰 Share & Earn
-              </SplitBarTrigger>
-            </SplitBarList>
+          {/* Mobile: Guided Discovery View */}
+          {isMobile ? (
+            <MobileDiscoverView aiRecommendations={aiRecommendations} />
+          ) : (
+            /* Desktop: Full Split Bar Navigation */
+            <SplitBar value={activeTab} onValueChange={setActiveTab}>
+              <SplitBarList>
+                <SplitBarTrigger value="suggested">
+                  💡 Suggested for You
+                </SplitBarTrigger>
+                <SplitBarTrigger value="categories">
+                  📂 Categories
+                </SplitBarTrigger>
+                <SplitBarTrigger value="share">
+                  💰 Share & Earn
+                </SplitBarTrigger>
+              </SplitBarList>
 
             {/* Tab 1: Suggested for You */}
             <SplitBarContent value="suggested" className="space-y-6">
@@ -553,6 +559,7 @@ export default withScreenId(function Discover() {
               </Card>
             </SplitBarContent>
           </SplitBar>
+          )}
         </div>
       </div>
       
