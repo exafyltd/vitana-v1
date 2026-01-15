@@ -10,15 +10,15 @@ import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/comp
 import { Plus, Plane } from "lucide-react";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 import { useState, useEffect, useMemo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileLiveRoomCarousel } from "@/components/community/MobileLiveRoomCarousel";
@@ -839,25 +839,25 @@ export default function LiveRooms() {
       )}
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Live Room</AlertDialogTitle>
-            <AlertDialogDescription>
+      <ResponsiveConfirmDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
+        <ResponsiveConfirmDialogContent>
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>Delete Live Room</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
               Are you sure you want to delete this live room? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
               onClick={() => deleteConfirmRoomId && handleDeleteRoom(deleteConfirmRoomId)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
 
     </AppLayout>
   );

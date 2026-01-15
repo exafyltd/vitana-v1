@@ -8,15 +8,15 @@ import {
   SheetContent,
 } from "@/components/ui/sheet";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -506,17 +506,17 @@ export function LiveRoomDrawer({
         </Drawer>
         
         {/* Delete Confirmation Dialog */}
-        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Delete Live Stream?</AlertDialogTitle>
-              <AlertDialogDescription>
+        <ResponsiveConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <ResponsiveConfirmDialogContent>
+            <ResponsiveConfirmDialogHeader>
+              <ResponsiveConfirmDialogTitle>Delete Live Stream?</ResponsiveConfirmDialogTitle>
+              <ResponsiveConfirmDialogDescription>
                 This will permanently delete "{room?.title}". This action cannot be undone.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
+              </ResponsiveConfirmDialogDescription>
+            </ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogFooter>
+              <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+              <ResponsiveConfirmDialogAction
                 onClick={() => {
                   setShowDeleteDialog(false);
                   onDelete?.();
@@ -524,10 +524,10 @@ export function LiveRoomDrawer({
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
               >
                 Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+              </ResponsiveConfirmDialogAction>
+            </ResponsiveConfirmDialogFooter>
+          </ResponsiveConfirmDialogContent>
+        </ResponsiveConfirmDialog>
       </>
     );
   }
@@ -541,17 +541,17 @@ export function LiveRoomDrawer({
       </Sheet>
       
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Live Stream?</AlertDialogTitle>
-            <AlertDialogDescription>
+      <ResponsiveConfirmDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <ResponsiveConfirmDialogContent>
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>Delete Live Stream?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
               This will permanently delete "{room?.title}". This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
               onClick={() => {
                 setShowDeleteDialog(false);
                 onDelete?.();
@@ -559,10 +559,10 @@ export function LiveRoomDrawer({
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
     </>
   );
 }

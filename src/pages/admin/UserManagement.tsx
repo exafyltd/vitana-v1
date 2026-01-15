@@ -24,7 +24,17 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+  ResponsiveConfirmDialogTrigger,
+} from "@/components/ui/responsive-confirm-dialog";
 import { Users, UserPlus, Shield, Trash2, Search, Filter } from "lucide-react";
 
 interface User {
@@ -527,31 +537,31 @@ export default function UserManagement() {
                                     )}
                                   </div>
                                   {canEdit && (
-                                    <AlertDialog>
-                                      <AlertDialogTrigger asChild>
+                                    <ResponsiveConfirmDialog>
+                                      <ResponsiveConfirmDialogTrigger asChild>
                                         <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
                                           <Trash2 className="h-3 w-3" />
                                         </Button>
-                                      </AlertDialogTrigger>
-                                      <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                          <AlertDialogTitle>Revoke Role</AlertDialogTitle>
-                                          <AlertDialogDescription>
+                                      </ResponsiveConfirmDialogTrigger>
+                                      <ResponsiveConfirmDialogContent>
+                                        <ResponsiveConfirmDialogHeader>
+                                          <ResponsiveConfirmDialogTitle>Revoke Role</ResponsiveConfirmDialogTitle>
+                                          <ResponsiveConfirmDialogDescription>
                                             Are you sure you want to revoke the {membership.role} role from {user.email} 
                                             at {membership.tenant.name}? This action cannot be undone.
-                                          </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                          <AlertDialogAction 
+                                          </ResponsiveConfirmDialogDescription>
+                                        </ResponsiveConfirmDialogHeader>
+                                        <ResponsiveConfirmDialogFooter>
+                                          <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                                          <ResponsiveConfirmDialogAction 
                                             onClick={() => handleRevokeRole(membership.id, user.email, membership.role)}
                                             className="bg-destructive text-destructive-foreground"
                                           >
                                             Revoke Role
-                                          </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                      </AlertDialogContent>
-                                    </AlertDialog>
+                                          </ResponsiveConfirmDialogAction>
+                                        </ResponsiveConfirmDialogFooter>
+                                      </ResponsiveConfirmDialogContent>
+                                    </ResponsiveConfirmDialog>
                                   )}
                                 </div>
                               );

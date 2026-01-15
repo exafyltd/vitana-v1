@@ -1,14 +1,14 @@
 import { useState } from "react";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 import { Wallet, ArrowRight, Loader2, CheckCircle } from "lucide-react";
 
 interface TransferToWalletDialogProps {
@@ -35,16 +35,16 @@ export function TransferToWalletDialog({
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="max-w-sm">
-        <AlertDialogHeader>
+    <ResponsiveConfirmDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveConfirmDialogContent className="max-w-sm">
+        <ResponsiveConfirmDialogHeader>
           <div className="mx-auto h-14 w-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-2">
             <Wallet className="h-7 w-7 text-accent" />
           </div>
-          <AlertDialogTitle className="text-center">
+          <ResponsiveConfirmDialogTitle className="text-center">
             Transfer to Wallet
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-center space-y-3">
+          </ResponsiveConfirmDialogTitle>
+          <ResponsiveConfirmDialogDescription className="text-center space-y-3">
             <p>Transfer your pending reseller commissions to your VITANA Wallet.</p>
             
             <div className="flex items-center justify-center gap-2 py-3">
@@ -66,13 +66,13 @@ export function TransferToWalletDialog({
             <p className="text-xs text-muted-foreground">
               This will credit your earnings instantly to your wallet balance.
             </p>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-          <AlertDialogCancel disabled={isLoading} className="rounded-full">
+          </ResponsiveConfirmDialogDescription>
+        </ResponsiveConfirmDialogHeader>
+        <ResponsiveConfirmDialogFooter className="flex-col sm:flex-row gap-2">
+          <ResponsiveConfirmDialogCancel disabled={isLoading} className="rounded-full">
             Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
+          </ResponsiveConfirmDialogCancel>
+          <ResponsiveConfirmDialogAction
             onClick={(e) => {
               e.preventDefault();
               onConfirm();
@@ -91,9 +91,9 @@ export function TransferToWalletDialog({
                 Transfer {formatCurrency(pendingAmount)}
               </>
             )}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </ResponsiveConfirmDialogAction>
+        </ResponsiveConfirmDialogFooter>
+      </ResponsiveConfirmDialogContent>
+    </ResponsiveConfirmDialog>
   );
 }

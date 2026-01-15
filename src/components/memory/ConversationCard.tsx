@@ -5,16 +5,16 @@ import { Clock, Sparkles, User, Bot, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { ConversationExchange } from "@/hooks/useActivityHistory";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+  ResponsiveConfirmDialogTrigger,
+} from "@/components/ui/responsive-confirm-dialog";
 
 interface ConversationCardProps {
   exchange: ConversationExchange;
@@ -102,8 +102,8 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
                 )}
                 
                 {onDelete && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
+                  <ResponsiveConfirmDialog>
+                    <ResponsiveConfirmDialogTrigger asChild>
                       <Button
                         size="sm"
                         variant="ghost"
@@ -111,25 +111,25 @@ export function ConversationCard({ exchange, onPromote, onDelete }: Conversation
                       >
                         <Trash2 className="w-3 h-3" />
                       </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Conversation</AlertDialogTitle>
-                        <AlertDialogDescription>
+                    </ResponsiveConfirmDialogTrigger>
+                    <ResponsiveConfirmDialogContent>
+                      <ResponsiveConfirmDialogHeader>
+                        <ResponsiveConfirmDialogTitle>Delete Conversation</ResponsiveConfirmDialogTitle>
+                        <ResponsiveConfirmDialogDescription>
                           Are you sure you want to delete this conversation? This will remove both the user message and AI response. This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
+                        </ResponsiveConfirmDialogDescription>
+                      </ResponsiveConfirmDialogHeader>
+                      <ResponsiveConfirmDialogFooter>
+                        <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+                        <ResponsiveConfirmDialogAction
                           onClick={() => onDelete(exchange.id, 'conversation')}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                           Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                        </ResponsiveConfirmDialogAction>
+                      </ResponsiveConfirmDialogFooter>
+                    </ResponsiveConfirmDialogContent>
+                  </ResponsiveConfirmDialog>
                 )}
               </div>
             </div>
