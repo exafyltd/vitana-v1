@@ -12,9 +12,19 @@ import { useIsMobile } from "@/hooks/use-mobile"
 interface ResponsivePopoverContextValue {
   open: boolean
   setOpen: (open: boolean) => void
+  isMobile: boolean
 }
 
 const ResponsivePopoverContext = React.createContext<ResponsivePopoverContextValue | null>(null)
+
+// Hook to safely access the context
+const useResponsivePopoverContext = () => {
+  const context = React.useContext(ResponsivePopoverContext)
+  if (!context) {
+    throw new Error("ResponsivePopover components must be used within a ResponsivePopover")
+  }
+  return context
+}
 
 interface ResponsivePopoverProps {
   open?: boolean
@@ -38,7 +48,8 @@ const ResponsivePopover = ({
     onOpenChange?.(newOpen)
   }, [onOpenChange])
 
-  const contextValue = React.useMemo(() => ({ open, setOpen }), [open, setOpen])
+  // Include isMobile in context so children use the same value
+  const contextValue = React.useMemo(() => ({ open, setOpen, isMobile }), [open, setOpen, isMobile])
 
   if (isMobile) {
     return (
@@ -64,7 +75,7 @@ const ResponsivePopoverTrigger = React.forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
 >(({ children, ...props }, ref) => {
-  const isMobile = useIsMobile()
+  const { isMobile } = useResponsivePopoverContext()
   
   if (isMobile) {
     return (
@@ -121,7 +132,7 @@ const ResponsivePopoverContent = React.forwardRef<
   sideOffset = 4, 
   ...props 
 }, ref) => {
-  const isMobile = useIsMobile()
+  const { isMobile } = useResponsivePopoverContext()
 
   if (isMobile) {
     return (
@@ -204,7 +215,7 @@ const ResponsivePopoverClose = React.forwardRef<
   HTMLButtonElement,
   React.ComponentPropsWithoutRef<"button">
 >(({ children, ...props }, ref) => {
-  const isMobile = useIsMobile()
+  const { isMobile } = useResponsivePopoverContext()
   
   if (isMobile) {
     return (
