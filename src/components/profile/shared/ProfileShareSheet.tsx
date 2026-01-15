@@ -2,10 +2,10 @@ import { Copy, Check, Twitter, Linkedin, Mail, Share2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  ResponsivePopover,
+  ResponsivePopoverContent,
+  ResponsivePopoverTrigger,
+} from "@/components/ui/responsive-popover";
 
 interface ShareOption {
   icon: React.ReactNode;
@@ -95,18 +95,14 @@ export const ProfileShareSheet = ({
   }
 
   return (
-    <Popover open={isOpen} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>
+    <ResponsivePopover open={isOpen} onOpenChange={onOpenChange}>
+      <ResponsivePopoverTrigger asChild>
         {trigger}
-      </PopoverTrigger>
-      <PopoverContent 
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent 
         className="w-64 p-2" 
         align="end"
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') {
-            onOpenChange(false);
-          }
-        }}
+        title="Share Profile"
       >
         <div className="flex flex-col gap-1">
           {shareOptions.map((option, index) => (
@@ -122,7 +118,7 @@ export const ProfileShareSheet = ({
             </Button>
           ))}
         </div>
-      </PopoverContent>
-    </Popover>
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   );
 };
