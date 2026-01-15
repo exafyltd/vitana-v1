@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { 
+  ResponsiveDialog, 
+  ResponsiveDialogContent, 
+  ResponsiveDialogDescription, 
+  ResponsiveDialogHeader, 
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+  ResponsiveDialogTitle 
+} from '@/components/ui/responsive-dialog';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, CheckCircle } from 'lucide-react';
@@ -39,49 +47,51 @@ export function HealthConsentGate({ open, onOpenChange, actionDescription, onCon
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="max-w-md">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-amber-500" />
             Data Access Consent Required
-          </DialogTitle>
-          <DialogDescription>
+          </ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>
             You're about to {actionDescription}. This action requires your explicit consent.
-          </DialogDescription>
-        </DialogHeader>
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <Alert>
-          <Shield className="w-4 h-4" />
-          <AlertDescription>
-            Your personal data is protected by privacy regulations (GDPR, HIPAA, PDPA). By proceeding, you consent to this specific action only.
-          </AlertDescription>
-        </Alert>
+        <ResponsiveDialogBody>
+          <Alert>
+            <Shield className="w-4 h-4" />
+            <AlertDescription>
+              Your personal data is protected by privacy regulations (GDPR, HIPAA, PDPA). By proceeding, you consent to this specific action only.
+            </AlertDescription>
+          </Alert>
 
-        <div className="space-y-3 text-sm">
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>You can revoke this consent at any time</span>
+          <div className="space-y-3 text-sm mt-4">
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>You can revoke this consent at any time</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>This consent is logged for your security</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>Recipients must comply with privacy regulations</span>
+            </div>
           </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>This consent is logged for your security</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>Recipients must comply with privacy regulations</span>
-          </div>
-        </div>
+        </ResponsiveDialogBody>
 
-        <DialogFooter>
+        <ResponsiveDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
           <Button onClick={handleConsent}>
             I Consent
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

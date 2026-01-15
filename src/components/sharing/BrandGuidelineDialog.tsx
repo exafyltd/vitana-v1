@@ -1,13 +1,14 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+  ResponsiveDialogTitle,
+} from "@/components/ui/responsive-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,14 +34,10 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Placeholder for actual implementation
     toast({
       title: "Brand guideline created",
       description: `Guidelines for ${channel} have been saved.`,
     });
-
-    // Reset form
     setChannel("");
     setImageSpecs("");
     setBestTimes("");
@@ -49,68 +46,70 @@ export function BrandGuidelineDialog({ open, onOpenChange }: BrandGuidelineDialo
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Create Brand Guideline</DialogTitle>
-          <DialogDescription>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-[500px]">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle>Create Brand Guideline</ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>
             Define channel-specific rules and best practices
-          </DialogDescription>
-        </DialogHeader>
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="channel">Channel</Label>
-              <Select value={channel} onValueChange={setChannel}>
-                <SelectTrigger id="channel">
-                  <SelectValue placeholder="Select channel" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="instagram">Instagram</SelectItem>
-                  <SelectItem value="linkedin">LinkedIn</SelectItem>
-                  <SelectItem value="twitter">Twitter/X</SelectItem>
-                  <SelectItem value="facebook">Facebook</SelectItem>
-                  <SelectItem value="tiktok">TikTok</SelectItem>
-                </SelectContent>
-              </Select>
+          <ResponsiveDialogBody>
+            <div className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="channel">Channel</Label>
+                <Select value={channel} onValueChange={setChannel}>
+                  <SelectTrigger id="channel">
+                    <SelectValue placeholder="Select channel" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="instagram">Instagram</SelectItem>
+                    <SelectItem value="linkedin">LinkedIn</SelectItem>
+                    <SelectItem value="twitter">Twitter/X</SelectItem>
+                    <SelectItem value="facebook">Facebook</SelectItem>
+                    <SelectItem value="tiktok">TikTok</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="imageSpecs">Image Specifications</Label>
+                <Input
+                  id="imageSpecs"
+                  placeholder="e.g., 1080x1080px, JPG/PNG"
+                  value={imageSpecs}
+                  onChange={(e) => setImageSpecs(e.target.value)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="bestTimes">Best Posting Times</Label>
+                <Input
+                  id="bestTimes"
+                  placeholder="e.g., Tue-Thu 9-11am EST"
+                  value={bestTimes}
+                  onChange={(e) => setBestTimes(e.target.value)}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="guidelines">Guidelines & Notes</Label>
+                <Textarea
+                  id="guidelines"
+                  placeholder="Add hashtag rules, tone of voice, character limits..."
+                  value={guidelines}
+                  onChange={(e) => setGuidelines(e.target.value)}
+                  rows={4}
+                />
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="imageSpecs">Image Specifications</Label>
-              <Input
-                id="imageSpecs"
-                placeholder="e.g., 1080x1080px, JPG/PNG"
-                value={imageSpecs}
-                onChange={(e) => setImageSpecs(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="bestTimes">Best Posting Times</Label>
-              <Input
-                id="bestTimes"
-                placeholder="e.g., Tue-Thu 9-11am EST"
-                value={bestTimes}
-                onChange={(e) => setBestTimes(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="guidelines">Guidelines & Notes</Label>
-              <Textarea
-                id="guidelines"
-                placeholder="Add hashtag rules, tone of voice, character limits..."
-                value={guidelines}
-                onChange={(e) => setGuidelines(e.target.value)}
-                rows={4}
-              />
-            </div>
-          </div>
-          <DialogFooter>
+          </ResponsiveDialogBody>
+          <ResponsiveDialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
             <Button type="submit">Save Guideline</Button>
-          </DialogFooter>
+          </ResponsiveDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }
