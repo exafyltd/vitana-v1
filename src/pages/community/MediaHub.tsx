@@ -64,12 +64,6 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
-import {
-  ResponsivePopover,
-  ResponsivePopoverTrigger,
-  ResponsivePopoverContent,
-  ResponsivePopoverClose,
-} from "@/components/ui/responsive-popover";
 // SubscribeButton component
   function SubscribeButton({ show }: { show: PopularShow }) {
     const { user } = useAuth();
@@ -241,7 +235,6 @@ export default function MediaHub() {
   const [videoToDelete, setVideoToDelete] = useState<{ id: string; src_url: string; thumbnail_url?: string } | null>(null);
   const [deleteVideoDialogOpen, setDeleteVideoDialogOpen] = useState(false);
   const [editingVideo, setEditingVideo] = useState<any>(null);
-  const [mobileUploadMenuOpen, setMobileUploadMenuOpen] = useState(false);
   const latestActions = getLatestActions(2);
   
   // Shorts density control
@@ -749,88 +742,13 @@ export default function MediaHub() {
                     <p className="text-sm text-muted-foreground mb-3">
                       {videoShorts.length} shorts available
                     </p>
-                    <div className="flex items-center justify-center gap-3">
-                      {/* Mobile Upload Menu */}
-                      <ResponsivePopover open={mobileUploadMenuOpen} onOpenChange={setMobileUploadMenuOpen}>
-                        <ResponsivePopoverTrigger asChild>
-                          <Button variant="outline" className="rounded-full px-5">
-                            <Plus className="h-4 w-4 mr-2" />
-                            Upload
-                          </Button>
-                        </ResponsivePopoverTrigger>
-                        <ResponsivePopoverContent title="Upload Media" className="w-72">
-                          <div className="flex flex-col gap-1 py-2">
-                            {/* Video Options */}
-                            <button
-                              onClick={() => {
-                                setMobileUploadMenuOpen(false);
-                                setInitialMediaType('video');
-                                setIsUnifiedUploadOpen(true);
-                              }}
-                              className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-accent rounded-lg transition-colors"
-                            >
-                              <Video className="h-5 w-5 text-violet-500" />
-                              <div>
-                                <p className="font-medium">Single Video</p>
-                                <p className="text-xs text-muted-foreground">Upload one video at a time</p>
-                              </div>
-                            </button>
-                            <button
-                              onClick={() => {
-                                setMobileUploadMenuOpen(false);
-                                setIsBulkUploadOpen(true);
-                              }}
-                              className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-accent rounded-lg transition-colors"
-                            >
-                              <Video className="h-5 w-5 text-pink-500" />
-                              <div>
-                                <p className="font-medium">Bulk Videos</p>
-                                <p className="text-xs text-muted-foreground">Upload multiple videos at once</p>
-                              </div>
-                            </button>
-                            <div className="h-px bg-border my-2" />
-                            {/* Music Option */}
-                            <button
-                              onClick={() => {
-                                setMobileUploadMenuOpen(false);
-                                setInitialMediaType('music');
-                                setIsUnifiedUploadOpen(true);
-                              }}
-                              className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-accent rounded-lg transition-colors"
-                            >
-                              <Music className="h-5 w-5 text-emerald-500" />
-                              <div>
-                                <p className="font-medium">Music</p>
-                                <p className="text-xs text-muted-foreground">Upload audio tracks</p>
-                              </div>
-                            </button>
-                            {/* Podcast Option */}
-                            <button
-                              onClick={() => {
-                                setMobileUploadMenuOpen(false);
-                                setInitialMediaType('podcast');
-                                setIsUnifiedUploadOpen(true);
-                              }}
-                              className="flex items-center gap-3 w-full px-4 py-3 text-left hover:bg-accent rounded-lg transition-colors"
-                            >
-                              <Mic className="h-5 w-5 text-orange-500" />
-                              <div>
-                                <p className="font-medium">Podcast</p>
-                                <p className="text-xs text-muted-foreground">Upload podcast episodes</p>
-                              </div>
-                            </button>
-                          </div>
-                        </ResponsivePopoverContent>
-                      </ResponsivePopover>
-                      
-                      <Button
-                        onClick={() => setMobileShortsFeedOpen(true)}
-                        className="bg-gradient-to-r from-violet-500 to-pink-500 text-white rounded-full px-6"
-                      >
-                        <Play className="h-4 w-4 mr-2" />
-                        Watch Shorts
-                      </Button>
-                    </div>
+                    <Button
+                      onClick={() => setMobileShortsFeedOpen(true)}
+                      className="bg-gradient-to-r from-violet-500 to-pink-500 text-white rounded-full px-6"
+                    >
+                      <Play className="h-4 w-4 mr-2" />
+                      Watch Shorts
+                    </Button>
                   </div>
                   
                   {/* Preview grid */}
