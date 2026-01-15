@@ -22,7 +22,7 @@ import { useAutoSave } from "@/hooks/useAutoSave";
 import { useState, useCallback } from "react";
 import { shouldShowField } from "@/lib/profileScope";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileProfileHeader } from "../mobile/MobileProfileHeader";
+import { MobileIdCardSwitcher } from "../mobile/MobileIdCardSwitcher";
 import { MobileProfileStats } from "../mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
@@ -128,16 +128,12 @@ export function ProfileLayout({
       <div className="min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
         {/* NO SmartEditingToolbar on mobile! */}
         
-        {/* Mobile Profile Header */}
-        <MobileProfileHeader
-          avatarUrl={profile.avatarUrl}
-          displayName={profile.name}
-          handle={profile.handle}
-          archetype={profile.longevityArchetype}
-          bio={profile.bio}
-          vitanaIndex={profile.vitanaIndex}
+        {/* ID Card Switcher - Front/Back with segmented control */}
+        <MobileIdCardSwitcher
+          profile={profile}
           editMode={effectiveEditMode}
-          onEdit={onEditIdentity}
+          onEditIdentity={onEditIdentity}
+          onEditSocial={onEditAbout}
         />
         
         {/* Compact Stats Strip */}
@@ -147,7 +143,7 @@ export function ProfileLayout({
           groupsCount={profile.stats?.groupsJoined}
         />
         
-        {/* Sticky Tab Bar */}
+        {/* Sticky Tab Bar for content below ID card */}
         <MobileProfileTabs
           activeTab={mobileActiveTab}
           onTabChange={setMobileActiveTab}
