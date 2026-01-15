@@ -31,6 +31,10 @@ import { ExpandableSearchButton } from '@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { DiscoverMasterActionPopup } from '@/components/discover/DiscoverMasterActionPopup';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
+import { AutopilotPopup } from '@/components/AutopilotPopup';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useAutopilot } from '@/hooks/use-autopilot';
+import { cn } from '@/lib/utils';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -40,9 +44,12 @@ import { UniversalShareButton } from '@/components/sharing/UniversalShareButton'
 
 export default withScreenId(function Discover() {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { logActivity } = useActivityLogger();
+  const { pendingCount } = useAutopilot();
   const [activeTab, setActiveTab] = useState('suggested');
   const [masterActionOpen, setMasterActionOpen] = useState(false);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
 
   // Log discover page view
   useEffect(() => {
@@ -194,16 +201,52 @@ export default withScreenId(function Discover() {
       />
       <SubNavigation items={discoverNavigation} />
       
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className={cn(
+        "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen",
+        isMobile && "pb-32" // Safe area for bottom nav + orb
+      )}>
           <div className="max-w-7xl mx-auto space-y-6">
             <StandardHeader
-              title="Discover Your Longevity Marketplace"
-              description="Personalized recommendations, browse categories, and earn rewards by sharing with your community"
+              title={isMobile ? "Discover" : "Discover Your Longevity Marketplace"}
+              description={isMobile ? "Explore experiences, people, and wellness" : "Personalized recommendations, browse categories, and earn rewards by sharing with your community"}
               emoji="🔍"
             />
 
-          {/* Utility Action Buttons */}
+          {/* Utility Action Buttons - Mobile optimized pill rail */}
           <UtilityActionButton
+            afterGiftVoucherChildren={isMobile ? (
+              <>
+                {/* Vitana Index - pill style on mobile */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => navigate('/health')}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                >
+                  <span className="text-xs opacity-60">🧬</span>
+                  <span className="text-sm font-medium text-primary">742</span>
+                </Button>
+                
+                {/* Autopilot - pill style with label on mobile */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setAutopilotOpen(true)}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                >
+                  <Plane className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Autopilot</span>
+                  {pendingCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                    >
+                      {pendingCount}
+                    </Badge>
+                  )}
+                </Button>
+              </>
+            ) : undefined}
             trailingElement={
               <Button 
                 variant="ghost"
@@ -217,15 +260,18 @@ export default withScreenId(function Discover() {
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search marketplace products, services, and experiences…"
+              placeholder={isMobile ? "Search..." : "Search marketplace products, services, and experiences…"}
             />
             <UniversalCalendarButton />
             <Button 
               size="sm"
               onClick={() => setMasterActionOpen(true)}
+              className={cn(
+                isMobile && "h-9 px-3 rounded-full gap-1.5 shrink-0"
+              )}
             >
-              <Plus className="h-4 w-4 mr-2" />
-              Action
+              <Plus className="h-4 w-4" />
+              {!isMobile && <span className="ml-2">Action</span>}
             </Button>
           </UtilityActionButton>
 
@@ -245,41 +291,50 @@ export default withScreenId(function Discover() {
 
             {/* Tab 1: Suggested for You */}
             <SplitBarContent value="suggested" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                <CardContent className="p-6">
+              <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-white/20 dark:border-border/20">
+                <CardContent className={cn("p-6", isMobile && "p-4")}>
                   <div className="flex items-center gap-2 mb-4">
                     <Brain className="h-6 w-6 text-purple-500" />
-                    <h2 className="text-2xl font-semibold">AI-Powered Recommendations</h2>
+                    <h2 className={cn("font-semibold", isMobile ? "text-lg" : "text-2xl")}>
+                      {isMobile ? "AI Picks" : "AI-Powered Recommendations"}
+                    </h2>
                   </div>
-                  <p className="text-muted-foreground mb-6">
-                    Based on your Vitana Index, biomarkers, sleep scores, stress levels, and health goals
-                  </p>
+                  {!isMobile && (
+                    <p className="text-muted-foreground mb-6">
+                      Based on your Vitana Index, biomarkers, sleep scores, stress levels, and health goals
+                    </p>
+                  )}
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className={cn(
+                    "grid gap-4",
+                    isMobile ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+                  )}>
                     {aiRecommendations.map((rec) => (
-                      <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200">
+                      <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 dark:border-purple-800">
                         <div className="relative">
                           <img 
                             src={rec.image} 
                             alt={rec.title}
-                            className="w-full h-40 object-cover rounded-t-lg"
+                            className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
                           <Badge className="absolute top-2 left-2 bg-purple-500 text-white">
                             {rec.badge}
                           </Badge>
-                          <div className="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1">
-                            <span className="text-xs font-bold text-purple-600">{rec.match}%</span>
+                          <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
+                            <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
                           </div>
                         </div>
-                        <CardContent className="p-4">
+                        <CardContent className={cn("p-4", isMobile && "p-3")}>
                           <h3 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">
                             {rec.title}
                           </h3>
-                          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
-                          <div className="bg-purple-50 p-2 rounded-lg mb-3">
+                          {!isMobile && (
+                            <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
+                          )}
+                          <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
                             <div className="flex items-center gap-1">
                               <Brain className="h-3 w-3 text-purple-500" />
-                              <span className="text-xs text-purple-700">{rec.reason}</span>
+                              <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
                             </div>
                           </div>
                           <div className="flex items-center justify-between mb-2">
@@ -316,36 +371,51 @@ export default withScreenId(function Discover() {
 
             {/* Tab 2: Categories */}
             <SplitBarContent value="categories" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                <CardContent className="p-6">
+              <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-white/20 dark:border-border/20">
+                <CardContent className={cn("p-6", isMobile && "p-4")}>
                   <div className="flex items-center gap-2 mb-4">
                     <Grid3X3 className="h-6 w-6 text-blue-500" />
-                    <h2 className="text-2xl font-semibold">Browse by Category</h2>
+                    <h2 className={cn("font-semibold", isMobile ? "text-lg" : "text-2xl")}>
+                      {isMobile ? "Categories" : "Browse by Category"}
+                    </h2>
                   </div>
-                  <p className="text-muted-foreground mb-6">
-                    Explore supplements, wellness services, lab tests, devices, and experiences
-                  </p>
+                  {!isMobile && (
+                    <p className="text-muted-foreground mb-6">
+                      Explore supplements, wellness services, lab tests, devices, and experiences
+                    </p>
+                  )}
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className={cn(
+                    "grid gap-4",
+                    isMobile ? "grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  )}>
                     {browseCategories.map((category) => (
                       <Card 
                         key={category.id}
-                        className="group hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105"
+                        className={cn(
+                          "group hover:shadow-lg transition-all duration-300 cursor-pointer",
+                          !isMobile && "hover:scale-105"
+                        )}
                         onClick={() => navigate(category.path)}
                       >
-                        <CardContent className="p-6">
+                        <CardContent className={cn("p-6", isMobile && "p-4")}>
                           <div className="flex items-center justify-between mb-4">
-                            <div className="bg-primary/10 p-3 rounded-lg">
-                              <category.icon className="h-6 w-6 text-primary" />
+                            <div className={cn("bg-primary/10 rounded-lg", isMobile ? "p-2" : "p-3")}>
+                              <category.icon className={cn("text-primary", isMobile ? "h-5 w-5" : "h-6 w-6")} />
                             </div>
-                            <Badge variant="outline">{category.count}</Badge>
+                            <Badge variant="outline" className={cn(isMobile && "text-xs")}>{category.count}</Badge>
                           </div>
-                          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                          <h3 className={cn(
+                            "font-semibold mb-2 group-hover:text-primary transition-colors",
+                            isMobile ? "text-sm" : "text-xl"
+                          )}>
                             {category.title}
                           </h3>
-                          <p className="text-muted-foreground text-sm">
-                            {category.description}
-                          </p>
+                          {!isMobile && (
+                            <p className="text-muted-foreground text-sm">
+                              {category.description}
+                            </p>
+                          )}
                         </CardContent>
                       </Card>
                     ))}
@@ -356,77 +426,95 @@ export default withScreenId(function Discover() {
 
             {/* Tab 3: Share & Earn */}
             <SplitBarContent value="share" className="space-y-6">
-              <Card className="bg-white/80 backdrop-blur-sm border-white/20">
-                <CardContent className="p-6">
+              <Card className="bg-white/80 dark:bg-card/80 backdrop-blur-sm border-white/20 dark:border-border/20">
+                <CardContent className={cn("p-6", isMobile && "p-4")}>
                   <div className="flex items-center gap-2 mb-4">
                     <Share2 className="h-6 w-6 text-green-500" />
-                    <h2 className="text-2xl font-semibold">Share & Earn Commissions</h2>
+                    <h2 className={cn("font-semibold", isMobile ? "text-lg" : "text-2xl")}>
+                      {isMobile ? "Share & Earn" : "Share & Earn Commissions"}
+                    </h2>
                   </div>
-                  <p className="text-muted-foreground mb-6">
-                    Curated product bundles you can share to earn credits and commissions
-                  </p>
+                  {!isMobile && (
+                    <p className="text-muted-foreground mb-6">
+                      Curated product bundles you can share to earn credits and commissions
+                    </p>
+                  )}
 
                   {/* Earnings Summary */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <Card className="bg-gradient-to-br from-green-50 to-blue-50">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <DollarSign className="h-5 w-5 text-green-600" />
-                          <span className="text-sm text-muted-foreground">Total Earnings</span>
+                  <div className={cn(
+                    "grid gap-4 mb-6",
+                    isMobile ? "grid-cols-3" : "grid-cols-1 md:grid-cols-3"
+                  )}>
+                    <Card className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-950/30 dark:to-blue-950/30">
+                      <CardContent className={cn("p-4", isMobile && "p-3")}>
+                        <div className={cn("flex items-center gap-2 mb-2", isMobile && "flex-col items-start gap-1")}>
+                          <DollarSign className={cn("text-green-600", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+                          <span className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-sm")}>
+                            {isMobile ? "Earned" : "Total Earnings"}
+                          </span>
                         </div>
-                        <p className="text-2xl font-bold text-green-600">$2,693</p>
+                        <p className={cn("font-bold text-green-600", isMobile ? "text-lg" : "text-2xl")}>$2,693</p>
                       </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-br from-purple-50 to-pink-50">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Users className="h-5 w-5 text-purple-600" />
-                          <span className="text-sm text-muted-foreground">Community Shares</span>
+                    <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30">
+                      <CardContent className={cn("p-4", isMobile && "p-3")}>
+                        <div className={cn("flex items-center gap-2 mb-2", isMobile && "flex-col items-start gap-1")}>
+                          <Users className={cn("text-purple-600", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+                          <span className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-sm")}>
+                            {isMobile ? "Shares" : "Community Shares"}
+                          </span>
                         </div>
-                        <p className="text-2xl font-bold text-purple-600">424</p>
+                        <p className={cn("font-bold text-purple-600", isMobile ? "text-lg" : "text-2xl")}>424</p>
                       </CardContent>
                     </Card>
-                    <Card className="bg-gradient-to-br from-orange-50 to-yellow-50">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Award className="h-5 w-5 text-orange-600" />
-                          <span className="text-sm text-muted-foreground">Top Performer</span>
+                    <Card className="bg-gradient-to-br from-orange-50 to-yellow-50 dark:from-orange-950/30 dark:to-yellow-950/30">
+                      <CardContent className={cn("p-4", isMobile && "p-3")}>
+                        <div className={cn("flex items-center gap-2 mb-2", isMobile && "flex-col items-start gap-1")}>
+                          <Award className={cn("text-orange-600", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+                          <span className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-sm")}>
+                            {isMobile ? "Rank" : "Top Performer"}
+                          </span>
                         </div>
-                        <p className="text-2xl font-bold text-orange-600">Top 5%</p>
+                        <p className={cn("font-bold text-orange-600", isMobile ? "text-lg" : "text-2xl")}>Top 5%</p>
                       </CardContent>
                     </Card>
                   </div>
 
                   {/* Shareable Products */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className={cn(
+                    "grid gap-4",
+                    isMobile ? "grid-cols-1" : "grid-cols-1 md:grid-cols-3 gap-6"
+                  )}>
                     {shareAndEarnItems.map((item) => (
                       <Card key={item.id} className="group hover:shadow-lg transition-all duration-300">
                         <div className="relative">
                           <img 
                             src={item.image} 
                             alt={item.title}
-                            className="w-full h-40 object-cover rounded-t-lg"
+                            className={cn("w-full object-cover rounded-t-lg", isMobile ? "h-32" : "h-40")}
                           />
                           <Badge className="absolute top-2 left-2 bg-green-500 text-white">
                             Earn {item.commission}
                           </Badge>
                         </div>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">
+                        <CardContent className={cn("p-4", isMobile && "p-3")}>
+                          <h3 className={cn("font-semibold mb-2 group-hover:text-primary transition-colors", isMobile && "text-sm")}>
                             {item.title}
                           </h3>
-                          <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
-                            {item.description}
-                          </p>
+                          {!isMobile && (
+                            <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+                              {item.description}
+                            </p>
+                          )}
                           <div className="flex items-center justify-between mb-3">
-                            <span className="text-lg font-bold">{item.price}</span>
+                            <span className={cn("font-bold", isMobile ? "text-base" : "text-lg")}>{item.price}</span>
                             <div className="text-xs text-muted-foreground">
                               <Users className="h-3 w-3 inline mr-1" />
                               {item.shares} shares
                             </div>
                           </div>
-                          <div className="bg-green-50 p-2 rounded-lg mb-3">
-                            <p className="text-xs text-green-700">
+                          <div className="bg-green-50 dark:bg-green-950/30 p-2 rounded-lg mb-3">
+                            <p className="text-xs text-green-700 dark:text-green-300">
                               Community earned: <span className="font-bold">{item.earnings}</span>
                             </p>
                           </div>
@@ -471,6 +559,11 @@ export default withScreenId(function Discover() {
       <DiscoverMasterActionPopup 
         open={masterActionOpen}
         onOpenChange={setMasterActionOpen}
+      />
+      
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
       />
     </AppLayout>
   );
