@@ -82,8 +82,9 @@ export default function Messages() {
   }, [threads, optimisticUnreadUpdates]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
+  // Only auto-select on desktop - on mobile, users should see the list first and tap to open
   useEffect(() => {
-    if (displayThreads.length > 0 && !selectedThreadId) {
+    if (displayThreads.length > 0 && !selectedThreadId && !isMobile) {
       // Get the most recent conversation from the sorted and deduplicated list
       const sortedThreads = [...displayThreads]
         .sort((a, b) => {
@@ -116,7 +117,7 @@ export default function Messages() {
         setSelectedRecipientId(null);
       }
     }
-  }, [displayThreads, selectedThreadId, pinnedThreads, user?.id]);
+  }, [displayThreads, selectedThreadId, pinnedThreads, user?.id, isMobile]);
 
   // Reset selection when context changes
   useEffect(() => {
