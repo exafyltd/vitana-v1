@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from '@/components/ui/responsive-popover';
 import { Smile } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -40,14 +40,15 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
   );
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <ResponsivePopover>
+      <ResponsivePopoverTrigger asChild>
         {trigger || defaultTrigger}
-      </PopoverTrigger>
-      <PopoverContent 
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent 
         side="top" 
         align="start"
         className="w-80 p-4 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
+        title="Select Emoji"
       >
         <div className="space-y-3">
           {/* Category tabs */}
@@ -80,7 +81,7 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
             ))}
           </div>
         </div>
-      </PopoverContent>
-    </Popover>
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   );
 }

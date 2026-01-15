@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from "@/components/ui/responsive-popover";
 import { SlidersHorizontal } from "lucide-react";
 
 interface RecipeFiltersProps {
@@ -26,8 +26,8 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
   const activeCount = getActiveFilterCount(filters);
   
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <ResponsivePopover>
+      <ResponsivePopoverTrigger asChild>
         <Button variant="outline" className="gap-2">
           <SlidersHorizontal className="w-4 h-4" />
           Filters
@@ -37,8 +37,8 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
             </Badge>
           )}
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80" align="end">
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent className="w-80" align="end" title="Filter Recipes">
         <div className="space-y-4">
           <h4 className="font-semibold">Filter Recipes</h4>
           
@@ -112,7 +112,7 @@ export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) 
             </Button>
           )}
         </div>
-      </PopoverContent>
-    </Popover>
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   );
 }
