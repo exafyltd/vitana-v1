@@ -14,7 +14,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
+} from "@/components/ui/responsive-dialog";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -363,94 +370,96 @@ export default function UserManagement() {
                     onChange={(e) => setSearchEmail(e.target.value)}
                   />
                 </div>
-                <Dialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
-                  <DialogTrigger asChild>
+                <ResponsiveDialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
+                  <ResponsiveDialogTrigger asChild>
                     <Button>
                       <UserPlus className="h-4 w-4 mr-2" />
                       Assign Role
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Assign Role to User</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label>Select User (by email)</Label>
-                        <Select
-                          value={assigningTo?.id || ""}
-                          onValueChange={(value) => {
-                            const user = filteredUsers.find(u => u.id === value);
-                            setAssigningTo(user || null);
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Choose a user..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {filteredUsers.map((user) => (
-                              <SelectItem key={user.id} value={user.id}>
-                                {user.email} ({user.full_name || 'No name'})
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      {isExafyAdmin && (
+                  </ResponsiveDialogTrigger>
+                  <ResponsiveDialogContent>
+                    <ResponsiveDialogHeader>
+                      <ResponsiveDialogTitle>Assign Role to User</ResponsiveDialogTitle>
+                    </ResponsiveDialogHeader>
+                    <ResponsiveDialogBody>
+                      <div className="space-y-4">
                         <div>
-                          <Label>Select Tenant</Label>
-                          <Select value={selectedTenant} onValueChange={setSelectedTenant}>
+                          <Label>Select User (by email)</Label>
+                          <Select
+                            value={assigningTo?.id || ""}
+                            onValueChange={(value) => {
+                              const user = filteredUsers.find(u => u.id === value);
+                              setAssigningTo(user || null);
+                            }}
+                          >
                             <SelectTrigger>
-                              <SelectValue placeholder="Choose a tenant..." />
+                              <SelectValue placeholder="Choose a user..." />
                             </SelectTrigger>
                             <SelectContent>
-                              {tenants?.map((tenant) => (
-                                <SelectItem key={tenant.tenant_id} value={tenant.tenant_id}>
-                                  {tenant.name}
+                              {filteredUsers.map((user) => (
+                                <SelectItem key={user.id} value={user.id}>
+                                  {user.email} ({user.full_name || 'No name'})
                                 </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
-                      )}
-                      
-                      <div>
-                        <Label>Select Role</Label>
-                        <Select value={selectedRole} onValueChange={setSelectedRole}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Choose a role..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {ROLE_OPTIONS.filter(role => canAssignRole(role.value)).map((role) => (
-                              <SelectItem key={role.value} value={role.value}>
-                                <div>
-                                  <div className="font-medium">{role.label}</div>
-                                  <div className="text-sm text-muted-foreground">{role.description}</div>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        
+                        {isExafyAdmin && (
+                          <div>
+                            <Label>Select Tenant</Label>
+                            <Select value={selectedTenant} onValueChange={setSelectedTenant}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose a tenant..." />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {tenants?.map((tenant) => (
+                                  <SelectItem key={tenant.tenant_id} value={tenant.tenant_id}>
+                                    {tenant.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        )}
+                        
+                        <div>
+                          <Label>Select Role</Label>
+                          <Select value={selectedRole} onValueChange={setSelectedRole}>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Choose a role..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {ROLE_OPTIONS.filter(role => canAssignRole(role.value)).map((role) => (
+                                <SelectItem key={role.value} value={role.value}>
+                                  <div>
+                                    <div className="font-medium">{role.label}</div>
+                                    <div className="text-sm text-muted-foreground">{role.description}</div>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div className="flex justify-end gap-2">
+                          <Button 
+                            variant="outline" 
+                            onClick={() => setAssignDialogOpen(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button 
+                            onClick={handleAssignRole}
+                            disabled={!assigningTo || (isExafyAdmin && !selectedTenant) || !selectedRole || isAssigning}
+                          >
+                            {isAssigning ? "Assigning..." : "Assign Role"}
+                          </Button>
+                        </div>
                       </div>
-                      
-                      <div className="flex justify-end gap-2">
-                        <Button 
-                          variant="outline" 
-                          onClick={() => setAssignDialogOpen(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button 
-                          onClick={handleAssignRole}
-                          disabled={!assigningTo || (isExafyAdmin && !selectedTenant) || !selectedRole || isAssigning}
-                        >
-                          {isAssigning ? "Assigning..." : "Assign Role"}
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                    </ResponsiveDialogBody>
+                  </ResponsiveDialogContent>
+                </ResponsiveDialog>
               </div>
             </CardContent>
           </Card>

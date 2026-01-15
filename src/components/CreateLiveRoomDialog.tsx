@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
+} from '@/components/ui/responsive-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -56,45 +63,47 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
+    <ResponsiveDialog open={isOpen} onOpenChange={setIsOpen}>
+      <ResponsiveDialogTrigger asChild>
         <Button className="gap-2">
           <Video className="h-4 w-4" />
           Create Live Room
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+      </ResponsiveDialogTrigger>
+      <ResponsiveDialogContent className="sm:max-w-md">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <Users className="h-5 w-5" />
             Create Live Room
-          </DialogTitle>
-        </DialogHeader>
+          </ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
         
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="room-name">Room Name</Label>
-            <Input
-              id="room-name"
-              placeholder="e.g., Weekly Health Coaching"
-              value={roomName}
-              onChange={(e) => setRoomName(e.target.value)}
-            />
-          </div>
+        <ResponsiveDialogBody>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="room-name">Room Name</Label>
+              <Input
+                id="room-name"
+                placeholder="e.g., Weekly Health Coaching"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+              />
+            </div>
 
-          <div className="text-sm text-muted-foreground">
-            Create a multi-participant video room for events, coaching sessions, or meetups.
-          </div>
+            <div className="text-sm text-muted-foreground">
+              Create a multi-participant video room for events, coaching sessions, or meetups.
+            </div>
 
-          <Button
-            onClick={handleCreateRoom}
-            disabled={isLoading}
-            className="w-full"
-          >
-            {isLoading ? 'Creating...' : 'Create Room'}
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+            <Button
+              onClick={handleCreateRoom}
+              disabled={isLoading}
+              className="w-full"
+            >
+              {isLoading ? 'Creating...' : 'Create Room'}
+            </Button>
+          </div>
+        </ResponsiveDialogBody>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 };
