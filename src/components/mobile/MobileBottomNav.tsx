@@ -86,19 +86,20 @@ export function MobileBottomNav() {
         <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
           {/* Orb container - positioned higher to pop above the bar */}
           <motion.div 
-            className="absolute -top-8"
+            className="absolute -top-7"
             whileTap={{ scale: 0.95 }}
           >
-            {/* Subtle backdrop/halo behind ORB for visibility */}
+            {/* Invisible aura - heavily blurred, no visible edges */}
             <div 
-              className="absolute inset-0 -m-3 rounded-full bg-background/60 backdrop-blur-md pointer-events-none"
+              className="absolute inset-0 -m-6 pointer-events-none"
               style={{
-                background: 'radial-gradient(circle, hsl(var(--background) / 0.7) 0%, hsl(var(--background) / 0.3) 60%, transparent 100%)',
-                filter: 'blur(6px)',
+                background: 'radial-gradient(ellipse 70% 60% at 50% 55%, hsl(var(--background) / 0.5) 0%, hsl(var(--background) / 0.2) 40%, transparent 70%)',
+                filter: 'blur(12px)',
+                mixBlendMode: 'soft-light',
               }}
             />
             
-            {/* The Orb itself - no frame, floating with drop shadow */}
+            {/* The Orb itself - floating with enhanced shadow for depth */}
             <div 
               role="button"
               tabIndex={0}
@@ -110,7 +111,10 @@ export function MobileBottomNav() {
                 }
               }}
               aria-label="Ask VITANA for guidance"
-              className="relative cursor-pointer drop-shadow-lg z-10"
+              className="relative cursor-pointer z-10"
+              style={{
+                filter: 'drop-shadow(0 4px 12px hsl(var(--background) / 0.4)) drop-shadow(0 2px 4px hsl(var(--background) / 0.3))',
+              }}
             >
               <VitanalandPortalSeed 
                 audioState="idle"
