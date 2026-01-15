@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -103,6 +103,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isUserNearBottom, setIsUserNearBottom] = useState(true);
   const hasInitialScrolledRef = useRef<string | null>(null);
   const { toast } = useToast();
@@ -411,23 +412,49 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
-  useEffect(() => {
+  // Use useLayoutEffect to run before browser paint for smoother UX
+  useLayoutEffect(() => {
     if (threadId && messages.length > 0 && hasInitialScrolledRef.current !== threadId) {
-      // Mark this thread as scrolled to prevent re-scrolling
       hasInitialScrolledRef.current = threadId;
       
-      // Wait for DOM to fully render, then scroll instantly (no animation)
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          const el = scrollRef.current;
-          if (el) {
-            // Use instant scroll for initial load - shows last message immediately
-            el.scrollTop = el.scrollHeight;
-          }
-        });
-      }, 100);
+      const scrollToEnd = () => {
+        const el = scrollRef.current;
+        if (el) {
+          el.scrollTop = el.scrollHeight - el.clientHeight;
+          setIsUserNearBottom(true);
+        }
+      };
+      
+      // Immediate attempt
+      scrollToEnd();
+      
+      // Retry after short delays to handle async content (images, etc.)
+      const timers = [50, 150, 300].map(delay => 
+        setTimeout(() => {
+          requestAnimationFrame(scrollToEnd);
+        }, delay)
+      );
+      
+      return () => timers.forEach(clearTimeout);
     }
   }, [threadId, messages.length]);
+
+  // ResizeObserver to keep pinned at bottom when content resizes (images loading, etc.)
+  useEffect(() => {
+    const content = contentRef.current;
+    const scroll = scrollRef.current;
+    if (!content || !scroll || !threadId) return;
+
+    const observer = new ResizeObserver(() => {
+      // Only auto-scroll if user is near bottom (won't yank them if scrolled up)
+      if (isUserNearBottom && hasInitialScrolledRef.current === threadId) {
+        scroll.scrollTop = scroll.scrollHeight - scroll.clientHeight;
+      }
+    });
+
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, [threadId, isUserNearBottom]);
 
 
   const handleSendMessage = async (
@@ -1047,7 +1074,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             )
           ) : (
 
-            <>
+            <div ref={contentRef}>
               {messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
                 const previousMessage = index > 0 ? messages[index - 1] : null;
@@ -1118,7 +1145,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 );
               })}
               
-            </>
+            </div>
           )}
           
           {/* Bottom padding and scroll anchor */}
