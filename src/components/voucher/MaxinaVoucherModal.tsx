@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { useCreateVoucherCheckout } from "@/hooks/useVouchers";
 import { toast } from "sonner";
 
-type VoucherTier = "experience" | "exclusive";
+type VoucherTier = "test" | "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success";
 
 interface MaxinaVoucherModalProps {
@@ -17,6 +17,17 @@ interface MaxinaVoucherModalProps {
 }
 
 const tiers = {
+  test: {
+    name: "Test",
+    price: 0.49,
+    icon: Gift,
+    color: "from-green-500 to-emerald-600",
+    benefits: [
+      "Payment flow test only",
+      "Not a real voucher",
+      "For development testing"
+    ]
+  },
   experience: {
     name: "Experience",
     price: 99,
