@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield, Send, ArrowUpDown, X, Sparkles } from "lucide-react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -36,6 +36,12 @@ import { useAuth } from "@/context/AuthProvider";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { MobileWalletBalanceCard } from "@/components/wallet/mobile/MobileWalletBalanceCard";
+import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWalletTransactionList";
+import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -77,6 +83,8 @@ const quickActionsData = [
 
 export default function Wallet() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const filterType = searchParams.get("filter"); // e.g., "reseller_commission"
   
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -93,10 +101,12 @@ export default function Wallet() {
   const [exchangeAndSendOpen, setExchangeAndSendOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [activeTab, setActiveTab] = useState("balance-overview");
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { user } = useAuth();
   const { requestPopup, clearPopup } = usePopupCoordination();
   const { logActivity } = useActivityLogger();
+  const { pendingCount } = useAutopilot();
 
   // Auto-switch to Recent Activity tab when filter is active
   useEffect(() => {
@@ -201,6 +211,259 @@ export default function Wallet() {
     }
   };
 
+  // Mobile wallet popup components (shared with desktop)
+  const renderPopups = () => (
+    <>
+      <PopupCoordinationWrapper
+        popupType="wallet-master"
+        isOpen={masterActionOpen}
+        onClose={() => {
+          setMasterActionOpen(false);
+          clearPopup('wallet-master');
+          setExchangeStep('menu');
+          setSelectedCurrencyForExchange(undefined);
+        }}
+      >
+        <WalletMasterActionPopup 
+          open={masterActionOpen}
+          onOpenChange={(open) => {
+            setMasterActionOpen(open);
+            if (!open) {
+              clearPopup('wallet-master');
+              setExchangeStep('menu');
+              setSelectedCurrencyForExchange(undefined);
+            }
+          }}
+          initialStep={exchangeStep}
+          selectedCurrency={selectedCurrencyForExchange}
+        />
+      </PopupCoordinationWrapper>
+
+      <StakeTokensPopup 
+        open={stakeTokensOpen}
+        onOpenChange={setStakeTokensOpen}
+      />
+
+      <AddFundsPopup 
+        open={addFundsOpen}
+        onOpenChange={setAddFundsOpen}
+      />
+
+      <BuyCreditsPopup 
+        open={buyCreditsOpen}
+        onOpenChange={setBuyCreditsOpen}
+      />
+
+      <BuyTokensPopup 
+        open={buyTokensOpen}
+        onOpenChange={setBuyTokensOpen}
+      />
+
+      <WithdrawPopup 
+        open={withdrawOpen}
+        onOpenChange={setWithdrawOpen}
+      />
+
+      <SpendCreditsPopup 
+        open={spendCreditsOpen}
+        onOpenChange={setSpendCreditsOpen}
+      />
+
+      <PaymentRequestPopup
+        isOpen={paymentRequestOpen}
+        onClose={() => setPaymentRequestOpen(false)}
+        initialAmount=""
+        initialDescription=""
+      />
+
+      <MakePaymentPopup 
+        isOpen={makePaymentOpen}
+        onClose={() => setMakePaymentOpen(false)}
+      />
+
+      <ExchangeAndSendPopup 
+        isOpen={exchangeAndSendOpen}
+        onClose={() => setExchangeAndSendOpen(false)}
+      />
+      
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen} 
+      />
+      
+      {/* Cross-system notification handler */}
+      <CrossSystemNotifier />
+    </>
+  );
+
+  // Mobile Layout - matches Events/BusinessHub pattern
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO title="Vitana Wallet | VITANA" description="Your balance, credits, and rewards" canonical={window.location.href} />
+        
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+          <div className="p-4 pb-32 space-y-4">
+            {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub/BusinessHub */}
+            <StandardHeader
+              title="Wallet"
+              description="Your balance, credits, and rewards"
+            />
+            
+            {/* Action Rail - same pattern */}
+            <UtilityActionButton 
+              className="min-w-0"
+              afterGiftVoucherChildren={
+                <>
+                  {/* Vitana Index - pill style */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => navigate('/health')}
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                  >
+                    <span className="text-xs opacity-60">🧬</span>
+                    <span className="text-sm font-medium text-primary">742</span>
+                  </Button>
+                  
+                  {/* Autopilot - pill style with label */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setAutopilotOpen(true)}
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                  >
+                    <Plane className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">Autopilot</span>
+                    {pendingCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                      >
+                        {pendingCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </>
+              }
+            >
+              <div className="flex items-center gap-2 min-w-max">
+                <ExpandableSearchButton 
+                  placeholder="Search wallet..."
+                  onSearch={(query) => console.log('Search:', query)}
+                />
+                <UniversalCalendarButton />
+                
+                {/* Wallet Actions button - primary action */}
+                <Button 
+                  onClick={() => setMasterActionOpen(true)}
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="text-sm">Actions</span>
+                </Button>
+              </div>
+            </UtilityActionButton>
+            
+            {/* Mobile Tabs - consolidated SplitBar */}
+            <SplitBar defaultValue="balances" className="w-full">
+              <SplitBarList>
+                <SplitBarTrigger value="balances">💰 Balances</SplitBarTrigger>
+                <SplitBarTrigger value="activity">📊 Activity</SplitBarTrigger>
+                <SplitBarTrigger value="actions">⚡ Actions</SplitBarTrigger>
+              </SplitBarList>
+              
+              {/* Balances Tab - Simplified balance cards */}
+              <SplitBarContent value="balances" className="space-y-3 pt-3">
+                {/* Balance Cards - vertical stack */}
+                <MobileWalletBalanceCard
+                  type="cash"
+                  title="USD Balance"
+                  balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
+                  subBalance="Available: 100%"
+                  change="+2.3%"
+                  changeType="increase"
+                  isLoading={!isLoaded}
+                  onPress={() => handleWalletAction('add-funds')}
+                />
+                
+                <MobileWalletBalanceCard
+                  type="credits"
+                  title="Credits Balance"
+                  balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : "Loading..."}
+                  subBalance="Available: 100%"
+                  change="+12.1%"
+                  changeType="increase"
+                  isLoading={!isLoaded}
+                  onPress={() => handleWalletAction('buy-credits')}
+                />
+                
+                <MobileWalletBalanceCard
+                  type="tokens"
+                  title="VTNA Tokens"
+                  balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
+                  subBalance="Staked: 25%"
+                  change="+5.7%"
+                  changeType="increase"
+                  isLoading={!isLoaded}
+                  onPress={() => handleWalletAction('stake-tokens')}
+                />
+                
+                {/* Quick Actions Card */}
+                <MobileWalletQuickActions
+                  onAddFunds={() => handleWalletAction('add-funds')}
+                  onSend={() => handleWalletAction('send', 'USD')}
+                  onExchange={() => handleWalletAction('exchange', 'USD')}
+                  onWithdraw={() => handleWalletAction('withdraw')}
+                  onBuyCredits={() => handleWalletAction('buy-credits')}
+                  onStakeTokens={() => handleWalletAction('stake-tokens')}
+                  className="mt-4"
+                />
+              </SplitBarContent>
+              
+              {/* Activity Tab - Transaction list */}
+              <SplitBarContent value="activity" className="space-y-3 pt-3">
+                {/* Filter Chip */}
+                {filterType && (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
+                      <Sparkles className="h-3.5 w-3.5 text-accent" />
+                      <span className="text-xs">Showing: {getFilterLabel(filterType)}</span>
+                      <button 
+                        onClick={clearFilter}
+                        className="ml-1 p-0.5 rounded-full hover:bg-muted transition-colors"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </Badge>
+                  </div>
+                )}
+                
+                <MobileWalletTransactionList
+                  transactions={filteredTransactions}
+                  isLoading={loading}
+                  maxItems={10}
+                  showHeader={true}
+                />
+              </SplitBarContent>
+              
+              {/* Actions Tab - Smart actions & opportunities */}
+              <SplitBarContent value="actions" className="space-y-4 pt-3">
+                <PredictiveActionsCard className="w-full" />
+                <DynamicRewardOpportunityCard className="w-full" />
+              </SplitBarContent>
+            </SplitBar>
+          </div>
+        </div>
+        
+        {renderPopups()}
+      </AppLayout>
+    );
+  }
+
+  // Desktop Layout (unchanged)
   return (
     <AppLayout>
       <SEO title="Vitana Wallet | VITANA" description="Your digital bank account for health rewards and benefits" canonical={window.location.href} />
@@ -562,80 +825,7 @@ export default function Wallet() {
           </SplitBarContent>
         </SplitBar>
 
-        <PopupCoordinationWrapper
-          popupType="wallet-master"
-          isOpen={masterActionOpen}
-          onClose={() => {
-            setMasterActionOpen(false);
-            clearPopup('wallet-master');
-            setExchangeStep('menu');
-            setSelectedCurrencyForExchange(undefined);
-          }}
-        >
-          <WalletMasterActionPopup 
-            open={masterActionOpen}
-            onOpenChange={(open) => {
-              setMasterActionOpen(open);
-              if (!open) {
-                clearPopup('wallet-master');
-                setExchangeStep('menu');
-                setSelectedCurrencyForExchange(undefined);
-              }
-            }}
-            initialStep={exchangeStep}
-            selectedCurrency={selectedCurrencyForExchange}
-          />
-        </PopupCoordinationWrapper>
-
-        <StakeTokensPopup 
-          open={stakeTokensOpen}
-          onOpenChange={setStakeTokensOpen}
-        />
-
-        <AddFundsPopup 
-          open={addFundsOpen}
-          onOpenChange={setAddFundsOpen}
-        />
-
-        <BuyCreditsPopup 
-          open={buyCreditsOpen}
-          onOpenChange={setBuyCreditsOpen}
-        />
-
-        <BuyTokensPopup 
-          open={buyTokensOpen}
-          onOpenChange={setBuyTokensOpen}
-        />
-
-        <WithdrawPopup 
-          open={withdrawOpen}
-          onOpenChange={setWithdrawOpen}
-        />
-
-        <SpendCreditsPopup 
-          open={spendCreditsOpen}
-          onOpenChange={setSpendCreditsOpen}
-        />
-
-        <PaymentRequestPopup
-          isOpen={paymentRequestOpen}
-          onClose={() => setPaymentRequestOpen(false)}
-          initialAmount=""
-          initialDescription=""
-        />
-
-        <MakePaymentPopup 
-          isOpen={makePaymentOpen}
-          onClose={() => setMakePaymentOpen(false)}
-        />
-
-        <ExchangeAndSendPopup 
-          isOpen={exchangeAndSendOpen}
-          onClose={() => setExchangeAndSendOpen(false)}
-        />
-        
-        {/* Cross-system notification handler */}
-        <CrossSystemNotifier />
+        {renderPopups()}
         </div>
       </div>
     </AppLayout>
