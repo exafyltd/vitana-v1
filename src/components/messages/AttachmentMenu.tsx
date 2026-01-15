@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from '@/components/ui/responsive-popover';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import WalletIntegratedSendFunds from '@/components/payment/WalletIntegratedSendFunds';
 import WalletIntegratedPaymentRequest from '@/components/payment/WalletIntegratedPaymentRequest';
@@ -161,8 +161,8 @@ export function AttachmentMenu({
 
   console.log('💰 AttachmentMenu walletRecipient:', { recipient, walletRecipient, hasRecipientContext });
   return (
-    <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-      <PopoverTrigger asChild>
+    <ResponsivePopover open={popoverOpen} onOpenChange={setPopoverOpen}>
+      <ResponsivePopoverTrigger asChild>
         <Button
           type="button"
           size="sm"
@@ -175,8 +175,9 @@ export function AttachmentMenu({
         >
           <Paperclip className="w-4 h-4" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent 
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent 
+        title="Attach"
         side="top" 
         align="start"
         className="w-56 p-2 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
@@ -278,7 +279,7 @@ export function AttachmentMenu({
           onSendMessage={onSendMessage}
           preSelectedRecipient={walletRecipient}
         />
-      </PopoverContent>
-    </Popover>
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   );
 }
