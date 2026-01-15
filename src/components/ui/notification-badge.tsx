@@ -39,10 +39,13 @@ export function NotificationBadge({
     <Badge 
       variant="default" 
       className={cn(
-        "absolute -top-1 -right-1 p-0 flex items-center justify-center rounded-full",
+        // Position badge outside parent, floating above
+        "absolute -top-1.5 -right-1.5 p-0 flex items-center justify-center rounded-full",
         "bg-blue-500 text-white font-bold leading-none",
         "pointer-events-none whitespace-nowrap",
-        // Consistent sizing for all sidebar badges
+        // Ensure badge is above other elements
+        "z-10",
+        // Consistent sizing for all badges
         collapsed 
           ? "h-4 w-4 text-[9px] min-w-[16px] px-0.5" 
           : "h-5 w-5 text-[10px] min-w-[20px] px-1",

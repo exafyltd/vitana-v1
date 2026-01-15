@@ -31,19 +31,22 @@ export function UtilityActionButton({
   return (
     <>
       <div className={cn("pt-4 pb-5", className)}>
-        <div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory">
-          {children}
-          
-          {/* Global Gift Voucher button - appears after main action buttons */}
-          {!hideGiftVoucher && (
-            <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
-          )}
-          
-          {/* Elements that appear after Gift Voucher (e.g., Vitana Index, Autopilot on mobile) */}
-          {afterGiftVoucherChildren}
-          
-          {/* Trailing element (e.g., refresh button) - always last */}
-          {trailingElement}
+        {/* Outer wrapper allows badge overflow while inner container scrolls */}
+        <div className="overflow-visible">
+          <div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2 -my-2">
+            {children}
+            
+            {/* Global Gift Voucher button - appears after main action buttons */}
+            {!hideGiftVoucher && (
+              <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
+            )}
+            
+            {/* Elements that appear after Gift Voucher (e.g., Vitana Index, Autopilot on mobile) */}
+            {afterGiftVoucherChildren}
+            
+            {/* Trailing element (e.g., refresh button) - always last */}
+            {trailingElement}
+          </div>
         </div>
       </div>
       
