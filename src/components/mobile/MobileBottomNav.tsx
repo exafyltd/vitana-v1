@@ -91,10 +91,10 @@ export function MobileBottomNav() {
           >
             {/* Invisible aura - stronger contrast boost, heavily blurred, no visible edges */}
             <div 
-              className="absolute inset-0 -m-[44px] pointer-events-none"
+              className="absolute inset-0 -m-[47px] pointer-events-none"
               style={{
-                background: 'radial-gradient(ellipse 100% 90% at 50% 50%, hsl(var(--background) / 1) 0%, hsl(var(--background) / 0.65) 28%, hsl(var(--background) / 0.22) 52%, transparent 78%)',
-                filter: 'blur(22px)',
+                background: 'radial-gradient(ellipse 107% 96% at 50% 50%, hsl(var(--background) / 1) 0%, hsl(var(--background) / 0.69) 28%, hsl(var(--background) / 0.24) 52%, transparent 80%)',
+                filter: 'blur(24px)',
               }}
             />
             
