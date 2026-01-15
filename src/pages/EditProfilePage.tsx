@@ -17,12 +17,11 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileProfileHeader } from "@/components/profile/mobile/MobileProfileHeader";
+import { MobileIdCardSwitcher } from "@/components/profile/mobile/MobileIdCardSwitcher";
 import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "@/components/profile/mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "@/components/profile/mobile/MobileShowcaseHeader";
-import { MobileSocialGrid } from "@/components/profile/mobile/MobileSocialGrid";
 import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
 
 export default function EditProfilePage() {
@@ -246,15 +245,6 @@ export default function EditProfilePage() {
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
   const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
 
-  // Build social platforms from profile data
-  const socialPlatforms = [
-    { id: "linkedin", name: "LinkedIn", icon: <span className="text-sm font-bold text-[#0A66C2]">in</span>, connected: !!profile.linkedin_url },
-    { id: "instagram", name: "Instagram", icon: <span className="text-sm">📸</span>, connected: !!profile.instagram_url },
-    { id: "tiktok", name: "TikTok", icon: <span className="text-sm">🎵</span>, connected: !!profile.tiktok_url },
-    { id: "youtube", name: "YouTube", icon: <span className="text-sm text-red-600">▶</span>, connected: !!profile.youtube_url },
-    { id: "facebook", name: "Facebook", icon: <span className="text-sm font-bold text-[#1877F2]">f</span>, connected: !!profile.facebook_url },
-    { id: "twitter", name: "X", icon: <span className="text-sm font-bold">𝕏</span>, connected: !!profile.x_url },
-  ];
 
   // Mobile-specific layout - early return pattern
   if (isMobile) {
@@ -268,16 +258,12 @@ export default function EditProfilePage() {
         {/* NO EditToolbar on mobile! */}
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
-          {/* Mobile Profile Header (identity block) */}
-          <MobileProfileHeader
-            avatarUrl={profile.avatarUrl}
-            displayName={profile.name}
-            handle={profile.handle}
-            archetype={profile.longevityArchetype}
-            bio={profile.bio}
-            vitanaIndex={profile.vitanaIndex}
+          {/* ID Card Switcher - Front/Back with segmented control */}
+          <MobileIdCardSwitcher
+            profile={profile}
             editMode={true}
-            onEdit={handleEditIdentity}
+            onEditIdentity={handleEditIdentity}
+            onEditSocial={handleEditAbout}
           />
           
           {/* Compact Stats Strip */}
@@ -287,7 +273,7 @@ export default function EditProfilePage() {
             groupsCount={profile.stats?.groupsJoined}
           />
           
-          {/* Sticky Tab Bar */}
+          {/* Sticky Tab Bar for content below ID card */}
           <MobileProfileTabs
             activeTab={mobileActiveTab}
             onTabChange={setMobileActiveTab}
@@ -319,13 +305,6 @@ export default function EditProfilePage() {
                   <p className="text-sm text-muted-foreground">{profile.bio || "Add a bio..."}</p>
                   <p className="text-xs text-primary mt-2">Tap to edit</p>
                 </button>
-                
-                {/* Social Presence Grid */}
-                <MobileSocialGrid
-                  platforms={socialPlatforms}
-                  onConnect={(platformId) => console.log('Connect:', platformId)}
-                  onManage={handleEditAbout}
-                />
               </div>
             )}
             
