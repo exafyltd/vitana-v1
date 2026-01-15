@@ -9,8 +9,9 @@ const corsHeaders = {
 
 // Stripe price IDs for voucher tiers
 const VOUCHER_PRICES = {
+  test: "price_1Spt2uAEiUKAgGPQ4GRZonZf",       // €0.49 (test)
   experience: "price_1SpVInAEiUKAgGPQKxwGTWIz", // €99
-  exclusive: "price_1SpVJAAEiUKAgGPQfZNE1eJg",   // €199
+  exclusive: "price_1SpVJAAEiUKAgGPQfZNE1eJg",  // €199
 };
 
 const logStep = (step: string, details?: any) => {
@@ -62,13 +63,13 @@ serve(async (req) => {
     const { tier } = await req.json();
     
     if (!tier || !VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES]) {
-      throw new Error("Invalid voucher tier. Must be 'experience' or 'exclusive'");
+      throw new Error("Invalid voucher tier. Must be 'test', 'experience', or 'exclusive'");
     }
 
     logStep("Request received", { tier });
 
     const priceId = VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES];
-    const tierPriceCents = tier === "experience" ? 9900 : 19900;
+    const tierPriceCents = tier === "test" ? 49 : tier === "experience" ? 9900 : 19900;
 
     // Maxina tenant ID for voucher purchases
     const MAXINA_TENANT_ID = "2e7528b8-472a-4356-88da-0280d4639cce";

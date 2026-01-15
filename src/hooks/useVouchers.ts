@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 
-export type VoucherTier = "experience" | "exclusive";
+export type VoucherTier = "test" | "experience" | "exclusive";
 
 interface CreateVoucherCheckoutParams {
   tier: VoucherTier;
