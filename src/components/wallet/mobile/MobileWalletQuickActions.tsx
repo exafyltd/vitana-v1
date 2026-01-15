@@ -1,0 +1,120 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard, Coins } from "lucide-react";
+
+interface QuickAction {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  variant?: 'default' | 'primary';
+}
+
+interface MobileWalletQuickActionsProps {
+  onAddFunds: () => void;
+  onSend: () => void;
+  onExchange: () => void;
+  onWithdraw: () => void;
+  onBuyCredits: () => void;
+  onStakeTokens: () => void;
+  className?: string;
+}
+
+export function MobileWalletQuickActions({
+  onAddFunds,
+  onSend,
+  onExchange,
+  onWithdraw,
+  onBuyCredits,
+  onStakeTokens,
+  className = ""
+}: MobileWalletQuickActionsProps) {
+  const actions: QuickAction[] = [
+    {
+      id: 'add-funds',
+      label: 'Add Funds',
+      icon: <Plus className="h-5 w-5" />,
+      onClick: onAddFunds,
+      variant: 'primary'
+    },
+    {
+      id: 'send',
+      label: 'Send',
+      icon: <Send className="h-5 w-5" />,
+      onClick: onSend
+    },
+    {
+      id: 'exchange',
+      label: 'Exchange',
+      icon: <ArrowUpDown className="h-5 w-5" />,
+      onClick: onExchange
+    },
+    {
+      id: 'withdraw',
+      label: 'Withdraw',
+      icon: <ArrowUpRight className="h-5 w-5" />,
+      onClick: onWithdraw
+    }
+  ];
+
+  const secondaryActions: QuickAction[] = [
+    {
+      id: 'buy-credits',
+      label: 'Buy Credits',
+      icon: <CreditCard className="h-4 w-4" />,
+      onClick: onBuyCredits
+    },
+    {
+      id: 'stake-tokens',
+      label: 'Stake Tokens',
+      icon: <Coins className="h-4 w-4" />,
+      onClick: onStakeTokens
+    }
+  ];
+
+  return (
+    <Card className={className}>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">Quick Actions</CardTitle>
+      </CardHeader>
+      <CardContent className="pt-0 space-y-4">
+        {/* Primary Actions - Grid */}
+        <div className="grid grid-cols-4 gap-2">
+          {actions.map((action) => (
+            <button
+              key={action.id}
+              onClick={action.onClick}
+              className={`
+                flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl
+                transition-all active:scale-95
+                ${action.variant === 'primary' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'bg-muted/60 hover:bg-muted text-foreground'
+                }
+              `}
+            >
+              {action.icon}
+              <span className="text-xs font-medium">{action.label}</span>
+            </button>
+          ))}
+        </div>
+        
+        {/* Secondary Actions - Horizontal Pills */}
+        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+          {secondaryActions.map((action) => (
+            <Button
+              key={action.id}
+              variant="outline"
+              size="sm"
+              onClick={action.onClick}
+              className="h-9 px-3 rounded-full gap-1.5 shrink-0"
+            >
+              {action.icon}
+              <span className="text-sm">{action.label}</span>
+            </Button>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
