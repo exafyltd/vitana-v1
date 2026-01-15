@@ -68,14 +68,14 @@ const ResponsivePopoverTrigger = React.forwardRef<
   
   if (isMobile) {
     return (
-      <SheetPrimitive.Trigger ref={ref} asChild {...props}>
+      <SheetPrimitive.Trigger ref={ref} {...props} asChild>
         {children}
       </SheetPrimitive.Trigger>
     )
   }
 
   return (
-    <PopoverPrimitive.Trigger ref={ref} asChild {...props}>
+    <PopoverPrimitive.Trigger ref={ref} {...props} asChild>
       {children}
     </PopoverPrimitive.Trigger>
   )
@@ -208,14 +208,14 @@ const ResponsivePopoverClose = React.forwardRef<
   
   if (isMobile) {
     return (
-      <SheetPrimitive.Close ref={ref} asChild {...props}>
+      <SheetPrimitive.Close ref={ref} {...props} asChild>
         {children}
       </SheetPrimitive.Close>
     )
   }
 
   return (
-    <PopoverPrimitive.Close ref={ref} asChild {...props}>
+    <PopoverPrimitive.Close ref={ref} {...props} asChild>
       {children}
     </PopoverPrimitive.Close>
   )
