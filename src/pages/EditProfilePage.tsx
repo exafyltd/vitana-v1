@@ -22,6 +22,8 @@ import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileSta
 import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "@/components/profile/mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "@/components/profile/mobile/MobileShowcaseHeader";
+import { MobileMediaTabContent } from "@/components/profile/mobile/MobileMediaTabContent";
+import { MobileGroupsTabContent } from "@/components/profile/mobile/MobileGroupsTabContent";
 import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
 
 export default function EditProfilePage() {
@@ -309,19 +311,11 @@ export default function EditProfilePage() {
             )}
             
             {mobileActiveTab === "media" && (
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground text-center py-8">
-                  {profile.stats?.mediaUploads || 0} media uploads
-                </p>
-              </div>
+              <MobileMediaTabContent />
             )}
             
             {mobileActiveTab === "groups" && (
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground text-center py-8">
-                  {profile.stats?.groupsJoined || 0} groups joined
-                </p>
-              </div>
+              <MobileGroupsTabContent />
             )}
           </div>
         </div>

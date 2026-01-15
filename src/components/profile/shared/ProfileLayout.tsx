@@ -27,6 +27,8 @@ import { MobileProfileStats } from "../mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "../mobile/MobileShowcaseHeader";
+import { MobileMediaTabContent } from "../mobile/MobileMediaTabContent";
+import { MobileGroupsTabContent } from "../mobile/MobileGroupsTabContent";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -177,6 +179,14 @@ export function ProfileLayout({
                 {effectiveEditMode && <p className="text-xs text-primary mt-2">Tap to edit</p>}
               </button>
             </div>
+          )}
+
+          {mobileActiveTab === "media" && (
+            <MobileMediaTabContent />
+          )}
+
+          {mobileActiveTab === "groups" && (
+            <MobileGroupsTabContent />
           )}
         </div>
 
