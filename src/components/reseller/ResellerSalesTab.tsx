@@ -22,7 +22,7 @@ import {
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from "@/components/ui/responsive-popover";
 import { TransferToWalletDialog } from "./TransferToWalletDialog";
 
 type TimeRange = "all" | "30d" | "7d";
@@ -366,20 +366,20 @@ export function ResellerSalesTab() {
 
           {/* Mock Data Toggle (Dev only) */}
           {shouldUseMock && (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+            <ResponsivePopover>
+              <ResponsivePopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full min-h-[44px] min-w-[44px]">
                   <Settings2 className="h-4 w-4 text-muted-foreground" />
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent align="end" className="w-auto p-2">
+              </ResponsivePopoverTrigger>
+              <ResponsivePopoverContent title="Info" align="end" className="w-auto p-2">
                 <div className="flex items-center gap-2 text-xs text-amber-600">
                   <Badge variant="outline" className="gap-1 text-amber-600 border-amber-300 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800">
                     Mock data active
                   </Badge>
                 </div>
-              </PopoverContent>
-            </Popover>
+              </ResponsivePopoverContent>
+            </ResponsivePopover>
           )}
         </div>
       </div>
