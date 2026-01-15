@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { generateGroupImage } from "@/lib/groupCardTransformers";
 
 interface GroupItem {
   id: string;
@@ -17,26 +18,26 @@ interface MobileGroupsTabContentProps {
   className?: string;
 }
 
-// Placeholder groups for demo
+// Placeholder groups for demo with wellness-themed images
 const PLACEHOLDER_GROUPS: GroupItem[] = [
   {
     id: '1',
     name: 'Mindful Movement',
-    avatar_url: null,
+    avatar_url: generateGroupImage('1'),
     members: 1250,
     gradient: 'from-violet-400 to-purple-500'
   },
   {
     id: '2',
     name: 'Morning Yoga Sessions',
-    avatar_url: null,
+    avatar_url: generateGroupImage('2'),
     members: 850,
     gradient: 'from-amber-400 to-orange-500'
   },
   {
     id: '3',
     name: 'Wellness Warriors',
-    avatar_url: null,
+    avatar_url: generateGroupImage('3'),
     members: 2100,
     gradient: 'from-emerald-400 to-teal-500'
   }
