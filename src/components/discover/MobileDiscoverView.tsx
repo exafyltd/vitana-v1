@@ -82,7 +82,7 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
             variant="ghost" 
             size="sm" 
             className="text-xs text-muted-foreground"
-            onClick={() => navigate('/discover/trending')}
+            onClick={() => navigate('/discover/ai-picks')}
           >
             See all <ChevronRight className="h-3 w-3 ml-1" />
           </Button>

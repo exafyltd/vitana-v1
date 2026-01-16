@@ -160,6 +160,7 @@ import DoctorsCoaches from "./pages/discover/DoctorsCoaches";
 import ProviderProfile from "./pages/discover/ProviderProfile";
 import DealsOffers from "./pages/discover/DealsOffers";
 import Orders from "./pages/discover/Orders";
+import AIPicksPage from "./pages/discover/AIPicksPage";
 
 // Health sub-pages
 import PillarsOfHealth from "./pages/health/PillarsOfHealth";
@@ -430,6 +431,11 @@ const App = () => {
           <Route path="/discover" element={
             <AuthGuard>
               <Discover />
+            </AuthGuard>
+          } />
+          <Route path="/discover/ai-picks" element={
+            <AuthGuard>
+              <AIPicksPage />
             </AuthGuard>
           } />
           <Route path="/discover/supplements" element={
