@@ -148,7 +148,7 @@ export default withScreenId(function Discover() {
       icon: Plane,
       description: 'Wearables and health tracking devices',
       count: 34,
-      path: '/discover/trending'
+      path: '/discover/supplements'
     },
     {
       id: 'experiences',
