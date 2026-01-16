@@ -187,12 +187,14 @@
     }
   },
   "inbox": {
-    "title": "Stay connected with your community!",
-    "subtitle": "Manage your conversations, notifications, and stay connected with your wellness community",
+    "title": "Inbox",
+    "subtitle": "Stay connected with your community!",
+    "description": "Your conversations, updates, and notifications",
     "tabs": {
-      "overview": "Overview",
-      "direct": "Direct Messages", 
-      "group": "Group Chats",
+      "all": "All",
+      "groups": "Groups",
+      "direct": "Direct Messages",
+      "contacts": "Contacts",
       "notifications": "Notifications",
       "archived": "Archived"
     },
@@ -207,7 +209,14 @@
       "empty": "No messages yet",
       "loading": "Loading messages...",
       "error": "Failed to load messages"
-    }
+    },
+    "createGroup": "Create New Group",
+    "newConversation": "New Conversation",
+    "noGroups": "No groups yet",
+    "noGroupsDesc": "Groups help you collaborate with multiple people at once.",
+    "createFirstGroup": "Create first group",
+    "loading": "Loading messages...",
+    "searchConversations": "Search conversations..."
   },
   "liveRooms": {
     "title": "Join the conversation live!",
@@ -261,7 +270,24 @@
     "wellnessServicesDesc": "Discover yoga, massage, dance, therapy, and recovery services",
     "communityGroups": "Community Groups",
     "communityGroupsDesc": "Join meetups, groups, and connect with like-minded people",
-    "explore": "Explore"
+    "explore": "Explore",
+    "aiPicksForYou": "AI Picks for You",
+    "seeAll": "See all",
+    "suggestedForYou": "Suggested For You",
+    "browseCategories": "Browse Categories",
+    "all": "All",
+    "shareAndEarn": "Share & Earn",
+    "shareAndEarnDesc": "Recommend products, earn commissions",
+    "start": "Start",
+    "view": "View",
+    "categories": {
+      "sleep": "Sleep",
+      "nutrition": "Nutrition",
+      "movement": "Movement",
+      "mind": "Mind",
+      "supplements": "Supplements",
+      "experts": "Experts"
+    }
   },
   "vitanaIndex": {
     "title": "Vitana Health Index",
@@ -309,6 +335,99 @@
     "delete": "Delete",
     "edit": "Edit",
     "create": "Create",
-    "close": "Close"
+    "close": "Close",
+    "actions": "Actions"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "description": "Your balance, credits, and rewards",
+    "usdBalance": "USD Balance",
+    "creditsBalance": "Credits Balance",
+    "vtnaTokens": "VTNA Tokens",
+    "available": "Available",
+    "staked": "Staked",
+    "searchWallet": "Search wallet...",
+    "tabs": {
+      "balances": "💰 Balances",
+      "activity": "📊 Activity",
+      "actions": "⚡ Actions"
+    },
+    "filters": {
+      "commissions": "Sell & Earn Commissions",
+      "transfers": "Transfers",
+      "exchanges": "Exchanges",
+      "rewards": "Rewards",
+      "purchases": "Purchases",
+      "pending": "Pending Payouts"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings, privacy, and preferences",
+    "searchPlaceholder": "Search settings, privacy controls, integrations...",
+    "quickSetup": "Quick Setup",
+    "tabs": {
+      "overview": "⚙️ Overview",
+      "notifications": "🔔 Notifications",
+      "quickActions": "⚡ Quick Actions"
+    },
+    "categories": {
+      "privacy": "Privacy",
+      "privacyDesc": "Control who sees your profile and activities",
+      "notifications": "Notifications",
+      "notificationsDesc": "Manage your notification preferences",
+      "preferences": "Preferences",
+      "preferencesDesc": "Language, theme, and display options",
+      "connectedApps": "Connected Apps",
+      "connectedAppsDesc": "Manage integrations and permissions",
+      "tenantRole": "Tenant & Role",
+      "tenantRoleDesc": "Switch between roles and tenants",
+      "billing": "Billing",
+      "billingDesc": "Subscription and payment information",
+      "support": "Support",
+      "supportDesc": "Help, FAQ, and contact options"
+    },
+    "status": {
+      "privacyStatus": "Privacy Status",
+      "subscription": "Subscription",
+      "protected": "Protected",
+      "premium": "Premium",
+      "notificationsActive": "Notifications Active",
+      "connectedAppsCount": "Connected Apps",
+      "types": "types",
+      "apps": "apps"
+    }
+  },
+  "health": {
+    "title": "Health",
+    "description": "Your personal health dashboard",
+    "overview": "Overview",
+    "overviewDesc": "Your comprehensive health dashboard and wellness overview",
+    "servicesHub": "Services Hub",
+    "servicesHubDesc": "Book doctors, coaching, programs & screenings",
+    "biomarkers": "Biomarkers",
+    "biomarkersDesc": "View your latest test results and biomarkers",
+    "healthTracker": "My Health Tracker",
+    "healthTrackerDesc": "Track your daily nutrition, sleep, exercise",
+    "education": "Education & Science",
+    "educationDesc": "Learn about health topics and access wellness resources",
+    "priorityFocus": "Priority Focus",
+    "autopilotGuidance": "Autopilot Guidance",
+    "takeAction": "Take Action",
+    "uploadBloodTest": "Upload Blood Test",
+    "orderBloodTest": "Order Blood Test",
+    "viewPlans": "View Plans",
+    "vitanaIndex": "Vitana Index",
+    "topPercentile": "Top {percent}% of users"
+  },
+  "home": {
+    "title": "Home",
+    "welcomeBack": "Welcome back",
+    "todaysSchedule": "Today's Schedule",
+    "mediaContent": "Media for You",
+    "eventsAndMeetups": "Events & Meetups",
+    "communityNews": "Community News",
+    "inspiration": "Inspiration",
+    "dailyMatches": "Daily Matches"
   }
 }

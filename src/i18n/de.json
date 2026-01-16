@@ -180,7 +180,24 @@
     "wellnessServicesDesc": "Entdecken Sie Yoga, Massage, Tanz, Therapie und Erholungsservices",
     "communityGroups": "Community-Gruppen",
     "communityGroupsDesc": "Treten Sie Meetups und Gruppen bei und vernetzen Sie sich mit Gleichgesinnten",
-    "explore": "Erkunden"
+    "explore": "Erkunden",
+    "aiPicksForYou": "KI-Empfehlungen für Sie",
+    "seeAll": "Alle anzeigen",
+    "suggestedForYou": "Für Sie empfohlen",
+    "browseCategories": "Kategorien durchsuchen",
+    "all": "Alle",
+    "shareAndEarn": "Teilen & Verdienen",
+    "shareAndEarnDesc": "Produkte empfehlen, Provisionen verdienen",
+    "start": "Starten",
+    "view": "Ansehen",
+    "categories": {
+      "sleep": "Schlaf",
+      "nutrition": "Ernährung",
+      "movement": "Bewegung",
+      "mind": "Geist",
+      "supplements": "Nahrungsergänzung",
+      "experts": "Experten"
+    }
   },
   "vitanaIndex": {
     "title": "Vitana Gesundheitsindex",
@@ -228,6 +245,116 @@
     "delete": "Löschen",
     "edit": "Bearbeiten",
     "create": "Erstellen",
-    "close": "Schließen"
+    "close": "Schließen",
+    "actions": "Aktionen"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "description": "Ihr Guthaben, Credits und Belohnungen",
+    "usdBalance": "USD-Guthaben",
+    "creditsBalance": "Credits-Guthaben",
+    "vtnaTokens": "VTNA-Token",
+    "available": "Verfügbar",
+    "staked": "Gesperrt",
+    "searchWallet": "Wallet durchsuchen...",
+    "tabs": {
+      "balances": "💰 Guthaben",
+      "activity": "📊 Aktivität",
+      "actions": "⚡ Aktionen"
+    },
+    "filters": {
+      "commissions": "Provisionen",
+      "transfers": "Überweisungen",
+      "exchanges": "Umtausch",
+      "rewards": "Belohnungen",
+      "purchases": "Käufe",
+      "pending": "Ausstehende Auszahlungen"
+    }
+  },
+  "inbox": {
+    "title": "Posteingang",
+    "description": "Ihre Unterhaltungen, Updates und Benachrichtigungen",
+    "tabs": {
+      "all": "Alle",
+      "groups": "Gruppen",
+      "direct": "Direktnachrichten",
+      "contacts": "Kontakte"
+    },
+    "createGroup": "Neue Gruppe erstellen",
+    "newConversation": "Neue Unterhaltung",
+    "noGroups": "Noch keine Gruppen",
+    "noGroupsDesc": "Gruppen helfen Ihnen, mit mehreren Personen gleichzeitig zusammenzuarbeiten.",
+    "createFirstGroup": "Erste Gruppe erstellen",
+    "loading": "Nachrichten werden geladen...",
+    "searchConversations": "Unterhaltungen durchsuchen..."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Verwalten Sie Ihre Kontoeinstellungen, Datenschutz und Präferenzen",
+    "searchPlaceholder": "Einstellungen, Datenschutz, Integrationen durchsuchen...",
+    "quickSetup": "Schnelleinrichtung",
+    "tabs": {
+      "overview": "⚙️ Übersicht",
+      "notifications": "🔔 Benachrichtigungen",
+      "quickActions": "⚡ Schnellaktionen"
+    },
+    "categories": {
+      "privacy": "Datenschutz",
+      "privacyDesc": "Steuern Sie, wer Ihr Profil und Ihre Aktivitäten sieht",
+      "notifications": "Benachrichtigungen",
+      "notificationsDesc": "Verwalten Sie Ihre Benachrichtigungseinstellungen",
+      "preferences": "Präferenzen",
+      "preferencesDesc": "Sprache, Thema und Anzeigeoptionen",
+      "connectedApps": "Verbundene Apps",
+      "connectedAppsDesc": "Verwalten Sie Integrationen und Berechtigungen",
+      "tenantRole": "Mandant & Rolle",
+      "tenantRoleDesc": "Wechseln Sie zwischen Rollen und Mandanten",
+      "billing": "Abrechnung",
+      "billingDesc": "Abonnement und Zahlungsinformationen",
+      "support": "Support",
+      "supportDesc": "Hilfe, FAQ und Kontaktoptionen"
+    },
+    "status": {
+      "privacyStatus": "Datenschutzstatus",
+      "subscription": "Abonnement",
+      "protected": "Geschützt",
+      "premium": "Premium",
+      "notificationsActive": "Aktive Benachrichtigungen",
+      "connectedAppsCount": "Verbundene Apps",
+      "types": "Typen",
+      "apps": "Apps"
+    }
+  },
+  "health": {
+    "title": "Gesundheit",
+    "description": "Ihr persönliches Gesundheits-Dashboard",
+    "overview": "Übersicht",
+    "overviewDesc": "Ihr umfassendes Gesundheits-Dashboard",
+    "servicesHub": "Service-Hub",
+    "servicesHubDesc": "Ärzte, Coaching, Programme & Screenings buchen",
+    "biomarkers": "Biomarker",
+    "biomarkersDesc": "Ihre neuesten Testergebnisse und Biomarker",
+    "healthTracker": "Mein Gesundheitstracker",
+    "healthTrackerDesc": "Tägliche Ernährung, Schlaf, Bewegung verfolgen",
+    "education": "Bildung & Wissenschaft",
+    "educationDesc": "Gesundheitsthemen lernen und Ressourcen",
+    "priorityFocus": "Priorität heute",
+    "autopilotGuidance": "Autopilot-Empfehlungen",
+    "takeAction": "Aktion ausführen",
+    "uploadBloodTest": "Bluttest hochladen",
+    "orderBloodTest": "Bluttest bestellen",
+    "viewPlans": "Pläne anzeigen",
+    "vitanaIndex": "Vitana Index",
+    "topPercentile": "Top {percent}% aller Nutzer"
+  },
+  "home": {
+    "title": "Startseite",
+    "welcomeBack": "Willkommen zurück",
+    "todaysSchedule": "Heute geplant",
+    "mediaContent": "Medien für Sie",
+    "eventsAndMeetups": "Events & Treffen",
+    "communityNews": "Community-Neuigkeiten",
+    "inspiration": "Inspiration",
+    "dailyMatches": "Tägliche Matches"
   }
 }
