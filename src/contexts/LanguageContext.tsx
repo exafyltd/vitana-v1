@@ -46,14 +46,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   // Initialize from localStorage (persisted) or default to German
   const [selectedLanguage, setLocalLanguage] = useState<string>(getInitialLanguage);
   const [lastLanguageChangeAt, setLastLanguageChangeAt] = useState<number>(0);
+  
+  // Track if we've already synced from server to avoid overriding local changes
+  const [hasInitializedFromServer, setHasInitializedFromServer] = useState(false);
 
-  // Sync from server preferences on load/change
+  // Sync from server preferences ONLY on initial load
+  // After that, local changes take priority (they get saved to server anyway)
   useEffect(() => {
-    if (preferences?.stt_language && preferences.stt_language !== selectedLanguage) {
-      console.log('[LANG] Syncing from server:', preferences.stt_language);
+    if (!hasInitializedFromServer && preferences?.stt_language) {
+      console.log('[LANG] Initial sync from server:', preferences.stt_language);
       setLocalLanguage(preferences.stt_language);
+      setHasInitializedFromServer(true);
     }
-  }, [preferences?.stt_language]);
+  }, [preferences?.stt_language, hasInitializedFromServer]);
 
   const setSelectedLanguage = (language: string) => {
     // RULE 2: Validate against allowed set
