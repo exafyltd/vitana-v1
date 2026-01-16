@@ -19,6 +19,7 @@ import {
 import { cn } from '@/lib/utils';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface AIRecommendation {
   id: number;
@@ -36,24 +37,31 @@ interface MobileDiscoverViewProps {
   aiRecommendations: AIRecommendation[];
 }
 
-// Intent-based categories for mobile (max 6-8 + All)
-const mobileCategories = [
-  { id: 'sleep', title: 'Sleep', icon: Moon, color: 'bg-indigo-500', path: '/discover/wellness-services' },
-  { id: 'nutrition', title: 'Nutrition', icon: Apple, color: 'bg-green-500', path: '/discover/supplements' },
-  { id: 'movement', title: 'Movement', icon: Dumbbell, color: 'bg-orange-500', path: '/discover/wellness-services' },
-  { id: 'mind', title: 'Mind', icon: Brain, color: 'bg-purple-500', path: '/discover/wellness-services' },
-  { id: 'supplements', title: 'Supplements', icon: Pill, color: 'bg-pink-500', path: '/discover/supplements' },
-  { id: 'experts', title: 'Experts', icon: Stethoscope, color: 'bg-blue-500', path: '/discover/doctors-coaches' },
+// Category config without titles (titles come from translations)
+const categoryConfig = [
+  { id: 'sleep', icon: Moon, color: 'bg-indigo-500', path: '/discover/wellness-services' },
+  { id: 'nutrition', icon: Apple, color: 'bg-green-500', path: '/discover/supplements' },
+  { id: 'movement', icon: Dumbbell, color: 'bg-orange-500', path: '/discover/wellness-services' },
+  { id: 'mind', icon: Brain, color: 'bg-purple-500', path: '/discover/wellness-services' },
+  { id: 'supplements', icon: Pill, color: 'bg-pink-500', path: '/discover/supplements' },
+  { id: 'experts', icon: Stethoscope, color: 'bg-blue-500', path: '/discover/doctors-coaches' },
 ];
 
 export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: false, 
     align: 'start',
     containScroll: 'trimSnaps'
   });
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Build categories with translated titles
+  const mobileCategories = categoryConfig.map(cat => ({
+    ...cat,
+    title: translate(`discover.categories.${cat.id}`)
+  }));
 
   // Update current index on scroll
   React.useEffect(() => {
@@ -76,7 +84,7 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-purple-500" />
-            <h2 className="text-lg font-semibold">AI Picks for You</h2>
+            <h2 className="text-lg font-semibold">{translate('discover.aiPicksForYou')}</h2>
           </div>
           <Button 
             variant="ghost" 
@@ -84,7 +92,7 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
             className="text-xs text-muted-foreground"
             onClick={() => navigate('/discover/ai-picks')}
           >
-            See all <ChevronRight className="h-3 w-3 ml-1" />
+            {translate('discover.seeAll')} <ChevronRight className="h-3 w-3 ml-1" />
           </Button>
         </div>
         
@@ -181,7 +189,7 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Zap className="h-5 w-5 text-amber-500" />
-            <h2 className="text-lg font-semibold">Suggested For You</h2>
+            <h2 className="text-lg font-semibold">{translate('discover.suggestedForYou')}</h2>
           </div>
         </div>
         
@@ -214,14 +222,14 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
       {/* Section 3: Categories - Compressed grid */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Browse Categories</h2>
+          <h2 className="text-lg font-semibold">{translate('discover.browseCategories')}</h2>
           <Button 
             variant="ghost" 
             size="sm" 
             className="text-xs text-muted-foreground"
             onClick={() => navigate('/discover/supplements')}
           >
-            All <LayoutGrid className="h-3 w-3 ml-1" />
+            {translate('discover.all')} <LayoutGrid className="h-3 w-3 ml-1" />
           </Button>
         </div>
         
@@ -252,15 +260,15 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
                 <Sparkles className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm">Share & Earn</h3>
-                <p className="text-xs text-muted-foreground">Recommend products, earn commissions</p>
+                <h3 className="font-semibold text-sm">{translate('discover.shareAndEarn')}</h3>
+                <p className="text-xs text-muted-foreground">{translate('discover.shareAndEarnDesc')}</p>
               </div>
               <Button 
                 size="sm" 
                 variant="outline"
                 onClick={() => navigate('/discover')}
               >
-                Start
+                {translate('discover.start')}
               </Button>
             </div>
           </CardContent>

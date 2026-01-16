@@ -42,6 +42,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { MobileWalletBalanceCard } from "@/components/wallet/mobile/MobileWalletBalanceCard";
 import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWalletTransactionList";
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -85,6 +86,7 @@ export default function Wallet() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   const filterType = searchParams.get("filter"); // e.g., "reseller_commission"
   
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -139,17 +141,17 @@ export default function Wallet() {
   const getFilterLabel = (filter: string) => {
     switch (filter) {
       case "reseller_commission":
-        return "Sell & Earn Commissions";
+        return translate('wallet.filters.commissions');
       case "transfer":
-        return "Transfers";
+        return translate('wallet.filters.transfers');
       case "exchange":
-        return "Exchanges";
+        return translate('wallet.filters.exchanges');
       case "reward":
-        return "Rewards";
+        return translate('wallet.filters.rewards');
       case "purchase":
-        return "Purchases";
+        return translate('wallet.filters.purchases');
       case "pending":
-        return "Pending Payouts";
+        return translate('wallet.filters.pending');
       default:
         return filter;
     }
@@ -300,14 +302,14 @@ export default function Wallet() {
   if (isMobile) {
     return (
       <AppLayout>
-        <SEO title="Vitana Wallet | VITANA" description="Your balance, credits, and rewards" canonical={window.location.href} />
+        <SEO title={`${translate('wallet.title')} | VITANA`} description={translate('wallet.description')} canonical={window.location.href} />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
           <div className="p-4 pb-32 space-y-4">
             {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub/BusinessHub */}
             <StandardHeader
-              title="Wallet"
-              description="Your balance, credits, and rewards"
+              title={translate('wallet.title')}
+              description={translate('wallet.description')}
             />
             
             {/* Action Rail - same pattern */}
@@ -349,7 +351,7 @@ export default function Wallet() {
             >
               <div className="flex items-center gap-2 min-w-max">
                 <ExpandableSearchButton 
-                  placeholder="Search wallet..."
+                  placeholder={translate('wallet.searchWallet')}
                   onSearch={(query) => console.log('Search:', query)}
                 />
                 <UniversalCalendarButton />
@@ -362,7 +364,7 @@ export default function Wallet() {
                   className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
                 >
                   <Plus className="h-4 w-4" />
-                  <span className="text-sm">Actions</span>
+                  <span className="text-sm">{translate('common.actions')}</span>
                 </Button>
               </div>
             </UtilityActionButton>
@@ -370,9 +372,9 @@ export default function Wallet() {
             {/* Mobile Tabs - consolidated SplitBar */}
             <SplitBar defaultValue="balances" className="w-full">
               <SplitBarList>
-                <SplitBarTrigger value="balances">💰 Balances</SplitBarTrigger>
-                <SplitBarTrigger value="activity">📊 Activity</SplitBarTrigger>
-                <SplitBarTrigger value="actions">⚡ Actions</SplitBarTrigger>
+                <SplitBarTrigger value="balances">{translate('wallet.tabs.balances')}</SplitBarTrigger>
+                <SplitBarTrigger value="activity">{translate('wallet.tabs.activity')}</SplitBarTrigger>
+                <SplitBarTrigger value="actions">{translate('wallet.tabs.actions')}</SplitBarTrigger>
               </SplitBarList>
               
               {/* Balances Tab - Simplified balance cards */}
@@ -380,7 +382,7 @@ export default function Wallet() {
                 {/* Balance Cards - vertical stack */}
                 <MobileWalletBalanceCard
                   type="cash"
-                  title="USD Balance"
+                  title={translate('wallet.usdBalance')}
                   balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+2.3%"
@@ -391,9 +393,9 @@ export default function Wallet() {
                 
                 <MobileWalletBalanceCard
                   type="credits"
-                  title="Credits Balance"
-                  balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : "Loading..."}
-                  subBalance="Available: 100%"
+                  title={translate('wallet.creditsBalance')}
+                  balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : translate('common.loading')}
+                  subBalance={`${translate('wallet.available')}: 100%`}
                   change="+12.1%"
                   changeType="increase"
                   isLoading={!isLoaded}
@@ -402,9 +404,9 @@ export default function Wallet() {
                 
                 <MobileWalletBalanceCard
                   type="tokens"
-                  title="VTNA Tokens"
-                  balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
-                  subBalance="Staked: 25%"
+                  title={translate('wallet.vtnaTokens')}
+                  balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : translate('common.loading')}
+                  subBalance={`${translate('wallet.staked')}: 25%`}
                   change="+5.7%"
                   changeType="increase"
                   isLoading={!isLoaded}
