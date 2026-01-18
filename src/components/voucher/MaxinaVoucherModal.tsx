@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X } from "lucide-react";
+import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useCreateVoucherCheckout } from "@/hooks/useVouchers";
+import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, VoucherData } from "@/hooks/useVouchers";
 import { toast } from "sonner";
 
 type VoucherTier = "test" | "experience" | "exclusive";
-type ModalState = "selection" | "loading" | "success";
+type ModalState = "selection" | "loading" | "success" | "email-form";
 
 interface MaxinaVoucherModalProps {
   open: boolean;
@@ -57,18 +60,34 @@ const tiers = {
 export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalProps) => {
   const [selectedTier, setSelectedTier] = useState<VoucherTier | null>(null);
   const [modalState, setModalState] = useState<ModalState>("selection");
+  const [completedOrderId, setCompletedOrderId] = useState<string | null>(null);
+  const [completedTier, setCompletedTier] = useState<VoucherTier | null>(null);
+  const [recipientEmail, setRecipientEmail] = useState("");
+  const [recipientName, setRecipientName] = useState("");
+  const [personalMessage, setPersonalMessage] = useState("");
+  
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  
   const createCheckout = useCreateVoucherCheckout();
+  const downloadPdf = useDownloadVoucherPdf();
+  const sendEmail = useSendVoucherEmail();
 
   // Check for success return from Stripe
   useEffect(() => {
     const voucherSuccess = searchParams.get("voucher_success");
-    if (voucherSuccess === "true") {
+    const orderId = searchParams.get("order_id");
+    const tier = searchParams.get("tier") as VoucherTier | null;
+    
+    if (voucherSuccess === "true" && orderId) {
+      setCompletedOrderId(orderId);
+      setCompletedTier(tier);
       setModalState("success");
       onOpenChange(true);
       // Clean up URL params
       searchParams.delete("voucher_success");
       searchParams.delete("order_id");
+      searchParams.delete("tier");
       setSearchParams(searchParams, { replace: true });
     }
   }, [searchParams, setSearchParams, onOpenChange]);
@@ -114,23 +133,161 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     setTimeout(() => {
       setSelectedTier(null);
       setModalState("selection");
+      setCompletedOrderId(null);
+      setCompletedTier(null);
+      setRecipientEmail("");
+      setRecipientName("");
+      setPersonalMessage("");
     }, 300);
   };
 
-  const handleDownloadPdf = () => {
-    // TODO: Implement PDF download
-    console.log("Download PDF");
+  const handleDownloadPdf = async () => {
+    if (!completedOrderId) {
+      toast.error("Order not found");
+      return;
+    }
+    
+    try {
+      toast.loading("Generating voucher PDF...");
+      const result = await downloadPdf.mutateAsync(completedOrderId);
+      const voucher = result.voucher;
+      
+      // Generate PDF using browser print
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Vitana Gift Voucher - ${voucher.tierName}</title>
+            <style>
+              @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body { 
+                font-family: 'Inter', sans-serif; 
+                background: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+              }
+              .voucher {
+                background: white;
+                border-radius: 24px;
+                padding: 48px;
+                max-width: 500px;
+                box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+                text-align: center;
+              }
+              .logo { font-size: 32px; font-weight: 700; color: #8b5cf6; margin-bottom: 24px; }
+              .gift-icon { font-size: 64px; margin-bottom: 16px; }
+              .tier-badge {
+                display: inline-block;
+                background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+                color: white;
+                padding: 8px 24px;
+                border-radius: 100px;
+                font-weight: 600;
+                margin-bottom: 16px;
+              }
+              .price { font-size: 48px; font-weight: 700; color: #18181b; margin-bottom: 8px; }
+              .expires { color: #71717a; margin-bottom: 32px; }
+              .code-box {
+                background: #f4f4f5;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 32px;
+              }
+              .code-label { color: #71717a; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+              .code { font-family: monospace; font-size: 28px; font-weight: 700; color: #18181b; letter-spacing: 3px; }
+              .benefits { text-align: left; }
+              .benefits-label { color: #71717a; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+              .benefit { display: flex; align-items: flex-start; margin-bottom: 8px; color: #3f3f46; }
+              .benefit::before { content: '✓'; color: #8b5cf6; margin-right: 12px; font-weight: 600; }
+              .footer { margin-top: 32px; color: #a1a1aa; font-size: 12px; }
+              @media print {
+                body { background: white; padding: 0; }
+                .voucher { box-shadow: none; border: 2px solid #e4e4e7; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="voucher">
+              <div class="logo">VITANA</div>
+              <div class="gift-icon">🎁</div>
+              <div class="tier-badge">${voucher.tierName}</div>
+              <div class="price">${voucher.price}</div>
+              <div class="expires">Valid until ${voucher.expiresAt}</div>
+              
+              <div class="code-box">
+                <div class="code-label">Voucher Code</div>
+                <div class="code">${voucher.code}</div>
+              </div>
+              
+              <div class="benefits">
+                <div class="benefits-label">What's included</div>
+                ${voucher.benefits.map((b: string) => `<div class="benefit">${b}</div>`).join('')}
+              </div>
+              
+              <div class="footer">
+                Purchased on ${voucher.purchaseDate}<br>
+                Redeem at vitana-v1.lovable.app
+              </div>
+            </div>
+            <script>window.print();</script>
+          </body>
+          </html>
+        `);
+        printWindow.document.close();
+      }
+      
+      toast.dismiss();
+      toast.success("Voucher PDF ready!");
+    } catch (error) {
+      console.error("Download error:", error);
+      toast.dismiss();
+      toast.error("Failed to download voucher");
+    }
   };
 
   const handleSendEmail = () => {
-    // TODO: Implement email send
-    console.log("Send email");
+    setModalState("email-form");
+  };
+
+  const handleConfirmSendEmail = async () => {
+    if (!completedOrderId || !recipientEmail) {
+      toast.error("Please enter recipient email");
+      return;
+    }
+
+    try {
+      toast.loading("Sending voucher email...");
+      await sendEmail.mutateAsync({
+        orderId: completedOrderId,
+        recipientEmail,
+        recipientName,
+        message: personalMessage,
+      });
+      toast.dismiss();
+      toast.success(`Voucher sent to ${recipientEmail}!`);
+      setModalState("success");
+      setRecipientEmail("");
+      setRecipientName("");
+      setPersonalMessage("");
+    } catch (error) {
+      console.error("Email send error:", error);
+      toast.dismiss();
+      toast.error("Failed to send email. Please try again.");
+    }
   };
 
   const handleViewOrders = () => {
-    // TODO: Navigate to orders
     handleClose();
+    navigate("/discover/orders?tab=vouchers");
   };
+
+  const tierForDisplay = completedTier || selectedTier;
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -243,7 +400,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </div>
                 <h3 className="text-xl font-semibold mb-1">Voucher Purchased!</h3>
                 <p className="text-sm text-muted-foreground">
-                  Your {selectedTier && tiers[selectedTier].name} voucher is ready
+                  Your {tierForDisplay && tiers[tierForDisplay].name} voucher is ready
                 </p>
               </div>
 
@@ -252,8 +409,13 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   onClick={handleDownloadPdf}
                   variant="outline"
                   className="w-full justify-start h-12"
+                  disabled={downloadPdf.isPending}
                 >
-                  <Download className="h-4 w-4 mr-3" />
+                  {downloadPdf.isPending ? (
+                    <Loader2 className="h-4 w-4 mr-3 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4 mr-3" />
+                  )}
                   Download PDF Voucher
                 </Button>
                 
@@ -282,6 +444,86 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               >
                 Done
               </Button>
+            </motion.div>
+          )}
+
+          {modalState === "email-form" && (
+            <motion.div
+              key="email-form"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="p-6"
+            >
+              <DialogHeader className="mb-6">
+                <DialogTitle className="flex items-center gap-2 text-xl">
+                  <Mail className="h-5 w-5 text-primary" />
+                  Send Voucher by Email
+                </DialogTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  We'll send a beautifully designed email with the voucher
+                </p>
+              </DialogHeader>
+
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="recipientEmail">Recipient Email *</Label>
+                  <Input
+                    id="recipientEmail"
+                    type="email"
+                    placeholder="friend@example.com"
+                    value={recipientEmail}
+                    onChange={(e) => setRecipientEmail(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="recipientName">Recipient Name (optional)</Label>
+                  <Input
+                    id="recipientName"
+                    type="text"
+                    placeholder="Jane"
+                    value={recipientName}
+                    onChange={(e) => setRecipientName(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="personalMessage">Personal Message (optional)</Label>
+                  <Textarea
+                    id="personalMessage"
+                    placeholder="Happy Birthday! Enjoy this wellness treat..."
+                    value={personalMessage}
+                    onChange={(e) => setPersonalMessage(e.target.value)}
+                    className="mt-1 resize-none"
+                    rows={3}
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-2 mt-6">
+                <Button
+                  variant="outline"
+                  onClick={() => setModalState("success")}
+                  className="flex-1"
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={handleConfirmSendEmail}
+                  disabled={!recipientEmail || sendEmail.isPending}
+                  className="flex-1"
+                >
+                  {sendEmail.isPending ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4 mr-2" />
+                  )}
+                  Send Voucher
+                </Button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

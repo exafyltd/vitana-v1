@@ -19,6 +19,7 @@ import { DiscoverOrderActionPopup } from "@/components/discover/DiscoverOrderAct
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
+import { useMyVouchers } from "@/hooks/useVouchers";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { format, isPast } from "date-fns";
@@ -33,7 +34,7 @@ interface UnifiedOrder {
   providerImage: string;
   price: string;
   status: string;
-  type: 'product' | 'service' | 'ticket';
+  type: 'product' | 'service' | 'ticket' | 'voucher';
   orderDate: string;
   rawDate: Date;
   trackingNumber?: string;
@@ -46,7 +47,7 @@ interface UnifiedOrder {
   ticketPurchase?: TicketPurchase;
 }
 
-type HistoryFilter = 'all' | 'events' | 'products' | 'services' | 'refunds';
+type HistoryFilter = 'all' | 'events' | 'products' | 'services' | 'refunds' | 'vouchers';
 
 export default function Orders() {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ export default function Orders() {
   const [historyFilter, setHistoryFilter] = useState<HistoryFilter>('all');
 
   const { tickets, loading: ticketsLoading } = useMyTickets();
+  const { data: voucherOrders = [], isLoading: vouchersLoading } = useMyVouchers();
 
   // Mock ticket data for preview
   const mockTickets: TicketPurchase[] = [
@@ -257,6 +259,27 @@ export default function Orders() {
     };
   };
 
+  // Transform voucher order to unified format
+  const transformVoucherOrder = (order: any): UnifiedOrder => {
+    const tierNames: Record<string, string> = {
+      test: 'Test Voucher',
+      experience: 'Experience Voucher', 
+      exclusive: 'Exclusive Voucher',
+    };
+    
+    return {
+      id: order.id,
+      title: `Maxina ${tierNames[order.tier] || 'Gift Voucher'}`,
+      provider: 'Maxina Gift Voucher',
+      providerImage: '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png',
+      price: `€${(order.amount_cents / 100).toFixed(2)}`,
+      status: order.status,
+      type: 'voucher',
+      orderDate: format(new Date(order.created_at), 'MMM d, yyyy'),
+      rawDate: new Date(order.created_at),
+    };
+  };
+
   // Build unified order lists
   const { unifiedActiveOrders, allHistoryOrders } = useMemo(() => {
     const activeCjOrders = cjOrders
@@ -275,14 +298,23 @@ export default function Orders() {
       .filter(t => t.event && isPast(new Date(t.event.start_time)))
       .map(transformTicketToUnifiedOrder);
 
-    const active = [...activeCjOrders, ...upcomingTickets]
+    // Vouchers: pending are active, completed/redeemed/expired are history
+    const activeVouchers = voucherOrders
+      .filter(v => v.status === 'pending')
+      .map(transformVoucherOrder);
+    
+    const completedVouchers = voucherOrders
+      .filter(v => ['completed', 'redeemed', 'expired', 'cancelled'].includes(v.status))
+      .map(transformVoucherOrder);
+
+    const active = [...activeCjOrders, ...upcomingTickets, ...activeVouchers]
       .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
 
-    const history = [...completedCjOrders, ...pastTickets]
+    const history = [...completedCjOrders, ...pastTickets, ...completedVouchers]
       .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
 
     return { unifiedActiveOrders: active, allHistoryOrders: history };
-  }, [cjOrders, displayTickets]);
+  }, [cjOrders, displayTickets, voucherOrders]);
 
   // Apply history filter
   const unifiedHistoryOrders = useMemo(() => {
@@ -291,10 +323,12 @@ export default function Orders() {
       if (historyFilter === 'events') return order.type === 'ticket';
       if (historyFilter === 'products') return order.type === 'product';
       if (historyFilter === 'services') return order.type === 'service';
+      if (historyFilter === 'vouchers') return order.type === 'voucher';
       if (historyFilter === 'refunds') return order.status === 'refunded' || order.status === 'cancelled';
       return true;
     });
   }, [allHistoryOrders, historyFilter]);
+
 
   // Transform to StandardHorizontalCard props
   const transformToCardProps = (order: UnifiedOrder): StandardHorizontalCardProps => {
@@ -362,6 +396,7 @@ export default function Orders() {
       }
       if (order.type === 'ticket') return '🎫';
       if (order.type === 'product') return '📦';
+      if (order.type === 'voucher') return '🎁';
       return '🩺';
     };
 
@@ -385,6 +420,7 @@ export default function Orders() {
       { key: 'all', label: 'All' },
       { key: 'events', label: 'Events' },
       { key: 'products', label: 'Products' },
+      { key: 'vouchers', label: 'Vouchers' },
       { key: 'services', label: 'Services' },
       { key: 'refunds', label: 'Refunds' },
     ];
@@ -418,7 +454,7 @@ export default function Orders() {
     </div>
   );
 
-  const isLoading = loading || ticketsLoading;
+  const isLoading = loading || ticketsLoading || vouchersLoading;
 
   return (
     <AppLayout>
