@@ -96,7 +96,7 @@ export const useRedeemableVouchers = () => {
       const { data, error } = await supabase
         .from('voucher_orders')
         .select('*')
-        .eq('status', 'completed')
+        .eq('status', 'paid')
         .eq('buyer_user_id', user.id)
         .order('created_at', { ascending: false });
       

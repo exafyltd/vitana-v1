@@ -286,11 +286,11 @@ serve(async (req) => {
         console.log('='.repeat(50));
         
         if (orderId) {
-          // Update voucher_orders status to completed
+          // Update voucher_orders status to paid
           const { data: updatedOrder, error: orderError } = await supabaseClient
             .from('voucher_orders')
             .update({
-              status: 'completed',
+              status: 'paid',
               payment_intent_id: session.payment_intent as string,
             })
             .eq('id', orderId)
