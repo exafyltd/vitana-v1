@@ -46,8 +46,8 @@ async function selfHealPendingOrder(
 ): Promise<{ healed: boolean; error?: string }> {
   console.log(`[voucher-send-email] Self-healing check for order ${order.id}, status: ${order.status}`);
   
-  if (order.status === "completed") {
-    return { healed: false }; // Already completed, no healing needed
+  if (order.status === "paid") {
+    return { healed: false }; // Already paid, no healing needed
   }
   
   if (!order.checkout_session_id) {
@@ -64,13 +64,13 @@ async function selfHealPendingOrder(
     console.log(`[voucher-send-email] Stripe session payment_status: ${session.payment_status}`);
     
     if (session.payment_status === "paid") {
-      console.log(`[voucher-send-email] Payment confirmed! Updating order to completed...`);
+      console.log(`[voucher-send-email] Payment confirmed! Updating order to paid...`);
       
-      // Update voucher_orders to completed
+      // Update voucher_orders to paid
       const { error: orderError } = await supabaseAdmin
         .from("voucher_orders")
         .update({
-          status: "completed",
+          status: "paid",
           payment_intent_id: session.payment_intent as string,
         })
         .eq("id", order.id);
@@ -197,7 +197,7 @@ serve(async (req) => {
     console.log(`[voucher-send-email] Order found: status=${order.status}, checkout_session_id=${order.checkout_session_id}`);
 
     // Self-healing: If order is pending but has checkout_session_id, check Stripe
-    if (order.status !== "completed") {
+    if (order.status !== "paid") {
       const healResult = await selfHealPendingOrder(supabaseAdmin, order, stripeSecretKey);
       
       if (healResult.healed) {
