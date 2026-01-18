@@ -276,38 +276,61 @@ serve(async (req) => {
         const orderId = meta.order_id;
         const voucherId = meta.voucher_id;
         
+        console.log('='.repeat(50));
+        console.log('[VOUCHER-WEBHOOK] Processing voucher purchase');
+        console.log('[VOUCHER-WEBHOOK] Order ID:', orderId);
+        console.log('[VOUCHER-WEBHOOK] Voucher ID:', voucherId);
+        console.log('[VOUCHER-WEBHOOK] Session ID:', session.id);
+        console.log('[VOUCHER-WEBHOOK] Payment Intent:', session.payment_intent);
+        console.log('[VOUCHER-WEBHOOK] Payment Status:', session.payment_status);
+        console.log('='.repeat(50));
+        
         if (orderId) {
-          console.log('Processing voucher purchase:', orderId);
-          
           // Update voucher_orders status to completed
-          const { error: orderError } = await supabaseClient
+          const { data: updatedOrder, error: orderError } = await supabaseClient
             .from('voucher_orders')
             .update({
               status: 'completed',
               payment_intent_id: session.payment_intent as string,
             })
-            .eq('id', orderId);
+            .eq('id', orderId)
+            .select()
+            .single();
 
           if (orderError) {
-            console.error('Error updating voucher order status:', orderError);
+            console.error('[VOUCHER-WEBHOOK] Error updating voucher order status:', orderError);
+            console.error('[VOUCHER-WEBHOOK] Order ID that failed:', orderId);
           } else {
-            console.log('Voucher order completed:', orderId);
+            console.log('[VOUCHER-WEBHOOK] ✅ Voucher order completed successfully');
+            console.log('[VOUCHER-WEBHOOK] Updated order:', JSON.stringify(updatedOrder, null, 2));
           }
 
           // Update voucher status to active
           if (voucherId) {
-            const { error: voucherError } = await supabaseClient
+            const { data: updatedVoucher, error: voucherError } = await supabaseClient
               .from('vouchers')
               .update({ status: 'active' })
-              .eq('id', voucherId);
+              .eq('id', voucherId)
+              .select()
+              .single();
 
             if (voucherError) {
-              console.error('Error updating voucher status:', voucherError);
+              console.error('[VOUCHER-WEBHOOK] Error updating voucher status:', voucherError);
+              console.error('[VOUCHER-WEBHOOK] Voucher ID that failed:', voucherId);
             } else {
-              console.log('Voucher activated:', voucherId);
+              console.log('[VOUCHER-WEBHOOK] ✅ Voucher activated successfully');
+              console.log('[VOUCHER-WEBHOOK] Activated voucher:', JSON.stringify(updatedVoucher, null, 2));
             }
+          } else {
+            console.warn('[VOUCHER-WEBHOOK] No voucher_id in metadata, skipping voucher activation');
           }
+        } else {
+          console.error('[VOUCHER-WEBHOOK] No order_id in metadata!');
+          console.error('[VOUCHER-WEBHOOK] Full metadata:', JSON.stringify(meta, null, 2));
         }
+        
+        console.log('[VOUCHER-WEBHOOK] Processing complete');
+        console.log('='.repeat(50));
       }
       // Handle PROVIDER APPOINTMENT bookings
       else if (bookingType === 'provider_appointment') {
