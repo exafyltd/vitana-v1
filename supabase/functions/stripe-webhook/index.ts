@@ -140,12 +140,33 @@ serve(async (req) => {
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
     
     if (!webhookSecret) {
-      console.error('STRIPE_WEBHOOK_SECRET not configured');
+      console.error('='.repeat(70));
+      console.error('FATAL ERROR: STRIPE_WEBHOOK_SECRET is NOT configured!');
+      console.error('');
+      console.error('Webhook signature verification will FAIL without this secret.');
+      console.error('All payment confirmations, voucher activations, and ticket purchases');
+      console.error('will NOT be processed until this is fixed.');
+      console.error('');
+      console.error('To fix:');
+      console.error('1. Go to Stripe Dashboard → Developers → Webhooks');
+      console.error('2. Select your webhook endpoint');
+      console.error('3. Click "Reveal" under Signing secret');
+      console.error('4. Copy the whsec_... value');
+      console.error('5. Add it to Supabase: Dashboard → Settings → Edge Functions → Secrets');
+      console.error('   Secret name: STRIPE_WEBHOOK_SECRET');
+      console.error('='.repeat(70));
+      
       return new Response(
-        JSON.stringify({ error: 'Webhook secret not configured' }),
-        { status: 500 }
+        JSON.stringify({ 
+          error: 'Webhook configuration error',
+          message: 'STRIPE_WEBHOOK_SECRET is not configured. Payment webhooks cannot be processed.',
+          fix: 'Add STRIPE_WEBHOOK_SECRET to Supabase Edge Function secrets'
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('[STRIPE-WEBHOOK] Secret configured, verifying signature...');
 
     const event = stripe.webhooks.constructEvent(
       body,
