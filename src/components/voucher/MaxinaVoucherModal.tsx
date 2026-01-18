@@ -147,9 +147,16 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       return;
     }
     
+    const loadingToast = toast.loading("Generating voucher PDF...");
+    
     try {
-      toast.loading("Generating voucher PDF...");
       const result = await downloadPdf.mutateAsync(completedOrderId);
+      
+      if (!result?.voucher) {
+        toast.dismiss(loadingToast);
+        toast.error("Failed to load voucher data");
+        return;
+      }
       const voucher = result.voucher;
       
       // Generate PDF using browser print
@@ -242,12 +249,19 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         printWindow.document.close();
       }
       
-      toast.dismiss();
+      toast.dismiss(loadingToast);
       toast.success("Voucher PDF ready!");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Download error:", error);
-      toast.dismiss();
-      toast.error("Failed to download voucher");
+      toast.dismiss(loadingToast);
+      
+      // Extract the actual error message from the response
+      const errorMessage = error?.message || 
+        error?.context?.body?.error || 
+        error?.error || 
+        "Failed to download voucher. Please try again.";
+      
+      toast.error(errorMessage);
     }
   };
 
@@ -261,24 +275,33 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       return;
     }
 
+    const loadingToast = toast.loading("Sending voucher email...");
+    
     try {
-      toast.loading("Sending voucher email...");
-      await sendEmail.mutateAsync({
+      const result = await sendEmail.mutateAsync({
         orderId: completedOrderId,
         recipientEmail,
         recipientName,
         message: personalMessage,
       });
-      toast.dismiss();
+      
+      toast.dismiss(loadingToast);
       toast.success(`Voucher sent to ${recipientEmail}!`);
       setModalState("success");
       setRecipientEmail("");
       setRecipientName("");
       setPersonalMessage("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Email send error:", error);
-      toast.dismiss();
-      toast.error("Failed to send email. Please try again.");
+      toast.dismiss(loadingToast);
+      
+      // Extract the actual error message from the response
+      const errorMessage = error?.message || 
+        error?.context?.body?.error || 
+        error?.error || 
+        "Failed to send email. Please try again.";
+      
+      toast.error(errorMessage);
     }
   };
 
