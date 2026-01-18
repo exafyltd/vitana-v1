@@ -1118,6 +1118,249 @@ export type Database = {
           },
         ]
       }
+      autopilot_loop_state: {
+        Row: {
+          batch_size: number
+          created_at: string
+          environment: string
+          errors_1h: number
+          events_processed_1h: number
+          events_processed_total: number
+          id: string
+          is_running: boolean
+          last_error: string | null
+          last_error_at: string | null
+          last_event_cursor: string | null
+          last_event_timestamp: string | null
+          poll_interval_ms: number
+          started_at: string | null
+          stopped_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          batch_size?: number
+          created_at?: string
+          environment?: string
+          errors_1h?: number
+          events_processed_1h?: number
+          events_processed_total?: number
+          id?: string
+          is_running?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_event_cursor?: string | null
+          last_event_timestamp?: string | null
+          poll_interval_ms?: number
+          started_at?: string | null
+          stopped_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          batch_size?: number
+          created_at?: string
+          environment?: string
+          errors_1h?: number
+          events_processed_1h?: number
+          events_processed_total?: number
+          id?: string
+          is_running?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_event_cursor?: string | null
+          last_event_timestamp?: string | null
+          poll_interval_ms?: number
+          started_at?: string | null
+          stopped_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      autopilot_processed_events: {
+        Row: {
+          action_triggered: string | null
+          error: string | null
+          event_id: string
+          event_timestamp: string | null
+          event_type: string
+          processed_at: string
+          raw_event: Json | null
+          result: Json
+          transition_from: string | null
+          transition_to: string | null
+          vtid: string | null
+        }
+        Insert: {
+          action_triggered?: string | null
+          error?: string | null
+          event_id: string
+          event_timestamp?: string | null
+          event_type: string
+          processed_at?: string
+          raw_event?: Json | null
+          result?: Json
+          transition_from?: string | null
+          transition_to?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          action_triggered?: string | null
+          error?: string | null
+          event_id?: string
+          event_timestamp?: string | null
+          event_type?: string
+          processed_at?: string
+          raw_event?: Json | null
+          result?: Json
+          transition_from?: string | null
+          transition_to?: string | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
+      autopilot_recommendations: {
+        Row: {
+          activated_at: string | null
+          activated_vtid: string | null
+          created_at: string | null
+          domain: string
+          effort_score: number | null
+          id: string
+          impact_score: number | null
+          risk_level: string | null
+          snoozed_until: string | null
+          spec_checksum: string | null
+          spec_snapshot: Json | null
+          status: string
+          summary: string
+          title: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_vtid?: string | null
+          created_at?: string | null
+          domain?: string
+          effort_score?: number | null
+          id?: string
+          impact_score?: number | null
+          risk_level?: string | null
+          snoozed_until?: string | null
+          spec_checksum?: string | null
+          spec_snapshot?: Json | null
+          status?: string
+          summary: string
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          activated_vtid?: string | null
+          created_at?: string | null
+          domain?: string
+          effort_score?: number | null
+          id?: string
+          impact_score?: number | null
+          risk_level?: string | null
+          snoozed_until?: string | null
+          spec_checksum?: string | null
+          spec_snapshot?: Json | null
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      autopilot_run_state: {
+        Row: {
+          attempts: Json
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          error_at: string | null
+          error_code: string | null
+          last_event_id: string | null
+          last_event_type: string | null
+          last_transition_at: string
+          lock_until: string | null
+          locked_by: string | null
+          max_attempts: number
+          merge_sha: string | null
+          metadata: Json | null
+          pr_number: number | null
+          pr_url: string | null
+          run_id: string | null
+          spec_checksum: string | null
+          started_at: string
+          state: string
+          updated_at: string
+          validator_passed: boolean | null
+          validator_result: Json | null
+          verification_passed: boolean | null
+          verification_result: Json | null
+          vtid: string
+        }
+        Insert: {
+          attempts?: Json
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          error_at?: string | null
+          error_code?: string | null
+          last_event_id?: string | null
+          last_event_type?: string | null
+          last_transition_at?: string
+          lock_until?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          merge_sha?: string | null
+          metadata?: Json | null
+          pr_number?: number | null
+          pr_url?: string | null
+          run_id?: string | null
+          spec_checksum?: string | null
+          started_at?: string
+          state?: string
+          updated_at?: string
+          validator_passed?: boolean | null
+          validator_result?: Json | null
+          verification_passed?: boolean | null
+          verification_result?: Json | null
+          vtid: string
+        }
+        Update: {
+          attempts?: Json
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          error_at?: string | null
+          error_code?: string | null
+          last_event_id?: string | null
+          last_event_type?: string | null
+          last_transition_at?: string
+          lock_until?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          merge_sha?: string | null
+          metadata?: Json | null
+          pr_number?: number | null
+          pr_url?: string | null
+          run_id?: string | null
+          spec_checksum?: string | null
+          started_at?: string
+          state?: string
+          updated_at?: string
+          validator_passed?: boolean | null
+          validator_result?: Json | null
+          verification_passed?: boolean | null
+          verification_result?: Json | null
+          vtid?: string
+        }
+        Relationships: []
+      }
       biomarker_results: {
         Row: {
           biomarker_code: string | null
@@ -4853,39 +5096,63 @@ export type Database = {
           category_key: string
           content: string
           content_json: Json | null
+          conversation_id: string | null
           created_at: string
+          embedding: string | null
+          embedding_model: string | null
+          embedding_updated_at: string | null
           id: string
           importance: number
           occurred_at: string
+          origin_service: string | null
           source: string
           tenant_id: string
           user_id: string
+          visibility_scope: string | null
+          vtid: string | null
+          workspace_scope: string | null
         }
         Insert: {
           active_role?: string | null
           category_key: string
           content: string
           content_json?: Json | null
+          conversation_id?: string | null
           created_at?: string
+          embedding?: string | null
+          embedding_model?: string | null
+          embedding_updated_at?: string | null
           id?: string
           importance?: number
           occurred_at?: string
+          origin_service?: string | null
           source: string
           tenant_id: string
           user_id: string
+          visibility_scope?: string | null
+          vtid?: string | null
+          workspace_scope?: string | null
         }
         Update: {
           active_role?: string | null
           category_key?: string
           content?: string
           content_json?: Json | null
+          conversation_id?: string | null
           created_at?: string
+          embedding?: string | null
+          embedding_model?: string | null
+          embedding_updated_at?: string | null
           id?: string
           importance?: number
           occurred_at?: string
+          origin_service?: string | null
           source?: string
           tenant_id?: string
           user_id?: string
+          visibility_scope?: string | null
+          vtid?: string | null
+          workspace_scope?: string | null
         }
         Relationships: [
           {
@@ -7420,6 +7687,78 @@ export type Database = {
         }
         Relationships: []
       }
+      system_control_audit: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          from_enabled: boolean
+          id: string
+          key: string
+          reason: string
+          scope: Json
+          to_enabled: boolean
+          updated_by: string | null
+          updated_by_role: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          from_enabled: boolean
+          id?: string
+          key: string
+          reason: string
+          scope: Json
+          to_enabled: boolean
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          from_enabled?: boolean
+          id?: string
+          key?: string
+          reason?: string
+          scope?: Json
+          to_enabled?: boolean
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Relationships: []
+      }
+      system_controls: {
+        Row: {
+          enabled: boolean
+          expires_at: string | null
+          key: string
+          reason: string
+          scope: Json
+          updated_at: string
+          updated_by: string | null
+          updated_by_role: string | null
+        }
+        Insert: {
+          enabled?: boolean
+          expires_at?: string | null
+          key: string
+          reason?: string
+          scope?: Json
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Update: {
+          enabled?: boolean
+          expires_at?: string | null
+          key?: string
+          reason?: string
+          scope?: Json
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           category: string
@@ -8590,6 +8929,9 @@ export type Database = {
       vtid_ledger: {
         Row: {
           assigned_to: string
+          claim_expires_at: string | null
+          claim_started_at: string | null
+          claimed_by: string | null
           completed_at: string | null
           created_at: string | null
           delete_reason: string | null
@@ -8618,6 +8960,9 @@ export type Database = {
         }
         Insert: {
           assigned_to?: string
+          claim_expires_at?: string | null
+          claim_started_at?: string | null
+          claimed_by?: string | null
           completed_at?: string | null
           created_at?: string | null
           delete_reason?: string | null
@@ -8646,6 +8991,9 @@ export type Database = {
         }
         Update: {
           assigned_to?: string
+          claim_expires_at?: string | null
+          claim_started_at?: string | null
+          claimed_by?: string | null
           completed_at?: string | null
           created_at?: string | null
           delete_reason?: string | null
@@ -8890,6 +9238,51 @@ export type Database = {
         }
         Relationships: []
       }
+      worker_registry: {
+        Row: {
+          capabilities: string[] | null
+          created_at: string | null
+          current_vtid: string | null
+          id: string
+          last_heartbeat_at: string | null
+          max_concurrent: number | null
+          metadata: Json | null
+          registered_at: string | null
+          status: string | null
+          updated_at: string | null
+          version: string | null
+          worker_id: string
+        }
+        Insert: {
+          capabilities?: string[] | null
+          created_at?: string | null
+          current_vtid?: string | null
+          id?: string
+          last_heartbeat_at?: string | null
+          max_concurrent?: number | null
+          metadata?: Json | null
+          registered_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          version?: string | null
+          worker_id: string
+        }
+        Update: {
+          capabilities?: string[] | null
+          created_at?: string | null
+          current_vtid?: string | null
+          id?: string
+          last_heartbeat_at?: string | null
+          max_concurrent?: number | null
+          metadata?: Json | null
+          registered_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          version?: string | null
+          worker_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       admin_system_health: {
@@ -9129,6 +9522,10 @@ export type Database = {
       }
     }
     Functions: {
+      activate_autopilot_recommendation: {
+        Args: { p_recommendation_id: string; p_user_id?: string }
+        Returns: Json
+      }
       allocate_global_vtid: {
         Args: { p_layer?: string; p_module?: string; p_source?: string }
         Returns: {
@@ -9159,6 +9556,14 @@ export type Database = {
           display_name: string
           user_id: string
         }[]
+      }
+      claim_vtid_task: {
+        Args: {
+          p_expires_minutes?: number
+          p_vtid: string
+          p_worker_id: string
+        }
+        Returns: Json
       }
       clean_expired_context_cache: { Args: never; Returns: undefined }
       clean_expired_memory: { Args: never; Returns: undefined }
@@ -9231,6 +9636,7 @@ export type Database = {
             Returns: Json
           }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
+      expire_stale_vtid_claims: { Args: never; Returns: number }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
       generate_event_slug: {
         Args: { event_id?: string; event_title: string }
@@ -9247,6 +9653,31 @@ export type Database = {
       }
       get_active_role: { Args: never; Returns: string }
       get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
+      get_autopilot_recommendations: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_status?: string[]
+          p_user_id?: string
+        }
+        Returns: {
+          activated_at: string
+          activated_vtid: string
+          created_at: string
+          domain: string
+          effort_score: number
+          id: string
+          impact_score: number
+          risk_level: string
+          status: string
+          summary: string
+          title: string
+        }[]
+      }
+      get_autopilot_recommendations_count: {
+        Args: { p_user_id?: string }
+        Returns: number
+      }
       get_conversation_participants: {
         Args: { p_user_id: string }
         Returns: {
@@ -9296,6 +9727,19 @@ export type Database = {
           avatar_url: string
           display_name: string
           user_id: string
+        }[]
+      }
+      get_pending_worker_tasks: {
+        Args: { p_limit?: number }
+        Returns: {
+          created_at: string
+          layer: string
+          module: string
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+          vtid: string
         }[]
       }
       get_public_campaign_details: {
@@ -9472,6 +9916,7 @@ export type Database = {
           youtube_url: string
         }[]
       }
+      get_worker_connector_stats: { Args: never; Returns: Json }
       has_active_consent: {
         Args: {
           p_data_scope: string
@@ -9610,6 +10055,66 @@ export type Database = {
         Returns: Json
       }
       memory_get_garden_summary: { Args: never; Returns: Json }
+      memory_get_items_needing_embeddings: {
+        Args: {
+          p_category_key?: string
+          p_limit?: number
+          p_since?: string
+          p_tenant_id?: string
+        }
+        Returns: {
+          category_key: string
+          content: string
+          created_at: string
+          id: string
+          tenant_id: string
+          user_id: string
+        }[]
+      }
+      memory_mark_for_reembed: {
+        Args: {
+          p_category_key?: string
+          p_since?: string
+          p_tenant_id?: string
+          p_until?: string
+          p_user_id?: string
+        }
+        Returns: Json
+      }
+      memory_semantic_search: {
+        Args: {
+          p_active_role?: string
+          p_categories?: string[]
+          p_max_age_hours?: number
+          p_query_embedding: string
+          p_recency_boost?: boolean
+          p_tenant_id?: string
+          p_top_k?: number
+          p_user_id?: string
+          p_visibility_scope?: string
+          p_workspace_scope?: string
+        }
+        Returns: {
+          active_role: string
+          category_key: string
+          combined_score: number
+          content: string
+          content_json: Json
+          conversation_id: string
+          created_at: string
+          id: string
+          importance: number
+          occurred_at: string
+          origin_service: string
+          recency_score: number
+          similarity_score: number
+          source: string
+          visibility_scope: string
+          vtid: string
+          workspace_scope: string
+        }[]
+      }
+      memory_update_embeddings: { Args: { p_updates: Json }; Returns: Json }
       memory_write_item: { Args: { p_payload: Json }; Returns: Json }
       next_vtid: {
         Args: { p_family: string; p_module: string }
@@ -9667,6 +10172,14 @@ export type Database = {
           p_tenant_id: string
           p_voucher_id: string
         }
+        Returns: Json
+      }
+      reject_autopilot_recommendation: {
+        Args: { p_reason?: string; p_recommendation_id: string }
+        Returns: Json
+      }
+      release_vtid_claim: {
+        Args: { p_reason?: string; p_vtid: string; p_worker_id: string }
         Returns: Json
       }
       resolve_event_by_slug: {
@@ -9754,6 +10267,10 @@ export type Database = {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
       }
+      snooze_autopilot_recommendation: {
+        Args: { p_hours?: number; p_recommendation_id: string }
+        Returns: Json
+      }
       switch_to_tenant_by_slug: {
         Args: { p_tenant_slug: string }
         Returns: undefined
@@ -9811,6 +10328,10 @@ export type Database = {
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }
         Returns: boolean
+      }
+      worker_heartbeat: {
+        Args: { p_active_vtid?: string; p_worker_id: string }
+        Returns: Json
       }
     }
     Enums: {
