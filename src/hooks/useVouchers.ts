@@ -21,6 +21,18 @@ export const useCreateVoucherCheckout = () => {
   });
 };
 
+export interface VoucherData {
+  code: string;
+  tier: string;
+  tierName: string;
+  price: string;
+  purchaseDate: string;
+  expiresAt: string;
+  benefits: string[];
+  buyerEmail: string;
+  orderId: string;
+}
+
 export const useDownloadVoucherPdf = () => {
   return useMutation({
     mutationFn: async (orderId: string) => {
@@ -29,7 +41,7 @@ export const useDownloadVoucherPdf = () => {
       });
       
       if (error) throw error;
-      return data as { signedUrl: string };
+      return data as { success: boolean; voucher: VoucherData };
     },
   });
 };

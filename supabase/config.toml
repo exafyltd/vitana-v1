@@ -51,6 +51,15 @@ verify_jwt = false
 [functions.stripe-webhook]
 verify_jwt = false
 
+[functions.stripe-create-voucher-checkout]
+verify_jwt = false
+
+[functions.voucher-download-pdf]
+verify_jwt = false
+
+[functions.voucher-send-email]
+verify_jwt = false
+
 [functions.ai-chat]
 verify_jwt = true
 
