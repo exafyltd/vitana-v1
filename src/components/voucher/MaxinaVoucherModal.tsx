@@ -68,6 +68,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   
   // PDF preview state (mobile only)
   const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
+  const [previewVoucher, setPreviewVoucher] = useState<VoucherData | null>(null);
   const [canShareUrl, setCanShareUrl] = useState(false);
   
   const [searchParams, setSearchParams] = useSearchParams();
@@ -219,7 +220,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
       if (isMobile) {
-        // Mobile: Show in-app PDF preview with signed URL
+        // Mobile: Show in-app HTML preview with voucher data + signed URL for actions
+        setPreviewVoucher(result.voucher);
         setSignedPdfUrl(result.signedPdfUrl);
         setModalState("pdf-preview");
       } else {
@@ -525,8 +527,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             </motion.div>
           )}
 
-          {/* Mobile PDF Preview - Full screen in-app preview */}
-          {modalState === "pdf-preview" && signedPdfUrl && (
+          {/* Mobile Voucher Preview - HTML card (works in all WebViews) */}
+          {modalState === "pdf-preview" && previewVoucher && signedPdfUrl && (
             <motion.div
               key="pdf-preview"
               initial={{ opacity: 0 }}
@@ -546,16 +548,55 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </Button>
               </div>
 
-              {/* PDF Preview - takes remaining space */}
-              <div className="flex-1 bg-muted/50 overflow-auto min-h-0">
-                <iframe
-                  src={signedPdfUrl}
-                  className="w-full h-full border-0"
-                  title="Voucher Preview"
-                />
+              {/* Voucher Card Preview - styled HTML (no iframe) */}
+              <div className="flex-1 overflow-auto p-4 bg-gradient-to-b from-primary/5 to-background">
+                <div className="bg-card rounded-2xl shadow-lg border p-6 max-w-sm mx-auto">
+                  {/* Logo */}
+                  <div className="text-center mb-4">
+                    <h1 className="text-2xl font-bold text-primary">VITANA</h1>
+                    <div className="text-5xl my-4">🎁</div>
+                    <p className="text-muted-foreground text-sm uppercase tracking-wider">Gift Voucher</p>
+                  </div>
+                  
+                  {/* Tier Badge */}
+                  <div className="flex justify-center mb-4">
+                    <span className="bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold">
+                      {previewVoucher.tierName?.toUpperCase() || previewVoucher.tier?.toUpperCase()}
+                    </span>
+                  </div>
+                  
+                  {/* Price */}
+                  <div className="text-center mb-5">
+                    <p className="text-4xl font-bold text-foreground">{previewVoucher.price}</p>
+                    <p className="text-muted-foreground text-sm mt-1">
+                      Valid until {previewVoucher.expiresAt}
+                    </p>
+                  </div>
+                  
+                  {/* Voucher Code */}
+                  <div className="bg-muted rounded-xl p-4 text-center mb-5">
+                    <p className="text-muted-foreground text-xs uppercase tracking-wide mb-1">Voucher Code</p>
+                    <p className="font-mono font-bold text-lg tracking-widest text-foreground">
+                      {previewVoucher.code}
+                    </p>
+                  </div>
+                  
+                  {/* Benefits */}
+                  {previewVoucher.benefits && previewVoucher.benefits.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-muted-foreground text-xs uppercase tracking-wide">What's Included</p>
+                      {previewVoucher.benefits.map((benefit, i) => (
+                        <div key={i} className="flex items-start gap-2 text-sm">
+                          <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                          <span className="text-foreground">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Footer Actions - capability-based */}
+              {/* Footer Actions */}
               <div className="p-4 border-t space-y-2">
                 {canShareUrl ? (
                   <>
