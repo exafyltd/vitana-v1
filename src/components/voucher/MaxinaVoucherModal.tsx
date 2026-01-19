@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy } from "lucide-react";
+import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -173,10 +173,38 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     }
   };
   
-  // Direct download - opens URL which triggers browser download
+  // Direct download - uses anchor with download attribute (works better in WebViews)
   const handleDownloadDirect = () => {
     if (!signedPdfUrl) return;
-    window.open(signedPdfUrl, '_blank');
+    
+    try {
+      // Create a temporary anchor with download attribute
+      const link = document.createElement('a');
+      link.href = signedPdfUrl;
+      link.download = `vitana-voucher-${completedOrderId || 'gift'}.pdf`;
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Download started!");
+    } catch (error) {
+      console.error("Download failed, trying fallback:", error);
+      // Fallback: navigate to URL directly
+      window.location.href = signedPdfUrl;
+    }
+  };
+  
+  // Open in external browser - escape hatch for WebViews
+  const handleOpenInBrowser = () => {
+    if (!signedPdfUrl) return;
+    
+    const newWindow = window.open(signedPdfUrl, '_blank', 'noopener,noreferrer');
+    
+    // If popup was blocked, copy link as fallback
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      handleCopyLink();
+      toast.info("Link copied! Paste in your browser to download.");
+    }
   };
   
   // Copy link to clipboard
@@ -625,18 +653,28 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       <Download className="h-4 w-4 mr-2" />
                       Download PDF
                     </Button>
-                    <Button
-                      variant="outline"
-                      onClick={handleCopyLink}
-                      className="w-full"
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy Link
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={handleOpenInBrowser}
+                        className="flex-1"
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Open in Browser
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={handleCopyLink}
+                        className="flex-1"
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copy Link
+                      </Button>
+                    </div>
                   </>
                 )}
                 <p className="text-xs text-center text-muted-foreground">
-                  {canShareUrl ? "Save to Files, Drive, or send to someone" : "Open link in browser to download"}
+                  {canShareUrl ? "Save to Files, Drive, or send to someone" : "If download opens blank, tap Open in Browser"}
                 </p>
               </div>
             </motion.div>
