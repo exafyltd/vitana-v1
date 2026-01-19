@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { NotificationBadge } from "@/components/ui/notification-badge";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
-import { useSidebar } from "@/components/ui/sidebar";
+import { useSidebarSafe } from "@/components/ui/sidebar";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -25,7 +25,7 @@ export function UniversalCalendarButton({
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const { events, getUpcomingEvents } = useCalendarEvents();
-  const { open } = useSidebar();
+  const { open } = useSidebarSafe();
   
   const upcomingEvents = getUpcomingEvents(10);
   const conflictCount = events.filter(e => e.status === 'conflict').length;
