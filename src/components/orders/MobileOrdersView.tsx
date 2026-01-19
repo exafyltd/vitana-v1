@@ -3,24 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { format, isPast } from 'date-fns';
 import { 
   Package, 
-  Ticket, 
-  Gift, 
   Clock, 
   CheckCircle, 
   ChevronRight,
   Calendar,
   MapPin,
   RefreshCw,
-  Loader2,
-  Search
+  Plane
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { TicketPurchase } from '@/hooks/useEventTickets';
 import { MobileOrderDetailSheet } from './MobileOrderDetailSheet';
+import { UtilityActionButton } from '@/components/ui/utility-action-button';
+import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
+import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 
 // Unified order type
 export interface UnifiedMobileOrder {
@@ -235,37 +234,63 @@ export function MobileOrdersView({
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
-        <div className="px-4 pt-4 pb-3">
-          <div className="flex items-center justify-between mb-1">
-            <h1 className="text-xl font-bold tracking-tight text-foreground">
-              My Orders 📦
-            </h1>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-            </Button>
-          </div>
+        <div className="px-4 pt-4 pb-2">
+          <h1 className="text-xl font-bold tracking-tight text-foreground">
+            My Orders 📦
+          </h1>
           <p className="text-sm text-muted-foreground">
             Track your product orders and event tickets
           </p>
         </div>
 
-        {/* Search bar */}
-        <div className="px-4 pb-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search orders..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-10 bg-muted/30 border-0 rounded-xl"
-            />
-          </div>
+        {/* Utility Action Bar */}
+        <div className="px-4">
+          <UtilityActionButton 
+            className="min-w-0"
+            trailingElement={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 rounded-full bg-muted/60 shrink-0"
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+              >
+                <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
+              </Button>
+            }
+            afterGiftVoucherChildren={
+              <>
+                {/* Vitana Index pill */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => navigate('/health')}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                >
+                  <span className="text-xs opacity-60">🧬</span>
+                  <span className="text-sm font-medium text-primary">742</span>
+                </Button>
+                
+                {/* Autopilot pill */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                >
+                  <Plane className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">Autopilot</span>
+                </Button>
+              </>
+            }
+          >
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton 
+                placeholder="Search orders..." 
+                onSearch={(query) => setSearchQuery(query)}
+              />
+              <UniversalCalendarButton />
+            </div>
+          </UtilityActionButton>
         </div>
       </div>
 
