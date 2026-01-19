@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import Stripe from "https://esm.sh/stripe@18.5.0";
+import { jsPDF } from "https://esm.sh/jspdf@2.5.2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -31,6 +32,126 @@ const TIER_DETAILS = {
     ],
   },
 };
+
+/**
+ * Generate PDF and return as Uint8Array
+ */
+function generateVoucherPdf(voucher: any): Uint8Array {
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+  
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const centerX = pageWidth / 2;
+  
+  // Background gradient simulation (light purple tint)
+  doc.setFillColor(250, 245, 255);
+  doc.rect(0, 0, pageWidth, pageHeight, 'F');
+  
+  // White card background
+  const cardMargin = 25;
+  const cardWidth = pageWidth - (cardMargin * 2);
+  const cardHeight = 220;
+  const cardY = 30;
+  
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(cardMargin, cardY, cardWidth, cardHeight, 8, 8, 'F');
+  
+  // Add subtle border
+  doc.setDrawColor(229, 231, 235);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(cardMargin, cardY, cardWidth, cardHeight, 8, 8, 'S');
+  
+  let yPos = cardY + 20;
+  
+  // VITANA Logo
+  doc.setFontSize(28);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(139, 92, 246); // Purple
+  doc.text('VITANA', centerX, yPos, { align: 'center' });
+  yPos += 15;
+  
+  // Gift label
+  doc.setFontSize(14);
+  doc.setTextColor(100, 100, 100);
+  doc.text('GIFT VOUCHER', centerX, yPos, { align: 'center' });
+  yPos += 18;
+  
+  // Tier badge
+  const tierBadgeWidth = 50;
+  const tierBadgeHeight = 10;
+  doc.setFillColor(139, 92, 246); // Purple
+  doc.roundedRect(centerX - tierBadgeWidth/2, yPos - 7, tierBadgeWidth, tierBadgeHeight, 5, 5, 'F');
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(255, 255, 255);
+  doc.text(voucher.tierName.toUpperCase(), centerX, yPos, { align: 'center' });
+  yPos += 18;
+  
+  // Price
+  doc.setFontSize(36);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(24, 24, 27);
+  doc.text(voucher.price, centerX, yPos, { align: 'center' });
+  yPos += 12;
+  
+  // Expiry
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(113, 113, 122);
+  doc.text(`Valid until ${voucher.expiresAt}`, centerX, yPos, { align: 'center' });
+  yPos += 18;
+  
+  // Voucher code box
+  const codeBoxWidth = cardWidth - 40;
+  const codeBoxHeight = 28;
+  const codeBoxX = cardMargin + 20;
+  doc.setFillColor(244, 244, 245);
+  doc.roundedRect(codeBoxX, yPos - 5, codeBoxWidth, codeBoxHeight, 4, 4, 'F');
+  
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(113, 113, 122);
+  doc.text('VOUCHER CODE', centerX, yPos + 3, { align: 'center' });
+  
+  doc.setFontSize(16);
+  doc.setFont('courier', 'bold');
+  doc.setTextColor(24, 24, 27);
+  doc.text(voucher.code, centerX, yPos + 15, { align: 'center' });
+  yPos += codeBoxHeight + 15;
+  
+  // Benefits section
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(113, 113, 122);
+  doc.text("WHAT'S INCLUDED", cardMargin + 20, yPos);
+  yPos += 8;
+  
+  doc.setFontSize(10);
+  doc.setTextColor(63, 63, 70);
+  voucher.benefits.forEach((benefit: string) => {
+    doc.setTextColor(139, 92, 246);
+    doc.text('✓', cardMargin + 20, yPos);
+    doc.setTextColor(63, 63, 70);
+    doc.setFont('helvetica', 'normal');
+    doc.text(benefit, cardMargin + 28, yPos);
+    yPos += 7;
+  });
+  
+  // Footer
+  yPos = cardY + cardHeight - 15;
+  doc.setFontSize(9);
+  doc.setTextColor(161, 161, 170);
+  doc.text(`Purchased on ${voucher.purchaseDate}`, centerX, yPos, { align: 'center' });
+  yPos += 5;
+  doc.text('Redeem at vitana-v1.lovable.app', centerX, yPos, { align: 'center' });
+  
+  // Return as Uint8Array
+  return doc.output('arraybuffer') as unknown as Uint8Array;
+}
 
 /**
  * Self-healing: Check Stripe and update order if payment is complete but order is still pending
@@ -137,7 +258,7 @@ serve(async (req) => {
       global: { headers: { Authorization: authHeader } },
     });
     
-    // Create admin client for self-healing updates
+    // Create admin client for self-healing updates and storage
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
     // Verify user
@@ -242,10 +363,63 @@ serve(async (req) => {
       orderId: order.id,
     };
 
-    console.log("[voucher-download-pdf] Returning voucher data:", voucherData);
+    console.log("[voucher-download-pdf] Generating PDF for voucher:", voucherData.code);
+
+    // Check if PDF already exists in storage
+    const pdfPath = `vouchers/${orderId}.pdf`;
+    const { data: existingFile } = await supabaseAdmin.storage
+      .from("voucher-pdfs")
+      .list("vouchers", { search: `${orderId}.pdf` });
+
+    let signedPdfUrl: string;
+
+    if (existingFile && existingFile.length > 0) {
+      console.log("[voucher-download-pdf] PDF already exists, creating signed URL");
+    } else {
+      // Generate PDF server-side
+      const pdfBuffer = generateVoucherPdf(voucherData);
+      
+      // Upload to storage
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from("voucher-pdfs")
+        .upload(pdfPath, pdfBuffer, {
+          contentType: "application/pdf",
+          upsert: true,
+        });
+
+      if (uploadError) {
+        console.error("[voucher-download-pdf] Upload error:", uploadError);
+        return new Response(
+          JSON.stringify({ error: "Failed to generate PDF. Please try again." }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      console.log("[voucher-download-pdf] PDF uploaded successfully");
+    }
+
+    // Create signed URL (valid for 1 hour)
+    const { data: signedData, error: signedError } = await supabaseAdmin.storage
+      .from("voucher-pdfs")
+      .createSignedUrl(pdfPath, 3600); // 1 hour expiry
+
+    if (signedError || !signedData?.signedUrl) {
+      console.error("[voucher-download-pdf] Signed URL error:", signedError);
+      return new Response(
+        JSON.stringify({ error: "Failed to create download link. Please try again." }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    signedPdfUrl = signedData.signedUrl;
+    console.log("[voucher-download-pdf] Signed URL created successfully");
 
     return new Response(
-      JSON.stringify({ success: true, voucher: voucherData }),
+      JSON.stringify({ 
+        success: true, 
+        voucher: voucherData,
+        signedPdfUrl 
+      }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
