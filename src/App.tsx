@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
@@ -295,6 +296,7 @@ const App = () => {
               <ProfilePreviewProvider>
                 <TooltipProvider>
                     <Toaster />
+                    <SonnerToaster position="top-center" richColors />
                     <PresenceDebugPanel />
                     <AppHooksInitializer />
                     <BrowserRouter>
