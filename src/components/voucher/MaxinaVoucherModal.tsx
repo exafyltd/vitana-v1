@@ -273,9 +273,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       yPos += 5;
       doc.text('Redeem at vitana-v1.lovable.app', centerX, yPos, { align: 'center' });
       
-      // Convert PDF to blob for better cross-device compatibility
-      const pdfBlob = doc.output('blob');
-      const blobUrl = URL.createObjectURL(pdfBlob);
+      // Convert PDF to blob with explicit MIME type for better compatibility
+      const pdfArrayBuffer = doc.output('arraybuffer');
+      const pdfBlob = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
+      const fileName = `vitana-voucher-${voucher.code}.pdf`;
       
       // Detect mobile devices
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -283,22 +284,52 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       toast.dismiss(loadingToast);
       
       if (isMobile) {
-        // On mobile: Open in new tab for preview + save option
-        window.open(blobUrl, '_blank');
-        toast.success("Voucher opened! Tap the share icon to save it.");
+        // Try Web Share API first for native save experience
+        if (navigator.share && navigator.canShare) {
+          const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+          const shareData = { files: [file], title: 'Vitana Gift Voucher' };
+          
+          if (navigator.canShare(shareData)) {
+            try {
+              await navigator.share(shareData);
+              toast.success("Voucher shared successfully!");
+              return;
+            } catch (shareError: any) {
+              // User cancelled or share failed, fall back to blob URL
+              if (shareError.name !== 'AbortError') {
+                console.log("Share failed, falling back to preview:", shareError);
+              }
+            }
+          }
+        }
+        
+        // Fallback: Open in new tab for preview
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const newTab = window.open(blobUrl, '_blank');
+        
+        if (newTab) {
+          toast.success("Voucher opened! Use the download or share button to save it.");
+          // Keep blob URL alive for 2 minutes to ensure PDF loads
+          setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
+        } else {
+          // Popup blocked - try data URL approach
+          const dataUrl = doc.output('dataurlstring');
+          window.location.href = dataUrl;
+          toast.success("Voucher opened! Use the share icon to save it.");
+        }
       } else {
         // On desktop: Force automatic download
+        const blobUrl = URL.createObjectURL(pdfBlob);
         const link = document.createElement('a');
         link.href = blobUrl;
-        link.download = `vitana-voucher-${voucher.code}.pdf`;
+        link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         toast.success("Voucher downloaded!");
+        // Cleanup after download starts
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
       }
-      
-      // Cleanup blob URL after a short delay
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     } catch (error: any) {
       console.error("Download error:", error);
       toast.dismiss(loadingToast);
