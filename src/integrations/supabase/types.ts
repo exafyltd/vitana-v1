@@ -5770,6 +5770,121 @@ export type Database = {
         }
         Relationships: []
       }
+      oasis_spec_approvals: {
+        Row: {
+          approved_at: string
+          approved_by: string
+          approved_role: string
+          id: string
+          spec_hash: string
+          spec_id: string
+          vtid: string
+        }
+        Insert: {
+          approved_at?: string
+          approved_by: string
+          approved_role?: string
+          id?: string
+          spec_hash: string
+          spec_id: string
+          vtid: string
+        }
+        Update: {
+          approved_at?: string
+          approved_by?: string
+          approved_role?: string
+          id?: string
+          spec_hash?: string
+          spec_id?: string
+          vtid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oasis_spec_approvals_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "oasis_specs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oasis_spec_validations: {
+        Row: {
+          created_at: string
+          id: string
+          report_json: Json
+          result: string
+          spec_hash: string
+          spec_id: string
+          validator_model: string
+          vtid: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          report_json?: Json
+          result?: string
+          spec_hash: string
+          spec_id: string
+          validator_model?: string
+          vtid: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          report_json?: Json
+          result?: string
+          spec_hash?: string
+          spec_id?: string
+          validator_model?: string
+          vtid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oasis_spec_validations_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "oasis_specs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oasis_specs: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          spec_hash: string
+          spec_markdown: string
+          status: string
+          title: string
+          version: number
+          vtid: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          spec_hash?: string
+          spec_markdown?: string
+          status?: string
+          title?: string
+          version?: number
+          vtid: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          spec_hash?: string
+          spec_markdown?: string
+          status?: string
+          title?: string
+          version?: number
+          vtid?: string
+        }
+        Relationships: []
+      }
       oasis_tasks: {
         Row: {
           assignee: string | null
@@ -8945,6 +9060,13 @@ export type Database = {
           metadata: Json
           module: string
           parent_vtid: string | null
+          spec_approved_at: string | null
+          spec_approved_by: string | null
+          spec_approved_hash: string | null
+          spec_current_hash: string | null
+          spec_current_id: string | null
+          spec_last_error: string | null
+          spec_status: string
           status: string
           summary: string | null
           task_family: string
@@ -8976,6 +9098,13 @@ export type Database = {
           metadata?: Json
           module: string
           parent_vtid?: string | null
+          spec_approved_at?: string | null
+          spec_approved_by?: string | null
+          spec_approved_hash?: string | null
+          spec_current_hash?: string | null
+          spec_current_id?: string | null
+          spec_last_error?: string | null
+          spec_status?: string
           status: string
           summary?: string | null
           task_family?: string
@@ -9007,6 +9136,13 @@ export type Database = {
           metadata?: Json
           module?: string
           parent_vtid?: string | null
+          spec_approved_at?: string | null
+          spec_approved_by?: string | null
+          spec_approved_hash?: string | null
+          spec_current_hash?: string | null
+          spec_current_id?: string | null
+          spec_last_error?: string | null
+          spec_status?: string
           status?: string
           summary?: string | null
           task_family?: string
@@ -9729,6 +9865,7 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_next_spec_version: { Args: { p_vtid: string }; Returns: number }
       get_pending_worker_tasks: {
         Args: { p_limit?: number }
         Returns: {

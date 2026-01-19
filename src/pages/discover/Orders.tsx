@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
 import { Package, RefreshCw, Clock, CheckCircle, Ticket, Receipt } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
 import StandardHeader from "@/components/StandardHeader";
@@ -25,6 +25,8 @@ import { EventTicket } from "@/components/tickets/EventTicket";
 import { format, isPast } from "date-fns";
 import { cn } from "@/lib/utils";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileOrdersView, UnifiedMobileOrder } from "@/components/orders/MobileOrdersView";
 
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
@@ -52,6 +54,7 @@ type HistoryFilter = 'all' | 'events' | 'products' | 'services' | 'refunds' | 'v
 export default function Orders() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -60,8 +63,8 @@ export default function Orders() {
   const [selectedTicket, setSelectedTicket] = useState<TicketPurchase | null>(null);
   const [historyFilter, setHistoryFilter] = useState<HistoryFilter>('all');
 
-  const { tickets, loading: ticketsLoading } = useMyTickets();
-  const { data: voucherOrders = [], isLoading: vouchersLoading } = useMyVouchers();
+  const { tickets, loading: ticketsLoading, refetch: refetchTickets } = useMyTickets();
+  const { data: voucherOrders = [], isLoading: vouchersLoading, refetch: refetchVouchers } = useMyVouchers();
 
   // Mock ticket data for preview
   const mockTickets: TicketPurchase[] = [
@@ -298,9 +301,9 @@ export default function Orders() {
       .filter(t => t.event && isPast(new Date(t.event.start_time)))
       .map(transformTicketToUnifiedOrder);
 
-    // Vouchers: pending are active, completed/redeemed/expired are history
+    // Vouchers: paid are active (not pending!), completed/redeemed/expired are history
     const activeVouchers = voucherOrders
-      .filter(v => v.status === 'pending')
+      .filter(v => v.status === 'paid')
       .map(transformVoucherOrder);
     
     const completedVouchers = voucherOrders
@@ -315,6 +318,77 @@ export default function Orders() {
 
     return { unifiedActiveOrders: active, allHistoryOrders: history };
   }, [cjOrders, displayTickets, voucherOrders]);
+
+  // Transform to mobile order format
+  const transformToMobileOrder = (order: UnifiedOrder, voucherOrder?: any): UnifiedMobileOrder => {
+    const getStatusLabel = (status: string) => {
+      const statusMap: Record<string, string> = {
+        upcoming: 'Upcoming',
+        attended: 'Attended',
+        expired: 'Expired',
+        completed: 'Completed',
+        delivered: 'Delivered',
+        cancelled: 'Cancelled',
+        refunded: 'Refunded',
+        shipped: 'In Transit',
+        confirmed: 'Confirmed',
+        pending: 'Pending',
+        processing: 'Processing',
+        paid: 'Active',
+        active: 'Active',
+      };
+      return statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1);
+    };
+
+    return {
+      id: order.id,
+      title: order.title,
+      subtitle: order.provider,
+      imageUrl: order.providerImage,
+      price: order.price,
+      status: order.status,
+      statusLabel: getStatusLabel(order.status),
+      type: order.type,
+      orderDate: order.orderDate,
+      rawDate: order.rawDate,
+      eventDate: order.eventDate,
+      eventLocation: order.eventLocation,
+      ticketNumber: order.ticketNumber,
+      quantity: order.quantity,
+      qrCodeToken: order.qrCodeToken,
+      ticketPurchase: order.ticketPurchase,
+      voucherOrder: voucherOrder,
+      orderId: order.id,
+    };
+  };
+
+  // Build mobile order lists
+  const { mobileActiveOrders, mobileHistoryOrders } = useMemo(() => {
+    const activeMobile = unifiedActiveOrders.map(order => {
+      const vOrder = order.type === 'voucher' 
+        ? voucherOrders.find(v => v.id === order.id) 
+        : undefined;
+      return transformToMobileOrder(order, vOrder);
+    });
+    
+    const historyMobile = allHistoryOrders.map(order => {
+      const vOrder = order.type === 'voucher' 
+        ? voucherOrders.find(v => v.id === order.id) 
+        : undefined;
+      return transformToMobileOrder(order, vOrder);
+    });
+    
+    return { mobileActiveOrders: activeMobile, mobileHistoryOrders: historyMobile };
+  }, [unifiedActiveOrders, allHistoryOrders, voucherOrders]);
+
+  // Refresh callback for mobile
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([
+      fetchCjOrders(),
+      refetchTickets(),
+      refetchVouchers(),
+    ]);
+  }, [refetchTickets, refetchVouchers]);
 
   // Apply history filter
   const unifiedHistoryOrders = useMemo(() => {
@@ -456,11 +530,24 @@ export default function Orders() {
 
   const isLoading = loading || ticketsLoading || vouchersLoading;
 
+  // Mobile view
+  if (isMobile) {
+    return (
+      <MobileOrdersView
+        activeOrders={mobileActiveOrders}
+        historyOrders={mobileHistoryOrders}
+        isLoading={isLoading}
+        isShowingMockData={isShowingMockData}
+        onRefresh={handleRefresh}
+      />
+    );
+  }
+
   return (
     <AppLayout>
       <SEO title="Orders | Discover" description="Track your wellness service bookings and product orders" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 dark:from-background dark:via-background dark:to-background min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
             title="My Orders"
