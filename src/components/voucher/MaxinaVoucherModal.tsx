@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, VoucherData } from "@/hooks/useVouchers";
 import { toast } from "sonner";
+import { jsPDF } from "jspdf";
 
 type VoucherTier = "test" | "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success" | "email-form";
@@ -147,7 +148,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       return;
     }
     
-    const loadingToast = toast.loading("Generating voucher PDF...");
+    const loadingToast = toast.loading("Generating voucher...");
     
     try {
       const result = await downloadPdf.mutateAsync(completedOrderId);
@@ -159,136 +160,128 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       }
       const voucher = result.voucher;
       
-      // Generate PDF using browser print
-      const printWindow = window.open('', '_blank');
-      if (!printWindow) {
-        toast.dismiss(loadingToast);
-        toast.error("Please allow popups to view your voucher. Check your browser settings.");
-        return;
-      }
+      // Create PDF document (A4 portrait)
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
       
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Vitana Gift Voucher - ${voucher.tierName}</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { 
-              font-family: 'Inter', sans-serif; 
-              background: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%);
-              min-height: 100vh;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              padding: 20px;
-            }
-            .voucher {
-              background: white;
-              border-radius: 24px;
-              padding: 24px;
-              width: 100%;
-              max-width: 100%;
-              box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
-              text-align: center;
-            }
-            .logo { font-size: 28px; font-weight: 700; color: #8b5cf6; margin-bottom: 20px; }
-            .gift-icon { font-size: 48px; margin-bottom: 12px; }
-            .tier-badge {
-              display: inline-block;
-              background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-              color: white;
-              padding: 8px 20px;
-              border-radius: 100px;
-              font-weight: 600;
-              margin-bottom: 12px;
-              font-size: 14px;
-            }
-            .price { font-size: 36px; font-weight: 700; color: #18181b; margin-bottom: 6px; }
-            .expires { color: #71717a; margin-bottom: 24px; font-size: 14px; }
-            .code-box {
-              background: #f4f4f5;
-              border-radius: 12px;
-              padding: 16px;
-              margin-bottom: 24px;
-            }
-            .code-label { color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-            .code { font-family: monospace; font-size: 20px; font-weight: 700; color: #18181b; letter-spacing: 2px; word-break: break-all; }
-            .benefits { text-align: left; }
-            .benefits-label { color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-            .benefit { display: flex; align-items: flex-start; margin-bottom: 6px; color: #3f3f46; font-size: 14px; }
-            .benefit::before { content: '✓'; color: #8b5cf6; margin-right: 10px; font-weight: 600; }
-            .footer { margin-top: 24px; color: #a1a1aa; font-size: 11px; }
-            
-            /* Desktop styles */
-            @media screen and (min-width: 600px) {
-              body { padding: 40px; }
-              .voucher {
-                padding: 48px;
-                max-width: 500px;
-              }
-              .logo { font-size: 32px; margin-bottom: 24px; }
-              .gift-icon { font-size: 64px; margin-bottom: 16px; }
-              .tier-badge { padding: 8px 24px; margin-bottom: 16px; font-size: 16px; }
-              .price { font-size: 48px; margin-bottom: 8px; }
-              .expires { margin-bottom: 32px; font-size: 16px; }
-              .code-box { padding: 20px; margin-bottom: 32px; }
-              .code-label { font-size: 12px; margin-bottom: 8px; }
-              .code { font-size: 28px; letter-spacing: 3px; }
-              .benefits-label { font-size: 12px; margin-bottom: 12px; }
-              .benefit { margin-bottom: 8px; font-size: 16px; }
-              .footer { margin-top: 32px; font-size: 12px; }
-            }
-            
-            @media print {
-              body { background: white; padding: 10px; }
-              .voucher { 
-                box-shadow: none; 
-                border: 2px solid #e4e4e7;
-                max-width: 100%;
-                width: 100%;
-              }
-            }
-          </style>
-        </head>
-          <body>
-            <div class="voucher">
-              <div class="logo">VITANA</div>
-              <div class="gift-icon">🎁</div>
-              <div class="tier-badge">${voucher.tierName}</div>
-              <div class="price">${voucher.price}</div>
-              <div class="expires">Valid until ${voucher.expiresAt}</div>
-              
-              <div class="code-box">
-                <div class="code-label">Voucher Code</div>
-                <div class="code">${voucher.code}</div>
-              </div>
-              
-              <div class="benefits">
-                <div class="benefits-label">What's included</div>
-                ${voucher.benefits.map((b: string) => `<div class="benefit">${b}</div>`).join('')}
-              </div>
-              
-              <div class="footer">
-                Purchased on ${voucher.purchaseDate}<br>
-                Redeem at vitana-v1.lovable.app
-              </div>
-            </div>
-            <script>window.print();</script>
-          </body>
-          </html>
-        `);
-      printWindow.document.close();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const centerX = pageWidth / 2;
+      
+      // Background gradient simulation (light purple tint)
+      doc.setFillColor(250, 245, 255);
+      doc.rect(0, 0, pageWidth, pageHeight, 'F');
+      
+      // White card background
+      const cardMargin = 25;
+      const cardWidth = pageWidth - (cardMargin * 2);
+      const cardHeight = 220;
+      const cardY = 30;
+      
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(cardMargin, cardY, cardWidth, cardHeight, 8, 8, 'F');
+      
+      // Add subtle border
+      doc.setDrawColor(229, 231, 235);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(cardMargin, cardY, cardWidth, cardHeight, 8, 8, 'S');
+      
+      let yPos = cardY + 20;
+      
+      // VITANA Logo
+      doc.setFontSize(28);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(139, 92, 246); // Purple
+      doc.text('VITANA', centerX, yPos, { align: 'center' });
+      yPos += 15;
+      
+      // Gift emoji (using text since emojis are tricky in jsPDF)
+      doc.setFontSize(14);
+      doc.setTextColor(100, 100, 100);
+      doc.text('GIFT VOUCHER', centerX, yPos, { align: 'center' });
+      yPos += 18;
+      
+      // Tier badge
+      const tierBadgeWidth = 50;
+      const tierBadgeHeight = 10;
+      doc.setFillColor(139, 92, 246); // Purple
+      doc.roundedRect(centerX - tierBadgeWidth/2, yPos - 7, tierBadgeWidth, tierBadgeHeight, 5, 5, 'F');
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(255, 255, 255);
+      doc.text(voucher.tierName.toUpperCase(), centerX, yPos, { align: 'center' });
+      yPos += 18;
+      
+      // Price
+      doc.setFontSize(36);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(24, 24, 27);
+      doc.text(voucher.price, centerX, yPos, { align: 'center' });
+      yPos += 12;
+      
+      // Expiry
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(113, 113, 122);
+      doc.text(`Valid until ${voucher.expiresAt}`, centerX, yPos, { align: 'center' });
+      yPos += 18;
+      
+      // Voucher code box
+      const codeBoxWidth = cardWidth - 40;
+      const codeBoxHeight = 28;
+      const codeBoxX = cardMargin + 20;
+      doc.setFillColor(244, 244, 245);
+      doc.roundedRect(codeBoxX, yPos - 5, codeBoxWidth, codeBoxHeight, 4, 4, 'F');
+      
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(113, 113, 122);
+      doc.text('VOUCHER CODE', centerX, yPos + 3, { align: 'center' });
+      
+      doc.setFontSize(16);
+      doc.setFont('courier', 'bold');
+      doc.setTextColor(24, 24, 27);
+      doc.text(voucher.code, centerX, yPos + 15, { align: 'center' });
+      yPos += codeBoxHeight + 15;
+      
+      // Benefits section
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(113, 113, 122);
+      doc.text("WHAT'S INCLUDED", cardMargin + 20, yPos);
+      yPos += 8;
+      
+      doc.setFontSize(10);
+      doc.setTextColor(63, 63, 70);
+      voucher.benefits.forEach((benefit: string) => {
+        doc.setTextColor(139, 92, 246);
+        doc.text('✓', cardMargin + 20, yPos);
+        doc.setTextColor(63, 63, 70);
+        doc.setFont('helvetica', 'normal');
+        doc.text(benefit, cardMargin + 28, yPos);
+        yPos += 7;
+      });
+      
+      // Footer
+      yPos = cardY + cardHeight - 15;
+      doc.setFontSize(9);
+      doc.setTextColor(161, 161, 170);
+      doc.text(`Purchased on ${voucher.purchaseDate}`, centerX, yPos, { align: 'center' });
+      yPos += 5;
+      doc.text('Redeem at vitana-v1.lovable.app', centerX, yPos, { align: 'center' });
+      
+      // Save the PDF with automatic download
+      doc.save(`vitana-voucher-${voucher.code}.pdf`);
       
       toast.dismiss(loadingToast);
-      toast.success("Voucher PDF ready!");
+      toast.success("Voucher downloaded!");
     } catch (error: any) {
       console.error("Download error:", error);
       toast.dismiss(loadingToast);
       
-      // Extract the actual error message from the response
       const errorMessage = error?.message || 
         error?.context?.body?.error || 
         error?.error || 
@@ -472,7 +465,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   ) : (
                     <Download className="h-4 w-4 mr-3" />
                   )}
-                  Download PDF Voucher
+                  Download Voucher
                 </Button>
                 
                 <Button 
