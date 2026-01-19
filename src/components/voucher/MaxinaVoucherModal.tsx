@@ -161,64 +161,98 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       
       // Generate PDF using browser print
       const printWindow = window.open('', '_blank');
-      if (printWindow) {
-        printWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Vitana Gift Voucher - ${voucher.tierName}</title>
-            <style>
-              @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-              * { margin: 0; padding: 0; box-sizing: border-box; }
-              body { 
-                font-family: 'Inter', sans-serif; 
-                background: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%);
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 40px;
-              }
+      if (!printWindow) {
+        toast.dismiss(loadingToast);
+        toast.error("Please allow popups to view your voucher. Check your browser settings.");
+        return;
+      }
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Vitana Gift Voucher - ${voucher.tierName}</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { 
+              font-family: 'Inter', sans-serif; 
+              background: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%);
+              min-height: 100vh;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 20px;
+            }
+            .voucher {
+              background: white;
+              border-radius: 24px;
+              padding: 24px;
+              width: 100%;
+              max-width: 100%;
+              box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
+              text-align: center;
+            }
+            .logo { font-size: 28px; font-weight: 700; color: #8b5cf6; margin-bottom: 20px; }
+            .gift-icon { font-size: 48px; margin-bottom: 12px; }
+            .tier-badge {
+              display: inline-block;
+              background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+              color: white;
+              padding: 8px 20px;
+              border-radius: 100px;
+              font-weight: 600;
+              margin-bottom: 12px;
+              font-size: 14px;
+            }
+            .price { font-size: 36px; font-weight: 700; color: #18181b; margin-bottom: 6px; }
+            .expires { color: #71717a; margin-bottom: 24px; font-size: 14px; }
+            .code-box {
+              background: #f4f4f5;
+              border-radius: 12px;
+              padding: 16px;
+              margin-bottom: 24px;
+            }
+            .code-label { color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+            .code { font-family: monospace; font-size: 20px; font-weight: 700; color: #18181b; letter-spacing: 2px; word-break: break-all; }
+            .benefits { text-align: left; }
+            .benefits-label { color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+            .benefit { display: flex; align-items: flex-start; margin-bottom: 6px; color: #3f3f46; font-size: 14px; }
+            .benefit::before { content: '✓'; color: #8b5cf6; margin-right: 10px; font-weight: 600; }
+            .footer { margin-top: 24px; color: #a1a1aa; font-size: 11px; }
+            
+            /* Desktop styles */
+            @media screen and (min-width: 600px) {
+              body { padding: 40px; }
               .voucher {
-                background: white;
-                border-radius: 24px;
                 padding: 48px;
                 max-width: 500px;
-                box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
-                text-align: center;
               }
-              .logo { font-size: 32px; font-weight: 700; color: #8b5cf6; margin-bottom: 24px; }
+              .logo { font-size: 32px; margin-bottom: 24px; }
               .gift-icon { font-size: 64px; margin-bottom: 16px; }
-              .tier-badge {
-                display: inline-block;
-                background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-                color: white;
-                padding: 8px 24px;
-                border-radius: 100px;
-                font-weight: 600;
-                margin-bottom: 16px;
+              .tier-badge { padding: 8px 24px; margin-bottom: 16px; font-size: 16px; }
+              .price { font-size: 48px; margin-bottom: 8px; }
+              .expires { margin-bottom: 32px; font-size: 16px; }
+              .code-box { padding: 20px; margin-bottom: 32px; }
+              .code-label { font-size: 12px; margin-bottom: 8px; }
+              .code { font-size: 28px; letter-spacing: 3px; }
+              .benefits-label { font-size: 12px; margin-bottom: 12px; }
+              .benefit { margin-bottom: 8px; font-size: 16px; }
+              .footer { margin-top: 32px; font-size: 12px; }
+            }
+            
+            @media print {
+              body { background: white; padding: 10px; }
+              .voucher { 
+                box-shadow: none; 
+                border: 2px solid #e4e4e7;
+                max-width: 100%;
+                width: 100%;
               }
-              .price { font-size: 48px; font-weight: 700; color: #18181b; margin-bottom: 8px; }
-              .expires { color: #71717a; margin-bottom: 32px; }
-              .code-box {
-                background: #f4f4f5;
-                border-radius: 12px;
-                padding: 20px;
-                margin-bottom: 32px;
-              }
-              .code-label { color: #71717a; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-              .code { font-family: monospace; font-size: 28px; font-weight: 700; color: #18181b; letter-spacing: 3px; }
-              .benefits { text-align: left; }
-              .benefits-label { color: #71717a; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-              .benefit { display: flex; align-items: flex-start; margin-bottom: 8px; color: #3f3f46; }
-              .benefit::before { content: '✓'; color: #8b5cf6; margin-right: 12px; font-weight: 600; }
-              .footer { margin-top: 32px; color: #a1a1aa; font-size: 12px; }
-              @media print {
-                body { background: white; padding: 0; }
-                .voucher { box-shadow: none; border: 2px solid #e4e4e7; }
-              }
-            </style>
-          </head>
+            }
+          </style>
+        </head>
           <body>
             <div class="voucher">
               <div class="logo">VITANA</div>
@@ -246,8 +280,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
           </body>
           </html>
         `);
-        printWindow.document.close();
-      }
+      printWindow.document.close();
       
       toast.dismiss(loadingToast);
       toast.success("Voucher PDF ready!");
