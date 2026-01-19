@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send } from "lucide-react";
+import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { jsPDF } from "jspdf";
 
 type VoucherTier = "test" | "experience" | "exclusive";
-type ModalState = "selection" | "loading" | "success" | "email-form";
+type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
 
 interface MaxinaVoucherModalProps {
   open: boolean;
@@ -66,6 +66,11 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const [recipientEmail, setRecipientEmail] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [personalMessage, setPersonalMessage] = useState("");
+  
+  // PDF preview state (mobile only)
+  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
+  const [pdfFileName, setPdfFileName] = useState<string | null>(null);
   
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -129,6 +134,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   };
 
   const handleClose = () => {
+    // Cleanup blob URL if exists
+    if (pdfBlobUrl) {
+      URL.revokeObjectURL(pdfBlobUrl);
+    }
     onOpenChange(false);
     // Reset state after animation
     setTimeout(() => {
@@ -139,7 +148,42 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       setRecipientEmail("");
       setRecipientName("");
       setPersonalMessage("");
+      setPdfBlobUrl(null);
+      setPdfBlob(null);
+      setPdfFileName(null);
     }, 300);
+  };
+  
+  // Handle share via Web Share API (mobile PDF preview)
+  const handleSharePdf = async () => {
+    if (!pdfBlob || !pdfFileName) return;
+    
+    const file = new File([pdfBlob], pdfFileName, { type: 'application/pdf' });
+    const shareData = { files: [file], title: 'Vitana Gift Voucher' };
+    
+    if (navigator.share && navigator.canShare?.(shareData)) {
+      try {
+        await navigator.share(shareData);
+        toast.success("Voucher saved/shared successfully!");
+      } catch (error: any) {
+        if (error.name !== 'AbortError') {
+          toast.error("Could not share. Please try again.");
+        }
+      }
+    } else {
+      toast.error("Sharing not supported on this device");
+    }
+  };
+  
+  // Close PDF preview and return to success state
+  const handleClosePdfPreview = () => {
+    if (pdfBlobUrl) {
+      URL.revokeObjectURL(pdfBlobUrl);
+    }
+    setPdfBlobUrl(null);
+    setPdfBlob(null);
+    setPdfFileName(null);
+    setModalState("success");
   };
 
   const handleDownloadPdf = async () => {
@@ -284,39 +328,12 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       toast.dismiss(loadingToast);
       
       if (isMobile) {
-        // Try Web Share API first for native save experience
-        if (navigator.share && navigator.canShare) {
-          const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
-          const shareData = { files: [file], title: 'Vitana Gift Voucher' };
-          
-          if (navigator.canShare(shareData)) {
-            try {
-              await navigator.share(shareData);
-              toast.success("Voucher shared successfully!");
-              return;
-            } catch (shareError: any) {
-              // User cancelled or share failed, fall back to blob URL
-              if (shareError.name !== 'AbortError') {
-                console.log("Share failed, falling back to preview:", shareError);
-              }
-            }
-          }
-        }
-        
-        // Fallback: Open in new tab for preview
+        // Mobile: Show in-app PDF preview instead of opening new tab
         const blobUrl = URL.createObjectURL(pdfBlob);
-        const newTab = window.open(blobUrl, '_blank');
-        
-        if (newTab) {
-          toast.success("Voucher opened! Use the download or share button to save it.");
-          // Keep blob URL alive for 2 minutes to ensure PDF loads
-          setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
-        } else {
-          // Popup blocked - try data URL approach
-          const dataUrl = doc.output('dataurlstring');
-          window.location.href = dataUrl;
-          toast.success("Voucher opened! Use the share icon to save it.");
-        }
+        setPdfBlob(pdfBlob);
+        setPdfBlobUrl(blobUrl);
+        setPdfFileName(fileName);
+        setModalState("pdf-preview");
       } else {
         // On desktop: Force automatic download
         const blobUrl = URL.createObjectURL(pdfBlob);
@@ -624,6 +641,52 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   )}
                   Send Voucher
                 </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Mobile PDF Preview - Full screen in-app preview */}
+          {modalState === "pdf-preview" && pdfBlobUrl && (
+            <motion.div
+              key="pdf-preview"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col h-[85vh]"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <h3 className="font-semibold">Your Voucher</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleClosePdfPreview}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {/* PDF Preview - takes remaining space */}
+              <div className="flex-1 bg-muted/50 overflow-auto min-h-0">
+                <iframe
+                  src={pdfBlobUrl}
+                  className="w-full h-full border-0"
+                  title="Voucher Preview"
+                />
+              </div>
+
+              {/* Footer Actions */}
+              <div className="p-4 border-t space-y-2">
+                <Button
+                  onClick={handleSharePdf}
+                  className="w-full h-12"
+                >
+                  <Share2 className="h-4 w-4 mr-2" />
+                  Save / Share
+                </Button>
+                <p className="text-xs text-center text-muted-foreground">
+                  Save to Files, Drive, or send to someone
+                </p>
               </div>
             </motion.div>
           )}
