@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2 } from "lucide-react";
+import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, VoucherData } from "@/hooks/useVouchers";
 import { toast } from "sonner";
-import { jsPDF } from "jspdf";
 
 type VoucherTier = "test" | "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
@@ -68,9 +67,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const [personalMessage, setPersonalMessage] = useState("");
   
   // PDF preview state (mobile only)
-  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
-  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
-  const [pdfFileName, setPdfFileName] = useState<string | null>(null);
+  const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
+  const [canShareUrl, setCanShareUrl] = useState(false);
   
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -78,6 +76,13 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const createCheckout = useCreateVoucherCheckout();
   const downloadPdf = useDownloadVoucherPdf();
   const sendEmail = useSendVoucherEmail();
+
+  // Detect Web Share API capability on mount
+  useEffect(() => {
+    // Check if navigator.share is available (basic URL sharing)
+    const hasShareApi = typeof navigator.share === 'function';
+    setCanShareUrl(hasShareApi);
+  }, []);
 
   // Check for success return from Stripe
   useEffect(() => {
@@ -134,10 +139,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   };
 
   const handleClose = () => {
-    // Cleanup blob URL if exists
-    if (pdfBlobUrl) {
-      URL.revokeObjectURL(pdfBlobUrl);
-    }
     onOpenChange(false);
     // Reset state after animation
     setTimeout(() => {
@@ -148,41 +149,50 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       setRecipientEmail("");
       setRecipientName("");
       setPersonalMessage("");
-      setPdfBlobUrl(null);
-      setPdfBlob(null);
-      setPdfFileName(null);
+      setSignedPdfUrl(null);
     }, 300);
   };
   
-  // Handle share via Web Share API (mobile PDF preview)
-  const handleSharePdf = async () => {
-    if (!pdfBlob || !pdfFileName) return;
+  // Handle share via Web Share API (URL only - works in more WebViews)
+  const handleShareUrl = async () => {
+    if (!signedPdfUrl) return;
     
-    const file = new File([pdfBlob], pdfFileName, { type: 'application/pdf' });
-    const shareData = { files: [file], title: 'Vitana Gift Voucher' };
-    
-    if (navigator.share && navigator.canShare?.(shareData)) {
-      try {
-        await navigator.share(shareData);
-        toast.success("Voucher saved/shared successfully!");
-      } catch (error: any) {
-        if (error.name !== 'AbortError') {
-          toast.error("Could not share. Please try again.");
-        }
+    try {
+      await navigator.share({
+        title: 'Vitana Gift Voucher',
+        text: 'Here is your Vitana wellness voucher',
+        url: signedPdfUrl
+      });
+      toast.success("Voucher shared successfully!");
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        // Fallback to download if share fails
+        handleDownloadDirect();
       }
-    } else {
-      toast.error("Sharing not supported on this device");
+    }
+  };
+  
+  // Direct download - opens URL which triggers browser download
+  const handleDownloadDirect = () => {
+    if (!signedPdfUrl) return;
+    window.open(signedPdfUrl, '_blank');
+  };
+  
+  // Copy link to clipboard
+  const handleCopyLink = async () => {
+    if (!signedPdfUrl) return;
+    
+    try {
+      await navigator.clipboard.writeText(signedPdfUrl);
+      toast.success("Link copied! Paste in browser to download.");
+    } catch (error) {
+      toast.error("Could not copy link");
     }
   };
   
   // Close PDF preview and return to success state
   const handleClosePdfPreview = () => {
-    if (pdfBlobUrl) {
-      URL.revokeObjectURL(pdfBlobUrl);
-    }
-    setPdfBlobUrl(null);
-    setPdfBlob(null);
-    setPdfFileName(null);
+    setSignedPdfUrl(null);
     setModalState("success");
   };
 
@@ -197,155 +207,25 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     try {
       const result = await downloadPdf.mutateAsync(completedOrderId);
       
-      if (!result?.voucher) {
+      if (!result?.voucher || !result?.signedPdfUrl) {
         toast.dismiss(loadingToast);
         toast.error("Failed to load voucher data");
         return;
       }
-      const voucher = result.voucher;
       
-      // Create PDF document (A4 portrait)
-      const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-      });
-      
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const centerX = pageWidth / 2;
-      
-      // Background gradient simulation (light purple tint)
-      doc.setFillColor(250, 245, 255);
-      doc.rect(0, 0, pageWidth, pageHeight, 'F');
-      
-      // White card background
-      const cardMargin = 25;
-      const cardWidth = pageWidth - (cardMargin * 2);
-      const cardHeight = 220;
-      const cardY = 30;
-      
-      doc.setFillColor(255, 255, 255);
-      doc.roundedRect(cardMargin, cardY, cardWidth, cardHeight, 8, 8, 'F');
-      
-      // Add subtle border
-      doc.setDrawColor(229, 231, 235);
-      doc.setLineWidth(0.5);
-      doc.roundedRect(cardMargin, cardY, cardWidth, cardHeight, 8, 8, 'S');
-      
-      let yPos = cardY + 20;
-      
-      // VITANA Logo
-      doc.setFontSize(28);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(139, 92, 246); // Purple
-      doc.text('VITANA', centerX, yPos, { align: 'center' });
-      yPos += 15;
-      
-      // Gift emoji (using text since emojis are tricky in jsPDF)
-      doc.setFontSize(14);
-      doc.setTextColor(100, 100, 100);
-      doc.text('GIFT VOUCHER', centerX, yPos, { align: 'center' });
-      yPos += 18;
-      
-      // Tier badge
-      const tierBadgeWidth = 50;
-      const tierBadgeHeight = 10;
-      doc.setFillColor(139, 92, 246); // Purple
-      doc.roundedRect(centerX - tierBadgeWidth/2, yPos - 7, tierBadgeWidth, tierBadgeHeight, 5, 5, 'F');
-      doc.setFontSize(11);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(255, 255, 255);
-      doc.text(voucher.tierName.toUpperCase(), centerX, yPos, { align: 'center' });
-      yPos += 18;
-      
-      // Price
-      doc.setFontSize(36);
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(24, 24, 27);
-      doc.text(voucher.price, centerX, yPos, { align: 'center' });
-      yPos += 12;
-      
-      // Expiry
-      doc.setFontSize(11);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(113, 113, 122);
-      doc.text(`Valid until ${voucher.expiresAt}`, centerX, yPos, { align: 'center' });
-      yPos += 18;
-      
-      // Voucher code box
-      const codeBoxWidth = cardWidth - 40;
-      const codeBoxHeight = 28;
-      const codeBoxX = cardMargin + 20;
-      doc.setFillColor(244, 244, 245);
-      doc.roundedRect(codeBoxX, yPos - 5, codeBoxWidth, codeBoxHeight, 4, 4, 'F');
-      
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(113, 113, 122);
-      doc.text('VOUCHER CODE', centerX, yPos + 3, { align: 'center' });
-      
-      doc.setFontSize(16);
-      doc.setFont('courier', 'bold');
-      doc.setTextColor(24, 24, 27);
-      doc.text(voucher.code, centerX, yPos + 15, { align: 'center' });
-      yPos += codeBoxHeight + 15;
-      
-      // Benefits section
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(113, 113, 122);
-      doc.text("WHAT'S INCLUDED", cardMargin + 20, yPos);
-      yPos += 8;
-      
-      doc.setFontSize(10);
-      doc.setTextColor(63, 63, 70);
-      voucher.benefits.forEach((benefit: string) => {
-        doc.setTextColor(139, 92, 246);
-        doc.text('✓', cardMargin + 20, yPos);
-        doc.setTextColor(63, 63, 70);
-        doc.setFont('helvetica', 'normal');
-        doc.text(benefit, cardMargin + 28, yPos);
-        yPos += 7;
-      });
-      
-      // Footer
-      yPos = cardY + cardHeight - 15;
-      doc.setFontSize(9);
-      doc.setTextColor(161, 161, 170);
-      doc.text(`Purchased on ${voucher.purchaseDate}`, centerX, yPos, { align: 'center' });
-      yPos += 5;
-      doc.text('Redeem at vitana-v1.lovable.app', centerX, yPos, { align: 'center' });
-      
-      // Convert PDF to blob with explicit MIME type for better compatibility
-      const pdfArrayBuffer = doc.output('arraybuffer');
-      const pdfBlob = new Blob([pdfArrayBuffer], { type: 'application/pdf' });
-      const fileName = `vitana-voucher-${voucher.code}.pdf`;
+      toast.dismiss(loadingToast);
       
       // Detect mobile devices
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
-      toast.dismiss(loadingToast);
-      
       if (isMobile) {
-        // Mobile: Show in-app PDF preview instead of opening new tab
-        const blobUrl = URL.createObjectURL(pdfBlob);
-        setPdfBlob(pdfBlob);
-        setPdfBlobUrl(blobUrl);
-        setPdfFileName(fileName);
+        // Mobile: Show in-app PDF preview with signed URL
+        setSignedPdfUrl(result.signedPdfUrl);
         setModalState("pdf-preview");
       } else {
-        // On desktop: Force automatic download
-        const blobUrl = URL.createObjectURL(pdfBlob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Desktop: Direct download via opening URL
+        window.open(result.signedPdfUrl, '_blank');
         toast.success("Voucher downloaded!");
-        // Cleanup after download starts
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
       }
     } catch (error: any) {
       console.error("Download error:", error);
@@ -646,7 +526,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
           )}
 
           {/* Mobile PDF Preview - Full screen in-app preview */}
-          {modalState === "pdf-preview" && pdfBlobUrl && (
+          {modalState === "pdf-preview" && signedPdfUrl && (
             <motion.div
               key="pdf-preview"
               initial={{ opacity: 0 }}
@@ -669,23 +549,53 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               {/* PDF Preview - takes remaining space */}
               <div className="flex-1 bg-muted/50 overflow-auto min-h-0">
                 <iframe
-                  src={pdfBlobUrl}
+                  src={signedPdfUrl}
                   className="w-full h-full border-0"
                   title="Voucher Preview"
                 />
               </div>
 
-              {/* Footer Actions */}
+              {/* Footer Actions - capability-based */}
               <div className="p-4 border-t space-y-2">
-                <Button
-                  onClick={handleSharePdf}
-                  className="w-full h-12"
-                >
-                  <Share2 className="h-4 w-4 mr-2" />
-                  Save / Share
-                </Button>
+                {canShareUrl ? (
+                  <>
+                    <Button
+                      onClick={handleShareUrl}
+                      className="w-full h-12"
+                    >
+                      <Share2 className="h-4 w-4 mr-2" />
+                      Save / Share
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleDownloadDirect}
+                      className="w-full"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download PDF
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      onClick={handleDownloadDirect}
+                      className="w-full h-12"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download PDF
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleCopyLink}
+                      className="w-full"
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy Link
+                    </Button>
+                  </>
+                )}
                 <p className="text-xs text-center text-muted-foreground">
-                  Save to Files, Drive, or send to someone
+                  {canShareUrl ? "Save to Files, Drive, or send to someone" : "Open link in browser to download"}
                 </p>
               </div>
             </motion.div>

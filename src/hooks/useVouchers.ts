@@ -41,7 +41,7 @@ export const useDownloadVoucherPdf = () => {
       });
       
       if (error) throw error;
-      return data as { success: boolean; voucher: VoucherData };
+      return data as { success: boolean; voucher: VoucherData; signedPdfUrl: string };
     },
   });
 };
