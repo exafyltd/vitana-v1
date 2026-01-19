@@ -273,11 +273,32 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       yPos += 5;
       doc.text('Redeem at vitana-v1.lovable.app', centerX, yPos, { align: 'center' });
       
-      // Save the PDF with automatic download
-      doc.save(`vitana-voucher-${voucher.code}.pdf`);
+      // Convert PDF to blob for better cross-device compatibility
+      const pdfBlob = doc.output('blob');
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      
+      // Detect mobile devices
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
       toast.dismiss(loadingToast);
-      toast.success("Voucher downloaded!");
+      
+      if (isMobile) {
+        // On mobile: Open in new tab for preview + save option
+        window.open(blobUrl, '_blank');
+        toast.success("Voucher opened! Tap the share icon to save it.");
+      } else {
+        // On desktop: Force automatic download
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `vitana-voucher-${voucher.code}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success("Voucher downloaded!");
+      }
+      
+      // Cleanup blob URL after a short delay
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     } catch (error: any) {
       console.error("Download error:", error);
       toast.dismiss(loadingToast);
