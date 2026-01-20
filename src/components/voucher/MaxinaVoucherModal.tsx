@@ -6,9 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContentNoOverlay,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, VoucherData } from "@/hooks/useVouchers";
 import { toast } from "sonner";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 type VoucherTier = "test" | "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
@@ -210,7 +217,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         console.error("Download failed:", error);
         toast.error("Download failed. Try copying the link.");
       }
-    }, 0);
+    }, 50);
   };
   
   // Open in external browser
@@ -331,18 +338,23 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   const tierForDisplay = completedTier || selectedTier;
 
-  // Don't render anything if not open
-  if (!open) return null;
-
-  // INLINE POPUP - standalone fixed card, NO full-screen wrapper, NO backdrop
-  // This prevents WebView compositing bugs (duplicate nav, ghost overlay)
+  // Use Radix Dialog with Portal + NoOverlay variant for WebView compatibility
+  // This portals to document.body, handles scroll locking, and prevents stuck overlays
   return (
-    <div 
-      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-[calc(100%-2rem)] max-w-md bg-background border rounded-2xl shadow-xl overflow-hidden"
-      role="dialog"
-      aria-modal="false"
-      aria-labelledby="voucher-modal-title"
-    >
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContentNoOverlay 
+        className="w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 gap-0 overflow-hidden"
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+      >
+        {/* Hidden accessible title for screen readers */}
+        <VisuallyHidden asChild>
+          <DialogTitle>Gift Voucher</DialogTitle>
+        </VisuallyHidden>
+        <VisuallyHidden asChild>
+          <DialogDescription>Purchase or manage your Vitana gift voucher</DialogDescription>
+        </VisuallyHidden>
+
         <AnimatePresence mode="wait">
           {modalState === "selection" && (
             <motion.div
@@ -354,7 +366,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             >
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 id="voucher-modal-title" className="flex items-center gap-2 text-xl font-semibold">
+                  <h2 className="flex items-center gap-2 text-xl font-semibold">
                     <Gift className="h-5 w-5 text-primary" />
                     Gift a Maxina Voucher
                   </h2>
@@ -714,6 +726,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             </motion.div>
           )}
         </AnimatePresence>
-    </div>
+      </DialogContentNoOverlay>
+    </Dialog>
   );
 };
