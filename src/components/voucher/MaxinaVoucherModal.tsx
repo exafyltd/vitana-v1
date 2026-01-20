@@ -187,11 +187,15 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       link.click();
       document.body.removeChild(link);
       
-      // Close the modal completely after a short delay
-      // so user immediately sees the system download progress/completion
-      setTimeout(() => {
-        onOpenChange(false);
-      }, 300);
+      // Reset state FIRST (clears the preview immediately)
+      setSignedPdfUrl(null);
+      setPreviewVoucher(null);
+      setModalState("selection");
+      setCompletedOrderId(null);
+      setCompletedTier(null);
+      
+      // Then close immediately - modal content already cleared
+      onOpenChange(false);
       
     } catch (error) {
       console.error("Download failed, trying fallback:", error);
