@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContentNoOverlay, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,7 +11,6 @@ import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, V
 import { toast } from "sonner";
 
 type VoucherTier = "test" | "experience" | "exclusive";
-type DownloadOverlayState = "idle" | "downloading" | "error";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
 
 interface MaxinaVoucherModalProps {
@@ -70,7 +68,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   // PDF preview state (mobile only)
   const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
   const [previewVoucher, setPreviewVoucher] = useState<VoucherData | null>(null);
-  const [downloadOverlayState, setDownloadOverlayState] = useState<DownloadOverlayState>("idle");
   const [canShareUrl, setCanShareUrl] = useState(false);
   
   const [searchParams, setSearchParams] = useSearchParams();
@@ -143,7 +140,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   // Immediately reset all state and close - no animation delays
   const resetAndClose = () => {
-    setDownloadOverlayState("idle");
     setSelectedTier(null);
     setModalState("selection");
     setCompletedOrderId(null);
@@ -330,9 +326,21 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   const tierForDisplay = completedTier || selectedTier;
 
+  // Don't render anything if not open
+  if (!open) return null;
+
   return (
-    <Dialog open={open} modal={false} onOpenChange={(nextOpen) => { if (!nextOpen) resetAndClose(); }}>
-      <DialogContentNoOverlay className="sm:max-w-md p-0 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+      <div className="pointer-events-auto w-[calc(100vw-32px)] max-w-md rounded-2xl border bg-background shadow-xl overflow-hidden relative">
+        {/* Close button - always visible */}
+        <button
+          onClick={handleClose}
+          className="absolute right-4 top-4 z-10 rounded-sm opacity-70 hover:opacity-100 transition-opacity"
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </button>
+
         <AnimatePresence mode="wait">
           {modalState === "selection" && (
             <motion.div
@@ -342,15 +350,15 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               exit={{ opacity: 0, y: -10 }}
               className="p-6"
             >
-              <DialogHeader className="mb-6">
-                <DialogTitle className="flex items-center gap-2 text-xl">
+              <div className="mb-6">
+                <h2 className="flex items-center gap-2 text-xl font-semibold">
                   <Gift className="h-5 w-5 text-primary" />
                   Gift a Maxina Voucher
-                </DialogTitle>
+                </h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   Give the gift of wellness and community connection
                 </p>
-              </DialogHeader>
+              </div>
 
               <div className="space-y-3">
                 {(Object.entries(tiers) as [VoucherTier, typeof tiers.experience][]).map(([key, tier]) => {
@@ -479,12 +487,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </Button>
               </div>
 
-              <Button 
-                onClick={handleClose}
-                className="w-full mt-4"
-              >
-                Done
-              </Button>
             </motion.div>
           )}
 
@@ -496,15 +498,15 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               exit={{ opacity: 0, x: -20 }}
               className="p-6"
             >
-              <DialogHeader className="mb-6">
-                <DialogTitle className="flex items-center gap-2 text-xl">
+              <div className="mb-6">
+                <h2 className="flex items-center gap-2 text-xl font-semibold">
                   <Mail className="h-5 w-5 text-primary" />
                   Send Voucher by Email
-                </DialogTitle>
+                </h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   We'll send a beautifully designed email with the voucher
                 </p>
-              </DialogHeader>
+              </div>
 
               <div className="space-y-4">
                 <div>
@@ -584,7 +586,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   variant="ghost"
                   size="icon"
                   onClick={handleClosePdfPreview}
-                  disabled={downloadOverlayState === "downloading"}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -645,7 +646,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                     <Button
                       onClick={handleShareUrl}
                       className="w-full h-12"
-                      disabled={downloadOverlayState === "downloading"}
                     >
                       <Share2 className="h-4 w-4 mr-2" />
                       Save / Share
@@ -654,7 +654,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       variant="outline"
                       onClick={handleDownloadDirect}
                       className="w-full"
-                      disabled={downloadOverlayState === "downloading"}
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download PDF
@@ -665,7 +664,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                     <Button
                       onClick={handleDownloadDirect}
                       className="w-full h-12"
-                      disabled={downloadOverlayState === "downloading"}
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download PDF
@@ -675,7 +673,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         variant="outline"
                         onClick={handleOpenInBrowser}
                         className="flex-1"
-                        disabled={downloadOverlayState === "downloading"}
                       >
                         <ExternalLink className="h-4 w-4 mr-2" />
                         Open in Browser
@@ -684,7 +681,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         variant="outline"
                         onClick={handleCopyLink}
                         className="flex-1"
-                        disabled={downloadOverlayState === "downloading"}
                       >
                         <Copy className="h-4 w-4 mr-2" />
                         Copy Link
@@ -697,61 +693,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </p>
               </div>
 
-              {/* Download Overlay - brief spinner, then auto-closes */}
-              <AnimatePresence>
-                {downloadOverlayState !== "idle" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-background/95 backdrop-blur-sm flex items-center justify-center z-50"
-                  >
-                    <div className="bg-card rounded-2xl shadow-xl border p-6 mx-4 max-w-xs w-full text-center">
-                      {downloadOverlayState === "downloading" && (
-                        <>
-                          <Loader2 className="h-10 w-10 text-primary animate-spin mx-auto mb-4" />
-                          <h4 className="font-semibold text-lg mb-1">Downloading voucher…</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Please wait a moment
-                          </p>
-                        </>
-                      )}
-                      
-                      {downloadOverlayState === "error" && (
-                        <>
-                          <div className="w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
-                            <X className="h-7 w-7 text-destructive" />
-                          </div>
-                          <h4 className="font-semibold text-lg mb-1">Download issue</h4>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            Copy the link and open in your browser
-                          </p>
-                          <div className="space-y-2">
-                            <Button
-                              onClick={handleCopyLink}
-                              className="w-full"
-                            >
-                              <Copy className="h-4 w-4 mr-2" />
-                              Copy Link
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              onClick={() => setDownloadOverlayState("idle")}
-                              className="w-full"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
-      </DialogContentNoOverlay>
-    </Dialog>
+      </div>
+    </div>
   );
 };
