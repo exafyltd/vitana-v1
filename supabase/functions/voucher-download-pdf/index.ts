@@ -365,38 +365,32 @@ serve(async (req) => {
 
     console.log("[voucher-download-pdf] Generating PDF for voucher:", voucherData.code);
 
-    // Check if PDF already exists in storage
+    // Always regenerate PDF to ensure it matches current voucher data
+    // This prevents mismatches between preview and downloaded PDF
     const pdfPath = `vouchers/${orderId}.pdf`;
-    const { data: existingFile } = await supabaseAdmin.storage
+    
+    console.log("[voucher-download-pdf] Regenerating PDF (always fresh)");
+    const pdfBuffer = generateVoucherPdf(voucherData);
+    
+    // Upload to storage with upsert to overwrite any existing file
+    const { error: uploadError } = await supabaseAdmin.storage
       .from("voucher-pdfs")
-      .list("vouchers", { search: `${orderId}.pdf` });
+      .upload(pdfPath, pdfBuffer, {
+        contentType: "application/pdf",
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error("[voucher-download-pdf] Upload error:", uploadError);
+      return new Response(
+        JSON.stringify({ error: "Failed to generate PDF. Please try again." }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    console.log("[voucher-download-pdf] PDF uploaded successfully");
 
     let signedPdfUrl: string;
-
-    if (existingFile && existingFile.length > 0) {
-      console.log("[voucher-download-pdf] PDF already exists, creating signed URL");
-    } else {
-      // Generate PDF server-side
-      const pdfBuffer = generateVoucherPdf(voucherData);
-      
-      // Upload to storage
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from("voucher-pdfs")
-        .upload(pdfPath, pdfBuffer, {
-          contentType: "application/pdf",
-          upsert: true,
-        });
-
-      if (uploadError) {
-        console.error("[voucher-download-pdf] Upload error:", uploadError);
-        return new Response(
-          JSON.stringify({ error: "Failed to generate PDF. Please try again." }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      console.log("[voucher-download-pdf] PDF uploaded successfully");
-    }
 
     // Create signed URL (valid for 1 hour)
     const { data: signedData, error: signedError } = await supabaseAdmin.storage
