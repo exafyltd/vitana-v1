@@ -377,29 +377,30 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="flex flex-col max-h-[100dvh]"
+              className="flex flex-col h-full max-h-[85dvh]"
             >
-              {/* Scrollable content area */}
+              {/* Header - fixed height, doesn't scroll */}
+              <div className="flex items-center justify-between p-6 pb-4 shrink-0">
+                <div>
+                  <h2 className="flex items-center gap-2 text-xl font-semibold">
+                    <Gift className="h-5 w-5 text-primary" />
+                    Gift a Maxina Voucher
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Give the gift of wellness and community connection
+                  </p>
+                </div>
+                <Button variant="ghost" size="icon" onClick={handleClose}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {/* Scrollable tier cards - takes remaining space */}
               <div 
-                className="flex-1 overflow-y-auto overscroll-contain p-6 pb-4"
+                className="flex-1 overflow-y-auto overscroll-contain px-6 min-h-0"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h2 className="flex items-center gap-2 text-xl font-semibold">
-                      <Gift className="h-5 w-5 text-primary" />
-                      Gift a Maxina Voucher
-                    </h2>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Give the gift of wellness and community connection
-                    </p>
-                  </div>
-                  <Button variant="ghost" size="icon" onClick={handleClose}>
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <div className="space-y-3">
+                <div className="space-y-3 pb-4">
                   {(Object.entries(tiers) as [VoucherTier, typeof tiers.experience][]).map(([key, tier]) => {
                     const Icon = tier.icon;
                     const isSelected = selectedTier === key;
@@ -451,9 +452,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </div>
               </div>
 
-              {/* Sticky footer CTA */}
+              {/* Footer CTA - fixed at bottom of modal */}
               <div 
-                className="sticky bottom-0 px-6 pt-3 bg-background/95 backdrop-blur-sm border-t border-border/50"
+                className="shrink-0 px-6 pt-3 bg-background border-t border-border/50"
                 style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}
               >
                 <Button 
