@@ -202,7 +202,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     }
   };
   
-  // Direct download - closes popup FIRST, then triggers download
+  // Direct download - pure action, NO navigation, modal stays open
   const handleDownloadDirect = () => {
     if (!signedPdfUrl) return;
     
@@ -211,24 +211,20 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       ? `vitana-voucher-${previewVoucher.code}.pdf`
       : `vitana-voucher-${completedOrderId || 'gift'}.pdf`;
     
-    // Close popup immediately BEFORE triggering download
-    resetAndClose();
-    
-    // Trigger download on next tick (after popup is gone)
-    setTimeout(() => {
-      try {
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = filename;
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("Download failed:", error);
-        toast.error("Download failed. Try copying the link.");
-      }
-    }, 50);
+    // DO NOT close the modal - just trigger download directly
+    try {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Download started!");
+    } catch (error) {
+      console.error("Download failed:", error);
+      toast.error("Download failed. Try copying the link.");
+    }
   };
   
   // Open in external browser
@@ -287,7 +283,14 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         setSignedPdfUrl(result.signedPdfUrl);
         setModalState("pdf-preview");
       } else {
-        window.open(result.signedPdfUrl, '_blank');
+        // Desktop: trigger download directly via anchor, don't open new window
+        const link = document.createElement('a');
+        link.href = result.signedPdfUrl;
+        link.download = `vitana-voucher-${result.voucher?.code || completedOrderId}.pdf`;
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
         toast.success("Voucher downloaded!");
       }
     } catch (error: any) {
