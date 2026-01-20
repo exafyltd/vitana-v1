@@ -187,14 +187,11 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       link.click();
       document.body.removeChild(link);
       
-      // Show success toast with guidance
-      toast.success("Download started! Check your notifications.");
-      
-      // Auto-close the pdf-preview modal after a short delay
-      // so user immediately sees the system download progress
+      // Close the modal completely after a short delay
+      // so user immediately sees the system download progress/completion
       setTimeout(() => {
-        setModalState("success");
-      }, 500);
+        onOpenChange(false);
+      }, 300);
       
     } catch (error) {
       console.error("Download failed, trying fallback:", error);
