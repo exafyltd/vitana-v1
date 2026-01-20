@@ -358,7 +358,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContentNoAnimation
         overlayClassName="z-[99999]"
-        className="z-[100000] w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 gap-0 overflow-hidden"
+        className="z-[100000] w-[calc(100%-2rem)] max-w-md max-h-[100dvh] rounded-2xl p-0 gap-0 flex flex-col"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
       >
@@ -377,82 +377,94 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="p-6"
+              className="flex flex-col max-h-[100dvh]"
             >
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="flex items-center gap-2 text-xl font-semibold">
-                    <Gift className="h-5 w-5 text-primary" />
-                    Gift a Maxina Voucher
-                  </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Give the gift of wellness and community connection
-                  </p>
+              {/* Scrollable content area */}
+              <div 
+                className="flex-1 overflow-y-auto overscroll-contain p-6 pb-4"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="flex items-center gap-2 text-xl font-semibold">
+                      <Gift className="h-5 w-5 text-primary" />
+                      Gift a Maxina Voucher
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Give the gift of wellness and community connection
+                    </p>
+                  </div>
+                  <Button variant="ghost" size="icon" onClick={handleClose}>
+                    <X className="h-4 w-4" />
+                  </Button>
                 </div>
-                <Button variant="ghost" size="icon" onClick={handleClose}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
 
-              <div className="space-y-3">
-                {(Object.entries(tiers) as [VoucherTier, typeof tiers.experience][]).map(([key, tier]) => {
-                  const Icon = tier.icon;
-                  const isSelected = selectedTier === key;
-                  
-                  return (
-                    <button
-                      key={key}
-                      onClick={() => setSelectedTier(key)}
-                      className={cn(
-                        "w-full p-4 rounded-xl border-2 text-left transition-all",
-                        isSelected 
-                          ? "border-primary bg-primary/5 shadow-md" 
-                          : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
-                      )}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className={cn(
-                          "w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center shrink-0",
-                          tier.color
-                        )}>
-                          <Icon className="h-5 w-5 text-white" />
-                        </div>
-                        
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-semibold">{tier.name}</span>
-                            <span className="text-lg font-bold">€{tier.price}</span>
+                <div className="space-y-3">
+                  {(Object.entries(tiers) as [VoucherTier, typeof tiers.experience][]).map(([key, tier]) => {
+                    const Icon = tier.icon;
+                    const isSelected = selectedTier === key;
+                    
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedTier(key)}
+                        className={cn(
+                          "w-full p-4 rounded-xl border-2 text-left transition-all",
+                          isSelected 
+                            ? "border-primary bg-primary/5 shadow-md" 
+                            : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
+                        )}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={cn(
+                            "w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center shrink-0",
+                            tier.color
+                          )}>
+                            <Icon className="h-5 w-5 text-white" />
                           </div>
                           
-                          <ul className="space-y-1">
-                            {tier.benefits.map((benefit, i) => (
-                              <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                                <Check className="h-3 w-3 text-primary mt-0.5 shrink-0" />
-                                <span>{benefit}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        
-                        {isSelected && (
-                          <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                            <Check className="h-3 w-3 text-primary-foreground" />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-semibold">{tier.name}</span>
+                              <span className="text-lg font-bold">€{tier.price}</span>
+                            </div>
+                            
+                            <ul className="space-y-1">
+                              {tier.benefits.map((benefit, i) => (
+                                <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                  <Check className="h-3 w-3 text-primary mt-0.5 shrink-0" />
+                                  <span>{benefit}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
+                          
+                          {isSelected && (
+                            <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shrink-0">
+                              <Check className="h-3 w-3 text-primary-foreground" />
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              <Button 
-                onClick={handleBuyVoucher}
-                disabled={!selectedTier}
-                className="w-full mt-6 h-11"
+              {/* Sticky footer CTA */}
+              <div 
+                className="sticky bottom-0 px-6 pt-3 bg-background/95 backdrop-blur-sm border-t border-border/50"
+                style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}
               >
-                <Gift className="h-4 w-4 mr-2" />
-                Buy Voucher {selectedTier && `· €${tiers[selectedTier].price}`}
-              </Button>
+                <Button 
+                  onClick={handleBuyVoucher}
+                  disabled={!selectedTier}
+                  className="w-full h-11"
+                >
+                  <Gift className="h-4 w-4 mr-2" />
+                  Buy Voucher {selectedTier && `· €${tiers[selectedTier].price}`}
+                </Button>
+              </div>
             </motion.div>
           )}
 
