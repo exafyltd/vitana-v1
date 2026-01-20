@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContentNoAnimation, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContentNoOverlay, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -180,16 +180,12 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   };
   
   // Direct download - uses anchor with download attribute
-  // Auto-closes modal IMMEDIATELY after download triggers so only system dialog remains
+  // Closes modal IMMEDIATELY so only system dialog remains (no overlay)
   const handleDownloadDirect = () => {
-    if (!signedPdfUrl || downloadOverlayState === "downloading") return;
-    
-    // Show downloading overlay immediately
-    setDownloadOverlayState("downloading");
+    if (!signedPdfUrl) return;
     
     try {
       // Create a temporary anchor with download attribute
-      // Use voucher code in filename for consistency with preview
       const filename = previewVoucher?.code 
         ? `vitana-voucher-${previewVoucher.code}.pdf`
         : `vitana-voucher-${completedOrderId || 'gift'}.pdf`;
@@ -202,16 +198,12 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       link.click();
       document.body.removeChild(link);
       
-      // After brief delay, immediately close everything
-      // Using 800ms to let the download start, then close so system dialog is visible
-      setTimeout(() => {
-        resetAndClose();
-      }, 800);
+      // Immediately close everything - no delay, no overlay
+      resetAndClose();
       
     } catch (error) {
       console.error("Download failed:", error);
-      // Show error state with copy link fallback
-      setDownloadOverlayState("error");
+      toast.error("Download failed. Try 'Copy Link' instead.");
     }
   };
   
@@ -339,8 +331,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const tierForDisplay = completedTier || selectedTier;
 
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) resetAndClose(); }}>
-      <DialogContentNoAnimation className="sm:max-w-md p-0 overflow-hidden">
+    <Dialog open={open} modal={false} onOpenChange={(nextOpen) => { if (!nextOpen) resetAndClose(); }}>
+      <DialogContentNoOverlay className="sm:max-w-md p-0 overflow-hidden">
         <AnimatePresence mode="wait">
           {modalState === "selection" && (
             <motion.div
@@ -759,7 +751,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             </motion.div>
           )}
         </AnimatePresence>
-      </DialogContentNoAnimation>
+      </DialogContentNoOverlay>
     </Dialog>
   );
 };
