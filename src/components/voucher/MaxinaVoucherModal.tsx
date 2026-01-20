@@ -334,16 +334,15 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   // Don't render anything if not open
   if (!open) return null;
 
-  // INLINE POPUP - no Portal, no Radix Dialog, no overlay/backdrop
+  // INLINE POPUP - standalone fixed card, NO full-screen wrapper, NO backdrop
+  // This prevents WebView compositing bugs (duplicate nav, ghost overlay)
   return (
     <div 
-      className="fixed inset-0 z-[70] pointer-events-none flex items-center justify-center p-4"
+      className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-[calc(100%-2rem)] max-w-md bg-background border rounded-2xl shadow-xl overflow-hidden"
       role="dialog"
       aria-modal="false"
       aria-labelledby="voucher-modal-title"
     >
-      {/* Popup Card - only this element is interactive */}
-      <div className="pointer-events-auto w-full max-w-md bg-background border rounded-2xl shadow-2xl overflow-hidden">
         <AnimatePresence mode="wait">
           {modalState === "selection" && (
             <motion.div
@@ -715,7 +714,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
     </div>
   );
 };
