@@ -12,7 +12,7 @@ import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, V
 import { toast } from "sonner";
 
 type VoucherTier = "test" | "experience" | "exclusive";
-type DownloadOverlayState = "idle" | "downloading" | "started" | "error";
+type DownloadOverlayState = "idle" | "downloading" | "error";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
 
 interface MaxinaVoucherModalProps {
@@ -175,8 +175,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     }
   };
   
-  // Direct download - uses anchor with download attribute + in-dialog overlay
-  // NEVER navigates away, NEVER closes the modal during download
+  // Direct download - uses anchor with download attribute
+  // Auto-closes modal after download triggers so only system dialog remains
   const handleDownloadDirect = () => {
     if (!signedPdfUrl || downloadOverlayState === "downloading") return;
     
@@ -193,23 +193,23 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       link.click();
       document.body.removeChild(link);
       
-      // After a short delay, show "download started" state
+      // After ~1 second, auto-close the entire modal
       setTimeout(() => {
-        setDownloadOverlayState("started");
-      }, 1200);
+        // Reset all state
+        setDownloadOverlayState("idle");
+        setSignedPdfUrl(null);
+        setPreviewVoucher(null);
+        setModalState("selection");
+        setCompletedOrderId(null);
+        setCompletedTier(null);
+        // Close the modal completely
+        onOpenChange(false);
+      }, 1000);
       
     } catch (error) {
       console.error("Download failed:", error);
-      // Show error state with fallback options (no navigation!)
+      // Show error state with copy link fallback
       setDownloadOverlayState("error");
-    }
-  };
-  
-  // Close download overlay and optionally close the whole preview
-  const handleCloseDownloadOverlay = (closePreview = false) => {
-    setDownloadOverlayState("idle");
-    if (closePreview) {
-      handleClosePdfPreview();
     }
   };
   
@@ -703,7 +703,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </p>
               </div>
 
-              {/* Download Overlay - stays inside dialog, never navigates */}
+              {/* Download Overlay - brief spinner, then auto-closes */}
               <AnimatePresence>
                 {downloadOverlayState !== "idle" && (
                   <motion.div
@@ -723,34 +723,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         </>
                       )}
                       
-                      {downloadOverlayState === "started" && (
-                        <>
-                          <div className="w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
-                            <Check className="h-7 w-7 text-green-600 dark:text-green-400" />
-                          </div>
-                          <h4 className="font-semibold text-lg mb-1">Download started!</h4>
-                          <p className="text-sm text-muted-foreground mb-4">
-                            Check your downloads or system notification
-                          </p>
-                          <div className="space-y-2">
-                            <Button
-                              onClick={() => handleCloseDownloadOverlay(true)}
-                              className="w-full"
-                            >
-                              Done
-                            </Button>
-                            <Button
-                              variant="outline"
-                              onClick={handleOpenInBrowser}
-                              className="w-full"
-                            >
-                              <ExternalLink className="h-4 w-4 mr-2" />
-                              Open in Browser
-                            </Button>
-                          </div>
-                        </>
-                      )}
-                      
                       {downloadOverlayState === "error" && (
                         <>
                           <div className="w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
@@ -758,18 +730,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                           </div>
                           <h4 className="font-semibold text-lg mb-1">Download issue</h4>
                           <p className="text-sm text-muted-foreground mb-4">
-                            This browser may not support direct downloads
+                            Copy the link and open in your browser
                           </p>
                           <div className="space-y-2">
                             <Button
-                              onClick={handleOpenInBrowser}
-                              className="w-full"
-                            >
-                              <ExternalLink className="h-4 w-4 mr-2" />
-                              Open in Browser
-                            </Button>
-                            <Button
-                              variant="outline"
                               onClick={handleCopyLink}
                               className="w-full"
                             >
@@ -778,10 +742,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                             </Button>
                             <Button
                               variant="ghost"
-                              onClick={() => handleCloseDownloadOverlay(false)}
+                              onClick={() => setDownloadOverlayState("idle")}
                               className="w-full"
                             >
-                              Try Again
+                              Cancel
                             </Button>
                           </div>
                         </>
