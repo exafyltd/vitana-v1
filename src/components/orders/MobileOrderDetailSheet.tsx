@@ -76,7 +76,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
     }
   };
 
-  // Handle PDF download for vouchers
+  // Handle PDF download for vouchers - pure download action, NO navigation
   const handleDownloadPdf = async () => {
     if (order.type === 'voucher' && order.voucherOrder?.id) {
       const loadingToast = toast.loading('Generating voucher PDF...');
@@ -84,125 +84,39 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
       try {
         const result = await downloadPdf.mutateAsync(order.voucherOrder.id);
         
-        if (!result?.voucher) {
+        if (!result?.voucher || !result?.signedPdfUrl) {
           toast.dismiss(loadingToast);
           toast.error('Failed to load voucher data');
           return;
         }
         
-        const voucher = result.voucher;
-        
-        // Generate PDF using browser print
-        const printWindow = window.open('', '_blank');
-        if (!printWindow) {
-          toast.dismiss(loadingToast);
-          toast.error('Please allow popups to view your voucher');
-          return;
-        }
-        
-        printWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Vitana Gift Voucher - ${voucher.tierName}</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-              @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-              * { margin: 0; padding: 0; box-sizing: border-box; }
-              body { 
-                font-family: 'Inter', sans-serif; 
-                background: linear-gradient(135deg, #f5f3ff 0%, #faf5ff 100%);
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-              }
-              .voucher {
-                background: white;
-                border-radius: 24px;
-                padding: 24px;
-                width: 100%;
-                max-width: 100%;
-                box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
-                text-align: center;
-              }
-              .logo { font-size: 28px; font-weight: 700; color: #8b5cf6; margin-bottom: 20px; }
-              .gift-icon { font-size: 48px; margin-bottom: 12px; }
-              .tier-badge {
-                display: inline-block;
-                background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-                color: white;
-                padding: 8px 20px;
-                border-radius: 100px;
-                font-weight: 600;
-                margin-bottom: 12px;
-                font-size: 14px;
-              }
-              .price { font-size: 36px; font-weight: 700; color: #18181b; margin-bottom: 6px; }
-              .expires { color: #71717a; margin-bottom: 24px; font-size: 14px; }
-              .code-box {
-                background: #f4f4f5;
-                border-radius: 12px;
-                padding: 16px;
-                margin-bottom: 24px;
-              }
-              .code-label { color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-              .code { font-family: monospace; font-size: 20px; font-weight: 700; color: #18181b; letter-spacing: 2px; word-break: break-all; }
-              .benefits { text-align: left; }
-              .benefits-label { color: #71717a; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-              .benefit { display: flex; align-items: flex-start; margin-bottom: 6px; color: #3f3f46; font-size: 14px; }
-              .benefit::before { content: '✓'; color: #8b5cf6; margin-right: 10px; font-weight: 600; }
-              .footer { margin-top: 24px; color: #a1a1aa; font-size: 11px; }
-              
-              @media screen and (min-width: 600px) {
-                .voucher { max-width: 500px; padding: 48px; }
-              }
-              
-              @media print {
-                body { background: white; padding: 10px; }
-                .voucher { box-shadow: none; border: 2px solid #e4e4e7; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="voucher">
-              <div class="logo">VITANA</div>
-              <div class="gift-icon">🎁</div>
-              <div class="tier-badge">${voucher.tierName}</div>
-              <div class="price">${voucher.price}</div>
-              <div class="expires">Valid until ${voucher.expiresAt}</div>
-              
-              <div class="code-box">
-                <div class="code-label">Voucher Code</div>
-                <div class="code">${voucher.code}</div>
-              </div>
-              
-              <div class="benefits">
-                <div class="benefits-label">What's included</div>
-                ${voucher.benefits.map((b: string) => `<div class="benefit">${b}</div>`).join('')}
-              </div>
-              
-              <div class="footer">
-                Purchased on ${voucher.purchaseDate}<br>
-                Redeem at vitana-v1.lovable.app
-              </div>
-            </div>
-            <script>window.print();</script>
-          </body>
-          </html>
-        `);
-        printWindow.document.close();
-        
         toast.dismiss(loadingToast);
-        toast.success('Voucher PDF ready!');
+        
+        const voucher = result.voucher;
+        const filename = `vitana-voucher-${voucher.code}.pdf`;
+        
+        // Pure download action - anchor-click method, NO navigation, NO window.open
+        try {
+          const link = document.createElement('a');
+          link.href = result.signedPdfUrl;
+          link.download = filename;
+          link.rel = 'noopener noreferrer';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          toast.success('Download started!');
+        } catch (error) {
+          console.error('Download anchor failed:', error);
+          // Fallback: direct location (still no navigation, just triggers download)
+          window.location.href = result.signedPdfUrl;
+          toast.success('Download started!');
+        }
       } catch (error: any) {
         console.error('Download error:', error);
         toast.dismiss(loadingToast);
         toast.error(error?.message || 'Failed to download voucher');
       }
     } else if (order.type === 'ticket' && order.ticketPurchase) {
-      // For tickets, trigger print of the ticket
       toast.info('Use the ticket view to print or save your ticket');
     } else {
       toast.info('PDF download not available for this order type');
