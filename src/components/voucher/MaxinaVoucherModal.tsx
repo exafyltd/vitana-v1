@@ -12,6 +12,7 @@ import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, V
 import { toast } from "sonner";
 
 type VoucherTier = "test" | "experience" | "exclusive";
+type DownloadOverlayState = "idle" | "downloading" | "started" | "error";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
 
 interface MaxinaVoucherModalProps {
@@ -69,6 +70,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   // PDF preview state (mobile only)
   const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
   const [previewVoucher, setPreviewVoucher] = useState<VoucherData | null>(null);
+  const [downloadOverlayState, setDownloadOverlayState] = useState<DownloadOverlayState>("idle");
   const [canShareUrl, setCanShareUrl] = useState(false);
   
   const [searchParams, setSearchParams] = useSearchParams();
@@ -167,15 +169,19 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       toast.success("Voucher shared successfully!");
     } catch (error: any) {
       if (error.name !== 'AbortError') {
-        // Fallback to download if share fails
+        // Fallback to download overlay flow if share fails
         handleDownloadDirect();
       }
     }
   };
   
-  // Direct download - uses anchor with download attribute (works better in WebViews)
+  // Direct download - uses anchor with download attribute + in-dialog overlay
+  // NEVER navigates away, NEVER closes the modal during download
   const handleDownloadDirect = () => {
-    if (!signedPdfUrl) return;
+    if (!signedPdfUrl || downloadOverlayState === "downloading") return;
+    
+    // Show downloading overlay immediately
+    setDownloadOverlayState("downloading");
     
     try {
       // Create a temporary anchor with download attribute
@@ -187,20 +193,23 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       link.click();
       document.body.removeChild(link);
       
-      // Reset state FIRST (clears the preview immediately)
-      setSignedPdfUrl(null);
-      setPreviewVoucher(null);
-      setModalState("selection");
-      setCompletedOrderId(null);
-      setCompletedTier(null);
-      
-      // Then close immediately - modal content already cleared
-      onOpenChange(false);
+      // After a short delay, show "download started" state
+      setTimeout(() => {
+        setDownloadOverlayState("started");
+      }, 1200);
       
     } catch (error) {
-      console.error("Download failed, trying fallback:", error);
-      // Fallback: navigate to URL directly
-      window.location.href = signedPdfUrl;
+      console.error("Download failed:", error);
+      // Show error state with fallback options (no navigation!)
+      setDownloadOverlayState("error");
+    }
+  };
+  
+  // Close download overlay and optionally close the whole preview
+  const handleCloseDownloadOverlay = (closePreview = false) => {
+    setDownloadOverlayState("idle");
+    if (closePreview) {
+      handleClosePdfPreview();
     }
   };
   
@@ -572,7 +581,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex flex-col h-[85vh]"
+              className="flex flex-col h-[85vh] relative"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b">
@@ -581,6 +590,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   variant="ghost"
                   size="icon"
                   onClick={handleClosePdfPreview}
+                  disabled={downloadOverlayState === "downloading"}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -641,6 +651,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                     <Button
                       onClick={handleShareUrl}
                       className="w-full h-12"
+                      disabled={downloadOverlayState === "downloading"}
                     >
                       <Share2 className="h-4 w-4 mr-2" />
                       Save / Share
@@ -649,6 +660,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       variant="outline"
                       onClick={handleDownloadDirect}
                       className="w-full"
+                      disabled={downloadOverlayState === "downloading"}
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download PDF
@@ -659,6 +671,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                     <Button
                       onClick={handleDownloadDirect}
                       className="w-full h-12"
+                      disabled={downloadOverlayState === "downloading"}
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download PDF
@@ -668,6 +681,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         variant="outline"
                         onClick={handleOpenInBrowser}
                         className="flex-1"
+                        disabled={downloadOverlayState === "downloading"}
                       >
                         <ExternalLink className="h-4 w-4 mr-2" />
                         Open in Browser
@@ -676,6 +690,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         variant="outline"
                         onClick={handleCopyLink}
                         className="flex-1"
+                        disabled={downloadOverlayState === "downloading"}
                       >
                         <Copy className="h-4 w-4 mr-2" />
                         Copy Link
@@ -687,6 +702,94 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   {canShareUrl ? "Save to Files, Drive, or send to someone" : "If download opens blank, tap Open in Browser"}
                 </p>
               </div>
+
+              {/* Download Overlay - stays inside dialog, never navigates */}
+              <AnimatePresence>
+                {downloadOverlayState !== "idle" && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 bg-background/95 backdrop-blur-sm flex items-center justify-center z-50"
+                  >
+                    <div className="bg-card rounded-2xl shadow-xl border p-6 mx-4 max-w-xs w-full text-center">
+                      {downloadOverlayState === "downloading" && (
+                        <>
+                          <Loader2 className="h-10 w-10 text-primary animate-spin mx-auto mb-4" />
+                          <h4 className="font-semibold text-lg mb-1">Downloading voucher…</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Please wait a moment
+                          </p>
+                        </>
+                      )}
+                      
+                      {downloadOverlayState === "started" && (
+                        <>
+                          <div className="w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+                            <Check className="h-7 w-7 text-green-600 dark:text-green-400" />
+                          </div>
+                          <h4 className="font-semibold text-lg mb-1">Download started!</h4>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Check your downloads or system notification
+                          </p>
+                          <div className="space-y-2">
+                            <Button
+                              onClick={() => handleCloseDownloadOverlay(true)}
+                              className="w-full"
+                            >
+                              Done
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={handleOpenInBrowser}
+                              className="w-full"
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Open in Browser
+                            </Button>
+                          </div>
+                        </>
+                      )}
+                      
+                      {downloadOverlayState === "error" && (
+                        <>
+                          <div className="w-14 h-14 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
+                            <X className="h-7 w-7 text-destructive" />
+                          </div>
+                          <h4 className="font-semibold text-lg mb-1">Download issue</h4>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            This browser may not support direct downloads
+                          </p>
+                          <div className="space-y-2">
+                            <Button
+                              onClick={handleOpenInBrowser}
+                              className="w-full"
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Open in Browser
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={handleCopyLink}
+                              className="w-full"
+                            >
+                              <Copy className="h-4 w-4 mr-2" />
+                              Copy Link
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              onClick={() => handleCloseDownloadOverlay(false)}
+                              className="w-full"
+                            >
+                              Try Again
+                            </Button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
