@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContentNoAnimation, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -141,19 +141,23 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     }
   };
 
-  const handleClose = () => {
+  // Immediately reset all state and close - no animation delays
+  const resetAndClose = () => {
+    setDownloadOverlayState("idle");
+    setSelectedTier(null);
+    setModalState("selection");
+    setCompletedOrderId(null);
+    setCompletedTier(null);
+    setRecipientEmail("");
+    setRecipientName("");
+    setPersonalMessage("");
+    setSignedPdfUrl(null);
+    setPreviewVoucher(null);
     onOpenChange(false);
-    // Reset state after animation
-    setTimeout(() => {
-      setSelectedTier(null);
-      setModalState("selection");
-      setCompletedOrderId(null);
-      setCompletedTier(null);
-      setRecipientEmail("");
-      setRecipientName("");
-      setPersonalMessage("");
-      setSignedPdfUrl(null);
-    }, 300);
+  };
+
+  const handleClose = () => {
+    resetAndClose();
   };
   
   // Handle share via Web Share API (URL only - works in more WebViews)
@@ -176,7 +180,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   };
   
   // Direct download - uses anchor with download attribute
-  // Auto-closes modal after download triggers so only system dialog remains
+  // Auto-closes modal IMMEDIATELY after download triggers so only system dialog remains
   const handleDownloadDirect = () => {
     if (!signedPdfUrl || downloadOverlayState === "downloading") return;
     
@@ -185,26 +189,24 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     
     try {
       // Create a temporary anchor with download attribute
+      // Use voucher code in filename for consistency with preview
+      const filename = previewVoucher?.code 
+        ? `vitana-voucher-${previewVoucher.code}.pdf`
+        : `vitana-voucher-${completedOrderId || 'gift'}.pdf`;
+      
       const link = document.createElement('a');
       link.href = signedPdfUrl;
-      link.download = `vitana-voucher-${completedOrderId || 'gift'}.pdf`;
+      link.download = filename;
       link.rel = 'noopener noreferrer';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       
-      // After ~1 second, auto-close the entire modal
+      // After brief delay, immediately close everything
+      // Using 800ms to let the download start, then close so system dialog is visible
       setTimeout(() => {
-        // Reset all state
-        setDownloadOverlayState("idle");
-        setSignedPdfUrl(null);
-        setPreviewVoucher(null);
-        setModalState("selection");
-        setCompletedOrderId(null);
-        setCompletedTier(null);
-        // Close the modal completely
-        onOpenChange(false);
-      }, 1000);
+        resetAndClose();
+      }, 800);
       
     } catch (error) {
       console.error("Download failed:", error);
@@ -337,8 +339,8 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const tierForDisplay = completedTier || selectedTier;
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+    <Dialog open={open} onOpenChange={(nextOpen) => { if (!nextOpen) resetAndClose(); }}>
+      <DialogContentNoAnimation className="sm:max-w-md p-0 overflow-hidden">
         <AnimatePresence mode="wait">
           {modalState === "selection" && (
             <motion.div
@@ -757,7 +759,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             </motion.div>
           )}
         </AnimatePresence>
-      </DialogContent>
+      </DialogContentNoAnimation>
     </Dialog>
   );
 };
