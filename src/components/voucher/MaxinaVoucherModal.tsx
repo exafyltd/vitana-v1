@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
-  DialogContentNoOverlay,
+  DialogContentNoAnimation,
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
@@ -89,9 +89,20 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   // Detect Web Share API capability on mount
   useEffect(() => {
-    const hasShareApi = typeof navigator.share === 'function';
+    const hasShareApi = typeof navigator.share === "function";
     setCanShareUrl(hasShareApi);
   }, []);
+
+  // Extra hardening for Appilix/WebView: lock body scroll while modal is open
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open]);
 
   // Check for success return from Stripe - only handle once per navigation
   useEffect(() => {
@@ -338,12 +349,13 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   const tierForDisplay = completedTier || selectedTier;
 
-  // Use Radix Dialog with Portal + NoOverlay variant for WebView compatibility
-  // This portals to document.body, handles scroll locking, and prevents stuck overlays
+  // Gift Voucher modal must be fully isolated in Appilix/WebView.
+  // We rely on Radix Portal (wired to #modal-root) + a real fullscreen overlay.
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContentNoOverlay 
-        className="w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 gap-0 overflow-hidden"
+      <DialogContentNoAnimation
+        overlayClassName="z-[99999]"
+        className="z-[100000] w-[calc(100%-2rem)] max-w-md rounded-2xl p-0 gap-0 overflow-hidden"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
       >
@@ -726,7 +738,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             </motion.div>
           )}
         </AnimatePresence>
-      </DialogContentNoOverlay>
+      </DialogContentNoAnimation>
     </Dialog>
   );
 };

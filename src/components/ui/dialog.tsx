@@ -8,7 +8,22 @@ const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = DialogPrimitive.Trigger
 
-const DialogPortal = DialogPrimitive.Portal
+const DialogPortal = ({
+  container,
+  ...props
+}: DialogPrimitive.DialogPortalProps) => {
+  const modalRoot =
+    typeof document !== "undefined"
+      ? (document.getElementById("modal-root") as HTMLElement | null)
+      : null;
+
+  return (
+    <DialogPrimitive.Portal
+      container={container ?? modalRoot ?? undefined}
+      {...props}
+    />
+  );
+};
 
 const DialogClose = DialogPrimitive.Close
 
@@ -27,12 +42,16 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
+type DialogContentProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+  overlayClassName?: string;
+};
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  DialogContentProps
+>(({ className, overlayClassName, children, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay />
+    <DialogOverlay className={overlayClassName} />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
@@ -70,12 +89,17 @@ const DialogOverlayNoAnimation = React.forwardRef<
 ))
 DialogOverlayNoAnimation.displayName = "DialogOverlayNoAnimation"
 
+type DialogContentNoAnimationProps =
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    overlayClassName?: string;
+  };
+
 const DialogContentNoAnimation = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  DialogContentNoAnimationProps
+>(({ className, overlayClassName, children, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlayNoAnimation />
+    <DialogOverlayNoAnimation className={overlayClassName} />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
