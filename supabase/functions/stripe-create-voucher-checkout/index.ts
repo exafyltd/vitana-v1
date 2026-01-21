@@ -19,6 +19,17 @@ const logStep = (step: string, details?: any) => {
   console.log(`[STRIPE-VOUCHER-CHECKOUT] ${step}${detailsStr}`);
 };
 
+// Sanitize returnTo - only allow relative paths starting with /
+const sanitizeReturnTo = (path: string | undefined): string => {
+  if (!path || typeof path !== 'string') return '/home';
+  const trimmed = path.trim();
+  // Must start with / and not contain protocol or double slashes
+  if (!trimmed.startsWith('/') || trimmed.includes('://') || trimmed.startsWith('//')) {
+    return '/home';
+  }
+  return trimmed;
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -60,7 +71,8 @@ serve(async (req) => {
     logStep("User authenticated", { userId: user.id, email: buyerEmail });
 
     // Parse request body
-    const { tier } = await req.json();
+    const { tier, returnTo } = await req.json();
+    const safeReturnTo = sanitizeReturnTo(returnTo);
     
     if (!tier || !VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES]) {
       throw new Error("Invalid voucher tier. Must be 'test', 'experience', or 'exclusive'");
@@ -133,7 +145,8 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://vitana.app";
 
-    // Create Stripe Checkout session
+    // Create Stripe Checkout session with dynamic return URL
+    const returnSeparator = safeReturnTo.includes('?') ? '&' : '?';
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : buyerEmail,
@@ -144,8 +157,8 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${origin}/home?voucher_success=true&order_id=${order.id}`,
-      cancel_url: `${origin}/home?voucher_cancelled=true`,
+      success_url: `${origin}${safeReturnTo}${returnSeparator}voucher_success=true&order_id=${order.id}&tier=${tier}`,
+      cancel_url: `${origin}${safeReturnTo}${returnSeparator}voucher_cancelled=true`,
       metadata: {
         type: "voucher",
         order_id: order.id,

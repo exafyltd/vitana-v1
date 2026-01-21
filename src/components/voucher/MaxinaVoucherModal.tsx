@@ -138,26 +138,21 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     
     setModalState("loading");
     
+    // Capture current location BEFORE navigating to Stripe
+    const originRoute = window.location.pathname + window.location.search;
+    
     try {
-      const result = await createCheckout.mutateAsync({ tier: selectedTier });
+      const result = await createCheckout.mutateAsync({ 
+        tier: selectedTier,
+        returnTo: originRoute
+      });
       
       if (result.url) {
-        const width = 600;
-        const height = 800;
-        const left = (window.screen.width - width) / 2;
-        const top = (window.screen.height - height) / 2;
-        const features = `width=${width},height=${height},left=${left},top=${top},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`;
-        
-        const popup = window.open(result.url, 'stripe-voucher-checkout', features);
-        
-        if (!popup) {
-          toast.error("Please allow popups to complete your voucher purchase");
-          setModalState("selection");
-          return;
-        }
-        
-        setModalState("selection");
-        onOpenChange(false);
+        // CRITICAL: Navigate in SAME window, not popup
+        // This replaces the current page with Stripe Checkout
+        // On return, user comes back to originRoute (not /home)
+        window.location.href = result.url;
+        // No need to reset state - page will navigate away
       }
     } catch (error) {
       console.error("Checkout error:", error);
@@ -292,6 +287,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         link.click();
         document.body.removeChild(link);
         toast.success("Voucher downloaded!");
+        
+        // AUTO-CLOSE after download initiated (desktop)
+        setTimeout(() => resetAndClose(), 300);
       }
     } catch (error: any) {
       console.error("Download error:", error);
@@ -328,10 +326,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       
       toast.dismiss(loadingToast);
       toast.success(`Voucher sent to ${recipientEmail}!`);
-      setModalState("success");
-      setRecipientEmail("");
-      setRecipientName("");
-      setPersonalMessage("");
+      
+      // AUTO-CLOSE: Reset and close modal after successful send
+      resetAndClose();
     } catch (error: any) {
       console.error("Email send error:", error);
       toast.dismiss(loadingToast);
@@ -346,8 +343,11 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   };
 
   const handleViewOrders = () => {
-    handleClose();
-    navigate("/discover/orders?tab=vouchers");
+    // Close modal first, then navigate
+    resetAndClose();
+    setTimeout(() => {
+      navigate("/discover/orders?tab=vouchers");
+    }, 50);
   };
 
   const tierForDisplay = completedTier || selectedTier;
