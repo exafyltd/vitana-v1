@@ -94,8 +94,15 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   }, []);
 
   // Extra hardening for Appilix/WebView: lock body scroll while modal is open
+  // Also force-remove stuck overlays when modal closes
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      // Force cleanup any stuck overlays when modal closes
+      const stuckOverlays = document.querySelectorAll('[data-radix-dialog-overlay]');
+      stuckOverlays.forEach(el => el.remove());
+      return;
+    }
+    
     const prevBodyOverflow = document.body.style.overflow;
     const prevHtmlOverflow = document.documentElement.style.overflow;
     
@@ -105,6 +112,12 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     return () => {
       document.body.style.overflow = prevBodyOverflow;
       document.documentElement.style.overflow = prevHtmlOverflow;
+      
+      // Extra WebView safety: remove stuck overlays on unmount
+      requestAnimationFrame(() => {
+        const stuckOverlays = document.querySelectorAll('[data-radix-dialog-overlay]');
+        stuckOverlays.forEach(el => el.remove());
+      });
     };
   }, [open]);
 
@@ -170,7 +183,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     }
   };
 
-  // Immediately reset all state and close
+  // Immediately reset all state and close, with forced overlay cleanup for WebView
   const resetAndClose = () => {
     setSelectedTier(null);
     setModalState("selection");
@@ -181,6 +194,17 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     setPersonalMessage("");
     setSignedPdfUrl(null);
     setPreviewVoucher(null);
+    
+    // Force cleanup stuck overlays before closing
+    requestAnimationFrame(() => {
+      const modalRoot = document.getElementById('modal-root');
+      if (modalRoot) {
+        modalRoot.innerHTML = '';
+      }
+      const stuckOverlays = document.querySelectorAll('[data-radix-dialog-overlay]');
+      stuckOverlays.forEach(el => el.remove());
+    });
+    
     onOpenChange(false);
   };
 
