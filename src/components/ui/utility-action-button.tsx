@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { GiftVoucherButton } from "@/components/voucher/GiftVoucherButton";
 import { MaxinaVoucherModal } from "@/components/voucher/MaxinaVoucherModal";
@@ -28,10 +27,6 @@ export function UtilityActionButton({
   afterGiftVoucherChildren
 }: UtilityActionButtonProps) {
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
-  const location = useLocation();
-  
-  // Capture full path including search params for Stripe return
-  const originRoute = location.pathname + location.search;
 
   return (
     <>
@@ -59,8 +54,7 @@ export function UtilityActionButton({
       {!hideGiftVoucher && (
         <MaxinaVoucherModal 
           open={voucherModalOpen} 
-          onOpenChange={setVoucherModalOpen}
-          originRoute={originRoute}
+          onOpenChange={setVoucherModalOpen} 
         />
       )}
     </>

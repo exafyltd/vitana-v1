@@ -6,14 +6,13 @@ export type VoucherTier = "test" | "experience" | "exclusive";
 
 interface CreateVoucherCheckoutParams {
   tier: VoucherTier;
-  returnTo?: string;  // Encoded origin route for Stripe redirect
 }
 
 export const useCreateVoucherCheckout = () => {
   return useMutation({
-    mutationFn: async ({ tier, returnTo }: CreateVoucherCheckoutParams) => {
+    mutationFn: async ({ tier }: CreateVoucherCheckoutParams) => {
       const { data, error } = await supabase.functions.invoke('stripe-create-voucher-checkout', {
-        body: { tier, returnTo }
+        body: { tier }
       });
       
       if (error) throw error;
