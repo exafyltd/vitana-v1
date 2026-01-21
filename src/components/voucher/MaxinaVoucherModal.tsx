@@ -96,11 +96,15 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   // Extra hardening for Appilix/WebView: lock body scroll while modal is open
   useEffect(() => {
     if (!open) return;
-    const prevOverflow = document.body.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = prevOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
     };
   }, [open]);
 
@@ -357,7 +361,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContentNoAnimation
-        overlayClassName="z-[99999]"
+        overlayClassName="z-[99999] !bg-background"
         className="z-[100000] w-[calc(100%-2rem)] max-w-md max-h-[100dvh] rounded-2xl p-0 gap-0 flex flex-col"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
@@ -488,7 +492,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="p-6"
+              className="p-6 bg-background"
             >
               <div className="flex justify-end mb-2">
                 <Button variant="ghost" size="icon" onClick={handleClose}>
