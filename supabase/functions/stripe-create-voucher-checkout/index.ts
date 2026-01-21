@@ -14,6 +14,30 @@ const VOUCHER_PRICES = {
   exclusive: "price_1SpVJAAEiUKAgGPQfZNE1eJg",  // €199
 };
 
+/**
+ * Sanitize returnTo path to prevent open redirect attacks.
+ * Only allows relative paths starting with /, rejects absolute URLs and javascript: URIs.
+ */
+const sanitizeReturnTo = (returnTo: string | undefined): string => {
+  if (!returnTo) return '/home';
+  
+  // Decode if encoded
+  let path = returnTo;
+  try {
+    path = decodeURIComponent(returnTo);
+  } catch {
+    // Already decoded or invalid - use as-is
+  }
+  
+  // Security: only allow relative paths starting with /
+  if (!path.startsWith('/')) return '/home';
+  if (path.startsWith('//')) return '/home';
+  if (path.includes('://')) return '/home';
+  if (path.toLowerCase().includes('javascript:')) return '/home';
+  
+  return path;
+};
+
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[STRIPE-VOUCHER-CHECKOUT] ${step}${detailsStr}`);
@@ -60,13 +84,15 @@ serve(async (req) => {
     logStep("User authenticated", { userId: user.id, email: buyerEmail });
 
     // Parse request body
-    const { tier } = await req.json();
+    const { tier, returnTo } = await req.json();
     
     if (!tier || !VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES]) {
       throw new Error("Invalid voucher tier. Must be 'test', 'experience', or 'exclusive'");
     }
 
-    logStep("Request received", { tier });
+    // Sanitize the return path to prevent open redirects
+    const returnPath = sanitizeReturnTo(returnTo);
+    logStep("Request received", { tier, returnPath });
 
     const priceId = VOUCHER_PRICES[tier as keyof typeof VOUCHER_PRICES];
     const tierPriceCents = tier === "test" ? 49 : tier === "experience" ? 9900 : 19900;
@@ -133,6 +159,21 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") || "https://vitana.app";
 
+    // Build dynamic success/cancel URLs using the sanitized return path
+    const successParams = `voucher_success=true&order_id=${order.id}&tier=${tier}`;
+    const cancelParams = `voucher_cancelled=true`;
+    
+    // Handle existing query params in returnPath
+    const successUrl = returnPath.includes('?')
+      ? `${origin}${returnPath}&${successParams}`
+      : `${origin}${returnPath}?${successParams}`;
+      
+    const cancelUrl = returnPath.includes('?')
+      ? `${origin}${returnPath}&${cancelParams}`
+      : `${origin}${returnPath}?${cancelParams}`;
+
+    logStep("Building checkout URLs", { successUrl, cancelUrl });
+
     // Create Stripe Checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -144,8 +185,8 @@ serve(async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${origin}/home?voucher_success=true&order_id=${order.id}`,
-      cancel_url: `${origin}/home?voucher_cancelled=true`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       metadata: {
         type: "voucher",
         order_id: order.id,
