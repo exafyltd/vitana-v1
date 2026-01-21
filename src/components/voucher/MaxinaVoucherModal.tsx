@@ -72,6 +72,11 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const [recipientName, setRecipientName] = useState("");
   const [personalMessage, setPersonalMessage] = useState("");
   
+  // Capture origin route for Stripe return - captured when modal opens
+  const [originRoute] = useState(() => 
+    window.location.pathname + window.location.search
+  );
+  
   // PDF preview state (mobile only)
   const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
   const [previewVoucher, setPreviewVoucher] = useState<VoucherData | null>(null);
@@ -156,7 +161,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     setModalState("loading");
     
     try {
-      const result = await createCheckout.mutateAsync({ tier: selectedTier });
+      const result = await createCheckout.mutateAsync({ 
+        tier: selectedTier,
+        returnTo: originRoute 
+      });
       
       if (result.url) {
         const width = 600;
