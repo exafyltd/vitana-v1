@@ -355,7 +355,7 @@ serve(async (req) => {
     const recipientDisplayName = recipientName || recipientEmail.split("@")[0];
     
     const emailResult = await resend.emails.send({
-      from: "Vitana Gifts <onboarding@resend.dev>",
+      from: "Vitana Gifts <noreply@vitanaland.com>",
       to: [recipientEmail],
       subject: `🎁 ${senderName} sent you a Vitana wellness voucher!`,
       html,
