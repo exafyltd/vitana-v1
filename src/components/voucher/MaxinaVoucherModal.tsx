@@ -72,11 +72,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const [recipientName, setRecipientName] = useState("");
   const [personalMessage, setPersonalMessage] = useState("");
   
-  // Capture origin route for Stripe return - captured when modal opens
-  const [originRoute] = useState(() => 
-    window.location.pathname + window.location.search
-  );
-  
   // PDF preview state (mobile only)
   const [signedPdfUrl, setSignedPdfUrl] = useState<string | null>(null);
   const [previewVoucher, setPreviewVoucher] = useState<VoucherData | null>(null);
@@ -99,30 +94,13 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   }, []);
 
   // Extra hardening for Appilix/WebView: lock body scroll while modal is open
-  // Also force-remove stuck overlays when modal closes
   useEffect(() => {
-    if (!open) {
-      // Force cleanup any stuck overlays when modal closes
-      const stuckOverlays = document.querySelectorAll('[data-radix-dialog-overlay]');
-      stuckOverlays.forEach(el => el.remove());
-      return;
-    }
-    
-    const prevBodyOverflow = document.body.style.overflow;
-    const prevHtmlOverflow = document.documentElement.style.overflow;
-    
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = prevBodyOverflow;
-      document.documentElement.style.overflow = prevHtmlOverflow;
-      
-      // Extra WebView safety: remove stuck overlays on unmount
-      requestAnimationFrame(() => {
-        const stuckOverlays = document.querySelectorAll('[data-radix-dialog-overlay]');
-        stuckOverlays.forEach(el => el.remove());
-      });
+      document.body.style.overflow = prevOverflow;
     };
   }, [open]);
 
@@ -161,10 +139,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     setModalState("loading");
     
     try {
-      const result = await createCheckout.mutateAsync({ 
-        tier: selectedTier,
-        returnTo: originRoute 
-      });
+      const result = await createCheckout.mutateAsync({ tier: selectedTier });
       
       if (result.url) {
         const width = 600;
@@ -191,7 +166,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     }
   };
 
-  // Immediately reset all state and close, with forced overlay cleanup for WebView
+  // Immediately reset all state and close
   const resetAndClose = () => {
     setSelectedTier(null);
     setModalState("selection");
@@ -202,17 +177,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     setPersonalMessage("");
     setSignedPdfUrl(null);
     setPreviewVoucher(null);
-    
-    // Force cleanup stuck overlays before closing
-    requestAnimationFrame(() => {
-      const modalRoot = document.getElementById('modal-root');
-      if (modalRoot) {
-        modalRoot.innerHTML = '';
-      }
-      const stuckOverlays = document.querySelectorAll('[data-radix-dialog-overlay]');
-      stuckOverlays.forEach(el => el.remove());
-    });
-    
     onOpenChange(false);
   };
 
@@ -393,7 +357,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContentNoAnimation
-        overlayClassName="z-[99999] !bg-background"
+        overlayClassName="z-[99999]"
         className="z-[100000] w-[calc(100%-2rem)] max-w-md max-h-[100dvh] rounded-2xl p-0 gap-0 flex flex-col"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
@@ -524,7 +488,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="p-6 bg-background"
+              className="p-6"
             >
               <div className="flex justify-end mb-2">
                 <Button variant="ghost" size="icon" onClick={handleClose}>
