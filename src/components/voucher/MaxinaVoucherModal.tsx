@@ -23,6 +23,7 @@ type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-prev
 interface MaxinaVoucherModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  originRoute?: string;  // Origin route for Stripe return redirect
 }
 
 const tiers = {
@@ -63,7 +64,7 @@ const tiers = {
   }
 };
 
-export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalProps) => {
+export const MaxinaVoucherModal = ({ open, onOpenChange, originRoute = '/home' }: MaxinaVoucherModalProps) => {
   const [selectedTier, setSelectedTier] = useState<VoucherTier | null>(null);
   const [modalState, setModalState] = useState<ModalState>("selection");
   const [completedOrderId, setCompletedOrderId] = useState<string | null>(null);
@@ -92,6 +93,13 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     const hasShareApi = typeof navigator.share === "function";
     setCanShareUrl(hasShareApi);
   }, []);
+
+  // Store origin route in sessionStorage as fallback for Stripe redirect
+  useEffect(() => {
+    if (open && originRoute) {
+      sessionStorage.setItem('voucher_return_to', originRoute);
+    }
+  }, [open, originRoute]);
 
   // Extra hardening for Appilix/WebView: lock body scroll while modal is open
   // Also force-remove stuck overlays when modal closes
@@ -155,8 +163,14 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     
     setModalState("loading");
     
+    // Use originRoute or fallback to stored value
+    const returnTo = originRoute || sessionStorage.getItem('voucher_return_to') || '/home';
+    
     try {
-      const result = await createCheckout.mutateAsync({ tier: selectedTier });
+      const result = await createCheckout.mutateAsync({ 
+        tier: selectedTier,
+        returnTo: encodeURIComponent(returnTo)  // Encode for safe URL transport
+      });
       
       if (result.url) {
         const width = 600;
@@ -212,7 +226,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     resetAndClose();
   };
   
-  // Handle share via Web Share API
+  // Handle share via Web Share API - auto-closes modal after success
   const handleShareUrl = async () => {
     if (!signedPdfUrl) return;
     
@@ -223,14 +237,17 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         url: signedPdfUrl
       });
       toast.success("Voucher shared successfully!");
+      
+      // Auto-close modal after share completes - return to origin route
+      setTimeout(() => resetAndClose(), 300);
     } catch (error: any) {
       if (error.name !== 'AbortError') {
-        handleDownloadDirect();
+        handleDownloadDirect(); // This will also auto-close
       }
     }
   };
   
-  // Direct download - pure action, NO navigation, modal stays open
+  // Direct download - triggers download then auto-closes modal
   const handleDownloadDirect = () => {
     if (!signedPdfUrl) return;
     
@@ -239,7 +256,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       ? `vitana-voucher-${previewVoucher.code}.pdf`
       : `vitana-voucher-${completedOrderId || 'gift'}.pdf`;
     
-    // DO NOT close the modal - just trigger download directly
     try {
       const link = document.createElement('a');
       link.href = url;
@@ -249,6 +265,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       link.click();
       document.body.removeChild(link);
       toast.success("Download started!");
+      
+      // Auto-close modal after download triggers - return to origin route
+      setTimeout(() => resetAndClose(), 300);
     } catch (error) {
       console.error("Download failed:", error);
       toast.error("Download failed. Try copying the link.");
@@ -320,6 +339,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         link.click();
         document.body.removeChild(link);
         toast.success("Voucher downloaded!");
+        
+        // Auto-close modal after desktop download - return to origin route
+        setTimeout(() => resetAndClose(), 300);
       }
     } catch (error: any) {
       console.error("Download error:", error);
@@ -356,10 +378,14 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       
       toast.dismiss(loadingToast);
       toast.success(`Voucher sent to ${recipientEmail}!`);
-      setModalState("success");
+      
+      // Clear form fields
       setRecipientEmail("");
       setRecipientName("");
       setPersonalMessage("");
+      
+      // Auto-close modal after email sent - return to origin route
+      setTimeout(() => resetAndClose(), 500);
     } catch (error: any) {
       console.error("Email send error:", error);
       toast.dismiss(loadingToast);
