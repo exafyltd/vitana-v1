@@ -330,7 +330,7 @@ serve(async (req) => {
 
       <!-- CTA Button -->
       <div style="text-align: center;">
-        <a href="https://vitana-v1.lovable.app/maxina?redeem=${voucherCode}" 
+        <a href="https://vitanaland.com/redeem?voucher=${voucherCode}" 
            style="display: inline-block; background: linear-gradient(135deg, ${tierInfo.color}, ${tierInfo.color}dd); color: white; text-decoration: none; padding: 16px 40px; border-radius: 100px; font-weight: 600; font-size: 16px;">
           Redeem Your Voucher
         </a>
