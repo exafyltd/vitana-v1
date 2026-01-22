@@ -261,7 +261,7 @@ serve(async (req) => {
     
     <!-- Header -->
     <div style="text-align: center; margin-bottom: 32px;">
-      <img src="https://vitana-v1.lovable.app/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png" alt="Vitana" style="height: 48px; width: auto;" />
+      <img src="https://vitana-v1.lovable.app/images/maxina-logo.png" alt="MAXINA" style="height: 64px; width: auto;" />
     </div>
 
     <!-- Main Card -->
