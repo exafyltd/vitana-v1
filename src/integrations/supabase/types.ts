@@ -5806,6 +5806,13 @@ export type Database = {
             referencedRelation: "oasis_specs"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "oasis_spec_approvals_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "vtid_specs"
+            referencedColumns: ["id"]
+          },
         ]
       }
       oasis_spec_validations: {
@@ -5845,6 +5852,13 @@ export type Database = {
             columns: ["spec_id"]
             isOneToOne: false
             referencedRelation: "oasis_specs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oasis_spec_validations_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "vtid_specs"
             referencedColumns: ["id"]
           },
         ]
@@ -9575,6 +9589,42 @@ export type Database = {
           followers_count: number | null
           following_count: number | null
           user_id: string | null
+        }
+        Relationships: []
+      }
+      vtid_specs: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string | null
+          spec_hash: string | null
+          spec_markdown: string | null
+          status: string | null
+          title: string | null
+          version: number | null
+          vtid: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string | null
+          spec_hash?: string | null
+          spec_markdown?: string | null
+          status?: string | null
+          title?: string | null
+          version?: number | null
+          vtid?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string | null
+          spec_hash?: string | null
+          spec_markdown?: string | null
+          status?: string | null
+          title?: string | null
+          version?: number | null
+          vtid?: string | null
         }
         Relationships: []
       }
