@@ -5,7 +5,7 @@
 /**
  * Hardcoded base URL for all email redirects
  */
-export const PUBLIC_BASE_URL = "https://vitana-v1.lovable.app";
+export const PUBLIC_BASE_URL = "https://vitanaland.com";
 
 /**
  * Get the production URL for email redirects
@@ -28,7 +28,7 @@ export function getEmailRedirectUrl(confirmationPath: string): string {
 export const CONFIRMATION_PATHS = {
   auth: '/',
   community: '/',
-  maxina: '/maxina',
+  maxina: '/maxina?confirmed=true',
   alkalma: '/alkalma',
   earthlinks: '/earthlinks'
 } as const;

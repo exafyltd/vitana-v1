@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { preloadDemoImages } from "@/lib/preloadDemoImages";
+import { toast } from "sonner";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -73,6 +74,24 @@ const MaxinaPortal = () => {
     root.style.setProperty("--brand-bg", "#FFF5F8");
     root.style.setProperty("--brand-fg", "#1A1A1A");
   }, []);
+
+  // Handle email confirmation success - show welcome toast and clean URL
+  useEffect(() => {
+    if (searchParams.get('confirmed') === 'true') {
+      toast.success("Email confirmed! Welcome to Maxina.", {
+        duration: 4000,
+      });
+      
+      // Clean URL after short delay
+      setTimeout(() => {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('confirmed');
+        window.history.replaceState({}, '', 
+          newParams.toString() ? `/maxina?${newParams}` : '/maxina'
+        );
+      }, 2000);
+    }
+  }, [searchParams]);
 
   // Load daily-rotating video background
   useEffect(() => {
