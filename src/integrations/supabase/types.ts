@@ -9005,6 +9005,7 @@ export type Database = {
           id: string
           redeemed_at: string | null
           redeemed_by_staff_id: string | null
+          redeemed_by_user_id: string | null
           redeemed_event_id: string | null
           status: string
           tenant_id: string
@@ -9018,6 +9019,7 @@ export type Database = {
           id?: string
           redeemed_at?: string | null
           redeemed_by_staff_id?: string | null
+          redeemed_by_user_id?: string | null
           redeemed_event_id?: string | null
           status?: string
           tenant_id: string
@@ -9031,6 +9033,7 @@ export type Database = {
           id?: string
           redeemed_at?: string | null
           redeemed_by_staff_id?: string | null
+          redeemed_by_user_id?: string | null
           redeemed_event_id?: string | null
           status?: string
           tenant_id?: string
