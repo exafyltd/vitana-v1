@@ -242,7 +242,7 @@ serve(async (req) => {
     const { data: profile } = await supabaseAdmin
       .from("profiles")
       .select("display_name, full_name")
-      .eq("id", user.id)
+      .eq("user_id", user.id)
       .single();
 
     const senderName = profile?.display_name || profile?.full_name || user.email?.split("@")[0] || "A friend";
