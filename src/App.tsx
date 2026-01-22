@@ -29,6 +29,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import IntroExperience from "./pages/IntroExperience";
+import RedeemVoucher from "./pages/RedeemVoucher";
 
 // Portal pages
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
@@ -322,6 +323,7 @@ const App = () => {
           <Route path="/community/confirmed" element={<CommunityConfirmed />} />
           
           {/* Public Routes - No Auth Required */}
+          <Route path="/redeem" element={<RedeemVoucher />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />

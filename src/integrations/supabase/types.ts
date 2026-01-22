@@ -9000,6 +9000,7 @@ export type Database = {
       }
       vouchers: {
         Row: {
+          code: string | null
           created_at: string
           expires_at: string
           id: string
@@ -9014,6 +9015,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          code?: string | null
           created_at?: string
           expires_at: string
           id?: string
@@ -9028,6 +9030,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          code?: string | null
           created_at?: string
           expires_at?: string
           id?: string
@@ -9840,6 +9843,7 @@ export type Database = {
         }
         Returns: string
       }
+      generate_voucher_code: { Args: never; Returns: string }
       get_active_role: { Args: never; Returns: string }
       get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
       get_autopilot_recommendations: {
