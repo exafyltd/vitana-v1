@@ -330,7 +330,7 @@ serve(async (req) => {
 
       <!-- CTA Button -->
       <div style="text-align: center;">
-        <a href="https://vitana-v1.lovable.app/discover?redeem=${voucherCode}" 
+        <a href="https://vitana-v1.lovable.app/maxina?redeem=${voucherCode}" 
            style="display: inline-block; background: linear-gradient(135deg, ${tierInfo.color}, ${tierInfo.color}dd); color: white; text-decoration: none; padding: 16px 40px; border-radius: 100px; font-weight: 600; font-size: 16px;">
           Redeem Your Voucher
         </a>
@@ -340,7 +340,7 @@ serve(async (req) => {
     <!-- Footer -->
     <div style="text-align: center; margin-top: 32px; color: #a1a1aa; font-size: 12px;">
       <p style="margin: 0 0 8px 0;">
-        This voucher was sent via Vitana by ${senderName}
+        This voucher was sent via MAXINA by ${senderName}
       </p>
       <p style="margin: 0;">
         Questions? Contact us at hello@vitana.app
