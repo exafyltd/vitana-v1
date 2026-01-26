@@ -51,7 +51,7 @@ const queryClient = new QueryClient({
  * Simple persistence for stable data - survives page refresh
  */
 const PERSIST_KEY = 'vitana-query-cache';
-const PERSIST_KEYS = ['profiles', 'tenant', 'user_preferences', 'health-plans', 'life-compass', 'global-community-events'];
+const PERSIST_KEYS = ['profiles', 'tenant', 'user_preferences', 'health-plans', 'life-compass', 'global-community-events', 'wallet-balances', 'organizer-events', 'live-streams', 'calendar-events'];
 
 // Restore cache from localStorage on startup
 try {
