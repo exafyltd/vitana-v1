@@ -180,10 +180,16 @@ const MaxinaPortal = () => {
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
+      // Detect mobile app context via query param
+      const isAppContext = searchParams.get('app') === '1';
+      const redirectPath = isAppContext 
+        ? '/comm/events-meetups?tab=upcoming' 
+        : '/home';
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: getEmailRedirectUrl('/home'),
+          redirectTo: getEmailRedirectUrl(redirectPath),
           queryParams: {
             tenant_slug: 'maxina'
           }
