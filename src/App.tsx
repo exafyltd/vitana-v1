@@ -22,6 +22,7 @@ import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationCont
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
+import { MobileTabKeepAlive } from "@/components/mobile/MobileTabKeepAlive";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
@@ -309,6 +310,7 @@ const App = () => {
                         <MobileMuteButton />
                         <SoundscapeResumeBanner />
                         <TenantDetector />
+                        <MobileTabKeepAlive />
                   <Routes>
           <Route path="/" element={<ShareEntry fallback={<Index />} />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
