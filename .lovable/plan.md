@@ -1,69 +1,61 @@
 
 
-# Conditional OAuth Redirect for Appilix Mobile
+# Mobile Home Screen → Events Page (Always)
 
 ## Overview
-Update the Google/Apple OAuth redirect logic to detect the `app=1` query parameter and redirect mobile users to `/comm/events-meetups?tab=upcoming` instead of `/home`.
+Update the OAuth redirect logic to use **actual mobile detection** (`window.innerWidth < 768`) instead of relying on the `app=1` query parameter. This ensures mobile users are always redirected to the events page after Google/Apple sign-in.
+
+## Root Cause
+The current implementation only checks for `app=1` query parameter, which requires the Appilix drawer to pass this parameter. Instead, we should detect mobile directly using screen width.
 
 ## Technical Implementation
 
-### 1. Modify `handleSocialLogin` in MaxinaPortal.tsx
-**File:** `src/pages/portals/MaxinaPortal.tsx` (lines 181-197)
+### Modify `handleSocialLogin` in MaxinaPortal.tsx
+**File:** `src/pages/portals/MaxinaPortal.tsx`
 
-Add conditional logic using the existing `searchParams` hook (already imported on line 32):
-
+**Current Logic (lines 183-187):**
 ```typescript
-const handleSocialLogin = async (provider: 'google' | 'apple') => {
-  try {
-    // Detect mobile app context via query param
-    const isAppContext = searchParams.get('app') === '1';
-    const redirectPath = isAppContext 
-      ? '/comm/events-meetups?tab=upcoming' 
-      : '/home';
-    
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: getEmailRedirectUrl(redirectPath),
-        queryParams: {
-          tenant_slug: 'maxina'
-        }
-      }
-    });
-    if (error) throw error;
-  } catch (err: any) {
-    console.error('OAuth error:', err);
-    setError(err.message || 'Social login failed. Please try again.');
-  }
-};
+const isAppContext = searchParams.get('app') === '1';
+const redirectPath = isAppContext 
+  ? '/comm/events-meetups?tab=upcoming' 
+  : '/home';
 ```
 
-## Redirect Flow
+**Updated Logic:**
+```typescript
+// Detect mobile via screen width (matches useIsMobile hook breakpoint)
+const isMobile = window.innerWidth < 768;
+const redirectPath = isMobile 
+  ? '/comm/events-meetups?tab=upcoming' 
+  : '/home';
+```
+
+## Redirect Flow After Fix
 
 ```text
-Mobile (Appilix):
-  /maxina?app=1 → OAuth → /comm/events-meetups?tab=upcoming
+Mobile (any device < 768px):
+  /maxina → OAuth → /comm/events-meetups?tab=upcoming
 
-Desktop/Web:
+Desktop (≥ 768px):
   /maxina → OAuth → /home
 ```
 
-## Supabase Configuration
-The redirect allowlist already includes `https://vitanaland.com/**` which covers both paths:
-- `https://vitanaland.com/home`
-- `https://vitanaland.com/comm/events-meetups?tab=upcoming`
-
-No dashboard changes required.
+## Consistency Check
+This now matches the existing post-login redirect logic already in the same file (lines 59-61):
+```typescript
+const isMobile = window.innerWidth < 768;
+const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
+```
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/pages/portals/MaxinaPortal.tsx` | Update `handleSocialLogin` with conditional redirect logic |
+| `src/pages/portals/MaxinaPortal.tsx` | Replace `app=1` check with `window.innerWidth < 768` in `handleSocialLogin` |
 
 ## Implementation Notes
-- Uses existing `searchParams` hook (already in component)
-- No new dependencies required
-- Desktop behavior unchanged when `app` param is absent
-- Appilix drawer links should include `?app=1` parameter
+- Uses same 768px breakpoint as `useIsMobile` hook
+- No dependency on query parameters
+- Desktop behavior unchanged (still goes to `/home`)
+- Works for both OAuth providers (Google and Apple)
 
