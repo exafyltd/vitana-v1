@@ -68,6 +68,42 @@ export type Database = {
           },
         ]
       }
+      active_threads: {
+        Row: {
+          active_role: string
+          created_at: string
+          id: string
+          last_activity_at: string
+          tenant_id: string
+          thread_id: string
+          turn_count: number
+          user_id: string
+          vtid: string | null
+        }
+        Insert: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          last_activity_at?: string
+          tenant_id: string
+          thread_id: string
+          turn_count?: number
+          user_id: string
+          vtid?: string | null
+        }
+        Update: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          last_activity_at?: string
+          tenant_id?: string
+          thread_id?: string
+          turn_count?: number
+          user_id?: string
+          vtid?: string | null
+        }
+        Relationships: []
+      }
       admin_proactive_settings: {
         Row: {
           created_at: string
@@ -5045,6 +5081,68 @@ export type Database = {
           },
         ]
       }
+      memory_facts: {
+        Row: {
+          entity: string
+          extracted_at: string
+          fact_key: string
+          fact_value: string
+          fact_value_type: string
+          id: string
+          provenance_confidence: number
+          provenance_source: string
+          provenance_utterance_id: string | null
+          superseded_at: string | null
+          superseded_by: string | null
+          tenant_id: string
+          thread_id: string | null
+          user_id: string
+          vtid: string | null
+        }
+        Insert: {
+          entity?: string
+          extracted_at?: string
+          fact_key: string
+          fact_value: string
+          fact_value_type?: string
+          id?: string
+          provenance_confidence?: number
+          provenance_source: string
+          provenance_utterance_id?: string | null
+          superseded_at?: string | null
+          superseded_by?: string | null
+          tenant_id: string
+          thread_id?: string | null
+          user_id: string
+          vtid?: string | null
+        }
+        Update: {
+          entity?: string
+          extracted_at?: string
+          fact_key?: string
+          fact_value?: string
+          fact_value_type?: string
+          id?: string
+          provenance_confidence?: number
+          provenance_source?: string
+          provenance_utterance_id?: string | null
+          superseded_at?: string | null
+          superseded_by?: string | null
+          tenant_id?: string
+          thread_id?: string | null
+          user_id?: string
+          vtid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_facts_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "memory_facts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memory_garden_nodes: {
         Row: {
           confidence: number
@@ -8041,6 +8139,54 @@ export type Database = {
         }
         Relationships: []
       }
+      thread_summaries: {
+        Row: {
+          content_hash: string
+          covers_turns_from: number
+          covers_turns_to: number
+          generated_at: string
+          generation_model: string | null
+          id: string
+          summary_text: string
+          summary_type: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+          version: number
+          vtid: string | null
+        }
+        Insert: {
+          content_hash: string
+          covers_turns_from?: number
+          covers_turns_to: number
+          generated_at?: string
+          generation_model?: string | null
+          id?: string
+          summary_text: string
+          summary_type: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+          version?: number
+          vtid?: string | null
+        }
+        Update: {
+          content_hash?: string
+          covers_turns_from?: number
+          covers_turns_to?: number
+          generated_at?: string
+          generation_model?: string | null
+          id?: string
+          summary_text?: string
+          summary_type?: string
+          tenant_id?: string
+          thread_id?: string
+          user_id?: string
+          version?: number
+          vtid?: string | null
+        }
+        Relationships: []
+      }
       typing_indicators: {
         Row: {
           id: string
@@ -9883,6 +10029,24 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_current_facts: {
+        Args: {
+          p_entity?: string
+          p_fact_keys?: string[]
+          p_tenant_id: string
+          p_user_id: string
+        }
+        Returns: {
+          entity: string
+          extracted_at: string
+          fact_key: string
+          fact_value: string
+          fact_value_type: string
+          id: string
+          provenance_confidence: number
+          provenance_source: string
+        }[]
+      }
       get_follow_status: { Args: { target_user_id: string }; Returns: boolean }
       get_message_reactions: {
         Args: { message_id_param: string }
@@ -10031,6 +10195,15 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_thread_summary: {
+        Args: { p_summary_type?: string; p_thread_id: string }
+        Returns: {
+          covers_turns_to: number
+          generated_at: string
+          summary_text: string
+          version: number
+        }[]
+      }
       get_ticket_by_qr_token: {
         Args: { token: string }
         Returns: {
@@ -10147,6 +10320,10 @@ export type Database = {
       health_ingest_wearable_samples: {
         Args: { p_payload: Json }
         Returns: Json
+      }
+      increment_thread_turn: {
+        Args: { p_tenant_id: string; p_thread_id: string; p_user_id: string }
+        Returns: number
       }
       increment_wallet_balance: {
         Args: { p_amount: number; p_currency_type: string; p_user_id: string }
@@ -10399,6 +10576,21 @@ export type Database = {
           title: string
         }[]
       }
+      resolve_thread_id: {
+        Args: {
+          p_active_role?: string
+          p_provided_thread_id?: string
+          p_session_timeout_hours?: number
+          p_tenant_id: string
+          p_user_id: string
+        }
+        Returns: {
+          is_new: boolean
+          resumed: boolean
+          thread_id: string
+          turn_count: number
+        }[]
+      }
       rpc_board_list_scheduled: {
         Args: { p_limit?: number; p_offset?: number }
         Returns: {
@@ -10526,6 +10718,21 @@ export type Database = {
       worker_heartbeat: {
         Args: { p_active_vtid?: string; p_worker_id: string }
         Returns: Json
+      }
+      write_fact: {
+        Args: {
+          p_entity?: string
+          p_fact_key: string
+          p_fact_value: string
+          p_fact_value_type?: string
+          p_provenance_confidence?: number
+          p_provenance_source?: string
+          p_provenance_utterance_id?: string
+          p_tenant_id: string
+          p_thread_id?: string
+          p_user_id: string
+        }
+        Returns: string
       }
     }
     Enums: {
