@@ -30,6 +30,7 @@ import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import IntroExperience from "./pages/IntroExperience";
 import RedeemVoucher from "./pages/RedeemVoucher";
+import Logout from "./pages/Logout";
 
 // Portal pages
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
@@ -324,6 +325,7 @@ const App = () => {
           
           {/* Public Routes - No Auth Required */}
           <Route path="/redeem" element={<RedeemVoucher />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
