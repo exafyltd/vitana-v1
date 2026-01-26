@@ -30,6 +30,7 @@ import { generateEventCampaignData } from "@/lib/eventPromotion";
 import { getShareUrl } from "@/lib/shareUrl";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileEventCarousel } from "@/components/community/MobileEventCarousel";
+import { EventCardSkeleton } from "@/components/events/EventCardSkeleton";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { Badge } from "@/components/ui/badge";
@@ -795,10 +796,7 @@ const EventsAndMeetups = () => {
 
               <SplitBarContent value="upcoming" className="mt-6">
                 {loading ? (
-                  <div className="text-center py-12">
-                    <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
-                    <p className="text-muted-foreground">Loading upcoming events...</p>
-                  </div>
+                  <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
                   <MobileEventCarousel
                     events={filteredUpcomingEvents}
