@@ -6,27 +6,20 @@ import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
-import { fetchOrganizerEventsQueryFn } from '@/hooks/useOrganizerEvents';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
  * Routes must match actual app routes (/comm not /community)
- * Updated for Appilix mobile PWA screens
  */
 export const ADJACENT_PILLARS: Record<string, string[]> = {
   '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox'],
   '/comm': ['/home', '/discover', '/inbox'],
-  '/comm/events-meetups': ['/business', '/comm/live-rooms', '/me/profile'],
-  '/comm/live-rooms': ['/comm/events-meetups', '/comm/media-hub', '/me/profile'],
-  '/comm/media-hub': ['/comm/events-meetups', '/comm/live-rooms'],
-  '/discover': ['/home', '/comm', '/calendar', '/wallet'],
-  '/discover/orders': ['/discover', '/wallet'],
-  '/health': ['/home', '/calendar', '/discover'],
-  '/business': ['/comm/events-meetups', '/wallet', '/me/profile'],
-  '/wallet': ['/home', '/business', '/discover'],
+  '/discover': ['/home', '/comm', '/calendar'],
+  '/health': ['/home', '/calendar'],
+  '/business': ['/home', '/wallet'],
+  '/wallet': ['/home', '/business'],
   '/calendar': ['/home', '/health'],
   '/inbox': ['/home', '/comm'],
-  '/me/profile': ['/wallet', '/settings', '/comm/events-meetups'],
 };
 
 /**
@@ -42,64 +35,25 @@ export async function prefetchForPath(
 
   const staleTime = 2 * 60 * 1000;
 
-  // Business Hub prefetch
+  // Prefetch based on path
   if (path.startsWith('/business')) {
-    await Promise.all([
-      queryClient.prefetchQuery({
-        queryKey: ['business-packages', userId, tenantId],
-        queryFn: async () => {
-          if (!tenantId) return [];
-          const { data } = await supabase.from('business_packages').select('*').eq('creator_id', userId).eq('tenant_id', tenantId).limit(20);
-          return data || [];
-        },
-        staleTime,
-      }),
-      queryClient.prefetchQuery({
-        queryKey: ['organizer-events', userId],
-        queryFn: () => fetchOrganizerEventsQueryFn(userId),
-        staleTime,
-      }),
-    ]);
+    await queryClient.prefetchQuery({
+      queryKey: ['business-packages', userId, tenantId],
+      queryFn: async () => {
+        if (!tenantId) return [];
+        const { data } = await supabase.from('business_packages').select('*').eq('creator_id', userId).eq('tenant_id', tenantId).limit(20);
+        return data || [];
+      },
+      staleTime,
+    });
   }
 
-  // Health prefetch
   if (path.startsWith('/health')) {
     await queryClient.prefetchQuery({
       queryKey: ['health-plans'],
       queryFn: async () => {
         const { data } = await supabase.from('user_health_plans').select('*').eq('active', true).limit(10);
         return data || [];
-      },
-      staleTime,
-    });
-  }
-
-  // Wallet prefetch
-  if (path.startsWith('/wallet')) {
-    await queryClient.prefetchQuery({
-      queryKey: ['wallet-balances', userId],
-      queryFn: async () => {
-        const { data } = await supabase
-          .from('user_wallets')
-          .select('currency_type, balance, updated_at')
-          .eq('user_id', userId);
-        return data || [];
-      },
-      staleTime,
-    });
-  }
-
-  // Profile prefetch
-  if (path.startsWith('/me/profile')) {
-    await queryClient.prefetchQuery({
-      queryKey: ['profiles', userId],
-      queryFn: async () => {
-        const { data } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', userId)
-          .single();
-        return data;
       },
       staleTime,
     });
@@ -160,23 +114,6 @@ export async function prefetchForPath(
       },
       staleTime,
     });
-
-    // Live Streams prefetch for /comm/live-rooms
-    if (path.startsWith('/comm/live-rooms')) {
-      await queryClient.prefetchQuery({
-        queryKey: ['live-streams'],
-        queryFn: async () => {
-          const { data } = await supabase
-            .from('community_live_streams')
-            .select('*')
-            .eq('status', 'live')
-            .order('started_at', { ascending: false })
-            .limit(20);
-          return data || [];
-        },
-        staleTime,
-      });
-    }
   }
 
   if (path.startsWith('/discover')) {
