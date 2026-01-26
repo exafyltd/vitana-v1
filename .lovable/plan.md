@@ -1,94 +1,69 @@
 
 
-# Add /logout Route for Appilix Mobile Drawer
+# Conditional OAuth Redirect for Appilix Mobile
 
 ## Overview
-Create a dedicated `/logout` route that the Appilix mobile app can trigger from its native drawer menu. Desktop functionality remains completely untouched - this route is specifically for mobile app integration.
-
-## Scope Confirmation
-| Platform | Impact |
-|----------|--------|
-| Desktop | ❌ No changes - existing sidebar logout continues to work |
-| Mobile (Appilix) | ✅ New `/logout` route for drawer navigation |
+Update the Google/Apple OAuth redirect logic to detect the `app=1` query parameter and redirect mobile users to `/comm/events-meetups?tab=upcoming` instead of `/home`.
 
 ## Technical Implementation
 
-### 1. Create Logout Page Component
-**File:** `src/pages/Logout.tsx`
+### 1. Modify `handleSocialLogin` in MaxinaPortal.tsx
+**File:** `src/pages/portals/MaxinaPortal.tsx` (lines 181-197)
+
+Add conditional logic using the existing `searchParams` hook (already imported on line 32):
 
 ```typescript
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthProvider";
-import { Loader2 } from "lucide-react";
-
-export default function Logout() {
-  const { signOut } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const performLogout = async () => {
-      // 1. Sign out from Supabase
-      await signOut();
-      
-      // 2. Clear React Query cache
-      const queryClient = (window as any).queryClient;
-      if (queryClient) queryClient.clear();
-      
-      // 3. Clear persisted localStorage cache
-      localStorage.removeItem('vitana-query-cache');
-      
-      // 4. Redirect to Maxina portal
-      navigate('/maxina', { replace: true });
-    };
+const handleSocialLogin = async (provider: 'google' | 'apple') => {
+  try {
+    // Detect mobile app context via query param
+    const isAppContext = searchParams.get('app') === '1';
+    const redirectPath = isAppContext 
+      ? '/comm/events-meetups?tab=upcoming' 
+      : '/home';
     
-    performLogout();
-  }, [signOut, navigate]);
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="flex flex-col items-center gap-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground">Signing out...</p>
-      </div>
-    </div>
-  );
-}
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: getEmailRedirectUrl(redirectPath),
+        queryParams: {
+          tenant_slug: 'maxina'
+        }
+      }
+    });
+    if (error) throw error;
+  } catch (err: any) {
+    console.error('OAuth error:', err);
+    setError(err.message || 'Social login failed. Please try again.');
+  }
+};
 ```
 
-### 2. Register Route in App.tsx
-Add as a public route (no auth guard):
-
-```typescript
-<Route path="/logout" element={<Logout />} />
-```
-
-## Logout Flow Sequence
+## Redirect Flow
 
 ```text
-Appilix Drawer → /logout → signOut() → Clear Cache → /maxina
+Mobile (Appilix):
+  /maxina?app=1 → OAuth → /comm/events-meetups?tab=upcoming
+
+Desktop/Web:
+  /maxina → OAuth → /home
 ```
 
-## State Clearing Checklist
-| Item | Method |
+## Supabase Configuration
+The redirect allowlist already includes `https://vitanaland.com/**` which covers both paths:
+- `https://vitanaland.com/home`
+- `https://vitanaland.com/comm/events-meetups?tab=upcoming`
+
+No dashboard changes required.
+
+## Files to Modify
+
+| File | Change |
 |------|--------|
-| Supabase session | `signOut()` from AuthProvider |
-| React Query cache | `queryClient.clear()` |
-| Persisted cache | `localStorage.removeItem('vitana-query-cache')` |
-| Toast notifications | Handled automatically by `onAuthStateChange` |
+| `src/pages/portals/MaxinaPortal.tsx` | Update `handleSocialLogin` with conditional redirect logic |
 
-## Files to Create/Modify
-
-| File | Action |
-|------|--------|
-| `src/pages/Logout.tsx` | Create - logout page component |
-| `src/App.tsx` | Modify - add route registration |
-
-## Appilix Integration
-The mobile app drawer can simply navigate to:
-```
-https://vitanaland.com/logout
-```
-
-No JavaScript bridge or native code changes required.
+## Implementation Notes
+- Uses existing `searchParams` hook (already in component)
+- No new dependencies required
+- Desktop behavior unchanged when `app` param is absent
+- Appilix drawer links should include `?app=1` parameter
 
