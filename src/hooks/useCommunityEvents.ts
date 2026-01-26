@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthProvider";
 
 interface CommunityEvent {
   id: string;
@@ -44,91 +46,77 @@ interface CreateEventData {
   default_reseller_commission_rate?: number;
 }
 
+/**
+ * Shared query function for fetching community events
+ * Used by both the hook and prefetch registry for cache consistency
+ */
+export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase
+    .from("global_community_events")
+    .select("*")
+    .order("start_time", { ascending: true });
+
+  if (error) {
+    console.error("Database error:", error);
+    throw error;
+  }
+
+  // Fetch co-creator status for current user
+  let coCreatorEventIds = new Set<string>();
+  if (user) {
+    const { data: coCreatorData } = await supabase
+      .from('event_co_creators')
+      .select('event_id')
+      .eq('user_id', user.id);
+    coCreatorEventIds = new Set(coCreatorData?.map(cc => cc.event_id) || []);
+  }
+
+  // Fetch creator profiles
+  const creatorIds = [...new Set(data?.map(event => event.created_by) || [])];
+  const { data: profilesData } = await supabase
+    .from('global_community_profiles')
+    .select('user_id, display_name, avatar_url')
+    .in('user_id', creatorIds);
+  
+  const profilesMap = new Map(
+    profilesData?.map(p => [p.user_id, p]) || []
+  );
+
+  // Add is_co_creator flag and creator info to events
+  const eventsWithMetadata = (data || []).map(event => {
+    const creatorProfile = profilesMap.get(event.created_by);
+    return {
+      ...event,
+      is_co_creator: coCreatorEventIds.has(event.id),
+      creator_display_name: creatorProfile?.display_name || undefined,
+      creator_avatar_url: creatorProfile?.avatar_url || undefined
+    };
+  });
+  
+  return eventsWithMetadata;
+}
+
 export function useCommunityEvents() {
-  const [events, setEvents] = useState<CommunityEvent[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
 
-  // Fetch all community events
-  const fetchEvents = async (): Promise<CommunityEvent[]> => {
-    try {
-      setLoading(true);
-      
-      // Check authentication status
-      const { data: { user } } = await supabase.auth.getUser();
-      console.log("Authentication check:", { 
-        user: user?.id || "Not authenticated",
-        email: user?.email 
-      });
+  // Use React Query for cache-first rendering with stale-while-revalidate
+  const { 
+    data: events = [], 
+    isLoading, 
+    isFetching,
+    refetch 
+  } = useQuery({
+    queryKey: ['global-community-events'],
+    queryFn: fetchCommunityEventsQueryFn,
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
 
-      const { data, error } = await supabase
-        .from("global_community_events")
-        .select("*")
-        .order("start_time", { ascending: true });
-
-      if (error) {
-        console.error("Database error:", error);
-        if (error.message.includes("JWT")) {
-          toast({
-            title: "Authentication Required",
-            description: "Please log in to view community events.",
-            variant: "destructive",
-          });
-          return [];
-        }
-        throw error;
-      }
-
-      // Fetch co-creator status for current user
-      let coCreatorEventIds = new Set<string>();
-      if (user) {
-        const { data: coCreatorData } = await supabase
-          .from('event_co_creators')
-          .select('event_id')
-          .eq('user_id', user.id);
-        coCreatorEventIds = new Set(coCreatorData?.map(cc => cc.event_id) || []);
-      }
-
-      // Fetch creator profiles
-      const creatorIds = [...new Set(data.map(event => event.created_by))];
-      const { data: profilesData } = await supabase
-        .from('global_community_profiles')
-        .select('user_id, display_name, avatar_url')
-        .in('user_id', creatorIds);
-      
-      const profilesMap = new Map(
-        profilesData?.map(p => [p.user_id, p]) || []
-      );
-
-      // Add is_co_creator flag and creator info to events
-      const eventsWithCoCreator = (data || []).map(event => {
-        const creatorProfile = profilesMap.get(event.created_by);
-        return {
-          ...event,
-          is_co_creator: coCreatorEventIds.has(event.id),
-          creator_display_name: creatorProfile?.display_name || undefined,
-          creator_avatar_url: creatorProfile?.avatar_url || undefined
-        };
-      });
-      
-      console.log("Fetched events:", eventsWithCoCreator.length);
-      setEvents(eventsWithCoCreator);
-      return eventsWithCoCreator;
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch meetups. Please try again.",
-        variant: "destructive",
-      });
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  };
-
-// Create a new community event
+  // Create a new community event
   const createEvent = async (eventData: CreateEventData) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -136,32 +124,34 @@ export function useCommunityEvents() {
         throw new Error("User not authenticated");
       }
 
-    const { data, error } = await supabase
-      .from("global_community_events")
-      .insert([{
-        title: eventData.title,
-        description: eventData.description,
-        event_type: eventData.event_type || 'meetup',
-        location: eventData.location,
-        virtual_link: eventData.virtual_link,
-        start_time: eventData.start_time,
-        end_time: eventData.end_time,
-        max_participants: eventData.max_participants,
-        image_url: eventData.image_url,
-        metadata: eventData.metadata || {},
-        created_by: user.id,
-        // Reseller fields
-        resellable: eventData.resellable || false,
-        resale_scope: eventData.resellable ? (eventData.resale_scope || 'tenant') : 'none',
-        default_reseller_commission_rate: eventData.resellable ? (eventData.default_reseller_commission_rate || 10) : null,
-      }])
-      .select()
-      .single();
+      const { data, error } = await supabase
+        .from("global_community_events")
+        .insert([{
+          title: eventData.title,
+          description: eventData.description,
+          event_type: eventData.event_type || 'meetup',
+          location: eventData.location,
+          virtual_link: eventData.virtual_link,
+          start_time: eventData.start_time,
+          end_time: eventData.end_time,
+          max_participants: eventData.max_participants,
+          image_url: eventData.image_url,
+          metadata: eventData.metadata || {},
+          created_by: user.id,
+          // Reseller fields
+          resellable: eventData.resellable || false,
+          resale_scope: eventData.resellable ? (eventData.resale_scope || 'tenant') : 'none',
+          default_reseller_commission_rate: eventData.resellable ? (eventData.default_reseller_commission_rate || 10) : null,
+        }])
+        .select()
+        .single();
 
       if (error) throw error;
 
-      // Add to local state immediately
-      setEvents(prev => [...prev, data]);
+      // Optimistically update the cache
+      queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+        return old ? [...old, data] : [data];
+      });
       
       toast({
         title: "Meetup Created! 🎉",
@@ -209,10 +199,10 @@ export function useCommunityEvents() {
 
       if (error) throw error;
 
-      // Update local state immediately
-      setEvents(prev => prev.map(event => 
-        event.id === eventId ? data : event
-      ));
+      // Optimistically update the cache
+      queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+        return old?.map(event => event.id === eventId ? data : event) || [];
+      });
       
       toast({
         title: "Meetup Updated! ✏️",
@@ -237,40 +227,42 @@ export function useCommunityEvents() {
   };
 
   // Filter events based on search query
-  const filteredEvents = events.filter(event => {
-    if (!searchQuery) return true;
+  const filteredEvents = useMemo(() => {
+    if (!searchQuery) return events;
     const searchLower = searchQuery.toLowerCase();
-    return (
+    return events.filter(event =>
       event.title.toLowerCase().includes(searchLower) ||
       (event.description && event.description.toLowerCase().includes(searchLower)) ||
       (event.location && event.location.toLowerCase().includes(searchLower))
     );
-  });
+  }, [events, searchQuery]);
 
   // Separate today's and upcoming events
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  const { todayEvents, upcomingEvents } = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const todayEvents = filteredEvents.filter(event => {
-    const eventDate = new Date(event.start_time);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate.getTime() === today.getTime();
-  });
+    const todayEvts = filteredEvents.filter(event => {
+      const eventDate = new Date(event.start_time);
+      eventDate.setHours(0, 0, 0, 0);
+      return eventDate.getTime() === today.getTime();
+    });
 
-  const upcomingEvents = filteredEvents.filter(event => {
-    const eventDate = new Date(event.start_time);
-    eventDate.setHours(0, 0, 0, 0);
-    return eventDate.getTime() >= tomorrow.getTime();
-  });
+    const upcomingEvts = filteredEvents.filter(event => {
+      const eventDate = new Date(event.start_time);
+      eventDate.setHours(0, 0, 0, 0);
+      return eventDate.getTime() >= tomorrow.getTime();
+    });
 
-  // Real-time subscription
+    return { todayEvents: todayEvts, upcomingEvents: upcomingEvts };
+  }, [filteredEvents]);
+
+  // Real-time subscription - updates React Query cache
   useEffect(() => {
-    fetchEvents();
-
     const channel = supabase
-      .channel('schema-db-changes')
+      .channel('events-realtime-changes')
       .on(
         'postgres_changes',
         {
@@ -279,7 +271,9 @@ export function useCommunityEvents() {
           table: 'global_community_events'
         },
         (payload) => {
-          setEvents(prev => [...prev, payload.new as CommunityEvent]);
+          queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+            return old ? [...old, payload.new as CommunityEvent] : [payload.new as CommunityEvent];
+          });
         }
       )
       .on(
@@ -290,9 +284,11 @@ export function useCommunityEvents() {
           table: 'global_community_events'
         },
         (payload) => {
-          setEvents(prev => prev.map(event => 
-            event.id === payload.new.id ? payload.new as CommunityEvent : event
-          ));
+          queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+            return old?.map(event => 
+              event.id === payload.new.id ? payload.new as CommunityEvent : event
+            ) || [];
+          });
         }
       )
       .on(
@@ -303,7 +299,9 @@ export function useCommunityEvents() {
           table: 'global_community_events'
         },
         (payload) => {
-          setEvents(prev => prev.filter(event => event.id !== payload.old.id));
+          queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+            return old?.filter(event => event.id !== payload.old.id) || [];
+          });
         }
       )
       .subscribe();
@@ -311,15 +309,16 @@ export function useCommunityEvents() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [queryClient]);
 
   return {
     events: filteredEvents,
     todayEvents,
     upcomingEvents,
-    loading,
+    loading: isLoading,
+    isFetching,
     searchQuery,
-    fetchEvents,
+    fetchEvents: refetch,
     createEvent,
     updateEvent,
     searchEvents,

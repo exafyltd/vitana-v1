@@ -24,6 +24,7 @@ import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
+import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
 
 const MaxinaPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -50,18 +51,36 @@ const MaxinaPortal = () => {
 
   // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
+  // Prefetch events BEFORE navigation for instant first paint
   useEffect(() => {
     if (!authLoading && user) {
       // Verify session is still valid before redirecting
-      supabase.auth.getSession().then(({ data: { session } }) => {
+      supabase.auth.getSession().then(async ({ data: { session } }) => {
         if (session) {
           const redirectTo = searchParams.get('redirectTo');
           const isMobile = window.innerWidth < 768;
           // Default to Events Upcoming on mobile if no explicit redirect
           const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
-          setTenantBySlug('maxina').then(() => {
-            navigate(redirectTo || defaultRedirect);
-          });
+          
+          // Prefetch events in parallel with tenant switch for mobile users
+          const prefetchPromise = isMobile ? (async () => {
+            const queryClient = (window as any).queryClient;
+            if (queryClient) {
+              await queryClient.prefetchQuery({
+                queryKey: ['global-community-events'],
+                queryFn: fetchCommunityEventsQueryFn,
+                staleTime: 2 * 60 * 1000,
+              });
+            }
+          })() : Promise.resolve();
+          
+          // Run prefetch and tenant switch in parallel
+          await Promise.all([
+            prefetchPromise,
+            setTenantBySlug('maxina')
+          ]);
+          
+          navigate(redirectTo || defaultRedirect);
         }
       });
     }
