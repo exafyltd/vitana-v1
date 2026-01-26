@@ -1,86 +1,96 @@
 
 
-# Fix: Mobile Users Should Never See Community Overview Screen
+# Fix: Eliminate Flash by Making Mobile Detection Synchronous
 
-## Problem Summary
-The screenshot shows mobile users are seeing an inconsistent "Community Overview" screen at `/comm` that doesn't match the established mobile UI patterns (Mobile Top Block, proper event cards, etc.). This screen shows:
-- Desktop-style `MobileCommunityNav` with "Overview" and "Events & MeetUps" tabs
-- A simplified header with entry cards
-- The 3-card header pattern (Autopilot, Vitana Index) that belongs on desktop
+## Problem
+When clicking Events on mobile, users briefly see the unadjusted Community Overview screen because:
 
-**User Requirement**: Mobile home = `/comm/events-meetups?tab=upcoming`. No Community Overview screen on mobile.
+1. `useIsMobile()` hook initializes with `undefined`
+2. Returns `!!undefined` = `false` on first render
+3. The guard `if (isMobile) return null` doesn't fire
+4. Full Community component renders for one frame
+5. Then `useEffect` runs → `isMobile` becomes `true` → redirect happens
 
-## Root Cause
-`Community.tsx` (lines 1216-1283) has a mobile-specific rendering path that displays a simplified Community dashboard instead of redirecting mobile users directly to the Events page.
+**Timeline of the bug:**
+```text
+Render 1: isMobile = false → Full Community renders (THE FLASH)
+Render 2: isMobile = true → return null + redirect
+```
 
 ## Solution
-Add an immediate redirect at the top of `Community.tsx` so mobile users accessing `/comm` are instantly sent to `/comm/events-meetups?tab=upcoming`.
+Use a **synchronous** mobile check on first render so we can immediately return `null` or a skeleton without waiting for `useEffect`.
 
 ## Technical Implementation
 
 ### File: `src/pages/Community.tsx`
 
-Add redirect logic early in the component (before any heavy rendering):
+Replace the current pattern with synchronous detection:
 
 ```typescript
-// At top of component, after hooks
-const isMobile = useIsMobile();
-const navigate = useNavigate();
+export default withScreenId(function Community() {
+  const navigate = useNavigate();
+  
+  // Synchronous mobile check - works on first render
+  const [isMobile] = useState(() => 
+    typeof window !== 'undefined' && window.innerWidth < 768
+  );
 
-// Mobile users should never see /comm - redirect to Events
-useEffect(() => {
+  // Immediate redirect for mobile users
+  useEffect(() => {
+    if (isMobile) {
+      navigate('/comm/events-meetups?tab=upcoming', { replace: true });
+    }
+  }, [isMobile, navigate]);
+
+  // Prevent flash: return null immediately on mobile
+  // This now works on FIRST render because isMobile is set synchronously
   if (isMobile) {
-    navigate('/comm/events-meetups?tab=upcoming', { replace: true });
+    return null;
   }
-}, [isMobile, navigate]);
 
-// Prevent flash: return null while redirecting on mobile
-if (isMobile) {
-  return null;
+  // ... rest of desktop-only component
+});
+```
+
+**Why this works:**
+- `useState(() => window.innerWidth < 768)` runs synchronously during component initialization
+- On the very first render, `isMobile` is already `true` for mobile devices
+- The `if (isMobile) return null` guard fires immediately
+- No flash ever occurs
+
+## Alternative: Update useIsMobile Hook Globally
+
+If we want this fix to apply everywhere, we could update the hook itself:
+
+```typescript
+// src/hooks/use-mobile.tsx
+export function useIsMobile() {
+  // Initialize synchronously with actual value (not undefined)
+  const [isMobile, setIsMobile] = React.useState<boolean>(() => 
+    typeof window !== 'undefined' ? window.innerWidth < MOBILE_BREAKPOINT : false
+  );
+
+  React.useEffect(() => {
+    // ... existing resize listener logic
+  }, []);
+
+  return isMobile;
 }
 ```
 
-This ensures:
-1. **No visual flash** - Returns `null` immediately for mobile users
-2. **Clean history** - Uses `{ replace: true }` to prevent back-button loops
-3. **Works for all entry points** - Sidebar links, direct URL, OAuth redirects, etc.
-4. **Desktop unchanged** - Only affects mobile users
-
-## Data Flow After Fix
-
-```text
-Mobile User → /comm (any source)
-      ↓
-Community.tsx mounts
-      ↓
-useIsMobile() returns true
-      ↓
-Component returns null (no render)
-      ↓
-useEffect triggers navigate()
-      ↓
-/comm/events-meetups?tab=upcoming renders
-      ↓
-Proper mobile Events layout with cached data
-```
+**Recommendation:** Update the global hook so all components benefit from synchronous mobile detection.
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/pages/Community.tsx` | Add mobile redirect `useEffect` + early `return null` guard |
+| `src/hooks/use-mobile.tsx` | Initialize state synchronously with `window.innerWidth` check |
 
-## Edge Cases Handled
+## Before vs After
 
-| Scenario | Handling |
-|----------|----------|
-| Back button | `replace: true` prevents redirect loop |
-| Direct URL `/comm` | Redirects immediately |
-| Sidebar link to Community | Redirects immediately |
-| OAuth login flow | Works with existing prefetch flow |
-| Desktop users | No change - full Community overview |
-| SSR/hydration | `useIsMobile()` handles initial state |
-
-## Cleanup Opportunity (Optional)
-After this fix, the entire mobile rendering block in `Community.tsx` (lines 1216-1283) becomes dead code and can be safely removed in a future cleanup, since mobile users will never reach that code path.
+| Phase | Before | After |
+|-------|--------|-------|
+| Initial render | `isMobile = false` (wrong) | `isMobile = true` (correct) |
+| Guard check | Fails, renders full UI | Succeeds, returns `null` |
+| User sees | Flash of Community Overview | Nothing (instant redirect) |
 
