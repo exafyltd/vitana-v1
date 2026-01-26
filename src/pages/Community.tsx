@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
@@ -972,6 +973,7 @@ const renderEventGrid = (
 
 export default withScreenId(function Community() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
@@ -986,29 +988,6 @@ export default withScreenId(function Community() {
   const { user } = useAuth();
   const [followStatus, setFollowStatus] = useState<Map<string, boolean>>(new Map());
   const [followLoading, setFollowLoading] = useState<Set<string>>(new Set());
-
-  // Fetch follow statuses for visible people
-  const fetchFollowStatuses = async (userIds: string[]) => {
-    if (!user || userIds.length === 0) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('user_follows')
-        .select('following_id')
-        .eq('follower_id', user.id)
-        .in('following_id', userIds);
-      
-      if (error) throw error;
-      
-      const statusMap = new Map<string, boolean>();
-      userIds.forEach(id => statusMap.set(id, false));
-      data?.forEach(follow => statusMap.set(follow.following_id, true));
-      
-      setFollowStatus(statusMap);
-    } catch (error) {
-      console.error('Error fetching follow statuses:', error);
-    }
-  };
   
   // Phase 1: Real Community Members
   const { members, loading: membersLoading, getDisplayName } = useCommunityMembers();
@@ -1030,8 +1009,17 @@ export default withScreenId(function Community() {
   
   const latestActions = getLatestActions(2);
 
+  // Mobile users should never see /comm - redirect to Events
+  useEffect(() => {
+    if (isMobile) {
+      navigate('/comm/events-meetups?tab=upcoming', { replace: true });
+    }
+  }, [isMobile, navigate]);
+
   // Fetch real activity metrics
   useEffect(() => {
+    if (isMobile) return; // Skip for mobile since we redirect
+    
     const fetchMetrics = async () => {
       try {
         // Count today's events
@@ -1063,7 +1051,46 @@ export default withScreenId(function Community() {
     };
 
     fetchMetrics();
-  }, []);
+  }, [isMobile]);
+
+  // Fetch follow statuses when people data loads
+  useEffect(() => {
+    if (isMobile) return; // Skip for mobile since we redirect
+    if (!user || members.length === 0) return;
+    
+    const userIds = members
+      .slice(0, 6)
+      .map(m => m.user_id)
+      .filter(id => id && !id.startsWith('demo-')) as string[];
+    
+    if (userIds.length > 0) {
+      const fetchFollowStatuses = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('user_follows')
+            .select('following_id')
+            .eq('follower_id', user.id)
+            .in('following_id', userIds);
+          
+          if (error) throw error;
+          
+          const statusMap = new Map<string, boolean>();
+          userIds.forEach(id => statusMap.set(id, false));
+          data?.forEach(follow => statusMap.set(follow.following_id, true));
+          
+          setFollowStatus(statusMap);
+        } catch (error) {
+          console.error('Error fetching follow statuses:', error);
+        }
+      };
+      fetchFollowStatuses();
+    }
+  }, [members, user, isMobile]);
+
+  // Prevent flash: return null while redirecting on mobile
+  if (isMobile) {
+    return null;
+  }
 
   // Event click handler for opening detail drawer
   const handleEventClick = (eventId: string) => {
@@ -1158,18 +1185,6 @@ export default withScreenId(function Community() {
     rewardPoints: 5,
     rewardDescription: "Connect for social credits"
   }));
-
-  // Fetch follow statuses when people data loads
-  useEffect(() => {
-    const allPeople = realCommunityPeople.length > 0 ? realCommunityPeople : communityPeople;
-    const userIds = allPeople
-      .map(p => p.authorId)
-      .filter(id => id && !id.startsWith('demo-')) as string[];
-    
-    if (userIds.length > 0) {
-      fetchFollowStatuses(userIds);
-    }
-  }, [realCommunityPeople.length, members.length, user]);
 
   const displayPeople = realCommunityPeople.length > 0 
     ? realCommunityPeople 
