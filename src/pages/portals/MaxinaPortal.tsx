@@ -199,16 +199,12 @@ const MaxinaPortal = () => {
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
-      // Detect mobile via screen width (matches useIsMobile hook breakpoint)
-      const isMobile = window.innerWidth < 768;
-      const redirectPath = isMobile 
-        ? '/comm/events-meetups?tab=upcoming' 
-        : '/home';
-      
+      // Always redirect to /maxina first - it handles mobile detection, prefetch, and navigation
+      // This prevents the brief flash of the community dashboard before events page loads
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: getEmailRedirectUrl(redirectPath),
+          redirectTo: getEmailRedirectUrl('/maxina'),
           queryParams: {
             tenant_slug: 'maxina'
           }
