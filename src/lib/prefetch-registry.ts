@@ -5,6 +5,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
+import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
@@ -60,6 +61,13 @@ export async function prefetchForPath(
 
   // Community prefetch - uses /comm route
   if (path.startsWith('/comm')) {
+    // Global Community Events - uses shared queryFn for exact cache match
+    await queryClient.prefetchQuery({
+      queryKey: ['global-community-events'],
+      queryFn: fetchCommunityEventsQueryFn,
+      staleTime,
+    });
+
     // Shorts - use stable EMPTY_SHORTS_PARAMS for exact cache key match
     await queryClient.prefetchQuery({
       queryKey: ['shorts', EMPTY_SHORTS_PARAMS],
@@ -111,10 +119,7 @@ export async function prefetchForPath(
   if (path.startsWith('/discover')) {
     await queryClient.prefetchQuery({
       queryKey: ['global-community-events'],
-      queryFn: async () => {
-        const { data } = await supabase.from('global_community_events').select('*').gte('start_time', new Date().toISOString()).limit(20);
-        return data || [];
-      },
+      queryFn: fetchCommunityEventsQueryFn,
       staleTime,
     });
   }

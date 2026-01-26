@@ -353,7 +353,7 @@ const renderEventGrid = (
 const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
-  const { events: dbEvents, loading, fetchEvents } = useCommunityEvents();
+  const { events: dbEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -516,8 +516,9 @@ const EventsAndMeetups = () => {
     // Wait a bit for the database to update
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Refresh events and get fresh data
-    const freshEvents = await fetchEvents();
+    // Refresh events - refetch returns QueryObserverResult, use refetch().then() pattern
+    const result = await fetchEvents();
+    const freshEvents = result.data || [];
     console.log('✅ Fresh events fetched:', freshEvents.length);
     
     // Find the event in the fresh data to determine which tab it belongs to
@@ -718,11 +719,8 @@ const EventsAndMeetups = () => {
               </SplitBarList>
 
               <SplitBarContent value="today" className="mt-6">
-                {loading ? (
-                  <div className="text-center py-12">
-                    <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
-                    <p className="text-muted-foreground">Loading today's events...</p>
-                  </div>
+                {loading && filteredTodayEvents.length === 0 ? (
+                  <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
                   <MobileEventCarousel
                     events={filteredTodayEvents}
@@ -795,7 +793,7 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="upcoming" className="mt-6">
-                {loading ? (
+                {loading && filteredUpcomingEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
                   <MobileEventCarousel
