@@ -180,9 +180,9 @@ const MaxinaPortal = () => {
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
-      // Detect mobile app context via query param
-      const isAppContext = searchParams.get('app') === '1';
-      const redirectPath = isAppContext 
+      // Detect mobile via screen width (matches useIsMobile hook breakpoint)
+      const isMobile = window.innerWidth < 768;
+      const redirectPath = isMobile 
         ? '/comm/events-meetups?tab=upcoming' 
         : '/home';
       
