@@ -1,96 +1,53 @@
 
 
-# Fix: Eliminate Flash by Making Mobile Detection Synchronous
+# Keep Mock Data for "Discover People" Section on Desktop Community Page
 
-## Problem
-When clicking Events on mobile, users briefly see the unadjusted Community Overview screen because:
-
-1. `useIsMobile()` hook initializes with `undefined`
-2. Returns `!!undefined` = `false` on first render
-3. The guard `if (isMobile) return null` doesn't fire
-4. Full Community component renders for one frame
-5. Then `useEffect` runs → `isMobile` becomes `true` → redirect happens
-
-**Timeline of the bug:**
-```text
-Render 1: isMobile = false → Full Community renders (THE FLASH)
-Render 2: isMobile = true → return null + redirect
-```
+## Problem Summary
+The desktop Community page's "Discover People" section currently prioritizes real community members from the database. However, these are test accounts with minimal profile data, making the section look sparse compared to the richer mock data (`communityPeople`) which includes professional titles, detailed descriptions, and high-quality images.
 
 ## Solution
-Use a **synchronous** mobile check on first render so we can immediately return `null` or a skeleton without waiting for `useEffect`.
+Change the data selection logic to **always use mock data** until the database is populated with real, rich profiles.
 
 ## Technical Implementation
 
 ### File: `src/pages/Community.tsx`
 
-Replace the current pattern with synchronous detection:
-
+**Current Code (line 1189-1191):**
 ```typescript
-export default withScreenId(function Community() {
-  const navigate = useNavigate();
-  
-  // Synchronous mobile check - works on first render
-  const [isMobile] = useState(() => 
-    typeof window !== 'undefined' && window.innerWidth < 768
-  );
-
-  // Immediate redirect for mobile users
-  useEffect(() => {
-    if (isMobile) {
-      navigate('/comm/events-meetups?tab=upcoming', { replace: true });
-    }
-  }, [isMobile, navigate]);
-
-  // Prevent flash: return null immediately on mobile
-  // This now works on FIRST render because isMobile is set synchronously
-  if (isMobile) {
-    return null;
-  }
-
-  // ... rest of desktop-only component
-});
+const displayPeople = realCommunityPeople.length > 0 
+  ? realCommunityPeople 
+  : communityPeople;
 ```
 
-**Why this works:**
-- `useState(() => window.innerWidth < 768)` runs synchronously during component initialization
-- On the very first render, `isMobile` is already `true` for mobile devices
-- The `if (isMobile) return null` guard fires immediately
-- No flash ever occurs
-
-## Alternative: Update useIsMobile Hook Globally
-
-If we want this fix to apply everywhere, we could update the hook itself:
-
+**Updated Code:**
 ```typescript
-// src/hooks/use-mobile.tsx
-export function useIsMobile() {
-  // Initialize synchronously with actual value (not undefined)
-  const [isMobile, setIsMobile] = React.useState<boolean>(() => 
-    typeof window !== 'undefined' ? window.innerWidth < MOBILE_BREAKPOINT : false
-  );
-
-  React.useEffect(() => {
-    // ... existing resize listener logic
-  }, []);
-
-  return isMobile;
-}
+// Always use mock data until real profiles are populated with rich data
+const displayPeople = communityPeople;
 ```
 
-**Recommendation:** Update the global hook so all components benefit from synchronous mobile detection.
+This single-line change ensures:
+- Mock profiles (Jovana T., Dr. Roberts, Mariia) are always displayed
+- Rich descriptions, professional titles, and quality images remain visible
+- Easy to revert once real users populate the community with complete profiles
 
-## Files to Modify
+## Mock Data Being Preserved
 
-| File | Change |
-|------|--------|
-| `src/hooks/use-mobile.tsx` | Initialize state synchronously with `window.innerWidth` check |
+The `communityPeople` array includes:
 
-## Before vs After
+| Name | Title | Description |
+|------|-------|-------------|
+| Jovana T. | Tech wellness enthusiast | 12 mutual groups, Digital Nomad |
+| Dr. Roberts | Hydration Expert 🩺 | Leading wellness doctor, Challenge host |
+| Mariia | Wellness Ambassador 🌸 | Community leader, Wellness Studio |
 
-| Phase | Before | After |
-|-------|--------|-------|
-| Initial render | `isMobile = false` (wrong) | `isMobile = true` (correct) |
-| Guard check | Fails, renders full UI | Succeeds, returns `null` |
-| User sees | Flash of Community Overview | Nothing (instant redirect) |
+## Future Considerations
+
+When ready to switch to real data, the logic can be updated to check for profile completeness:
+```typescript
+const displayPeople = realCommunityPeople.some(p => p.description?.length > 20)
+  ? realCommunityPeople 
+  : communityPeople;
+```
+
+This would only switch to real data once profiles have meaningful content.
 
