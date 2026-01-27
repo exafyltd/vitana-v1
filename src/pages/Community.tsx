@@ -1186,9 +1186,8 @@ export default withScreenId(function Community() {
     rewardDescription: "Connect for social credits"
   }));
 
-  const displayPeople = realCommunityPeople.length > 0 
-    ? realCommunityPeople 
-    : communityPeople;
+  // Always use mock data until real profiles are populated with rich data
+  const displayPeople = communityPeople;
 
   // Phase 2: Transform AI recommendations with fallback
   const aiSpotlightItems = recommendations.length > 0 
