@@ -94,6 +94,14 @@ const MaxinaPortal = () => {
     root.style.setProperty("--brand-fg", "#1A1A1A");
   }, []);
 
+  // Add body class for Maxina-specific orb positioning
+  useEffect(() => {
+    document.body.classList.add('maxina-signin-page');
+    return () => {
+      document.body.classList.remove('maxina-signin-page');
+    };
+  }, []);
+
   // Handle email confirmation success - show welcome toast and clean URL
   useEffect(() => {
     if (searchParams.get('confirmed') === 'true') {

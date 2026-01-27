@@ -595,10 +595,10 @@ All colors MUST be HSL.
   }
 
   /* Maxina portal pages: center orb lower at bottom on mobile */
-  .maxina-signin-page .vitana-orb,
-  .maxina-signin-page [data-vitana-orb="true"],
-  .maxina-signin-page #vitana-orb,
-  .maxina-signin-page .OrbFloatingButton {
+  body.maxina-signin-page .vitana-orb,
+  body.maxina-signin-page [data-vitana-orb="true"],
+  body.maxina-signin-page #vitana-orb,
+  body.maxina-signin-page .OrbFloatingButton {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
   }
 
