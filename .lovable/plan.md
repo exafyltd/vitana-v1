@@ -1,62 +1,48 @@
 
 
-# Fix Orb Position: Move Lower on Maxina Mobile Screens
+# Push Orb Even Lower on Maxina Mobile Screens
 
-## Problem Identified
+## Current State
+Looking at the screenshot, the Orb is positioned above the footer links ("Privacy · Terms · Help"). The user wants it **much lower** - essentially at the very bottom of the viewport, just above the Android system navigation bar.
 
-There are **two issues** preventing the fix from working:
-
-### Issue 1: Changes Not Published
-The user is testing on **vitanaland.com** (published site), but frontend changes require clicking **Publish → Update** to go live. The code changes from the last edit are only visible in the preview, not on the published site yet.
-
-### Issue 2: CSS Logic is Inverted
-The current CSS override **increases** the `bottom` value from `4px` to `16px`, which actually moves the orb **higher** (more gap from the bottom edge), not lower. The user wants the orb **closer** to the bottom edge.
-
-**Current CSS (wrong direction):**
-```css
-/* General mobile: close to bottom */
-bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
-
-/* Maxina override: further FROM bottom (wrong!) */
-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
-```
+## Problem
+The current CSS sets `bottom: env(safe-area-inset-bottom, 0px)`, which equals `0px` on most Android devices. This still places the Orb above the absolute bottom because of:
+1. The Orb's own height/size
+2. Any transform offsets applied to center it
 
 ## Solution
+Use a **negative bottom value** to push the Orb below its default position, getting it as close to the system navigation bar as possible.
 
-Since the user wants the orb "lower" (closer to the bottom edge) on Maxina pages, we need to **remove** the extra offset entirely and rely only on the safe-area-inset for these pages.
+## Technical Implementation
 
-### Updated CSS
+**File: `src/index.css`**
 
+Change the Maxina-specific orb positioning from:
 ```css
-/* Maxina portal pages: dock orb at bottom edge on mobile */
-body.maxina-signin-page .vitana-orb,
-body.maxina-signin-page [data-vitana-orb="true"],
-body.maxina-signin-page #vitana-orb,
-body.maxina-signin-page .OrbFloatingButton {
-  bottom: env(safe-area-inset-bottom, 0px) !important;
-}
+bottom: env(safe-area-inset-bottom, 0px) !important;
 ```
 
-This positions the orb flush with the safe area (no additional gap), making it sit as low as possible while respecting device safe areas (like iPhone home indicator).
+To:
+```css
+bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
+```
 
-## Deployment Steps
-
-After implementing the fix:
-1. **Preview** - The change will be visible immediately in the Lovable preview
-2. **Publish** - Click **Publish → Update** to deploy to vitanaland.com
-3. **Clear cache** - User may need to hard-refresh (pull down in mobile Safari/Chrome) to see changes
+The `-24px` offset will push the Orb 24 pixels lower than the current position, bringing it much closer to the bottom edge of the screen.
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/index.css` | Change Maxina override from `+ 16px` to `0px` (safe-area only) |
+| `src/index.css` | Change Maxina orb `bottom` from `0px` to `-24px` offset |
 
 ## Visual Result
 
 | Route | Mobile Bottom Offset |
 |-------|---------------------|
-| `/_intro/maxina` | `0px` (flush with safe area - lowest possible) |
-| `/maxina` | `0px` (flush with safe area - lowest possible) |
-| All other routes | `4px` (small gap, unchanged) |
+| `/_intro/maxina` | `-24px` (very close to bottom edge) |
+| `/maxina` | `-24px` (very close to bottom edge) |
+| All other routes | `+4px` (unchanged) |
+
+## Post-Implementation
+After approval and implementation, remember to click **Publish → Update** to deploy changes to vitanaland.com.
 
