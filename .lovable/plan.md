@@ -1,116 +1,69 @@
 
 
-# Auto-Switch "Meet Vitanaland Citizens" to Demo Data Unless Profiles Are Rich
+# Move Orb Lower on Maxina Mobile Screens Only
 
-## Problem Summary
-The user still sees sparse test accounts in the "Meet Vitanaland Citizens" section on the desktop Home page. The previous fix only addressed the "Discover People" section in `Community.tsx` - but the Home page has a separate component (`PeopleDiscoveryHero`) that still prioritizes real profiles from the database.
+## Problem
+The Orb on mobile screens at `/_intro/maxina` and `/maxina` is positioned too high. The user wants it centered at the bottom of the screen on these two specific routes only, while keeping the current position on all other screens.
+
+## Current Architecture
+The Orb positioning on mobile is controlled by global CSS in `src/index.css`:
+
+```css
+@media (max-width: 768px) {
+  .vitana-orb, [data-vitana-orb="true"], ... {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
+  }
+}
+```
+
+This applies the same `bottom` value to all mobile routes.
 
 ## Solution
-Update `PeopleDiscoveryHero.tsx` to only use real profiles when they meet richness criteria. Otherwise, fall back to the rich demo profiles.
-
-**Richness criteria (all must be present):**
-- Has avatar (`avatar_url` is not null/empty)
-- Has bio (40+ characters)
-- Has headline (`professional_headline` is not null/empty)
-- Has interests (`top_3_interests` array has at least 1 item)
+Add a route-specific CSS class that overrides the `bottom` value only on Maxina routes. This approach:
+- Uses the existing `.maxina-signin-page` class pattern already in the codebase
+- Keeps desktop unchanged
+- Only affects mobile on the two specified routes
 
 ## Technical Implementation
 
-### File: `src/components/discovery/PeopleDiscoveryHero.tsx`
+### 1. Add Route-Specific CSS Override in `src/index.css`
 
-**Current Code (lines 224-246):**
-```typescript
-const displayProfiles = useMemo(() => {
-  let baseProfiles = profiles && profiles.length > 0 
-    ? profiles 
-    : demoProfiles.map(p => ({...}));
-  // ...filters
-  return baseProfiles;
-}, [profiles, demoProfiles, interestFilter, regionFilter]);
+Inside the existing `@media (max-width: 768px)` block, add a new rule:
+
+```css
+/* Maxina portal pages: center orb lower at bottom */
+.maxina-signin-page .vitana-orb,
+.maxina-signin-page [data-vitana-orb="true"] {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
+}
 ```
 
-**Updated Code:**
-```typescript
-const displayProfiles = useMemo(() => {
-  // Check if real profiles are "rich enough" to display
-  const isProfileRich = (p: MatchProfile) => 
-    !!p.avatar_url && 
-    (p.bio?.length || 0) >= 40 && 
-    !!p.professional_headline && 
-    (p.top_3_interests?.length || 0) > 0;
+This increases the `bottom` value from `4px` to `16px`, pushing the orb lower and more centered at the bottom of the screen.
 
-  // Only use real profiles if at least half are rich
-  const richProfiles = profiles?.filter(isProfileRich) || [];
-  const useRealProfiles = richProfiles.length >= Math.ceil((profiles?.length || 0) / 2);
+### 2. Verify Class is Applied on Target Pages
 
-  let baseProfiles = useRealProfiles && richProfiles.length > 0
-    ? richProfiles
-    : demoProfiles.map(p => ({
-        user_id: p.user_id,
-        display_name: p.display_name,
-        age: p.age,
-        avatar_url: p.avatar_url,
-        bio: p.bio,
-        location: p.location,
-        professional_headline: p.professional_headline,
-        story_cue: p.story_cue,
-        vitana_index: p.vitana_index,
-        vitana_percentile: p.vitana_percentile,
-        activity_time_preference: p.activity_time_preference,
-        top_3_interests: p.top_3_interests,
-        certification_badges: p.certification_badges,
-        match_score: p.compatibility_score,
-        match_reasons: [p.match_reason],
-        shared_interests: p.shared_interests,
-        streak_days: p.streak_days,
-        primary_pillar: p.primary_pillar,
-      }));
+The `maxina-signin-page` class is already applied on:
+- `MaxinaPortal.tsx` (the `/maxina` route)
+- `IntroExperience.tsx` for the `/_intro/maxina` route
 
-  // Apply filters
-  if (interestFilter !== "all") {
-    baseProfiles = baseProfiles.filter(p => 
-      p.top_3_interests?.some(i => i.toLowerCase().includes(interestFilter.toLowerCase()))
-    );
-  }
-  if (regionFilter !== "all") {
-    baseProfiles = baseProfiles.filter(p => 
-      p.location?.toLowerCase()?.includes(regionFilter.toLowerCase()) ?? false
-    );
-  }
-
-  return baseProfiles;
-}, [profiles, demoProfiles, interestFilter, regionFilter]);
-```
-
-## How It Works
-
-| Scenario | Result |
-|----------|--------|
-| No real profiles in DB | Demo profiles shown |
-| Real profiles exist but are sparse | Demo profiles shown |
-| 50%+ of real profiles are rich | Rich real profiles shown |
-| User populates rich profiles | Auto-switches to real data |
-
-## Richness Check Function
-
-```text
-isProfileRich(profile) =
-  ✓ has avatar_url (non-null, non-empty)
-  ✓ has bio >= 40 characters
-  ✓ has professional_headline (non-null, non-empty)
-  ✓ has at least 1 item in top_3_interests
-```
+If needed, ensure both pages have this class on their root container.
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/components/discovery/PeopleDiscoveryHero.tsx` | Add richness check logic before selecting data source |
+| `src/index.css` | Add `.maxina-signin-page .vitana-orb` override with lower bottom position |
 
-## Benefits
+## Visual Impact
 
-- Automatic: No manual toggle needed
-- Progressive: Switches to real data as community grows
-- Consistent UX: Users always see rich, engaging profiles
-- Easy criteria: Clear signals for what counts as "complete"
+| Route | Before | After |
+|-------|--------|-------|
+| `/_intro/maxina` (mobile) | `bottom: 4px` | `bottom: 16px` |
+| `/maxina` (mobile) | `bottom: 4px` | `bottom: 16px` |
+| All other routes (mobile) | `bottom: 4px` | `bottom: 4px` (unchanged) |
+| All desktop routes | No change | No change |
+
+## Notes
+- The value of `16px` can be adjusted if the user wants it even lower or higher
+- Only the vertical position changes; horizontal centering remains intact (`left: 50%`, `transform: translateX(-50%)`)
 
