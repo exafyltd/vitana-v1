@@ -599,7 +599,7 @@ All colors MUST be HSL.
   body.maxina-signin-page [data-vitana-orb="true"],
   body.maxina-signin-page #vitana-orb,
   body.maxina-signin-page .OrbFloatingButton {
-    bottom: env(safe-area-inset-bottom, 0px) !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
   }
 
   /* Hide irrelevant tenant links for Maxina app users */
