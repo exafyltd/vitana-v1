@@ -220,10 +220,21 @@ export function PeopleDiscoveryHero() {
     openPreview(userId);
   };
 
-  // Use demo data if no real matches, and apply filters
+  // Use demo data if no real matches, or if real profiles are too sparse
   const displayProfiles = useMemo(() => {
-    let baseProfiles = profiles && profiles.length > 0 
-      ? profiles 
+    // Check if a profile is "rich enough" to display
+    const isProfileRich = (p: MatchProfile) => 
+      !!p.avatar_url && 
+      (p.bio?.length || 0) >= 40 && 
+      !!p.professional_headline && 
+      (p.top_3_interests?.length || 0) > 0;
+
+    // Only use real profiles if at least half are rich
+    const richProfiles = profiles?.filter(isProfileRich) || [];
+    const useRealProfiles = richProfiles.length >= Math.ceil((profiles?.length || 0) / 2) && richProfiles.length > 0;
+
+    let baseProfiles = useRealProfiles
+      ? richProfiles
       : demoProfiles.map(p => ({
           user_id: p.user_id,
           display_name: p.display_name,
