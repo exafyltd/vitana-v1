@@ -12,6 +12,7 @@ import { ProfileEventsTab } from "./tabs/ProfileEventsTab";
 import { ProfileInsightTab } from "./tabs/ProfileInsightTab";
 import { SmartTabPreview } from "../engagement/SmartTabPreview";
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ProfileTabsProps {
   profile: UserProfile;
@@ -35,6 +36,8 @@ export function ProfileTabs({
   onEditVisibility
 }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState("posts");
+  const { translate } = useTranslation();
+  
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
     shouldShowField('public', scope); // Health is public when consented
@@ -52,13 +55,13 @@ export function ProfileTabs({
     <div className="space-y-6">
       <Tabs defaultValue="posts" onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
-          <TabsTrigger value="posts">Posts</TabsTrigger>
-          <TabsTrigger value="media">Media</TabsTrigger>
-          <TabsTrigger value="groups">Groups</TabsTrigger>
-          <TabsTrigger value="events">Events</TabsTrigger>
-          {showHealthTab && <TabsTrigger value="health">Health</TabsTrigger>}
-          {showServicesTab && <TabsTrigger value="services">Services</TabsTrigger>}
-          <TabsTrigger value="insight">Insight</TabsTrigger>
+          <TabsTrigger value="posts">{translate('profileTabs.posts', 'Posts')}</TabsTrigger>
+          <TabsTrigger value="media">{translate('profileTabs.media', 'Media')}</TabsTrigger>
+          <TabsTrigger value="groups">{translate('profileTabs.groups', 'Groups')}</TabsTrigger>
+          <TabsTrigger value="events">{translate('profileTabs.events', 'Events')}</TabsTrigger>
+          {showHealthTab && <TabsTrigger value="health">{translate('profileTabs.health', 'Health')}</TabsTrigger>}
+          {showServicesTab && <TabsTrigger value="services">{translate('profileTabs.services', 'Services')}</TabsTrigger>}
+          <TabsTrigger value="insight">{translate('profileTabs.insight', 'Insight')}</TabsTrigger>
         </TabsList>
 
         {/* Smart Tab Previews */}

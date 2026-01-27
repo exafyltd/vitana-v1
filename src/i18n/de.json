@@ -356,5 +356,14 @@
     "communityNews": "Community-Neuigkeiten",
     "inspiration": "Inspiration",
     "dailyMatches": "Tägliche Matches"
+  },
+  "profileTabs": {
+    "posts": "Beiträge",
+    "media": "Medien",
+    "groups": "Gruppen",
+    "events": "Events",
+    "health": "Gesundheit",
+    "services": "Dienste",
+    "insight": "Einblick"
   }
 }
