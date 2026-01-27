@@ -358,7 +358,8 @@
     "dailyMatches": "Tägliche Matches"
   },
   "profileTabs": {
-    "posts": "Beiträge",
+    "posts": "Posts",
+    "about": "Über Uns",
     "media": "Medien",
     "groups": "Gruppen",
     "events": "Events",

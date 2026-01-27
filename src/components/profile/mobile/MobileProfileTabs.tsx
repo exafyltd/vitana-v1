@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export type MobileProfileTab = "posts" | "about" | "media" | "groups";
 
@@ -9,21 +10,22 @@ interface MobileProfileTabsProps {
   className?: string;
 }
 
-const TABS: { id: MobileProfileTab; label: string }[] = [
-  { id: "posts", label: "Posts" },
-  { id: "about", label: "About" },
-  { id: "media", label: "Media" },
-  { id: "groups", label: "Groups" },
-];
-
 export function MobileProfileTabs({
   activeTab: controlledActiveTab,
   onTabChange,
   className
 }: MobileProfileTabsProps) {
+  const { translate } = useTranslation();
   const [internalActiveTab, setInternalActiveTab] = useState<MobileProfileTab>("posts");
   
   const activeTab = controlledActiveTab ?? internalActiveTab;
+  
+  const tabs: { id: MobileProfileTab; label: string }[] = [
+    { id: "posts", label: translate('profileTabs.posts', 'Posts') },
+    { id: "about", label: translate('profileTabs.about', 'About') },
+    { id: "media", label: translate('profileTabs.media', 'Media') },
+    { id: "groups", label: translate('profileTabs.groups', 'Groups') },
+  ];
   
   const handleTabChange = (tab: MobileProfileTab) => {
     if (onTabChange) {
@@ -39,7 +41,7 @@ export function MobileProfileTabs({
       className
     )}>
       <div className="flex">
-        {TABS.map((tab) => (
+        {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => handleTabChange(tab.id)}
