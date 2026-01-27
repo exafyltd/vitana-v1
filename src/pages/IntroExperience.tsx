@@ -38,6 +38,14 @@ export default function IntroExperience() {
   useEffect(() => {
     showOrb();
   }, [showOrb]);
+
+  // Add body class for Maxina-specific orb positioning
+  useEffect(() => {
+    document.body.classList.add('maxina-signin-page');
+    return () => {
+      document.body.classList.remove('maxina-signin-page');
+    };
+  }, []);
   const { startFresh, setVolume } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
