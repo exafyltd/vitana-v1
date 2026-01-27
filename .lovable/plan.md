@@ -1,48 +1,76 @@
 
 
-# Push Orb Even Lower on Maxina Mobile Screens
+# Localize Mobile Profile Tabs + Translation Adjustments
 
-## Current State
-Looking at the screenshot, the Orb is positioned above the footer links ("Privacy · Terms · Help"). The user wants it **much lower** - essentially at the very bottom of the viewport, just above the Android system navigation bar.
+## Summary
 
-## Problem
-The current CSS sets `bottom: env(safe-area-inset-bottom, 0px)`, which equals `0px` on most Android devices. This still places the Orb above the absolute bottom because of:
-1. The Orb's own height/size
-2. Any transform offsets applied to center it
-
-## Solution
-Use a **negative bottom value** to push the Orb below its default position, getting it as close to the system navigation bar as possible.
-
-## Technical Implementation
-
-**File: `src/index.css`**
-
-Change the Maxina-specific orb positioning from:
-```css
-bottom: env(safe-area-inset-bottom, 0px) !important;
-```
-
-To:
-```css
-bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
-```
-
-The `-24px` offset will push the Orb 24 pixels lower than the current position, bringing it much closer to the bottom edge of the screen.
+The mobile "Edit Profile" screen tabs are not responding to language changes because `MobileProfileTabs.tsx` uses hardcoded English strings. Additionally, the user wants:
+- **"Posts"** to stay as "Posts" in German (not "Beiträge")
+- **"About"** to be translated as "Über Uns" in German
 
 ## Files to Modify
 
-| File | Change |
-|------|--------|
-| `src/index.css` | Change Maxina orb `bottom` from `0px` to `-24px` offset |
+| File | Changes |
+|------|---------|
+| `src/i18n/de.json` | Change `posts` from "Beiträge" → "Posts", add `about: "Über Uns"` |
+| `src/i18n/en.json` | Add `about: "About"` |
+| `src/components/profile/mobile/MobileProfileTabs.tsx` | Import `useTranslation` hook and use dynamic tab labels |
 
-## Visual Result
+## Technical Details
 
-| Route | Mobile Bottom Offset |
-|-------|---------------------|
-| `/_intro/maxina` | `-24px` (very close to bottom edge) |
-| `/maxina` | `-24px` (very close to bottom edge) |
-| All other routes | `+4px` (unchanged) |
+### 1. German Translations (`de.json`)
+```json
+"profileTabs": {
+  "posts": "Posts",         // Changed from "Beiträge"
+  "about": "Über Uns",      // New - mobile-only tab
+  "media": "Medien",
+  "groups": "Gruppen",
+  "events": "Events",
+  "health": "Gesundheit",
+  "services": "Dienste",
+  "insight": "Einblick"
+}
+```
 
-## Post-Implementation
-After approval and implementation, remember to click **Publish → Update** to deploy changes to vitanaland.com.
+### 2. English Translations (`en.json`)
+```json
+"profileTabs": {
+  "posts": "Posts",
+  "about": "About",         // New - mobile-only tab
+  "media": "Media",
+  ...
+}
+```
+
+### 3. Mobile Component Update (`MobileProfileTabs.tsx`)
+
+Replace the hardcoded `TABS` constant with dynamic translations:
+
+```typescript
+import { useTranslation } from "@/hooks/useTranslation";
+
+export function MobileProfileTabs({ ... }) {
+  const { translate } = useTranslation();
+  
+  const tabs: { id: MobileProfileTab; label: string }[] = [
+    { id: "posts", label: translate('profileTabs.posts', 'Posts') },
+    { id: "about", label: translate('profileTabs.about', 'About') },
+    { id: "media", label: translate('profileTabs.media', 'Media') },
+    { id: "groups", label: translate('profileTabs.groups', 'Groups') },
+  ];
+  
+  // ... rest of component uses `tabs` array
+}
+```
+
+## Result
+
+| Tab | German | English |
+|-----|--------|---------|
+| Posts | Posts | Posts |
+| About | Über Uns | About |
+| Media | Medien | Media |
+| Groups | Gruppen | Groups |
+
+Both mobile (Edit Profile screen) and desktop profile views will now properly respond to language selection.
 
