@@ -18,6 +18,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Activity, MessageSquare, Video, Users, Calendar, Heart, Briefcase, Lightbulb } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
@@ -46,6 +47,7 @@ export function ProfileSplitNavigation({
   onGoLive,
   onUploadCredentials,
 }: ProfileSplitNavigationProps) {
+  const { translate } = useTranslation();
 
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
@@ -55,22 +57,22 @@ export function ProfileSplitNavigation({
     profile.offerings.some(offering => offering.status === 'published');
 
   const tabs = [
-    { id: 'posts', name: 'Posts' },
-    { id: 'media', name: 'Media' },
-    { id: 'groups', name: 'Groups' },
-    { id: 'events', name: 'Events' },
+    { id: 'posts', name: translate('profileTabs.posts', 'Posts') },
+    { id: 'media', name: translate('profileTabs.media', 'Media') },
+    { id: 'groups', name: translate('profileTabs.groups', 'Groups') },
+    { id: 'events', name: translate('profileTabs.events', 'Events') },
   ];
 
   if (showHealthTab) {
-    tabs.push({ id: 'health', name: 'Health' });
+    tabs.push({ id: 'health', name: translate('profileTabs.health', 'Health') });
   }
   
   if (showServicesTab) {
-    tabs.push({ id: 'services', name: 'Services' });
+    tabs.push({ id: 'services', name: translate('profileTabs.services', 'Services') });
   }
 
   // Always add Insight as the FINAL tab
-  tabs.push({ id: 'insight', name: 'Insight' });
+  tabs.push({ id: 'insight', name: translate('profileTabs.insight', 'Insight') });
 
   // Icon mapping for tabs
   const getTabIcon = (tabId: string) => {

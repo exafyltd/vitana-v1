@@ -429,5 +429,14 @@
     "communityNews": "Community News",
     "inspiration": "Inspiration",
     "dailyMatches": "Daily Matches"
+  },
+  "profileTabs": {
+    "posts": "Posts",
+    "media": "Media",
+    "groups": "Groups",
+    "events": "Events",
+    "health": "Health",
+    "services": "Services",
+    "insight": "Insight"
   }
 }
