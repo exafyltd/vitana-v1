@@ -1,69 +1,74 @@
 
 
-# Move Orb Lower on Maxina Mobile Screens Only
+# Fix Orb Position on Maxina Mobile Screens
 
-## Problem
-The Orb on mobile screens at `/_intro/maxina` and `/maxina` is positioned too high. The user wants it centered at the bottom of the screen on these two specific routes only, while keeping the current position on all other screens.
+## Problem Identified
+The CSS override `.maxina-signin-page .vitana-orb` is not working for two reasons:
 
-## Current Architecture
-The Orb positioning on mobile is controlled by global CSS in `src/index.css`:
-
-```css
-@media (max-width: 768px) {
-  .vitana-orb, [data-vitana-orb="true"], ... {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
-  }
-}
-```
-
-This applies the same `bottom` value to all mobile routes.
+1. **IntroExperience.tsx** (`/_intro/maxina`): Missing `maxina-signin-page` class entirely - it only has `maxina-page-content`
+2. **CSS Specificity Issue**: Even in MaxinaPortal, `position: fixed` elements are removed from document flow, making descendant selectors unreliable
 
 ## Solution
-Add a route-specific CSS class that overrides the `bottom` value only on Maxina routes. This approach:
-- Uses the existing `.maxina-signin-page` class pattern already in the codebase
-- Keeps desktop unchanged
-- Only affects mobile on the two specified routes
+Use a **body-level class** approach instead of relying on descendant selectors for fixed-position elements.
 
-## Technical Implementation
+### Implementation
 
-### 1. Add Route-Specific CSS Override in `src/index.css`
+#### 1. Add `maxina-signin-page` class to `<body>` on both pages
 
-Inside the existing `@media (max-width: 768px)` block, add a new rule:
+Since the orb is `position: fixed` (positioned relative to viewport), we need a class on `<body>` that CSS can use to target the orb directly.
 
+**IntroExperience.tsx** - Add useEffect to toggle body class:
+```typescript
+// Add on mount, remove on unmount
+useEffect(() => {
+  document.body.classList.add('maxina-signin-page');
+  return () => {
+    document.body.classList.remove('maxina-signin-page');
+  };
+}, []);
+```
+
+**MaxinaPortal.tsx** - Add same useEffect:
+```typescript
+useEffect(() => {
+  document.body.classList.add('maxina-signin-page');
+  return () => {
+    document.body.classList.remove('maxina-signin-page');
+  };
+}, []);
+```
+
+#### 2. Update CSS selector to use body-level class
+
+**src/index.css** - Change the selector to target orbs when body has the class:
 ```css
-/* Maxina portal pages: center orb lower at bottom */
-.maxina-signin-page .vitana-orb,
-.maxina-signin-page [data-vitana-orb="true"] {
+/* Maxina portal pages: center orb lower at bottom on mobile */
+body.maxina-signin-page .vitana-orb,
+body.maxina-signin-page [data-vitana-orb="true"],
+body.maxina-signin-page #vitana-orb,
+body.maxina-signin-page .OrbFloatingButton {
   bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
 }
 ```
 
-This increases the `bottom` value from `4px` to `16px`, pushing the orb lower and more centered at the bottom of the screen.
-
-### 2. Verify Class is Applied on Target Pages
-
-The `maxina-signin-page` class is already applied on:
-- `MaxinaPortal.tsx` (the `/maxina` route)
-- `IntroExperience.tsx` for the `/_intro/maxina` route
-
-If needed, ensure both pages have this class on their root container.
+This approach works because:
+- The body element is always a parent of all fixed-position elements
+- Adding/removing the class on route change keeps styling isolated
+- Uses React's cleanup pattern to prevent class leakage
 
 ## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/index.css` | Add `.maxina-signin-page .vitana-orb` override with lower bottom position |
+| `src/pages/IntroExperience.tsx` | Add `useEffect` to toggle `maxina-signin-page` class on `body` |
+| `src/pages/portals/MaxinaPortal.tsx` | Add `useEffect` to toggle `maxina-signin-page` class on `body` |
+| `src/index.css` | Update selector to `body.maxina-signin-page .vitana-orb` |
 
-## Visual Impact
+## Visual Result
 
-| Route | Before | After |
-|-------|--------|-------|
-| `/_intro/maxina` (mobile) | `bottom: 4px` | `bottom: 16px` |
-| `/maxina` (mobile) | `bottom: 4px` | `bottom: 16px` |
-| All other routes (mobile) | `bottom: 4px` | `bottom: 4px` (unchanged) |
-| All desktop routes | No change | No change |
-
-## Notes
-- The value of `16px` can be adjusted if the user wants it even lower or higher
-- Only the vertical position changes; horizontal centering remains intact (`left: 50%`, `transform: translateX(-50%)`)
+| Route | Mobile Bottom Offset |
+|-------|---------------------|
+| `/_intro/maxina` | `16px` (lowered) |
+| `/maxina` | `16px` (lowered) |
+| All other routes | `4px` (unchanged) |
 
