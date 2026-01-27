@@ -594,12 +594,12 @@ All colors MUST be HSL.
     ) !important;
   }
 
-  /* Maxina portal pages: center orb lower at bottom on mobile */
+  /* Maxina portal pages: dock orb at bottom edge on mobile */
   body.maxina-signin-page .vitana-orb,
   body.maxina-signin-page [data-vitana-orb="true"],
   body.maxina-signin-page #vitana-orb,
   body.maxina-signin-page .OrbFloatingButton {
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
+    bottom: env(safe-area-inset-bottom, 0px) !important;
   }
 
   /* Hide irrelevant tenant links for Maxina app users */
