@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 import { ViewStatisticsDialog } from "./ViewStatisticsDialog";
 import { AdvancedSearchDialog } from "./AdvancedSearchDialog";
 import { BulkActionsDialog } from "./BulkActionsDialog";
@@ -29,6 +30,7 @@ interface HistoryMasterActionPopupProps {
 
 export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode }: HistoryMasterActionPopupProps) {
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [loading, setLoading] = useState<string | null>(null);
   const [statsDialogOpen, setStatsDialogOpen] = useState(false);
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
@@ -43,14 +45,14 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
       // Simulate export process
       await new Promise(resolve => setTimeout(resolve, 1500));
       toast({
-        title: "Export Complete",
-        description: "Your history has been exported successfully.",
+        title: translate('historyManagement.exportComplete', 'Export Complete'),
+        description: translate('historyManagement.exportCompleteDesc', 'Your history has been exported successfully.'),
       });
       onOpenChange(false);
     } catch (error) {
       toast({
-        title: "Export Failed",
-        description: "There was an error exporting your history.",
+        title: translate('historyManagement.exportFailed', 'Export Failed'),
+        description: translate('historyManagement.exportFailedDesc', 'There was an error exporting your history.'),
         variant: "destructive",
       });
     } finally {
@@ -83,7 +85,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
   };
 
   const handleClearOldHistory = async () => {
-    if (!confirm("Are you sure you want to clear history older than 90 days?")) {
+    if (!confirm(translate('historyManagement.confirmClearOld', 'Are you sure you want to clear history older than 90 days?'))) {
       return;
     }
     
@@ -92,14 +94,14 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
       // Simulate clearing process
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast({
-        title: "History Cleared",
-        description: "Old history items have been removed.",
+        title: translate('historyManagement.historyCleared', 'History Cleared'),
+        description: translate('historyManagement.historyClearedDesc', 'Old history items have been removed.'),
       });
       onOpenChange(false);
     } catch (error) {
       toast({
-        title: "Clear Failed",
-        description: "There was an error clearing old history.",
+        title: translate('historyManagement.clearFailed', 'Clear Failed'),
+        description: translate('historyManagement.clearFailedDesc', 'There was an error clearing old history.'),
         variant: "destructive",
       });
     } finally {
@@ -108,7 +110,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
   };
 
   const handleDeleteAllHistory = async () => {
-    if (!confirm("⚠️ WARNING: This will permanently delete ALL your history. This action cannot be undone. Are you absolutely sure?")) {
+    if (!confirm(translate('historyManagement.confirmDeleteAll', '⚠️ WARNING: This will permanently delete ALL your history. This action cannot be undone. Are you absolutely sure?'))) {
       return;
     }
     
@@ -117,14 +119,14 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
       // Simulate deletion process
       await new Promise(resolve => setTimeout(resolve, 1500));
       toast({
-        title: "All History Deleted",
-        description: "Your entire history has been permanently removed.",
+        title: translate('historyManagement.allHistoryDeleted', 'All History Deleted'),
+        description: translate('historyManagement.allHistoryDeletedDesc', 'Your entire history has been permanently removed.'),
       });
       onOpenChange(false);
     } catch (error) {
       toast({
-        title: "Delete Failed",
-        description: "There was an error deleting your history.",
+        title: translate('historyManagement.deleteFailed', 'Delete Failed'),
+        description: translate('historyManagement.deleteFailedDesc', 'There was an error deleting your history.'),
         variant: "destructive",
       });
     } finally {
@@ -138,7 +140,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold">
-              History Management
+              {translate('historyManagement.title', 'History Management')}
             </DialogTitle>
           </DialogHeader>
 
@@ -146,7 +148,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
             {/* Section 1: View & Analyze */}
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-muted-foreground px-2">
-                View & Analyze
+                {translate('historyManagement.viewAnalyze', 'View & Analyze')}
               </h3>
               <div className="space-y-1">
                 <Button
@@ -157,13 +159,13 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <Download className="w-5 h-5 text-primary" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">Export History</div>
+                    <div className="font-medium">{translate('historyManagement.exportHistory', 'Export History')}</div>
                     <div className="text-xs text-muted-foreground">
-                      Download your activity data (CSV/JSON)
+                      {translate('historyManagement.exportHistoryDesc', 'Download your activity data (CSV/JSON)')}
                     </div>
                   </div>
                   {loading === "export" && (
-                    <span className="text-xs text-muted-foreground">Exporting...</span>
+                    <span className="text-xs text-muted-foreground">{translate('historyManagement.exporting', 'Exporting...')}</span>
                   )}
                 </Button>
 
@@ -174,9 +176,9 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <BarChart3 className="w-5 h-5 text-accent" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">View Statistics</div>
+                    <div className="font-medium">{translate('historyManagement.viewStatistics', 'View Statistics')}</div>
                     <div className="text-xs text-muted-foreground">
-                      See insights, trends, and usage patterns
+                      {translate('historyManagement.viewStatisticsDesc', 'See insights, trends, and usage patterns')}
                     </div>
                   </div>
                 </Button>
@@ -188,9 +190,9 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <Search className="w-5 h-5 text-secondary" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">Advanced Search</div>
+                    <div className="font-medium">{translate('historyManagement.advancedSearch', 'Advanced Search')}</div>
                     <div className="text-xs text-muted-foreground">
-                      Filter by date range, category, keywords
+                      {translate('historyManagement.advancedSearchDesc', 'Filter by date range, category, keywords')}
                     </div>
                   </div>
                 </Button>
@@ -202,7 +204,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
             {/* Section 2: Organize & Manage */}
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-muted-foreground px-2">
-                Organize & Manage
+                {translate('historyManagement.organizeManage', 'Organize & Manage')}
               </h3>
               <div className="space-y-1">
                 <Button
@@ -213,13 +215,13 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   <CheckSquare className="w-5 h-5 text-primary" />
                   <div className="flex-1 text-left">
                     <div className="font-medium flex items-center gap-2">
-                      Bulk Actions
+                      {translate('historyManagement.bulkActions', 'Bulk Actions')}
                       <span className="text-xs px-1.5 py-0.5 rounded-full bg-primary/10 text-primary">
-                        Beta
+                        {translate('historyManagement.beta', 'Beta')}
                       </span>
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      Select and manage multiple items at once
+                      {translate('historyManagement.bulkActionsDesc', 'Select and manage multiple items at once')}
                     </div>
                   </div>
                 </Button>
@@ -231,9 +233,9 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <Archive className="w-5 h-5 text-accent" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">Archive Settings</div>
+                    <div className="font-medium">{translate('historyManagement.archiveSettings', 'Archive Settings')}</div>
                     <div className="text-xs text-muted-foreground">
-                      Configure auto-archiving for old items
+                      {translate('historyManagement.archiveSettingsDesc', 'Configure auto-archiving for old items')}
                     </div>
                   </div>
                 </Button>
@@ -245,9 +247,9 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <FolderOpen className="w-5 h-5 text-secondary" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">Manage Categories</div>
+                    <div className="font-medium">{translate('historyManagement.manageCategories', 'Manage Categories')}</div>
                     <div className="text-xs text-muted-foreground">
-                      Customize category labels and filters
+                      {translate('historyManagement.manageCategoriesDesc', 'Customize category labels and filters')}
                     </div>
                   </div>
                 </Button>
@@ -259,7 +261,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
             {/* Section 3: Privacy & Data */}
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-muted-foreground px-2">
-                Privacy & Data
+                {translate('historyManagement.privacyData', 'Privacy & Data')}
               </h3>
               <div className="space-y-1">
                 <Button
@@ -269,9 +271,9 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <Shield className="w-5 h-5 text-primary" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">Privacy Controls</div>
+                    <div className="font-medium">{translate('historyManagement.privacyControls', 'Privacy Controls')}</div>
                     <div className="text-xs text-muted-foreground">
-                      Manage what activities are tracked
+                      {translate('historyManagement.privacyControlsDesc', 'Manage what activities are tracked')}
                     </div>
                   </div>
                 </Button>
@@ -284,13 +286,13 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                 >
                   <Clock className="w-5 h-5 text-accent" />
                   <div className="flex-1 text-left">
-                    <div className="font-medium">Clear Old History</div>
+                    <div className="font-medium">{translate('historyManagement.clearOldHistory', 'Clear Old History')}</div>
                     <div className="text-xs text-muted-foreground">
-                      Remove items older than 90 days
+                      {translate('historyManagement.clearOldHistoryDesc', 'Remove items older than 90 days')}
                     </div>
                   </div>
                   {loading === "clear-old" && (
-                    <span className="text-xs text-muted-foreground">Clearing...</span>
+                    <span className="text-xs text-muted-foreground">{translate('historyManagement.clearing', 'Clearing...')}</span>
                   )}
                 </Button>
 
@@ -303,17 +305,17 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
                   <Trash2 className="w-5 h-5 text-destructive" />
                   <div className="flex-1 text-left">
                     <div className="font-medium flex items-center gap-2">
-                      Delete All History
+                      {translate('historyManagement.deleteAllHistory', 'Delete All History')}
                       <span className="text-xs px-1.5 py-0.5 rounded-full bg-destructive/10 text-destructive">
-                        Danger
+                        {translate('historyManagement.danger', 'Danger')}
                       </span>
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      Permanently remove all stored activity data
+                      {translate('historyManagement.deleteAllHistoryDesc', 'Permanently remove all stored activity data')}
                     </div>
                   </div>
                   {loading === "delete-all" && (
-                    <span className="text-xs text-muted-foreground">Deleting...</span>
+                    <span className="text-xs text-muted-foreground">{translate('historyManagement.deleting', 'Deleting...')}</span>
                   )}
                 </Button>
               </div>
@@ -322,7 +324,7 @@ export function HistoryMasterActionPopup({ open, onOpenChange, onEnableBulkMode 
 
           <div className="flex justify-center pt-4 border-t">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Close
+              {translate('buttons.close', 'Close')}
             </Button>
           </div>
         </DialogContent>

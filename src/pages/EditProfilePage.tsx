@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 import { MobileIdCardSwitcher } from "@/components/profile/mobile/MobileIdCardSwitcher";
 import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
@@ -33,6 +34,7 @@ export default function EditProfilePage() {
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
   const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
@@ -153,8 +155,8 @@ export default function EditProfilePage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         toast({
-          title: "Not authenticated",
-          description: "Please log in to save your profile.",
+          title: translate('editProfile.notAuthenticated', 'Not authenticated'),
+          description: translate('editProfile.notAuthenticatedDesc', 'Please log in to save your profile.'),
           variant: "destructive"
         });
         return;
@@ -171,16 +173,16 @@ export default function EditProfilePage() {
 
       setHasUnsavedChanges(false);
       toast({
-        title: "Profile updated successfully!",
-        description: "Your changes are now live. Your VITANA profile looks amazing."
+        title: translate('editProfile.profileUpdated', 'Profile updated successfully!'),
+        description: translate('editProfile.profileUpdatedDesc', 'Your changes are now live. Your VITANA profile looks amazing.')
       });
       
       console.log('[EditProfilePage] Profile data refreshed:', data);
     } catch (error: any) {
       console.error('[EditProfilePage] Save error:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to refresh profile data.",
+        title: translate('editProfile.error', 'Error'),
+        description: error.message || translate('editProfile.refreshFailed', 'Failed to refresh profile data.'),
         variant: "destructive"
       });
     }
@@ -188,7 +190,7 @@ export default function EditProfilePage() {
 
   const handleCancel = () => {
     if (hasUnsavedChanges) {
-      const confirmed = window.confirm('You have unsaved changes. Are you sure you want to leave?');
+      const confirmed = window.confirm(translate('editProfile.unsavedChanges', 'You have unsaved changes. Are you sure you want to leave?'));
       if (!confirmed) return;
     }
     navigate(`/u/${profile.handle}`);
@@ -288,7 +290,7 @@ export default function EditProfilePage() {
                 {/* Showcase Section */}
                 <MobileShowcaseHeader onManage={handleEditShowcase} />
                 <div className="px-4 py-2 text-sm text-muted-foreground">
-                  Select posts and content to feature at the top of your profile
+                  {translate('editProfile.showcaseHint', 'Select posts and content to feature at the top of your profile')}
                 </div>
                 
                 {/* Autopilot Banner */}
@@ -303,9 +305,9 @@ export default function EditProfilePage() {
                   onClick={handleEditAbout}
                   className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
                 >
-                  <h3 className="text-sm font-semibold mb-2">About</h3>
-                  <p className="text-sm text-muted-foreground">{profile.bio || "Add a bio..."}</p>
-                  <p className="text-xs text-primary mt-2">Tap to edit</p>
+                  <h3 className="text-sm font-semibold mb-2">{translate('editProfile.about', 'About')}</h3>
+                  <p className="text-sm text-muted-foreground">{profile.bio || translate('editProfile.addBio', 'Add a bio...')}</p>
+                  <p className="text-xs text-primary mt-2">{translate('editProfile.tapToEdit', 'Tap to edit')}</p>
                 </button>
               </div>
             )}

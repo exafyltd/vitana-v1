@@ -1,18 +1,21 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface AudioStatusTextProps {
   audioState: 'idle' | 'listening' | 'processing' | 'error';
   errorMessage?: string;
 }
 
-const statusMessages = {
-  idle: '', // VITANALAND speaks instead
-  listening: "I'm listening...",
-  processing: 'One moment...',
-  error: 'Connection issue. Please try again.',
-};
-
 export function AudioStatusText({ audioState, errorMessage }: AudioStatusTextProps) {
+  const { translate } = useTranslation();
+  
+  const statusMessages = {
+    idle: '', // VITANALAND speaks instead
+    listening: translate('audio.listening', "I'm listening..."),
+    processing: translate('audio.processing', 'One moment...'),
+    error: translate('audio.connectionError', 'Connection issue. Please try again.'),
+  };
+  
   const message = audioState === 'error' && errorMessage ? errorMessage : statusMessages[audioState];
 
   return (
