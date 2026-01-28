@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Plane, Target, AlertTriangle, Check, X, Clock } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface AutopilotSuggestion {
   id: string;
@@ -55,14 +56,18 @@ export function AutopilotCalendarSuggestions({
   onUndo,
   onSnooze
 }: AutopilotCalendarSuggestionsProps) {
+  const { translate } = useTranslation();
   const visibleSuggestions = suggestions.filter(s => !s.snoozed);
+  
   if (visibleSuggestions.length === 0) return null;
 
   return (
     <div className="space-y-3 mb-6">
       <div className="flex items-center gap-2 mb-2">
         <Plane className="h-4 w-4 text-sys-autopilot-accent" />
-        <h3 className="text-sm font-semibold">Autopilot Suggestions</h3>
+        <h3 className="text-sm font-semibold">
+          {translate('calendar.autopilot.suggestions', 'Autopilot Suggestions')}
+        </h3>
         <Badge variant="secondary" className="text-xs ml-auto">{visibleSuggestions.length}</Badge>
       </div>
 
@@ -94,7 +99,7 @@ export function AutopilotCalendarSuggestions({
                     {suggestion.accepted && (
                       <Badge variant="secondary" className="text-xs bg-sys-autopilot-tint text-sys-autopilot-accent border border-sys-autopilot-accent/20">
                         <Plane className="h-3 w-3 mr-1" />
-                        Autopilot
+                        {translate('calendar.autopilot.badge', 'Autopilot')}
                       </Badge>
                     )}
                   </div>
@@ -114,7 +119,7 @@ export function AutopilotCalendarSuggestions({
                 {suggestion.conflictsWith && (
                   <p className="text-xs text-sys-noti-accent mb-2 flex items-center gap-1">
                     <AlertTriangle className="h-3 w-3" />
-                    Conflicts with: {suggestion.conflictsWith}
+                    {translate('calendar.autopilot.conflictsWith', 'Conflicts with:')} {suggestion.conflictsWith}
                   </p>
                 )}
 
@@ -126,7 +131,7 @@ export function AutopilotCalendarSuggestions({
                       className="gap-1.5"
                     >
                       <Check className="h-3.5 w-3.5" />
-                      Accept
+                      {translate('calendar.autopilot.accept', 'Accept')}
                     </Button>
                     {onSnooze && (
                       <DropdownMenu>
@@ -137,15 +142,15 @@ export function AutopilotCalendarSuggestions({
                             className="gap-1.5"
                           >
                             <Clock className="h-3.5 w-3.5" />
-                            Snooze
+                            {translate('calendar.autopilot.snooze', 'Snooze')}
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => onSnooze(suggestion.id, 'later-today')}>
-                            Later today
+                            {translate('calendar.autopilot.laterToday', 'Later today')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => onSnooze(suggestion.id, 'tomorrow')}>
-                            Tomorrow
+                            {translate('calendar.autopilot.tomorrow', 'Tomorrow')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -157,7 +162,7 @@ export function AutopilotCalendarSuggestions({
                       className="gap-1.5"
                     >
                       <X className="h-3.5 w-3.5" />
-                      Dismiss
+                      {translate('calendar.autopilot.dismiss', 'Dismiss')}
                     </Button>
                   </div>
                 ) : (
@@ -168,7 +173,7 @@ export function AutopilotCalendarSuggestions({
                       onClick={() => onUndo(suggestion.id)}
                       className="gap-1.5 h-7 text-xs"
                     >
-                      Undo
+                      {translate('calendar.autopilot.undo', 'Undo')}
                     </Button>
                   </div>
                 )}
