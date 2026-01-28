@@ -38,6 +38,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useRole } from "@/hooks/useRole";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface CalendarEvent {
   id: string;
@@ -164,6 +165,7 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { currentRole } = useRole();
+  const { translate } = useTranslation();
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   
   const upcomingEvents = mockEvents.slice(0, 4);
@@ -173,15 +175,15 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
   const handleQuickAdd = () => {
     setShowQuickAdd(true);
     toast({
-      title: "Quick Add",
-      description: "Event creation form coming soon"
+      title: translate('calendarPopup.quickAdd'),
+      description: translate('calendarPopup.eventFormComingSoon')
     });
   };
 
   const handleSyncExternal = () => {
     toast({
-      title: "External Sync",
-      description: "Connecting to external calendars..."
+      title: translate('calendarPopup.externalSync'),
+      description: translate('calendarPopup.connectingCalendars')
     });
   };
 
@@ -193,18 +195,18 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400/20 to-purple-500/20 flex items-center justify-center">
               <Calendar className="w-4 h-4 text-blue-500" />
             </div>
-            <span>Calendar</span>
+            <span>{translate('calendarPopup.title')}</span>
             <Badge variant="outline" className="ml-auto">
-              Next {upcomingEvents.length} Events
+              {translate('calendarPopup.nextEvents').replace('{count}', String(upcomingEvents.length))}
             </Badge>
             {conflictCount > 0 && (
               <Badge variant="destructive" className="bg-amber-500 hover:bg-amber-600">
-                {conflictCount} Conflicts
+                {translate('calendarPopup.conflicts').replace('{count}', String(conflictCount))}
               </Badge>
             )}
           </DialogTitle>
           <DialogDescription>
-            Your upcoming schedule and events
+            {translate('calendarPopup.upcomingSchedule')}
           </DialogDescription>
         </DialogHeader>
 
@@ -219,7 +221,7 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
                   onClick={handleQuickAdd}
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add New Event
+                  {translate('calendarPopup.addNewEvent')}
                 </Button>
               </CardContent>
             </Card>
@@ -274,10 +276,10 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
               ) : (
                 <Card className="p-6 text-center">
                   <Calendar className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground mb-3">No upcoming events</p>
+                  <p className="text-sm text-muted-foreground mb-3">{translate('calendarPopup.noUpcomingEvents')}</p>
                   <Button variant="outline" size="sm" onClick={handleQuickAdd}>
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Your First Event
+                    {translate('calendarPopup.createFirstEvent')}
                   </Button>
                 </Card>
               )}
@@ -288,19 +290,19 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
               <>
                 <Separator />
                 <div className="space-y-2">
-                  <p className="text-xs font-medium text-muted-foreground">AI Suggestions</p>
+                  <p className="text-xs font-medium text-muted-foreground">{translate('calendarPopup.aiSuggestions')}</p>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="text-xs cursor-pointer hover:bg-accent">
                       <Sparkles className="h-3 w-3 mr-1" />
-                      Find better slot
+                      {translate('calendarPopup.findBetterSlot')}
                     </Badge>
                     <Badge variant="outline" className="text-xs cursor-pointer hover:bg-accent">
                       <Zap className="h-3 w-3 mr-1" />
-                      Prepare brief
+                      {translate('calendarPopup.prepareBrief')}
                     </Badge>
                     <Badge variant="outline" className="text-xs cursor-pointer hover:bg-accent">
                       <RefreshCw className="h-3 w-3 mr-1" />
-                      Share availability
+                      {translate('calendarPopup.shareAvailability')}
                     </Badge>
                   </div>
                 </div>
@@ -313,15 +315,15 @@ export function CalendarPopup({ open, onOpenChange }: CalendarPopupProps) {
           <div className="flex gap-2 w-full">
             <Button variant="outline" size="sm" onClick={handleSyncExternal}>
               <RefreshCw className="h-4 w-4 mr-2" />
-              Sync External
+              {translate('calendarPopup.syncExternal')}
             </Button>
             <Button variant="outline" size="sm" onClick={handleQuickAdd}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Event
+              {translate('calendarPopup.addEvent')}
             </Button>
           </div>
           <Button onClick={() => onOpenChange(false)} className="w-full sm:w-auto">
-            Done
+            {translate('common.done')}
           </Button>
         </DialogFooter>
       </DialogContent>

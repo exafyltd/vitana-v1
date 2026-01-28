@@ -2,19 +2,22 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ShortsDensity } from '@/hooks/useShortsDensity';
 import { Grid3x3, Grid2x2, LayoutGrid } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface DensityControlProps {
   value: ShortsDensity;
   onChange: (value: ShortsDensity) => void;
 }
 
-const densityOptions: { value: ShortsDensity; label: string; icon: React.ReactNode }[] = [
-  { value: 'cozy', label: 'Cozy', icon: <Grid2x2 className="w-3.5 h-3.5" /> },
-  { value: 'compact', label: 'Compact', icon: <Grid3x3 className="w-3.5 h-3.5" /> },
-  { value: 'gallery', label: 'Gallery', icon: <LayoutGrid className="w-3.5 h-3.5" /> },
-];
-
 export function DensityControl({ value, onChange }: DensityControlProps) {
+  const { translate } = useTranslation();
+  
+  const densityOptions: { value: ShortsDensity; label: string; icon: React.ReactNode }[] = [
+    { value: 'cozy', label: translate('densityOptions.cozy'), icon: <Grid2x2 className="w-3.5 h-3.5" /> },
+    { value: 'compact', label: translate('densityOptions.compact'), icon: <Grid3x3 className="w-3.5 h-3.5" /> },
+    { value: 'gallery', label: translate('densityOptions.gallery'), icon: <LayoutGrid className="w-3.5 h-3.5" /> },
+  ];
+
   return (
     <div className="flex items-center gap-2">
       <RadioGroup

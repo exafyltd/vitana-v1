@@ -14,9 +14,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Podcasts() {
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -48,9 +50,16 @@ export default function Podcasts() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
+      toast({ 
+        title: translate('payment.error'), 
+        description: translate('admin.media.updateFailed'), 
+        variant: "destructive" 
+      });
     } else {
-      toast({ title: "Success", description: `Podcast ${newStatus}` });
+      toast({ 
+        title: translate('toasts.success.generic'), 
+        description: translate('admin.media.podcastStatus').replace('{status}', newStatus) 
+      });
       refetch();
     }
   };
@@ -62,9 +71,16 @@ export default function Podcasts() {
       .eq('id', id);
 
     if (error) {
-      toast({ title: "Error", description: "Failed to delete podcast", variant: "destructive" });
+      toast({ 
+        title: translate('payment.error'), 
+        description: translate('admin.media.deleteFailed'), 
+        variant: "destructive" 
+      });
     } else {
-      toast({ title: "Success", description: "Podcast deleted" });
+      toast({ 
+        title: translate('toasts.success.generic'), 
+        description: translate('admin.media.podcastDeleted') 
+      });
       refetch();
     }
   };
@@ -86,8 +102,8 @@ export default function Podcasts() {
       
       <div className="p-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Podcast Management</h1>
-          <p className="text-muted-foreground">Review and moderate podcast uploads</p>
+          <h1 className="text-3xl font-bold mb-2">{translate('admin.media.podcastManagement')}</h1>
+          <p className="text-muted-foreground">{translate('admin.media.podcastManagementDesc')}</p>
         </div>
 
         {/* Filters */}
@@ -98,7 +114,7 @@ export default function Podcasts() {
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input 
-                    placeholder="Search podcasts..." 
+                    placeholder={translate('admin.media.searchPodcasts')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-9"
@@ -107,14 +123,14 @@ export default function Podcasts() {
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={translate('admin.media.filterByStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                  <SelectItem value="flagged">Flagged</SelectItem>
+                  <SelectItem value="all">{translate('admin.media.allStatus')}</SelectItem>
+                  <SelectItem value="pending">{translate('admin.media.pending')}</SelectItem>
+                  <SelectItem value="approved">{translate('admin.media.approved')}</SelectItem>
+                  <SelectItem value="rejected">{translate('admin.media.rejected')}</SelectItem>
+                  <SelectItem value="flagged">{translate('admin.media.flagged')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
