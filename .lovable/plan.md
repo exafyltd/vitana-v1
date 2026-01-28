@@ -1,312 +1,324 @@
 
-# Complete German i18n Translation — All UI Components
+# Global i18n Enforcement + Sweep for Business/Profile/Index
 
-## Executive Summary
+## Problem Summary
 
-This plan systematically translates ALL remaining hardcoded English strings across the application to ensure 100% German localization when German is selected. The scope includes popups, cards, helper text, empty states, segmented tabs, buttons, subtitles, dialog titles, form labels, placeholders, toast messages, and table headers.
+When German is selected, mixed English/German text appears across Business Hub, Profile, and Index pages. The following hardcoded English strings were identified:
 
----
+### Business Hub Components (14 files, ~80 strings)
 
-## Categories of Remaining Hardcoded Strings
-
-### 1. Portal/Auth Pages (4 files) — HIGH PRIORITY
-All tenant portal pages have hardcoded English:
-
-| File | Hardcoded Strings |
+| File | Hardcoded English |
 |------|-------------------|
-| `MaxinaPortal.tsx` | "Sign In", "Join Maxina", "Email", "Password", "Keep me logged in", "Forgot password?", "Signing in…", "Or continue with", "Welcome back to Maxina.", "Sign in to continue your journey.", "Full Name", "Your full name", "I am joining as:", "Community", "Patient", "Pro", "Admin", "Join the Maxina community.", "Create your account and begin your journey." |
-| `AlkalmaPortal.tsx` | "Sign In", "Join AlKalma", "Email", "Password", etc. |
-| `EarthlinksPortal.tsx` | "Sign In", "Join Earthlinks", "Email", "Password", etc. |
-| `CommunityPortal.tsx` | "Sign In", "Join Community", "Email", "Password", etc. |
+| `BusinessAcceleratorCenterCTA.tsx` | "Ready to earn with VITANA?", "Choose a path and we'll guide you...", "Start earning", "How do you want to earn?", "Pick one — you can always do the others later", "Create an Event", "Host your own event and sell tickets.", "Add Events to Inventory", "Resell curated events and earn commission.", "Create a Service", "Offer sessions people can book.", "Create a Promotion", "Boost visibility and share to social." |
+| `MobileEarningPortal.tsx` | Same as above (mobile version) + "Host & sell tickets", "Resell & earn", "Offer bookings", "Boost visibility", "Pick one — you can explore others later" |
+| `EarningsHistoryLedger.tsx` | "All", "Direct Sales", "Reseller", "No earnings history yet", "Start selling to see your transactions here", "Tickets Sold", "Gross Amount", "You Earned", "Status", "Paid to Wallet", "Pending Payout", "Transaction ID", "View in Wallet", "Last 30 Days", "Last 7 Days", "Last 90 Days", "Details", "Close" |
+| `EarningsActivityFeed.tsx` | "Earnings Activity", "View in Wallet", "All", "Direct Sales", "Reseller", "Loading...", "No earnings yet. Start selling to see activity here." |
+| `EarningsBySourceCards.tsx` | "Tickets Sold", "Reseller Commissions" |
+| `BusinessHubKPICards.tsx` | "Revenue", "This month", "Active Clients", "Total active", "Upcoming Sessions", "This week", "Top Performer", "No data yet", "Create a service to get started.", "bookings" |
+| `ResellerHeader.tsx` | "Upcoming Events", "Next:", "Reseller code", "Tickets Sold", "Last 30 days", "Revenue", "Top Performer", "No sales yet", "Share a link to start earning.", "tickets" |
+| `ResellerSalesTab.tsx` | "No sales yet", "Share your reseller links or create a promotion to start earning commissions.", "Share reseller link", "Create promotion", "Select an event to share", "Pick an event to generate your reseller link", "No events available to sell", "commission", "All time", "Last 30 days", "Last 7 days", "Transfer to Wallet", "Attributed Sales by Event", "No sales match the current filters", "Commission Earned", "Pending Payout", "In Wallet", "Last Payout", "No payouts yet", "View in Wallet", "Mock data active" |
+| `TransferToWalletDialog.tsx` | "Transfer to Wallet", "Transfer your pending reseller commissions to your VITANA Wallet.", "Pending", "Wallet", "This will credit your earnings instantly to your wallet balance.", "Cancel", "Transferring...", "Transfer" |
+| `OrganizerEventSalesSheet.tsx` | "Tickets Sold" |
 
-### 2. Campaign & Sharing Dialogs (3 files)
-| File | Hardcoded Strings |
+### Profile Components (2 files, ~8 strings)
+
+| File | Hardcoded English |
 |------|-------------------|
-| `DeleteCampaignDialog.tsx` | "Delete Campaign?", "Deleting ... will permanently remove all related drafts and analytics.", "Don't ask me again for draft campaigns", "Cancel", "Delete Permanently" |
-| `CampaignCreationHeader.tsx` | "Create Campaign", "Step X of 4", "Your Campaigns", "drafts", "live", "Pro Tip", all step tips |
+| `MobileAutopilotBanner.tsx` | "Polish your bio, archetype & showcase", "Try" |
+| `MobileIdentityCard.tsx` | "Vitana Index", "Based on activity, health engagement & contribution", "View my Longevity ID" |
 
-### 3. Admin Tabs & Table Headers (5+ files)
-| File | Hardcoded Strings |
+### Reseller/Toast Components (2 files)
+
+| File | Hardcoded English |
 |------|-------------------|
-| `Groups.tsx` (admin) | "All Groups", "Pending", "Approved", "Flagged", "Rejected", "Loading groups...", "No groups found", "Group Name", "Category", "Members", "Privacy", "Status", "Actions" |
-| `CommunityRoomsAdmin.tsx` | "Active Rooms", "Scheduled", "Analytics", "Moderation" |
-| `UserManagement.tsx` | Role labels, "Community Member", "Patient", etc., dialog buttons |
-
-### 4. Popup Tabs & Actions (10+ files)
-| File | Hardcoded Strings |
-|------|-------------------|
-| `CreatePackagePopup.tsx` | "Details", "Data Types", "Timeline", "Sharing", "Create Health Data Package", "Package Information" |
-| `ManageMyActionsPopup.tsx` | "Pending", "New Action", "Prioritize", "Pending Actions", "Confirm All", "Snooze All" |
-| `ReactionPopover.tsx` | "Reactions" |
-| `AttachmentMenu.tsx` | "Attach" |
-| `SoundscapeControl.tsx` | "Volume" |
-
-### 5. Empty States (33+ files)
-Common patterns found:
-- "No apps found matching your search."
-- "No events found"
-- "No contacts found"
-- "No groups found"
-- "No results found"
-- "No reports found"
-- "No users found"
-
-### 6. Loading States (17+ files)
-- "Loading..."
-- "Uploading..."
-- "Uploading... {progress}%"
-- "Loading groups..."
-- "Loading messages..."
-
-### 7. Dialog Buttons (70+ occurrences)
-- "Cancel" (70 files)
-- "Confirm", "Delete", "Save", "Apply", "Close"
-- "Reschedule", "Add Notes"
-
-### 8. Toast Messages with Hardcoded Strings (37+ files)
-Pattern: `toast({ title: "Error", description: "..." })`
-- "Error", "Success", "Failed to...", "Search Error"
-- All payment toasts, conversation toasts, etc.
-
-### 9. Placeholders (247+ files)
-- `placeholder="Search..."`
-- `placeholder="Enter your..."` 
-- `placeholder="e.g., ..."`
-
-### 10. SEO & StandardHeader Descriptions (199+ files)
-- `title="Settings"`, `description="Manage your account..."`
-- All page-level metadata
+| `ResellerHeader.tsx` | `toast.success("Reseller code copied!")` |
 
 ---
 
 ## Implementation Plan
 
-### Phase 1: Expand Translation Files (~300 new keys)
+### Phase 1: Expand Translation Files (~100 new keys)
 
-Add comprehensive keys to cover all discovered gaps:
+Add comprehensive keys to `src/i18n/de.json` and `src/i18n/en.json`:
 
 ```json
 {
-  "portals": {
-    "maxina": {
-      "title": "Maxina Gesundheitsplattform",
-      "signIn": "Anmelden",
-      "joinMaxina": "Maxina beitreten",
-      "welcomeBack": "Willkommen zurück bei Maxina.",
-      "continueJourney": "Melden Sie sich an, um Ihre Reise fortzusetzen.",
-      "joinCommunity": "Treten Sie der Maxina-Community bei.",
-      "createAccount": "Erstellen Sie Ihr Konto und beginnen Sie Ihre Reise.",
-      "signingIn": "Wird angemeldet…",
-      "joiningAs": "Ich trete bei als:",
-      "roles": {
-        "community": "Community",
-        "patient": "Patient",
-        "professional": "Pro",
-        "admin": "Admin"
-      }
+  "business": {
+    "earning": {
+      "readyToEarn": "Bereit, mit VITANA zu verdienen?",
+      "choosePathGuide": "Wählen Sie einen Weg und wir führen Sie zu Ihrem ersten Einkommensstrom.",
+      "startEarning": "Jetzt verdienen",
+      "howToEarn": "Wie möchten Sie verdienen?",
+      "pickOne": "Wählen Sie eine Option — Sie können die anderen später erkunden.",
+      "createEvent": "Event erstellen",
+      "createEventDesc": "Veranstalten Sie Ihr eigenes Event und verkaufen Sie Tickets.",
+      "addToInventory": "Events zum Inventar hinzufügen",
+      "addToInventoryDesc": "Kuratierte Events weiterverkaufen und Provision verdienen.",
+      "createService": "Service erstellen",
+      "createServiceDesc": "Bieten Sie buchbare Sitzungen an.",
+      "createPromotion": "Promotion erstellen",
+      "createPromotionDesc": "Sichtbarkeit erhöhen und in sozialen Medien teilen.",
+      "hostAndSell": "Veranstalten & Tickets verkaufen",
+      "resellAndEarn": "Weiterverkaufen & verdienen",
+      "offerBookings": "Buchungen anbieten",
+      "boostVisibility": "Sichtbarkeit erhöhen"
     },
-    "alkalma": { "joinAlkalma": "AlKalma beitreten", ... },
-    "earthlinks": { "joinEarthlinks": "Earthlinks beitreten", ... },
-    "community": { "joinCommunity": "Community beitreten", ... }
-  },
-  "campaigns": {
-    "delete": {
-      "title": "Kampagne löschen?",
-      "description": "Das Löschen von \"{name}\" wird alle zugehörigen Entwürfe und Analysen dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
-      "dontAskAgain": "Bei Entwürfen nicht mehr fragen",
-      "deletePermanently": "Dauerhaft löschen"
+    "history": {
+      "all": "Alle",
+      "directSales": "Direktverkäufe",
+      "reseller": "Wiederverkäufer",
+      "noEarningsYet": "Noch keine Einnahmen",
+      "startSellingToSee": "Beginnen Sie mit dem Verkauf, um Ihre Transaktionen hier zu sehen",
+      "ticketsSold": "Tickets verkauft",
+      "grossAmount": "Bruttobetrag",
+      "youEarned": "Sie haben verdient",
+      "paidToWallet": "An Wallet gezahlt",
+      "pendingPayout": "Ausstehende Auszahlung",
+      "transactionId": "Transaktions-ID",
+      "viewInWallet": "Im Wallet anzeigen",
+      "last7Days": "Letzte 7 Tage",
+      "last30Days": "Letzte 30 Tage",
+      "last90Days": "Letzte 90 Tage",
+      "allTime": "Gesamte Zeit",
+      "details": "Details",
+      "close": "Schließen",
+      "earningsActivity": "Einnahmen-Aktivität",
+      "noEarningsStartSelling": "Noch keine Einnahmen. Beginnen Sie mit dem Verkauf, um hier Aktivitäten zu sehen."
     },
-    "creation": {
-      "title": "Kampagne erstellen",
-      "stepOf": "Schritt {current} von {total}",
-      "yourCampaigns": "Ihre Kampagnen",
-      "drafts": "Entwürfe",
-      "live": "Live",
-      "proTip": "Profi-Tipp",
-      "tips": {
-        "1": "Klare Namen helfen Ihnen, Kampagnen später zu finden",
-        "2": "Verbinden Sie Kanäle jetzt für sofortige Planung",
-        "3": "Die Launch-Vorlage funktioniert für die meisten Ankündigungen",
-        "4": "Intelligente Planung verwendet Ihre bisherigen Engagement-Daten"
-      }
-    }
-  },
-  "adminTabs": {
-    "groups": {
-      "all": "Alle Gruppen",
+    "kpi": {
+      "revenue": "Umsatz",
+      "thisMonth": "Diesen Monat",
+      "activeClients": "Aktive Kunden",
+      "totalActive": "Gesamt aktiv",
+      "upcomingSessions": "Kommende Sitzungen",
+      "thisWeek": "Diese Woche",
+      "topPerformer": "Top-Performer",
+      "noDataYet": "Noch keine Daten",
+      "createServiceToStart": "Erstellen Sie einen Service, um loszulegen.",
+      "bookings": "Buchungen"
+    },
+    "reseller": {
+      "upcomingEvents": "Kommende Events",
+      "next": "Nächste",
+      "resellerCode": "Wiederverkäufer-Code",
+      "codeCopied": "Wiederverkäufer-Code kopiert!",
+      "noSalesYet": "Noch keine Verkäufe",
+      "shareLinkToStart": "Teilen Sie einen Link, um zu verdienen.",
+      "tickets": "Tickets",
+      "shareResellerLink": "Wiederverkäufer-Link teilen",
+      "createPromotion": "Promotion erstellen",
+      "shareLinkOrPromotion": "Teilen Sie Ihre Wiederverkäufer-Links oder erstellen Sie eine Promotion, um Provisionen zu verdienen.",
+      "selectEventToShare": "Event zum Teilen auswählen",
+      "pickEventForLink": "Wählen Sie ein Event, um Ihren Wiederverkäufer-Link zu generieren",
+      "noEventsToSell": "Keine Events zum Verkauf verfügbar",
+      "commission": "Provision",
+      "commissionEarned": "Verdiente Provision",
+      "inWallet": "Im Wallet",
+      "lastPayout": "Letzte Auszahlung",
+      "noPayoutsYet": "Noch keine Auszahlungen",
+      "attributedSales": "Zugeordnete Verkäufe nach Event",
+      "noSalesMatchFilter": "Keine Verkäufe entsprechen den aktuellen Filtern",
+      "mockDataActive": "Mock-Daten aktiv"
+    },
+    "transfer": {
+      "title": "An Wallet übertragen",
+      "description": "Übertragen Sie Ihre ausstehenden Wiederverkäufer-Provisionen auf Ihr VITANA Wallet.",
       "pending": "Ausstehend",
-      "approved": "Genehmigt",
-      "flagged": "Markiert",
-      "rejected": "Abgelehnt"
-    },
-    "rooms": {
-      "active": "Aktive Räume",
-      "scheduled": "Geplant",
-      "analytics": "Analytik",
-      "moderation": "Moderation"
+      "wallet": "Wallet",
+      "instantCredit": "Dies wird Ihre Einnahmen sofort auf Ihr Wallet-Guthaben gutschreiben.",
+      "transferring": "Wird übertragen...",
+      "transfer": "Übertragen"
     }
   },
-  "tableHeaders": {
-    "groupName": "Gruppenname",
-    "category": "Kategorie",
-    "members": "Mitglieder",
-    "privacy": "Datenschutz",
-    "status": "Status",
-    "actions": "Aktionen"
-  },
-  "popupTabs": {
-    "details": "Details",
-    "dataTypes": "Datentypen",
-    "timeline": "Zeitachse",
-    "sharing": "Teilen",
-    "pending": "Ausstehend",
-    "newAction": "Neue Aktion",
-    "prioritize": "Priorisieren"
-  },
-  "popupTitles": {
-    "createHealthDataPackage": "Gesundheitsdatenpaket erstellen",
-    "packageInformation": "Paketinformationen",
-    "reactions": "Reaktionen",
-    "attach": "Anhängen",
-    "volume": "Lautstärke"
-  },
-  "actionButtons": {
-    "confirmAll": "Alle bestätigen",
-    "snoozeAll": "Alle verschieben",
-    "reschedule": "Neu planen",
-    "addNotes": "Notizen hinzufügen",
-    "changePlan": "Plan ändern",
-    "cancelSubscription": "Abonnement kündigen"
-  },
-  "formLabels": {
-    "fullName": "Vollständiger Name",
-    "yourFullName": "Ihr vollständiger Name",
-    "actionTitle": "Aktionstitel",
-    "actionTitlePlaceholder": "z.B. Abendspaziergang, Arzt anrufen",
-    "optionalNotes": "Optionale Notizen",
-    "additionalDetails": "Zusätzliche Details oder Kontext..."
-  },
-  "empty": {
-    "noAppsFound": "Keine Apps gefunden, die Ihrer Suche entsprechen.",
-    "noEventsFound": "Keine Veranstaltungen gefunden",
-    "noContactsFound": "Keine Kontakte gefunden",
-    "noContactsFoundMatching": "Keine Kontakte gefunden, die \"{query}\" entsprechen",
-    "noGroupsFound": "Keine Gruppen gefunden",
-    "noResultsFound": "Keine Ergebnisse gefunden",
-    "noReportsFound": "Keine Berichte gefunden",
-    "noUsersFound": "Keine Benutzer gefunden",
-    "noTransactionsFound": "Keine Transaktionen gefunden",
-    "noEventsYet": "Noch keine Veranstaltungen. Erstellen Sie zuerst eine Veranstaltung.",
-    "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen"
-  },
-  "loading": {
-    "default": "Wird geladen...",
-    "groups": "Gruppen werden geladen...",
-    "messages": "Nachrichten werden geladen...",
-    "uploading": "Wird hochgeladen...",
-    "uploadingProgress": "Wird hochgeladen... {progress}%"
+  "profile": {
+    "autopilot": {
+      "polishBio": "Bio, Archetyp & Showcase verbessern",
+      "try": "Ausprobieren"
+    },
+    "identity": {
+      "vitanaIndex": "Vitana Index",
+      "basedOnActivity": "Basierend auf Aktivität, Gesundheitsengagement & Beitrag",
+      "viewLongevityId": "Meine Langlebigkeits-ID anzeigen"
+    }
   }
 }
 ```
 
-### Phase 2: Refactor Portal Pages (4 files)
+### Phase 2: Refactor Business Hub Earning CTAs (2 files)
 
-**Pattern for MaxinaPortal.tsx:**
+**BusinessAcceleratorCenterCTA.tsx:**
+```typescript
+import { useTranslation } from '@/hooks/useTranslation';
+
+// Inside component:
+const { translate } = useTranslation();
+
+const earningOptions: EarningOption[] = [
+  {
+    id: "create-event",
+    icon: <Calendar className="h-6 w-6" />,
+    title: translate('business.earning.createEvent'),
+    description: translate('business.earning.createEventDesc'),
+    action: onCreateEvent,
+  },
+  // ... similar for other options
+];
+
+// JSX updates:
+<h2>{translate('business.earning.readyToEarn')}</h2>
+<p>{translate('business.earning.choosePathGuide')}</p>
+<Button>{translate('business.earning.startEarning')}</Button>
+<DialogTitle>{translate('business.earning.howToEarn')}</DialogTitle>
+<DialogDescription>{translate('business.earning.pickOne')}</DialogDescription>
+```
+
+**MobileEarningPortal.tsx:**
+Same pattern with mobile-specific copy keys.
+
+### Phase 3: Refactor Earnings Ledger & Activity (2 files)
+
+**EarningsHistoryLedger.tsx:**
 ```typescript
 const { translate } = useTranslation();
 
-<TabsTrigger value="signin">{translate('authPage.signIn')}</TabsTrigger>
-<TabsTrigger value="signup">{translate('portals.maxina.joinMaxina')}</TabsTrigger>
-<Label>{translate('authPage.email')}</Label>
-<Label>{translate('authPage.password')}</Label>
-<CardTitle>{translate('portals.maxina.welcomeBack')}</CardTitle>
-<CardDescription>{translate('portals.maxina.continueJourney')}</CardDescription>
+const filters = [
+  { value: "all", label: translate('business.history.all') },
+  { value: "direct_sale", label: translate('business.history.directSales') },
+  { value: "reseller_commission", label: translate('business.history.reseller') },
+];
+
+const getDateRangeLabel = (range: string) => {
+  switch (range) {
+    case "30d": return translate('business.history.last30Days');
+    case "7d": return translate('business.history.last7Days');
+    case "90d": return translate('business.history.last90Days');
+    default: return range;
+  }
+};
+
+// Empty state:
+<p>{translate('business.history.noEarningsYet')}</p>
+<p>{translate('business.history.startSellingToSee')}</p>
 ```
 
-### Phase 3: Refactor Campaign Dialogs (2 files)
+**EarningsActivityFeed.tsx:**
+```typescript
+const { translate } = useTranslation();
 
-**DeleteCampaignDialog.tsx:**
+<CardTitle>{translate('business.history.earningsActivity')}</CardTitle>
+<Button>{translate('business.history.viewInWallet')}</Button>
+// Empty state:
+<div>{translate('business.history.noEarningsStartSelling')}</div>
+```
+
+### Phase 4: Refactor KPI Cards (2 files)
+
+**BusinessHubKPICards.tsx:**
+```typescript
+const { translate } = useTranslation();
+
+<p>{translate('business.kpi.revenue')}</p>
+<p>{translate('business.kpi.thisMonth')}</p>
+<p>{translate('business.kpi.activeClients')}</p>
+<p>{translate('business.kpi.totalActive')}</p>
+<p>{translate('business.kpi.upcomingSessions')}</p>
+<p>{translate('business.kpi.thisWeek')}</p>
+<p>{translate('business.kpi.topPerformer')}</p>
+<p>{translate('business.kpi.noDataYet')}</p>
+<p>{translate('business.kpi.createServiceToStart')}</p>
+<span>{stats.topPerformer.bookings} {translate('business.kpi.bookings')}</span>
+```
+
+**ResellerHeader.tsx:**
+```typescript
+const { translate } = useTranslation();
+
+<p>{translate('business.reseller.upcomingEvents')}</p>
+<p>{translate('business.reseller.next')}: {format(...)}</p>
+<span>{translate('business.reseller.resellerCode')}</span>
+<p>{translate('business.kpi.ticketsSold')}</p>
+<p>{translate('business.history.last30Days')}</p>
+<p>{translate('business.kpi.revenue')}</p>
+<p>{translate('business.reseller.topPerformer')}</p>
+<p>{translate('business.reseller.noSalesYet')}</p>
+<p>{translate('business.reseller.shareLinkToStart')}</p>
+
+// Toast:
+toast.success(translate('business.reseller.codeCopied'));
+```
+
+### Phase 5: Refactor Reseller Sales Tab & Transfer Dialog (2 files)
+
+**ResellerSalesTab.tsx:**
+```typescript
+const { translate } = useTranslation();
+
+// Empty state:
+<h3>{translate('business.reseller.noSalesYet')}</h3>
+<p>{translate('business.reseller.shareLinkOrPromotion')}</p>
+<Button>{translate('business.reseller.shareResellerLink')}</Button>
+<Button>{translate('business.reseller.createPromotion')}</Button>
+
+// Dialog:
+<DialogTitle>{translate('business.reseller.selectEventToShare')}</DialogTitle>
+<DialogDescription>{translate('business.reseller.pickEventForLink')}</DialogDescription>
+<p>{translate('business.reseller.noEventsToSell')}</p>
+
+// KPI labels:
+<p>{translate('business.reseller.commissionEarned')}</p>
+<p>{translate('business.history.pendingPayout')}</p>
+<p>{translate('business.reseller.inWallet')}</p>
+<p>{translate('business.reseller.lastPayout')}</p>
+<p>{translate('business.reseller.noPayoutsYet')}</p>
+
+// Time range filters:
+const timeRangeOptions = [
+  { value: "all", label: translate('business.history.allTime') },
+  { value: "30d", label: translate('business.history.last30Days') },
+  { value: "7d", label: translate('business.history.last7Days') },
+];
+
+<Button>{translate('business.transfer.title')}</Button>
+<h3>{translate('business.reseller.attributedSales')}</h3>
+<p>{translate('business.reseller.noSalesMatchFilter')}</p>
+```
+
+**TransferToWalletDialog.tsx:**
 ```typescript
 const { translate } = useTranslation();
 
 <ResponsiveConfirmDialogTitle>
-  {translate('campaigns.delete.title')}
+  {translate('business.transfer.title')}
 </ResponsiveConfirmDialogTitle>
-<ResponsiveConfirmDialogDescription>
-  {applyReplacements(translate('campaigns.delete.description'), { name: campaignName })}
-</ResponsiveConfirmDialogDescription>
-<Label>{translate('campaigns.delete.dontAskAgain')}</Label>
+<p>{translate('business.transfer.description')}</p>
+<p>{translate('business.transfer.pending')}</p>
+<p>{translate('business.transfer.wallet')}</p>
+<p>{translate('business.transfer.instantCredit')}</p>
 <ResponsiveConfirmDialogCancel>{translate('buttons.cancel')}</ResponsiveConfirmDialogCancel>
-<ResponsiveConfirmDialogAction>{translate('campaigns.delete.deletePermanently')}</ResponsiveConfirmDialogAction>
+{isLoading ? translate('business.transfer.transferring') : translate('business.transfer.transfer')}
 ```
 
-### Phase 4: Refactor Admin Tabs (5+ files)
+### Phase 6: Refactor Profile Components (2 files)
 
-**Groups.tsx pattern:**
+**MobileAutopilotBanner.tsx:**
 ```typescript
+import { useTranslation } from '@/hooks/useTranslation';
+
 const { translate } = useTranslation();
 
-<TabsTrigger value="all">{translate('adminTabs.groups.all')}</TabsTrigger>
-<TabsTrigger value="pending">{translate('adminTabs.groups.pending')}</TabsTrigger>
-// Table headers
-<TableHead>{translate('tableHeaders.groupName')}</TableHead>
-<TableHead>{translate('tableHeaders.category')}</TableHead>
-// Empty state
-<p>{translate('empty.noGroupsFound')}</p>
-// Loading state
-<div>{translate('loading.groups')}</div>
+<p>{translate('profile.autopilot.polishBio')}</p>
+<Button>{translate('profile.autopilot.try')}</Button>
 ```
 
-### Phase 5: Refactor Popup Components (10+ files)
-
-**CreatePackagePopup.tsx:**
+**MobileIdentityCard.tsx:**
 ```typescript
-<DialogTitle>{translate('popupTitles.createHealthDataPackage')}</DialogTitle>
-<TabsTrigger value="details">{translate('popupTabs.details')}</TabsTrigger>
-<TabsTrigger value="data">{translate('popupTabs.dataTypes')}</TabsTrigger>
-```
+import { useTranslation } from '@/hooks/useTranslation';
 
-**ManageMyActionsPopup.tsx:**
-```typescript
-<TabsTrigger value="pending">{translate('popupTabs.pending')}</TabsTrigger>
-<Button>{translate('actionButtons.confirmAll')}</Button>
-<Button>{translate('actionButtons.snoozeAll')}</Button>
-```
+const { translate } = useTranslation();
 
-### Phase 6: Refactor Cancel Buttons (11 files)
-
-All `ResponsiveConfirmDialogCancel>Cancel<` instances:
-```typescript
-<ResponsiveConfirmDialogCancel>
-  {translate('buttons.cancel')}
-</ResponsiveConfirmDialogCancel>
-```
-
-Files: `LiveRooms.tsx`, `UserManagement.tsx`, `LiveRoomDrawer.tsx`, `ContactListItem.tsx`, `MediaHub.tsx`, `ConversationCard.tsx`, `ActivityCard.tsx`, `ProfileDrawer.tsx`, `Appointments.tsx`, `DoctorsCoaches.tsx`, `Billing.tsx`
-
-### Phase 7: Refactor Empty States (33+ files)
-
-Convert to `I18nEmptyState` component or use `translate()`:
-```typescript
-// Before
-<p className="text-muted-foreground">No groups found</p>
-
-// After
-<p className="text-muted-foreground">{translate('empty.noGroupsFound')}</p>
-```
-
-### Phase 8: Refactor Toast Messages (37+ files)
-
-Convert all hardcoded toast calls:
-```typescript
-// Before
-toast({ title: "Error", description: "Failed to search users" });
-
-// After
-toast({ 
-  title: translate('toasts.error.generic'), 
-  description: translate('toasts.error.searchFailed') 
-});
+<span>{translate('profile.identity.vitanaIndex')}</span>
+<p>{translate('profile.identity.basedOnActivity')}</p>
+<Button>{translate('profile.identity.viewLongevityId')}</Button>
 ```
 
 ---
@@ -316,120 +328,111 @@ toast({
 ### Translation Files
 | File | Changes |
 |------|---------|
-| `src/i18n/de.json` | +300 new keys |
-| `src/i18n/en.json` | +300 new keys |
+| `src/i18n/de.json` | +100 new keys under `business.*` and `profile.*` |
+| `src/i18n/en.json` | +100 new keys (English equivalents) |
 
-### Portal Pages (4 files)
-- `src/pages/portals/MaxinaPortal.tsx`
-- `src/pages/portals/AlkalmaPortal.tsx`
-- `src/pages/portals/EarthlinksPortal.tsx`
-- `src/pages/portals/CommunityPortal.tsx`
+### Business Hub Components (10 files)
+| File | Key Changes |
+|------|-------------|
+| `src/components/business/BusinessAcceleratorCenterCTA.tsx` | All earning CTA text |
+| `src/components/business/MobileEarningPortal.tsx` | Mobile earning portal text |
+| `src/components/business/EarningsHistoryLedger.tsx` | Filters, empty states, labels |
+| `src/components/business/EarningsActivityFeed.tsx` | Title, filters, empty state |
+| `src/components/business/EarningsBySourceCards.tsx` | Card labels |
+| `src/components/business/BusinessHubKPICards.tsx` | KPI labels, empty states |
+| `src/components/reseller/ResellerHeader.tsx` | KPI labels, toast message |
+| `src/components/reseller/ResellerSalesTab.tsx` | Empty states, filters, dialogs, KPI labels |
+| `src/components/reseller/TransferToWalletDialog.tsx` | Dialog title, description, buttons |
+| `src/components/business/OrganizerEventSalesSheet.tsx` | KPI labels |
 
-### Campaign Components (2 files)
-- `src/components/sharing/DeleteCampaignDialog.tsx`
-- `src/components/sharing/CampaignCreationHeader.tsx`
-
-### Admin Pages (5 files)
-- `src/pages/admin/community/Groups.tsx`
-- `src/pages/admin/CommunityRoomsAdmin.tsx`
-- `src/pages/admin/UserManagement.tsx`
-- `src/pages/admin/community/ReportedContent.tsx`
-- `src/pages/admin/Dashboard.tsx`
-
-### Popup Components (10 files)
-- `src/components/CreatePackagePopup.tsx`
-- `src/components/ManageMyActionsPopup.tsx`
-- `src/components/messages/ReactionPopover.tsx`
-- `src/components/messages/AttachmentMenu.tsx`
-- `src/components/audio/SoundscapeControl.tsx`
-- `src/components/NewConversationPopup.tsx`
-- `src/components/SmartPackagePopup.tsx`
-- `src/components/ConnectAppPopup.tsx`
-- `src/components/contacts/ContactsTabContent.tsx`
-- `src/components/sharing/EditPackageDialog.tsx`
-
-### Dialog/Confirm Components (11 files)
-- `src/pages/community/LiveRooms.tsx`
-- `src/pages/community/MediaHub.tsx`
-- `src/components/liverooms/LiveRoomDrawer.tsx`
-- `src/components/contacts/ContactListItem.tsx`
-- `src/components/memory/ConversationCard.tsx`
-- `src/components/memory/ActivityCard.tsx`
-- `src/components/profile/ProfileDrawer.tsx`
-- `src/pages/patient/Appointments.tsx`
-- `src/pages/discover/DoctorsCoaches.tsx`
-- `src/pages/settings/Billing.tsx`
-- `src/pages/admin/UserManagement.tsx`
-
-### Empty State Components (15+ files)
-- `src/components/ai-feed/VisualHistoryTimeline.tsx`
-- `src/pages/Search.tsx`
-- `src/components/crossover/GroupMatchCard.tsx`
-- `src/components/events/ContactPicker.tsx`
-- `src/pages/settings/TenantRole.tsx`
-- And 10+ more
-
-### Toast Message Files (20+ files)
-- `src/components/payment/GlobalPaymentRequest.tsx`
-- `src/components/payment/PaymentRequestPopup.tsx`
-- `src/components/NewConversationPopup.tsx`
-- `src/components/calendar/EnhancedCalendarPopup.tsx`
-- And 16+ more
+### Profile Components (2 files)
+| File | Key Changes |
+|------|-------------|
+| `src/components/profile/mobile/MobileAutopilotBanner.tsx` | Banner text and button |
+| `src/components/profile/mobile/MobileIdentityCard.tsx` | Index label and button |
 
 ---
 
 ## New Translation Key Structure
 
 ```text
-├── portals.*              # Portal-specific (Maxina, AlKalma, etc.)
-├── campaigns.*            # Campaign creation/deletion
-│   ├── delete.*
-│   └── creation.*
-├── adminTabs.*            # Admin section tabs
-│   ├── groups.*
-│   └── rooms.*
-├── tableHeaders.*         # All table column headers
-├── popupTabs.*            # Popup internal tabs
-├── popupTitles.*          # Popup dialog titles
-├── actionButtons.*        # Action button labels
-├── formLabels.*           # Form field labels
-├── empty.*                # All empty state messages
-├── loading.*              # All loading state messages
-└── (existing keys...)
+business/
+├── earning/           # Earning portal CTAs
+│   ├── readyToEarn
+│   ├── choosePathGuide
+│   ├── startEarning
+│   ├── howToEarn
+│   ├── pickOne
+│   ├── createEvent / createEventDesc
+│   ├── addToInventory / addToInventoryDesc
+│   ├── createService / createServiceDesc
+│   └── createPromotion / createPromotionDesc
+├── history/           # Earnings ledger and activity
+│   ├── all / directSales / reseller
+│   ├── noEarningsYet / startSellingToSee
+│   ├── ticketsSold / grossAmount / youEarned
+│   ├── paidToWallet / pendingPayout
+│   ├── viewInWallet / transactionId
+│   ├── last7Days / last30Days / last90Days / allTime
+│   └── earningsActivity / noEarningsStartSelling
+├── kpi/               # KPI card labels
+│   ├── revenue / thisMonth
+│   ├── activeClients / totalActive
+│   ├── upcomingSessions / thisWeek
+│   ├── topPerformer / noDataYet
+│   └── createServiceToStart / bookings
+├── reseller/          # Reseller-specific
+│   ├── upcomingEvents / next / resellerCode
+│   ├── codeCopied / noSalesYet / shareLinkToStart
+│   ├── shareResellerLink / createPromotion
+│   ├── selectEventToShare / pickEventForLink
+│   ├── noEventsToSell / commission
+│   ├── commissionEarned / inWallet
+│   ├── lastPayout / noPayoutsYet
+│   ├── attributedSales / noSalesMatchFilter
+│   └── mockDataActive
+└── transfer/          # Transfer dialog
+    ├── title / description
+    ├── pending / wallet
+    ├── instantCredit
+    └── transferring / transfer
+
+profile/
+├── autopilot/
+│   ├── polishBio
+│   └── try
+└── identity/
+    ├── vitanaIndex
+    ├── basedOnActivity
+    └── viewLongevityId
 ```
 
 ---
 
-## Priority Order
+## Acceptance Criteria Checklist
 
-### Batch 1: User-Facing Critical (Do First)
-1. Portal pages (MaxinaPortal, etc.) — first thing users see
-2. Campaign dialogs — common user flow
-3. Cancel/Confirm buttons — appears everywhere
-
-### Batch 2: Common Components
-4. Popup tabs and titles
-5. Empty states
-6. Loading states
-
-### Batch 3: Admin & Backend
-7. Admin tabs and table headers
-8. Toast messages
-9. Form labels and placeholders
+- [ ] `BusinessAcceleratorCenterCTA.tsx` fully translated
+- [ ] `MobileEarningPortal.tsx` fully translated
+- [ ] `EarningsHistoryLedger.tsx` fully translated (filters, empty states, labels)
+- [ ] `EarningsActivityFeed.tsx` fully translated
+- [ ] `BusinessHubKPICards.tsx` fully translated
+- [ ] `ResellerHeader.tsx` fully translated (including toast)
+- [ ] `ResellerSalesTab.tsx` fully translated
+- [ ] `TransferToWalletDialog.tsx` fully translated
+- [ ] `MobileAutopilotBanner.tsx` fully translated
+- [ ] `MobileIdentityCard.tsx` fully translated
+- [ ] Navigate Business Hub with DE selected → zero English UI text
+- [ ] Navigate Profile with DE selected → zero English UI text
+- [ ] Trigger empty states → zero English system text
+- [ ] All toasts display in German when German selected
+- [ ] Dev-mode missing key detection remains active (`[[missing:key]]`)
+- [ ] Only user-generated content remains in original language
 
 ---
 
-## Acceptance Criteria
+## Technical Notes
 
-- [ ] All 4 portal pages fully translated
-- [ ] DeleteCampaignDialog fully translated
-- [ ] CampaignCreationHeader fully translated
-- [ ] All admin tabs translated
-- [ ] All table headers translated
-- [ ] All "Cancel" buttons use translation keys
-- [ ] All empty states use translation keys
-- [ ] All loading states use translation keys
-- [ ] All popup tabs/titles translated
-- [ ] Zero hardcoded English in any UI component
-- [ ] Switching to German shows 100% German text
-- [ ] Only user-generated content remains in original language
+- **Existing infrastructure**: The `useTranslation()` hook and translation files are already set up with dev-mode `[[missing:key]]` detection
+- **Pattern to follow**: Use `translate('key.path', 'English fallback')` for all visible text
+- **Toast localization**: Use `translate()` for toast messages, e.g., `toast.success(translate('business.reseller.codeCopied'))`
+- **Dynamic content**: For values like amounts, combine: `${translate('business.transfer.transfer')} ${formatCurrency(amount)}`
