@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from '@/hooks/useTranslation';
 import { format, isPast } from 'date-fns';
 import { 
   Package, 
@@ -59,6 +60,7 @@ export function MobileOrdersView({
   onRefresh 
 }: MobileOrdersViewProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<UnifiedMobileOrder | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -278,7 +280,7 @@ export function MobileOrdersView({
                   className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
                 >
                   <Plane className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Autopilot</span>
+                  <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
                 </Button>
               </>
             }

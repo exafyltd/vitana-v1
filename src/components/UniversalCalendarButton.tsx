@@ -5,6 +5,7 @@ import { NotificationBadge } from "@/components/ui/notification-badge";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useSidebarSafe } from "@/components/ui/sidebar";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -26,6 +27,7 @@ export function UniversalCalendarButton({
   const [calendarOpen, setCalendarOpen] = useState(false);
   const { events, getUpcomingEvents } = useCalendarEvents();
   const { open } = useSidebarSafe();
+  const { translate } = useTranslation();
   
   const upcomingEvents = getUpcomingEvents(10);
   const conflictCount = events.filter(e => e.status === 'conflict').length;
@@ -47,7 +49,7 @@ export function UniversalCalendarButton({
           className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 ${className}`}
         >
           <Calendar className="w-4 h-4" />
-          {showText && <span className="text-sm">Calendar</span>}
+          {showText && <span className="text-sm">{translate('actionBar.calendar', 'Calendar')}</span>}
         </Button>
         
         {/* Event count badge - positioned outside pill, z-index above */}

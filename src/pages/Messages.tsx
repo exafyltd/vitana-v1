@@ -50,10 +50,12 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { MobileConversationCard } from "@/components/messages/mobile/MobileConversationCard";
 import { MobileInboxEmptyState } from "@/components/messages/mobile/MobileInboxEmptyState";
 import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileConversationSkeleton";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
+  const { translate } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
@@ -892,7 +894,7 @@ export default function Messages() {
                         className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                       >
                         <Plane className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">Autopilot</span>
+                        <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
                         {pendingCount > 0 && (
                           <Badge 
                             variant="destructive" 

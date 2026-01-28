@@ -313,6 +313,13 @@
     "getStarted": "Get Started",
     "skip": "Skip for now"
   },
+  "actionBar": {
+    "search": "Search",
+    "calendar": "Calendar",
+    "giftVoucher": "Gift Voucher",
+    "autopilot": "Autopilot",
+    "vitanaIndex": "Vitana Index"
+  },
   "common": {
     "search": "Search",
     "save": "Save",

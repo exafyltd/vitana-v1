@@ -313,6 +313,13 @@
     "getStarted": "Loslegen",
     "skip": "Überspringen"
   },
+  "actionBar": {
+    "search": "Suchen",
+    "calendar": "Kalender",
+    "giftVoucher": "Gutschein",
+    "autopilot": "Autopilot",
+    "vitanaIndex": "Vitana Index"
+  },
   "common": {
     "search": "Suchen",
     "save": "Speichern",
