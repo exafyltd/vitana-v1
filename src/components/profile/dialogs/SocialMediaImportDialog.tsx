@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type Platform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -67,12 +68,13 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
   const [bioText, setBioText] = useState('');
   const [importing, setImporting] = useState(false);
   const { toast } = useToast();
+  const { translate } = useTranslation();
 
   const handleImport = async () => {
     if (!profileUrl.trim()) {
       toast({
-        title: 'URL Required',
-        description: `Please enter your ${platformName} profile URL`,
+        title: translate('socialImport.urlRequired', 'URL Required'),
+        description: translate('socialImport.urlRequiredDesc', 'Please enter your {platform} profile URL').replace('{platform}', platformName),
         variant: 'destructive'
       });
       return;
@@ -108,8 +110,8 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
       }
 
       toast({
-        title: 'Import Successful',
-        description: `Your ${platformName} profile has been imported and enriched with AI insights.`
+        title: translate('socialImport.importSuccess', 'Import Successful'),
+        description: translate('socialImport.importSuccessDesc', 'Your {platform} profile has been imported and enriched with AI insights.').replace('{platform}', platformName)
       });
 
       onOpenChange(false);
@@ -122,8 +124,8 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
     } catch (error: any) {
       console.error(`[SocialMediaImport] ${platformName} import error:`, error);
       toast({
-        title: 'Import Failed',
-        description: error.message || `Failed to import ${platformName} profile. Please try again.`,
+        title: translate('socialImport.importFailed', 'Import Failed'),
+        description: error.message || translate('socialImport.urlRequiredDesc', 'Please enter your {platform} profile URL').replace('{platform}', platformName),
         variant: 'destructive'
       });
     } finally {
@@ -137,16 +139,16 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {icon}
-            <span>Import {platformName} Profile</span>
+            <span>{translate('socialImport.dialogTitle', 'Import {platform} Profile').replace('{platform}', platformName)}</span>
           </DialogTitle>
           <DialogDescription>
-            Connect your {platformName} profile to enrich your Vitana identity with AI-powered insights.
+            {translate('socialImport.dialogDescription', 'Connect your {platform} profile to enrich your Vitana identity with AI-powered insights.').replace('{platform}', platformName)}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="profile-url">{platformName} Profile URL</Label>
+            <Label htmlFor="profile-url">{translate('socialImport.profileUrl', '{platform} Profile URL').replace('{platform}', platformName)}</Label>
             <Input
               id="profile-url"
               type="url"
@@ -159,7 +161,7 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
 
           <div className="space-y-2">
             <Label htmlFor="bio-text">
-              Bio / About Section <span className="text-muted-foreground">(Optional)</span>
+              {translate('socialImport.bioLabel', 'Bio / About Section')} <span className="text-muted-foreground">{translate('socialImport.bioOptional', '(Optional)')}</span>
             </Label>
             <Textarea
               id="bio-text"
@@ -171,7 +173,7 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
               className="resize-none"
             />
             <p className="text-xs text-muted-foreground">
-              {platformHelpTexts[platform]}
+              {translate(`socialImport.platformHelp.${platform}`, platformHelpTexts[platform])}
             </p>
           </div>
         </div>
@@ -182,16 +184,16 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
             onClick={() => onOpenChange(false)}
             disabled={importing}
           >
-            Cancel
+            {translate('socialImport.cancel', 'Cancel')}
           </Button>
           <Button onClick={handleImport} disabled={importing}>
             {importing ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Importing...
+                {translate('socialImport.importing', 'Importing...')}
               </>
             ) : (
-              'Import Profile'
+              translate('socialImport.importProfile', 'Import Profile')
             )}
           </Button>
         </div>
