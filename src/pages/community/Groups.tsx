@@ -13,6 +13,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from "react";
 
 import { communityNavigation } from "@/config/navigation";
@@ -23,6 +24,7 @@ export default function Groups() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const isMobile = useIsMobile();
   const { pendingCount } = useAutopilot();
+  const { translate } = useTranslation();
 
   return (
     <AppLayout>
@@ -52,7 +54,7 @@ export default function Groups() {
                 className="h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
               >
                 <Plus className="h-4 w-4" />
-                {!isMobile && <span>Create</span>}
+                {!isMobile && <span>{translate('buttons.create', 'Create')}</span>}
               </Button>
               
               {/* Vitana Index chip (mobile only) */}
