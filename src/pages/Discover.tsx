@@ -42,12 +42,14 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { UniversalShareButton } from '@/components/sharing/UniversalShareButton';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default withScreenId(function Discover() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { logActivity } = useActivityLogger();
   const { pendingCount } = useAutopilot();
+  const { translate } = useTranslation();
   const [activeTab, setActiveTab] = useState('suggested');
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -237,7 +239,7 @@ export default withScreenId(function Discover() {
                   className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                 >
                   <Plane className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Autopilot</span>
+                  <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
                   {pendingCount > 0 && (
                     <Badge 
                       variant="destructive" 

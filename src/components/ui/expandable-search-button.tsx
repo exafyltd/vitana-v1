@@ -3,6 +3,7 @@ import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ExpandableSearchButtonProps {
   placeholder?: string;
@@ -11,13 +12,14 @@ interface ExpandableSearchButtonProps {
 }
 
 export function ExpandableSearchButton({ 
-  placeholder = "Search…", 
+  placeholder, 
   onSearch,
   className 
 }: ExpandableSearchButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { translate } = useTranslation();
 
   // Auto-focus when expanded
   useEffect(() => {
@@ -58,7 +60,7 @@ export function ExpandableSearchButton({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={placeholder}
+            placeholder={placeholder || `${translate('actionBar.search', 'Search')}…`}
             className="pl-10 pr-10 h-9 rounded-lg transition-all duration-300 ease-in-out"
           />
           <Button
@@ -86,7 +88,7 @@ export function ExpandableSearchButton({
       )}
     >
       <Search className="w-4 h-4" />
-      <span className="text-sm">Search</span>
+      <span className="text-sm">{translate('actionBar.search', 'Search')}</span>
     </Button>
   );
 }

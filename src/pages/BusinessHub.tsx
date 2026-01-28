@@ -148,7 +148,7 @@ export default function BusinessHub() {
                     className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                   >
                     <Plane className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">Autopilot</span>
+                    <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
                     {pendingCount > 0 && (
                       <Badge 
                         variant="destructive" 
@@ -329,7 +329,7 @@ export default function BusinessHub() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{translate('actionBar.autopilot', 'Autopilot')}</span>
               </div>
               
               {/* Hover Preview */}

@@ -336,7 +336,7 @@ export default function Wallet() {
                     className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                   >
                     <Plane className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">Autopilot</span>
+                    <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
                     {pendingCount > 0 && (
                       <Badge 
                         variant="destructive" 

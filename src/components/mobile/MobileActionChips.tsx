@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plane } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface VitanaIndexChipProps {
   className?: string;
@@ -38,6 +39,8 @@ interface AutopilotChipProps {
  * Shows pending actions count with animated badge
  */
 export function AutopilotChip({ pendingCount, onClick, className }: AutopilotChipProps) {
+  const { translate } = useTranslation();
+  
   return (
     <Button 
       variant="ghost" 
@@ -46,7 +49,7 @@ export function AutopilotChip({ pendingCount, onClick, className }: AutopilotChi
       className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0 ${className || ''}`}
     >
       <Plane className="h-4 w-4 text-muted-foreground" />
-      <span className="text-sm">Autopilot</span>
+      <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
       {pendingCount > 0 && (
         <Badge 
           variant="destructive" 

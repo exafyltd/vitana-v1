@@ -51,6 +51,7 @@ import { MobileShortsFeed } from '@/components/community/MobileShortsFeed';
 import { MobileMusicList } from '@/components/community/MobileMusicList';
 import { MobilePodcastList } from '@/components/community/MobilePodcastList';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslation } from '@/hooks/useTranslation';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -209,6 +210,7 @@ export default function MediaHub() {
     pendingCount,
     getLatestActions
   } = useAutopilot();
+  const { translate } = useTranslation();
   const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
   const [initialMediaType, setInitialMediaType] = useState<'music' | 'podcast' | 'video' | undefined>();
@@ -585,7 +587,7 @@ export default function MediaHub() {
                       className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
                     >
                       <Plane className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">Autopilot</span>
+                      <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
                       {pendingCount > 0 && (
                         <Badge 
                           variant="destructive" 
@@ -641,7 +643,7 @@ export default function MediaHub() {
                     <div>
                       <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                     </div>
-                    <span className="text-sm font-medium text-red-400">Autopilot</span>
+                    <span className="text-sm font-medium text-red-400">{translate('actionBar.autopilot', 'Autopilot')}</span>
                   </div>
                   
                   {/* Hover Preview */}
