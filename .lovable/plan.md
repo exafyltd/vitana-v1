@@ -1,59 +1,40 @@
 
 
-# Create Privacy Policy Page at /privacy
+# Create Delete Account Page at /delete-account
 
 ## Overview
 
-Create a new public route at `/privacy` that displays the Maxina Mobile Privacy Policy from the uploaded document. This will be a static legal page accessible without authentication.
-
----
-
-## Document Content Summary
-
-The uploaded document is a comprehensive Privacy Policy for Maxina Mobile Application with:
-- **Effective Date**: 29th March 2025
-- **Company**: Exafy LTD, Abu Dhabi, UAE
-- **13 Sections** covering:
-  1. Introduction (About Us, Scope, Compliance)
-  2. Data Collection (Account, Usage, Location, Cookies)
-  3. How We Collect Your Data
-  4. Purpose and Legal Bases for Processing
-  5. How We Share Your Data
-  6. International Data Transfers
-  7. Data Retention
-  8. Data Security
-  9. GDPR Rights
-  10. Children's Privacy
-  11. Third-Party Services
-  12. Changes to This Policy
-  13. Contact Us
+Create a new public route at `/delete-account` that explains how users can request deletion of their Maxina account and associated personal data, in compliance with Google Play's Account Deletion policy.
 
 ---
 
 ## Implementation Plan
 
-### Step 1: Create Privacy Policy Page Component
+### Step 1: Create Delete Account Page Component
 
-Create a new file `src/pages/legal/PrivacyPolicy.tsx` with:
-- Clean, readable typography for legal documents
-- Proper heading hierarchy for sections
+Create a new file `src/pages/legal/DeleteAccount.tsx` following the same pattern as `PrivacyPolicy.tsx`:
+- Clean, minimal layout with readable typography
+- Sticky header with back navigation
 - SEO metadata for the page
-- Responsive design matching the app's styling
-- A "Back" navigation option
-
-**Styling approach**: Use a centered container with prose-like styling for readability, similar to blog/legal document patterns.
+- Responsive design matching Maxina branding
+- Professional, trustworthy tone
 
 ### Step 2: Register the Route in App.tsx
 
-Add the `/privacy` route to the public routes section (no authentication required):
+Add the `/delete-account` route to the public routes section (no authentication required).
 
-```typescript
-// Import
-import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+---
 
-// Route (after the Public Routes comment, line ~327)
-<Route path="/privacy" element={<PrivacyPolicy />} />
-```
+## Page Content Structure
+
+| Section | Content |
+|---------|---------|
+| **Title** | Delete Your Maxina Account |
+| **Intro** | Users of the Maxina mobile application may request deletion of their account and associated personal data at any time. |
+| **How to Request** | Contact via email: support@exafy.io with registered email and subject line "Account Deletion Request – Maxina" |
+| **What Happens Next** | Identity verification, data deletion, retention for legal/business purposes per Privacy Policy |
+| **Processing Time** | Typically within 30 days |
+| **Footer Note** | Link to Privacy Policy for more information |
 
 ---
 
@@ -61,41 +42,35 @@ import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 
 | File | Purpose |
 |------|---------|
-| `src/pages/legal/PrivacyPolicy.tsx` | Main privacy policy page component |
+| `src/pages/legal/DeleteAccount.tsx` | Account deletion instructions page |
 
 ## Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/App.tsx` | Add import and route for `/privacy` |
+| `src/App.tsx` | Add import and route for `/delete-account` |
 
 ---
 
-## Page Design
+## Design Details
 
-The privacy policy page will include:
-
-- **Header**: "Privacy Policy for the Maxina Mobile Application" with effective date
-- **Navigation**: Back button to return to previous page
-- **Content**: All 13 sections formatted with proper headings
-- **Footer**: Last updated date and contact information
-- **SEO**: Proper meta tags for search engines
-
-**Typography**:
-- H1 for main title
-- H2 for section numbers (1. Introduction, 2. Data Collection, etc.)
-- H3 for subsections (1.1 About Us, 2.1 Account Information, etc.)
-- Proper paragraph spacing for readability
-- Bulleted lists where applicable
+- **Header**: Sticky header with back button and "Delete Account" title
+- **Typography**: Clean prose styling matching PrivacyPolicy.tsx
+- **Sections**: Clear H2 headings for each section
+- **Email**: Clickable mailto link for support@exafy.io
+- **Privacy Link**: Internal link to `/privacy` page
+- **Mobile-friendly**: Responsive padding and text sizing
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] Navigating to `https://vitanaland.com/privacy` displays the privacy policy
-- [ ] All 13 sections from the document are displayed correctly
-- [ ] Page is readable on both mobile and desktop
-- [ ] SEO metadata is properly set
-- [ ] Page loads without requiring authentication
-- [ ] Footer link in MaxinaPortal works correctly (already points to `/privacy`)
+- [ ] Page accessible at `https://vitanaland.com/delete-account`
+- [ ] No authentication required
+- [ ] All content sections displayed correctly
+- [ ] Email link functional (mailto:support@exafy.io)
+- [ ] Privacy Policy link works
+- [ ] Page readable on mobile and desktop
+- [ ] SEO metadata properly set
+- [ ] Matches Maxina branding
 
