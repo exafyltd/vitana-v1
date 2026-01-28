@@ -10,6 +10,9 @@ const translations: Record<string, TranslationObject> = {
   'de-DE': de,
 };
 
+// Track missing keys in development to catch untranslated strings
+const missingKeys = new Set<string>();
+
 export function useTranslation() {
   const { selectedLanguage } = useLanguage();
   
@@ -24,17 +27,30 @@ export function useTranslation() {
     for (const k of keys) {
       result = result?.[k];
       if (result === undefined) {
+        // DEV: Log missing key for debugging (only once per key)
+        if (import.meta.env.DEV && !missingKeys.has(key)) {
+          missingKeys.add(key);
+          console.warn(`[i18n] Missing key: "${key}" in ${selectedLanguage}`);
+        }
+        // Return visual indicator in dev, fallback in production
+        if (import.meta.env.DEV && !fallback) {
+          return `[[missing:${key}]]`;
+        }
         return fallback || key;
       }
     }
     
     return typeof result === 'string' ? result : fallback || key;
   };
+
+  // Helper to get all missing keys (useful for debugging)
+  const getMissingKeys = () => Array.from(missingKeys);
   
   return {
     t,              // Direct object access: t.sidebar.home
     translate,      // Dot notation: translate('sidebar.home')
     language: selectedLanguage,
     isGerman: selectedLanguage === 'de-DE',
+    getMissingKeys, // Debug helper
   };
 }
