@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EarningOption {
   id: string;
@@ -41,6 +42,7 @@ export function BusinessAcceleratorCenterCTA({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  const { translate } = useTranslation();
 
   const handleOptionSelect = (action: () => void) => {
     setIsModalOpen(false);
@@ -51,29 +53,29 @@ export function BusinessAcceleratorCenterCTA({
     {
       id: "create-event",
       icon: <Calendar className="h-6 w-6" />,
-      title: "Create an Event",
-      description: "Host your own event and sell tickets.",
+      title: translate('business.earning.createEvent'),
+      description: translate('business.earning.createEventDesc'),
       action: onCreateEvent,
     },
     {
       id: "add-inventory",
       icon: <Package className="h-6 w-6" />,
-      title: "Add Events to Inventory",
-      description: "Resell curated events and earn commission.",
+      title: translate('business.earning.addToInventory'),
+      description: translate('business.earning.addToInventoryDesc'),
       action: onAddToInventory,
     },
     {
       id: "create-service",
       icon: <Briefcase className="h-6 w-6" />,
-      title: "Create a Service",
-      description: "Offer sessions people can book.",
+      title: translate('business.earning.createService'),
+      description: translate('business.earning.createServiceDesc'),
       action: onCreateService,
     },
     {
       id: "create-promotion",
       icon: <Megaphone className="h-6 w-6" />,
-      title: "Create a Promotion",
-      description: "Boost visibility and share to social.",
+      title: translate('business.earning.createPromotion'),
+      description: translate('business.earning.createPromotionDesc'),
       action: onCreatePromotion,
     },
   ];
@@ -95,10 +97,10 @@ export function BusinessAcceleratorCenterCTA({
 
         <div className="flex flex-col items-center text-center space-y-4">
           <h2 className="text-xl font-semibold text-foreground">
-            Ready to earn with VITANA?
+            {translate('business.earning.readyToEarn')}
           </h2>
           <p className="text-muted-foreground text-sm max-w-md">
-            Choose a path and we'll guide you to your first income stream.
+            {translate('business.earning.choosePathGuide')}
           </p>
           
           {/* Button with glow effect */}
@@ -129,7 +131,7 @@ export function BusinessAcceleratorCenterCTA({
                 className="relative px-8 py-6 text-base font-medium rounded-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg transition-shadow duration-200"
               >
                 <Rocket className="h-5 w-5 mr-2" />
-                Start earning
+                {translate('business.earning.startEarning')}
               </Button>
             </motion.div>
           </div>
@@ -141,10 +143,10 @@ export function BusinessAcceleratorCenterCTA({
         <DialogContent className="sm:max-w-lg">
           <DialogHeader className="text-center pb-2">
             <DialogTitle className="text-xl font-semibold">
-              How do you want to earn?
+              {translate('business.earning.howToEarn')}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground">
-              Pick one — you can always do the others later.
+              {translate('business.earning.pickOne')}
             </DialogDescription>
           </DialogHeader>
 

@@ -9,6 +9,7 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobileEarningPortalProps {
   onCreateEvent: () => void;
@@ -32,12 +33,13 @@ export function MobileEarningPortal({
   onCreatePromotion,
 }: MobileEarningPortalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { translate } = useTranslation();
 
   const earningOptions: EarningOption[] = [
     {
       icon: Calendar,
-      title: "Create Event",
-      description: "Host & sell tickets",
+      title: translate('business.earning.createEvent'),
+      description: translate('business.earning.hostAndSell'),
       action: () => {
         setIsOpen(false);
         onCreateEvent();
@@ -46,8 +48,8 @@ export function MobileEarningPortal({
     },
     {
       icon: Package,
-      title: "Add to Inventory",
-      description: "Resell & earn",
+      title: translate('business.earning.addToInventory'),
+      description: translate('business.earning.resellAndEarn'),
       action: () => {
         setIsOpen(false);
         onAddToInventory();
@@ -56,8 +58,8 @@ export function MobileEarningPortal({
     },
     {
       icon: Briefcase,
-      title: "Create Service",
-      description: "Offer bookings",
+      title: translate('business.earning.createService'),
+      description: translate('business.earning.offerBookings'),
       action: () => {
         setIsOpen(false);
         onCreateService();
@@ -66,8 +68,8 @@ export function MobileEarningPortal({
     },
     {
       icon: Megaphone,
-      title: "Create Promotion",
-      description: "Boost visibility",
+      title: translate('business.earning.createPromotion'),
+      description: translate('business.earning.boostVisibility'),
       action: () => {
         setIsOpen(false);
         onCreatePromotion();
@@ -90,10 +92,10 @@ export function MobileEarningPortal({
         
         <div className="relative p-5 text-center space-y-3">
           <h3 className="text-lg font-semibold text-foreground">
-            Ready to earn with VITANA?
+            {translate('business.earning.readyToEarn')}
           </h3>
           <p className="text-sm text-muted-foreground">
-            Choose a path and we'll guide you to your first income stream.
+            {translate('business.earning.choosePathGuide')}
           </p>
           
           <Button
@@ -101,7 +103,7 @@ export function MobileEarningPortal({
             className="mt-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-md"
           >
             <Rocket className="w-4 h-4 mr-2" />
-            Start Earning
+            {translate('business.earning.startEarning')}
           </Button>
         </div>
       </motion.div>
@@ -110,9 +112,9 @@ export function MobileEarningPortal({
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
         <DrawerContent className="max-h-[85vh]">
           <DrawerHeader className="text-center pb-2">
-            <DrawerTitle className="text-xl">How do you want to earn?</DrawerTitle>
+            <DrawerTitle className="text-xl">{translate('business.earning.howToEarn')}</DrawerTitle>
             <DrawerDescription>
-              Pick one — you can explore others later
+              {translate('business.earning.pickOne')}
             </DrawerDescription>
           </DrawerHeader>
           
