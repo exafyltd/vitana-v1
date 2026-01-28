@@ -19,6 +19,7 @@
   "events": {
     "title": "Events & Meet-Ups",
     "description": "Discover local wellness gatherings",
+    "searchPlaceholder": "Search events and meetups...",
     "tabs": {
       "today": "Today",
       "upcoming": "Upcoming",
@@ -1377,5 +1378,23 @@
       "basedOnActivity": "Based on activity, health engagement & contribution",
       "viewLongevityId": "View my Longevity ID"
     }
+  },
+  "groups": {
+    "searchPlaceholder": "Search groups..."
+  },
+  "challenges": {
+    "searchPlaceholder": "Search challenges..."
+  },
+  "consent": {
+    "searchPlaceholder": "Search consent packages, organizations, permissions..."
+  },
+  "timeline": {
+    "searchPlaceholder": "Search activity..."
+  },
+  "wellnessServices": {
+    "searchPlaceholder": "Search services, providers, or programs..."
+  },
+  "archives": {
+    "searchPlaceholder": "Search archives..."
   }
 }

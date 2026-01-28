@@ -12,6 +12,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useState } from "react";
 import { communityNavigation } from "@/config/navigation";
 
@@ -20,6 +21,7 @@ export default function Challenges() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const isMobile = useIsMobile();
   const { pendingCount } = useAutopilot();
+  const { translate } = useTranslation();
 
   return (
     <AppLayout>
@@ -37,7 +39,7 @@ export default function Challenges() {
           <UtilityActionButton className="min-w-0">
             <div className="flex items-center gap-2.5 min-w-max">
               <ExpandableSearchButton 
-                placeholder="Search challenges..." 
+                placeholder={translate('challenges.searchPlaceholder', 'Search challenges...')} 
                 onSearch={(query) => console.log('Search Challenges:', query)}
               />
               <UniversalCalendarButton />

@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Category configuration
 const CATEGORIES = [
@@ -40,6 +41,7 @@ function Timeline() {
   const [activeTab, setActiveTab] = useState<"all" | "by-category">("all");
   const [expandedCategory, setExpandedCategory] = useState<string | undefined>(undefined);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { translate } = useTranslation();
   
   const allLoadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -297,7 +299,7 @@ function Timeline() {
         />
 
         <UtilityActionButton>
-          <ExpandableSearchButton placeholder="Search activity..." />
+          <ExpandableSearchButton placeholder={translate('timeline.searchPlaceholder', 'Search activity...')} />
           <UniversalCalendarButton />
           <Button size="sm" onClick={() => setActionPopupOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
