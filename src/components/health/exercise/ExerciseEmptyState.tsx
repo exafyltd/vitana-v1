@@ -17,10 +17,10 @@ export function ExerciseEmptyState() {
         </div>
         
         <h3 className="text-xl font-semibold">
-          {translate('health.emptyStates.noExercisePlan', 'No Exercise Plan Yet')}
+          {translate('health.emptyStates.noExercisePlan')}
         </h3>
         <p className="text-muted-foreground">
-          {translate('health.emptyStates.noExercisePlanDesc', 'Generate your personalized workout plan with AI-optimized exercises tailored to your fitness level, goals, and recovery needs.')}
+          {translate('health.emptyStates.noExercisePlanDesc')}
         </p>
         
         <Button
@@ -35,8 +35,8 @@ export function ExerciseEmptyState() {
           className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
         >
           {generatePlan.isPending 
-            ? translate('health.emptyStates.generating', 'Generating...') 
-            : translate('health.emptyStates.generatePlan', 'Generate Exercise Plan')}
+            ? translate('health.emptyStates.generating') 
+            : translate('health.emptyStates.generatePlan')}
         </Button>
       </div>
     </Card>

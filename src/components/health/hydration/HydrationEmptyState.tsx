@@ -19,10 +19,10 @@ export function HydrationEmptyState() {
         </div>
         
         <h3 className="text-xl font-semibold">
-          {translate('health.emptyStates.noHydrationPlan', 'No Hydration Plan Yet')}
+          {translate('health.emptyStates.noHydrationPlan')}
         </h3>
         <p className="text-muted-foreground">
-          {translate('health.emptyStates.noHydrationPlanDesc', 'Generate your personalized hydration plan with AI-optimized daily targets tailored to your activity level, environment, and recovery needs.')}
+          {translate('health.emptyStates.noHydrationPlanDesc')}
         </p>
         
         <Button
@@ -37,8 +37,8 @@ export function HydrationEmptyState() {
           className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
         >
           {generatePlan.isPending 
-            ? translate('health.emptyStates.generating', 'Generating...') 
-            : translate('health.emptyStates.generatePlan', 'Generate Hydration Plan')}
+            ? translate('health.emptyStates.generating') 
+            : translate('health.emptyStates.generatePlan')}
         </Button>
       </div>
     </Card>

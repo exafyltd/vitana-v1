@@ -209,6 +209,20 @@
     "connectedApps": "Connected Apps & Integrations",
     "support": "Support"
   },
+  "health": {
+    "emptyStates": {
+      "noNutritionPlan": "No Nutrition Plan Yet",
+      "noNutritionPlanDesc": "Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.",
+      "noExercisePlan": "No Exercise Plan Yet",
+      "noExercisePlanDesc": "Generate your personalized workout plan with AI-optimized exercises tailored to your fitness level, goals, and recovery needs.",
+      "noSleepPlan": "No Sleep Plan Yet",
+      "noSleepPlanDesc": "Generate your personalized sleep plan with AI-optimized targets tuned to your circadian rhythm, recovery needs, and daily performance.",
+      "noHydrationPlan": "No Hydration Plan Yet",
+      "noHydrationPlanDesc": "Generate your personalized hydration plan with AI-optimized daily targets tailored to your activity level, environment, and recovery needs.",
+      "generating": "Generating...",
+      "generatePlan": "Generate Plan"
+    }
+  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "AI suggestions",
@@ -1140,5 +1154,124 @@
     "cozy": "Cozy",
     "compact": "Compact",
     "gallery": "Gallery"
+  },
+  "portals": {
+    "maxina": {
+      "title": "Maxina Health Platform",
+      "welcomeBack": "Welcome back to Maxina.",
+      "continueJourney": "Sign in to continue your journey.",
+      "joinMaxina": "Join Maxina",
+      "joinCommunity": "Join the Maxina community.",
+      "createAccount": "Create your account and begin your journey.",
+      "signingIn": "Signing in…",
+      "creatingAccount": "Creating account…",
+      "joiningAs": "I am joining as:",
+      "yourFullName": "Your full name",
+      "forgotPassword": "Forgot password?",
+      "partOfVitana": "Maxina is part of the VITANA ecosystem.",
+      "allPortals": "All Portals",
+      "emailConfirmed": "Email confirmed! Welcome to Maxina.",
+      "checkEmail": "Please check your email to confirm your account.",
+      "roles": {
+        "community": "Community",
+        "patient": "Patient",
+        "professional": "Pro",
+        "admin": "Admin"
+      }
+    },
+    "alkalma": {
+      "joinAlkalma": "Join AlKalma",
+      "welcomeBack": "Welcome back to AlKalma.",
+      "continueJourney": "Sign in to continue."
+    },
+    "earthlinks": {
+      "joinEarthlinks": "Join Earthlinks",
+      "welcomeBack": "Welcome back to Earthlinks.",
+      "continueJourney": "Sign in to continue."
+    },
+    "community": {
+      "joinCommunity": "Join Community",
+      "welcomeBack": "Welcome back.",
+      "continueJourney": "Sign in to continue."
+    }
+  },
+  "campaigns": {
+    "delete": {
+      "title": "Delete Campaign?",
+      "description": "Deleting \"{name}\" will permanently remove all related drafts and analytics. This action can't be undone.",
+      "dontAskAgain": "Don't ask me again for draft campaigns",
+      "deletePermanently": "Delete Permanently"
+    },
+    "creation": {
+      "title": "Create Campaign",
+      "stepOf": "Step {current} of {total}",
+      "yourCampaigns": "Your Campaigns",
+      "drafts": "drafts",
+      "live": "live",
+      "proTip": "Pro Tip",
+      "tips": {
+        "1": "Clear names help you find campaigns later",
+        "2": "Connect channels now for instant scheduling",
+        "3": "Launch template works for most announcements",
+        "4": "Smart scheduling uses your past engagement data"
+      }
+    }
+  },
+  "adminTabs": {
+    "groups": {
+      "all": "All Groups",
+      "pending": "Pending",
+      "approved": "Approved",
+      "flagged": "Flagged",
+      "rejected": "Rejected"
+    },
+    "rooms": {
+      "active": "Active Rooms",
+      "scheduled": "Scheduled",
+      "analytics": "Analytics",
+      "moderation": "Moderation"
+    }
+  },
+  "tableHeaders": {
+    "groupName": "Group Name",
+    "category": "Category",
+    "members": "Members",
+    "privacy": "Privacy",
+    "status": "Status",
+    "actions": "Actions",
+    "name": "Name",
+    "role": "Role",
+    "email": "Email",
+    "date": "Date",
+    "amount": "Amount"
+  },
+  "empty": {
+    "noAppsFound": "No apps found matching your search.",
+    "noEventsFound": "No events found",
+    "noContactsFound": "No contacts found",
+    "noContactsFoundMatching": "No contacts found matching \"{query}\"",
+    "noGroupsFound": "No groups found",
+    "noResultsFound": "No results found",
+    "noReportsFound": "No reports found",
+    "noUsersFound": "No users found",
+    "noTransactionsFound": "No transactions found",
+    "noEventsYet": "No events yet. Create an event first.",
+    "tryAdjustingFilters": "Try adjusting your filters or search query",
+    "noData": "No data available",
+    "noMessages": "No messages",
+    "noNotifications": "No notifications"
+  },
+  "loading": {
+    "default": "Loading...",
+    "groups": "Loading groups...",
+    "messages": "Loading messages...",
+    "uploading": "Uploading...",
+    "uploadingProgress": "Uploading... {progress}%",
+    "processing": "Processing...",
+    "saving": "Saving..."
+  },
+  "privacy": {
+    "public": "Public",
+    "private": "Private"
   }
 }

@@ -20,11 +20,11 @@ export function MobileProfileTabs({
   
   const activeTab = controlledActiveTab ?? internalActiveTab;
   
-  const tabs: { id: MobileProfileTab; label: string }[] = [
-    { id: "posts", label: translate('profileTabs.posts', 'Posts') },
-    { id: "about", label: translate('profileTabs.about', 'About') },
-    { id: "media", label: translate('profileTabs.media', 'Media') },
-    { id: "groups", label: translate('profileTabs.groups', 'Groups') },
+  const tabs: { id: MobileProfileTab; labelKey: string }[] = [
+    { id: "posts", labelKey: 'profileTabs.posts' },
+    { id: "about", labelKey: 'profileTabs.about' },
+    { id: "media", labelKey: 'profileTabs.media' },
+    { id: "groups", labelKey: 'profileTabs.groups' },
   ];
   
   const handleTabChange = (tab: MobileProfileTab) => {
@@ -52,7 +52,7 @@ export function MobileProfileTabs({
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            {tab.label}
+            {translate(tab.labelKey)}
             {activeTab === tab.id && (
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
             )}

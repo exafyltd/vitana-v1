@@ -13,6 +13,7 @@ import { CheckCircle, XCircle, Flag, Eye, Users, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface CommunityGroup {
   id: string;
@@ -37,6 +38,7 @@ interface CommunityGroup {
 }
 
 const GroupsModeration = () => {
+  const { translate } = useTranslation();
   const [groups, setGroups] = useState<CommunityGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
@@ -101,13 +103,13 @@ const GroupsModeration = () => {
 
   const getStatusBadge = (status: string) => {
     const variants = {
-      pending: { variant: "secondary" as const, label: "Pending", color: "text-yellow-600" },
-      approved: { variant: "default" as const, label: "Approved", color: "text-green-600" },
-      rejected: { variant: "destructive" as const, label: "Rejected", color: "text-red-600" },
-      flagged: { variant: "outline" as const, label: "Flagged", color: "text-orange-600" }
+      pending: { variant: "secondary" as const, labelKey: "adminTabs.groups.pending", color: "text-yellow-600" },
+      approved: { variant: "default" as const, labelKey: "adminTabs.groups.approved", color: "text-green-600" },
+      rejected: { variant: "destructive" as const, labelKey: "adminTabs.groups.rejected", color: "text-red-600" },
+      flagged: { variant: "outline" as const, labelKey: "adminTabs.groups.flagged", color: "text-orange-600" }
     };
     const config = variants[status as keyof typeof variants] || variants.approved;
-    return <Badge variant={config.variant} className={config.color}>{config.label}</Badge>;
+    return <Badge variant={config.variant} className={config.color}>{translate(config.labelKey, status)}</Badge>;
   };
 
   return (
@@ -126,32 +128,32 @@ const GroupsModeration = () => {
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="all">All Groups</TabsTrigger>
-                <TabsTrigger value="pending">Pending</TabsTrigger>
-                <TabsTrigger value="approved">Approved</TabsTrigger>
-                <TabsTrigger value="flagged">Flagged</TabsTrigger>
-                <TabsTrigger value="rejected">Rejected</TabsTrigger>
+                <TabsTrigger value="all">{translate('adminTabs.groups.all', 'All Groups')}</TabsTrigger>
+                <TabsTrigger value="pending">{translate('adminTabs.groups.pending', 'Pending')}</TabsTrigger>
+                <TabsTrigger value="approved">{translate('adminTabs.groups.approved', 'Approved')}</TabsTrigger>
+                <TabsTrigger value="flagged">{translate('adminTabs.groups.flagged', 'Flagged')}</TabsTrigger>
+                <TabsTrigger value="rejected">{translate('adminTabs.groups.rejected', 'Rejected')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value={activeTab} className="mt-6">
                 <Card>
                   {loading ? (
-                    <div className="p-12 text-center text-muted-foreground">Loading groups...</div>
+                    <div className="p-12 text-center text-muted-foreground">{translate('loading.groups', 'Loading groups...')}</div>
                   ) : filteredGroups.length === 0 ? (
                     <div className="p-12 text-center">
                       <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <p className="text-muted-foreground">No groups found</p>
+                      <p className="text-muted-foreground">{translate('empty.noGroupsFound', 'No groups found')}</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Group Name</TableHead>
-                          <TableHead>Category</TableHead>
-                          <TableHead>Members</TableHead>
-                          <TableHead>Privacy</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>{translate('tableHeaders.groupName', 'Group Name')}</TableHead>
+                          <TableHead>{translate('tableHeaders.category', 'Category')}</TableHead>
+                          <TableHead>{translate('tableHeaders.members', 'Members')}</TableHead>
+                          <TableHead>{translate('tableHeaders.privacy', 'Privacy')}</TableHead>
+                          <TableHead>{translate('tableHeaders.status', 'Status')}</TableHead>
+                          <TableHead>{translate('tableHeaders.actions', 'Actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -178,10 +180,10 @@ const GroupsModeration = () => {
                               {!group.is_public && (
                                 <div className="flex items-center gap-1 text-muted-foreground">
                                   <Lock className="h-4 w-4" />
-                                  <span className="text-sm">Private</span>
+                                  <span className="text-sm">{translate('privacy.private', 'Private')}</span>
                                 </div>
                               )}
-                              {group.is_public && <span className="text-sm text-muted-foreground">Public</span>}
+                              {group.is_public && <span className="text-sm text-muted-foreground">{translate('privacy.public', 'Public')}</span>}
                             </TableCell>
                             <TableCell>{getStatusBadge(group.status)}</TableCell>
                             <TableCell>

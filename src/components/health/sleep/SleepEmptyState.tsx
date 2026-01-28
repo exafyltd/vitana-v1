@@ -17,10 +17,10 @@ export function SleepEmptyState() {
         </div>
         
         <h3 className="text-xl font-semibold">
-          {translate('health.emptyStates.noSleepPlan', 'No Sleep Plan Yet')}
+          {translate('health.emptyStates.noSleepPlan')}
         </h3>
         <p className="text-muted-foreground">
-          {translate('health.emptyStates.noSleepPlanDesc', 'Generate your personalized sleep plan with AI-optimized targets tuned to your circadian rhythm, recovery needs, and daily performance.')}
+          {translate('health.emptyStates.noSleepPlanDesc')}
         </p>
         
         <Button
@@ -35,8 +35,8 @@ export function SleepEmptyState() {
           className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
         >
           {generatePlan.isPending 
-            ? translate('health.emptyStates.generating', 'Generating...') 
-            : translate('health.emptyStates.generatePlan', 'Generate Sleep Plan')}
+            ? translate('health.emptyStates.generating') 
+            : translate('health.emptyStates.generatePlan')}
         </Button>
       </div>
     </Card>

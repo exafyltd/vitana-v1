@@ -12,6 +12,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
+import { applyReplacements } from "@/lib/i18n-helpers";
 
 interface DeleteCampaignDialogProps {
   open: boolean;
@@ -28,6 +30,7 @@ export function DeleteCampaignDialog({
   campaignName,
   isDraft,
 }: DeleteCampaignDialogProps) {
+  const { translate } = useTranslation();
   const [dontAskAgain, setDontAskAgain] = useState(false);
 
   const handleConfirm = () => {
@@ -48,11 +51,10 @@ export function DeleteCampaignDialog({
       )}>
         <ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogTitle className="text-xl font-bold text-gray-900">
-            Delete Campaign?
+            {translate('campaigns.delete.title', 'Delete Campaign?')}
           </ResponsiveConfirmDialogTitle>
           <ResponsiveConfirmDialogDescription className="text-sm text-gray-600 leading-relaxed">
-            Deleting <span className="font-semibold text-gray-900">"{campaignName}"</span> will 
-            permanently remove all related drafts and analytics. This action can't be undone.
+            {applyReplacements(translate('campaigns.delete.description', 'Deleting "{name}" will permanently remove all related drafts and analytics. This action can\'t be undone.'), { name: campaignName })}
           </ResponsiveConfirmDialogDescription>
         </ResponsiveConfirmDialogHeader>
 
@@ -67,7 +69,7 @@ export function DeleteCampaignDialog({
               htmlFor="dont-ask" 
               className="text-xs text-gray-600 cursor-pointer"
             >
-              Don't ask me again for draft campaigns
+              {translate('campaigns.delete.dontAskAgain', "Don't ask me again for draft campaigns")}
             </Label>
           </div>
         )}
@@ -78,7 +80,7 @@ export function DeleteCampaignDialog({
             "bg-gray-100 hover:bg-gray-200",
             "text-gray-700 border-gray-300"
           )}>
-            Cancel
+            {translate('buttons.cancel', 'Cancel')}
           </ResponsiveConfirmDialogCancel>
           <ResponsiveConfirmDialogAction
             onClick={handleConfirm}
@@ -90,7 +92,7 @@ export function DeleteCampaignDialog({
               "transition-all duration-200"
             )}
           >
-            Delete Permanently
+            {translate('campaigns.delete.deletePermanently', 'Delete Permanently')}
           </ResponsiveConfirmDialogAction>
         </ResponsiveConfirmDialogFooter>
       </ResponsiveConfirmDialogContent>

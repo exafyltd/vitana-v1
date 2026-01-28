@@ -25,8 +25,10 @@ import { motion } from "framer-motion";
 import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
 import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const MaxinaPortal = () => {
+  const { translate } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
@@ -105,7 +107,7 @@ const MaxinaPortal = () => {
   // Handle email confirmation success - show welcome toast and clean URL
   useEffect(() => {
     if (searchParams.get('confirmed') === 'true') {
-      toast.success("Email confirmed! Welcome to Maxina.", {
+      toast.success(translate('portals.maxina.emailConfirmed', "Email confirmed! Welcome to Maxina."), {
         duration: 4000,
       });
       
@@ -118,7 +120,7 @@ const MaxinaPortal = () => {
         );
       }, 2000);
     }
-  }, [searchParams]);
+  }, [searchParams, translate]);
 
   // Load daily-rotating video background
   useEffect(() => {
@@ -196,7 +198,7 @@ const MaxinaPortal = () => {
       if (error) {
         setError(error.message);
       } else {
-        setError("Please check your email to confirm your account.");
+        setError(translate('portals.maxina.checkEmail', "Please check your email to confirm your account."));
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -290,16 +292,16 @@ const MaxinaPortal = () => {
             <Tabs defaultValue="signin" className="w-full">
               {/* Compact tab bar */}
               <TabsList className="grid w-full grid-cols-2 h-10 md:h-11">
-                <TabsTrigger value="signin" className="text-sm md:text-base py-1.5">Sign In</TabsTrigger>
-                <TabsTrigger value="signup" className="text-sm md:text-base py-1.5">Join Maxina</TabsTrigger>
+                <TabsTrigger value="signin" className="text-sm md:text-base py-1.5">{translate('authPage.signIn', 'Sign In')}</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm md:text-base py-1.5">{translate('portals.maxina.joinMaxina', 'Join Maxina')}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
                 {/* Compact header */}
                 <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
-                  <CardTitle className="text-lg md:text-xl">Welcome back to Maxina.</CardTitle>
+                  <CardTitle className="text-lg md:text-xl">{translate('portals.maxina.welcomeBack', 'Welcome back to Maxina.')}</CardTitle>
                   <CardDescription className="text-sm md:text-base mt-1">
-                    Sign in to continue your journey.
+                    {translate('portals.maxina.continueJourney', 'Sign in to continue your journey.')}
                   </CardDescription>
                 </CardHeader>
                 {/* Compact form content */}
@@ -312,7 +314,7 @@ const MaxinaPortal = () => {
                     )}
                     
                     <div className="space-y-1.5">
-                      <Label htmlFor="email" className="text-sm">Email</Label>
+                      <Label htmlFor="email" className="text-sm">{translate('authPage.email', 'Email')}</Label>
                         <Input
                           id="email"
                           type="email"
@@ -327,7 +329,7 @@ const MaxinaPortal = () => {
                     </div>
                     
                     <div className="space-y-1.5">
-                      <Label htmlFor="password" className="text-sm">Password</Label>
+                      <Label htmlFor="password" className="text-sm">{translate('authPage.password', 'Password')}</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -367,14 +369,14 @@ const MaxinaPortal = () => {
                             htmlFor="keep-logged-in"
                             className="text-xs font-normal cursor-pointer"
                           >
-                            Keep me logged in
+                            {translate('authPage.keepLoggedIn', 'Keep me logged in')}
                           </Label>
                         </div>
                         <Link
                           to="/reset-password" 
                           className="text-xs text-muted-foreground hover:text-[#FF7BAC] transition-colors"
                         >
-                          Forgot password?
+                          {translate('portals.maxina.forgotPassword', 'Forgot password?')}
                         </Link>
                       </div>
                     
@@ -386,10 +388,10 @@ const MaxinaPortal = () => {
                         {loading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Signing in…
+                            {translate('portals.maxina.signingIn', 'Signing in…')}
                           </>
                         ) : (
-                          "Sign In"
+                          translate('authPage.signIn', 'Sign In')
                         )}
                       </Button>
 
@@ -399,7 +401,7 @@ const MaxinaPortal = () => {
                           <div className="w-full border-t border-border/40" />
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">Or continue with</span>
+                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">{translate('authPage.orContinueWith', 'Or continue with')}</span>
                         </div>
                       </div>
 
@@ -443,9 +445,9 @@ const MaxinaPortal = () => {
               <TabsContent value="signup">
                 {/* Compact header */}
                 <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
-                  <CardTitle className="text-lg md:text-xl">Join the Maxina community.</CardTitle>
+                  <CardTitle className="text-lg md:text-xl">{translate('portals.maxina.joinCommunity', 'Join the Maxina community.')}</CardTitle>
                   <CardDescription className="text-sm md:text-base mt-1">
-                    Create your account and begin your journey.
+                    {translate('portals.maxina.createAccount', 'Create your account and begin your journey.')}
                   </CardDescription>
                 </CardHeader>
                 {/* Compact form content */}
@@ -458,11 +460,11 @@ const MaxinaPortal = () => {
                     )}
                     
                     <div className="space-y-1.5">
-                      <Label htmlFor="fullName" className="text-sm">Full Name</Label>
+                      <Label htmlFor="fullName" className="text-sm">{translate('authPage.fullName', 'Full Name')}</Label>
                       <Input
                         id="fullName"
                         type="text"
-                        placeholder="Your full name"
+                        placeholder={translate('portals.maxina.yourFullName', 'Your full name')}
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required
@@ -472,7 +474,7 @@ const MaxinaPortal = () => {
                     </div>
                     
                     <div className="space-y-1.5">
-                      <Label htmlFor="email" className="text-sm">Email</Label>
+                      <Label htmlFor="email" className="text-sm">{translate('authPage.email', 'Email')}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -486,7 +488,7 @@ const MaxinaPortal = () => {
                     </div>
                     
                     <div className="space-y-1.5">
-                      <Label htmlFor="password" className="text-sm">Password</Label>
+                      <Label htmlFor="password" className="text-sm">{translate('authPage.password', 'Password')}</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -515,7 +517,7 @@ const MaxinaPortal = () => {
 
                     {/* Compact Role Selection */}
                     <div className="space-y-2">
-                      <Label className="text-sm">I am joining as:</Label>
+                      <Label className="text-sm">{translate('portals.maxina.joiningAs', 'I am joining as:')}</Label>
                       <div className="grid grid-cols-4 gap-1.5 md:gap-2">
                         <Button
                           type="button"
@@ -524,7 +526,7 @@ const MaxinaPortal = () => {
                           onClick={() => setSelectedRole("community")}
                         >
                           <Users className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">Community</span>
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.community', 'Community')}</span>
                         </Button>
                         <Button
                           type="button"
@@ -533,7 +535,7 @@ const MaxinaPortal = () => {
                           onClick={() => setSelectedRole("patient")}
                         >
                           <Heart className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">Patient</span>
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.patient', 'Patient')}</span>
                         </Button>
                         <Button
                           type="button"
@@ -542,7 +544,7 @@ const MaxinaPortal = () => {
                           onClick={() => setSelectedRole("professional")}
                         >
                           <Stethoscope className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">Pro</span>
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.professional', 'Pro')}</span>
                         </Button>
                         <Button
                           type="button"
@@ -551,7 +553,7 @@ const MaxinaPortal = () => {
                           onClick={() => setSelectedRole("admin")}
                         >
                           <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">Admin</span>
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.admin', 'Admin')}</span>
                         </Button>
                       </div>
                     </div>
@@ -564,10 +566,10 @@ const MaxinaPortal = () => {
                         {loading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Creating account…
+                            {translate('portals.maxina.creatingAccount', 'Creating account…')}
                           </>
                         ) : (
-                          "Create Account"
+                          translate('authPage.createAccount', 'Create Account')
                         )}
                       </Button>
 
@@ -577,7 +579,7 @@ const MaxinaPortal = () => {
                           <div className="w-full border-t border-border/40" />
                         </div>
                         <div className="relative flex justify-center">
-                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">Or continue with</span>
+                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">{translate('authPage.orContinueWith', 'Or continue with')}</span>
                         </div>
                       </div>
 
@@ -623,7 +625,7 @@ const MaxinaPortal = () => {
           {/* Compact Trust & Navigation Footer */}
           <div className="space-y-2 mt-3 md:mt-4" data-maxina-footer="true">
             <p className="text-center text-white/60 text-[10px] md:text-xs tracking-wide">
-              Maxina is part of the VITANA ecosystem.
+              {translate('portals.maxina.partOfVitana', 'Maxina is part of the VITANA ecosystem.')}
             </p>
             
             <div className="flex justify-center items-center space-x-3 text-xs md:text-sm">
@@ -651,7 +653,7 @@ const MaxinaPortal = () => {
               </Link>
               <span className="text-white/30">·</span>
               <Link to="/" className="text-white/60 hover:text-white transition-colors">
-                All Portals
+                {translate('portals.maxina.allPortals', 'All Portals')}
               </Link>
             </div>
             
