@@ -2,9 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Apple } from "lucide-react";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function NutritionEmptyState() {
   const { generatePlan } = useHealthPlans();
+  const { translate } = useTranslation();
   
   return (
     <Card className="p-12 text-center border-2 border-dashed">
@@ -13,9 +15,11 @@ export function NutritionEmptyState() {
           <Apple className="w-10 h-10 text-primary" />
         </div>
         
-        <h3 className="text-xl font-semibold">No Nutrition Plan Yet</h3>
+        <h3 className="text-xl font-semibold">
+          {translate('health.emptyStates.noNutritionPlan', 'No Nutrition Plan Yet')}
+        </h3>
         <p className="text-muted-foreground">
-          Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.
+          {translate('health.emptyStates.noNutritionPlanDesc', 'Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.')}
         </p>
         
         <Button
@@ -28,7 +32,9 @@ export function NutritionEmptyState() {
           }}
           disabled={generatePlan.isPending}
         >
-          {generatePlan.isPending ? 'Generating...' : 'Generate Nutrition Plan'}
+          {generatePlan.isPending 
+            ? translate('health.emptyStates.generating', 'Generating...') 
+            : translate('health.emptyStates.generatePlan', 'Generate Nutrition Plan')}
         </Button>
       </div>
     </Card>
