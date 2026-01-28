@@ -682,7 +682,7 @@ const EventsAndMeetups = () => {
           >
             <div className="flex items-center gap-2 min-w-max">
               <ExpandableSearchButton 
-                placeholder="Search events and meetups..." 
+                placeholder={translate('events.searchPlaceholder', 'Search events and meetups...')} 
                 onSearch={(query) => setSearchQuery(query)}
               />
               <UniversalCalendarButton />

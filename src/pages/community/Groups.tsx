@@ -42,7 +42,7 @@ export default function Groups() {
           <UtilityActionButton className="min-w-0">
             <div className="flex items-center gap-2.5 min-w-max">
               <ExpandableSearchButton 
-                placeholder="Search groups..." 
+                placeholder={translate('groups.searchPlaceholder', 'Search groups...')} 
                 onSearch={(query) => console.log('Search Groups:', query)}
               />
               <UniversalCalendarButton />

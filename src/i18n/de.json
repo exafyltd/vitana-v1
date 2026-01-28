@@ -19,6 +19,7 @@
   "events": {
     "title": "Events & MeetUps",
     "description": "Entdecke lokale Wellness-Treffen",
+    "searchPlaceholder": "Events und Meetups suchen...",
     "tabs": {
       "today": "Heute",
       "upcoming": "Kommende",
@@ -433,7 +434,7 @@
   "settings": {
     "title": "Einstellungen",
     "description": "Verwalten Sie Ihre Kontoeinstellungen, Datenschutz und Präferenzen",
-    "searchPlaceholder": "Einstellungen, Datenschutz, Integrationen durchsuchen...",
+    "searchPlaceholder": "Einstellungen, Datenschutz, Integrationen suchen...",
     "quickSetup": "Schnelleinrichtung",
     "tabs": {
       "overview": "⚙️ Übersicht",
@@ -1377,5 +1378,23 @@
       "basedOnActivity": "Basierend auf Aktivität, Gesundheitsengagement & Beitrag",
       "viewLongevityId": "Meine Langlebigkeits-ID anzeigen"
     }
+  },
+  "groups": {
+    "searchPlaceholder": "Gruppen suchen..."
+  },
+  "challenges": {
+    "searchPlaceholder": "Challenges suchen..."
+  },
+  "consent": {
+    "searchPlaceholder": "Einwilligungspakete, Organisationen, Berechtigungen suchen..."
+  },
+  "timeline": {
+    "searchPlaceholder": "Aktivität suchen..."
+  },
+  "wellnessServices": {
+    "searchPlaceholder": "Services, Anbieter oder Programme suchen..."
+  },
+  "archives": {
+    "searchPlaceholder": "Archive suchen..."
   }
 }

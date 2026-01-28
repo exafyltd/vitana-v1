@@ -14,10 +14,12 @@ import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Archived() {
   const [activeTab, setActiveTab] = useState("all");
   const [archiveActionOpen, setArchiveActionOpen] = useState(false);
+  const { translate } = useTranslation();
   const archivedChats = [
     { id: 1, name: "Dr. Johnson", type: "direct", message: "Thanks for the consultation!", date: "Nov 15, 2023", category: "Healthcare" },
     { id: 2, name: "Yoga Beginners", type: "group", message: "Great session everyone!", date: "Nov 10, 2023", category: "Fitness" },
@@ -43,7 +45,7 @@ export default function Archived() {
             
             <UtilityActionButton>
               <ExpandableSearchButton 
-                placeholder="Search archives..."
+                placeholder={translate('archives.searchPlaceholder', 'Search archives...')}
                 onSearch={(query) => console.log('Search:', query)}
               />
               <UniversalCalendarButton />

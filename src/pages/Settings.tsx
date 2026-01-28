@@ -21,6 +21,7 @@ import { QuickSetupPopup } from "@/components/QuickSetupPopup";
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import { useNotificationSettings, NotificationSettings } from "@/hooks/useMessageNotifications";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 
 function Settings() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function Settings() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const { toast } = useToast();
   const { getNotificationSettings, updateNotificationSettings } = useNotificationSettings();
+  const { translate } = useTranslation();
 
   // Notification settings state
   const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>({
@@ -157,7 +159,7 @@ function Settings() {
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search settings, privacy controls, integrations..." />
+            <ExpandableSearchButton placeholder={translate('settings.searchPlaceholder', 'Search settings, privacy controls, integrations...')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
