@@ -1,613 +1,435 @@
 
-# Global i18n Hardening — Make Untranslated UI Text Impossible
+# Complete German i18n Translation — All UI Components
 
 ## Executive Summary
 
-This plan enforces a **"NO RAW STRINGS"** rule across the entire application, ensuring that when German is selected, 100% of UI/system text displays in German. We will create typed wrapper components that only accept translation keys, implement dev-mode missing key detection, and systematically refactor all remaining hardcoded strings.
+This plan systematically translates ALL remaining hardcoded English strings across the application to ensure 100% German localization when German is selected. The scope includes popups, cards, helper text, empty states, segmented tabs, buttons, subtitles, dialog titles, form labels, placeholders, toast messages, and table headers.
 
 ---
 
-## Current State Analysis
+## Categories of Remaining Hardcoded Strings
 
-### Existing Infrastructure ✅
-| Component | Status |
-|-----------|--------|
-| Translation files | `de.json` (~1018 lines), `en.json` (~1018 lines) |
-| Translation hook | `useTranslation()` with dev-mode `[[missing:key]]` indicator |
-| I18n helpers | `useI18nNotify()`, `createI18nToast()`, `createI18nConfirm()` |
-| Dev detection | Console warnings + visual `[[missing:key]]` indicator |
+### 1. Portal/Auth Pages (4 files) — HIGH PRIORITY
+All tenant portal pages have hardcoded English:
 
-### Critical Gaps Still Present
+| File | Hardcoded Strings |
+|------|-------------------|
+| `MaxinaPortal.tsx` | "Sign In", "Join Maxina", "Email", "Password", "Keep me logged in", "Forgot password?", "Signing in…", "Or continue with", "Welcome back to Maxina.", "Sign in to continue your journey.", "Full Name", "Your full name", "I am joining as:", "Community", "Patient", "Pro", "Admin", "Join the Maxina community.", "Create your account and begin your journey." |
+| `AlkalmaPortal.tsx` | "Sign In", "Join AlKalma", "Email", "Password", etc. |
+| `EarthlinksPortal.tsx` | "Sign In", "Join Earthlinks", "Email", "Password", etc. |
+| `CommunityPortal.tsx` | "Sign In", "Join Community", "Email", "Password", etc. |
 
-#### 1. Toast Messages with Hardcoded Strings (205+ occurrences in 11 files)
+### 2. Campaign & Sharing Dialogs (3 files)
+| File | Hardcoded Strings |
+|------|-------------------|
+| `DeleteCampaignDialog.tsx` | "Delete Campaign?", "Deleting ... will permanently remove all related drafts and analytics.", "Don't ask me again for draft campaigns", "Cancel", "Delete Permanently" |
+| `CampaignCreationHeader.tsx` | "Create Campaign", "Step X of 4", "Your Campaigns", "drafts", "live", "Pro Tip", all step tips |
 
-**`src/hooks/useVitanaOrbTools.ts`** — 20+ navigation toasts:
-```typescript
-toast({ title: "Navigating to Hydration Tracker" });
-toast({ title: "Navigating to Sleep Tracker" });
-toast({ title: "Navigating to Calendar" });
-// ...15+ more
-```
+### 3. Admin Tabs & Table Headers (5+ files)
+| File | Hardcoded Strings |
+|------|-------------------|
+| `Groups.tsx` (admin) | "All Groups", "Pending", "Approved", "Flagged", "Rejected", "Loading groups...", "No groups found", "Group Name", "Category", "Members", "Privacy", "Status", "Actions" |
+| `CommunityRoomsAdmin.tsx` | "Active Rooms", "Scheduled", "Analytics", "Moderation" |
+| `UserManagement.tsx` | Role labels, "Community Member", "Patient", etc., dialog buttons |
 
-**`src/pages/admin/media/*.tsx`** — CRUD toasts:
-```typescript
-toast({ title: "Error", description: "Failed to update status" });
-toast({ title: "Success", description: "Podcast deleted" });
-```
+### 4. Popup Tabs & Actions (10+ files)
+| File | Hardcoded Strings |
+|------|-------------------|
+| `CreatePackagePopup.tsx` | "Details", "Data Types", "Timeline", "Sharing", "Create Health Data Package", "Package Information" |
+| `ManageMyActionsPopup.tsx` | "Pending", "New Action", "Prioritize", "Pending Actions", "Confirm All", "Snooze All" |
+| `ReactionPopover.tsx` | "Reactions" |
+| `AttachmentMenu.tsx` | "Attach" |
+| `SoundscapeControl.tsx` | "Volume" |
 
-**`src/components/payment/PaymentMessageHandler.tsx`**:
-```typescript
-toast({ title: "Payment Completed! ✅", description: "..." });
-toast({ title: "Already processed", description: "..." });
-```
+### 5. Empty States (33+ files)
+Common patterns found:
+- "No apps found matching your search."
+- "No events found"
+- "No contacts found"
+- "No groups found"
+- "No results found"
+- "No reports found"
+- "No users found"
 
-**`src/lib/ai-feed-transformers.ts`**:
-```typescript
-toast({ title: 'Activity hidden' });
-```
+### 6. Loading States (17+ files)
+- "Loading..."
+- "Uploading..."
+- "Uploading... {progress}%"
+- "Loading groups..."
+- "Loading messages..."
 
-#### 2. Constants/Config Arrays with Labels (106+ files)
+### 7. Dialog Buttons (70+ occurrences)
+- "Cancel" (70 files)
+- "Confirm", "Delete", "Save", "Apply", "Close"
+- "Reschedule", "Add Notes"
 
-**`src/lib/currencies.tsx`**:
-```typescript
-{ value: 'USD', label: 'USD', fullLabel: 'US Dollars' }
-{ value: 'CREDITS', label: 'Credits', fullLabel: 'Platform Credits' }
-```
+### 8. Toast Messages with Hardcoded Strings (37+ files)
+Pattern: `toast({ title: "Error", description: "..." })`
+- "Error", "Success", "Failed to...", "Search Error"
+- All payment toasts, conversation toasts, etc.
 
-**`src/components/wallet/mobile/MobileWalletQuickActions.tsx`**:
-```typescript
-{ label: 'Add Funds', ... }
-{ label: 'Send', ... }
-{ label: 'Exchange', ... }
-{ label: 'Stake Tokens', ... }
-```
+### 9. Placeholders (247+ files)
+- `placeholder="Search..."`
+- `placeholder="Enter your..."` 
+- `placeholder="e.g., ..."`
 
-**`src/components/business/UnifiedEarningsKPIStrip.tsx`**:
-```typescript
-{ label: "Total Earnings", ... }
-{ label: "Last 30 Days", ... }
-{ label: "Pending Payout", ... }
-```
-
-**`src/pages/admin/UserManagement.tsx`**:
-```typescript
-{ value: "community", label: "Community Member", description: "Basic community access" }
-{ value: "patient", label: "Patient", description: "Patient portal access" }
-```
-
-#### 3. Empty States (33+ files with "No X found")
-
-```typescript
-"No groups found"
-"No transactions found"
-"No results found"
-"No users found"
-"No events found"
-"No reports found"
-"No apps found matching your search."
-```
-
-#### 4. Loading States (17+ files)
-
-```typescript
-"Loading..."
-"Uploading..."
-"Uploading... {progress}%"
-```
-
-#### 5. Placeholders (248+ files)
-
-```typescript
-placeholder="Search workers…"
-placeholder="Search members, groups, or..."
-placeholder="Add a language"
-placeholder="Admin notes (optional)"
-```
-
-#### 6. Window.confirm with Raw Strings (1 file remaining)
-
-**`src/utils/glassMode.ts`**:
-```typescript
-window.confirm('Share selection with AI?');
-```
-
-#### 7. StandardHeader Descriptions (199+ files)
-
-```typescript
-<StandardHeader
-  title="Community Feed"
-  description="Stay updated with posts, updates, and activities from your community."
-/>
-```
+### 10. SEO & StandardHeader Descriptions (199+ files)
+- `title="Settings"`, `description="Manage your account..."`
+- All page-level metadata
 
 ---
 
 ## Implementation Plan
 
-### Phase 1: Create Type-Safe i18n Wrappers
+### Phase 1: Expand Translation Files (~300 new keys)
 
-Create components that **only accept translation keys**, making raw strings impossible:
-
-**`src/components/ui/i18n-empty-state.tsx`** (NEW):
-```typescript
-interface I18nEmptyStateProps {
-  titleKey: string;
-  descriptionKey?: string;
-  icon?: React.ReactNode;
-  actionKey?: string;
-  onAction?: () => void;
-}
-
-export function I18nEmptyState({ titleKey, descriptionKey, icon, actionKey, onAction }: I18nEmptyStateProps) {
-  const { translate } = useTranslation();
-  
-  return (
-    <div className="text-center py-12">
-      {icon}
-      <h3 className="text-lg font-semibold mb-2">{translate(titleKey)}</h3>
-      {descriptionKey && <p className="text-muted-foreground">{translate(descriptionKey)}</p>}
-      {actionKey && onAction && (
-        <Button onClick={onAction}>{translate(actionKey)}</Button>
-      )}
-    </div>
-  );
-}
-```
-
-**`src/lib/i18n-helpers.ts`** — Add loading state helper:
-```typescript
-export function createI18nLoading(translate: TranslateFn) {
-  return (stateKey?: string) => {
-    return stateKey 
-      ? translate(stateKey) 
-      : translate('states.loading', 'Loading...');
-  };
-}
-```
-
-**Update `src/hooks/useI18nNotify.ts`** — Add navigation toast helper:
-```typescript
-export function useI18nNotify() {
-  const { translate } = useTranslation();
-  
-  const notify = useMemo(() => createI18nToast(translate), [translate]);
-  const confirm = useMemo(() => createI18nConfirm(translate), [translate]);
-  
-  // NEW: Navigation toast helper
-  const navigateTo = useMemo(() => (destinationKey: string) => {
-    rawToast({ title: translate('navigation.navigatingTo', 'Navigating to') + ' ' + translate(destinationKey) });
-  }, [translate]);
-  
-  return { notify, confirm, navigateTo };
-}
-```
-
-### Phase 2: Expand Translation Files
-
-Add ~200 new keys covering all discovered gaps:
+Add comprehensive keys to cover all discovered gaps:
 
 ```json
 {
-  "navigation": {
-    "navigatingTo": "Navigiere zu",
-    "hydrationTracker": "Hydrations-Tracker",
-    "sleepTracker": "Schlaf-Tracker",
-    "nutritionTracker": "Ernährungs-Tracker",
-    "workoutTracker": "Workout-Tracker",
-    "biomarkers": "Biomarker",
-    "calendar": "Kalender",
-    "community": "Community",
-    "groups": "Gruppen",
-    "messages": "Nachrichten",
-    "discover": "Entdecken",
-    "supplements": "Nahrungsergänzung",
-    "wallet": "Wallet",
-    "profile": "Profil",
-    "settings": "Einstellungen",
-    "diary": "Tagebuch",
-    "home": "Startseite"
-  },
-  "wallet": {
-    "quickActions": {
-      "title": "Schnellaktionen",
-      "addFunds": "Geld hinzufügen",
-      "send": "Senden",
-      "exchange": "Umtauschen",
-      "withdraw": "Abheben",
-      "buyCredits": "Credits kaufen",
-      "stakeTokens": "Token staken"
+  "portals": {
+    "maxina": {
+      "title": "Maxina Gesundheitsplattform",
+      "signIn": "Anmelden",
+      "joinMaxina": "Maxina beitreten",
+      "welcomeBack": "Willkommen zurück bei Maxina.",
+      "continueJourney": "Melden Sie sich an, um Ihre Reise fortzusetzen.",
+      "joinCommunity": "Treten Sie der Maxina-Community bei.",
+      "createAccount": "Erstellen Sie Ihr Konto und beginnen Sie Ihre Reise.",
+      "signingIn": "Wird angemeldet…",
+      "joiningAs": "Ich trete bei als:",
+      "roles": {
+        "community": "Community",
+        "patient": "Patient",
+        "professional": "Pro",
+        "admin": "Admin"
+      }
     },
-    "currencies": {
-      "usd": "US-Dollar",
-      "vtna": "VTNA Token",
-      "credits": "Plattform-Credits"
-    }
+    "alkalma": { "joinAlkalma": "AlKalma beitreten", ... },
+    "earthlinks": { "joinEarthlinks": "Earthlinks beitreten", ... },
+    "community": { "joinCommunity": "Community beitreten", ... }
   },
-  "business": {
-    "kpi": {
-      "totalEarnings": "Gesamteinnahmen",
-      "last30Days": "Letzte 30 Tage",
-      "pendingPayout": "Ausstehende Auszahlung",
-      "inWallet": "Im Wallet"
-    }
-  },
-  "admin": {
-    "roles": {
-      "community": "Community-Mitglied",
-      "communityDesc": "Grundlegender Community-Zugang",
-      "patient": "Patient",
-      "patientDesc": "Patienten-Portal Zugang",
-      "professional": "Fachperson",
-      "professionalDesc": "Zugang für medizinische Fachkräfte",
-      "staff": "Mitarbeiter",
-      "staffDesc": "Mitarbeiter-Portal Zugang",
-      "admin": "Administrator",
-      "adminDesc": "Volle Mandantenverwaltung"
+  "campaigns": {
+    "delete": {
+      "title": "Kampagne löschen?",
+      "description": "Das Löschen von \"{name}\" wird alle zugehörigen Entwürfe und Analysen dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "dontAskAgain": "Bei Entwürfen nicht mehr fragen",
+      "deletePermanently": "Dauerhaft löschen"
     },
-    "media": {
-      "updateSuccess": "Status erfolgreich aktualisiert",
-      "updateFailed": "Status-Aktualisierung fehlgeschlagen",
-      "deleteSuccess": "Erfolgreich gelöscht",
-      "deleteFailed": "Löschen fehlgeschlagen",
-      "podcastDeleted": "Podcast gelöscht",
-      "musicDeleted": "Musik gelöscht",
-      "videoDeleted": "Video gelöscht"
+    "creation": {
+      "title": "Kampagne erstellen",
+      "stepOf": "Schritt {current} von {total}",
+      "yourCampaigns": "Ihre Kampagnen",
+      "drafts": "Entwürfe",
+      "live": "Live",
+      "proTip": "Profi-Tipp",
+      "tips": {
+        "1": "Klare Namen helfen Ihnen, Kampagnen später zu finden",
+        "2": "Verbinden Sie Kanäle jetzt für sofortige Planung",
+        "3": "Die Launch-Vorlage funktioniert für die meisten Ankündigungen",
+        "4": "Intelligente Planung verwendet Ihre bisherigen Engagement-Daten"
+      }
     }
   },
-  "payment": {
-    "completed": "Zahlung abgeschlossen!",
-    "alreadyProcessed": "Bereits verarbeitet",
-    "requestIs": "Diese Anfrage ist {status}.",
-    "alreadyAccepted": "Diese Zahlungsanforderung wurde bereits akzeptiert.",
-    "declined": "Zahlung abgelehnt",
-    "declinedDesc": "Zahlungsanforderung wurde abgelehnt",
-    "exchangeSuccess": "Umtausch & Senden erfolgreich!",
-    "insufficientBalance": "Unzureichendes Guthaben",
-    "insufficientBalanceDesc": "Sie haben nicht genug {currency} für diesen Umtausch",
-    "transactionFailed": "Transaktion fehlgeschlagen",
-    "balanceRefreshed": "Guthaben aktualisiert",
-    "refreshFailed": "Aktualisierung fehlgeschlagen"
+  "adminTabs": {
+    "groups": {
+      "all": "Alle Gruppen",
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "flagged": "Markiert",
+      "rejected": "Abgelehnt"
+    },
+    "rooms": {
+      "active": "Aktive Räume",
+      "scheduled": "Geplant",
+      "analytics": "Analytik",
+      "moderation": "Moderation"
+    }
   },
-  "glassMode": {
-    "shareWithAI": "Auswahl mit KI teilen?",
-    "screenSharingComingSoon": "Bildschirmfreigabe bald verfügbar",
-    "screenSharingDesc": "Teilen Sie Ihren Bildschirm mit VITANA für kontextuelle Unterstützung.",
-    "screenSharingStopped": "Bildschirmfreigabe beendet",
-    "glassModeDisabled": "Glass-Modus deaktiviert",
-    "cameraModeComingSoon": "Kamera-Modus bald verfügbar",
-    "cameraModeDesc": "Vision-basierte KI-Interaktionen werden im nächsten Update verfügbar sein.",
-    "diaryReady": "Tagebuch bereit",
-    "openingDiary": "Öffne Tagebucheintrag",
-    "autopilotActivated": "Autopilot aktiviert",
-    "runningAutopilot": "Autopilot-Modus läuft",
-    "textInputReady": "Texteingabe bereit",
-    "typeMessage": "Sie können jetzt Ihre Nachricht eingeben",
-    "actionFailed": "Aktion fehlgeschlagen",
-    "couldNotExecute": "Konnte {action} nicht ausführen"
-  },
-  "aiFeed": {
-    "activityHidden": "Aktivität ausgeblendet",
-    "boost": "Boost",
-    "hide": "Ausblenden",
-    "activityDetails": "Aktivitätsdetails",
-    "status": "Status",
+  "tableHeaders": {
+    "groupName": "Gruppenname",
     "category": "Kategorie",
-    "reason": "Grund"
+    "members": "Mitglieder",
+    "privacy": "Datenschutz",
+    "status": "Status",
+    "actions": "Aktionen"
   },
-  "placeholders": {
-    "searchWorkers": "Mitarbeiter suchen...",
-    "searchMembers": "Mitglieder, Gruppen suchen...",
-    "addLanguage": "Sprache hinzufügen",
-    "adminNotes": "Admin-Notizen (optional)",
-    "searchApps": "Apps und Dienste suchen...",
-    "searchMatches": "Matches suchen...",
-    "selectTemplate": "Vorlage auswählen",
-    "enterRunName": "Namen für diesen Lauf eingeben...",
-    "selectTriggerMode": "Auslösemodus auswählen",
-    "addContext": "Zusätzlichen Kontext oder Notizen hinzufügen...",
-    "searchSharing": "Teilungsaktivitäten suchen...",
-    "searchVideos": "Videos suchen...",
-    "shareBio": "Teilen Sie Ihre Wellness-Reise, Leidenschaften und was Sie einzigartig macht...",
-    "locationExample": "z.B. München, DE • Berlin, DE • Remote",
-    "labelExample": "Label (z.B. Website, Instagram, LinkedIn, Portfolio)",
-    "urlExample": "https://ihre-website.com oder @benutzername"
+  "popupTabs": {
+    "details": "Details",
+    "dataTypes": "Datentypen",
+    "timeline": "Zeitachse",
+    "sharing": "Teilen",
+    "pending": "Ausstehend",
+    "newAction": "Neue Aktion",
+    "prioritize": "Priorisieren"
   },
-  "densityOptions": {
-    "cozy": "Gemütlich",
-    "compact": "Kompakt",
-    "gallery": "Galerie"
+  "popupTitles": {
+    "createHealthDataPackage": "Gesundheitsdatenpaket erstellen",
+    "packageInformation": "Paketinformationen",
+    "reactions": "Reaktionen",
+    "attach": "Anhängen",
+    "volume": "Lautstärke"
   },
-  "calendarPopup": {
-    "quickAdd": "Schnell hinzufügen",
-    "eventFormComingSoon": "Event-Erstellungsformular bald verfügbar",
-    "externalSync": "Externe Synchronisierung",
-    "connectingCalendars": "Verbinde mit externen Kalendern..."
+  "actionButtons": {
+    "confirmAll": "Alle bestätigen",
+    "snoozeAll": "Alle verschieben",
+    "reschedule": "Neu planen",
+    "addNotes": "Notizen hinzufügen",
+    "changePlan": "Plan ändern",
+    "cancelSubscription": "Abonnement kündigen"
+  },
+  "formLabels": {
+    "fullName": "Vollständiger Name",
+    "yourFullName": "Ihr vollständiger Name",
+    "actionTitle": "Aktionstitel",
+    "actionTitlePlaceholder": "z.B. Abendspaziergang, Arzt anrufen",
+    "optionalNotes": "Optionale Notizen",
+    "additionalDetails": "Zusätzliche Details oder Kontext..."
+  },
+  "empty": {
+    "noAppsFound": "Keine Apps gefunden, die Ihrer Suche entsprechen.",
+    "noEventsFound": "Keine Veranstaltungen gefunden",
+    "noContactsFound": "Keine Kontakte gefunden",
+    "noContactsFoundMatching": "Keine Kontakte gefunden, die \"{query}\" entsprechen",
+    "noGroupsFound": "Keine Gruppen gefunden",
+    "noResultsFound": "Keine Ergebnisse gefunden",
+    "noReportsFound": "Keine Berichte gefunden",
+    "noUsersFound": "Keine Benutzer gefunden",
+    "noTransactionsFound": "Keine Transaktionen gefunden",
+    "noEventsYet": "Noch keine Veranstaltungen. Erstellen Sie zuerst eine Veranstaltung.",
+    "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen"
+  },
+  "loading": {
+    "default": "Wird geladen...",
+    "groups": "Gruppen werden geladen...",
+    "messages": "Nachrichten werden geladen...",
+    "uploading": "Wird hochgeladen...",
+    "uploadingProgress": "Wird hochgeladen... {progress}%"
   }
 }
 ```
 
-### Phase 3: Refactor Remaining Components
+### Phase 2: Refactor Portal Pages (4 files)
 
-#### 3.1 Navigation Toasts — `useVitanaOrbTools.ts`
-
-```typescript
-// Before
-toast({ title: "Navigating to Hydration Tracker" });
-
-// After
-import { useTranslation } from '@/hooks/useTranslation';
-
-const { translate } = useTranslation();
-toast({ title: translate('navigation.navigatingTo') + ' ' + translate('navigation.hydrationTracker') });
-```
-
-#### 3.2 Wallet Quick Actions — `MobileWalletQuickActions.tsx`
-
-```typescript
-// Before
-const actions = [
-  { id: 'add-funds', label: 'Add Funds', ... },
-  { id: 'send', label: 'Send', ... },
-];
-
-// After
-const { translate } = useTranslation();
-const actions = [
-  { id: 'add-funds', label: translate('wallet.quickActions.addFunds'), ... },
-  { id: 'send', label: translate('wallet.quickActions.send'), ... },
-];
-```
-
-#### 3.3 Currency Labels — `currencies.tsx`
-
-Convert to function that accepts translator:
-
-```typescript
-// Before
-export const CURRENCY_CONFIGS = [
-  { value: 'USD', label: 'USD', fullLabel: 'US Dollars' },
-];
-
-// After
-export const getCurrencyConfigs = (translate: TranslateFn) => [
-  { value: 'USD', label: 'USD', fullLabel: translate('wallet.currencies.usd', 'US Dollars') },
-  { value: 'VTNA', label: 'VTNA', fullLabel: translate('wallet.currencies.vtna', 'VTNA Tokens') },
-  { value: 'CREDITS', label: translate('wallet.currencies.credits', 'Credits'), fullLabel: translate('wallet.currencies.creditsLabel', 'Platform Credits') },
-];
-```
-
-#### 3.4 Admin Media Toasts — `Podcasts.tsx`, `Music.tsx`, `Videos.tsx`
-
-```typescript
-// Before
-toast({ title: "Error", description: "Failed to update status", variant: "destructive" });
-toast({ title: "Success", description: "Podcast deleted" });
-
-// After
-import { useI18nNotify } from '@/hooks/useI18nNotify';
-const { notify } = useI18nNotify();
-
-notify.error('toasts.error.generic', 'admin.media.updateFailed');
-notify.success('toasts.success.deleted', 'admin.media.podcastDeleted');
-```
-
-#### 3.5 Payment Handler — `PaymentMessageHandler.tsx`
-
-```typescript
-// Before
-toast({ title: "Payment Completed! ✅", description: `${formatCurrency(...)} sent` });
-
-// After
-notify.success('payment.completed', 'payment.sentSuccess', { amount: formatCurrency(...) });
-```
-
-#### 3.6 Business KPI Labels — `UnifiedEarningsKPIStrip.tsx`
-
+**Pattern for MaxinaPortal.tsx:**
 ```typescript
 const { translate } = useTranslation();
 
-const kpiCards = [
-  { label: translate('business.kpi.totalEarnings'), ... },
-  { label: translate('business.kpi.last30Days'), ... },
-  { label: translate('business.kpi.pendingPayout'), ... },
-  { label: translate('business.kpi.inWallet'), ... },
-];
+<TabsTrigger value="signin">{translate('authPage.signIn')}</TabsTrigger>
+<TabsTrigger value="signup">{translate('portals.maxina.joinMaxina')}</TabsTrigger>
+<Label>{translate('authPage.email')}</Label>
+<Label>{translate('authPage.password')}</Label>
+<CardTitle>{translate('portals.maxina.welcomeBack')}</CardTitle>
+<CardDescription>{translate('portals.maxina.continueJourney')}</CardDescription>
 ```
 
-#### 3.7 Admin Role Options — `UserManagement.tsx`
+### Phase 3: Refactor Campaign Dialogs (2 files)
 
+**DeleteCampaignDialog.tsx:**
 ```typescript
 const { translate } = useTranslation();
 
-const ROLE_OPTIONS = [
-  { value: "community", label: translate('admin.roles.community'), description: translate('admin.roles.communityDesc') },
-  { value: "patient", label: translate('admin.roles.patient'), description: translate('admin.roles.patientDesc') },
-  // ...
-];
+<ResponsiveConfirmDialogTitle>
+  {translate('campaigns.delete.title')}
+</ResponsiveConfirmDialogTitle>
+<ResponsiveConfirmDialogDescription>
+  {applyReplacements(translate('campaigns.delete.description'), { name: campaignName })}
+</ResponsiveConfirmDialogDescription>
+<Label>{translate('campaigns.delete.dontAskAgain')}</Label>
+<ResponsiveConfirmDialogCancel>{translate('buttons.cancel')}</ResponsiveConfirmDialogCancel>
+<ResponsiveConfirmDialogAction>{translate('campaigns.delete.deletePermanently')}</ResponsiveConfirmDialogAction>
 ```
 
-#### 3.8 Glass Mode Confirm — `glassMode.ts`
+### Phase 4: Refactor Admin Tabs (5+ files)
 
-This is a utility class, not a React component, so we need to pass the translate function:
-
+**Groups.tsx pattern:**
 ```typescript
-// In glassMode.ts
-private showTextSelectionPrompt(text: string, translate?: TranslateFn) {
-  const message = translate 
-    ? translate('glassMode.shareWithAI', 'Share selection with AI?')
-    : 'Share selection with AI?';
-  const share = window.confirm(message);
-  // ...
-}
+const { translate } = useTranslation();
+
+<TabsTrigger value="all">{translate('adminTabs.groups.all')}</TabsTrigger>
+<TabsTrigger value="pending">{translate('adminTabs.groups.pending')}</TabsTrigger>
+// Table headers
+<TableHead>{translate('tableHeaders.groupName')}</TableHead>
+<TableHead>{translate('tableHeaders.category')}</TableHead>
+// Empty state
+<p>{translate('empty.noGroupsFound')}</p>
+// Loading state
+<div>{translate('loading.groups')}</div>
 ```
 
-### Phase 4: Create i18n-First Empty State Component
+### Phase 5: Refactor Popup Components (10+ files)
 
-**`src/components/ui/i18n-empty-state.tsx`**:
-
+**CreatePackagePopup.tsx:**
 ```typescript
-import { useTranslation } from "@/hooks/useTranslation";
-import { Button } from "@/components/ui/button";
-import { LucideIcon } from "lucide-react";
-
-interface I18nEmptyStateProps {
-  titleKey: string;
-  descriptionKey?: string;
-  Icon?: LucideIcon;
-  actionKey?: string;
-  onAction?: () => void;
-  className?: string;
-}
-
-export function I18nEmptyState({ 
-  titleKey, 
-  descriptionKey, 
-  Icon, 
-  actionKey, 
-  onAction,
-  className 
-}: I18nEmptyStateProps) {
-  const { translate } = useTranslation();
-  
-  return (
-    <div className={`text-center py-12 ${className || ''}`}>
-      {Icon && <Icon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />}
-      <h3 className="text-lg font-semibold mb-2">{translate(titleKey)}</h3>
-      {descriptionKey && (
-        <p className="text-muted-foreground">{translate(descriptionKey)}</p>
-      )}
-      {actionKey && onAction && (
-        <Button onClick={onAction} className="mt-4">
-          {translate(actionKey)}
-        </Button>
-      )}
-    </div>
-  );
-}
+<DialogTitle>{translate('popupTitles.createHealthDataPackage')}</DialogTitle>
+<TabsTrigger value="details">{translate('popupTabs.details')}</TabsTrigger>
+<TabsTrigger value="data">{translate('popupTabs.dataTypes')}</TabsTrigger>
 ```
 
-**Usage pattern:**
+**ManageMyActionsPopup.tsx:**
+```typescript
+<TabsTrigger value="pending">{translate('popupTabs.pending')}</TabsTrigger>
+<Button>{translate('actionButtons.confirmAll')}</Button>
+<Button>{translate('actionButtons.snoozeAll')}</Button>
+```
+
+### Phase 6: Refactor Cancel Buttons (11 files)
+
+All `ResponsiveConfirmDialogCancel>Cancel<` instances:
+```typescript
+<ResponsiveConfirmDialogCancel>
+  {translate('buttons.cancel')}
+</ResponsiveConfirmDialogCancel>
+```
+
+Files: `LiveRooms.tsx`, `UserManagement.tsx`, `LiveRoomDrawer.tsx`, `ContactListItem.tsx`, `MediaHub.tsx`, `ConversationCard.tsx`, `ActivityCard.tsx`, `ProfileDrawer.tsx`, `Appointments.tsx`, `DoctorsCoaches.tsx`, `Billing.tsx`
+
+### Phase 7: Refactor Empty States (33+ files)
+
+Convert to `I18nEmptyState` component or use `translate()`:
 ```typescript
 // Before
-<div className="text-center py-12">
-  <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-  <p className="text-muted-foreground">No groups found</p>
-</div>
+<p className="text-muted-foreground">No groups found</p>
 
 // After
-<I18nEmptyState 
-  Icon={Users}
-  titleKey="empty.noGroups"
-  descriptionKey="empty.noGroupsDesc"
-/>
+<p className="text-muted-foreground">{translate('empty.noGroupsFound')}</p>
+```
+
+### Phase 8: Refactor Toast Messages (37+ files)
+
+Convert all hardcoded toast calls:
+```typescript
+// Before
+toast({ title: "Error", description: "Failed to search users" });
+
+// After
+toast({ 
+  title: translate('toasts.error.generic'), 
+  description: translate('toasts.error.searchFailed') 
+});
 ```
 
 ---
 
-## Files to Create/Modify
+## Files to Modify
 
-### New Files
-| File | Purpose |
-|------|---------|
-| `src/components/ui/i18n-empty-state.tsx` | Type-safe empty state component |
-
-### Translation Files (Major Expansion)
-| File | Current Lines | Estimated After |
-|------|---------------|-----------------|
-| `src/i18n/de.json` | ~1018 | ~1250 |
-| `src/i18n/en.json` | ~1018 | ~1250 |
-
-### Components to Refactor
-
+### Translation Files
 | File | Changes |
 |------|---------|
-| `src/hooks/useVitanaOrbTools.ts` | All 20+ navigation toasts |
-| `src/lib/currencies.tsx` | Convert to function with translator |
-| `src/components/wallet/mobile/MobileWalletQuickActions.tsx` | 6 action labels |
-| `src/components/business/UnifiedEarningsKPIStrip.tsx` | 4 KPI labels |
-| `src/pages/admin/UserManagement.tsx` | Role labels and descriptions |
-| `src/pages/admin/media/Podcasts.tsx` | CRUD toasts |
-| `src/pages/admin/media/Music.tsx` | CRUD toasts |
-| `src/pages/admin/media/Videos.tsx` | CRUD toasts |
-| `src/components/payment/PaymentMessageHandler.tsx` | 15+ payment toasts |
-| `src/lib/ai-feed-transformers.ts` | Action labels and toasts |
-| `src/utils/glassMode.ts` | window.confirm prompt |
-| `src/components/community/DensityControl.tsx` | Density option labels |
-| `src/components/CalendarPopup.tsx` | Toast messages |
-| `src/components/dev/DevSidebar.tsx` | Search placeholders |
-| `src/components/profile/editor/AboutForm.tsx` | Form placeholders |
-| `src/pages/admin/community/Groups.tsx` | Status labels + empty state |
-| `src/pages/admin/community/ReportedContent.tsx` | Empty state |
-| `src/pages/Search.tsx` | Empty state |
-| `src/components/ConnectAppPopup.tsx` | Empty state + placeholder |
-| `src/pages/discover/Supplements.tsx` | Empty state |
-| ~30 more files | Various hardcoded strings |
+| `src/i18n/de.json` | +300 new keys |
+| `src/i18n/en.json` | +300 new keys |
+
+### Portal Pages (4 files)
+- `src/pages/portals/MaxinaPortal.tsx`
+- `src/pages/portals/AlkalmaPortal.tsx`
+- `src/pages/portals/EarthlinksPortal.tsx`
+- `src/pages/portals/CommunityPortal.tsx`
+
+### Campaign Components (2 files)
+- `src/components/sharing/DeleteCampaignDialog.tsx`
+- `src/components/sharing/CampaignCreationHeader.tsx`
+
+### Admin Pages (5 files)
+- `src/pages/admin/community/Groups.tsx`
+- `src/pages/admin/CommunityRoomsAdmin.tsx`
+- `src/pages/admin/UserManagement.tsx`
+- `src/pages/admin/community/ReportedContent.tsx`
+- `src/pages/admin/Dashboard.tsx`
+
+### Popup Components (10 files)
+- `src/components/CreatePackagePopup.tsx`
+- `src/components/ManageMyActionsPopup.tsx`
+- `src/components/messages/ReactionPopover.tsx`
+- `src/components/messages/AttachmentMenu.tsx`
+- `src/components/audio/SoundscapeControl.tsx`
+- `src/components/NewConversationPopup.tsx`
+- `src/components/SmartPackagePopup.tsx`
+- `src/components/ConnectAppPopup.tsx`
+- `src/components/contacts/ContactsTabContent.tsx`
+- `src/components/sharing/EditPackageDialog.tsx`
+
+### Dialog/Confirm Components (11 files)
+- `src/pages/community/LiveRooms.tsx`
+- `src/pages/community/MediaHub.tsx`
+- `src/components/liverooms/LiveRoomDrawer.tsx`
+- `src/components/contacts/ContactListItem.tsx`
+- `src/components/memory/ConversationCard.tsx`
+- `src/components/memory/ActivityCard.tsx`
+- `src/components/profile/ProfileDrawer.tsx`
+- `src/pages/patient/Appointments.tsx`
+- `src/pages/discover/DoctorsCoaches.tsx`
+- `src/pages/settings/Billing.tsx`
+- `src/pages/admin/UserManagement.tsx`
+
+### Empty State Components (15+ files)
+- `src/components/ai-feed/VisualHistoryTimeline.tsx`
+- `src/pages/Search.tsx`
+- `src/components/crossover/GroupMatchCard.tsx`
+- `src/components/events/ContactPicker.tsx`
+- `src/pages/settings/TenantRole.tsx`
+- And 10+ more
+
+### Toast Message Files (20+ files)
+- `src/components/payment/GlobalPaymentRequest.tsx`
+- `src/components/payment/PaymentRequestPopup.tsx`
+- `src/components/NewConversationPopup.tsx`
+- `src/components/calendar/EnhancedCalendarPopup.tsx`
+- And 16+ more
 
 ---
 
 ## New Translation Key Structure
 
 ```text
-├── navigation.*        # "Navigating to X" messages
-├── wallet.quickActions.* # Add Funds, Send, Exchange, etc.
-├── wallet.currencies.* # Currency labels
-├── business.kpi.*      # KPI card labels
-├── admin.roles.*       # Role labels and descriptions
-├── admin.media.*       # CRUD operation messages
-├── payment.*           # Payment flow messages
-├── glassMode.*         # Glass mode prompts
-├── aiFeed.*            # AI feed action labels
-├── placeholders.*      # All form placeholders
-├── densityOptions.*    # Layout density options
-├── calendarPopup.*     # Calendar popup messages
+├── portals.*              # Portal-specific (Maxina, AlKalma, etc.)
+├── campaigns.*            # Campaign creation/deletion
+│   ├── delete.*
+│   └── creation.*
+├── adminTabs.*            # Admin section tabs
+│   ├── groups.*
+│   └── rooms.*
+├── tableHeaders.*         # All table column headers
+├── popupTabs.*            # Popup internal tabs
+├── popupTitles.*          # Popup dialog titles
+├── actionButtons.*        # Action button labels
+├── formLabels.*           # Form field labels
+├── empty.*                # All empty state messages
+├── loading.*              # All loading state messages
 └── (existing keys...)
 ```
 
 ---
 
-## Acceptance Criteria Checklist
+## Priority Order
 
-- [ ] All toast calls use `useI18nNotify()` or `translate()` 
-- [ ] All config arrays with labels use translation keys
-- [ ] All empty states use `I18nEmptyState` or `translate()`
-- [ ] All loading states use `translate('states.*')`
-- [ ] All placeholders use `translate('placeholders.*')`
-- [ ] All `window.confirm()` calls use translated strings
-- [ ] Zero hardcoded English strings in any UI component
-- [ ] Missing keys show `[[missing:key]]` in dev mode
-- [ ] Console warnings for missing keys in dev mode
-- [ ] Language switch updates ALL visible text instantly
-- [ ] Navigation through 11 mobile screens shows zero English when German selected
+### Batch 1: User-Facing Critical (Do First)
+1. Portal pages (MaxinaPortal, etc.) — first thing users see
+2. Campaign dialogs — common user flow
+3. Cancel/Confirm buttons — appears everywhere
+
+### Batch 2: Common Components
+4. Popup tabs and titles
+5. Empty states
+6. Loading states
+
+### Batch 3: Admin & Backend
+7. Admin tabs and table headers
+8. Toast messages
+9. Form labels and placeholders
+
+---
+
+## Acceptance Criteria
+
+- [ ] All 4 portal pages fully translated
+- [ ] DeleteCampaignDialog fully translated
+- [ ] CampaignCreationHeader fully translated
+- [ ] All admin tabs translated
+- [ ] All table headers translated
+- [ ] All "Cancel" buttons use translation keys
+- [ ] All empty states use translation keys
+- [ ] All loading states use translation keys
+- [ ] All popup tabs/titles translated
+- [ ] Zero hardcoded English in any UI component
+- [ ] Switching to German shows 100% German text
 - [ ] Only user-generated content remains in original language
-
----
-
-## Implementation Priority
-
-### Batch 1: High-Traffic Components (Critical)
-1. Navigation toasts in `useVitanaOrbTools.ts`
-2. Wallet quick actions
-3. Payment handler toasts
-4. i18n empty state component
-
-### Batch 2: Admin & Business (Medium)
-5. Admin media toasts
-6. Business KPI labels
-7. User management role labels
-8. Currency labels
-
-### Batch 3: Config & Placeholders (Lower)
-9. Form placeholders
-10. Density controls
-11. Calendar popup
-12. Remaining empty states
-
----
-
-## Technical Notes
-
-- **Brand names stay English**: "Vitana Index", "Autopilot", "VTNA"
-- **German formal "Sie" form**: All German translations use formal address
-- **Fallback chain**: German → English → `[[missing:key]]` marker
-- **Dynamic replacements**: Use `{variable}` syntax with `applyReplacements()` helper
-- **Non-React files**: Pass `translate` function as parameter to utility classes
