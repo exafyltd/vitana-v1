@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobileAutopilotBannerProps {
   onTry?: () => void;
@@ -11,6 +12,8 @@ export function MobileAutopilotBanner({
   onTry,
   className
 }: MobileAutopilotBannerProps) {
+  const { translate } = useTranslation();
+  
   return (
     <div className={cn(
       "mx-4 my-3 px-3 py-2.5 rounded-xl",
@@ -26,7 +29,7 @@ export function MobileAutopilotBanner({
 
       {/* Text - single line on mobile */}
       <p className="flex-1 text-xs text-foreground leading-tight">
-        Polish your bio, archetype & showcase
+        {translate('profile.autopilot.polishBio')}
       </p>
 
       {/* Try button */}
@@ -36,7 +39,7 @@ export function MobileAutopilotBanner({
         onClick={onTry}
         className="h-7 px-3 text-xs font-medium bg-primary/10 hover:bg-primary/20 text-primary shrink-0"
       >
-        Try
+        {translate('profile.autopilot.try')}
       </Button>
     </div>
   );

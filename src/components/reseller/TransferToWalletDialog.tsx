@@ -10,6 +10,7 @@ import {
   ResponsiveConfirmDialogTitle,
 } from "@/components/ui/responsive-confirm-dialog";
 import { Wallet, ArrowRight, Loader2, CheckCircle } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface TransferToWalletDialogProps {
   open: boolean;
@@ -26,6 +27,8 @@ export function TransferToWalletDialog({
   onConfirm,
   isLoading,
 }: TransferToWalletDialogProps) {
+  const { translate } = useTranslation();
+  
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -42,21 +45,21 @@ export function TransferToWalletDialog({
             <Wallet className="h-7 w-7 text-accent" />
           </div>
           <ResponsiveConfirmDialogTitle className="text-center">
-            Transfer to Wallet
+            {translate('business.transfer.title')}
           </ResponsiveConfirmDialogTitle>
           <ResponsiveConfirmDialogDescription className="text-center space-y-3">
-            <p>Transfer your pending reseller commissions to your VITANA Wallet.</p>
+            <p>{translate('business.transfer.description')}</p>
             
             <div className="flex items-center justify-center gap-2 py-3">
               <div className="text-center">
-                <p className="text-xs text-muted-foreground mb-0.5">Pending</p>
+                <p className="text-xs text-muted-foreground mb-0.5">{translate('business.transfer.pending')}</p>
                 <p className="text-xl font-semibold text-foreground">
                   {formatCurrency(pendingAmount)}
                 </p>
               </div>
               <ArrowRight className="h-5 w-5 text-muted-foreground" />
               <div className="text-center">
-                <p className="text-xs text-muted-foreground mb-0.5">Wallet</p>
+                <p className="text-xs text-muted-foreground mb-0.5">{translate('business.transfer.wallet')}</p>
                 <div className="h-6 w-6 rounded-full bg-accent/20 flex items-center justify-center mx-auto">
                   <Wallet className="h-3.5 w-3.5 text-accent" />
                 </div>
@@ -64,13 +67,13 @@ export function TransferToWalletDialog({
             </div>
 
             <p className="text-xs text-muted-foreground">
-              This will credit your earnings instantly to your wallet balance.
+              {translate('business.transfer.instantCredit')}
             </p>
           </ResponsiveConfirmDialogDescription>
         </ResponsiveConfirmDialogHeader>
         <ResponsiveConfirmDialogFooter className="flex-col sm:flex-row gap-2">
           <ResponsiveConfirmDialogCancel disabled={isLoading} className="rounded-full">
-            Cancel
+            {translate('common.cancel')}
           </ResponsiveConfirmDialogCancel>
           <ResponsiveConfirmDialogAction
             onClick={(e) => {
@@ -83,12 +86,12 @@ export function TransferToWalletDialog({
             {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Transferring...
+                {translate('business.transfer.transferring')}
               </>
             ) : (
               <>
                 <CheckCircle className="h-4 w-4" />
-                Transfer {formatCurrency(pendingAmount)}
+                {translate('business.transfer.transfer')} {formatCurrency(pendingAmount)}
               </>
             )}
           </ResponsiveConfirmDialogAction>

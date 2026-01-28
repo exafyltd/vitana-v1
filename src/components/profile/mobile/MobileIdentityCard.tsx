@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Pencil, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
@@ -29,6 +30,8 @@ export function MobileIdentityCard({
   onViewFullId,
   className
 }: MobileIdentityCardProps) {
+  const { translate } = useTranslation();
+  
   const initials = displayName
     ?.split(" ")
     .map((n) => n[0])
@@ -100,7 +103,7 @@ export function MobileIdentityCard({
           <div className="flex flex-col items-center w-full">
             {/* Label */}
             <span className="text-[10px] font-medium tracking-[0.2em] text-white/40 uppercase mb-3">
-              Vitana Index
+              {translate('profile.identity.vitanaIndex')}
             </span>
 
             {/* Score with ambient glow */}
@@ -138,7 +141,7 @@ export function MobileIdentityCard({
 
             {/* Explanation */}
             <p className="text-[11px] text-white/40 italic text-center px-4">
-              Based on activity, health engagement & contribution
+              {translate('profile.identity.basedOnActivity')}
             </p>
           </div>
 
@@ -153,7 +156,7 @@ export function MobileIdentityCard({
                 onViewFullId();
               }}
             >
-              View my Longevity ID
+              {translate('profile.identity.viewLongevityId')}
               <ChevronRight className="h-3 w-3" />
             </Button>
           )}

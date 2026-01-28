@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Ticket, Award, ChevronDown, ChevronRight, Wallet, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EarningsBySourceCardsProps {
   directSales: {
@@ -37,6 +37,7 @@ export function EarningsBySourceCards({
   const navigate = useNavigate();
   const [directOpen, setDirectOpen] = useState(false);
   const [resellerOpen, setResellerOpen] = useState(false);
+  const { translate } = useTranslation();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -48,7 +49,7 @@ export function EarningsBySourceCards({
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-medium text-muted-foreground">Earnings by Source</h3>
+      <h3 className="text-sm font-medium text-muted-foreground">{translate('business.kpi.earningsBySource')}</h3>
       
       {/* My Event Sales Card */}
       <Collapsible open={directOpen} onOpenChange={setDirectOpen}>
@@ -61,9 +62,9 @@ export function EarningsBySourceCards({
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">My Event Sales</p>
+                  <p className="text-sm font-medium">{translate('business.kpi.myEventSales')}</p>
                   <p className="text-xs text-muted-foreground">
-                    {directSales.tickets} tickets · Last 30 days: {formatCurrency(directSales.lastMonth)}
+                    {directSales.tickets} {translate('business.reseller.tickets')} · {translate('business.history.last30Days')}: {formatCurrency(directSales.lastMonth)}
                   </p>
                 </div>
                 
@@ -85,15 +86,15 @@ export function EarningsBySourceCards({
             <div className="px-4 pb-4 pt-0 border-t border-border/30">
               <div className="pt-3 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Total Gross Sales</span>
+                  <span className="text-muted-foreground">{translate('business.kpi.totalGrossSales')}</span>
                   <span className="font-medium">{formatCurrency(directSales.gross)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tickets Sold</span>
+                  <span className="text-muted-foreground">{translate('business.history.ticketsSold')}</span>
                   <span className="font-medium">{directSales.tickets}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Last 30 Days</span>
+                  <span className="text-muted-foreground">{translate('business.history.last30Days')}</span>
                   <span className="font-medium">{formatCurrency(directSales.lastMonth)}</span>
                 </div>
                 <Button
@@ -102,7 +103,7 @@ export function EarningsBySourceCards({
                   className="w-full mt-2 rounded-full gap-2"
                   onClick={() => navigate("/business/services")}
                 >
-                  View My Events
+                  {translate('business.kpi.viewMyEvents')}
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Button>
               </div>
@@ -122,9 +123,9 @@ export function EarningsBySourceCards({
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">Reseller Commissions</p>
+                  <p className="text-sm font-medium">{translate('business.kpi.resellerCommissions')}</p>
                   <p className="text-xs text-muted-foreground">
-                    {resellerCommissions.ticketsSold} tickets sold · {formatCurrency(resellerCommissions.pending)} pending
+                    {resellerCommissions.ticketsSold} {translate('business.reseller.tickets')} · {formatCurrency(resellerCommissions.pending)} {translate('business.history.pendingPayout').toLowerCase()}
                   </p>
                 </div>
                 
@@ -146,19 +147,19 @@ export function EarningsBySourceCards({
             <div className="px-4 pb-4 pt-0 border-t border-border/30">
               <div className="pt-3 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Total Earned</span>
+                  <span className="text-muted-foreground">{translate('business.kpi.totalEarned')}</span>
                   <span className="font-medium">{formatCurrency(resellerCommissions.earned)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Pending Payout</span>
+                  <span className="text-muted-foreground">{translate('business.history.pendingPayout')}</span>
                   <span className="font-medium text-amber-600">{formatCurrency(resellerCommissions.pending)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">In Wallet</span>
+                  <span className="text-muted-foreground">{translate('business.reseller.inWallet')}</span>
                   <span className="font-medium text-emerald-600">{formatCurrency(resellerCommissions.inWallet)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tickets Sold</span>
+                  <span className="text-muted-foreground">{translate('business.history.ticketsSold')}</span>
                   <span className="font-medium">{resellerCommissions.ticketsSold}</span>
                 </div>
                 <div className="flex gap-2 mt-2">
@@ -168,7 +169,7 @@ export function EarningsBySourceCards({
                     className="flex-1 rounded-full gap-2"
                     onClick={() => navigate("/business/sell-earn")}
                   >
-                    Go to Sell & Earn
+                    {translate('business.kpi.goToSellEarn')}
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Button>
                   <Button

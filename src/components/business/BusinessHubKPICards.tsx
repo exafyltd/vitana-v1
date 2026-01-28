@@ -7,8 +7,11 @@
 
 import { CardContent } from "@/components/ui/card";
 import { DollarSign, Users, Calendar, TrendingUp } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function BusinessHubKPICards() {
+  const { translate } = useTranslation();
+  
   // Mock data - in production, these would come from real hooks
   const stats = {
     revenue: 2450,
@@ -46,11 +49,11 @@ export function BusinessHubKPICards() {
               <DollarSign className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Revenue</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.kpi.revenue')}</p>
               <p className="text-3xl font-bold text-foreground mt-1">
                 {formatCurrency(stats.revenue)}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">This month</p>
+              <p className="text-xs text-muted-foreground mt-1">{translate('business.kpi.thisMonth')}</p>
             </div>
           </div>
         </CardContent>
@@ -67,11 +70,11 @@ export function BusinessHubKPICards() {
               <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Active Clients</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.kpi.activeClients')}</p>
               <p className="text-3xl font-bold text-foreground mt-1">
                 {stats.activeClients}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">Total active</p>
+              <p className="text-xs text-muted-foreground mt-1">{translate('business.kpi.totalActive')}</p>
             </div>
           </div>
         </CardContent>
@@ -88,11 +91,11 @@ export function BusinessHubKPICards() {
               <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Upcoming Sessions</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.kpi.upcomingSessions')}</p>
               <p className="text-3xl font-bold text-foreground mt-1">
                 {stats.upcomingSessions}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">This week</p>
+              <p className="text-xs text-muted-foreground mt-1">{translate('business.kpi.thisWeek')}</p>
             </div>
           </div>
         </CardContent>
@@ -109,7 +112,7 @@ export function BusinessHubKPICards() {
               <TrendingUp className="h-5 w-5 text-violet-600 dark:text-violet-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Top Performer</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.kpi.topPerformer')}</p>
               {stats.topPerformer ? (
                 <>
                   <p className="text-sm font-medium text-foreground truncate mt-1">
@@ -117,7 +120,7 @@ export function BusinessHubKPICards() {
                   </p>
                   <div className="flex items-center gap-2 mt-2">
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-muted/50 text-xs text-muted-foreground">
-                      {stats.topPerformer.bookings} bookings
+                      {stats.topPerformer.bookings} {translate('business.kpi.bookings')}
                     </span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-muted/50 text-xs text-muted-foreground">
                       {formatCurrency(stats.topPerformer.revenue)}
@@ -126,8 +129,8 @@ export function BusinessHubKPICards() {
                 </>
               ) : (
                 <div className="mt-1">
-                  <p className="text-sm font-medium text-foreground">No data yet</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Create a service to get started.</p>
+                  <p className="text-sm font-medium text-foreground">{translate('business.kpi.noDataYet')}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{translate('business.kpi.createServiceToStart')}</p>
                 </div>
               )}
             </div>

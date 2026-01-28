@@ -15,6 +15,7 @@ import { Wallet, ChevronDown, X } from "lucide-react";
 import { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EarningsHistoryLedgerProps {
   transactions: EarningsTransaction[];
@@ -32,15 +33,16 @@ export function EarningsHistoryLedger({
   const navigate = useNavigate();
   const [filter, setFilter] = useState<FilterType>("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { translate } = useTranslation();
 
   const handleToggleExpand = (id: string) => {
     setExpandedId(prev => prev === id ? null : id);
   };
 
   const filters: { value: FilterType; label: string }[] = [
-    { value: "all", label: "All" },
-    { value: "direct_sale", label: "Direct Sales" },
-    { value: "reseller_commission", label: "Reseller" },
+    { value: "all", label: translate('business.history.all') },
+    { value: "direct_sale", label: translate('business.history.directSales') },
+    { value: "reseller_commission", label: translate('business.history.reseller') },
   ];
 
   // Apply date range filter
@@ -77,9 +79,9 @@ export function EarningsHistoryLedger({
   
   const getDateRangeLabel = (range: string) => {
     switch (range) {
-      case "30d": return "Last 30 Days";
-      case "7d": return "Last 7 Days";
-      case "90d": return "Last 90 Days";
+      case "30d": return translate('business.history.last30Days');
+      case "7d": return translate('business.history.last7Days');
+      case "90d": return translate('business.history.last90Days');
       default: return range;
     }
   };
@@ -112,21 +114,21 @@ export function EarningsHistoryLedger({
         {/* Transaction Summary Grid */}
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="space-y-1">
-            <span className="text-muted-foreground text-xs">Tickets Sold</span>
+            <span className="text-muted-foreground text-xs">{translate('business.history.ticketsSold')}</span>
             <p className="font-medium">{ticketsSold}</p>
           </div>
           <div className="space-y-1">
-            <span className="text-muted-foreground text-xs">Gross Amount</span>
+            <span className="text-muted-foreground text-xs">{translate('business.history.grossAmount')}</span>
             <p className="font-medium">{formatCurrency(grossAmount)}</p>
           </div>
           <div className="space-y-1">
-            <span className="text-muted-foreground text-xs">You Earned</span>
+            <span className="text-muted-foreground text-xs">{translate('business.history.youEarned')}</span>
             <p className="font-semibold text-emerald-600">{formatCurrency(tx.amount)}</p>
           </div>
           <div className="space-y-1">
-            <span className="text-muted-foreground text-xs">Status</span>
+            <span className="text-muted-foreground text-xs">{translate('tableHeaders.status')}</span>
             <Badge variant={isPaid ? "secondary" : "outline"}>
-              {isPaid ? "Paid to Wallet" : "Pending Payout"}
+              {isPaid ? translate('business.history.paidToWallet') : translate('business.history.pendingPayout')}
             </Badge>
           </div>
         </div>
@@ -134,7 +136,7 @@ export function EarningsHistoryLedger({
         {/* Wallet Link Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-border/30">
           <span className="text-xs text-muted-foreground">
-            Transaction ID: #{tx.id.slice(0, 12)}
+            {translate('business.history.transactionId')}: #{tx.id.slice(0, 12)}
           </span>
           <Button 
             variant="link" 
@@ -146,7 +148,7 @@ export function EarningsHistoryLedger({
             className="text-xs h-auto p-0"
           >
             <Wallet className="h-3 w-3 mr-1" />
-            View in Wallet
+            {translate('business.history.viewInWallet')}
           </Button>
         </div>
       </div>
@@ -154,7 +156,7 @@ export function EarningsHistoryLedger({
   };
 
   const transformToCardProps = (tx: EarningsTransaction): StandardHorizontalCardProps => {
-    const typeLabel = tx.type === "reseller_commission" ? "Reseller" : "Direct Sale";
+    const typeLabel = tx.type === "reseller_commission" ? translate('business.history.reseller') : translate('business.history.directSales');
     const dateInfo = format(new Date(tx.timestamp), "MMM d, yyyy • h:mm a");
     const txId = tx.id.slice(0, 8);
     
@@ -163,9 +165,9 @@ export function EarningsHistoryLedger({
     // Status badge (single inline badge like Orders)
     const getStatusBadge = (): { label: string; variant: 'default' | 'secondary' | 'outline' | 'destructive' } => {
       if (tx.metadata?.status === "paid_to_wallet") {
-        return { label: "Paid", variant: "secondary" };
+        return { label: translate('business.history.paidToWallet'), variant: "secondary" };
       }
-      return { label: "Pending", variant: "outline" };
+      return { label: translate('business.history.pendingPayout'), variant: "outline" };
     };
     
     return {
@@ -181,7 +183,7 @@ export function EarningsHistoryLedger({
       badges: [getStatusBadge()],
       metadata: [{ 
         icon: null, 
-        text: `${formatCurrency(tx.amount)} earned` 
+        text: `${formatCurrency(tx.amount)} ${translate('business.history.youEarned').toLowerCase()}` 
       }],
       // Expansion props - clicking card expands it
       expandedContent: renderExpandedContent(tx),
@@ -189,7 +191,7 @@ export function EarningsHistoryLedger({
       onToggleExpand: handleToggleExpand,
       // Visual indicator for expandable
       primaryAction: {
-        label: expandedId === tx.id ? "Close" : "Details",
+        label: expandedId === tx.id ? translate('common.close') : translate('business.history.details'),
         onClick: () => handleToggleExpand(tx.id),
         variant: "ghost",
         icon: <ChevronDown className={cn(
@@ -267,9 +269,9 @@ export function EarningsHistoryLedger({
       {filteredTransactions.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <Wallet className="h-10 w-10 mx-auto mb-3 opacity-40" />
-          <p className="text-sm font-medium">No earnings history yet</p>
+          <p className="text-sm font-medium">{translate('business.history.noEarningsYet')}</p>
           <p className="text-xs text-muted-foreground/70 mt-1">
-            Start selling to see your transactions here
+            {translate('business.history.startSellingToSee')}
           </p>
         </div>
       ) : (

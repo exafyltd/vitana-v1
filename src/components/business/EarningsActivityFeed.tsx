@@ -12,6 +12,7 @@ import { Award, Ticket, ChevronRight, Receipt } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 import type { EarningsTransaction } from "@/hooks/useUnifiedEarnings";
 
 type FilterType = "all" | "direct" | "reseller";
@@ -24,6 +25,7 @@ interface EarningsActivityFeedProps {
 export function EarningsActivityFeed({ transactions, isLoading }: EarningsActivityFeedProps) {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<FilterType>("all");
+  const { translate } = useTranslation();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -53,23 +55,23 @@ export function EarningsActivityFeed({ transactions, isLoading }: EarningsActivi
   };
 
   const filterOptions: { value: FilterType; label: string }[] = [
-    { value: "all", label: "All" },
-    { value: "direct", label: "Direct Sales" },
-    { value: "reseller", label: "Reseller" },
+    { value: "all", label: translate('business.history.all') },
+    { value: "direct", label: translate('business.history.directSales') },
+    { value: "reseller", label: translate('business.history.reseller') },
   ];
 
   return (
     <Card className="bg-card/70 backdrop-blur-sm border-border/40 rounded-2xl shadow-sm">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-medium">Earnings Activity</CardTitle>
+          <CardTitle className="text-base font-medium">{translate('business.history.earningsActivity')}</CardTitle>
           <Button
             variant="link"
             size="sm"
             className="text-xs text-muted-foreground hover:text-foreground gap-1 h-auto p-0"
             onClick={() => navigate("/wallet")}
           >
-            View in Wallet
+            {translate('business.history.viewInWallet')}
             <ChevronRight className="h-3 w-3" />
           </Button>
         </div>
@@ -96,11 +98,11 @@ export function EarningsActivityFeed({ transactions, isLoading }: EarningsActivi
       <CardContent className="pt-0">
         {isLoading ? (
           <div className="py-8 text-center text-muted-foreground text-sm">
-            Loading...
+            {translate('loading.default')}
           </div>
         ) : filteredTransactions.length === 0 ? (
           <div className="py-8 text-center text-muted-foreground text-sm">
-            No earnings yet. Start selling to see activity here.
+            {translate('business.history.noEarningsStartSelling')}
           </div>
         ) : (
           <div className="space-y-2">
