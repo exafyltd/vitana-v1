@@ -1014,5 +1014,131 @@
     "about": "About",
     "addBio": "Add a bio...",
     "tapToEdit": "Tap to edit"
+  },
+  "navigation": {
+    "navigatingTo": "Navigating to",
+    "hydrationTracker": "Hydration Tracker",
+    "sleepTracker": "Sleep Tracker",
+    "nutritionTracker": "Nutrition Tracker",
+    "workoutTracker": "Workout Tracker",
+    "biomarkers": "Biomarkers",
+    "calendar": "Calendar",
+    "community": "Community",
+    "groups": "Groups",
+    "messages": "Messages",
+    "discover": "Discover",
+    "supplements": "Supplements",
+    "wallet": "Wallet",
+    "profile": "Profile",
+    "settings": "Settings",
+    "diary": "Diary",
+    "home": "Home"
+  },
+  "walletActions": {
+    "title": "Quick Actions",
+    "addFunds": "Add Funds",
+    "send": "Send",
+    "exchange": "Exchange",
+    "withdraw": "Withdraw",
+    "buyCredits": "Buy Credits",
+    "stakeTokens": "Stake Tokens"
+  },
+  "currencies": {
+    "usd": "US Dollars",
+    "vtna": "VTNA Tokens",
+    "credits": "Platform Credits"
+  },
+  "business": {
+    "kpi": {
+      "totalEarnings": "Total Earnings",
+      "last30Days": "Last 30 Days",
+      "pendingPayout": "Pending Payout",
+      "inWallet": "In Wallet"
+    }
+  },
+  "admin": {
+    "media": {
+      "updateSuccess": "Status updated successfully",
+      "updateFailed": "Failed to update status",
+      "deleteSuccess": "Successfully deleted",
+      "deleteFailed": "Failed to delete",
+      "podcastStatus": "Podcast {status}",
+      "podcastDeleted": "Podcast deleted",
+      "musicDeleted": "Music deleted",
+      "videoDeleted": "Video deleted",
+      "searchPodcasts": "Search podcasts...",
+      "searchMusic": "Search music...",
+      "searchVideos": "Search videos...",
+      "filterByStatus": "Filter by status",
+      "allStatus": "All Status",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "flagged": "Flagged",
+      "podcastManagement": "Podcast Management",
+      "podcastManagementDesc": "Review and moderate podcast uploads"
+    }
+  },
+  "payment": {
+    "completed": "Payment Completed! ✅",
+    "sentSuccess": "{amount} sent successfully",
+    "alreadyProcessed": "Already processed",
+    "requestIs": "This request is {status}.",
+    "alreadyAccepted": "This payment request was already accepted.",
+    "declined": "Payment Declined",
+    "declinedDesc": "Payment request has been declined",
+    "exchangeSuccess": "Exchange & Send Successful! ✨",
+    "exchangeSuccessDesc": "Converted and sent {amount}",
+    "insufficientBalance": "Insufficient Balance",
+    "insufficientBalanceDesc": "You don't have enough {currency} for this exchange",
+    "transactionFailed": "Transaction Failed",
+    "paymentFailed": "Payment Failed",
+    "paymentFailedDesc": "Failed to process payment. Please try again.",
+    "balanceRefreshed": "Balance Refreshed",
+    "balanceRefreshedDesc": "Wallet balance has been updated",
+    "refreshFailed": "Refresh Failed",
+    "refreshFailedDesc": "Could not refresh balance. Please try again.",
+    "error": "Error"
+  },
+  "glassMode": {
+    "shareWithAI": "Share selection with AI?",
+    "screenSharingComingSoon": "🖥️ Screen Sharing Coming Soon",
+    "screenSharingDesc": "Share your screen with VITANA for contextual assistance.",
+    "screenSharingStopped": "Screen Sharing Stopped",
+    "glassModeDisabled": "Glass mode disabled",
+    "cameraModeComingSoon": "📹 Camera Mode Coming Soon",
+    "cameraModeDesc": "Vision-based AI interactions will be available in the next update.",
+    "diaryReady": "Diary Ready",
+    "openingDiary": "Opening diary entry",
+    "autopilotActivated": "Autopilot Activated",
+    "runningAutopilot": "Running autopilot mode",
+    "textInputReady": "Text Input Ready",
+    "typeMessage": "You can now type your message",
+    "actionFailed": "Action Failed",
+    "couldNotExecute": "Could not execute {action}"
+  },
+  "calendarPopup": {
+    "title": "Calendar",
+    "nextEvents": "Next {count} Events",
+    "conflicts": "{count} Conflicts",
+    "upcomingSchedule": "Your upcoming schedule and events",
+    "addNewEvent": "Add New Event",
+    "noUpcomingEvents": "No upcoming events",
+    "createFirstEvent": "Create Your First Event",
+    "aiSuggestions": "AI Suggestions",
+    "findBetterSlot": "Find better slot",
+    "prepareBrief": "Prepare brief",
+    "shareAvailability": "Share availability",
+    "syncExternal": "Sync External",
+    "addEvent": "Add Event",
+    "quickAdd": "Quick Add",
+    "eventFormComingSoon": "Event creation form coming soon",
+    "externalSync": "External Sync",
+    "connectingCalendars": "Connecting to external calendars..."
+  },
+  "densityOptions": {
+    "cozy": "Cozy",
+    "compact": "Compact",
+    "gallery": "Gallery"
   }
 }

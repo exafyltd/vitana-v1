@@ -1014,5 +1014,131 @@
     "about": "Über",
     "addBio": "Bio hinzufügen...",
     "tapToEdit": "Tippen zum Bearbeiten"
+  },
+  "navigation": {
+    "navigatingTo": "Navigiere zu",
+    "hydrationTracker": "Hydrations-Tracker",
+    "sleepTracker": "Schlaf-Tracker",
+    "nutritionTracker": "Ernährungs-Tracker",
+    "workoutTracker": "Workout-Tracker",
+    "biomarkers": "Biomarker",
+    "calendar": "Kalender",
+    "community": "Community",
+    "groups": "Gruppen",
+    "messages": "Nachrichten",
+    "discover": "Entdecken",
+    "supplements": "Nahrungsergänzung",
+    "wallet": "Wallet",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "diary": "Tagebuch",
+    "home": "Startseite"
+  },
+  "walletActions": {
+    "title": "Schnellaktionen",
+    "addFunds": "Geld hinzufügen",
+    "send": "Senden",
+    "exchange": "Umtauschen",
+    "withdraw": "Abheben",
+    "buyCredits": "Credits kaufen",
+    "stakeTokens": "Token staken"
+  },
+  "currencies": {
+    "usd": "US-Dollar",
+    "vtna": "VTNA Token",
+    "credits": "Plattform-Credits"
+  },
+  "business": {
+    "kpi": {
+      "totalEarnings": "Gesamteinnahmen",
+      "last30Days": "Letzte 30 Tage",
+      "pendingPayout": "Ausstehende Auszahlung",
+      "inWallet": "Im Wallet"
+    }
+  },
+  "admin": {
+    "media": {
+      "updateSuccess": "Status erfolgreich aktualisiert",
+      "updateFailed": "Status-Aktualisierung fehlgeschlagen",
+      "deleteSuccess": "Erfolgreich gelöscht",
+      "deleteFailed": "Löschen fehlgeschlagen",
+      "podcastStatus": "Podcast {status}",
+      "podcastDeleted": "Podcast gelöscht",
+      "musicDeleted": "Musik gelöscht",
+      "videoDeleted": "Video gelöscht",
+      "searchPodcasts": "Podcasts suchen...",
+      "searchMusic": "Musik suchen...",
+      "searchVideos": "Videos suchen...",
+      "filterByStatus": "Nach Status filtern",
+      "allStatus": "Alle Status",
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "rejected": "Abgelehnt",
+      "flagged": "Markiert",
+      "podcastManagement": "Podcast-Verwaltung",
+      "podcastManagementDesc": "Podcast-Uploads prüfen und moderieren"
+    }
+  },
+  "payment": {
+    "completed": "Zahlung abgeschlossen! ✅",
+    "sentSuccess": "{amount} erfolgreich gesendet",
+    "alreadyProcessed": "Bereits verarbeitet",
+    "requestIs": "Diese Anfrage ist {status}.",
+    "alreadyAccepted": "Diese Zahlungsanforderung wurde bereits akzeptiert.",
+    "declined": "Zahlung abgelehnt",
+    "declinedDesc": "Zahlungsanforderung wurde abgelehnt",
+    "exchangeSuccess": "Umtausch & Senden erfolgreich! ✨",
+    "exchangeSuccessDesc": "Konvertiert und {amount} gesendet",
+    "insufficientBalance": "Unzureichendes Guthaben",
+    "insufficientBalanceDesc": "Sie haben nicht genug {currency} für diesen Umtausch",
+    "transactionFailed": "Transaktion fehlgeschlagen",
+    "paymentFailed": "Zahlung fehlgeschlagen",
+    "paymentFailedDesc": "Zahlung konnte nicht verarbeitet werden. Bitte erneut versuchen.",
+    "balanceRefreshed": "Guthaben aktualisiert",
+    "balanceRefreshedDesc": "Wallet-Guthaben wurde aktualisiert",
+    "refreshFailed": "Aktualisierung fehlgeschlagen",
+    "refreshFailedDesc": "Guthaben konnte nicht aktualisiert werden. Bitte erneut versuchen.",
+    "error": "Fehler"
+  },
+  "glassMode": {
+    "shareWithAI": "Auswahl mit KI teilen?",
+    "screenSharingComingSoon": "🖥️ Bildschirmfreigabe bald verfügbar",
+    "screenSharingDesc": "Teilen Sie Ihren Bildschirm mit VITANA für kontextuelle Unterstützung.",
+    "screenSharingStopped": "Bildschirmfreigabe beendet",
+    "glassModeDisabled": "Glass-Modus deaktiviert",
+    "cameraModeComingSoon": "📹 Kamera-Modus bald verfügbar",
+    "cameraModeDesc": "Vision-basierte KI-Interaktionen werden im nächsten Update verfügbar sein.",
+    "diaryReady": "Tagebuch bereit",
+    "openingDiary": "Öffne Tagebucheintrag",
+    "autopilotActivated": "Autopilot aktiviert",
+    "runningAutopilot": "Autopilot-Modus läuft",
+    "textInputReady": "Texteingabe bereit",
+    "typeMessage": "Sie können jetzt Ihre Nachricht eingeben",
+    "actionFailed": "Aktion fehlgeschlagen",
+    "couldNotExecute": "Konnte {action} nicht ausführen"
+  },
+  "calendarPopup": {
+    "title": "Kalender",
+    "nextEvents": "Nächste {count} Termine",
+    "conflicts": "{count} Konflikte",
+    "upcomingSchedule": "Ihr anstehender Zeitplan und Termine",
+    "addNewEvent": "Neuen Termin hinzufügen",
+    "noUpcomingEvents": "Keine anstehenden Termine",
+    "createFirstEvent": "Ersten Termin erstellen",
+    "aiSuggestions": "KI-Vorschläge",
+    "findBetterSlot": "Besseren Termin finden",
+    "prepareBrief": "Briefing vorbereiten",
+    "shareAvailability": "Verfügbarkeit teilen",
+    "syncExternal": "Extern synchronisieren",
+    "addEvent": "Termin hinzufügen",
+    "quickAdd": "Schnell hinzufügen",
+    "eventFormComingSoon": "Event-Erstellungsformular bald verfügbar",
+    "externalSync": "Externe Synchronisierung",
+    "connectingCalendars": "Verbinde mit externen Kalendern..."
+  },
+  "densityOptions": {
+    "cozy": "Gemütlich",
+    "compact": "Kompakt",
+    "gallery": "Galerie"
   }
 }

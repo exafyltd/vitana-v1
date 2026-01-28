@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard, Coins } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface QuickAction {
   id: string;
@@ -29,29 +30,31 @@ export function MobileWalletQuickActions({
   onStakeTokens,
   className = ""
 }: MobileWalletQuickActionsProps) {
+  const { translate } = useTranslation();
+  
   const actions: QuickAction[] = [
     {
       id: 'add-funds',
-      label: 'Add Funds',
+      label: translate('walletActions.addFunds'),
       icon: <Plus className="h-5 w-5" />,
       onClick: onAddFunds,
       variant: 'primary'
     },
     {
       id: 'send',
-      label: 'Send',
+      label: translate('walletActions.send'),
       icon: <Send className="h-5 w-5" />,
       onClick: onSend
     },
     {
       id: 'exchange',
-      label: 'Exchange',
+      label: translate('walletActions.exchange'),
       icon: <ArrowUpDown className="h-5 w-5" />,
       onClick: onExchange
     },
     {
       id: 'withdraw',
-      label: 'Withdraw',
+      label: translate('walletActions.withdraw'),
       icon: <ArrowUpRight className="h-5 w-5" />,
       onClick: onWithdraw
     }
@@ -60,13 +63,13 @@ export function MobileWalletQuickActions({
   const secondaryActions: QuickAction[] = [
     {
       id: 'buy-credits',
-      label: 'Buy Credits',
+      label: translate('walletActions.buyCredits'),
       icon: <CreditCard className="h-4 w-4" />,
       onClick: onBuyCredits
     },
     {
       id: 'stake-tokens',
-      label: 'Stake Tokens',
+      label: translate('walletActions.stakeTokens'),
       icon: <Coins className="h-4 w-4" />,
       onClick: onStakeTokens
     }
@@ -75,7 +78,7 @@ export function MobileWalletQuickActions({
   return (
     <Card className={className}>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">Quick Actions</CardTitle>
+        <CardTitle className="text-base">{translate('walletActions.title')}</CardTitle>
       </CardHeader>
       <CardContent className="pt-0 space-y-4">
         {/* Primary Actions - Grid */}
