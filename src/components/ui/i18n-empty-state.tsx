@@ -1,6 +1,7 @@
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface I18nEmptyStateProps {
   titleKey: string;
@@ -30,12 +31,12 @@ export function I18nEmptyState({
   Icon, 
   actionKey, 
   onAction,
-  className = ""
+  className
 }: I18nEmptyStateProps) {
   const { translate } = useTranslation();
   
   return (
-    <div className={`text-center py-12 ${className}`}>
+    <div className={cn("text-center py-12", className)}>
       {Icon && <Icon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />}
       <h3 className="text-lg font-semibold mb-2">{translate(titleKey)}</h3>
       {descriptionKey && (

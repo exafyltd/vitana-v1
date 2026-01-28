@@ -16,10 +16,10 @@ export function NutritionEmptyState() {
         </div>
         
         <h3 className="text-xl font-semibold">
-          {translate('health.emptyStates.noNutritionPlan', 'No Nutrition Plan Yet')}
+          {translate('health.emptyStates.noNutritionPlan')}
         </h3>
         <p className="text-muted-foreground">
-          {translate('health.emptyStates.noNutritionPlanDesc', 'Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.')}
+          {translate('health.emptyStates.noNutritionPlanDesc')}
         </p>
         
         <Button
@@ -33,8 +33,8 @@ export function NutritionEmptyState() {
           disabled={generatePlan.isPending}
         >
           {generatePlan.isPending 
-            ? translate('health.emptyStates.generating', 'Generating...') 
-            : translate('health.emptyStates.generatePlan', 'Generate Nutrition Plan')}
+            ? translate('health.emptyStates.generating') 
+            : translate('health.emptyStates.generatePlan')}
         </Button>
       </div>
     </Card>

@@ -209,6 +209,20 @@
     "connectedApps": "Verbundene Apps",
     "support": "Support"
   },
+  "health": {
+    "emptyStates": {
+      "noNutritionPlan": "Noch kein Ernährungsplan",
+      "noNutritionPlanDesc": "Generieren Sie Ihren personalisierten Ernährungsplan mit köstlichen, ausgewogenen Rezepten, die auf Ihre Ziele und Ernährungsvorlieben abgestimmt sind.",
+      "noExercisePlan": "Noch kein Trainingsplan",
+      "noExercisePlanDesc": "Generieren Sie Ihren personalisierten Trainingsplan mit KI-optimierten Übungen, die auf Ihr Fitnessniveau, Ihre Ziele und Erholungsbedürfnisse abgestimmt sind.",
+      "noSleepPlan": "Noch kein Schlafplan",
+      "noSleepPlanDesc": "Generieren Sie Ihren personalisierten Schlafplan mit KI-optimierten Zielen, die auf Ihren zirkadianen Rhythmus, Erholungsbedürfnisse und tägliche Leistung abgestimmt sind.",
+      "noHydrationPlan": "Noch kein Hydrationsplan",
+      "noHydrationPlanDesc": "Generieren Sie Ihren personalisierten Hydrationsplan mit KI-optimierten Tageszielen, die auf Ihr Aktivitätsniveau, Ihre Umgebung und Erholungsbedürfnisse abgestimmt sind.",
+      "generating": "Wird generiert...",
+      "generatePlan": "Plan generieren"
+    }
+  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "KI-Vorschläge",
@@ -1140,5 +1154,124 @@
     "cozy": "Gemütlich",
     "compact": "Kompakt",
     "gallery": "Galerie"
+  },
+  "portals": {
+    "maxina": {
+      "title": "Maxina Gesundheitsplattform",
+      "welcomeBack": "Willkommen zurück bei Maxina.",
+      "continueJourney": "Melden Sie sich an, um Ihre Reise fortzusetzen.",
+      "joinMaxina": "Maxina beitreten",
+      "joinCommunity": "Treten Sie der Maxina-Community bei.",
+      "createAccount": "Erstellen Sie Ihr Konto und beginnen Sie Ihre Reise.",
+      "signingIn": "Wird angemeldet…",
+      "creatingAccount": "Konto wird erstellt…",
+      "joiningAs": "Ich trete bei als:",
+      "yourFullName": "Ihr vollständiger Name",
+      "forgotPassword": "Passwort vergessen?",
+      "partOfVitana": "Maxina ist Teil des VITANA-Ökosystems.",
+      "allPortals": "Alle Portale",
+      "emailConfirmed": "E-Mail bestätigt! Willkommen bei Maxina.",
+      "checkEmail": "Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu bestätigen.",
+      "roles": {
+        "community": "Community",
+        "patient": "Patient",
+        "professional": "Pro",
+        "admin": "Admin"
+      }
+    },
+    "alkalma": {
+      "joinAlkalma": "AlKalma beitreten",
+      "welcomeBack": "Willkommen zurück bei AlKalma.",
+      "continueJourney": "Melden Sie sich an, um fortzufahren."
+    },
+    "earthlinks": {
+      "joinEarthlinks": "Earthlinks beitreten",
+      "welcomeBack": "Willkommen zurück bei Earthlinks.",
+      "continueJourney": "Melden Sie sich an, um fortzufahren."
+    },
+    "community": {
+      "joinCommunity": "Community beitreten",
+      "welcomeBack": "Willkommen zurück.",
+      "continueJourney": "Melden Sie sich an, um fortzufahren."
+    }
+  },
+  "campaigns": {
+    "delete": {
+      "title": "Kampagne löschen?",
+      "description": "Das Löschen von \"{name}\" wird alle zugehörigen Entwürfe und Analysen dauerhaft entfernen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "dontAskAgain": "Bei Entwürfen nicht mehr fragen",
+      "deletePermanently": "Dauerhaft löschen"
+    },
+    "creation": {
+      "title": "Kampagne erstellen",
+      "stepOf": "Schritt {current} von {total}",
+      "yourCampaigns": "Ihre Kampagnen",
+      "drafts": "Entwürfe",
+      "live": "Live",
+      "proTip": "Profi-Tipp",
+      "tips": {
+        "1": "Klare Namen helfen Ihnen, Kampagnen später zu finden",
+        "2": "Verbinden Sie Kanäle jetzt für sofortige Planung",
+        "3": "Die Launch-Vorlage funktioniert für die meisten Ankündigungen",
+        "4": "Intelligente Planung verwendet Ihre bisherigen Engagement-Daten"
+      }
+    }
+  },
+  "adminTabs": {
+    "groups": {
+      "all": "Alle Gruppen",
+      "pending": "Ausstehend",
+      "approved": "Genehmigt",
+      "flagged": "Markiert",
+      "rejected": "Abgelehnt"
+    },
+    "rooms": {
+      "active": "Aktive Räume",
+      "scheduled": "Geplant",
+      "analytics": "Analytik",
+      "moderation": "Moderation"
+    }
+  },
+  "tableHeaders": {
+    "groupName": "Gruppenname",
+    "category": "Kategorie",
+    "members": "Mitglieder",
+    "privacy": "Datenschutz",
+    "status": "Status",
+    "actions": "Aktionen",
+    "name": "Name",
+    "role": "Rolle",
+    "email": "E-Mail",
+    "date": "Datum",
+    "amount": "Betrag"
+  },
+  "empty": {
+    "noAppsFound": "Keine Apps gefunden, die Ihrer Suche entsprechen.",
+    "noEventsFound": "Keine Veranstaltungen gefunden",
+    "noContactsFound": "Keine Kontakte gefunden",
+    "noContactsFoundMatching": "Keine Kontakte gefunden, die \"{query}\" entsprechen",
+    "noGroupsFound": "Keine Gruppen gefunden",
+    "noResultsFound": "Keine Ergebnisse gefunden",
+    "noReportsFound": "Keine Berichte gefunden",
+    "noUsersFound": "Keine Benutzer gefunden",
+    "noTransactionsFound": "Keine Transaktionen gefunden",
+    "noEventsYet": "Noch keine Veranstaltungen. Erstellen Sie zuerst eine Veranstaltung.",
+    "tryAdjustingFilters": "Versuchen Sie, Ihre Filter oder Suchanfrage anzupassen",
+    "noData": "Keine Daten verfügbar",
+    "noMessages": "Keine Nachrichten",
+    "noNotifications": "Keine Benachrichtigungen"
+  },
+  "loading": {
+    "default": "Wird geladen...",
+    "groups": "Gruppen werden geladen...",
+    "messages": "Nachrichten werden geladen...",
+    "uploading": "Wird hochgeladen...",
+    "uploadingProgress": "Wird hochgeladen... {progress}%",
+    "processing": "Wird verarbeitet...",
+    "saving": "Wird gespeichert..."
+  },
+  "privacy": {
+    "public": "Öffentlich",
+    "private": "Privat"
   }
 }
