@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,9 @@ import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { XIcon } from "@/components/icons/XIcon";
+import { useAuth } from "@/context/AuthProvider";
+import { useTranslation } from "@/hooks/useTranslation";
+import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 
 interface MobileIdCardBackProps {
   profile: UserProfile;
@@ -77,11 +81,21 @@ export function MobileIdCardBack({
   onEdit,
   className
 }: MobileIdCardBackProps) {
+  const { user } = useAuth();
+  const { translate } = useTranslation();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
+  
   const connectedPlatforms = platforms.filter(p => !!p.getUrl(profile));
   const unconnectedPlatforms = platforms.filter(p => !p.getUrl(profile));
 
   const handleOpenProfile = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleConnect = (platform: PlatformConfig) => {
+    setSelectedPlatform(platform);
+    setDialogOpen(true);
   };
 
   return (
@@ -110,10 +124,10 @@ export function MobileIdCardBack({
           {/* Header */}
           <div className="text-center mb-6">
             <h2 className="text-lg font-semibold text-white mb-1">
-              Social Presence
+              {translate('socialImport.socialPresence', 'Social Presence')}
             </h2>
             <p className="text-xs text-white/50">
-              Verified connections across your digital life
+              {translate('socialImport.verifiedConnections', 'Verified connections across your digital life')}
             </p>
           </div>
 
@@ -166,11 +180,11 @@ export function MobileIdCardBack({
             <>
               <div className="h-px bg-white/5 my-4" />
               <div className="flex items-center justify-center gap-2">
-                <span className="text-[10px] text-white/40 mr-2">Connect:</span>
+                <span className="text-[10px] text-white/40 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
                 {unconnectedPlatforms.map((platform) => (
                   <button
                     key={platform.id}
-                    onClick={onEdit}
+                    onClick={() => handleConnect(platform)}
                     className="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
                   >
                     <div className="opacity-40 grayscale">
@@ -188,7 +202,7 @@ export function MobileIdCardBack({
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
                 <Plus className="h-5 w-5 text-white/40" />
               </div>
-              <p className="text-sm text-white/50 mb-3">No social accounts connected</p>
+              <p className="text-sm text-white/50 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
               {editMode && onEdit && (
                 <Button
                   variant="outline"
@@ -196,7 +210,7 @@ export function MobileIdCardBack({
                   onClick={onEdit}
                   className="border-white/20 text-white/70 hover:bg-white/10"
                 >
-                  Connect Accounts
+                  {translate('socialImport.connectAccounts', 'Connect Accounts')}
                 </Button>
               )}
             </div>
@@ -205,11 +219,23 @@ export function MobileIdCardBack({
           {/* Subtle footer note */}
           {connectedPlatforms.length > 0 && (
             <p className="text-[10px] text-white/30 text-center mt-4 italic">
-              Tap to visit profile
+              {translate('socialImport.tapToVisit', 'Tap to visit profile')}
             </p>
           )}
         </div>
       </div>
+
+      {/* Social Media Import Dialog */}
+      {selectedPlatform && (
+        <SocialMediaImportDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          platform={selectedPlatform.id}
+          platformName={selectedPlatform.name}
+          icon={selectedPlatform.icon}
+          profileId={user?.id ?? profile.user_id ?? profile.id}
+        />
+      )}
     </div>
   );
 }
