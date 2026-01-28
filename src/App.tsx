@@ -25,6 +25,7 @@ import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
@@ -324,6 +325,7 @@ const App = () => {
           <Route path="/community/confirmed" element={<CommunityConfirmed />} />
           
           {/* Public Routes - No Auth Required */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/redeem" element={<RedeemVoucher />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
