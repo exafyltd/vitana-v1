@@ -20,6 +20,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Task {
   id: string;
@@ -107,6 +108,7 @@ const MOCK_TASKS: Task[] = [
 export function OpenTasksList() {
   const [tasks, setTasks] = useState<Task[]>(MOCK_TASKS);
   const [expandedTask, setExpandedTask] = useState<string | null>(null);
+  const { translate } = useTranslation();
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -153,20 +155,20 @@ export function OpenTasksList() {
   };
 
   const handleCancel = (taskId: string) => {
-    if (confirm("Are you sure you want to cancel this task?")) {
+    if (confirm(translate('tasks.confirmCancelTask', 'Are you sure you want to cancel this task?'))) {
       setTasks(tasks.filter((t) => t.id !== taskId));
       setExpandedTask(null);
     }
   };
 
   const handlePostpone = (taskId: string) => {
-    alert("Postpone feature coming soon");
+    alert(translate('tasks.postponeComingSoon', 'Postpone feature coming soon'));
   };
 
   const handleAddNote = (taskId: string) => {
-    const note = prompt("Add a note to this task:");
+    const note = prompt(translate('tasks.addNotePrompt', 'Add a note to this task:'));
     if (note) {
-      alert(`Note added: ${note}`);
+      alert(translate('tasks.noteAdded', 'Note added: {note}').replace('{note}', note));
     }
   };
 
@@ -180,7 +182,7 @@ export function OpenTasksList() {
         <div className="max-w-5xl mx-auto p-6 space-y-3">
           {tasks.length === 0 ? (
             <div className="flex items-center justify-center h-64 text-muted-foreground">
-              <p>No open tasks</p>
+              <p>{translate('tasks.noOpenTasks', 'No open tasks')}</p>
             </div>
           ) : (
             tasks.map((task) => (
@@ -234,7 +236,7 @@ export function OpenTasksList() {
                           {/* Metadata row */}
                           <div className="flex items-center gap-4 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
-                              <span className="font-medium">Assignee:</span>{" "}
+                              <span className="font-medium">{translate('tasks.assignee', 'Assignee')}:</span>{" "}
                               {task.assignee}
                             </span>
                             {task.vtid && (
@@ -265,7 +267,7 @@ export function OpenTasksList() {
                       {task.description && (
                         <div className="pt-2 border-t border-border/50">
                           <h4 className="text-sm font-semibold mb-2">
-                            Description
+                            {translate('tasks.description', 'Description')}
                           </h4>
                           <p className="text-sm text-muted-foreground">
                             {task.description}
@@ -277,7 +279,7 @@ export function OpenTasksList() {
                       {task.logs && task.logs.length > 0 && (
                         <div className="pt-2 border-t border-border/50">
                           <h4 className="text-sm font-semibold mb-2">
-                            Activity Log
+                            {translate('tasks.activityLog', 'Activity Log')}
                           </h4>
                           <div className="space-y-1">
                             {task.logs.map((log, idx) => (
@@ -296,7 +298,7 @@ export function OpenTasksList() {
                       {task.relatedLinks && task.relatedLinks.length > 0 && (
                         <div className="pt-2 border-t border-border/50">
                           <h4 className="text-sm font-semibold mb-2">
-                            Related Links
+                            {translate('tasks.relatedLinks', 'Related Links')}
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {task.relatedLinks.map((link, idx) => (
@@ -307,7 +309,7 @@ export function OpenTasksList() {
                                 className="gap-2"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  alert(`Navigate to: ${link.url}`);
+                                  alert(translate('tasks.navigateTo', 'Navigate to: {url}').replace('{url}', link.url));
                                 }}
                               >
                                 <ExternalLink className="w-3 h-3" />
@@ -331,7 +333,7 @@ export function OpenTasksList() {
                             }}
                           >
                             <Check className="w-3 h-3" />
-                            Complete
+                            {translate('tasks.complete', 'Complete')}
                           </Button>
                           <Button
                             size="sm"
@@ -343,7 +345,7 @@ export function OpenTasksList() {
                             }}
                           >
                             <Calendar className="w-3 h-3" />
-                            Postpone
+                            {translate('tasks.postpone', 'Postpone')}
                           </Button>
                           <Button
                             size="sm"
@@ -355,7 +357,7 @@ export function OpenTasksList() {
                             }}
                           >
                             <MessageSquare className="w-3 h-3" />
-                            Add Note
+                            {translate('tasks.addNote', 'Add Note')}
                           </Button>
                           {task.vtid && (
                             <Button
@@ -364,11 +366,11 @@ export function OpenTasksList() {
                               className="gap-2"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                alert(`Open VTID: ${task.vtid}`);
+                                alert(translate('tasks.openVtid', 'Open VTID: {vtid}').replace('{vtid}', task.vtid!));
                               }}
                             >
                               <ExternalLink className="w-3 h-3" />
-                              Open Context
+                              {translate('tasks.openContext', 'Open Context')}
                             </Button>
                           )}
                           <Button
@@ -381,7 +383,7 @@ export function OpenTasksList() {
                             }}
                           >
                             <X className="w-3 h-3" />
-                            Cancel
+                            {translate('buttons.cancel', 'Cancel')}
                           </Button>
                         </div>
                       </div>

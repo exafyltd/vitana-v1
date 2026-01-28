@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { BusinessPackage, useBusinessPackages, formatCents } from "@/hooks/useBusinessPackages";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PackageCardProps {
   pkg: BusinessPackage;
@@ -29,30 +30,34 @@ interface PackageCardProps {
 
 const PACKAGE_TYPE_CONFIG = {
   bundle: {
-    label: 'Bundle',
+    labelKey: 'packages.types.bundle',
+    fallback: 'Bundle',
     icon: Package,
     color: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
   },
   subscription: {
-    label: 'Subscription',
+    labelKey: 'packages.types.subscription',
+    fallback: 'Subscription',
     icon: Repeat,
     color: 'bg-purple-500/10 text-purple-600 border-purple-500/20',
   },
   program: {
-    label: 'Program',
+    labelKey: 'packages.types.program',
+    fallback: 'Program',
     icon: CalendarDays,
     color: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
   },
 };
 
 const STATUS_CONFIG = {
-  draft: { label: 'Draft', color: 'bg-muted text-muted-foreground' },
-  published: { label: 'Live', color: 'bg-emerald-500/10 text-emerald-600' },
-  archived: { label: 'Archived', color: 'bg-destructive/10 text-destructive' },
+  draft: { labelKey: 'packages.status.draft', fallback: 'Draft', color: 'bg-muted text-muted-foreground' },
+  published: { labelKey: 'packages.status.published', fallback: 'Live', color: 'bg-emerald-500/10 text-emerald-600' },
+  archived: { labelKey: 'packages.status.archived', fallback: 'Archived', color: 'bg-destructive/10 text-destructive' },
 };
 
 export function PackageCard({ pkg, onEdit }: PackageCardProps) {
   const { updatePackage, deletePackage } = useBusinessPackages();
+  const { translate } = useTranslation();
   
   const typeConfig = PACKAGE_TYPE_CONFIG[pkg.package_type];
   const statusConfig = STATUS_CONFIG[pkg.status];
@@ -74,7 +79,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
   };
 
   const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this package?')) {
+    if (confirm(translate('packages.confirmDelete', 'Are you sure you want to delete this package?'))) {
       deletePackage(pkg.id);
     }
   };
@@ -84,7 +89,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
       {/* Status Badge */}
       <div className="absolute top-3 right-3 z-10">
         <Badge variant="outline" className={cn("text-xs", statusConfig.color)}>
-          {statusConfig.label}
+          {translate(statusConfig.labelKey, statusConfig.fallback)}
         </Badge>
       </div>
 
@@ -99,7 +104,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
           <div className="flex-1 min-w-0 pr-16">
             <h3 className="font-semibold text-foreground truncate">{pkg.title}</h3>
             <Badge variant="outline" className={cn("text-xs mt-1", typeConfig.color)}>
-              {typeConfig.label}
+              {translate(typeConfig.labelKey, typeConfig.fallback)}
             </Badge>
           </div>
         </div>
@@ -115,17 +120,17 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
             <Package className="w-3.5 h-3.5" />
-            {itemCount} {itemCount === 1 ? 'item' : 'items'}
+            {itemCount} {itemCount === 1 ? translate('packages.item', 'item') : translate('packages.items', 'items')}
           </span>
           {totalQuantity > itemCount && (
             <span className="flex items-center gap-1">
               <Clock className="w-3.5 h-3.5" />
-              {totalQuantity} total
+              {totalQuantity} {translate('packages.total', 'total')}
             </span>
           )}
           {pkg.validity_days && pkg.package_type !== 'subscription' && (
             <span className="text-xs">
-              Valid {pkg.validity_days} days
+              {translate('packages.validDays', 'Valid {days} days').replace('{days}', String(pkg.validity_days))}
             </span>
           )}
           {pkg.package_type === 'subscription' && pkg.billing_interval && (
@@ -147,7 +152,7 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
                 {formatCents(pkg.original_price_cents, pkg.currency)}
               </span>
               <Badge variant="secondary" className="text-xs bg-emerald-500/10 text-emerald-600">
-                Save {savings}%
+                {translate('packages.save', 'Save {percent}%').replace('{percent}', String(savings))}
               </Badge>
             </>
           )}
@@ -162,25 +167,25 @@ export function PackageCard({ pkg, onEdit }: PackageCardProps) {
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => onEdit?.(pkg)}>
               <Edit className="w-4 h-4 mr-2" />
-              Edit
+              {translate('buttons.edit', 'Edit')}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleToggleStatus}>
               {pkg.status === 'published' ? (
                 <>
                   <EyeOff className="w-4 h-4 mr-2" />
-                  Unpublish
+                  {translate('packages.unpublish', 'Unpublish')}
                 </>
               ) : (
                 <>
                   <Eye className="w-4 h-4 mr-2" />
-                  Publish
+                  {translate('packages.publish', 'Publish')}
                 </>
               )}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleDelete} className="text-destructive">
               <Trash2 className="w-4 h-4 mr-2" />
-              Delete
+              {translate('buttons.delete', 'Delete')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
