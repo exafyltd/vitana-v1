@@ -211,8 +211,8 @@ export default withScreenId(function Discover() {
       )}>
         <div className="max-w-7xl mx-auto space-y-6">
             <StandardHeader
-              title={isMobile ? "Discover" : "Discover Your Longevity Marketplace"}
-              description={isMobile ? "Explore experiences, people, and wellness" : "Personalized recommendations, browse categories, and earn rewards by sharing with your community"}
+              title={isMobile ? translate('discover.mobileTitle') : translate('discover.title')}
+              description={isMobile ? translate('discover.mobileDescription') : translate('discover.description')}
               emoji="🔍"
             />
 

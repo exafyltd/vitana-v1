@@ -152,7 +152,7 @@ export function MobileDiscoverView({ aiRecommendations }: MobileDiscoverViewProp
                           size="sm"
                           onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
                         >
-                          View
+                          {translate('discover.view')}
                         </Button>
                       </div>
                     </div>
