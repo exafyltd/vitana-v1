@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileOrdersView, UnifiedMobileOrder } from "@/components/orders/MobileOrdersView";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
@@ -55,6 +56,7 @@ export default function Orders() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -490,29 +492,22 @@ export default function Orders() {
 
   // Segmented filter controls for History tab
   const HistoryFilterRow = () => {
-    const filters: { key: HistoryFilter; label: string }[] = [
-      { key: 'all', label: 'All' },
-      { key: 'events', label: 'Events' },
-      { key: 'products', label: 'Products' },
-      { key: 'vouchers', label: 'Vouchers' },
-      { key: 'services', label: 'Services' },
-      { key: 'refunds', label: 'Refunds' },
-    ];
+    const filterKeys: HistoryFilter[] = ['all', 'events', 'products', 'vouchers', 'services', 'refunds'];
 
     return (
       <div className="flex gap-1 p-1 bg-card/40 backdrop-blur-xl rounded-xl border border-border/20 w-fit mb-4">
-        {filters.map(filter => (
+        {filterKeys.map(key => (
           <button
-            key={filter.key}
-            onClick={() => setHistoryFilter(filter.key)}
+            key={key}
+            onClick={() => setHistoryFilter(key)}
             className={cn(
               "px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200",
-              historyFilter === filter.key 
+              historyFilter === key 
                 ? "bg-background shadow-sm text-foreground" 
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
             )}
           >
-            {filter.label}
+            {translate(`orders.filters.${key}`)}
           </button>
         ))}
       </div>
@@ -550,8 +545,8 @@ export default function Orders() {
       <div className="p-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="My Orders"
-            description="Track your product orders and event tickets"
+            title={translate('orders.myOrders')}
+            description={translate('orders.trackDescription')}
             emoji="📦"
           />
 
@@ -569,7 +564,7 @@ export default function Orders() {
             }
           >
             <ExpandableSearchButton 
-              placeholder="Search your orders…"
+              placeholder={translate('orders.searchPlaceholder')}
             />
             <UniversalCalendarButton />
           </UtilityActionButton>
@@ -578,10 +573,10 @@ export default function Orders() {
           {isShowingMockData && (
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
               <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700">
-                Sample Data
+                {translate('orders.sampleData')}
               </Badge>
               <span className="text-sm text-amber-700 dark:text-amber-400">
-                These are preview orders. Your actual orders and tickets will appear here.
+                {translate('orders.previewNotice')}
               </span>
             </div>
           )}
@@ -594,14 +589,14 @@ export default function Orders() {
                 className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               >
                 <Clock className="h-4 w-4" />
-                Active ({unifiedActiveOrders.length})
+                {translate('orders.tabs.active')} ({unifiedActiveOrders.length})
               </TabsTrigger>
               <TabsTrigger 
                 value="history" 
                 className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               >
                 <CheckCircle className="h-4 w-4" />
-                History ({allHistoryOrders.length})
+                {translate('orders.tabs.history')} ({allHistoryOrders.length})
               </TabsTrigger>
             </TabsList>
             
@@ -624,14 +619,14 @@ export default function Orders() {
                     <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
                       <Package className="w-8 h-8 text-muted-foreground/60" />
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">No Active Orders</h3>
-                    <p className="text-muted-foreground mb-4">You don't have any active orders or upcoming event tickets.</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{translate('orders.emptyActive.title')}</h3>
+                    <p className="text-muted-foreground mb-4">{translate('orders.emptyActive.description')}</p>
                     <div className="flex gap-3 justify-center">
                       <Button onClick={() => navigate('/discover')}>
-                        Browse Products
+                        {translate('orders.browseProducts')}
                       </Button>
                       <Button variant="outline" onClick={() => navigate('/comm/events-meetups')}>
-                        Discover Events
+                        {translate('orders.findEvents')}
                       </Button>
                     </div>
                   </CardContent>
@@ -661,15 +656,17 @@ export default function Orders() {
                       <CheckCircle className="w-8 h-8 text-muted-foreground/60" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">
-                      {historyFilter === 'all' ? 'No Order History' : `No ${historyFilter.charAt(0).toUpperCase() + historyFilter.slice(1)}`}
+                      {historyFilter === 'all' 
+                        ? translate('orders.emptyHistory.title') 
+                        : translate('orders.noFilter', translate(`orders.filters.${historyFilter}`))}
                     </h3>
                     <p className="text-muted-foreground mb-4">
                       {historyFilter === 'all' 
-                        ? 'Your completed orders and past events will appear here.'
-                        : `No ${historyFilter} found in your history.`}
+                        ? translate('orders.emptyHistory.description')
+                        : translate('orders.noFilterDesc', translate(`orders.filters.${historyFilter}`))}
                     </p>
                     <Button onClick={() => navigate('/discover')}>
-                      Start Shopping
+                      {translate('orders.startShopping')}
                     </Button>
                   </CardContent>
                 </Card>

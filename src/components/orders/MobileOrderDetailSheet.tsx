@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useDownloadVoucherPdf, useSendVoucherEmail } from '@/hooks/useVouchers';
 import { UnifiedMobileOrder } from './MobileOrdersView';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface MobileOrderDetailSheetProps {
   order: UnifiedMobileOrder | null;
@@ -35,6 +36,7 @@ interface MobileOrderDetailSheetProps {
 }
 
 export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrderDetailSheetProps) {
+  const { translate } = useTranslation();
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [recipientEmail, setRecipientEmail] = useState('');
   const [recipientName, setRecipientName] = useState('');
@@ -79,14 +81,14 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
   // Handle PDF download for vouchers - pure download action, NO navigation
   const handleDownloadPdf = async () => {
     if (order.type === 'voucher' && order.voucherOrder?.id) {
-      const loadingToast = toast.loading('Generating voucher PDF...');
+      const loadingToast = toast.loading(translate('voucher.toast.generatingVoucher'));
       
       try {
         const result = await downloadPdf.mutateAsync(order.voucherOrder.id);
         
         if (!result?.voucher || !result?.signedPdfUrl) {
           toast.dismiss(loadingToast);
-          toast.error('Failed to load voucher data');
+          toast.error(translate('voucher.toast.failedToLoadVoucher'));
           return;
         }
         
@@ -104,38 +106,38 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          toast.success('Download started!');
+          toast.success(translate('voucher.toast.downloadStarted'));
         } catch (error) {
           console.error('Download anchor failed:', error);
           // Fallback: direct location (still no navigation, just triggers download)
           window.location.href = result.signedPdfUrl;
-          toast.success('Download started!');
+          toast.success(translate('voucher.toast.downloadStarted'));
         }
       } catch (error: any) {
         console.error('Download error:', error);
         toast.dismiss(loadingToast);
-        toast.error(error?.message || 'Failed to download voucher');
+        toast.error(error?.message || translate('voucher.toast.downloadFailed'));
       }
     } else if (order.type === 'ticket' && order.ticketPurchase) {
-      toast.info('Use the ticket view to print or save your ticket');
+      toast.info(translate('voucher.toast.useTicketView'));
     } else {
-      toast.info('PDF download not available for this order type');
+      toast.info(translate('voucher.toast.pdfNotAvailable'));
     }
   };
 
   // Handle email send for vouchers
   const handleSendEmail = async () => {
     if (!recipientEmail) {
-      toast.error('Please enter recipient email');
+      toast.error(translate('voucher.toast.enterRecipientEmail'));
       return;
     }
 
     if (order.type !== 'voucher' || !order.voucherOrder?.id) {
-      toast.error('Email sending only available for vouchers');
+      toast.error(translate('voucher.toast.emailOnlyForVouchers'));
       return;
     }
 
-    const loadingToast = toast.loading('Sending voucher email...');
+    const loadingToast = toast.loading(translate('voucher.toast.sendingVoucherEmail'));
     
     try {
       await sendEmail.mutateAsync({
@@ -146,7 +148,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
       });
       
       toast.dismiss(loadingToast);
-      toast.success(`Voucher sent to ${recipientEmail}!`);
+      toast.success(translate('voucher.toast.voucherSent').replace('{email}', recipientEmail));
       setShowEmailForm(false);
       setRecipientEmail('');
       setRecipientName('');
@@ -154,7 +156,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
     } catch (error: any) {
       console.error('Email send error:', error);
       toast.dismiss(loadingToast);
-      toast.error(error?.message || 'Failed to send email');
+      toast.error(error?.message || translate('voucher.toast.downloadFailed'));
     }
   };
 
@@ -179,7 +181,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                   {getTypeIcon()}
                 </div>
                 <div>
-                  <SheetTitle className="text-left text-base">Order Details</SheetTitle>
+                  <SheetTitle className="text-left text-base">{translate('orders.detailSheet.title')}</SheetTitle>
                   <p className="text-xs text-muted-foreground">
                     {order.type.charAt(0).toUpperCase() + order.type.slice(1)} • {order.orderDate}
                   </p>
@@ -235,13 +237,13 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
 
             {/* Order details */}
             <div className="bg-card/70 backdrop-blur-sm border border-border/30 rounded-xl p-4 space-y-3">
-              <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Order Info</h4>
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{translate('orders.detailSheet.orderInfo')}</h4>
               
               {order.ticketNumber && (
                 <div className="flex items-center gap-3">
                   <Hash className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Order Reference</p>
+                    <p className="text-xs text-muted-foreground">{translate('orders.detailSheet.orderReference')}</p>
                     <p className="text-sm font-medium font-mono">{order.ticketNumber}</p>
                   </div>
                 </div>
@@ -250,7 +252,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
               <div className="flex items-center gap-3">
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <div>
-                  <p className="text-xs text-muted-foreground">Purchase Date</p>
+                  <p className="text-xs text-muted-foreground">{translate('orders.detailSheet.purchaseDate')}</p>
                   <p className="text-sm font-medium">{order.orderDate}</p>
                 </div>
               </div>
@@ -259,7 +261,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 <div className="flex items-center gap-3">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Event Date</p>
+                    <p className="text-xs text-muted-foreground">{translate('orders.detailSheet.eventDate')}</p>
                     <p className="text-sm font-medium">{format(order.eventDate, 'EEEE, MMMM d, yyyy • h:mm a')}</p>
                   </div>
                 </div>
@@ -269,7 +271,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 <div className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Location</p>
+                    <p className="text-xs text-muted-foreground">{translate('orders.detailSheet.location')}</p>
                     <p className="text-sm font-medium">{order.eventLocation}</p>
                   </div>
                 </div>
@@ -279,8 +281,8 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 <div className="flex items-center gap-3">
                   <Ticket className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-xs text-muted-foreground">Quantity</p>
-                    <p className="text-sm font-medium">{order.quantity} tickets</p>
+                    <p className="text-xs text-muted-foreground">{translate('orders.detailSheet.quantity')}</p>
+                    <p className="text-sm font-medium">{order.quantity} {translate('orders.detailSheet.tickets')}</p>
                   </div>
                 </div>
               )}
@@ -289,7 +291,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
             {/* Ticket/Voucher Preview */}
             {order.type === 'ticket' && order.ticketPurchase && order.ticketPurchase.event && (
               <div className="bg-card/70 backdrop-blur-sm border border-border/30 rounded-xl p-4">
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Your Ticket</h4>
+                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">{translate('orders.detailSheet.yourTicket')}</h4>
                 <EventTicket
                   eventTitle={order.ticketPurchase.event.title}
                   eventDate={new Date(order.ticketPurchase.event.start_time)}
@@ -309,10 +311,10 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border border-purple-200/50 dark:border-purple-800/50 rounded-xl p-4">
                 <div className="text-center mb-4">
                   <div className="text-4xl mb-2">🎁</div>
-                  <h4 className="font-semibold text-lg">Gift Voucher</h4>
+                  <h4 className="font-semibold text-lg">{translate('orders.detailSheet.giftVoucher')}</h4>
                   {order.voucherOrder.voucher_code && (
                     <div className="bg-white/80 dark:bg-background/80 rounded-lg px-4 py-2 mt-2 inline-block">
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider">Code</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">{translate('orders.detailSheet.code')}</p>
                       <p className="font-mono font-bold text-lg tracking-widest">{order.voucherOrder.voucher_code}</p>
                     </div>
                   )}
@@ -323,11 +325,11 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
             {/* Email form for vouchers */}
             {showEmailForm && order.type === 'voucher' && (
               <div className="bg-card/70 backdrop-blur-sm border border-border/30 rounded-xl p-4 space-y-4">
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Send to Recipient</h4>
+                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{translate('orders.detailSheet.sendToRecipient')}</h4>
                 
                 <div className="space-y-3">
                   <div>
-                    <Label htmlFor="recipientEmail" className="text-sm">Recipient Email *</Label>
+                    <Label htmlFor="recipientEmail" className="text-sm">{translate('orders.detailSheet.recipientEmail')}</Label>
                     <Input
                       id="recipientEmail"
                       type="email"
@@ -339,7 +341,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                   </div>
                   
                   <div>
-                    <Label htmlFor="recipientName" className="text-sm">Recipient Name</Label>
+                    <Label htmlFor="recipientName" className="text-sm">{translate('orders.detailSheet.recipientName')}</Label>
                     <Input
                       id="recipientName"
                       placeholder="Friend's name"
@@ -350,10 +352,10 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                   </div>
                   
                   <div>
-                    <Label htmlFor="personalMessage" className="text-sm">Personal Message</Label>
+                    <Label htmlFor="personalMessage" className="text-sm">{translate('orders.detailSheet.personalMessage')}</Label>
                     <Textarea
                       id="personalMessage"
-                      placeholder="Add a personal message..."
+                      placeholder={translate('voucher.email.messagePlaceholder')}
                       value={personalMessage}
                       onChange={(e) => setPersonalMessage(e.target.value)}
                       className="mt-1"
@@ -367,7 +369,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                       className="flex-1"
                       onClick={() => setShowEmailForm(false)}
                     >
-                      Cancel
+                      {translate('orders.detailSheet.cancel')}
                     </Button>
                     <Button 
                       className="flex-1"
@@ -379,7 +381,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                       ) : (
                         <>
                           <Send className="h-4 w-4 mr-2" />
-                          Send
+                          {translate('orders.detailSheet.send')}
                         </>
                       )}
                     </Button>
@@ -404,7 +406,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
               ) : (
                 <>
                   <Download className="h-4 w-4 mr-2" />
-                  Download PDF
+                  {translate('orders.detailSheet.downloadPdf')}
                 </>
               )}
             </Button>
@@ -415,7 +417,7 @@ export function MobileOrderDetailSheet({ order, open, onOpenChange }: MobileOrde
                 onClick={() => setShowEmailForm(true)}
               >
                 <Mail className="h-4 w-4 mr-2" />
-                Send to Recipient
+                {translate('orders.detailSheet.sendToRecipient')}
               </Button>
             )}
           </div>

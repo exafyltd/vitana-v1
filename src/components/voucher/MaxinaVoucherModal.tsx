@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Download, Mail, ShoppingBag, Loader2, Gift, Sparkles, Crown, X, Send, Share2, Copy, ExternalLink } from "lucide-react";
@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { useCreateVoucherCheckout, useDownloadVoucherPdf, useSendVoucherEmail, VoucherData } from "@/hooks/useVouchers";
 import { toast } from "sonner";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type VoucherTier = "test" | "experience" | "exclusive";
 type ModalState = "selection" | "loading" | "success" | "email-form" | "pdf-preview";
@@ -25,45 +26,27 @@ interface MaxinaVoucherModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const tiers = {
+// Static tier config (icons, colors, prices) - labels come from translations
+const tierConfig = {
   test: {
-    name: "Test",
     price: 0.49,
     icon: Gift,
     color: "from-green-500 to-emerald-600",
-    benefits: [
-      "Payment flow test only",
-      "Not a real voucher",
-      "For development testing"
-    ]
   },
   experience: {
-    name: "Experience",
     price: 99,
     icon: Sparkles,
     color: "from-violet-500 to-purple-600",
-    benefits: [
-      "1 premium community event access",
-      "Personalized wellness consultation",
-      "30-day Vitana+ trial included",
-      "Beautifully designed e-voucher"
-    ]
   },
   exclusive: {
-    name: "Exclusive",
     price: 199,
     icon: Crown,
     color: "from-amber-500 to-orange-600",
-    benefits: [
-      "3 premium community events",
-      "1-on-1 expert coaching session",
-      "90-day Vitana+ subscription",
-      "Priority booking + VIP perks"
-    ]
   }
 };
 
 export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalProps) => {
+  const { translate, t } = useTranslation();
   const [selectedTier, setSelectedTier] = useState<VoucherTier | null>(null);
   const [modalState, setModalState] = useState<ModalState>("selection");
   const [completedOrderId, setCompletedOrderId] = useState<string | null>(null);
@@ -86,6 +69,25 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
   const createCheckout = useCreateVoucherCheckout();
   const downloadPdf = useDownloadVoucherPdf();
   const sendEmail = useSendVoucherEmail();
+
+  // Build localized tier data
+  const tiers = useMemo(() => ({
+    test: {
+      ...tierConfig.test,
+      name: translate('voucher.tiers.test.name'),
+      benefits: t.voucher?.tiers?.test?.benefits || [],
+    },
+    experience: {
+      ...tierConfig.experience,
+      name: translate('voucher.tiers.experience.name'),
+      benefits: t.voucher?.tiers?.experience?.benefits || [],
+    },
+    exclusive: {
+      ...tierConfig.exclusive,
+      name: translate('voucher.tiers.exclusive.name'),
+      benefits: t.voucher?.tiers?.exclusive?.benefits || [],
+    }
+  }), [translate, t]);
 
   // Detect Web Share API capability on mount
   useEffect(() => {
@@ -156,7 +158,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      toast.error("Failed to start checkout. Please try again.");
+      toast.error(translate('voucher.toast.checkoutFailed'));
       setModalState("selection");
     }
   };
@@ -186,10 +188,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
     try {
       await navigator.share({
         title: 'Vitana Gift Voucher',
-        text: 'Here is your Vitana wellness voucher',
+        text: translate('voucher.preview.giftVoucher'),
         url: signedPdfUrl
       });
-      toast.success("Voucher shared successfully!");
+      toast.success(translate('voucher.toast.voucherShared'));
     } catch (error: any) {
       if (error.name !== 'AbortError') {
         handleDownloadDirect();
@@ -215,14 +217,36 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      toast.success("Download started!");
+      toast.success(translate('voucher.toast.downloadStarted'));
     } catch (error) {
       console.error("Download failed:", error);
-      toast.error("Download failed. Try copying the link.");
+      toast.error(translate('voucher.toast.downloadFailedCopyLink'));
     }
   };
   
   // Open in external browser
+  const handleOpenInBrowser = () => {
+    if (!signedPdfUrl) return;
+    
+    const newWindow = window.open(signedPdfUrl, '_blank', 'noopener,noreferrer');
+    
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      handleCopyLink();
+      toast.info(translate('voucher.toast.linkCopiedDesc'));
+    }
+  };
+  
+  // Copy link to clipboard
+  const handleCopyLink = async () => {
+    if (!signedPdfUrl) return;
+    
+    try {
+      await navigator.clipboard.writeText(signedPdfUrl);
+      toast.success(translate('voucher.toast.linkCopied'));
+    } catch (error) {
+      toast.error(translate('voucher.toast.downloadFailed'));
+    }
+  };
   const handleOpenInBrowser = () => {
     if (!signedPdfUrl) return;
     
@@ -254,18 +278,18 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   const handleDownloadPdf = async () => {
     if (!completedOrderId) {
-      toast.error("Order not found");
+      toast.error(translate('voucher.toast.failedToLoadVoucher'));
       return;
     }
     
-    const loadingToast = toast.loading("Generating voucher...");
+    const loadingToast = toast.loading(translate('voucher.toast.generatingVoucher'));
     
     try {
       const result = await downloadPdf.mutateAsync(completedOrderId);
       
       if (!result?.voucher || !result?.signedPdfUrl) {
         toast.dismiss(loadingToast);
-        toast.error("Failed to load voucher data");
+        toast.error(translate('voucher.toast.failedToLoadVoucher'));
         return;
       }
       
@@ -286,7 +310,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        toast.success("Voucher downloaded!");
+        toast.success(translate('voucher.toast.downloadStarted'));
         
         // AUTO-CLOSE after download initiated (desktop)
         setTimeout(() => resetAndClose(), 300);
@@ -310,11 +334,11 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   const handleConfirmSendEmail = async () => {
     if (!completedOrderId || !recipientEmail) {
-      toast.error("Please enter recipient email");
+      toast.error(translate('voucher.toast.enterRecipientEmail'));
       return;
     }
 
-    const loadingToast = toast.loading("Sending voucher email...");
+    const loadingToast = toast.loading(translate('voucher.toast.sendingVoucherEmail'));
     
     try {
       await sendEmail.mutateAsync({
@@ -325,7 +349,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       });
       
       toast.dismiss(loadingToast);
-      toast.success(`Voucher sent to ${recipientEmail}!`);
+      toast.success(translate('voucher.toast.voucherSent').replace('{email}', recipientEmail));
       
       // AUTO-CLOSE: Reset and close modal after successful send
       resetAndClose();
@@ -336,7 +360,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       const errorMessage = error?.message || 
         error?.context?.body?.error || 
         error?.error || 
-        "Failed to send email. Please try again.";
+        translate('voucher.toast.downloadFailed');
       
       toast.error(errorMessage);
     }
@@ -352,8 +376,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
   const tierForDisplay = completedTier || selectedTier;
 
-  // Gift Voucher modal must be fully isolated in Appilix/WebView.
-  // We rely on Radix Portal (wired to #modal-root) + a real fullscreen overlay.
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContentNoAnimation
@@ -364,10 +386,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       >
         {/* Hidden accessible title for screen readers */}
         <VisuallyHidden asChild>
-          <DialogTitle>Gift Voucher</DialogTitle>
+          <DialogTitle>{translate('voucher.preview.giftVoucher')}</DialogTitle>
         </VisuallyHidden>
         <VisuallyHidden asChild>
-          <DialogDescription>Purchase or manage your Vitana gift voucher</DialogDescription>
+          <DialogDescription>{translate('voucher.modal.subtitle')}</DialogDescription>
         </VisuallyHidden>
 
         <AnimatePresence mode="wait">
@@ -384,10 +406,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 <div>
                   <h2 className="flex items-center gap-2 text-xl font-semibold">
                     <Gift className="h-5 w-5 text-primary" />
-                    Gift a Maxina Voucher
+                    {translate('voucher.modal.title')}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Give the gift of wellness and community connection
+                    {translate('voucher.modal.subtitle')}
                   </p>
                 </div>
                 <Button variant="ghost" size="icon" onClick={handleClose}>
@@ -404,6 +426,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   {(Object.entries(tiers) as [VoucherTier, typeof tiers.experience][]).map(([key, tier]) => {
                     const Icon = tier.icon;
                     const isSelected = selectedTier === key;
+                    const benefits = Array.isArray(tier.benefits) ? tier.benefits : [];
                     
                     return (
                       <button
@@ -431,7 +454,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                             </div>
                             
                             <ul className="space-y-1">
-                              {tier.benefits.map((benefit, i) => (
+                              {benefits.map((benefit: string, i: number) => (
                                 <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
                                   <Check className="h-3 w-3 text-primary mt-0.5 shrink-0" />
                                   <span>{benefit}</span>
@@ -452,7 +475,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </div>
               </div>
 
-              {/* Footer CTA - fixed at bottom of modal */}
               <div 
                 className="shrink-0 px-6 pt-3 bg-background border-t border-border/50"
                 style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)' }}
@@ -463,7 +485,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   className="w-full h-11"
                 >
                   <Gift className="h-4 w-4 mr-2" />
-                  Buy Voucher {selectedTier && `· €${tiers[selectedTier].price}`}
+                  {translate('voucher.modal.buyVoucher')} {selectedTier && `· €${tiers[selectedTier].price}`}
                 </Button>
               </div>
             </motion.div>
@@ -478,7 +500,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
               className="p-12 flex flex-col items-center justify-center"
             >
               <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
-              <p className="text-sm text-muted-foreground">Opening secure checkout...</p>
+              <p className="text-sm text-muted-foreground">{translate('voucher.modal.openingCheckout')}</p>
             </motion.div>
           )}
 
@@ -500,9 +522,9 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
                   <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-xl font-semibold mb-1">Voucher Purchased!</h3>
+                <h3 className="text-xl font-semibold mb-1">{translate('voucher.success.title')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Your {tierForDisplay && tiers[tierForDisplay].name} voucher is ready
+                  {translate('voucher.success.ready').replace('{tier}', tierForDisplay ? tiers[tierForDisplay].name : '')}
                 </p>
               </div>
 
@@ -518,7 +540,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   ) : (
                     <Download className="h-4 w-4 mr-3" />
                   )}
-                  Download Voucher
+                  {translate('voucher.success.download')}
                 </Button>
                 
                 <Button 
@@ -527,7 +549,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   className="w-full justify-start h-12"
                 >
                   <Mail className="h-4 w-4 mr-3" />
-                  Send to Recipient by Email
+                  {translate('voucher.success.sendEmail')}
                 </Button>
                 
                 <Button 
@@ -536,7 +558,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   className="w-full justify-start h-12 text-muted-foreground"
                 >
                   <ShoppingBag className="h-4 w-4 mr-3" />
-                  View in Orders
+                  {translate('voucher.success.viewOrders')}
                 </Button>
               </div>
 
@@ -544,7 +566,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 onClick={handleClose}
                 className="w-full mt-4"
               >
-                Done
+                {translate('voucher.success.done')}
               </Button>
             </motion.div>
           )}
@@ -561,10 +583,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 <div>
                   <h2 className="flex items-center gap-2 text-xl font-semibold">
                     <Mail className="h-5 w-5 text-primary" />
-                    Send Voucher by Email
+                    {translate('voucher.email.title')}
                   </h2>
                   <p className="text-sm text-muted-foreground mt-1">
-                    We'll send a beautifully designed email with the voucher
+                    {translate('voucher.email.subtitle')}
                   </p>
                 </div>
                 <Button variant="ghost" size="icon" onClick={handleClose}>
@@ -574,7 +596,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="recipientEmail">Recipient Email *</Label>
+                  <Label htmlFor="recipientEmail">{translate('voucher.email.recipientEmail')}</Label>
                   <Input
                     id="recipientEmail"
                     type="email"
@@ -586,7 +608,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </div>
 
                 <div>
-                  <Label htmlFor="recipientName">Recipient Name (optional)</Label>
+                  <Label htmlFor="recipientName">{translate('voucher.email.recipientName')}</Label>
                   <Input
                     id="recipientName"
                     type="text"
@@ -598,10 +620,10 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                 </div>
 
                 <div>
-                  <Label htmlFor="personalMessage">Personal Message (optional)</Label>
+                  <Label htmlFor="personalMessage">{translate('voucher.email.personalMessage')}</Label>
                   <Textarea
                     id="personalMessage"
-                    placeholder="Happy Birthday! Enjoy this wellness treat..."
+                    placeholder={translate('voucher.email.messagePlaceholder')}
                     value={personalMessage}
                     onChange={(e) => setPersonalMessage(e.target.value)}
                     className="mt-1 resize-none"
@@ -616,7 +638,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   onClick={() => setModalState("success")}
                   className="flex-1"
                 >
-                  Back
+                  {translate('voucher.email.back')}
                 </Button>
                 <Button
                   onClick={handleConfirmSendEmail}
@@ -628,7 +650,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   ) : (
                     <Send className="h-4 w-4 mr-2" />
                   )}
-                  Send Voucher
+                  {translate('voucher.email.send')}
                 </Button>
               </div>
             </motion.div>
@@ -645,7 +667,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
             >
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b">
-                <h3 className="font-semibold">Your Voucher</h3>
+                <h3 className="font-semibold">{translate('voucher.preview.title')}</h3>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -661,7 +683,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   <div className="text-center mb-4">
                     <h1 className="text-2xl font-bold text-primary">VITANA</h1>
                     <div className="text-5xl my-4">🎁</div>
-                    <p className="text-muted-foreground text-sm uppercase tracking-wider">Gift Voucher</p>
+                    <p className="text-muted-foreground text-sm uppercase tracking-wider">{translate('voucher.preview.giftVoucher')}</p>
                   </div>
                   
                   <div className="flex justify-center mb-4">
@@ -673,12 +695,12 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   <div className="text-center mb-5">
                     <p className="text-4xl font-bold text-foreground">{previewVoucher.price}</p>
                     <p className="text-muted-foreground text-sm mt-1">
-                      Valid until {previewVoucher.expiresAt}
+                      {translate('voucher.preview.validUntil').replace('{date}', previewVoucher.expiresAt)}
                     </p>
                   </div>
                   
                   <div className="bg-muted rounded-xl p-4 text-center mb-5">
-                    <p className="text-muted-foreground text-xs uppercase tracking-wide mb-1">Voucher Code</p>
+                    <p className="text-muted-foreground text-xs uppercase tracking-wide mb-1">{translate('voucher.preview.voucherCode')}</p>
                     <p className="font-mono font-bold text-lg tracking-widest text-foreground">
                       {previewVoucher.code}
                     </p>
@@ -686,7 +708,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                   
                   {previewVoucher.benefits && previewVoucher.benefits.length > 0 && (
                     <div className="space-y-2">
-                      <p className="text-muted-foreground text-xs uppercase tracking-wide">What's Included</p>
+                      <p className="text-muted-foreground text-xs uppercase tracking-wide">{translate('voucher.preview.whatsIncluded')}</p>
                       {previewVoucher.benefits.map((benefit, i) => (
                         <div key={i} className="flex items-start gap-2 text-sm">
                           <Check className="h-4 w-4 text-primary shrink-0 mt-0.5" />
@@ -707,7 +729,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       className="w-full h-12"
                     >
                       <Share2 className="h-4 w-4 mr-2" />
-                      Save / Share
+                      {translate('voucher.preview.share')}
                     </Button>
                     <Button
                       variant="outline"
@@ -715,7 +737,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       className="w-full"
                     >
                       <Download className="h-4 w-4 mr-2" />
-                      Download PDF
+                      {translate('voucher.preview.downloadPdf')}
                     </Button>
                   </>
                 ) : (
@@ -725,7 +747,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                       className="w-full h-12"
                     >
                       <Download className="h-4 w-4 mr-2" />
-                      Download PDF
+                      {translate('voucher.preview.downloadPdf')}
                     </Button>
                     <div className="flex gap-2">
                       <Button
@@ -734,7 +756,7 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         className="flex-1"
                       >
                         <ExternalLink className="h-4 w-4 mr-2" />
-                        Open in Browser
+                        {translate('voucher.preview.openInBrowser')}
                       </Button>
                       <Button
                         variant="outline"
@@ -742,13 +764,13 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
                         className="flex-1"
                       >
                         <Copy className="h-4 w-4 mr-2" />
-                        Copy Link
+                        {translate('voucher.preview.copyLink')}
                       </Button>
                     </div>
                   </>
                 )}
                 <p className="text-xs text-center text-muted-foreground">
-                  {canShareUrl ? "Save to Files, Drive, or send to someone" : "If download opens blank, tap Open in Browser"}
+                  {canShareUrl ? translate('voucher.preview.shareHint') : translate('voucher.preview.downloadHint')}
                 </p>
               </div>
             </motion.div>

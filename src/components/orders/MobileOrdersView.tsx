@@ -205,19 +205,21 @@ export function MobileOrdersView({
         )}
       </div>
       <h3 className="text-base font-semibold text-foreground mb-1">
-        {type === 'active' ? 'No Active Orders' : 'No Order History'}
+        {type === 'active' 
+          ? translate('orders.emptyActive.title') 
+          : translate('orders.emptyHistory.title')}
       </h3>
       <p className="text-sm text-muted-foreground mb-4">
         {type === 'active' 
-          ? "You don't have any active orders or upcoming events." 
-          : 'Your completed orders and past events will appear here.'}
+          ? translate('orders.emptyActive.description')
+          : translate('orders.emptyHistory.description')}
       </p>
       <div className="flex gap-2">
         <Button size="sm" onClick={() => navigate('/discover')}>
-          Browse Products
+          {translate('orders.browseProducts')}
         </Button>
         <Button size="sm" variant="outline" onClick={() => navigate('/comm/events-meetups')}>
-          Find Events
+          {translate('orders.findEvents')}
         </Button>
       </div>
     </div>
@@ -238,10 +240,10 @@ export function MobileOrdersView({
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
         <div className="px-4 pt-4 pb-2">
           <h1 className="text-xl font-bold tracking-tight text-foreground">
-            My Orders 📦
+            {translate('orders.myOrders')} 📦
           </h1>
           <p className="text-sm text-muted-foreground">
-            Track your product orders and event tickets
+            {translate('orders.trackDescription')}
           </p>
         </div>
 
@@ -287,7 +289,7 @@ export function MobileOrdersView({
           >
             <div className="flex items-center gap-2 min-w-max">
               <ExpandableSearchButton 
-                placeholder="Search orders..." 
+                placeholder={translate('orders.searchPlaceholder')} 
                 onSearch={(query) => setSearchQuery(query)}
               />
               <UniversalCalendarButton />
@@ -300,10 +302,10 @@ export function MobileOrdersView({
       {isShowingMockData && (
         <div className="mx-4 mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
           <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700 text-[10px]">
-            Preview
+            {translate('orders.sampleData')}
           </Badge>
           <span className="text-xs text-amber-700 dark:text-amber-400">
-            These are preview orders. Your actual orders will appear here.
+            {translate('orders.previewNotice')}
           </span>
         </div>
       )}
@@ -314,11 +316,11 @@ export function MobileOrdersView({
           <SplitBarList className="mb-4">
             <SplitBarTrigger value="active" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              Active ({filteredActiveOrders.length})
+              {translate('orders.tabs.active')} ({filteredActiveOrders.length})
             </SplitBarTrigger>
             <SplitBarTrigger value="history" className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
-              History ({filteredHistoryOrders.length})
+              {translate('orders.tabs.history')} ({filteredHistoryOrders.length})
             </SplitBarTrigger>
           </SplitBarList>
 
