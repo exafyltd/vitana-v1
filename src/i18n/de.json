@@ -1542,6 +1542,19 @@
       "instantCredit": "Dies wird Ihre Einnahmen sofort auf Ihr Wallet-Guthaben gutschreiben.",
       "transferring": "Wird übertragen...",
       "transfer": "Übertragen"
+    },
+    "typeSelector": {
+      "title": "Ein Geschäft starten",
+      "createEvent": "Event erstellen",
+      "createEventDesc": "Workshops, Kurse oder Veranstaltungen ausrichten",
+      "offerService": "Service anbieten",
+      "offerServiceDesc": "1-zu-1 Beratungen, Coaching, Sitzungen",
+      "sellTickets": "Event-Tickets verkaufen",
+      "sellTicketsDesc": "Events bewerben und Provisionen verdienen",
+      "badgeNew": "Neu",
+      "badgeActive": "Aktiv",
+      "alreadyReseller": "Sie sind bereits Wiederverkäufer! Schauen Sie im Tab \"Verkaufen & Verdienen\" nach.",
+      "cancel": "Abbrechen"
     }
   },
   "profile": {
