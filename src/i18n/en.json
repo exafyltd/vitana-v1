@@ -1542,6 +1542,19 @@
       "instantCredit": "This will credit your earnings instantly to your wallet balance.",
       "transferring": "Transferring...",
       "transfer": "Transfer"
+    },
+    "typeSelector": {
+      "title": "Start a Business",
+      "createEvent": "Create Event",
+      "createEventDesc": "Host workshops, classes, or gatherings",
+      "offerService": "Offer Service",
+      "offerServiceDesc": "1-on-1 consultations, coaching, sessions",
+      "sellTickets": "Sell Event Tickets",
+      "sellTicketsDesc": "Promote events and earn commissions",
+      "badgeNew": "New",
+      "badgeActive": "Active",
+      "alreadyReseller": "You're already a reseller! Check the Sell & Earn tab.",
+      "cancel": "Cancel"
     }
   },
   "profile": {
