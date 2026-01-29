@@ -1,78 +1,116 @@
 
+# Fix Default Bio Not Localizing After Database Fetch
 
-# Fix Default Bio Not Updating to German
+## Problem Summary
 
-## Problem
-
-The default bio placeholder stays in English ("Wellness enthusiast passionate about holistic health and community building.") even when German is selected. This happens because:
-
-1. `useState` only uses its initial value once at component mount
-2. If the language context isn't ready during initial render, or changes later, the bio stays at the English fallback
+The default bio placeholder shows in English even when German is selected. The screenshot shows:
+- "Über" (German header) ✅
+- "Tippen zum Bearbeiten" (German tap text) ✅  
+- "Wellness enthusiast passionate about holistic health and community building." (English bio) ❌
 
 ## Root Cause
 
-```typescript
-// Line 46-55 in EditProfilePage.tsx
-const defaultBio = translate('profile.defaultBio', 'Wellness enthusiast...');
+The bio localization logic has a **timing issue**:
 
-const [profile, setProfile] = useState<UserProfile>({
-  ...
-  bio: defaultBio,  // Only set once on mount!
-  ...
-});
-```
+1. Component mounts with `localizedDefaultBio` set to German
+2. The sync `useEffect` runs but bio is already German → no change needed
+3. `refetchProfile()` fetches data from database
+4. Line 119 sets `bio: data.bio || prev.bio` → overwrites with English bio from database
+5. The sync `useEffect` doesn't trigger again (its dependency `localizedDefaultBio` didn't change)
 
-The translation might not be ready when the component first mounts, causing it to use the English fallback forever.
+The database has the English default bio stored, and `refetchProfile` blindly uses it without checking if it should be localized.
+
+---
 
 ## Solution
 
-Add a `useEffect` that watches for language changes and updates the bio **only if** it matches one of the known default placeholder texts. This ensures:
-- User-entered custom bios are never overwritten
-- Default placeholder updates when language changes
+Modify `refetchProfile` to localize the bio if the fetched value matches one of the known default placeholder texts.
+
+---
 
 ## Implementation
 
-### Update EditProfilePage.tsx
+### Update refetchProfile in EditProfilePage.tsx
 
-Add an effect after the existing state initialization:
+Add localization check when setting the bio from database:
 
 ```typescript
-// Define both default bio texts for comparison
+// In refetchProfile function, change line 119 from:
+bio: data.bio || prev.bio,
+
+// To:
+bio: (() => {
+  const fetchedBio = data.bio || prev.bio;
+  // If fetched bio is a default placeholder, use localized version
+  if (fetchedBio === DEFAULT_BIO_EN || fetchedBio === DEFAULT_BIO_DE) {
+    return localizedDefaultBio;
+  }
+  return fetchedBio;
+})(),
+```
+
+### Move Constants Outside Component
+
+Move `DEFAULT_BIO_EN` and `DEFAULT_BIO_DE` outside the component so they're stable and can be used in the `useCallback`:
+
+```typescript
+// Before component definition
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
 const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱';
 
-// Get localized default bio
-const localizedDefaultBio = translate('profile.defaultBio', DEFAULT_BIO_EN);
-
-// Sync default bio when language changes
-useEffect(() => {
-  setProfile(prev => {
-    // Only update if current bio is one of the default placeholders
-    const isDefaultBio = prev.bio === DEFAULT_BIO_EN || prev.bio === DEFAULT_BIO_DE;
-    if (isDefaultBio && prev.bio !== localizedDefaultBio) {
-      return { ...prev, bio: localizedDefaultBio };
-    }
-    return prev;
-  });
-}, [localizedDefaultBio]);
+export default function EditProfilePage() {
+  // ... rest of component
+}
 ```
+
+### Update useCallback Dependencies
+
+Add `localizedDefaultBio` to the `refetchProfile` dependencies:
+
+```typescript
+const refetchProfile = useCallback(async () => {
+  // ... existing logic with bio localization
+}, [user?.id, contextProfile, localizedDefaultBio]);
+```
+
+---
 
 ## Files to Modify
 
-| File | Change |
-|------|--------|
-| `src/pages/EditProfilePage.tsx` | Add constants for default bios + useEffect to sync on language change |
+| File | Changes |
+|------|---------|
+| `src/pages/EditProfilePage.tsx` | Move constants outside component, add bio localization in refetchProfile |
+
+---
+
+## Technical Flow After Fix
+
+```text
+1. Component mounts
+2. localizedDefaultBio = German translation
+3. refetchProfile() runs
+4. Fetches data.bio from database (English)
+5. Checks: Is data.bio a default placeholder?
+   - YES → Use localizedDefaultBio (German)
+   - NO → Use user's custom bio
+6. Bio displays in German ✅
+```
+
+---
 
 ## Expected Result
 
-- When German is selected: "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau."
-- When English is selected: "Wellness enthusiast passionate about holistic health and community building."
-- Custom user bios remain unchanged regardless of language selection
+When German is selected and viewing the profile:
+- "Über" (About header) ✅
+- "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱" ✅
+- "Tippen zum Bearbeiten" ✅
+
+---
 
 ## Acceptance Criteria
 
 - [ ] Default bio shows German text when German is selected
 - [ ] Default bio shows English text when English is selected
-- [ ] Switching language updates the default bio immediately
-- [ ] User's custom bio (if set) is never overwritten
-
+- [ ] User's custom bio (if different from defaults) is never overwritten
+- [ ] Works correctly after page refresh
+- [ ] Works correctly after publishing updates
