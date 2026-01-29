@@ -541,7 +541,7 @@
     "home": "Startseite",
     "community": "Gemeinschaft",
     "discover": "Entdecken", 
-    "inbox": "Posteingang",
+    "inbox": "Postfach",
     "health": "Gesundheit",
     "wallet": "Wallet",
     "sharing": "Teilen",
@@ -855,7 +855,7 @@
     "noActivityDesc": "Ihre Transaktionen werden hier erscheinen."
   },
   "inbox": {
-    "title": "Posteingang",
+    "title": "Postfach",
     "subtitle": "Bleiben Sie mit Ihrer Community verbunden!",
     "description": "Ihre Unterhaltungen, Updates und Benachrichtigungen",
     "tabs": {
