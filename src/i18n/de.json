@@ -1239,14 +1239,6 @@
     "vtna": "VTNA Token",
     "credits": "Plattform-Credits"
   },
-  "business": {
-    "kpi": {
-      "totalEarnings": "Gesamteinnahmen",
-      "last30Days": "Letzte 30 Tage",
-      "pendingPayout": "Ausstehende Auszahlung",
-      "inWallet": "Im Wallet"
-    }
-  },
   "admin": {
     "media": {
       "updateSuccess": "Status erfolgreich aktualisiert",
@@ -1493,6 +1485,10 @@
       "noEarningsStartSelling": "Noch keine Einnahmen. Beginnen Sie mit dem Verkauf, um hier Aktivitäten zu sehen."
     },
     "kpi": {
+      "totalEarnings": "Gesamteinnahmen",
+      "last30Days": "Letzte 30 Tage",
+      "pendingPayout": "Ausstehende Auszahlung",
+      "inWallet": "Im Wallet",
       "revenue": "Umsatz",
       "thisMonth": "Diesen Monat",
       "activeClients": "Aktive Kunden",
