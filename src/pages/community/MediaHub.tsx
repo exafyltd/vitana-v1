@@ -68,6 +68,7 @@ import {
 // SubscribeButton component
   function SubscribeButton({ show }: { show: PopularShow }) {
     const { user } = useAuth();
+    const { translate } = useTranslation();
     const { isSubscribed, toggleSubscription, isToggling } = usePodcastShowSubscription(
       { show_name: show.show_name, host_name: show.host_name },
       user?.id
@@ -98,7 +99,7 @@ import {
                   ? 'fill-current text-emerald-600' 
                   : 'fill-none group-hover/sub:fill-current group-hover/sub:text-white'
               }`} />
-              {isSubscribed ? 'Subscribed' : 'Subscribe'}
+              {isSubscribed ? translate('mediaHub.subscribed') : translate('mediaHub.subscribe')}
             </>
           )}
         </span>
@@ -108,6 +109,7 @@ import {
 
 // PopularShowsList component
 function PopularShowsList() {
+  const { translate } = useTranslation();
   const { data: popularShows = [], isLoading: isLoadingShows } = usePopularPodcastShows();
   
   // Fallback shows if database is empty
@@ -170,11 +172,11 @@ function PopularShowsList() {
                 {show.show_name}
               </h4>
               <p className="text-xs text-muted-foreground/75 font-medium mb-2">
-                by {show.host_name}
+                {translate('mediaHub.by')} {show.host_name}
               </p>
               <p className="text-xs text-muted-foreground/60">
-                {show.episode_count} episodes
-                {show.subscriber_count > 0 && ` • ${show.subscriber_count} subscribers`}
+                {show.episode_count} {translate('mediaHub.episodes')}
+                {show.subscriber_count > 0 && ` • ${show.subscriber_count} ${translate('mediaHub.subscribers')}`}
               </p>
             </div>
           </div>
@@ -267,16 +269,16 @@ export default function MediaHub() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['community-podcasts'] });
       toast({
-        title: "Podcast deleted",
-        description: "Your podcast has been successfully deleted.",
+        title: translate('mediaHub.toast.podcastDeleted'),
+        description: translate('mediaHub.toast.podcastDeletedDesc'),
       });
       setDeleteDialogOpen(false);
       setPodcastToDelete(null);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to delete podcast. Please try again.",
+        title: translate('mediaHub.toast.deleteError'),
+        description: translate('mediaHub.toast.deleteErrorDesc'),
         variant: "destructive",
       });
       console.error('Delete error:', error);
@@ -319,8 +321,8 @@ export default function MediaHub() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shorts'] });
       toast({
-        title: "Video deleted",
-        description: "Your video has been successfully deleted.",
+        title: translate('mediaHub.toast.videoDeleted'),
+        description: translate('mediaHub.toast.videoDeletedDesc'),
       });
       setDeleteVideoDialogOpen(false);
       setVideoToDelete(null);
@@ -328,8 +330,8 @@ export default function MediaHub() {
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to delete video. Please try again.",
+        title: translate('mediaHub.toast.deleteError'),
+        description: translate('mediaHub.toast.deleteErrorDesc'),
         variant: "destructive",
       });
       console.error('Delete video error:', error);
@@ -489,8 +491,8 @@ export default function MediaHub() {
   const handleVideoUploadComplete = () => {
     refetchShorts();
     toast({
-      title: 'Success!',
-      description: 'Your video is now live in the community.',
+      title: translate('mediaHub.toast.uploadSuccess'),
+      description: translate('mediaHub.toast.uploadSuccessDesc').replace('{type}', 'video'),
     });
   };
   // Fetch approved podcasts from database
@@ -559,8 +561,8 @@ export default function MediaHub() {
           {isMobile ? (
             <>
               <StandardHeader
-                title="Media Hub"
-                description="Discover and share inspiring wellness content"
+                title={translate('mediaHub.title')}
+                description={translate('mediaHub.discoverContent')}
               />
               
               {/* Compact Mobile Action Rail */}
@@ -602,7 +604,7 @@ export default function MediaHub() {
               >
                 <div className="flex items-center gap-2 min-w-max">
                   <ExpandableSearchButton 
-                    placeholder="Search Media…"
+                    placeholder={translate('mediaHub.searchPlaceholder')}
                     onSearch={(query) => console.log('Search Media:', query)}
                   />
                   
@@ -617,7 +619,7 @@ export default function MediaHub() {
                     className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
                   >
                     <Plus className="h-4 w-4" />
-                    <span className="text-sm">Upload</span>
+                    <span className="text-sm">{translate('mediaHub.actions.upload')}</span>
                   </Button>
                 </div>
               </UtilityActionButton>
@@ -629,8 +631,8 @@ export default function MediaHub() {
                 {/* Shortened Header Bar - Welcome Message */}
                 <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
                   <div>
-                    <h1 className="text-3xl font-bold text-foreground mb-2">Media Hub ✨</h1>
-                    <p className="text-muted-foreground">Discover and share inspiring wellness content with your community.</p>
+                    <h1 className="text-3xl font-bold text-foreground mb-2">{translate('mediaHub.title')} ✨</h1>
+                    <p className="text-muted-foreground">{translate('mediaHub.discoverContent')}</p>
                   </div>
                 </div>
                 
@@ -648,13 +650,13 @@ export default function MediaHub() {
                   
                   {/* Hover Preview */}
                   {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                      <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
+                      <div className="text-xs font-medium text-muted-foreground mb-2">{translate('mediaHub.latestActions')}</div>
                       {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
                           <span>{action.icon}</span>
                           <span className="truncate">{action.title}</span>
                         </div>)}
                       {pendingCount > 2 && <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                          +{pendingCount - 2} more actions
+                          {translate('mediaHub.moreActions').replace('{count}', String(pendingCount - 2))}
                         </div>}
                     </div>}
                 </div>
@@ -672,7 +674,7 @@ export default function MediaHub() {
               {/* Desktop Action Buttons Utility Bar */}
               <UtilityActionButton>
                 <ExpandableSearchButton 
-                  placeholder="Search Media…"
+                  placeholder={translate('mediaHub.searchPlaceholder')}
                   onSearch={(query) => console.log('Search Media:', query)}
                 />
                 <UniversalCalendarButton />
@@ -680,24 +682,24 @@ export default function MediaHub() {
                   <DropdownMenuTrigger asChild>
                     <Button size="sm">
                       <Plus className="w-4 h-4 mr-2" />
-                      Upload
+                      {translate('mediaHub.actions.upload')}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger>
                         <Video className="w-4 h-4 mr-2" />
-                        Video
+                        {translate('mediaHub.menu.video')}
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
                         <DropdownMenuItem onClick={() => {
                           setInitialMediaType('video');
                           setIsUnifiedUploadOpen(true);
                         }}>
-                          Single Upload
+                          {translate('mediaHub.menu.singleUpload')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
-                          Bulk Upload
+                          {translate('mediaHub.menu.bulkUpload')}
                         </DropdownMenuItem>
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
@@ -706,14 +708,14 @@ export default function MediaHub() {
                       setIsUnifiedUploadOpen(true);
                     }}>
                       <Music className="w-4 h-4 mr-2" />
-                      Music
+                      {translate('mediaHub.menu.music')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => {
                       setInitialMediaType('podcast');
                       setIsUnifiedUploadOpen(true);
                     }}>
                       <Mic className="w-4 h-4 mr-2" />
-                      Podcast
+                      {translate('mediaHub.menu.podcast')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -725,13 +727,13 @@ export default function MediaHub() {
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
             <SplitBarList>
             <SplitBarTrigger value="shorts">
-              📹 Shorts
+              📹 {translate('mediaHub.tabs.shorts')}
             </SplitBarTrigger>
             <SplitBarTrigger value="music">
-              🎵 Music
+              🎵 {translate('mediaHub.tabs.music')}
             </SplitBarTrigger>
             <SplitBarTrigger value="podcasts">
-              🎙️ Podcasts
+              🎙️ {translate('mediaHub.tabs.podcasts')}
             </SplitBarTrigger>
             </SplitBarList>
 
@@ -742,14 +744,14 @@ export default function MediaHub() {
                   {/* Mobile Shorts Preview Grid - tap to enter immersive mode */}
                   <div className="text-center py-4">
                     <p className="text-sm text-muted-foreground mb-3">
-                      {videoShorts.length} shorts available
+                      {translate('mediaHub.shortsAvailable').replace('{count}', String(videoShorts.length))}
                     </p>
                     <Button
                       onClick={() => setMobileShortsFeedOpen(true)}
                       className="bg-gradient-to-r from-violet-500 to-pink-500 text-white rounded-full px-6"
                     >
                       <Play className="h-4 w-4 mr-2" />
-                      Watch Shorts
+                      {translate('mediaHub.actions.watchShorts')}
                     </Button>
                   </div>
                   
@@ -790,7 +792,7 @@ export default function MediaHub() {
                       onClick={() => setMobileShortsFeedOpen(true)}
                       className="w-full text-muted-foreground"
                     >
-                      View all {videoShorts.length} shorts
+                      {translate('mediaHub.actions.viewAllShorts').replace('{count}', String(videoShorts.length))}
                     </Button>
                   )}
                 </div>
@@ -803,7 +805,7 @@ export default function MediaHub() {
                     <div>
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
                         <Video className="w-6 h-6 text-violet-600" />
-                        Trending Shorts
+                        {translate('mediaHub.sections.trendingShorts')}
                       </h2>
                       <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-violet-500 to-transparent rounded-full mt-2"></div>
                     </div>
@@ -817,7 +819,7 @@ export default function MediaHub() {
                   {/* Filter Indicator */}
                   {activeTags.length > 0 && filteringEnabled && (
                     <div className="mb-4 flex flex-wrap items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Filtered by:</span>
+                      <span className="text-sm text-muted-foreground">{translate('mediaHub.filteredBy')}</span>
                       {activeTags.map(tag => (
                         <Badge key={tag} variant="secondary" className="gap-1">
                           {tag}
@@ -829,13 +831,13 @@ export default function MediaHub() {
                         onClick={() => {
                           useUserInterestsStore.getState().setFilteringEnabled(false);
                           toast({
-                            title: "Filters cleared",
-                            description: "Showing all shorts",
+                            title: translate('mediaHub.toast.filtersCleared'),
+                            description: translate('mediaHub.toast.filtersClearedDesc'),
                           });
                         }}
                         className="text-xs h-6"
                       >
-                        Clear filters
+                        {translate('mediaHub.actions.clearFilters')}
                       </Button>
                     </div>
                   )}
@@ -843,7 +845,7 @@ export default function MediaHub() {
                   {/* Empty State */}
                   {videoShorts.length === 0 && !isShortsLoading && activeTags.length > 0 && filteringEnabled && (
                     <div className="text-center py-12">
-                      <p className="text-muted-foreground mb-2">No shorts match your interests</p>
+                      <p className="text-muted-foreground mb-2">{translate('mediaHub.noMatchingShorts')}</p>
                       <Button
                         size="sm"
                         variant="outline"
@@ -851,7 +853,7 @@ export default function MediaHub() {
                           useUserInterestsStore.getState().setFilteringEnabled(false);
                         }}
                       >
-                        View all shorts
+                        {translate('mediaHub.viewAllShorts')}
                       </Button>
                     </div>
                   )}
@@ -910,7 +912,7 @@ export default function MediaHub() {
                     <div className="mb-6">
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
                         <Music className="w-6 h-6 text-purple-600" />
-                        Trending Music
+                        {translate('mediaHub.sections.trendingMusic')}
                       </h2>
                       <div className="h-0.5 w-32 bg-gradient-to-r from-purple-500 via-pink-500 to-transparent rounded-full mt-2"></div>
                     </div>
@@ -919,7 +921,7 @@ export default function MediaHub() {
                       {approvedMusic.length === 0 ? (
                         <div className="text-center py-12 text-muted-foreground">
                           <Music className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                          <p className="text-base">No music uploaded yet. Be the first to share!</p>
+                          <p className="text-base">{translate('mediaHub.noMusicDesc')}</p>
                         </div>
                       ) : (
                         approvedMusic.map((track, index) => {
@@ -986,7 +988,7 @@ export default function MediaHub() {
                                 
                                 {/* Artist & Duration - 75% opacity */}
                                 <p className="text-sm text-muted-foreground/75 leading-none font-medium">
-                                  {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
+                                  {track.music_metadata?.[0]?.artist_name || translate('mediaHub.unknownArtist')} • {formatDuration(track.duration)}
                                 </p>
                                 
                                 {/* One-line Description */}
@@ -1073,7 +1075,7 @@ export default function MediaHub() {
                                       e.stopPropagation();
                                       const shareData = {
                                         title: track.title,
-                                        text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} on Vitana`,
+                                        text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || translate('mediaHub.unknownArtist')} on Vitana`,
                                         url: `${window.location.origin}/comm/media-hub?music=${track.id}`,
                                       };
 
@@ -1086,8 +1088,8 @@ export default function MediaHub() {
                                       } else {
                                         await navigator.clipboard.writeText(shareData.url);
                                         toast({
-                                          title: "Link copied",
-                                          description: "Music link copied to clipboard",
+                                          title: translate('mediaHub.toast.linkCopied'),
+                                          description: translate('mediaHub.toast.linkCopiedDesc'),
                                           duration: 2000,
                                         });
                                       }
@@ -1099,8 +1101,8 @@ export default function MediaHub() {
 
                                   {/* More Options */}
                                   <KebabMenu className="h-9 w-9 rounded-full hover:bg-purple-50">
-                                    <KebabDropdownMenuItem>Add to Playlist</KebabDropdownMenuItem>
-                                    <KebabDropdownMenuItem>View Artist</KebabDropdownMenuItem>
+                                    <KebabDropdownMenuItem>{translate('mediaHub.menu.addToPlaylist')}</KebabDropdownMenuItem>
+                                    <KebabDropdownMenuItem>{translate('mediaHub.menu.viewArtist')}</KebabDropdownMenuItem>
                                   </KebabMenu>
                                 </div>
 
@@ -1156,7 +1158,7 @@ export default function MediaHub() {
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <h3 className="text-2xl font-semibold mb-1 text-foreground">Music Playlists</h3>
+                      <h3 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.musicPlaylists')}</h3>
                       <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
                     
@@ -1203,7 +1205,7 @@ export default function MediaHub() {
                           <div className="space-y-2 mb-4">
                             <h4 className="font-bold text-base text-foreground leading-tight">{playlist.title}</h4>
                             <p className="text-xs text-muted-foreground/75 font-medium">
-                              {playlist.count} tracks • ~{Math.floor(playlist.count * 3.5)} min • by Vitana
+                              {playlist.count} {translate('mediaHub.tracks')} • ~{Math.floor(playlist.count * 3.5)} {translate('mediaHub.min')} • {translate('mediaHub.by')} Vitana
                             </p>
                           </div>
 
@@ -1212,7 +1214,7 @@ export default function MediaHub() {
                             className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:shadow-purple-400/50 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group/play"
                           >
                             <Play className="w-4 h-4 group-hover/play:scale-110 transition-transform" />
-                            Play Playlist
+                            {translate('mediaHub.actions.playPlaylist')}
                           </button>
                         </div>
                       ))}
@@ -1260,14 +1262,14 @@ export default function MediaHub() {
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <h2 className="text-2xl font-semibold mb-1 text-foreground">Latest Episodes</h2>
+                      <h2 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.latestEpisodes')}</h2>
                       <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
                     <div className="flex flex-col gap-4">
                       {approvedPodcasts.length === 0 ? (
                         <div className="col-span-full text-center py-8 text-muted-foreground">
                           <Podcast className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                          <p>No podcasts uploaded yet. Be the first to share!</p>
+                          <p>{translate('mediaHub.noPodcastsDesc')}</p>
                         </div>
                       ) : (
                         approvedPodcasts.map((podcast: any, index: number) => {
@@ -1285,8 +1287,8 @@ export default function MediaHub() {
                           >
                             <PodcastCard
                               id={podcast.id}
-                              title={podcast.title}
-                              creator={metadata?.host_name || 'Unknown Host'}
+                            title={podcast.title}
+                              creator={metadata?.host_name || translate('mediaHub.unknownHost')}
                               duration={podcast.duration}
                               uploadedAt={podcast.created_at}
                               description={podcast.description}
@@ -1311,7 +1313,7 @@ export default function MediaHub() {
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <h3 className="text-2xl font-semibold mb-1 text-foreground">Popular Shows</h3>
+                      <h3 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.popularShows')}</h3>
                       <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
                     <PopularShowsList />
@@ -1368,13 +1370,13 @@ export default function MediaHub() {
       <ResponsiveConfirmDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Podcast</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{translate('mediaHub.deletePodcast.title')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              Are you sure you want to delete this podcast? This action cannot be undone.
+              {translate('mediaHub.deletePodcast.description')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel>{translate('mediaHub.deletePodcast.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={() => {
                 if (podcastToDelete) {
@@ -1383,7 +1385,7 @@ export default function MediaHub() {
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              {translate('mediaHub.deletePodcast.confirm')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>
@@ -1393,13 +1395,13 @@ export default function MediaHub() {
       <ResponsiveConfirmDialog open={deleteVideoDialogOpen} onOpenChange={setDeleteVideoDialogOpen}>
         <ResponsiveConfirmDialogContent>
           <ResponsiveConfirmDialogHeader>
-            <ResponsiveConfirmDialogTitle>Delete Video</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogTitle>{translate('mediaHub.deleteVideo.title')}</ResponsiveConfirmDialogTitle>
             <ResponsiveConfirmDialogDescription>
-              Are you sure you want to delete this video? This action cannot be undone and will remove the video from storage.
+              {translate('mediaHub.deleteVideo.description')}
             </ResponsiveConfirmDialogDescription>
           </ResponsiveConfirmDialogHeader>
           <ResponsiveConfirmDialogFooter>
-            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogCancel>{translate('mediaHub.deleteVideo.cancel')}</ResponsiveConfirmDialogCancel>
             <ResponsiveConfirmDialogAction
               onClick={() => {
                 if (videoToDelete) {
@@ -1408,7 +1410,7 @@ export default function MediaHub() {
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              {translate('mediaHub.deleteVideo.confirm')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>
@@ -1431,8 +1433,8 @@ export default function MediaHub() {
           onSave={() => {
             refetchShorts();
             toast({
-              title: 'Success',
-              description: 'Video updated successfully',
+              title: translate('mediaHub.toast.videoUpdated'),
+              description: translate('mediaHub.toast.videoUpdatedDesc'),
             });
           }}
         />
@@ -1457,8 +1459,8 @@ export default function MediaHub() {
           }
           
           toast({
-            title: 'Success!',
-            description: `Your ${mediaType} is now live in the community.`,
+            title: translate('mediaHub.toast.uploadSuccess'),
+            description: translate('mediaHub.toast.uploadSuccessDesc').replace('{type}', mediaType),
           });
           
           setIsUnifiedUploadOpen(false);
