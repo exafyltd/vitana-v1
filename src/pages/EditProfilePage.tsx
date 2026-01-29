@@ -27,6 +27,10 @@ import { MobileMediaTabContent } from "@/components/profile/mobile/MobileMediaTa
 import { MobileGroupsTabContent } from "@/components/profile/mobile/MobileGroupsTabContent";
 import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
 
+// Default bio constants for language sync - OUTSIDE component for stability
+const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
+const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱';
+
 export default function EditProfilePage() {
   const navigate = useNavigate();
   const { profile: contextProfile } = useProfile();
@@ -42,10 +46,6 @@ export default function EditProfilePage() {
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
-  // Default bio constants for language sync
-  const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
-  const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱';
-  
   // Get localized default bio
   const localizedDefaultBio = translate('profile.defaultBio', DEFAULT_BIO_EN);
   
@@ -116,7 +116,14 @@ export default function EditProfilePage() {
         name: data.display_name || contextProfile.displayName,
         handle: data.handle || contextProfile.handle || 'user',
         avatarUrl: data.avatar_url || contextProfile.avatar,
-        bio: data.bio || prev.bio,
+        // Localize bio if it's a default placeholder from database
+        bio: (() => {
+          const fetchedBio = data.bio || prev.bio;
+          if (fetchedBio === DEFAULT_BIO_EN || fetchedBio === DEFAULT_BIO_DE) {
+            return localizedDefaultBio;
+          }
+          return fetchedBio;
+        })(),
         // Social media fields
         linkedin_url: data.linkedin_url,
         linkedin_synced_at: data.linkedin_synced_at,
@@ -149,7 +156,7 @@ export default function EditProfilePage() {
         x_topics: data.x_topics,
       }));
     }
-  }, [user?.id, contextProfile]);
+  }, [user?.id, contextProfile, localizedDefaultBio]);
 
   // Fetch full profile data including social media fields from Supabase
   useEffect(() => {
