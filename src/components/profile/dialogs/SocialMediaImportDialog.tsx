@@ -18,6 +18,7 @@ interface SocialMediaImportDialogProps {
   platformName: string;
   icon: React.ReactNode;
   profileId: string;
+  onSuccess?: () => void;
 }
 
 const platformPlaceholders: Record<Platform, { url: string; bio: string }> = {
@@ -62,7 +63,8 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
   platform,
   platformName,
   icon,
-  profileId
+  profileId,
+  onSuccess
 }) => {
   const [profileUrl, setProfileUrl] = useState('');
   const [bioText, setBioText] = useState('');
@@ -118,8 +120,8 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
       setProfileUrl('');
       setBioText('');
       
-      // Reload to see updated profile
-      setTimeout(() => window.location.reload(), 1000);
+      // Trigger parent refresh instead of page reload
+      onSuccess?.();
 
     } catch (error: any) {
       console.error(`[SocialMediaImport] ${platformName} import error:`, error);

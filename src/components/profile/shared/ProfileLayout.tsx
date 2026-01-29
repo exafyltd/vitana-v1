@@ -41,6 +41,7 @@ interface ProfileLayoutProps {
   onEditCompliance?: () => void;
   onEditShowcase?: () => void;
   onEditVisibility?: () => void;
+  onRefreshProfile?: () => void;
 }
 
 export function ProfileLayout({ 
@@ -53,7 +54,8 @@ export function ProfileLayout({
   onEditServices,
   onEditCompliance,
   onEditShowcase,
-  onEditVisibility
+  onEditVisibility,
+  onRefreshProfile
 }: ProfileLayoutProps) {
   // Smart editing state
   const [isPreviewMode, setIsPreviewMode] = useState(false);
@@ -136,6 +138,7 @@ export function ProfileLayout({
           editMode={effectiveEditMode}
           onEditIdentity={onEditIdentity}
           onEditSocial={onEditAbout}
+          onRefreshProfile={onRefreshProfile}
         />
         
         {/* Compact Stats Strip */}

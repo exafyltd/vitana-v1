@@ -12,6 +12,7 @@ interface MobileIdCardSwitcherProps {
   editMode?: boolean;
   onEditIdentity?: () => void;
   onEditSocial?: () => void;
+  onRefreshProfile?: () => void;
   className?: string;
 }
 
@@ -20,6 +21,7 @@ export function MobileIdCardSwitcher({
   editMode = false,
   onEditIdentity,
   onEditSocial,
+  onRefreshProfile,
   className
 }: MobileIdCardSwitcherProps) {
   const [activeSide, setActiveSide] = useState<CardSide>("front");
@@ -108,13 +110,14 @@ export function MobileIdCardSwitcher({
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
             >
-              <MobileIdCardBack
-                profile={profile}
-                editMode={editMode}
-                onEdit={onEditSocial}
-              />
-            </motion.div>
-          )}
+            <MobileIdCardBack
+              profile={profile}
+              editMode={editMode}
+              onEdit={onEditSocial}
+              onRefreshProfile={onRefreshProfile}
+            />
+          </motion.div>
+        )}
         </AnimatePresence>
       </div>
     </div>
