@@ -351,3 +351,71 @@ export function getPublicLandingCta(options: {
     action: 'reserve',
   };
 }
+
+// ============== Localized CTA Functions ==============
+
+export type TranslateFn = (key: string, fallback: string) => string;
+
+/**
+ * Get localized label for a CTA action
+ */
+function getLocalizedLabel(
+  action: string,
+  priceLabel: string | undefined,
+  translate: TranslateFn
+): string {
+  switch (action) {
+    case 'buy-ticket':
+      return priceLabel
+        ? translate('eventCta.buyTicketWithPrice', `Buy Ticket · ${priceLabel}`).replace('{price}', priceLabel)
+        : translate('eventCta.buyTicket', 'Buy Ticket');
+    case 'get-free-ticket':
+      return translate('eventCta.getFreeTicket', 'Get Free Ticket');
+    case 'view-ticket':
+      return translate('eventCta.viewTicket', 'View Ticket');
+    case 'join':
+      return translate('eventCta.joinMeetup', 'Join MeetUp');
+    case 'leave':
+      return translate('eventCta.leaveMeetup', 'Leave MeetUp');
+    case 'reserve':
+      return translate('eventCta.reserveSpot', 'Reserve Spot');
+    case 'cancel':
+      return translate('eventCta.cancelReservation', 'Cancel Reservation');
+    case 'sold-out':
+      return translate('eventCta.soldOut', 'Sold Out');
+    default:
+      return translate('eventCta.viewEvent', 'View Event');
+  }
+}
+
+/**
+ * Get localized CTA configuration for an event
+ * Wraps getEventCta and translates labels based on current language
+ */
+export function getLocalizedEventCta(
+  options: GetEventCtaOptions,
+  translate: TranslateFn
+): CtaConfig {
+  const config = getEventCta(options);
+  
+  return {
+    ...config,
+    label: getLocalizedLabel(config.action, config.priceLabel, translate),
+  };
+}
+
+/**
+ * Get localized CTA configuration for public landing pages
+ * Wraps getPublicLandingCta and translates labels based on current language
+ */
+export function getLocalizedPublicLandingCta(
+  options: Parameters<typeof getPublicLandingCta>[0],
+  translate: TranslateFn
+): CtaConfig {
+  const config = getPublicLandingCta(options);
+  
+  return {
+    ...config,
+    label: getLocalizedLabel(config.action, config.priceLabel, translate),
+  };
+}
