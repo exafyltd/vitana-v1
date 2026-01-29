@@ -9,8 +9,9 @@ import { useEventParticipation } from "@/hooks/useEventParticipation";
 import { cn } from "@/lib/utils";
 import { withCardId } from "@/lib/withCardId";
 import { useMeetupSelection } from "@/context/MeetupSelectionContext";
-import { getEventCta, CtaConfig } from "@/lib/eventsCtaUtils";
+import { getLocalizedEventCta, CtaConfig } from "@/lib/eventsCtaUtils";
 import { TicketType } from "@/hooks/useEventTickets";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface NewsCardProps {
   title: string;
@@ -92,6 +93,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     "data-event-id": dataEventId
   }, ref) => {
     const { selectedMeetupId } = useMeetupSelection();
+    const { translate } = useTranslation();
     const isSelected = category === 'event' && dataEventId ? selectedMeetupId === dataEventId : false;
     
     const categoryStyles = {
@@ -129,9 +131,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
       let isDisabled = false;
       let ctaAction: (() => void) | undefined = onActionClick;
       
-      // Use unified CTA logic for event cards
+      // Use unified localized CTA logic for event cards
       if (category === "event" && eventId) {
-        const ctaConfig = getEventCta({
+        const ctaConfig = getLocalizedEventCta({
           event: {
             id: eventId,
             event_type: eventType,
@@ -144,7 +146,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           userHasTicket: userHasTicket,
           isParticipating: eventParticipation?.isParticipating,
           context: 'card',
-        });
+        }, translate);
         
         buttonText = ctaConfig.label;
         isDisabled = ctaConfig.disabled || false;

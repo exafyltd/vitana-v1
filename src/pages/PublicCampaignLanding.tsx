@@ -8,7 +8,8 @@ import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
-import { getPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
+import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PublicCampaignData {
   id: string;
@@ -38,6 +39,7 @@ export default function PublicCampaignLanding() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
+  const { translate } = useTranslation();
   const [campaign, setCampaign] = useState<PublicCampaignData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -171,8 +173,8 @@ export default function PublicCampaignLanding() {
   // Get tenant from campaign metadata for proper login routing
   const tenantSlug = campaign?.metadata?.tenant_slug || campaign?.metadata?.tenantSlug || localStorage.getItem('tenant_slug') || null;
 
-  // Use unified CTA logic
-  const ctaConfig = getPublicLandingCta({
+  // Use unified localized CTA logic
+  const ctaConfig = getLocalizedPublicLandingCta({
     hasTickets,
     isPaid: isEventPaid,
     isSoldOut: false, // TODO: Fetch from event data
@@ -180,7 +182,7 @@ export default function PublicCampaignLanding() {
     currency: 'USD',
     isAuthenticated: !!user,
     userHasTicket,
-  });
+  }, translate);
 
   // Determine CTA icon
   const getPrimaryCTAIcon = () => {
@@ -384,7 +386,7 @@ export default function PublicCampaignLanding() {
                         ) : (
                           <CalendarDays className="h-4 w-4 text-primary" />
                         )}
-                        <span>{hasTickets ? "Get your ticket" : "Join this event"}</span>
+                        <span>{hasTickets ? translate('eventCta.getYourTicket', 'Get your ticket') : translate('eventCta.joinThisEvent', 'Join this event')}</span>
                       </div>
                       <Button
                         size="default"

@@ -30,13 +30,14 @@ import { EventSalesDashboard } from "@/components/tickets/EventSalesDashboard";
 import { useEventTicketTypes } from "@/hooks/useEventTickets";
 import { useIsEventOrganizer } from "@/hooks/useEventSales";
 import {
-  getEventCta,
+  getLocalizedEventCta,
   isTicketedEvent,
   isPaidEvent,
   isEventSoldOut,
   getLowestAvailableTicketPrice,
   formatTicketPrice,
 } from "@/lib/eventsCtaUtils";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -198,6 +199,7 @@ export function MeetupDetailsDrawer({
   const { addEvent, removeEvent } = useCalendarEvents();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { translate } = useTranslation();
   
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
@@ -231,8 +233,8 @@ export function MeetupDetailsDrawer({
     checkUserTicket();
   }, [user, event?.id]);
   
-  // Get CTA config using unified logic
-  const ctaConfig = getEventCta({
+  // Get CTA config using unified localized logic
+  const ctaConfig = getLocalizedEventCta({
     event: event ? {
       id: event.id,
       event_type: event.event_type,
@@ -242,7 +244,7 @@ export function MeetupDetailsDrawer({
     userHasTicket,
     isParticipating: isJoined,
     context: 'drawer',
-  });
+  }, translate);
   
   // Check if current user is the organizer
   const { isOrganizer } = useIsEventOrganizer(event?.id || '');
@@ -1210,13 +1212,15 @@ export function MeetupDetailsDrawer({
                 {isJoining ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    {ctaConfig.action === 'join' || ctaConfig.action === 'reserve' ? 'Joining...' : 'Processing...'}
+                    {ctaConfig.action === 'join' || ctaConfig.action === 'reserve' 
+                      ? translate('eventCta.joining', 'Joining...') 
+                      : translate('eventCta.processing', 'Processing...')}
                   </>
                 ) : (
                   <>
                     {getCtaIcon()}
-                    {/* For ticketed events, show just "Buy Ticket" without price */}
-                    {isTicketCta ? 'Buy Ticket' : ctaConfig.label}
+                    {/* For ticketed events, show translated "Buy Ticket" without price in sticky bar */}
+                    {isTicketCta ? translate('eventCta.buyTicket', 'Buy Ticket') : ctaConfig.label}
                   </>
                 )}
               </Button>
@@ -1236,13 +1240,13 @@ export function MeetupDetailsDrawer({
                       e.stopPropagation();
                       onPromoteEvent(event);
                     }}
-                    aria-label="Promote event"
+                    aria-label={translate('eventCta.promoteEvent', 'Promote event')}
                   >
                     <Megaphone className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Promote this event</p>
+                  <p>{translate('eventCta.promoteEvent', 'Promote event')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

@@ -8,7 +8,8 @@ import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
-import { getPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
+import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCtaUtils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PublicEventData {
   id: string;
@@ -55,6 +56,7 @@ export default function PublicEventLanding() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
+  const { translate } = useTranslation();
   const [event, setEvent] = useState<PublicEventData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -150,8 +152,8 @@ export default function PublicEventLanding() {
                      localStorage.getItem('tenant_slug') || 
                      null;
 
-  // Use unified CTA logic
-  const ctaConfig = getPublicLandingCta({
+  // Use unified localized CTA logic
+  const ctaConfig = getLocalizedPublicLandingCta({
     hasTickets: event?.has_tickets || false,
     isPaid: event?.is_paid_event || false,
     isSoldOut: event?.is_sold_out || false,
@@ -159,7 +161,7 @@ export default function PublicEventLanding() {
     currency: 'USD',
     isAuthenticated: !!user,
     userHasTicket,
-  });
+  }, translate);
 
   // Get CTA icon based on config
   const getPrimaryCTAIcon = () => {
@@ -357,9 +359,9 @@ export default function PublicEventLanding() {
                           <CalendarDays className="h-4 w-4 text-primary" />
                         )}
                         <span>
-                          {ctaConfig.action === 'view-ticket' ? 'Your ticket' : 
-                           ctaConfig.action === 'sold-out' ? 'Sold out' :
-                           event.has_tickets ? 'Get your ticket' : 'Join this event'}
+                          {ctaConfig.action === 'view-ticket' ? translate('eventCta.yourTicket', 'Your ticket') : 
+                           ctaConfig.action === 'sold-out' ? translate('eventCta.soldOut', 'Sold out') :
+                           event.has_tickets ? translate('eventCta.getYourTicket', 'Get your ticket') : translate('eventCta.joinThisEvent', 'Join this event')}
                         </span>
                       </div>
                       <Button
