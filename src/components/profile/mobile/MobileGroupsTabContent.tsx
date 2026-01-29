@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { generateGroupImage } from "@/lib/groupCardTransformers";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface GroupItem {
   id: string;
@@ -48,6 +49,7 @@ export function MobileGroupsTabContent({
   className 
 }: MobileGroupsTabContentProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
   const hasGroups = groups.length > 0;
   const previewGroups = groups.slice(0, 3);
 
@@ -81,9 +83,11 @@ export function MobileGroupsTabContent({
             <Users className="h-8 w-8 text-primary/50" />
           </div>
           <div className="text-center space-y-1">
-            <h3 className="text-base font-medium text-foreground">No groups yet</h3>
+            <h3 className="text-base font-medium text-foreground">
+              {translate('profileGroups.emptyTitle', 'No groups yet')}
+            </h3>
             <p className="text-sm text-muted-foreground">
-              Join communities that match your interests
+              {translate('profileGroups.emptyDescription', 'Join communities that match your interests')}
             </p>
           </div>
           <Button 
@@ -92,7 +96,7 @@ export function MobileGroupsTabContent({
             size="sm"
           >
             <Compass className="h-4 w-4 mr-2" />
-            Discover Groups
+            {translate('profileGroups.discoverCta', 'Discover Groups')}
           </Button>
         </div>
       </div>
@@ -125,7 +129,7 @@ export function MobileGroupsTabContent({
               {group.members && (
                 <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                   <Users className="h-3 w-3" />
-                  {group.members.toLocaleString()} members
+                  {group.members.toLocaleString()} {translate('profileGroups.membersLabel', 'members')}
                 </p>
               )}
             </div>
@@ -141,7 +145,7 @@ export function MobileGroupsTabContent({
           onClick={handleViewAll}
           className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-card/50 hover:bg-card/80 border border-border/50 transition-colors text-sm font-medium text-foreground"
         >
-          View all groups
+          {translate('profileGroups.viewAllCta', 'View all groups')}
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </button>
 
@@ -151,7 +155,7 @@ export function MobileGroupsTabContent({
           className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary/10 hover:bg-primary/15 border border-primary/20 transition-colors text-sm font-medium text-primary"
         >
           <Compass className="h-4 w-4" />
-          Discover groups
+          {translate('profileGroups.discoverCta', 'Discover groups')}
         </button>
       </div>
     </div>

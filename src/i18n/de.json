@@ -1502,5 +1502,19 @@
     "joining": "Beitreten...",
     "getTickets": "Tickets holen",
     "promoteEvent": "Event bewerben"
+  },
+  "profileMedia": {
+    "emptyTitle": "Noch keine Medien",
+    "emptyDescription": "Teile deine Wellness-Reise",
+    "uploadCta": "Medien hochladen",
+    "viewAllCta": "Alle Medien ansehen",
+    "thumbnailAlt": "Medien"
+  },
+  "profileGroups": {
+    "emptyTitle": "Noch keine Gruppen",
+    "emptyDescription": "Tritt Communities bei, die zu deinen Interessen passen",
+    "discoverCta": "Gruppen entdecken",
+    "viewAllCta": "Alle Gruppen ansehen",
+    "membersLabel": "Mitglieder"
   }
 }
