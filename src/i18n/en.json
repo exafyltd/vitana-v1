@@ -1502,5 +1502,19 @@
     "joining": "Joining...",
     "getTickets": "Get Tickets",
     "promoteEvent": "Promote event"
+  },
+  "profileMedia": {
+    "emptyTitle": "No media yet",
+    "emptyDescription": "Share your wellness journey",
+    "uploadCta": "Upload Media",
+    "viewAllCta": "View all media",
+    "thumbnailAlt": "Media"
+  },
+  "profileGroups": {
+    "emptyTitle": "No groups yet",
+    "emptyDescription": "Join communities that match your interests",
+    "discoverCta": "Discover groups",
+    "viewAllCta": "View all groups",
+    "membersLabel": "members"
   }
 }

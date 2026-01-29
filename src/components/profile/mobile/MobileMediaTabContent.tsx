@@ -2,6 +2,7 @@ import { Play, Upload, Image as ImageIcon, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MediaItem {
   id: string;
@@ -60,6 +61,7 @@ export function MobileMediaTabContent({
   className 
 }: MobileMediaTabContentProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
   const hasMedia = media.length > 0;
   const previewMedia = media.slice(0, 6);
 
@@ -85,9 +87,11 @@ export function MobileMediaTabContent({
             <ImageIcon className="h-8 w-8 text-primary/50" />
           </div>
           <div className="text-center space-y-1">
-            <h3 className="text-base font-medium text-foreground">No media yet</h3>
+            <h3 className="text-base font-medium text-foreground">
+              {translate('profileMedia.emptyTitle', 'No media yet')}
+            </h3>
             <p className="text-sm text-muted-foreground">
-              Share your wellness journey
+              {translate('profileMedia.emptyDescription', 'Share your wellness journey')}
             </p>
           </div>
           <Button 
@@ -96,7 +100,7 @@ export function MobileMediaTabContent({
             size="sm"
           >
             <Upload className="h-4 w-4 mr-2" />
-            Upload Media
+            {translate('profileMedia.uploadCta', 'Upload Media')}
           </Button>
         </div>
       </div>
@@ -115,7 +119,7 @@ export function MobileMediaTabContent({
           >
             <img
               src={item.thumbnail}
-              alt={item.title || 'Media'}
+              alt={item.title || translate('profileMedia.thumbnailAlt', 'Media')}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
             {/* Video play indicator */}
@@ -137,7 +141,7 @@ export function MobileMediaTabContent({
         onClick={handleViewAll}
         className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-card/50 hover:bg-card/80 border border-border/50 transition-colors text-sm font-medium text-foreground"
       >
-        View all media
+        {translate('profileMedia.viewAllCta', 'View all media')}
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
       </button>
     </div>
