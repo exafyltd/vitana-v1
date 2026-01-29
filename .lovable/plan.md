@@ -1,218 +1,233 @@
 
-## Localize Discover Page, Quick Actions Popup, and AI Picks Page
 
-### Issues Identified
+## Localize Orders Page and Gift Voucher Modal (MAXINA)
 
-From the screenshots and code analysis, there are **three main problems**:
+### Problem Analysis
 
-| Screen | Issue | Evidence |
-|--------|-------|----------|
-| Discover main page | Title "Discover" + description in English | Screenshot 3 shows English title |
-| Quick Actions popup | All 8 actions in English | Screenshot 2 shows "View Cart", "Book Appointment", etc. |
-| AI Picks page | All content in English + vertical cards layout | Screenshot 1 shows English UI with vertical grid |
+From the screenshot and code analysis, there are **three areas** with hardcoded English strings:
+
+| Component | Issues Found |
+|-----------|--------------|
+| Orders Page (`Orders.tsx`) | "My Orders", "Track your product orders...", tab labels, empty states, buttons |
+| Mobile Orders View (`MobileOrdersView.tsx`) | Same header, tabs ("Active", "History"), empty states, search placeholder |
+| Gift Voucher Modal (`MaxinaVoucherModal.tsx`) | ~60+ strings: tier names, benefits, form labels, success messages, button text |
+| Order Detail Sheet (`MobileOrderDetailSheet.tsx`) | "Order Details", "Gift Voucher", form labels, action buttons |
 
 ### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/i18n/de.json` | Add ~40 new keys under `discover` namespace |
+| `src/i18n/de.json` | Add ~80 new translation keys |
 | `src/i18n/en.json` | Mirror all new keys in English |
-| `src/pages/Discover.tsx` | Use `translate()` for title, description |
-| `src/components/discover/DiscoverMasterActionPopup.tsx` | Full localization + use `useTranslation()` |
-| `src/pages/discover/AIPicksPage.tsx` | Full localization + horizontal scroll layout for mobile |
-| `src/components/discover/MobileDiscoverView.tsx` | Localize "View" button |
+| `src/pages/discover/Orders.tsx` | Use `translate()` for all strings |
+| `src/components/orders/MobileOrdersView.tsx` | Use `translate()` for all strings |
+| `src/components/orders/MobileOrderDetailSheet.tsx` | Full localization |
+| `src/components/voucher/MaxinaVoucherModal.tsx` | Full localization |
 
 ### Implementation Plan
 
 #### Step 1: Expand Translation Keys
 
-Add new keys under the existing `discover` namespace:
+**Orders Namespace (`orders.*`):**
 
-**Main Page:**
-- `discover.mobileTitle`: "Entdecken" / "Discover"
-- `discover.mobileDescription`: "Erlebnisse, Menschen und Wellness erkunden" / "Explore experiences, people, and wellness"
-- `discover.desktopTitle`: "Entdecken Sie Ihren Langlebigkeits-Marktplatz" / "Discover Your Longevity Marketplace"
-- `discover.desktopDescription`: (existing)
-
-**Quick Actions Popup:**
-- `discover.quickActions.title`: "Schnellaktionen" / "Quick Actions"
-- `discover.quickActions.viewCart`: "Warenkorb" / "View Cart"
-- `discover.quickActions.bookAppointment`: "Termin buchen" / "Book Appointment"
-- `discover.quickActions.quickCheckout`: "Schnellkauf" / "Quick Checkout"
-- `discover.quickActions.trackOrders`: "Bestellungen verfolgen" / "Track Orders"
-- `discover.quickActions.reorderPrevious`: "Erneut bestellen" / "Reorder Previous"
-- `discover.quickActions.managePayment`: "Zahlung verwalten" / "Manage Payment"
-- `discover.quickActions.findServicesNearMe`: "Services in der Nähe" / "Find Services Near Me"
-- `discover.quickActions.viewSavedItems`: "Gespeicherte Artikel" / "View Saved Items"
-
-**AI Picks Page:**
-- `discover.aiPicks.title`: "KI-Empfehlungen für Sie" / "AI Picks for You"
-- `discover.aiPicks.description`: "Personalisierte Empfehlungen basierend auf Ihrem Vitana Index, Biomarkern und Gesundheitszielen" / "Personalized recommendations based on your Vitana Index, biomarkers, and health goals"
-- `discover.aiPicks.backToDiscover`: "Zurück zu Entdecken" / "Back to Discover"
-- `discover.aiPicks.loading`: "KI-Empfehlungen werden geladen..." / "Loading AI recommendations..."
-- `discover.aiPicks.unavailable`: "KI-Empfehlungen nicht verfügbar" / "AI Picks unavailable"
-- `discover.aiPicks.unavailableDesc`: "Wir konnten Ihre personalisierten Empfehlungen nicht laden" / "We couldn't load your personalized recommendations right now"
-- `discover.aiPicks.recommendationsFound`: "{count} Empfehlungen gefunden" / "{count} recommendations found"
-- `discover.aiPicks.noRecommendations`: "Keine Empfehlungen gefunden" / "No recommendations found"
-- `discover.aiPicks.noRecommendationsDesc`: "Wählen Sie einen anderen Filter, um mehr Empfehlungen zu sehen" / "Try selecting a different filter to see more recommendations"
-- `discover.aiPicks.viewAllPicks`: "Alle Empfehlungen anzeigen" / "View All Picks"
-
-**Filter Tabs:**
-- `discover.filters.all`: "Alle" / "All"
-- `discover.filters.services`: "Services" / "Services"
-- `discover.filters.supplements`: "Nahrungsergänzung" / "Supplements"
-- `discover.filters.experts`: "Experten" / "Experts"
-- `discover.filters.deals`: "Angebote" / "Deals"
-
-**Toast Messages:**
-- `discover.toast.actionSelected`: "Aktion ausgewählt" / "Action Selected"
-- `discover.toast.comingSoon`: "{action} Funktion bald verfügbar!" / "{action} feature coming soon!"
-
-#### Step 2: Update Discover.tsx
-
-Replace hardcoded StandardHeader with translated strings:
-
-```tsx
-// BEFORE (line 213-216)
-<StandardHeader
-  title={isMobile ? "Discover" : "Discover Your Longevity Marketplace"}
-  description={isMobile ? "Explore experiences, people, and wellness" : "..."}
-
-// AFTER
-<StandardHeader
-  title={isMobile ? translate('discover.mobileTitle') : translate('discover.desktopTitle')}
-  description={isMobile ? translate('discover.mobileDescription') : translate('discover.description')}
+```
+orders.myOrders = "Meine Bestellungen" / "My Orders"
+orders.trackDescription = "Verfolgen Sie Ihre Produktbestellungen und Event-Tickets" / "Track your product orders and event tickets"
+orders.searchPlaceholder = "Bestellungen suchen..." / "Search orders..."
+orders.tabs.active = "Aktiv" / "Active"
+orders.tabs.history = "Verlauf" / "History"
+orders.previewNotice = "Dies sind Vorschau-Bestellungen. Ihre tatsächlichen Bestellungen erscheinen hier."
+orders.emptyActive.title = "Keine aktiven Bestellungen"
+orders.emptyActive.description = "Sie haben keine aktiven Bestellungen oder anstehenden Events."
+orders.emptyHistory.title = "Kein Bestellverlauf"
+orders.emptyHistory.description = "Ihre abgeschlossenen Bestellungen und vergangenen Events erscheinen hier."
+orders.browseProducts = "Produkte durchsuchen"
+orders.findEvents = "Events entdecken"
+orders.startShopping = "Einkaufen starten"
+orders.sampleData = "Beispieldaten"
+orders.detailSheet.title = "Bestelldetails"
+orders.detailSheet.orderInfo = "Bestellinfo"
+orders.detailSheet.orderReference = "Bestellreferenz"
+orders.detailSheet.purchaseDate = "Kaufdatum"
+orders.detailSheet.eventDate = "Event-Datum"
+orders.detailSheet.location = "Ort"
+orders.detailSheet.quantity = "Menge"
+orders.detailSheet.tickets = "Tickets"
+orders.detailSheet.yourTicket = "Ihr Ticket"
+orders.detailSheet.giftVoucher = "Geschenkgutschein"
+orders.detailSheet.code = "Code"
+orders.detailSheet.sendToRecipient = "An Empfänger senden"
+orders.detailSheet.recipientEmail = "Empfänger-E-Mail *"
+orders.detailSheet.recipientName = "Empfängername"
+orders.detailSheet.personalMessage = "Persönliche Nachricht"
+orders.detailSheet.cancel = "Abbrechen"
+orders.detailSheet.send = "Senden"
+orders.detailSheet.downloadPdf = "PDF herunterladen"
 ```
 
-#### Step 3: Update DiscoverMasterActionPopup.tsx
+**Voucher Modal Namespace (`voucher.*`):**
 
-1. Import `useTranslation()`
-2. Refactor `actions` array to use stable IDs + translated labels
-3. Localize dialog title and toast messages
-
-```tsx
-// NEW: Use stable IDs for action keys
-const ACTION_IDS = ['viewCart', 'bookAppointment', 'quickCheckout', 'trackOrders', 
-                    'reorderPrevious', 'managePayment', 'findServicesNearMe', 'viewSavedItems'];
-
-const actions = ACTION_IDS.map((id, index) => ({
-  id,
-  icon: [ShoppingCart, Calendar, Zap, Package, RotateCcw, CreditCard, MapPin, Heart][index],
-  label: translate(`discover.quickActions.${id}`),
-  color: [...colors][index]
-}));
+```
+voucher.modal.title = "Maxina Gutschein verschenken"
+voucher.modal.subtitle = "Verschenken Sie Wellness und Community-Verbindung"
+voucher.tiers.test.name = "Test"
+voucher.tiers.test.benefits.0 = "Nur für Zahlungstest"
+voucher.tiers.test.benefits.1 = "Kein echter Gutschein"
+voucher.tiers.test.benefits.2 = "Für Entwicklungstests"
+voucher.tiers.experience.name = "Erlebnis"
+voucher.tiers.experience.benefits.0 = "1 Premium-Community-Event-Zugang"
+voucher.tiers.experience.benefits.1 = "Personalisierte Wellness-Beratung"
+voucher.tiers.experience.benefits.2 = "30-Tage Vitana+ Testversion inklusive"
+voucher.tiers.experience.benefits.3 = "Wunderschön gestalteter E-Gutschein"
+voucher.tiers.exclusive.name = "Exklusiv"
+voucher.tiers.exclusive.benefits.0 = "3 Premium-Community-Events"
+voucher.tiers.exclusive.benefits.1 = "1-zu-1 Experten-Coaching"
+voucher.tiers.exclusive.benefits.2 = "90-Tage Vitana+ Abonnement"
+voucher.tiers.exclusive.benefits.3 = "Prioritätsbuchung + VIP-Vorteile"
+voucher.modal.buyVoucher = "Gutschein kaufen"
+voucher.modal.openingCheckout = "Sicheren Checkout öffnen..."
+voucher.success.title = "Gutschein gekauft!"
+voucher.success.ready = "Ihr {tier} Gutschein ist bereit"
+voucher.success.download = "Gutschein herunterladen"
+voucher.success.sendEmail = "Per E-Mail an Empfänger senden"
+voucher.success.viewOrders = "In Bestellungen anzeigen"
+voucher.success.done = "Fertig"
+voucher.email.title = "Gutschein per E-Mail senden"
+voucher.email.subtitle = "Wir senden eine schön gestaltete E-Mail mit dem Gutschein"
+voucher.email.recipientEmail = "Empfänger-E-Mail *"
+voucher.email.recipientName = "Empfängername (optional)"
+voucher.email.personalMessage = "Persönliche Nachricht (optional)"
+voucher.email.messagePlaceholder = "Alles Gute zum Geburtstag! Genieße dieses Wellness-Geschenk..."
+voucher.email.back = "Zurück"
+voucher.email.send = "Gutschein senden"
+voucher.preview.title = "Ihr Gutschein"
+voucher.preview.giftVoucher = "Geschenkgutschein"
+voucher.preview.validUntil = "Gültig bis {date}"
+voucher.preview.voucherCode = "Gutschein-Code"
+voucher.preview.whatsIncluded = "Was enthalten ist"
+voucher.preview.downloadPdf = "PDF herunterladen"
+voucher.preview.downloadDirect = "Direkt herunterladen"
+voucher.preview.openInBrowser = "Im Browser öffnen"
+voucher.preview.copyLink = "Link kopieren"
+voucher.preview.share = "Teilen"
+voucher.toast.downloadStarted = "Download gestartet!"
+voucher.toast.downloadFailed = "Download fehlgeschlagen"
+voucher.toast.linkCopied = "Link kopiert!"
+voucher.toast.linkCopiedDesc = "Im Browser einfügen zum Herunterladen."
+voucher.toast.voucherSent = "Gutschein an {email} gesendet!"
+voucher.toast.voucherShared = "Gutschein erfolgreich geteilt!"
+voucher.toast.checkoutFailed = "Checkout konnte nicht gestartet werden. Bitte erneut versuchen."
 ```
 
-#### Step 4: Update AIPicksPage.tsx - Localization + Horizontal Scroll Fix
+#### Step 2: Update Orders.tsx (Desktop)
 
-**Localization:**
-1. Import `useTranslation()`
-2. Replace all hardcoded strings with `translate()` calls
-3. Localize filter tabs, loading states, error messages, buttons
-
-**Layout Fix - Horizontal Carousel for Mobile:**
-
-The current grid layout (line 269-272):
-```tsx
-<div className={cn("grid gap-4", isMobile ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2...")}>
-```
-
-Needs to be replaced with a horizontal carousel for mobile using Embla (same as `MobileDiscoverView.tsx`):
-
-```tsx
-// For mobile: Use horizontal carousel with one card per viewport
-{isMobile ? (
-  <div ref={emblaRef} className="overflow-hidden -mx-6">
-    <div className="flex">
-      {filteredRecommendations.map((rec) => (
-        <div key={rec.id} className="flex-none w-[85vw] px-2 first:pl-6 last:pr-6">
-          {/* Card content */}
-        </div>
-      ))}
-    </div>
-  </div>
-) : (
-  /* Desktop: Keep existing grid layout */
-)}
-```
-
-#### Step 5: Update MobileDiscoverView.tsx
-
-Replace the hardcoded "View" button text (line 156):
+Replace all hardcoded strings:
 
 ```tsx
 // BEFORE
-<Button size="sm" ...>View</Button>
+<StandardHeader
+  title="My Orders"
+  description="Track your product orders and event tickets"
+  emoji="📦"
+/>
 
 // AFTER
-<Button size="sm" ...>{translate('discover.view')}</Button>
+<StandardHeader
+  title={translate('orders.myOrders')}
+  description={translate('orders.trackDescription')}
+  emoji="📦"
+/>
 ```
+
+Update tabs, empty states, buttons with `translate()` calls.
+
+#### Step 3: Update MobileOrdersView.tsx
+
+```tsx
+// BEFORE
+<h1 className="text-xl font-bold">My Orders 📦</h1>
+<p className="text-sm">Track your product orders and event tickets</p>
+
+// AFTER
+<h1 className="text-xl font-bold">{translate('orders.myOrders')} 📦</h1>
+<p className="text-sm">{translate('orders.trackDescription')}</p>
+```
+
+Update tabs, empty states, search placeholder.
+
+#### Step 4: Update MobileOrderDetailSheet.tsx
+
+Import `useTranslation()` and replace:
+- "Order Details" → `translate('orders.detailSheet.title')`
+- "Order Info" → `translate('orders.detailSheet.orderInfo')`
+- "Gift Voucher" → `translate('orders.detailSheet.giftVoucher')`
+- All form labels and buttons
+
+#### Step 5: Update MaxinaVoucherModal.tsx
+
+This is the largest change. Import `useTranslation()` and refactor:
+
+```tsx
+// Tier data with translation keys
+const getTierData = (translate: TranslateFn) => ({
+  test: {
+    name: translate('voucher.tiers.test.name'),
+    price: 0.49,
+    icon: Gift,
+    color: "from-green-500 to-emerald-600",
+    benefits: [
+      translate('voucher.tiers.test.benefits.0'),
+      translate('voucher.tiers.test.benefits.1'),
+      translate('voucher.tiers.test.benefits.2')
+    ]
+  },
+  // ... experience and exclusive tiers
+});
+```
+
+Replace all modal state strings, button text, and toast messages.
 
 ### Translation Summary (German)
 
-| Key Path | German Value |
-|----------|--------------|
-| `discover.mobileTitle` | Entdecken |
-| `discover.mobileDescription` | Erlebnisse, Menschen und Wellness erkunden |
-| `discover.quickActions.title` | Schnellaktionen |
-| `discover.quickActions.viewCart` | Warenkorb |
-| `discover.quickActions.bookAppointment` | Termin buchen |
-| `discover.quickActions.quickCheckout` | Schnellkauf |
-| `discover.quickActions.trackOrders` | Bestellungen verfolgen |
-| `discover.quickActions.reorderPrevious` | Erneut bestellen |
-| `discover.quickActions.managePayment` | Zahlung verwalten |
-| `discover.quickActions.findServicesNearMe` | Services in der Nähe |
-| `discover.quickActions.viewSavedItems` | Gespeicherte Artikel |
-| `discover.aiPicks.title` | KI-Empfehlungen für Sie |
-| `discover.aiPicks.backToDiscover` | Zurück zu Entdecken |
-| `discover.aiPicks.loading` | KI-Empfehlungen werden geladen... |
-| `discover.aiPicks.recommendationsFound` | {count} Empfehlungen gefunden |
-| `discover.filters.all` | Alle |
-| `discover.filters.services` | Services |
-| `discover.filters.supplements` | Nahrungsergänzung |
-| `discover.filters.experts` | Experten |
-| `discover.filters.deals` | Angebote |
+| Key | German Value |
+|-----|--------------|
+| `orders.myOrders` | Meine Bestellungen |
+| `orders.trackDescription` | Verfolgen Sie Ihre Produktbestellungen und Event-Tickets |
+| `orders.tabs.active` | Aktiv |
+| `orders.tabs.history` | Verlauf |
+| `orders.emptyActive.title` | Keine aktiven Bestellungen |
+| `voucher.modal.title` | Maxina Gutschein verschenken |
+| `voucher.modal.buyVoucher` | Gutschein kaufen |
+| `voucher.success.title` | Gutschein gekauft! |
+| `voucher.success.download` | Gutschein herunterladen |
+| `voucher.email.title` | Gutschein per E-Mail senden |
+| `voucher.tiers.experience.name` | Erlebnis |
+| `voucher.tiers.exclusive.name` | Exklusiv |
+| ... and ~70 more keys |
 
-### Technical Details
+### Technical Notes
 
-**Horizontal Scroll Implementation (AIPicksPage mobile):**
-
-```tsx
-import useEmblaCarousel from 'embla-carousel-react';
-
-// Inside component
-const [emblaRef, emblaApi] = useEmblaCarousel({ 
-  loop: false, 
-  align: 'start',
-  containScroll: 'trimSnaps'
-});
-const [currentIndex, setCurrentIndex] = useState(0);
-
-// Update current index on scroll
-useEffect(() => {
-  if (!emblaApi) return;
-  const onSelect = () => setCurrentIndex(emblaApi.selectedScrollSnap());
-  emblaApi.on('select', onSelect);
-  return () => emblaApi.off('select', onSelect);
-}, [emblaApi]);
-```
-
-This matches the pattern used in `MobileDiscoverView.tsx` for consistent UX across the Discover experience.
+- Tier benefits use array indexing (`benefits.0`, `benefits.1`, etc.) for dynamic benefit lists
+- Toast messages use `sonner` directly with translated strings
+- Form placeholders need translation (e.g., "friend@example.com" stays as-is since it's a format hint)
+- Keep the email format hint `friend@example.com` untranslated (universal format)
 
 ### Verification Steps
 
 1. Set language to German
-2. Navigate to Discover page
+2. Navigate to Discover → Orders
 3. Confirm:
-   - Title: "Entdecken 🔍"
-   - Description: "Erlebnisse, Menschen und Wellness erkunden"
-4. Tap the "+" button - Quick Actions popup should show:
-   - Title: "Schnellaktionen"
-   - All 8 actions in German
-5. Tap "Alle anzeigen" on AI Picks section
-6. AI Picks page should show:
-   - Title: "KI-Empfehlungen für Sie"
-   - Filters in German
-   - **Horizontal scrolling cards** (one card per viewport)
-   - "Zurück zu Entdecken" back button
-7. Switch to English and verify all text reverts
+   - Title: "Meine Bestellungen 📦"
+   - Description: "Verfolgen Sie Ihre Produktbestellungen und Event-Tickets"
+   - Tabs: "Aktiv (X)" / "Verlauf (X)"
+   - Empty states in German
+4. Tap "Gutschein" button in utility bar
+5. Gift Voucher modal should show:
+   - "Maxina Gutschein verschenken"
+   - Tier names in German
+   - Benefits in German
+   - "Gutschein kaufen" button
+6. (After purchase) Success screen in German
+7. Email form in German
+8. Order Detail Sheet in German
+
