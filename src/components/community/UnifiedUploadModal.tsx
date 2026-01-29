@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { Upload, X, Music, Mic, Video } from 'lucide-react';
 import { useMediaUpload } from '@/hooks/useMediaUpload';
 import { useVideoUpload } from '@/hooks/useVideoUpload';
+import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
 
 interface UnifiedUploadModalProps {
@@ -19,10 +20,11 @@ interface UnifiedUploadModalProps {
   initialMediaType?: 'music' | 'podcast' | 'video';
 }
 
-const PREDEFINED_TAGS = [
-  'Nutrition', 'Sleep', 'Longevity', 'Motivation', 'Mindfulness',
-  'Fitness', 'Mental Health', 'Wellness', 'Education', 'Lifestyle'
-];
+// Stable IDs for predefined tags - translate display names dynamically
+const PREDEFINED_TAG_IDS = [
+  'nutrition', 'sleep', 'longevity', 'motivation', 'mindfulness',
+  'fitness', 'mentalHealth', 'wellness', 'education', 'lifestyle'
+] as const;
 
 const SIZE_LIMITS = {
   music: { max: 50, text: 'MP3, WAV, FLAC (max 50MB)' },
@@ -31,6 +33,7 @@ const SIZE_LIMITS = {
 };
 
 export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initialMediaType }: UnifiedUploadModalProps) {
+  const { translate } = useTranslation();
   const [mediaType, setMediaType] = useState<'music' | 'podcast' | 'video' | null>(initialMediaType || null);
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState('');
@@ -178,8 +181,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
         <DialogHeader>
           <DialogTitle>
             {initialMediaType 
-              ? `Upload ${initialMediaType.charAt(0).toUpperCase() + initialMediaType.slice(1)}`
-              : 'Upload Media'
+              ? translate('mediaHub.upload.titleWithType').replace('{type}', initialMediaType.charAt(0).toUpperCase() + initialMediaType.slice(1))
+              : translate('mediaHub.upload.title')
             }
           </DialogTitle>
         </DialogHeader>
@@ -188,23 +191,23 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
           {/* Media Type Selector */}
           {!initialMediaType && (
             <div className="space-y-2">
-              <Label htmlFor="mediaType">Media Type *</Label>
+              <Label htmlFor="mediaType">{translate('mediaHub.upload.mediaType')}</Label>
               <Select
                 value={mediaType || ''}
                 onValueChange={(value) => setMediaType(value as 'music' | 'podcast' | 'video')}
                 disabled={isUploading}
               >
                 <SelectTrigger id="mediaType">
-                  <SelectValue placeholder="Select media type" />
+                  <SelectValue placeholder={translate('mediaHub.upload.selectMediaType')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="podcast">🎙️ Podcast</SelectItem>
-                  <SelectItem value="music">🎵 Music</SelectItem>
-                  <SelectItem value="video">🎬 Video</SelectItem>
+                  <SelectItem value="podcast">🎙️ {translate('mediaHub.menu.podcast')}</SelectItem>
+                  <SelectItem value="music">🎵 {translate('mediaHub.menu.music')}</SelectItem>
+                  <SelectItem value="video">🎬 {translate('mediaHub.menu.video')}</SelectItem>
                 </SelectContent>
               </Select>
               {!mediaType && (
-                <p className="text-xs text-muted-foreground">Select media type first</p>
+                <p className="text-xs text-muted-foreground">{translate('mediaHub.upload.selectMediaTypeFirst')}</p>
               )}
             </div>
           )}
@@ -212,7 +215,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
           {/* File Upload Area */}
           {mediaType && (
             <div className="space-y-2">
-              <Label>File *</Label>
+              <Label>{translate('mediaHub.upload.file')}</Label>
               <div className={cn(
                 "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
                 file ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
@@ -234,7 +237,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                       disabled={isUploading}
                     >
                       <X className="w-4 h-4 mr-1" />
-                      Remove
+                      {translate('mediaHub.upload.remove')}
                     </Button>
                   </div>
                 ) : (
@@ -242,8 +245,8 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                     {getMediaIcon()}
                     <div>
                       <label htmlFor="file-upload" className="cursor-pointer">
-                        <span className="text-primary hover:underline">Click to upload</span>
-                        <span className="text-muted-foreground"> or drag and drop</span>
+                        <span className="text-primary hover:underline">{translate('mediaHub.upload.clickToUpload')}</span>
+                        <span className="text-muted-foreground"> {translate('mediaHub.upload.orDragDrop')}</span>
                       </label>
                       <Input
                         id="file-upload"
@@ -267,24 +270,24 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
           {mediaType && (
             <>
               <div className="space-y-2">
-                <Label htmlFor="title">Title * ({title.length}/100)</Label>
+                <Label htmlFor="title">{translate('mediaHub.upload.titleLabel')} ({title.length}/100)</Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value.slice(0, 100))}
-                  placeholder="Enter title"
+                  placeholder={translate('mediaHub.upload.titlePlaceholder')}
                   disabled={isUploading}
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description ({description.length}/500)</Label>
+                <Label htmlFor="description">{translate('mediaHub.upload.descriptionLabel')} ({description.length}/500)</Label>
                 <Textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value.slice(0, 500))}
-                  placeholder="Enter description"
+                  placeholder={translate('mediaHub.upload.descriptionPlaceholder')}
                   disabled={isUploading}
                   rows={3}
                 />
@@ -294,22 +297,22 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
               {mediaType === 'music' && (
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="genre">Genre</Label>
+                    <Label htmlFor="genre">{translate('mediaHub.upload.genre')}</Label>
                     <Input
                       id="genre"
                       value={genre}
                       onChange={(e) => setGenre(e.target.value)}
-                      placeholder="e.g., Classical, Jazz"
+                      placeholder={translate('mediaHub.upload.genrePlaceholder')}
                       disabled={isUploading}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="mood">Mood</Label>
+                    <Label htmlFor="mood">{translate('mediaHub.upload.mood')}</Label>
                     <Input
                       id="mood"
                       value={mood}
                       onChange={(e) => setMood(e.target.value)}
-                      placeholder="e.g., Calm, Energetic"
+                      placeholder={translate('mediaHub.upload.moodPlaceholder')}
                       disabled={isUploading}
                     />
                   </div>
@@ -319,22 +322,22 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
               {mediaType === 'podcast' && (
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="hostGuest">Host / Guest</Label>
+                    <Label htmlFor="hostGuest">{translate('mediaHub.upload.hostGuest')}</Label>
                     <Input
                       id="hostGuest"
                       value={hostGuest}
                       onChange={(e) => setHostGuest(e.target.value)}
-                      placeholder="Host Name, Guest Name"
+                      placeholder={translate('mediaHub.upload.hostGuestPlaceholder')}
                       disabled={isUploading}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="language">Language</Label>
+                    <Label htmlFor="language">{translate('mediaHub.upload.language')}</Label>
                     <Input
                       id="language"
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
-                      placeholder="e.g., English"
+                      placeholder={translate('mediaHub.upload.languagePlaceholder')}
                       disabled={isUploading}
                     />
                   </div>
@@ -344,18 +347,18 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
               {mediaType === 'video' && (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="topic">Topic / Category</Label>
+                    <Label htmlFor="topic">{translate('mediaHub.upload.topic')}</Label>
                     <Input
                       id="topic"
                       value={topic}
                       onChange={(e) => setTopic(e.target.value)}
-                      placeholder="e.g., Wellness, Fitness"
+                      placeholder={translate('mediaHub.upload.topicPlaceholder')}
                       disabled={isUploading}
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="thumbnail">Custom Thumbnail (optional)</Label>
+                    <Label htmlFor="thumbnail">{translate('mediaHub.upload.thumbnail')}</Label>
                     <div className={cn(
                       "border-2 border-dashed rounded-lg p-4 text-center transition-colors",
                       thumbnailFile ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
@@ -374,7 +377,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                             disabled={isUploading}
                           >
                             <X className="w-4 h-4 mr-1" />
-                            Remove
+                            {translate('mediaHub.upload.remove')}
                           </Button>
                         </div>
                       ) : (
@@ -382,7 +385,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                           <Upload className="w-8 h-8 mx-auto text-muted-foreground" />
                           <div>
                             <label htmlFor="thumbnail-upload" className="cursor-pointer">
-                              <span className="text-primary hover:underline">Upload thumbnail</span>
+                              <span className="text-primary hover:underline">{translate('mediaHub.upload.uploadThumbnail')}</span>
                             </label>
                             <Input
                               id="thumbnail-upload"
@@ -394,7 +397,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                             />
                           </div>
                           <p className="text-xs text-muted-foreground">
-                            JPG, PNG, WebP (auto-generated if not provided)
+                            {translate('mediaHub.upload.thumbnailHint')}
                           </p>
                         </div>
                       )}
@@ -405,22 +408,22 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
 
               {/* Tags */}
               <div className="space-y-3">
-                <Label>Tags</Label>
+                <Label>{translate('mediaHub.upload.tags')}</Label>
                 <div className="flex flex-wrap gap-2">
-                  {PREDEFINED_TAGS.map((tag) => (
+                  {PREDEFINED_TAG_IDS.map((tagId) => (
                     <button
-                      key={tag}
+                      key={tagId}
                       type="button"
-                      onClick={() => toggleTag(tag)}
+                      onClick={() => toggleTag(tagId)}
                       disabled={isUploading}
                       className={cn(
                         "px-3 py-1 rounded-full text-sm transition-colors",
-                        tags.includes(tag)
+                        tags.includes(tagId)
                           ? "bg-primary text-primary-foreground"
                           : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                       )}
                     >
-                      {tag}
+                      {translate(`mediaHub.upload.predefinedTags.${tagId}`)}
                     </button>
                   ))}
                 </div>
@@ -429,7 +432,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
               {/* Visibility */}
               {mediaType !== 'video' && (
                 <div className="space-y-3">
-                  <Label>Visibility</Label>
+                  <Label>{translate('mediaHub.upload.visibility')}</Label>
                   <RadioGroup
                     value={visibility}
                     onValueChange={(value) => setVisibility(value as 'public' | 'private')}
@@ -439,13 +442,13 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="public" id="public" />
                       <Label htmlFor="public" className="cursor-pointer font-normal">
-                        Public
+                        {translate('mediaHub.upload.public')}
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="private" id="private" />
                       <Label htmlFor="private" className="cursor-pointer font-normal">
-                        Private
+                        {translate('mediaHub.upload.private')}
                       </Label>
                     </div>
                   </RadioGroup>
@@ -457,7 +460,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                 <div className="space-y-2">
                   <Progress value={progress} className="h-2" />
                   <p className="text-sm text-center text-muted-foreground">
-                    Uploading... {progress}%
+                    {translate('mediaHub.upload.uploading').replace('{progress}', String(progress))}
                   </p>
                 </div>
               )}
@@ -468,7 +471,7 @@ export function UnifiedUploadModal({ open, onOpenChange, onUploadComplete, initi
                 disabled={!isFormValid || isUploading}
                 className="w-full bg-gradient-to-r from-violet-500 to-sky-400 hover:from-violet-600 hover:to-sky-500"
               >
-                {isUploading ? 'Publishing...' : `Publish ${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}`}
+                {isUploading ? translate('mediaHub.upload.uploading').replace('{progress}', String(progress)) : translate('mediaHub.upload.submit')}
               </Button>
             </>
           )}
