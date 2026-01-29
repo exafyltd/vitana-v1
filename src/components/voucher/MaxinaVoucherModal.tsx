@@ -247,28 +247,6 @@ export const MaxinaVoucherModal = ({ open, onOpenChange }: MaxinaVoucherModalPro
       toast.error(translate('voucher.toast.downloadFailed'));
     }
   };
-  const handleOpenInBrowser = () => {
-    if (!signedPdfUrl) return;
-    
-    const newWindow = window.open(signedPdfUrl, '_blank', 'noopener,noreferrer');
-    
-    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-      handleCopyLink();
-      toast.info("Link copied! Paste in your browser to download.");
-    }
-  };
-  
-  // Copy link to clipboard
-  const handleCopyLink = async () => {
-    if (!signedPdfUrl) return;
-    
-    try {
-      await navigator.clipboard.writeText(signedPdfUrl);
-      toast.success("Link copied! Paste in browser to download.");
-    } catch (error) {
-      toast.error("Could not copy link");
-    }
-  };
   
   // Close PDF preview and return to success state
   const handleClosePdfPreview = () => {
