@@ -648,9 +648,6 @@
     "followers": "Follower",
     "following": "Folge ich"
   },
-  "profile": {
-    "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱"
-  },
   "services": {
     "title": "Service-Hub",
     "subtitle": "Zugang zu umfassenden Gesundheits- und Wellness-Diensten",
@@ -1453,6 +1450,7 @@
     }
   },
   "profile": {
+    "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
     "autopilot": {
       "polishBio": "Bio, Archetyp & Showcase verbessern",
       "try": "Ausprobieren"
