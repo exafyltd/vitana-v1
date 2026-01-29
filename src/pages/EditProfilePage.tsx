@@ -42,8 +42,12 @@ export default function EditProfilePage() {
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
-  // Profile data from context - use localized default bio
-  const defaultBio = translate('profile.defaultBio', 'Wellness enthusiast passionate about holistic health and community building. 🌱');
+  // Default bio constants for language sync
+  const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
+  const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱';
+  
+  // Get localized default bio
+  const localizedDefaultBio = translate('profile.defaultBio', DEFAULT_BIO_EN);
   
   const [profile, setProfile] = useState<UserProfile>({
     id: 'current-user',
@@ -52,7 +56,7 @@ export default function EditProfilePage() {
     handle: contextProfile.handle || 'user',
     avatarUrl: contextProfile.avatar,
     roles: ['community'],
-    bio: defaultBio,
+    bio: localizedDefaultBio,
     location: 'San Francisco, CA',
     links: [
       { label: 'Website', url: 'https://mariia.com' },
@@ -78,6 +82,17 @@ export default function EditProfilePage() {
       healthShareConsent: true
     }
   });
+
+  // Sync default bio when language changes (only if bio is a default placeholder)
+  useEffect(() => {
+    setProfile(prev => {
+      const isDefaultBio = prev.bio === DEFAULT_BIO_EN || prev.bio === DEFAULT_BIO_DE;
+      if (isDefaultBio && prev.bio !== localizedDefaultBio) {
+        return { ...prev, bio: localizedDefaultBio };
+      }
+      return prev;
+    });
+  }, [localizedDefaultBio]);
 
   // Refetch profile data - extracted for reuse after social import success
   const refetchProfile = useCallback(async () => {
