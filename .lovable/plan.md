@@ -1,123 +1,77 @@
 
 
-## Localize Business Hub "Create" Popup (BusinessTypeSelector)
+## Fix: BusinessTypeSelector Still Showing English
 
-### What's Happening
+### Issue Analysis
 
-When you click **+ Erstellen** in Business Hub, the `BusinessTypeSelector` popup opens with all content in English:
+The component code and translation keys I added earlier are correct:
+- `src/components/business/BusinessTypeSelector.tsx` uses `translate('business.typeSelector.*')` pattern
+- `src/i18n/de.json` has German translations at lines 1546-1558
+- `src/i18n/en.json` has English translations at lines 1546-1558
 
-- Dialog title: "Start a Business"
-- Card titles: "Create Event", "Offer Service", "Sell Event Tickets"
-- Subtitles describing each option
-- Badge text: "New", "Active"
-- Status messages and Cancel button
+However, there's still a **duplicate `"business":` key problem** that needs to be fixed:
 
-This component (`src/components/business/BusinessTypeSelector.tsx`) does not use `useTranslation()` and has all strings hardcoded.
+| Location | Block Contains |
+|----------|----------------|
+| Line 1242 | `kpi` only |
+| Line 1454 | `earning`, `sellAndEarn`, `transfer`, `typeSelector` |
 
-### Implementation Plan
+JSON's last-key-wins means only the line 1454 block is used. The `kpi` translations at line 1242 are silently ignored.
 
-#### Step 1: Add Translation Keys
+### Solution
 
-Add new keys under `business.typeSelector.*` namespace in the final `business` block (around line 1454) to avoid the duplicate key issue.
+Merge the `kpi` block from line 1242 into the main `business` block at line 1454, then delete the orphaned block. This follows the established namespace integrity rule.
 
-**Keys to add:**
+### Implementation
 
-| Key | German | English |
-|-----|--------|---------|
-| `typeSelector.title` | Ein Geschäft starten | Start a Business |
-| `typeSelector.createEvent` | Event erstellen | Create Event |
-| `typeSelector.createEventDesc` | Workshops, Kurse oder Veranstaltungen ausrichten | Host workshops, classes, or gatherings |
-| `typeSelector.offerService` | Service anbieten | Offer Service |
-| `typeSelector.offerServiceDesc` | 1-zu-1 Beratungen, Coaching, Sitzungen | 1-on-1 consultations, coaching, sessions |
-| `typeSelector.sellTickets` | Event-Tickets verkaufen | Sell Event Tickets |
-| `typeSelector.sellTicketsDesc` | Events bewerben und Provisionen verdienen | Promote events and earn commissions |
-| `typeSelector.badgeNew` | Neu | New |
-| `typeSelector.badgeActive` | Aktiv | Active |
-| `typeSelector.alreadyReseller` | Sie sind bereits Wiederverkäufer! Schauen Sie im Tab "Verkaufen & Verdienen" nach. | You're already a reseller! Check the Sell & Earn tab. |
-| `typeSelector.cancel` | Abbrechen | Cancel |
+#### Step 1: Update `src/i18n/de.json`
 
-#### Step 2: Update BusinessTypeSelector Component
+1. Add `kpi` block into the main `business` object at line 1454:
 
-Refactor `src/components/business/BusinessTypeSelector.tsx`:
-
-1. Import `useTranslation` hook
-2. Refactor `BUSINESS_TYPES` array to use stable IDs for logic, translated labels for display
-3. Replace all hardcoded strings with `translate(...)` calls
-4. Keep click handlers and business logic unchanged
-
-**Current structure (hardcoded):**
-```typescript
-const BUSINESS_TYPES = [
-  {
-    id: "event",
-    title: "Create Event",  // ← hardcoded
-    subtitle: "Host workshops, classes, or gatherings",  // ← hardcoded
-    ...
+```json
+"business": {
+  "kpi": {
+    "totalEarnings": "Gesamteinnahmen",
+    "last30Days": "Letzte 30 Tage",
+    "pendingPayout": "Ausstehende Auszahlung",
+    "inWallet": "Im Wallet"
   },
-```
-
-**New structure (translated):**
-```typescript
-// Move inside component to access translate()
-const getBusinessTypes = () => [
-  {
-    id: "event",
-    title: translate('business.typeSelector.createEvent', 'Create Event'),
-    subtitle: translate('business.typeSelector.createEventDesc', '...'),
-    ...
-  },
-```
-
-#### Step 3: Fix Duplicate `business` Keys in JSON Files
-
-The translation files have duplicate `"business":` keys (at lines ~1242 and ~1454). Following the established namespace integrity rule, merge the `kpi` block from line 1242 into the final `business` block at line 1454, then delete the orphaned block.
-
-**Files to modify:**
-- `src/i18n/de.json`
-- `src/i18n/en.json`
-- `src/components/business/BusinessTypeSelector.tsx`
-
-### Scope Note
-
-The `CreateServicePopup` component (which opens after selecting "Offer Service") also contains ~50+ hardcoded English strings (service types, form labels, buttons, toasts, etc.). That's a larger localization task that can be done as a follow-up if you want. This plan focuses on the initial selector popup you reported.
-
-### Verification Steps
-
-1. Set language to German
-2. Go to Business Hub → tap **+ Erstellen**
-3. Popup should display:
-   - "Ein Geschäft starten" as title
-   - All three cards in German
-   - "Abbrechen" button
-4. If already a reseller, the Sell Tickets card should show German status message
-5. Switch to English and confirm it flips back
-
-### Technical Details
-
-**Safe refactoring pattern for BUSINESS_TYPES:**
-
-```typescript
-export function BusinessTypeSelector({ ... }) {
-  const { translate } = useTranslation();
-  
-  // Build translated array inside component
-  const businessTypes = [
-    {
-      id: "event",  // stable ID for logic
-      icon: Calendar,
-      title: translate('business.typeSelector.createEvent', 'Create Event'),
-      subtitle: translate('business.typeSelector.createEventDesc', '...'),
-      ...
-    },
-    // ... other types
-  ];
-  
-  // Rest of component logic unchanged
+  "earning": { ... },
+  "sellAndEarn": { ... },
+  "transfer": { ... },
+  "typeSelector": { ... }
 }
 ```
 
-This ensures:
-- Stable IDs for switch/case logic
-- Dynamic translation on language change
-- No breaking changes to existing functionality
+2. Delete the orphaned `business` block at lines 1242-1249
+
+#### Step 2: Update `src/i18n/en.json`
+
+Same approach - merge `kpi` into the main `business` block and delete the duplicate.
+
+### Files to Modify
+
+| File | Change |
+|------|--------|
+| `src/i18n/de.json` | Merge `kpi` into main `business` block, delete orphan at line 1242 |
+| `src/i18n/en.json` | Merge `kpi` into main `business` block, delete orphan at line 1242 |
+
+### Expected Result
+
+After this fix:
+1. No duplicate `"business":` keys in JSON files
+2. All `business.*` translation lookups work correctly
+3. `business.kpi.*` keys preserved for any components using them
+4. `business.typeSelector.*` continues working as intended
+5. Preview refresh will show German text in the popup
+
+### Verification
+
+1. Set language to German
+2. Go to Business Hub → tap **+ Erstellen**  
+3. Popup should display:
+   - "Ein Geschäft starten" as title
+   - "Event erstellen", "Service anbieten", "Event-Tickets verkaufen"
+   - "Abbrechen" button
+4. Switch to English and confirm English text appears
 
