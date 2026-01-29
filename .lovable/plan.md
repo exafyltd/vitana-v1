@@ -1,116 +1,114 @@
 
-# Fix Default Bio Not Localizing After Database Fetch
+## What’s happening (two separate issues)
 
-## Problem Summary
+### 1) “View all media / View all groups / Discover groups” still English
+These strings are hardcoded in:
+- `src/components/profile/mobile/MobileMediaTabContent.tsx`
+- `src/components/profile/mobile/MobileGroupsTabContent.tsx`
 
-The default bio placeholder shows in English even when German is selected. The screenshot shows:
-- "Über" (German header) ✅
-- "Tippen zum Bearbeiten" (German tap text) ✅  
-- "Wellness enthusiast passionate about holistic health and community building." (English bio) ❌
+They do not use `useTranslation()` at all, so they will always render in English regardless of the selected language.
 
-## Root Cause
+### 2) “Publishing failed” build error
+Your build log shows:
 
-The bio localization logic has a **timing issue**:
+- `failed to acquire sandbox config`
+- `scheduler timeout: retry deadline exceeded`
+- marked as `retryable: true`
 
-1. Component mounts with `localizedDefaultBio` set to German
-2. The sync `useEffect` runs but bio is already German → no change needed
-3. `refetchProfile()` fetches data from database
-4. Line 119 sets `bio: data.bio || prev.bio` → overwrites with English bio from database
-5. The sync `useEffect` doesn't trigger again (its dependency `localizedDefaultBio` didn't change)
-
-The database has the English default bio stored, and `refetchProfile` blindly uses it without checking if it should be localized.
+That is an infrastructure/scheduler timeout (Lovable build sandbox capacity), not a TypeScript/React compile error caused by your code change. There is nothing to “fix in code” for that specific error; the resolution is operational (retry).
 
 ---
 
-## Solution
-
-Modify `refetchProfile` to localize the bio if the fetched value matches one of the known default placeholder texts.
-
----
-
-## Implementation
-
-### Update refetchProfile in EditProfilePage.tsx
-
-Add localization check when setting the bio from database:
-
-```typescript
-// In refetchProfile function, change line 119 from:
-bio: data.bio || prev.bio,
-
-// To:
-bio: (() => {
-  const fetchedBio = data.bio || prev.bio;
-  // If fetched bio is a default placeholder, use localized version
-  if (fetchedBio === DEFAULT_BIO_EN || fetchedBio === DEFAULT_BIO_DE) {
-    return localizedDefaultBio;
-  }
-  return fetchedBio;
-})(),
-```
-
-### Move Constants Outside Component
-
-Move `DEFAULT_BIO_EN` and `DEFAULT_BIO_DE` outside the component so they're stable and can be used in the `useCallback`:
-
-```typescript
-// Before component definition
-const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
-const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱';
-
-export default function EditProfilePage() {
-  // ... rest of component
-}
-```
-
-### Update useCallback Dependencies
-
-Add `localizedDefaultBio` to the `refetchProfile` dependencies:
-
-```typescript
-const refetchProfile = useCallback(async () => {
-  // ... existing logic with bio localization
-}, [user?.id, contextProfile, localizedDefaultBio]);
-```
+## Goals
+1) Remove hardcoded English strings from the mobile Profile “Media” and “Groups” tab content, so German shows correctly.
+2) Provide a reliable step-by-step path to get publishing to succeed again.
 
 ---
 
-## Files to Modify
+## Implementation plan (code)
 
-| File | Changes |
-|------|---------|
-| `src/pages/EditProfilePage.tsx` | Move constants outside component, add bio localization in refetchProfile |
+### Step A — Add translation keys (DE + EN)
+Add a small dedicated namespace for these mobile profile tab CTAs and empty states (keeping it consistent and avoiding reuse collisions):
+
+Proposed keys:
+
+**`profileMedia.*`**
+- `profileMedia.emptyTitle` → DE: “Noch keine Medien” | EN: “No media yet”
+- `profileMedia.emptyDescription` → DE: “Teile deine Wellness-Reise” | EN: “Share your wellness journey”
+- `profileMedia.uploadCta` → DE: “Medien hochladen” | EN: “Upload media”
+- `profileMedia.viewAllCta` → DE: “Alle Medien ansehen” | EN: “View all media”
+- `profileMedia.thumbnailAlt` → DE: “Medien” | EN: “Media” (fallback alt text)
+
+**`profileGroups.*`**
+- `profileGroups.emptyTitle` → DE: “Noch keine Gruppen” | EN: “No groups yet”
+- `profileGroups.emptyDescription` → DE: “Tritt Communities bei, die zu deinen Interessen passen” | EN: “Join communities that match your interests”
+- `profileGroups.discoverCta` → DE: “Gruppen entdecken” | EN: “Discover groups”
+- `profileGroups.viewAllCta` → DE: “Alle Gruppen ansehen” | EN: “View all groups”
+- `profileGroups.membersLabel` → DE: “Mitglieder” | EN: “members” (used after the number)
+
+Files:
+- `src/i18n/de.json`
+- `src/i18n/en.json`
+
+### Step B — Localize `MobileMediaTabContent.tsx`
+Update the component to:
+- `import { useTranslation } from "@/hooks/useTranslation";`
+- Use `translate()` for:
+  - Empty-state title/description
+  - Upload button label
+  - “View all media” CTA
+  - Thumbnail `alt` fallback (`item.title || translate('profileMedia.thumbnailAlt', 'Media')`)
+
+Also keep existing placeholder `title` values as-is (those are demo content; we won’t auto-translate demo titles unless you want that later).
+
+File:
+- `src/components/profile/mobile/MobileMediaTabContent.tsx`
+
+### Step C — Localize `MobileGroupsTabContent.tsx`
+Update the component to:
+- `import { useTranslation } from "@/hooks/useTranslation";`
+- Use `translate()` for:
+  - Empty-state title/description
+  - Empty-state “Discover Groups” button label
+  - “View all groups” CTA
+  - “Discover groups” CTA
+  - Members line: `"{count} {translate('profileGroups.membersLabel', 'members')}"`
+
+File:
+- `src/components/profile/mobile/MobileGroupsTabContent.tsx`
+
+### Step D — Quick verification steps (in preview)
+1) Switch language to German
+2) Go to the mobile Profile screen
+3) Open “Media” tab: confirm the CTA reads in German
+4) Open “Groups” tab: confirm both CTAs read in German
+5) Toggle back to English and confirm it flips back correctly
 
 ---
 
-## Technical Flow After Fix
+## Publishing plan (non-code, resolves your current build error)
 
-```text
-1. Component mounts
-2. localizedDefaultBio = German translation
-3. refetchProfile() runs
-4. Fetches data.bio from database (English)
-5. Checks: Is data.bio a default placeholder?
-   - YES → Use localizedDefaultBio (German)
-   - NO → Use user's custom bio
-6. Bio displays in German ✅
-```
+Because the error is a **retryable scheduler timeout**, do this:
+
+1) Wait 2–5 minutes (scheduler capacity often clears quickly)
+2) Click **Publish** again
+3) If it still fails, try again after ~10 minutes (peak load can cause repeated timeouts)
+4) If it persists for >30 minutes, share the timestamp and I’ll guide you to collect the exact publish attempt ID / logs so support can see the scheduler incidents
+
+Important: this error message does **not** indicate a TS/ESLint build failure—so the localization changes above are still valid and should publish once the scheduler is available.
 
 ---
 
-## Expected Result
-
-When German is selected and viewing the profile:
-- "Über" (About header) ✅
-- "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱" ✅
-- "Tippen zum Bearbeiten" ✅
+## Scope note (related but not included unless you want it next)
+`src/pages/community/MyGroups.tsx` contains a large amount of hardcoded English (headers, buttons, empty states, etc.). If you want, we can do a follow-up sweep to fully localize that page too, but the fixes above directly address what you reported on the Profile “Media” and “Groups” tabs.
 
 ---
 
-## Acceptance Criteria
-
-- [ ] Default bio shows German text when German is selected
-- [ ] Default bio shows English text when English is selected
-- [ ] User's custom bio (if different from defaults) is never overwritten
-- [ ] Works correctly after page refresh
-- [ ] Works correctly after publishing updates
+## Acceptance criteria
+- German selected:
+  - “View all media” → German
+  - “View all groups” / “Discover groups” → German
+  - Empty states (“No media yet”, “No groups yet”, etc.) → German
+- English selected:
+  - Same strings show in English
+- Publish succeeds once Lovable scheduler is available (no code changes required specifically for the timeout)
