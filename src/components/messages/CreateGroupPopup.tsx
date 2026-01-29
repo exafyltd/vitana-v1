@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, X, Users, Camera } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { v4 as uuidv4 } from 'uuid';
@@ -35,6 +36,7 @@ export default function CreateGroupPopup({
 }: CreateGroupPopupProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [groupName, setGroupName] = useState("");
   const [groupAvatar, setGroupAvatar] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -128,8 +130,8 @@ export default function CreateGroupPopup({
   const createGroup = async () => {
     if (!groupName.trim()) {
       toast({
-        title: "Group name required",
-        description: "Please enter a name for your group.",
+        title: translate('inbox.createGroup.groupNameRequired'),
+        description: translate('inbox.createGroup.groupNameRequiredDesc'),
         variant: "destructive"
       });
       return;
@@ -137,8 +139,8 @@ export default function CreateGroupPopup({
 
     if (selectedMembers.length === 0) {
       toast({
-        title: "Add members",
-        description: "Please add at least one member to the group.",
+        title: translate('inbox.createGroup.addMembersRequired'),
+        description: translate('inbox.createGroup.addMembersRequiredDesc'),
         variant: "destructive"
       });
       return;
@@ -152,8 +154,8 @@ export default function CreateGroupPopup({
       const isDuplicate = await checkForDuplicateGroup(memberIds);
       if (isDuplicate) {
         toast({
-          title: "Group already exists",
-          description: "A group with these members was created recently. Please wait before creating another.",
+          title: translate('inbox.createGroup.groupExists'),
+          description: translate('inbox.createGroup.groupExistsDesc'),
           variant: "destructive"
         });
         return;
@@ -242,8 +244,8 @@ export default function CreateGroupPopup({
         .insert(messageData);
 
       toast({
-        title: "Group created",
-        description: `"${groupName}" has been created successfully.`
+        title: translate('inbox.createGroup.created'),
+        description: translate('inbox.createGroup.createdDesc').replace('{name}', groupName)
       });
 
       onGroupCreated?.(threadId);
@@ -265,8 +267,8 @@ export default function CreateGroupPopup({
         code: error?.code
       });
       toast({
-        title: "Failed to create group",
-        description: "Please try again.",
+        title: translate('inbox.createGroup.failed'),
+        description: translate('inbox.createGroup.failedDesc'),
         variant: "destructive"
       });
     } finally {
@@ -280,7 +282,7 @@ export default function CreateGroupPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5" />
-            Create Group
+            {translate('inbox.createGroup.title')}
           </DialogTitle>
         </DialogHeader>
         
@@ -299,10 +301,9 @@ export default function CreateGroupPopup({
                 variant="outline"
                 className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full p-0"
                 onClick={() => {
-                  // TODO: Implement avatar upload
                   toast({
-                    title: "Coming soon",
-                    description: "Avatar upload will be available soon."
+                    title: translate('inbox.createGroup.avatarSoon'),
+                    description: ""
                   });
                 }}
               >
@@ -310,12 +311,12 @@ export default function CreateGroupPopup({
               </Button>
             </div>
             <div className="flex-1">
-              <Label htmlFor="groupName">Group Name</Label>
+              <Label htmlFor="groupName">{translate('inbox.createGroup.groupName')}</Label>
               <Input
                 id="groupName"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                placeholder="Enter group name..."
+                placeholder={translate('inbox.newConversation.groupNamePlaceholder')}
                 className="mt-1"
               />
             </div>
@@ -324,7 +325,7 @@ export default function CreateGroupPopup({
           {/* Selected Members */}
           {selectedMembers.length > 0 && (
             <div>
-              <Label>Members ({selectedMembers.length})</Label>
+              <Label>{translate('inbox.newConversation.members')} ({selectedMembers.length})</Label>
               <div className="flex flex-wrap gap-2 mt-2">
                 {selectedMembers.map((member) => (
                   <Badge
@@ -357,14 +358,14 @@ export default function CreateGroupPopup({
 
           {/* Member Search */}
           <div>
-            <Label htmlFor="search">Add Members</Label>
+            <Label htmlFor="search">{translate('inbox.createGroup.addMembers')}</Label>
             <div className="relative mt-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 id="search"
                 value={searchTerm}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                placeholder="Search users..."
+                placeholder={translate('inbox.createGroup.searchPlaceholder')}
                 className="pl-10"
               />
             </div>
@@ -406,13 +407,13 @@ export default function CreateGroupPopup({
               onClick={() => onOpenChange(false)}
               disabled={isCreating}
             >
-              Cancel
+              {translate('inbox.newConversation.cancel')}
             </Button>
             <Button
               onClick={createGroup}
               disabled={isCreating || !groupName.trim() || selectedMembers.length === 0}
             >
-              {isCreating ? "Creating..." : "Create Group"}
+              {isCreating ? translate('inbox.newConversation.creating') : translate('inbox.newConversation.createGroup')}
             </Button>
           </div>
         </div>

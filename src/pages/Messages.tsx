@@ -181,12 +181,12 @@ export default function Messages() {
     if (isMobile) {
       return (
         <AppLayout>
-          <SEO title="Inbox" description="Your conversations, updates, and notifications" canonical={window.location.href} />
+          <SEO title={translate('inbox.title')} description={translate('inbox.description')} canonical={window.location.href} />
           <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
             <div className="p-4 pb-32 space-y-4">
               <StandardHeader 
-                title="Inbox"
-                description="Your conversations, updates, and notifications"
+                title={translate('inbox.title')}
+                description={translate('inbox.description')}
               />
               <MobileConversationSkeleton count={6} />
             </div>
@@ -198,14 +198,14 @@ export default function Messages() {
     // Desktop loading state
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
-        <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
+        <SEO title={translate('inbox.desktopTitle', 'Messages')} description={translate('inbox.description')} canonical={window.location.href} />
         <AppLayout>
           <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
             <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
               <SubNavigation items={messagesNavigation} />
               <StandardHeader 
-                title="Messages"
-                description="Loading your conversations..."
+                title={translate('inbox.desktopTitle', 'Messages')}
+                description={translate('inbox.loading')}
               />
               <div className="flex-1 flex">
                 <div className="w-80 border-r">
@@ -214,7 +214,7 @@ export default function Messages() {
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">Loading messages...</p>
+                    <p className="text-muted-foreground">{translate('inbox.loading')}</p>
                   </div>
                 </div>
               </div>
@@ -253,25 +253,25 @@ export default function Messages() {
             value="all" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            All
+            {translate('inbox.tabs.all')}
           </TabsTrigger>
           <TabsTrigger 
             value="groups" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            Groups
+            {translate('inbox.tabs.groups')}
           </TabsTrigger>
           <TabsTrigger 
             value="direct" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            Direct Messages
+            {translate('inbox.tabs.direct')}
           </TabsTrigger>
           <TabsTrigger 
             value="contacts" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            Contacts
+            {translate('inbox.tabs.contacts')}
           </TabsTrigger>
         </TabsList>
 
@@ -866,8 +866,8 @@ export default function Messages() {
               <div className="p-4 pb-32 space-y-4">
                 {/* StandardHeader - same pattern as Events/Wallet */}
                 <StandardHeader
-                  title="Inbox"
-                  description="Your conversations, updates, and notifications"
+                  title={translate('inbox.title')}
+                  description={translate('inbox.description')}
                 />
                 
                 {/* Action Rail - same pattern */}
@@ -909,7 +909,7 @@ export default function Messages() {
                 >
                   <div className="flex items-center gap-2 min-w-max">
                     <ExpandableSearchButton 
-                      placeholder="Search..."
+                      placeholder={translate('inbox.searchPlaceholder')}
                       onSearch={(query) => console.log('Search:', query)}
                     />
                     <UniversalCalendarButton />
@@ -922,7 +922,7 @@ export default function Messages() {
                       className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
                     >
                       <Plus className="h-4 w-4" />
-                      <span className="text-sm">New</span>
+                      <span className="text-sm">{translate('inbox.actions.new')}</span>
                     </Button>
                   </div>
                 </UtilityActionButton>
@@ -934,8 +934,8 @@ export default function Messages() {
                   className="w-full"
                 >
                   <SplitBarList>
-                    <SplitBarTrigger value="global">🌍 Community</SplitBarTrigger>
-                    <SplitBarTrigger value="tenant">🏢 Network</SplitBarTrigger>
+                    <SplitBarTrigger value="global">{translate('inbox.contextTabs.community')}</SplitBarTrigger>
+                    <SplitBarTrigger value="tenant">{translate('inbox.contextTabs.network')}</SplitBarTrigger>
                   </SplitBarList>
                   
                   <SplitBarContent value="global" className="pt-3">
@@ -953,7 +953,7 @@ export default function Messages() {
                               : 'bg-muted/60'
                           }`}
                         >
-                          {filter === 'all' ? 'All' : filter === 'direct' ? 'Direct' : 'Groups'}
+                          {translate(`inbox.tabs.${filter}`)}
                         </Button>
                       ))}
                     </div>
@@ -975,7 +975,7 @@ export default function Messages() {
                               : 'bg-muted/60'
                           }`}
                         >
-                          {filter === 'all' ? 'All' : filter === 'direct' ? 'Direct' : 'Groups'}
+                          {translate(`inbox.tabs.${filter}`)}
                         </Button>
                       ))}
                     </div>
