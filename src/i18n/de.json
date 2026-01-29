@@ -522,6 +522,8 @@
   },
   "discover": {
     "title": "Entdecken Sie Ihren Langlebigkeits-Marktplatz",
+    "mobileTitle": "Entdecken",
+    "mobileDescription": "Erlebnisse, Menschen und Wellness erkunden",
     "description": "Finden Sie Ärzte, Wellness-Services und Community-Gruppen, die perfekt zu Ihrer gesunden Altersreise passen.",
     "searchPlaceholder": "Wonach suchen Sie? (z.B. Yoga-Kurse, Langlebigkeitsarzt, Meetups)",
     "doctorsCoaches": "Ärzte & Coaches",
@@ -549,6 +551,40 @@
       "mind": "Geist",
       "supplements": "Nahrungsergänzung",
       "experts": "Experten"
+    },
+    "quickActions": {
+      "title": "Schnellaktionen",
+      "viewCart": "Warenkorb",
+      "bookAppointment": "Termin buchen",
+      "quickCheckout": "Schnellkauf",
+      "trackOrders": "Bestellungen verfolgen",
+      "reorderPrevious": "Erneut bestellen",
+      "managePayment": "Zahlung verwalten",
+      "findServicesNearMe": "Services in der Nähe",
+      "viewSavedItems": "Gespeicherte Artikel"
+    },
+    "aiPicks": {
+      "title": "KI-Empfehlungen für Sie",
+      "description": "Personalisierte Empfehlungen basierend auf Ihrem Vitana Index, Biomarkern und Gesundheitszielen",
+      "backToDiscover": "Zurück zu Entdecken",
+      "loading": "KI-Empfehlungen werden geladen...",
+      "unavailable": "KI-Empfehlungen nicht verfügbar",
+      "unavailableDesc": "Wir konnten Ihre personalisierten Empfehlungen nicht laden",
+      "recommendationsFound": "{count} Empfehlungen gefunden",
+      "noRecommendations": "Keine Empfehlungen gefunden",
+      "noRecommendationsDesc": "Wählen Sie einen anderen Filter, um mehr Empfehlungen zu sehen",
+      "viewAllPicks": "Alle Empfehlungen anzeigen"
+    },
+    "filters": {
+      "all": "Alle",
+      "services": "Services",
+      "supplements": "Nahrungsergänzung",
+      "experts": "Experten",
+      "deals": "Angebote"
+    },
+    "toast": {
+      "actionSelected": "Aktion ausgewählt",
+      "comingSoon": "{action} Funktion bald verfügbar!"
     }
   },
   "orders": {

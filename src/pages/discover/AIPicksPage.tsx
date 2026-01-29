@@ -18,8 +18,10 @@ import StandardHeader from '@/components/StandardHeader';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface AIRecommendation {
   id: number;
@@ -38,9 +40,18 @@ export default function AIPicksPage() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+  
+  // Embla carousel for mobile horizontal scroll
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: false, 
+    align: 'start',
+    containScroll: 'trimSnaps'
+  });
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // AI Recommendations Data with types
   const aiRecommendations: AIRecommendation[] = [
@@ -146,7 +157,6 @@ export default function AIPicksPage() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Simulate successful load - in real app, this would be from API
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -155,13 +165,21 @@ export default function AIPicksPage() {
   useEffect(() => {
     if (error) {
       toast({
-        title: "AI Picks unavailable",
-        description: "We couldn't load your personalized recommendations right now",
+        title: translate('discover.aiPicks.unavailable'),
+        description: translate('discover.aiPicks.unavailableDesc'),
         variant: "destructive"
       });
       navigate('/discover');
     }
-  }, [error, toast, navigate]);
+  }, [error, toast, navigate, translate]);
+
+  // Update carousel index on scroll
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => setCurrentIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on('select', onSelect);
+    return () => { emblaApi.off('select', onSelect); };
+  }, [emblaApi]);
 
   // Filter recommendations based on active filter
   const filteredRecommendations = activeFilter === 'all' 
@@ -188,13 +206,93 @@ export default function AIPicksPage() {
     }
   };
 
+  const getTypeLabel = (type?: string) => {
+    switch (type) {
+      case 'service': return translate('discover.filters.services');
+      case 'supplement': return translate('discover.filters.supplements');
+      case 'expert': return translate('discover.filters.experts');
+      case 'deal': return translate('discover.filters.deals');
+      default: return translate('discover.filters.all');
+    }
+  };
+
+  // Card component for reuse
+  const RecommendationCard = ({ rec }: { rec: AIRecommendation }) => (
+    <Card 
+      className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200/50 dark:border-purple-800/50 overflow-hidden h-full"
+    >
+      <div className="relative">
+        <img 
+          src={rec.image} 
+          alt={rec.title}
+          className="w-full h-40 object-cover"
+        />
+        <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs">
+          {rec.badge}
+        </Badge>
+        <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
+          <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
+        </div>
+        {/* Type indicator */}
+        <div className={cn(
+          "absolute bottom-2 left-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
+          getTypeColor(rec.type)
+        )}>
+          {getTypeIcon(rec.type)}
+          <span>{getTypeLabel(rec.type)}</span>
+        </div>
+      </div>
+      <CardContent className="p-4">
+        <h3 className="font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors">
+          {rec.title}
+        </h3>
+        <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
+        
+        {/* AI Reason Highlight */}
+        <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
+          <div className="flex items-center gap-1.5">
+            <Sparkles className="h-3 w-3 text-purple-500" />
+            <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-lg font-bold">{rec.price}</span>
+          <span className="text-xs text-muted-foreground">{rec.provider}</span>
+        </div>
+        
+        <div className="flex gap-2">
+          <AddToCartButton
+            item={{
+              item_type: rec.type === 'supplement' ? 'product' : 'wellness_service',
+              item_id: rec.id.toString(),
+              item_name: rec.title,
+              item_price: parseFloat(rec.price.replace(/[$,/session]/g, '')),
+              item_image_url: rec.image,
+              item_metadata: { provider: rec.provider, match: rec.match, type: rec.type }
+            }}
+            size="sm"
+            className="flex-1"
+          />
+          <Button 
+            size="sm"
+            className="flex-1"
+            onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
+          >
+            {translate('discover.view')}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   if (isLoading) {
     return (
       <AppLayout>
         <div className="flex items-center justify-center min-h-screen">
           <div className="animate-pulse flex flex-col items-center gap-4">
             <Brain className="h-12 w-12 text-purple-500 animate-bounce" />
-            <p className="text-muted-foreground">Loading AI recommendations...</p>
+            <p className="text-muted-foreground">{translate('discover.aiPicks.loading')}</p>
           </div>
         </div>
       </AppLayout>
@@ -223,13 +321,13 @@ export default function AIPicksPage() {
               className="mb-2 -ml-2"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Discover
+              {translate('discover.aiPicks.backToDiscover')}
             </Button>
           )}
 
           <StandardHeader
-            title="AI Picks for You"
-            description="Personalized recommendations based on your Vitana Index, biomarkers, and health goals"
+            title={translate('discover.aiPicks.title')}
+            description={translate('discover.aiPicks.description')}
             emoji="🧠"
           />
 
@@ -238,23 +336,23 @@ export default function AIPicksPage() {
             <SplitBarList className={cn(isMobile && "overflow-x-auto")}>
               <SplitBarTrigger value="all">
                 <Sparkles className="h-4 w-4 mr-1.5" />
-                All
+                {translate('discover.filters.all')}
               </SplitBarTrigger>
               <SplitBarTrigger value="service">
                 <Heart className="h-4 w-4 mr-1.5" />
-                Services
+                {translate('discover.filters.services')}
               </SplitBarTrigger>
               <SplitBarTrigger value="supplement">
                 <Pill className="h-4 w-4 mr-1.5" />
-                Supplements
+                {translate('discover.filters.supplements')}
               </SplitBarTrigger>
               <SplitBarTrigger value="expert">
                 <Stethoscope className="h-4 w-4 mr-1.5" />
-                Experts
+                {translate('discover.filters.experts')}
               </SplitBarTrigger>
               <SplitBarTrigger value="deal">
                 <Tag className="h-4 w-4 mr-1.5" />
-                Deals
+                {translate('discover.filters.deals')}
               </SplitBarTrigger>
             </SplitBarList>
           </SplitBar>
@@ -262,95 +360,71 @@ export default function AIPicksPage() {
           {/* Results count */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Brain className="h-4 w-4 text-purple-500" />
-            <span>{filteredRecommendations.length} recommendations found</span>
+            <span>
+              {translate('discover.aiPicks.recommendationsFound').replace('{count}', String(filteredRecommendations.length))}
+            </span>
           </div>
 
-          {/* Recommendations Grid */}
-          <div className={cn(
-            "grid gap-4",
-            isMobile ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          )}>
-            {filteredRecommendations.map((rec) => (
-              <Card 
-                key={rec.id} 
-                className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200/50 dark:border-purple-800/50 overflow-hidden"
+          {/* Recommendations - Horizontal carousel on mobile, grid on desktop */}
+          {isMobile ? (
+            <>
+              <div 
+                ref={emblaRef} 
+                className="overflow-hidden -mx-4"
+                style={{ touchAction: 'pan-y pinch-zoom' }}
               >
-                <div className="relative">
-                  <img 
-                    src={rec.image} 
-                    alt={rec.title}
-                    className="w-full h-40 object-cover"
-                  />
-                  <Badge className="absolute top-2 left-2 bg-purple-500 text-white text-xs">
-                    {rec.badge}
-                  </Badge>
-                  <div className="absolute top-2 right-2 bg-white/90 dark:bg-background/90 rounded-full px-2 py-1">
-                    <span className="text-xs font-bold text-purple-600 dark:text-purple-400">{rec.match}%</span>
-                  </div>
-                  {/* Type indicator */}
-                  <div className={cn(
-                    "absolute bottom-2 left-2 rounded-full px-2 py-1 flex items-center gap-1 text-white text-xs",
-                    getTypeColor(rec.type)
-                  )}>
-                    {getTypeIcon(rec.type)}
-                    <span className="capitalize">{rec.type}</span>
-                  </div>
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-base mb-1 line-clamp-1 group-hover:text-primary transition-colors">
-                    {rec.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{rec.description}</p>
-                  
-                  {/* AI Reason Highlight */}
-                  <div className="bg-purple-50 dark:bg-purple-950/30 p-2 rounded-lg mb-3">
-                    <div className="flex items-center gap-1.5">
-                      <Sparkles className="h-3 w-3 text-purple-500" />
-                      <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-lg font-bold">{rec.price}</span>
-                    <span className="text-xs text-muted-foreground">{rec.provider}</span>
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <AddToCartButton
-                      item={{
-                        item_type: rec.type === 'supplement' ? 'product' : 'wellness_service',
-                        item_id: rec.id.toString(),
-                        item_name: rec.title,
-                        item_price: parseFloat(rec.price.replace(/[$,/session]/g, '')),
-                        item_image_url: rec.image,
-                        item_metadata: { provider: rec.provider, match: rec.match, type: rec.type }
-                      }}
-                      size="sm"
-                      className="flex-1"
-                    />
-                    <Button 
-                      size="sm"
-                      className="flex-1"
-                      onClick={() => navigate(`/discover/product/${rec.id}`, { state: rec })}
+                <div className="flex">
+                  {filteredRecommendations.map((rec) => (
+                    <div
+                      key={rec.id}
+                      className="flex-none w-[85vw] px-2 first:pl-4 last:pr-4"
                     >
-                      View
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      <RecommendationCard rec={rec} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Dot indicators */}
+              {filteredRecommendations.length > 1 && (
+                <div className="flex justify-center items-center gap-1.5 mt-2">
+                  {filteredRecommendations.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className={cn(
+                        "rounded-full transition-all duration-200",
+                        index === currentIndex 
+                          ? "w-5 h-1.5 bg-primary" 
+                          : "w-1.5 h-1.5 bg-muted-foreground/30"
+                      )}
+                      onClick={() => emblaApi?.scrollTo(index)}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredRecommendations.map((rec) => (
+                <RecommendationCard key={rec.id} rec={rec} />
+              ))}
+            </div>
+          )}
 
           {/* Empty state */}
           {filteredRecommendations.length === 0 && (
             <Card className="p-8 text-center">
               <Brain className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No recommendations found</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {translate('discover.aiPicks.noRecommendations')}
+              </h3>
               <p className="text-muted-foreground mb-4">
-                Try selecting a different filter to see more recommendations
+                {translate('discover.aiPicks.noRecommendationsDesc')}
               </p>
               <Button onClick={() => setActiveFilter('all')}>
-                View All Picks
+                {translate('discover.aiPicks.viewAllPicks')}
               </Button>
             </Card>
           )}
