@@ -641,6 +641,16 @@
     "services": "Services",
     "insight": "Insight"
   },
+  "profileStats": {
+    "posts": "Posts",
+    "media": "Media",
+    "groups": "Groups",
+    "followers": "Followers",
+    "following": "Following"
+  },
+  "profile": {
+    "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱"
+  },
   "services": {
     "title": "Services HUB",
     "subtitle": "Access comprehensive healthcare and wellness services",

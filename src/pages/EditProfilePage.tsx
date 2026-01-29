@@ -42,7 +42,9 @@ export default function EditProfilePage() {
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
-  // Profile data from context
+  // Profile data from context - use localized default bio
+  const defaultBio = translate('profile.defaultBio', 'Wellness enthusiast passionate about holistic health and community building. 🌱');
+  
   const [profile, setProfile] = useState<UserProfile>({
     id: 'current-user',
     user_id: user?.id,
@@ -50,7 +52,7 @@ export default function EditProfilePage() {
     handle: contextProfile.handle || 'user',
     avatarUrl: contextProfile.avatar,
     roles: ['community'],
-    bio: 'Wellness enthusiast passionate about holistic health and community building. 🌱',
+    bio: defaultBio,
     location: 'San Francisco, CA',
     links: [
       { label: 'Website', url: 'https://mariia.com' },

@@ -641,6 +641,16 @@
     "services": "Dienste",
     "insight": "Einblick"
   },
+  "profileStats": {
+    "posts": "Posts",
+    "media": "Medien",
+    "groups": "Gruppen",
+    "followers": "Follower",
+    "following": "Folge ich"
+  },
+  "profile": {
+    "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱"
+  },
   "services": {
     "title": "Service-Hub",
     "subtitle": "Zugang zu umfassenden Gesundheits- und Wellness-Diensten",

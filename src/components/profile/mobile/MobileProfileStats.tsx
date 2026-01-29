@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobileProfileStatsProps {
   postsCount?: number;
@@ -13,6 +14,8 @@ export function MobileProfileStats({
   groupsCount = 0,
   className
 }: MobileProfileStatsProps) {
+  const { translate } = useTranslation();
+  
   const formatCount = (count: number) => {
     if (count >= 1000) {
       return `${(count / 1000).toFixed(1)}k`;
@@ -24,13 +27,13 @@ export function MobileProfileStats({
     <div className={cn("flex items-center justify-center py-2", className)}>
       <p className="text-xs text-muted-foreground">
         <span className="font-medium text-foreground">{formatCount(postsCount)}</span>
-        <span> Posts</span>
+        <span> {translate('profileStats.posts', 'Posts')}</span>
         <span className="mx-1.5">·</span>
         <span className="font-medium text-foreground">{formatCount(mediaCount)}</span>
-        <span> Media</span>
+        <span> {translate('profileStats.media', 'Media')}</span>
         <span className="mx-1.5">·</span>
         <span className="font-medium text-foreground">{formatCount(groupsCount)}</span>
-        <span> Groups</span>
+        <span> {translate('profileStats.groups', 'Groups')}</span>
       </p>
     </div>
   );
