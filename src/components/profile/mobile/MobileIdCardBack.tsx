@@ -11,12 +11,14 @@ import { FacebookIcon } from "@/components/icons/FacebookIcon";
 import { XIcon } from "@/components/icons/XIcon";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useProfile } from "@/context/ProfileProvider";
 import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
 
 interface MobileIdCardBackProps {
   profile: UserProfile;
   editMode?: boolean;
   onEdit?: () => void;
+  onRefreshProfile?: () => void;
   className?: string;
 }
 
@@ -79,12 +81,19 @@ export function MobileIdCardBack({
   profile,
   editMode = false,
   onEdit,
+  onRefreshProfile,
   className
 }: MobileIdCardBackProps) {
   const { user } = useAuth();
   const { translate } = useTranslation();
+  const { refreshProfile } = useProfile();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
+
+  const handleImportSuccess = () => {
+    refreshProfile();         // Update ProfileProvider context
+    onRefreshProfile?.();     // Trigger parent to refetch local state
+  };
   
   const connectedPlatforms = platforms.filter(p => !!p.getUrl(profile));
   const unconnectedPlatforms = platforms.filter(p => !p.getUrl(profile));
@@ -234,6 +243,7 @@ export function MobileIdCardBack({
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
           profileId={user?.id ?? profile.user_id ?? profile.id}
+          onSuccess={handleImportSuccess}
         />
       )}
     </div>

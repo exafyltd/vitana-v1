@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
@@ -77,66 +77,67 @@ export default function EditProfilePage() {
     }
   });
 
+  // Refetch profile data - extracted for reuse after social import success
+  const refetchProfile = useCallback(async () => {
+    if (!user?.id) return;
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error) {
+      console.error('Error fetching profile:', error);
+      return;
+    }
+
+    if (data) {
+      setProfile(prev => ({
+        ...prev,
+        user_id: user.id,
+        name: data.display_name || contextProfile.displayName,
+        handle: data.handle || contextProfile.handle || 'user',
+        avatarUrl: data.avatar_url || contextProfile.avatar,
+        bio: data.bio || prev.bio,
+        // Social media fields
+        linkedin_url: data.linkedin_url,
+        linkedin_synced_at: data.linkedin_synced_at,
+        linkedin_headline: data.linkedin_headline,
+        linkedin_summary: data.linkedin_summary,
+        linkedin_skills: data.professional_skills,
+        instagram_url: data.instagram_url,
+        instagram_synced_at: data.instagram_synced_at,
+        instagram_bio: data.instagram_bio,
+        instagram_followers_count: data.instagram_followers_count,
+        instagram_interests: data.instagram_interests,
+        tiktok_url: data.tiktok_url,
+        tiktok_synced_at: data.tiktok_synced_at,
+        tiktok_bio: data.tiktok_bio,
+        tiktok_followers_count: data.tiktok_followers_count,
+        tiktok_content_themes: data.tiktok_content_themes,
+        youtube_url: data.youtube_url,
+        youtube_synced_at: data.youtube_synced_at,
+        youtube_description: data.youtube_description,
+        youtube_subscribers_count: data.youtube_subscribers_count,
+        youtube_content_categories: data.youtube_content_categories,
+        facebook_url: data.facebook_url,
+        facebook_synced_at: data.facebook_synced_at,
+        facebook_bio: data.facebook_bio,
+        facebook_interests: data.facebook_interests,
+        x_url: data.x_url,
+        x_synced_at: data.x_synced_at,
+        x_bio: data.x_bio,
+        x_followers_count: data.x_followers_count,
+        x_topics: data.x_topics,
+      }));
+    }
+  }, [user?.id, contextProfile]);
+
   // Fetch full profile data including social media fields from Supabase
   useEffect(() => {
-    const fetchProfileData = async () => {
-      if (!user?.id) return;
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching profile:', error);
-        return;
-      }
-
-      if (data) {
-        setProfile(prev => ({
-          ...prev,
-          user_id: user.id,
-          name: data.display_name || contextProfile.displayName,
-          handle: data.handle || contextProfile.handle || 'user',
-          avatarUrl: data.avatar_url || contextProfile.avatar,
-          bio: data.bio || prev.bio,
-          // Social media fields
-          linkedin_url: data.linkedin_url,
-          linkedin_synced_at: data.linkedin_synced_at,
-          linkedin_headline: data.linkedin_headline,
-          linkedin_summary: data.linkedin_summary,
-          linkedin_skills: data.professional_skills,
-          instagram_url: data.instagram_url,
-          instagram_synced_at: data.instagram_synced_at,
-          instagram_bio: data.instagram_bio,
-          instagram_followers_count: data.instagram_followers_count,
-          instagram_interests: data.instagram_interests,
-          tiktok_url: data.tiktok_url,
-          tiktok_synced_at: data.tiktok_synced_at,
-          tiktok_bio: data.tiktok_bio,
-          tiktok_followers_count: data.tiktok_followers_count,
-          tiktok_content_themes: data.tiktok_content_themes,
-          youtube_url: data.youtube_url,
-          youtube_synced_at: data.youtube_synced_at,
-          youtube_description: data.youtube_description,
-          youtube_subscribers_count: data.youtube_subscribers_count,
-          youtube_content_categories: data.youtube_content_categories,
-          facebook_url: data.facebook_url,
-          facebook_synced_at: data.facebook_synced_at,
-          facebook_bio: data.facebook_bio,
-          facebook_interests: data.facebook_interests,
-          x_url: data.x_url,
-          x_synced_at: data.x_synced_at,
-          x_bio: data.x_bio,
-          x_followers_count: data.x_followers_count,
-          x_topics: data.x_topics,
-        }));
-      }
-    };
-
-    fetchProfileData();
-  }, [user, contextProfile]);
+    refetchProfile();
+  }, [refetchProfile]);
 
   const scopeContext = {
     isOwner: true,
@@ -268,6 +269,7 @@ export default function EditProfilePage() {
             editMode={true}
             onEditIdentity={handleEditIdentity}
             onEditSocial={handleEditAbout}
+            onRefreshProfile={refetchProfile}
           />
           
           {/* Compact Stats Strip */}
