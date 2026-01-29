@@ -648,9 +648,6 @@
     "followers": "Followers",
     "following": "Following"
   },
-  "profile": {
-    "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱"
-  },
   "services": {
     "title": "Services HUB",
     "subtitle": "Access comprehensive healthcare and wellness services",
@@ -1453,6 +1450,7 @@
     }
   },
   "profile": {
+    "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
     "autopilot": {
       "polishBio": "Polish your bio, archetype & showcase",
       "try": "Try"
