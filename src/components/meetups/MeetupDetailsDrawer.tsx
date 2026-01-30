@@ -1348,32 +1348,23 @@ export function MeetupDetailsDrawer({
 
           <DropdownMenu modal={!isMobile}>
             <DropdownMenuTrigger asChild>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className={cn(
-                        "shrink-0 flex items-center justify-center",
-                        isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
-                      )}
-                      style={isMobile ? {
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        border: '1px solid rgba(0, 0, 0, 0.08)'
-                      } : undefined}
-                      aria-label="Add to calendar"
-                    >
-                      <Calendar className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Add to calendar</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className={cn(
+                  "shrink-0 flex items-center justify-center",
+                  isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+                )}
+                style={isMobile ? {
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                } : undefined}
+                aria-label="Add to calendar"
+              >
+                <Calendar className="h-4 w-4" />
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent align="end" className="w-48 z-[100]">
               <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('google'); }}>
                 Google Calendar
               </DropdownMenuItem>
@@ -1391,66 +1382,48 @@ export function MeetupDetailsDrawer({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className={cn(
-                    "shrink-0 flex items-center justify-center",
-                    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
-                  )}
-                  style={isMobile ? {
-                    background: 'rgba(255, 255, 255, 0.9)',
-                    border: '1px solid rgba(0, 0, 0, 0.08)'
-                  } : undefined}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setShareDialogOpen(true);
-                  }}
-                  aria-label="Share meetup"
-                >
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Share event</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className={cn(
+              "shrink-0 flex items-center justify-center",
+              isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+            )}
+            style={isMobile ? {
+              background: 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(0, 0, 0, 0.08)'
+            } : undefined}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setShareDialogOpen(true);
+            }}
+            aria-label="Share meetup"
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className={cn(
-                    "shrink-0 flex items-center justify-center",
-                    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12",
-                    isSaved && !isMobile && "bg-accent"
-                  )}
-                  style={isMobile ? {
-                    background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
-                    border: '1px solid rgba(0, 0, 0, 0.08)'
-                  } : undefined}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    handleSave();
-                  }}
-                  aria-label={isSaved ? "Remove from saved" : "Save for later"}
-                >
-                  <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{isSaved ? "Remove from saved" : "Save for later"}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Button
+            variant="outline"
+            size="icon"
+            className={cn(
+              "shrink-0 flex items-center justify-center",
+              isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12",
+              isSaved && !isMobile && "bg-accent"
+            )}
+            style={isMobile ? {
+              background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(0, 0, 0, 0.08)'
+            } : undefined}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleSave();
+            }}
+            aria-label={isSaved ? "Remove from saved" : "Save for later"}
+          >
+            <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
+          </Button>
         </div>
       </div>
 
