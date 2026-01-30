@@ -1153,31 +1153,72 @@ export function MeetupDetailsDrawer({
         </div>
       </ScrollArea>
 
-      {/* Sticky Action Bar */}
+      {/* Sticky Action Bar - Premium Glassy Design */}
       <div 
-        className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg flex items-center"
-        style={{
-          height: isMobile ? '64px' : 'auto',
-          minHeight: isMobile ? '64px' : undefined,
-          padding: isMobile ? '10px 12px' : '16px',
-          paddingBottom: isMobile ? 'max(10px, env(safe-area-inset-bottom))' : 'max(16px, env(safe-area-inset-bottom))',
-          gap: '10px'
+        className={cn(
+          "absolute bottom-0 left-0 right-0 flex items-center",
+          isMobile 
+            ? "backdrop-blur-xl" 
+            : "bg-background/95 backdrop-blur-sm border-t shadow-lg"
+        )}
+        style={isMobile ? {
+          height: '72px',
+          padding: '10px 12px',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)',
+          gap: '10px',
+          background: 'rgba(255, 255, 255, 0.86)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+          boxShadow: '0 -8px 24px rgba(0, 0, 0, 0.08)'
+        } : {
+          padding: '16px',
+          paddingBottom: 'max(16px, env(safe-area-inset-bottom))'
         }}
       >
-        <div className="flex items-center justify-center gap-2.5 w-full">
+        <div className="flex items-center gap-2.5 w-full">
           {/* Use unified CTA logic */}
           {(() => {
+            // Premium CTA button styles for mobile
+            const getMobilePrimaryCtaStyle = (): React.CSSProperties => ({
+              height: '48px',
+              borderRadius: '14px',
+              padding: '0 16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: '#0b1220',
+              color: 'white',
+              border: 'none'
+            });
+
             const getCtaButtonClasses = () => {
+              const baseClasses = "flex-1 font-semibold text-[15px] flex items-center justify-center";
+              
+              if (isMobile) {
+                // Mobile uses inline styles for premium look
+                switch (ctaConfig.variant) {
+                  case 'ticket':
+                    return cn(baseClasses, "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-[14px] h-12");
+                  case 'view-ticket':
+                    return cn(baseClasses, "bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-[14px] h-12");
+                  case 'disabled':
+                    return cn(baseClasses, "bg-muted text-muted-foreground cursor-not-allowed rounded-[14px] h-12");
+                  case 'join':
+                  default:
+                    return cn(baseClasses, "rounded-[14px] h-12");
+                }
+              }
+              
+              // Desktop styles
               switch (ctaConfig.variant) {
                 case 'ticket':
-                  return cn("flex-1 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white flex items-center justify-center", isMobile ? "h-11" : "h-12");
+                  return cn(baseClasses, "h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white");
                 case 'view-ticket':
-                  return cn("flex-1 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white flex items-center justify-center", isMobile ? "h-11" : "h-12");
+                  return cn(baseClasses, "h-12 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white");
                 case 'disabled':
-                  return cn("flex-1 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed flex items-center justify-center", isMobile ? "h-11" : "h-12");
+                  return cn(baseClasses, "h-12 bg-muted text-muted-foreground cursor-not-allowed");
                 case 'join':
                 default:
-                  return cn("flex-1 font-semibold text-[15px] flex items-center justify-center", isMobile ? "h-11" : "h-12");
+                  return cn(baseClasses, "h-12");
               }
             };
 
@@ -1248,6 +1289,7 @@ export function MeetupDetailsDrawer({
                   "transition-opacity duration-300",
                   shouldFade && "opacity-0 pointer-events-none"
                 )}
+                style={isMobile && ctaConfig.variant === 'join' ? getMobilePrimaryCtaStyle() : undefined}
                 onClick={handleCtaClick}
                 disabled={ctaConfig.disabled || isJoining || shouldFade}
               >
@@ -1269,6 +1311,7 @@ export function MeetupDetailsDrawer({
             );
           })()}
 
+          {/* Icon Rail - Premium glassy buttons */}
           {/* Promote Button (only for event creators) */}
           {user && event.created_by === user.id && onPromoteEvent && (
             <TooltipProvider>
@@ -1277,7 +1320,14 @@ export function MeetupDetailsDrawer({
                   <Button
                     variant="outline"
                     size="icon"
-                    className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12")}
+                    className={cn(
+                      "shrink-0 flex items-center justify-center",
+                      isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+                    )}
+                    style={isMobile ? {
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid rgba(0, 0, 0, 0.08)'
+                    } : undefined}
                     onClick={(e) => {
                       e.stopPropagation();
                       onPromoteEvent(event);
@@ -1302,7 +1352,14 @@ export function MeetupDetailsDrawer({
                     <Button 
                       variant="outline" 
                       size="icon" 
-                      className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12")}
+                      className={cn(
+                        "shrink-0 flex items-center justify-center",
+                        isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+                      )}
+                      style={isMobile ? {
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        border: '1px solid rgba(0, 0, 0, 0.08)'
+                      } : undefined}
                       aria-label="Add to calendar"
                     >
                       <Calendar className="h-4 w-4" />
@@ -1338,7 +1395,14 @@ export function MeetupDetailsDrawer({
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12")}
+                  className={cn(
+                    "shrink-0 flex items-center justify-center",
+                    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+                  )}
+                  style={isMobile ? {
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    border: '1px solid rgba(0, 0, 0, 0.08)'
+                  } : undefined}
                   onClick={() => setShareDialogOpen(true)}
                   aria-label="Share meetup"
                 >
@@ -1357,7 +1421,15 @@ export function MeetupDetailsDrawer({
                 <Button
                   variant="outline"
                   size="icon"
-                  className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12", isSaved && "bg-accent")}
+                  className={cn(
+                    "shrink-0 flex items-center justify-center",
+                    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12",
+                    isSaved && !isMobile && "bg-accent"
+                  )}
+                  style={isMobile ? {
+                    background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                    border: '1px solid rgba(0, 0, 0, 0.08)'
+                  } : undefined}
                   onClick={handleSave}
                   aria-label={isSaved ? "Remove from saved" : "Save for later"}
                 >
