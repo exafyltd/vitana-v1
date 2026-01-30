@@ -1,178 +1,177 @@
 
 
-## Mobile Event Card Full-Screen Detail View
+## Mobile Event Card Layout Adjustments
 
-### Summary
+### Issues Identified
 
-Transform the mobile event card detail view from a 90% height sheet with navigation arrows to a **full-screen immersive experience** with a dedicated close button, removing carousel-style navigation within the detail view.
+From the screenshot, there are three layout problems:
 
-### Current Behavior
+1. **Title cut off at top**: The event title "Evening of Stillness – Sound Bath" appears cut off by the MAXINA header bar (the blue area at top)
+2. **Empty space below CTA**: There's visible empty space between the CTA buttons and the bottom of the screen
+3. **Orb/Mute button hidden**: The Orb (which contains the soundscape mute toggle) is covered by the event sheet since the Sheet has `z-index: 50` while the Orb has `z-index: 40`
 
-```text
-+-----------------------------+
-|     MAXINA Header           |
-+-----------------------------+
-|  Events & Meetups           |
-|  ← Card →                   |  <- Navigation arrows
-|  [Event Details]            |
-|  [Scrollable Content]       |
-|  [Sticky Action Bar]        |
-+-----------------------------+
-|      90vh height            |
-+-----------------------------+
-```
+### Root Cause Analysis
 
-### Target Behavior
+The event detail sheet now uses `h-[100dvh]` (full screen height), but:
+- The hero image starts at `top: 0` which means it goes under the MAXINA header bar
+- The sheet's `z-index: 50` completely covers the Orb which has `z-index: 40`
+- The sticky action bar has `pb-[max(1rem,env(safe-area-inset-bottom))]` but content scrolls to the edge
 
-```text
-+-----------------------------+
-|                         [X] |  <- Close button (top-right)
-|                             |
-|     [Hero Image]            |
-|                             |
-|     [Event Title]           |
-|     [Host Info]             |
-|                             |
-|     [Event Details]         |
-|     (no internal scroll)    |
-|                             |
-|  [CTA Bar - Sticky Bottom]  |
-+-----------------------------+
-|      Full screen (100dvh)   |
-+-----------------------------+
-```
+### Solution
+
+| Change | Purpose |
+|--------|---------|
+| Add top padding to hero on mobile | Push content down to avoid header overlap |
+| Elevate Orb z-index when sheet is open | Keep mute button visible above event details |
+| Adjust bottom spacing | Better fit with CTA bar |
 
 ### Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | 1. Full-screen height on mobile<br/>2. Hide navigation arrows on mobile<br/>3. Add prominent close button<br/>4. Remove internal scrolling for focused view |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Add mobile top padding to hero section |
+| `src/index.css` | Add rule to elevate Orb z-index above sheets when event detail is open |
 
 ### Detailed Implementation
 
-#### 1. Update Mobile Sheet to Full Screen
+#### 1. Add Top Padding to Hero Section (MeetupDetailsDrawer.tsx)
 
-**Lines 1381-1384:**
+On mobile, add top padding to push the hero image content down so the title isn't cut off by the header bar:
+
+**Line 609 (hero container):**
 
 ```tsx
 // BEFORE
-<SheetContent side="bottom" className="h-[90vh] p-0">
+<div className="relative w-full aspect-video bg-muted overflow-hidden">
 
 // AFTER
-<SheetContent 
-  side="bottom" 
-  className="h-[100dvh] p-0 rounded-none"
->
+<div className={cn(
+  "relative w-full bg-muted overflow-hidden",
+  isMobile ? "pt-14 min-h-[45vh]" : "aspect-video"
+)}>
 ```
 
-Using `100dvh` (dynamic viewport height) ensures proper full-screen behavior accounting for browser UI on mobile.
+The `pt-14` (56px) accounts for the MAXINA header height, and `min-h-[45vh]` ensures the hero area remains visually prominent while allowing more content to be visible.
 
-#### 2. Add Custom Close Button (Top Right)
+#### 2. Adjust Title Overlay Position
 
-Since we're hiding the navigation arrows on mobile, we'll add a dedicated close button in the hero area. This replaces the built-in Sheet close button which is positioned at top-right.
-
-**After line 633 (hero image section), add mobile-only close button:**
-
-```tsx
-{/* Mobile Close Button - Top Right */}
-{isMobile && (
-  <Button
-    variant="outline"
-    size="icon"
-    className={cn(
-      "absolute top-4 right-4 z-20 rounded-full",
-      "bg-background/80 backdrop-blur-md shadow-md",
-      "border-border/40 hover:bg-background/90",
-      "h-10 w-10"
-    )}
-    onClick={() => onOpenChange(false)}
-    aria-label="Close event details"
-  >
-    <X className="h-5 w-5" />
-  </Button>
-)}
-```
-
-#### 3. Hide Navigation Arrows on Mobile
-
-**Lines 634-669 (arrow buttons in hero):**
-
-Wrap the existing navigation arrow container with a conditional render to hide on mobile:
+**Line 692 (title overlay):**
 
 ```tsx
 // BEFORE
-<div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-  <Button ... ChevronLeft />
-  <Button ... ChevronRight />
-</div>
+<div className="absolute bottom-0 left-0 right-0 p-6">
+
+// AFTER  
+<div className={cn(
+  "absolute left-0 right-0 p-6",
+  isMobile ? "bottom-0 pt-6" : "bottom-0"
+)}>
+```
+
+#### 3. Elevate Orb Above Sheet When Event Detail is Open
+
+Add a CSS rule so the Orb appears above the event detail sheet. We'll add a data attribute to the sheet and use CSS to elevate the orb.
+
+**In MeetupDetailsDrawer.tsx line 1401:**
+
+```tsx
+// BEFORE
+<Sheet open={open} onOpenChange={onOpenChange}>
 
 // AFTER
-{!isMobile && (
-  <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-    <Button ... ChevronLeft />
-    <Button ... ChevronRight />
-  </div>
-)}
+<Sheet open={open} onOpenChange={onOpenChange}>
+  {/* Add data attribute to body when open */}
 ```
 
-#### 4. Remove Swipe Navigation on Mobile
+Actually, a cleaner approach is to use CSS that targets when a bottom sheet is present:
 
-Since the user will be focusing on a single card, we should disable the swipe-to-navigate feature on mobile. The swipe handlers are at lines 468-489.
+**In src/index.css, add after line 586:**
 
-**Lines 597-599:**
+```css
+/* When bottom sheet is open, elevate Orb above it */
+.vitana-orb[data-sheet-open="true"],
+body:has([data-radix-dialog-overlay]) .vitana-orb,
+body:has([data-state="open"][data-side="bottom"]) .vitana-orb {
+  z-index: 60 !important; /* Above sheet (z-50) */
+}
+```
+
+However, `:has()` may not be fully supported. A more reliable approach is to conditionally render the Orb at a higher z-index when the drawer is open.
+
+**Alternative approach - Add inline style override in MeetupDetailsDrawer:**
+
+Since the Orb is rendered globally, we can use a React Portal or body class to elevate it. The simplest solution is to add a body class when the sheet is open:
+
+**In MeetupDetailsDrawer.tsx, add useEffect around line 530:**
+
+```tsx
+// Set body class when mobile sheet is open to elevate Orb above it
+useEffect(() => {
+  if (isMobile && open) {
+    document.body.classList.add('event-detail-sheet-open');
+    return () => {
+      document.body.classList.remove('event-detail-sheet-open');
+    };
+  }
+}, [isMobile, open]);
+```
+
+**In src/index.css, add after line 586:**
+
+```css
+/* When event detail sheet is open on mobile, elevate Orb above it */
+body.event-detail-sheet-open .vitana-orb,
+body.event-detail-sheet-open [data-vitana-orb="true"] {
+  z-index: 60 !important; /* Above sheet (z-50), but below other modals */
+}
+```
+
+#### 4. Reduce Bottom Spacing in ScrollArea
+
+**Line 601:**
 
 ```tsx
 // BEFORE
-onTouchStart={onTouchStart}
-onTouchMove={onTouchMove}
-onTouchEnd={onTouchEnd}
+<ScrollArea className="flex-1 pb-20">
 
-// AFTER (conditional)
-onTouchStart={!isMobile ? onTouchStart : undefined}
-onTouchMove={!isMobile ? onTouchMove : undefined}
-onTouchEnd={!isMobile ? onTouchEnd : undefined}
+// AFTER  
+<ScrollArea className={cn("flex-1", isMobile ? "pb-24" : "pb-20")}>
 ```
 
-#### 5. Adjust ScrollArea for Better Focus (Optional)
+The `pb-24` (96px) on mobile ensures content doesn't get hidden behind the sticky action bar, while reducing unnecessary empty space.
 
-The current implementation uses `<ScrollArea>` (line 601). For a focused view, we can keep scrolling enabled since event content may still exceed viewport, but optimize the layout:
+### Visual Summary
 
-```tsx
-// Ensure content fits better without requiring excessive scrolling
-<ScrollArea className="flex-1 pb-24"> {/* Increased padding for sticky bar */}
+```text
+BEFORE:                          AFTER:
++------------------------+       +------------------------+
+| MAXINA        [header] |       | MAXINA        [header] |
++-----Title cut off------+       +------------------------+
+|    Sound Bath          |       |     [Top Padding]      |
+|                        |       |                        |
+|    [Hero Image]        |       |    [Hero Image]        |
+|                        |       |                        |
+|    [Content]           |       |    Title: Sound Bath   |
+|                        |       |                        |
+|    [Empty Space]       |       |    [Content]           |
+|                        |       |                        |
+| [CTA Bar] [Orb hidden] |       | [CTA Bar]              |
++------------------------+       |    [Orb visible]       |
+                                 +------------------------+
 ```
-
-### Visual Changes Summary
-
-| Element | Before | After |
-|---------|--------|-------|
-| Sheet height | `90vh` | `100dvh` (full screen) |
-| Navigation arrows | Visible (prev/next) | Hidden on mobile |
-| Close button | Default Sheet X | Prominent X in hero area |
-| Swipe navigation | Enabled | Disabled on mobile |
-| Focus | Multi-card carousel | Single card focus |
-
-### Technical Notes
-
-1. **Why `100dvh` instead of `100vh`**: Dynamic viewport height (`dvh`) accounts for mobile browser UI changes (address bar, navigation bar) and provides more consistent full-screen experience.
-
-2. **Rounded corners**: Set `rounded-none` to eliminate any rounded corners for true full-screen edge-to-edge appearance.
-
-3. **Safe area**: The sticky action bar already respects safe areas via `pb-[max(1rem,env(safe-area-inset-bottom))]` (line 1124).
-
-4. **Desktop unchanged**: All changes are conditional on `isMobile` prop, preserving desktop behavior with navigation arrows and standard sheet appearance.
 
 ### Verification Steps
 
-1. Open the app on mobile (or mobile preview)
+1. Open the app on mobile
 2. Navigate to Events page
 3. Tap on an event card
 4. Verify:
-   - Detail view covers full screen (no gap at top)
-   - Left/right arrows are NOT visible
-   - X button appears in top-right corner of hero image
-   - Tapping X closes the detail and returns to card list
-   - Content scrolls vertically if needed
-   - Sticky action bar remains at bottom
-5. Confirm desktop view still has prev/next arrows
+   - Event title is fully visible (not cut off by header)
+   - Hero image has proper top padding
+   - X close button is clearly visible in top-right
+   - Orb/mute button is visible below the event details
+   - CTA buttons are at the bottom with minimal empty space below
+   - Content scrolls smoothly
+5. Tap the Orb to confirm it's interactive
+6. Close the event detail and verify Orb returns to normal z-index
 
