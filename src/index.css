@@ -582,10 +582,7 @@ All colors MUST be HSL.
     margin: 0 !important;
     z-index: 40 !important; /* above content, below modals */
     pointer-events: auto !important;
-    /* Tight shadow for lift, no glow spread - "Readability Ring" mode */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-    outline: 1px solid rgba(255,255,255,0.12);
-    border-radius: 9999px;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
 
   /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */
