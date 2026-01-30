@@ -599,7 +599,7 @@ export function MeetupDetailsDrawer({
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
       >
-      <ScrollArea className={cn("flex-1", isMobile ? "pb-24" : "pb-20")}>
+      <ScrollArea className={cn("flex-1", isMobile ? "pb-[72px]" : "pb-20")}>
         <div 
           className={cn(
             "transition-opacity duration-300",
@@ -1162,8 +1162,10 @@ export function MeetupDetailsDrawer({
             : "bg-background/95 backdrop-blur-sm border-t shadow-lg"
         )}
         style={isMobile ? {
-          height: '72px',
-          padding: '10px 12px',
+          minHeight: '72px',
+          paddingTop: '10px',
+          paddingLeft: '12px',
+          paddingRight: '12px',
           paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)',
           gap: '10px',
           background: 'rgba(255, 255, 255, 0.86)',
