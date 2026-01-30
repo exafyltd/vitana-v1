@@ -606,8 +606,11 @@ export function MeetupDetailsDrawer({
             isTransitioning && !prefersReducedMotion && "opacity-40"
           )}
         >
-          {/* Hero Image - Edge to edge */}
-          <div className="relative w-full aspect-video bg-muted overflow-hidden">
+          {/* Hero Image - Edge to edge, with small top padding on mobile for header clearance */}
+          <div className={cn(
+            "relative w-full aspect-video bg-muted overflow-hidden",
+            isMobile && "pt-5"
+          )}>
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
