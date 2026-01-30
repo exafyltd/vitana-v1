@@ -1403,7 +1403,10 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="h-[calc(100dvh-52px)] p-0 rounded-none">
+        <SheetContent 
+          side="bottom" 
+          className="!top-[52px] !bottom-0 !h-auto p-0 rounded-none [&>button]:hidden"
+        >
           {content}
         </SheetContent>
       </Sheet>
