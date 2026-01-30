@@ -327,15 +327,6 @@ export function MeetupDetailsDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, hasPrev, hasNext, onNavigatePrev, onNavigateNext, onOpenChange]);
 
-  // Set body class when mobile sheet is open to elevate Orb above it
-  useEffect(() => {
-    if (isMobile && open) {
-      document.body.classList.add('event-detail-sheet-open');
-      return () => {
-        document.body.classList.remove('event-detail-sheet-open');
-      };
-    }
-  }, [isMobile, open]);
 
   if (!event) return null;
 
@@ -615,11 +606,8 @@ export function MeetupDetailsDrawer({
             isTransitioning && !prefersReducedMotion && "opacity-40"
           )}
         >
-          {/* Hero Image - Edge to edge, with top padding on mobile */}
-          <div className={cn(
-            "relative w-full bg-muted overflow-hidden",
-            isMobile ? "pt-14 min-h-[45vh]" : "aspect-video"
-          )}>
+          {/* Hero Image - Edge to edge */}
+          <div className="relative w-full aspect-video bg-muted overflow-hidden">
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
