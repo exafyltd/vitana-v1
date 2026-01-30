@@ -594,10 +594,10 @@ export function MeetupDetailsDrawer({
       )}
       <div 
         className="flex flex-col h-full"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-    >
+        onTouchStart={!isMobile ? onTouchStart : undefined}
+        onTouchMove={!isMobile ? onTouchMove : undefined}
+        onTouchEnd={!isMobile ? onTouchEnd : undefined}
+      >
       <ScrollArea className="flex-1 pb-20">
         <div 
           className={cn(
@@ -630,43 +630,63 @@ export function MeetupDetailsDrawer({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 dark:from-background/95 via-background/50 dark:via-background/60 to-transparent" />
             
-            {/* Floating Navigation Arrows */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+            {/* Mobile Close Button - Top Right */}
+            {isMobile && (
               <Button
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
-                  "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
-                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-75 hover:opacity-100 focus-visible:opacity-100",
-                  !hasPrev && "pointer-events-none"
+                  "absolute top-4 right-4 z-20 rounded-full",
+                  "bg-background/80 backdrop-blur-md shadow-md",
+                  "border-border/40 hover:bg-background/90",
+                  "h-10 w-10"
                 )}
-                onClick={onNavigatePrev}
-                disabled={!hasPrev}
-                aria-label="Previous meetup (← key)"
-                title="Previous meetup (← key)"
+                onClick={() => onOpenChange(false)}
+                aria-label="Close event details"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <X className="h-5 w-5" />
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className={cn(
-                  "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
-                  "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
-                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-75 hover:opacity-100 focus-visible:opacity-100",
-                  !hasNext && "pointer-events-none"
-                )}
-                onClick={onNavigateNext}
-                disabled={!hasNext}
-                aria-label="Next meetup (→ key)"
-                title="Next meetup (→ key)"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
+            )}
+            
+            {/* Floating Navigation Arrows - Desktop only */}
+            {!isMobile && (
+              <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn(
+                    "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
+                    "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
+                    "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                    "opacity-75 hover:opacity-100 focus-visible:opacity-100",
+                    !hasPrev && "pointer-events-none"
+                  )}
+                  onClick={onNavigatePrev}
+                  disabled={!hasPrev}
+                  aria-label="Previous meetup (← key)"
+                  title="Previous meetup (← key)"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn(
+                    "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
+                    "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
+                    "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                    "opacity-75 hover:opacity-100 focus-visible:opacity-100",
+                    !hasNext && "pointer-events-none"
+                  )}
+                  onClick={onNavigateNext}
+                  disabled={!hasNext}
+                  aria-label="Next meetup (→ key)"
+                  title="Next meetup (→ key)"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
+            )}
 
             {/* Title Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -1379,7 +1399,7 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="h-[90vh] p-0">
+        <SheetContent side="bottom" className="h-[100dvh] p-0 rounded-none">
           {content}
         </SheetContent>
       </Sheet>
