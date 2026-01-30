@@ -605,28 +605,6 @@ All colors MUST be HSL.
     box-shadow: none !important;
   }
 
-  /* Step 3: Reintroduce a SMALL controlled aura via pseudo-element */
-  .vitana-orb::before,
-  [data-vitana-orb="true"]::before,
-  #vitana-orb::before,
-  .OrbFloatingButton::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: clamp(86px, 18vw, 140px);
-    height: clamp(86px, 18vw, 140px);
-    transform: translate(-50%, -50%);
-    border-radius: 9999px;
-    pointer-events: none;
-    z-index: -1;
-    filter: blur(14px) !important;
-    background: radial-gradient(circle,
-      rgba(76, 200, 244, 0.18) 0%,
-      rgba(76, 200, 244, 0.08) 35%,
-      rgba(76, 200, 244, 0.00) 70%
-    );
-  }
 
   /* /maxina only: ensure the "Privacy · Terms · Help" footer area never collides with the orb */
   .maxina-signin-page {
