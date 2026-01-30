@@ -1,57 +1,111 @@
 
 
-## Fix Mobile Event Details: Lower Content & Hide Mute Button
+## Fit Event Details to Available Viewport (Below Appilix Header)
 
-### Issues Identified
+### Problem Analysis
 
-1. **Mute button appearing on top**: The `MobileMuteButton` component uses `z-[9999]` which is far above the Sheet's `z-50`, causing it to always appear on top of everything.
+Looking at the screenshot, the event details sheet uses `h-[100dvh]` (full device viewport height), but the app runs inside Appilix which has its own header bar (~1.3cm / 52px). This causes:
 
-2. **Content too high**: Need to add ~0.5cm (approximately 20px / `pt-5`) of top padding to push content down slightly.
+1. **Content extends beyond visible area**: The sheet thinks it has the full screen, but the Appilix header occupies the top
+2. **White gap visible**: The `pt-5` padding we added creates a white band, but doesn't solve the core sizing issue
+3. **CTA bar pushed too low**: The action bar at the bottom may be cut off or positioned incorrectly
+
+### Solution
+
+Instead of using `h-[100dvh]` (full viewport), we need to account for the Appilix header by:
+
+1. **Use CSS calc to subtract header height**: Change the mobile Sheet height from `h-[100dvh]` to `h-[calc(100dvh-52px)]` (where 52px ≈ 1.3cm for the Appilix bar)
+2. **Remove the pt-5 padding**: Since we're now sizing correctly, we don't need the top padding hack
+3. **Adjust top position**: Position the sheet at `top-[52px]` instead of relying on bottom positioning
 
 ### Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/components/audio/MobileMuteButton.tsx` | Lower z-index from `z-[9999]` to `z-40` (same as Orb, below Sheet) |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Add `pt-5` (20px) top padding to hero section on mobile |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Adjust mobile Sheet height and positioning to account for Appilix header |
 
 ### Implementation Details
 
-#### 1. Fix MobileMuteButton z-index (src/components/audio/MobileMuteButton.tsx)
-
-**Line 34:**
+#### MeetupDetailsDrawer.tsx (around line 1407-1412)
 
 ```tsx
 // BEFORE
-"fixed top-4 right-4 z-[9999]",
+<Sheet open={open} onOpenChange={onOpenChange}>
+  <SheetContent side="bottom" className="h-[100dvh] p-0 rounded-none">
+    {content}
+  </SheetContent>
+</Sheet>
 
 // AFTER
-"fixed top-4 right-4 z-40",
+<Sheet open={open} onOpenChange={onOpenChange}>
+  <SheetContent 
+    side="bottom" 
+    className="h-[calc(100dvh-52px)] p-0 rounded-none"
+  >
+    {content}
+  </SheetContent>
+</Sheet>
 ```
 
-This puts the mute button at the same z-level as the Orb (`z-40`), which means the Sheet (`z-50`) will naturally cover it when open.
+The `52px` value accounts for:
+- Appilix header bar: ~1.3cm ≈ 52px
+- This leaves the full remaining viewport for the event details
 
-#### 2. Add small top padding to hero (src/components/meetups/MeetupDetailsDrawer.tsx)
-
-**Line 610:**
+#### Remove the pt-5 padding from hero (line 610-612)
 
 ```tsx
 // BEFORE
-<div className="relative w-full aspect-video bg-muted overflow-hidden">
-
-// AFTER  
 <div className={cn(
   "relative w-full aspect-video bg-muted overflow-hidden",
   isMobile && "pt-5"
 )}>
+
+// AFTER
+<div className="relative w-full aspect-video bg-muted overflow-hidden">
 ```
 
-The `pt-5` (20px ≈ 0.5cm) will push the image content down slightly so the title/hero has proper clearance from the Appilix header bar.
+Since we're now correctly sizing the container, the padding is no longer needed.
 
-### Result
+### Why This Works
 
-- Mute button stays behind the event details sheet (hidden when sheet is open)
-- X close button is unobstructed and clearly visible
-- Content is lowered by ~0.5cm for proper spacing
-- When closing the sheet, mute button becomes visible again
+```text
+BEFORE:                          AFTER:
++------------------------+       +------------------------+
+| MAXINA (52px header)   |       | MAXINA (52px header)   |
++------------------------+       +------------------------+
+|                        |       |  Hero Image            |
+|  Sheet at h-[100dvh]   |       |    (Event Title)       |
+|  extends under header  |       +------------------------+
+|                        |       |  Content               |
+|  Content...            |       |  (tags, when/where)    |
+|                        |       +------------------------+
+|                        |       |  [CTA Bar]             |
++------------------------+       +------------------------+
+| CTA bar pushed down    |       | Fits perfectly         |
+| or off-screen          |       | in available space     |
++------------------------+       +------------------------+
+```
+
+### Visual Result
+
+After this change:
+- Event details will perfectly fill the space below the Appilix header
+- Hero image starts immediately at the top of the sheet (no white gap)
+- CTA bar sits properly at the bottom
+- X close button remains visible and unobstructed
+- Mute button stays behind the sheet (already fixed)
+
+### Note on Header Height
+
+If the Appilix header height changes or varies by device, you could use a CSS custom property:
+
+```css
+:root {
+  --appilix-header-height: 52px;
+}
+```
+
+And reference it: `h-[calc(100dvh-var(--appilix-header-height))]`
+
+For now, we'll use the fixed `52px` value based on your ~1.3cm measurement.
 
