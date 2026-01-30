@@ -1,206 +1,179 @@
 
-## Fix Mobile Event Details Icon Buttons (Complete Solution)
 
-### Problem Summary
+## Fix Event Details Icon Buttons (Desktop & Mobile)
 
-The Calendar dropdown menu opens on mobile, but tapping on the menu items (Google Calendar, Outlook, Apple Calendar, Download ICS) does nothing. The Share and Save buttons also don't work as expected. The user confirmed that "functionalities should be the same as desktop, only adapted to mobile view."
+### Problems Identified
 
-### Root Cause Analysis
+After investigating the codebase, I found three distinct issues:
 
-When Radix UI's `DropdownMenu` is nested inside a `Sheet` (which is a Dialog primitive), several issues occur on mobile:
+| Issue | Root Cause |
+|-------|------------|
+| Calendar only exports to external apps | Uses `handleExportToCalendar` which opens Google/Outlook URLs, doesn't use the `addEvent` function already imported from `useCalendarEvents` |
+| Promote popup opens behind drawer | `CampaignDialog` is in parent component (EventsAndMeetups.tsx) but drawer has same z-index (z-50), so dialog appears underneath |
+| Share popup opens behind drawer | `UniversalShareDialog` is inside drawer content, but Dialog portal has same z-index as Sheet (both z-50) |
+| Mobile buttons unresponsive | Touch events not reaching handlers due to Sheet's focus trap and portal conflicts |
 
-1. **Focus Trap Conflict**: The Sheet's focus trap interferes with the DropdownMenu's portal
-2. **Touch Event Interception**: The overlay and parent touch handlers capture events before they reach menu items
-3. **Pointer Events**: The dropdown content needs explicit `pointer-events-auto` to receive touch events
-4. **onSelect vs onClick**: Radix recommends using `onSelect` for DropdownMenuItem, which handles both click and keyboard selection
+### Solution Overview
 
-Looking at the working `KebabMenu` component, we can see the pattern that works:
-```tsx
-<DropdownMenu modal={false}>
-  <DropdownMenuContent
-    onCloseAutoFocus={(e) => e.preventDefault()}
-    className="... pointer-events-auto"
-    onClick={(e) => e.stopPropagation()}
-  >
-```
-
-### Solution
-
-Apply the proven pattern from KebabMenu to the Calendar dropdown and fix the Share/Save buttons:
-
-**File: `src/components/meetups/MeetupDetailsDrawer.tsx`**
-
-| Change | Location | Description |
-|--------|----------|-------------|
-| Add pointer-events-auto | DropdownMenuContent | Enable touch events on the menu |
-| Add onCloseAutoFocus | DropdownMenuContent | Prevent auto-focus issues |
-| Add onClick stopPropagation | DropdownMenuContent | Prevent bubbling to overlay |
-| Use onSelect instead of onClick | DropdownMenuItem | Use Radix's recommended event |
-| Add onPointerDown handlers | Share/Save buttons | Capture touch events early |
+1. **Add "Add to VITANA Calendar" as PRIMARY option** - Add a new menu item that uses the existing `addEvent` function to save to Smart Calendar
+2. **Close drawer before opening child dialogs** - For both Share and Promote, close the drawer first, then open the dialog (avoiding z-index conflicts entirely)
+3. **Move UniversalShareDialog to parent** - Similar pattern to CampaignDialog - manage state from parent
+4. **Ensure mobile touch handling is complete** - Apply final fixes for mobile event propagation
 
 ### Implementation Details
 
-#### 1. Calendar Dropdown - Full Fix
+#### 1. Calendar Menu - Add VITANA Calendar Option
+
+Add "Add to VITANA Calendar" as the **first** menu item that uses the existing `addEvent` function:
 
 ```tsx
-<DropdownMenu modal={!isMobile}>
-  <DropdownMenuTrigger asChild>
-    <Button 
-      variant="outline" 
-      size="icon" 
-      className={cn(
-        "shrink-0 flex items-center justify-center",
-        isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
-      )}
-      style={isMobile ? {
-        background: 'rgba(255, 255, 255, 0.9)',
-        border: '1px solid rgba(0, 0, 0, 0.08)'
-      } : undefined}
-      onPointerDown={(e) => isMobile && e.stopPropagation()}
-      aria-label="Add to calendar"
-    >
-      <Calendar className="h-4 w-4" />
-    </Button>
-  </DropdownMenuTrigger>
-  <DropdownMenuContent 
-    align="end" 
-    className="w-48 z-[100] pointer-events-auto"
-    onCloseAutoFocus={(e) => e.preventDefault()}
-    onClick={(e) => e.stopPropagation()}
-  >
-    <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
-      Google Calendar
-    </DropdownMenuItem>
-    <DropdownMenuItem onSelect={() => handleExportToCalendar('outlook')}>
-      Outlook
-    </DropdownMenuItem>
-    <DropdownMenuItem onSelect={() => handleExportToCalendar('apple')}>
-      Apple Calendar
-    </DropdownMenuItem>
-    <DropdownMenuSeparator />
-    <DropdownMenuItem onSelect={() => handleExportToCalendar('ics')}>
-      <Download className="h-4 w-4 mr-2" />
-      Download ICS
-    </DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
-```
-
-#### 2. Share Button - Add Touch Handling
-
-```tsx
-<Button 
-  variant="outline" 
-  size="icon" 
-  className={cn(
-    "shrink-0 flex items-center justify-center",
-    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
-  )}
-  style={isMobile ? {
-    background: 'rgba(255, 255, 255, 0.9)',
-    border: '1px solid rgba(0, 0, 0, 0.08)'
-  } : undefined}
-  onPointerDown={(e) => {
-    if (isMobile) {
-      e.stopPropagation();
+const handleAddToVitanaCalendar = async () => {
+  if (!user) {
+    toast({
+      title: "Sign in required",
+      description: "Please sign in to add to your calendar",
+      variant: "destructive"
+    });
+    return;
+  }
+  
+  const calendarEvent = {
+    user_id: '',
+    title: event.title,
+    description: event.description || '',
+    start_time: event.start_time,
+    end_time: event.end_time,
+    location: event.location || event.virtual_link || '',
+    event_type: 'community' as const,
+    status: 'confirmed' as const,
+    priority: 'medium' as const,
+    is_recurring: false,
+    source_type: 'manual' as const,
+    metadata: {
+      meetup_id: event.id,
+      meetup_slug: event.slug,
     }
-  }}
-  onClick={(e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShareDialogOpen(true);
-  }}
-  aria-label="Share meetup"
->
-  <Share2 className="h-4 w-4" />
-</Button>
+  };
+  
+  await addEvent(calendarEvent);
+  
+  toast({
+    title: "Added to Smart Calendar ✓",
+    description: "Event saved. We'll remind you before it starts.",
+  });
+};
 ```
 
-#### 3. Save Button - Add Touch Handling
+Update the dropdown:
+```tsx
+<DropdownMenuContent>
+  {/* Primary action - VITANA Calendar */}
+  <DropdownMenuItem onSelect={handleAddToVitanaCalendar}>
+    <CalendarPlus className="h-4 w-4 mr-2" />
+    Add to VITANA Calendar
+  </DropdownMenuItem>
+  <DropdownMenuSeparator />
+  {/* External calendars */}
+  <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
+    Google Calendar
+  </DropdownMenuItem>
+  ...
+</DropdownMenuContent>
+```
+
+#### 2. Share Button - Close Drawer First
+
+Instead of opening the dialog while drawer is open, close the drawer first:
 
 ```tsx
-<Button
-  variant="outline"
-  size="icon"
-  className={cn(
-    "shrink-0 flex items-center justify-center",
-    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12",
-    isSaved && !isMobile && "bg-accent"
-  )}
-  style={isMobile ? {
-    background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
-    border: '1px solid rgba(0, 0, 0, 0.08)'
-  } : undefined}
-  onPointerDown={(e) => {
-    if (isMobile) {
-      e.stopPropagation();
-    }
-  }}
-  onClick={(e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    handleSave();
-  }}
-  aria-label={isSaved ? "Remove from saved" : "Save for later"}
->
-  <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
-</Button>
+// In MeetupDetailsDrawer - pass a callback to parent
+onShareEvent?: (event: any) => void;
+
+// Share button handler
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  // Close drawer first, then parent opens share dialog
+  onOpenChange(false);
+  onShareEvent?.(event);
+}}
 ```
 
-#### 4. Promote Button - Add Touch Handling (if present)
+In `EventsAndMeetups.tsx`:
+```tsx
+const [shareDialogOpen, setShareDialogOpen] = useState(false);
+const [eventToShare, setEventToShare] = useState(null);
+
+const handleShareEvent = (event) => {
+  setEventToShare(event);
+  setShareDialogOpen(true);
+};
+
+// Pass to drawer
+<MeetupDetailsDrawer
+  ...
+  onShareEvent={handleShareEvent}
+/>
+
+// Render dialog at root level (not inside drawer)
+{eventToShare && (
+  <UniversalShareDialog
+    open={shareDialogOpen}
+    onOpenChange={setShareDialogOpen}
+    content={{...}}
+  />
+)}
+```
+
+#### 3. Promote Button - Already Uses Callback Pattern
+
+The Promote button already calls `onPromoteEvent(event)` which is handled by the parent. The issue is the drawer stays open. Fix:
 
 ```tsx
-<Button
-  variant="outline"
-  size="icon"
-  className={cn(
-    "shrink-0 flex items-center justify-center",
-    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
-  )}
-  style={isMobile ? {
-    background: 'rgba(255, 255, 255, 0.9)',
-    border: '1px solid rgba(0, 0, 0, 0.08)'
-  } : undefined}
-  onPointerDown={(e) => {
-    if (isMobile) {
-      e.stopPropagation();
-    }
-  }}
-  onClick={(e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    onPromoteEvent(event);
-  }}
-  aria-label={translate('eventCta.promoteEvent', 'Promote event')}
->
-  <Megaphone className="h-4 w-4" />
-</Button>
+// Promote button handler
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onOpenChange(false); // Close drawer first
+  onPromoteEvent(event);
+}}
 ```
 
-### Technical Notes
+#### 4. Mobile Touch Handling - Final Fixes
 
-| Technique | Why It Works |
-|-----------|--------------|
-| `modal={false}` | Prevents DropdownMenu from creating its own focus trap that conflicts with Sheet |
-| `pointer-events-auto` | Ensures the dropdown portal receives touch events even when inside a Sheet |
-| `onCloseAutoFocus={(e) => e.preventDefault()}` | Prevents focus issues when menu closes |
-| `onSelect` vs `onClick` | Radix's official API for menu item selection - more reliable than onClick |
-| `onPointerDown` with stopPropagation | Captures touch events early before they bubble to parent handlers |
-| `onClick` with stopPropagation + preventDefault | Prevents Sheet overlay from intercepting the click |
+Ensure all mobile buttons use the complete pattern:
+
+```tsx
+// All mobile action buttons need:
+onPointerDown={(e) => e.stopPropagation()}
+onTouchEnd={(e) => e.stopPropagation()}  // Add this
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  // action
+}}
+```
 
 ### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Update Calendar dropdown, Share button, Save button, and Promote button with proper mobile touch handling |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Add VITANA calendar function, close drawer before opening Share/Promote dialogs, add `onShareEvent` prop, enhance mobile touch handling |
+| `src/pages/community/EventsAndMeetups.tsx` | Add Share dialog state and handler, move `UniversalShareDialog` to root level |
 
-### Expected Result
+### Expected Results
 
 After these changes:
-- Tapping "Google Calendar" in the dropdown opens Google Calendar in a new tab
-- Tapping "Outlook" opens Outlook Calendar in a new tab  
-- Tapping "Apple Calendar" / "Download ICS" shows the toast notification
-- Tapping Share icon opens the UniversalShareDialog
-- Tapping Save icon toggles the saved state with toast feedback
-- Tapping Promote icon (for event creators) opens the CampaignDialog
-- All buttons work identically to desktop, just adapted for touch
+
+| Action | Desktop | Mobile |
+|--------|---------|--------|
+| Calendar → "Add to VITANA Calendar" | Adds to Smart Calendar, shows toast | Same |
+| Calendar → "Google Calendar" | Opens Google Calendar in new tab | Same |
+| Share button | Closes drawer, opens Share dialog on top | Same |
+| Promote button | Closes drawer, opens Campaign dialog on top | Same |
+| Save button | Toggles saved state, shows toast | Same |
+
+### Technical Notes
+
+The key insight is that when a Dialog (Share/Campaign) is opened from inside a Drawer/Sheet, they fight for z-index and portal precedence. The cleanest solution is to **close the drawer first** before opening the child dialog, rather than trying to layer them correctly. This also provides a better UX as the user isn't juggling multiple overlays.
+
