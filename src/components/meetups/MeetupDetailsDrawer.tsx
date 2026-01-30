@@ -606,11 +606,8 @@ export function MeetupDetailsDrawer({
             isTransitioning && !prefersReducedMotion && "opacity-40"
           )}
         >
-          {/* Hero Image - Edge to edge, with small top padding on mobile for header clearance */}
-          <div className={cn(
-            "relative w-full aspect-video bg-muted overflow-hidden",
-            isMobile && "pt-5"
-          )}>
+          {/* Hero Image - Edge to edge */}
+          <div className="relative w-full aspect-video bg-muted overflow-hidden">
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
@@ -1406,7 +1403,7 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="h-[100dvh] p-0 rounded-none">
+        <SheetContent side="bottom" className="h-[calc(100dvh-52px)] p-0 rounded-none">
           {content}
         </SheetContent>
       </Sheet>
