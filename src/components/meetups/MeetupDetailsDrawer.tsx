@@ -1405,7 +1405,7 @@ export function MeetupDetailsDrawer({
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent 
           side="bottom" 
-          className="!top-[52px] !bottom-0 !h-auto p-0 rounded-none [&>button]:hidden"
+          className="!inset-0 !h-full p-0 rounded-none [&>button]:hidden"
         >
           {content}
         </SheetContent>
