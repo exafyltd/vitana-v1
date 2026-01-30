@@ -692,7 +692,7 @@ export function MeetupDetailsDrawer({
             {/* Title Overlay */}
             <div className={cn(
               "absolute left-0 right-0 p-6",
-              isMobile ? "bottom-0 pt-6" : "bottom-0"
+              isMobile ? "bottom-0 pt-12" : "bottom-0"
             )}>
               <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
                 {event.title}
