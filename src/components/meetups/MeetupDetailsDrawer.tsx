@@ -607,7 +607,10 @@ export function MeetupDetailsDrawer({
           )}
         >
           {/* Hero Image - Edge to edge */}
-          <div className="relative w-full aspect-video bg-muted overflow-hidden">
+          <div className={cn(
+            "relative w-full bg-muted overflow-hidden",
+            isMobile ? "min-h-[50vh]" : "aspect-video"
+          )}>
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
@@ -693,9 +696,9 @@ export function MeetupDetailsDrawer({
             <div 
               className={cn(
                 "absolute left-0 right-0 p-6",
-                isMobile ? "bottom-0" : "bottom-0"
+                "bottom-0"
               )}
-              style={isMobile ? { paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)' } : undefined}
+              style={isMobile ? { paddingTop: 'calc(env(safe-area-inset-top, 0px) + 18px)' } : undefined}
             >
               <h2 
                 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]"
@@ -1151,24 +1154,30 @@ export function MeetupDetailsDrawer({
       </ScrollArea>
 
       {/* Sticky Action Bar */}
-      <div className={cn(
-        "absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg",
-        isMobile ? "px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]" : "p-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
-      )}>
-        <div className="flex items-center justify-center gap-2.5">
+      <div 
+        className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg flex items-center"
+        style={{
+          height: isMobile ? '64px' : 'auto',
+          minHeight: isMobile ? '64px' : undefined,
+          padding: isMobile ? '10px 12px' : '16px',
+          paddingBottom: isMobile ? 'max(10px, env(safe-area-inset-bottom))' : 'max(16px, env(safe-area-inset-bottom))',
+          gap: '10px'
+        }}
+      >
+        <div className="flex items-center justify-center gap-2.5 w-full">
           {/* Use unified CTA logic */}
           {(() => {
             const getCtaButtonClasses = () => {
               switch (ctaConfig.variant) {
                 case 'ticket':
-                  return cn("flex-1 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white", isMobile ? "h-10" : "h-12");
+                  return cn("flex-1 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white flex items-center justify-center", isMobile ? "h-11" : "h-12");
                 case 'view-ticket':
-                  return cn("flex-1 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white", isMobile ? "h-10" : "h-12");
+                  return cn("flex-1 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white flex items-center justify-center", isMobile ? "h-11" : "h-12");
                 case 'disabled':
-                  return cn("flex-1 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed", isMobile ? "h-10" : "h-12");
+                  return cn("flex-1 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed flex items-center justify-center", isMobile ? "h-11" : "h-12");
                 case 'join':
                 default:
-                  return cn("flex-1 font-semibold text-[15px]", isMobile ? "h-10" : "h-12");
+                  return cn("flex-1 font-semibold text-[15px] flex items-center justify-center", isMobile ? "h-11" : "h-12");
               }
             };
 
@@ -1268,7 +1277,7 @@ export function MeetupDetailsDrawer({
                   <Button
                     variant="outline"
                     size="icon"
-                    className={cn("shrink-0", isMobile ? "h-10 w-10" : "h-12 w-12")}
+                    className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12")}
                     onClick={(e) => {
                       e.stopPropagation();
                       onPromoteEvent(event);
@@ -1293,7 +1302,7 @@ export function MeetupDetailsDrawer({
                     <Button 
                       variant="outline" 
                       size="icon" 
-                      className={cn("shrink-0", isMobile ? "h-10 w-10" : "h-12 w-12")}
+                      className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12")}
                       aria-label="Add to calendar"
                     >
                       <Calendar className="h-4 w-4" />
@@ -1329,7 +1338,7 @@ export function MeetupDetailsDrawer({
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className={cn("shrink-0", isMobile ? "h-10 w-10" : "h-12 w-12")}
+                  className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12")}
                   onClick={() => setShareDialogOpen(true)}
                   aria-label="Share meetup"
                 >
@@ -1348,7 +1357,7 @@ export function MeetupDetailsDrawer({
                 <Button
                   variant="outline"
                   size="icon"
-                  className={cn("shrink-0", isMobile ? "h-10 w-10" : "h-12 w-12", isSaved && "bg-accent")}
+                  className={cn("shrink-0 flex items-center justify-center", isMobile ? "h-11 w-11" : "h-12 w-12", isSaved && "bg-accent")}
                   onClick={handleSave}
                   aria-label={isSaved ? "Remove from saved" : "Save for later"}
                 >
