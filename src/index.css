@@ -609,12 +609,6 @@ All colors MUST be HSL.
     display: none !important;
   }
 
-  /* When event detail sheet is open on mobile, elevate Orb above it */
-  body.event-detail-sheet-open .vitana-orb,
-  body.event-detail-sheet-open [data-vitana-orb="true"],
-  body.event-detail-sheet-open .OrbFloatingButton {
-    z-index: 60 !important; /* Above sheet (z-50), but below other modals */
-  }
 }
 
 
