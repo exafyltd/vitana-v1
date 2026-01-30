@@ -1,179 +1,126 @@
 
 
-## Fix Event Details Icon Buttons (Desktop & Mobile)
+## Keep Event Detail Drawer Open While Showing Dialogs
 
-### Problems Identified
+### Problem
 
-After investigating the codebase, I found three distinct issues:
+The user wants to keep the event detail drawer visible in the background when clicking the Share or Promote buttons. Currently, the drawer closes before the dialog opens.
 
-| Issue | Root Cause |
-|-------|------------|
-| Calendar only exports to external apps | Uses `handleExportToCalendar` which opens Google/Outlook URLs, doesn't use the `addEvent` function already imported from `useCalendarEvents` |
-| Promote popup opens behind drawer | `CampaignDialog` is in parent component (EventsAndMeetups.tsx) but drawer has same z-index (z-50), so dialog appears underneath |
-| Share popup opens behind drawer | `UniversalShareDialog` is inside drawer content, but Dialog portal has same z-index as Sheet (both z-50) |
-| Mobile buttons unresponsive | Touch events not reaching handlers due to Sheet's focus trap and portal conflicts |
+### Solution
 
-### Solution Overview
+Instead of closing the drawer first (which was done to avoid z-index conflicts), we will:
 
-1. **Add "Add to VITANA Calendar" as PRIMARY option** - Add a new menu item that uses the existing `addEvent` function to save to Smart Calendar
-2. **Close drawer before opening child dialogs** - For both Share and Promote, close the drawer first, then open the dialog (avoiding z-index conflicts entirely)
-3. **Move UniversalShareDialog to parent** - Similar pattern to CampaignDialog - manage state from parent
-4. **Ensure mobile touch handling is complete** - Apply final fixes for mobile event propagation
+1. **Remove the drawer close calls** from Share and Promote button handlers
+2. **Increase the z-index of dialogs** so they render above the Sheet/Drawer
 
-### Implementation Details
+### Technical Details
 
-#### 1. Calendar Menu - Add VITANA Calendar Option
+The Sheet component uses `z-50` for both its overlay and content. The Dialog component also uses `z-50`. When both are open, they fight for precedence, causing the dialog to appear behind the drawer.
 
-Add "Add to VITANA Calendar" as the **first** menu item that uses the existing `addEvent` function:
-
-```tsx
-const handleAddToVitanaCalendar = async () => {
-  if (!user) {
-    toast({
-      title: "Sign in required",
-      description: "Please sign in to add to your calendar",
-      variant: "destructive"
-    });
-    return;
-  }
-  
-  const calendarEvent = {
-    user_id: '',
-    title: event.title,
-    description: event.description || '',
-    start_time: event.start_time,
-    end_time: event.end_time,
-    location: event.location || event.virtual_link || '',
-    event_type: 'community' as const,
-    status: 'confirmed' as const,
-    priority: 'medium' as const,
-    is_recurring: false,
-    source_type: 'manual' as const,
-    metadata: {
-      meetup_id: event.id,
-      meetup_slug: event.slug,
-    }
-  };
-  
-  await addEvent(calendarEvent);
-  
-  toast({
-    title: "Added to Smart Calendar ✓",
-    description: "Event saved. We'll remind you before it starts.",
-  });
-};
-```
-
-Update the dropdown:
-```tsx
-<DropdownMenuContent>
-  {/* Primary action - VITANA Calendar */}
-  <DropdownMenuItem onSelect={handleAddToVitanaCalendar}>
-    <CalendarPlus className="h-4 w-4 mr-2" />
-    Add to VITANA Calendar
-  </DropdownMenuItem>
-  <DropdownMenuSeparator />
-  {/* External calendars */}
-  <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
-    Google Calendar
-  </DropdownMenuItem>
-  ...
-</DropdownMenuContent>
-```
-
-#### 2. Share Button - Close Drawer First
-
-Instead of opening the dialog while drawer is open, close the drawer first:
-
-```tsx
-// In MeetupDetailsDrawer - pass a callback to parent
-onShareEvent?: (event: any) => void;
-
-// Share button handler
-onClick={(e) => {
-  e.stopPropagation();
-  e.preventDefault();
-  // Close drawer first, then parent opens share dialog
-  onOpenChange(false);
-  onShareEvent?.(event);
-}}
-```
-
-In `EventsAndMeetups.tsx`:
-```tsx
-const [shareDialogOpen, setShareDialogOpen] = useState(false);
-const [eventToShare, setEventToShare] = useState(null);
-
-const handleShareEvent = (event) => {
-  setEventToShare(event);
-  setShareDialogOpen(true);
-};
-
-// Pass to drawer
-<MeetupDetailsDrawer
-  ...
-  onShareEvent={handleShareEvent}
-/>
-
-// Render dialog at root level (not inside drawer)
-{eventToShare && (
-  <UniversalShareDialog
-    open={shareDialogOpen}
-    onOpenChange={setShareDialogOpen}
-    content={{...}}
-  />
-)}
-```
-
-#### 3. Promote Button - Already Uses Callback Pattern
-
-The Promote button already calls `onPromoteEvent(event)` which is handled by the parent. The issue is the drawer stays open. Fix:
-
-```tsx
-// Promote button handler
-onClick={(e) => {
-  e.stopPropagation();
-  e.preventDefault();
-  onOpenChange(false); // Close drawer first
-  onPromoteEvent(event);
-}}
-```
-
-#### 4. Mobile Touch Handling - Final Fixes
-
-Ensure all mobile buttons use the complete pattern:
-
-```tsx
-// All mobile action buttons need:
-onPointerDown={(e) => e.stopPropagation()}
-onTouchEnd={(e) => e.stopPropagation()}  // Add this
-onClick={(e) => {
-  e.stopPropagation();
-  e.preventDefault();
-  // action
-}}
-```
+The fix is to apply `z-[60]` to the DialogContent for both Share and Campaign dialogs, ensuring they stack above the drawer.
 
 ### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Add VITANA calendar function, close drawer before opening Share/Promote dialogs, add `onShareEvent` prop, enhance mobile touch handling |
-| `src/pages/community/EventsAndMeetups.tsx` | Add Share dialog state and handler, move `UniversalShareDialog` to root level |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Remove `onOpenChange(false)` from Share and Promote button onClick handlers |
+| `src/components/sharing/UniversalShareDialog.tsx` | Add `className` with `z-[60]` to DialogContent and `overlayClassName="z-[60]"` to ensure it renders above the drawer |
+| `src/components/sharing/CampaignDialog.tsx` | Add `className` with `z-[60]` to DialogContent and `overlayClassName="z-[60]"` to ensure it renders above the drawer |
 
-### Expected Results
+### Implementation Details
+
+#### 1. MeetupDetailsDrawer.tsx - Remove drawer close calls
+
+**Share Button (around line 1481-1486):**
+```tsx
+// Before
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onOpenChange(false);  // Remove this line
+  onShareEvent?.(event);
+}}
+
+// After
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onShareEvent?.(event);
+}}
+```
+
+**Promote Button - Desktop (around line 1397-1402):**
+```tsx
+// Before
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onOpenChange(false);  // Remove this line
+  onPromoteEvent(event);
+}}
+
+// After
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onPromoteEvent(event);
+}}
+```
+
+**Promote Button - Mobile (around line 1379-1384):**
+```tsx
+// Before
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onOpenChange(false);  // Remove this line
+  onPromoteEvent(event);
+}}
+
+// After
+onClick={(e) => {
+  e.stopPropagation();
+  e.preventDefault();
+  onPromoteEvent(event);
+}}
+```
+
+#### 2. UniversalShareDialog.tsx - Increase z-index
+
+```tsx
+// Line ~195
+// Before
+<DialogContent className="max-w-2xl">
+
+// After
+<DialogContent className="max-w-2xl z-[60]" overlayClassName="z-[60]">
+```
+
+#### 3. CampaignDialog.tsx - Increase z-index
+
+Find the DialogContent component and add z-index:
+```tsx
+// Before
+<DialogContent className="...existing classes...">
+
+// After  
+<DialogContent className="...existing classes... z-[60]" overlayClassName="z-[60]">
+```
+
+### Expected Result
 
 After these changes:
 
-| Action | Desktop | Mobile |
-|--------|---------|--------|
-| Calendar → "Add to VITANA Calendar" | Adds to Smart Calendar, shows toast | Same |
-| Calendar → "Google Calendar" | Opens Google Calendar in new tab | Same |
-| Share button | Closes drawer, opens Share dialog on top | Same |
-| Promote button | Closes drawer, opens Campaign dialog on top | Same |
-| Save button | Toggles saved state, shows toast | Same |
+| Action | Behavior |
+|--------|----------|
+| Click Share button | Share dialog opens ON TOP of the drawer (drawer stays visible but dimmed) |
+| Click Promote button | Campaign dialog opens ON TOP of the drawer (drawer stays visible but dimmed) |
+| Close dialog | Returns to the drawer view |
+| Mobile | Same behavior - dialogs layer above the drawer |
 
 ### Technical Notes
 
-The key insight is that when a Dialog (Share/Campaign) is opened from inside a Drawer/Sheet, they fight for z-index and portal precedence. The cleanest solution is to **close the drawer first** before opening the child dialog, rather than trying to layer them correctly. This also provides a better UX as the user isn't juggling multiple overlays.
+- The `overlayClassName="z-[60]"` is important because it ensures both the dialog overlay AND content render above the drawer's overlay (z-50)
+- The Dialog component in this codebase supports an `overlayClassName` prop that gets passed to `DialogOverlay`
+- This layering approach is cleaner than using portals or DOM manipulation
 
