@@ -327,6 +327,16 @@ export function MeetupDetailsDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, hasPrev, hasNext, onNavigatePrev, onNavigateNext, onOpenChange]);
 
+  // Set body class when mobile sheet is open to elevate Orb above it
+  useEffect(() => {
+    if (isMobile && open) {
+      document.body.classList.add('event-detail-sheet-open');
+      return () => {
+        document.body.classList.remove('event-detail-sheet-open');
+      };
+    }
+  }, [isMobile, open]);
+
   if (!event) return null;
 
   const handleJoin = async () => {
@@ -598,15 +608,18 @@ export function MeetupDetailsDrawer({
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
       >
-      <ScrollArea className="flex-1 pb-20">
+      <ScrollArea className={cn("flex-1", isMobile ? "pb-24" : "pb-20")}>
         <div 
           className={cn(
             "transition-opacity duration-300",
             isTransitioning && !prefersReducedMotion && "opacity-40"
           )}
         >
-          {/* Hero Image - Edge to edge 16:9 */}
-          <div className="relative w-full aspect-video bg-muted overflow-hidden">
+          {/* Hero Image - Edge to edge, with top padding on mobile */}
+          <div className={cn(
+            "relative w-full bg-muted overflow-hidden",
+            isMobile ? "pt-14 min-h-[45vh]" : "aspect-video"
+          )}>
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
@@ -689,7 +702,10 @@ export function MeetupDetailsDrawer({
             )}
 
             {/* Title Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6">
+            <div className={cn(
+              "absolute left-0 right-0 p-6",
+              isMobile ? "bottom-0 pt-6" : "bottom-0"
+            )}>
               <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
                 {event.title}
               </h2>
