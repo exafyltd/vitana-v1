@@ -58,6 +58,7 @@ export default function Profile() {
   // Create a mock UserProfile object that matches ProfileStats component expectations
   const mockUserProfile = {
     id: user?.id || "",
+    user_id: user?.id,
     name: profile.displayName,
     handle: profile.handle || "@user",
     avatarUrl: profile.avatar,
@@ -73,6 +74,13 @@ export default function Profile() {
     vitanaPercentile: 85,
     longevityArchetype: "The Mindful Mover",
     offerings: [],
+    // Social URLs from ProfileProvider context
+    linkedin_url: profile.linkedin_url,
+    instagram_url: profile.instagram_url,
+    facebook_url: profile.facebook_url,
+    x_url: profile.x_url,
+    youtube_url: profile.youtube_url,
+    tiktok_url: profile.tiktok_url,
     compliance: {
       isProfessional: false,
       licenseVerified: false

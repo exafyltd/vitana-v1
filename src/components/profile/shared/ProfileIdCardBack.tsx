@@ -1,5 +1,6 @@
 import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
+import { useProfile } from "@/context/ProfileProvider";
 import { Plus, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -42,8 +43,13 @@ interface PlatformConfig {
 
 export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackProps) {
   const { user } = useAuth();
+  const { refreshProfile } = useProfile();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
+
+  const handleImportSuccess = () => {
+    refreshProfile();
+  };
   
   // Check if this is the user's own profile
   const isOwnProfile = user?.id === (profile.user_id || profile.id);
@@ -426,6 +432,7 @@ export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackPro
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
           profileId={user?.id ?? profile.user_id ?? profile.id}
+          onSuccess={handleImportSuccess}
         />
       )}
     </>
