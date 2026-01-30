@@ -1,149 +1,201 @@
 
 
-## Fix Displaced Mobile Orb Aura
+## Fix Social Presence Connection Status Not Displaying
 
-### Root Cause Identified
+### Problem Analysis
 
-The "flashlight" effect appearing **displaced above** the orb is caused by the CSS `::before` pseudo-element aura being positioned incorrectly.
+The user reports that Instagram and Facebook accounts appear as "Not linked" on the profile page despite being connected. After thorough investigation, I found **two separate issues**:
 
-**The Problem:**
+### Root Cause 1: Database Has No Social URLs
 
-```text
-MobileFixedOrb structure:
-┌──────────────────────────────────────────┐
-│ .vitana-orb (motion.div)                 │ ← NO explicit width/height
-│   ┌─────────────────────────────────┐    │
-│   │ [role="button"] div             │    │
-│   │   ┌──────────────────────────┐  │    │
-│   │   │ VitanalandPortalSeed     │  │    │   ← 60x60px
-│   │   │       ◉ ORB              │  │    │
-│   │   └──────────────────────────┘  │    │
-│   └─────────────────────────────────┘    │
-└──────────────────────────────────────────┘
+The database query confirms that **Daniela Küper has null values for all social URLs**:
 
-CSS ::before pseudo-element:
-- position: absolute
-- left: 50%; top: 50%
-- transform: translate(-50%, -50%)
-- width/height: clamp(86px, 18vw, 140px)  ← LARGER than orb
-
-But .vitana-orb has NO explicit dimensions!
-→ The "50% top" of the container box ≠ visual center of the orb
-→ The ::before aura appears DISPLACED ABOVE the orb
+```
+id: 96f34f52-72d1-4475-a96c-2217b63a196e
+user_id: 05ce4a1d-fb54-4c08-acd3-11c8d0a80d8b  
+instagram_url: null
+facebook_url: null
+linkedin_url: null
 ```
 
-The container's natural box size (from wrapped content) doesn't match where we expect the orb's visual center to be.
+In contrast, **Jovana Comm** (whose profile displays correctly) has populated URLs:
+
+```
+instagram_url: https://www.instagram.com/jovanataditsh?igsh=...
+facebook_url: https://www.facebook.com/share/1CaVooJ3M5/
+```
+
+**Possible causes for the URLs not being saved:**
+- The edge function `social-media-import` may have failed silently
+- The import dialog may not have been completed successfully
+- There could be an RLS policy blocking the update
+
+### Root Cause 2: Profile.tsx Missing Social URL Fields
+
+The `/profile` page (Profile.tsx) creates a `mockUserProfile` object that is **missing all social URL fields**:
+
+```tsx
+const mockUserProfile = {
+  id: user?.id || "",
+  name: profile.displayName,
+  handle: profile.handle || "@user",
+  avatarUrl: profile.avatar,
+  // ... other fields
+  // MISSING: linkedin_url, instagram_url, facebook_url, x_url, tiktok_url, youtube_url
+};
+```
+
+Even though `ProfileProvider` fetches these fields (lines 93-98), they are never passed to the `ProfileIdCardBack` component.
 
 ### Solution
 
-**Option A: Give the container explicit dimensions matching the orb**
+#### Fix 1: Update Profile.tsx to Include Social URLs
 
-Add explicit width/height to the `.vitana-orb` container in CSS so the `::before` correctly centers on the orb:
+Add the social URL fields to the `mockUserProfile` object:
 
-```css
-@media (max-width: 768px) {
-  .vitana-orb,
-  [data-vitana-orb="true"],
-  #vitana-orb,
-  .OrbFloatingButton {
-    /* ... existing positioning ... */
-    
-    /* Add explicit dimensions to match the nav-size orb (60x60px) */
-    width: 60px !important;
-    height: 60px !important;
-  }
-}
+```tsx
+const mockUserProfile = {
+  id: user?.id || "",
+  user_id: user?.id,  // Add user_id for edge function compatibility
+  name: profile.displayName,
+  handle: profile.handle || "@user",
+  avatarUrl: profile.avatar,
+  coverUrl: profile.coverUrl,
+  // ... existing fields ...
+  
+  // Add social URLs from ProfileProvider context
+  linkedin_url: profile.linkedin_url,
+  instagram_url: profile.instagram_url,
+  facebook_url: profile.facebook_url,
+  x_url: profile.x_url,
+  youtube_url: profile.youtube_url,
+  tiktok_url: profile.tiktok_url,
+};
 ```
 
-**Option B: Remove the ::before aura entirely (simplest)**
+#### Fix 2: Add onSuccess Handler to Desktop Component
 
-Since we've already applied the component-level kill switch to disable all blur/boxShadow effects inside `VitanalandPortalSeed` when `isMobileNav` is true, the orb will still look clean without any external aura. We can simply remove the `::before` pseudo-element entirely:
+The desktop `ProfileIdCardBack.tsx` is missing the `onSuccess` prop that triggers profile refresh after successful import. Compare:
 
-```css
-/* REMOVE this entire block */
-.vitana-orb::before,
-[data-vitana-orb="true"]::before,
-#vitana-orb::before,
-.OrbFloatingButton::before {
-  /* ... delete all ... */
-}
+**Mobile (correct):**
+```tsx
+<SocialMediaImportDialog
+  ...
+  onSuccess={handleImportSuccess}  // ✓ Has refresh handler
+/>
 ```
 
-**Option C: Use Option A + fix the ::before size**
-
-If we want to keep a subtle aura, set the container dimensions AND tighten the `::before` to be smaller than the orb (no bleed):
-
-```css
-.vitana-orb::before,
-[data-vitana-orb="true"]::before {
-  /* Tighten to ~56px (slightly smaller than 60px orb) */
-  width: 56px;
-  height: 56px;
-  filter: blur(10px) !important;
-  background: radial-gradient(circle,
-    rgba(76, 200, 244, 0.12) 0%,
-    rgba(76, 200, 244, 0.06) 50%,
-    transparent 80%
-  );
-}
+**Desktop (missing):**
+```tsx
+<SocialMediaImportDialog 
+  ...
+  // Missing onSuccess prop!
+/>
 ```
 
-### Recommended Approach
-
-**Use Option B (remove ::before entirely)** for now. The orb's glass shell and internal visuals are still visible on mobile, so it remains recognizable. Once the flashlight is confirmed gone, we can optionally re-add a much smaller, correctly-positioned aura.
+Add the same refresh pattern to the desktop component.
 
 ### Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/index.css` | Remove the `::before` pseudo-element block entirely (lines 608-629) |
-| `src/components/mobile/MobileFixedOrb.tsx` | Optionally add inline `width: 60px; height: 60px` to the container for future aura support |
+| `src/pages/Profile.tsx` | Add social URL fields and `user_id` to `mockUserProfile` |
+| `src/components/profile/shared/ProfileIdCardBack.tsx` | Add `onSuccess` handler for profile refresh after import |
 
-### Implementation Steps
+### Implementation Details
 
-1. **Remove the ::before pseudo-element CSS**
-   - Delete lines 608-629 in `src/index.css`
-   - This eliminates the displaced glow source
+**Profile.tsx (lines 59-88):**
 
-2. **Verify the flashlight is gone**
-   - Check `/home` on mobile
-   - Confirm no wash-out on Events feed
-
-3. **(Optional) Add explicit container dimensions**
-   - Add `width: 60px !important; height: 60px !important;` to `.vitana-orb` in the mobile block
-   - This prepares for future controlled aura re-addition
-
-4. **(Optional) Re-add tiny centered aura later**
-   - If the orb looks too flat, we can add a much smaller, correctly-sized `::before` (56px, low opacity, small blur)
-
-### Visual Result
-
-```text
-BEFORE (Current - Displaced Aura):
-┌────────────────────────────────────────┐
-│               ░░░░░░░                  │ ← Displaced aura (ABOVE orb)
-│              ░░░░░░░░░                 │
-│                                        │
-│              ╭──────╮                  │
-│              │ ◉ORB │                  │ ← Orb here
-│              ╰──────╯                  │
-└────────────────────────────────────────┘
-
-AFTER (Fixed - No External Aura):
-┌────────────────────────────────────────┐
-│    Card text clearly visible           │
-│              ╭──────╮                  │
-│              │ ◉ORB │ (glass shell)    │
-│              ╰──────╯                  │
-│                                        │
-└────────────────────────────────────────┘
+```tsx
+const mockUserProfile = {
+  id: user?.id || "",
+  user_id: user?.id,  // NEW: Add user_id field
+  name: profile.displayName,
+  handle: profile.handle || "@user",
+  avatarUrl: profile.avatar,
+  coverUrl: profile.coverUrl,
+  roles: ["community" as const],
+  membershipTier: null,
+  bio: profile.bio,
+  links: [],
+  languages: [],
+  location: "",
+  stats: dummyProfileStats,
+  vitanaIndex: 750,
+  vitanaPercentile: 85,
+  longevityArchetype: "The Mindful Mover",
+  offerings: [],
+  // NEW: Add social URLs from context
+  linkedin_url: profile.linkedin_url,
+  instagram_url: profile.instagram_url,
+  facebook_url: profile.facebook_url,
+  x_url: profile.x_url,
+  youtube_url: profile.youtube_url,
+  tiktok_url: profile.tiktok_url,
+  compliance: {
+    isProfessional: false,
+    licenseVerified: false
+  },
+  visibility: {
+    about: "public" as const,
+    links: "public" as const,
+    location: "public" as const,
+    showcase: "public" as const,
+    indexPublic: true,
+    healthShareConsent: true
+  }
+};
 ```
 
-### Acceptance Criteria
+**ProfileIdCardBack.tsx:**
 
-- Flashlight effect completely eliminated
-- No displaced glow circle above the orb
-- Orb remains visible with its internal glass shell
-- Card text behind/near orb is clearly readable
-- Desktop experience unchanged
+1. Import `useProfile` hook
+2. Add refresh handler
+3. Pass `onSuccess` to dialog
+
+```tsx
+import { useProfile } from "@/context/ProfileProvider";
+
+export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackProps) {
+  const { user } = useAuth();
+  const { refreshProfile } = useProfile();  // NEW
+  // ... existing code ...
+
+  const handleImportSuccess = () => {
+    refreshProfile();  // Trigger context refresh
+  };
+
+  // In the dialog JSX:
+  <SocialMediaImportDialog 
+    open={dialogOpen}
+    onOpenChange={setDialogOpen}
+    platform={selectedPlatform.platform}
+    platformName={selectedPlatform.name}
+    icon={selectedPlatform.icon}
+    profileId={user?.id ?? profile.user_id ?? profile.id}
+    onSuccess={handleImportSuccess}  // NEW
+  />
+}
+```
+
+### Verification Steps
+
+1. Navigate to Profile page while logged in as Daniela
+2. Go to Social Presence section (back of ID card)
+3. Click "Connect" on Instagram
+4. Enter a valid Instagram URL
+5. Submit the import
+6. Verify:
+   - Toast shows "Import Successful"
+   - Instagram icon immediately shows as connected (colored with checkmark)
+   - No page reload required
+7. Refresh page and verify the connected state persists
+
+### Technical Summary
+
+| Issue | Location | Root Cause | Fix |
+|-------|----------|------------|-----|
+| Social URLs not passed to component | Profile.tsx | `mockUserProfile` missing social URL fields | Add all 6 social URL fields from context |
+| No refresh after import | ProfileIdCardBack.tsx | Missing `onSuccess` handler | Add `refreshProfile()` callback |
+| Missing `user_id` field | Profile.tsx | Component can't identify correct user for updates | Add `user_id: user?.id` to profile object |
 

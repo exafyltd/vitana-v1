@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface VitanalandPortalSeedProps {
   audioState: 'idle' | 'listening' | 'processing' | 'error';
@@ -14,9 +13,6 @@ export function VitanalandPortalSeed({
   size = 'lg',
   layoutId
 }: VitanalandPortalSeedProps) {
-  // Mobile detection - disable heavy effects on mobile nav to prevent "flashlight" wash-out
-  const isMobile = useIsMobile();
-  const isMobileNav = isMobile && size === 'nav';
   // Size configuration for scaling all visual elements
   const sizeConfig = {
     sm: {
@@ -130,21 +126,17 @@ export function VitanalandPortalSeed({
       layoutId={layoutId}
     >
       {/* Outer halo - enhanced elliptical with size-specific opacity */}
-      {/* MOBILE NAV: Hidden to prevent flashlight wash-out effect */}
       <motion.div
         className="absolute rounded-full"
         style={{
           inset: `${config.outerHaloInset}px`,
-          background: isMobileNav 
-            ? 'transparent' 
-            : isError
-              ? `radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.625}) 0%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.375}) 40%, transparent 70%)`
-              : `radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, ${config.outerHaloOpacity}) 0%, rgba(76, 200, 244, ${config.outerHaloOpacity * 0.5}) 40%, transparent 70%)`,
-          filter: isMobileNav ? 'none' : `blur(${config.outerBlur}px)`,
+          background: isError
+            ? `radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.625}) 0%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.375}) 40%, transparent 70%)`
+            : `radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, ${config.outerHaloOpacity}) 0%, rgba(76, 200, 244, ${config.outerHaloOpacity * 0.5}) 40%, transparent 70%)`,
+          filter: `blur(${config.outerBlur}px)`,
           transform: 'scale(1.08, 1)',
-          opacity: isMobileNav ? 0 : undefined,
         }}
-        animate={isMobileNav ? {} : {
+        animate={{
           scale: haloScale,
           opacity: isListening ? [0.8, 1, 0.8] : [0.9, 1, 0.9],
         }}
@@ -155,19 +147,15 @@ export function VitanalandPortalSeed({
       />
 
       {/* Second halo layer for depth - with size-specific opacity */}
-      {/* MOBILE NAV: Hidden to prevent flashlight wash-out effect */}
       <motion.div
         className="absolute rounded-full"
         style={{
           inset: `${config.secondHaloInset}px`,
-          background: isMobileNav 
-            ? 'transparent' 
-            : `radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, ${config.secondHaloOpacity}) 0%, rgba(76, 200, 244, ${config.secondHaloOpacity * 0.53}) 40%, transparent 70%)`,
-          filter: isMobileNav ? 'none' : `blur(${config.secondBlur}px)`,
+          background: `radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, ${config.secondHaloOpacity}) 0%, rgba(76, 200, 244, ${config.secondHaloOpacity * 0.53}) 40%, transparent 70%)`,
+          filter: `blur(${config.secondBlur}px)`,
           transform: 'scale(1.1, 1.05)',
-          opacity: isMobileNav ? 0 : undefined,
         }}
-        animate={isMobileNav ? {} : {
+        animate={{
           opacity: [0.6, 0.8, 0.6],
         }}
         transition={{
@@ -178,21 +166,17 @@ export function VitanalandPortalSeed({
       />
 
       {/* Thin halo ring - enhanced */}
-      {/* MOBILE NAV: Hidden to prevent flashlight wash-out effect */}
       <motion.div
         className="absolute rounded-full"
         style={{
           inset: `${config.thinRingInset}px`,
-          background: isMobileNav 
-            ? 'transparent' 
-            : isError
-              ? 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(239, 68, 68, 0.5) 75%, transparent 80%)'
-              : 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
-          filter: isMobileNav ? 'none' : `blur(${config.thinBlur}px)`,
+          background: isError
+            ? 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(239, 68, 68, 0.5) 75%, transparent 80%)'
+            : 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
+          filter: `blur(${config.thinBlur}px)`,
           transform: 'scale(1.08, 1)',
-          opacity: isMobileNav ? 0 : undefined,
         }}
-        animate={isMobileNav ? {} : {
+        animate={{
           scale: haloScale,
         }}
         transition={{
@@ -485,20 +469,16 @@ export function VitanalandPortalSeed({
 
           {/* Enhanced triple-core system - scaled */}
           {/* Outer core - aqua-rose blend (enhanced size and bloom) */}
-          {/* MOBILE NAV: Reduced effects to prevent flashlight wash-out */}
           <motion.div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               width: `${config.coreSize * 0.96}px`,
               height: `${config.coreSize * 0.96}px`,
               background: 'radial-gradient(circle, rgba(76, 200, 244, 0.85) 0%, rgba(255, 109, 168, 0.65) 60%, transparent 100%)',
-              filter: isMobileNav ? 'blur(6px)' : `blur(${24 * config.nebulaScale}px)`,
-              boxShadow: isMobileNav ? 'none' : `0 0 ${60 * config.nebulaScale}px rgba(76, 200, 244, 0.9), 0 0 ${80 * config.nebulaScale}px rgba(76, 200, 244, 0.5)`,
+              filter: `blur(${24 * config.nebulaScale}px)`,
+              boxShadow: `0 0 ${60 * config.nebulaScale}px rgba(76, 200, 244, 0.9), 0 0 ${80 * config.nebulaScale}px rgba(76, 200, 244, 0.5)`,
             }}
-            animate={isMobileNav ? {
-              scale: [0.95, 1.05, 0.95],
-              opacity: coreBrightness * 0.9,
-            } : {
+            animate={{
               scale: isListening ? [1, 1.1, 1] : [0.95, 1.05, 0.95],
               opacity: coreBrightness * 0.9,
               filter: isListening 
@@ -523,15 +503,14 @@ export function VitanalandPortalSeed({
           />
 
           {/* Inner core - bright white center (enhanced size and bloom) - scaled */}
-          {/* MOBILE NAV: Reduced effects to prevent flashlight wash-out */}
           <motion.div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               width: `${config.coreSize * 0.56}px`,
               height: `${config.coreSize * 0.56}px`,
               background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.85) 50%, transparent 100%)',
-              filter: isMobileNav ? 'blur(4px)' : `blur(${18 * config.nebulaScale}px)`,
-              boxShadow: isMobileNav ? 'none' : `0 0 ${40 * config.nebulaScale}px rgba(255, 255, 255, 1), 0 0 ${60 * config.nebulaScale}px rgba(255, 255, 255, 0.6)`,
+              filter: `blur(${18 * config.nebulaScale}px)`,
+              boxShadow: `0 0 ${40 * config.nebulaScale}px rgba(255, 255, 255, 1), 0 0 ${60 * config.nebulaScale}px rgba(255, 255, 255, 0.6)`,
             }}
             animate={{
               scale: isListening ? [1, 1.2, 1] : [0.95, 1.05, 0.95],
@@ -550,15 +529,14 @@ export function VitanalandPortalSeed({
           />
 
           {/* Micro core - NEW pure white definition point - scaled */}
-          {/* MOBILE NAV: Reduced effects to prevent flashlight wash-out */}
           <motion.div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               width: `${6 * config.fragmentScale}px`,
               height: `${6 * config.fragmentScale}px`,
               background: 'rgba(255, 255, 255, 1)',
-              filter: isMobileNav ? 'none' : `blur(${1 * config.fragmentScale}px)`,
-              boxShadow: isMobileNav ? 'none' : `0 0 ${12 * config.fragmentScale}px rgba(255, 255, 255, 1), 0 0 ${18 * config.fragmentScale}px rgba(255, 255, 255, 0.8)`,
+              filter: `blur(${1 * config.fragmentScale}px)`,
+              boxShadow: `0 0 ${12 * config.fragmentScale}px rgba(255, 255, 255, 1), 0 0 ${18 * config.fragmentScale}px rgba(255, 255, 255, 0.8)`,
             }}
             animate={{
               scale: [0.95, 1.05, 0.95],
@@ -577,7 +555,6 @@ export function VitanalandPortalSeed({
           />
 
           {/* Premium micro-fragments (4 particles with enhanced bloom and parallax) */}
-          {/* MOBILE NAV: Reduced bloom to prevent flashlight wash-out */}
           <div className="absolute inset-0">
             {microFragments.map((fragment, index) => {
               const x = Math.cos(fragment.angle) * fragment.radius;
@@ -591,8 +568,8 @@ export function VitanalandPortalSeed({
                     width: `${fragment.size}px`,
                     height: `${fragment.size}px`,
                     background: fragment.color,
-                    boxShadow: isMobileNav ? 'none' : `0 0 ${fragment.size * 3}px ${fragment.color}`,
-                    filter: isMobileNav ? 'none' : `blur(${fragment.blur}px)`,
+                    boxShadow: `0 0 ${fragment.size * 3}px ${fragment.color}`,
+                    filter: `blur(${fragment.blur}px)`,
                   }}
                   animate={{
                     x: [x, x + (Math.cos(fragment.angle + 0.5) * 12 * fragment.zDepth), x],
