@@ -582,8 +582,7 @@ All colors MUST be HSL.
     margin: 0 !important;
     z-index: 40 !important; /* above content, below modals */
     pointer-events: auto !important;
-    /* Reduced drop-shadow to prevent "flashlight" glow multiplying */
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.18));
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
   }
 
   /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */

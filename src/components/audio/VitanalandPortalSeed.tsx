@@ -30,18 +30,15 @@ export function VitanalandPortalSeed({
       shellBorder: 1,
       rimHighlight: 8,
       rimOpacity: 0.15,
-      outerHaloOpacity: 0.40,
-      secondHaloOpacity: 0.15,
     },
     nav: {
       container: 'w-[60px] h-[60px]',
-      // Tightened halo for mobile - max ~6-10px outside orb, not 40-50px
-      outerHaloInset: -5,
-      secondHaloInset: -7,
-      thinRingInset: -4,
-      outerBlur: 9,
-      secondBlur: 11,
-      thinBlur: 1,
+      outerHaloInset: -13,
+      secondHaloInset: -16,
+      thinRingInset: -7,
+      outerBlur: 16,
+      secondBlur: 20,
+      thinBlur: 1.5,
       nebulaScale: 0.43,
       auroraScale: 0.43,
       fragmentScale: 0.43,
@@ -49,28 +46,23 @@ export function VitanalandPortalSeed({
       shellBorder: 1.35,
       rimHighlight: 11,
       rimOpacity: 0.19,
-      // Reduced halo opacity for nav size to prevent "flashlight" effect
-      outerHaloOpacity: 0.20,
-      secondHaloOpacity: 0.10,
     },
     md: {
-      container: 'w-20 h-20',
-      outerHaloInset: -18,
-      secondHaloInset: -22,
-      thinRingInset: -9,
-      outerBlur: 18,
-      secondBlur: 24,
-      thinBlur: 1.5,
-      nebulaScale: 0.65,
-      auroraScale: 0.65,
-      fragmentScale: 0.65,
-      coreSize: 60,
-      shellBorder: 1.75,
-      rimHighlight: 16,
-      rimOpacity: 0.25,
-      outerHaloOpacity: 0.40,
-      secondHaloOpacity: 0.15,
-    },
+    container: 'w-20 h-20',
+    outerHaloInset: -18,
+    secondHaloInset: -22,
+    thinRingInset: -9,
+    outerBlur: 18,
+    secondBlur: 24,
+    thinBlur: 1.5,
+    nebulaScale: 0.65,
+    auroraScale: 0.65,
+    fragmentScale: 0.65,
+    coreSize: 60,
+    shellBorder: 1.75,
+    rimHighlight: 16,
+    rimOpacity: 0.25,
+  },
     lg: {
       container: 'w-[160px] h-[160px] lg:w-[220px] lg:h-[220px]',
       outerHaloInset: -25,
@@ -86,8 +78,6 @@ export function VitanalandPortalSeed({
       shellBorder: 2,
       rimHighlight: 30,
       rimOpacity: 0.4,
-      outerHaloOpacity: 0.40,
-      secondHaloOpacity: 0.15,
     }
   };
 
@@ -125,14 +115,14 @@ export function VitanalandPortalSeed({
       className={`relative ${config.container}`}
       layoutId={layoutId}
     >
-      {/* Outer halo - enhanced elliptical with size-specific opacity */}
+      {/* Outer halo - enhanced elliptical */}
       <motion.div
         className="absolute rounded-full"
         style={{
           inset: `${config.outerHaloInset}px`,
           background: isError
-            ? `radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.625}) 0%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.375}) 40%, transparent 70%)`
-            : `radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, ${config.outerHaloOpacity}) 0%, rgba(76, 200, 244, ${config.outerHaloOpacity * 0.5}) 40%, transparent 70%)`,
+            ? 'radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.15) 40%, transparent 70%)'
+            : 'radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, 0.4) 0%, rgba(76, 200, 244, 0.2) 40%, transparent 70%)',
           filter: `blur(${config.outerBlur}px)`,
           transform: 'scale(1.08, 1)',
         }}
@@ -146,12 +136,12 @@ export function VitanalandPortalSeed({
         }}
       />
 
-      {/* Second halo layer for depth - with size-specific opacity */}
+      {/* Second halo layer for depth */}
       <motion.div
         className="absolute rounded-full"
         style={{
           inset: `${config.secondHaloInset}px`,
-          background: `radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, ${config.secondHaloOpacity}) 0%, rgba(76, 200, 244, ${config.secondHaloOpacity * 0.53}) 40%, transparent 70%)`,
+          background: 'radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, 0.15) 0%, rgba(76, 200, 244, 0.08) 40%, transparent 70%)',
           filter: `blur(${config.secondBlur}px)`,
           transform: 'scale(1.1, 1.05)',
         }}
