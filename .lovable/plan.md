@@ -1,201 +1,145 @@
 
+## Remove Orb Aura/Halo "Glow" on Mobile
 
-## Fix Social Presence Connection Status Not Displaying
+### Problem
+The mobile orb creates a "flashlight effect" that bleaches content behind it. This comes from:
+1. Three external halo layers in `VitanalandPortalSeed.tsx`
+2. A CSS `filter: drop-shadow()` in `index.css`
+3. A `drop-shadow-lg` class in `MobileFixedOrb.tsx`
 
-### Problem Analysis
+### Solution: "Readability Ring Only" for Mobile
 
-The user reports that Instagram and Facebook accounts appear as "Not linked" on the profile page despite being connected. After thorough investigation, I found **two separate issues**:
-
-### Root Cause 1: Database Has No Social URLs
-
-The database query confirms that **Daniela Küper has null values for all social URLs**:
-
-```
-id: 96f34f52-72d1-4475-a96c-2217b63a196e
-user_id: 05ce4a1d-fb54-4c08-acd3-11c8d0a80d8b  
-instagram_url: null
-facebook_url: null
-linkedin_url: null
-```
-
-In contrast, **Jovana Comm** (whose profile displays correctly) has populated URLs:
-
-```
-instagram_url: https://www.instagram.com/jovanataditsh?igsh=...
-facebook_url: https://www.facebook.com/share/1CaVooJ3M5/
-```
-
-**Possible causes for the URLs not being saved:**
-- The edge function `social-media-import` may have failed silently
-- The import dialog may not have been completed successfully
-- There could be an RLS policy blocking the update
-
-### Root Cause 2: Profile.tsx Missing Social URL Fields
-
-The `/profile` page (Profile.tsx) creates a `mockUserProfile` object that is **missing all social URL fields**:
-
-```tsx
-const mockUserProfile = {
-  id: user?.id || "",
-  name: profile.displayName,
-  handle: profile.handle || "@user",
-  avatarUrl: profile.avatar,
-  // ... other fields
-  // MISSING: linkedin_url, instagram_url, facebook_url, x_url, tiktok_url, youtube_url
-};
-```
-
-Even though `ProfileProvider` fetches these fields (lines 93-98), they are never passed to the `ProfileIdCardBack` component.
-
-### Solution
-
-#### Fix 1: Update Profile.tsx to Include Social URLs
-
-Add the social URL fields to the `mockUserProfile` object:
-
-```tsx
-const mockUserProfile = {
-  id: user?.id || "",
-  user_id: user?.id,  // Add user_id for edge function compatibility
-  name: profile.displayName,
-  handle: profile.handle || "@user",
-  avatarUrl: profile.avatar,
-  coverUrl: profile.coverUrl,
-  // ... existing fields ...
-  
-  // Add social URLs from ProfileProvider context
-  linkedin_url: profile.linkedin_url,
-  instagram_url: profile.instagram_url,
-  facebook_url: profile.facebook_url,
-  x_url: profile.x_url,
-  youtube_url: profile.youtube_url,
-  tiktok_url: profile.tiktok_url,
-};
-```
-
-#### Fix 2: Add onSuccess Handler to Desktop Component
-
-The desktop `ProfileIdCardBack.tsx` is missing the `onSuccess` prop that triggers profile refresh after successful import. Compare:
-
-**Mobile (correct):**
-```tsx
-<SocialMediaImportDialog
-  ...
-  onSuccess={handleImportSuccess}  // ✓ Has refresh handler
-/>
-```
-
-**Desktop (missing):**
-```tsx
-<SocialMediaImportDialog 
-  ...
-  // Missing onSuccess prop!
-/>
-```
-
-Add the same refresh pattern to the desktop component.
+Add a new `glowIntensity` prop to `VitanalandPortalSeed` that controls the external halos. On mobile, set it to `0` to disable all external glows while preserving internal animations.
 
 ### Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/pages/Profile.tsx` | Add social URL fields and `user_id` to `mockUserProfile` |
-| `src/components/profile/shared/ProfileIdCardBack.tsx` | Add `onSuccess` handler for profile refresh after import |
+| `src/components/audio/VitanalandPortalSeed.tsx` | Add `glowIntensity` prop, conditionally render halo layers |
+| `src/components/mobile/MobileFixedOrb.tsx` | Pass `glowIntensity={0}`, remove `drop-shadow-lg` class |
+| `src/index.css` | Replace large drop-shadow with tight, minimal shadow |
+
+---
 
 ### Implementation Details
 
-**Profile.tsx (lines 59-88):**
+#### 1. Update `VitanalandPortalSeed.tsx`
 
+**Add new prop to interface:**
 ```tsx
-const mockUserProfile = {
-  id: user?.id || "",
-  user_id: user?.id,  // NEW: Add user_id field
-  name: profile.displayName,
-  handle: profile.handle || "@user",
-  avatarUrl: profile.avatar,
-  coverUrl: profile.coverUrl,
-  roles: ["community" as const],
-  membershipTier: null,
-  bio: profile.bio,
-  links: [],
-  languages: [],
-  location: "",
-  stats: dummyProfileStats,
-  vitanaIndex: 750,
-  vitanaPercentile: 85,
-  longevityArchetype: "The Mindful Mover",
-  offerings: [],
-  // NEW: Add social URLs from context
-  linkedin_url: profile.linkedin_url,
-  instagram_url: profile.instagram_url,
-  facebook_url: profile.facebook_url,
-  x_url: profile.x_url,
-  youtube_url: profile.youtube_url,
-  tiktok_url: profile.tiktok_url,
-  compliance: {
-    isProfessional: false,
-    licenseVerified: false
-  },
-  visibility: {
-    about: "public" as const,
-    links: "public" as const,
-    location: "public" as const,
-    showcase: "public" as const,
-    indexPublic: true,
-    healthShareConsent: true
-  }
-};
-```
-
-**ProfileIdCardBack.tsx:**
-
-1. Import `useProfile` hook
-2. Add refresh handler
-3. Pass `onSuccess` to dialog
-
-```tsx
-import { useProfile } from "@/context/ProfileProvider";
-
-export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackProps) {
-  const { user } = useAuth();
-  const { refreshProfile } = useProfile();  // NEW
-  // ... existing code ...
-
-  const handleImportSuccess = () => {
-    refreshProfile();  // Trigger context refresh
-  };
-
-  // In the dialog JSX:
-  <SocialMediaImportDialog 
-    open={dialogOpen}
-    onOpenChange={setDialogOpen}
-    platform={selectedPlatform.platform}
-    platformName={selectedPlatform.name}
-    icon={selectedPlatform.icon}
-    profileId={user?.id ?? profile.user_id ?? profile.id}
-    onSuccess={handleImportSuccess}  // NEW
-  />
+interface VitanalandPortalSeedProps {
+  audioState: 'idle' | 'listening' | 'processing' | 'error';
+  volumeLevel: number;
+  size?: 'sm' | 'nav' | 'md' | 'lg';
+  layoutId?: string;
+  glowIntensity?: number; // 0-1, default 1. 0 = no external halos
 }
 ```
 
-### Verification Steps
+**Update component signature:**
+```tsx
+export function VitanalandPortalSeed({ 
+  audioState, 
+  volumeLevel,
+  size = 'lg',
+  layoutId,
+  glowIntensity = 1  // Default to full glow
+}: VitanalandPortalSeedProps)
+```
 
-1. Navigate to Profile page while logged in as Daniela
-2. Go to Social Presence section (back of ID card)
-3. Click "Connect" on Instagram
-4. Enter a valid Instagram URL
-5. Submit the import
-6. Verify:
-   - Toast shows "Import Successful"
-   - Instagram icon immediately shows as connected (colored with checkmark)
-   - No page reload required
-7. Refresh page and verify the connected state persists
+**Conditionally render halo layers (lines 118-176):**
 
-### Technical Summary
+Wrap the three halo divs in a condition:
+```tsx
+{glowIntensity > 0 && (
+  <>
+    {/* Outer halo */}
+    <motion.div ... style={{ opacity: glowIntensity }} />
+    
+    {/* Second halo */}
+    <motion.div ... style={{ opacity: glowIntensity * 0.8 }} />
+    
+    {/* Thin halo ring */}
+    <motion.div ... style={{ opacity: glowIntensity }} />
+  </>
+)}
+```
 
-| Issue | Location | Root Cause | Fix |
-|-------|----------|------------|-----|
-| Social URLs not passed to component | Profile.tsx | `mockUserProfile` missing social URL fields | Add all 6 social URL fields from context |
-| No refresh after import | ProfileIdCardBack.tsx | Missing `onSuccess` handler | Add `refreshProfile()` callback |
-| Missing `user_id` field | Profile.tsx | Component can't identify correct user for updates | Add `user_id: user?.id` to profile object |
+This approach:
+- Preserves internal orb animations (nebula clouds, aurora paths, core glow)
+- Only removes the external "flashlight" halos
+- Can be fine-tuned with values between 0-1 if needed later
 
+---
+
+#### 2. Update `MobileFixedOrb.tsx`
+
+**Remove the `drop-shadow-lg` class and pass `glowIntensity={0}`:**
+
+```tsx
+// BEFORE (line 54)
+className="cursor-pointer drop-shadow-lg"
+
+// AFTER
+className="cursor-pointer"
+```
+
+```tsx
+// BEFORE (lines 56-61)
+<VitanalandPortalSeed 
+  audioState="idle"
+  volumeLevel={0}
+  size="nav"
+  layoutId="vitana-orb-mobile"
+/>
+
+// AFTER
+<VitanalandPortalSeed 
+  audioState="idle"
+  volumeLevel={0}
+  size="nav"
+  layoutId="vitana-orb-mobile"
+  glowIntensity={0}
+/>
+```
+
+---
+
+#### 3. Update `src/index.css`
+
+**Replace the large drop-shadow with a tight, minimal shadow (line 585):**
+
+```css
+/* BEFORE */
+filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
+
+/* AFTER - Tight shadow for lift, no glow spread */
+box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+outline: 1px solid rgba(255,255,255,0.12);
+```
+
+The new styling:
+- Uses `box-shadow` instead of `filter: drop-shadow()` for tighter control
+- Shadow spread is minimal (~8px) with low opacity
+- Thin outline provides edge definition without being a visible border
+- Works on both light and dark backgrounds
+
+---
+
+### Visual Result
+
+| Element | Before | After |
+|---------|--------|-------|
+| External halos | 3 blurred layers extending 13-25px beyond orb | None |
+| CSS drop-shadow | 30px blur, 10px offset | 8px blur, 2px offset |
+| Orb visibility | Strong glow reduces card readability | Clean edge, visible on any background |
+| Internal animations | Active | Preserved (nebula, aurora, core) |
+
+### Acceptance Criteria
+
+- On mobile Events feed, orb never "bleaches" the card behind it
+- Orb remains clearly visible on bright and dark surfaces
+- Ring is within ~2px of the orb edge
+- Shadow spread is minimal (~6-10px), low opacity
+- No visible border or frame added
+- All internal orb animations continue working
