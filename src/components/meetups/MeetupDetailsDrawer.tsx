@@ -692,11 +692,11 @@ export function MeetupDetailsDrawer({
             {/* Title Overlay */}
             <div className={cn(
               "absolute left-0 right-0 p-6",
-              isMobile ? "bottom-0 pt-16" : "bottom-0"
+              isMobile ? "bottom-0 pt-12" : "bottom-0"
             )}>
               <h2 className={cn(
                 "text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]",
-                isMobile && "mt-4"
+                isMobile && "mt-2"
               )} style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
                 {event.title}
               </h2>
@@ -1148,21 +1148,21 @@ export function MeetupDetailsDrawer({
       </ScrollArea>
 
       {/* Sticky Action Bar */}
-      <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg px-3 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-        <div className="flex items-center justify-center gap-2">
+      <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="flex items-center gap-2">
           {/* Use unified CTA logic */}
           {(() => {
             const getCtaButtonClasses = () => {
               switch (ctaConfig.variant) {
                 case 'ticket':
-                  return "flex-1 h-10 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white";
+                  return "flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white";
                 case 'view-ticket':
-                  return "flex-1 h-10 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white";
+                  return "flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white";
                 case 'disabled':
-                  return "flex-1 h-10 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed";
+                  return "flex-1 h-12 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed";
                 case 'join':
                 default:
-                  return "flex-1 h-10 font-semibold text-[15px]";
+                  return "flex-1 h-12 font-semibold text-[15px]";
               }
             };
 
@@ -1262,7 +1262,7 @@ export function MeetupDetailsDrawer({
                   <Button
                     variant="outline"
                     size="icon"
-                    className="h-10 w-10 shrink-0"
+                    className="h-12 w-12 shrink-0"
                     onClick={(e) => {
                       e.stopPropagation();
                       onPromoteEvent(event);
@@ -1287,7 +1287,7 @@ export function MeetupDetailsDrawer({
                     <Button 
                       variant="outline" 
                       size="icon" 
-                      className="h-10 w-10 shrink-0"
+                      className="h-12 w-12 shrink-0"
                       aria-label="Add to calendar"
                     >
                       <Calendar className="h-4 w-4" />
@@ -1323,7 +1323,7 @@ export function MeetupDetailsDrawer({
                 <Button 
                   variant="outline" 
                   size="icon" 
-                  className="h-10 w-10 shrink-0"
+                  className="h-12 w-12 shrink-0"
                   onClick={() => setShareDialogOpen(true)}
                   aria-label="Share meetup"
                 >
@@ -1342,7 +1342,7 @@ export function MeetupDetailsDrawer({
                 <Button
                   variant="outline"
                   size="icon"
-                  className={cn("h-10 w-10 shrink-0", isSaved && "bg-accent")}
+                  className={cn("h-12 w-12 shrink-0", isSaved && "bg-accent")}
                   onClick={handleSave}
                   aria-label={isSaved ? "Remove from saved" : "Save for later"}
                 >
