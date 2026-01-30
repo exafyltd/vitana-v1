@@ -25,6 +25,7 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
+import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
 import { getShareUrl } from "@/lib/shareUrl";
@@ -376,6 +377,8 @@ const EventsAndMeetups = () => {
   const [promoteCampaignOpen, setPromoteCampaignOpen] = useState(false);
   const [eventToPromote, setEventToPromote] = useState<any>(null);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [eventToShare, setEventToShare] = useState<any>(null);
 
   // Filter events by time
   const todayEvents = useMemo(() => {
@@ -507,6 +510,12 @@ const EventsAndMeetups = () => {
   const handlePromoteEvent = (event: any) => {
     setEventToPromote(event);
     setPromoteCampaignOpen(true);
+  };
+
+  // Handle share event - opens share dialog from parent
+  const handleShareEvent = (event: any) => {
+    setEventToShare(event);
+    setShareDialogOpen(true);
   };
 
   // Handle event creation - show the newly created event
@@ -942,6 +951,27 @@ const EventsAndMeetups = () => {
           hasNext={hasNext}
           isMobile={isMobile}
           onPromoteEvent={handlePromoteEvent}
+          onShareEvent={handleShareEvent}
+        />
+      )}
+
+      {/* Share Dialog - Rendered at root level to avoid z-index conflicts */}
+      {eventToShare && (
+        <UniversalShareDialog
+          open={shareDialogOpen}
+          onOpenChange={setShareDialogOpen}
+          content={{
+            type: "event",
+            id: eventToShare.id,
+            title: eventToShare.title,
+            description: eventToShare.description,
+            image_url: eventToShare.image_url || eventToShare.cover_image_url,
+            url: getShareUrl('event', eventToShare.id, {
+              utm_source: 'event_details',
+              utm_medium: 'share_dialog',
+              slug: eventToShare.slug
+            })
+          }}
         />
       )}
 

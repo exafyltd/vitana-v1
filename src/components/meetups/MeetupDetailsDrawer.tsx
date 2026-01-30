@@ -80,6 +80,7 @@ import {
   MapPinned,
   Megaphone,
   Ticket,
+  CalendarPlus,
   BarChart3,
   Eye,
 } from "lucide-react";
@@ -163,6 +164,7 @@ interface MeetupDetailsDrawerProps {
   hasNext?: boolean;
   isMobile?: boolean;
   onPromoteEvent?: (event: any) => void;
+  onShareEvent?: (event: any) => void;
 }
 
 export function MeetupDetailsDrawer({
@@ -175,6 +177,7 @@ export function MeetupDetailsDrawer({
   hasNext,
   isMobile = false,
   onPromoteEvent,
+  onShareEvent,
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
@@ -194,7 +197,7 @@ export function MeetupDetailsDrawer({
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [isCreatingThread, setIsCreatingThread] = useState(false);
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  // Share dialog state now managed by parent via onShareEvent callback
   
   const { addEvent, removeEvent } = useCalendarEvents();
   const navigate = useNavigate();
@@ -403,6 +406,52 @@ export function MeetupDetailsDrawer({
     utm_medium: 'share_dialog',
     slug: event.slug
   });
+
+  // Add to VITANA Smart Calendar (primary action)
+  const handleAddToVitanaCalendar = async () => {
+    if (!user) {
+      toast({
+        title: translate('auth.signInRequired', 'Sign in required'),
+        description: translate('calendar.signInToAdd', 'Please sign in to add to your calendar'),
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    try {
+      const calendarEvent = {
+        user_id: '',
+        title: event.title,
+        description: event.description || '',
+        start_time: event.start_time,
+        end_time: event.end_time,
+        location: event.location || event.virtual_link || '',
+        event_type: 'community' as const,
+        status: 'confirmed' as const,
+        priority: 'medium' as const,
+        is_recurring: false,
+        source_type: 'manual' as const,
+        metadata: {
+          meetup_id: event.id,
+          meetup_slug: event.slug,
+        }
+      };
+      
+      await addEvent(calendarEvent);
+      
+      toast({
+        title: translate('calendar.addedToSmart', 'Added to Smart Calendar ✓'),
+        description: translate('calendar.eventSaved', "Event saved. We'll remind you before it starts."),
+      });
+    } catch (error) {
+      console.error('Failed to add to VITANA calendar:', error);
+      toast({
+        title: translate('errors.failedToAdd', 'Failed to add event'),
+        description: translate('errors.tryAgain', 'Please try again.'),
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleExportToCalendar = (type: string) => {
     const startDate = new Date(event.start_time);
@@ -1314,7 +1363,7 @@ export function MeetupDetailsDrawer({
           })()}
 
           {/* Icon Rail - Premium glassy buttons */}
-          {/* Promote Button (only for event creators) - No Tooltip on mobile */}
+          {/* Promote Button (only for event creators) - Close drawer first */}
           {user && event.created_by === user.id && onPromoteEvent && (
             isMobile ? (
               <Button
@@ -1326,9 +1375,11 @@ export function MeetupDetailsDrawer({
                   border: '1px solid rgba(0, 0, 0, 0.08)'
                 }}
                 onPointerDown={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
+                  onOpenChange(false);
                   onPromoteEvent(event);
                 }}
                 aria-label={translate('eventCta.promoteEvent', 'Promote event')}
@@ -1345,6 +1396,8 @@ export function MeetupDetailsDrawer({
                       className="shrink-0 flex items-center justify-center h-12 w-12"
                       onClick={(e) => {
                         e.stopPropagation();
+                        e.preventDefault();
+                        onOpenChange(false);
                         onPromoteEvent(event);
                       }}
                       aria-label={translate('eventCta.promoteEvent', 'Promote event')}
@@ -1360,7 +1413,7 @@ export function MeetupDetailsDrawer({
             )
           )}
 
-          {/* Calendar Dropdown - Full mobile touch handling */}
+          {/* Calendar Dropdown - Full mobile touch handling with VITANA Calendar as primary */}
           <DropdownMenu modal={!isMobile}>
             <DropdownMenuTrigger asChild>
               <Button 
@@ -1375,6 +1428,7 @@ export function MeetupDetailsDrawer({
                   border: '1px solid rgba(0, 0, 0, 0.08)'
                 } : undefined}
                 onPointerDown={(e) => isMobile && e.stopPropagation()}
+                onTouchEnd={(e) => isMobile && e.stopPropagation()}
                 aria-label="Add to calendar"
               >
                 <Calendar className="h-4 w-4" />
@@ -1382,10 +1436,17 @@ export function MeetupDetailsDrawer({
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="w-48 z-[100] pointer-events-auto"
+              className="w-56 z-[100] pointer-events-auto"
               onCloseAutoFocus={(e) => e.preventDefault()}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Primary action - VITANA Smart Calendar */}
+              <DropdownMenuItem onSelect={handleAddToVitanaCalendar}>
+                <CalendarPlus className="h-4 w-4 mr-2" />
+                {translate('calendar.addToVitana', 'Add to VITANA Calendar')}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {/* External calendars */}
               <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
                 Google Calendar
               </DropdownMenuItem>
@@ -1403,7 +1464,7 @@ export function MeetupDetailsDrawer({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Share Button - Mobile touch handling */}
+          {/* Share Button - Close drawer first, then parent opens dialog */}
           <Button 
             variant="outline" 
             size="icon" 
@@ -1416,10 +1477,12 @@ export function MeetupDetailsDrawer({
               border: '1px solid rgba(0, 0, 0, 0.08)'
             } : undefined}
             onPointerDown={(e) => isMobile && e.stopPropagation()}
+            onTouchEnd={(e) => isMobile && e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setShareDialogOpen(true);
+              onOpenChange(false);
+              onShareEvent?.(event);
             }}
             aria-label="Share meetup"
           >
@@ -1440,6 +1503,7 @@ export function MeetupDetailsDrawer({
               border: '1px solid rgba(0, 0, 0, 0.08)'
             } : undefined}
             onPointerDown={(e) => isMobile && e.stopPropagation()}
+            onTouchEnd={(e) => isMobile && e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -1477,19 +1541,7 @@ export function MeetupDetailsDrawer({
         />
       )}
 
-      {/* Share Dialog */}
-      <UniversalShareDialog
-        open={shareDialogOpen}
-        onOpenChange={setShareDialogOpen}
-        content={{
-          type: "event",
-          id: event.id,
-          title: event.title,
-          description: event.description,
-          image_url: event.image_url || event.cover_image_url,
-          url: shareUrl
-        }}
-      />
+      {/* Share Dialog is now managed by parent component via onShareEvent callback */}
       
       {/* Profile Preview Dialog */}
       <ProfilePreviewDialog />
