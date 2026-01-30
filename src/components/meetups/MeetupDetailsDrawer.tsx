@@ -1314,38 +1314,53 @@ export function MeetupDetailsDrawer({
           })()}
 
           {/* Icon Rail - Premium glassy buttons */}
-          {/* Promote Button (only for event creators) */}
+          {/* Promote Button (only for event creators) - No Tooltip on mobile */}
           {user && event.created_by === user.id && onPromoteEvent && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className={cn(
-                      "shrink-0 flex items-center justify-center",
-                      isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
-                    )}
-                    style={isMobile ? {
-                      background: 'rgba(255, 255, 255, 0.9)',
-                      border: '1px solid rgba(0, 0, 0, 0.08)'
-                    } : undefined}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onPromoteEvent(event);
-                    }}
-                    aria-label={translate('eventCta.promoteEvent', 'Promote event')}
-                  >
-                    <Megaphone className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{translate('eventCta.promoteEvent', 'Promote event')}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            isMobile ? (
+              <Button
+                variant="outline"
+                size="icon"
+                className="shrink-0 flex items-center justify-center h-12 w-12 rounded-[14px] border-0"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                }}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onPromoteEvent(event);
+                }}
+                aria-label={translate('eventCta.promoteEvent', 'Promote event')}
+              >
+                <Megaphone className="h-4 w-4" />
+              </Button>
+            ) : (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="shrink-0 flex items-center justify-center h-12 w-12"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onPromoteEvent(event);
+                      }}
+                      aria-label={translate('eventCta.promoteEvent', 'Promote event')}
+                    >
+                      <Megaphone className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{translate('eventCta.promoteEvent', 'Promote event')}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )
           )}
 
+          {/* Calendar Dropdown - Full mobile touch handling */}
           <DropdownMenu modal={!isMobile}>
             <DropdownMenuTrigger asChild>
               <Button 
@@ -1359,29 +1374,36 @@ export function MeetupDetailsDrawer({
                   background: 'rgba(255, 255, 255, 0.9)',
                   border: '1px solid rgba(0, 0, 0, 0.08)'
                 } : undefined}
+                onPointerDown={(e) => isMobile && e.stopPropagation()}
                 aria-label="Add to calendar"
               >
                 <Calendar className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 z-[100]">
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('google'); }}>
+            <DropdownMenuContent 
+              align="end" 
+              className="w-48 z-[100] pointer-events-auto"
+              onCloseAutoFocus={(e) => e.preventDefault()}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
                 Google Calendar
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('outlook'); }}>
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('outlook')}>
                 Outlook
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('apple'); }}>
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('apple')}>
                 Apple Calendar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('ics'); }}>
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('ics')}>
                 <Download className="h-4 w-4 mr-2" />
                 Download ICS
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Share Button - Mobile touch handling */}
           <Button 
             variant="outline" 
             size="icon" 
@@ -1393,6 +1415,7 @@ export function MeetupDetailsDrawer({
               background: 'rgba(255, 255, 255, 0.9)',
               border: '1px solid rgba(0, 0, 0, 0.08)'
             } : undefined}
+            onPointerDown={(e) => isMobile && e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
@@ -1403,6 +1426,7 @@ export function MeetupDetailsDrawer({
             <Share2 className="h-4 w-4" />
           </Button>
 
+          {/* Save Button - Mobile touch handling */}
           <Button
             variant="outline"
             size="icon"
@@ -1415,6 +1439,7 @@ export function MeetupDetailsDrawer({
               background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
               border: '1px solid rgba(0, 0, 0, 0.08)'
             } : undefined}
+            onPointerDown={(e) => isMobile && e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
