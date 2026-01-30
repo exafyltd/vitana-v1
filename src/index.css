@@ -586,6 +586,14 @@ All colors MUST be HSL.
     filter: none !important;
   }
   
+  /* HARD DISABLE filter on clickable wrapper to prevent Tailwind drop-shadow-* from reintroducing flashlight */
+  .vitana-orb [role="button"],
+  [data-vitana-orb="true"] [role="button"],
+  .vitana-orb .drop-shadow-lg,
+  [data-vitana-orb="true"] .drop-shadow-lg {
+    filter: none !important;
+  }
+  
   /* Add subtle box-shadow to the orb inner element instead of filter glow */
   .vitana-orb > div,
   [data-vitana-orb="true"] > div {
