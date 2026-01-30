@@ -5,13 +5,15 @@ interface VitanalandPortalSeedProps {
   volumeLevel: number; // 0-1 range
   size?: 'sm' | 'nav' | 'md' | 'lg';
   layoutId?: string;
+  glowIntensity?: number; // 0 = no halos, 1 = full halos (default)
 }
 
 export function VitanalandPortalSeed({ 
   audioState, 
   volumeLevel,
   size = 'lg',
-  layoutId
+  layoutId,
+  glowIntensity = 1
 }: VitanalandPortalSeedProps) {
   // Size configuration for scaling all visual elements
   const sizeConfig = {
@@ -125,65 +127,70 @@ export function VitanalandPortalSeed({
       className={`relative ${config.container}`}
       layoutId={layoutId}
     >
-      {/* Outer halo - enhanced elliptical with size-specific opacity */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          inset: `${config.outerHaloInset}px`,
-          background: isError
-            ? `radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.625}) 0%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.375}) 40%, transparent 70%)`
-            : `radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, ${config.outerHaloOpacity}) 0%, rgba(76, 200, 244, ${config.outerHaloOpacity * 0.5}) 40%, transparent 70%)`,
-          filter: `blur(${config.outerBlur}px)`,
-          transform: 'scale(1.08, 1)',
-        }}
-        animate={{
-          scale: haloScale,
-          opacity: isListening ? [0.8, 1, 0.8] : [0.9, 1, 0.9],
-        }}
-        transition={{
-          scale: { duration: 0.2, ease: 'easeOut' },
-          opacity: { duration: isListening ? 1.2 : 4, repeat: Infinity, ease: 'easeInOut' },
-        }}
-      />
+      {/* Only render halos if glowIntensity > 0 */}
+      {glowIntensity > 0 && (
+        <>
+          {/* Outer halo - enhanced elliptical with size-specific opacity */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              inset: `${config.outerHaloInset}px`,
+              background: isError
+                ? `radial-gradient(ellipse 108% 100%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.625 * glowIntensity}) 0%, rgba(239, 68, 68, ${config.outerHaloOpacity * 0.375 * glowIntensity}) 40%, transparent 70%)`
+                : `radial-gradient(ellipse 108% 100%, rgba(76, 200, 244, ${config.outerHaloOpacity * glowIntensity}) 0%, rgba(76, 200, 244, ${config.outerHaloOpacity * 0.5 * glowIntensity}) 40%, transparent 70%)`,
+              filter: `blur(${config.outerBlur}px)`,
+              transform: 'scale(1.08, 1)',
+            }}
+            animate={{
+              scale: haloScale,
+              opacity: isListening ? [0.8, 1, 0.8] : [0.9, 1, 0.9],
+            }}
+            transition={{
+              scale: { duration: 0.2, ease: 'easeOut' },
+              opacity: { duration: isListening ? 1.2 : 4, repeat: Infinity, ease: 'easeInOut' },
+            }}
+          />
 
-      {/* Second halo layer for depth - with size-specific opacity */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          inset: `${config.secondHaloInset}px`,
-          background: `radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, ${config.secondHaloOpacity}) 0%, rgba(76, 200, 244, ${config.secondHaloOpacity * 0.53}) 40%, transparent 70%)`,
-          filter: `blur(${config.secondBlur}px)`,
-          transform: 'scale(1.1, 1.05)',
-        }}
-        animate={{
-          opacity: [0.6, 0.8, 0.6],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+          {/* Second halo layer for depth - with size-specific opacity */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              inset: `${config.secondHaloInset}px`,
+              background: `radial-gradient(ellipse 110% 105%, rgba(76, 200, 244, ${config.secondHaloOpacity * glowIntensity}) 0%, rgba(76, 200, 244, ${config.secondHaloOpacity * 0.53 * glowIntensity}) 40%, transparent 70%)`,
+              filter: `blur(${config.secondBlur}px)`,
+              transform: 'scale(1.1, 1.05)',
+            }}
+            animate={{
+              opacity: [0.6, 0.8, 0.6],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
 
-      {/* Thin halo ring - enhanced */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          inset: `${config.thinRingInset}px`,
-          background: isError
-            ? 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(239, 68, 68, 0.5) 75%, transparent 80%)'
-            : 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
-          filter: `blur(${config.thinBlur}px)`,
-          transform: 'scale(1.08, 1)',
-        }}
-        animate={{
-          scale: haloScale,
-        }}
-        transition={{
-          duration: 0.2,
-          ease: 'easeOut',
-        }}
-      />
+          {/* Thin halo ring - enhanced */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              inset: `${config.thinRingInset}px`,
+              background: isError
+                ? 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(239, 68, 68, 0.5) 75%, transparent 80%)'
+                : 'radial-gradient(ellipse 108% 100%, transparent 70%, rgba(76, 200, 244, 0.75) 75%, transparent 80%)',
+              filter: `blur(${config.thinBlur}px)`,
+              transform: 'scale(1.08, 1)',
+            }}
+            animate={{
+              scale: haloScale,
+            }}
+            transition={{
+              duration: 0.2,
+              ease: 'easeOut',
+            }}
+          />
+        </>
+      )}
 
       {/* Main sphere container with 3D depth and organic morphing */}
       <motion.div
