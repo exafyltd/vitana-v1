@@ -1,177 +1,101 @@
 
+## Goal
+Fix the new mobile layout regressions in the full-screen event details view:
+1) Remove the new white gap at the top (content should sit higher again).
+2) Ensure the Orb/Mute button stays on the “behind” (initial list) layer when event details are open, so it does not cover the X close button.
+3) Keep the X clearly tappable in the top-right.
 
-## Mobile Event Card Layout Adjustments
+---
 
-### Issues Identified
-
-From the screenshot, there are three layout problems:
-
-1. **Title cut off at top**: The event title "Evening of Stillness – Sound Bath" appears cut off by the MAXINA header bar (the blue area at top)
-2. **Empty space below CTA**: There's visible empty space between the CTA buttons and the bottom of the screen
-3. **Orb/Mute button hidden**: The Orb (which contains the soundscape mute toggle) is covered by the event sheet since the Sheet has `z-index: 50` while the Orb has `z-index: 40`
-
-### Root Cause Analysis
-
-The event detail sheet now uses `h-[100dvh]` (full screen height), but:
-- The hero image starts at `top: 0` which means it goes under the MAXINA header bar
-- The sheet's `z-index: 50` completely covers the Orb which has `z-index: 40`
-- The sticky action bar has `pb-[max(1rem,env(safe-area-inset-bottom))]` but content scrolls to the edge
-
-### Solution
-
-| Change | Purpose |
-|--------|---------|
-| Add top padding to hero on mobile | Push content down to avoid header overlap |
-| Elevate Orb z-index when sheet is open | Keep mute button visible above event details |
-| Adjust bottom spacing | Better fit with CTA bar |
-
-### Files to Modify
-
-| File | Change |
-|------|--------|
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Add mobile top padding to hero section |
-| `src/index.css` | Add rule to elevate Orb z-index above sheets when event detail is open |
-
-### Detailed Implementation
-
-#### 1. Add Top Padding to Hero Section (MeetupDetailsDrawer.tsx)
-
-On mobile, add top padding to push the hero image content down so the title isn't cut off by the header bar:
-
-**Line 609 (hero container):**
-
+## What’s happening now (root causes)
+### A) White space at the top
+In `MeetupDetailsDrawer.tsx` we added `pt-14` and `min-h-[45vh]` on the hero container for mobile:
 ```tsx
-// BEFORE
-<div className="relative w-full aspect-video bg-muted overflow-hidden">
-
-// AFTER
-<div className={cn(
-  "relative w-full bg-muted overflow-hidden",
-  isMobile ? "pt-14 min-h-[45vh]" : "aspect-video"
-)}>
+isMobile ? "pt-14 min-h-[45vh]" : "aspect-video"
 ```
+That padding pushes the hero down, creating the visible “blank” area above the image.
 
-The `pt-14` (56px) accounts for the MAXINA header height, and `min-h-[45vh]` ensures the hero area remains visually prominent while allowing more content to be visible.
+### B) Mute (Orb) covering the X
+We also added logic to elevate the Orb above the sheet:
+- `MeetupDetailsDrawer.tsx` adds `body.event-detail-sheet-open`
+- `index.css` bumps Orb to `z-index: 60`
 
-#### 2. Adjust Title Overlay Position
+This makes the Orb float above the event details sheet (and above the X), causing the overlap you’re seeing.
 
-**Line 692 (title overlay):**
+---
 
-```tsx
-// BEFORE
-<div className="absolute bottom-0 left-0 right-0 p-6">
+## Implementation plan (code changes)
 
-// AFTER  
-<div className={cn(
-  "absolute left-0 right-0 p-6",
-  isMobile ? "bottom-0 pt-6" : "bottom-0"
-)}>
-```
+### 1) Move the hero content up (remove the forced top padding on mobile)
+**File:** `src/components/meetups/MeetupDetailsDrawer.tsx`
 
-#### 3. Elevate Orb Above Sheet When Event Detail is Open
+- Change the hero wrapper classes so mobile no longer uses `pt-14`.
+- Prefer a consistent hero shape on mobile: keep `aspect-video` (or switch to a slightly taller hero if needed, but without top padding that creates a gap).
 
-Add a CSS rule so the Orb appears above the event detail sheet. We'll add a data attribute to the sheet and use CSS to elevate the orb.
+**Planned change (conceptually):**
+- Replace:
+  - `isMobile ? "pt-14 min-h-[45vh]" : "aspect-video"`
+- With something like:
+  - `isMobile ? "aspect-video" : "aspect-video"`
+  - (or a mobile-tuned height like `min-h-[40vh]` without top padding, if the hero feels too short)
 
-**In MeetupDetailsDrawer.tsx line 1401:**
+This removes the blank strip at the top immediately.
 
-```tsx
-// BEFORE
-<Sheet open={open} onOpenChange={onOpenChange}>
+---
 
-// AFTER
-<Sheet open={open} onOpenChange={onOpenChange}>
-  {/* Add data attribute to body when open */}
-```
+### 2) Keep Orb/Mute behind the event details (stop elevating z-index)
+**File:** `src/components/meetups/MeetupDetailsDrawer.tsx`
 
-Actually, a cleaner approach is to use CSS that targets when a bottom sheet is present:
+- Remove the `useEffect` that adds `event-detail-sheet-open` to the `<body>`.
+  - This was only introduced to raise the Orb above the sheet.
 
-**In src/index.css, add after line 586:**
+**File:** `src/index.css`
 
+- Remove the CSS block that raises Orb z-index when `body.event-detail-sheet-open` is present:
 ```css
-/* When bottom sheet is open, elevate Orb above it */
-.vitana-orb[data-sheet-open="true"],
-body:has([data-radix-dialog-overlay]) .vitana-orb,
-body:has([data-state="open"][data-side="bottom"]) .vitana-orb {
-  z-index: 60 !important; /* Above sheet (z-50) */
-}
-```
-
-However, `:has()` may not be fully supported. A more reliable approach is to conditionally render the Orb at a higher z-index when the drawer is open.
-
-**Alternative approach - Add inline style override in MeetupDetailsDrawer:**
-
-Since the Orb is rendered globally, we can use a React Portal or body class to elevate it. The simplest solution is to add a body class when the sheet is open:
-
-**In MeetupDetailsDrawer.tsx, add useEffect around line 530:**
-
-```tsx
-// Set body class when mobile sheet is open to elevate Orb above it
-useEffect(() => {
-  if (isMobile && open) {
-    document.body.classList.add('event-detail-sheet-open');
-    return () => {
-      document.body.classList.remove('event-detail-sheet-open');
-    };
-  }
-}, [isMobile, open]);
-```
-
-**In src/index.css, add after line 586:**
-
-```css
-/* When event detail sheet is open on mobile, elevate Orb above it */
 body.event-detail-sheet-open .vitana-orb,
-body.event-detail-sheet-open [data-vitana-orb="true"] {
-  z-index: 60 !important; /* Above sheet (z-50), but below other modals */
+body.event-detail-sheet-open [data-vitana-orb="true"],
+body.event-detail-sheet-open .OrbFloatingButton {
+  z-index: 60 !important;
 }
 ```
 
-#### 4. Reduce Bottom Spacing in ScrollArea
+After this, the sheet (z-50) will naturally sit above the Orb (z-40), meaning:
+- Orb stays “behind” (on the initial screen layer)
+- X remains unobstructed
 
-**Line 601:**
+---
 
-```tsx
-// BEFORE
-<ScrollArea className="flex-1 pb-20">
+### 3) Ensure the X is always visible and tappable
+**File:** `src/components/meetups/MeetupDetailsDrawer.tsx`
 
-// AFTER  
-<ScrollArea className={cn("flex-1", isMobile ? "pb-24" : "pb-20")}>
-```
+- Keep the X button, but make sure it’s positioned safely for mobile:
+  - Use safe-area top padding if needed (`top-[max(1rem,env(safe-area-inset-top))]`) rather than pushing the whole hero down.
+  - Keep `z-20` or raise slightly within the sheet content (not above the sheet globally).
 
-The `pb-24` (96px) on mobile ensures content doesn't get hidden behind the sticky action bar, while reducing unnecessary empty space.
+This ensures Appilix top chrome + device notch doesn’t interfere, while avoiding the white gap issue.
 
-### Visual Summary
+---
 
-```text
-BEFORE:                          AFTER:
-+------------------------+       +------------------------+
-| MAXINA        [header] |       | MAXINA        [header] |
-+-----Title cut off------+       +------------------------+
-|    Sound Bath          |       |     [Top Padding]      |
-|                        |       |                        |
-|    [Hero Image]        |       |    [Hero Image]        |
-|                        |       |                        |
-|    [Content]           |       |    Title: Sound Bath   |
-|                        |       |                        |
-|    [Empty Space]       |       |    [Content]           |
-|                        |       |                        |
-| [CTA Bar] [Orb hidden] |       | [CTA Bar]              |
-+------------------------+       |    [Orb visible]       |
-                                 +------------------------+
-```
+## Acceptance criteria (what you should see after)
+1) When opening an event on mobile:
+   - The hero image starts higher (no white band above it).
+2) The Orb/Mute button does NOT appear above the event detail screen.
+3) The X close button is always visible and easy to tap.
+4) Closing via X returns to the original list view and the Orb/Mute is visible again as normal.
 
-### Verification Steps
+---
 
-1. Open the app on mobile
-2. Navigate to Events page
-3. Tap on an event card
-4. Verify:
-   - Event title is fully visible (not cut off by header)
-   - Hero image has proper top padding
-   - X close button is clearly visible in top-right
-   - Orb/mute button is visible below the event details
-   - CTA buttons are at the bottom with minimal empty space below
-   - Content scrolls smoothly
-5. Tap the Orb to confirm it's interactive
-6. Close the event detail and verify Orb returns to normal z-index
+## Files to change
+- `src/components/meetups/MeetupDetailsDrawer.tsx`
+  - Remove body-class z-index workaround
+  - Remove hero `pt-14` padding approach; use safer positioning for X if needed
+- `src/index.css`
+  - Remove `event-detail-sheet-open` Orb z-index override
+
+---
+
+## Notes / tradeoffs
+- This approach matches your request precisely: Orb stays on the initial screen layer while the event detail sheet overlays it.
+- If we still need to protect the title from any overlap, we’ll do it by adjusting *overlay content spacing* (safe-area-aware) rather than padding the entire hero down (which creates the blank gap).
 
