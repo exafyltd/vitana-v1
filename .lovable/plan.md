@@ -1,57 +1,110 @@
 
+## Fix Mobile Event Details Icon Buttons (Complete Solution)
 
-## Fix Mobile Event Details Icon Buttons
+### Problem Summary
 
-### Problem
+The Calendar dropdown menu opens on mobile, but tapping on the menu items (Google Calendar, Outlook, Apple Calendar, Download ICS) does nothing. The Share and Save buttons also don't work as expected. The user confirmed that "functionalities should be the same as desktop, only adapted to mobile view."
 
-The icon buttons in the mobile Event Details sticky bar (Promote, Calendar, Share, Save) are not responding to taps. Only the main CTA button works. This is visible in the screenshot where tapping these buttons does nothing.
+### Root Cause Analysis
 
-### Root Cause
+When Radix UI's `DropdownMenu` is nested inside a `Sheet` (which is a Dialog primitive), several issues occur on mobile:
 
-When using Radix UI Sheet (which is a Dialog primitive) on mobile, nested interactive components like DropdownMenu and child Dialogs have portal/focus issues:
+1. **Focus Trap Conflict**: The Sheet's focus trap interferes with the DropdownMenu's portal
+2. **Touch Event Interception**: The overlay and parent touch handlers capture events before they reach menu items
+3. **Pointer Events**: The dropdown content needs explicit `pointer-events-auto` to receive touch events
+4. **onSelect vs onClick**: Radix recommends using `onSelect` for DropdownMenuItem, which handles both click and keyboard selection
 
-1. **Calendar button**: Uses DropdownMenu which creates its own portal. By default, DropdownMenu uses `modal={true}`, which can conflict with the parent Sheet's focus trap
-2. **Share button**: Opens UniversalShareDialog (another Dialog), creating a modal-in-modal situation
-3. **Promote button**: Calls `onPromoteEvent` which opens CampaignDialog - same modal-in-modal issue
-4. **Save button**: Direct onClick should work, but may be affected by event propagation issues
+Looking at the working `KebabMenu` component, we can see the pattern that works:
+```tsx
+<DropdownMenu modal={false}>
+  <DropdownMenuContent
+    onCloseAutoFocus={(e) => e.preventDefault()}
+    className="... pointer-events-auto"
+    onClick={(e) => e.stopPropagation()}
+  >
+```
 
 ### Solution
 
-1. **Add `modal={false}` to DropdownMenu** on mobile to prevent focus trap conflicts
-2. **Add explicit touch event handling** with `onClick` that doesn't conflict with the parent
-3. **Ensure all button onClick handlers properly prevent propagation** where needed
-4. **For nested dialogs (Share, Promote)**: These should work since they use their own portals, but we need to ensure the state setters are being called
+Apply the proven pattern from KebabMenu to the Calendar dropdown and fix the Share/Save buttons:
 
-### Files to Modify
+**File: `src/components/meetups/MeetupDetailsDrawer.tsx`**
 
-| File | Change |
-|------|--------|
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Add `modal={false}` to Calendar DropdownMenu on mobile, ensure all button handlers work |
+| Change | Location | Description |
+|--------|----------|-------------|
+| Add pointer-events-auto | DropdownMenuContent | Enable touch events on the menu |
+| Add onCloseAutoFocus | DropdownMenuContent | Prevent auto-focus issues |
+| Add onClick stopPropagation | DropdownMenuContent | Prevent bubbling to overlay |
+| Use onSelect instead of onClick | DropdownMenuItem | Use Radix's recommended event |
+| Add onPointerDown handlers | Share/Save buttons | Capture touch events early |
 
 ### Implementation Details
 
-#### 1. Calendar DropdownMenu - Add modal={false} on mobile
+#### 1. Calendar Dropdown - Full Fix
 
 ```tsx
-// Line ~1349
 <DropdownMenu modal={!isMobile}>
   <DropdownMenuTrigger asChild>
-    // ... Calendar button
+    <Button 
+      variant="outline" 
+      size="icon" 
+      className={cn(
+        "shrink-0 flex items-center justify-center",
+        isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+      )}
+      style={isMobile ? {
+        background: 'rgba(255, 255, 255, 0.9)',
+        border: '1px solid rgba(0, 0, 0, 0.08)'
+      } : undefined}
+      onPointerDown={(e) => isMobile && e.stopPropagation()}
+      aria-label="Add to calendar"
+    >
+      <Calendar className="h-4 w-4" />
+    </Button>
   </DropdownMenuTrigger>
-  <DropdownMenuContent align="end" className="w-48">
-    // ... menu items
+  <DropdownMenuContent 
+    align="end" 
+    className="w-48 z-[100] pointer-events-auto"
+    onCloseAutoFocus={(e) => e.preventDefault()}
+    onClick={(e) => e.stopPropagation()}
+  >
+    <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
+      Google Calendar
+    </DropdownMenuItem>
+    <DropdownMenuItem onSelect={() => handleExportToCalendar('outlook')}>
+      Outlook
+    </DropdownMenuItem>
+    <DropdownMenuItem onSelect={() => handleExportToCalendar('apple')}>
+      Apple Calendar
+    </DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem onSelect={() => handleExportToCalendar('ics')}>
+      <Download className="h-4 w-4 mr-2" />
+      Download ICS
+    </DropdownMenuItem>
   </DropdownMenuContent>
 </DropdownMenu>
 ```
 
-#### 2. Share Button - Add explicit onClick with proper handling
+#### 2. Share Button - Add Touch Handling
 
 ```tsx
-// Line ~1397
 <Button 
   variant="outline" 
-  size="icon"
-  // ... className and style
+  size="icon" 
+  className={cn(
+    "shrink-0 flex items-center justify-center",
+    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+  )}
+  style={isMobile ? {
+    background: 'rgba(255, 255, 255, 0.9)',
+    border: '1px solid rgba(0, 0, 0, 0.08)'
+  } : undefined}
+  onPointerDown={(e) => {
+    if (isMobile) {
+      e.stopPropagation();
+    }
+  }}
   onClick={(e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -59,16 +112,30 @@ When using Radix UI Sheet (which is a Dialog primitive) on mobile, nested intera
   }}
   aria-label="Share meetup"
 >
+  <Share2 className="h-4 w-4" />
+</Button>
 ```
 
-#### 3. Save Button - Add explicit onClick with proper handling
+#### 3. Save Button - Add Touch Handling
 
 ```tsx
-// Line ~1423
 <Button
   variant="outline"
   size="icon"
-  // ... className and style
+  className={cn(
+    "shrink-0 flex items-center justify-center",
+    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12",
+    isSaved && !isMobile && "bg-accent"
+  )}
+  style={isMobile ? {
+    background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
+    border: '1px solid rgba(0, 0, 0, 0.08)'
+  } : undefined}
+  onPointerDown={(e) => {
+    if (isMobile) {
+      e.stopPropagation();
+    }
+  }}
   onClick={(e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -76,34 +143,64 @@ When using Radix UI Sheet (which is a Dialog primitive) on mobile, nested intera
   }}
   aria-label={isSaved ? "Remove from saved" : "Save for later"}
 >
+  <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
+</Button>
 ```
 
-#### 4. Calendar Menu Items - Add proper mobile event handling
+#### 4. Promote Button - Add Touch Handling (if present)
 
 ```tsx
-<DropdownMenuItem 
+<Button
+  variant="outline"
+  size="icon"
+  className={cn(
+    "shrink-0 flex items-center justify-center",
+    isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+  )}
+  style={isMobile ? {
+    background: 'rgba(255, 255, 255, 0.9)',
+    border: '1px solid rgba(0, 0, 0, 0.08)'
+  } : undefined}
+  onPointerDown={(e) => {
+    if (isMobile) {
+      e.stopPropagation();
+    }
+  }}
   onClick={(e) => {
     e.stopPropagation();
-    handleExportToCalendar('google');
+    e.preventDefault();
+    onPromoteEvent(event);
   }}
+  aria-label={translate('eventCta.promoteEvent', 'Promote event')}
 >
-  Google Calendar
-</DropdownMenuItem>
-// ... similar for other items
+  <Megaphone className="h-4 w-4" />
+</Button>
 ```
 
 ### Technical Notes
 
-- The `modal={false}` prop on DropdownMenu prevents it from creating a focus trap, which conflicts with the Sheet's focus trap on mobile
-- Adding `e.stopPropagation()` and `e.preventDefault()` ensures touch events don't bubble up to parent handlers
-- The existing `handleExportToCalendar`, `setShareDialogOpen`, and `handleSave` functions are correctly implemented - they just need proper event handling to be triggered on mobile
+| Technique | Why It Works |
+|-----------|--------------|
+| `modal={false}` | Prevents DropdownMenu from creating its own focus trap that conflicts with Sheet |
+| `pointer-events-auto` | Ensures the dropdown portal receives touch events even when inside a Sheet |
+| `onCloseAutoFocus={(e) => e.preventDefault()}` | Prevents focus issues when menu closes |
+| `onSelect` vs `onClick` | Radix's official API for menu item selection - more reliable than onClick |
+| `onPointerDown` with stopPropagation | Captures touch events early before they bubble to parent handlers |
+| `onClick` with stopPropagation + preventDefault | Prevents Sheet overlay from intercepting the click |
+
+### Files to Modify
+
+| File | Changes |
+|------|---------|
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Update Calendar dropdown, Share button, Save button, and Promote button with proper mobile touch handling |
 
 ### Expected Result
 
 After these changes:
-- Tapping the Calendar icon opens the dropdown with calendar export options
-- Tapping the Share icon opens the UniversalShareDialog
-- Tapping the Promote icon (for event creators) opens the CampaignDialog  
-- Tapping the Save icon toggles the saved state
-- All actions work identically to desktop, just adapted for touch
-
+- Tapping "Google Calendar" in the dropdown opens Google Calendar in a new tab
+- Tapping "Outlook" opens Outlook Calendar in a new tab  
+- Tapping "Apple Calendar" / "Download ICS" shows the toast notification
+- Tapping Share icon opens the UniversalShareDialog
+- Tapping Save icon toggles the saved state with toast feedback
+- Tapping Promote icon (for event creators) opens the CampaignDialog
+- All buttons work identically to desktop, just adapted for touch
