@@ -58,7 +58,6 @@ export function MobileFixedOrb() {
           volumeLevel={0}
           size="nav"
           layoutId="vitana-orb-mobile"
-          glowIntensity={0}
         />
       </div>
     </motion.div>
