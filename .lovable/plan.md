@@ -1,268 +1,201 @@
 
 
-## Localize Inbox (Messages) Page Components
+## Fix Social Presence Connection Status Not Displaying
 
-### Root Cause
+### Problem Analysis
 
-The translation keys were updated in `de.json`, but the React components still use **hardcoded English strings**. The `useTranslation()` hook is imported in `Messages.tsx` (line 53-58) but barely used.
+The user reports that Instagram and Facebook accounts appear as "Not linked" on the profile page despite being connected. After thorough investigation, I found **two separate issues**:
+
+### Root Cause 1: Database Has No Social URLs
+
+The database query confirms that **Daniela Küper has null values for all social URLs**:
+
+```
+id: 96f34f52-72d1-4475-a96c-2217b63a196e
+user_id: 05ce4a1d-fb54-4c08-acd3-11c8d0a80d8b  
+instagram_url: null
+facebook_url: null
+linkedin_url: null
+```
+
+In contrast, **Jovana Comm** (whose profile displays correctly) has populated URLs:
+
+```
+instagram_url: https://www.instagram.com/jovanataditsh?igsh=...
+facebook_url: https://www.facebook.com/share/1CaVooJ3M5/
+```
+
+**Possible causes for the URLs not being saved:**
+- The edge function `social-media-import` may have failed silently
+- The import dialog may not have been completed successfully
+- There could be an RLS policy blocking the update
+
+### Root Cause 2: Profile.tsx Missing Social URL Fields
+
+The `/profile` page (Profile.tsx) creates a `mockUserProfile` object that is **missing all social URL fields**:
+
+```tsx
+const mockUserProfile = {
+  id: user?.id || "",
+  name: profile.displayName,
+  handle: profile.handle || "@user",
+  avatarUrl: profile.avatar,
+  // ... other fields
+  // MISSING: linkedin_url, instagram_url, facebook_url, x_url, tiktok_url, youtube_url
+};
+```
+
+Even though `ProfileProvider` fetches these fields (lines 93-98), they are never passed to the `ProfileIdCardBack` component.
+
+### Solution
+
+#### Fix 1: Update Profile.tsx to Include Social URLs
+
+Add the social URL fields to the `mockUserProfile` object:
+
+```tsx
+const mockUserProfile = {
+  id: user?.id || "",
+  user_id: user?.id,  // Add user_id for edge function compatibility
+  name: profile.displayName,
+  handle: profile.handle || "@user",
+  avatarUrl: profile.avatar,
+  coverUrl: profile.coverUrl,
+  // ... existing fields ...
+  
+  // Add social URLs from ProfileProvider context
+  linkedin_url: profile.linkedin_url,
+  instagram_url: profile.instagram_url,
+  facebook_url: profile.facebook_url,
+  x_url: profile.x_url,
+  youtube_url: profile.youtube_url,
+  tiktok_url: profile.tiktok_url,
+};
+```
+
+#### Fix 2: Add onSuccess Handler to Desktop Component
+
+The desktop `ProfileIdCardBack.tsx` is missing the `onSuccess` prop that triggers profile refresh after successful import. Compare:
+
+**Mobile (correct):**
+```tsx
+<SocialMediaImportDialog
+  ...
+  onSuccess={handleImportSuccess}  // ✓ Has refresh handler
+/>
+```
+
+**Desktop (missing):**
+```tsx
+<SocialMediaImportDialog 
+  ...
+  // Missing onSuccess prop!
+/>
+```
+
+Add the same refresh pattern to the desktop component.
 
 ### Files to Modify
 
-| File | Changes Needed |
-|------|----------------|
-| `src/i18n/de.json` | Add ~50 missing keys for popups and context tabs |
-| `src/i18n/en.json` | Mirror all keys in English |
-| `src/pages/Messages.tsx` | Replace ALL hardcoded strings with `translate()` calls |
-| `src/components/NewConversationPopup.tsx` | Add `useTranslation()` hook and localize all strings |
-| `src/components/messages/CreateGroupPopup.tsx` | Add `useTranslation()` hook and localize all strings |
+| File | Change |
+|------|--------|
+| `src/pages/Profile.tsx` | Add social URL fields and `user_id` to `mockUserProfile` |
+| `src/components/profile/shared/ProfileIdCardBack.tsx` | Add `onSuccess` handler for profile refresh after import |
 
-### Detailed Changes
+### Implementation Details
 
-#### 1. Add Missing Translation Keys to `de.json`
+**Profile.tsx (lines 59-88):**
 
-```json
-"inbox": {
-  "title": "Postfach",
-  "description": "Ihre Unterhaltungen, Updates und Benachrichtigungen",
-  "desktopTitle": "Nachrichten",
-  "desktopDescription": "Verbinden Sie sich mit Ihrer Community und Ihrem Netzwerk",
-  "loading": "Nachrichten werden geladen...",
-  "contextTabs": {
-    "community": "🌍 Community",
-    "network": "🏢 Netzwerk"
+```tsx
+const mockUserProfile = {
+  id: user?.id || "",
+  user_id: user?.id,  // NEW: Add user_id field
+  name: profile.displayName,
+  handle: profile.handle || "@user",
+  avatarUrl: profile.avatar,
+  coverUrl: profile.coverUrl,
+  roles: ["community" as const],
+  membershipTier: null,
+  bio: profile.bio,
+  links: [],
+  languages: [],
+  location: "",
+  stats: dummyProfileStats,
+  vitanaIndex: 750,
+  vitanaPercentile: 85,
+  longevityArchetype: "The Mindful Mover",
+  offerings: [],
+  // NEW: Add social URLs from context
+  linkedin_url: profile.linkedin_url,
+  instagram_url: profile.instagram_url,
+  facebook_url: profile.facebook_url,
+  x_url: profile.x_url,
+  youtube_url: profile.youtube_url,
+  tiktok_url: profile.tiktok_url,
+  compliance: {
+    isProfessional: false,
+    licenseVerified: false
   },
-  "actions": {
-    "new": "Neu",
-    "newMessage": "Neue Nachricht",
-    "createGroup": "Gruppe erstellen"
-  },
-  "searchPlaceholder": "Suchen...",
-  "tabs": {
-    "all": "Alle",
-    "groups": "Gruppen",
-    "direct": "Direkt",
-    "contacts": "Kontakte"
-  },
-  "newConversation": {
-    "title": "Neue Unterhaltung starten",
-    "titleGroup": "Gruppenchat erstellen",
-    "groupName": "Gruppenname",
-    "groupNamePlaceholder": "Gruppenname eingeben...",
-    "members": "Mitglieder",
-    "recipient": "Empfänger",
-    "addMore": "Weitere Personen hinzufügen",
-    "searchPeople": "Personen suchen",
-    "searchPlaceholder": "Name oder E-Mail eingeben...",
-    "searchMinChars": "Mindestens 2 Zeichen zum Suchen eingeben",
-    "searchResults": "Suchergebnisse",
-    "noResults": "Keine Nutzer gefunden. Versuchen Sie einen anderen Suchbegriff.",
-    "add": "Hinzufügen",
-    "added": "Hinzugefügt",
-    "cancel": "Abbrechen",
-    "startChat": "Chat starten",
-    "createGroup": "Gruppe erstellen",
-    "creating": "Wird erstellt..."
-  },
-  "createGroup": {
-    "title": "Gruppe erstellen",
-    "avatarSoon": "Avatar-Upload bald verfügbar.",
-    "groupName": "Gruppenname",
-    "addMembers": "Mitglieder hinzufügen",
-    "searchPlaceholder": "Nutzer suchen...",
-    "groupNameRequired": "Gruppenname erforderlich",
-    "groupNameRequiredDesc": "Bitte geben Sie einen Namen für Ihre Gruppe ein.",
-    "addMembersRequired": "Mitglieder hinzufügen",
-    "addMembersRequiredDesc": "Bitte fügen Sie mindestens ein Mitglied hinzu.",
-    "groupExists": "Gruppe existiert bereits",
-    "groupExistsDesc": "Eine Gruppe mit diesen Mitgliedern wurde kürzlich erstellt.",
-    "created": "Gruppe erstellt",
-    "createdDesc": "\"{name}\" wurde erfolgreich erstellt.",
-    "failed": "Gruppe konnte nicht erstellt werden",
-    "failedDesc": "Bitte versuchen Sie es erneut."
-  },
-  "toast": {
-    "success": "Erfolg",
-    "error": "Fehler",
-    "conversationStarted": "Unterhaltung gestartet!",
-    "authRequired": "Anmeldung erforderlich",
-    "noTenantContext": "Kein Mandantenkontext verfügbar",
-    "searchFailed": "Suche fehlgeschlagen",
-    "accessDenied": "Zugriff verweigert",
-    "communityOnly": "Nur Community-Nutzer können globale Unterhaltungen erstellen",
-    "pleaseLogin": "Bitte melden Sie sich an",
-    "groupRecipientsRequired": "Gruppenname und Empfänger erforderlich",
-    "singleRecipientRequired": "Wählen Sie einen Empfänger für Direktnachrichten"
+  visibility: {
+    about: "public" as const,
+    links: "public" as const,
+    location: "public" as const,
+    showcase: "public" as const,
+    indexPublic: true,
+    healthShareConsent: true
   }
+};
+```
+
+**ProfileIdCardBack.tsx:**
+
+1. Import `useProfile` hook
+2. Add refresh handler
+3. Pass `onSuccess` to dialog
+
+```tsx
+import { useProfile } from "@/context/ProfileProvider";
+
+export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackProps) {
+  const { user } = useAuth();
+  const { refreshProfile } = useProfile();  // NEW
+  // ... existing code ...
+
+  const handleImportSuccess = () => {
+    refreshProfile();  // Trigger context refresh
+  };
+
+  // In the dialog JSX:
+  <SocialMediaImportDialog 
+    open={dialogOpen}
+    onOpenChange={setDialogOpen}
+    platform={selectedPlatform.platform}
+    platformName={selectedPlatform.name}
+    icon={selectedPlatform.icon}
+    profileId={user?.id ?? profile.user_id ?? profile.id}
+    onSuccess={handleImportSuccess}  // NEW
+  />
 }
 ```
 
-#### 2. Update `src/pages/Messages.tsx`
-
-**Loading states (lines 184-225):**
-
-```tsx
-// BEFORE
-<StandardHeader 
-  title="Inbox"
-  description="Your conversations, updates, and notifications"
-/>
-// AFTER
-<StandardHeader 
-  title={translate('inbox.title')}
-  description={translate('inbox.description')}
-/>
-```
-
-**Mobile inbox view (lines 868-928):**
-
-```tsx
-// BEFORE
-<StandardHeader
-  title="Inbox"
-  description="Your conversations, updates, and notifications"
-/>
-// AFTER
-<StandardHeader
-  title={translate('inbox.title')}
-  description={translate('inbox.description')}
-/>
-
-// BEFORE
-<span className="text-sm">New</span>
-// AFTER
-<span className="text-sm">{translate('inbox.actions.new')}</span>
-```
-
-**Context tabs (lines 937-938):**
-
-```tsx
-// BEFORE
-<SplitBarTrigger value="global">🌍 Community</SplitBarTrigger>
-<SplitBarTrigger value="tenant">🏢 Network</SplitBarTrigger>
-// AFTER
-<SplitBarTrigger value="global">{translate('inbox.contextTabs.community')}</SplitBarTrigger>
-<SplitBarTrigger value="tenant">{translate('inbox.contextTabs.network')}</SplitBarTrigger>
-```
-
-**Filter buttons (lines 956, 978):**
-
-```tsx
-// BEFORE
-{filter === 'all' ? 'All' : filter === 'direct' ? 'Direct' : 'Groups'}
-// AFTER
-{translate(`inbox.tabs.${filter}`)}
-```
-
-**Desktop tabs (lines 252-275):**
-
-```tsx
-// BEFORE
-<TabsTrigger value="all">All</TabsTrigger>
-<TabsTrigger value="groups">Groups</TabsTrigger>
-<TabsTrigger value="direct">Direct Messages</TabsTrigger>
-<TabsTrigger value="contacts">Contacts</TabsTrigger>
-// AFTER
-<TabsTrigger value="all">{translate('inbox.tabs.all')}</TabsTrigger>
-<TabsTrigger value="groups">{translate('inbox.tabs.groups')}</TabsTrigger>
-<TabsTrigger value="direct">{translate('inbox.tabs.direct')}</TabsTrigger>
-<TabsTrigger value="contacts">{translate('inbox.tabs.contacts')}</TabsTrigger>
-```
-
-#### 3. Update `src/components/NewConversationPopup.tsx`
-
-Add import and hook:
-```tsx
-import { useTranslation } from "@/hooks/useTranslation";
-// Inside component:
-const { translate } = useTranslation();
-```
-
-Replace all hardcoded strings:
-
-| Line | Current | New |
-|------|---------|-----|
-| 409 | `'Create Group Chat' : 'Start New Conversation'` | `translate('inbox.newConversation.titleGroup') : translate('inbox.newConversation.title')` |
-| 417 | `"Group Name"` | `translate('inbox.newConversation.groupName')` |
-| 422 | `"Enter group name..."` | `translate('inbox.newConversation.groupNamePlaceholder')` |
-| 431 | `'Members' / 'Recipient'` | `translate('inbox.newConversation.members') / translate('inbox.newConversation.recipient')` |
-| 465 | `'Add more people' : 'Search for people'` | `translate('inbox.newConversation.addMore') : translate('inbox.newConversation.searchPeople')` |
-| 474 | `"Enter name or email to search..."` | `translate('inbox.newConversation.searchPlaceholder')` |
-| 483 | `"Type at least 2 characters..."` | `translate('inbox.newConversation.searchMinChars')` |
-| 490 | `"Search Results"` | `translate('inbox.newConversation.searchResults')` |
-| 524 | `'Added' : 'Add'` | `translate('inbox.newConversation.added') : translate('inbox.newConversation.add')` |
-| 534 | `"No users found..."` | `translate('inbox.newConversation.noResults')` |
-| 545 | `"Cancel"` | `translate('inbox.newConversation.cancel')` |
-| 551 | `'Creating...' / 'Create Group' / 'Start Chat'` | Localized versions |
-
-Toast messages (lines 87-109, 148-165, 266-295):
-```tsx
-// BEFORE
-toast({ title: "Error", description: "No tenant context available" });
-// AFTER
-toast({ 
-  title: translate('inbox.toast.error'), 
-  description: translate('inbox.toast.noTenantContext') 
-});
-```
-
-#### 4. Update `src/components/messages/CreateGroupPopup.tsx`
-
-Add import and hook:
-```tsx
-import { useTranslation } from "@/hooks/useTranslation";
-// Inside component:
-const { translate } = useTranslation();
-```
-
-Replace all hardcoded strings:
-
-| Line | Current | New |
-|------|---------|-----|
-| 283 | `"Create Group"` | `translate('inbox.createGroup.title')` |
-| 304-306 | `"Coming soon" / "Avatar upload..."` | `translate('inbox.createGroup.avatarSoon')` |
-| 313 | `"Group Name"` | `translate('inbox.createGroup.groupName')` |
-| 327 | `"Members"` | `translate('inbox.newConversation.members')` |
-| 360 | `"Add Members"` | `translate('inbox.createGroup.addMembers')` |
-| 367 | `"Search users..."` | `translate('inbox.createGroup.searchPlaceholder')` |
-| 409 | `"Cancel"` | `translate('inbox.newConversation.cancel')` |
-| 415 | `"Creating..." / "Create Group"` | Localized versions |
-
-Toast messages:
-```tsx
-// BEFORE
-toast({ title: "Group name required", description: "Please enter..." });
-// AFTER
-toast({ 
-  title: translate('inbox.createGroup.groupNameRequired'), 
-  description: translate('inbox.createGroup.groupNameRequiredDesc') 
-});
-```
-
-### Summary of Changes
-
-| Component | Strings to Replace |
-|-----------|-------------------|
-| Messages.tsx (loading) | 4 strings |
-| Messages.tsx (mobile view) | 12 strings |
-| Messages.tsx (desktop view) | 10 strings |
-| NewConversationPopup.tsx | 25+ strings including toasts |
-| CreateGroupPopup.tsx | 18+ strings including toasts |
-
 ### Verification Steps
 
-1. Set language to German (🇩🇪)
-2. Navigate to Inbox/Messages
-3. Verify:
-   - Title: "Postfach" ✓
-   - Description: "Ihre Unterhaltungen, Updates und Benachrichtigungen" ✓
-   - Context tabs: "🌍 Community" / "🏢 Netzwerk" ✓
-   - Filter tabs: "Alle" / "Direkt" / "Gruppen" ✓
-   - New button: "Neu" ✓
-4. Tap "Neu" button
-5. Verify popup:
-   - Title: "Neue Unterhaltung starten" ✓
-   - Search placeholder: "Name oder E-Mail eingeben..." ✓
-   - Cancel: "Abbrechen" ✓
-   - Start Chat: "Chat starten" ✓
-6. Test Create Group flow with German labels
+1. Navigate to Profile page while logged in as Daniela
+2. Go to Social Presence section (back of ID card)
+3. Click "Connect" on Instagram
+4. Enter a valid Instagram URL
+5. Submit the import
+6. Verify:
+   - Toast shows "Import Successful"
+   - Instagram icon immediately shows as connected (colored with checkmark)
+   - No page reload required
+7. Refresh page and verify the connected state persists
+
+### Technical Summary
+
+| Issue | Location | Root Cause | Fix |
+|-------|----------|------------|-----|
+| Social URLs not passed to component | Profile.tsx | `mockUserProfile` missing social URL fields | Add all 6 social URL fields from context |
+| No refresh after import | ProfileIdCardBack.tsx | Missing `onSuccess` handler | Add `refreshProfile()` callback |
+| Missing `user_id` field | Profile.tsx | Component can't identify correct user for updates | Add `user_id: user?.id` to profile object |
 
