@@ -1,201 +1,178 @@
 
 
-## Fix Social Presence Connection Status Not Displaying
+## Mobile Event Card Full-Screen Detail View
 
-### Problem Analysis
+### Summary
 
-The user reports that Instagram and Facebook accounts appear as "Not linked" on the profile page despite being connected. After thorough investigation, I found **two separate issues**:
+Transform the mobile event card detail view from a 90% height sheet with navigation arrows to a **full-screen immersive experience** with a dedicated close button, removing carousel-style navigation within the detail view.
 
-### Root Cause 1: Database Has No Social URLs
+### Current Behavior
 
-The database query confirms that **Daniela Küper has null values for all social URLs**:
-
-```
-id: 96f34f52-72d1-4475-a96c-2217b63a196e
-user_id: 05ce4a1d-fb54-4c08-acd3-11c8d0a80d8b  
-instagram_url: null
-facebook_url: null
-linkedin_url: null
-```
-
-In contrast, **Jovana Comm** (whose profile displays correctly) has populated URLs:
-
-```
-instagram_url: https://www.instagram.com/jovanataditsh?igsh=...
-facebook_url: https://www.facebook.com/share/1CaVooJ3M5/
+```text
++-----------------------------+
+|     MAXINA Header           |
++-----------------------------+
+|  Events & Meetups           |
+|  ← Card →                   |  <- Navigation arrows
+|  [Event Details]            |
+|  [Scrollable Content]       |
+|  [Sticky Action Bar]        |
++-----------------------------+
+|      90vh height            |
++-----------------------------+
 ```
 
-**Possible causes for the URLs not being saved:**
-- The edge function `social-media-import` may have failed silently
-- The import dialog may not have been completed successfully
-- There could be an RLS policy blocking the update
+### Target Behavior
 
-### Root Cause 2: Profile.tsx Missing Social URL Fields
-
-The `/profile` page (Profile.tsx) creates a `mockUserProfile` object that is **missing all social URL fields**:
-
-```tsx
-const mockUserProfile = {
-  id: user?.id || "",
-  name: profile.displayName,
-  handle: profile.handle || "@user",
-  avatarUrl: profile.avatar,
-  // ... other fields
-  // MISSING: linkedin_url, instagram_url, facebook_url, x_url, tiktok_url, youtube_url
-};
+```text
++-----------------------------+
+|                         [X] |  <- Close button (top-right)
+|                             |
+|     [Hero Image]            |
+|                             |
+|     [Event Title]           |
+|     [Host Info]             |
+|                             |
+|     [Event Details]         |
+|     (no internal scroll)    |
+|                             |
+|  [CTA Bar - Sticky Bottom]  |
++-----------------------------+
+|      Full screen (100dvh)   |
++-----------------------------+
 ```
-
-Even though `ProfileProvider` fetches these fields (lines 93-98), they are never passed to the `ProfileIdCardBack` component.
-
-### Solution
-
-#### Fix 1: Update Profile.tsx to Include Social URLs
-
-Add the social URL fields to the `mockUserProfile` object:
-
-```tsx
-const mockUserProfile = {
-  id: user?.id || "",
-  user_id: user?.id,  // Add user_id for edge function compatibility
-  name: profile.displayName,
-  handle: profile.handle || "@user",
-  avatarUrl: profile.avatar,
-  coverUrl: profile.coverUrl,
-  // ... existing fields ...
-  
-  // Add social URLs from ProfileProvider context
-  linkedin_url: profile.linkedin_url,
-  instagram_url: profile.instagram_url,
-  facebook_url: profile.facebook_url,
-  x_url: profile.x_url,
-  youtube_url: profile.youtube_url,
-  tiktok_url: profile.tiktok_url,
-};
-```
-
-#### Fix 2: Add onSuccess Handler to Desktop Component
-
-The desktop `ProfileIdCardBack.tsx` is missing the `onSuccess` prop that triggers profile refresh after successful import. Compare:
-
-**Mobile (correct):**
-```tsx
-<SocialMediaImportDialog
-  ...
-  onSuccess={handleImportSuccess}  // ✓ Has refresh handler
-/>
-```
-
-**Desktop (missing):**
-```tsx
-<SocialMediaImportDialog 
-  ...
-  // Missing onSuccess prop!
-/>
-```
-
-Add the same refresh pattern to the desktop component.
 
 ### Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/pages/Profile.tsx` | Add social URL fields and `user_id` to `mockUserProfile` |
-| `src/components/profile/shared/ProfileIdCardBack.tsx` | Add `onSuccess` handler for profile refresh after import |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | 1. Full-screen height on mobile<br/>2. Hide navigation arrows on mobile<br/>3. Add prominent close button<br/>4. Remove internal scrolling for focused view |
 
-### Implementation Details
+### Detailed Implementation
 
-**Profile.tsx (lines 59-88):**
+#### 1. Update Mobile Sheet to Full Screen
 
-```tsx
-const mockUserProfile = {
-  id: user?.id || "",
-  user_id: user?.id,  // NEW: Add user_id field
-  name: profile.displayName,
-  handle: profile.handle || "@user",
-  avatarUrl: profile.avatar,
-  coverUrl: profile.coverUrl,
-  roles: ["community" as const],
-  membershipTier: null,
-  bio: profile.bio,
-  links: [],
-  languages: [],
-  location: "",
-  stats: dummyProfileStats,
-  vitanaIndex: 750,
-  vitanaPercentile: 85,
-  longevityArchetype: "The Mindful Mover",
-  offerings: [],
-  // NEW: Add social URLs from context
-  linkedin_url: profile.linkedin_url,
-  instagram_url: profile.instagram_url,
-  facebook_url: profile.facebook_url,
-  x_url: profile.x_url,
-  youtube_url: profile.youtube_url,
-  tiktok_url: profile.tiktok_url,
-  compliance: {
-    isProfessional: false,
-    licenseVerified: false
-  },
-  visibility: {
-    about: "public" as const,
-    links: "public" as const,
-    location: "public" as const,
-    showcase: "public" as const,
-    indexPublic: true,
-    healthShareConsent: true
-  }
-};
-```
-
-**ProfileIdCardBack.tsx:**
-
-1. Import `useProfile` hook
-2. Add refresh handler
-3. Pass `onSuccess` to dialog
+**Lines 1381-1384:**
 
 ```tsx
-import { useProfile } from "@/context/ProfileProvider";
+// BEFORE
+<SheetContent side="bottom" className="h-[90vh] p-0">
 
-export function ProfileIdCardBack({ profile, themeConfig }: ProfileIdCardBackProps) {
-  const { user } = useAuth();
-  const { refreshProfile } = useProfile();  // NEW
-  // ... existing code ...
-
-  const handleImportSuccess = () => {
-    refreshProfile();  // Trigger context refresh
-  };
-
-  // In the dialog JSX:
-  <SocialMediaImportDialog 
-    open={dialogOpen}
-    onOpenChange={setDialogOpen}
-    platform={selectedPlatform.platform}
-    platformName={selectedPlatform.name}
-    icon={selectedPlatform.icon}
-    profileId={user?.id ?? profile.user_id ?? profile.id}
-    onSuccess={handleImportSuccess}  // NEW
-  />
-}
+// AFTER
+<SheetContent 
+  side="bottom" 
+  className="h-[100dvh] p-0 rounded-none"
+>
 ```
+
+Using `100dvh` (dynamic viewport height) ensures proper full-screen behavior accounting for browser UI on mobile.
+
+#### 2. Add Custom Close Button (Top Right)
+
+Since we're hiding the navigation arrows on mobile, we'll add a dedicated close button in the hero area. This replaces the built-in Sheet close button which is positioned at top-right.
+
+**After line 633 (hero image section), add mobile-only close button:**
+
+```tsx
+{/* Mobile Close Button - Top Right */}
+{isMobile && (
+  <Button
+    variant="outline"
+    size="icon"
+    className={cn(
+      "absolute top-4 right-4 z-20 rounded-full",
+      "bg-background/80 backdrop-blur-md shadow-md",
+      "border-border/40 hover:bg-background/90",
+      "h-10 w-10"
+    )}
+    onClick={() => onOpenChange(false)}
+    aria-label="Close event details"
+  >
+    <X className="h-5 w-5" />
+  </Button>
+)}
+```
+
+#### 3. Hide Navigation Arrows on Mobile
+
+**Lines 634-669 (arrow buttons in hero):**
+
+Wrap the existing navigation arrow container with a conditional render to hide on mobile:
+
+```tsx
+// BEFORE
+<div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+  <Button ... ChevronLeft />
+  <Button ... ChevronRight />
+</div>
+
+// AFTER
+{!isMobile && (
+  <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+    <Button ... ChevronLeft />
+    <Button ... ChevronRight />
+  </div>
+)}
+```
+
+#### 4. Remove Swipe Navigation on Mobile
+
+Since the user will be focusing on a single card, we should disable the swipe-to-navigate feature on mobile. The swipe handlers are at lines 468-489.
+
+**Lines 597-599:**
+
+```tsx
+// BEFORE
+onTouchStart={onTouchStart}
+onTouchMove={onTouchMove}
+onTouchEnd={onTouchEnd}
+
+// AFTER (conditional)
+onTouchStart={!isMobile ? onTouchStart : undefined}
+onTouchMove={!isMobile ? onTouchMove : undefined}
+onTouchEnd={!isMobile ? onTouchEnd : undefined}
+```
+
+#### 5. Adjust ScrollArea for Better Focus (Optional)
+
+The current implementation uses `<ScrollArea>` (line 601). For a focused view, we can keep scrolling enabled since event content may still exceed viewport, but optimize the layout:
+
+```tsx
+// Ensure content fits better without requiring excessive scrolling
+<ScrollArea className="flex-1 pb-24"> {/* Increased padding for sticky bar */}
+```
+
+### Visual Changes Summary
+
+| Element | Before | After |
+|---------|--------|-------|
+| Sheet height | `90vh` | `100dvh` (full screen) |
+| Navigation arrows | Visible (prev/next) | Hidden on mobile |
+| Close button | Default Sheet X | Prominent X in hero area |
+| Swipe navigation | Enabled | Disabled on mobile |
+| Focus | Multi-card carousel | Single card focus |
+
+### Technical Notes
+
+1. **Why `100dvh` instead of `100vh`**: Dynamic viewport height (`dvh`) accounts for mobile browser UI changes (address bar, navigation bar) and provides more consistent full-screen experience.
+
+2. **Rounded corners**: Set `rounded-none` to eliminate any rounded corners for true full-screen edge-to-edge appearance.
+
+3. **Safe area**: The sticky action bar already respects safe areas via `pb-[max(1rem,env(safe-area-inset-bottom))]` (line 1124).
+
+4. **Desktop unchanged**: All changes are conditional on `isMobile` prop, preserving desktop behavior with navigation arrows and standard sheet appearance.
 
 ### Verification Steps
 
-1. Navigate to Profile page while logged in as Daniela
-2. Go to Social Presence section (back of ID card)
-3. Click "Connect" on Instagram
-4. Enter a valid Instagram URL
-5. Submit the import
-6. Verify:
-   - Toast shows "Import Successful"
-   - Instagram icon immediately shows as connected (colored with checkmark)
-   - No page reload required
-7. Refresh page and verify the connected state persists
-
-### Technical Summary
-
-| Issue | Location | Root Cause | Fix |
-|-------|----------|------------|-----|
-| Social URLs not passed to component | Profile.tsx | `mockUserProfile` missing social URL fields | Add all 6 social URL fields from context |
-| No refresh after import | ProfileIdCardBack.tsx | Missing `onSuccess` handler | Add `refreshProfile()` callback |
-| Missing `user_id` field | Profile.tsx | Component can't identify correct user for updates | Add `user_id: user?.id` to profile object |
+1. Open the app on mobile (or mobile preview)
+2. Navigate to Events page
+3. Tap on an event card
+4. Verify:
+   - Detail view covers full screen (no gap at top)
+   - Left/right arrows are NOT visible
+   - X button appears in top-right corner of hero image
+   - Tapping X closes the detail and returns to card list
+   - Content scrolls vertically if needed
+   - Sticky action bar remains at bottom
+5. Confirm desktop view still has prev/next arrows
 
