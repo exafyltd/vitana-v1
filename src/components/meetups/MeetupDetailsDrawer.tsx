@@ -1379,7 +1379,6 @@ export function MeetupDetailsDrawer({
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  onOpenChange(false);
                   onPromoteEvent(event);
                 }}
                 aria-label={translate('eventCta.promoteEvent', 'Promote event')}
@@ -1394,10 +1393,9 @@ export function MeetupDetailsDrawer({
                       variant="outline"
                       size="icon"
                       className="shrink-0 flex items-center justify-center h-12 w-12"
-                      onClick={(e) => {
+                    onClick={(e) => {
                         e.stopPropagation();
                         e.preventDefault();
-                        onOpenChange(false);
                         onPromoteEvent(event);
                       }}
                       aria-label={translate('eventCta.promoteEvent', 'Promote event')}
@@ -1481,7 +1479,6 @@ export function MeetupDetailsDrawer({
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              onOpenChange(false);
               onShareEvent?.(event);
             }}
             aria-label="Share meetup"
