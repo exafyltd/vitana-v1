@@ -1,111 +1,111 @@
 
 
-## Fit Event Details to Available Viewport (Below Appilix Header)
+## Fix Mobile Event Details Viewport Positioning
 
 ### Problem Analysis
 
-Looking at the screenshot, the event details sheet uses `h-[100dvh]` (full device viewport height), but the app runs inside Appilix which has its own header bar (~1.3cm / 52px). This causes:
+Looking at the screenshot, I can see these UX issues:
 
-1. **Content extends beyond visible area**: The sheet thinks it has the full screen, but the Appilix header occupies the top
-2. **White gap visible**: The `pt-5` padding we added creates a white band, but doesn't solve the core sizing issue
-3. **CTA bar pushed too low**: The action bar at the bottom may be cut off or positioned incorrectly
+| Issue | Root Cause |
+|-------|------------|
+| **Gray band at top** | Sheet uses `side="bottom"` which positions it at `bottom-0`. With `h-[calc(100dvh-52px)]`, the sheet doesn't reach the top, leaving a 52px gap showing the gray overlay. |
+| **Content not aligned** | The sheet slides up from bottom but stops short of the Appilix header, creating dead space |
+
+The current approach:
+```text
++------------------------+  <- top of viewport
+| MAXINA (52px)          |
++------------------------+
+| 52px GAP (gray area)   |  <- This is the overlay showing through!
++------------------------+
+| Sheet starts here      |  <- Sheet is bottom-anchored, height stops short
+| (hero image)           |
++------------------------+
+```
+
+What we need:
+```text
++------------------------+  <- top of viewport  
+| MAXINA (52px)          |  <- Appilix header (outside our control)
++------------------------+
+| Sheet starts here      |  <- Sheet TOP-anchored at 52px
+| (hero image fills)     |
+|                        |
+| [CTA Bar]              |
++------------------------+  <- bottom of viewport
+```
+
+---
 
 ### Solution
 
-Instead of using `h-[100dvh]` (full viewport), we need to account for the Appilix header by:
+Override the sheet positioning for this specific mobile use case:
+1. Change from `bottom-0` to `top-[52px]` positioning
+2. Remove `bottom-0` default and set explicit `bottom-0` so it stretches full height
+3. Hide the default Sheet close button (we have our own X in the hero)
 
-1. **Use CSS calc to subtract header height**: Change the mobile Sheet height from `h-[100dvh]` to `h-[calc(100dvh-52px)]` (where 52px ≈ 1.3cm for the Appilix bar)
-2. **Remove the pt-5 padding**: Since we're now sizing correctly, we don't need the top padding hack
-3. **Adjust top position**: Position the sheet at `top-[52px]` instead of relying on bottom positioning
+---
 
 ### Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Adjust mobile Sheet height and positioning to account for Appilix header |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Override Sheet positioning to anchor from top-[52px] instead of bottom-0 |
+
+---
 
 ### Implementation Details
 
-#### MeetupDetailsDrawer.tsx (around line 1407-1412)
+#### MeetupDetailsDrawer.tsx (line ~1406)
 
 ```tsx
 // BEFORE
-<Sheet open={open} onOpenChange={onOpenChange}>
-  <SheetContent side="bottom" className="h-[100dvh] p-0 rounded-none">
-    {content}
-  </SheetContent>
-</Sheet>
+<SheetContent side="bottom" className="h-[calc(100dvh-52px)] p-0 rounded-none">
 
 // AFTER
-<Sheet open={open} onOpenChange={onOpenChange}>
-  <SheetContent 
-    side="bottom" 
-    className="h-[calc(100dvh-52px)] p-0 rounded-none"
-  >
-    {content}
-  </SheetContent>
-</Sheet>
+<SheetContent 
+  side="bottom" 
+  className="!top-[52px] !bottom-0 !h-auto p-0 rounded-none [&>button]:hidden"
+>
 ```
 
-The `52px` value accounts for:
-- Appilix header bar: ~1.3cm ≈ 52px
-- This leaves the full remaining viewport for the event details
+**Explanation of the changes:**
+- `!top-[52px]` - Positions sheet 52px from top (below Appilix header) with `!important` to override the default `bottom` variant
+- `!bottom-0` - Anchors to bottom of viewport
+- `!h-auto` - Let height be determined by top/bottom anchoring instead of explicit height
+- `[&>button]:hidden` - Hides the default Sheet close button (we have our own X)
 
-#### Remove the pt-5 padding from hero (line 610-612)
+This makes the sheet stretch from `top: 52px` to `bottom: 0`, perfectly filling the available space below the Appilix header.
 
-```tsx
-// BEFORE
-<div className={cn(
-  "relative w-full aspect-video bg-muted overflow-hidden",
-  isMobile && "pt-5"
-)}>
-
-// AFTER
-<div className="relative w-full aspect-video bg-muted overflow-hidden">
-```
-
-Since we're now correctly sizing the container, the padding is no longer needed.
-
-### Why This Works
-
-```text
-BEFORE:                          AFTER:
-+------------------------+       +------------------------+
-| MAXINA (52px header)   |       | MAXINA (52px header)   |
-+------------------------+       +------------------------+
-|                        |       |  Hero Image            |
-|  Sheet at h-[100dvh]   |       |    (Event Title)       |
-|  extends under header  |       +------------------------+
-|                        |       |  Content               |
-|  Content...            |       |  (tags, when/where)    |
-|                        |       +------------------------+
-|                        |       |  [CTA Bar]             |
-+------------------------+       +------------------------+
-| CTA bar pushed down    |       | Fits perfectly         |
-| or off-screen          |       | in available space     |
-+------------------------+       +------------------------+
-```
+---
 
 ### Visual Result
 
-After this change:
-- Event details will perfectly fill the space below the Appilix header
-- Hero image starts immediately at the top of the sheet (no white gap)
-- CTA bar sits properly at the bottom
-- X close button remains visible and unobstructed
-- Mute button stays behind the sheet (already fixed)
+After this fix:
+- Hero image starts immediately below the MAXINA header bar (no gray gap)
+- Content fills the entire available viewport
+- CTA bar sits at the proper bottom position
+- X close button remains visible in hero (our custom one)
+- No duplicate close buttons
 
-### Note on Header Height
+---
 
-If the Appilix header height changes or varies by device, you could use a CSS custom property:
+### Alternative Approach (if needed)
 
-```css
-:root {
-  --appilix-header-height: 52px;
-}
+If the `!important` overrides don't work cleanly, we could create a custom sheet variant or use inline styles:
+
+```tsx
+<SheetContent 
+  side="bottom" 
+  className="p-0 rounded-none [&>button]:hidden"
+  style={{ 
+    top: '52px', 
+    bottom: 0, 
+    height: 'auto',
+    insetInline: 0 
+  }}
+>
 ```
 
-And reference it: `h-[calc(100dvh-var(--appilix-header-height))]`
-
-For now, we'll use the fixed `52px` value based on your ~1.3cm measurement.
+This gives us explicit control over positioning without fighting the CSS cascade.
 
