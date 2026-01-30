@@ -1346,7 +1346,7 @@ export function MeetupDetailsDrawer({
             </TooltipProvider>
           )}
 
-          <DropdownMenu>
+          <DropdownMenu modal={!isMobile}>
             <DropdownMenuTrigger asChild>
               <TooltipProvider>
                 <Tooltip>
@@ -1374,17 +1374,17 @@ export function MeetupDetailsDrawer({
               </TooltipProvider>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => handleExportToCalendar('google')}>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('google'); }}>
                 Google Calendar
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExportToCalendar('outlook')}>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('outlook'); }}>
                 Outlook
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExportToCalendar('apple')}>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('apple'); }}>
                 Apple Calendar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleExportToCalendar('ics')}>
+              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleExportToCalendar('ics'); }}>
                 <Download className="h-4 w-4 mr-2" />
                 Download ICS
               </DropdownMenuItem>
@@ -1405,7 +1405,11 @@ export function MeetupDetailsDrawer({
                     background: 'rgba(255, 255, 255, 0.9)',
                     border: '1px solid rgba(0, 0, 0, 0.08)'
                   } : undefined}
-                  onClick={() => setShareDialogOpen(true)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setShareDialogOpen(true);
+                  }}
                   aria-label="Share meetup"
                 >
                   <Share2 className="h-4 w-4" />
@@ -1432,7 +1436,11 @@ export function MeetupDetailsDrawer({
                     background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
                     border: '1px solid rgba(0, 0, 0, 0.08)'
                   } : undefined}
-                  onClick={handleSave}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleSave();
+                  }}
                   aria-label={isSaved ? "Remove from saved" : "Save for later"}
                 >
                   <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
