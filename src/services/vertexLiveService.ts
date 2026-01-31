@@ -31,6 +31,8 @@ export class VertexLiveService {
   // Heartbeat management
   private heartbeatInterval: number | null = null;
   private lastPongReceived: number = Date.now();
+  // Audio scheduling to prevent gaps between chunks
+  private lastScheduledEndTime: number = 0;
 
   constructor(callbacks: VertexLiveCallbacks) {
     this.callbacks = callbacks;
@@ -391,6 +393,7 @@ export class VertexLiveService {
   }
 
   // Play accumulated PCM16 chunks as a single AudioBufferSource
+  // FIX: Schedule sequential playback to eliminate gaps between turns
   private async playTurnBuffer() {
     try {
       if (!this.audioContext) return;
@@ -413,8 +416,18 @@ export class VertexLiveService {
       const src = this.audioContext.createBufferSource();
       src.buffer = buf;
       src.connect(this.audioContext.destination);
-      src.start(0);
-      console.log('▶️ Per-turn playback started. Bytes:', pcm.byteLength, 'Frames:', frames);
+
+      // Schedule playback to start immediately after previous chunk ends
+      // This eliminates gaps between consecutive audio turns
+      const now = this.audioContext.currentTime;
+      const nextStartTime = Math.max(now, this.lastScheduledEndTime);
+      src.start(nextStartTime);
+
+      // Track when this segment will end for next scheduling
+      const duration = buf.duration;
+      this.lastScheduledEndTime = nextStartTime + duration;
+
+      console.log(`▶️ Scheduled playback at ${nextStartTime.toFixed(3)}s (now: ${now.toFixed(3)}s), duration: ${duration.toFixed(3)}s, bytes: ${pcm.byteLength}, frames: ${frames}`);
     } catch (e) {
       console.error('Per-turn playback error:', e);
     }
@@ -629,10 +642,10 @@ export class VertexLiveService {
 
   disconnect() {
     console.log('🔌 Disconnecting from Vertex AI...');
-    
+
     // Mark as intentional disconnect to prevent false errors
     this.isIntentionalDisconnect = true;
-    
+
     this.stopAudio();
     this.stopScreen();
     this.stopCamera();
@@ -650,6 +663,7 @@ export class VertexLiveService {
     this.isSetupComplete = false;
     this.geminiReadyFired = false;
     this.conversationId = null;
+    this.lastScheduledEndTime = 0; // Reset audio scheduling for clean reconnect
     
     // Reset flag after a short delay to allow close handler to see it
     setTimeout(() => {
