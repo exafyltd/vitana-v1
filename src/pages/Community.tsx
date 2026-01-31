@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
@@ -36,6 +37,9 @@ import { useEventSelection } from '@/context/EventSelectionContext';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
 import { useEventRecommendations } from '@/hooks/useEventRecommendations';
 import { HorizontalCardList } from '@/components/ui/horizontal-card-list';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileCommunityNav } from '@/components/community/MobileCommunityNav';
+import { MobileEntryCard } from '@/components/community/MobileEntryCard';
 import { 
   transformMemberRankingToCard,
   transformGroupRankingToCard,
@@ -968,6 +972,8 @@ const renderEventGrid = (
 };
 
 export default withScreenId(function Community() {
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { todayEvents, upcomingEvents } = useCommunityEvents();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
@@ -982,29 +988,6 @@ export default withScreenId(function Community() {
   const { user } = useAuth();
   const [followStatus, setFollowStatus] = useState<Map<string, boolean>>(new Map());
   const [followLoading, setFollowLoading] = useState<Set<string>>(new Set());
-
-  // Fetch follow statuses for visible people
-  const fetchFollowStatuses = async (userIds: string[]) => {
-    if (!user || userIds.length === 0) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('user_follows')
-        .select('following_id')
-        .eq('follower_id', user.id)
-        .in('following_id', userIds);
-      
-      if (error) throw error;
-      
-      const statusMap = new Map<string, boolean>();
-      userIds.forEach(id => statusMap.set(id, false));
-      data?.forEach(follow => statusMap.set(follow.following_id, true));
-      
-      setFollowStatus(statusMap);
-    } catch (error) {
-      console.error('Error fetching follow statuses:', error);
-    }
-  };
   
   // Phase 1: Real Community Members
   const { members, loading: membersLoading, getDisplayName } = useCommunityMembers();
@@ -1026,8 +1009,17 @@ export default withScreenId(function Community() {
   
   const latestActions = getLatestActions(2);
 
+  // Mobile users should never see /comm - redirect to Events
+  useEffect(() => {
+    if (isMobile) {
+      navigate('/comm/events-meetups?tab=upcoming', { replace: true });
+    }
+  }, [isMobile, navigate]);
+
   // Fetch real activity metrics
   useEffect(() => {
+    if (isMobile) return; // Skip for mobile since we redirect
+    
     const fetchMetrics = async () => {
       try {
         // Count today's events
@@ -1059,7 +1051,46 @@ export default withScreenId(function Community() {
     };
 
     fetchMetrics();
-  }, []);
+  }, [isMobile]);
+
+  // Fetch follow statuses when people data loads
+  useEffect(() => {
+    if (isMobile) return; // Skip for mobile since we redirect
+    if (!user || members.length === 0) return;
+    
+    const userIds = members
+      .slice(0, 6)
+      .map(m => m.user_id)
+      .filter(id => id && !id.startsWith('demo-')) as string[];
+    
+    if (userIds.length > 0) {
+      const fetchFollowStatuses = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('user_follows')
+            .select('following_id')
+            .eq('follower_id', user.id)
+            .in('following_id', userIds);
+          
+          if (error) throw error;
+          
+          const statusMap = new Map<string, boolean>();
+          userIds.forEach(id => statusMap.set(id, false));
+          data?.forEach(follow => statusMap.set(follow.following_id, true));
+          
+          setFollowStatus(statusMap);
+        } catch (error) {
+          console.error('Error fetching follow statuses:', error);
+        }
+      };
+      fetchFollowStatuses();
+    }
+  }, [members, user, isMobile]);
+
+  // Prevent flash: return null while redirecting on mobile
+  if (isMobile) {
+    return null;
+  }
 
   // Event click handler for opening detail drawer
   const handleEventClick = (eventId: string) => {
@@ -1155,21 +1186,8 @@ export default withScreenId(function Community() {
     rewardDescription: "Connect for social credits"
   }));
 
-  // Fetch follow statuses when people data loads
-  useEffect(() => {
-    const allPeople = realCommunityPeople.length > 0 ? realCommunityPeople : communityPeople;
-    const userIds = allPeople
-      .map(p => p.authorId)
-      .filter(id => id && !id.startsWith('demo-')) as string[];
-    
-    if (userIds.length > 0) {
-      fetchFollowStatuses(userIds);
-    }
-  }, [realCommunityPeople.length, members.length, user]);
-
-  const displayPeople = realCommunityPeople.length > 0 
-    ? realCommunityPeople 
-    : communityPeople;
+  // Always use mock data until real profiles are populated with rich data
+  const displayPeople = communityPeople;
 
   // Phase 2: Transform AI recommendations with fallback
   const aiSpotlightItems = recommendations.length > 0 
@@ -1208,6 +1226,78 @@ export default withScreenId(function Community() {
   // Global row counter for continuous alternating pattern
   let globalRowIndex = 0;
 
+  // Mobile-specific minimal Community dashboard
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO title="Community" description="Connect with the community" canonical={window.location.href} />
+        <MobileCommunityNav items={communityNavigation} />
+        
+        <div className="flex flex-col gap-4 p-4 pb-32 min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+          {/* Compact Header */}
+          <div className="space-y-1 pt-2">
+            <h1 className="text-xl font-bold text-foreground">Community</h1>
+            <p className="text-sm text-muted-foreground">Connect, share, and grow together</p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                🧬 Vitana {activityMetrics.totalMembers || 742}
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                Live
+              </span>
+            </div>
+          </div>
+          
+          {/* Quick Entry Cards - 3 deep links */}
+          <div className="space-y-3 mt-4">
+            <MobileEntryCard
+              icon={<Calendar className="h-5 w-5" />}
+              title="Browse Events & MeetUps"
+              subtitle="Discover local wellness gatherings"
+              to="/comm/events-meetups"
+            />
+            <MobileEntryCard
+              icon={<Radio className="h-5 w-5" />}
+              title="Join Live Rooms"
+              subtitle="Drop into real-time conversations"
+              to="/comm/live-rooms"
+            />
+            <MobileEntryCard
+              icon={<Play className="h-5 w-5" />}
+              title="Watch Shorts"
+              subtitle="Quick wellness inspiration"
+              to="/comm/media-hub?tab=shorts"
+            />
+          </div>
+        </div>
+        
+        {/* Popups */}
+        {autopilotOpen && (
+          <AutopilotPopup 
+            open={autopilotOpen} 
+            onOpenChange={setAutopilotOpen}
+          />
+        )}
+        
+        {communityFiltersOpen && (
+          <CommunityFiltersPopup 
+            open={communityFiltersOpen} 
+            onOpenChange={setCommunityFiltersOpen}
+          />
+        )}
+        
+        {/* Event Details Drawer */}
+        {selectedEventData && (
+          <MeetupDetailsDrawer
+            event={selectedEventData}
+            open={!!selectedEventId}
+            onOpenChange={handleDrawerClose}
+          />
+        )}
+      </AppLayout>
+    );
+  }
+
+  // Desktop layout
   return (
     <AppLayout>
       <SEO title="Community" description="Connect with the community through groups, events, and matchmaking" canonical={window.location.href} />
@@ -1221,7 +1311,19 @@ export default withScreenId(function Community() {
           />
 
           {/* Action Buttons */}
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                onClick={() => window.location.reload()}
+                title="Refresh page"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            }
+          >
             <ExpandableSearchButton 
               placeholder="Search Community…"
               onSearch={(query) => console.log('Search Community:', query)}
@@ -1230,15 +1332,6 @@ export default withScreenId(function Community() {
             <Button size="sm" onClick={() => setCommunityFiltersOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Hub
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              onClick={() => window.location.reload()}
-              title="Refresh page"
-            >
-              <RefreshCw className="h-4 w-4" />
             </Button>
           </UtilityActionButton>
 

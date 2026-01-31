@@ -10,16 +10,18 @@ import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/comp
 import { Plus, Plane } from "lucide-react";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useState, useEffect } from "react";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
+import { useState, useEffect, useMemo } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileLiveRoomCarousel } from "@/components/community/MobileLiveRoomCarousel";
 import { GoLivePopup } from "@/components/GoLivePopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { LiveRoomCard } from "@/components/liverooms/LiveRoomCard";
@@ -36,7 +38,8 @@ import type { LiveStream } from "@/hooks/useLiveStreams";
 import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
-import { useMemo } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
+
 import { supabase } from "@/integrations/supabase/client";
 
 export default function LiveRooms() {
@@ -44,11 +47,12 @@ export default function LiveRooms() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('live');
   const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
@@ -156,15 +160,6 @@ export default function LiveRooms() {
     );
   }, [scheduledRooms, searchQuery]);
 
-  // Detect mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   // Handle deep linking
   useEffect(() => {
@@ -606,32 +601,76 @@ export default function LiveRooms() {
         description="Join live conversations and discussions"
         canonical={window.location.href}
       />
-      <SubNavigation items={communityNavigation} />
+      {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
+      {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 pb-24 md:pb-32 scroll-smooth" style={{ scrollPaddingBottom: "96px" }}>
         <StandardHeader
-          title="Live Rooms"
-          description="Join live audio and video discussions with community members."
-          emoji="🎙️"
+          title={translate('liveRooms.title', 'Live Rooms')}
+          description={translate('liveRooms.description', 'Join live audio and video discussions with community members.')}
         />
 
         {/* Utility Action Button */}
-        <UtilityActionButton>
-          <ExpandableSearchButton
-            placeholder="Search Live Rooms…"
-            onSearch={(query) => setSearchQuery(query)}
-          />
-          <UniversalCalendarButton />
-          <Button size="sm" onClick={() => setIsGoLiveOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Go Live
-          </Button>
+        <UtilityActionButton 
+          className="min-w-0"
+          afterGiftVoucherChildren={isMobile && (
+            <>
+              {/* Vitana Index - pill with emoji + text */}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate('/health')}
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+              >
+                <span className="text-xs opacity-60">🧬</span>
+                <span className="text-sm font-medium text-primary">742</span>
+              </Button>
+              
+              {/* Autopilot - pill with icon + text */}
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setAutopilotOpen(true)}
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+              >
+                <Plane className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                  >
+                    {pendingCount}
+                  </Badge>
+                )}
+              </Button>
+            </>
+          )}
+        >
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton
+              placeholder="Search Live Rooms…"
+              onSearch={(query) => setSearchQuery(query)}
+            />
+            <UniversalCalendarButton />
+            
+            {/* Go Live - PRIMARY ACTION */}
+            <Button 
+              onClick={() => setIsGoLiveOpen(true)}
+              variant="ghost"
+              size="sm"
+              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="text-sm">{translate('liveRooms.goLive', 'Go Live')}</span>
+            </Button>
+          </div>
         </UtilityActionButton>
 
         {/* Split Bar for Live/Scheduled */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
           <SplitBarList className="grid w-full grid-cols-2">
             <SplitBarTrigger value="live">
-              📡 Live
+              📡 {translate('liveRooms.tabs.live', 'Live Now')}
               {filteredLiveRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {filteredLiveRooms.length}
@@ -642,7 +681,7 @@ export default function LiveRooms() {
               )}
             </SplitBarTrigger>
             <SplitBarTrigger value="scheduled">
-              📅 Scheduled
+              📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
               {filteredScheduledRooms.length > 0 && (
                 <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
                   {filteredScheduledRooms.length}
@@ -660,23 +699,36 @@ export default function LiveRooms() {
                 <p className="text-muted-foreground">Loading live rooms...</p>
               </div>
             ) : filteredLiveRooms.length > 0 ? (
-              <>
-                {chunkRooms(filteredLiveRooms).map((chunk, chunkIndex) => (
-                  <div key={`live-chunk-${chunkIndex}`}>
-                    {renderMosaicGrid(chunk)}
-                    {chunkIndex < chunkRooms(filteredLiveRooms).length - 1 && (
-                      <div className="mb-8 mt-2">
-                        <MotivationalBanner variant="encouragement" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {filteredLiveRooms.length > 0 && (
-                  <div className="mb-8 mt-2">
-                    <MotivationalBanner variant="partnership" />
-                  </div>
-                )}
-              </>
+              isMobile ? (
+                <MobileLiveRoomCarousel
+                  rooms={filteredLiveRooms}
+                  onCardClick={handleCardClick}
+                  onJoinRoom={handleJoinRoom}
+                  onNotifyClick={handleNotifyClick}
+                  notifyingRooms={notifyingRooms}
+                  currentUserId={user?.id}
+                  onEdit={handleCardEdit}
+                  onDelete={handleCardDelete}
+                />
+              ) : (
+                <>
+                  {chunkRooms(filteredLiveRooms).map((chunk, chunkIndex) => (
+                    <div key={`live-chunk-${chunkIndex}`}>
+                      {renderMosaicGrid(chunk)}
+                      {chunkIndex < chunkRooms(filteredLiveRooms).length - 1 && (
+                        <div className="mb-8 mt-2">
+                          <MotivationalBanner variant="encouragement" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredLiveRooms.length > 0 && (
+                    <div className="mb-8 mt-2">
+                      <MotivationalBanner variant="partnership" />
+                    </div>
+                  )}
+                </>
+              )
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No live rooms at the moment</p>
@@ -699,23 +751,36 @@ export default function LiveRooms() {
                 <p className="text-muted-foreground">Loading scheduled rooms...</p>
               </div>
             ) : filteredScheduledRooms.length > 0 ? (
-              <>
-                {chunkRooms(filteredScheduledRooms).map((chunk, chunkIndex) => (
-                  <div key={`scheduled-chunk-${chunkIndex}`}>
-                    {renderMosaicGrid(chunk)}
-                    {chunkIndex < chunkRooms(filteredScheduledRooms).length - 1 && (
-                      <div className="mb-8 mt-2">
-                        <MotivationalBanner variant="achievement" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {filteredScheduledRooms.length > 0 && (
-                  <div className="mb-8 mt-2">
-                    <MotivationalBanner variant="guidance" />
-                  </div>
-                )}
-              </>
+              isMobile ? (
+                <MobileLiveRoomCarousel
+                  rooms={filteredScheduledRooms}
+                  onCardClick={handleCardClick}
+                  onJoinRoom={handleJoinRoom}
+                  onNotifyClick={handleNotifyClick}
+                  notifyingRooms={notifyingRooms}
+                  currentUserId={user?.id}
+                  onEdit={handleCardEdit}
+                  onDelete={handleCardDelete}
+                />
+              ) : (
+                <>
+                  {chunkRooms(filteredScheduledRooms).map((chunk, chunkIndex) => (
+                    <div key={`scheduled-chunk-${chunkIndex}`}>
+                      {renderMosaicGrid(chunk)}
+                      {chunkIndex < chunkRooms(filteredScheduledRooms).length - 1 && (
+                        <div className="mb-8 mt-2">
+                          <MotivationalBanner variant="achievement" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredScheduledRooms.length > 0 && (
+                    <div className="mb-8 mt-2">
+                      <MotivationalBanner variant="guidance" />
+                    </div>
+                  )}
+                </>
+              )
             ) : (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No scheduled rooms</p>
@@ -774,25 +839,25 @@ export default function LiveRooms() {
       )}
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Live Room</AlertDialogTitle>
-            <AlertDialogDescription>
+      <ResponsiveConfirmDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
+        <ResponsiveConfirmDialogContent>
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>Delete Live Room</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
               Are you sure you want to delete this live room? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
               onClick={() => deleteConfirmRoomId && handleDeleteRoom(deleteConfirmRoomId)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
 
     </AppLayout>
   );

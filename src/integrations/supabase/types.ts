@@ -68,6 +68,42 @@ export type Database = {
           },
         ]
       }
+      active_threads: {
+        Row: {
+          active_role: string
+          created_at: string
+          id: string
+          last_activity_at: string
+          tenant_id: string
+          thread_id: string
+          turn_count: number
+          user_id: string
+          vtid: string | null
+        }
+        Insert: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          last_activity_at?: string
+          tenant_id: string
+          thread_id: string
+          turn_count?: number
+          user_id: string
+          vtid?: string | null
+        }
+        Update: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          last_activity_at?: string
+          tenant_id?: string
+          thread_id?: string
+          turn_count?: number
+          user_id?: string
+          vtid?: string | null
+        }
+        Relationships: []
+      }
       admin_proactive_settings: {
         Row: {
           created_at: string
@@ -440,6 +476,81 @@ export type Database = {
           },
         ]
       }
+      anticipatory_guidance: {
+        Row: {
+          confidence: number
+          created_at: string
+          dismissed_at: string | null
+          dismissible: boolean
+          domain: string
+          engaged_at: string | null
+          generation_rules_version: string | null
+          guidance_mode: string
+          guidance_text: string
+          id: string
+          metadata: Json
+          originating_signal_ids: Json | null
+          relevance_score: number | null
+          source_window_id: string | null
+          status: string
+          surfaced_at: string | null
+          tenant_id: string
+          timing_hint: string
+          updated_at: string
+          user_id: string
+          user_preferences_snapshot: Json | null
+          why_this_matters: string
+        }
+        Insert: {
+          confidence: number
+          created_at?: string
+          dismissed_at?: string | null
+          dismissible?: boolean
+          domain: string
+          engaged_at?: string | null
+          generation_rules_version?: string | null
+          guidance_mode: string
+          guidance_text: string
+          id?: string
+          metadata?: Json
+          originating_signal_ids?: Json | null
+          relevance_score?: number | null
+          source_window_id?: string | null
+          status?: string
+          surfaced_at?: string | null
+          tenant_id: string
+          timing_hint: string
+          updated_at?: string
+          user_id: string
+          user_preferences_snapshot?: Json | null
+          why_this_matters: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          dismissed_at?: string | null
+          dismissible?: boolean
+          domain?: string
+          engaged_at?: string | null
+          generation_rules_version?: string | null
+          guidance_mode?: string
+          guidance_text?: string
+          id?: string
+          metadata?: Json
+          originating_signal_ids?: Json | null
+          relevance_score?: number | null
+          source_window_id?: string | null
+          status?: string
+          surfaced_at?: string | null
+          tenant_id?: string
+          timing_hint?: string
+          updated_at?: string
+          user_id?: string
+          user_preferences_snapshot?: Json | null
+          why_this_matters?: string
+        }
+        Relationships: []
+      }
       api_integrations: {
         Row: {
           active_connections: number | null
@@ -665,6 +776,8 @@ export type Database = {
       app_users: {
         Row: {
           created_at: string
+          display_name: string | null
+          email: string | null
           profile: Json
           status: string
           tenant_id: string
@@ -673,6 +786,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          display_name?: string | null
+          email?: string | null
           profile?: Json
           status?: string
           tenant_id: string
@@ -681,6 +796,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          display_name?: string | null
+          email?: string | null
           profile?: Json
           status?: string
           tenant_id?: string
@@ -1033,6 +1150,302 @@ export type Database = {
             columns: ["action_id"]
             isOneToOne: false
             referencedRelation: "autopilot_actions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      autopilot_loop_state: {
+        Row: {
+          batch_size: number
+          created_at: string
+          environment: string
+          errors_1h: number
+          events_processed_1h: number
+          events_processed_total: number
+          id: string
+          is_running: boolean
+          last_error: string | null
+          last_error_at: string | null
+          last_event_cursor: string | null
+          last_event_timestamp: string | null
+          poll_interval_ms: number
+          started_at: string | null
+          stopped_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          batch_size?: number
+          created_at?: string
+          environment?: string
+          errors_1h?: number
+          events_processed_1h?: number
+          events_processed_total?: number
+          id?: string
+          is_running?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_event_cursor?: string | null
+          last_event_timestamp?: string | null
+          poll_interval_ms?: number
+          started_at?: string | null
+          stopped_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          batch_size?: number
+          created_at?: string
+          environment?: string
+          errors_1h?: number
+          events_processed_1h?: number
+          events_processed_total?: number
+          id?: string
+          is_running?: boolean
+          last_error?: string | null
+          last_error_at?: string | null
+          last_event_cursor?: string | null
+          last_event_timestamp?: string | null
+          poll_interval_ms?: number
+          started_at?: string | null
+          stopped_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      autopilot_processed_events: {
+        Row: {
+          action_triggered: string | null
+          error: string | null
+          event_id: string
+          event_timestamp: string | null
+          event_type: string
+          processed_at: string
+          raw_event: Json | null
+          result: Json
+          transition_from: string | null
+          transition_to: string | null
+          vtid: string | null
+        }
+        Insert: {
+          action_triggered?: string | null
+          error?: string | null
+          event_id: string
+          event_timestamp?: string | null
+          event_type: string
+          processed_at?: string
+          raw_event?: Json | null
+          result?: Json
+          transition_from?: string | null
+          transition_to?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          action_triggered?: string | null
+          error?: string | null
+          event_id?: string
+          event_timestamp?: string | null
+          event_type?: string
+          processed_at?: string
+          raw_event?: Json | null
+          result?: Json
+          transition_from?: string | null
+          transition_to?: string | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
+      autopilot_recommendations: {
+        Row: {
+          activated_at: string | null
+          activated_vtid: string | null
+          created_at: string | null
+          domain: string
+          effort_score: number | null
+          id: string
+          impact_score: number | null
+          risk_level: string | null
+          snoozed_until: string | null
+          spec_checksum: string | null
+          spec_snapshot: Json | null
+          status: string
+          summary: string
+          title: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          activated_vtid?: string | null
+          created_at?: string | null
+          domain?: string
+          effort_score?: number | null
+          id?: string
+          impact_score?: number | null
+          risk_level?: string | null
+          snoozed_until?: string | null
+          spec_checksum?: string | null
+          spec_snapshot?: Json | null
+          status?: string
+          summary: string
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          activated_vtid?: string | null
+          created_at?: string | null
+          domain?: string
+          effort_score?: number | null
+          id?: string
+          impact_score?: number | null
+          risk_level?: string | null
+          snoozed_until?: string | null
+          spec_checksum?: string | null
+          spec_snapshot?: Json | null
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      autopilot_run_state: {
+        Row: {
+          attempts: Json
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          error_at: string | null
+          error_code: string | null
+          last_event_id: string | null
+          last_event_type: string | null
+          last_transition_at: string
+          lock_until: string | null
+          locked_by: string | null
+          max_attempts: number
+          merge_sha: string | null
+          metadata: Json | null
+          pr_number: number | null
+          pr_url: string | null
+          run_id: string | null
+          spec_checksum: string | null
+          started_at: string
+          state: string
+          updated_at: string
+          validator_passed: boolean | null
+          validator_result: Json | null
+          verification_passed: boolean | null
+          verification_result: Json | null
+          vtid: string
+        }
+        Insert: {
+          attempts?: Json
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          error_at?: string | null
+          error_code?: string | null
+          last_event_id?: string | null
+          last_event_type?: string | null
+          last_transition_at?: string
+          lock_until?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          merge_sha?: string | null
+          metadata?: Json | null
+          pr_number?: number | null
+          pr_url?: string | null
+          run_id?: string | null
+          spec_checksum?: string | null
+          started_at?: string
+          state?: string
+          updated_at?: string
+          validator_passed?: boolean | null
+          validator_result?: Json | null
+          verification_passed?: boolean | null
+          verification_result?: Json | null
+          vtid: string
+        }
+        Update: {
+          attempts?: Json
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          error_at?: string | null
+          error_code?: string | null
+          last_event_id?: string | null
+          last_event_type?: string | null
+          last_transition_at?: string
+          lock_until?: string | null
+          locked_by?: string | null
+          max_attempts?: number
+          merge_sha?: string | null
+          metadata?: Json | null
+          pr_number?: number | null
+          pr_url?: string | null
+          run_id?: string | null
+          spec_checksum?: string | null
+          started_at?: string
+          state?: string
+          updated_at?: string
+          validator_passed?: boolean | null
+          validator_result?: Json | null
+          verification_passed?: boolean | null
+          verification_result?: Json | null
+          vtid?: string
+        }
+        Relationships: []
+      }
+      biomarker_results: {
+        Row: {
+          biomarker_code: string | null
+          id: string
+          lab_report_id: string | null
+          measured_at: string
+          name: string | null
+          ref_range_high: number | null
+          ref_range_low: number | null
+          status: string | null
+          tenant_id: string
+          unit: string | null
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          biomarker_code?: string | null
+          id?: string
+          lab_report_id?: string | null
+          measured_at: string
+          name?: string | null
+          ref_range_high?: number | null
+          ref_range_low?: number | null
+          status?: string | null
+          tenant_id: string
+          unit?: string | null
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          biomarker_code?: string | null
+          id?: string
+          lab_report_id?: string | null
+          measured_at?: string
+          name?: string | null
+          ref_range_high?: number | null
+          ref_range_low?: number | null
+          status?: string | null
+          tenant_id?: string
+          unit?: string | null
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "biomarker_results_lab_report_id_fkey"
+            columns: ["lab_report_id"]
+            isOneToOne: false
+            referencedRelation: "lab_reports"
             referencedColumns: ["id"]
           },
         ]
@@ -3571,6 +3984,39 @@ export type Database = {
           },
         ]
       }
+      health_features_daily: {
+        Row: {
+          created_at: string | null
+          date: string
+          feature_key: string
+          feature_value: number
+          id: string
+          provenance: Json | null
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          feature_key: string
+          feature_value: number
+          id?: string
+          provenance?: Json | null
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          feature_key?: string
+          feature_value?: number
+          id?: string
+          provenance?: Json | null
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       invite_analytics: {
         Row: {
           channel: string
@@ -3643,6 +4089,42 @@ export type Database = {
           title?: string
           updated_at?: string | null
           word_count?: number | null
+        }
+        Relationships: []
+      }
+      lab_reports: {
+        Row: {
+          created_at: string
+          id: string
+          parsed_json: Json | null
+          raw_file_ref: string | null
+          raw_text: string | null
+          report_date: string | null
+          source: string | null
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          parsed_json?: Json | null
+          raw_file_ref?: string | null
+          raw_text?: string | null
+          report_date?: string | null
+          source?: string | null
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          parsed_json?: Json | null
+          raw_file_ref?: string | null
+          raw_text?: string | null
+          report_date?: string | null
+          source?: string | null
+          tenant_id?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -3876,6 +4358,140 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      location_preferences: {
+        Row: {
+          allow_location_personalization: boolean
+          allow_sharing_in_meetups: boolean
+          home_area: string | null
+          home_city: string | null
+          id: string
+          preferred_radius_km: number
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allow_location_personalization?: boolean
+          allow_sharing_in_meetups?: boolean
+          home_area?: string | null
+          home_city?: string | null
+          id?: string
+          preferred_radius_km?: number
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allow_location_personalization?: boolean
+          allow_sharing_in_meetups?: boolean
+          home_area?: string | null
+          home_city?: string | null
+          id?: string
+          preferred_radius_km?: number
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      location_visits: {
+        Row: {
+          created_at: string
+          id: string
+          location_id: string
+          metadata: Json
+          notes: string | null
+          tenant_id: string
+          user_id: string
+          visit_time: string
+          visit_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location_id: string
+          metadata?: Json
+          notes?: string | null
+          tenant_id: string
+          user_id: string
+          visit_time?: string
+          visit_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location_id?: string
+          metadata?: Json
+          notes?: string | null
+          tenant_id?: string
+          user_id?: string
+          visit_time?: string
+          visit_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "location_visits_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          area: string | null
+          city: string | null
+          country: string | null
+          created_at: string
+          created_by: string
+          id: string
+          lat: number | null
+          lng: number | null
+          location_type: string
+          metadata: Json
+          name: string
+          privacy_level: string
+          tenant_id: string
+          topic_keys: string[]
+          updated_at: string
+        }
+        Insert: {
+          area?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location_type: string
+          metadata?: Json
+          name: string
+          privacy_level?: string
+          tenant_id: string
+          topic_keys?: string[]
+          updated_at?: string
+        }
+        Update: {
+          area?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          location_type?: string
+          metadata?: Json
+          name?: string
+          privacy_level?: string
+          tenant_id?: string
+          topic_keys?: string[]
+          updated_at?: string
+        }
+        Relationships: []
       }
       match_notifications: {
         Row: {
@@ -4291,6 +4907,69 @@ export type Database = {
           },
         ]
       }
+      memory_categories: {
+        Row: {
+          created_at: string
+          is_active: boolean
+          key: string
+          label: string
+        }
+        Insert: {
+          created_at?: string
+          is_active?: boolean
+          key: string
+          label: string
+        }
+        Update: {
+          created_at?: string
+          is_active?: boolean
+          key?: string
+          label?: string
+        }
+        Relationships: []
+      }
+      memory_diary_entries: {
+        Row: {
+          created_at: string
+          energy_level: number | null
+          entry_date: string
+          entry_type: string
+          id: string
+          mood: string | null
+          raw_text: string
+          tags: string[] | null
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          energy_level?: number | null
+          entry_date: string
+          entry_type: string
+          id?: string
+          mood?: string | null
+          raw_text: string
+          tags?: string[] | null
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          energy_level?: number | null
+          entry_date?: string
+          entry_type?: string
+          id?: string
+          mood?: string | null
+          raw_text?: string
+          tags?: string[] | null
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       memory_embeddings: {
         Row: {
           created_at: string
@@ -4399,6 +5078,220 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
+      memory_facts: {
+        Row: {
+          entity: string
+          extracted_at: string
+          fact_key: string
+          fact_value: string
+          fact_value_type: string
+          id: string
+          provenance_confidence: number
+          provenance_source: string
+          provenance_utterance_id: string | null
+          superseded_at: string | null
+          superseded_by: string | null
+          tenant_id: string
+          thread_id: string | null
+          user_id: string
+          vtid: string | null
+        }
+        Insert: {
+          entity?: string
+          extracted_at?: string
+          fact_key: string
+          fact_value: string
+          fact_value_type?: string
+          id?: string
+          provenance_confidence?: number
+          provenance_source: string
+          provenance_utterance_id?: string | null
+          superseded_at?: string | null
+          superseded_by?: string | null
+          tenant_id: string
+          thread_id?: string | null
+          user_id: string
+          vtid?: string | null
+        }
+        Update: {
+          entity?: string
+          extracted_at?: string
+          fact_key?: string
+          fact_value?: string
+          fact_value_type?: string
+          id?: string
+          provenance_confidence?: number
+          provenance_source?: string
+          provenance_utterance_id?: string | null
+          superseded_at?: string | null
+          superseded_by?: string | null
+          tenant_id?: string
+          thread_id?: string | null
+          user_id?: string
+          vtid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_facts_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "memory_facts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      memory_garden_nodes: {
+        Row: {
+          confidence: number
+          created_at: string
+          domain: string
+          first_seen: string
+          id: string
+          last_seen: string
+          node_type: string
+          source: string
+          summary: string
+          tenant_id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number
+          created_at?: string
+          domain: string
+          first_seen?: string
+          id?: string
+          last_seen?: string
+          node_type: string
+          source: string
+          summary: string
+          tenant_id: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number
+          created_at?: string
+          domain?: string
+          first_seen?: string
+          id?: string
+          last_seen?: string
+          node_type?: string
+          source?: string
+          summary?: string
+          tenant_id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      memory_items: {
+        Row: {
+          active_role: string | null
+          category_key: string
+          content: string
+          content_json: Json | null
+          conversation_id: string | null
+          created_at: string
+          embedding: string | null
+          embedding_model: string | null
+          embedding_updated_at: string | null
+          id: string
+          importance: number
+          occurred_at: string
+          origin_service: string | null
+          source: string
+          tenant_id: string
+          user_id: string
+          visibility_scope: string | null
+          vtid: string | null
+          workspace_scope: string | null
+        }
+        Insert: {
+          active_role?: string | null
+          category_key: string
+          content: string
+          content_json?: Json | null
+          conversation_id?: string | null
+          created_at?: string
+          embedding?: string | null
+          embedding_model?: string | null
+          embedding_updated_at?: string | null
+          id?: string
+          importance?: number
+          occurred_at?: string
+          origin_service?: string | null
+          source: string
+          tenant_id: string
+          user_id: string
+          visibility_scope?: string | null
+          vtid?: string | null
+          workspace_scope?: string | null
+        }
+        Update: {
+          active_role?: string | null
+          category_key?: string
+          content?: string
+          content_json?: Json | null
+          conversation_id?: string | null
+          created_at?: string
+          embedding?: string | null
+          embedding_model?: string | null
+          embedding_updated_at?: string | null
+          id?: string
+          importance?: number
+          occurred_at?: string
+          origin_service?: string | null
+          source?: string
+          tenant_id?: string
+          user_id?: string
+          visibility_scope?: string | null
+          vtid?: string | null
+          workspace_scope?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_items_category_key_fkey"
+            columns: ["category_key"]
+            isOneToOne: false
+            referencedRelation: "memory_categories"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
+      memory_node_sources: {
+        Row: {
+          created_at: string
+          diary_entry_id: string
+          node_id: string
+        }
+        Insert: {
+          created_at?: string
+          diary_entry_id: string
+          node_id: string
+        }
+        Update: {
+          created_at?: string
+          diary_entry_id?: string
+          node_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_node_sources_diary_entry_id_fkey"
+            columns: ["diary_entry_id"]
+            isOneToOne: false
+            referencedRelation: "memory_diary_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "memory_node_sources_node_id_fkey"
+            columns: ["node_id"]
+            isOneToOne: false
+            referencedRelation: "memory_garden_nodes"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4975,36 +5868,174 @@ export type Database = {
         }
         Relationships: []
       }
+      oasis_spec_approvals: {
+        Row: {
+          approved_at: string
+          approved_by: string
+          approved_role: string
+          id: string
+          spec_hash: string
+          spec_id: string
+          vtid: string
+        }
+        Insert: {
+          approved_at?: string
+          approved_by: string
+          approved_role?: string
+          id?: string
+          spec_hash: string
+          spec_id: string
+          vtid: string
+        }
+        Update: {
+          approved_at?: string
+          approved_by?: string
+          approved_role?: string
+          id?: string
+          spec_hash?: string
+          spec_id?: string
+          vtid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oasis_spec_approvals_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "oasis_specs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oasis_spec_approvals_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "vtid_specs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oasis_spec_validations: {
+        Row: {
+          created_at: string
+          id: string
+          report_json: Json
+          result: string
+          spec_hash: string
+          spec_id: string
+          validator_model: string
+          vtid: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          report_json?: Json
+          result?: string
+          spec_hash: string
+          spec_id: string
+          validator_model?: string
+          vtid: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          report_json?: Json
+          result?: string
+          spec_hash?: string
+          spec_id?: string
+          validator_model?: string
+          vtid?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oasis_spec_validations_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "oasis_specs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oasis_spec_validations_spec_id_fkey"
+            columns: ["spec_id"]
+            isOneToOne: false
+            referencedRelation: "vtid_specs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oasis_specs: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          spec_hash: string
+          spec_markdown: string
+          status: string
+          title: string
+          version: number
+          vtid: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          spec_hash?: string
+          spec_markdown?: string
+          status?: string
+          title?: string
+          version?: number
+          vtid: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          spec_hash?: string
+          spec_markdown?: string
+          status?: string
+          title?: string
+          version?: number
+          vtid?: string
+        }
+        Relationships: []
+      }
       oasis_tasks: {
         Row: {
           assignee: string | null
+          column: string | null
           created_at: string
           description: string | null
           id: number
+          is_terminal: boolean | null
           metadata: Json | null
           status: string
+          terminal_outcome: string | null
           title: string
           updated_at: string
           vtid: string
         }
         Insert: {
           assignee?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          is_terminal?: boolean | null
           metadata?: Json | null
           status?: string
+          terminal_outcome?: string | null
           title: string
           updated_at?: string
           vtid: string
         }
         Update: {
           assignee?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          is_terminal?: boolean | null
           metadata?: Json | null
           status?: string
+          terminal_outcome?: string | null
           title?: string
           updated_at?: string
           vtid?: string
@@ -6184,6 +7215,90 @@ export type Database = {
           },
         ]
       }
+      recommendations: {
+        Row: {
+          based_on: Json | null
+          body: string | null
+          category: string | null
+          created_at: string | null
+          evidence_refs: Json | null
+          id: string
+          safety_checked: boolean | null
+          status: string | null
+          tenant_id: string
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          based_on?: Json | null
+          body?: string | null
+          category?: string | null
+          created_at?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          safety_checked?: boolean | null
+          status?: string | null
+          tenant_id: string
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          based_on?: Json | null
+          body?: string | null
+          category?: string | null
+          created_at?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          safety_checked?: boolean | null
+          status?: string | null
+          tenant_id?: string
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      relationship_edges: {
+        Row: {
+          created_at: string
+          edge_type: string
+          id: string
+          last_interaction: string
+          metadata: Json
+          source_id: string
+          source_type: string
+          strength: number
+          target_id: string
+          target_type: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          edge_type: string
+          id?: string
+          last_interaction?: string
+          metadata?: Json
+          source_id: string
+          source_type: string
+          strength?: number
+          target_id: string
+          target_type: string
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          edge_type?: string
+          id?: string
+          last_interaction?: string
+          metadata?: Json
+          source_id?: string
+          source_type?: string
+          strength?: number
+          target_id?: string
+          target_type?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       reseller_attributions: {
         Row: {
           commission_amount: number | null
@@ -6498,6 +7613,42 @@ export type Database = {
           },
         ]
       }
+      safety_constraints: {
+        Row: {
+          constraint_key: string | null
+          constraint_value: string | null
+          created_at: string | null
+          id: string
+          severity: string | null
+          source: string | null
+          tenant_id: string
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          constraint_key?: string | null
+          constraint_value?: string | null
+          created_at?: string | null
+          id?: string
+          severity?: string | null
+          source?: string | null
+          tenant_id: string
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          constraint_key?: string | null
+          constraint_value?: string | null
+          created_at?: string | null
+          id?: string
+          severity?: string | null
+          source?: string | null
+          tenant_id?: string
+          type?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       scheduled_posts: {
         Row: {
           channels: Database["public"]["Enums"]["channel_type"][]
@@ -6763,6 +7914,78 @@ export type Database = {
         }
         Relationships: []
       }
+      system_control_audit: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          from_enabled: boolean
+          id: string
+          key: string
+          reason: string
+          scope: Json
+          to_enabled: boolean
+          updated_by: string | null
+          updated_by_role: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          from_enabled: boolean
+          id?: string
+          key: string
+          reason: string
+          scope: Json
+          to_enabled: boolean
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          from_enabled?: boolean
+          id?: string
+          key?: string
+          reason?: string
+          scope?: Json
+          to_enabled?: boolean
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Relationships: []
+      }
+      system_controls: {
+        Row: {
+          enabled: boolean
+          expires_at: string | null
+          key: string
+          reason: string
+          scope: Json
+          updated_at: string
+          updated_by: string | null
+          updated_by_role: string | null
+        }
+        Insert: {
+          enabled?: boolean
+          expires_at?: string | null
+          key: string
+          reason?: string
+          scope?: Json
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Update: {
+          enabled?: boolean
+          expires_at?: string | null
+          key?: string
+          reason?: string
+          scope?: Json
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           category: string
@@ -6916,6 +8139,54 @@ export type Database = {
         }
         Relationships: []
       }
+      thread_summaries: {
+        Row: {
+          content_hash: string
+          covers_turns_from: number
+          covers_turns_to: number
+          generated_at: string
+          generation_model: string | null
+          id: string
+          summary_text: string
+          summary_type: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+          version: number
+          vtid: string | null
+        }
+        Insert: {
+          content_hash: string
+          covers_turns_from?: number
+          covers_turns_to: number
+          generated_at?: string
+          generation_model?: string | null
+          id?: string
+          summary_text: string
+          summary_type: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+          version?: number
+          vtid?: string | null
+        }
+        Update: {
+          content_hash?: string
+          covers_turns_from?: number
+          covers_turns_to?: number
+          generated_at?: string
+          generation_model?: string | null
+          id?: string
+          summary_text?: string
+          summary_type?: string
+          tenant_id?: string
+          thread_id?: string
+          user_id?: string
+          version?: number
+          vtid?: string | null
+        }
+        Relationships: []
+      }
       typing_indicators: {
         Row: {
           id: string
@@ -6961,6 +8232,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_active_roles: {
+        Row: {
+          active_role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_role?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_activity_log: {
         Row: {
@@ -7502,6 +8791,58 @@ export type Database = {
         }
         Relationships: []
       }
+      user_tenants: {
+        Row: {
+          active_role: string
+          created_at: string
+          id: string
+          is_primary: boolean
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_role?: string
+          created_at?: string
+          id?: string
+          is_primary?: boolean
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_tenants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_tenants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_tenants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       user_wallets: {
         Row: {
           balance: number
@@ -7621,77 +8962,378 @@ export type Database = {
         }
         Relationships: []
       }
+      vitana_index_scores: {
+        Row: {
+          created_at: string | null
+          date: string
+          id: string
+          model_version: string | null
+          provenance: Json | null
+          score_exercise: number | null
+          score_hydration: number | null
+          score_mental: number | null
+          score_nutrition: number | null
+          score_sleep: number | null
+          score_total: number
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          date: string
+          id?: string
+          model_version?: string | null
+          provenance?: Json | null
+          score_exercise?: number | null
+          score_hydration?: number | null
+          score_mental?: number | null
+          score_nutrition?: number | null
+          score_sleep?: number | null
+          score_total: number
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          date?: string
+          id?: string
+          model_version?: string | null
+          provenance?: Json | null
+          score_exercise?: number | null
+          score_hydration?: number | null
+          score_mental?: number | null
+          score_nutrition?: number | null
+          score_sleep?: number | null
+          score_total?: number
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      voucher_orders: {
+        Row: {
+          amount_cents: number
+          buyer_email: string
+          buyer_name: string | null
+          buyer_user_id: string | null
+          checkout_session_id: string | null
+          created_at: string
+          currency: string
+          id: string
+          payment_intent_id: string | null
+          pdf_path: string | null
+          provider: string
+          status: string
+          tenant_id: string
+          updated_at: string
+          voucher_id: string
+        }
+        Insert: {
+          amount_cents: number
+          buyer_email: string
+          buyer_name?: string | null
+          buyer_user_id?: string | null
+          checkout_session_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_intent_id?: string | null
+          pdf_path?: string | null
+          provider?: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          voucher_id: string
+        }
+        Update: {
+          amount_cents?: number
+          buyer_email?: string
+          buyer_name?: string | null
+          buyer_user_id?: string | null
+          checkout_session_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_intent_id?: string | null
+          pdf_path?: string | null
+          provider?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          voucher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voucher_orders_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_orders_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_orders_voucher_id_fkey"
+            columns: ["voucher_id"]
+            isOneToOne: false
+            referencedRelation: "vouchers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      voucher_redemptions: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          event_id: string
+          id: string
+          reason: string | null
+          staff_user_id: string
+          status: string
+          tenant_id: string
+          voucher_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          event_id: string
+          id?: string
+          reason?: string | null
+          staff_user_id: string
+          status: string
+          tenant_id: string
+          voucher_id: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          event_id?: string
+          id?: string
+          reason?: string | null
+          staff_user_id?: string
+          status?: string
+          tenant_id?: string
+          voucher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voucher_redemptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_redemptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "voucher_redemptions_voucher_id_fkey"
+            columns: ["voucher_id"]
+            isOneToOne: false
+            referencedRelation: "vouchers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vouchers: {
+        Row: {
+          code: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          redeemed_at: string | null
+          redeemed_by_staff_id: string | null
+          redeemed_by_user_id: string | null
+          redeemed_event_id: string | null
+          status: string
+          tenant_id: string
+          tier: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          redeemed_at?: string | null
+          redeemed_by_staff_id?: string | null
+          redeemed_by_user_id?: string | null
+          redeemed_event_id?: string | null
+          status?: string
+          tenant_id: string
+          tier: string
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          redeemed_at?: string | null
+          redeemed_by_staff_id?: string | null
+          redeemed_by_user_id?: string | null
+          redeemed_event_id?: string | null
+          status?: string
+          tenant_id?: string
+          tier?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vouchers_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "vouchers_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       vtid_ledger: {
         Row: {
           assigned_to: string
+          claim_expires_at: string | null
+          claim_started_at: string | null
+          claimed_by: string | null
+          completed_at: string | null
           created_at: string | null
+          delete_reason: string | null
+          deleted_at: string | null
+          deleted_by: string | null
           description: string | null
           id: string
+          is_terminal: boolean | null
           is_test: boolean
           layer: string
           metadata: Json
           module: string
           parent_vtid: string | null
+          spec_approved_at: string | null
+          spec_approved_by: string | null
+          spec_approved_hash: string | null
+          spec_current_hash: string | null
+          spec_current_id: string | null
+          spec_last_error: string | null
+          spec_status: string
           status: string
           summary: string | null
           task_family: string
           task_module: string
           task_type: string
           tenant: string
+          terminal_outcome: string | null
           title: string | null
           updated_at: string | null
+          voided_at: string | null
+          voided_reason: string | null
           vtid: string
         }
         Insert: {
           assigned_to?: string
+          claim_expires_at?: string | null
+          claim_started_at?: string | null
+          claimed_by?: string | null
+          completed_at?: string | null
           created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string | null
           id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           layer: string
           metadata?: Json
           module: string
           parent_vtid?: string | null
+          spec_approved_at?: string | null
+          spec_approved_by?: string | null
+          spec_approved_hash?: string | null
+          spec_current_hash?: string | null
+          spec_current_id?: string | null
+          spec_last_error?: string | null
+          spec_status?: string
           status: string
           summary?: string | null
           task_family?: string
           task_module?: string
           task_type?: string
           tenant?: string
+          terminal_outcome?: string | null
           title?: string | null
           updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
           vtid: string
         }
         Update: {
           assigned_to?: string
+          claim_expires_at?: string | null
+          claim_started_at?: string | null
+          claimed_by?: string | null
+          completed_at?: string | null
           created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
           description?: string | null
           id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           layer?: string
           metadata?: Json
           module?: string
           parent_vtid?: string | null
+          spec_approved_at?: string | null
+          spec_approved_by?: string | null
+          spec_approved_hash?: string | null
+          spec_current_hash?: string | null
+          spec_current_id?: string | null
+          spec_last_error?: string | null
+          spec_status?: string
           status?: string
           summary?: string | null
           task_family?: string
           task_module?: string
           task_type?: string
           tenant?: string
+          terminal_outcome?: string | null
           title?: string | null
           updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
           vtid?: string
         }
         Relationships: []
       }
-      VtidLedger: {
+      vtidledger_wrong_backup: {
         Row: {
           assigned_to: string | null
+          column: string | null
           created_at: string
           description: string | null
           description_md: string | null
           environment: string | null
           id: string
+          is_terminal: boolean | null
           is_test: boolean
           last_event_at: string | null
           last_event_id: string | null
@@ -7707,17 +9349,20 @@ export type Database = {
           task_module: string | null
           task_type: string | null
           tenant: string
+          terminal_outcome: string | null
           title: string
           updated_at: string
           vtid: string
         }
         Insert: {
           assigned_to?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           description_md?: string | null
           environment?: string | null
-          id: string
+          id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           last_event_at?: string | null
           last_event_id?: string | null
@@ -7733,17 +9378,20 @@ export type Database = {
           task_module?: string | null
           task_type?: string | null
           tenant: string
+          terminal_outcome?: string | null
           title: string
           updated_at?: string
           vtid: string
         }
         Update: {
           assigned_to?: string | null
+          column?: string | null
           created_at?: string
           description?: string | null
           description_md?: string | null
           environment?: string | null
           id?: string
+          is_terminal?: boolean | null
           is_test?: boolean
           last_event_at?: string | null
           last_event_id?: string | null
@@ -7759,6 +9407,7 @@ export type Database = {
           task_module?: string | null
           task_type?: string | null
           tenant?: string
+          terminal_outcome?: string | null
           title?: string
           updated_at?: string
           vtid?: string
@@ -7852,6 +9501,87 @@ export type Database = {
           to_user_id?: string | null
           transaction_type?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      wearable_samples: {
+        Row: {
+          id: string
+          metric: string | null
+          provider: string | null
+          raw_json: Json | null
+          tenant_id: string
+          ts: string
+          unit: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          id?: string
+          metric?: string | null
+          provider?: string | null
+          raw_json?: Json | null
+          tenant_id: string
+          ts: string
+          unit?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          id?: string
+          metric?: string | null
+          provider?: string | null
+          raw_json?: Json | null
+          tenant_id?: string
+          ts?: string
+          unit?: string | null
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      worker_registry: {
+        Row: {
+          capabilities: string[] | null
+          created_at: string | null
+          current_vtid: string | null
+          id: string
+          last_heartbeat_at: string | null
+          max_concurrent: number | null
+          metadata: Json | null
+          registered_at: string | null
+          status: string | null
+          updated_at: string | null
+          version: string | null
+          worker_id: string
+        }
+        Insert: {
+          capabilities?: string[] | null
+          created_at?: string | null
+          current_vtid?: string | null
+          id?: string
+          last_heartbeat_at?: string | null
+          max_concurrent?: number | null
+          metadata?: Json | null
+          registered_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          version?: string | null
+          worker_id: string
+        }
+        Update: {
+          capabilities?: string[] | null
+          created_at?: string | null
+          current_vtid?: string | null
+          id?: string
+          last_heartbeat_at?: string | null
+          max_concurrent?: number | null
+          metadata?: Json | null
+          registered_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          version?: string | null
+          worker_id?: string
         }
         Relationships: []
       }
@@ -7973,38 +9703,23 @@ export type Database = {
       }
       commandhub_board_visible: {
         Row: {
-          created_at: string | null
-          is_test: boolean | null
+          is_terminal: boolean | null
           status: string | null
-          summary: string | null
-          task_family: string | null
-          task_type: string | null
-          tenant: string | null
-          title: string | null
+          terminal_outcome: string | null
           updated_at: string | null
           vtid: string | null
         }
         Insert: {
-          created_at?: string | null
-          is_test?: boolean | null
+          is_terminal?: boolean | null
           status?: string | null
-          summary?: never
-          task_family?: string | null
-          task_type?: string | null
-          tenant?: string | null
-          title?: never
+          terminal_outcome?: string | null
           updated_at?: string | null
           vtid?: string | null
         }
         Update: {
-          created_at?: string | null
-          is_test?: boolean | null
+          is_terminal?: boolean | null
           status?: string | null
-          summary?: never
-          task_family?: string | null
-          task_type?: string | null
-          tenant?: string | null
-          title?: never
+          terminal_outcome?: string | null
           updated_at?: string | null
           vtid?: string | null
         }
@@ -8029,8 +9744,126 @@ export type Database = {
         }
         Relationships: []
       }
+      vtid_specs: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string | null
+          spec_hash: string | null
+          spec_markdown: string | null
+          status: string | null
+          title: string | null
+          version: number | null
+          vtid: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string | null
+          spec_hash?: string | null
+          spec_markdown?: string | null
+          status?: string | null
+          title?: string | null
+          version?: number | null
+          vtid?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string | null
+          spec_hash?: string | null
+          spec_markdown?: string | null
+          status?: string | null
+          title?: string | null
+          version?: number | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
+      VtidLedger: {
+        Row: {
+          assigned_to: string | null
+          created_at: string | null
+          delete_reason: string | null
+          deleted_at: string | null
+          deleted_by: string | null
+          description: string | null
+          id: string | null
+          is_test: boolean | null
+          layer: string | null
+          metadata: Json | null
+          module: string | null
+          parent_vtid: string | null
+          status: string | null
+          summary: string | null
+          task_family: string | null
+          task_module: string | null
+          task_type: string | null
+          tenant: string | null
+          title: string | null
+          updated_at: string | null
+          voided_at: string | null
+          voided_reason: string | null
+          vtid: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          id?: string | null
+          is_test?: boolean | null
+          layer?: string | null
+          metadata?: Json | null
+          module?: string | null
+          parent_vtid?: string | null
+          status?: string | null
+          summary?: string | null
+          task_family?: string | null
+          task_module?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: string | null
+          updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
+          vtid?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string | null
+          delete_reason?: string | null
+          deleted_at?: string | null
+          deleted_by?: string | null
+          description?: string | null
+          id?: string | null
+          is_test?: boolean | null
+          layer?: string | null
+          metadata?: Json | null
+          module?: string | null
+          parent_vtid?: string | null
+          status?: string | null
+          summary?: string | null
+          task_family?: string | null
+          task_module?: string | null
+          task_type?: string | null
+          tenant?: string | null
+          title?: string | null
+          updated_at?: string | null
+          voided_at?: string | null
+          voided_reason?: string | null
+          vtid?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      activate_autopilot_recommendation: {
+        Args: { p_recommendation_id: string; p_user_id?: string }
+        Returns: Json
+      }
       allocate_global_vtid: {
         Args: { p_layer?: string; p_module?: string; p_source?: string }
         Returns: {
@@ -8061,6 +9894,14 @@ export type Database = {
           display_name: string
           user_id: string
         }[]
+      }
+      claim_vtid_task: {
+        Args: {
+          p_expires_minutes?: number
+          p_vtid: string
+          p_worker_id: string
+        }
+        Returns: Json
       }
       clean_expired_context_cache: { Args: never; Returns: undefined }
       clean_expired_memory: { Args: never; Returns: undefined }
@@ -8113,12 +9954,27 @@ export type Database = {
       current_active_role: { Args: never; Returns: string }
       current_tenant: { Args: never; Returns: string }
       current_tenant_id: { Args: never; Returns: string }
+      current_user_id: { Args: never; Returns: string }
       decrypt_api_key: { Args: { encrypted_key_text: string }; Returns: string }
-      dev_set_request_context: {
+      dev_bootstrap_request_context: {
         Args: { p_active_role: string; p_tenant_id: string }
         Returns: Json
       }
+      dev_set_request_context:
+        | {
+            Args: { p_active_role: string; p_tenant_id: string }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_active_role: string
+              p_tenant_id: string
+              p_user_id: string
+            }
+            Returns: Json
+          }
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
+      expire_stale_vtid_claims: { Args: never; Returns: number }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
       generate_event_slug: {
         Args: { event_id?: string; event_title: string }
@@ -8133,8 +9989,34 @@ export type Database = {
         }
         Returns: string
       }
+      generate_voucher_code: { Args: never; Returns: string }
       get_active_role: { Args: never; Returns: string }
       get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
+      get_autopilot_recommendations: {
+        Args: {
+          p_limit?: number
+          p_offset?: number
+          p_status?: string[]
+          p_user_id?: string
+        }
+        Returns: {
+          activated_at: string
+          activated_vtid: string
+          created_at: string
+          domain: string
+          effort_score: number
+          id: string
+          impact_score: number
+          risk_level: string
+          status: string
+          summary: string
+          title: string
+        }[]
+      }
+      get_autopilot_recommendations_count: {
+        Args: { p_user_id?: string }
+        Returns: number
+      }
       get_conversation_participants: {
         Args: { p_user_id: string }
         Returns: {
@@ -8145,6 +10027,24 @@ export type Database = {
           last_message_at: string
           phone: string
           user_id: string
+        }[]
+      }
+      get_current_facts: {
+        Args: {
+          p_entity?: string
+          p_fact_keys?: string[]
+          p_tenant_id: string
+          p_user_id: string
+        }
+        Returns: {
+          entity: string
+          extracted_at: string
+          fact_key: string
+          fact_value: string
+          fact_value_type: string
+          id: string
+          provenance_confidence: number
+          provenance_source: string
         }[]
       }
       get_follow_status: { Args: { target_user_id: string }; Returns: boolean }
@@ -8184,6 +10084,20 @@ export type Database = {
           avatar_url: string
           display_name: string
           user_id: string
+        }[]
+      }
+      get_next_spec_version: { Args: { p_vtid: string }; Returns: number }
+      get_pending_worker_tasks: {
+        Args: { p_limit?: number }
+        Returns: {
+          created_at: string
+          layer: string
+          module: string
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+          vtid: string
         }[]
       }
       get_public_campaign_details: {
@@ -8281,6 +10195,15 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_thread_summary: {
+        Args: { p_summary_type?: string; p_thread_id: string }
+        Returns: {
+          covers_turns_to: number
+          generated_at: string
+          summary_text: string
+          version: number
+        }[]
+      }
       get_ticket_by_qr_token: {
         Args: { token: string }
         Returns: {
@@ -8360,6 +10283,7 @@ export type Database = {
           youtube_url: string
         }[]
       }
+      get_worker_connector_stats: { Args: never; Returns: Json }
       has_active_consent: {
         Args: {
           p_data_scope: string
@@ -8378,6 +10302,28 @@ export type Database = {
           p_subject_type: string
         }
         Returns: boolean
+      }
+      health_compute_features_daily: { Args: { p_date: string }; Returns: Json }
+      health_compute_vitana_index: {
+        Args: { p_date: string; p_model_version?: string }
+        Returns: Json
+      }
+      health_generate_recommendations: {
+        Args: { p_from: string; p_model_version?: string; p_to: string }
+        Returns: Json
+      }
+      health_get_summary: {
+        Args: { p_from: string; p_to: string }
+        Returns: Json
+      }
+      health_ingest_lab_report: { Args: { p_payload: Json }; Returns: Json }
+      health_ingest_wearable_samples: {
+        Args: { p_payload: Json }
+        Returns: Json
+      }
+      increment_thread_turn: {
+        Args: { p_tenant_id: string; p_thread_id: string; p_user_id: string }
+        Returns: number
       }
       increment_wallet_balance: {
         Args: { p_amount: number; p_currency_type: string; p_user_id: string }
@@ -8439,6 +10385,108 @@ export type Database = {
       me_context: { Args: never; Returns: Json }
       me_set_active_role: { Args: { p_role: string }; Returns: Json }
       me_tenant_id: { Args: { p_user_id: string }; Returns: string }
+      memory_add_diary_entry: {
+        Args: {
+          p_energy_level?: number
+          p_entry_date: string
+          p_entry_type: string
+          p_mood?: string
+          p_raw_text: string
+          p_tags?: string[]
+        }
+        Returns: Json
+      }
+      memory_extract_garden_nodes: {
+        Args: { p_diary_entry_id: string }
+        Returns: Json
+      }
+      memory_garden_node_upsert: {
+        Args: {
+          p_confidence: number
+          p_domain: string
+          p_node_type: string
+          p_seen_date: string
+          p_source: string
+          p_summary: string
+          p_tenant_id: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: {
+          id: string
+          is_new: boolean
+        }[]
+      }
+      memory_get_context: {
+        Args: { p_categories?: string[]; p_limit?: number; p_since?: string }
+        Returns: Json
+      }
+      memory_get_diary_entries: {
+        Args: { p_from?: string; p_limit?: number; p_to?: string }
+        Returns: Json
+      }
+      memory_get_garden_summary: { Args: never; Returns: Json }
+      memory_get_items_needing_embeddings: {
+        Args: {
+          p_category_key?: string
+          p_limit?: number
+          p_since?: string
+          p_tenant_id?: string
+        }
+        Returns: {
+          category_key: string
+          content: string
+          created_at: string
+          id: string
+          tenant_id: string
+          user_id: string
+        }[]
+      }
+      memory_mark_for_reembed: {
+        Args: {
+          p_category_key?: string
+          p_since?: string
+          p_tenant_id?: string
+          p_until?: string
+          p_user_id?: string
+        }
+        Returns: Json
+      }
+      memory_semantic_search: {
+        Args: {
+          p_active_role?: string
+          p_categories?: string[]
+          p_max_age_hours?: number
+          p_query_embedding: string
+          p_recency_boost?: boolean
+          p_tenant_id?: string
+          p_top_k?: number
+          p_user_id?: string
+          p_visibility_scope?: string
+          p_workspace_scope?: string
+        }
+        Returns: {
+          active_role: string
+          category_key: string
+          combined_score: number
+          content: string
+          content_json: Json
+          conversation_id: string
+          created_at: string
+          id: string
+          importance: number
+          occurred_at: string
+          origin_service: string
+          recency_score: number
+          similarity_score: number
+          source: string
+          visibility_scope: string
+          vtid: string
+          workspace_scope: string
+        }[]
+      }
+      memory_update_embeddings: { Args: { p_updates: Json }; Returns: Json }
+      memory_write_item: { Args: { p_payload: Json }; Returns: Json }
       next_vtid: {
         Args: { p_family: string; p_module: string }
         Returns: string
@@ -8487,6 +10535,24 @@ export type Database = {
           transaction_id: string
         }[]
       }
+      redeem_voucher: {
+        Args: {
+          p_device_id?: string
+          p_event_id: string
+          p_staff_user_id: string
+          p_tenant_id: string
+          p_voucher_id: string
+        }
+        Returns: Json
+      }
+      reject_autopilot_recommendation: {
+        Args: { p_reason?: string; p_recommendation_id: string }
+        Returns: Json
+      }
+      release_vtid_claim: {
+        Args: { p_reason?: string; p_vtid: string; p_worker_id: string }
+        Returns: Json
+      }
       resolve_event_by_slug: {
         Args: { identifier: string }
         Returns: {
@@ -8508,6 +10574,21 @@ export type Database = {
           slug: string
           start_time: string
           title: string
+        }[]
+      }
+      resolve_thread_id: {
+        Args: {
+          p_active_role?: string
+          p_provided_thread_id?: string
+          p_session_timeout_hours?: number
+          p_tenant_id: string
+          p_user_id: string
+        }
+        Returns: {
+          is_new: boolean
+          resumed: boolean
+          thread_id: string
+          turn_count: number
         }[]
       }
       rpc_board_list_scheduled: {
@@ -8572,6 +10653,10 @@ export type Database = {
         Args: { p_role: string; p_tenant_id: string }
         Returns: undefined
       }
+      snooze_autopilot_recommendation: {
+        Args: { p_hours?: number; p_recommendation_id: string }
+        Returns: Json
+      }
       switch_to_tenant_by_slug: {
         Args: { p_tenant_slug: string }
         Returns: undefined
@@ -8629,6 +10714,25 @@ export type Database = {
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }
         Returns: boolean
+      }
+      worker_heartbeat: {
+        Args: { p_active_vtid?: string; p_worker_id: string }
+        Returns: Json
+      }
+      write_fact: {
+        Args: {
+          p_entity?: string
+          p_fact_key: string
+          p_fact_value: string
+          p_fact_value_type?: string
+          p_provenance_confidence?: number
+          p_provenance_source?: string
+          p_provenance_utterance_id?: string
+          p_tenant_id: string
+          p_thread_id?: string
+          p_user_id: string
+        }
+        Returns: string
       }
     }
     Enums: {

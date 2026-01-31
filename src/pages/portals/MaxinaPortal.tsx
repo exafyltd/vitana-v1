@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Heart, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
-import { VitanaGuideOrbIntro } from "@/components/vitanaland/VitanaGuideOrbIntro";
+import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
@@ -23,8 +23,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { preloadDemoImages } from "@/lib/preloadDemoImages";
+import { toast } from "sonner";
+import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const MaxinaPortal = () => {
+  const { translate } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
@@ -48,11 +52,38 @@ const MaxinaPortal = () => {
   }, [startFresh]);
 
   // Switch to maxina tenant if already authenticated
+  // Default post-login redirect to Events → Upcoming on mobile
+  // Prefetch events BEFORE navigation for instant first paint
   useEffect(() => {
     if (!authLoading && user) {
-      const redirectTo = searchParams.get('redirectTo');
-      setTenantBySlug('maxina').then(() => {
-        navigate(redirectTo || "/home");
+      // Verify session is still valid before redirecting
+      supabase.auth.getSession().then(async ({ data: { session } }) => {
+        if (session) {
+          const redirectTo = searchParams.get('redirectTo');
+          const isMobile = window.innerWidth < 768;
+          // Default to Events Upcoming on mobile if no explicit redirect
+          const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
+          
+          // Prefetch events in parallel with tenant switch for mobile users
+          const prefetchPromise = isMobile ? (async () => {
+            const queryClient = (window as any).queryClient;
+            if (queryClient) {
+              await queryClient.prefetchQuery({
+                queryKey: ['global-community-events'],
+                queryFn: fetchCommunityEventsQueryFn,
+                staleTime: 2 * 60 * 1000,
+              });
+            }
+          })() : Promise.resolve();
+          
+          // Run prefetch and tenant switch in parallel
+          await Promise.all([
+            prefetchPromise,
+            setTenantBySlug('maxina')
+          ]);
+          
+          navigate(redirectTo || defaultRedirect);
+        }
       });
     }
   }, [user, authLoading, navigate, setTenantBySlug, searchParams]);
@@ -65,17 +96,40 @@ const MaxinaPortal = () => {
     root.style.setProperty("--brand-fg", "#1A1A1A");
   }, []);
 
+  // Add body class for Maxina-specific orb positioning
+  useEffect(() => {
+    document.body.classList.add('maxina-signin-page');
+    return () => {
+      document.body.classList.remove('maxina-signin-page');
+    };
+  }, []);
+
+  // Handle email confirmation success - show welcome toast and clean URL
+  useEffect(() => {
+    if (searchParams.get('confirmed') === 'true') {
+      toast.success(translate('portals.maxina.emailConfirmed', "Email confirmed! Welcome to Maxina."), {
+        duration: 4000,
+      });
+      
+      // Clean URL after short delay
+      setTimeout(() => {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('confirmed');
+        window.history.replaceState({}, '', 
+          newParams.toString() ? `/maxina?${newParams}` : '/maxina'
+        );
+      }, 2000);
+    }
+  }, [searchParams, translate]);
+
   // Load daily-rotating video background
   useEffect(() => {
     getIntroVideoSrc('maxina').then(setVideoSrc);
   }, []);
 
-  // Start soundscape when video loads
-  useEffect(() => {
-    if (videoSrc) {
-      startFresh(0.05);
-    }
-  }, [videoSrc, startFresh]);
+  // NOTE: Do NOT auto-start soundscape on mount/video load
+  // Soundscape should only start on explicit user gesture (click)
+  // The ensureSoundscapePlaying callback handles this correctly
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
@@ -144,7 +198,7 @@ const MaxinaPortal = () => {
       if (error) {
         setError(error.message);
       } else {
-        setError("Please check your email to confirm your account.");
+        setError(translate('portals.maxina.checkEmail', "Please check your email to confirm your account."));
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -155,10 +209,16 @@ const MaxinaPortal = () => {
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
+      // Detect mobile via screen width (matches useIsMobile hook breakpoint)
+      const isMobile = window.innerWidth < 768;
+      const redirectPath = isMobile 
+        ? '/comm/events-meetups?tab=upcoming' 
+        : '/home';
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: getEmailRedirectUrl('/home'),
+          redirectTo: getEmailRedirectUrl(redirectPath),
           queryParams: {
             tenant_slug: 'maxina'
           }
@@ -217,40 +277,44 @@ const MaxinaPortal = () => {
         />
       )}
       
-      {/* Dark overlay for readability */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
+      {/* Premium multi-layer gradient overlay for readability */}
+      <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
+      <div className="fixed inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10" />
       
-      {/* Content layer */}
-      <div className="relative z-20 flex flex-col items-center justify-center min-h-screen px-6 py-4">
+      {/* Content layer - pulled up with safe bottom spacing */}
+      <div className="relative z-20 flex flex-col items-center justify-start min-h-screen px-4 pt-16 md:pt-16 md:justify-center md:px-6 pb-32 md:pb-6 maxina-page-content maxina-signin-page" data-maxina-app="true">
         <div className="max-w-md w-full">
-          {/* Auth Tabs */}
+          {/* Auth Tabs - Compact card */}
           <Card 
-            className="bg-white/70 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl shadow-black/20"
+            className="bg-white/75 backdrop-blur-xl rounded-2xl border border-white/30 shadow-[0_8px_40px_rgba(0,0,0,0.25)]"
             onClick={ensureSoundscapePlaying}
           >
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Join Maxina</TabsTrigger>
+              {/* Compact tab bar */}
+              <TabsList className="grid w-full grid-cols-2 h-10 md:h-11">
+                <TabsTrigger value="signin" className="text-sm md:text-base py-1.5">{translate('authPage.signIn', 'Sign In')}</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm md:text-base py-1.5">{translate('portals.maxina.joinMaxina', 'Join Maxina')}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="signin">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl">Welcome back to Maxina.</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Sign in to continue your Vitanaland journey.
+                {/* Compact header */}
+                <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
+                  <CardTitle className="text-lg md:text-xl">{translate('portals.maxina.welcomeBack', 'Welcome back to Maxina.')}</CardTitle>
+                  <CardDescription className="text-sm md:text-base mt-1">
+                    {translate('portals.maxina.continueJourney', 'Sign in to continue your journey.')}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSignIn} className="space-y-3">
+                {/* Compact form content */}
+                <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
+                  <form onSubmit={handleSignIn} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant="destructive">
-                        <AlertDescription>{error}</AlertDescription>
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
                     )}
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm">{translate('authPage.email', 'Email')}</Label>
                         <Input
                           id="email"
                           type="email"
@@ -260,11 +324,12 @@ const MaxinaPortal = () => {
                           onFocus={ensureSoundscapePlaying}
                           required
                           disabled={loading}
+                          className="h-10 md:h-11"
                         />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="password" className="text-sm">{translate('authPage.password', 'Password')}</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -274,7 +339,7 @@ const MaxinaPortal = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           disabled={loading}
-                          className="pr-10"
+                          className="pr-10 h-10 md:h-11"
                         />
                         <button
                           type="button"
@@ -291,64 +356,65 @@ const MaxinaPortal = () => {
                       </div>
                       </div>
                       
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                      {/* Compact row: Keep me logged in + Forgot password */}
+                      <div className="flex items-center justify-between py-1">
+                        <div className="flex items-center space-x-1.5">
                           <Checkbox
                             id="keep-logged-in"
                             checked={keepLoggedIn}
                             onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
+                            className="h-3.5 w-3.5"
                           />
                           <Label
                             htmlFor="keep-logged-in"
-                            className="text-sm font-normal cursor-pointer"
+                            className="text-xs font-normal cursor-pointer"
                           >
-                            Keep me logged in
+                            {translate('authPage.keepLoggedIn', 'Keep me logged in')}
                           </Label>
                         </div>
                         <Link
                           to="/reset-password" 
-                          className="text-sm text-muted-foreground hover:text-[#FF7BAC] transition-colors"
+                          className="text-xs text-muted-foreground hover:text-[#FF7BAC] transition-colors"
                         >
-                          Forgot password?
+                          {translate('portals.maxina.forgotPassword', 'Forgot password?')}
                         </Link>
                       </div>
-                      
-                      <div>
-                    </div>
                     
                       <Button 
                         type="submit" 
-                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300" 
+                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
                         disabled={loading}
                       >
                         {loading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Signing in…
+                            {translate('portals.maxina.signingIn', 'Signing in…')}
                           </>
                         ) : (
-                          "Sign In"
+                          translate('authPage.signIn', 'Sign In')
                         )}
                       </Button>
 
-                      <div className="relative my-6">
+                      {/* Compact social login divider */}
+                      <div className="relative my-3 md:my-4">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-border/50" />
+                          <div className="w-full border-t border-border/40" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                        <div className="relative flex justify-center">
+                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">{translate('authPage.orContinueWith', 'Or continue with')}</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      {/* Compact social buttons */}
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => handleSocialLogin('google')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M21.35 11.1h-9.17v2.98h5.44c-.24 1.38-1.65 4.04-5.44 4.04-3.28 0-5.96-2.71-5.96-6.05s2.68-6.05 5.96-6.05c1.87 0 3.12.79 3.84 1.47l2.62-2.53C17.51 3.26 15.35 2.4 13 2.4 7.98 2.4 3.94 6.46 3.94 11.5S7.98 20.6 13 20.6c7.47 0 8.94-6.05 8.34-9.5z"
@@ -361,9 +427,9 @@ const MaxinaPortal = () => {
                           variant="outline"
                           onClick={() => handleSocialLogin('apple')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M16.365 1.43c0 1.14-.42 2.13-1.26 2.97-.96.96-2.06 1.52-3.3 1.47-.06-1.17.42-2.19 1.26-3.03.9-.9 2.1-1.47 3.3-1.41zm5.22 16.29c-.6 1.47-1.38 2.73-2.28 3.69-1.02 1.08-2.16 1.65-3.42 1.68-1.02.03-1.71-.3-2.49-.66-.6-.3-1.23-.6-2.04-.6-.84 0-1.47.3-2.1.6-.78.36-1.53.72-2.55.69-1.29-.03-2.4-.57-3.42-1.65-1.14-1.2-2.07-2.76-2.82-4.74-.96-2.49-1.44-4.89-1.44-7.17 0-2.1.48-3.93 1.47-5.46C1.965 3.9 3.315 3 4.845 2.97c.96-.03 1.86.33 2.67.78.6.33 1.17.63 1.77.63.57 0 1.11-.3 1.74-.63.84-.45 1.77-.93 2.94-.81 1.89.18 3.24 1.02 4.17 2.52-1.65 1.02-2.49 2.46-2.46 4.32.03 1.77.96 3.27 2.43 4.11.72.42 1.53.66 2.43.69-.21.66-.45 1.29-.78 1.95z"
@@ -377,35 +443,38 @@ const MaxinaPortal = () => {
               </TabsContent>
               
               <TabsContent value="signup">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl">Join the Maxina community.</CardTitle>
-                  <CardDescription className="text-base mt-2">
-                    Create your account and begin your wellness journey.
+                {/* Compact header */}
+                <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
+                  <CardTitle className="text-lg md:text-xl">{translate('portals.maxina.joinCommunity', 'Join the Maxina community.')}</CardTitle>
+                  <CardDescription className="text-sm md:text-base mt-1">
+                    {translate('portals.maxina.createAccount', 'Create your account and begin your journey.')}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSignUp} className="space-y-3">
+                {/* Compact form content */}
+                <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
+                  <form onSubmit={handleSignUp} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant="destructive">
-                        <AlertDescription>{error}</AlertDescription>
+                      <Alert variant="destructive" className="py-2">
+                        <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
                     )}
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="fullName">Full Name</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="fullName" className="text-sm">{translate('authPage.fullName', 'Full Name')}</Label>
                       <Input
                         id="fullName"
                         type="text"
-                        placeholder="Your full name"
+                        placeholder={translate('portals.maxina.yourFullName', 'Your full name')}
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required
                         disabled={loading}
+                        className="h-10 md:h-11"
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm">{translate('authPage.email', 'Email')}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -414,11 +483,12 @@ const MaxinaPortal = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         disabled={loading}
+                        className="h-10 md:h-11"
                       />
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="password" className="text-sm">{translate('authPage.password', 'Password')}</Label>
                       <div className="relative">
                         <Input
                           id="password"
@@ -428,7 +498,7 @@ const MaxinaPortal = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                           disabled={loading}
-                          className="pr-10"
+                          className="pr-10 h-10 md:h-11"
                         />
                         <button
                           type="button"
@@ -445,82 +515,84 @@ const MaxinaPortal = () => {
                       </div>
                     </div>
 
-                    {/* Role Selection */}
-                    <div className="space-y-3">
-                      <Label>I am joining as:</Label>
-                      <div className="grid grid-cols-2 gap-2">
+                    {/* Compact Role Selection */}
+                    <div className="space-y-2">
+                      <Label className="text-sm">{translate('portals.maxina.joiningAs', 'I am joining as:')}</Label>
+                      <div className="grid grid-cols-4 gap-1.5 md:gap-2">
                         <Button
                           type="button"
                           variant={selectedRole === "community" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("community")}
                         >
-                          <Users className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Community</span>
+                          <Users className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.community', 'Community')}</span>
                         </Button>
                         <Button
                           type="button"
                           variant={selectedRole === "patient" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("patient")}
                         >
-                          <Heart className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Patient</span>
+                          <Heart className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.patient', 'Patient')}</span>
                         </Button>
                         <Button
                           type="button"
                           variant={selectedRole === "professional" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("professional")}
                         >
-                          <Stethoscope className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Professional</span>
+                          <Stethoscope className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.professional', 'Pro')}</span>
                         </Button>
                         <Button
                           type="button"
                           variant={selectedRole === "admin" ? "default" : "outline"}
-                          className="p-3 h-auto flex-col"
+                          className="p-2 h-auto flex-col"
                           onClick={() => setSelectedRole("admin")}
                         >
-                          <Shield className="h-4 w-4 mb-1" />
-                          <span className="text-xs">Admin</span>
+                          <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
+                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.admin', 'Admin')}</span>
                         </Button>
                       </div>
                     </div>
                     
                       <Button 
                         type="submit" 
-                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300" 
+                        className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] hover:shadow-lg hover:shadow-pink-500/30 transition-all duration-300 h-10 md:h-11 text-sm md:text-base" 
                         disabled={loading}
                       >
                         {loading ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Creating account…
+                            {translate('portals.maxina.creatingAccount', 'Creating account…')}
                           </>
                         ) : (
-                          "Create Account"
+                          translate('authPage.createAccount', 'Create Account')
                         )}
                       </Button>
 
-                      <div className="relative my-6">
+                      {/* Compact social login divider */}
+                      <div className="relative my-3 md:my-4">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-border/50" />
+                          <div className="w-full border-t border-border/40" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                        <div className="relative flex justify-center">
+                          <span className="bg-card px-2 text-[10px] md:text-xs uppercase text-muted-foreground tracking-wider">{translate('authPage.orContinueWith', 'Or continue with')}</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
+                      {/* Compact social buttons */}
+                      <div className="grid grid-cols-2 gap-2 md:gap-3">
                         <Button
                           type="button"
                           variant="outline"
                           onClick={() => handleSocialLogin('google')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M21.35 11.1h-9.17v2.98h5.44c-.24 1.38-1.65 4.04-5.44 4.04-3.28 0-5.96-2.71-5.96-6.05s2.68-6.05 5.96-6.05c1.87 0 3.12.79 3.84 1.47l2.62-2.53C17.51 3.26 15.35 2.4 13 2.4 7.98 2.4 3.94 6.46 3.94 11.5S7.98 20.6 13 20.6c7.47 0 8.94-6.05 8.34-9.5z"
@@ -533,9 +605,9 @@ const MaxinaPortal = () => {
                           variant="outline"
                           onClick={() => handleSocialLogin('apple')}
                           disabled={loading}
-                          className="w-full"
+                          className="w-full h-9 md:h-10 text-sm"
                         >
-                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                          <svg className="mr-1.5 h-4 w-4" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M16.365 1.43c0 1.14-.42 2.13-1.26 2.97-.96.96-2.06 1.52-3.3 1.47-.06-1.17.42-2.19 1.26-3.03.9-.9 2.1-1.47 3.3-1.41zm5.22 16.29c-.6 1.47-1.38 2.73-2.28 3.69-1.02 1.08-2.16 1.65-3.42 1.68-1.02.03-1.71-.3-2.49-.66-.6-.3-1.23-.6-2.04-.6-.84 0-1.47.3-2.1.6-.78.36-1.53.72-2.55.69-1.29-.03-2.4-.57-3.42-1.65-1.14-1.2-2.07-2.76-2.82-4.74-.96-2.49-1.44-4.89-1.44-7.17 0-2.1.48-3.93 1.47-5.46C1.965 3.9 3.315 3 4.845 2.97c.96-.03 1.86.33 2.67.78.6.33 1.17.63 1.77.63.57 0 1.11-.3 1.74-.63.84-.45 1.77-.93 2.94-.81 1.89.18 3.24 1.02 4.17 2.52-1.65 1.02-2.49 2.46-2.46 4.32.03 1.77.96 3.27 2.43 4.11.72.42 1.53.66 2.43.69-.21.66-.45 1.29-.78 1.95z"
@@ -550,45 +622,71 @@ const MaxinaPortal = () => {
             </Tabs>
           </Card>
 
-          {/* Trust & Navigation Footer */}
-          <div className="space-y-3">
-            <p className="text-center text-white/70 text-xs">
-              Maxina is part of the VITANA ecosystem.
+          {/* Compact Trust & Navigation Footer */}
+          <div className="space-y-2 mt-3 md:mt-4" data-maxina-footer="true">
+            <p className="text-center text-white/60 text-[10px] md:text-xs tracking-wide">
+              {translate('portals.maxina.partOfVitana', 'Maxina is part of the VITANA ecosystem.')}
             </p>
             
-            <div className="flex justify-center items-center space-x-4 text-sm">
-              <Link to="/privacy" className="text-white/80 hover:text-white font-medium transition-colors">
+            <div className="flex justify-center items-center space-x-3 text-xs md:text-sm">
+              <Link to="/privacy" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Privacy
               </Link>
-              <span className="text-white/40">·</span>
-              <Link to="/terms" className="text-white/80 hover:text-white font-medium transition-colors">
+              <span className="text-white/30">·</span>
+              <Link to="/terms" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Terms
               </Link>
-              <span className="text-white/40">·</span>
-              <Link to="/help" className="text-white/80 hover:text-white font-medium transition-colors">
+              <span className="text-white/30">·</span>
+              <Link to="/help" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Help
               </Link>
             </div>
             
-            <div className="w-16 h-px bg-white/30 mx-auto" />
-            
-            {/* Secondary navigation */}
-            <div className="flex justify-center space-x-6 text-sm pt-1">
-              <Link to="/alkalma" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
-                AlKalma Portal
+            {/* Portal Navigation - Desktop only */}
+            <div className="hidden md:flex justify-center items-center space-x-4 text-sm mt-2">
+              <Link to="/alkalma" className="text-white/60 hover:text-white transition-colors">
+                AlKalma
               </Link>
-              <Link to="/earthlinks" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
-                Earthlinks Portal
+              <span className="text-white/30">·</span>
+              <Link to="/earthlinks" className="text-white/60 hover:text-white transition-colors">
+                Earthlinks
               </Link>
-              <Link to="/" className="text-white/90 hover:text-white font-medium underline-offset-4 hover:underline transition-all">
-                ← Back to All Portals
+              <span className="text-white/30">·</span>
+              <Link to="/" className="text-white/60 hover:text-white transition-colors">
+                {translate('portals.maxina.allPortals', 'All Portals')}
               </Link>
             </div>
+            
           </div>
         </div>
+        
+        <div className="pb-6 md:pb-0" />
 
-        {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
-        <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={0.8} />
+        {/* VITANA Orb - positioned via global CSS */}
+        <MobileFixedOrb />
+
+        {/* Desktop ORB - bottom-left matching sidebar position */}
+        <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleOrbClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleOrbClick();
+              }
+            }}
+            className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+          >
+            <VitanalandPortalSeed 
+              audioState="idle"
+              volumeLevel={0}
+              size="sm"
+              layoutId="vitana-orb-desktop-portal"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

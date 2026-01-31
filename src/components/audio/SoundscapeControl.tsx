@@ -2,7 +2,7 @@ import { Music2, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Slider } from '@/components/ui/slider';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from '@/components/ui/responsive-popover';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useSidebar } from '@/components/ui/sidebar';
 import { toast } from 'sonner';
@@ -68,12 +68,12 @@ export function SoundscapeControl() {
         <div className="flex-1 flex items-center gap-2">
           <span className="text-sm text-foreground">Soundscape</span>
           
-          <Popover>
-            <PopoverTrigger asChild>
+          <ResponsivePopover>
+            <ResponsivePopoverTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 ml-auto"
+                className="h-6 w-6 ml-auto min-h-[44px] min-w-[44px]"
                 onClick={(e) => e.stopPropagation()}
               >
                 {isMuted ? (
@@ -82,8 +82,8 @@ export function SoundscapeControl() {
                   <Volume2 className="h-3 w-3 text-muted-foreground" />
                 )}
               </Button>
-            </PopoverTrigger>
-            <PopoverContent side="right" className="w-48 p-3">
+            </ResponsivePopoverTrigger>
+            <ResponsivePopoverContent title="Volume" side="right" className="w-48 p-3">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium">Volume</span>
@@ -101,13 +101,13 @@ export function SoundscapeControl() {
                   variant="outline"
                   size="sm"
                   onClick={handleToggleMute}
-                  className="w-full"
+                  className="w-full min-h-[44px]"
                 >
                   {isMuted ? 'Unmute' : 'Mute'}
                 </Button>
               </div>
-            </PopoverContent>
-          </Popover>
+            </ResponsivePopoverContent>
+          </ResponsivePopover>
         </div>
         
         {isPlaying && (

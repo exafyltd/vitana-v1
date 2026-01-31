@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+  ResponsivePopover,
+  ResponsivePopoverContent,
+  ResponsivePopoverTrigger,
+} from '@/components/ui/responsive-popover';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { ReactionSummary } from '@/hooks/useMessageReactions';
@@ -31,22 +31,22 @@ export function ReactionPopover({
   if (allUsers.length === 0) return <>{children}</>;
 
   return (
-    <Popover open={open} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>
+    <ResponsivePopover open={open} onOpenChange={onOpenChange}>
+      <ResponsivePopoverTrigger asChild>
         {children}
-      </PopoverTrigger>
-      <PopoverContent 
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent 
+        title="Reactions"
         className="w-64 p-3" 
         align="start"
         side="top"
       >
         <div className="space-y-2">
-          <h4 className="text-sm font-medium text-foreground">Reactions</h4>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {allUsers.map((user, index) => (
               <div
                 key={`${user.user_id}-${user.emoji}-${index}`}
-                className="flex items-center gap-3 py-1"
+                className="flex items-center gap-3 py-2 min-h-[44px]"
               >
                 <Avatar className="w-6 h-6">
                   <AvatarImage src={user.avatar_url} />
@@ -62,7 +62,7 @@ export function ReactionPopover({
             ))}
           </div>
         </div>
-      </PopoverContent>
-    </Popover>
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   );
 }

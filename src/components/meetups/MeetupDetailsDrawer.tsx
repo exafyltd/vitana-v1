@@ -30,13 +30,14 @@ import { EventSalesDashboard } from "@/components/tickets/EventSalesDashboard";
 import { useEventTicketTypes } from "@/hooks/useEventTickets";
 import { useIsEventOrganizer } from "@/hooks/useEventSales";
 import {
-  getEventCta,
+  getLocalizedEventCta,
   isTicketedEvent,
   isPaidEvent,
   isEventSoldOut,
   getLowestAvailableTicketPrice,
   formatTicketPrice,
 } from "@/lib/eventsCtaUtils";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -79,6 +80,7 @@ import {
   MapPinned,
   Megaphone,
   Ticket,
+  CalendarPlus,
   BarChart3,
   Eye,
 } from "lucide-react";
@@ -162,6 +164,7 @@ interface MeetupDetailsDrawerProps {
   hasNext?: boolean;
   isMobile?: boolean;
   onPromoteEvent?: (event: any) => void;
+  onShareEvent?: (event: any) => void;
 }
 
 export function MeetupDetailsDrawer({
@@ -174,6 +177,7 @@ export function MeetupDetailsDrawer({
   hasNext,
   isMobile = false,
   onPromoteEvent,
+  onShareEvent,
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
@@ -193,11 +197,12 @@ export function MeetupDetailsDrawer({
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [isCreatingThread, setIsCreatingThread] = useState(false);
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  // Share dialog state now managed by parent via onShareEvent callback
   
   const { addEvent, removeEvent } = useCalendarEvents();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { translate } = useTranslation();
   
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
@@ -231,8 +236,8 @@ export function MeetupDetailsDrawer({
     checkUserTicket();
   }, [user, event?.id]);
   
-  // Get CTA config using unified logic
-  const ctaConfig = getEventCta({
+  // Get CTA config using unified localized logic
+  const ctaConfig = getLocalizedEventCta({
     event: event ? {
       id: event.id,
       event_type: event.event_type,
@@ -242,7 +247,7 @@ export function MeetupDetailsDrawer({
     userHasTicket,
     isParticipating: isJoined,
     context: 'drawer',
-  });
+  }, translate);
   
   // Check if current user is the organizer
   const { isOrganizer } = useIsEventOrganizer(event?.id || '');
@@ -325,6 +330,7 @@ export function MeetupDetailsDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, hasPrev, hasNext, onNavigatePrev, onNavigateNext, onOpenChange]);
 
+
   if (!event) return null;
 
   const handleJoin = async () => {
@@ -400,6 +406,52 @@ export function MeetupDetailsDrawer({
     utm_medium: 'share_dialog',
     slug: event.slug
   });
+
+  // Add to VITANA Smart Calendar (primary action)
+  const handleAddToVitanaCalendar = async () => {
+    if (!user) {
+      toast({
+        title: translate('auth.signInRequired', 'Sign in required'),
+        description: translate('calendar.signInToAdd', 'Please sign in to add to your calendar'),
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    try {
+      const calendarEvent = {
+        user_id: '',
+        title: event.title,
+        description: event.description || '',
+        start_time: event.start_time,
+        end_time: event.end_time,
+        location: event.location || event.virtual_link || '',
+        event_type: 'community' as const,
+        status: 'confirmed' as const,
+        priority: 'medium' as const,
+        is_recurring: false,
+        source_type: 'manual' as const,
+        metadata: {
+          meetup_id: event.id,
+          meetup_slug: event.slug,
+        }
+      };
+      
+      await addEvent(calendarEvent);
+      
+      toast({
+        title: translate('calendar.addedToSmart', 'Added to Smart Calendar ✓'),
+        description: translate('calendar.eventSaved', "Event saved. We'll remind you before it starts."),
+      });
+    } catch (error) {
+      console.error('Failed to add to VITANA calendar:', error);
+      toast({
+        title: translate('errors.failedToAdd', 'Failed to add event'),
+        description: translate('errors.tryAgain', 'Please try again.'),
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleExportToCalendar = (type: string) => {
     const startDate = new Date(event.start_time);
@@ -592,19 +644,22 @@ export function MeetupDetailsDrawer({
       )}
       <div 
         className="flex flex-col h-full"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-    >
-      <ScrollArea className="flex-1 pb-20">
+        onTouchStart={!isMobile ? onTouchStart : undefined}
+        onTouchMove={!isMobile ? onTouchMove : undefined}
+        onTouchEnd={!isMobile ? onTouchEnd : undefined}
+      >
+      <ScrollArea className={cn("flex-1", isMobile ? "pb-[72px]" : "pb-20")}>
         <div 
           className={cn(
             "transition-opacity duration-300",
             isTransitioning && !prefersReducedMotion && "opacity-40"
           )}
         >
-          {/* Hero Image - Edge to edge 16:9 */}
-          <div className="relative w-full aspect-video bg-muted overflow-hidden">
+          {/* Hero Image - Edge to edge */}
+          <div className={cn(
+            "relative w-full bg-muted overflow-hidden",
+            isMobile ? "min-h-[50vh]" : "aspect-video"
+          )}>
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
             )}
@@ -628,47 +683,76 @@ export function MeetupDetailsDrawer({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 dark:from-background/95 via-background/50 dark:via-background/60 to-transparent" />
             
-            {/* Floating Navigation Arrows */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+            {/* Mobile Close Button - Top Right */}
+            {isMobile && (
               <Button
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
-                  "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
-                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-75 hover:opacity-100 focus-visible:opacity-100",
-                  !hasPrev && "pointer-events-none"
+                  "absolute top-4 right-4 z-20 rounded-full",
+                  "bg-background/80 backdrop-blur-md shadow-md",
+                  "border-border/40 hover:bg-background/90",
+                  "h-10 w-10"
                 )}
-                onClick={onNavigatePrev}
-                disabled={!hasPrev}
-                aria-label="Previous meetup (← key)"
-                title="Previous meetup (← key)"
+                onClick={() => onOpenChange(false)}
+                aria-label="Close event details"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <X className="h-5 w-5" />
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className={cn(
-                  "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
-                  "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
-                  "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                  "opacity-75 hover:opacity-100 focus-visible:opacity-100",
-                  !hasNext && "pointer-events-none"
-                )}
-                onClick={onNavigateNext}
-                disabled={!hasNext}
-                aria-label="Next meetup (→ key)"
-                title="Next meetup (→ key)"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
+            )}
+            
+            {/* Floating Navigation Arrows - Desktop only */}
+            {!isMobile && (
+              <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn(
+                    "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
+                    "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
+                    "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                    "opacity-75 hover:opacity-100 focus-visible:opacity-100",
+                    !hasPrev && "pointer-events-none"
+                  )}
+                  onClick={onNavigatePrev}
+                  disabled={!hasPrev}
+                  aria-label="Previous meetup (← key)"
+                  title="Previous meetup (← key)"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className={cn(
+                    "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
+                    "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
+                    "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+                    "opacity-75 hover:opacity-100 focus-visible:opacity-100",
+                    !hasNext && "pointer-events-none"
+                  )}
+                  onClick={onNavigateNext}
+                  disabled={!hasNext}
+                  aria-label="Next meetup (→ key)"
+                  title="Next meetup (→ key)"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
+            )}
 
             {/* Title Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              <h2 className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}>
+            <div 
+              className={cn(
+                "absolute left-0 right-0 p-6",
+                "bottom-0"
+              )}
+              style={isMobile ? { paddingTop: 'calc(env(safe-area-inset-top, 0px) + 18px)' } : undefined}
+            >
+              <h2 
+                className="text-[28px] md:text-[32px] font-bold tracking-tight text-white max-w-[22ch]"
+                style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.5)' }}
+              >
                 {event.title}
               </h2>
               
@@ -1118,22 +1202,74 @@ export function MeetupDetailsDrawer({
         </div>
       </ScrollArea>
 
-      {/* Sticky Action Bar */}
-      <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t shadow-lg p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <div className="flex items-center gap-2">
+      {/* Sticky Action Bar - Premium Glassy Design */}
+      <div 
+        className={cn(
+          "absolute bottom-0 left-0 right-0 flex items-center",
+          isMobile 
+            ? "backdrop-blur-xl" 
+            : "bg-background/95 backdrop-blur-sm border-t shadow-lg"
+        )}
+        style={isMobile ? {
+          minHeight: '72px',
+          paddingTop: '10px',
+          paddingLeft: '12px',
+          paddingRight: '12px',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)',
+          gap: '10px',
+          background: 'rgba(255, 255, 255, 0.86)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+          boxShadow: '0 -8px 24px rgba(0, 0, 0, 0.08)'
+        } : {
+          padding: '16px',
+          paddingBottom: 'max(16px, env(safe-area-inset-bottom))'
+        }}
+      >
+        <div className="flex items-center gap-2.5 w-full">
           {/* Use unified CTA logic */}
           {(() => {
+            // Premium CTA button styles for mobile
+            const getMobilePrimaryCtaStyle = (): React.CSSProperties => ({
+              height: '48px',
+              borderRadius: '14px',
+              padding: '0 16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: '#0b1220',
+              color: 'white',
+              border: 'none'
+            });
+
             const getCtaButtonClasses = () => {
+              const baseClasses = "flex-1 font-semibold text-[15px] flex items-center justify-center";
+              
+              if (isMobile) {
+                // Mobile uses inline styles for premium look
+                switch (ctaConfig.variant) {
+                  case 'ticket':
+                    return cn(baseClasses, "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-[14px] h-12");
+                  case 'view-ticket':
+                    return cn(baseClasses, "bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white rounded-[14px] h-12");
+                  case 'disabled':
+                    return cn(baseClasses, "bg-muted text-muted-foreground cursor-not-allowed rounded-[14px] h-12");
+                  case 'join':
+                  default:
+                    return cn(baseClasses, "rounded-[14px] h-12");
+                }
+              }
+              
+              // Desktop styles
               switch (ctaConfig.variant) {
                 case 'ticket':
-                  return "flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white";
+                  return cn(baseClasses, "h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white");
                 case 'view-ticket':
-                  return "flex-1 h-12 font-semibold text-[15px] bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white";
+                  return cn(baseClasses, "h-12 bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white");
                 case 'disabled':
-                  return "flex-1 h-12 font-semibold text-[15px] bg-muted text-muted-foreground cursor-not-allowed";
+                  return cn(baseClasses, "h-12 bg-muted text-muted-foreground cursor-not-allowed");
                 case 'join':
                 default:
-                  return "flex-1 h-12 font-semibold text-[15px]";
+                  return cn(baseClasses, "h-12");
               }
             };
 
@@ -1204,125 +1340,176 @@ export function MeetupDetailsDrawer({
                   "transition-opacity duration-300",
                   shouldFade && "opacity-0 pointer-events-none"
                 )}
+                style={isMobile && ctaConfig.variant === 'join' ? getMobilePrimaryCtaStyle() : undefined}
                 onClick={handleCtaClick}
                 disabled={ctaConfig.disabled || isJoining || shouldFade}
               >
                 {isJoining ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    {ctaConfig.action === 'join' || ctaConfig.action === 'reserve' ? 'Joining...' : 'Processing...'}
+                    {ctaConfig.action === 'join' || ctaConfig.action === 'reserve' 
+                      ? translate('eventCta.joining', 'Joining...') 
+                      : translate('eventCta.processing', 'Processing...')}
                   </>
                 ) : (
                   <>
                     {getCtaIcon()}
-                    {/* For ticketed events, show just "Buy Ticket" without price */}
-                    {isTicketCta ? 'Buy Ticket' : ctaConfig.label}
+                    {/* For ticketed events, show translated "Buy Ticket" without price in sticky bar */}
+                    {isTicketCta ? translate('eventCta.buyTicket', 'Buy Ticket') : ctaConfig.label}
                   </>
                 )}
               </Button>
             );
           })()}
 
-          {/* Promote Button (only for event creators) */}
+          {/* Icon Rail - Premium glassy buttons */}
+          {/* Promote Button (only for event creators) - Close drawer first */}
           {user && event.created_by === user.id && onPromoteEvent && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-12 w-12 shrink-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onPromoteEvent(event);
-                    }}
-                    aria-label="Promote event"
-                  >
-                    <Megaphone className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Promote this event</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            isMobile ? (
+              <Button
+                variant="outline"
+                size="icon"
+                className="shrink-0 flex items-center justify-center h-12 w-12 rounded-[14px] border-0"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                }}
+                onPointerDown={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onPromoteEvent(event);
+                }}
+                aria-label={translate('eventCta.promoteEvent', 'Promote event')}
+              >
+                <Megaphone className="h-4 w-4" />
+              </Button>
+            ) : (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-12 w-12 shrink-0"
-                      aria-label="Add to calendar"
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="shrink-0 flex items-center justify-center h-12 w-12"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        onPromoteEvent(event);
+                      }}
+                      aria-label={translate('eventCta.promoteEvent', 'Promote event')}
                     >
-                      <Calendar className="h-4 w-4" />
+                      <Megaphone className="h-4 w-4" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Add to calendar</p>
+                    <p>{translate('eventCta.promoteEvent', 'Promote event')}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
+            )
+          )}
+
+          {/* Calendar Dropdown - Full mobile touch handling with VITANA Calendar as primary */}
+          <DropdownMenu modal={!isMobile}>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className={cn(
+                  "shrink-0 flex items-center justify-center",
+                  isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+                )}
+                style={isMobile ? {
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(0, 0, 0, 0.08)'
+                } : undefined}
+                onPointerDown={(e) => isMobile && e.stopPropagation()}
+                onTouchEnd={(e) => isMobile && e.stopPropagation()}
+                aria-label="Add to calendar"
+              >
+                <Calendar className="h-4 w-4" />
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => handleExportToCalendar('google')}>
+            <DropdownMenuContent 
+              align="end" 
+              className="w-56 z-[100] pointer-events-auto"
+              onCloseAutoFocus={(e) => e.preventDefault()}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Primary action - VITANA Smart Calendar */}
+              <DropdownMenuItem onSelect={handleAddToVitanaCalendar}>
+                <CalendarPlus className="h-4 w-4 mr-2" />
+                {translate('calendar.addToVitana', 'Add to VITANA Calendar')}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {/* External calendars */}
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
                 Google Calendar
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExportToCalendar('outlook')}>
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('outlook')}>
                 Outlook
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleExportToCalendar('apple')}>
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('apple')}>
                 Apple Calendar
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleExportToCalendar('ics')}>
+              <DropdownMenuItem onSelect={() => handleExportToCalendar('ics')}>
                 <Download className="h-4 w-4 mr-2" />
                 Download ICS
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
-                  className="h-12 w-12 shrink-0"
-                  onClick={() => setShareDialogOpen(true)}
-                  aria-label="Share meetup"
-                >
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Share event</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {/* Share Button - Close drawer first, then parent opens dialog */}
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className={cn(
+              "shrink-0 flex items-center justify-center",
+              isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12"
+            )}
+            style={isMobile ? {
+              background: 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(0, 0, 0, 0.08)'
+            } : undefined}
+            onPointerDown={(e) => isMobile && e.stopPropagation()}
+            onTouchEnd={(e) => isMobile && e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              onShareEvent?.(event);
+            }}
+            aria-label="Share meetup"
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className={cn("h-12 w-12 shrink-0", isSaved && "bg-accent")}
-                  onClick={handleSave}
-                  aria-label={isSaved ? "Remove from saved" : "Save for later"}
-                >
-                  <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{isSaved ? "Remove from saved" : "Save for later"}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {/* Save Button - Mobile touch handling */}
+          <Button
+            variant="outline"
+            size="icon"
+            className={cn(
+              "shrink-0 flex items-center justify-center",
+              isMobile ? "h-12 w-12 rounded-[14px] border-0" : "h-12 w-12",
+              isSaved && !isMobile && "bg-accent"
+            )}
+            style={isMobile ? {
+              background: isSaved ? 'rgba(var(--accent), 0.9)' : 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(0, 0, 0, 0.08)'
+            } : undefined}
+            onPointerDown={(e) => isMobile && e.stopPropagation()}
+            onTouchEnd={(e) => isMobile && e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleSave();
+            }}
+            aria-label={isSaved ? "Remove from saved" : "Save for later"}
+          >
+            <Bookmark className={cn("h-4 w-4", isSaved && "fill-current")} />
+          </Button>
         </div>
       </div>
 
@@ -1351,19 +1538,7 @@ export function MeetupDetailsDrawer({
         />
       )}
 
-      {/* Share Dialog */}
-      <UniversalShareDialog
-        open={shareDialogOpen}
-        onOpenChange={setShareDialogOpen}
-        content={{
-          type: "event",
-          id: event.id,
-          title: event.title,
-          description: event.description,
-          image_url: event.image_url || event.cover_image_url,
-          url: shareUrl
-        }}
-      />
+      {/* Share Dialog is now managed by parent component via onShareEvent callback */}
       
       {/* Profile Preview Dialog */}
       <ProfilePreviewDialog />
@@ -1375,7 +1550,10 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent side="bottom" className="h-[90vh] p-0">
+        <SheetContent 
+          side="bottom" 
+          className="!inset-0 !h-full p-0 rounded-none [&>button]:hidden"
+        >
           {content}
         </SheetContent>
       </Sheet>

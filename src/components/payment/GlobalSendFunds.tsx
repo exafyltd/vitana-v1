@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { 
+  ResponsiveDialog, 
+  ResponsiveDialogContent, 
+  ResponsiveDialogHeader, 
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+  ResponsiveDialogTitle 
+} from '@/components/ui/responsive-dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -152,148 +159,149 @@ export default function GlobalSendFunds({
   const currentBalance = balances.find(b => b.currency_type === currency)?.balance || 0;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={isOpen} onOpenChange={onClose}>
+      <ResponsiveDialogContent className="sm:max-w-md">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <Send className="w-5 h-5 text-green-600" />
             Send Funds
-          </DialogTitle>
-        </DialogHeader>
+          </ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
 
-        <div className="space-y-4">
-          {/* Recipient Selection */}
-          {!selectedRecipient ? (
-            <div>
-              <Label htmlFor="search">Search Users</Label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  id="search"
-                  placeholder="Search by name or email..."
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    searchUsers(e.target.value);
-                  }}
-                  className="pl-10"
-                />
+        <ResponsiveDialogBody>
+          <div className="space-y-4">
+            {/* Recipient Selection */}
+            {!selectedRecipient ? (
+              <div>
+                <Label htmlFor="search">Search Users</Label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="search"
+                    placeholder="Search by name or email..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      searchUsers(e.target.value);
+                    }}
+                    className="pl-10"
+                  />
+                </div>
+                
+                {searchResults.length > 0 && (
+                  <div className="mt-2 max-h-40 overflow-y-auto border rounded-md">
+                    {searchResults.map((user) => (
+                      <button
+                        key={user.user_id}
+                        onClick={() => {
+                          setSelectedRecipient(user);
+                          setSearchQuery('');
+                          setSearchResults([]);
+                        }}
+                        className="w-full flex items-center gap-3 p-3 hover:bg-muted text-left"
+                      >
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={user.avatar_url} />
+                          <AvatarFallback>
+                            {user.display_name?.charAt(0) || user.full_name?.charAt(0) || '?'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">
+                            {user.display_name || user.full_name}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {user.email}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                
+                {isSearching && (
+                  <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                    <Users className="w-4 h-4 animate-pulse" />
+                    Searching users...
+                  </div>
+                )}
               </div>
-              
-              {searchResults.length > 0 && (
-                <div className="mt-2 max-h-40 overflow-y-auto border rounded-md">
-                  {searchResults.map((user) => (
-                    <button
-                      key={user.user_id}
-                      onClick={() => {
-                        setSelectedRecipient(user);
-                        setSearchQuery('');
-                        setSearchResults([]);
-                      }}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-muted text-left"
-                    >
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src={user.avatar_url} />
-                        <AvatarFallback>
-                          {user.display_name?.charAt(0) || user.full_name?.charAt(0) || '?'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">
-                          {user.display_name || user.full_name}
-                        </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {user.email}
-                        </p>
-                      </div>
-                    </button>
-                  ))}
+            ) : (
+              <div>
+                <Label>Recipient</Label>
+                <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={selectedRecipient.avatar_url} />
+                    <AvatarFallback>
+                      {selectedRecipient.display_name?.charAt(0) || '?'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{selectedRecipient.display_name}</p>
+                    <p className="text-xs text-muted-foreground">{selectedRecipient.email}</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedRecipient(null)}
+                  >
+                    Change
+                  </Button>
                 </div>
-              )}
-              
-              {isSearching && (
-                <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
-                  <Users className="w-4 h-4 animate-pulse" />
-                  Searching users...
-                </div>
-              )}
-            </div>
-          ) : (
-            <div>
-              <Label>Recipient</Label>
-              <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src={selectedRecipient.avatar_url} />
-                  <AvatarFallback>
-                    {selectedRecipient.display_name?.charAt(0) || '?'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <p className="text-sm font-medium">{selectedRecipient.display_name}</p>
-                  <p className="text-xs text-muted-foreground">{selectedRecipient.email}</p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSelectedRecipient(null)}
-                >
-                  Change
-                </Button>
               </div>
+            )}
+
+            {/* Currency Selection */}
+            <div>
+              <Label htmlFor="currency">Currency</Label>
+              <Select value={currency} onValueChange={setCurrency}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="VTNA">VTNA Tokens</SelectItem>
+                  <SelectItem value="USD">USD</SelectItem>
+                  <SelectItem value="CREDITS">Credits</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground mt-1">
+                Available: {currentBalance.toLocaleString()} {currency}
+              </p>
             </div>
-          )}
 
-          {/* Currency Selection */}
-          <div>
-            <Label htmlFor="currency">Currency</Label>
-            <Select value={currency} onValueChange={setCurrency}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="VTNA">VTNA Tokens</SelectItem>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="CREDITS">Credits</SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-xs text-muted-foreground mt-1">
-              Available: {currentBalance.toLocaleString()} {currency}
-            </p>
+            {/* Amount Input */}
+            <div>
+              <Label htmlFor="amount">Amount</Label>
+              <Input
+                id="amount"
+                type="number"
+                placeholder="0.00"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                min="0"
+                step="0.01"
+              />
+            </div>
           </div>
+        </ResponsiveDialogBody>
 
-          {/* Amount Input */}
-          <div>
-            <Label htmlFor="amount">Amount</Label>
-            <Input
-              id="amount"
-              type="number"
-              placeholder="0.00"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              min="0"
-              step="0.01"
-            />
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-2 pt-4">
-            <Button 
-              variant="outline" 
-              onClick={onClose}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleSendFunds}
-              disabled={!selectedRecipient || !amount || isLoading || loading}
-              className="flex-1"
-            >
-              {isLoading ? 'Sending...' : 'Send Funds'}
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        <ResponsiveDialogFooter>
+          <Button 
+            variant="outline" 
+            onClick={onClose}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSendFunds}
+            disabled={!selectedRecipient || !amount || isLoading || loading}
+            className="flex-1"
+          >
+            {isLoading ? 'Sending...' : 'Send Funds'}
+          </Button>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

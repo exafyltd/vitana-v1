@@ -223,11 +223,12 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                      tabIndex={0}
                      role="button"
                      aria-label={`Vitana Index: ${profile.vitanaIndex}`}
-                     onClick={() => window.location.href = '/health/my-health-tracker'}
+                     onClick={() => { window.history.pushState({}, '', '/health/my-health-tracker'); window.dispatchEvent(new PopStateEvent('popstate')); }}
                      onKeyDown={(e) => {
                        if (e.key === 'Enter' || e.key === ' ') {
                          e.preventDefault();
-                         window.location.href = '/health/my-health-tracker';
+                         window.history.pushState({}, '', '/health/my-health-tracker');
+                         window.dispatchEvent(new PopStateEvent('popstate'));
                        }
                      }}
                 >

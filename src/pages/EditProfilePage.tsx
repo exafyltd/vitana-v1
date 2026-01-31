@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
@@ -15,8 +15,21 @@ import { getScope } from "@/lib/profileScope";
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-
 import { useAuth } from "@/context/AuthProvider";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
+import { MobileIdCardSwitcher } from "@/components/profile/mobile/MobileIdCardSwitcher";
+import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileStats";
+import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
+import { MobileAutopilotBanner } from "@/components/profile/mobile/MobileAutopilotBanner";
+import { MobileShowcaseHeader } from "@/components/profile/mobile/MobileShowcaseHeader";
+import { MobileMediaTabContent } from "@/components/profile/mobile/MobileMediaTabContent";
+import { MobileGroupsTabContent } from "@/components/profile/mobile/MobileGroupsTabContent";
+import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
+
+// Default bio constants for language sync - OUTSIDE component for stability
+const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
+const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱';
 
 export default function EditProfilePage() {
   const navigate = useNavigate();
@@ -25,6 +38,7 @@ export default function EditProfilePage() {
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
   const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
@@ -32,7 +46,9 @@ export default function EditProfilePage() {
   const [showcaseDrawerOpen, setShowcaseDrawerOpen] = useState(false);
   const [visibilityDrawerOpen, setVisibilityDrawerOpen] = useState(false);
 
-  // Profile data from context
+  // Get localized default bio
+  const localizedDefaultBio = translate('profile.defaultBio', DEFAULT_BIO_EN);
+  
   const [profile, setProfile] = useState<UserProfile>({
     id: 'current-user',
     user_id: user?.id,
@@ -40,7 +56,7 @@ export default function EditProfilePage() {
     handle: contextProfile.handle || 'user',
     avatarUrl: contextProfile.avatar,
     roles: ['community'],
-    bio: 'Wellness enthusiast passionate about holistic health and community building. 🌱',
+    bio: localizedDefaultBio,
     location: 'San Francisco, CA',
     links: [
       { label: 'Website', url: 'https://mariia.com' },
@@ -67,66 +83,85 @@ export default function EditProfilePage() {
     }
   });
 
+  // Sync default bio when language changes (only if bio is a default placeholder)
+  useEffect(() => {
+    setProfile(prev => {
+      const isDefaultBio = prev.bio === DEFAULT_BIO_EN || prev.bio === DEFAULT_BIO_DE;
+      if (isDefaultBio && prev.bio !== localizedDefaultBio) {
+        return { ...prev, bio: localizedDefaultBio };
+      }
+      return prev;
+    });
+  }, [localizedDefaultBio]);
+
+  // Refetch profile data - extracted for reuse after social import success
+  const refetchProfile = useCallback(async () => {
+    if (!user?.id) return;
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', user.id)
+      .single();
+
+    if (error) {
+      console.error('Error fetching profile:', error);
+      return;
+    }
+
+    if (data) {
+      setProfile(prev => ({
+        ...prev,
+        user_id: user.id,
+        name: data.display_name || contextProfile.displayName,
+        handle: data.handle || contextProfile.handle || 'user',
+        avatarUrl: data.avatar_url || contextProfile.avatar,
+        // Localize bio if it's a default placeholder from database
+        bio: (() => {
+          const fetchedBio = data.bio || prev.bio;
+          if (fetchedBio === DEFAULT_BIO_EN || fetchedBio === DEFAULT_BIO_DE) {
+            return localizedDefaultBio;
+          }
+          return fetchedBio;
+        })(),
+        // Social media fields
+        linkedin_url: data.linkedin_url,
+        linkedin_synced_at: data.linkedin_synced_at,
+        linkedin_headline: data.linkedin_headline,
+        linkedin_summary: data.linkedin_summary,
+        linkedin_skills: data.professional_skills,
+        instagram_url: data.instagram_url,
+        instagram_synced_at: data.instagram_synced_at,
+        instagram_bio: data.instagram_bio,
+        instagram_followers_count: data.instagram_followers_count,
+        instagram_interests: data.instagram_interests,
+        tiktok_url: data.tiktok_url,
+        tiktok_synced_at: data.tiktok_synced_at,
+        tiktok_bio: data.tiktok_bio,
+        tiktok_followers_count: data.tiktok_followers_count,
+        tiktok_content_themes: data.tiktok_content_themes,
+        youtube_url: data.youtube_url,
+        youtube_synced_at: data.youtube_synced_at,
+        youtube_description: data.youtube_description,
+        youtube_subscribers_count: data.youtube_subscribers_count,
+        youtube_content_categories: data.youtube_content_categories,
+        facebook_url: data.facebook_url,
+        facebook_synced_at: data.facebook_synced_at,
+        facebook_bio: data.facebook_bio,
+        facebook_interests: data.facebook_interests,
+        x_url: data.x_url,
+        x_synced_at: data.x_synced_at,
+        x_bio: data.x_bio,
+        x_followers_count: data.x_followers_count,
+        x_topics: data.x_topics,
+      }));
+    }
+  }, [user?.id, contextProfile, localizedDefaultBio]);
+
   // Fetch full profile data including social media fields from Supabase
   useEffect(() => {
-    const fetchProfileData = async () => {
-      if (!user?.id) return;
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching profile:', error);
-        return;
-      }
-
-      if (data) {
-        setProfile(prev => ({
-          ...prev,
-          user_id: user.id,
-          name: data.display_name || contextProfile.displayName,
-          handle: data.handle || contextProfile.handle || 'user',
-          avatarUrl: data.avatar_url || contextProfile.avatar,
-          bio: data.bio || prev.bio,
-          // Social media fields
-          linkedin_url: data.linkedin_url,
-          linkedin_synced_at: data.linkedin_synced_at,
-          linkedin_headline: data.linkedin_headline,
-          linkedin_summary: data.linkedin_summary,
-          linkedin_skills: data.professional_skills,
-          instagram_url: data.instagram_url,
-          instagram_synced_at: data.instagram_synced_at,
-          instagram_bio: data.instagram_bio,
-          instagram_followers_count: data.instagram_followers_count,
-          instagram_interests: data.instagram_interests,
-          tiktok_url: data.tiktok_url,
-          tiktok_synced_at: data.tiktok_synced_at,
-          tiktok_bio: data.tiktok_bio,
-          tiktok_followers_count: data.tiktok_followers_count,
-          tiktok_content_themes: data.tiktok_content_themes,
-          youtube_url: data.youtube_url,
-          youtube_synced_at: data.youtube_synced_at,
-          youtube_description: data.youtube_description,
-          youtube_subscribers_count: data.youtube_subscribers_count,
-          youtube_content_categories: data.youtube_content_categories,
-          facebook_url: data.facebook_url,
-          facebook_synced_at: data.facebook_synced_at,
-          facebook_bio: data.facebook_bio,
-          facebook_interests: data.facebook_interests,
-          x_url: data.x_url,
-          x_synced_at: data.x_synced_at,
-          x_bio: data.x_bio,
-          x_followers_count: data.x_followers_count,
-          x_topics: data.x_topics,
-        }));
-      }
-    };
-
-    fetchProfileData();
-  }, [user, contextProfile]);
+    refetchProfile();
+  }, [refetchProfile]);
 
   const scopeContext = {
     isOwner: true,
@@ -145,8 +180,8 @@ export default function EditProfilePage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         toast({
-          title: "Not authenticated",
-          description: "Please log in to save your profile.",
+          title: translate('editProfile.notAuthenticated', 'Not authenticated'),
+          description: translate('editProfile.notAuthenticatedDesc', 'Please log in to save your profile.'),
           variant: "destructive"
         });
         return;
@@ -163,16 +198,16 @@ export default function EditProfilePage() {
 
       setHasUnsavedChanges(false);
       toast({
-        title: "Profile updated successfully!",
-        description: "Your changes are now live. Your VITANA profile looks amazing."
+        title: translate('editProfile.profileUpdated', 'Profile updated successfully!'),
+        description: translate('editProfile.profileUpdatedDesc', 'Your changes are now live. Your VITANA profile looks amazing.')
       });
       
       console.log('[EditProfilePage] Profile data refreshed:', data);
     } catch (error: any) {
       console.error('[EditProfilePage] Save error:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to refresh profile data.",
+        title: translate('editProfile.error', 'Error'),
+        description: error.message || translate('editProfile.refreshFailed', 'Failed to refresh profile data.'),
         variant: "destructive"
       });
     }
@@ -180,7 +215,7 @@ export default function EditProfilePage() {
 
   const handleCancel = () => {
     if (hasUnsavedChanges) {
-      const confirmed = window.confirm('You have unsaved changes. Are you sure you want to leave?');
+      const confirmed = window.confirm(translate('editProfile.unsavedChanges', 'You have unsaved changes. Are you sure you want to leave?'));
       if (!confirmed) return;
     }
     navigate(`/u/${profile.handle}`);
@@ -235,6 +270,125 @@ export default function EditProfilePage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [viewAs, hasUnsavedChanges]);
 
+  const isMobile = useIsMobile();
+  const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
+  const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
+
+
+  // Mobile-specific layout - early return pattern
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO 
+          title="Edit Profile – VITANA" 
+          description="Edit your VITANA profile and customize your public presence" 
+        />
+        
+        {/* NO EditToolbar on mobile! */}
+        
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
+          {/* ID Card Switcher - Front/Back with segmented control */}
+          <MobileIdCardSwitcher
+            profile={profile}
+            editMode={true}
+            onEditIdentity={handleEditIdentity}
+            onEditSocial={handleEditAbout}
+            onRefreshProfile={refetchProfile}
+          />
+          
+          {/* Compact Stats Strip */}
+          <MobileProfileStats
+            postsCount={profile.stats?.posts}
+            mediaCount={profile.stats?.mediaUploads}
+            groupsCount={profile.stats?.groupsJoined}
+          />
+          
+          {/* Sticky Tab Bar for content below ID card */}
+          <MobileProfileTabs
+            activeTab={mobileActiveTab}
+            onTabChange={setMobileActiveTab}
+          />
+          
+          {/* Tab Content */}
+          <div className="flex-1">
+            {mobileActiveTab === "posts" && (
+              <div className="p-4">
+                {/* Showcase Section */}
+                <MobileShowcaseHeader onManage={handleEditShowcase} />
+                <div className="px-4 py-2 text-sm text-muted-foreground">
+                  {translate('editProfile.showcaseHint', 'Select posts and content to feature at the top of your profile')}
+                </div>
+                
+                {/* Autopilot Banner */}
+                <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
+              </div>
+            )}
+            
+            {mobileActiveTab === "about" && (
+              <div className="p-4 space-y-4">
+                {/* About content - tap to edit */}
+                <button 
+                  onClick={handleEditAbout}
+                  className="w-full text-left p-4 rounded-xl border bg-card/50 hover:bg-card/80 transition-colors"
+                >
+                  <h3 className="text-sm font-semibold mb-2">{translate('editProfile.about', 'About')}</h3>
+                  <p className="text-sm text-muted-foreground">{profile.bio || translate('editProfile.addBio', 'Add a bio...')}</p>
+                  <p className="text-xs text-primary mt-2">{translate('editProfile.tapToEdit', 'Tap to edit')}</p>
+                </button>
+              </div>
+            )}
+            
+            {mobileActiveTab === "media" && (
+              <MobileMediaTabContent />
+            )}
+            
+            {mobileActiveTab === "groups" && (
+              <MobileGroupsTabContent />
+            )}
+          </div>
+        </div>
+
+        {/* Drawers - same on mobile */}
+        <IdentityDrawer
+          open={identityDrawerOpen}
+          onOpenChange={setIdentityDrawerOpen}
+        />
+
+        <AboutDrawer
+          open={aboutDrawerOpen}
+          onOpenChange={setAboutDrawerOpen}
+        />
+
+        <ServicesDrawer
+          open={servicesDrawerOpen}
+          onOpenChange={setServicesDrawerOpen}
+        />
+
+        <ComplianceDrawer
+          open={complianceDrawerOpen}
+          onOpenChange={setComplianceDrawerOpen}
+        />
+
+        <ShowcaseDrawer
+          open={showcaseDrawerOpen}
+          onOpenChange={setShowcaseDrawerOpen}
+        />
+
+        <VisibilityDrawer
+          open={visibilityDrawerOpen}
+          onOpenChange={setVisibilityDrawerOpen}
+        />
+
+        {/* Autopilot Popup */}
+        <AutopilotProfilePopup
+          open={showAutopilotPopup}
+          onOpenChange={setShowAutopilotPopup}
+        />
+      </AppLayout>
+    );
+  }
+
+  // Desktop layout (unchanged)
   return (
     <AppLayout>
       <SEO 

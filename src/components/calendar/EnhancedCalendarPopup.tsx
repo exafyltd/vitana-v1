@@ -53,6 +53,7 @@ import { CalendarListSkeleton } from "./CalendarSkeleton";
 import { CalendarFilters } from "./CalendarFilters";
 import { WeekGridView } from "./WeekGridView";
 import { AutopilotCalendarSuggestions, AutopilotSuggestion } from "./AutopilotCalendarSuggestions";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
@@ -64,13 +65,13 @@ interface EnhancedCalendarPopupProps {
 // Category color mapping using design tokens
 const getCategoryColor = (type: CalendarEvent['event_type']) => {
   switch (type) {
-    case 'professional': return 'hsl(var(--pill-exercise-accent))'; // Work = Exercise gray
-    case 'health': return 'hsl(var(--pill-mental-accent))'; // Health = Mental pink
-    case 'workout': return 'hsl(var(--pill-exercise-accent))'; // Workout = Exercise
-    case 'nutrition': return 'hsl(var(--pill-nutrition-accent))'; // Nutrition green
-    case 'community': return 'hsl(var(--domain-community-accent))'; // Community pink
-    case 'personal': return 'hsl(var(--sys-vitana-accent))'; // Personal = Vitana teal
-    default: return 'hsl(var(--util-calendar-accent))'; // Default calendar gray
+    case 'professional': return 'hsl(var(--pill-exercise-accent))';
+    case 'health': return 'hsl(var(--pill-mental-accent))';
+    case 'workout': return 'hsl(var(--pill-exercise-accent))';
+    case 'nutrition': return 'hsl(var(--pill-nutrition-accent))';
+    case 'community': return 'hsl(var(--domain-community-accent))';
+    case 'personal': return 'hsl(var(--sys-vitana-accent))';
+    default: return 'hsl(var(--util-calendar-accent))';
   }
 };
 
@@ -105,6 +106,7 @@ export function EnhancedCalendarPopup({
   initialView = 'today'
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
@@ -121,8 +123,8 @@ export function EnhancedCalendarPopup({
     {
       id: '1',
       type: 'focus-block',
-      title: 'Recommend focus block',
-      description: 'You have a 90-minute window available. Perfect for deep work.',
+      title: translate('calendar.autopilot.recommendFocus', 'Recommend focus block'),
+      description: translate('calendar.autopilot.focusBlockDesc', 'You have a 90-minute window available. Perfect for deep work.'),
       suggestedTime: 'Tomorrow 9:00 AM - 10:30 AM',
     }
   ]);
@@ -145,7 +147,7 @@ export function EnhancedCalendarPopup({
   const handleEventCreate = async (event: Partial<CalendarEvent>) => {
     try {
       await addEvent({
-        title: event.title || 'Untitled Event',
+        title: event.title || translate('calendar.untitledEvent', 'Untitled Event'),
         description: event.description || '',
         start_time: event.start_time || new Date().toISOString(),
         end_time: event.end_time || new Date(Date.now() + 60 * 60 * 1000).toISOString(),
@@ -162,14 +164,14 @@ export function EnhancedCalendarPopup({
 
       setShowQuickAdd(false);
       toast({
-        title: "Event created",
-        description: "Your event has been added to the calendar",
+        title: translate('calendar.toasts.eventCreated', 'Event created'),
+        description: translate('calendar.toasts.eventCreatedDesc', 'Your event has been added to the calendar'),
       });
     } catch (error) {
       console.error('Error adding event:', error);
       toast({
-        title: "Error",
-        description: "Failed to create event",
+        title: translate('common.error', 'Error'),
+        description: translate('calendar.error.failedToCreate', 'Failed to create event'),
         variant: "destructive"
       });
     }
@@ -179,8 +181,8 @@ export function EnhancedCalendarPopup({
     try {
       await removeEvent(eventId);
       toast({
-        title: "Event deleted",
-        description: "The event has been removed from your calendar",
+        title: translate('calendar.toasts.eventDeleted', 'Event deleted'),
+        description: translate('calendar.toasts.eventDeletedDesc', 'The event has been removed from your calendar'),
       });
     } catch (error) {
       console.error('Error deleting event:', error);
@@ -190,15 +192,15 @@ export function EnhancedCalendarPopup({
   const handleSyncExternal = () => {
     setSyncStatus('needs-sync');
     toast({
-      title: "Syncing...",
-      description: "Syncing with external calendars",
+      title: translate('calendar.toasts.syncingTitle', 'Syncing...'),
+      description: translate('calendar.toasts.syncingDesc', 'Syncing with external calendars'),
     });
     setTimeout(() => {
       setSyncStatus('synced');
       setLastSyncTime(new Date());
       toast({
-        title: "Synced",
-        description: "Calendar is up to date",
+        title: translate('calendar.toasts.syncedTitle', 'Synced'),
+        description: translate('calendar.toasts.syncedDesc', 'Calendar is up to date'),
       });
     }, 1500);
   };
@@ -226,7 +228,7 @@ export function EnhancedCalendarPopup({
   const handleCreateEventAtTime = (date: Date, hour: number) => {
     const eventDate = setHours(date, hour);
     handleEventCreate({
-      title: 'New Event',
+      title: translate('calendar.newEvent', 'New Event'),
       start_time: eventDate.toISOString(),
       end_time: addMinutes(eventDate, 60).toISOString(),
       event_type: 'personal',
@@ -238,8 +240,8 @@ export function EnhancedCalendarPopup({
       prev.map(s => s.id === id ? { ...s, accepted: true } : s)
     );
     toast({
-      title: "Suggestion accepted",
-      description: "Autopilot has updated your calendar",
+      title: translate('calendar.autopilot.suggestionAccepted', 'Suggestion accepted'),
+      description: translate('calendar.autopilot.calendarUpdated', 'Autopilot has updated your calendar'),
     });
   };
 
@@ -252,8 +254,8 @@ export function EnhancedCalendarPopup({
       prev.map(s => s.id === id ? { ...s, accepted: false } : s)
     );
     toast({
-      title: "Suggestion undone",
-      description: "Changes have been reverted",
+      title: translate('calendar.autopilot.suggestionUndone', 'Suggestion undone'),
+      description: translate('calendar.autopilot.changesReverted', 'Changes have been reverted'),
     });
   };
 
@@ -262,8 +264,10 @@ export function EnhancedCalendarPopup({
       prev.map(s => s.id === id ? { ...s, snoozed: true, snoozeUntil: until } : s)
     );
     toast({
-      title: "Suggestion snoozed",
-      description: `Reminder set for ${until === 'later-today' ? 'later today' : 'tomorrow'}`,
+      title: translate('calendar.autopilot.suggestionSnoozed', 'Suggestion snoozed'),
+      description: until === 'later-today' 
+        ? translate('calendar.autopilot.reminderLaterToday', 'Reminder set for later today')
+        : translate('calendar.autopilot.reminderTomorrow', 'Reminder set for tomorrow'),
     });
   };
 
@@ -279,7 +283,7 @@ export function EnhancedCalendarPopup({
 
   const getTimeSinceSync = () => {
     const diff = Math.floor((now.getTime() - lastSyncTime.getTime()) / 1000);
-    if (diff < 60) return 'just now';
+    if (diff < 60) return translate('calendar.justNow', 'just now');
     if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
     return `${Math.floor(diff / 3600)}h ago`;
   };
@@ -342,7 +346,7 @@ export function EnhancedCalendarPopup({
                 <div className="w-9 h-9 rounded-xl bg-util-calendar-tint flex items-center justify-center border border-util-calendar-accent/20">
                   <Calendar className="w-4 h-4 text-util-calendar-accent" />
                 </div>
-                <h2 className="text-lg font-semibold">Smart Calendar</h2>
+                <h2 className="text-lg font-semibold">{translate('calendar.smartCalendar', 'Smart Calendar')}</h2>
               </div>
               
               <div className="flex items-center gap-2">
@@ -352,7 +356,7 @@ export function EnhancedCalendarPopup({
                   className="gap-1.5 h-9"
                 >
                   <Plus className="h-4 w-4" />
-                  Add Event
+                  {translate('calendar.addEvent', 'Add Event')}
                 </Button>
 
                 <Button
@@ -364,12 +368,12 @@ export function EnhancedCalendarPopup({
                   {syncStatus === 'synced' ? (
                     <>
                       <CheckCircle2 className="h-4 w-4 text-pill-nutrition-accent" />
-                      <span className="text-xs">Synced</span>
+                      <span className="text-xs">{translate('calendar.synced', 'Synced')}</span>
                     </>
                   ) : (
                     <>
                       <RefreshCw className="h-4 w-4 text-sys-autopilot-accent animate-spin" />
-                      <span className="text-xs">Syncing</span>
+                      <span className="text-xs">{translate('calendar.syncing', 'Syncing')}</span>
                     </>
                   )}
                 </Button>
@@ -399,19 +403,19 @@ export function EnhancedCalendarPopup({
                   value="today" 
                   className="data-[state=active]:border-b-[3px] data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
                 >
-                  Today
+                  {translate('calendar.today', 'Today')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="week"
                   className="data-[state=active]:border-b-[3px] data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
                 >
-                  Week
+                  {translate('calendar.week', 'Week')}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="month"
                   className="data-[state=active]:border-b-[3px] data-[state=active]:border-foreground rounded-none data-[state=active]:shadow-none data-[state=active]:bg-transparent font-medium px-4"
                 >
-                  Month
+                  {translate('calendar.month', 'Month')}
                 </TabsTrigger>
               </TabsList>
 
@@ -449,7 +453,7 @@ export function EnhancedCalendarPopup({
                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sys-ai-accent opacity-75"></span>
                               <span className="relative inline-flex rounded-full h-2 w-2 bg-sys-ai-accent"></span>
                             </span>
-                            Now: {ongoingEvent.title}
+                            {translate('calendar.now', 'Now')}: {ongoingEvent.title}
                           </p>
                         </div>
                       )}
@@ -533,13 +537,13 @@ export function EnhancedCalendarPopup({
                           <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-muted/30 flex items-center justify-center">
                             <Calendar className="h-8 w-8 text-muted-foreground/40" />
                           </div>
-                          <h3 className="text-base font-semibold mb-1">Nothing scheduled</h3>
+                          <h3 className="text-base font-semibold mb-1">{translate('calendar.nothingScheduled', 'Nothing scheduled')}</h3>
                           <p className="text-sm text-muted-foreground mb-4">
-                            Try Quick Add or let Autopilot plan your day
+                            {translate('calendar.tryQuickAdd', 'Try Quick Add or let Autopilot plan your day')}
                           </p>
                           <Button variant="outline" size="sm" onClick={() => setShowQuickAdd(true)}>
                             <Plus className="h-4 w-4 mr-1.5" />
-                            Add Event
+                            {translate('calendar.addEvent', 'Add Event')}
                           </Button>
                         </div>
                       )}
@@ -558,7 +562,7 @@ export function EnhancedCalendarPopup({
                       {format(weekStart, 'MMM d')}–{format(weekEnd, 'MMM d, yyyy')}
                     </h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      Click any slot to create an event • Drag to reschedule
+                      {translate('calendar.clickSlotHint', 'Click any slot to create an event • Drag to reschedule')}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -639,7 +643,6 @@ export function EnhancedCalendarPopup({
                         onSelect={(date) => {
                           if (date) {
                             setSelectedMonthDay(date);
-                            // Check for double-click
                             const now = Date.now();
                             const lastClick = (window as any).__calendarLastClick || 0;
                             if (now - lastClick < 300) {
@@ -732,7 +735,7 @@ export function EnhancedCalendarPopup({
                         </div>
                       ) : (
                         <div className="text-center py-8">
-                          <p className="text-sm text-muted-foreground">No events on this date</p>
+                          <p className="text-sm text-muted-foreground">{translate('calendar.noEventsOnDate', 'No events on this date')}</p>
                           <Button 
                             variant="outline" 
                             size="sm" 
@@ -740,7 +743,7 @@ export function EnhancedCalendarPopup({
                             onClick={() => setShowQuickAdd(true)}
                           >
                             <Plus className="h-3 w-3 mr-1" />
-                            Add Event
+                            {translate('calendar.addEvent', 'Add Event')}
                           </Button>
                         </div>
                       );
@@ -754,12 +757,12 @@ export function EnhancedCalendarPopup({
           {/* Sticky Footer */}
           <div className="sticky bottom-0 z-10 bg-background border-t px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <p className="text-xs text-muted-foreground" title={`Last synced ${format(lastSyncTime, 'PPpp')}`}>
-                Last synced {getTimeSinceSync()}
+              <p className="text-xs text-muted-foreground" title={`${translate('calendar.lastSynced', 'Last synced')} ${format(lastSyncTime, 'PPpp')}`}>
+                {translate('calendar.lastSynced', 'Last synced')} {getTimeSinceSync()}
               </p>
             </div>
             <Button variant="secondary" onClick={() => onOpenChange(false)}>
-              Close
+              {translate('calendar.close', 'Close')}
             </Button>
           </div>
         </DialogContent>
@@ -773,32 +776,32 @@ export function EnhancedCalendarPopup({
         onDelete={handleDeleteEvent}
         onJoin={(event) => {
           toast({
-            title: "Joining event",
-            description: "Opening video call...",
+            title: translate('calendar.toasts.joiningEvent', 'Joining event'),
+            description: translate('calendar.toasts.openingVideoCall', 'Opening video call...'),
           });
         }}
         onMessage={(event) => {
           toast({
-            title: "Message attendees",
-            description: "Feature coming soon",
+            title: translate('calendar.toasts.messageAttendees', 'Message attendees'),
+            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
           });
         }}
         onInvite={(event) => {
           toast({
-            title: "Invite followers",
-            description: "Feature coming soon",
+            title: translate('calendar.toasts.inviteFollowers', 'Invite followers'),
+            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
           });
         }}
         onReschedule={(event) => {
           toast({
-            title: "Reschedule event",
-            description: "Feature coming soon",
+            title: translate('calendar.toasts.rescheduleEvent', 'Reschedule event'),
+            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
           });
         }}
         onShare={(event) => {
           toast({
-            title: "Share to group",
-            description: "Feature coming soon",
+            title: translate('calendar.toasts.shareToGroup', 'Share to group'),
+            description: translate('calendar.toasts.featureComingSoon', 'Feature coming soon'),
           });
         }}
       />

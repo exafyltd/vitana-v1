@@ -177,7 +177,7 @@ export function UniversalShareDialog({
   };
 
   const handleCreateCampaign = () => {
-    window.location.href = `/sharing/campaigns?prefill=${encodeURIComponent(
+    const url = `/sharing/campaigns?prefill=${encodeURIComponent(
       JSON.stringify({
         name: `Campaign - ${content.title}`,
         description: message,
@@ -185,11 +185,14 @@ export function UniversalShareDialog({
         content_id: content.id,
       })
     )}`;
+    // SPA-safe navigation
+    window.history.pushState({}, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl z-[60]" overlayClassName="z-[60]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="h-5 w-5" />

@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 import { debounce } from "@/utils/performanceOptimization";
 
 interface User {
@@ -41,6 +42,7 @@ export default function NewConversationPopup({
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<User[]>([]);
   const [selectedRecipients, setSelectedRecipients] = useState<User[]>([]);
@@ -85,8 +87,8 @@ export default function NewConversationPopup({
         // Use secure RPC function for tenant directory search
         if (!activeTenantId) {
           toast({
-            title: "Error",
-            description: "No tenant context available",
+            title: translate('inbox.toast.error'),
+            description: translate('inbox.toast.noTenantContext'),
             variant: "destructive"
           });
           return;
@@ -103,8 +105,8 @@ export default function NewConversationPopup({
     } catch (error) {
       console.error('Error searching users:', error);
       toast({
-        title: "Error",
-        description: "Failed to search users",
+        title: translate('inbox.toast.error'),
+        description: translate('inbox.toast.searchFailed'),
         variant: "destructive"
       });
     } finally {
@@ -146,8 +148,8 @@ export default function NewConversationPopup({
       // Create group chat
       if (!groupName.trim() || selectedRecipients.length === 0) {
         toast({
-          title: "Error",
-          description: "Group name and recipients are required",
+          title: translate('inbox.toast.error'),
+          description: translate('inbox.toast.groupRecipientsRequired'),
           variant: "destructive"
         });
         return;
@@ -157,8 +159,8 @@ export default function NewConversationPopup({
       // Create direct message
       if (selectedRecipients.length !== 1) {
         toast({
-          title: "Error",
-          description: "Select exactly one recipient for direct message",
+          title: translate('inbox.toast.error'),
+          description: translate('inbox.toast.singleRecipientRequired'),
           variant: "destructive"
         });
         return;
@@ -179,8 +181,8 @@ export default function NewConversationPopup({
     if (!user) {
       console.error('❌ No authenticated user found');
       toast({
-        title: "Error", 
-        description: "Authentication required",
+        title: translate('inbox.toast.error'), 
+        description: translate('inbox.toast.authRequired'),
         variant: "destructive"
       });
       return;
@@ -264,8 +266,8 @@ export default function NewConversationPopup({
       }
 
       toast({
-        title: "Success",
-        description: "Conversation started!"
+        title: translate('inbox.toast.success'),
+        description: translate('inbox.toast.conversationStarted')
       });
       resetForm();
     } catch (error: any) {
@@ -280,17 +282,17 @@ export default function NewConversationPopup({
       let errorMessage = 'Failed to start conversation';
       
       if (error?.message?.includes('Access denied')) {
-        errorMessage = 'Access denied - check your permissions';
+        errorMessage = translate('inbox.toast.accessDenied');
       } else if (error?.message?.includes('community')) {
-        errorMessage = 'Only community users can create global conversations';
+        errorMessage = translate('inbox.toast.communityOnly');
       } else if (error?.message?.includes('Authentication')) {
-        errorMessage = 'Please log in to start conversations';
+        errorMessage = translate('inbox.toast.pleaseLogin');
       } else if (error?.message) {
         errorMessage = error.message;
       }
       
       toast({
-        title: "Error",
+        title: translate('inbox.toast.error'),
         description: errorMessage,
         variant: "destructive"
       });
@@ -374,16 +376,16 @@ export default function NewConversationPopup({
         .insert(messageData);
 
       toast({
-        title: "Success",
-        description: `Group "${groupName}" created successfully!`
+        title: translate('inbox.toast.success'),
+        description: translate('inbox.toast.groupCreated').replace('{name}', groupName)
       });
       onGroupCreated?.(thread.id);
       resetForm();
     } catch (error) {
       console.error('Error creating group:', error);
       toast({
-        title: "Error",
-        description: "Failed to create group",
+        title: translate('inbox.toast.error'),
+        description: translate('inbox.toast.groupFailed'),
         variant: "destructive"
       });
     } finally {
@@ -406,7 +408,7 @@ export default function NewConversationPopup({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {isGroupMode ? <Users className="w-5 h-5" /> : <User className="w-5 h-5" />}
-            {isGroupMode ? 'Create Group Chat' : 'Start New Conversation'}
+            {isGroupMode ? translate('inbox.newConversation.titleGroup') : translate('inbox.newConversation.title')}
           </DialogTitle>
         </DialogHeader>
         
@@ -414,12 +416,12 @@ export default function NewConversationPopup({
           {/* Group Name (only in group mode) */}
           {isGroupMode && (
             <div className="space-y-2">
-              <Label htmlFor="groupName">Group Name</Label>
+              <Label htmlFor="groupName">{translate('inbox.newConversation.groupName')}</Label>
               <Input
                 id="groupName"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                placeholder="Enter group name..."
+                placeholder={translate('inbox.newConversation.groupNamePlaceholder')}
               />
             </div>
           )}
@@ -428,7 +430,7 @@ export default function NewConversationPopup({
           {selectedRecipients.length > 0 && (
             <div className="space-y-2">
               <Label>
-                {isGroupMode ? `Members (${selectedRecipients.length})` : 'Recipient'}
+                {isGroupMode ? `${translate('inbox.newConversation.members')} (${selectedRecipients.length})` : translate('inbox.newConversation.recipient')}
               </Label>
               <div className="flex flex-wrap gap-2">
                 {selectedRecipients.map((recipient) => (
@@ -462,7 +464,7 @@ export default function NewConversationPopup({
 
           <div className="space-y-2">
             <Label htmlFor="search">
-              {isGroupMode ? 'Add more people' : 'Search for people'}
+              {isGroupMode ? translate('inbox.newConversation.addMore') : translate('inbox.newConversation.searchPeople')}
             </Label>
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -471,7 +473,7 @@ export default function NewConversationPopup({
               )}
               <Input
                 id="search"
-                placeholder="Enter name or email to search..."
+                placeholder={translate('inbox.newConversation.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && searchUsers()}
@@ -480,14 +482,14 @@ export default function NewConversationPopup({
             </div>
             {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
               <p className="text-sm text-muted-foreground">
-                Type at least 2 characters to search
+                {translate('inbox.newConversation.searchMinChars')}
               </p>
             )}
           </div>
 
           {searchResults.length > 0 && (
             <div className="space-y-2">
-              <Label>Search Results</Label>
+              <Label>{translate('inbox.newConversation.searchResults')}</Label>
               <div className="max-h-60 overflow-y-auto space-y-2">
                 {searchResults.map((profile) => (
                   <div
@@ -521,7 +523,7 @@ export default function NewConversationPopup({
                       size="sm"
                       variant={selectedRecipients.find(r => r.user_id === profile.user_id) ? "secondary" : "default"}
                     >
-                      {selectedRecipients.find(r => r.user_id === profile.user_id) ? 'Added' : 'Add'}
+                      {selectedRecipients.find(r => r.user_id === profile.user_id) ? translate('inbox.newConversation.added') : translate('inbox.newConversation.add')}
                     </Button>
                   </div>
                 ))}
@@ -531,7 +533,7 @@ export default function NewConversationPopup({
 
           {searchQuery && searchResults.length === 0 && !isSearching && (
             <p className="text-sm text-muted-foreground text-center py-4">
-              No users found. Try a different search term.
+              {translate('inbox.newConversation.noResults')}
             </p>
           )}
 
@@ -542,13 +544,13 @@ export default function NewConversationPopup({
               onClick={resetForm}
               disabled={isCreating}
             >
-              Cancel
+              {translate('inbox.newConversation.cancel')}
             </Button>
             <Button
               onClick={startConversation}
               disabled={isCreating || selectedRecipients.length === 0 || (isGroupMode && !groupName.trim())}
             >
-              {isCreating ? 'Creating...' : isGroupMode ? 'Create Group' : 'Start Chat'}
+              {isCreating ? translate('inbox.newConversation.creating') : isGroupMode ? translate('inbox.newConversation.createGroup') : translate('inbox.newConversation.startChat')}
             </Button>
           </div>
         </div>

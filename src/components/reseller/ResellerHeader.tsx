@@ -11,12 +11,14 @@ import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function ResellerHeader() {
   const { data: profile } = useResellerProfile();
   const { data: events = [] } = useResellerEvents();
   const stats = useResellerEventStats();
   const [copied, setCopied] = useState(false);
+  const { translate } = useTranslation();
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -31,7 +33,7 @@ export function ResellerHeader() {
     if (profile?.reseller_code) {
       navigator.clipboard.writeText(profile.reseller_code);
       setCopied(true);
-      toast.success("Reseller code copied!");
+      toast.success(translate('business.reseller.codeCopied'));
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -58,20 +60,20 @@ export function ResellerHeader() {
               <CalendarDays className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Upcoming Events</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.reseller.upcomingEvents')}</p>
               <p className="text-3xl font-bold text-foreground mt-1">
                 {stats.upcomingEventsCount}
               </p>
               {stats.nextEventDate && (
                 <p className="text-xs text-muted-foreground mt-1">
-                  Next: {format(new Date(stats.nextEventDate), "MMM d, yyyy")}
+                  {translate('business.reseller.next')}: {format(new Date(stats.nextEventDate), "MMM d, yyyy")}
                 </p>
               )}
             </div>
           </div>
           {profile?.reseller_code && (
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/40">
-              <span className="text-xs text-muted-foreground">Reseller code</span>
+              <span className="text-xs text-muted-foreground">{translate('business.reseller.resellerCode')}</span>
               <button 
                 onClick={handleCopyCode}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/50 hover:bg-muted transition-colors"
@@ -97,11 +99,11 @@ export function ResellerHeader() {
               <Ticket className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Tickets Sold</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.history.ticketsSold')}</p>
               <p className="text-3xl font-bold text-foreground mt-1">
                 {stats.ticketsSold30Days}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">Last 30 days</p>
+              <p className="text-xs text-muted-foreground mt-1">{translate('business.history.last30Days')}</p>
             </div>
           </div>
         </CardContent>
@@ -116,11 +118,11 @@ export function ResellerHeader() {
               <DollarSign className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Revenue</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.kpi.revenue')}</p>
               <p className="text-3xl font-bold text-foreground mt-1">
                 {formatCurrency(stats.revenue30Days)}
               </p>
-              <p className="text-xs text-muted-foreground mt-1">Last 30 days</p>
+              <p className="text-xs text-muted-foreground mt-1">{translate('business.history.last30Days')}</p>
             </div>
           </div>
         </CardContent>
@@ -143,7 +145,7 @@ export function ResellerHeader() {
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-muted-foreground font-medium">Top Performer</p>
+              <p className="text-sm text-muted-foreground font-medium">{translate('business.kpi.topPerformer')}</p>
               {topEvent ? (
                 <>
                   <p className="text-sm font-medium text-foreground truncate mt-1">
@@ -151,7 +153,7 @@ export function ResellerHeader() {
                   </p>
                   <div className="flex items-center gap-2 mt-2">
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-muted/50 text-xs text-muted-foreground">
-                      {topEvent.tickets_sold} tickets
+                      {topEvent.tickets_sold} {translate('business.reseller.tickets')}
                     </span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-muted/50 text-xs text-muted-foreground">
                       {formatCurrency(topEvent.gross_revenue)}
@@ -160,8 +162,8 @@ export function ResellerHeader() {
                 </>
               ) : (
                 <div className="mt-1">
-                  <p className="text-sm font-medium text-foreground">No sales yet</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Share a link to start earning.</p>
+                  <p className="text-sm font-medium text-foreground">{translate('business.reseller.noSalesYet')}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{translate('business.reseller.shareLinkToStart')}</p>
                 </div>
               )}
             </div>

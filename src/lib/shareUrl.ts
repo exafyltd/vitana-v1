@@ -16,35 +16,39 @@ export function getShareUrl(
     slug?: string; // Event slug for clean URLs
   }
 ): string {
-  // Campaigns use OG edge function for rich social previews
+  // Campaigns use clean app URLs for sharing
+  // OG previews work via client-side meta tag injection
   if (type === 'campaign') {
-    const params = new URLSearchParams();
-    params.set('id', id);
+    const appUrl = window.location.origin;
+    const path = `/pub/campaigns/${encodeURIComponent(id)}`;
     
+    const params = new URLSearchParams();
     if (options?.utm_source) params.set('utm_source', options.utm_source);
     if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
     if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
-    return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-campaign?${params.toString()}`;
+    const queryString = params.toString();
+    return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
   }
 
-  // Events use OG edge function for rich social previews (same pattern as campaigns)
+  // Events/meetups use clean app URLs for sharing
+  // OG previews work via client-side meta tag injection
   if (type === 'event' || type === 'meetup') {
+    const appUrl = window.location.origin;
+    
+    // Build clean URL path - prefer slug for SEO-friendly URLs
+    const path = options?.slug 
+      ? `/e/${encodeURIComponent(options.slug)}`
+      : `/pub/events/${encodeURIComponent(id)}`;
+    
+    // Add UTM parameters for attribution tracking
     const params = new URLSearchParams();
-    
-    // Use slug if available, otherwise ID
-    if (options?.slug) {
-      params.set('slug', options.slug);
-    } else {
-      params.set('id', id);
-    }
-    
-    // UTM params are captured server-side for attribution, users see clean URLs
     if (options?.utm_source) params.set('utm_source', options.utm_source);
     if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
     if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
-    return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?${params.toString()}`;
+    const queryString = params.toString();
+    return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
   }
   
   // Other content types use direct app URLs

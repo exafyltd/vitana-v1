@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner"; // Global toast provider
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
@@ -20,12 +21,18 @@ import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
+import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
+import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import DeleteAccount from "./pages/legal/DeleteAccount";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import IntroExperience from "./pages/IntroExperience";
+import RedeemVoucher from "./pages/RedeemVoucher";
+import Logout from "./pages/Logout";
 
 // Portal pages
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
@@ -158,6 +165,7 @@ import DoctorsCoaches from "./pages/discover/DoctorsCoaches";
 import ProviderProfile from "./pages/discover/ProviderProfile";
 import DealsOffers from "./pages/discover/DealsOffers";
 import Orders from "./pages/discover/Orders";
+import AIPicksPage from "./pages/discover/AIPicksPage";
 
 // Health sub-pages
 import PillarsOfHealth from "./pages/health/PillarsOfHealth";
@@ -292,6 +300,7 @@ const App = () => {
               <ProfilePreviewProvider>
                 <TooltipProvider>
                     <Toaster />
+                    <SonnerToaster position="top-center" richColors />
                     <PresenceDebugPanel />
                     <AppHooksInitializer />
                     <BrowserRouter>
@@ -299,6 +308,8 @@ const App = () => {
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
                         <VitanaAudioOverlay />
+                        <MobileMuteButton />
+                        <SoundscapeResumeBanner />
                         <TenantDetector />
                   <Routes>
           <Route path="/" element={<ShareEntry fallback={<Index />} />} />
@@ -315,6 +326,10 @@ const App = () => {
           <Route path="/community/confirmed" element={<CommunityConfirmed />} />
           
           {/* Public Routes - No Auth Required */}
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/redeem" element={<RedeemVoucher />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
@@ -426,6 +441,11 @@ const App = () => {
           <Route path="/discover" element={
             <AuthGuard>
               <Discover />
+            </AuthGuard>
+          } />
+          <Route path="/discover/ai-picks" element={
+            <AuthGuard>
+              <AIPicksPage />
             </AuthGuard>
           } />
           <Route path="/discover/supplements" element={

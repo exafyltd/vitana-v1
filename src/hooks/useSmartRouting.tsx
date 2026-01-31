@@ -58,6 +58,8 @@ export function useSmartRouting() {
           case "community":
           default:
             // Redirect community users to tenant-specific pages based on their active tenant
+            // On mobile, Maxina users go to Events → Upcoming
+            const isMobileDevice = window.innerWidth < 768;
             if (tenant?.slug) {
               switch (tenant.slug) {
                 case 'alkalma':
@@ -67,6 +69,9 @@ export function useSmartRouting() {
                   navigate("/earthlinks");
                   break;
                 case 'maxina':
+                  // Mobile: default to Events Upcoming
+                  navigate(isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina");
+                  break;
                 default:
                   navigate("/maxina");
                   break;
@@ -103,6 +108,8 @@ export function useRoleBasedRedirect() {
       case "community":
       default:
         // Redirect community users to tenant-specific pages
+        // On mobile, Maxina users go to Events → Upcoming
+        const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
         if (tenant?.slug) {
           switch (tenant.slug) {
             case 'alkalma':
@@ -110,6 +117,7 @@ export function useRoleBasedRedirect() {
             case 'earthlinks':
               return "/earthlinks";
             case 'maxina':
+              return isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina";
             default:
               return "/maxina";
           }

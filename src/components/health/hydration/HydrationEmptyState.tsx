@@ -2,9 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Droplets } from "lucide-react";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function HydrationEmptyState() {
   const { generatePlan } = useHealthPlans();
+  const { translate } = useTranslation();
   
   return (
     <Card className="relative p-12 text-center overflow-hidden bg-gradient-to-br from-[#f9fdff] to-[#f1faff]
@@ -16,10 +18,11 @@ export function HydrationEmptyState() {
           <Droplets className="w-10 h-10 text-cyan-600 dark:text-cyan-400" />
         </div>
         
-        <h3 className="text-xl font-semibold">No Hydration Plan Yet</h3>
+        <h3 className="text-xl font-semibold">
+          {translate('health.emptyStates.noHydrationPlan')}
+        </h3>
         <p className="text-muted-foreground">
-          Generate your personalized hydration plan with AI-optimized daily targets tailored to your 
-          activity level, environment, and recovery needs.
+          {translate('health.emptyStates.noHydrationPlanDesc')}
         </p>
         
         <Button
@@ -33,7 +36,9 @@ export function HydrationEmptyState() {
           disabled={generatePlan.isPending}
           className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
         >
-          {generatePlan.isPending ? 'Generating...' : 'Generate Hydration Plan'}
+          {generatePlan.isPending 
+            ? translate('health.emptyStates.generating') 
+            : translate('health.emptyStates.generatePlan')}
         </Button>
       </div>
     </Card>

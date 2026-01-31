@@ -4,7 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+  ResponsiveDialogTrigger,
+} from "@/components/ui/responsive-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Key, Eye, EyeOff, Shield, Plus, Trash2, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -160,69 +168,71 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
               Securely manage API keys, tokens, and authentication credentials
             </CardDescription>
           </div>
-          <Dialog open={showDialog} onOpenChange={setShowDialog}>
-            <DialogTrigger asChild>
+          <ResponsiveDialog open={showDialog} onOpenChange={setShowDialog}>
+            <ResponsiveDialogTrigger asChild>
               <Button size="sm">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Credential
               </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Credential</DialogTitle>
-                <DialogDescription>
+            </ResponsiveDialogTrigger>
+            <ResponsiveDialogContent>
+              <ResponsiveDialogHeader>
+                <ResponsiveDialogTitle>Add New Credential</ResponsiveDialogTitle>
+                <ResponsiveDialogDescription>
                   Store authentication credentials securely using encryption
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4 pt-4">
-                <div className="space-y-2">
-                  <Label>Credential Name</Label>
-                  <Input
-                    placeholder="e.g., Production API Key"
-                    value={newCredential.name}
-                    onChange={(e) => setNewCredential({ ...newCredential, name: e.target.value })}
-                  />
-                </div>
+                </ResponsiveDialogDescription>
+              </ResponsiveDialogHeader>
+              <ResponsiveDialogBody>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Credential Name</Label>
+                    <Input
+                      placeholder="e.g., Production API Key"
+                      value={newCredential.name}
+                      onChange={(e) => setNewCredential({ ...newCredential, name: e.target.value })}
+                    />
+                  </div>
 
-                <div className="space-y-2">
-                  <Label>Type</Label>
-                  <Select
-                    value={newCredential.type}
-                    onValueChange={(value: any) => setNewCredential({ ...newCredential, type: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="api_key">API Key</SelectItem>
-                      <SelectItem value="bearer_token">Bearer Token</SelectItem>
-                      <SelectItem value="oauth">OAuth Token</SelectItem>
-                      <SelectItem value="basic_auth">Basic Auth</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                  <div className="space-y-2">
+                    <Label>Type</Label>
+                    <Select
+                      value={newCredential.type}
+                      onValueChange={(value: any) => setNewCredential({ ...newCredential, type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="api_key">API Key</SelectItem>
+                        <SelectItem value="bearer_token">Bearer Token</SelectItem>
+                        <SelectItem value="oauth">OAuth Token</SelectItem>
+                        <SelectItem value="basic_auth">Basic Auth</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                <div className="space-y-2">
-                  <Label>Credential Value</Label>
-                  <Input
-                    type="password"
-                    placeholder="Enter the credential value"
-                    value={newCredential.value}
-                    onChange={(e) => setNewCredential({ ...newCredential, value: e.target.value })}
-                  />
-                  <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <Shield className="w-3 h-3" />
-                    Stored encrypted using Supabase Vault
-                  </p>
-                </div>
+                  <div className="space-y-2">
+                    <Label>Credential Value</Label>
+                    <Input
+                      type="password"
+                      placeholder="Enter the credential value"
+                      value={newCredential.value}
+                      onChange={(e) => setNewCredential({ ...newCredential, value: e.target.value })}
+                    />
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      Stored encrypted using Supabase Vault
+                    </p>
+                  </div>
 
-                <Button onClick={handleAddCredential} className="w-full">
-                  <Check className="w-4 h-4 mr-2" />
-                  Save Credential
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+                  <Button onClick={handleAddCredential} className="w-full">
+                    <Check className="w-4 h-4 mr-2" />
+                    Save Credential
+                  </Button>
+                </div>
+              </ResponsiveDialogBody>
+            </ResponsiveDialogContent>
+          </ResponsiveDialog>
         </div>
       </CardHeader>
       <CardContent>

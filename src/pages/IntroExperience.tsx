@@ -1,29 +1,51 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Play, Loader2 } from 'lucide-react';
+import { Play, Pause, Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
-import { VitanaGuideOrbIntro } from '@/components/vitanaland/VitanaGuideOrbIntro';
+import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
-import { motion } from 'framer-motion';
+import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
+import { useTranslation } from '@/hooks/useTranslation';
 
-const MAXINA_WELCOME_SSML = `<speak>
+// English welcome SSML
+const MAXINA_WELCOME_SSML_EN = `<speak>
   Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
   You're entering the Maxina experience — where calm begins and energy awakens.
   Let's explore, connect, and feel amazing together.
 </speak>`;
 
+// German welcome SSML
+const MAXINA_WELCOME_SSML_DE = `<speak>
+  Willkommen bei <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> Land.
+  Du betrittst die Maxina Erfahrung — wo Ruhe beginnt und Energie erwacht.
+  Lass uns gemeinsam erkunden, verbinden und uns großartig fühlen.
+</speak>`;
+
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { expandToFull } = useVitanalandNavigation();
+  const { expandToFull, showOrb } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
+  
+  // Ensure orb is visible on intro page (fix "sometimes missing" orb)
+  useEffect(() => {
+    showOrb();
+  }, [showOrb]);
+
+  // Add body class for Maxina-specific orb positioning
+  useEffect(() => {
+    document.body.classList.add('maxina-signin-page');
+    return () => {
+      document.body.classList.remove('maxina-signin-page');
+    };
+  }, []);
   const { startFresh, setVolume } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
@@ -53,12 +75,9 @@ export default function IntroExperience() {
     }
   }, [videoSrc]);
 
-  // Start soundscape when video loads
-  useEffect(() => {
-    if (videoSrc) {
-      startFresh(0.04);
-    }
-  }, [videoSrc, startFresh]);
+  // NOTE: Do NOT auto-start soundscape on mount/video load
+  // Soundscape should only start on explicit user gesture (click)
+  // The ensureSoundscapePlaying callback handles this correctly
 
   // Fade soundscape volume when TTS is playing
   useEffect(() => {
@@ -99,19 +118,42 @@ export default function IntroExperience() {
     }, 100);
   };
 
-  const handlePlayAudio = useCallback(async () => {
+  // Get current language for TTS and translations
+  const { t, isGerman } = useTranslation();
+
+  const handlePlayPauseAudio = useCallback(async () => {
     // Ensure soundscape starts on user click
     ensureSoundscapePlaying();
     
+    // If currently playing, pause it
+    if (isPlayingAudio && audioRef.current) {
+      audioRef.current.pause();
+      setIsPlayingAudio(false);
+      return;
+    }
+    
+    // If audio exists and was paused, resume it
+    if (audioRef.current && audioRef.current.paused && audioRef.current.currentTime > 0) {
+      audioRef.current.play();
+      setIsPlayingAudio(true);
+      return;
+    }
+    
+    // Otherwise, fetch and play new audio
     setIsPreparingAudio(true);
+    
+    // Select SSML and voice based on current language
+    const ssml = isGerman ? MAXINA_WELCOME_SSML_DE : MAXINA_WELCOME_SSML_EN;
+    const voiceId = isGerman ? 'de-DE-Wavenet-F' : 'en-US-Wavenet-F';
+    const languageCode = isGerman ? 'de-DE' : 'en-US';
     
     try {
       // Call Google Cloud TTS edge function
       const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
         body: {
-          text: MAXINA_WELCOME_SSML,
-          voiceId: 'en-US-Wavenet-F',
-          languageCode: 'en-US',
+          text: ssml,
+          voiceId: voiceId,
+          languageCode: languageCode,
           speakingRate: 0.96,
           pitch: 1.0,
           useSSML: true
@@ -144,15 +186,15 @@ export default function IntroExperience() {
       setIsPreparingAudio(false);
       toast.error('Audio unavailable now');
     }
-  }, [continueToMaxina, ensureSoundscapePlaying]);
+  }, [isPlayingAudio, continueToMaxina, ensureSoundscapePlaying, isGerman]);
 
   // Keyboard shortcuts - must be after function declarations
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
-        if (!isPlayingAudio && !isPreparingAudio) {
-          handlePlayAudio();
+        if (!isPreparingAudio) {
+          handlePlayPauseAudio();
         }
       } else if (e.key === 'Escape') {
         e.preventDefault();
@@ -162,7 +204,7 @@ export default function IntroExperience() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPlayingAudio, isPreparingAudio, handlePlayAudio, handleSkip]);
+  }, [isPreparingAudio, handlePlayPauseAudio, handleSkip]);
 
   if (!videoSrc) {
     return (
@@ -191,102 +233,153 @@ export default function IntroExperience() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+      {/* Premium multi-layer gradient overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      {/* Subtle vignette effect */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
-      {/* Content */}
+      {/* Content - positioned higher with safe bottom spacing for Orb */}
       <div 
-        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-opacity duration-[1000ms] ${
+        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-32 md:pb-6 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={ensureSoundscapePlaying}
+        data-maxina-app="true"
       >
-        {/* Title */}
-        <h1 
-          className="text-5xl md:text-6xl font-bold text-white text-center mb-6 animate-fade-in"
+        {/* Eyebrow - Small, uppercase, tracking-wide */}
+        <p 
+          className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
           style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
         >
-          Welcome to Vitanaland.
+          {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
+        </p>
+
+        {/* Primary Title - MAXINA in ALL CAPS */}
+        <h1 
+          className="text-4xl md:text-5xl font-bold text-white text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase"
+          style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
+        >
+          MAXINA
         </h1>
 
-        {/* Subtitle */}
+        {/* Signature Subtitle */}
         <p 
-          className="text-xl md:text-2xl text-white/90 text-center max-w-2xl mb-8 animate-fade-in"
+          className="text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
+          style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
+        >
+          {t.intro?.experience || 'Experience'}
+        </p>
+
+        {/* Longevity Tagline - Single line */}
+        <p 
+          className="text-sm md:text-base text-white/70 text-center mb-10 animate-fade-in whitespace-nowrap"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
-          You're entering the Maxina experience.
+          {t.intro?.tagline || 'Your longevity journey, guided.'}
         </p>
 
-        {/* Caption */}
-        <p 
-          className="text-base text-white/70 text-center max-w-xl mb-12 animate-fade-in"
-          style={{ animationDelay: '2400ms', animationFillMode: 'both' }}
-        >
-          Where your wellness, connection, and purpose come together.
-        </p>
-
-        {/* Controls */}
+        {/* CTA Stack - Premium glass buttons */}
         <div 
-          className="flex flex-col items-center gap-6 animate-fade-in"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Play Button */}
-          <Button
-            onClick={handlePlayAudio}
-            disabled={isPlayingAudio || isPreparingAudio}
-            size="lg"
-            className="relative bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/20 px-8 py-6 text-lg shadow-[0_0_30px_rgba(255,255,255,0.15)] hover:shadow-[0_0_40px_rgba(255,255,255,0.25)] transition-all duration-300"
-          >
-            {isPreparingAudio ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Preparing audio...
-              </>
-            ) : isPlayingAudio ? (
-              <>
-                <div className="w-5 h-5 mr-2 relative">
-                  <div className="absolute inset-0 border-2 border-white/30 rounded-full animate-ping" />
-                  <div className="absolute inset-0 border-2 border-white rounded-full" />
-                </div>
-                Playing...
-              </>
-            ) : (
-              <>
-                <Play className="w-5 h-5 mr-2 fill-current" />
-                Play Welcome
-              </>
-            )}
-          </Button>
-
-          {/* Continue and Skip */}
-          <div className="flex items-center gap-4">
+          {/* Button row: Play Welcome + Language Toggle */}
+          <div className="flex items-center gap-2.5 w-full">
+            {/* Primary Play/Pause Button - Premium glass style */}
             <Button
-              onClick={continueToMaxina}
-              variant="ghost"
-              className="text-white/80 hover:text-white hover:bg-white/10"
+              onClick={handlePlayPauseAudio}
+              disabled={isPreparingAudio}
+              size="lg"
+              className="relative flex-1 bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white border border-white/30 rounded-2xl px-8 py-5 text-base font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300"
             >
-              Continue
+              {isPreparingAudio ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2.5 animate-spin" />
+                  {t.intro?.preparing || 'Preparing...'}
+                </>
+              ) : isPlayingAudio ? (
+                <>
+                  <Pause className="w-5 h-5 mr-2.5" />
+                  {t.intro?.playing || 'Playing'}
+                  {/* Animated Equalizer Bars */}
+                  <div className="flex gap-0.5 items-end h-4 ml-3">
+                    <div 
+                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0s_infinite]"
+                      style={{ height: '4px' }}
+                    />
+                    <div 
+                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.15s_infinite]"
+                      style={{ height: '4px' }}
+                    />
+                    <div 
+                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.3s_infinite]"
+                      style={{ height: '4px' }}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Play className="w-5 h-5 mr-2.5 fill-current" />
+                  {t.intro?.playWelcome || 'Play Welcome'}
+                </>
+              )}
             </Button>
-            <span className="text-white/40">•</span>
-            <button
-              onClick={handleSkip}
-              className="text-white/60 hover:text-white/90 text-sm underline-offset-4 hover:underline transition-colors"
-            >
-              Skip
-            </button>
+            
+            {/* Language Toggle - circular, shows opposite flag */}
+            <LanguageToggleButton size="md" />
           </div>
+
+          {/* Skip intro - secondary text button */}
+          <button
+            onClick={handleSkip}
+            className="text-white/50 hover:text-white/80 text-sm font-medium transition-colors duration-200 underline-offset-4 hover:underline"
+          >
+            {t.intro?.skipIntro || 'Skip intro'}
+          </button>
         </div>
+
+        {/* Equalizer animation keyframes */}
+        <style>{`
+          @keyframes equalizer {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+          }
+        `}</style>
       </div>
 
-      {/* Keyboard Hints */}
-      <div className="absolute bottom-6 left-0 right-0 text-center">
+      {/* Keyboard Hints - Desktop only */}
+      <div className="absolute bottom-6 left-0 right-0 text-center hidden md:block">
         <p className="text-white/40 text-xs">
           Press <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Space</kbd> to play • <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">Esc</kbd> to skip
         </p>
       </div>
 
-      {/* Mini VITANA Orb - Bottom Right Corner Assistant */}
-      <VitanaGuideOrbIntro onOrbClick={handleOrbClick} initialDelay={1} />
+      {/* Mobile-only fixed ORB - positioned via global CSS */}
+      <MobileFixedOrb />
+
+      {/* Desktop ORB - bottom-left matching sidebar position */}
+      <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={handleOrbClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleOrbClick();
+            }
+          }}
+          className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+        >
+          <VitanalandPortalSeed 
+            audioState="idle"
+            volumeLevel={0}
+            size="sm"
+            layoutId="vitana-orb-desktop-intro"
+          />
+        </div>
+      </div>
     </div>
   );
 }

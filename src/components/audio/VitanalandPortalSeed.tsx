@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 interface VitanalandPortalSeedProps {
   audioState: 'idle' | 'listening' | 'processing' | 'error';
   volumeLevel: number; // 0-1 range
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'nav' | 'md' | 'lg';
   layoutId?: string;
 }
 
@@ -31,7 +31,23 @@ export function VitanalandPortalSeed({
       rimHighlight: 8,
       rimOpacity: 0.15,
     },
-  md: {
+    nav: {
+      container: 'w-[60px] h-[60px]',
+      outerHaloInset: -13,
+      secondHaloInset: -16,
+      thinRingInset: -7,
+      outerBlur: 16,
+      secondBlur: 20,
+      thinBlur: 1.5,
+      nebulaScale: 0.43,
+      auroraScale: 0.43,
+      fragmentScale: 0.43,
+      coreSize: 43,
+      shellBorder: 1.35,
+      rimHighlight: 11,
+      rimOpacity: 0.19,
+    },
+    md: {
     container: 'w-20 h-20',
     outerHaloInset: -18,
     secondHaloInset: -22,

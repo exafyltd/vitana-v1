@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { NotificationBadge } from "@/components/ui/notification-badge";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
-import { useSidebar } from "@/components/ui/sidebar";
+import { useSidebarSafe } from "@/components/ui/sidebar";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface UniversalCalendarButtonProps {
   variant?: "default" | "outline" | "ghost" | "secondary";
@@ -25,7 +26,8 @@ export function UniversalCalendarButton({
 }: UniversalCalendarButtonProps) {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const { events, getUpcomingEvents } = useCalendarEvents();
-  const { open } = useSidebar();
+  const { open } = useSidebarSafe();
+  const { translate } = useTranslation();
   
   const upcomingEvents = getUpcomingEvents(10);
   const conflictCount = events.filter(e => e.status === 'conflict').length;
@@ -37,29 +39,32 @@ export function UniversalCalendarButton({
 
   return (
     <>
-      <div className="relative">
+      {/* Wrapper with overflow-visible to prevent badge clipping */}
+      <div className="relative overflow-visible shrink-0">
+        {/* Pill button */}
         <Button 
-          size={size} 
-          variant={variant}
+          variant="ghost"
+          size="sm"
           onClick={() => setCalendarOpen(true)} 
-          className={className}
+          className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 ${className}`}
         >
-          <Calendar className={`w-4 h-4 ${showText ? 'mr-2' : ''}`} />
-          {showText && 'Calendar'}
+          <Calendar className="w-4 h-4" />
+          {showText && <span className="text-sm">{translate('actionBar.calendar', 'Calendar')}</span>}
         </Button>
         
-        {/* Event count badge */}
+        {/* Event count badge - positioned outside pill, z-index above */}
         {showEventCount && upcomingEvents.length > 0 && (
           <NotificationBadge
             count={upcomingEvents.length}
             collapsed={!open}
+            className="z-10"
             ariaLabel={`${upcomingEvents.length} upcoming event${upcomingEvents.length !== 1 ? 's' : ''}`}
           />
         )}
         
         {/* Conflict indicator */}
         {showConflictIndicator && conflictCount > 0 && (
-          <div className="absolute -top-1 -left-1 h-3 w-3 bg-amber-500 rounded-full border-2 border-white animate-pulse" />
+          <div className="absolute -top-1.5 -left-1.5 h-3 w-3 bg-amber-500 rounded-full border-2 border-background animate-pulse z-10" />
         )}
       </div>
 

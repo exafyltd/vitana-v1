@@ -1,0 +1,204 @@
+import { NavLink, useLocation } from "react-router-dom";
+import { Calendar, Briefcase, Radio, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
+import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { useStreamingState } from "@/context/StreamingStateContext";
+import { playSound } from "@/lib/playSound";
+import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/useTranslation";
+
+const navItems = [
+  { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
+  { id: 'business', icon: Briefcase, label: 'Business', path: '/business', i18nKey: 'mobileNav.business' },
+  { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
+  { id: 'profile', icon: User, label: 'Profile', path: '/me/profile', i18nKey: 'mobileNav.profile' },
+];
+
+/**
+ * Mobile bottom navigation bar with integrated pop-out Vitana Orb.
+ * 
+ * Z-Index Layering:
+ * - Nav container: z-50 (base)
+ * - Orb aura: z-[51] (above container, below labels)
+ * - Nav labels/icons: z-[52] (above aura, readable)
+ * - Orb itself: z-[53] (topmost, always visible)
+ */
+export function MobileBottomNav() {
+  const isMobile = useIsMobile();
+  const location = useLocation();
+  const { expandToFull, orbVisible } = useVitanalandNavigation();
+  const { setAudioOverlayVisible } = useStreamingState();
+  
+  // Routes where the bottom nav should be hidden
+  const hideNavRoutes = [
+    '/_intro',
+    '/maxina',
+    '/auth',
+    '/login',
+    '/register',
+    '/video-player',
+    '/live-classes',
+    '/camera-capture',
+    '/meditation-player',
+    '/onboarding',
+    '/payment-checkout',
+    '/kyc-verification',
+  ];
+  
+  const shouldHideNav = hideNavRoutes.some(route => 
+    location.pathname === route || location.pathname.startsWith(route + '/')
+  );
+  
+  // Only render on mobile and when not on hidden routes
+  if (!isMobile || shouldHideNav) {
+    return null;
+  }
+  
+  const handleOrbClick = () => {
+    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
+    expandToFull();
+    setTimeout(() => {
+      setAudioOverlayVisible(true);
+    }, 100);
+  };
+  
+  // Split nav items for left and right sides of the orb
+  const leftItems = navItems.slice(0, 2);
+  const rightItems = navItems.slice(2);
+  
+  return (
+    <motion.nav
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
+    >
+      {/* Glass background - base layer */}
+      <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
+        
+        {/* Orb aura layer - z-[51], rendered BEHIND nav items */}
+        <div 
+          className="absolute left-1/2 -translate-x-1/2 bottom-[calc(env(safe-area-inset-bottom)+8px)] pointer-events-none z-[51]"
+          style={{ width: '120px', height: '120px' }}
+        >
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 30%, hsl(var(--background) / 0.95) 0%, hsl(var(--background) / 0.7) 30%, hsl(var(--background) / 0.3) 55%, transparent 75%)',
+              filter: 'blur(16px)',
+              transform: 'translateY(-24px)',
+            }}
+          />
+        </div>
+        
+        {/* Left nav items - z-[52], ABOVE aura */}
+        <div className="relative z-[52] flex items-center">
+          {leftItems.map((item) => (
+            <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
+          ))}
+        </div>
+        
+        {/* Center Orb container */}
+        <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
+          {/* Orb - z-[53], topmost layer */}
+          <motion.div 
+            className="absolute -top-12 z-[53]"
+            whileTap={{ scale: 0.95 }}
+          >
+            <div 
+              role="button"
+              tabIndex={0}
+              onClick={handleOrbClick}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleOrbClick();
+                }
+              }}
+              aria-label="Ask VITANA for guidance"
+              className="relative cursor-pointer"
+              style={{
+                filter: 'drop-shadow(0 4px 12px hsl(var(--background) / 0.5)) drop-shadow(0 2px 6px hsl(var(--background) / 0.4))',
+              }}
+            >
+              <VitanalandPortalSeed 
+                audioState="idle"
+                volumeLevel={0}
+                size="nav"
+                layoutId="vitana-orb-nav"
+              />
+            </div>
+          </motion.div>
+          
+          {/* Spacer to maintain layout */}
+          <div className="h-9" />
+        </div>
+        
+        {/* Right nav items - z-[52], ABOVE aura */}
+        <div className="relative z-[52] flex items-center">
+          {rightItems.map((item) => (
+            <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
+          ))}
+        </div>
+      </div>
+    </motion.nav>
+  );
+}
+
+interface NavItemProps {
+  id: string;
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  path: string;
+  i18nKey?: string;
+}
+
+function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
+  const { translate } = useTranslation();
+  
+  return (
+    <NavLink
+      to={path}
+      className={({ isActive }) =>
+        cn(
+          "flex flex-col items-center gap-0.5 px-3 py-1 min-w-[60px] transition-all duration-200"
+        )
+      }
+    >
+      {({ isActive }) => (
+        <div className="relative flex flex-col items-center">
+          {/* Icon - black, opacity varies */}
+          <Icon 
+            className={cn(
+              "w-5 h-5 text-black dark:text-white transition-opacity duration-200",
+              isActive ? "opacity-100" : "opacity-50"
+            )} 
+          />
+          
+          {/* Label - always black, readable */}
+          <span 
+            className={cn(
+              "text-[12px] tracking-tight text-black dark:text-white transition-opacity duration-200",
+              isActive ? "font-semibold opacity-100" : "font-medium opacity-60"
+            )}
+          >
+            {translate(i18nKey ?? '', label)}
+          </span>
+          
+          {/* Active indicator - centered underline */}
+          {isActive && (
+            <motion.div 
+              layoutId="nav-active-indicator"
+              className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-primary"
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.2 }}
+            />
+          )}
+        </div>
+      )}
+    </NavLink>
+  );
+}

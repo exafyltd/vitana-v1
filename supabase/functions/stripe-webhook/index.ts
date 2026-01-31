@@ -140,12 +140,33 @@ serve(async (req) => {
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
     
     if (!webhookSecret) {
-      console.error('STRIPE_WEBHOOK_SECRET not configured');
+      console.error('='.repeat(70));
+      console.error('FATAL ERROR: STRIPE_WEBHOOK_SECRET is NOT configured!');
+      console.error('');
+      console.error('Webhook signature verification will FAIL without this secret.');
+      console.error('All payment confirmations, voucher activations, and ticket purchases');
+      console.error('will NOT be processed until this is fixed.');
+      console.error('');
+      console.error('To fix:');
+      console.error('1. Go to Stripe Dashboard → Developers → Webhooks');
+      console.error('2. Select your webhook endpoint');
+      console.error('3. Click "Reveal" under Signing secret');
+      console.error('4. Copy the whsec_... value');
+      console.error('5. Add it to Supabase: Dashboard → Settings → Edge Functions → Secrets');
+      console.error('   Secret name: STRIPE_WEBHOOK_SECRET');
+      console.error('='.repeat(70));
+      
       return new Response(
-        JSON.stringify({ error: 'Webhook secret not configured' }),
-        { status: 500 }
+        JSON.stringify({ 
+          error: 'Webhook configuration error',
+          message: 'STRIPE_WEBHOOK_SECRET is not configured. Payment webhooks cannot be processed.',
+          fix: 'Add STRIPE_WEBHOOK_SECRET to Supabase Edge Function secrets'
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    console.log('[STRIPE-WEBHOOK] Secret configured, verifying signature...');
 
     const event = stripe.webhooks.constructEvent(
       body,
@@ -249,6 +270,67 @@ serve(async (req) => {
             }
           }
         }
+      }
+      // Handle VOUCHER purchases
+      else if (checkoutType === 'voucher') {
+        const orderId = meta.order_id;
+        const voucherId = meta.voucher_id;
+        
+        console.log('='.repeat(50));
+        console.log('[VOUCHER-WEBHOOK] Processing voucher purchase');
+        console.log('[VOUCHER-WEBHOOK] Order ID:', orderId);
+        console.log('[VOUCHER-WEBHOOK] Voucher ID:', voucherId);
+        console.log('[VOUCHER-WEBHOOK] Session ID:', session.id);
+        console.log('[VOUCHER-WEBHOOK] Payment Intent:', session.payment_intent);
+        console.log('[VOUCHER-WEBHOOK] Payment Status:', session.payment_status);
+        console.log('='.repeat(50));
+        
+        if (orderId) {
+          // Update voucher_orders status to paid
+          const { data: updatedOrder, error: orderError } = await supabaseClient
+            .from('voucher_orders')
+            .update({
+              status: 'paid',
+              payment_intent_id: session.payment_intent as string,
+            })
+            .eq('id', orderId)
+            .select()
+            .single();
+
+          if (orderError) {
+            console.error('[VOUCHER-WEBHOOK] Error updating voucher order status:', orderError);
+            console.error('[VOUCHER-WEBHOOK] Order ID that failed:', orderId);
+          } else {
+            console.log('[VOUCHER-WEBHOOK] ✅ Voucher order completed successfully');
+            console.log('[VOUCHER-WEBHOOK] Updated order:', JSON.stringify(updatedOrder, null, 2));
+          }
+
+          // Update voucher status to active
+          if (voucherId) {
+            const { data: updatedVoucher, error: voucherError } = await supabaseClient
+              .from('vouchers')
+              .update({ status: 'active' })
+              .eq('id', voucherId)
+              .select()
+              .single();
+
+            if (voucherError) {
+              console.error('[VOUCHER-WEBHOOK] Error updating voucher status:', voucherError);
+              console.error('[VOUCHER-WEBHOOK] Voucher ID that failed:', voucherId);
+            } else {
+              console.log('[VOUCHER-WEBHOOK] ✅ Voucher activated successfully');
+              console.log('[VOUCHER-WEBHOOK] Activated voucher:', JSON.stringify(updatedVoucher, null, 2));
+            }
+          } else {
+            console.warn('[VOUCHER-WEBHOOK] No voucher_id in metadata, skipping voucher activation');
+          }
+        } else {
+          console.error('[VOUCHER-WEBHOOK] No order_id in metadata!');
+          console.error('[VOUCHER-WEBHOOK] Full metadata:', JSON.stringify(meta, null, 2));
+        }
+        
+        console.log('[VOUCHER-WEBHOOK] Processing complete');
+        console.log('='.repeat(50));
       }
       // Handle PROVIDER APPOINTMENT bookings
       else if (bookingType === 'provider_appointment') {

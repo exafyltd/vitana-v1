@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { discoverNavigation } from "@/config/navigation";
 import { Package, RefreshCw, Clock, CheckCircle, Ticket, Receipt } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNavigate } from "react-router-dom";
 import StandardHeader from "@/components/StandardHeader";
@@ -19,11 +19,15 @@ import { DiscoverOrderActionPopup } from "@/components/discover/DiscoverOrderAct
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
+import { useMyVouchers } from "@/hooks/useVouchers";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EventTicket } from "@/components/tickets/EventTicket";
 import { format, isPast } from "date-fns";
 import { cn } from "@/lib/utils";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileOrdersView, UnifiedMobileOrder } from "@/components/orders/MobileOrdersView";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
@@ -33,7 +37,7 @@ interface UnifiedOrder {
   providerImage: string;
   price: string;
   status: string;
-  type: 'product' | 'service' | 'ticket';
+  type: 'product' | 'service' | 'ticket' | 'voucher';
   orderDate: string;
   rawDate: Date;
   trackingNumber?: string;
@@ -46,11 +50,13 @@ interface UnifiedOrder {
   ticketPurchase?: TicketPurchase;
 }
 
-type HistoryFilter = 'all' | 'events' | 'products' | 'services' | 'refunds';
+type HistoryFilter = 'all' | 'events' | 'products' | 'services' | 'refunds' | 'vouchers';
 
 export default function Orders() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
@@ -59,7 +65,8 @@ export default function Orders() {
   const [selectedTicket, setSelectedTicket] = useState<TicketPurchase | null>(null);
   const [historyFilter, setHistoryFilter] = useState<HistoryFilter>('all');
 
-  const { tickets, loading: ticketsLoading } = useMyTickets();
+  const { tickets, loading: ticketsLoading, refetch: refetchTickets } = useMyTickets();
+  const { data: voucherOrders = [], isLoading: vouchersLoading, refetch: refetchVouchers } = useMyVouchers();
 
   // Mock ticket data for preview
   const mockTickets: TicketPurchase[] = [
@@ -257,6 +264,27 @@ export default function Orders() {
     };
   };
 
+  // Transform voucher order to unified format
+  const transformVoucherOrder = (order: any): UnifiedOrder => {
+    const tierNames: Record<string, string> = {
+      test: 'Test Voucher',
+      experience: 'Experience Voucher', 
+      exclusive: 'Exclusive Voucher',
+    };
+    
+    return {
+      id: order.id,
+      title: `Maxina ${tierNames[order.tier] || 'Gift Voucher'}`,
+      provider: 'Maxina Gift Voucher',
+      providerImage: '/lovable-uploads/7cca32ae-be17-4ab2-bc65-98257922207a.png',
+      price: `€${(order.amount_cents / 100).toFixed(2)}`,
+      status: order.status,
+      type: 'voucher',
+      orderDate: format(new Date(order.created_at), 'MMM d, yyyy'),
+      rawDate: new Date(order.created_at),
+    };
+  };
+
   // Build unified order lists
   const { unifiedActiveOrders, allHistoryOrders } = useMemo(() => {
     const activeCjOrders = cjOrders
@@ -275,14 +303,94 @@ export default function Orders() {
       .filter(t => t.event && isPast(new Date(t.event.start_time)))
       .map(transformTicketToUnifiedOrder);
 
-    const active = [...activeCjOrders, ...upcomingTickets]
+    // Vouchers: paid are active (not pending!), completed/redeemed/expired are history
+    const activeVouchers = voucherOrders
+      .filter(v => v.status === 'paid')
+      .map(transformVoucherOrder);
+    
+    const completedVouchers = voucherOrders
+      .filter(v => ['completed', 'redeemed', 'expired', 'cancelled'].includes(v.status))
+      .map(transformVoucherOrder);
+
+    const active = [...activeCjOrders, ...upcomingTickets, ...activeVouchers]
       .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
 
-    const history = [...completedCjOrders, ...pastTickets]
+    const history = [...completedCjOrders, ...pastTickets, ...completedVouchers]
       .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime());
 
     return { unifiedActiveOrders: active, allHistoryOrders: history };
-  }, [cjOrders, displayTickets]);
+  }, [cjOrders, displayTickets, voucherOrders]);
+
+  // Transform to mobile order format
+  const transformToMobileOrder = (order: UnifiedOrder, voucherOrder?: any): UnifiedMobileOrder => {
+    const getStatusLabel = (status: string) => {
+      const statusMap: Record<string, string> = {
+        upcoming: 'Upcoming',
+        attended: 'Attended',
+        expired: 'Expired',
+        completed: 'Completed',
+        delivered: 'Delivered',
+        cancelled: 'Cancelled',
+        refunded: 'Refunded',
+        shipped: 'In Transit',
+        confirmed: 'Confirmed',
+        pending: 'Pending',
+        processing: 'Processing',
+        paid: 'Active',
+        active: 'Active',
+      };
+      return statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1);
+    };
+
+    return {
+      id: order.id,
+      title: order.title,
+      subtitle: order.provider,
+      imageUrl: order.providerImage,
+      price: order.price,
+      status: order.status,
+      statusLabel: getStatusLabel(order.status),
+      type: order.type,
+      orderDate: order.orderDate,
+      rawDate: order.rawDate,
+      eventDate: order.eventDate,
+      eventLocation: order.eventLocation,
+      ticketNumber: order.ticketNumber,
+      quantity: order.quantity,
+      qrCodeToken: order.qrCodeToken,
+      ticketPurchase: order.ticketPurchase,
+      voucherOrder: voucherOrder,
+      orderId: order.id,
+    };
+  };
+
+  // Build mobile order lists
+  const { mobileActiveOrders, mobileHistoryOrders } = useMemo(() => {
+    const activeMobile = unifiedActiveOrders.map(order => {
+      const vOrder = order.type === 'voucher' 
+        ? voucherOrders.find(v => v.id === order.id) 
+        : undefined;
+      return transformToMobileOrder(order, vOrder);
+    });
+    
+    const historyMobile = allHistoryOrders.map(order => {
+      const vOrder = order.type === 'voucher' 
+        ? voucherOrders.find(v => v.id === order.id) 
+        : undefined;
+      return transformToMobileOrder(order, vOrder);
+    });
+    
+    return { mobileActiveOrders: activeMobile, mobileHistoryOrders: historyMobile };
+  }, [unifiedActiveOrders, allHistoryOrders, voucherOrders]);
+
+  // Refresh callback for mobile
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([
+      fetchCjOrders(),
+      refetchTickets(),
+      refetchVouchers(),
+    ]);
+  }, [refetchTickets, refetchVouchers]);
 
   // Apply history filter
   const unifiedHistoryOrders = useMemo(() => {
@@ -291,10 +399,12 @@ export default function Orders() {
       if (historyFilter === 'events') return order.type === 'ticket';
       if (historyFilter === 'products') return order.type === 'product';
       if (historyFilter === 'services') return order.type === 'service';
+      if (historyFilter === 'vouchers') return order.type === 'voucher';
       if (historyFilter === 'refunds') return order.status === 'refunded' || order.status === 'cancelled';
       return true;
     });
   }, [allHistoryOrders, historyFilter]);
+
 
   // Transform to StandardHorizontalCard props
   const transformToCardProps = (order: UnifiedOrder): StandardHorizontalCardProps => {
@@ -362,6 +472,7 @@ export default function Orders() {
       }
       if (order.type === 'ticket') return '🎫';
       if (order.type === 'product') return '📦';
+      if (order.type === 'voucher') return '🎁';
       return '🩺';
     };
 
@@ -381,28 +492,22 @@ export default function Orders() {
 
   // Segmented filter controls for History tab
   const HistoryFilterRow = () => {
-    const filters: { key: HistoryFilter; label: string }[] = [
-      { key: 'all', label: 'All' },
-      { key: 'events', label: 'Events' },
-      { key: 'products', label: 'Products' },
-      { key: 'services', label: 'Services' },
-      { key: 'refunds', label: 'Refunds' },
-    ];
+    const filterKeys: HistoryFilter[] = ['all', 'events', 'products', 'vouchers', 'services', 'refunds'];
 
     return (
       <div className="flex gap-1 p-1 bg-card/40 backdrop-blur-xl rounded-xl border border-border/20 w-fit mb-4">
-        {filters.map(filter => (
+        {filterKeys.map(key => (
           <button
-            key={filter.key}
-            onClick={() => setHistoryFilter(filter.key)}
+            key={key}
+            onClick={() => setHistoryFilter(key)}
             className={cn(
               "px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200",
-              historyFilter === filter.key 
+              historyFilter === key 
                 ? "bg-background shadow-sm text-foreground" 
                 : "text-muted-foreground hover:text-foreground hover:bg-background/50"
             )}
           >
-            {filter.label}
+            {translate(`orders.filters.${key}`)}
           </button>
         ))}
       </div>
@@ -418,44 +523,60 @@ export default function Orders() {
     </div>
   );
 
-  const isLoading = loading || ticketsLoading;
+  const isLoading = loading || ticketsLoading || vouchersLoading;
+
+  // Mobile view
+  if (isMobile) {
+    return (
+      <MobileOrdersView
+        activeOrders={mobileActiveOrders}
+        historyOrders={mobileHistoryOrders}
+        isLoading={isLoading}
+        isShowingMockData={isShowingMockData}
+        onRefresh={handleRefresh}
+      />
+    );
+  }
 
   return (
     <AppLayout>
       <SEO title="Orders | Discover" description="Track your wellness service bookings and product orders" canonical={window.location.href} />
       <SubNavigation items={discoverNavigation} />
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-green-50 dark:from-background dark:via-background dark:to-background min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 dark:from-background dark:via-background dark:to-background min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <StandardHeader
-            title="My Orders"
-            description="Track your product orders and event tickets"
+            title={translate('orders.myOrders')}
+            description={translate('orders.trackDescription')}
             emoji="📦"
           />
 
-          <UtilityActionButton>
+          <UtilityActionButton
+            trailingElement={
+              <Button 
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                onClick={() => window.location.reload()}
+                title="Refresh page"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            }
+          >
             <ExpandableSearchButton 
-              placeholder="Search your orders…"
+              placeholder={translate('orders.searchPlaceholder')}
             />
             <UniversalCalendarButton />
-            <Button 
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              onClick={() => window.location.reload()}
-              title="Refresh page"
-            >
-              <RefreshCw className="h-4 w-4" />
-            </Button>
           </UtilityActionButton>
 
           {/* Mock data indicator */}
           {isShowingMockData && (
             <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
               <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700">
-                Sample Data
+                {translate('orders.sampleData')}
               </Badge>
               <span className="text-sm text-amber-700 dark:text-amber-400">
-                These are preview orders. Your actual orders and tickets will appear here.
+                {translate('orders.previewNotice')}
               </span>
             </div>
           )}
@@ -468,14 +589,14 @@ export default function Orders() {
                 className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               >
                 <Clock className="h-4 w-4" />
-                Active ({unifiedActiveOrders.length})
+                {translate('orders.tabs.active')} ({unifiedActiveOrders.length})
               </TabsTrigger>
               <TabsTrigger 
                 value="history" 
                 className="flex items-center gap-2 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm"
               >
                 <CheckCircle className="h-4 w-4" />
-                History ({allHistoryOrders.length})
+                {translate('orders.tabs.history')} ({allHistoryOrders.length})
               </TabsTrigger>
             </TabsList>
             
@@ -498,14 +619,14 @@ export default function Orders() {
                     <div className="w-16 h-16 rounded-2xl bg-muted/30 flex items-center justify-center mx-auto mb-4">
                       <Package className="w-8 h-8 text-muted-foreground/60" />
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2">No Active Orders</h3>
-                    <p className="text-muted-foreground mb-4">You don't have any active orders or upcoming event tickets.</p>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{translate('orders.emptyActive.title')}</h3>
+                    <p className="text-muted-foreground mb-4">{translate('orders.emptyActive.description')}</p>
                     <div className="flex gap-3 justify-center">
                       <Button onClick={() => navigate('/discover')}>
-                        Browse Products
+                        {translate('orders.browseProducts')}
                       </Button>
                       <Button variant="outline" onClick={() => navigate('/comm/events-meetups')}>
-                        Discover Events
+                        {translate('orders.findEvents')}
                       </Button>
                     </div>
                   </CardContent>
@@ -535,15 +656,17 @@ export default function Orders() {
                       <CheckCircle className="w-8 h-8 text-muted-foreground/60" />
                     </div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">
-                      {historyFilter === 'all' ? 'No Order History' : `No ${historyFilter.charAt(0).toUpperCase() + historyFilter.slice(1)}`}
+                      {historyFilter === 'all' 
+                        ? translate('orders.emptyHistory.title') 
+                        : translate('orders.noFilter', translate(`orders.filters.${historyFilter}`))}
                     </h3>
                     <p className="text-muted-foreground mb-4">
                       {historyFilter === 'all' 
-                        ? 'Your completed orders and past events will appear here.'
-                        : `No ${historyFilter} found in your history.`}
+                        ? translate('orders.emptyHistory.description')
+                        : translate('orders.noFilterDesc', translate(`orders.filters.${historyFilter}`))}
                     </p>
                     <Button onClick={() => navigate('/discover')}>
-                      Start Shopping
+                      {translate('orders.startShopping')}
                     </Button>
                   </CardContent>
                 </Card>

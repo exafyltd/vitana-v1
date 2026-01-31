@@ -15,7 +15,7 @@ import { communityNavigation } from "@/config/navigation";
 import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
@@ -23,11 +23,20 @@ import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
+import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
 import { getShareUrl } from "@/lib/shareUrl";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileEventCarousel } from "@/components/community/MobileEventCarousel";
+import { EventCardSkeleton } from "@/components/events/EventCardSkeleton";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -345,29 +354,31 @@ const renderEventGrid = (
 const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
-  const { events: dbEvents, loading, fetchEvents } = useCommunityEvents();
+  const { events: dbEvents, loading, isFetching, fetchEvents } = useCommunityEvents();
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { pendingCount } = useAutopilot();
+  const { translate } = useTranslation();
   
   const [createEventOpen, setCreateEventOpen] = useState(false);
   const [createMeetupOpen, setCreateMeetupOpen] = useState(false);
   const [createSelectionOpen, setCreateSelectionOpen] = useState(false);
   const [editMeetupOpen, setEditMeetupOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState("today");
-  const [isMobile, setIsMobile] = useState(false);
+  // Use the mobile hook
+  const isMobile = useIsMobile();
+  
+  // Mobile defaults to "upcoming" since Today is often empty
+  const initialTab = searchParams.get('tab') || (isMobile ? 'upcoming' : 'today');
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [promoteCampaignOpen, setPromoteCampaignOpen] = useState(false);
   const [eventToPromote, setEventToPromote] = useState<any>(null);
-
-  // Detect mobile
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [eventToShare, setEventToShare] = useState<any>(null);
 
   // Filter events by time
   const todayEvents = useMemo(() => {
@@ -419,31 +430,61 @@ const EventsAndMeetups = () => {
                         activeTab === "upcoming" ? filteredUpcomingEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
-  // Handle deep linking - read ?event= and ?tab from URL on mount
+  // Track if we've initialized the tab from URL (prevents resetting on data refresh)
+  const hasInitializedTab = useRef(false);
+
+  // Handle initial tab setup on mount only
   useEffect(() => {
+    if (hasInitializedTab.current) return;
+    hasInitializedTab.current = true;
+    
     const eventParam = searchParams.get('event');
     const tabParam = searchParams.get('tab');
+    const isMobileView = window.innerWidth < 768;
+    const validTabs = ['today', 'upcoming', 'following', 'recommended'];
     
-    if (eventParam) {
-      // Switch to the correct tab if specified
-      if (tabParam && (tabParam === 'today' || tabParam === 'upcoming')) {
-        setActiveTab(tabParam);
-      } else if (!tabParam && dbEvents.length > 0) {
-        // Auto-detect tab if not specified
-        const event = dbEvents.find(e => e.id === eventParam);
-        if (event) {
-          const eventDate = new Date(event.start_time);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          const tomorrow = new Date(today);
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          
-          const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
-          setActiveTab(detectedTab);
-        }
-      }
+    // On mobile, if no tab specified, set to upcoming
+    if (isMobileView && !tabParam && !eventParam) {
+      setActiveTab('upcoming');
+      return;
+    }
+    
+    // Respect tab param if valid
+    if (tabParam && validTabs.includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, []);
+
+  // Sync activeTab to URL when user switches tabs
+  useEffect(() => {
+    const currentTab = searchParams.get('tab');
+    if (activeTab && activeTab !== currentTab) {
+      setSearchParams(prev => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set('tab', activeTab);
+        return newParams;
+      }, { replace: true });
+    }
+  }, [activeTab, setSearchParams]);
+
+  // Handle event deep linking when dbEvents loads
+  useEffect(() => {
+    const eventParam = searchParams.get('event');
+    if (!eventParam || dbEvents.length === 0) return;
+    
+    // If event param exists, find and scroll to it
+    const event = dbEvents.find(e => e.id === eventParam);
+    if (event && !selectedEventId) {
+      // Auto-detect tab if not already set correctly
+      const eventDate = new Date(event.start_time);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
       
-      // Select event and scroll into view
+      const detectedTab = (eventDate >= today && eventDate < tomorrow) ? 'today' : 'upcoming';
+      setActiveTab(detectedTab);
+      
       selectEvent(eventParam);
       setTimeout(() => {
         const card = document.querySelector(`[data-event-id="${eventParam}"]`);
@@ -471,6 +512,12 @@ const EventsAndMeetups = () => {
     setPromoteCampaignOpen(true);
   };
 
+  // Handle share event - opens share dialog from parent
+  const handleShareEvent = (event: any) => {
+    setEventToShare(event);
+    setShareDialogOpen(true);
+  };
+
   // Handle event creation - show the newly created event
   const handleEventCreated = async (eventId: string) => {
     console.log('🎯 Event created, handling:', eventId);
@@ -478,8 +525,9 @@ const EventsAndMeetups = () => {
     // Wait a bit for the database to update
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Refresh events and get fresh data
-    const freshEvents = await fetchEvents();
+    // Refresh events - refetch returns QueryObserverResult, use refetch().then() pattern
+    const result = await fetchEvents();
+    const freshEvents = result.data || [];
     console.log('✅ Fresh events fetched:', freshEvents.length);
     
     // Find the event in the fresh data to determine which tab it belongs to
@@ -596,53 +644,120 @@ const EventsAndMeetups = () => {
         type={eventSEO?.type || 'website'}
       />
       <AppLayout>
-        <SubNavigation items={communityNavigation} />
+        {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
+        {!isMobile && <SubNavigation items={communityNavigation} />}
         <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
           <div className="flex-1 overflow-hidden">
           <StandardHeader
-            title="Events & MeetUps"
-            description="Discover formal events and casual meetups in your community"
+            title={translate('events.title', 'Events & MeetUps')}
+            description={translate('events.description', 'Discover formal events and casual meetups in your community')}
           />
           
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search events and meetups..." 
-              onSearch={(query) => setSearchQuery(query)}
-            />
-            <UniversalCalendarButton />
-            <Button 
-              onClick={() => setCreateSelectionOpen(true)}
-              size="sm"
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Create</span>
-            </Button>
+          <UtilityActionButton 
+            className="min-w-0"
+            afterGiftVoucherChildren={isMobile && (
+              <>
+                {/* Vitana Index - pill style on mobile */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => navigate('/health')}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                >
+                  <span className="text-xs opacity-60">🧬</span>
+                  <span className="text-sm font-medium text-primary">742</span>
+                </Button>
+                
+                {/* Autopilot - pill style with label on mobile */}
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => setAutopilotOpen(true)}
+                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                >
+                  <Plane className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                  {pendingCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                    >
+                      {pendingCount}
+                    </Badge>
+                  )}
+                </Button>
+              </>
+            )}
+          >
+            <div className="flex items-center gap-2 min-w-max">
+              <ExpandableSearchButton 
+                placeholder={translate('events.searchPlaceholder', 'Search events and meetups...')} 
+                onSearch={(query) => setSearchQuery(query)}
+              />
+              <UniversalCalendarButton />
+              
+              {/* Create button - matches pill style */}
+              <Button 
+                onClick={() => setCreateSelectionOpen(true)}
+                variant="ghost"
+                size="sm"
+                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="text-sm">{translate('buttons.create', 'Create')}</span>
+              </Button>
+              
+            </div>
           </UtilityActionButton>
 
           <div className="flex-1 overflow-y-auto">
             <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList>
                 <SplitBarTrigger value="today">
-                  ☀️ Today
+                  ☀️ {translate('events.tabs.today', 'Today')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="upcoming">
-                  📅 Upcoming
+                  📅 {translate('events.tabs.upcoming', 'Upcoming')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="following">
-                  👥 Following
+                  👥 {translate('events.tabs.following', 'Following')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="recommended">
-                  ✨ Recommended
+                  ✨ {translate('events.tabs.recommended', 'Recommended')}
                 </SplitBarTrigger>
               </SplitBarList>
 
               <SplitBarContent value="today" className="mt-6">
-                {loading ? (
-                  <div className="text-center py-12">
-                    <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
-                    <p className="text-muted-foreground">Loading today's events...</p>
-                  </div>
+                {loading && filteredTodayEvents.length === 0 ? (
+                  <EventCardSkeleton count={4} className="px-2" />
+                ) : isMobile ? (
+                  <MobileEventCarousel
+                    events={filteredTodayEvents}
+                    onCardClick={handleCardClick}
+                    currentUserId={user?.id}
+                    onEdit={handleEditEvent}
+                    initialEventId={selectedEventId || undefined}
+                    onSlideChange={(eventId) => {
+                      setFocusedCardId(eventId);
+                    }}
+                    emptyState={
+                      <div className="text-center py-12">
+                        <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-semibold mb-2">No Events Today</h3>
+                        <p className="text-muted-foreground mb-4">
+                          There are no events scheduled for today. Check upcoming events or create your own!
+                        </p>
+                        <div className="flex flex-col gap-3">
+                          <Button onClick={() => setCreateSelectionOpen(true)}>
+                            Create Event
+                          </Button>
+                          <Button variant="outline" onClick={() => setActiveTab('upcoming')}>
+                            View Upcoming Events
+                          </Button>
+                        </div>
+                      </div>
+                    }
+                  />
                 ) : (
                   <>
                     {filteredTodayEvents.length === 0 ? (
@@ -687,11 +802,31 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="upcoming" className="mt-6">
-                {loading ? (
-                  <div className="text-center py-12">
-                    <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground animate-pulse" />
-                    <p className="text-muted-foreground">Loading upcoming events...</p>
-                  </div>
+                {loading && filteredUpcomingEvents.length === 0 ? (
+                  <EventCardSkeleton count={4} className="px-2" />
+                ) : isMobile ? (
+                  <MobileEventCarousel
+                    events={filteredUpcomingEvents}
+                    onCardClick={handleCardClick}
+                    currentUserId={user?.id}
+                    onEdit={handleEditEvent}
+                    initialEventId={selectedEventId || undefined}
+                    onSlideChange={(eventId) => {
+                      setFocusedCardId(eventId);
+                    }}
+                    emptyState={
+                      <div className="text-center py-12">
+                        <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-semibold mb-2">No Upcoming Events</h3>
+                        <p className="text-muted-foreground mb-4">
+                          There are no events scheduled. Be the first to create one!
+                        </p>
+                        <Button onClick={() => setCreateSelectionOpen(true)}>
+                          Create Event
+                        </Button>
+                      </div>
+                    }
+                  />
                 ) : (
                   <>
                     {filteredUpcomingEvents.length === 0 ? (
@@ -816,6 +951,27 @@ const EventsAndMeetups = () => {
           hasNext={hasNext}
           isMobile={isMobile}
           onPromoteEvent={handlePromoteEvent}
+          onShareEvent={handleShareEvent}
+        />
+      )}
+
+      {/* Share Dialog - Rendered at root level to avoid z-index conflicts */}
+      {eventToShare && (
+        <UniversalShareDialog
+          open={shareDialogOpen}
+          onOpenChange={setShareDialogOpen}
+          content={{
+            type: "event",
+            id: eventToShare.id,
+            title: eventToShare.title,
+            description: eventToShare.description,
+            image_url: eventToShare.image_url || eventToShare.cover_image_url,
+            url: getShareUrl('event', eventToShare.id, {
+              utm_source: 'event_details',
+              utm_medium: 'share_dialog',
+              slug: eventToShare.slug
+            })
+          }}
         />
       )}
 
@@ -845,6 +1001,13 @@ const EventsAndMeetups = () => {
           }}
         />
       )}
+
+      {/* Autopilot Popup (mobile) */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen}
+      />
+
     </>
   );
 };

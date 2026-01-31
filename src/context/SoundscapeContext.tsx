@@ -1,50 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
-
-// Store audio element on window to survive HMR module reloads
-declare global {
-  interface Window {
-    __SOUNDSCAPE_AUDIO__?: HTMLAudioElement;
-  }
-}
-
-function getOrCreateAudioElement(src: string): HTMLAudioElement {
-  const filename = src.split('/').pop() || '';
-  
-  // FIRST: Stop any orphaned audio elements playing this track
-  const allAudio = document.querySelectorAll('audio');
-  allAudio.forEach((audio) => {
-    if (audio.src.includes(filename) && audio !== window.__SOUNDSCAPE_AUDIO__) {
-      console.log('[Soundscape] Found orphaned audio element, stopping it:', audio.src);
-      audio.pause();
-      audio.src = '';
-      audio.load();
-    }
-  });
-
-  // Check for existing HMR-surviving audio element
-  const existing = window.__SOUNDSCAPE_AUDIO__;
-  if (existing && existing.src.includes(filename)) {
-    console.log('[Soundscape] Reusing HMR-surviving audio element');
-    existing.loop = true;
-    return existing;
-  }
-
-  // If there's an existing element but for a different src, stop and dispose it
-  if (existing) {
-    console.log('[Soundscape] Stopping old HMR audio element before creating new one');
-    existing.pause();
-    existing.src = '';
-    existing.load();
-  }
-
-  // Create new audio element and persist it on window
-  console.log('[Soundscape] Creating new audio element');
-  const audio = new Audio(src);
-  audio.loop = true;
-  window.__SOUNDSCAPE_AUDIO__ = audio;
-  return audio;
-}
+import * as AudioManager from '@/audio/SoundscapeAudioManager';
 
 interface SoundscapeContextType {
   isPlaying: boolean;
@@ -68,267 +24,159 @@ const DEFAULT_VOLUME = 0.05;
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
 
 export function SoundscapeProvider({ children }: { children: ReactNode }) {
+  // State synced from AudioManager
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useState(DEFAULT_VOLUME);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrack] = useState(AMBIENT_TRACK);
   const [pendingAutoPlay, setPendingAutoPlay] = useState(false);
+  
+  // Keep ref to audio for handoff
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const previousVolumeRef = useRef(DEFAULT_VOLUME);
-  const [pausedByPriority, setPausedByPriority] = useState(false);
-  const wasPlayingBeforePriorityRef = useRef(false);
-  const userExplicitlyPausedRef = useRef(false);
-  
-  // Use refs for state that callbacks need to access
-  const isMutedRef = useRef(isMuted);
-  const isPlayingRef = useRef(isPlaying);
 
-  // Store event handler refs for proper cleanup
-  const handleVolumeChangeRef = useRef<(() => void) | null>(null);
-  const handlePlayRef = useRef<(() => void) | null>(null);
-  const handlePauseRef = useRef<(() => void) | null>(null);
-
-  // Keep refs in sync with state
+  // Initialize AudioManager on mount
   useEffect(() => {
-    isMutedRef.current = isMuted;
-  }, [isMuted]);
-
-  useEffect(() => {
-    isPlayingRef.current = isPlaying;
-  }, [isPlaying]);
-
-  // Helper to attach event listeners to an audio element
-  const attachListeners = useCallback((audio: HTMLAudioElement) => {
-    console.log('[Soundscape] Attaching event listeners to audio element');
+    console.log('[SoundscapeProvider] Initializing AudioManager');
+    AudioManager.initialize();
     
-    // Remove old listeners if they exist
-    if (handleVolumeChangeRef.current) {
-      audio.removeEventListener('volumechange', handleVolumeChangeRef.current);
-    }
-    if (handlePlayRef.current) {
-      audio.removeEventListener('play', handlePlayRef.current);
-    }
-    if (handlePauseRef.current) {
-      audio.removeEventListener('pause', handlePauseRef.current);
-    }
-
-    // Create new handlers
-    const handleVolumeChange = () => {
-      console.log('[Soundscape] Audio volumechange event:', audio.volume);
-      setVolumeState(audio.volume);
-    };
-
-    const handlePlay = () => {
-      console.log('[Soundscape] Audio play event');
-      setIsPlaying(true);
-    };
-
-    const handlePause = () => {
-      console.log('[Soundscape] Audio pause event');
-      setIsPlaying(false);
-    };
-
-    // Store refs and attach
-    handleVolumeChangeRef.current = handleVolumeChange;
-    handlePlayRef.current = handlePlay;
-    handlePauseRef.current = handlePause;
-
-    audio.addEventListener('volumechange', handleVolumeChange);
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-
-    console.log('[Soundscape] Event listeners attached successfully');
-  }, []);
-
-  // Initialize audio element using HMR-resilient singleton
-  useEffect(() => {
-    // Load preferences from localStorage
+    // Get audio element reference
+    audioRef.current = AudioManager.getAudio();
+    
+    // Load saved preferences
     const savedVolume = localStorage.getItem('soundscape_volume');
     const savedAutoPlay = localStorage.getItem('soundscape_auto_play');
     const savedMuted = localStorage.getItem('soundscape_muted');
-    
-    console.log('[Soundscape] Initializing with savedVolume:', savedVolume, 'savedAutoPlay:', savedAutoPlay, 'savedMuted:', savedMuted);
     
     if (savedVolume) {
       const vol = parseFloat(savedVolume);
       setVolumeState(vol);
       previousVolumeRef.current = vol;
+      audioRef.current.volume = vol;
     }
-
-    // Get or create the singleton audio element
-    const audio = getOrCreateAudioElement(AMBIENT_TRACK);
-    audioRef.current = audio;
-    
-    // Apply current volume and mute state
-    audio.volume = savedVolume ? parseFloat(savedVolume) : DEFAULT_VOLUME;
     
     if (savedMuted === 'true') {
-      audio.muted = true;
       setIsMuted(true);
-    } else {
-      audio.muted = false;
-      setIsMuted(false);
     }
     
-    console.log('[Soundscape] Audio element initialized:', {
-      src: audio.src,
-      volume: audio.volume,
-      loop: audio.loop,
-      paused: audio.paused
+    // Subscribe to manager state changes
+    const unsubscribe = AudioManager.subscribe((state) => {
+      setIsPlaying(state.isPlaying);
+      setVolumeState(state.volume);
+      setIsMuted(state.isMuted);
     });
-
-    // Attach event listeners
-    attachListeners(audio);
-
-    // Only auto-play if user explicitly enabled it previously (not for new users)
-    // Music should only start when explicitly entering a portal via startFresh()
-    const shouldAutoPlay = savedAutoPlay === 'true';
-    if (shouldAutoPlay && audio.paused && !userExplicitlyPausedRef.current) {
-      audio.play()
-        .then(() => {
-          console.log('[Soundscape] Auto-play succeeded (user previously enabled)');
-          setIsPlaying(true);
-          setPendingAutoPlay(false);
-        })
-        .catch((err) => {
-          if (err.name === 'NotAllowedError') {
-            console.log('[Soundscape] Auto-play blocked by browser, waiting for user interaction');
-            setPendingAutoPlay(true);
-          } else {
-            console.warn('[Soundscape] Auto-play failed:', err);
-          }
-        });
-    } else {
-      // Sync state with actual audio state
-      setIsPlaying(!audio.paused);
+    
+    // Sync initial state
+    const state = AudioManager.getState();
+    setIsPlaying(state.isPlaying);
+    setVolumeState(state.volume);
+    setIsMuted(state.isMuted);
+    
+    // Handle auto-play if enabled AND not muted
+    // ON MOBILE: Skip provider auto-play - let AudioManager.attemptMobileResume() handle it
+    // This prevents race conditions where play() starts at t=0 before restore completes
+    const userAgent = navigator.userAgent || (navigator as any).vendor || '';
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+    const isMobileDevice = isMobileUA || isNarrowViewport;
+    
+    if (savedAutoPlay === 'true' && savedMuted !== 'true' && audioRef.current.paused) {
+      if (!isMobileDevice) {
+        // Desktop only: direct auto-play
+        audioRef.current.play()
+          .then(() => {
+            console.log('[SoundscapeProvider] Auto-play succeeded');
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            if (err.name === 'NotAllowedError') {
+              console.log('[SoundscapeProvider] Auto-play blocked, waiting for interaction');
+              setPendingAutoPlay(true);
+            }
+          });
+      } else {
+        // Mobile: let AudioManager handle resume after state is fully restored
+        setTimeout(() => {
+          AudioManager.attemptMobileResume();
+        }, 100);
+      }
     }
-
-    // DO NOT cleanup/destroy the audio element on unmount
-    // The singleton persists across HMR cycles
+    
+    // Attach play/pause listeners for state sync
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleVolumeChange = () => setVolumeState(audioRef.current?.volume ?? DEFAULT_VOLUME);
+    
+    audioRef.current.addEventListener('play', handlePlay);
+    audioRef.current.addEventListener('pause', handlePause);
+    audioRef.current.addEventListener('volumechange', handleVolumeChange);
+    
     return () => {
-      // Only remove event listeners, don't destroy audio
-      if (audioRef.current && handleVolumeChangeRef.current) {
-        audioRef.current.removeEventListener('volumechange', handleVolumeChangeRef.current);
-        audioRef.current.removeEventListener('play', handlePlayRef.current!);
-        audioRef.current.removeEventListener('pause', handlePauseRef.current!);
+      unsubscribe();
+      if (audioRef.current) {
+        audioRef.current.removeEventListener('play', handlePlay);
+        audioRef.current.removeEventListener('pause', handlePause);
+        audioRef.current.removeEventListener('volumechange', handleVolumeChange);
       }
-      console.log('[Soundscape] Removed event listeners (audio element persists)');
     };
-  }, [attachListeners]);
+  }, []);
 
-  // Sync React state with actual audio element state (handles HMR recovery)
-  useEffect(() => {
-    if (audioRef.current) {
-      // Sync isPlaying
-      const actuallyPlaying = !audioRef.current.paused;
-      if (actuallyPlaying !== isPlaying) {
-        console.log('[Soundscape] Syncing isPlaying state: actuallyPlaying=', actuallyPlaying, 'isPlaying=', isPlaying);
-        setIsPlaying(actuallyPlaying);
-      }
-      
-      // Sync isMuted
-      const actuallyMuted = audioRef.current.muted;
-      if (actuallyMuted !== isMuted) {
-        console.log('[Soundscape] Syncing isMuted state: actuallyMuted=', actuallyMuted, 'isMuted=', isMuted);
-        setIsMuted(actuallyMuted);
-      }
-    }
-  }, []); // Only run once on mount
-
-  // Sync audioRef with window singleton (HMR recovery)
-  useEffect(() => {
-    if (window.__SOUNDSCAPE_AUDIO__ && audioRef.current !== window.__SOUNDSCAPE_AUDIO__) {
-      console.log('[Soundscape] Syncing audioRef with window singleton');
-      audioRef.current = window.__SOUNDSCAPE_AUDIO__;
-      attachListeners(window.__SOUNDSCAPE_AUDIO__);
-    }
-  }, [attachListeners]); // Only run when attachListeners changes
-
-  // Listen for first user interaction to resume blocked autoplay
+  // Handle pending auto-play on first interaction (desktop only)
   useEffect(() => {
     if (!pendingAutoPlay) return;
     
+    // On mobile, don't use this interaction handler - AudioManager handles resume via banner
+    const userAgent = navigator.userAgent || (navigator as any).vendor || '';
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
+    if (isMobileUA || isNarrowViewport) {
+      return;
+    }
+    
     const handleInteraction = () => {
-      console.log('[Soundscape] User interaction detected, attempting to start audio');
+      // Check if user has muted - don't auto-play if muted
+      const isMutedInStorage = localStorage.getItem('soundscape_muted') === 'true';
+      
+      if (isMutedInStorage) {
+        console.log('[SoundscapeProvider] Skipping auto-play - user has muted');
+        setPendingAutoPlay(false);
+        document.removeEventListener('click', handleInteraction, true);
+        document.removeEventListener('touchstart', handleInteraction, true);
+        return;
+      }
+      
       if (audioRef.current && pendingAutoPlay) {
         audioRef.current.play()
           .then(() => {
             setIsPlaying(true);
             setPendingAutoPlay(false);
-            console.log('[Soundscape] Audio started after user interaction');
+            console.log('[SoundscapeProvider] Audio started after user interaction');
           })
           .catch((err) => {
-            console.warn('[Soundscape] Failed to start audio even after interaction:', err);
+            console.warn('[SoundscapeProvider] Failed to start audio:', err);
           });
       }
       
-      // Remove listeners after first interaction
       document.removeEventListener('click', handleInteraction, true);
       document.removeEventListener('touchstart', handleInteraction, true);
-      document.removeEventListener('keydown', handleInteraction, true);
     };
     
-    // Use capture phase to catch events early
     document.addEventListener('click', handleInteraction, true);
     document.addEventListener('touchstart', handleInteraction, true);
-    document.addEventListener('keydown', handleInteraction, true);
     
     return () => {
       document.removeEventListener('click', handleInteraction, true);
       document.removeEventListener('touchstart', handleInteraction, true);
-      document.removeEventListener('keydown', handleInteraction, true);
     };
   }, [pendingAutoPlay]);
 
-
-  const play = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-          setPendingAutoPlay(false);
-          localStorage.setItem('soundscape_auto_play', 'true');
-          userExplicitlyPausedRef.current = false;
-        })
-        .catch((err) => {
-          if (err.name === 'NotAllowedError') {
-            console.log('[Soundscape] Play blocked by browser, waiting for user interaction');
-            setPendingAutoPlay(true);
-          } else {
-            console.warn('[Soundscape] Play failed:', err);
-          }
-        });
-    }
-  }, []);
-
-  const pause = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    
-    setIsPlaying(false);
-    localStorage.setItem('soundscape_auto_play', 'false');
-    userExplicitlyPausedRef.current = true;
-  }, []);
-
-  const toggle = useCallback(() => {
-    if (audioRef.current) {
-      if (audioRef.current.paused) {
-        play();
-      } else {
-        pause();
-      }
-    }
-  }, [play, pause]);
-
-  // Helper function to kill orphaned audio elements
+  // Kill orphaned audio helper
   const killOrphanedAudio = useCallback(() => {
     const filename = AMBIENT_TRACK.split('/').pop() || '';
     const allAudio = document.querySelectorAll('audio');
     allAudio.forEach((audio) => {
-      // Kill any audio playing the ambient track that isn't our controlled singleton
       if (audio.src.includes(filename) && audio !== audioRef.current) {
-        console.log('[Soundscape] Killing orphaned audio:', audio.src);
+        console.log('[SoundscapeProvider] Killing orphaned audio:', audio.src);
         audio.pause();
         audio.src = '';
         audio.load();
@@ -336,176 +184,99 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const play = useCallback(() => {
+    AudioManager.play()
+      .then(() => {
+        setIsPlaying(true);
+        setPendingAutoPlay(false);
+      })
+      .catch((err) => {
+        if (err.name === 'NotAllowedError') {
+          setPendingAutoPlay(true);
+        } else {
+          console.warn('[SoundscapeProvider] Play failed:', err);
+        }
+      });
+  }, []);
+
+  const pause = useCallback(() => {
+    AudioManager.pause();
+    setIsPlaying(false);
+  }, []);
+
+  const toggle = useCallback(() => {
+    if (isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  }, [isPlaying, play, pause]);
+
   const setVolume = useCallback((vol: number) => {
-    console.log('[Soundscape] setVolume called with:', vol, 'current isMuted:', isMutedRef.current);
+    const clamped = Math.max(0, Math.min(1, vol));
     
-    const clampedVol = Math.max(0, Math.min(1, vol));
-    
-    // If setting volume to 0, also kill orphaned audio
-    if (clampedVol === 0) {
+    if (clamped === 0) {
       killOrphanedAudio();
     }
     
-    setVolumeState(clampedVol);
-    previousVolumeRef.current = clampedVol;
-    
-    if (!audioRef.current) {
-      console.warn('[Soundscape] setVolume: audioRef.current is null');
-      return;
-    }
-
-    // Only apply volume if not muted
-    if (!isMutedRef.current) {
-      audioRef.current.volume = clampedVol;
-      console.log('[Soundscape] Applied volume to audio element:', clampedVol, 'actual:', audioRef.current.volume);
-    } else {
-      console.log('[Soundscape] Skipped applying volume (muted), but saved for unmute:', clampedVol);
-    }
-    
-    localStorage.setItem('soundscape_volume', clampedVol.toString());
+    AudioManager.setVolume(clamped);
+    setVolumeState(clamped);
+    previousVolumeRef.current = clamped;
   }, [killOrphanedAudio]);
 
   const toggleMute = useCallback(() => {
-    if (!audioRef.current) return;
+    const newMuted = !isMuted;
     
-    if (isMutedRef.current) {
-      // UNMUTE - restore volume
-      console.log('[Soundscape] Unmuting, restoring volume:', previousVolumeRef.current);
-      audioRef.current.muted = false;
-      audioRef.current.volume = previousVolumeRef.current;
-      setIsMuted(false);
-      localStorage.setItem('soundscape_muted', 'false');
-    } else {
-      // MUTE - silence but keep playing, also kill orphaned audio
-      console.log('[Soundscape] Muting, keeping playback active, killing orphans');
-      audioRef.current.muted = true;
+    if (newMuted) {
       killOrphanedAudio();
-      setIsMuted(true);
-      localStorage.setItem('soundscape_muted', 'true');
     }
-  }, [killOrphanedAudio]);
+    
+    AudioManager.setMuted(newMuted);
+    setIsMuted(newMuted);
+  }, [isMuted, killOrphanedAudio]);
 
-  const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
-    console.log('[Soundscape] handoffAudio called with external audio:', {
-      src: externalAudio.src,
-      paused: externalAudio.paused,
-      volume: externalAudio.volume
-    });
-
-    if (!externalAudio) return;
-
-    // Dispose of any existing audio element if it's different
-    if (audioRef.current && audioRef.current !== externalAudio) {
-      console.log('[Soundscape] Disposing existing audio element');
-      audioRef.current.pause();
-      audioRef.current.src = '';
-      audioRef.current.load();
-    }
-
-    // Take ownership of the external audio element
-    audioRef.current = externalAudio;
-
-    // Remove from activeLoopingSounds registry without stopping it
-    removeFromRegistry(externalAudio);
-    console.log('[Soundscape] Removed handed-off audio from registry');
-
-    // Attach event listeners to the new audio element
-    attachListeners(externalAudio);
-
-    // Apply current state to the handed-off audio
-    externalAudio.loop = true;
-    externalAudio.volume = isMutedRef.current ? 0 : volume;
-
-    // If we should be playing, ensure the audio is playing
-    if (isPlayingRef.current && externalAudio.paused) {
-      console.log('[Soundscape] Starting playback on handed-off audio');
-      externalAudio.play().catch((err) => {
-        console.error('[Soundscape] Failed to play handed-off audio:', err);
-      });
-    } else if (!isPlayingRef.current && !externalAudio.paused) {
-      console.log('[Soundscape] Pausing handed-off audio');
-      externalAudio.pause();
-    }
-
-    // Sync UI state with actual audio state
-    setIsPlaying(!externalAudio.paused);
-    setVolumeState(externalAudio.volume);
-
-    console.log('[Soundscape] Handoff complete, new audio state:', {
-      isPlaying: !externalAudio.paused,
-      volume: externalAudio.volume,
-      isMuted: isMutedRef.current
-    });
-  }, [volume, attachListeners]);
-
-  const pauseForPriorityAudio = useCallback(() => {
-    if (isPlaying && audioRef.current && !pausedByPriority) {
-      wasPlayingBeforePriorityRef.current = true;
-      audioRef.current.pause();
-      setIsPlaying(false);
-      setPausedByPriority(true);
-      console.log('[Soundscape] Paused for priority audio');
-    }
-  }, [isPlaying, pausedByPriority]);
-
-  const resumeAfterPriorityAudio = useCallback(() => {
-    // Don't resume if user explicitly paused the music
-    if (userExplicitlyPausedRef.current) {
-      console.log('[Soundscape] Not resuming - user explicitly paused');
-      setPausedByPriority(false);
-      wasPlayingBeforePriorityRef.current = false;
+  const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
+    // On mobile, use engine guard - don't restart if already playing same track
+    if (AudioManager.isMobile() && !AudioManager.shouldLoadTrack('ambient')) {
+      console.log('[SoundscapeProvider] Mobile: skipping startFresh, same track active');
       return;
     }
     
-    if (pausedByPriority && wasPlayingBeforePriorityRef.current && audioRef.current) {
-      audioRef.current.play().catch((err) => {
-        console.warn('[Soundscape] Resume after priority audio failed:', err);
-      });
-      setIsPlaying(true);
-      setPausedByPriority(false);
-      wasPlayingBeforePriorityRef.current = false;
-      console.log('[Soundscape] Resumed after priority audio ended');
-    }
-  }, [pausedByPriority]);
+    AudioManager.startFresh(initialVolume);
+    setVolumeState(initialVolume);
+    previousVolumeRef.current = initialVolume;
+  }, []);
 
-  const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
-    if (audioRef.current) {
-      // Check if user explicitly muted - respect that preference!
-      const savedMuted = localStorage.getItem('soundscape_muted');
-      const shouldBeMuted = savedMuted === 'true';
-      
-      if (shouldBeMuted) {
-        console.log('[Soundscape] startFresh: respecting user mute preference');
-        audioRef.current.muted = true;
-        setIsMuted(true);
-      } else {
-        console.log('[Soundscape] startFresh: starting unmuted');
-        audioRef.current.muted = false;
-        setIsMuted(false);
-      }
-      
-      // Set volume
-      audioRef.current.volume = initialVolume;
-      setVolumeState(initialVolume);
-      previousVolumeRef.current = initialVolume;
-      
-      // Play
-      audioRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-          setPendingAutoPlay(false);
-          localStorage.setItem('soundscape_auto_play', 'true');
-          userExplicitlyPausedRef.current = false;
-        })
-        .catch((err) => {
-          if (err.name === 'NotAllowedError') {
-            console.log('[Soundscape] startFresh blocked by browser, waiting for user interaction');
-            setPendingAutoPlay(true);
-          } else {
-            console.warn('[Soundscape] startFresh failed:', err);
-          }
-        });
+  const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
+    console.log('[SoundscapeProvider] handoffAudio called');
+    
+    if (!externalAudio) return;
+
+    // Dispose of old audio if different
+    if (audioRef.current && audioRef.current !== externalAudio) {
+      audioRef.current.pause();
+      audioRef.current.src = '';
     }
+
+    // Take ownership
+    audioRef.current = externalAudio;
+    removeFromRegistry(externalAudio);
+    
+    // Configure
+    externalAudio.loop = true;
+    externalAudio.volume = isMuted ? 0 : volume;
+
+    // Sync state
+    setIsPlaying(!externalAudio.paused);
+    setVolumeState(externalAudio.volume);
+  }, [isMuted, volume]);
+
+  const pauseForPriorityAudio = useCallback(() => {
+    AudioManager.pauseForForeground();
+  }, []);
+
+  const resumeAfterPriorityAudio = useCallback(() => {
+    AudioManager.resumeAfterForeground();
   }, []);
 
   const value: SoundscapeContextType = {

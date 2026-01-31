@@ -77,7 +77,7 @@ export class DevErrorBoundary extends Component<Props, State> {
                   Refresh Page
                 </Button>
                 <Button
-                  onClick={() => window.location.href = '/dev/dashboard'}
+                  onClick={() => { window.history.pushState({}, '', '/dev/dashboard'); window.dispatchEvent(new PopStateEvent('popstate')); }}
                   variant="ghost"
                 >
                   Go to Dashboard

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useEventTicketTypes, usePurchaseTicket, TicketType, UtmParams } from "@/hooks/useEventTickets";
 import { format } from "date-fns";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface EventTicketSelectorProps {
   eventId: string;
@@ -21,6 +22,7 @@ interface EventTicketSelectorProps {
 export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams, eventPrice }: EventTicketSelectorProps) {
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
+  const { translate } = useTranslation();
   
   const [selectedTickets, setSelectedTickets] = useState<Record<string, number>>({});
   const [guestEmail, setGuestEmail] = useState("");
@@ -104,7 +106,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
       {!forceGuestMode && (
         <h3 className="font-semibold text-foreground flex items-center gap-2">
           <Ticket className="h-5 w-5" />
-          Get Tickets
+          {translate('eventCta.getTickets', 'Get Tickets')}
         </h3>
       )}
 
@@ -188,14 +190,14 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
           {purchasing ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Processing...
+              {translate('eventCta.processing', 'Processing...')}
             </>
           ) : totalTickets === 0 ? (
-            "Select Tickets"
+            translate('eventCta.selectTickets', 'Select Tickets')
           ) : totalAmount === 0 ? (
-            "Get Free Ticket"
+            translate('eventCta.getFreeTicket', 'Get Free Ticket')
           ) : (
-            `Buy Tickets – $${totalAmount.toFixed(2)}`
+            translate('eventCta.buyTicketsTotal', `Buy Tickets – $${totalAmount.toFixed(2)}`).replace('{total}', `$${totalAmount.toFixed(2)}`)
           )}
         </Button>
       </div>

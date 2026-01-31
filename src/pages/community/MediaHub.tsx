@@ -47,22 +47,28 @@ import { BulkVideoUploadModal } from '@/components/community/BulkVideoUploadModa
 import { EditShortVideoModal } from '@/components/community/EditShortVideoModal';
 import { useShortsDensity } from '@/hooks/useShortsDensity';
 import { DensityControl } from '@/components/community/DensityControl';
+import { MobileShortsFeed } from '@/components/community/MobileShortsFeed';
+import { MobileMusicList } from '@/components/community/MobileMusicList';
+import { MobilePodcastList } from '@/components/community/MobilePodcastList';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslation } from '@/hooks/useTranslation';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 // SubscribeButton component
   function SubscribeButton({ show }: { show: PopularShow }) {
     const { user } = useAuth();
+    const { translate } = useTranslation();
     const { isSubscribed, toggleSubscription, isToggling } = usePodcastShowSubscription(
       { show_name: show.show_name, host_name: show.host_name },
       user?.id
@@ -93,7 +99,7 @@ import {
                   ? 'fill-current text-emerald-600' 
                   : 'fill-none group-hover/sub:fill-current group-hover/sub:text-white'
               }`} />
-              {isSubscribed ? 'Subscribed' : 'Subscribe'}
+              {isSubscribed ? translate('mediaHub.subscribed') : translate('mediaHub.subscribe')}
             </>
           )}
         </span>
@@ -103,6 +109,7 @@ import {
 
 // PopularShowsList component
 function PopularShowsList() {
+  const { translate } = useTranslation();
   const { data: popularShows = [], isLoading: isLoadingShows } = usePopularPodcastShows();
   
   // Fallback shows if database is empty
@@ -165,11 +172,11 @@ function PopularShowsList() {
                 {show.show_name}
               </h4>
               <p className="text-xs text-muted-foreground/75 font-medium mb-2">
-                by {show.host_name}
+                {translate('mediaHub.by')} {show.host_name}
               </p>
               <p className="text-xs text-muted-foreground/60">
-                {show.episode_count} episodes
-                {show.subscriber_count > 0 && ` • ${show.subscriber_count} subscribers`}
+                {show.episode_count} {translate('mediaHub.episodes')}
+                {show.subscriber_count > 0 && ` • ${show.subscriber_count} ${translate('mediaHub.subscribers')}`}
               </p>
             </div>
           </div>
@@ -200,10 +207,12 @@ export default function MediaHub() {
   const { playMedia, currentMedia, isPlaying, togglePlay, pause } = useAudioPlayer();
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
   const {
     pendingCount,
     getLatestActions
   } = useAutopilot();
+  const { translate } = useTranslation();
   const [isUnifiedUploadOpen, setIsUnifiedUploadOpen] = useState(false);
   const [isBulkUploadOpen, setIsBulkUploadOpen] = useState(false);
   const [initialMediaType, setInitialMediaType] = useState<'music' | 'podcast' | 'video' | undefined>();
@@ -212,6 +221,7 @@ export default function MediaHub() {
   const [isVideoPlayerOpen, setIsVideoPlayerOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [mobileShortsFeedOpen, setMobileShortsFeedOpen] = useState(false);
   
   // Read tab parameter from URL and set initial active tab
   const [searchParams] = useSearchParams();
@@ -259,16 +269,16 @@ export default function MediaHub() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['community-podcasts'] });
       toast({
-        title: "Podcast deleted",
-        description: "Your podcast has been successfully deleted.",
+        title: translate('mediaHub.toast.podcastDeleted'),
+        description: translate('mediaHub.toast.podcastDeletedDesc'),
       });
       setDeleteDialogOpen(false);
       setPodcastToDelete(null);
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to delete podcast. Please try again.",
+        title: translate('mediaHub.toast.deleteError'),
+        description: translate('mediaHub.toast.deleteErrorDesc'),
         variant: "destructive",
       });
       console.error('Delete error:', error);
@@ -311,8 +321,8 @@ export default function MediaHub() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shorts'] });
       toast({
-        title: "Video deleted",
-        description: "Your video has been successfully deleted.",
+        title: translate('mediaHub.toast.videoDeleted'),
+        description: translate('mediaHub.toast.videoDeletedDesc'),
       });
       setDeleteVideoDialogOpen(false);
       setVideoToDelete(null);
@@ -320,8 +330,8 @@ export default function MediaHub() {
     },
     onError: (error) => {
       toast({
-        title: "Error",
-        description: "Failed to delete video. Please try again.",
+        title: translate('mediaHub.toast.deleteError'),
+        description: translate('mediaHub.toast.deleteErrorDesc'),
         variant: "destructive",
       });
       console.error('Delete video error:', error);
@@ -481,8 +491,8 @@ export default function MediaHub() {
   const handleVideoUploadComplete = () => {
     refetchShorts();
     toast({
-      title: 'Success!',
-      description: 'Your video is now live in the community.',
+      title: translate('mediaHub.toast.uploadSuccess'),
+      description: translate('mediaHub.toast.uploadSuccessDesc').replace('{type}', 'video'),
     });
   };
   // Fetch approved podcasts from database
@@ -543,119 +553,251 @@ export default function MediaHub() {
   return (
     <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
+      {!isMobile && <SubNavigation items={communityNavigation} />}
       <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          {/* Header Section with Perfect Symmetry - Three Cards Layout */}
-          <div className="flex flex-col lg:flex-row gap-4 mb-8">
-            {/* Shortened Header Bar - Welcome Message */}
-            <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">Media Hub ✨</h1>
-                <p className="text-muted-foreground">Discover and share inspiring wellness content with your community.</p>
-              </div>
-            </div>
-            
-            {/* Autopilot Card with Live Badge Counter */}
-            <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
-              {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
-                  {pendingCount}
-                </Badge>}
-              <div className="flex flex-col items-center justify-center h-full space-y-3">
-                <div>
-                  <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
-                </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
-              </div>
+          
+          {/* Mobile Header */}
+          {isMobile ? (
+            <>
+              <StandardHeader
+                title={translate('mediaHub.title')}
+                description={translate('mediaHub.discoverContent')}
+              />
               
-              {/* Hover Preview */}
-              {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
-                  <div className="text-xs font-medium text-muted-foreground mb-2">Latest Actions:</div>
-                  {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
-                      <span>{action.icon}</span>
-                      <span className="truncate">{action.title}</span>
-                    </div>)}
-                  {pendingCount > 2 && <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
-                      +{pendingCount - 2} more actions
+              {/* Compact Mobile Action Rail */}
+              <UtilityActionButton 
+                className="min-w-0"
+                afterGiftVoucherChildren={
+                  <>
+                    {/* Vitana Index - pill with emoji + text */}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => navigate('/health')}
+                      className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                    >
+                      <span className="text-xs opacity-60">🧬</span>
+                      <span className="text-sm font-medium text-primary">742</span>
+                    </Button>
+                    
+                    {/* Autopilot - pill with icon + text */}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setAutopilotOpen(true)}
+                      className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                    >
+                      <Plane className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                      {pendingCount > 0 && (
+                        <Badge 
+                          variant="destructive" 
+                          className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                        >
+                          {pendingCount}
+                        </Badge>
+                      )}
+                    </Button>
+                  </>
+                }
+              >
+                <div className="flex items-center gap-2 min-w-max">
+                  <ExpandableSearchButton 
+                    placeholder={translate('mediaHub.searchPlaceholder')}
+                    onSearch={(query) => console.log('Search Media:', query)}
+                  />
+                  
+                  {/* Calendar - default styling */}
+                  <UniversalCalendarButton />
+                  
+                  {/* Upload - PRIMARY ACTION */}
+                  <Button 
+                    onClick={() => setIsUnifiedUploadOpen(true)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="text-sm">{translate('mediaHub.actions.upload')}</span>
+                  </Button>
+                </div>
+              </UtilityActionButton>
+            </>
+          ) : (
+            <>
+              {/* Desktop Header Section with Perfect Symmetry - Three Cards Layout */}
+              <div className="flex flex-col lg:flex-row gap-4 mb-8">
+                {/* Shortened Header Bar - Welcome Message */}
+                <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20">
+                  <div>
+                    <h1 className="text-3xl font-bold text-foreground mb-2">{translate('mediaHub.title')} ✨</h1>
+                    <p className="text-muted-foreground">{translate('mediaHub.discoverContent')}</p>
+                  </div>
+                </div>
+                
+                {/* Autopilot Card with Live Badge Counter */}
+                <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl relative" onClick={() => setAutopilotOpen(true)} onMouseEnter={() => setShowPreview(true)} onMouseLeave={() => setShowPreview(false)}>
+                  {pendingCount > 0 && <Badge variant="destructive" className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 flex items-center justify-center text-xs animate-pulse z-10">
+                      {pendingCount}
+                    </Badge>}
+                  <div className="flex flex-col items-center justify-center h-full space-y-3">
+                    <div>
+                      <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
+                    </div>
+                    <span className="text-sm font-medium text-red-400">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                  </div>
+                  
+                  {/* Hover Preview */}
+                  {showPreview && pendingCount > 0 && <div className="absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl p-3 z-10">
+                      <div className="text-xs font-medium text-muted-foreground mb-2">{translate('mediaHub.latestActions')}</div>
+                      {latestActions.map((action, index) => <div key={action.id} className="flex items-center space-x-2 text-xs py-1">
+                          <span>{action.icon}</span>
+                          <span className="truncate">{action.title}</span>
+                        </div>)}
+                      {pendingCount > 2 && <div className="text-xs text-muted-foreground pt-1 border-t mt-1">
+                          {translate('mediaHub.moreActions').replace('{count}', String(pendingCount - 2))}
+                        </div>}
                     </div>}
-                </div>}
-            </div>
-            
-            {/* Vitana Index Card - Circle with 742 */}
-            <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
-              <div className="flex items-center justify-center h-full">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
-                  <span className="text-xl font-bold text-green-600">742</span>
+                </div>
+                
+                {/* Vitana Index Card - Circle with 742 */}
+                <div className="w-32 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 cursor-pointer group transition-all duration-300 hover:shadow-xl" onClick={() => navigate('/health/my-health-tracker')}>
+                  <div className="flex items-center justify-center h-full">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:shadow-green-500/40 transition-all duration-300">
+                      <span className="text-xl font-bold text-green-600">742</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Action Buttons Utility Bar */}
-          <UtilityActionButton>
-            <ExpandableSearchButton 
-              placeholder="Search Media…"
-              onSearch={(query) => console.log('Search Media:', query)}
-            />
-            <UniversalCalendarButton />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Upload
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <Video className="w-4 h-4 mr-2" />
-                    Video
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
+              {/* Desktop Action Buttons Utility Bar */}
+              <UtilityActionButton>
+                <ExpandableSearchButton 
+                  placeholder={translate('mediaHub.searchPlaceholder')}
+                  onSearch={(query) => console.log('Search Media:', query)}
+                />
+                <UniversalCalendarButton />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="w-4 h-4 mr-2" />
+                      {translate('mediaHub.actions.upload')}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-popover z-50 border border-border shadow-md">
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        <Video className="w-4 h-4 mr-2" />
+                        {translate('mediaHub.menu.video')}
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent className="bg-popover z-50 border border-border shadow-md">
+                        <DropdownMenuItem onClick={() => {
+                          setInitialMediaType('video');
+                          setIsUnifiedUploadOpen(true);
+                        }}>
+                          {translate('mediaHub.menu.singleUpload')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
+                          {translate('mediaHub.menu.bulkUpload')}
+                        </DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
                     <DropdownMenuItem onClick={() => {
-                      setInitialMediaType('video');
+                      setInitialMediaType('music');
                       setIsUnifiedUploadOpen(true);
                     }}>
-                      Single Upload
+                      <Music className="w-4 h-4 mr-2" />
+                      {translate('mediaHub.menu.music')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setIsBulkUploadOpen(true)}>
-                      Bulk Upload
+                    <DropdownMenuItem onClick={() => {
+                      setInitialMediaType('podcast');
+                      setIsUnifiedUploadOpen(true);
+                    }}>
+                      <Mic className="w-4 h-4 mr-2" />
+                      {translate('mediaHub.menu.podcast')}
                     </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
-                <DropdownMenuItem onClick={() => {
-                  setInitialMediaType('music');
-                  setIsUnifiedUploadOpen(true);
-                }}>
-                  <Music className="w-4 h-4 mr-2" />
-                  Music
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => {
-                  setInitialMediaType('podcast');
-                  setIsUnifiedUploadOpen(true);
-                }}>
-                  <Mic className="w-4 h-4 mr-2" />
-                  Podcast
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </UtilityActionButton>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </UtilityActionButton>
+            </>
+          )}
 
           {/* Media Hub Subtabs */}
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
             <SplitBarList>
             <SplitBarTrigger value="shorts">
-              📹 Shorts
+              📹 {translate('mediaHub.tabs.shorts')}
             </SplitBarTrigger>
             <SplitBarTrigger value="music">
-              🎵 Music
+              🎵 {translate('mediaHub.tabs.music')}
             </SplitBarTrigger>
             <SplitBarTrigger value="podcasts">
-              🎙️ Podcasts
+              🎙️ {translate('mediaHub.tabs.podcasts')}
             </SplitBarTrigger>
             </SplitBarList>
 
             <SplitBarContent value="shorts">
+              {/* Mobile TikTok-style immersive feed */}
+              {isMobile ? (
+                <div className="space-y-4">
+                  {/* Mobile Shorts Preview Grid - tap to enter immersive mode */}
+                  <div className="text-center py-4">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {translate('mediaHub.shortsAvailable').replace('{count}', String(videoShorts.length))}
+                    </p>
+                    <Button
+                      onClick={() => setMobileShortsFeedOpen(true)}
+                      className="bg-gradient-to-r from-violet-500 to-pink-500 text-white rounded-full px-6"
+                    >
+                      <Play className="h-4 w-4 mr-2" />
+                      {translate('mediaHub.actions.watchShorts')}
+                    </Button>
+                  </div>
+                  
+                  {/* Preview grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {videoShorts.slice(0, 4).map((video, index) => (
+                      <div
+                        key={video.id || index}
+                        onClick={() => {
+                          setSelectedVideoIndex(index);
+                          setMobileShortsFeedOpen(true);
+                        }}
+                        className="relative aspect-[9/16] rounded-xl overflow-hidden bg-muted cursor-pointer group"
+                      >
+                        <img
+                          src={video.thumbnail_url || video.thumbnailImage}
+                          alt={video.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                            <Play className="h-6 w-6 text-white ml-0.5" />
+                          </div>
+                        </div>
+                        <div className="absolute bottom-2 left-2 right-2">
+                          <p className="text-white text-xs font-medium line-clamp-2 drop-shadow-lg">
+                            {video.title}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {videoShorts.length > 4 && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => setMobileShortsFeedOpen(true)}
+                      className="w-full text-muted-foreground"
+                    >
+                      {translate('mediaHub.actions.viewAllShorts').replace('{count}', String(videoShorts.length))}
+                    </Button>
+                  )}
+                </div>
+              ) : (
+              /* Desktop Grid Layout */
               <div className="space-y-6">
                 {/* Trending Shorts Section */}
                 <div className="bg-gradient-to-b from-white/0 to-white/5 rounded-t-3xl p-6 -mx-6 -mt-6">
@@ -663,7 +805,7 @@ export default function MediaHub() {
                     <div>
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
                         <Video className="w-6 h-6 text-violet-600" />
-                        Trending Shorts
+                        {translate('mediaHub.sections.trendingShorts')}
                       </h2>
                       <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-violet-500 to-transparent rounded-full mt-2"></div>
                     </div>
@@ -677,7 +819,7 @@ export default function MediaHub() {
                   {/* Filter Indicator */}
                   {activeTags.length > 0 && filteringEnabled && (
                     <div className="mb-4 flex flex-wrap items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Filtered by:</span>
+                      <span className="text-sm text-muted-foreground">{translate('mediaHub.filteredBy')}</span>
                       {activeTags.map(tag => (
                         <Badge key={tag} variant="secondary" className="gap-1">
                           {tag}
@@ -689,13 +831,13 @@ export default function MediaHub() {
                         onClick={() => {
                           useUserInterestsStore.getState().setFilteringEnabled(false);
                           toast({
-                            title: "Filters cleared",
-                            description: "Showing all shorts",
+                            title: translate('mediaHub.toast.filtersCleared'),
+                            description: translate('mediaHub.toast.filtersClearedDesc'),
                           });
                         }}
                         className="text-xs h-6"
                       >
-                        Clear filters
+                        {translate('mediaHub.actions.clearFilters')}
                       </Button>
                     </div>
                   )}
@@ -703,7 +845,7 @@ export default function MediaHub() {
                   {/* Empty State */}
                   {videoShorts.length === 0 && !isShortsLoading && activeTags.length > 0 && filteringEnabled && (
                     <div className="text-center py-12">
-                      <p className="text-muted-foreground mb-2">No shorts match your interests</p>
+                      <p className="text-muted-foreground mb-2">{translate('mediaHub.noMatchingShorts')}</p>
                       <Button
                         size="sm"
                         variant="outline"
@@ -711,7 +853,7 @@ export default function MediaHub() {
                           useUserInterestsStore.getState().setFilteringEnabled(false);
                         }}
                       >
-                        View all shorts
+                        {translate('mediaHub.viewAllShorts')}
                       </Button>
                     </div>
                   )}
@@ -756,9 +898,13 @@ export default function MediaHub() {
                   </div>
                 </div>
               </div>
+              )}
             </SplitBarContent>
 
             <SplitBarContent value="music">
+              {isMobile ? (
+                <MobileMusicList tracks={approvedMusic} />
+              ) : (
               <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
                 {/* Trending Music - Left Column (~62%) */}
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
@@ -766,7 +912,7 @@ export default function MediaHub() {
                     <div className="mb-6">
                       <h2 className="text-2xl font-semibold mb-1 flex items-center gap-2 text-foreground">
                         <Music className="w-6 h-6 text-purple-600" />
-                        Trending Music
+                        {translate('mediaHub.sections.trendingMusic')}
                       </h2>
                       <div className="h-0.5 w-32 bg-gradient-to-r from-purple-500 via-pink-500 to-transparent rounded-full mt-2"></div>
                     </div>
@@ -775,7 +921,7 @@ export default function MediaHub() {
                       {approvedMusic.length === 0 ? (
                         <div className="text-center py-12 text-muted-foreground">
                           <Music className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                          <p className="text-base">No music uploaded yet. Be the first to share!</p>
+                          <p className="text-base">{translate('mediaHub.noMusicDesc')}</p>
                         </div>
                       ) : (
                         approvedMusic.map((track, index) => {
@@ -842,7 +988,7 @@ export default function MediaHub() {
                                 
                                 {/* Artist & Duration - 75% opacity */}
                                 <p className="text-sm text-muted-foreground/75 leading-none font-medium">
-                                  {track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} • {formatDuration(track.duration)}
+                                  {track.music_metadata?.[0]?.artist_name || translate('mediaHub.unknownArtist')} • {formatDuration(track.duration)}
                                 </p>
                                 
                                 {/* One-line Description */}
@@ -929,7 +1075,7 @@ export default function MediaHub() {
                                       e.stopPropagation();
                                       const shareData = {
                                         title: track.title,
-                                        text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || 'Unknown Artist'} on Vitana`,
+                                        text: `Check out "${track.title}" by ${track.music_metadata?.[0]?.artist_name || translate('mediaHub.unknownArtist')} on Vitana`,
                                         url: `${window.location.origin}/comm/media-hub?music=${track.id}`,
                                       };
 
@@ -942,8 +1088,8 @@ export default function MediaHub() {
                                       } else {
                                         await navigator.clipboard.writeText(shareData.url);
                                         toast({
-                                          title: "Link copied",
-                                          description: "Music link copied to clipboard",
+                                          title: translate('mediaHub.toast.linkCopied'),
+                                          description: translate('mediaHub.toast.linkCopiedDesc'),
                                           duration: 2000,
                                         });
                                       }
@@ -955,8 +1101,8 @@ export default function MediaHub() {
 
                                   {/* More Options */}
                                   <KebabMenu className="h-9 w-9 rounded-full hover:bg-purple-50">
-                                    <KebabDropdownMenuItem>Add to Playlist</KebabDropdownMenuItem>
-                                    <KebabDropdownMenuItem>View Artist</KebabDropdownMenuItem>
+                                    <KebabDropdownMenuItem>{translate('mediaHub.menu.addToPlaylist')}</KebabDropdownMenuItem>
+                                    <KebabDropdownMenuItem>{translate('mediaHub.menu.viewArtist')}</KebabDropdownMenuItem>
                                   </KebabMenu>
                                 </div>
 
@@ -1012,7 +1158,7 @@ export default function MediaHub() {
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <h3 className="text-2xl font-semibold mb-1 text-foreground">Music Playlists</h3>
+                      <h3 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.musicPlaylists')}</h3>
                       <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
                     
@@ -1059,7 +1205,7 @@ export default function MediaHub() {
                           <div className="space-y-2 mb-4">
                             <h4 className="font-bold text-base text-foreground leading-tight">{playlist.title}</h4>
                             <p className="text-xs text-muted-foreground/75 font-medium">
-                              {playlist.count} tracks • ~{Math.floor(playlist.count * 3.5)} min • by Vitana
+                              {playlist.count} {translate('mediaHub.tracks')} • ~{Math.floor(playlist.count * 3.5)} {translate('mediaHub.min')} • {translate('mediaHub.by')} Vitana
                             </p>
                           </div>
 
@@ -1068,7 +1214,7 @@ export default function MediaHub() {
                             className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold text-sm shadow-md hover:shadow-lg hover:shadow-purple-400/50 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 group/play"
                           >
                             <Play className="w-4 h-4 group-hover/play:scale-110 transition-transform" />
-                            Play Playlist
+                            {translate('mediaHub.actions.playPlaylist')}
                           </button>
                         </div>
                       ))}
@@ -1076,6 +1222,7 @@ export default function MediaHub() {
                   </CardContent>
                 </Card>
               </div>
+              )}
 
               {/* Custom Animations */}
               <style>{`
@@ -1107,19 +1254,22 @@ export default function MediaHub() {
             </SplitBarContent>
 
             <SplitBarContent value="podcasts">
+              {isMobile ? (
+                <MobilePodcastList podcasts={approvedPodcasts} currentUserId={user?.id} />
+              ) : (
               <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6">
                 {/* Latest Episodes - Left Column (~60%) */}
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <h2 className="text-2xl font-semibold mb-1 text-foreground">Latest Episodes</h2>
+                      <h2 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.latestEpisodes')}</h2>
                       <div className="h-0.5 w-32 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
                     <div className="flex flex-col gap-4">
                       {approvedPodcasts.length === 0 ? (
                         <div className="col-span-full text-center py-8 text-muted-foreground">
                           <Podcast className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                          <p>No podcasts uploaded yet. Be the first to share!</p>
+                          <p>{translate('mediaHub.noPodcastsDesc')}</p>
                         </div>
                       ) : (
                         approvedPodcasts.map((podcast: any, index: number) => {
@@ -1137,8 +1287,8 @@ export default function MediaHub() {
                           >
                             <PodcastCard
                               id={podcast.id}
-                              title={podcast.title}
-                              creator={metadata?.host_name || 'Unknown Host'}
+                            title={podcast.title}
+                              creator={metadata?.host_name || translate('mediaHub.unknownHost')}
                               duration={podcast.duration}
                               uploadedAt={podcast.created_at}
                               description={podcast.description}
@@ -1163,18 +1313,29 @@ export default function MediaHub() {
                 <Card className="rounded-2xl shadow-lg border-white/20 bg-white/60 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-8">
                     <div className="mb-6">
-                      <h3 className="text-2xl font-semibold mb-1 text-foreground">Popular Shows</h3>
+                      <h3 className="text-2xl font-semibold mb-1 text-foreground">{translate('mediaHub.sections.popularShows')}</h3>
                       <div className="h-0.5 w-28 bg-gradient-to-r from-pink-500 via-purple-500 to-transparent rounded-full mt-2"></div>
                     </div>
                     <PopularShowsList />
                   </CardContent>
                 </Card>
               </div>
+              )}
             </SplitBarContent>
           </SplitBar>
         </div>
       </div>
 
+
+      {/* Mobile TikTok-style Shorts Feed */}
+      {mobileShortsFeedOpen && isMobile && (
+        <MobileShortsFeed
+          shorts={videoShorts}
+          currentUserId={user?.id}
+          onClose={() => setMobileShortsFeedOpen(false)}
+          initialIndex={selectedVideoIndex >= 0 ? selectedVideoIndex : 0}
+        />
+      )}
 
       <VideoPlayerModal
         isOpen={isVideoPlayerOpen}
@@ -1206,17 +1367,17 @@ export default function MediaHub() {
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Podcast</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this podcast? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+      <ResponsiveConfirmDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <ResponsiveConfirmDialogContent>
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>{translate('mediaHub.deletePodcast.title')}</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
+              {translate('mediaHub.deletePodcast.description')}
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel>{translate('mediaHub.deletePodcast.cancel')}</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
               onClick={() => {
                 if (podcastToDelete) {
                   deletePodcastMutation.mutate(podcastToDelete);
@@ -1224,24 +1385,24 @@ export default function MediaHub() {
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+              {translate('mediaHub.deletePodcast.confirm')}
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
 
       {/* Delete Video Confirmation Dialog */}
-      <AlertDialog open={deleteVideoDialogOpen} onOpenChange={setDeleteVideoDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete Video</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this video? This action cannot be undone and will remove the video from storage.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+      <ResponsiveConfirmDialog open={deleteVideoDialogOpen} onOpenChange={setDeleteVideoDialogOpen}>
+        <ResponsiveConfirmDialogContent>
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>{translate('mediaHub.deleteVideo.title')}</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
+              {translate('mediaHub.deleteVideo.description')}
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel>{translate('mediaHub.deleteVideo.cancel')}</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
               onClick={() => {
                 if (videoToDelete) {
                   deleteVideoMutation.mutate(videoToDelete);
@@ -1249,11 +1410,11 @@ export default function MediaHub() {
               }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+              {translate('mediaHub.deleteVideo.confirm')}
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
 
       {/* Edit Video Modal */}
       {editingVideo && (
@@ -1272,8 +1433,8 @@ export default function MediaHub() {
           onSave={() => {
             refetchShorts();
             toast({
-              title: 'Success',
-              description: 'Video updated successfully',
+              title: translate('mediaHub.toast.videoUpdated'),
+              description: translate('mediaHub.toast.videoUpdatedDesc'),
             });
           }}
         />
@@ -1298,8 +1459,8 @@ export default function MediaHub() {
           }
           
           toast({
-            title: 'Success!',
-            description: `Your ${mediaType} is now live in the community.`,
+            title: translate('mediaHub.toast.uploadSuccess'),
+            description: translate('mediaHub.toast.uploadSuccessDesc').replace('{type}', mediaType),
           });
           
           setIsUnifiedUploadOpen(false);

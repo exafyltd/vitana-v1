@@ -1,12 +1,13 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
+import StandardHeader from "@/components/StandardHeader";
 import { Badge } from "@/components/ui/badge";
 
-import { Plus, Plane } from "lucide-react";
+import { Plus, Plane, Briefcase, Users, TrendingUp, BarChart3 } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { CreateSelectionDialog } from "@/components/CreateSelectionDialog";
@@ -27,13 +28,27 @@ import { ClientsSubTabs } from "@/components/business/ClientsSubTabs";
 import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
 import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
+// MobileBusinessNav removed - consolidated into single SplitBar
+import { MobileKPIStrip } from "@/components/business/MobileKPIStrip";
+import { MobileEarningPortal } from "@/components/business/MobileEarningPortal";
+import { EarningsHistoryLedger } from "@/components/business/EarningsHistoryLedger";
+import {
+  SplitBar,
+  SplitBarList,
+  SplitBarTrigger,
+  SplitBarContent,
+} from "@/components/ui/split-bar";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
 export default function BusinessHub() {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
+  const { translate } = useTranslation();
   const [showSelectionDialog, setShowSelectionDialog] = useState(false);
   const [showCreateEvent, setShowCreateEvent] = useState(false);
   const [showCreateMeetup, setShowCreateMeetup] = useState(false);
@@ -91,6 +106,185 @@ export default function BusinessHub() {
     }
   };
 
+  // Mobile-specific layout - single screen with consolidated SplitBar (matches Events/LiveRooms/MediaHub pattern)
+  if (isMobile) {
+    return (
+      <AppLayout>
+        <SEO 
+          title="Business Hub | VITANA" 
+          description="Grow your wellness business" 
+          canonical={window.location.href} 
+        />
+        
+        <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+          <div className="p-4 pb-32 space-y-4">
+            {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub */}
+            <StandardHeader
+              title={translate('businessHub.title', 'Business Hub')}
+              description={translate('businessHub.description', 'Grow your wellness business')}
+            />
+            
+            {/* Action Rail - same pattern */}
+            <UtilityActionButton 
+              className="min-w-0"
+              afterGiftVoucherChildren={
+                <>
+                  {/* Vitana Index - pill style */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => navigate('/health')}
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                  >
+                    <span className="text-xs opacity-60">🧬</span>
+                    <span className="text-sm font-medium text-primary">742</span>
+                  </Button>
+                  
+                  {/* Autopilot - pill style with label */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setAutopilotOpen(true)}
+                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                  >
+                    <Plane className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                    {pendingCount > 0 && (
+                      <Badge 
+                        variant="destructive" 
+                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                      >
+                        {pendingCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </>
+              }
+            >
+              <div className="flex items-center gap-2 min-w-max">
+                <ExpandableSearchButton 
+                  placeholder={translate('businessHub.searchBusiness', 'Search business...')}
+                  onSearch={(query) => console.log('Search:', query)}
+                />
+                <UniversalCalendarButton />
+                
+                {/* Create button - primary action */}
+                <Button 
+                  onClick={() => setShowBusinessTypeSelector(true)}
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span className="text-sm">{translate('buttons.create', 'Create')}</span>
+                </Button>
+              </div>
+            </UtilityActionButton>
+            
+            {/* Consolidated SplitBar - All sections in one tab bar */}
+            <SplitBar defaultValue="snapshot" className="w-full">
+              <SplitBarList>
+                <SplitBarTrigger value="snapshot">📊 {translate('businessHub.tabs.snapshot', 'Snapshot')}</SplitBarTrigger>
+                <SplitBarTrigger value="services">💼 {translate('businessHub.tabs.services', 'Services')}</SplitBarTrigger>
+                {isReseller && <SplitBarTrigger value="sales">🎫 {translate('businessHub.tabs.sales', 'Sales')}</SplitBarTrigger>}
+                <SplitBarTrigger value="insights">📈 {translate('businessHub.tabs.insights', 'Insights')}</SplitBarTrigger>
+              </SplitBarList>
+              
+              {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
+              <SplitBarContent value="snapshot" className="space-y-4 pt-2">
+                <MobileKPIStrip 
+                  totalEarnings={earnings.totalEarnings}
+                  earnings30Days={earnings.earnings30Days}
+                  pendingPayout={earnings.pendingPayout}
+                  inWallet={earnings.inWallet}
+                  isLoading={false}
+                />
+                <MobileEarningPortal 
+                  onCreateEvent={() => setShowSelectionDialog(true)}
+                  onAddToInventory={() => {/* Will switch to sales tab */}}
+                  onCreateService={() => setShowCreateService(true)}
+                  onCreatePromotion={() => setShowCampaignDialog(true)}
+                />
+                {/* Recent Activity inline */}
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.recentActivity', 'Recent Activity')}</h3>
+                  <EarningsHistoryLedger
+                    transactions={earnings.recentTransactions}
+                    isLoading={false}
+                  />
+                </div>
+              </SplitBarContent>
+              
+              {/* Services Tab - My Services, Packages, Events */}
+              <SplitBarContent value="services" className="pt-2">
+                <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
+              </SplitBarContent>
+              
+              {/* Sales Tab - Inventory + Promotions (Reseller only) */}
+              <SplitBarContent value="sales" className="pt-2">
+                <SellAndEarnSubTabs />
+              </SplitBarContent>
+              
+              {/* Insights Tab - Clients + Analytics combined */}
+              <SplitBarContent value="insights" className="pt-2 space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.clients', 'Clients')}</h3>
+                  <ClientsSubTabs />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.analytics', 'Analytics')}</h3>
+                  <AnalyticsSubTabs />
+                </div>
+              </SplitBarContent>
+            </SplitBar>
+          </div>
+        </div>
+
+        {/* Dialogs for mobile */}
+        <CreateSelectionDialog
+          open={showSelectionDialog}
+          onOpenChange={setShowSelectionDialog}
+          onSelectEvent={() => {
+            setShowSelectionDialog(false);
+            setShowCreateEvent(true);
+          }}
+          onSelectMeetup={() => {
+            setShowSelectionDialog(false);
+            setShowCreateMeetup(true);
+          }}
+        />
+        <CreateEventPopup
+          isOpen={showCreateEvent}
+          onClose={() => setShowCreateEvent(false)}
+          eventContext="community"
+        />
+        <CreateMeetupPopup
+          isOpen={showCreateMeetup}
+          onClose={() => setShowCreateMeetup(false)}
+        />
+        <AutopilotPopup 
+          open={autopilotOpen} 
+          onOpenChange={setAutopilotOpen}
+        />
+        <CreateServicePopup 
+          isOpen={showCreateService}
+          onClose={() => setShowCreateService(false)}
+        />
+        <BusinessTypeSelector
+          isOpen={showBusinessTypeSelector}
+          onClose={() => setShowBusinessTypeSelector(false)}
+          onSelectEvent={() => setShowSelectionDialog(true)}
+          onSelectService={() => setShowCreateService(true)}
+        />
+        <CampaignDialog
+          open={showCampaignDialog}
+          onOpenChange={setShowCampaignDialog}
+        />
+      </AppLayout>
+    );
+  }
+
+  // Desktop layout - unchanged
   return (
     <AppLayout>
       <SEO 
@@ -135,7 +329,7 @@ export default function BusinessHub() {
                 <div>
                   <Plane className="w-10 h-10 text-red-400 transform rotate-0" />
                 </div>
-                <span className="text-sm font-medium text-red-400">Autopilot</span>
+                <span className="text-sm font-medium text-red-400">{translate('actionBar.autopilot', 'Autopilot')}</span>
               </div>
               
               {/* Hover Preview */}

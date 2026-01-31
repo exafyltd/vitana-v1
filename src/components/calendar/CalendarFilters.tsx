@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { Briefcase, Heart, Dumbbell, Coffee, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface CalendarFiltersProps {
   activeFilters: CalendarEvent['event_type'][];
@@ -11,7 +12,8 @@ interface CalendarFiltersProps {
 
 const FILTER_CONFIG: Array<{
   type: CalendarEvent['event_type'];
-  label: string;
+  labelKey: string;
+  defaultLabel: string;
   icon: React.ComponentType<{ className?: string }>;
   color: string;
   bgClass: string;
@@ -20,7 +22,8 @@ const FILTER_CONFIG: Array<{
 }> = [
   {
     type: 'personal',
-    label: 'Personal',
+    labelKey: 'calendar.filters.personal',
+    defaultLabel: 'Personal',
     icon: Heart,
     color: 'hsl(var(--sys-vitana-accent))',
     bgClass: 'bg-sys-vitana-tint',
@@ -29,7 +32,8 @@ const FILTER_CONFIG: Array<{
   },
   {
     type: 'community',
-    label: 'Community',
+    labelKey: 'calendar.filters.community',
+    defaultLabel: 'Community',
     icon: Users,
     color: 'hsl(var(--domain-community-accent))',
     bgClass: 'bg-domain-community-tint',
@@ -38,7 +42,8 @@ const FILTER_CONFIG: Array<{
   },
   {
     type: 'professional',
-    label: 'Work',
+    labelKey: 'calendar.filters.work',
+    defaultLabel: 'Work',
     icon: Briefcase,
     color: 'hsl(var(--pill-exercise-accent))',
     bgClass: 'bg-pill-exercise-tint',
@@ -47,7 +52,8 @@ const FILTER_CONFIG: Array<{
   },
   {
     type: 'health',
-    label: 'Health',
+    labelKey: 'calendar.filters.health',
+    defaultLabel: 'Health',
     icon: Heart,
     color: 'hsl(var(--pill-mental-accent))',
     bgClass: 'bg-pill-mental-tint',
@@ -56,7 +62,8 @@ const FILTER_CONFIG: Array<{
   },
   {
     type: 'workout',
-    label: 'Workout',
+    labelKey: 'calendar.filters.workout',
+    defaultLabel: 'Workout',
     icon: Dumbbell,
     color: 'hsl(var(--pill-exercise-accent))',
     bgClass: 'bg-pill-exercise-tint',
@@ -66,6 +73,8 @@ const FILTER_CONFIG: Array<{
 ];
 
 export function CalendarFilters({ activeFilters, onToggleFilter }: CalendarFiltersProps) {
+  const { translate } = useTranslation();
+
   // Load saved filters from session storage on mount
   React.useEffect(() => {
     const saved = sessionStorage.getItem('calendarFilters');
@@ -83,10 +92,12 @@ export function CalendarFilters({ activeFilters, onToggleFilter }: CalendarFilte
   React.useEffect(() => {
     sessionStorage.setItem('calendarFilters', JSON.stringify(activeFilters));
   }, [activeFilters]);
+
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      {FILTER_CONFIG.map(({ type, label, icon: Icon, color, bgClass, textClass, borderClass }) => {
+      {FILTER_CONFIG.map(({ type, labelKey, defaultLabel, icon: Icon, color, bgClass, textClass, borderClass }) => {
         const isActive = activeFilters.includes(type);
+        const label = translate(labelKey, defaultLabel);
         
         return (
           <Badge

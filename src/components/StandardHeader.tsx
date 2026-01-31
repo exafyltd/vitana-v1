@@ -5,6 +5,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface StandardHeaderProps {
   title: string;
@@ -20,12 +21,26 @@ interface StandardHeaderProps {
  */
 export default function StandardHeader({ title, description, emoji, syncTimestamp, className }: StandardHeaderProps) {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   
   const latestActions = getLatestActions(2);
 
+  // Beautified mobile header - premium, consistent pattern
+  if (isMobile) {
+    return (
+      <div className={cn("pt-4 pb-2", className)}>
+        <h1 className="text-xl font-bold tracking-tight text-foreground">
+          {title} {emoji}
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{description}</p>
+      </div>
+    );
+  }
+
+  // Desktop: Full 3-card layout
   return (
     <>
       {/* Header Section with Perfect Symmetry - Three Cards Layout */}

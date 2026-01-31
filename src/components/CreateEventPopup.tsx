@@ -427,8 +427,9 @@ export function CreateEventPopup({
             detail: { id: result.eventId, start_time: startTime } 
           }));
           
-          // Navigate to Events & MeetUps with event and tab parameters
-          window.location.href = `/comm/events-meetups?event=${result.eventId}&tab=${tab}`;
+          // Navigate to Events & MeetUps with event and tab parameters (SPA navigation)
+          window.history.pushState({}, '', `/comm/events-meetups?event=${result.eventId}&tab=${tab}`);
+          window.dispatchEvent(new PopStateEvent('popstate'));
         }
       } else {
         // Personal event: only add to calendar_events

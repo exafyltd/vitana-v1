@@ -164,7 +164,9 @@ export function useLocalCart() {
       toast.success('Opening checkout...');
       // For demo, just show a success message
       // In real implementation, this would call Stripe
-      window.location.href = '/checkout-success';
+      // SPA-safe navigation
+      window.history.pushState({}, '', '/checkout-success');
+      window.dispatchEvent(new PopStateEvent('popstate'));
     } catch (error) {
       console.error('Error during checkout:', error);
       toast.error('Failed to start checkout');

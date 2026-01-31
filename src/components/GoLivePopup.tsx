@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,10 +12,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video, Users, Clock, X, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useCreateStream, useUpdateStream, type LiveStream } from "@/hooks/useLiveStreams";
-import { useEffect } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useI18nNotify } from "@/hooks/useI18nNotify";
+import { applyReplacements } from "@/lib/i18n-helpers";
 
 interface GoLivePopupProps {
   open: boolean;
@@ -26,28 +27,34 @@ interface GoLivePopupProps {
   streamData?: LiveStream;
 }
 
-const streamTags = [
-  "Wellness", "Nutrition", "Fitness", "Mental Health", "Longevity", 
-  "Meditation", "Sleep", "Motivation", "Education", "Lifestyle"
-];
+// Stable tag IDs mapped to translation keys
+const TAG_IDS = [
+  "wellness", "nutrition", "fitness", "mentalHealth", "longevity", 
+  "meditation", "sleep", "motivation", "education", "lifestyle"
+] as const;
 
-const accessOptions = [
-  { id: "public", label: "Public", description: "Anyone can join" },
-  { id: "followers", label: "Followers Only", description: "Only your followers" },
-  { id: "group", label: "Group/VIP", description: "Invited members only" }
-];
+type TagId = typeof TAG_IDS[number];
+
+// Access level IDs (stable internal values)
+const ACCESS_LEVEL_IDS = ["public", "followers", "group"] as const;
+type AccessLevelId = typeof ACCESS_LEVEL_IDS[number];
 
 export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, editMode = false, streamData }: GoLivePopupProps) {
-  const { toast } = useToast();
+  const { translate } = useTranslation();
+  const { notify } = useI18nNotify();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Helper for popup translations
+  const t = (key: string, fallback?: string) => translate(`liveRooms.goLivePopup.${key}`, fallback);
   
   const [title, setTitle] = useState(defaultTitle || "Live with [Name]");
   const [description, setDescription] = useState("");
-  const [streamType, setStreamType] = useState<"Audio" | "Video" | "">("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  // Use stable internal values for stream type
+  const [streamType, setStreamType] = useState<"audio" | "video" | "">("");
+  const [selectedTags, setSelectedTags] = useState<TagId[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [coHostInput, setCoHostInput] = useState("");
-  const [accessLevel, setAccessLevel] = useState("public");
+  const [accessLevel, setAccessLevel] = useState<AccessLevelId>("public");
   const [scheduleDate, setScheduleDate] = useState<Date>();
   const [scheduleTime, setScheduleTime] = useState("");
   const [enableChat, setEnableChat] = useState(true);
@@ -69,9 +76,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     if (editMode && streamData) {
       setTitle(streamData.title);
       setDescription(streamData.description || "");
-      setStreamType(streamData.stream_type === 'audio' ? 'Audio' : 'Video');
-      setSelectedTags(streamData.tags);
-      setAccessLevel(streamData.access_level);
+      setStreamType(streamData.stream_type === 'audio' ? 'audio' : 'video');
+      // Map stored tags to tag IDs
+      setSelectedTags(streamData.tags as TagId[]);
+      setAccessLevel(streamData.access_level as AccessLevelId);
       setCoHostInput(streamData.co_hosts?.[0] || "");
       setEnableChat(streamData.enable_chat);
       setEnablePolls(streamData.enable_polls);
@@ -105,20 +113,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     if (file) {
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        toast({ 
-          title: "Invalid File Type", 
-          description: "Please select an image file (JPEG, PNG, WebP)", 
-          variant: "destructive" 
-        });
+        notify.error('liveRooms.goLivePopup.errors.invalidFileTypeTitle', 'liveRooms.goLivePopup.errors.invalidFileTypeDesc');
         return;
       }
       // Validate file size (2MB max)
       if (file.size > 2 * 1024 * 1024) {
-        toast({ 
-          title: "File Too Large", 
-          description: "Image must be smaller than 2MB", 
-          variant: "destructive" 
-        });
+        notify.error('liveRooms.goLivePopup.errors.fileTooLargeTitle', 'liveRooms.goLivePopup.errors.fileTooLargeDesc');
         return;
       }
       setSelectedImage(file);
@@ -132,7 +132,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     setImagePreviewUrl("");
   };
 
-  const handleTagToggle = (tag: string) => {
+  const handleTagToggle = (tag: TagId) => {
     setSelectedTags(prev => {
       if (prev.includes(tag)) {
         return prev.filter(t => t !== tag);
@@ -146,11 +146,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
   const handleGoLive = async () => {
     if (!streamType) {
-      toast({ 
-        title: "Select Stream Type", 
-        description: "Please select Audio or Video",
-        variant: "destructive"
-      });
+      notify.error('liveRooms.goLivePopup.errors.selectStreamTypeTitle', 'liveRooms.goLivePopup.errors.selectStreamTypeDesc');
       return;
     }
 
@@ -159,11 +155,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast({ 
-          title: "Error", 
-          description: "You must be logged in to go live", 
-          variant: "destructive" 
-        });
+        notify.error('liveRooms.goLivePopup.errors.notLoggedInTitle', 'liveRooms.goLivePopup.errors.notLoggedInDesc');
         setIsLoading(false);
         return;
       }
@@ -194,11 +186,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             coverUrlToSave = publicUrlData.publicUrl;
           } catch (e) {
             console.error("Image upload failed:", e);
-            toast({
-              title: "Image upload failed",
-              description: "We'll keep the existing image.",
-              variant: "default",
-            });
+            notify.info('liveRooms.goLivePopup.errors.imageUploadFailedTitle', 'liveRooms.goLivePopup.errors.imageUploadFailedDesc');
           }
         } else {
           // B) If user removed existing image (preview cleared) and there was one before, set to null
@@ -213,7 +201,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         const updates: Partial<LiveStream> = {
           title,
           description: description || null,
-          stream_type: streamType.toLowerCase(),
+          stream_type: streamType,
           tags: selectedTags,
           access_level: accessLevel,
           co_hosts: coHostInput ? [coHostInput] : [],
@@ -228,10 +216,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
         await updateStream({ id: streamData.id, updates });
         
-        toast({
-          title: "Stream Updated! ✨",
-          description: "Your stream has been updated successfully",
-        });
+        notify.success('liveRooms.goLivePopup.success.streamUpdatedTitle', 'liveRooms.goLivePopup.success.streamUpdatedDesc');
         
         setIsLoading(false);
         onOpenChange(false);
@@ -282,27 +267,20 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           uploadedImageUrl = publicUrlData.publicUrl;
         } catch (e) {
           console.error('Image upload failed:', e);
-          toast({ 
-            title: "Image upload failed", 
-            description: "Stream will be created without an image.",
-            variant: "destructive"
-          });
+          notify.error('liveRooms.goLivePopup.errors.imageUploadFailedTitle', 'liveRooms.goLivePopup.errors.imageUploadFailedDesc');
         }
       }
       
       // Auto-generate image if enabled and no manual image
       if (autoGenerateImage && !uploadedImageUrl) {
-        toast({ 
-          title: "AI Image Generation", 
-          description: "Image will be generated when stream starts." 
-        });
+        notify.info('liveRooms.goLivePopup.success.aiImageHintTitle', 'liveRooms.goLivePopup.success.aiImageHintDesc');
       }
       
       // Prepare stream data for creation
       const newStreamData = {
         title,
         description: description || null,
-        stream_type: streamType.toLowerCase(),
+        stream_type: streamType,
         tags: selectedTags,
         access_level: accessLevel,
         cover_image_url: uploadedImageUrl || null,
@@ -328,20 +306,19 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       
       // Show appropriate toast
       if (scheduleDate && scheduleTime) {
-        toast({
-          title: "Stream Scheduled! 📅",
-          description: `Your stream is scheduled for ${format(scheduleDate, "PPP")} at ${scheduleTime}`,
-        });
+        const dateStr = format(scheduleDate, "PPP");
+        notify.success(
+          'liveRooms.goLivePopup.success.streamScheduledTitle', 
+          'liveRooms.goLivePopup.success.streamScheduledDesc',
+          { date: dateStr, time: scheduleTime }
+        );
       } else {
-        toast({
-          title: "You're Live! 🎙️",
-          description: "Joining your stream room...",
-        });
+        notify.success('liveRooms.goLivePopup.success.youAreLiveTitle', 'liveRooms.goLivePopup.success.youAreLiveDesc');
 
-        // Navigate creator to viewer as host
+        // Navigate creator to viewer as host (SPA-safe navigation)
         setTimeout(() => {
-          window.location.href = `/comm/live-rooms/${stream.id}/view`;
-          window.history.replaceState({
+          const path = `/comm/live-rooms/${stream.id}/view`;
+          window.history.pushState({
             roomId: stream.id,
             userId: user.id,
             userName: user.email?.split('@')[0] || 'Host',
@@ -351,7 +328,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               title: stream.title,
               isLive: true,
             }
-          }, '', `/comm/live-rooms/${stream.id}/view`);
+          }, '', path);
+          window.dispatchEvent(new PopStateEvent('popstate'));
         }, 500);
       }
       
@@ -372,11 +350,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       resetForm();
     } catch (error) {
       console.error('Error creating stream:', error);
-      toast({
-        title: "Error",
-        description: `Failed to ${editMode ? 'update' : 'create'} stream. Please try again.`,
-        variant: "destructive",
-      });
+      notify.error('liveRooms.goLivePopup.errors.genericTitle', 'liveRooms.goLivePopup.errors.genericDesc');
       setIsLoading(false);
     }
   };
@@ -400,11 +374,18 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
   };
 
+  // Get translated tag label
+  const getTagLabel = (tagId: TagId) => t(`tags.${tagId}`, tagId);
+
+  // Get translated access option
+  const getAccessLabel = (id: AccessLevelId) => t(`access.${id}.label`, id);
+  const getAccessDesc = (id: AccessLevelId) => t(`access.${id}.desc`, '');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{editMode ? 'Edit Live Stream' : 'Go Live'}</DialogTitle>
+          <DialogTitle>{editMode ? t('titleEdit', 'Edit Live Stream') : t('titleCreate', 'Go Live')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -412,13 +393,13 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           <div className="space-y-4">
             {/* Title */}
             <div>
-              <Label htmlFor="stream-title">Stream Title</Label>
+              <Label htmlFor="stream-title">{t('streamTitleLabel', 'Stream Title')}</Label>
               <div className="relative">
                 <Input
                   id="stream-title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value.slice(0, 100))}
-                  placeholder="Live with [Name]"
+                  placeholder={applyReplacements(t('streamTitlePlaceholder', 'Live with {name}'), { name: '[Name]' })}
                   maxLength={100}
                 />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
@@ -429,49 +410,49 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
             {/* Description */}
             <div>
-              <Label htmlFor="stream-description">Description / Bio (Optional)</Label>
+              <Label htmlFor="stream-description">{t('descriptionLabel', 'Description / Bio (Optional)')}</Label>
               <Textarea
                 id="stream-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value.slice(0, 500))}
-                placeholder="Tell your audience what this stream is about..."
+                placeholder={t('descriptionPlaceholder', 'Tell your audience what this stream is about...')}
                 className="mt-1 resize-none"
                 rows={3}
                 maxLength={500}
               />
               <p className="text-xs text-muted-foreground mt-1">
-                {description.length}/500 characters
+                {applyReplacements(t('charactersCount', '{count}/500 characters'), { count: description.length })}
               </p>
             </div>
 
             {/* Stream Type */}
             <div>
-              <Label>Stream Type</Label>
+              <Label>{t('streamTypeLabel', 'Stream Type')}</Label>
               <div className="flex gap-2 mt-2">
                 <Button
                   type="button"
-                  variant={streamType === "Audio" ? "default" : "outline"}
+                  variant={streamType === "audio" ? "default" : "outline"}
                   className="flex-1"
-                  onClick={() => setStreamType("Audio")}
+                  onClick={() => setStreamType("audio")}
                 >
                   <Mic className="w-4 h-4 mr-2" />
-                  Audio
+                  {t('streamTypeAudio', 'Audio')}
                 </Button>
                 <Button
                   type="button"
-                  variant={streamType === "Video" ? "default" : "outline"}
+                  variant={streamType === "video" ? "default" : "outline"}
                   className="flex-1"
-                  onClick={() => setStreamType("Video")}
+                  onClick={() => setStreamType("video")}
                 >
                   <Video className="w-4 h-4 mr-2" />
-                  Video
+                  {t('streamTypeVideo', 'Video')}
                 </Button>
               </div>
             </div>
 
             {/* Cover Image */}
             <div>
-              <Label>Cover Image / Thumbnail</Label>
+              <Label>{t('coverLabel', 'Cover Image / Thumbnail')}</Label>
               
               {/* Hidden file input */}
               <input
@@ -487,12 +468,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center mt-2">
                   <Loader2 className="w-6 h-6 mx-auto mb-2 text-muted-foreground animate-spin" />
                   <p className="text-sm text-muted-foreground">
-                    Generating AI image...
+                    {t('generatingAiImage', 'Generating AI image…')}
                   </p>
                 </div>
               ) : imagePreviewUrl ? (
                 <div className="relative mt-2 rounded-lg overflow-hidden border">
-                  <img src={imagePreviewUrl} alt="Stream cover" className="w-full h-40 object-cover" />
+                  <img src={imagePreviewUrl} alt={t('coverAlt', 'Stream cover')} className="w-full h-40 object-cover" />
                   <Button
                     variant="destructive"
                     size="icon"
@@ -509,20 +490,19 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 >
                   <UploadIcon className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">
-                    Click to upload custom image
+                    {t('coverUploadCta', 'Click to upload custom image')}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    PNG, JPG up to 2MB
+                    {t('coverUploadHint', 'PNG, JPG up to 2MB')}
                   </p>
                 </div>
               )}
               
               {/* AI generation toggle */}
-              {/* AI generation toggle */}
               <div className="flex items-center justify-between mt-3">
                 <div className="space-y-0.5">
-                  <Label>Auto-generate with AI</Label>
-                  <p className="text-xs text-muted-foreground">Generate image if none uploaded</p>
+                  <Label>{t('aiAutoGenerateLabel', 'Auto-generate with AI')}</Label>
+                  <p className="text-xs text-muted-foreground">{t('aiAutoGenerateHint', 'Generate image if none uploaded')}</p>
                 </div>
                 <Switch checked={autoGenerateImage} onCheckedChange={setAutoGenerateImage} />
               </div>
@@ -530,24 +510,24 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
             {/* Tags */}
             <div>
-              <Label>Tags / Category (Select 1-3)</Label>
+              <Label>{t('tagsLabel', 'Tags / Category (Select 1-3)')}</Label>
               <div className="flex flex-wrap gap-2 mt-2">
-                {streamTags.map((tag) => (
+                {TAG_IDS.map((tagId) => (
                   <Badge
-                    key={tag}
-                    variant={selectedTags.includes(tag) ? "default" : "outline"}
+                    key={tagId}
+                    variant={selectedTags.includes(tagId) ? "default" : "outline"}
                     className={cn(
                       "cursor-pointer",
-                      selectedTags.length >= 3 && !selectedTags.includes(tag) && "opacity-50 cursor-not-allowed"
+                      selectedTags.length >= 3 && !selectedTags.includes(tagId) && "opacity-50 cursor-not-allowed"
                     )}
-                    onClick={() => handleTagToggle(tag)}
+                    onClick={() => handleTagToggle(tagId)}
                   >
-                    {tag}
+                    {getTagLabel(tagId)}
                   </Badge>
                 ))}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {selectedTags.length}/3 selected
+                {applyReplacements(t('tagsSelected', '{count}/3 selected'), { count: selectedTags.length })}
               </p>
             </div>
           </div>
@@ -560,7 +540,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               className="w-full justify-between p-2 h-auto"
               onClick={() => setShowAdvanced(!showAdvanced)}
             >
-              <span className="font-medium">Advanced Options</span>
+              <span className="font-medium">{t('advancedTitle', 'Advanced Options')}</span>
               {showAdvanced ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </Button>
             
@@ -568,13 +548,13 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               <div className="space-y-4 mt-4">
                 {/* Co-Host Invite */}
                 <div>
-                  <Label htmlFor="cohost">Co-Host / Guest Invite</Label>
+                  <Label htmlFor="cohost">{t('cohostLabel', 'Co-Host / Guest Invite')}</Label>
                   <div className="flex gap-2 mt-1">
                     <Input
                       id="cohost"
                       value={coHostInput}
                       onChange={(e) => setCoHostInput(e.target.value)}
-                      placeholder="Search and add co-host"
+                      placeholder={t('cohostPlaceholder', 'Search and add co-host')}
                     />
                     <Button type="button" variant="outline" size="sm">
                       <Users className="w-4 h-4" />
@@ -584,23 +564,23 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
                 {/* Access Level */}
                 <div>
-                  <Label>Access Level</Label>
+                  <Label>{t('accessLevelLabel', 'Access Level')}</Label>
                   <div className="space-y-2 mt-2">
-                    {accessOptions.map((option) => (
-                      <div key={option.id} className="flex items-center space-x-2">
+                    {ACCESS_LEVEL_IDS.map((id) => (
+                      <div key={id} className="flex items-center space-x-2">
                         <input
                           type="radio"
-                          id={option.id}
+                          id={id}
                           name="access"
-                          checked={accessLevel === option.id}
-                          onChange={() => setAccessLevel(option.id)}
+                          checked={accessLevel === id}
+                          onChange={() => setAccessLevel(id)}
                           className="w-4 h-4"
                         />
                         <div className="flex-1">
-                          <label htmlFor={option.id} className="text-sm font-medium cursor-pointer">
-                            {option.label}
+                          <label htmlFor={id} className="text-sm font-medium cursor-pointer">
+                            {getAccessLabel(id)}
                           </label>
-                          <p className="text-xs text-muted-foreground">{option.description}</p>
+                          <p className="text-xs text-muted-foreground">{getAccessDesc(id)}</p>
                         </div>
                       </div>
                     ))}
@@ -609,7 +589,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
                 {/* Schedule for Later */}
                 <div>
-                  <Label>Schedule for Later</Label>
+                  <Label>{t('scheduleLabel', 'Schedule for Later')}</Label>
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -621,10 +601,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                       >
                         <Clock className="mr-2 h-4 w-4" />
                         {scheduleDate && scheduleTime 
-                          ? `${format(scheduleDate, "PPP")} at ${scheduleTime}`
+                          ? applyReplacements(t('scheduledAt', '{date} at {time}'), { date: format(scheduleDate, "PPP"), time: scheduleTime })
                           : scheduleDate 
-                            ? `${format(scheduleDate, "PPP")} - Select time`
-                            : "Go Live Now"
+                            ? applyReplacements(t('dateNeedsTime', '{date} – select time'), { date: format(scheduleDate, "PPP") })
+                            : t('goLiveNow', 'Go Live Now')
                         }
                       </Button>
                     </PopoverTrigger>
@@ -640,13 +620,13 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                       
                       {scheduleDate && (
                         <div className="p-3 border-t space-y-2">
-                          <Label htmlFor="schedule-time">Time</Label>
+                          <Label htmlFor="schedule-time">{t('time', 'Time')}</Label>
                           <Select 
                             value={scheduleTime || ""} 
                             onValueChange={setScheduleTime}
                           >
                             <SelectTrigger id="schedule-time">
-                              <SelectValue placeholder="Select time" />
+                              <SelectValue placeholder={t('selectTime', 'Select time')} />
                             </SelectTrigger>
                             <SelectContent className="max-h-[200px]">
                               {generateTimeOptions().map((time) => (
@@ -664,7 +644,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                             }}
                             className="w-full"
                           >
-                            Clear Schedule (Go Live Now)
+                            {t('clearSchedule', 'Clear Schedule (Go Live Now)')}
                           </Button>
                         </div>
                       )}
@@ -674,18 +654,18 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
                 {/* Chat & Engagement */}
                 <div className="space-y-3">
-                  <Label>Chat & Engagement</Label>
+                  <Label>{t('engagementLabel', 'Chat & Engagement')}</Label>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium">Enable Chat</p>
-                      <p className="text-xs text-muted-foreground">Allow viewers to chat</p>
+                      <p className="text-sm font-medium">{t('enableChatTitle', 'Enable Chat')}</p>
+                      <p className="text-xs text-muted-foreground">{t('enableChatDesc', 'Allow viewers to chat')}</p>
                     </div>
                     <Switch checked={enableChat} onCheckedChange={setEnableChat} />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium">Enable Polls</p>
-                      <p className="text-xs text-muted-foreground">Create live polls during stream</p>
+                      <p className="text-sm font-medium">{t('enablePollsTitle', 'Enable Polls')}</p>
+                      <p className="text-xs text-muted-foreground">{t('enablePollsDesc', 'Create live polls during stream')}</p>
                     </div>
                     <Switch checked={enablePolls} onCheckedChange={setEnablePolls} />
                   </div>
@@ -694,8 +674,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 {/* Record for Replay */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Record for Replay</Label>
-                    <p className="text-xs text-muted-foreground">Save stream for later viewing</p>
+                    <Label>{t('recordReplayTitle', 'Record for Replay')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('recordReplayDesc', 'Save stream for later viewing')}</p>
                   </div>
                   <Switch checked={enableRecording} onCheckedChange={setEnableRecording} />
                 </div>
@@ -711,7 +691,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               onClick={() => onOpenChange(false)}
               disabled={isLoading}
             >
-              Cancel
+              {t('cancel', 'Cancel')}
             </Button>
             <Button
               className="flex-1"
@@ -719,12 +699,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               disabled={!title || !streamType || selectedTags.length === 0 || isLoading}
             >
               {isLoading 
-                ? (editMode ? "Updating..." : "Starting...") 
+                ? (editMode ? t('updating', 'Updating…') : t('starting', 'Starting…')) 
                 : editMode
-                  ? "Update Stream"
+                  ? t('updateStream', 'Update Stream')
                   : isScheduled 
-                    ? "Schedule Live Session" 
-                    : "Go Live Now"
+                    ? t('scheduleSession', 'Schedule Live Session') 
+                    : t('goLiveNowAction', 'Go Live Now')
               }
             </Button>
           </div>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, Users, MessageSquare, Video, Calendar, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from "@/components/ui/responsive-popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
@@ -206,8 +206,8 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   };
 
   return (
-    <Popover open={showSuggestions && filteredSuggestions.length > 0 && open} onOpenChange={setShowSuggestions}>
-      <PopoverTrigger asChild>
+    <ResponsivePopover open={showSuggestions && filteredSuggestions.length > 0 && open} onOpenChange={setShowSuggestions}>
+      <ResponsivePopoverTrigger asChild>
         <div className="relative w-full">
           {open ? (
             <div className="relative">
@@ -250,9 +250,10 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             </Button>
           )}
         </div>
-      </PopoverTrigger>
+      </ResponsivePopoverTrigger>
 
-      <PopoverContent 
+      <ResponsivePopoverContent 
+        title="Suggestions"
         className="w-[var(--radix-popover-trigger-width)] p-0 mt-2 bg-popover border border-border shadow-lg rounded-lg z-50"
         align="start"
         side="bottom"
@@ -304,7 +305,7 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
             ))}
           </div>
         </ScrollArea>
-      </PopoverContent>
-    </Popover>
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   );
 }

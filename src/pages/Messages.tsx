@@ -10,6 +10,7 @@ import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/componen
 import { useIsMobile } from "@/hooks/use-mobile";
 import { messagesNavigation } from "@/config/navigation";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Users, MessageSquareText, Globe, Building } from "lucide-react";
+import { Plus, Users, MessageSquareText, Globe, Building, Plane } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -26,10 +27,10 @@ import { useRole } from "@/hooks/useRole";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
-import { Badge } from "@/components/ui/badge";
 import { MessageSquare } from "lucide-react";
 import NewConversationPopup from "@/components/NewConversationPopup";
 import ConversationListSkeleton from "@/components/messages/ConversationListSkeleton";
@@ -44,10 +45,18 @@ import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherPart
 import ContactsTabContent from '@/components/contacts/ContactsTabContent';
 import { CallManager } from '@/components/CallManager';
 import { CallProvider } from '@/context/CallContext';
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { MobileConversationCard } from "@/components/messages/mobile/MobileConversationCard";
+import { MobileInboxEmptyState } from "@/components/messages/mobile/MobileInboxEmptyState";
+import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileConversationSkeleton";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Messages() {
   const { user } = useAuth();
   const { currentRole } = useRole();
+  const { translate } = useTranslation();
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
   const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
@@ -59,6 +68,8 @@ export default function Messages() {
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
   const [conversationFilter, setConversationFilter] = useState<'all' | 'groups' | 'direct' | 'contacts'>('all');
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const { pendingCount } = useAutopilot();
   
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
@@ -73,8 +84,9 @@ export default function Messages() {
   }, [threads, optimisticUnreadUpdates]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
+  // Only auto-select on desktop - on mobile, users should see the list first and tap to open
   useEffect(() => {
-    if (displayThreads.length > 0 && !selectedThreadId) {
+    if (displayThreads.length > 0 && !selectedThreadId && !isMobile) {
       // Get the most recent conversation from the sorted and deduplicated list
       const sortedThreads = [...displayThreads]
         .sort((a, b) => {
@@ -107,7 +119,7 @@ export default function Messages() {
         setSelectedRecipientId(null);
       }
     }
-  }, [displayThreads, selectedThreadId, pinnedThreads, user?.id]);
+  }, [displayThreads, selectedThreadId, pinnedThreads, user?.id, isMobile]);
 
   // Reset selection when context changes
   useEffect(() => {
@@ -165,16 +177,35 @@ export default function Messages() {
 
   // Only show skeleton when loading AND no cached data
   if (isLoading && threads.length === 0) {
+    // Mobile loading state
+    if (isMobile) {
+      return (
+        <AppLayout>
+          <SEO title={translate('inbox.title')} description={translate('inbox.description')} canonical={window.location.href} />
+          <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+            <div className="p-4 pb-32 space-y-4">
+              <StandardHeader 
+                title={translate('inbox.title')}
+                description={translate('inbox.description')}
+              />
+              <MobileConversationSkeleton count={6} />
+            </div>
+          </div>
+        </AppLayout>
+      );
+    }
+    
+    // Desktop loading state
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 overflow-x-hidden">
-        <SEO title="Messages" description="Your messages and conversations" canonical={window.location.href} />
+        <SEO title={translate('inbox.desktopTitle', 'Messages')} description={translate('inbox.description')} canonical={window.location.href} />
         <AppLayout>
           <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
             <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
               <SubNavigation items={messagesNavigation} />
               <StandardHeader 
-                title="Messages"
-                description="Loading your conversations..."
+                title={translate('inbox.desktopTitle', 'Messages')}
+                description={translate('inbox.loading')}
               />
               <div className="flex-1 flex">
                 <div className="w-80 border-r">
@@ -183,7 +214,7 @@ export default function Messages() {
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-muted-foreground">Loading messages...</p>
+                    <p className="text-muted-foreground">{translate('inbox.loading')}</p>
                   </div>
                 </div>
               </div>
@@ -222,25 +253,25 @@ export default function Messages() {
             value="all" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            All
+            {translate('inbox.tabs.all')}
           </TabsTrigger>
           <TabsTrigger 
             value="groups" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            Groups
+            {translate('inbox.tabs.groups')}
           </TabsTrigger>
           <TabsTrigger 
             value="direct" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            Direct Messages
+            {translate('inbox.tabs.direct')}
           </TabsTrigger>
           <TabsTrigger 
             value="contacts" 
             className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-4 py-2"
           >
-            Contacts
+            {translate('inbox.tabs.contacts')}
           </TabsTrigger>
         </TabsList>
 
@@ -736,6 +767,255 @@ export default function Messages() {
     );
   };
 
+  // Helper to render mobile conversation list with new cards
+  const renderMobileConversationList = () => {
+    const filteredThreads = getFilteredThreads(displayThreads, conversationFilter);
+    
+    if (filteredThreads.length === 0) {
+      return (
+        <MobileInboxEmptyState 
+          context={messageContext}
+          onNewMessage={() => setShowNewConversation(true)}
+          onCreateGroup={() => setShowCreateGroup(true)}
+        />
+      );
+    }
+
+    // Sort and dedupe threads
+    const sortedThreads = [...filteredThreads]
+      .sort((a, b) => {
+        const ap = pinnedThreads.has(a.id) ? 1 : 0;
+        const bp = pinnedThreads.has(b.id) ? 1 : 0;
+        if (ap !== bp) return bp - ap;
+        const ad = new Date(a.updated_at).getTime();
+        const bd = new Date(b.updated_at).getTime();
+        return bd - ad;
+      })
+      .reduce((acc, thread) => {
+        if (thread.type === 'direct') {
+          const counterpart = thread.participants?.find(p => p.user_id !== user?.id);
+          const key = counterpart?.user_id || 'unknown';
+          const existing = acc.find(t => t._dedupeKey === key);
+          if (!existing || new Date(thread.updated_at) > new Date(existing.updated_at)) {
+            const filtered = acc.filter(t => t._dedupeKey !== key);
+            filtered.push({ ...thread, _dedupeKey: key });
+            return filtered;
+          }
+          return acc;
+        } else {
+          acc.push({ ...thread, _dedupeKey: thread.id });
+          return acc;
+        }
+      }, [] as (typeof displayThreads[0] & { _dedupeKey: string })[]);
+
+    return (
+      <div className="space-y-2">
+        {sortedThreads.map((thread) => (
+          <MobileConversationCard
+            key={thread.id}
+            id={thread.id}
+            name={getConversationDisplayTitle(thread, user?.id) || 'Unknown'}
+            avatarUrl={getConversationDisplayAvatar(thread, user?.id) || undefined}
+            lastMessage={thread.last_message?.body}
+            timestamp={thread.updated_at}
+            unreadCount={thread.unread_count || 0}
+            isActive={selectedThreadId === thread.id}
+            isPinned={pinnedThreads.has(thread.id)}
+            isGroup={thread.type === 'group'}
+            participantUserId={getOtherParticipant(thread, user?.id)?.user_id}
+            context={messageContext}
+            onClick={() => {
+              setSelectedThreadId(thread.id);
+              setSelectedRecipientId(null);
+              if ((thread.unread_count || 0) > 0) {
+                handleConversationOpened(thread.id);
+              }
+            }}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  // Mobile Layout - matches Events/Wallet/BusinessHub pattern
+  if (isMobile) {
+    return (
+      <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
+        <AppLayout>
+          <SEO title="Inbox" description="Your conversations, updates, and notifications" canonical={window.location.href} />
+          
+          <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+            {/* When viewing a conversation, show full-screen chat */}
+            {selectedThreadId ? (
+              <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+                <ConversationErrorBoundary>
+                  <ConversationView 
+                    threadId={selectedThreadId}
+                    recipientId={selectedRecipientId}
+                    context={messageContext}
+                    className="flex-1 min-h-0 min-w-0"
+                    onBack={() => setSelectedThreadId(null)}
+                    onThreadRead={handleThreadRead}
+                    onConversationOpened={handleConversationOpened}
+                    onMessageSent={handleMessageSent}
+                  />
+                </ConversationErrorBoundary>
+              </div>
+            ) : (
+              /* Inbox list view */
+              <div className="p-4 pb-32 space-y-4">
+                {/* StandardHeader - same pattern as Events/Wallet */}
+                <StandardHeader
+                  title={translate('inbox.title')}
+                  description={translate('inbox.description')}
+                />
+                
+                {/* Action Rail - same pattern */}
+                <UtilityActionButton 
+                  className="min-w-0"
+                  afterGiftVoucherChildren={
+                    <>
+                      {/* Vitana Index - pill style */}
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => navigate('/health')}
+                        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                      >
+                        <span className="text-xs opacity-60">🧬</span>
+                        <span className="text-sm font-medium text-primary">742</span>
+                      </Button>
+                      
+                      {/* Autopilot - pill style with label */}
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setAutopilotOpen(true)}
+                        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                      >
+                        <Plane className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                        {pendingCount > 0 && (
+                          <Badge 
+                            variant="destructive" 
+                            className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                          >
+                            {pendingCount}
+                          </Badge>
+                        )}
+                      </Button>
+                    </>
+                  }
+                >
+                  <div className="flex items-center gap-2 min-w-max">
+                    <ExpandableSearchButton 
+                      placeholder={translate('inbox.searchPlaceholder')}
+                      onSearch={(query) => console.log('Search:', query)}
+                    />
+                    <UniversalCalendarButton />
+                    
+                    {/* New Message button - primary action */}
+                    <Button 
+                      onClick={() => setShowNewConversation(true)}
+                      variant="ghost"
+                      size="sm"
+                      className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span className="text-sm">{translate('inbox.actions.new')}</span>
+                    </Button>
+                  </div>
+                </UtilityActionButton>
+                
+                {/* Mobile Tabs - consolidated SplitBar */}
+                <SplitBar 
+                  value={messageContext} 
+                  onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} 
+                  className="w-full"
+                >
+                  <SplitBarList>
+                    <SplitBarTrigger value="global">{translate('inbox.contextTabs.community')}</SplitBarTrigger>
+                    <SplitBarTrigger value="tenant">{translate('inbox.contextTabs.network')}</SplitBarTrigger>
+                  </SplitBarList>
+                  
+                  <SplitBarContent value="global" className="pt-3">
+                    {/* Sub-filter tabs */}
+                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+                      {['all', 'direct', 'groups'].map((filter) => (
+                        <Button
+                          key={filter}
+                          variant={conversationFilter === filter ? "default" : "ghost"}
+                          size="sm"
+                          onClick={() => setConversationFilter(filter as any)}
+                          className={`h-8 px-3 rounded-full shrink-0 text-sm ${
+                            conversationFilter === filter 
+                              ? 'bg-primary text-primary-foreground' 
+                              : 'bg-muted/60'
+                          }`}
+                        >
+                          {translate(`inbox.tabs.${filter}`)}
+                        </Button>
+                      ))}
+                    </div>
+                    {renderMobileConversationList()}
+                  </SplitBarContent>
+                  
+                  <SplitBarContent value="tenant" className="pt-3">
+                    {/* Sub-filter tabs */}
+                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+                      {['all', 'direct', 'groups'].map((filter) => (
+                        <Button
+                          key={filter}
+                          variant={conversationFilter === filter ? "default" : "ghost"}
+                          size="sm"
+                          onClick={() => setConversationFilter(filter as any)}
+                          className={`h-8 px-3 rounded-full shrink-0 text-sm ${
+                            conversationFilter === filter 
+                              ? 'bg-primary text-primary-foreground' 
+                              : 'bg-muted/60'
+                          }`}
+                        >
+                          {translate(`inbox.tabs.${filter}`)}
+                        </Button>
+                      ))}
+                    </div>
+                    {renderMobileConversationList()}
+                  </SplitBarContent>
+                </SplitBar>
+              </div>
+            )}
+          </div>
+
+          {/* Popups */}
+          <NewConversationPopup
+            open={showNewConversation}
+            onOpenChange={setShowNewConversation}
+            onConversationCreated={handleConversationCreated}
+            onGroupCreated={handleGroupCreated}
+            context={messageContext}
+          />
+          
+          <CreateGroupPopup
+            open={showCreateGroup}
+            onOpenChange={setShowCreateGroup}
+            onGroupCreated={handleGroupCreated}
+            context={messageContext}
+          />
+          
+          <AutopilotPopup 
+            open={autopilotOpen} 
+            onOpenChange={setAutopilotOpen} 
+          />
+
+          {user?.id && (
+            <CallManager userId={user.id} userName={user.email || 'User'} />
+          )}
+        </AppLayout>
+      </CallProvider>
+    );
+  }
+
+  // Desktop Layout (unchanged)
   return (
     <CallProvider userId={user?.id || ''} userName={user?.email || 'User'}>
       <AppLayout>

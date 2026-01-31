@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 import ServiceDetailDrawer from "@/components/health/ServiceDetailDrawer";
 import { healthNavigation } from "@/config/navigation";
 import { Stethoscope, Users, Target, Shield, Heart, Activity, Calendar, TestTube, UserCheck, Phone, FileText, CreditCard, Clock, Star, MessageSquare, TestTube2, Microscope, Package, Plane, Apple, Dumbbell, Brain, Briefcase, BookOpen, Plus } from "lucide-react";
@@ -194,6 +195,7 @@ export default function WellnessServices() {
   const [selectedService, setSelectedService] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [servicesActionsOpen, setServicesActionsOpen] = useState(false);
+  const { translate } = useTranslation();
 
   const handleServiceClick = (service: any) => {
     setSelectedService(service);
@@ -268,7 +270,7 @@ export default function WellnessServices() {
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search services, providers, or programs..." />
+            <ExpandableSearchButton placeholder={translate('wellnessServices.searchPlaceholder', 'Search services, providers, or programs...')} />
             <UniversalCalendarButton />
             <Button
               variant="default"

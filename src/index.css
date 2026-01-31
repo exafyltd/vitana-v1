@@ -8,6 +8,10 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Appilix bottom navigation offset - injected by Appilix, fallback values here */
+    --appilix-bottom-nav: 84px;
+    --orb-gap: 10px;
+    
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -556,6 +560,58 @@ All colors MUST be HSL.
     }
   }
 
+  /* VITANA ORB - Appilix bottom nav anchoring */
+  /* Appilix may override via injected CSS vars. Defaults match our expected native bar size. */
+  --appilix-bottom-nav-height: 72px; /* fallback if Appilix doesn't set it */
+  --appilix-bottom-nav-h: var(--appilix-bottom-nav-height);
+  --orb-gap: 4px; /* reduced gap to dock orb closer to bottom nav (~4cm lower) */
+}
+
+/* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
+@media (max-width: 768px) {
+  .vitana-orb,
+  [data-vitana-orb="true"],
+  #vitana-orb,
+  .OrbFloatingButton {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    /* Y-axis ONLY: dock tight to bottom with safe-area */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
+    margin: 0 !important;
+    z-index: 40 !important; /* above content, below modals */
+    pointer-events: auto !important;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
+  }
+
+  /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */
+  .maxina-signin-page {
+    padding-bottom: calc(
+      var(--appilix-bottom-nav-height, 72px) +
+      env(safe-area-inset-bottom, 0px) +
+      90px
+    ) !important;
+  }
+
+  /* Maxina portal pages: dock orb at bottom edge on mobile */
+  body.maxina-signin-page .vitana-orb,
+  body.maxina-signin-page [data-vitana-orb="true"],
+  body.maxina-signin-page #vitana-orb,
+  body.maxina-signin-page .OrbFloatingButton {
+    bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
+  }
+
+  /* Hide irrelevant tenant links for Maxina app users */
+  [data-maxina-app="true"] .tenant-footer-links,
+  [data-maxina-app="true"] [data-tenant-switcher],
+  .maxina-hide-tenant-links {
+    display: none !important;
+  }
+
+}
+
+
   /* Fade In Up Animation */
   @keyframes fadeInUp {
     from {
@@ -693,8 +749,6 @@ All colors MUST be HSL.
   /* Keyboard hint styling */
   .keyboard-hint kbd {
     @apply px-1 py-0.5 bg-background border border-border rounded text-xs font-mono;
-  }
-    z-index: 10;
   }
 
   /* Chat history - scrollable middle zone */
@@ -859,4 +913,15 @@ All colors MUST be HSL.
 
   .safe-bottom { 
     padding-bottom: calc(env(safe-area-inset-bottom) + 12px); 
+  }
+
+  /* Mobile bottom nav height for content padding */
+  .mobile-content-padding {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 768px) {
+    .mobile-content-padding {
+      padding-bottom: 0;
+    }
   }

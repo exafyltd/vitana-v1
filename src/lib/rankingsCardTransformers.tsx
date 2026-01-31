@@ -285,7 +285,8 @@ export const transformCreatorRankingToCard = (
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
-              window.location.href = `/u/${creator.id}`;
+              window.history.pushState({}, '', `/u/${creator.id}`);
+              window.dispatchEvent(new PopStateEvent('popstate'));
             }}
           >
             View Full Profile
@@ -295,7 +296,8 @@ export const transformCreatorRankingToCard = (
     ),
     className: cn(borderStyle),
     onClick: () => {
-      window.location.href = `/u/${creator.id}`;
+      window.history.pushState({}, '', `/u/${creator.id}`);
+      window.dispatchEvent(new PopStateEvent('popstate'));
     }
   };
 };
@@ -373,7 +375,8 @@ export const transformMemberRankingToCard = (
             size="sm"
             onClick={(e) => {
               e.stopPropagation();
-              window.location.href = `/u/${member.user_id}`;
+              window.history.pushState({}, '', `/u/${member.user_id}`);
+              window.dispatchEvent(new PopStateEvent('popstate'));
             }}
           >
             View Full Profile
@@ -383,7 +386,8 @@ export const transformMemberRankingToCard = (
     ),
     className: cn(borderStyle),
     onClick: () => {
-      window.location.href = `/u/${member.user_id}`;
+      window.history.pushState({}, '', `/u/${member.user_id}`);
+      window.dispatchEvent(new PopStateEvent('popstate'));
     }
   };
 };

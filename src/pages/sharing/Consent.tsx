@@ -9,6 +9,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 import { sharingNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -73,6 +74,7 @@ const consentData = {
 export default withScreenId(function Consent() {
   const [activeTab, setActiveTab] = useState("active");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const { translate } = useTranslation();
 
   return (
     <AppLayout>
@@ -87,7 +89,7 @@ export default withScreenId(function Consent() {
           />
 
           <UtilityActionButton>
-            <ExpandableSearchButton placeholder="Search consent packages, organizations, permissions..." />
+            <ExpandableSearchButton placeholder={translate('consent.searchPlaceholder', 'Search consent packages, organizations, permissions...')} />
             <UniversalCalendarButton />
             <Button size="sm" onClick={() => setActionPopupOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />

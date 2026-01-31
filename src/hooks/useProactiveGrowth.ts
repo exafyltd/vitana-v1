@@ -127,19 +127,24 @@ export function useProactiveGrowth() {
     try {
       // Log the action (would track in production)
 
-      // Navigate to appropriate page based on action type
+      // Navigate to appropriate page based on action type (SPA-safe navigation)
+      const navigateSPA = (path: string) => {
+        window.history.pushState({}, '', path);
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      };
+      
       switch (action.type) {
         case 'import_contacts':
-          window.location.href = '/contacts';
+          navigateSPA('/contacts');
           break;
         case 'invite_contacts':
-          window.location.href = '/contacts';
+          navigateSPA('/contacts');
           break;
         case 'connect_channels':
-          window.location.href = '/sharing';
+          navigateSPA('/sharing');
           break;
         case 'share_social':
-          window.location.href = '/sharing';
+          navigateSPA('/sharing');
           break;
       }
 

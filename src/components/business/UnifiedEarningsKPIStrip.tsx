@@ -5,6 +5,7 @@
 
 import { DollarSign, TrendingUp, Clock, Wallet } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface UnifiedEarningsKPIStripProps {
   totalEarnings: number;
@@ -86,11 +87,12 @@ export function UnifiedEarningsKPIStrip({
   isLoading,
 }: UnifiedEarningsKPIStripProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
 
   const kpiCards = [
     {
       icon: <DollarSign className="h-5 w-5" />,
-      label: "Total Earnings",
+      label: translate('business.kpi.totalEarnings'),
       value: totalEarnings,
       gradientFrom: "hsl(142, 76%, 36%)", // emerald
       gradientTo: "hsl(158, 64%, 52%)",
@@ -98,7 +100,7 @@ export function UnifiedEarningsKPIStrip({
     },
     {
       icon: <TrendingUp className="h-5 w-5" />,
-      label: "Last 30 Days",
+      label: translate('business.kpi.last30Days'),
       value: earnings30Days,
       gradientFrom: "hsl(217, 91%, 60%)", // blue
       gradientTo: "hsl(199, 89%, 48%)",
@@ -106,7 +108,7 @@ export function UnifiedEarningsKPIStrip({
     },
     {
       icon: <Clock className="h-5 w-5" />,
-      label: "Pending Payout",
+      label: translate('business.kpi.pendingPayout'),
       value: pendingPayout,
       gradientFrom: "hsl(38, 92%, 50%)", // amber
       gradientTo: "hsl(45, 93%, 47%)",
@@ -114,7 +116,7 @@ export function UnifiedEarningsKPIStrip({
     },
     {
       icon: <Wallet className="h-5 w-5" />,
-      label: "In Wallet",
+      label: translate('business.kpi.inWallet'),
       value: inWallet,
       gradientFrom: "hsl(271, 91%, 65%)", // purple
       gradientTo: "hsl(292, 84%, 61%)",

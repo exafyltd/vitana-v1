@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -103,7 +103,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isUserNearBottom, setIsUserNearBottom] = useState(true);
+  const hasInitialScrolledRef = useRef<string | null>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
   const [isThreadDataLoaded, setIsThreadDataLoaded] = useState(false);
@@ -235,6 +237,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (threadId !== previousThreadId.current) {
       console.log('🔄 Thread switching detected:', { from: previousThreadId.current, to: threadId });
       setIsThreadDataLoaded(false); // Reset thread data loaded state
+      hasInitialScrolledRef.current = null; // Reset scroll tracking for new thread
       previousThreadId.current = threadId;
       
       // Remove artificial delay - let cache handle instant display
@@ -408,17 +411,50 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }, [messages, isUserNearBottom, scrollToBottom]);
 
 
-  // Scroll to latest messages after they are loaded (not immediately on threadId change)
-  useEffect(() => {
-    if (threadId && messages.length > 0) {
-      // Wait for DOM to update, then scroll to bottom to show latest messages
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          scrollToBottom(true);
-        });
-      }, 50);
+  // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
+  // Use useLayoutEffect to run before browser paint for smoother UX
+  useLayoutEffect(() => {
+    if (threadId && messages.length > 0 && hasInitialScrolledRef.current !== threadId) {
+      hasInitialScrolledRef.current = threadId;
+      
+      const scrollToEnd = () => {
+        const el = scrollRef.current;
+        if (el) {
+          el.scrollTop = el.scrollHeight - el.clientHeight;
+          setIsUserNearBottom(true);
+        }
+      };
+      
+      // Immediate attempt
+      scrollToEnd();
+      
+      // Retry after short delays to handle async content (images, etc.)
+      const timers = [50, 150, 300].map(delay => 
+        setTimeout(() => {
+          requestAnimationFrame(scrollToEnd);
+        }, delay)
+      );
+      
+      return () => timers.forEach(clearTimeout);
     }
-  }, [threadId, messages.length, scrollToBottom]);
+  }, [threadId, messages.length]);
+
+  // ResizeObserver to keep pinned at bottom when content resizes (images loading, etc.)
+  useEffect(() => {
+    const content = contentRef.current;
+    const scroll = scrollRef.current;
+    if (!content || !scroll || !threadId) return;
+
+    const observer = new ResizeObserver(() => {
+      // Only auto-scroll if user is near bottom (won't yank them if scrolled up)
+      if (isUserNearBottom && hasInitialScrolledRef.current === threadId) {
+        scroll.scrollTop = scroll.scrollHeight - scroll.clientHeight;
+      }
+    });
+
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, [threadId, isUserNearBottom]);
 
 
   const handleSendMessage = async (
@@ -1038,7 +1074,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             )
           ) : (
 
-            <>
+            <div ref={contentRef}>
               {messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
                 const previousMessage = index > 0 ? messages[index - 1] : null;
@@ -1109,7 +1145,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 );
               })}
               
-            </>
+            </div>
           )}
           
           {/* Bottom padding and scroll anchor */}

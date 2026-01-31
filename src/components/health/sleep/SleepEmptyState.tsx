@@ -2,9 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Moon } from "lucide-react";
 import { useHealthPlans } from "@/hooks/useHealthPlans";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function SleepEmptyState() {
   const { generatePlan } = useHealthPlans();
+  const { translate } = useTranslation();
   
   return (
     <Card className="p-12 text-center bg-gradient-to-br from-[hsl(230,100%,90%)]/30 via-[hsl(270,50%,90%)]/40 to-[hsl(210,100%,97%)]/40 
@@ -14,10 +16,11 @@ export function SleepEmptyState() {
           <Moon className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
         </div>
         
-        <h3 className="text-xl font-semibold">No Sleep Plan Yet</h3>
+        <h3 className="text-xl font-semibold">
+          {translate('health.emptyStates.noSleepPlan')}
+        </h3>
         <p className="text-muted-foreground">
-          Generate your personalized sleep plan with AI-optimized targets tuned to your 
-          circadian rhythm, recovery needs, and daily performance.
+          {translate('health.emptyStates.noSleepPlanDesc')}
         </p>
         
         <Button
@@ -31,7 +34,9 @@ export function SleepEmptyState() {
           disabled={generatePlan.isPending}
           className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
         >
-          {generatePlan.isPending ? 'Generating...' : 'Generate Sleep Plan'}
+          {generatePlan.isPending 
+            ? translate('health.emptyStates.generating') 
+            : translate('health.emptyStates.generatePlan')}
         </Button>
       </div>
     </Card>

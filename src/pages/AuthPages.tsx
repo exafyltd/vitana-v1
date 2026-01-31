@@ -8,6 +8,7 @@ import SEO from "@/components/SEO";
 import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 
 const providers = [
   {
@@ -106,9 +107,12 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
   const description = isRegister ? "Create your VITANA account" : "Login to VITANA";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 pb-32 md:pb-0">
       <SEO title={title} description={description} canonical={window.location.href} />
       <main className="w-full max-w-lg">
+      
+      {/* Mobile-only fixed ORB - centered, docked above bottom nav */}
+      <MobileFixedOrb />
         <article className="w-full rounded-3xl border bg-card p-8 md:p-10 shadow-sm">
           <header className="text-center space-y-2 mb-6">
             <div className="mx-auto flex items-center justify-center gap-2">

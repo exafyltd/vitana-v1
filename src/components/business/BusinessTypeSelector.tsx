@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Briefcase, Ticket, Sparkles } from "lucide-react";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
 import { useIsReseller } from "@/hooks/useIsReseller";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface BusinessTypeSelectorProps {
   isOpen: boolean;
@@ -12,33 +13,34 @@ interface BusinessTypeSelectorProps {
   onSelectService: () => void;
 }
 
-const BUSINESS_TYPES = [
-  {
-    id: "event",
+// Stable IDs for logic - never changes with language
+const BUSINESS_TYPE_IDS = ["event", "service", "reseller"] as const;
+type BusinessTypeId = typeof BUSINESS_TYPE_IDS[number];
+
+// Static config (icons, colors) - not translated
+const BUSINESS_TYPE_CONFIG: Record<BusinessTypeId, {
+  icon: typeof Calendar;
+  color: string;
+  bgColor: string;
+  hasBadge?: boolean;
+}> = {
+  event: {
     icon: Calendar,
-    title: "Create Event",
-    subtitle: "Host workshops, classes, or gatherings",
     color: "text-blue-600",
     bgColor: "bg-blue-50 hover:bg-blue-100",
   },
-  {
-    id: "service",
+  service: {
     icon: Briefcase,
-    title: "Offer Service",
-    subtitle: "1-on-1 consultations, coaching, sessions",
     color: "text-green-600",
     bgColor: "bg-green-50 hover:bg-green-100",
   },
-  {
-    id: "reseller",
+  reseller: {
     icon: Ticket,
-    title: "Sell Event Tickets",
-    subtitle: "Promote events and earn commissions",
     color: "text-purple-600",
     bgColor: "bg-purple-50 hover:bg-purple-100",
-    badge: "New",
+    hasBadge: true,
   },
-];
+};
 
 export function BusinessTypeSelector({ 
   isOpen, 
@@ -48,8 +50,32 @@ export function BusinessTypeSelector({
 }: BusinessTypeSelectorProps) {
   const { activateResellerForCurrentUser, isActivating } = useActivateReseller();
   const { isReseller } = useIsReseller();
+  const { translate } = useTranslation();
 
-  const handleSelect = async (typeId: string) => {
+  // Helper for namespaced keys
+  const t = (key: string, fallback?: string) => 
+    translate(`business.typeSelector.${key}`, fallback);
+
+  // Build translated business types inside component
+  const businessTypes = [
+    {
+      id: "event" as BusinessTypeId,
+      title: t('createEvent', 'Create Event'),
+      subtitle: t('createEventDesc', 'Host workshops, classes, or gatherings'),
+    },
+    {
+      id: "service" as BusinessTypeId,
+      title: t('offerService', 'Offer Service'),
+      subtitle: t('offerServiceDesc', '1-on-1 consultations, coaching, sessions'),
+    },
+    {
+      id: "reseller" as BusinessTypeId,
+      title: t('sellTickets', 'Sell Event Tickets'),
+      subtitle: t('sellTicketsDesc', 'Promote events and earn commissions'),
+    },
+  ];
+
+  const handleSelect = async (typeId: BusinessTypeId) => {
     switch (typeId) {
       case "event":
         onClose();
@@ -72,42 +98,45 @@ export function BusinessTypeSelector({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Sparkles className="w-5 h-5 text-primary" />
-            Start a Business
+            {t('title', 'Start a Business')}
           </DialogTitle>
         </DialogHeader>
 
         <div className="grid gap-3 py-4">
-          {BUSINESS_TYPES.map((type) => {
-            const Icon = type.icon;
+          {businessTypes.map((type) => {
+            const config = BUSINESS_TYPE_CONFIG[type.id];
+            const Icon = config.icon;
             const isResellerType = type.id === "reseller";
             const isAlreadyReseller = isResellerType && isReseller;
 
             return (
               <Card 
                 key={type.id}
-                className={`cursor-pointer transition-all ${type.bgColor} border-0 shadow-sm hover:shadow-md ${isAlreadyReseller ? 'opacity-60' : ''}`}
+                className={`cursor-pointer transition-all ${config.bgColor} border-0 shadow-sm hover:shadow-md ${isAlreadyReseller ? 'opacity-60' : ''}`}
                 onClick={() => !isAlreadyReseller && handleSelect(type.id)}
               >
                 <CardContent className="flex items-center gap-4 p-4">
-                  <div className={`p-2 rounded-lg bg-white/80 ${type.color}`}>
+                  <div className={`p-2 rounded-lg bg-white/80 ${config.color}`}>
                     <Icon className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-foreground">{type.title}</h3>
-                      {type.badge && !isAlreadyReseller && (
+                      {config.hasBadge && !isAlreadyReseller && (
                         <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white">
-                          {type.badge}
+                          {t('badgeNew', 'New')}
                         </span>
                       )}
                       {isAlreadyReseller && (
                         <span className="text-xs px-2 py-0.5 rounded-full bg-green-600 text-white">
-                          Active
+                          {t('badgeActive', 'Active')}
                         </span>
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {isAlreadyReseller ? "You're already a reseller! Check the Sell & Earn tab." : type.subtitle}
+                      {isAlreadyReseller 
+                        ? t('alreadyReseller', "You're already a reseller! Check the Sell & Earn tab.") 
+                        : type.subtitle}
                     </p>
                   </div>
                 </CardContent>
@@ -118,7 +147,7 @@ export function BusinessTypeSelector({
 
         <div className="flex justify-end">
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            {t('cancel', 'Cancel')}
           </Button>
         </div>
       </DialogContent>

@@ -1,8 +1,18 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { 
+  ResponsiveDialog, 
+  ResponsiveDialogContent, 
+  ResponsiveDialogDescription, 
+  ResponsiveDialogHeader, 
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+  ResponsiveDialogTitle 
+} from '@/components/ui/responsive-dialog';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, CheckCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
+import { applyReplacements } from '@/lib/i18n-helpers';
 
 interface HealthConsentGateProps {
   open: boolean;
@@ -13,6 +23,7 @@ interface HealthConsentGateProps {
 
 export function HealthConsentGate({ open, onOpenChange, actionDescription, onConsent }: HealthConsentGateProps) {
   const [accepted, setAccepted] = useState(false);
+  const { translate } = useTranslation();
 
   const handleConsent = () => {
     // Log to audit trail (not analytics) with structured data
@@ -38,50 +49,57 @@ export function HealthConsentGate({ open, onOpenChange, actionDescription, onCon
     setAccepted(false);
   };
 
+  const descriptionText = applyReplacements(
+    translate('consent.dataAccess.description', "You're about to {action}. This action requires your explicit consent."),
+    { action: actionDescription }
+  );
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="max-w-md">
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-amber-500" />
-            Data Access Consent Required
-          </DialogTitle>
-          <DialogDescription>
-            You're about to {actionDescription}. This action requires your explicit consent.
-          </DialogDescription>
-        </DialogHeader>
+            {translate('consent.dataAccess.title', 'Data Access Consent Required')}
+          </ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>
+            {descriptionText}
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <Alert>
-          <Shield className="w-4 h-4" />
-          <AlertDescription>
-            Your personal data is protected by privacy regulations (GDPR, HIPAA, PDPA). By proceeding, you consent to this specific action only.
-          </AlertDescription>
-        </Alert>
+        <ResponsiveDialogBody>
+          <Alert>
+            <Shield className="w-4 h-4" />
+            <AlertDescription>
+              {translate('consent.dataAccess.gdprNotice', 'Your personal data is protected by privacy regulations (GDPR, HIPAA, PDPA). By proceeding, you consent to this specific action only.')}
+            </AlertDescription>
+          </Alert>
 
-        <div className="space-y-3 text-sm">
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>You can revoke this consent at any time</span>
+          <div className="space-y-3 text-sm mt-4">
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>{translate('consent.dataAccess.revokeAnytime', 'You can revoke this consent at any time')}</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>{translate('consent.dataAccess.loggedForSecurity', 'This consent is logged for your security')}</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <span>{translate('consent.dataAccess.recipientsComply', 'Recipients must comply with privacy regulations')}</span>
+            </div>
           </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>This consent is logged for your security</span>
-          </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-            <span>Recipients must comply with privacy regulations</span>
-          </div>
-        </div>
+        </ResponsiveDialogBody>
 
-        <DialogFooter>
+        <ResponsiveDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {translate('buttons.cancel', 'Cancel')}
           </Button>
           <Button onClick={handleConsent}>
-            I Consent
+            {translate('consent.dataAccess.iConsent', 'I Consent')}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

@@ -404,12 +404,15 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
   return (
     <>
       <Dialog open={open} onOpenChange={(isOpen) => { if (isOpen) { onOpenChange(true); } else { handleClose(); } }}>
-        <DialogContent className={cn(
-          "max-w-3xl overflow-hidden flex flex-col",
-          "md:max-h-[90vh] md:rounded-2xl",
-          "max-md:w-screen max-md:h-screen max-md:max-w-full max-md:rounded-none",
-          "bg-gradient-to-br from-background/95 via-background to-background backdrop-blur-xl border-2 shadow-2xl"
-        )}>
+        <DialogContent 
+          className={cn(
+            "max-w-3xl overflow-hidden flex flex-col z-[60]",
+            "md:max-h-[90vh] md:rounded-2xl",
+            "max-md:w-screen max-md:h-screen max-md:max-w-full max-md:rounded-none",
+            "bg-gradient-to-br from-background/95 via-background to-background backdrop-blur-xl border-2 shadow-2xl"
+          )}
+          overlayClassName="z-[60]"
+        >
           <DialogHeader>
             <DialogTitle className="sr-only">
               {isEditMode ? "Edit Campaign" : "Create New Campaign"}

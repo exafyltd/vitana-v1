@@ -45,6 +45,20 @@ function useSidebar() {
   return context
 }
 
+// Safe version that doesn't throw when outside provider context
+function useSidebarSafe() {
+  const context = React.useContext(SidebarContext)
+  return context ?? { 
+    state: 'expanded' as const, 
+    open: true, 
+    setOpen: () => {},
+    openMobile: false,
+    setOpenMobile: () => {},
+    isMobile: false,
+    toggleSidebar: () => {}
+  }
+}
+
 const SidebarProvider = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
@@ -758,4 +772,5 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  useSidebarSafe,
 }
