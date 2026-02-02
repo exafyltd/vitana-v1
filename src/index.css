@@ -582,7 +582,7 @@ All colors MUST be HSL.
     margin: 0 !important;
     z-index: 40 !important; /* above content, below modals */
     pointer-events: auto !important;
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
+    /* Removed filter: drop-shadow - orb has its own internal shadows */
   }
 
   /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */
