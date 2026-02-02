@@ -1,7 +1,8 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
+import { useEffect, useRef, useCallback } from "react";
+import { isTabVisible } from "@/utils/realtimeDebounce";
 
 export interface ActivityHistoryItem {
   id: string;
@@ -297,8 +298,24 @@ const ITEMS_PER_PAGE = 20;
 export function useActivityHistory(filterType?: string) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  
+  // Debounce timer for activity updates
+  const activityTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Debounced invalidation to prevent cascade refetches
+  const invalidateActivityHistory = useCallback(() => {
+    if (activityTimerRef.current) {
+      clearTimeout(activityTimerRef.current);
+    }
+    activityTimerRef.current = setTimeout(() => {
+      if (isTabVisible()) {
+        queryClient.invalidateQueries({ queryKey: ['activity-history'] });
+      }
+      activityTimerRef.current = null;
+    }, 2000);
+  }, [queryClient]);
 
-  // Set up realtime subscription for ai_messages
+  // Set up realtime subscription for ai_messages - INSERT only
   useEffect(() => {
     const channel = supabase
       .channel('ai_messages_realtime')
@@ -311,8 +328,7 @@ export function useActivityHistory(filterType?: string) {
         },
         (payload) => {
           console.log('New AI message detected, refreshing timeline...');
-          // Invalidate queries to trigger refetch
-          queryClient.invalidateQueries({ queryKey: ['activity-history'] });
+          invalidateActivityHistory();
         }
       )
       .subscribe();
@@ -320,31 +336,31 @@ export function useActivityHistory(filterType?: string) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [invalidateActivityHistory]);
 
-  // Set up realtime subscription for user_activity_log
+  // Set up realtime subscription for user_activity_log - INSERT only (not *)
   useEffect(() => {
     const channel = supabase
       .channel('activity_log_realtime')
       .on(
         'postgres_changes',
         {
-          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
+          event: 'INSERT', // Changed from * to INSERT only
           schema: 'public',
           table: 'user_activity_log'
         },
         (payload) => {
-          console.log('Activity log change detected, refreshing timeline...', payload.eventType);
-          // Invalidate queries to trigger refetch
-          queryClient.invalidateQueries({ queryKey: ['activity-history'] });
+          console.log('Activity log insert detected, refreshing timeline...');
+          invalidateActivityHistory();
         }
       )
       .subscribe();
 
     return () => {
+      if (activityTimerRef.current) clearTimeout(activityTimerRef.current);
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [invalidateActivityHistory]);
 
   const {
     data,
@@ -363,12 +379,12 @@ export function useActivityHistory(filterType?: string) {
 
       const promises = [];
 
-      // Fetch ai_messages (chat history) - fetch BOTH user and assistant messages
+      // Fetch ai_messages (chat history) - select specific columns, not *
       if (!filterType || filterType === 'all' || filterType === 'chat') {
         promises.push(
           supabase
             .from("ai_messages")
-            .select("*")
+            .select("id, user_id, role, content, created_at, conversation_id, context_data")
             .order("created_at", { ascending: false })
             .range(pageParam * ITEMS_PER_PAGE * 2, (pageParam + 1) * ITEMS_PER_PAGE * 2 - 1) // Fetch more to account for pairs
         );
@@ -376,10 +392,10 @@ export function useActivityHistory(filterType?: string) {
         promises.push(Promise.resolve({ data: [], error: null }));
       }
 
-      // Fetch user_activity_log
+      // Fetch user_activity_log - select specific columns, not *
       let logQuery = supabase
         .from("user_activity_log")
-        .select("*")
+        .select("id, user_id, activity_type, activity_data, context_data, created_at")
         .order("created_at", { ascending: false })
         .range(pageParam * ITEMS_PER_PAGE, (pageParam + 1) * ITEMS_PER_PAGE - 1);
 

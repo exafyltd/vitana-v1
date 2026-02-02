@@ -291,26 +291,38 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     // Initial DB fallback load
     loadDatabasePresence();
 
-    // Enhanced heartbeat with connection monitoring
+    // Enhanced heartbeat with connection monitoring - 60s interval (was 30s)
+    // Skip heartbeat when tab is hidden to reduce DB writes
     const heartbeat = setInterval(() => {
+      // Skip if tab is hidden
+      if (document.visibilityState === 'hidden') {
+        console.log('[Presence] Skipping heartbeat - tab hidden');
+        return;
+      }
+      
       if (connectionRef.current.status === 'connected') {
         trackPresence();
       } else if (connectionRef.current.status === 'disconnected') {
         retryConnection();
       }
-    }, 30000);
+    }, 60000); // Changed from 30000 to 60000
 
-    // Connection health check every 10s
+    // Connection health check every 30s (was 10s)
     const healthCheck = setInterval(() => {
+      // Skip if tab is hidden
+      if (document.visibilityState === 'hidden') {
+        return;
+      }
+      
       const timeSinceLastConnection = connectionRef.current.lastConnected 
         ? Date.now() - connectionRef.current.lastConnected 
         : Infinity;
         
-      if (timeSinceLastConnection > 60000 && connectionRef.current.status !== 'disconnected') {
+      if (timeSinceLastConnection > 90000 && connectionRef.current.status !== 'disconnected') {
         console.log('[Presence] Connection health check failed, marking as disconnected');
         setConnection(prev => ({ ...prev, status: 'disconnected' }));
       }
-    }, 10000);
+    }, 30000); // Changed from 10000 to 30000
 
     return () => {
       clearInterval(heartbeat);
