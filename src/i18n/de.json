@@ -1983,6 +1983,25 @@
     },
     "lastSync": "Letzte Sync",
     "dataSync": "Daten-Synchronisation",
-    "comingSoonMessage": "{appName}-Integration kommt bald"
+    "comingSoonMessage": "{appName}-Integration kommt bald",
+    "popup": {
+      "title": "Apps & Services verbinden",
+      "searchPlaceholder": "Apps und Services suchen...",
+      "categories": {
+        "all": "Alle Apps",
+        "health": "Gesundheit & Fitness",
+        "social": "Social"
+      },
+      "availableApps": "Verfügbare Apps",
+      "verified": "Verifiziert",
+      "connected": "Verbunden",
+      "settings": "Einstellungen",
+      "disconnect": "Trennen",
+      "connect": "Verbinden",
+      "done": "Fertig",
+      "noResults": "Keine Apps gefunden",
+      "connectionSuccess": "Verbindung erfolgreich",
+      "connectionPlaceholder": "{appName}-Verbindung kommt bald"
+    }
   }
 }

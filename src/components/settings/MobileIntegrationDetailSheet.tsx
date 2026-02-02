@@ -8,17 +8,43 @@ import type { Integration } from "./integrationData";
 interface MobileIntegrationDetailSheetProps {
   integration: Integration | null;
   onClose: () => void;
+  onConnect?: (integration: Integration) => void;
+  onDisconnect?: (integration: Integration) => void;
+  onConfigure?: (integration: Integration) => void;
 }
 
 export function MobileIntegrationDetailSheet({
   integration,
   onClose,
+  onConnect,
+  onDisconnect,
+  onConfigure,
 }: MobileIntegrationDetailSheetProps) {
   const { translate } = useTranslation();
 
   if (!integration) return null;
 
   const Icon = integration.icon;
+
+  const handleConnect = () => {
+    if (onConnect) {
+      onConnect(integration);
+    }
+    onClose();
+  };
+
+  const handleDisconnect = () => {
+    if (onDisconnect) {
+      onDisconnect(integration);
+    }
+    onClose();
+  };
+
+  const handleConfigure = () => {
+    if (onConfigure) {
+      onConfigure(integration);
+    }
+  };
 
   return (
     <Sheet open={!!integration} onOpenChange={() => onClose()}>
@@ -58,10 +84,10 @@ export function MobileIntegrationDetailSheet({
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline" className="flex-1">
+              <Button variant="outline" className="flex-1" onClick={handleConfigure}>
                 {translate('connectedApps.actions.configure')}
               </Button>
-              <Button variant="destructive" className="flex-1">
+              <Button variant="destructive" className="flex-1" onClick={handleDisconnect}>
                 {translate('connectedApps.actions.disconnect')}
               </Button>
             </div>
@@ -73,7 +99,7 @@ export function MobileIntegrationDetailSheet({
             </p>
           </div>
         ) : (
-          <Button className="w-full" size="lg">
+          <Button className="w-full" size="lg" onClick={handleConnect}>
             <Plus className="h-4 w-4 mr-2" />
             {translate('connectedApps.actions.connect')}
           </Button>

@@ -1983,6 +1983,25 @@
     },
     "lastSync": "Last sync",
     "dataSync": "Data syncing",
-    "comingSoonMessage": "{appName} integration coming soon"
+    "comingSoonMessage": "{appName} integration coming soon",
+    "popup": {
+      "title": "Connect Apps & Services",
+      "searchPlaceholder": "Search apps and services...",
+      "categories": {
+        "all": "All Apps",
+        "health": "Health & Fitness",
+        "social": "Social"
+      },
+      "availableApps": "Available Apps",
+      "verified": "Verified",
+      "connected": "Connected",
+      "settings": "Settings",
+      "disconnect": "Disconnect",
+      "connect": "Connect",
+      "done": "Done",
+      "noResults": "No apps found",
+      "connectionSuccess": "Connection successful",
+      "connectionPlaceholder": "{appName} connection coming soon"
+    }
   }
 }
