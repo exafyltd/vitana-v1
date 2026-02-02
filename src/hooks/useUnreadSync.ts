@@ -1,16 +1,45 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
+import { isTabVisible } from '@/utils/realtimeDebounce';
 
 /**
  * Cross-tab unread count synchronization hook
  * Listens for real-time unread updates and syncs across browser tabs
+ * Optimized with debouncing to reduce DB operations
  */
 export function useUnreadSync(
   onThreadRead: (threadId: string, context: 'global' | 'tenant') => void,
   onUnreadChange: (threadId: string, context: 'global' | 'tenant', tenantId?: string) => void
 ) {
   const { user } = useAuth();
+  
+  // Debounce timers
+  const unreadChangeTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const pendingChanges = useRef<Map<string, { context: 'global' | 'tenant'; tenantId?: string }>>(new Map());
+
+  // Batched debounced unread change handler
+  const processPendingChanges = useCallback(() => {
+    if (!isTabVisible()) return;
+    
+    pendingChanges.current.forEach((data, threadId) => {
+      onUnreadChange(threadId, data.context, data.tenantId);
+    });
+    pendingChanges.current.clear();
+  }, [onUnreadChange]);
+
+  const debouncedUnreadChange = useCallback((threadId: string, context: 'global' | 'tenant', tenantId?: string) => {
+    // Batch multiple changes
+    pendingChanges.current.set(threadId, { context, tenantId });
+    
+    if (unreadChangeTimerRef.current) {
+      clearTimeout(unreadChangeTimerRef.current);
+    }
+    unreadChangeTimerRef.current = setTimeout(() => {
+      processPendingChanges();
+      unreadChangeTimerRef.current = null;
+    }, 2000);
+  }, [processPendingChanges]);
 
   // Set up real-time sync for unread count changes
   useEffect(() => {
@@ -22,17 +51,18 @@ export function useUnreadSync(
         const { threadId, userId, context } = payload.payload;
         
         // Only sync if it's from another user or another tab
-        if (userId === user.id) {
+        if (userId === user.id && isTabVisible()) {
           onThreadRead(threadId, context);
         }
       })
       .on('broadcast', { event: 'unread_change' }, (payload) => {
         const { threadId, context, tenantId } = payload.payload;
-        onUnreadChange(threadId, context, tenantId);
+        debouncedUnreadChange(threadId, context, tenantId);
       })
       .subscribe();
 
     // Subscribe to participant changes for real-time unread updates
+    // Using UPDATE only (not *) to reduce event volume
     const participantChannel = supabase
       .channel('participant_changes')
       .on('postgres_changes', {
@@ -42,7 +72,7 @@ export function useUnreadSync(
         filter: `user_id=eq.${user.id}`
       }, (payload) => {
         const { thread_id } = payload.new as any;
-        onUnreadChange(thread_id, 'tenant');
+        debouncedUnreadChange(thread_id, 'tenant');
       })
       .on('postgres_changes', {
         event: 'UPDATE',
@@ -51,15 +81,16 @@ export function useUnreadSync(
         filter: `user_id=eq.${user.id}`
       }, (payload) => {
         const { thread_id } = payload.new as any;
-        onUnreadChange(thread_id, 'global');
+        debouncedUnreadChange(thread_id, 'global');
       })
       .subscribe();
 
     return () => {
+      if (unreadChangeTimerRef.current) clearTimeout(unreadChangeTimerRef.current);
       supabase.removeChannel(unreadSyncChannel);
       supabase.removeChannel(participantChannel);
     };
-  }, [user, onThreadRead, onUnreadChange]);
+  }, [user, onThreadRead, debouncedUnreadChange]);
 
   // Broadcast unread change to sync across tabs/devices
   const broadcastUnreadChange = useCallback(async (
