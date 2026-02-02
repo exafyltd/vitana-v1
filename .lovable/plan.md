@@ -1,198 +1,223 @@
 
-## Fix: Stop Sharing Supabase Edge Function URLs Directly
 
-### Problem Analysis
+## Fix Mobile Health Screen Internationalization (i18n)
 
-The current architecture shares the **Supabase edge function URL** directly:
+### Problem
 
-```
-https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=...
-```
+The mobile Health screen displays all text in English even when German is selected. The screenshot shows hardcoded English strings:
 
-This causes:
-1. **Antivirus false positives** (Kaspersky HEUR:AdWare.Script.Generic)
-2. **User distrust** - URLs look suspicious, not like a real website
-3. **Broken experience** if the edge function fails or is slow
+- "Your Health Snapshot"
+- "Top 15%"
+- "Improving" / "Declining" / "Stable"
+- "Good" (tier badge)
+- "Nutrition", "Exercise", "Sleep", "Hydration", "Mental" (pillar labels)
+- "Priority Focus"
+- "This area currently has the biggest impact..."
+- "Autopilot Suggests"
+- "Take Action"
+- "Upload Blood Test", "Order Blood Test", "View Plans"
 
 ### Root Cause
 
-In `src/lib/shareUrl.ts` (lines 31-47), the `getShareUrl()` function for events/meetups returns the edge function URL:
+The mobile health components use hardcoded English strings instead of the `useTranslation()` hook:
 
-```typescript
-if (type === 'event' || type === 'meetup') {
-  // ...
-  return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?${params.toString()}`;
-}
-```
+| Component | Hardcoded Strings |
+|-----------|------------------|
+| `MobileHealthSnapshot.tsx` | "Your Health Snapshot", pillar labels, trend labels, "Top X%" |
+| `MobilePriorityFocus.tsx` | "Priority Focus", explanation text |
+| `MobileAutopilotGuidance.tsx` | "Autopilot Suggests", "Take Action" |
+| `MobileHealthActionStrip.tsx` | "Upload Blood Test", "Order Blood Test", "View Plans" |
+| `Health.tsx` | Autopilot suggestions passed as props |
 
-This URL is then used everywhere events are shared:
-- `UniversalShareDialog` (via `PersonalShareButtons`)
-- `MeetupDetailsDrawer` 
-- `EventsAndMeetups.tsx`
-- `MobileEventCarousel.tsx`
+### Solution
 
-### Correct Architecture
-
-The solution requires separating **what users click** from **what crawlers see**:
-
-```text
-+------------------+       +-------------------+       +------------------+
-|   User Shares    |       |  WhatsApp/Social  |       |   User Clicks    |
-|  Link via App    |  -->  |  Crawler Fetches  |  -->  |  Link in Chat    |
-+------------------+       +-------------------+       +------------------+
-         |                         |                          |
-         v                         v                          v
-   Normal App URL           og-event returns            Normal App URL
-   /e/my-event              OG HTML with meta           /e/my-event
-                            tags pointing to            (static HTML, 200)
-                            the image                   
-```
-
-**Key insight**: The edge function should **NOT** be the shared URL. It should only be used for:
-1. Generating dynamic OG images (if needed in future)
-2. Server-side OG meta tag injection (for hosts without SSR)
-
-Since this app uses **client-side rendering (SPA)**, crawlers that fetch `/e/my-event` won't see the meta tags because they're injected by JavaScript after load.
-
-### Solution Strategy
-
-There are two possible approaches:
-
-**Option A: Cloudflare Worker Proxy (Production)**
-- Add a Cloudflare Worker on the custom domain that intercepts crawler requests
-- Serve OG HTML for crawlers, pass-through for real users
-- Requires domain/infrastructure changes
-
-**Option B: Query Parameter Entry Point (Immediate Fix)**
-- Share clean app URLs that go through `ShareEntry` component
-- `ShareEntry` already exists and works correctly
-- The SPA loads, injects meta tags client-side
-- Works but meta tags may not be picked up by all crawlers
-
-**Recommended: Hybrid Approach**
-1. Share clean app URLs (`vitana.exafy.io/e/my-slug`)
-2. Keep og-event for crawlers via a redirect pattern
-3. Use ShareEntry's query param approach as fallback
-
-### Implementation Plan
-
-#### 1. Update `src/lib/shareUrl.ts` - Return App URLs Instead of Edge Function URLs
-
-Change the event/meetup case to return normal app URLs:
-
-```typescript
-// Events/meetups use clean app URLs for sharing
-// OG previews work via client-side meta tag injection
-if (type === 'event' || type === 'meetup') {
-  const appUrl = window.location.origin;
-  
-  // Build clean URL path
-  const path = options?.slug 
-    ? `/e/${encodeURIComponent(options.slug)}`
-    : `/pub/events/${encodeURIComponent(id)}`;
-  
-  // Add UTM parameters
-  const params = new URLSearchParams();
-  if (options?.utm_source) params.set('utm_source', options.utm_source);
-  if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
-  if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
-  
-  const queryString = params.toString();
-  return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
-}
-```
-
-#### 2. Ensure Event Pages Have Proper OG Meta Tags
-
-The `PublicEventLanding.tsx` already uses the `SEO` component correctly:
-
-```tsx
-<SEO
-  title={event.title}
-  description={shortDescription}
-  image={event.image_url}
-  url={publicEventUrl}
-  type="event"
-/>
-```
-
-This injects OG meta tags client-side. For SPAs, this works when:
-- The crawler supports JavaScript execution (WhatsApp does partially)
-- The index.html has basic fallback meta tags
-
-#### 3. Update `index.html` - Add Fallback OG Meta Tags
-
-Add default OG meta tags that will be overwritten by the SEO component:
-
-```html
-<head>
-  <!-- Default OG tags - overwritten by SEO component on specific pages -->
-  <meta property="og:site_name" content="VITANA" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="VITANA - Longevity Community" />
-  <meta property="og:description" content="Discover events and connect with the longevity community" />
-  <meta property="og:image" content="https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-</head>
-```
-
-#### 4. Apply Same Fix to Campaigns
-
-Update the campaign case in `shareUrl.ts` to also use app URLs.
+1. Add missing translation keys to `de.json` and `en.json`
+2. Update all 4 mobile health components to use `useTranslation()`
+3. Update `Health.tsx` to pass translated strings as props
 
 ### Files to Modify
 
 | File | Changes |
 |------|---------|
-| `src/lib/shareUrl.ts` | Change event/meetup/campaign URLs from edge function to app URLs |
-| `index.html` | Add fallback OG meta tags for crawlers that don't execute JS |
+| `src/i18n/de.json` | Add missing keys: `healthSnapshot`, `topPercentile`, trend labels |
+| `src/i18n/en.json` | Add same keys for English |
+| `src/components/health/mobile/MobileHealthSnapshot.tsx` | Import `useTranslation`, replace hardcoded strings |
+| `src/components/health/mobile/MobilePriorityFocus.tsx` | Import `useTranslation`, replace hardcoded strings |
+| `src/components/health/mobile/MobileAutopilotGuidance.tsx` | Import `useTranslation`, replace hardcoded strings |
+| `src/components/health/mobile/MobileHealthActionStrip.tsx` | Import `useTranslation`, replace hardcoded strings |
+| `src/pages/Health.tsx` | Translate autopilot suggestions and priority focus explanation |
 
-### Important Notes
+---
 
-**WhatsApp Preview Behavior:**
-- WhatsApp's crawler partially executes JavaScript
-- It may still show rich previews from client-side meta tags
-- Testing is needed after implementation
+## Technical Details
 
-**Alternative for Full Crawler Support:**
-If client-side meta tags don't work well for all crawlers, a future enhancement would be:
-1. Deploy the app with SSR (e.g., via Cloudflare Pages + Workers)
-2. Or use Cloudflare Worker to serve OG HTML for crawlers only
+### Translation Keys to Add
 
-**No Breaking Changes:**
-- Existing shared links using `?share=event&slug=...` pattern still work
-- The `ShareEntry` component handles the redirect correctly
-- Users see clean URLs, no more Supabase function URLs
+Add to `health` namespace in both `de.json` and `en.json`:
 
-### Expected Results After Fix
-
-| Before | After |
-|--------|-------|
-| `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=my-event` | `https://vitana.exafy.io/e/my-event` |
-| Antivirus warnings | No warnings |
-| Suspicious-looking URL | Clean, branded URL |
-| Edge function dependency for every share | Direct app access |
-
-### Technical Details
-
-The key change is in `shareUrl.ts`:
-
-```typescript
-// BEFORE (problematic)
-if (type === 'event' || type === 'meetup') {
-  return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?...`;
-}
-
-// AFTER (correct)
-if (type === 'event' || type === 'meetup') {
-  const appUrl = window.location.origin;
-  const path = options?.slug ? `/e/${options.slug}` : `/pub/events/${id}`;
-  return `${appUrl}${path}${queryString}`;
+```json
+{
+  "health": {
+    "healthSnapshot": "Dein Gesundheits-Überblick",  // DE
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Verbessernd",
+      "declining": "Abnehmend", 
+      "stable": "Stabil"
+    },
+    "priorityFocusExplanation": "Dieser Bereich hat derzeit den größten Einfluss auf Ihre langfristige Gesundheit.",
+    "autopilotSuggests": "Autopilot empfiehlt",
+    "suggestions": {
+      "uploadBloodTestResults": "Bluttestergebnisse hochladen",
+      "startFitnessChallenge": "30-Tage-Fitness-Challenge starten"
+    }
+  }
 }
 ```
 
-This ensures:
-1. Shared links are normal app URLs (HTTP 200, static HTML first paint)
-2. No user ever opens `/functions/v1/og-event` directly
-3. OG meta tags are injected client-side by the SEO component
-4. WhatsApp preview should still work (needs testing)
+### Component Updates
+
+**MobileHealthSnapshot.tsx:**
+```tsx
+import { useTranslation } from '@/hooks/useTranslation';
+
+export function MobileHealthSnapshot({ ... }) {
+  const { translate } = useTranslation();
+  
+  // Replace hardcoded labels
+  const PILLAR_CONFIG = [
+    { key: 'nutrition', label: translate('health.pillars.nutrition'), emoji: '🥗' },
+    { key: 'exercise', label: translate('health.pillars.exercise'), emoji: '🏃' },
+    // ...
+  ];
+  
+  // Replace trend label
+  const trendLabel = trend === 'up' 
+    ? translate('health.trend.improving')
+    : trend === 'down' 
+    ? translate('health.trend.declining') 
+    : translate('health.trend.stable');
+  
+  return (
+    // ...
+    <span>🧬 {translate('health.healthSnapshot')}</span>
+    <span>{translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}</span>
+    <span>{tier.label}</span> // Use translated tier from vitanaIndex
+    // ...
+  );
+}
+```
+
+**MobilePriorityFocus.tsx:**
+```tsx
+import { useTranslation } from '@/hooks/useTranslation';
+
+export function MobilePriorityFocus({ pillarName, ... }) {
+  const { translate } = useTranslation();
+  
+  return (
+    // ...
+    <span>{translate('health.priorityFocus')}</span>
+    <p>{translate('health.priorityFocusExplanation')}</p>
+    // ...
+  );
+}
+```
+
+**MobileAutopilotGuidance.tsx:**
+```tsx
+import { useTranslation } from '@/hooks/useTranslation';
+
+export function MobileAutopilotGuidance({ suggestions, onTakeAction }) {
+  const { translate } = useTranslation();
+  
+  return (
+    // ...
+    <span>{translate('health.autopilotSuggests')}</span>
+    <Button>{translate('health.takeAction')}</Button>
+    // ...
+  );
+}
+```
+
+**MobileHealthActionStrip.tsx:**
+```tsx
+import { useTranslation } from '@/hooks/useTranslation';
+
+export function MobileHealthActionStrip({ ... }) {
+  const { translate } = useTranslation();
+  
+  return (
+    // ...
+    <Button>{translate('health.uploadBloodTest')}</Button>
+    <Button>{translate('health.orderBloodTest')}</Button>
+    <Button>{translate('health.viewPlans')}</Button>
+    // ...
+  );
+}
+```
+
+**Health.tsx - Translate suggestions:**
+```tsx
+const { translate } = useTranslation();
+
+// Inside mobile render
+<MobileAutopilotGuidance
+  suggestions={[
+    translate('health.suggestions.uploadBloodTestResults'),
+    translate('health.suggestions.startFitnessChallenge')
+  ]}
+  onTakeAction={() => setHealthActionsOpen(true)}
+/>
+
+<MobilePriorityFocus
+  pillarName={translate(`health.pillars.${weakestPillar[0]}`)}
+  pillarScore={weakestPillar[1]}
+  pillarEmoji={pillarLabels[weakestPillar[0]].emoji}
+  explanation={translate('health.priorityFocusExplanation')}
+/>
+```
+
+### Tier Label Translation
+
+The `getVitanaIndexTier()` function returns English tier labels. Either:
+1. Map the tier label to translation key: `translate(\`vitanaIndex.${tier.label.toLowerCase()}\`)`
+2. Or update the function to return a key instead of a label
+
+Using option 1 (simpler):
+```tsx
+// In MobileHealthSnapshot.tsx
+const translatedTierLabel = translate(`vitanaIndex.${tier.label.toLowerCase()}`);
+```
+
+### Existing Keys Already Available
+
+These keys already exist in `de.json`:
+- `health.priorityFocus` → "Priorität heute"
+- `health.autopilotGuidance` → "Autopilot-Empfehlungen"
+- `health.takeAction` → "Aktion ausführen"
+- `health.uploadBloodTest` → "Bluttest hochladen"
+- `health.orderBloodTest` → "Bluttest bestellen"
+- `health.viewPlans` → "Pläne anzeigen"
+- `health.pillars.nutrition` → "Ernährung"
+- `health.pillars.exercise` → "Bewegung"
+- `health.pillars.sleep` → "Schlaf"
+- `health.pillars.hydration` → "Hydration"
+- `health.pillars.mental` → "Mental"
+- `vitanaIndex.improving` → "Verbessernd"
+- `vitanaIndex.good` → "Gut"
+
+### Keys to Add
+
+| Key | German | English |
+|-----|--------|---------|
+| `health.healthSnapshot` | Dein Gesundheits-Überblick | Your Health Snapshot |
+| `health.topPercentile` | Top {percent}% | Top {percent}% |
+| `health.trend.improving` | Verbessernd | Improving |
+| `health.trend.declining` | Abnehmend | Declining |
+| `health.trend.stable` | Stabil | Stable |
+| `health.priorityFocusExplanation` | Dieser Bereich hat derzeit den größten Einfluss auf Ihre langfristige Gesundheit. | This area currently has the biggest impact on your long-term healthspan. |
+| `health.autopilotSuggests` | Autopilot empfiehlt | Autopilot Suggests |
+| `health.suggestions.uploadBloodTestResults` | Bluttestergebnisse hochladen | Upload blood test results |
+| `health.suggestions.startFitnessChallenge` | 30-Tage-Fitness-Challenge starten | Start 30-Day Fitness Challenge |
+
