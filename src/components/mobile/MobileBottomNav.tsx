@@ -119,6 +119,9 @@ export function MobileBottomNav() {
               }}
               aria-label="Ask VITANA for guidance"
               className="relative cursor-pointer"
+              style={{
+                filter: 'drop-shadow(0 4px 12px hsl(var(--background) / 0.5)) drop-shadow(0 2px 6px hsl(var(--background) / 0.4))',
+              }}
             >
               <VitanalandPortalSeed 
                 audioState="idle"
