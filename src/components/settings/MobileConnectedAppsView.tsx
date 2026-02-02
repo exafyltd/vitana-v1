@@ -5,6 +5,10 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { useTranslation } from "@/hooks/useTranslation";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { ConnectAppPopup } from "@/components/ConnectAppPopup";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
 
 import { MobileIntegrationSection } from "./MobileIntegrationSection";
 import { MobileIntegrationDetailSheet } from "./MobileIntegrationDetailSheet";
@@ -22,6 +26,8 @@ export function MobileConnectedAppsView() {
   const { translate } = useTranslation();
   const [selectedApp, setSelectedApp] = useState<Integration | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [connectPopupOpen, setConnectPopupOpen] = useState(false);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
 
   const { connected, syncing } = getConnectionStats();
 
@@ -51,20 +57,29 @@ export function MobileConnectedAppsView() {
         />
 
         {/* Action Bar */}
-        <UtilityActionButton hideGiftVoucher>
+        <UtilityActionButton
+          afterGiftVoucherChildren={
+            <>
+              <VitanaIndexChip />
+              <AutopilotChip 
+                pendingCount={0} 
+                onClick={() => setAutopilotOpen(true)} 
+              />
+            </>
+          }
+        >
           <ExpandableSearchButton
             placeholder={translate('connectedApps.searchPlaceholder')}
             onSearch={setSearchQuery}
           />
+          <UniversalCalendarButton />
           <Button
-            variant="soft"
-            size="xs"
-            className="shrink-0"
-            onClick={() => {
-              // Could open a connect popup in the future
-            }}
+            variant="ghost"
+            size="sm"
+            className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            onClick={() => setConnectPopupOpen(true)}
           >
-            <Plus className="h-4 w-4 mr-1" />
+            <Plus className="h-4 w-4" />
             {translate('connectedApps.addApp')}
           </Button>
         </UtilityActionButton>
@@ -120,6 +135,18 @@ export function MobileConnectedAppsView() {
       <MobileIntegrationDetailSheet
         integration={selectedApp}
         onClose={() => setSelectedApp(null)}
+      />
+
+      {/* Connect App Popup */}
+      <ConnectAppPopup 
+        isOpen={connectPopupOpen} 
+        onClose={() => setConnectPopupOpen(false)} 
+      />
+
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen} 
       />
     </div>
   );
