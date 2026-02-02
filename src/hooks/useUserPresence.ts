@@ -335,10 +335,16 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     };
   }, [user?.id, context]);
 
-  // Update presence when activity or visibility changes
+  // Update presence when activity changes
+  // Using ref to avoid trackPresence in deps which causes re-render loops
+  const trackPresenceRef = useRef(trackPresence);
   useEffect(() => {
-    trackPresence();
-  }, [isActive, trackPresence]);
+    trackPresenceRef.current = trackPresence;
+  }, [trackPresence]);
+
+  useEffect(() => {
+    trackPresenceRef.current();
+  }, [isActive]);
 
   useEffect(() => {
     const onVisibility = () => trackPresence();

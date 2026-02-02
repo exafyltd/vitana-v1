@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -42,7 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signOut = async () => {
+  // Memoize signOut to prevent unnecessary re-renders
+  const signOut = useCallback(async () => {
     try {
       console.log('[AuthProvider] Signing out user');
       // Clear all toasts before signing out
@@ -61,14 +62,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('[AuthProvider] Sign out exception:', error);
       // Don't throw - allow sign out to complete even if there's an error
     }
-  };
+  }, [dismiss]);
 
-  const value: AuthContextValue = {
+  // Memoize context value to prevent unnecessary re-renders
+  const value = useMemo<AuthContextValue>(() => ({
     user,
     session,
     loading,
     signOut,
-  };
+  }), [user, session, loading, signOut]);
 
   return (
     <AuthContext.Provider value={value}>
