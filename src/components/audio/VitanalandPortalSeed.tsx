@@ -232,9 +232,11 @@ export function VitanalandPortalSeed({
           className="absolute inset-0 rounded-full overflow-hidden"
           style={{
             background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.15) 0%, rgba(13, 44, 243, 0.45) 100%)',
-            boxShadow: isError
-              ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, 0.3), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
-              : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, 0.4), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`,
+            boxShadow: glowIntensity > 0
+              ? (isError
+                  ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, 0.3), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
+                  : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, 0.4), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`)
+              : 'inset 0 0 40px rgba(0, 0, 0, 0.15)',
             border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.25)`,
           }}
         >
@@ -474,7 +476,9 @@ export function VitanalandPortalSeed({
               height: `${config.coreSize * 0.96}px`,
               background: 'radial-gradient(circle, rgba(76, 200, 244, 0.85) 0%, rgba(255, 109, 168, 0.65) 60%, transparent 100%)',
               filter: `blur(${24 * config.nebulaScale}px)`,
-              boxShadow: `0 0 ${60 * config.nebulaScale}px rgba(76, 200, 244, 0.9), 0 0 ${80 * config.nebulaScale}px rgba(76, 200, 244, 0.5)`,
+              boxShadow: glowIntensity > 0 
+                ? `0 0 ${60 * config.nebulaScale}px rgba(76, 200, 244, 0.9), 0 0 ${80 * config.nebulaScale}px rgba(76, 200, 244, 0.5)`
+                : 'none',
             }}
             animate={{
               scale: isListening ? [1, 1.1, 1] : [0.95, 1.05, 0.95],

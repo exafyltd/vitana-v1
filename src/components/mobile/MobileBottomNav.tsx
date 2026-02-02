@@ -78,20 +78,7 @@ export function MobileBottomNav() {
       {/* Glass background - base layer */}
       <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
         
-        {/* Orb aura layer - z-[51], rendered BEHIND nav items */}
-        <div 
-          className="absolute left-1/2 -translate-x-1/2 bottom-[calc(env(safe-area-inset-bottom)+8px)] pointer-events-none z-[51]"
-          style={{ width: '120px', height: '120px' }}
-        >
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'radial-gradient(circle at 50% 30%, hsl(var(--background) / 0.95) 0%, hsl(var(--background) / 0.7) 30%, hsl(var(--background) / 0.3) 55%, transparent 75%)',
-              filter: 'blur(16px)',
-              transform: 'translateY(-24px)',
-            }}
-          />
-        </div>
+        {/* Orb aura layer removed - no external glow */}
         
         {/* Left nav items - z-[52], ABOVE aura */}
         <div className="relative z-[52] flex items-center">
@@ -119,9 +106,6 @@ export function MobileBottomNav() {
               }}
               aria-label="Ask VITANA for guidance"
               className="relative cursor-pointer"
-              style={{
-                filter: 'drop-shadow(0 4px 12px hsl(var(--background) / 0.5)) drop-shadow(0 2px 6px hsl(var(--background) / 0.4))',
-              }}
             >
               <VitanalandPortalSeed 
                 audioState="idle"
