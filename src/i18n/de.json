@@ -1,11 +1,16 @@
 {
   "orders": {
     "myOrders": "Meine Bestellungen",
+    "title": "Bestellungen",
+    "description": "Ihre Bestellhistorie und aktive Abonnements",
     "trackDescription": "Verfolgen Sie Ihre Produktbestellungen und Event-Tickets",
     "searchPlaceholder": "Bestellungen suchen...",
     "tabs": {
       "active": "Aktiv",
-      "history": "Verlauf"
+      "history": "Verlauf",
+      "all": "Alle",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
     },
     "filters": {
       "all": "Alle",
@@ -25,11 +30,18 @@
       "title": "Kein Bestellverlauf",
       "description": "Ihre abgeschlossenen Bestellungen und vergangenen Events erscheinen hier."
     },
+    "noOrders": "Noch keine Bestellungen",
+    "noOrdersDesc": "Ihre Bestellungen werden hier erscheinen, sobald Sie etwas kaufen.",
     "browseProducts": "Produkte durchsuchen",
     "findEvents": "Events entdecken",
     "startShopping": "Einkaufen starten",
     "noFilter": "Keine {filter} gefunden",
     "noFilterDesc": "Keine {filter} in Ihrem Verlauf gefunden.",
+    "orderDate": "Bestelldatum",
+    "orderNumber": "Bestellnummer",
+    "viewDetails": "Details anzeigen",
+    "trackOrder": "Bestellung verfolgen",
+    "reorder": "Erneut bestellen",
     "detailSheet": {
       "title": "Bestelldetails",
       "orderInfo": "Bestellinfo",
@@ -710,32 +722,6 @@
       "actionSelected": "Aktion ausgewählt",
       "comingSoon": "{action} Funktion bald verfügbar!"
     }
-  },
-  "orders": {
-    "title": "Bestellungen",
-    "description": "Ihre Bestellhistorie und aktive Abonnements",
-    "tabs": {
-      "all": "Alle",
-      "active": "Aktiv",
-      "completed": "Abgeschlossen",
-      "cancelled": "Storniert"
-    },
-    "noOrders": "Noch keine Bestellungen",
-    "noOrdersDesc": "Ihre Bestellungen werden hier erscheinen, sobald Sie etwas kaufen.",
-    "browseProducts": "Produkte durchsuchen",
-    "orderDate": "Bestelldatum",
-    "orderNumber": "Bestellnummer",
-    "status": {
-      "pending": "Ausstehend",
-      "processing": "In Bearbeitung",
-      "shipped": "Versandt",
-      "delivered": "Geliefert",
-      "cancelled": "Storniert",
-      "refunded": "Erstattet"
-    },
-    "viewDetails": "Details anzeigen",
-    "trackOrder": "Bestellung verfolgen",
-    "reorder": "Erneut bestellen"
   },
   "vitanaIndex": {
     "title": "Vitana Gesundheitsindex",
