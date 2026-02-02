@@ -1,11 +1,16 @@
 {
   "orders": {
     "myOrders": "My Orders",
+    "title": "Orders",
+    "description": "Your order history and active subscriptions",
     "trackDescription": "Track your product orders and event tickets",
     "searchPlaceholder": "Search orders...",
     "tabs": {
       "active": "Active",
-      "history": "History"
+      "history": "History",
+      "all": "All",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
     },
     "filters": {
       "all": "All",
@@ -25,11 +30,18 @@
       "title": "No Order History",
       "description": "Your completed orders and past events will appear here."
     },
+    "noOrders": "No orders yet",
+    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
     "browseProducts": "Browse Products",
     "findEvents": "Find Events",
     "startShopping": "Start Shopping",
     "noFilter": "No {filter}",
     "noFilterDesc": "No {filter} found in your history.",
+    "orderDate": "Order date",
+    "orderNumber": "Order number",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "reorder": "Reorder",
     "detailSheet": {
       "title": "Order Details",
       "orderInfo": "Order Info",
@@ -710,32 +722,6 @@
       "actionSelected": "Action Selected",
       "comingSoon": "{action} feature coming soon!"
     }
-  },
-  "orders": {
-    "title": "Orders",
-    "description": "Your order history and active subscriptions",
-    "tabs": {
-      "all": "All",
-      "active": "Active",
-      "completed": "Completed",
-      "cancelled": "Cancelled"
-    },
-    "noOrders": "No orders yet",
-    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
-    "browseProducts": "Browse Products",
-    "orderDate": "Order date",
-    "orderNumber": "Order number",
-    "status": {
-      "pending": "Pending",
-      "processing": "Processing",
-      "shipped": "Shipped",
-      "delivered": "Delivered",
-      "cancelled": "Cancelled",
-      "refunded": "Refunded"
-    },
-    "viewDetails": "View Details",
-    "trackOrder": "Track Order",
-    "reorder": "Reorder"
   },
   "vitanaIndex": {
     "title": "Vitana Health Index",
