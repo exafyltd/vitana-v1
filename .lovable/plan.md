@@ -1,125 +1,160 @@
 
 
-## Fix Mobile Connected Apps Utility Action Bar
+## Fix Mobile Connected Apps: Popup i18n, Mobile Adaptation & Connect Action
 
-### Problem Summary
+### Issues Identified
 
-The Mobile Connected Apps screen is missing standard action bar components that appear on other mobile hubs:
+Based on the screenshots and code analysis, there are three main problems:
 
-| Missing Component | Status |
-|-------------------|--------|
-| 📅 **Calendar** button (`UniversalCalendarButton`) | Not included |
-| 🎁 **Gift Voucher** button | Explicitly hidden with `hideGiftVoucher` |
-| 🧬 **Vitana Index** chip | Not included in `afterGiftVoucherChildren` |
-| ✈️ **Autopilot** chip | Not included in `afterGiftVoucherChildren` |
-| ➕ **"App hinzufügen" button** | onClick handler is empty (does nothing) |
-
-The current implementation at line 54-70 of `MobileConnectedAppsView.tsx` has:
-- `hideGiftVoucher` set to `true`
-- No `afterGiftVoucherChildren` prop
-- No `UniversalCalendarButton`
-- Empty onClick for the "Add App" button
+| Issue | Root Cause |
+|-------|------------|
+| **1. ConnectAppPopup is not mobile-adapted** | Uses `Dialog` with `max-w-4xl` — a desktop modal instead of a mobile bottom sheet |
+| **2. All text is English despite German selected** | `ConnectAppPopup.tsx` has 100% hardcoded English strings — no `useTranslation` hook used |
+| **3. "Verbinden" button does nothing** | `MobileIntegrationDetailSheet.tsx` buttons have no `onClick` handlers |
 
 ---
 
-## Solution
+## Solution Overview
 
-Update `MobileConnectedAppsView.tsx` to match the standard mobile hub pattern used in `MobileOrdersView.tsx` (lines 250-297):
+### Part 1: Create Mobile-Friendly ConnectAppPopup
 
-1. **Remove** `hideGiftVoucher` prop (let Gift Voucher button appear)
-2. **Add** `UniversalCalendarButton` in children
-3. **Add** `afterGiftVoucherChildren` with `VitanaIndexChip` and `AutopilotChip`
-4. **Wire** the "Add App" button to open a bottom sheet or the existing `ConnectAppPopup`
+Replace the desktop `Dialog` with a responsive component that:
+- Uses **Sheet** (bottom drawer) on mobile
+- Keeps the **Dialog** behavior on desktop
+- Uses the existing `integrationData.ts` instead of duplicate mock data
+
+### Part 2: Add Full i18n Support
+
+Add a new `connectedApps.popup` namespace with all required translations:
+
+**New Keys:**
+```json
+{
+  "connectedApps": {
+    "popup": {
+      "title": "Apps & Services verbinden",
+      "searchPlaceholder": "Apps und Services suchen...",
+      "categories": {
+        "all": "Alle Apps",
+        "health": "Gesundheit & Fitness",
+        "calendar": "Kalender",
+        "social": "Social",
+        "productivity": "Produktivität"
+      },
+      "availableApps": "Verfügbare Apps",
+      "verified": "Verifiziert",
+      "connected": "Verbunden",
+      "settings": "Einstellungen",
+      "disconnect": "Trennen",
+      "connect": "Verbinden",
+      "done": "Fertig",
+      "manageConnections": "Alle Verbindungen verwalten",
+      "noResults": "Keine Apps gefunden"
+    }
+  }
+}
+```
+
+### Part 3: Wire Connect/Disconnect Actions
+
+The `MobileIntegrationDetailSheet` "Verbinden" button needs to:
+1. For **social apps** (LinkedIn, Instagram, TikTok, etc.) → Open `SocialMediaImportDialog`
+2. For **fitness apps** (Apple Health, Fitbit, etc.) → Show a toast/placeholder (future OAuth flow)
+3. For **coming soon** apps → Show informational message
 
 ---
 
 ## Technical Implementation
 
-### Current Code (Lines 53-70)
-```tsx
-{/* Action Bar */}
-<UtilityActionButton hideGiftVoucher>
-  <ExpandableSearchButton
-    placeholder={translate('connectedApps.searchPlaceholder')}
-    onSearch={setSearchQuery}
-  />
-  <Button
-    variant="soft"
-    size="xs"
-    className="shrink-0"
-    onClick={() => {
-      // Could open a connect popup in the future
-    }}
-  >
-    <Plus className="h-4 w-4 mr-1" />
-    {translate('connectedApps.addApp')}
-  </Button>
-</UtilityActionButton>
+### File 1: `src/components/ConnectAppPopup.tsx`
+
+**Changes:**
+1. Add `useIsMobile()` hook to detect mobile
+2. Replace `Dialog` with conditional rendering:
+   - **Mobile**: `Sheet` with `SheetContent side="bottom"`
+   - **Desktop**: Keep `Dialog`
+3. Add `useTranslation()` and replace all hardcoded strings
+4. Use `integrationData.ts` instead of duplicate mock apps array
+5. Simplify mobile layout (single-column card list, no ratings)
+
+### File 2: `src/components/settings/MobileIntegrationDetailSheet.tsx`
+
+**Changes:**
+1. Add `onConnect` and `onDisconnect` props
+2. Add `onClick` handlers to the action buttons
+3. For social apps, call a new `handleSocialConnect` that opens `SocialMediaImportDialog`
+4. Add toast notifications for non-social app actions (placeholder)
+
+### File 3: `src/components/settings/MobileConnectedAppsView.tsx`
+
+**Changes:**
+1. Add state for `SocialMediaImportDialog`
+2. Pass `onConnect` handler to `MobileIntegrationDetailSheet`
+3. Handle different integration types with appropriate actions
+
+### File 4: `src/i18n/de.json` & `src/i18n/en.json`
+
+**Changes:**
+Add the `connectedApps.popup` namespace with all new translation keys
+
+---
+
+## ConnectAppPopup Redesign (Mobile)
+
+The mobile version will be a bottom sheet with:
+
+```text
+┌─────────────────────────────────────┐
+│  ══════════════════════════════     │  ← Drag handle
+│  🔌 Apps & Services verbinden   ✕   │  ← Header with close
+├─────────────────────────────────────┤
+│  🔍 [Apps suchen...]               │  ← Search input
+│                                     │
+│  [Alle] [Fitness] [Social] [...]   │  ← Category pills (horizontal scroll)
+├─────────────────────────────────────┤
+│                                     │
+│  Apple Health     ✓ Verifiziert    │
+│  🍎 Gesundheitsdaten synchron...   │
+│                        [Verbinden] │
+│                                     │
+│  Google Fit       ✓ Verifiziert    │
+│  🏃 Workouts, Ernährung...         │
+│                        [Verbinden] │
+│                                     │
+│  Strava           ✓ Verifiziert    │
+│  🚴 Laufen, Radfahren...           │
+│                        [Verbinden] │
+│                                     │
+├─────────────────────────────────────┤
+│  [Fertig]                          │
+└─────────────────────────────────────┘
 ```
 
-### Updated Code
-```tsx
-{/* Action Bar */}
-<UtilityActionButton
-  afterGiftVoucherChildren={
-    <>
-      <VitanaIndexChip />
-      <AutopilotChip 
-        pendingCount={0} 
-        onClick={() => setAutopilotOpen(true)} 
-      />
-    </>
+---
+
+## Connect Flow Logic
+
+```typescript
+// In MobileConnectedAppsView.tsx
+const handleConnect = (integration: Integration) => {
+  // Close the detail sheet first
+  setSelectedApp(null);
+  
+  // Check if it's a social platform
+  const socialPlatforms = ['linkedin', 'instagram', 'tiktok', 'youtube', 'facebook', 'x'];
+  
+  if (socialPlatforms.includes(integration.id)) {
+    // Open social media import dialog
+    setSocialImportPlatform(integration.id);
+    setSocialImportDialogOpen(true);
+  } else {
+    // For other apps, show placeholder toast
+    toast({
+      title: translate('connectedApps.actions.connect'),
+      description: `${integration.name} connection coming soon`,
+    });
   }
->
-  <div className="flex items-center gap-2 min-w-max">
-    <ExpandableSearchButton
-      placeholder={translate('connectedApps.searchPlaceholder')}
-      onSearch={setSearchQuery}
-    />
-    <UniversalCalendarButton />
-    <Button
-      variant="ghost"
-      size="sm"
-      className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-      onClick={() => setConnectPopupOpen(true)}
-    >
-      <Plus className="h-4 w-4" />
-      {translate('connectedApps.addApp')}
-    </Button>
-  </div>
-</UtilityActionButton>
-
-{/* Connect App Popup */}
-<ConnectAppPopup 
-  isOpen={connectPopupOpen} 
-  onClose={() => setConnectPopupOpen(false)} 
-/>
-
-{/* Autopilot Popup */}
-<AutopilotPopup 
-  open={autopilotOpen} 
-  onOpenChange={setAutopilotOpen} 
-/>
-```
-
----
-
-## Required Imports to Add
-
-```tsx
-import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
-import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
-import { ConnectAppPopup } from "@/components/ConnectAppPopup";
-import { AutopilotPopup } from "@/components/AutopilotPopup";
-```
-
----
-
-## State to Add
-
-```tsx
-const [connectPopupOpen, setConnectPopupOpen] = useState(false);
-const [autopilotOpen, setAutopilotOpen] = useState(false);
+};
 ```
 
 ---
@@ -128,28 +163,29 @@ const [autopilotOpen, setAutopilotOpen] = useState(false);
 
 | File | Changes |
 |------|---------|
-| `src/components/settings/MobileConnectedAppsView.tsx` | Add missing imports, state, action bar components, and popup modals |
+| `src/components/ConnectAppPopup.tsx` | Complete rewrite: add i18n, mobile Sheet, use integrationData |
+| `src/components/settings/MobileIntegrationDetailSheet.tsx` | Add onConnect/onDisconnect props with handlers |
+| `src/components/settings/MobileConnectedAppsView.tsx` | Add social import dialog state and connect handler |
+| `src/i18n/de.json` | Add `connectedApps.popup` namespace (German) |
+| `src/i18n/en.json` | Add `connectedApps.popup` namespace (English) |
 
 ---
 
-## Visual Result
+## Implementation Sequence
 
-After this fix, the Mobile Connected Apps utility action bar will display:
-
-```text
-[🔍 Suchen] [📅 Calendar] [+ App hinzufügen] [🎁 Gift] [🧬 742] [✈️ Autopilot]
-```
-
-This matches the pattern used across other VITANA mobile hubs (Orders, Events, Media Hub, Business Hub).
+1. **Add i18n keys** to both language files
+2. **Refactor ConnectAppPopup** with mobile Sheet and translations
+3. **Update MobileIntegrationDetailSheet** with action handlers
+4. **Wire MobileConnectedAppsView** to handle connect actions and open SocialMediaImportDialog
 
 ---
 
-## Button Styling Consistency
+## Result
 
-The "Add App" button will use the same styling as other primary action buttons in mobile hubs:
-- `h-9` height (matches other pills)
-- `rounded-full` border radius
-- `bg-primary text-primary-foreground` for primary action emphasis
-- `px-3` horizontal padding
-- `gap-1.5` icon-text spacing
+After these changes:
+- The "App hinzufügen" button opens a **native-feeling bottom sheet** on mobile
+- All text displays in **German** when German is selected
+- Clicking "Verbinden" on an unconnected app triggers the **appropriate connection flow**
+- Social apps open the existing `SocialMediaImportDialog`
+- Non-social apps show a toast placeholder for future OAuth implementation
 
