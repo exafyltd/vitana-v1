@@ -227,25 +227,28 @@ export function VitanalandPortalSeed({
         },
         }}
       >
-        {/* Glass shell outer layer with enhanced rim */}
+        {/* Glass shell outer layer with enhanced rim + frosted glass separation */}
         <div
           className="absolute inset-0 rounded-full overflow-hidden"
           style={{
-            background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.15) 0%, rgba(13, 44, 243, 0.45) 100%)',
+            background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.22) 0%, rgba(13, 44, 243, 0.55) 100%)',
+            backgroundColor: 'rgba(255, 255, 255, 0.03)',
             boxShadow: glowIntensity > 0
               ? (isError
                   ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, 0.3), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
                   : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, 0.4), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`)
-              : '0 0 20px rgba(0, 0, 0, 0.35), 0 0 10px rgba(255, 255, 255, 0.25), inset 0 0 40px rgba(255, 255, 255, 0.15)',
+              : '0 0 24px rgba(0, 0, 0, 0.42), 0 0 10px rgba(255, 255, 255, 0.25), inset 0 0 40px rgba(255, 255, 255, 0.15)',
             border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.4)`,
+            backdropFilter: 'blur(8px) saturate(125%)',
+            WebkitBackdropFilter: 'blur(8px) saturate(125%)',
             isolation: 'isolate',
           }}
         >
-          {/* Vignette effect for depth */}
+          {/* Vignette effect for depth - enhanced for better presence */}
           <div
             className="absolute inset-0 rounded-full pointer-events-none"
             style={{
-              boxShadow: 'inset 0 0 120px rgba(0, 0, 0, 0.35)',
+              boxShadow: 'inset 0 0 120px rgba(0, 0, 0, 0.45)',
             }}
           />
 
