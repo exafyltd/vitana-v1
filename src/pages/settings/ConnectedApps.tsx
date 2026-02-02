@@ -46,11 +46,27 @@ import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
 import { StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileConnectedAppsView } from "@/components/settings/MobileConnectedAppsView";
 
 function ConnectedApps() {
+  const isMobile = useIsMobile();
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("connected");
   const { allPlatforms, loading } = useSocialPlatforms();
+
+  // Mobile view - simplified, native-feeling experience
+  if (isMobile) {
+    return (
+      <>
+        <SEO 
+          title="Connected Apps & Integrations"
+          description="Manage your connected devices and services"
+        />
+        <MobileConnectedAppsView />
+      </>
+    );
+  }
 
   // Transform social platforms into horizontal cards
   const getSocialMediaCards = (): StandardHorizontalCardProps[] => {
