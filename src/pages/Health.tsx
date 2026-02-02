@@ -24,6 +24,7 @@ import { useHealthLogger } from "@/hooks/useHealthLogger";
 import CompactVitanaIndex from "@/components/health/CompactVitanaIndex";
 import MotivationalDataCard from "@/components/health/MotivationalDataCard";
 import NextBestActionCard from "@/components/health/NextBestActionCard";
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { healthNavigation } from "@/config/navigation";
 import { useProfile } from "@/context/ProfileProvider";
@@ -78,6 +79,7 @@ export default withScreenId(function Health() {
   const location = useLocation();
   const isMobile = useIsMobile();
   const { profile } = useProfile();
+  const { translate } = useTranslation();
   const { pendingCount, getLatestActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
@@ -102,12 +104,14 @@ export default withScreenId(function Health() {
     curr[1] < min[1] ? curr : min
   , pillarEntries[0]);
   
-  const pillarLabels: Record<string, { label: string; emoji: string }> = {
-    nutrition: { label: 'Nutrition', emoji: '🥗' },
-    exercise: { label: 'Exercise', emoji: '🏃' },
-    sleep: { label: 'Sleep', emoji: '😴' },
-    hydration: { label: 'Hydration', emoji: '💧' },
-    mental: { label: 'Mental', emoji: '🧠' }
+  // Get translated pillar labels and emojis
+  const getPillarLabel = (key: string) => translate(`health.pillars.${key}`);
+  const pillarEmojis: Record<string, string> = {
+    nutrition: '🥗',
+    exercise: '🏃',
+    sleep: '😴',
+    hydration: '💧',
+    mental: '🧠'
   };
 
   const smartSuggestions = [
@@ -192,17 +196,17 @@ export default withScreenId(function Health() {
           
           {/* 2. Priority Focus (Single) */}
           <MobilePriorityFocus
-            pillarName={pillarLabels[weakestPillar[0]].label}
+            pillarName={getPillarLabel(weakestPillar[0])}
             pillarScore={weakestPillar[1]}
-            pillarEmoji={pillarLabels[weakestPillar[0]].emoji}
-            explanation="This area currently has the biggest impact on your long-term healthspan."
+            pillarEmoji={pillarEmojis[weakestPillar[0]]}
+            explanation={translate('health.priorityFocusExplanation')}
           />
           
           {/* 3. Autopilot Guidance (Condensed) */}
           <MobileAutopilotGuidance
             suggestions={[
-              "Upload blood test results",
-              "Start 30-Day Fitness Challenge"
+              translate('health.suggestions.uploadBloodTestResults'),
+              translate('health.suggestions.startFitnessChallenge')
             ]}
             onTakeAction={() => setHealthActionsOpen(true)}
           />

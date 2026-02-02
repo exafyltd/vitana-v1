@@ -1,5 +1,6 @@
 import { Plane } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobileAutopilotGuidanceProps {
   suggestions: string[];
@@ -10,6 +11,8 @@ export function MobileAutopilotGuidance({
   suggestions, 
   onTakeAction 
 }: MobileAutopilotGuidanceProps) {
+  const { translate } = useTranslation();
+  
   // Limit to max 2 suggestions
   const displaySuggestions = suggestions.slice(0, 2);
 
@@ -18,7 +21,7 @@ export function MobileAutopilotGuidance({
       {/* Section Header */}
       <div className="flex items-center gap-2 mb-3">
         <Plane className="w-4 h-4 text-primary" />
-        <span className="text-sm font-medium text-foreground/80">Autopilot Suggests</span>
+        <span className="text-sm font-medium text-foreground/80">{translate('health.autopilotSuggests')}</span>
       </div>
 
       {/* Suggestions Card */}
@@ -44,7 +47,7 @@ export function MobileAutopilotGuidance({
           onClick={onTakeAction}
           className="w-full bg-primary hover:bg-primary/90"
         >
-          Take Action
+          {translate('health.takeAction')}
         </Button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { Target } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobilePriorityFocusProps {
   pillarName: string;
@@ -11,14 +12,19 @@ export function MobilePriorityFocus({
   pillarName, 
   pillarScore, 
   pillarEmoji,
-  explanation = "This area currently has the biggest impact on your long-term healthspan."
+  explanation
 }: MobilePriorityFocusProps) {
+  const { translate } = useTranslation();
+  
+  // Use provided explanation or fall back to translated default
+  const displayExplanation = explanation || translate('health.priorityFocusExplanation');
+
   return (
     <div className="mx-4 mt-4">
       {/* Section Header */}
       <div className="flex items-center gap-2 mb-3">
         <Target className="w-4 h-4 text-primary" />
-        <span className="text-sm font-medium text-foreground/80">Priority Focus</span>
+        <span className="text-sm font-medium text-foreground/80">{translate('health.priorityFocus')}</span>
       </div>
 
       {/* Focus Card */}
@@ -48,7 +54,7 @@ export function MobilePriorityFocus({
 
         {/* Explanation */}
         <p className="text-sm text-white/60 leading-relaxed">
-          {explanation}
+          {displayExplanation}
         </p>
       </div>
     </div>
