@@ -46,6 +46,9 @@ export function useWallet() {
   const { deduplicateRequest } = useRequestDeduplication();
   const { logActivity } = useActivityLogger();
   
+  // IMPORTANT: Call all hooks at the top unconditionally to avoid React queue errors
+  const { isConnected } = useRealtimeConnection();
+  
   // Background refresh queue
   const backgroundTasks = useRef<Set<Promise<any>>>(new Set());
 
@@ -608,8 +611,7 @@ export function useWallet() {
     onTransactionUpdate: fetchTransactions,
   });
 
-  // Smart fallback polling when real-time is disconnected
-  const { isConnected } = useRealtimeConnection();
+  // Smart fallback polling when real-time is disconnected (isConnected from top of hook)
 
   useEffect(() => {
     if (isConnected || !user?.id) return; // Real-time working, no polling needed
