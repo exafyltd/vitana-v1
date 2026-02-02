@@ -51,7 +51,7 @@ export function MobileFixedOrb() {
           }
         }}
         aria-label="Ask VITANA for guidance"
-        className="cursor-pointer drop-shadow-lg"
+        className="cursor-pointer"
       >
         <VitanalandPortalSeed 
           audioState="idle"
