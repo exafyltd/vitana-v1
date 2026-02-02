@@ -1,75 +1,95 @@
 
-
-## Intensify Orb Visibility - Stronger Soft Separation
-
-### Problem
-
-The current shadow values are too subtle - the Orb is barely visible against the colorful teal/cyan gradient and event card imagery. It appears washed out and transparent.
+## Goal
+Make the Orb visibly “present” on busy/colorful imagery (like the event card photo) without changing its shape, size, movement, or overall color palette. The Orb should feel like a living glass sphere with more “mass” (less background bleed-through), but still soft and organic (no crisp outlines).
 
 ---
 
-## Solution
-
-Increase the shadow intensity while maintaining the organic approach:
-
-| Current Value | Intensified Value | Purpose |
-|---------------|-------------------|---------|
-| `0 0 15px rgba(0,0,0,0.2)` | `0 0 20px rgba(0,0,0,0.35)` | Stronger dark halo for light/colorful bg separation |
-| `0 0 6px rgba(255,255,255,0.12)` | `0 0 10px rgba(255,255,255,0.25)` | More visible white rim for dark bg definition |
-| `inset 0 0 35px rgba(255,255,255,0.08)` | `inset 0 0 40px rgba(255,255,255,0.15)` | Stronger inner luminosity |
-| Border: `rgba(255,255,255,0.25)` | `rgba(255,255,255,0.4)` | Slightly more visible edge definition |
+## What’s happening now (based on the screenshot)
+Even with stronger shadows, the Orb’s **shell layer is highly transparent** (the base shell radial gradient is only ~15%–45% opacity), so colorful/background imagery still dominates. Shadows help separation at the edges, but they don’t fix the “see-through” center.
 
 ---
 
-## Technical Implementation
+## Strategy (soft + organic)
+We’ll improve visibility using three techniques that preserve the living-circle feel:
 
+1) **Increase shell “density” slightly**  
+   - Raise the opacity of the shell’s base gradient (same colors, just less transparent).  
+   - This reduces background bleed-through without adding hard edges.
+
+2) **Add subtle glass “frost” separation using backdrop-filter**  
+   - `backdrop-filter: blur(...) saturate(...)` creates a premium glass effect that makes *any* underlying imagery less distracting.
+   - This is the single most effective way to stand out on busy photos while staying organic.
+
+3) **Increase internal contrast (vignette + haze a bit)**  
+   - Slightly stronger internal vignette gives the orb more perceived mass and readability, still soft.
+
+Optionally (if still needed after the above): slightly raise idle core brightness and/or nebula layer opacities, but we’ll keep this conservative to avoid changing the orb’s character.
+
+---
+
+## Implementation details (single file)
 ### File: `src/components/audio/VitanalandPortalSeed.tsx`
 
-**Line 239 - Update boxShadow for glowIntensity=0:**
-```tsx
-// Current (too subtle)
-'0 0 15px rgba(0, 0, 0, 0.2), 0 0 6px rgba(255, 255, 255, 0.12), inset 0 0 35px rgba(255, 255, 255, 0.08)'
+#### A) Shell outer layer: make it less transparent + add frosted separation
+**Location:** “Glass shell outer layer with enhanced rim” (around current lines ~230–260)
 
-// Intensified
-'0 0 20px rgba(0, 0, 0, 0.35), 0 0 10px rgba(255, 255, 255, 0.25), inset 0 0 40px rgba(255, 255, 255, 0.15)'
-```
+1. **Increase the shell base gradient opacities (same hues)**
+   - Current:
+     - `rgba(13, 44, 243, 0.15)` → `rgba(13, 44, 243, 0.45)`
+   - Update to (example values; tuned to stay organic):
+     - `rgba(13, 44, 243, 0.22)` → `rgba(13, 44, 243, 0.55)`
 
-**Line 240 - Increase border opacity:**
-```tsx
-// Current
-border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.25)`
+2. **Add frosted-glass separation**
+   Add to the same `style={{ ... }}` object:
+   - `backdropFilter: 'blur(8px) saturate(125%)'`
+   - `WebkitBackdropFilter: 'blur(8px) saturate(125%)'` (important for iOS Safari)
 
-// Intensified (still soft, not crisp)
-border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.4)`
-```
+3. **Add a very subtle “glass milk” base tint (optional but recommended)**
+   - Add:
+     - `backgroundColor: 'rgba(255,255,255,0.03)'`
+   This does not change colors; it just gives a tiny glass density so photos don’t overpower the orb.
+
+#### B) Strengthen interior depth (not a glow)
+**Location:** “Vignette effect for depth” (currently `inset 0 0 120px rgba(0,0,0,0.35)`)
+
+- Increase slightly:
+  - `rgba(0, 0, 0, 0.35)` → `rgba(0, 0, 0, 0.45)`
+
+This increases perceived depth and reduces “transparent overlay” feeling.
+
+#### C) Keep the current soft separation shadow (or adjust minimally if needed)
+You already have (when `glowIntensity=0`):
+- `0 0 20px rgba(0, 0, 0, 0.35), 0 0 10px rgba(255, 255, 255, 0.25), inset 0 0 40px rgba(255, 255, 255, 0.15)`
+This is good. If the orb still disappears on certain backgrounds after (A) and (B), we’ll increase *only* the dark halo slightly:
+- `0 0 20px rgba(0,0,0,0.35)` → `0 0 24px rgba(0,0,0,0.42)`
+…but we will try (A)+(B) first to avoid returning to a “flashlight” feel.
+
+#### D) Optional (only if still too faint): slightly increase idle core brightness
+**Location:** coreBrightness calculation (currently idle is `0.6`)
+
+- Change idle base:
+  - `: 0.6` → `: 0.72`
+
+This makes the core feel more alive even over busy imagery, without affecting size/movement.
 
 ---
 
-## Shadow Breakdown
-
-```text
-0 0 20px rgba(0, 0, 0, 0.35)           → Stronger dark outer halo (35% vs 20%)
-0 0 10px rgba(255, 255, 255, 0.25)     → More visible white glow (25% vs 12%)  
-inset 0 0 40px rgba(255, 255, 255, 0.15) → Brighter inner luminosity (15% vs 8%)
-```
-
-These values are still soft and diffuse (no hard edges), but significantly more visible against colorful backgrounds.
+## Acceptance checks (how we’ll verify)
+1. On the events screen (photo card background), the orb should have a clear boundary and readable internal structure.
+2. On plain white and plain dark backgrounds, it should still feel soft and premium (no harsh outline).
+3. Ensure there’s no “flashlight spill” covering UI elements (we keep glowIntensity behavior intact).
+4. Test on mobile Safari (iOS) and Chrome (Android) to confirm `backdrop-filter` behavior is acceptable; if unsupported, the orb should still look better due to increased shell density and vignette.
 
 ---
 
-## Files to Modify
-
-| File | Change |
-|------|--------|
-| `src/components/audio/VitanalandPortalSeed.tsx` | Increase boxShadow and border opacity values (lines 239-240) |
+## Risks / notes
+- `backdrop-filter` can be GPU-expensive on very old devices; we’re keeping blur modest (8px). The orb is small, so performance impact should be limited.
+- If you prefer zero blur for performance reasons, we can instead increase only shell density + vignette and slightly lift core brightness.
 
 ---
 
-## Visual Result
-
-The Orb will:
-- Be **clearly visible** against colorful gradients and busy imagery
-- Maintain its **organic, living appearance** without hard outlines
-- Have stronger **depth and presence** while still looking natural
-- Keep all existing animations, morphing, and color cycling intact
-
+## Files to change
+- `src/components/audio/VitanalandPortalSeed.tsx`
+  - Shell layer: slightly higher base opacity + add `backdropFilter`/`WebkitBackdropFilter` (+ optional faint backgroundColor)
+  - Vignette opacity increase
+  - Optional: idle `coreBrightness` bump if needed after visual check
