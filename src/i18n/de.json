@@ -632,20 +632,6 @@
     "connectedApps": "Verbundene Apps",
     "support": "Support"
   },
-  "health": {
-    "emptyStates": {
-      "noNutritionPlan": "Noch kein Ernährungsplan",
-      "noNutritionPlanDesc": "Generieren Sie Ihren personalisierten Ernährungsplan mit köstlichen, ausgewogenen Rezepten, die auf Ihre Ziele und Ernährungsvorlieben abgestimmt sind.",
-      "noExercisePlan": "Noch kein Trainingsplan",
-      "noExercisePlanDesc": "Generieren Sie Ihren personalisierten Trainingsplan mit KI-optimierten Übungen, die auf Ihr Fitnessniveau, Ihre Ziele und Erholungsbedürfnisse abgestimmt sind.",
-      "noSleepPlan": "Noch kein Schlafplan",
-      "noSleepPlanDesc": "Generieren Sie Ihren personalisierten Schlafplan mit KI-optimierten Zielen, die auf Ihren zirkadianen Rhythmus, Erholungsbedürfnisse und tägliche Leistung abgestimmt sind.",
-      "noHydrationPlan": "Noch kein Hydrationsplan",
-      "noHydrationPlanDesc": "Generieren Sie Ihren personalisierten Hydrationsplan mit KI-optimierten Tageszielen, die auf Ihr Aktivitätsniveau, Ihre Umgebung und Erholungsbedürfnisse abgestimmt sind.",
-      "generating": "Wird generiert...",
-      "generatePlan": "Plan generieren"
-    }
-  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "KI-Vorschläge",
@@ -1004,13 +990,25 @@
     "education": "Bildung & Wissenschaft",
     "educationDesc": "Gesundheitsthemen lernen und Ressourcen",
     "priorityFocus": "Priorität heute",
+    "priorityFocusExplanation": "Dieser Bereich hat derzeit den größten Einfluss auf Ihre langfristige Gesundheit.",
     "autopilotGuidance": "Autopilot-Empfehlungen",
+    "autopilotSuggests": "Autopilot empfiehlt",
     "takeAction": "Aktion ausführen",
     "uploadBloodTest": "Bluttest hochladen",
     "orderBloodTest": "Bluttest bestellen",
     "viewPlans": "Pläne anzeigen",
     "vitanaIndex": "Vitana Index",
-    "topPercentile": "Top {percent}% aller Nutzer",
+    "healthSnapshot": "Dein Gesundheits-Überblick",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Verbessernd",
+      "declining": "Abnehmend",
+      "stable": "Stabil"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Bluttestergebnisse hochladen",
+      "startFitnessChallenge": "30-Tage-Fitness-Challenge starten"
+    },
     "pillars": {
       "sleep": "Schlaf",
       "exercise": "Bewegung",

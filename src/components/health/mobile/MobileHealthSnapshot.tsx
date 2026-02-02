@@ -1,5 +1,6 @@
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PillarData {
   nutrition: number;
@@ -16,21 +17,29 @@ interface MobileHealthSnapshotProps {
   pillars: PillarData;
 }
 
-const PILLAR_CONFIG = [
-  { key: 'nutrition', label: 'Nutrition', emoji: '🥗' },
-  { key: 'exercise', label: 'Exercise', emoji: '🏃' },
-  { key: 'sleep', label: 'Sleep', emoji: '😴' },
-  { key: 'hydration', label: 'Hydration', emoji: '💧' },
-  { key: 'mental', label: 'Mental', emoji: '🧠' },
-] as const;
-
 export function MobileHealthSnapshot({ 
   vitanaIndex, 
   vitanaPercentile = 15, 
   trend, 
   pillars 
 }: MobileHealthSnapshotProps) {
+  const { translate } = useTranslation();
   const tier = getVitanaIndexTier(vitanaIndex);
+  
+  // Translate tier label based on tier.label value
+  const getTierLabel = () => {
+    const labelKey = tier.label.toLowerCase().replace(' ', '');
+    return translate(`vitanaIndex.${labelKey}`, tier.label);
+  };
+  
+  // Build pillar config with translated labels
+  const PILLAR_CONFIG = [
+    { key: 'nutrition', label: translate('health.pillars.nutrition'), emoji: '🥗' },
+    { key: 'exercise', label: translate('health.pillars.exercise'), emoji: '🏃' },
+    { key: 'sleep', label: translate('health.pillars.sleep'), emoji: '😴' },
+    { key: 'hydration', label: translate('health.pillars.hydration'), emoji: '💧' },
+    { key: 'mental', label: translate('health.pillars.mental'), emoji: '🧠' },
+  ] as const;
   
   // Find the weakest pillar
   const pillarEntries = Object.entries(pillars).filter(([_, v]) => v !== undefined) as [string, number][];
@@ -39,7 +48,11 @@ export function MobileHealthSnapshot({
   , pillarEntries[0]);
 
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
-  const trendLabel = trend === 'up' ? 'Improving' : trend === 'down' ? 'Declining' : 'Stable';
+  const trendLabel = trend === 'up' 
+    ? translate('health.trend.improving')
+    : trend === 'down' 
+    ? translate('health.trend.declining') 
+    : translate('health.trend.stable');
 
   return (
     <div className="mx-4 mt-4">
@@ -53,7 +66,7 @@ export function MobileHealthSnapshot({
       >
         {/* Header */}
         <div className="text-center mb-6">
-          <span className="text-lg text-white/70">🧬 Your Health Snapshot</span>
+          <span className="text-lg text-white/70">🧬 {translate('health.healthSnapshot')}</span>
         </div>
 
         {/* Vitana Index - Dominant Visual */}
@@ -84,7 +97,7 @@ export function MobileHealthSnapshot({
           {/* Status Text */}
           <div className="flex items-center gap-2 mt-3">
             <span className="text-white/60 text-sm">
-              Top {vitanaPercentile}%
+              {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
             </span>
             <span className="text-white/30">·</span>
             <div className="flex items-center gap-1">
@@ -111,7 +124,7 @@ export function MobileHealthSnapshot({
               color: tier.color
             }}
           >
-            {tier.label}
+            {getTierLabel()}
           </div>
         </div>
 

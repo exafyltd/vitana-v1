@@ -632,20 +632,6 @@
     "connectedApps": "Connected Apps & Integrations",
     "support": "Support"
   },
-  "health": {
-    "emptyStates": {
-      "noNutritionPlan": "No Nutrition Plan Yet",
-      "noNutritionPlanDesc": "Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.",
-      "noExercisePlan": "No Exercise Plan Yet",
-      "noExercisePlanDesc": "Generate your personalized workout plan with AI-optimized exercises tailored to your fitness level, goals, and recovery needs.",
-      "noSleepPlan": "No Sleep Plan Yet",
-      "noSleepPlanDesc": "Generate your personalized sleep plan with AI-optimized targets tuned to your circadian rhythm, recovery needs, and daily performance.",
-      "noHydrationPlan": "No Hydration Plan Yet",
-      "noHydrationPlanDesc": "Generate your personalized hydration plan with AI-optimized daily targets tailored to your activity level, environment, and recovery needs.",
-      "generating": "Generating...",
-      "generatePlan": "Generate Plan"
-    }
-  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "AI suggestions",
@@ -1004,13 +990,25 @@
     "education": "Education & Science",
     "educationDesc": "Learn about health topics and access wellness resources",
     "priorityFocus": "Priority Focus",
+    "priorityFocusExplanation": "This area currently has the biggest impact on your long-term healthspan.",
     "autopilotGuidance": "Autopilot Guidance",
+    "autopilotSuggests": "Autopilot Suggests",
     "takeAction": "Take Action",
     "uploadBloodTest": "Upload Blood Test",
     "orderBloodTest": "Order Blood Test",
     "viewPlans": "View Plans",
     "vitanaIndex": "Vitana Index",
-    "topPercentile": "Top {percent}% of users",
+    "healthSnapshot": "Your Health Snapshot",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Improving",
+      "declining": "Declining",
+      "stable": "Stable"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Upload blood test results",
+      "startFitnessChallenge": "Start 30-Day Fitness Challenge"
+    },
     "pillars": {
       "sleep": "Sleep",
       "exercise": "Exercise",
