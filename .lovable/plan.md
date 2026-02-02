@@ -1,75 +1,134 @@
-# Database Performance Optimization Plan
 
-## ✅ IMPLEMENTATION COMPLETE
+# Fix Plan: 401 Membership Error & Maximum Update Depth Loop
 
-All Phase 1 optimizations have been applied to reduce Disk IO usage by an estimated 60-80%.
+## Summary of Issues Found
 
----
+I discovered **two related but distinct problems**:
 
-## Changes Made
-
-### 1. Created Debounce Utility
-**File**: `src/utils/realtimeDebounce.ts`
-- Shared debounce function for realtime handlers
-- Tab visibility checker to skip operations when hidden
-- Batch invalidation support
-
-### 2. Presence & Heartbeat Optimization
-**File**: `src/hooks/useUserPresence.ts`
-- Heartbeat interval: 30s → 60s (50% fewer writes)
-- Health check interval: 10s → 30s (66% fewer checks)
-- Added visibility guard to skip when tab is hidden
-
-### 3. Background Refresh Optimization
-**File**: `src/hooks/useBackgroundRefresh.ts`
-- Notifications: 30s → 60s
-- Wallet/earnings: 60s → 120s
-- Background data: 120s → 180s
-
-### 4. Realtime Handler Debouncing (2s delay)
-**Files Updated**:
-- `src/hooks/useWalletRealtime.ts` - Debounced balance/transaction updates
-- `src/hooks/useRealtimeAPIMonitoring.ts` - Debounced all invalidateQueries
-- `src/hooks/useActivityHistory.ts` - Debounced activity updates
-- `src/hooks/useUnreadSync.ts` - Debounced unread changes with batching
-
-### 5. Query Column Selection
-**Files Updated**:
-- `src/hooks/useActivityHistory.ts` - Specific columns instead of `*`
-- `src/hooks/usePaginatedMessages.ts` - Specific columns for messages
-
-### 6. Realtime Subscription Scope Reduction
-- Changed `event: '*'` to specific events (`INSERT`, `UPDATE`)
-- Reduced event volume and cascade refetches
+1. **401 Unauthorized Error** - The `list_my_memberships` edge function is rejected at the Supabase gateway level because it's missing from `config.toml`
+2. **Maximum Update Depth Exceeded** - A React infinite loop caused by unstable dependencies in the `useUserPresence` hook and un-memoized context value in `AuthProvider`
 
 ---
 
-## Expected Impact
+## Root Cause Analysis
 
-| Optimization | DB Operations Reduced |
-|--------------|----------------------|
-| Presence heartbeat 30s → 60s | ~50% fewer writes |
-| Health check 10s → 30s | ~66% fewer checks |
-| Tab visibility guards | ~70% reduction when tab hidden |
-| Realtime debouncing (2s) | ~80% fewer cascade refetches |
-| Column selection | ~30% smaller data transfers |
-| Specific event subscriptions | ~40% fewer event triggers |
+### Problem 1: 401 Error for list_my_memberships
 
-**Total Expected Reduction: 60-80% of current disk IO usage**
+The edge function `list_my_memberships` is **NOT listed** in `supabase/config.toml`. This means Supabase uses the default `verify_jwt = true`, which causes the gateway to reject requests before your function code ever runs.
 
----
+Your function already handles authentication internally (the recent fix to use `getUser(token)`), but the gateway blocks it first.
 
-## Monitoring
+### Problem 2: Maximum Update Depth Loop
 
-After the Disk IO budget regenerates, monitor the Supabase dashboard:
-- Dashboard > Settings > Compute and Disk
-- Check IOPS usage over time
-- Verify budget is no longer being depleted
+The infinite re-render loop is caused by:
+
+1. **Un-memoized `AuthProvider` context value** (line 66-71): Every render creates a new object, causing all `useAuth()` consumers to re-render
+2. **Unstable dependency chain in `useUserPresence`** (line 339-341): The effect `[isActive, trackPresence]` triggers when `trackPresence` changes, but `trackPresence` depends on `user?.id` which can change when `AuthProvider` re-renders
 
 ---
 
-## If Issues Persist
+## Fix Plan
 
-1. **Upgrade Compute Tier**: Supabase Dashboard > Settings > Compute and Disk
-2. **Add Database Indexes**: For frequently queried columns
-3. **Implement Read Replicas**: For read-heavy workloads
+### Fix 1: Add list_my_memberships to config.toml
+
+Add the missing function configuration:
+
+```toml
+[functions.list_my_memberships]
+verify_jwt = false
+```
+
+This allows the function to receive requests, and your internal authentication code handles JWT validation.
+
+### Fix 2: Memoize AuthProvider context value
+
+Update `src/context/AuthProvider.tsx` to prevent unnecessary re-renders:
+
+```typescript
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react";
+// ...
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  // ... existing state ...
+
+  // Memoize signOut to prevent re-renders
+  const signOut = useCallback(async () => {
+    // ... existing signOut logic ...
+  }, [dismiss]);
+
+  // Memoize context value to prevent re-renders
+  const value = useMemo<AuthContextValue>(() => ({
+    user,
+    session,
+    loading,
+    signOut,
+  }), [user, session, loading, signOut]);
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+```
+
+### Fix 3: Stabilize useUserPresence dependencies
+
+Update `src/hooks/useUserPresence.ts` to break the circular dependency:
+
+```typescript
+// Line 339-341: Remove trackPresence from effect dependencies
+// Use a ref to call trackPresence without creating a dependency
+useEffect(() => {
+  trackPresence();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isActive]); // Only trigger on isActive change, not trackPresence
+```
+
+Or better yet, use a ref-based approach:
+
+```typescript
+const trackPresenceRef = useRef(trackPresence);
+useEffect(() => {
+  trackPresenceRef.current = trackPresence;
+}, [trackPresence]);
+
+useEffect(() => {
+  trackPresenceRef.current();
+}, [isActive]);
+```
+
+---
+
+## Implementation Steps
+
+1. **Update config.toml** - Add `list_my_memberships` with `verify_jwt = false`
+2. **Memoize AuthProvider** - Add `useMemo` for context value and `useCallback` for `signOut`
+3. **Fix useUserPresence** - Stabilize the effect dependencies to prevent loops
+4. **Test** - Verify memberships load correctly and no re-render loops occur
+
+---
+
+## Technical Details
+
+### Files to Modify
+
+| File | Change |
+|------|--------|
+| `supabase/config.toml` | Add `[functions.list_my_memberships]` section |
+| `src/context/AuthProvider.tsx` | Memoize `value` and `signOut` |
+| `src/hooks/useUserPresence.ts` | Fix effect dependency array |
+
+### Impact Assessment
+
+- **Low risk** - Changes are isolated to specific hooks/providers
+- **No data changes** - Only React rendering behavior affected
+- **Backward compatible** - No API or interface changes
+
+### Verification Steps
+
+After implementation:
+1. Log in and navigate to `/home`
+2. Check browser console for "Maximum update depth" errors (should be gone)
+3. Check Network tab for `list_my_memberships` call (should return 200)
+4. Verify memberships data displays correctly
