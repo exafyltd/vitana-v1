@@ -232,10 +232,14 @@ export function VitanalandPortalSeed({
           className="absolute inset-0 rounded-full overflow-hidden"
           style={{
             background: 'radial-gradient(circle at 30% 30%, rgba(13, 44, 243, 0.15) 0%, rgba(13, 44, 243, 0.45) 100%)',
-            boxShadow: isError
-              ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, 0.3), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
-              : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, 0.4), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`,
-            border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.25)`,
+            boxShadow: glowIntensity > 0
+              ? (isError
+                ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, ${0.3 * glowIntensity}), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
+                : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, ${0.4 * glowIntensity}), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`)
+              : `inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`,
+            border: glowIntensity > 0
+              ? `${config.shellBorder}px solid rgba(255, 255, 255, ${0.25 * glowIntensity})`
+              : 'none',
           }}
         >
           {/* Vignette effect for depth */}
@@ -246,13 +250,15 @@ export function VitanalandPortalSeed({
             }}
           />
 
-          {/* Fresnel edge highlight */}
-          <div
-            className="absolute inset-0 rounded-full pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, 0.1) 100%)',
-            }}
-          />
+          {/* Fresnel edge highlight - only render when glow is enabled */}
+          {glowIntensity > 0 && (
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 50% 50%, transparent 60%, rgba(255, 255, 255, ${0.1 * glowIntensity}) 100%)`,
+              }}
+            />
+          )}
 
           {/* Glass specular highlight - primary */}
           <motion.div
@@ -287,13 +293,15 @@ export function VitanalandPortalSeed({
             }}
           />
 
-          {/* Inner rim layer */}
-          <div
-            className="absolute inset-[2px] rounded-full pointer-events-none"
-            style={{
-              border: `1px solid rgba(255, 255, 255, ${config.rimOpacity})`,
-            }}
-          />
+          {/* Inner rim layer - only render when glow is enabled */}
+          {glowIntensity > 0 && (
+            <div
+              className="absolute inset-[2px] rounded-full pointer-events-none"
+              style={{
+                border: `1px solid rgba(255, 255, 255, ${config.rimOpacity * glowIntensity})`,
+              }}
+            />
+          )}
 
           {/* Rim iridescence */}
           <motion.div
