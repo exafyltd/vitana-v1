@@ -128,6 +128,7 @@ export function MobileBottomNav() {
                 volumeLevel={0}
                 size="nav"
                 layoutId="vitana-orb-nav"
+                glowIntensity={0}
               />
             </div>
           </motion.div>
