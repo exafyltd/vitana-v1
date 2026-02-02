@@ -1,3 +1,4 @@
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
@@ -13,6 +14,18 @@ serve(async (req) => {
   }
 
   try {
+    // Initialize Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
+
     // Get the authorization header
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
@@ -22,31 +35,8 @@ serve(async (req) => {
       );
     }
 
-    // Initialize Supabase client with the user's token
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      {
-        global: {
-          headers: { Authorization: authHeader },
-        },
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-      }
-    );
-
-    // Extract the JWT token and verify the user
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
-    if (userError || !user) {
-      console.error('Auth error:', userError);
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    // Set the auth header
+    supabaseClient.rest.headers['Authorization'] = authHeader;
 
     // Get user memberships with tenant information
     const { data: memberships, error } = await supabaseClient
@@ -65,14 +55,14 @@ serve(async (req) => {
       .eq('status', 'active');
 
     if (error) {
-      console.error('Error fetching memberships:', error.message, error.code);
+      console.error('Error fetching memberships:', error);
       return new Response(
-        JSON.stringify({ error: 'Failed to fetch memberships', details: error.message }),
+        JSON.stringify({ error: 'Failed to fetch memberships' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Fetched ${memberships?.length || 0} memberships for user ${user.id}`);
+    console.log(`Fetched ${memberships?.length || 0} memberships for user`);
 
     return new Response(
       JSON.stringify({ memberships: memberships || [] }),

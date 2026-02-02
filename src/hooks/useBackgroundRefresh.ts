@@ -16,19 +16,19 @@ interface RefreshConfig {
 }
 
 const REFRESH_CONFIGS: RefreshConfig[] = [
-  // Critical - refresh every 60s if actively viewing (was 30s)
-  { queryKey: ['notifications'], intervalMs: 60_000, refetchType: 'active' },
+  // Critical - refresh every 30s if actively viewing
+  { queryKey: ['notifications'], intervalMs: 30_000, refetchType: 'active' },
   
-  // Semi-critical - mark stale every 120s, refetch on next view (was 60s)
-  { queryKey: ['unified-earnings-wallet'], intervalMs: 120_000, refetchType: 'none' },
-  { queryKey: ['wallet-balances'], intervalMs: 120_000, refetchType: 'none' },
+  // Semi-critical - mark stale every 60s, refetch on next view
+  { queryKey: ['unified-earnings-wallet'], intervalMs: 60_000, refetchType: 'none' },
+  { queryKey: ['wallet-balances'], intervalMs: 60_000, refetchType: 'none' },
   
-  // Background - mark stale every 3 minutes (was 2 minutes)
-  { queryKey: ['global-community-events'], intervalMs: 180_000, refetchType: 'none' },
-  { queryKey: ['shorts'], intervalMs: 180_000, refetchType: 'none' },
-  { queryKey: ['community-music'], intervalMs: 180_000, refetchType: 'none' },
-  { queryKey: ['business-packages'], intervalMs: 180_000, refetchType: 'none' },
-  { queryKey: ['health-plans'], intervalMs: 180_000, refetchType: 'none' },
+  // Background - mark stale every 2 minutes
+  { queryKey: ['global-community-events'], intervalMs: 120_000, refetchType: 'none' },
+  { queryKey: ['shorts'], intervalMs: 120_000, refetchType: 'none' },
+  { queryKey: ['community-music'], intervalMs: 120_000, refetchType: 'none' },
+  { queryKey: ['business-packages'], intervalMs: 120_000, refetchType: 'none' },
+  { queryKey: ['health-plans'], intervalMs: 120_000, refetchType: 'none' },
 ];
 
 export function useBackgroundRefresh() {

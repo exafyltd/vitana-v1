@@ -50,13 +50,10 @@ export function usePaginatedMessages(config: PaginatedMessagesConfig = {}) {
     try {
       const tableName = context === 'global' ? 'global_messages' : 'messages';
       
-      // Select specific columns instead of * for better performance
-      const selectColumns = 'id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at';
-      
       // Use type assertion to avoid TypeScript recursion
       let queryBuilder = supabase
         .from(tableName)
-        .select(selectColumns)
+        .select('*')
         .eq('thread_id', threadId)
         .order('created_at', { ascending: false })
         .limit(pageSize) as any;
@@ -107,13 +104,10 @@ export function usePaginatedMessages(config: PaginatedMessagesConfig = {}) {
 
       const tableName = context === 'global' ? 'global_messages' : 'messages';
       
-      // Select specific columns instead of * for better performance
-      const selectColumns = 'id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at';
-      
       // Use type assertion to avoid TypeScript recursion
       let queryBuilder = supabase
         .from(tableName)
-        .select(selectColumns)
+        .select('*')
         .eq('thread_id', threadId)
         .lt('created_at', cursor.created_at)
         .order('created_at', { ascending: false })

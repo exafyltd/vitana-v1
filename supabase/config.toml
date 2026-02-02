@@ -170,6 +170,3 @@ verify_jwt = false
 
 [functions.og-event]
 verify_jwt = false
-
-[functions.list_my_memberships]
-verify_jwt = false
