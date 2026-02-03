@@ -73,6 +73,18 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
   const { translate } = useTranslation();
 
   const handleImport = async () => {
+    // Validate profileId is a real UUID (not 'current-user' or empty)
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!profileId || !uuidRegex.test(profileId)) {
+      console.error('[SocialMediaImport] Invalid profileId:', profileId);
+      toast({
+        title: translate('socialImport.authRequired', 'Authentication Required'),
+        description: translate('socialImport.authRequiredDesc', 'Please make sure you are logged in to connect social accounts.'),
+        variant: 'destructive'
+      });
+      return;
+    }
+
     if (!profileUrl.trim()) {
       toast({
         title: translate('socialImport.urlRequired', 'URL Required'),

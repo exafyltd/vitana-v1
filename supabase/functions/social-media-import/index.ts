@@ -110,6 +110,12 @@ serve(async (req) => {
       .select()
       .single();
 
+    // Explicit check for no matching profile
+    if (!data && !error) {
+      console.error(`[social-media-import] No profile found for user ${userId}`);
+      throw new Error(`No profile found for user ID: ${userId}. Please ensure you have a profile.`);
+    }
+
     if (error) {
       console.error(`[social-media-import] Database update error for ${platform}:`, error);
       throw error;
