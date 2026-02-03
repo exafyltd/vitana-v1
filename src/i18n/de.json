@@ -2052,6 +2052,29 @@
       "moreProfessional": "Professioneller",
       "moreInspirational": "Inspirierender",
       "suggestion": "Autopilot-Vorschlag"
+    },
+    "identity": {
+      "editIdentity": "Identität bearbeiten",
+      "title": "Identität",
+      "description": "Verwalten Sie Ihren Anzeigenamen, Handle und Profilbilder.",
+      "profilePicture": "Profilbild",
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "Ihr Anzeigename",
+      "handle": "Handle",
+      "handlePlaceholder": "ihrhandle",
+      "handleDescription": "Ihr Handle wird in Ihrer öffentlichen Profil-URL verwendet: /u/@{handle}",
+      "personalityDescriptor": "Persönlichkeitsbeschreibung",
+      "personalityDescriptorPlaceholder": "z.B. The Mindful Mover, Der Achtsame Bewegte",
+      "personalityDescriptorDescription": "Eine kurze Beschreibung, die Ihren Wellness-Stil charakterisiert",
+      "upload": "Hochladen",
+      "uploading": "Hochladen...",
+      "remove": "Entfernen",
+      "avatarUploaded": "Profilbild hochgeladen",
+      "avatarUploadedDesc": "Ihr Profilbild wurde aktualisiert.",
+      "uploadFailed": "Hochladen fehlgeschlagen",
+      "uploadFailedDesc": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
+      "identityUpdated": "Identität aktualisiert",
+      "identityUpdatedDesc": "Ihre Identitätsinformationen wurden erfolgreich gespeichert."
     }
   }
 }

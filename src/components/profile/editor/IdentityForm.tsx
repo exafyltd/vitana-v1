@@ -3,17 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
 import { Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface IdentityFormProps {
   onDataChange?: (data: {
     displayName: string;
     handle: string;
     avatarUrl: string;
-    coverUrl: string;
+    longevityArchetype: string;
   }) => void;
 }
 
@@ -21,9 +21,10 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   const [displayName, setDisplayName] = useState("");
   const [handle, setHandle] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [coverUrl, setCoverUrl] = useState("");
+  const [longevityArchetype, setLongevityArchetype] = useState("");
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
+  const { translate } = useTranslation();
 
   // Load current profile data
   useEffect(() => {
@@ -33,9 +34,9 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   // Notify parent of data changes
   useEffect(() => {
     if (onDataChange) {
-      onDataChange({ displayName, handle, avatarUrl, coverUrl });
+      onDataChange({ displayName, handle, avatarUrl, longevityArchetype });
     }
-  }, [displayName, handle, avatarUrl, coverUrl, onDataChange]);
+  }, [displayName, handle, avatarUrl, longevityArchetype, onDataChange]);
 
   const loadProfile = async () => {
     try {
@@ -44,7 +45,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('display_name, handle, avatar_url, cover_url')
+        .select('display_name, handle, avatar_url, longevity_archetype')
         .eq('user_id', user.id)
         .single();
 
@@ -52,7 +53,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
         setDisplayName(profile.display_name || "");
         setHandle(profile.handle || "");
         setAvatarUrl(profile.avatar_url || "");
-        setCoverUrl(profile.cover_url || "");
+        setLongevityArchetype(profile.longevity_archetype || "");
       }
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -81,8 +82,8 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
     } catch (error) {
       console.error('Upload error:', error);
       toast({
-        title: "Upload failed",
-        description: "Failed to upload image. Please try again.",
+        title: translate('profileEditor.identity.uploadFailed'),
+        description: translate('profileEditor.identity.uploadFailedDesc'),
         variant: "destructive",
       });
       return null;
@@ -102,30 +103,8 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
       if (url) {
         setAvatarUrl(url);
         toast({
-          title: "Avatar uploaded",
-          description: "Your profile picture has been updated.",
-        });
-      }
-      setUploading(false);
-    };
-    input.click();
-  };
-
-  const handleCoverUpload = async () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-
-      setUploading(true);
-      const url = await uploadFile(file, 'covers', 'cover');
-      if (url) {
-        setCoverUrl(url);
-        toast({
-          title: "Cover photo uploaded",
-          description: "Your cover photo has been updated.",
+          title: translate('profileEditor.identity.avatarUploaded'),
+          description: translate('profileEditor.identity.avatarUploadedDesc'),
         });
       }
       setUploading(false);
@@ -136,53 +115,15 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">Identity</h3>
+        <h3 className="text-lg font-medium mb-4">{translate('profileEditor.identity.title')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Manage your display name, handle, and profile images.
+          {translate('profileEditor.identity.description')}
         </p>
-      </div>
-
-      {/* Cover Photo */}
-      <div className="space-y-2">
-        <Label>Cover Photo</Label>
-        <p className="text-xs text-muted-foreground">Recommended: 16:5 aspect ratio (e.g., 1600x500px)</p>
-        <Card className="relative aspect-[16/5] border-2 border-dashed border-muted-foreground/25 hover:border-muted-foreground/50 transition-colors">
-          {coverUrl ? (
-            <div className="relative h-full">
-              <img 
-                src={coverUrl} 
-                alt="Cover" 
-                className="w-full h-full object-cover rounded-md"
-              />
-              <Button
-                size="sm"
-                variant="secondary"
-                className="absolute top-2 right-2"
-                onClick={() => setCoverUrl("")}
-                disabled={uploading}
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-          ) : (
-            <Button
-              variant="ghost"
-              className="w-full h-full flex flex-col gap-2"
-              onClick={handleCoverUpload}
-              disabled={uploading}
-            >
-              <Upload className="w-6 h-6 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">
-                {uploading ? "Uploading..." : "Upload cover photo"}
-              </span>
-            </Button>
-          )}
-        </Card>
       </div>
 
       {/* Avatar */}
       <div className="space-y-2">
-        <Label>Profile Picture</Label>
+        <Label>{translate('profileEditor.identity.profilePicture')}</Label>
         <div className="flex items-center gap-4">
           <Avatar className="w-20 h-20">
             <AvatarImage src={avatarUrl} />
@@ -198,7 +139,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
               disabled={uploading}
             >
               <Upload className="w-4 h-4 mr-2" />
-              {uploading ? "Uploading..." : "Upload"}
+              {uploading ? translate('profileEditor.identity.uploading') : translate('profileEditor.identity.upload')}
             </Button>
             {avatarUrl && (
               <Button 
@@ -208,7 +149,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
                 disabled={uploading}
               >
                 <X className="w-4 h-4 mr-2" />
-                Remove
+                {translate('profileEditor.identity.remove')}
               </Button>
             )}
           </div>
@@ -217,30 +158,44 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
 
       {/* Display Name */}
       <div className="space-y-2">
-        <Label htmlFor="display-name">Display Name</Label>
+        <Label htmlFor="display-name">{translate('profileEditor.identity.displayName')}</Label>
         <Input
           id="display-name"
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
-          placeholder="Your display name"
+          placeholder={translate('profileEditor.identity.displayNamePlaceholder')}
         />
       </div>
 
       {/* Handle */}
       <div className="space-y-2">
-        <Label htmlFor="handle">Handle</Label>
+        <Label htmlFor="handle">{translate('profileEditor.identity.handle')}</Label>
         <div className="flex items-center">
           <span className="text-muted-foreground mr-2">@</span>
           <Input
             id="handle"
             value={handle}
             onChange={(e) => setHandle(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
-            placeholder="yourhandle"
+            placeholder={translate('profileEditor.identity.handlePlaceholder')}
             className="flex-1"
           />
         </div>
         <p className="text-xs text-muted-foreground">
-          Your handle will be used in your public profile URL: /u/@{handle}
+          {translate('profileEditor.identity.handleDescription').replace('{handle}', handle || translate('profileEditor.identity.handlePlaceholder'))}
+        </p>
+      </div>
+
+      {/* Personality Descriptor */}
+      <div className="space-y-2">
+        <Label htmlFor="personality-descriptor">{translate('profileEditor.identity.personalityDescriptor')}</Label>
+        <Input
+          id="personality-descriptor"
+          value={longevityArchetype}
+          onChange={(e) => setLongevityArchetype(e.target.value)}
+          placeholder={translate('profileEditor.identity.personalityDescriptorPlaceholder')}
+        />
+        <p className="text-xs text-muted-foreground">
+          {translate('profileEditor.identity.personalityDescriptorDescription')}
         </p>
       </div>
     </div>
