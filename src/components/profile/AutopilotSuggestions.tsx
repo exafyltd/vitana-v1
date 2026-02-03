@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Plane, TrendingUp, Star } from "lucide-react";
 import { AutopilotProfilePopup } from "./AutopilotProfilePopup";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AutopilotSuggestionsProps {
   type: 'banner' | 'bio' | 'showcase' | 'archetype' | 'profile-section';
@@ -12,6 +13,8 @@ interface AutopilotSuggestionsProps {
 
 export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSuggestionsProps) {
   const [showPopup, setShowPopup] = useState(false);
+  const { translate } = useTranslation();
+  
   if (type === 'banner') {
     return (
       <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 p-4 mb-6">
@@ -35,7 +38,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
       <Card className="border-dashed border-primary/30 bg-primary/5 p-3 mb-4">
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="h-4 w-4 text-primary" />
-          <span className="text-sm font-medium">Autopilot Quick Suggestions</span>
+          <span className="text-sm font-medium">{translate('profileEditor.autopilot.quickSuggestions')}</span>
           <Badge variant="secondary" className="text-xs">AI</Badge>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -45,7 +48,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             className="h-7 text-xs hover:bg-primary/10"
             onClick={() => onSuggestionClick?.('shorter')}
           >
-            Make Shorter
+            {translate('profileEditor.autopilot.makeShorter')}
           </Button>
           <Button 
             size="sm" 
@@ -53,7 +56,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             className="h-7 text-xs hover:bg-primary/10"
             onClick={() => onSuggestionClick?.('professional')}
           >
-            More Professional
+            {translate('profileEditor.autopilot.moreProfessional')}
           </Button>
           <Button 
             size="sm" 
@@ -61,7 +64,7 @@ export function AutopilotSuggestions({ type, onSuggestionClick }: AutopilotSugge
             className="h-7 text-xs hover:bg-primary/10"
             onClick={() => onSuggestionClick?.('inspirational')}
           >
-            More Inspirational
+            {translate('profileEditor.autopilot.moreInspirational')}
           </Button>
         </div>
       </Card>
