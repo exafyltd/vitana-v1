@@ -5,6 +5,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/context/ProfileProvider";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AboutDrawerProps {
   open: boolean;
@@ -21,6 +22,7 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
   const { refreshProfile } = useProfile();
+  const { translate } = useTranslation();
 
   const handleSave = async () => {
     try {
@@ -53,16 +55,16 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
       refreshProfile();
 
       toast({
-        title: "Profile updated",
-        description: "Your about information has been saved successfully.",
+        title: translate('profileEditor.profileUpdated'),
+        description: translate('profileEditor.profileUpdatedDesc'),
       });
       
       onOpenChange(false);
     } catch (error: any) {
       console.error('[AboutDrawer] Save error:', error);
       toast({
-        title: "Save failed",
-        description: error.message || "Failed to save profile. Please try again.",
+        title: translate('profileEditor.saveFailed'),
+        description: translate('profileEditor.saveFailedDesc'),
         variant: "destructive",
       });
     } finally {
@@ -74,7 +76,7 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit About</DialogTitle>
+          <DialogTitle>{translate('profileEditor.editAbout')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -87,14 +89,14 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
               onClick={() => onOpenChange(false)}
               disabled={saving}
             >
-              Cancel
+              {translate('profileEditor.cancel')}
             </Button>
             <Button 
               className="flex-1"
               onClick={handleSave}
               disabled={saving}
             >
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? translate('profileEditor.saving') : translate('profileEditor.save')}
             </Button>
           </div>
         </div>
