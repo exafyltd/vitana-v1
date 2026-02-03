@@ -242,7 +242,7 @@ export function MobileIdCardBack({
           platform={selectedPlatform.id}
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
-          profileId={user?.id ?? profile.user_id ?? profile.id}
+          profileId={user?.id || (profile.user_id && profile.user_id !== 'current-user' ? profile.user_id : '')}
           onSuccess={handleImportSuccess}
         />
       )}
