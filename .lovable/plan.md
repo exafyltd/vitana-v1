@@ -1,152 +1,112 @@
 
-## Internationalize "Edit Identity" Dialog + Remove Cover Photo + Add Personality Descriptor
 
-### Problem
-1. The "Edit Identity" dialog displays hardcoded English text even when German is selected
-2. The Cover Photo section is obsolete (now using front/back ID card style)
-3. Users cannot edit their "personality descriptor" (longevity archetype like "The Mindful Mover")
+## Fix Mobile Social Presence Synchronization
+
+### Problem Summary
+On the mobile profile page (`/me/profile`), the "Social Presence" section shows no connected accounts even though the desktop shows them correctly. The user "Jovana Comm" has LinkedIn, Instagram, and Facebook connected in the database, but mobile displays "No social accounts connected."
 
 ---
 
-### Changes Overview
+### Root Cause
 
-#### 1. Database Migration
-Add `longevity_archetype` column to the `profiles` table:
-```sql
-ALTER TABLE profiles ADD COLUMN longevity_archetype TEXT;
+The `EditProfilePage.tsx` initializes local `profile` state **without** social URLs from `ProfileProvider`, even though those URLs are available. Only after a Supabase refetch do the social URLs get populated - but by then the initial render has already passed the incomplete profile to `MobileIdCardSwitcher`.
+
+**Desktop Profile.tsx (works)**:
+```typescript
+const mockUserProfile = {
+  // ...
+  linkedin_url: profile.linkedin_url,  // ✅ Uses ProfileProvider
+  instagram_url: profile.instagram_url,
+  // ...
+};
 ```
 
-#### 2. Translation Keys
-Add new keys under `profileEditor.identity` namespace in both `de.json` and `en.json`:
-
-**German (de.json):**
-```json
-"identity": {
-  "editIdentity": "Identität bearbeiten",
-  "title": "Identität",
-  "description": "Verwalten Sie Ihren Anzeigenamen, Handle und Profilbilder.",
-  "profilePicture": "Profilbild",
-  "displayName": "Anzeigename",
-  "displayNamePlaceholder": "Ihr Anzeigename",
-  "handle": "Handle",
-  "handlePlaceholder": "ihrhandle",
-  "handleDescription": "Ihr Handle wird in Ihrer öffentlichen Profil-URL verwendet: /u/@{handle}",
-  "personalityDescriptor": "Persönlichkeitsbeschreibung",
-  "personalityDescriptorPlaceholder": "z.B. The Mindful Mover, Der Achtsame Bewegte",
-  "personalityDescriptorDescription": "Eine kurze Beschreibung, die Ihren Wellness-Stil charakterisiert",
-  "upload": "Hochladen",
-  "uploading": "Hochladen...",
-  "remove": "Entfernen",
-  "avatarUploaded": "Profilbild hochgeladen",
-  "avatarUploadedDesc": "Ihr Profilbild wurde aktualisiert.",
-  "uploadFailed": "Hochladen fehlgeschlagen",
-  "uploadFailedDesc": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
-  "identityUpdated": "Identität aktualisiert",
-  "identityUpdatedDesc": "Ihre Identitätsinformationen wurden erfolgreich gespeichert."
-}
+**Mobile EditProfilePage.tsx (broken)**:
+```typescript
+const [profile, setProfile] = useState<UserProfile>({
+  id: 'current-user',
+  // ...
+  // ❌ NO social URLs from contextProfile
+});
 ```
 
-**English (en.json):**
-```json
-"identity": {
-  "editIdentity": "Edit Identity",
-  "title": "Identity",
-  "description": "Manage your display name, handle, and profile images.",
-  "profilePicture": "Profile Picture",
-  "displayName": "Display Name",
-  "displayNamePlaceholder": "Your display name",
-  "handle": "Handle",
-  "handlePlaceholder": "yourhandle",
-  "handleDescription": "Your handle will be used in your public profile URL: /u/@{handle}",
-  "personalityDescriptor": "Personality Descriptor",
-  "personalityDescriptorPlaceholder": "e.g., The Mindful Mover, The Zen Warrior",
-  "personalityDescriptorDescription": "A short phrase that characterizes your wellness style",
-  "upload": "Upload",
-  "uploading": "Uploading...",
-  "remove": "Remove",
-  "avatarUploaded": "Avatar uploaded",
-  "avatarUploadedDesc": "Your profile picture has been updated.",
-  "uploadFailed": "Upload failed",
-  "uploadFailedDesc": "Failed to upload image. Please try again.",
-  "identityUpdated": "Identity updated",
-  "identityUpdatedDesc": "Your identity information has been saved successfully."
-}
+---
+
+### Solution
+
+#### 1. Update `EditProfilePage.tsx` Initial State
+Add social URLs from `contextProfile` to the initial `useState` call:
+
+```typescript
+const [profile, setProfile] = useState<UserProfile>({
+  id: 'current-user',
+  user_id: user?.id,
+  name: contextProfile.displayName,
+  handle: contextProfile.handle || 'user',
+  avatarUrl: contextProfile.avatar,
+  roles: ['community'],
+  bio: localizedDefaultBio,
+  location: 'San Francisco, CA',
+  // ... existing fields ...
+  
+  // ADD: Social URLs from context for immediate display
+  linkedin_url: contextProfile.linkedin_url,
+  instagram_url: contextProfile.instagram_url,
+  facebook_url: contextProfile.facebook_url,
+  x_url: contextProfile.x_url,
+  youtube_url: contextProfile.youtube_url,
+  tiktok_url: contextProfile.tiktok_url,
+  
+  visibility: { /* ... */ }
+});
+```
+
+#### 2. Update the `useEffect` to sync social URLs when `contextProfile` changes
+Since `contextProfile` has realtime subscriptions, we need to sync the local state when it updates:
+
+```typescript
+// Add effect to sync social URLs when contextProfile updates
+useEffect(() => {
+  setProfile(prev => ({
+    ...prev,
+    linkedin_url: contextProfile.linkedin_url,
+    instagram_url: contextProfile.instagram_url,
+    facebook_url: contextProfile.facebook_url,
+    x_url: contextProfile.x_url,
+    youtube_url: contextProfile.youtube_url,
+    tiktok_url: contextProfile.tiktok_url,
+  }));
+}, [
+  contextProfile.linkedin_url,
+  contextProfile.instagram_url,
+  contextProfile.facebook_url,
+  contextProfile.x_url,
+  contextProfile.youtube_url,
+  contextProfile.tiktok_url
+]);
 ```
 
 ---
 
 ### Files to Modify
 
-#### 1. `src/components/profile/editor/IdentityForm.tsx`
-- Import `useTranslation` hook
-- **Remove entire Cover Photo section** (lines 145-181)
-- Remove `coverUrl` state and related handlers (`handleCoverUpload`)
-- Add new `longevityArchetype` state field
-- Add new input field for Personality Descriptor
-- Replace all hardcoded strings:
-  - `"Identity"` → `translate('profileEditor.identity.title')`
-  - `"Manage your display name, handle, and profile images."` → `translate('profileEditor.identity.description')`
-  - `"Profile Picture"` → `translate('profileEditor.identity.profilePicture')`
-  - `"Upload"` → `translate('profileEditor.identity.upload')`
-  - `"Uploading..."` → `translate('profileEditor.identity.uploading')`
-  - `"Remove"` → `translate('profileEditor.identity.remove')`
-  - `"Display Name"` → `translate('profileEditor.identity.displayName')`
-  - `"Your display name"` → `translate('profileEditor.identity.displayNamePlaceholder')`
-  - `"Handle"` → `translate('profileEditor.identity.handle')`
-  - `"yourhandle"` → `translate('profileEditor.identity.handlePlaceholder')`
-  - Handle URL description → `translate('profileEditor.identity.handleDescription')`
-  - Toast messages → translated keys
-
-#### 2. `src/components/profile/drawers/IdentityDrawer.tsx`
-- Import `useTranslation` hook
-- Update `formData` state to include `longevityArchetype` instead of `coverUrl`
-- Update database upsert to save `longevity_archetype` instead of `cover_url`
-- Replace hardcoded strings:
-  - `"Edit Identity"` → `translate('profileEditor.identity.editIdentity')`
-  - `"Cancel"` → `translate('profileEditor.cancel')`
-  - `"Save Changes"` → `translate('profileEditor.save')`
-  - `"Saving..."` → `translate('profileEditor.saving')`
-  - Toast messages → `translate('profileEditor.identity.identityUpdated')`, etc.
-
-#### 3. `src/i18n/de.json`
-- Add `identity` sub-namespace under `profileEditor` with all German translations
-
-#### 4. `src/i18n/en.json`
-- Add matching `identity` sub-namespace with English translations
+| File | Change |
+|------|--------|
+| `src/pages/EditProfilePage.tsx` | Add social URLs to initial state + sync effect |
 
 ---
 
-### New Personality Descriptor Field UI
+### Expected Result
 
-The new field will appear after Handle:
-
-```text
-┌─────────────────────────────────────┐
-│ Personality Descriptor              │
-│ ┌─────────────────────────────────┐ │
-│ │ The Mindful Mover               │ │
-│ └─────────────────────────────────┘ │
-│ A short phrase that characterizes   │
-│ your wellness style                 │
-└─────────────────────────────────────┘
-```
+1. **Immediate display**: When user navigates to `/me/profile` on mobile, connected social platforms show immediately (colored icons with checkmarks)
+2. **Live sync**: When user connects a new platform, the UI updates instantly without requiring page refresh
+3. **Desktop parity**: Mobile now behaves identically to desktop Social Presence section
 
 ---
 
 ### Technical Notes
 
-1. **Database**: Need to add `longevity_archetype` column to `profiles` table
-2. **IdentityForm props interface**: Update `onDataChange` to pass `longevityArchetype` instead of `coverUrl`
-3. The personality descriptor (archetype) is displayed on the profile ID card next to the handle (e.g., "@daniela-kper · The Mindful Mover")
-4. Keep the upload functionality for avatars - only remove cover photo section
+- The `ProfileProvider` already has realtime subscription for profile changes (line 130-145 in `ProfileProvider.tsx`)
+- After `SocialMediaImportDialog` succeeds, it calls `onSuccess` → `handleImportSuccess` → `refreshProfile()` which triggers the realtime subscription
+- The new sync effect will pick up changes from `contextProfile` and update local state
 
----
-
-### Expected Result
-When German is selected:
-- Dialog title shows **"Identität bearbeiten"**
-- Section title shows **"Identität"**
-- Labels in German: Profilbild, Anzeigename, Handle, Persönlichkeitsbeschreibung
-- Buttons: Hochladen, Entfernen, Speichern, Löschen
-- No Cover Photo section
-- New editable field for the personality descriptor
