@@ -73,6 +73,13 @@ export default function EditProfilePage() {
     vitanaIndex: 742,
     vitanaPercentile: 85,
     longevityArchetype: 'The Mindful Mover',
+    // Social URLs from context for immediate display
+    linkedin_url: contextProfile.linkedin_url,
+    instagram_url: contextProfile.instagram_url,
+    facebook_url: contextProfile.facebook_url,
+    x_url: contextProfile.x_url,
+    youtube_url: contextProfile.youtube_url,
+    tiktok_url: contextProfile.tiktok_url,
     visibility: {
       about: 'public',
       links: 'public',
@@ -93,6 +100,26 @@ export default function EditProfilePage() {
       return prev;
     });
   }, [localizedDefaultBio]);
+
+  // Sync social URLs when contextProfile updates (realtime subscription)
+  useEffect(() => {
+    setProfile(prev => ({
+      ...prev,
+      linkedin_url: contextProfile.linkedin_url,
+      instagram_url: contextProfile.instagram_url,
+      facebook_url: contextProfile.facebook_url,
+      x_url: contextProfile.x_url,
+      youtube_url: contextProfile.youtube_url,
+      tiktok_url: contextProfile.tiktok_url,
+    }));
+  }, [
+    contextProfile.linkedin_url,
+    contextProfile.instagram_url,
+    contextProfile.facebook_url,
+    contextProfile.x_url,
+    contextProfile.youtube_url,
+    contextProfile.tiktok_url
+  ]);
 
   // Refetch profile data - extracted for reuse after social import success
   const refetchProfile = useCallback(async () => {
