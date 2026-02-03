@@ -6803,6 +6803,7 @@ export type Database = {
           linkedin_url: string | null
           links: Json | null
           location: string | null
+          longevity_archetype: string | null
           medical_conditions: string[] | null
           medications: string[] | null
           phone: string | null
@@ -6863,6 +6864,7 @@ export type Database = {
           linkedin_url?: string | null
           links?: Json | null
           location?: string | null
+          longevity_archetype?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
@@ -6923,6 +6925,7 @@ export type Database = {
           linkedin_url?: string | null
           links?: Json | null
           location?: string | null
+          longevity_archetype?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null

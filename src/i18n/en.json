@@ -2052,6 +2052,29 @@
       "moreProfessional": "More Professional",
       "moreInspirational": "More Inspirational",
       "suggestion": "Autopilot suggestion"
+    },
+    "identity": {
+      "editIdentity": "Edit Identity",
+      "title": "Identity",
+      "description": "Manage your display name, handle, and profile images.",
+      "profilePicture": "Profile Picture",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "Your display name",
+      "handle": "Handle",
+      "handlePlaceholder": "yourhandle",
+      "handleDescription": "Your handle will be used in your public profile URL: /u/@{handle}",
+      "personalityDescriptor": "Personality Descriptor",
+      "personalityDescriptorPlaceholder": "e.g., The Mindful Mover, The Zen Warrior",
+      "personalityDescriptorDescription": "A short phrase that characterizes your wellness style",
+      "upload": "Upload",
+      "uploading": "Uploading...",
+      "remove": "Remove",
+      "avatarUploaded": "Avatar uploaded",
+      "avatarUploadedDesc": "Your profile picture has been updated.",
+      "uploadFailed": "Upload failed",
+      "uploadFailedDesc": "Failed to upload image. Please try again.",
+      "identityUpdated": "Identity updated",
+      "identityUpdatedDesc": "Your identity information has been saved successfully."
     }
   }
 }
