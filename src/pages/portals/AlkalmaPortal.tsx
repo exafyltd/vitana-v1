@@ -143,7 +143,8 @@ const AlkalmaPortal = () => {
     }
   };
 
-  if (authLoading) {
+  // Show loading state while checking auth OR if user exists (redirect in progress)
+  if (authLoading || user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
         <Loader2 className="h-8 w-8 animate-spin text-[#3B82F6]" />
