@@ -1,187 +1,152 @@
 
-
-## Internationalize "Edit About" Dialog (Profile Screen)
+## Internationalize "Edit Identity" Dialog + Remove Cover Photo + Add Personality Descriptor
 
 ### Problem
-The "Edit About" dialog on the Profile screen displays hardcoded English text even when German is selected. All labels, buttons, placeholders, and visibility options need to be translated.
+1. The "Edit Identity" dialog displays hardcoded English text even when German is selected
+2. The Cover Photo section is obsolete (now using front/back ID card style)
+3. Users cannot edit their "personality descriptor" (longevity archetype like "The Mindful Mover")
 
 ---
 
-### Translation Mapping (User-Provided + Standard)
+### Changes Overview
 
-| English | German |
-|---------|--------|
-| Edit About | **Profil** |
-| Cancel | **Löschen** |
-| Save Changes | Speichern |
-| Saving... | Speichern... |
-| Location | Ort |
-| Languages | Sprachen |
-| Add a language | Sprache hinzufügen |
-| Public | Öffentlich |
-| Followers | Follower |
-| Private | Privat |
-| Bio | Bio |
-| Links | Links |
-| Add Link | Link hinzufügen |
-| About | Über |
-| Profile updated | Profil aktualisiert |
-| Save failed | Speichern fehlgeschlagen |
+#### 1. Database Migration
+Add `longevity_archetype` column to the `profiles` table:
+```sql
+ALTER TABLE profiles ADD COLUMN longevity_archetype TEXT;
+```
+
+#### 2. Translation Keys
+Add new keys under `profileEditor.identity` namespace in both `de.json` and `en.json`:
+
+**German (de.json):**
+```json
+"identity": {
+  "editIdentity": "Identität bearbeiten",
+  "title": "Identität",
+  "description": "Verwalten Sie Ihren Anzeigenamen, Handle und Profilbilder.",
+  "profilePicture": "Profilbild",
+  "displayName": "Anzeigename",
+  "displayNamePlaceholder": "Ihr Anzeigename",
+  "handle": "Handle",
+  "handlePlaceholder": "ihrhandle",
+  "handleDescription": "Ihr Handle wird in Ihrer öffentlichen Profil-URL verwendet: /u/@{handle}",
+  "personalityDescriptor": "Persönlichkeitsbeschreibung",
+  "personalityDescriptorPlaceholder": "z.B. The Mindful Mover, Der Achtsame Bewegte",
+  "personalityDescriptorDescription": "Eine kurze Beschreibung, die Ihren Wellness-Stil charakterisiert",
+  "upload": "Hochladen",
+  "uploading": "Hochladen...",
+  "remove": "Entfernen",
+  "avatarUploaded": "Profilbild hochgeladen",
+  "avatarUploadedDesc": "Ihr Profilbild wurde aktualisiert.",
+  "uploadFailed": "Hochladen fehlgeschlagen",
+  "uploadFailedDesc": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
+  "identityUpdated": "Identität aktualisiert",
+  "identityUpdatedDesc": "Ihre Identitätsinformationen wurden erfolgreich gespeichert."
+}
+```
+
+**English (en.json):**
+```json
+"identity": {
+  "editIdentity": "Edit Identity",
+  "title": "Identity",
+  "description": "Manage your display name, handle, and profile images.",
+  "profilePicture": "Profile Picture",
+  "displayName": "Display Name",
+  "displayNamePlaceholder": "Your display name",
+  "handle": "Handle",
+  "handlePlaceholder": "yourhandle",
+  "handleDescription": "Your handle will be used in your public profile URL: /u/@{handle}",
+  "personalityDescriptor": "Personality Descriptor",
+  "personalityDescriptorPlaceholder": "e.g., The Mindful Mover, The Zen Warrior",
+  "personalityDescriptorDescription": "A short phrase that characterizes your wellness style",
+  "upload": "Upload",
+  "uploading": "Uploading...",
+  "remove": "Remove",
+  "avatarUploaded": "Avatar uploaded",
+  "avatarUploadedDesc": "Your profile picture has been updated.",
+  "uploadFailed": "Upload failed",
+  "uploadFailedDesc": "Failed to upload image. Please try again.",
+  "identityUpdated": "Identity updated",
+  "identityUpdatedDesc": "Your identity information has been saved successfully."
+}
+```
 
 ---
 
 ### Files to Modify
 
-#### 1. `src/i18n/de.json`
-Add new `profileEditor` namespace with all German translations:
-
-```json
-"profileEditor": {
-  "editAbout": "Profil",
-  "aboutTitle": "Über",
-  "aboutDescription": "Teilen Sie mehr über sich. Sie können steuern, wer jedes Feld sehen kann.",
-  "bio": "Bio",
-  "bioPlaceholder": "Teilen Sie Ihre Wellness-Reise, Leidenschaften und was Sie einzigartig macht...\n\nBeispiele:\n• 'Wellness-Enthusiast mit Leidenschaft für achtsames Leben und Community-Building 🌱'\n• 'Zertifizierter Ernährungsberater, der anderen hilft, ihr gesündestes Selbst zu entdecken'\n• 'Marathonläufer, Meditationslehrer und Fürsprecher für ausgewogenes Leben'",
-  "location": "Ort",
-  "locationPlaceholder": "z.B. Berlin, DE • München, DE • Remote",
-  "links": "Links",
-  "addLink": "Link hinzufügen",
-  "linkLabelPlaceholder": "Bezeichnung (z.B. Website, Instagram, LinkedIn, Portfolio)",
-  "linkUrlPlaceholder": "https://ihre-website.com oder @benutzername",
-  "languages": "Sprachen",
-  "addLanguage": "Sprache hinzufügen",
-  "characters": "Zeichen",
-  "words": "Wörter",
-  "almostFull": "Fast voll",
-  "goodLength": "Gute Länge",
-  "visibility": {
-    "public": "Öffentlich",
-    "followers": "Follower",
-    "private": "Privat"
-  },
-  "languageOptions": {
-    "english": "Englisch",
-    "german": "Deutsch",
-    "spanish": "Spanisch",
-    "french": "Französisch",
-    "italian": "Italienisch",
-    "portuguese": "Portugiesisch",
-    "russian": "Russisch",
-    "arabic": "Arabisch",
-    "chinese": "Chinesisch",
-    "japanese": "Japanisch"
-  },
-  "cancel": "Löschen",
-  "save": "Speichern",
-  "saving": "Speichern...",
-  "profileUpdated": "Profil aktualisiert",
-  "profileUpdatedDesc": "Ihre Informationen wurden erfolgreich gespeichert.",
-  "saveFailed": "Speichern fehlgeschlagen",
-  "saveFailedDesc": "Profil konnte nicht gespeichert werden. Bitte erneut versuchen.",
-  "autopilot": {
-    "quickSuggestions": "Autopilot Schnellvorschläge",
-    "makeShorter": "Kürzer machen",
-    "moreProfessional": "Professioneller",
-    "moreInspirational": "Inspirierender",
-    "suggestion": "Autopilot-Vorschlag"
-  }
-}
-```
-
-#### 2. `src/i18n/en.json`
-Add matching English keys under `profileEditor` namespace:
-
-```json
-"profileEditor": {
-  "editAbout": "Edit About",
-  "aboutTitle": "About",
-  "aboutDescription": "Share more about yourself. You can control who sees each field.",
-  "bio": "Bio",
-  "bioPlaceholder": "Share your wellness journey, passions, and what makes you unique...\n\nExamples:\n• 'Wellness enthusiast passionate about mindful living and community building 🌱'\n• 'Certified nutritionist helping others discover their healthiest selves'\n• 'Marathon runner, meditation teacher, and advocate for balanced living'",
-  "location": "Location",
-  "locationPlaceholder": "e.g., San Francisco, CA • London, UK • Remote",
-  "links": "Links",
-  "addLink": "Add Link",
-  "linkLabelPlaceholder": "Label (e.g., Website, Instagram, LinkedIn, Portfolio)",
-  "linkUrlPlaceholder": "https://your-website.com or @username",
-  "languages": "Languages",
-  "addLanguage": "Add a language",
-  "characters": "characters",
-  "words": "words",
-  "almostFull": "Almost full",
-  "goodLength": "Good length",
-  "visibility": {
-    "public": "Public",
-    "followers": "Followers",
-    "private": "Private"
-  },
-  "languageOptions": {
-    "english": "English",
-    "german": "German",
-    "spanish": "Spanish",
-    "french": "French",
-    "italian": "Italian",
-    "portuguese": "Portuguese",
-    "russian": "Russian",
-    "arabic": "Arabic",
-    "chinese": "Chinese",
-    "japanese": "Japanese"
-  },
-  "cancel": "Cancel",
-  "save": "Save Changes",
-  "saving": "Saving...",
-  "profileUpdated": "Profile updated",
-  "profileUpdatedDesc": "Your about information has been saved successfully.",
-  "saveFailed": "Save failed",
-  "saveFailedDesc": "Failed to save profile. Please try again.",
-  "autopilot": {
-    "quickSuggestions": "Autopilot Quick Suggestions",
-    "makeShorter": "Make Shorter",
-    "moreProfessional": "More Professional",
-    "moreInspirational": "More Inspirational",
-    "suggestion": "Autopilot suggestion"
-  }
-}
-```
-
-#### 3. `src/components/profile/drawers/AboutDrawer.tsx`
+#### 1. `src/components/profile/editor/IdentityForm.tsx`
 - Import `useTranslation` hook
-- Replace all hardcoded strings with translation calls:
-  - `"Edit About"` → `translate('profileEditor.editAbout')`
+- **Remove entire Cover Photo section** (lines 145-181)
+- Remove `coverUrl` state and related handlers (`handleCoverUpload`)
+- Add new `longevityArchetype` state field
+- Add new input field for Personality Descriptor
+- Replace all hardcoded strings:
+  - `"Identity"` → `translate('profileEditor.identity.title')`
+  - `"Manage your display name, handle, and profile images."` → `translate('profileEditor.identity.description')`
+  - `"Profile Picture"` → `translate('profileEditor.identity.profilePicture')`
+  - `"Upload"` → `translate('profileEditor.identity.upload')`
+  - `"Uploading..."` → `translate('profileEditor.identity.uploading')`
+  - `"Remove"` → `translate('profileEditor.identity.remove')`
+  - `"Display Name"` → `translate('profileEditor.identity.displayName')`
+  - `"Your display name"` → `translate('profileEditor.identity.displayNamePlaceholder')`
+  - `"Handle"` → `translate('profileEditor.identity.handle')`
+  - `"yourhandle"` → `translate('profileEditor.identity.handlePlaceholder')`
+  - Handle URL description → `translate('profileEditor.identity.handleDescription')`
+  - Toast messages → translated keys
+
+#### 2. `src/components/profile/drawers/IdentityDrawer.tsx`
+- Import `useTranslation` hook
+- Update `formData` state to include `longevityArchetype` instead of `coverUrl`
+- Update database upsert to save `longevity_archetype` instead of `cover_url`
+- Replace hardcoded strings:
+  - `"Edit Identity"` → `translate('profileEditor.identity.editIdentity')`
   - `"Cancel"` → `translate('profileEditor.cancel')`
   - `"Save Changes"` → `translate('profileEditor.save')`
   - `"Saving..."` → `translate('profileEditor.saving')`
-  - Toast messages → `translate('profileEditor.profileUpdated')`, etc.
+  - Toast messages → `translate('profileEditor.identity.identityUpdated')`, etc.
 
-#### 4. `src/components/profile/editor/AboutForm.tsx`
-- Import `useTranslation` hook
-- Replace all labels and placeholders:
-  - Section title `"About"` → `translate('profileEditor.aboutTitle')`
-  - Description text → `translate('profileEditor.aboutDescription')`
-  - Field labels (Bio, Location, Links, Languages) → translated
-  - All placeholder text → translated
-  - Visibility options (Public, Followers, Private) → translated using `translate('profileEditor.visibility.*')`
-  - Character/word count labels → translated
-  - Language option names in dropdown → translated using `translate('profileEditor.languageOptions.*')`
+#### 3. `src/i18n/de.json`
+- Add `identity` sub-namespace under `profileEditor` with all German translations
 
-#### 5. `src/components/profile/AutopilotSuggestions.tsx`
-- Import `useTranslation` hook
-- Replace bio suggestion labels (for the `type === 'bio'` case used in AboutForm):
-  - `"Autopilot Quick Suggestions"` → `translate('profileEditor.autopilot.quickSuggestions')`
-  - `"Make Shorter"` → `translate('profileEditor.autopilot.makeShorter')`
-  - `"More Professional"` → `translate('profileEditor.autopilot.moreProfessional')`
-  - `"More Inspirational"` → `translate('profileEditor.autopilot.moreInspirational')`
-  - Toast title → `translate('profileEditor.autopilot.suggestion')`
+#### 4. `src/i18n/en.json`
+- Add matching `identity` sub-namespace with English translations
+
+---
+
+### New Personality Descriptor Field UI
+
+The new field will appear after Handle:
+
+```text
+┌─────────────────────────────────────┐
+│ Personality Descriptor              │
+│ ┌─────────────────────────────────┐ │
+│ │ The Mindful Mover               │ │
+│ └─────────────────────────────────┘ │
+│ A short phrase that characterizes   │
+│ your wellness style                 │
+└─────────────────────────────────────┘
+```
+
+---
+
+### Technical Notes
+
+1. **Database**: Need to add `longevity_archetype` column to `profiles` table
+2. **IdentityForm props interface**: Update `onDataChange` to pass `longevityArchetype` instead of `coverUrl`
+3. The personality descriptor (archetype) is displayed on the profile ID card next to the handle (e.g., "@daniela-kper · The Mindful Mover")
+4. Keep the upload functionality for avatars - only remove cover photo section
 
 ---
 
 ### Expected Result
-After these changes, when German is selected:
-- Dialog title shows **"Profil"**
-- Cancel button shows **"Löschen"**
-- Save button shows **"Speichern"**
-- All labels (Bio, Ort, Sprachen, Links) are in German
-- Visibility dropdown shows Öffentlich/Follower/Privat
-- Language names in dropdown are in German (Englisch, Deutsch, etc.)
-- Autopilot suggestions are in German
-
+When German is selected:
+- Dialog title shows **"Identität bearbeiten"**
+- Section title shows **"Identität"**
+- Labels in German: Profilbild, Anzeigename, Handle, Persönlichkeitsbeschreibung
+- Buttons: Hochladen, Entfernen, Speichern, Löschen
+- No Cover Photo section
+- New editable field for the personality descriptor
