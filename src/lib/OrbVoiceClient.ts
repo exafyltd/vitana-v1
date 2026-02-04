@@ -273,12 +273,12 @@ export class OrbVoiceClient {
     const base64 = btoa(binary);
 
     try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send?session_id=${this.sessionId}`, {
+      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          type: 'audio',
           session_id: this.sessionId,
+          type: 'audio',
           data_b64: base64,
           mime: 'audio/pcm;rate=16000'
         })
@@ -296,7 +296,7 @@ export class OrbVoiceClient {
     this.callbacks.onProcessingChange?.(true);
 
     try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/end-turn?session_id=${this.sessionId}`, {
+      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/end-turn`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: this.sessionId })
@@ -312,12 +312,12 @@ export class OrbVoiceClient {
     this.callbacks.onProcessingChange?.(true);
 
     try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send?session_id=${this.sessionId}`, {
+      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          type: 'text',
           session_id: this.sessionId,
+          type: 'text',
           text: text
         })
       });
