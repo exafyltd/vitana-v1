@@ -4928,6 +4928,29 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_category_mapping: {
+        Row: {
+          garden_category: string
+          source_category: string
+        }
+        Insert: {
+          garden_category: string
+          source_category: string
+        }
+        Update: {
+          garden_category?: string
+          source_category?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_category_mapping_garden_category_fkey"
+            columns: ["garden_category"]
+            isOneToOne: false
+            referencedRelation: "memory_garden_config"
+            referencedColumns: ["category_key"]
+          },
+        ]
+      }
       memory_diary_entries: {
         Row: {
           created_at: string
@@ -5142,6 +5165,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      memory_garden_config: {
+        Row: {
+          category_key: string
+          created_at: string
+          description: string | null
+          display_order: number
+          icon: string | null
+          is_active: boolean
+          label: string
+          longevity_message: string | null
+          target_count: number
+        }
+        Insert: {
+          category_key: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          is_active?: boolean
+          label: string
+          longevity_message?: string | null
+          target_count?: number
+        }
+        Update: {
+          category_key?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          is_active?: boolean
+          label?: string
+          longevity_message?: string | null
+          target_count?: number
+        }
+        Relationships: []
       }
       memory_garden_nodes: {
         Row: {
@@ -7299,6 +7358,39 @@ export type Database = {
           target_id?: string
           target_type?: string
           tenant_id?: string
+        }
+        Relationships: []
+      }
+      relationship_nodes: {
+        Row: {
+          created_at: string
+          domain: string
+          id: string
+          metadata: Json | null
+          node_type: string
+          ref_id: string | null
+          tenant_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          domain?: string
+          id?: string
+          metadata?: Json | null
+          node_type: string
+          ref_id?: string | null
+          tenant_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          id?: string
+          metadata?: Json | null
+          node_type?: string
+          ref_id?: string | null
+          tenant_id?: string
+          title?: string
         }
         Relationships: []
       }
@@ -10550,6 +10642,16 @@ export type Database = {
       }
       reject_autopilot_recommendation: {
         Args: { p_reason?: string; p_recommendation_id: string }
+        Returns: Json
+      }
+      relationship_ensure_node: {
+        Args: {
+          p_domain?: string
+          p_metadata?: Json
+          p_node_type: string
+          p_ref_id?: string
+          p_title: string
+        }
         Returns: Json
       }
       release_vtid_claim: {
