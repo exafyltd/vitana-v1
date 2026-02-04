@@ -1,153 +1,162 @@
 
 
-## Simplify Audio Playback: Remove Queue, Use Direct Scheduling
+# Wire Orb to Auth: Multi-Tenant Voice Implementation
 
-### Summary
-Simplify the audio playback in `OrbVoiceClient.ts` by removing the queue-based approach and scheduling each audio chunk immediately when it arrives. The Web Audio API's scheduling system handles seamless playback automatically.
+## Summary
 
----
-
-### What's Changing
-
-**Current Approach (Complex)**
-```text
-┌──────────────┐     ┌────────────┐     ┌──────────────┐
-│ Audio chunk  │ ──> │ audioQueue │ ──> │ playNextAudio│
-│ arrives      │     │ (array)    │     │ (onended)    │
-└──────────────┘     └────────────┘     └──────────────┘
-```
-
-**New Approach (Simple)**
-```text
-┌──────────────┐     ┌─────────────────────────────────┐
-│ Audio chunk  │ ──> │ Schedule at nextStartTime       │
-│ arrives      │     │ nextStartTime += buffer.duration│
-└──────────────┘     └─────────────────────────────────┘
-```
+Implement authenticated, multi-tenant voice sessions by adding JWT authorization to all Orb API calls. The gateway extracts `user_id` and `tenant_id` from the JWT claims - we only pass the access token.
 
 ---
 
-### Code Changes
+## Key Clarification Applied
 
-**File: `src/lib/OrbVoiceClient.ts`**
+When user is authenticated but has no `active_tenant_id` in their JWT:
 
-#### Remove
-- `audioQueue` property
-- `isPlaying` property  
-- `lastScheduledEnd` property
-- `playNextAudio()` method
-- `playPcmWithScheduling()` method
+1. **Check localStorage** for stored `tenant_slug` (set by TenantDetector)
+2. **Auto-call `switch_to_tenant_by_slug`** to update JWT's `app_metadata.active_tenant_id`
+3. **Refresh session** to get updated JWT with tenant context
+4. **Then connect to Orb** with the updated token
 
-#### Add
-- `nextStartTime` property (simpler name, same purpose)
-
-#### Simplify
-Replace `handleAudioChunk()` with direct scheduling logic
+If no stored tenant and no active tenant → show "Please select a community first" error.
 
 ---
 
-### Implementation Details
+## Files to Modify
 
-**1. Update class properties (lines 26-28)**
+### 1. `src/lib/OrbVoiceClient.ts`
+
+**Changes:**
+
+- Add `OrbVoiceClientConfig` interface with `lang` and `accessToken`
+- Update constructor to accept config object
+- Add `getAuthHeaders()` helper method
+- Update ALL fetch calls to use auth headers:
+  - `start()` - session/start
+  - `sendAudio()` - stream/send  
+  - `sendTextMessage()` - stream/send
+  - `endTurn()` - stream/end-turn
+  - `stop()` - session/stop
+- Update SSE connection to include token as query parameter
+- Add error handling for 401 and 400 TENANT_REQUIRED
+
+### 2. `src/hooks/useOrbVoiceClient.ts`
+
+**Changes:**
+
+- Import `useAuth`, `useTenant`, `useProfile` hooks
+- Import Supabase client for fresh token retrieval
+- Update `connect()` function to:
+  1. Validate user is authenticated
+  2. Get fresh access token via `supabase.auth.getSession()`
+  3. Check if `activeTenantId` exists
+  4. If no tenant, try auto-selecting from localStorage + call `setTenantBySlug`
+  5. Create `OrbVoiceClient` with config object
+- Add dependency array with auth/tenant state
+
+---
+
+## Implementation Details
+
+### OrbVoiceClient Constructor Change
+
 ```typescript
-// REMOVE these:
-private audioQueue: Array<{ data: string; mime: string }> = [];
-private isPlaying = false;
-private lastScheduledEnd: number = 0;
+// Before
+constructor(lang: string = 'de', callbacks: OrbVoiceClientCallbacks = {})
 
-// ADD this:
-private nextStartTime: number = 0;
+// After
+export interface OrbVoiceClientConfig {
+  lang: string;
+  accessToken: string;
+}
+
+constructor(config: OrbVoiceClientConfig, callbacks: OrbVoiceClientCallbacks = {})
 ```
 
-**2. Replace handleAudioChunk method (lines 143-151)**
+### Auth Headers Helper
+
 ```typescript
-private handleAudioChunk(base64: string): void {
-  if (!this.audioContext) return;
-  
-  // Resume if suspended (browser autoplay policy)
-  if (this.audioContext.state === 'suspended') {
-    this.audioContext.resume();
-  }
-
-  // Decode base64 → Int16 → Float32
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  const int16 = new Int16Array(bytes.buffer);
-  const float32 = new Float32Array(int16.length);
-  for (let i = 0; i < int16.length; i++) {
-    float32[i] = int16[i] / 32768.0;
-  }
-
-  // Create audio buffer at 24kHz
-  const buffer = this.audioContext.createBuffer(1, float32.length, 24000);
-  buffer.copyToChannel(float32, 0);
-
-  const source = this.audioContext.createBufferSource();
-  source.buffer = buffer;
-  source.connect(this.audioContext.destination);
-
-  // Schedule to start exactly when previous ends
-  const now = this.audioContext.currentTime;
-  if (this.nextStartTime < now) {
-    this.nextStartTime = now;
-  }
-  source.start(this.nextStartTime);
-  this.nextStartTime += buffer.duration;
-
-  this.callbacks.onSpeakingChange?.(true);
-  source.onended = () => {
-    // Check if timeline is empty (no more scheduled audio)
-    if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
-      this.callbacks.onSpeakingChange?.(false);
-    }
+private getAuthHeaders(): HeadersInit {
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.config.accessToken}`,
   };
 }
 ```
 
-**3. Delete playNextAudio() and playPcmWithScheduling() methods (lines 153-216)**
+### SSE URL with Token
 
-Completely remove both methods.
-
-**4. Update initAudioOutput (line 140)**
 ```typescript
-private async initAudioOutput(): Promise<void> {
-  this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-  this.nextStartTime = 0;  // Reset on new context
+const token = encodeURIComponent(this.config.accessToken);
+const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}&token=${token}`;
+```
+
+### Error Handling
+
+```typescript
+if (response.status === 401) {
+  throw new Error('Session expired - please sign in again');
+}
+if (response.status === 400) {
+  const errorData = await response.json();
+  if (errorData.error === 'TENANT_REQUIRED') {
+    throw new Error('Please select a community first');
+  }
 }
 ```
 
-**5. Update stop() method (lines 414-416)**
-```typescript
-// REMOVE these lines:
-this.audioQueue = [];
-this.lastScheduledEnd = 0;
-this.isPlaying = false;
+### Tenant Auto-Selection in Hook
 
-// ADD this:
-this.nextStartTime = 0;
+```typescript
+// In connect() when no activeTenantId
+if (!activeTenantId) {
+  const storedSlug = localStorage.getItem('tenant_slug');
+  if (storedSlug) {
+    await setTenantBySlug(storedSlug);  // Updates JWT
+    // Re-fetch session to get updated token
+    const { data: { session: updatedSession } } = await supabase.auth.getSession();
+    // Use updatedSession.access_token
+  } else {
+    setError('Please select a community first');
+    return;
+  }
+}
 ```
 
 ---
 
-### Why This Works
+## API Contract
 
-| Aspect | Old Queue Approach | New Direct Scheduling |
-|--------|-------------------|----------------------|
-| When chunks are scheduled | After previous `onended` fires | Immediately on arrival |
-| Gap potential | Yes - event loop delay | No - pre-scheduled |
-| Code complexity | 3 methods, queue array | 1 method, 1 number |
-| State tracking | `isPlaying`, `audioQueue.length` | Just `nextStartTime` |
+| Endpoint | Auth Header | Body |
+|----------|-------------|------|
+| `POST /session/start` | `Bearer <token>` | `{lang, voice_style, response_modalities}` |
+| `GET /stream` (SSE) | Query: `token=<token>` | - |
+| `POST /stream/send` | `Bearer <token>` | `{session_id, type, data_b64, mime}` |
+| `POST /stream/end-turn` | `Bearer <token>` | `{session_id}` |
+| `POST /session/stop` | `Bearer <token>` | `{session_id}` |
 
-The Web Audio API's scheduling is sample-accurate. By pre-scheduling each chunk at `nextStartTime` and incrementing by `buffer.duration`, there's literally zero gap between audio segments.
+**Note:** `user_id` and `tenant_id` are NOT sent in body - gateway extracts from JWT.
 
 ---
 
-### Files Modified
+## Error States
 
-| File | Changes |
-|------|---------|
-| `src/lib/OrbVoiceClient.ts` | Remove queue logic, simplify to direct scheduling |
+| Condition | Error Message | Resolution |
+|-----------|---------------|------------|
+| Not signed in | "Please sign in to use voice features" | Redirect to login |
+| Token expired | "Session expired - please sign in again" | Re-authenticate |
+| No tenant selected | "Please select a community first" | Navigate to tenant portal |
+| Gateway 401 mid-session | Disconnect + show error | Re-connect with fresh token |
+
+---
+
+## Testing Checklist
+
+1. Sign in to app
+2. Navigate to tenant portal (e.g., `/maxina`)
+3. Open Orb overlay
+4. Verify network request to `/session/start` includes `Authorization` header
+5. Verify SSE URL includes `token` query parameter
+6. Test voice conversation works
+7. Sign out and verify "Please sign in" error
+8. Clear localStorage tenant and verify "Please select a community" error
 
