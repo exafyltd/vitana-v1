@@ -54,7 +54,9 @@ import { CalendarFilters } from "./CalendarFilters";
 import { WeekGridView } from "./WeekGridView";
 import { AutopilotCalendarSuggestions, AutopilotSuggestion } from "./AutopilotCalendarSuggestions";
 import { BookedVitanaEventsSection } from "./BookedVitanaEventsSection";
+import { MobileCalendarModal } from "./MobileCalendarModal";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
@@ -108,6 +110,7 @@ export function EnhancedCalendarPopup({
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
   const { translate } = useTranslation();
+  const isMobile = useIsMobile();
   const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
@@ -335,6 +338,11 @@ export function EnhancedCalendarPopup({
     window.addEventListener('keydown', handleKeyboard);
     return () => window.removeEventListener('keydown', handleKeyboard);
   }, [open, activeTab]);
+
+  // Render mobile-optimized modal on mobile devices
+  if (isMobile) {
+    return <MobileCalendarModal open={open} onOpenChange={onOpenChange} />;
+  }
 
   return (
     <>
