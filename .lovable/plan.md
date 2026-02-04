@@ -1,235 +1,153 @@
 
 
-## New OrbVoiceClient Implementation (REST + SSE Architecture)
+## Simplify Audio Playback: Remove Queue, Use Direct Scheduling
 
 ### Summary
-Replace the current WebSocket-based `useVitanalandLive` hook with a new **REST + SSE** architecture using the `OrbVoiceClient` class. The new client connects to the external gateway at `https://gateway-86804897789.us-central1.run.app` using REST endpoints for session management and SSE for streaming responses.
-
-**Key Changes:**
-- Replace WebSocket connection with REST + SSE pattern
-- Create AudioWorklet processor for high-quality audio capture
-- Maintain all existing UI and multimodal features for future phases
-- Voice-only functionality in this phase (camera/screen share UI remains but will connect later)
+Simplify the audio playback in `OrbVoiceClient.ts` by removing the queue-based approach and scheduling each audio chunk immediately when it arrives. The Web Audio API's scheduling system handles seamless playback automatically.
 
 ---
 
-### Architecture Comparison
+### What's Changing
 
-| Aspect | Current (WebSocket) | New (REST + SSE) |
-|--------|---------------------|------------------|
-| Protocol | WebSocket to Supabase Edge Function | REST + SSE to Gateway |
-| Session Management | Implicit via WS connection | Explicit REST endpoints |
-| Audio Input | ScriptProcessorNode (deprecated) | AudioWorklet (modern) |
-| Audio Output | 24kHz PCM via binary WS | 24kHz PCM via base64 SSE |
-| Sample Rate In | 24kHz | 16kHz (gateway requirement) |
-| Sample Rate Out | 24kHz | 24kHz |
-
----
-
-### New Gateway Endpoints
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/api/v1/orb/live/session/start` | POST | Create new session, returns `session_id` |
-| `/api/v1/orb/live/stream?session_id=...` | GET (SSE) | Stream audio/transcripts from AI |
-| `/api/v1/orb/live/stream/send?session_id=...` | POST | Send audio chunks to AI |
-| `/api/v1/orb/live/stream/end-turn?session_id=...` | POST | Signal end of user turn |
-| `/api/v1/orb/live/session/stop` | POST | Close session |
-
----
-
-### Implementation Plan
-
-#### Phase 1: Create AudioWorklet Processor
-
-**New file: `public/audio-processor.js`**
-
-```javascript
-class AudioProcessor extends AudioWorkletProcessor {
-    constructor() {
-        super();
-        this.buffer = [];
-        this.bufferSize = 4096; // ~256ms at 16kHz
-    }
-
-    process(inputs) {
-        const input = inputs[0];
-        if (input && input.length > 0) {
-            const channelData = input[0];
-            for (let i = 0; i < channelData.length; i++) {
-                this.buffer.push(channelData[i]);
-            }
-            while (this.buffer.length >= this.bufferSize) {
-                const chunk = new Float32Array(this.buffer.splice(0, this.bufferSize));
-                this.port.postMessage(chunk);
-            }
-        }
-        return true;
-    }
-}
-
-registerProcessor('audio-processor', AudioProcessor);
+**Current Approach (Complex)**
+```text
+┌──────────────┐     ┌────────────┐     ┌──────────────┐
+│ Audio chunk  │ ──> │ audioQueue │ ──> │ playNextAudio│
+│ arrives      │     │ (array)    │     │ (onended)    │
+└──────────────┘     └────────────┘     └──────────────┘
 ```
 
-#### Phase 2: Create OrbVoiceClient Class
+**New Approach (Simple)**
+```text
+┌──────────────┐     ┌─────────────────────────────────┐
+│ Audio chunk  │ ──> │ Schedule at nextStartTime       │
+│ arrives      │     │ nextStartTime += buffer.duration│
+└──────────────┘     └─────────────────────────────────┘
+```
 
-**New file: `src/lib/OrbVoiceClient.ts`**
+---
 
-Core class with:
-- Session management (start/stop)
-- SSE connection for receiving audio/transcripts
-- AudioWorklet-based recording at 16kHz
-- PCM audio queue playback at 24kHz
-- Error handling and reconnection logic
+### Code Changes
 
-**Key Methods:**
-- `start()`: Create session → connect SSE → init audio → start recording
-- `stop()`: Stop session → close SSE → cleanup audio
-- `endTurn()`: Signal end of user speaking
-- `sendTextMessage(text: string)`: Send text instead of audio (for text input feature)
+**File: `src/lib/OrbVoiceClient.ts`**
 
-#### Phase 3: Create React Hook
+#### Remove
+- `audioQueue` property
+- `isPlaying` property  
+- `lastScheduledEnd` property
+- `playNextAudio()` method
+- `playPcmWithScheduling()` method
 
-**New file: `src/hooks/useOrbVoiceClient.ts`**
+#### Add
+- `nextStartTime` property (simpler name, same purpose)
 
-React hook that wraps `OrbVoiceClient` with:
-- Connection state management (`disconnected`, `connecting`, `ready`)
-- Listening state (`isListening`)
-- Processing state (`isProcessing`)
-- Speaking state (`isSpeaking`)
-- Error state
-- Volume level tracking for orb animation
-- Transcript handling
+#### Simplify
+Replace `handleAudioChunk()` with direct scheduling logic
 
-**Interface matching current hook:**
+---
+
+### Implementation Details
+
+**1. Update class properties (lines 26-28)**
 ```typescript
-{
-  connectionState: 'disconnected' | 'connecting' | 'ready';
-  isListening: boolean;
-  isProcessing: boolean;
-  isSpeaking: boolean;
-  error: string | null;
-  volumeLevel: number;
-  transcript: string;
-  connect: () => Promise<void>;
-  disconnect: () => void;
-  startListening: () => Promise<void>;
-  stopListening: () => void;
-  sendMessage: (text: string) => void;
+// REMOVE these:
+private audioQueue: Array<{ data: string; mime: string }> = [];
+private isPlaying = false;
+private lastScheduledEnd: number = 0;
+
+// ADD this:
+private nextStartTime: number = 0;
+```
+
+**2. Replace handleAudioChunk method (lines 143-151)**
+```typescript
+private handleAudioChunk(base64: string): void {
+  if (!this.audioContext) return;
+  
+  // Resume if suspended (browser autoplay policy)
+  if (this.audioContext.state === 'suspended') {
+    this.audioContext.resume();
+  }
+
+  // Decode base64 → Int16 → Float32
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  const int16 = new Int16Array(bytes.buffer);
+  const float32 = new Float32Array(int16.length);
+  for (let i = 0; i < int16.length; i++) {
+    float32[i] = int16[i] / 32768.0;
+  }
+
+  // Create audio buffer at 24kHz
+  const buffer = this.audioContext.createBuffer(1, float32.length, 24000);
+  buffer.copyToChannel(float32, 0);
+
+  const source = this.audioContext.createBufferSource();
+  source.buffer = buffer;
+  source.connect(this.audioContext.destination);
+
+  // Schedule to start exactly when previous ends
+  const now = this.audioContext.currentTime;
+  if (this.nextStartTime < now) {
+    this.nextStartTime = now;
+  }
+  source.start(this.nextStartTime);
+  this.nextStartTime += buffer.duration;
+
+  this.callbacks.onSpeakingChange?.(true);
+  source.onended = () => {
+    // Check if timeline is empty (no more scheduled audio)
+    if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
+      this.callbacks.onSpeakingChange?.(false);
+    }
+  };
 }
 ```
 
-#### Phase 4: Update VitanaAudioOverlay
+**3. Delete playNextAudio() and playPcmWithScheduling() methods (lines 153-216)**
 
-**Modify: `src/components/audio/VitanaAudioOverlay.tsx`**
+Completely remove both methods.
 
-Changes:
-1. Replace `useVitanalandLive` import with `useOrbVoiceClient`
-2. Replace `useVitanaPCMAudio` (playback now handled inside client)
-3. Update `connect()` call signature
-4. Keep all multimodal UI controls (camera, screen share, text input)
-5. Keep tool execution and navigation logic
-6. Update volume level source (now from hook directly)
-
-**Preserved Features (for future phases):**
-- Camera toggle button and `useVisualContext` integration
-- Screen share toggle button
-- Text input slide-up panel
-- Diary/Autopilot tool execution
-- Navigation commands via `useVitanaOrbTools`
-
----
-
-### File Changes Summary
-
-| File | Action | Description |
-|------|--------|-------------|
-| `public/audio-processor.js` | **Create** | AudioWorklet processor for 16kHz capture |
-| `src/lib/OrbVoiceClient.ts` | **Create** | Core client class (REST + SSE + audio) |
-| `src/hooks/useOrbVoiceClient.ts` | **Create** | React hook wrapping OrbVoiceClient |
-| `src/components/audio/VitanaAudioOverlay.tsx` | **Modify** | Switch to new hook, keep UI intact |
-
----
-
-### Technical Specifications
-
-#### Audio Input (Microphone → Gateway)
-- Sample Rate: **16,000 Hz** (gateway requirement)
-- Format: PCM 16-bit signed integer
-- Encoding: Base64
-- Buffer Size: 4096 samples (~256ms)
-- MIME: `audio/pcm;rate=16000`
-
-#### Audio Output (Gateway → Speaker)
-- Sample Rate: **24,000 Hz**
-- Format: PCM 16-bit signed integer (base64 in SSE)
-- Playback: Web Audio API AudioBufferSourceNode
-
-#### SSE Message Types
+**4. Update initAudioOutput (line 140)**
 ```typescript
-type SSEMessage = 
-  | { type: 'audio'; data_b64: string }
-  | { type: 'transcript'; text: string }
-  | { type: 'assistant_text'; text: string }
-  | { type: 'error'; message: string };
+private async initAudioOutput(): Promise<void> {
+  this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+  this.nextStartTime = 0;  // Reset on new context
+}
+```
+
+**5. Update stop() method (lines 414-416)**
+```typescript
+// REMOVE these lines:
+this.audioQueue = [];
+this.lastScheduledEnd = 0;
+this.isPlaying = false;
+
+// ADD this:
+this.nextStartTime = 0;
 ```
 
 ---
 
-### Error Handling
+### Why This Works
 
-1. **Session Start Failure**: Toast error, remain disconnected
-2. **SSE Disconnect**: Warn in console, allow reconnect
-3. **Audio Chunk Send Failure**: Silent fail (avoid log spam)
-4. **Microphone Denied**: Toast error, set error state
-5. **AudioWorklet Failure**: Fallback error message
+| Aspect | Old Queue Approach | New Direct Scheduling |
+|--------|-------------------|----------------------|
+| When chunks are scheduled | After previous `onended` fires | Immediately on arrival |
+| Gap potential | Yes - event loop delay | No - pre-scheduled |
+| Code complexity | 3 methods, queue array | 1 method, 1 number |
+| State tracking | `isPlaying`, `audioQueue.length` | Just `nextStartTime` |
 
----
-
-### State Mapping
-
-| OrbVoiceClient Event | Hook State Change |
-|----------------------|-------------------|
-| Session created | `connectionState: 'connecting'` |
-| SSE connected | `connectionState: 'ready'`, `sessionReady: true` |
-| Recording started | `isListening: true` |
-| Recording stopped | `isListening: false`, `isProcessing: true` |
-| Receiving audio | `isSpeaking: true` |
-| Audio complete | `isSpeaking: false`, `isProcessing: false` |
-| Transcript received | Update `transcript` |
-| Error | Set `error`, optionally disconnect |
+The Web Audio API's scheduling is sample-accurate. By pre-scheduling each chunk at `nextStartTime` and incrementing by `buffer.duration`, there's literally zero gap between audio segments.
 
 ---
 
-### Multimodal Preservation
+### Files Modified
 
-The following features remain in the UI but won't send visual data in Phase 1:
-
-| Feature | UI State | Future Integration Point |
-|---------|----------|-------------------------|
-| Camera | `cameraActive` toggle button | Will send frames to gateway |
-| Screen Share | `screenShareActive` toggle button | Will send screenshots to gateway |
-| Text Input | `textInputVisible` panel | Works now via `sendMessage()` |
-| Diary | `diaryActive` modal | Works now via tool calls |
-| Autopilot | `autopilotActive` modal | Works now via tool calls |
-
----
-
-### Dependencies
-
-No new npm packages required. Uses:
-- Native `AudioWorklet` API
-- Native `EventSource` API
-- Native `AudioContext` API
-- Native `fetch` API
-
----
-
-### Migration Path
-
-1. Create new files (`OrbVoiceClient.ts`, `useOrbVoiceClient.ts`, `audio-processor.js`)
-2. Update `VitanaAudioOverlay.tsx` to use new hook
-3. Test voice-only flow
-4. Old files (`useVitanalandLive.ts`, `useVitanaPCMAudio.ts`) remain for reference but are no longer used by the orb
-5. Future: Add multimodal support by extending `OrbVoiceClient.sendVisualContext()`
+| File | Changes |
+|------|---------|
+| `src/lib/OrbVoiceClient.ts` | Remove queue logic, simplify to direct scheduling |
 
