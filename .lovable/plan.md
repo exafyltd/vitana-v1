@@ -1,304 +1,235 @@
 
 
-## Mobile Calendar Modal Redesign (Bookings + Quick Add)
+## New OrbVoiceClient Implementation (REST + SSE Architecture)
 
 ### Summary
-Complete redesign of the Calendar modal opened from the mobile Utility/Action bar to be mobile-first, focused on VITANA bookings (fitness, training, health, community), with smooth scrolling, a clean header, and "Agenda | Month" tabbed navigation.
+Replace the current WebSocket-based `useVitanalandLive` hook with a new **REST + SSE** architecture using the `OrbVoiceClient` class. The new client connects to the external gateway at `https://gateway-86804897789.us-central1.run.app` using REST endpoints for session management and SSE for streaming responses.
+
+**Key Changes:**
+- Replace WebSocket connection with REST + SSE pattern
+- Create AudioWorklet processor for high-quality audio capture
+- Maintain all existing UI and multimodal features for future phases
+- Voice-only functionality in this phase (camera/screen share UI remains but will connect later)
 
 ---
 
-### Current Issues
-1. **Desktop-first layout**: `max-w-[920px]`, `max-h-[80vh]` styling doesn't suit mobile bottom sheets
-2. **Complex nested tabs**: Today | Week | Month with category filter chips adds clutter
-3. **ScrollArea within Dialog**: Causes "stuck modal" scrolling bugs on mobile
-4. **Header bloat**: Sync button, filter chips, and Autopilot suggestions compete for space
-5. **No booking-centric focus**: Shows all events without highlighting VITANA bookings
-6. **Wrong mental model**: "Smart Calendar" multi-purpose look vs. "My Calendar" personal bookings view
+### Architecture Comparison
+
+| Aspect | Current (WebSocket) | New (REST + SSE) |
+|--------|---------------------|------------------|
+| Protocol | WebSocket to Supabase Edge Function | REST + SSE to Gateway |
+| Session Management | Implicit via WS connection | Explicit REST endpoints |
+| Audio Input | ScriptProcessorNode (deprecated) | AudioWorklet (modern) |
+| Audio Output | 24kHz PCM via binary WS | 24kHz PCM via base64 SSE |
+| Sample Rate In | 24kHz | 16kHz (gateway requirement) |
+| Sample Rate Out | 24kHz | 24kHz |
 
 ---
 
-### Proposed Solution
+### New Gateway Endpoints
 
-Create a new **MobileCalendarModal** component that:
-- Uses `ResponsiveDialog` for proper mobile bottom sheet behavior
-- Height: 92vh with rounded-t-[24px] corners
-- Single scroll container (body scrolls, header/footer sticky)
-- Focuses on user's VITANA bookings
-- Provides "Agenda | Month" segmented control (default: Agenda)
-
----
-
-### Component Architecture
-
-```text
-MobileCalendarModal.tsx (new file)
-├── Header (sticky)
-│   ├── Calendar icon + "My Calendar"
-│   └── "+ Event hinzufügen" button
-│
-├── Body (scrollable)
-│   ├── TodaySection
-│   │   ├── Date display
-│   │   ├── Today's booked items (up to 3) OR "No bookings today"
-│   │   └── Next upcoming card (title, time, category badge, location, CTA)
-│   │
-│   ├── SegmentedControl: [Agenda | Month]
-│   │
-│   ├── AgendaView (default tab)
-│   │   ├── Group: Today
-│   │   ├── Group: Tomorrow
-│   │   ├── Group: This Week
-│   │   └── Group: Later
-│   │   Each row: title, time range, category badge, status pill
-│   │
-│   └── MonthView (secondary tab)
-│       ├── Minimal month grid with dots on booked days
-│       └── Selected day's events below grid
-│
-└── Footer (sticky)
-    ├── Close button
-    └── "Browse Activities" button
-```
-
----
-
-### Data Source: "Booked through VITANA"
-
-All events where the user has a booking relationship:
-- **Filter criteria**: events with `metadata.meetup_id` OR `metadata.ticket_id` OR `source_type: 'invite'` with accepted status
-- **Include**: community, fitness, training, health, professional events that user actively joined/booked
-
-Fields needed per booking:
-- `id`, `title`, `start_time`, `end_time`
-- `event_type` (for category badge)
-- `location` (optional)
-- `status` (for booking status pill)
-- `metadata` (for route/link to detail)
-
----
-
-### UI Specifications
-
-#### Header (sticky)
-```tsx
-<div className="sticky top-0 z-10 bg-background px-4 pt-2 pb-3 border-b">
-  <div className="flex items-center justify-between">
-    <div className="flex items-center gap-2">
-      <Calendar className="w-5 h-5 text-util-calendar-accent" />
-      <div>
-        <h2 className="text-lg font-semibold">My Calendar</h2>
-        <p className="text-xs text-muted-foreground">Your booked activities in VITANA</p>
-      </div>
-    </div>
-    <Button size="sm" className="gap-1.5 h-9">
-      <Plus className="h-4 w-4" />
-      Event hinzufügen
-    </Button>
-  </div>
-</div>
-```
-
-#### Today Section
-- Show current date formatted (e.g., "Tuesday, Feb 4")
-- Up to 3 booked items for today with compact rows
-- If no today bookings: "No bookings today" text
-- "Next upcoming" card with:
-  - Title
-  - Time (e.g., "Fri, Feb 7 • 14:00")
-  - Category badge (color-coded: Fitness, Health, Community, etc.)
-  - Location (if available)
-  - "Open →" CTA to navigate to event detail
-
-#### Segmented Control
-```tsx
-<Tabs defaultValue="agenda" className="w-full">
-  <TabsList className="grid w-full grid-cols-2 h-10 p-1 bg-muted/50 rounded-lg">
-    <TabsTrigger value="agenda">Agenda</TabsTrigger>
-    <TabsTrigger value="month">Month</TabsTrigger>
-  </TabsList>
-  ...
-</Tabs>
-```
-
-#### Agenda View (grouped list)
-- **Groups**: Today, Tomorrow, This Week, Later
-- Each row:
-  - Left: time range (e.g., "14:00–16:00")
-  - Center: title (truncated)
-  - Right: category badge + status pill
-- Tap row → navigate to event detail
-- Empty state: "No bookings yet" + "Browse activities" CTA
-
-#### Month View
-- Minimal calendar grid (prev/next arrows)
-- Dots only on days with bookings
-- Tap day → show that day's booked items below grid
-- Compact event list for selected day
-
-#### Footer (sticky)
-```tsx
-<div className="sticky bottom-0 z-10 bg-background px-4 py-3 border-t flex gap-2 pb-[env(safe-area-inset-bottom)]">
-  <Button variant="outline" className="flex-1" onClick={onClose}>
-    Close
-  </Button>
-  <Button variant="secondary" className="flex-1" onClick={onBrowseActivities}>
-    Browse Activities
-  </Button>
-</div>
-```
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/v1/orb/live/session/start` | POST | Create new session, returns `session_id` |
+| `/api/v1/orb/live/stream?session_id=...` | GET (SSE) | Stream audio/transcripts from AI |
+| `/api/v1/orb/live/stream/send?session_id=...` | POST | Send audio chunks to AI |
+| `/api/v1/orb/live/stream/end-turn?session_id=...` | POST | Signal end of user turn |
+| `/api/v1/orb/live/session/stop` | POST | Close session |
 
 ---
 
 ### Implementation Plan
 
-#### Phase 1: Create New Mobile Calendar Component
+#### Phase 1: Create AudioWorklet Processor
 
-**New file: `src/components/calendar/MobileCalendarModal.tsx`**
+**New file: `public/audio-processor.js`**
 
-Structure:
-1. Use `ResponsiveDialog` with `fullscreenOnMobile={false}` for 92vh bottom sheet
-2. Custom height styling: `h-[92vh]` with `rounded-t-[24px]`
-3. Native scrolling via `overflow-y-auto` on body (no `ScrollArea`)
-4. Import `useCalendarEvents` for data
-5. Filter for booked events only
+```javascript
+class AudioProcessor extends AudioWorkletProcessor {
+    constructor() {
+        super();
+        this.buffer = [];
+        this.bufferSize = 4096; // ~256ms at 16kHz
+    }
 
-#### Phase 2: Add Helper Functions
+    process(inputs) {
+        const input = inputs[0];
+        if (input && input.length > 0) {
+            const channelData = input[0];
+            for (let i = 0; i < channelData.length; i++) {
+                this.buffer.push(channelData[i]);
+            }
+            while (this.buffer.length >= this.bufferSize) {
+                const chunk = new Float32Array(this.buffer.splice(0, this.bufferSize));
+                this.port.postMessage(chunk);
+            }
+        }
+        return true;
+    }
+}
 
-**Within `MobileCalendarModal.tsx`:**
-- `getBookedEvents()`: Filter events that represent bookings
-- `groupEventsByTimeframe()`: Group into Today/Tomorrow/ThisWeek/Later
-- `getCategoryLabel()`: Map event_type to user-friendly labels
+registerProcessor('audio-processor', AudioProcessor);
+```
 
-#### Phase 3: Create Sub-Components
+#### Phase 2: Create OrbVoiceClient Class
 
-**`TodayBookingsSection.tsx`** (can reuse/adapt `BookedVitanaEventsSection`)
-- Today's date
-- Up to 3 compact event rows
-- "Next upcoming" card
+**New file: `src/lib/OrbVoiceClient.ts`**
 
-**`AgendaGroupedList.tsx`**
-- Grouped list with section headers
-- Compact event rows with category badges and status pills
+Core class with:
+- Session management (start/stop)
+- SSE connection for receiving audio/transcripts
+- AudioWorklet-based recording at 16kHz
+- PCM audio queue playback at 24kHz
+- Error handling and reconnection logic
 
-**`MonthGridView.tsx`**
-- Minimal month calendar with dots
-- Day selection → event list
+**Key Methods:**
+- `start()`: Create session → connect SSE → init audio → start recording
+- `stop()`: Stop session → close SSE → cleanup audio
+- `endTurn()`: Signal end of user speaking
+- `sendTextMessage(text: string)`: Send text instead of audio (for text input feature)
 
-#### Phase 4: Update Entry Point
+#### Phase 3: Create React Hook
 
-**Modify `EnhancedCalendarPopup.tsx`:**
-- Add `useIsMobile()` check at top
-- If mobile, render `MobileCalendarModal` instead of desktop Dialog
-- Desktop view remains unchanged
+**New file: `src/hooks/useOrbVoiceClient.ts`**
 
-#### Phase 5: Add Translation Keys
+React hook that wraps `OrbVoiceClient` with:
+- Connection state management (`disconnected`, `connecting`, `ready`)
+- Listening state (`isListening`)
+- Processing state (`isProcessing`)
+- Speaking state (`isSpeaking`)
+- Error state
+- Volume level tracking for orb animation
+- Transcript handling
 
-**`src/i18n/en.json` and `src/i18n/de.json`:**
-```json
-"calendar": {
-  "myCalendar": "My Calendar",
-  "bookedActivities": "Your booked activities in VITANA",
-  "noBookingsToday": "No bookings today",
-  "nextUpcoming": "Next upcoming",
-  "open": "Open",
-  "noBookingsYet": "No bookings yet",
-  "browseActivities": "Browse Activities",
-  "agenda": "Agenda",
-  "categories": {
-    "fitness": "Fitness",
-    "training": "Training",
-    "health": "Health",
-    "community": "Community",
-    "professional": "Work"
-  },
-  "bookingStatus": {
-    "booked": "Booked",
-    "rsvp": "RSVP",
-    "ticket": "Ticket",
-    "reserved": "Reserved"
-  },
-  "timeGroups": {
-    "today": "Today",
-    "tomorrow": "Tomorrow",
-    "thisWeek": "This Week",
-    "later": "Later"
-  }
+**Interface matching current hook:**
+```typescript
+{
+  connectionState: 'disconnected' | 'connecting' | 'ready';
+  isListening: boolean;
+  isProcessing: boolean;
+  isSpeaking: boolean;
+  error: string | null;
+  volumeLevel: number;
+  transcript: string;
+  connect: () => Promise<void>;
+  disconnect: () => void;
+  startListening: () => Promise<void>;
+  stopListening: () => void;
+  sendMessage: (text: string) => void;
 }
 ```
 
----
+#### Phase 4: Update VitanaAudioOverlay
 
-### Files to Create/Modify
+**Modify: `src/components/audio/VitanaAudioOverlay.tsx`**
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `src/components/calendar/MobileCalendarModal.tsx` | Create | New mobile-first calendar modal |
-| `src/components/calendar/TodayBookingsSection.tsx` | Create | Today's bookings + next upcoming |
-| `src/components/calendar/AgendaGroupedList.tsx` | Create | Grouped agenda list view |
-| `src/components/calendar/MonthGridMobile.tsx` | Create | Minimal month grid for mobile |
-| `src/components/calendar/EnhancedCalendarPopup.tsx` | Modify | Add mobile detection and delegate to MobileCalendarModal |
-| `src/i18n/en.json` | Modify | Add new translation keys |
-| `src/i18n/de.json` | Modify | Add German translations |
+Changes:
+1. Replace `useVitanalandLive` import with `useOrbVoiceClient`
+2. Replace `useVitanaPCMAudio` (playback now handled inside client)
+3. Update `connect()` call signature
+4. Keep all multimodal UI controls (camera, screen share, text input)
+5. Keep tool execution and navigation logic
+6. Update volume level source (now from hook directly)
 
----
-
-### Removed Elements (Mobile Only)
-- Category filter chips (Persönlich / Arbeit / Gesundheit / Training / Community)
-- "Smart Calendar" branding
-- Sync button (de-emphasized to small footer text if kept)
-- Week view tab (Agenda replaces Today + Week combined)
-- Autopilot suggestions section (simplify focus)
-- Quick actions on event rows (hover states don't work well on mobile)
+**Preserved Features (for future phases):**
+- Camera toggle button and `useVisualContext` integration
+- Screen share toggle button
+- Text input slide-up panel
+- Diary/Autopilot tool execution
+- Navigation commands via `useVitanaOrbTools`
 
 ---
 
-### Technical Details
+### File Changes Summary
 
-**Scrolling Fix:**
-```tsx
-// MobileCalendarModal.tsx body section
-<div className="flex-1 overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]">
-  {/* Content */}
-</div>
-```
+| File | Action | Description |
+|------|--------|-------------|
+| `public/audio-processor.js` | **Create** | AudioWorklet processor for 16kHz capture |
+| `src/lib/OrbVoiceClient.ts` | **Create** | Core client class (REST + SSE + audio) |
+| `src/hooks/useOrbVoiceClient.ts` | **Create** | React hook wrapping OrbVoiceClient |
+| `src/components/audio/VitanaAudioOverlay.tsx` | **Modify** | Switch to new hook, keep UI intact |
 
-**Event Filtering for Bookings:**
+---
+
+### Technical Specifications
+
+#### Audio Input (Microphone → Gateway)
+- Sample Rate: **16,000 Hz** (gateway requirement)
+- Format: PCM 16-bit signed integer
+- Encoding: Base64
+- Buffer Size: 4096 samples (~256ms)
+- MIME: `audio/pcm;rate=16000`
+
+#### Audio Output (Gateway → Speaker)
+- Sample Rate: **24,000 Hz**
+- Format: PCM 16-bit signed integer (base64 in SSE)
+- Playback: Web Audio API AudioBufferSourceNode
+
+#### SSE Message Types
 ```typescript
-const bookedEvents = events.filter(event => 
-  (event.metadata?.meetup_id) || 
-  (event.metadata?.ticket_id) ||
-  (event.source_type === 'invite' && event.status === 'confirmed')
-);
-```
-
-**Time Grouping Logic:**
-```typescript
-const groupEvents = (events: CalendarEvent[]) => {
-  const now = new Date();
-  const tomorrow = addDays(now, 1);
-  const endOfWeek = endOfWeek(now);
-  
-  return {
-    today: events.filter(e => isSameDay(new Date(e.start_time), now)),
-    tomorrow: events.filter(e => isSameDay(new Date(e.start_time), tomorrow)),
-    thisWeek: events.filter(e => {
-      const date = new Date(e.start_time);
-      return isAfter(date, tomorrow) && isBefore(date, endOfWeek);
-    }),
-    later: events.filter(e => isAfter(new Date(e.start_time), endOfWeek))
-  };
-};
+type SSEMessage = 
+  | { type: 'audio'; data_b64: string }
+  | { type: 'transcript'; text: string }
+  | { type: 'assistant_text'; text: string }
+  | { type: 'error'; message: string };
 ```
 
 ---
 
-### Acceptance Criteria
-- Scrolling works smoothly (no stuck modal)
-- Calendar is the visual focus
-- Shows Today + Next upcoming immediately at top
-- Shows all booked items regardless of category
-- "+ Event hinzufügen" is available and opens create flow
-- Agenda is default tab, Month is secondary
-- Mobile-first, uncluttered UI
-- Fully localized (DE/EN)
+### Error Handling
+
+1. **Session Start Failure**: Toast error, remain disconnected
+2. **SSE Disconnect**: Warn in console, allow reconnect
+3. **Audio Chunk Send Failure**: Silent fail (avoid log spam)
+4. **Microphone Denied**: Toast error, set error state
+5. **AudioWorklet Failure**: Fallback error message
+
+---
+
+### State Mapping
+
+| OrbVoiceClient Event | Hook State Change |
+|----------------------|-------------------|
+| Session created | `connectionState: 'connecting'` |
+| SSE connected | `connectionState: 'ready'`, `sessionReady: true` |
+| Recording started | `isListening: true` |
+| Recording stopped | `isListening: false`, `isProcessing: true` |
+| Receiving audio | `isSpeaking: true` |
+| Audio complete | `isSpeaking: false`, `isProcessing: false` |
+| Transcript received | Update `transcript` |
+| Error | Set `error`, optionally disconnect |
+
+---
+
+### Multimodal Preservation
+
+The following features remain in the UI but won't send visual data in Phase 1:
+
+| Feature | UI State | Future Integration Point |
+|---------|----------|-------------------------|
+| Camera | `cameraActive` toggle button | Will send frames to gateway |
+| Screen Share | `screenShareActive` toggle button | Will send screenshots to gateway |
+| Text Input | `textInputVisible` panel | Works now via `sendMessage()` |
+| Diary | `diaryActive` modal | Works now via tool calls |
+| Autopilot | `autopilotActive` modal | Works now via tool calls |
+
+---
+
+### Dependencies
+
+No new npm packages required. Uses:
+- Native `AudioWorklet` API
+- Native `EventSource` API
+- Native `AudioContext` API
+- Native `fetch` API
+
+---
+
+### Migration Path
+
+1. Create new files (`OrbVoiceClient.ts`, `useOrbVoiceClient.ts`, `audio-processor.js`)
+2. Update `VitanaAudioOverlay.tsx` to use new hook
+3. Test voice-only flow
+4. Old files (`useVitanalandLive.ts`, `useVitanaPCMAudio.ts`) remain for reference but are no longer used by the orb
+5. Future: Add multimodal support by extending `OrbVoiceClient.sendVisualContext()`
 
