@@ -19,7 +19,7 @@ export function MobileIntegrationSection({
   emoji,
   integrations,
   onSelect,
-  defaultExpanded = true,
+  defaultExpanded = false,
 }: MobileIntegrationSectionProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const connectedCount = integrations.filter((i) => i.connected).length;
