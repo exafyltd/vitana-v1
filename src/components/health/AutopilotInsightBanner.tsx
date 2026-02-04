@@ -1,6 +1,7 @@
 import { Brain } from "lucide-react";
 import { AutopilotInsight } from "@/services/autopilotContext";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AutopilotInsightBannerProps {
   insights: AutopilotInsight[];
@@ -8,17 +9,19 @@ interface AutopilotInsightBannerProps {
   synergyTrend: number;
 }
 
-const statusConfig = {
-  "balanced": { icon: "🟢", color: "text-emerald-600 dark:text-emerald-400" },
-  "needs-attention": { icon: "🟠", color: "text-amber-600 dark:text-amber-400" },
-  "improving": { icon: "🟣", color: "text-violet-600 dark:text-violet-400" }
-};
-
 export function AutopilotInsightBanner({ 
   insights, 
   synergyScore, 
   synergyTrend 
 }: AutopilotInsightBannerProps) {
+  const { translate } = useTranslation();
+
+  const statusConfig = {
+    "balanced": { icon: "🟢", color: "text-emerald-600 dark:text-emerald-400", labelKey: "autopilot.insightBanner.statusBalanced" },
+    "needs-attention": { icon: "🟠", color: "text-amber-600 dark:text-amber-400", labelKey: "autopilot.insightBanner.statusNeedsAttention" },
+    "improving": { icon: "🟣", color: "text-violet-600 dark:text-violet-400", labelKey: "autopilot.insightBanner.statusImproving" }
+  };
+
   return (
     <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 md:p-6 mb-6 shadow-[0_6px_20px_rgba(20,25,40,0.06)]">
       <div className="flex items-start gap-4">
@@ -28,10 +31,10 @@ export function AutopilotInsightBanner({
         
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-foreground mb-1">
-            Autopilot Health Overview
+            {translate('autopilot.insightBanner.title')}
           </h3>
           <p className="text-sm text-muted-foreground mb-4">
-            Your Vitana Autopilot analyzed current plans and consistency.
+            {translate('autopilot.insightBanner.description')}
           </p>
           
           {/* Insights */}
@@ -42,7 +45,7 @@ export function AutopilotInsightBanner({
                 <div key={idx} className="flex items-center gap-2 text-sm">
                   <span className="text-base">{config.icon}</span>
                   <span className={cn("font-medium capitalize", config.color)}>
-                    {insight.status.replace("-", " ")}:
+                    {translate(config.labelKey)}:
                   </span>
                   <span className="text-foreground/80">{insight.label}</span>
                 </div>
@@ -54,7 +57,7 @@ export function AutopilotInsightBanner({
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                Synergy Index:
+                {translate('autopilot.insightBanner.synergyIndex')}:
               </span>
               <span className="text-lg font-bold text-slate-900 dark:text-white">
                 {synergyScore} / 100
