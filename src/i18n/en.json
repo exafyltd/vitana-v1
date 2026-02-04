@@ -205,6 +205,12 @@
     "untitledEvent": "Untitled Event",
     "newEvent": "New Event",
     "close": "Close",
+    "bookedEvents": {
+      "title": "Your Booked Events",
+      "todayLabel": "Today",
+      "nextUp": "Next up",
+      "noEventsToday": "No events today"
+    },
     "filters": {
       "personal": "Personal",
       "community": "Community",

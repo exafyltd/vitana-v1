@@ -53,6 +53,7 @@ import { CalendarListSkeleton } from "./CalendarSkeleton";
 import { CalendarFilters } from "./CalendarFilters";
 import { WeekGridView } from "./WeekGridView";
 import { AutopilotCalendarSuggestions, AutopilotSuggestion } from "./AutopilotCalendarSuggestions";
+import { BookedVitanaEventsSection } from "./BookedVitanaEventsSection";
 import { useTranslation } from "@/hooks/useTranslation";
 
 interface EnhancedCalendarPopupProps {
@@ -436,6 +437,12 @@ export function EnhancedCalendarPopup({
                     <CalendarListSkeleton />
                   ) : (
                     <>
+                      {/* Booked Vitana Events Section */}
+                      <BookedVitanaEventsSection
+                        events={events}
+                        onEventClick={setDetailsPanelEvent}
+                      />
+
                       {/* Autopilot Suggestions */}
                       <AutopilotCalendarSuggestions
                         suggestions={autopilotSuggestions}
