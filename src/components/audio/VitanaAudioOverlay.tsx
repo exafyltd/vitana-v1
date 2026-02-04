@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
-import { useVitanalandLive } from '@/hooks/useVitanalandLive';
+import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
-import { useVitanaPCMAudio } from '@/hooks/useVitanaPCMAudio';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
 import { AudioControls } from './AudioControls';
@@ -36,73 +35,46 @@ export function VitanaAudioOverlay() {
   const [showDiaryEntry, setShowDiaryEntry] = useState(false);
   const [showAutopilot, setShowAutopilot] = useState(false);
   
-  // Visual context for screen/camera sharing
+  // Visual context for screen/camera sharing (preserved for future multimodal)
   const { 
     startCapture, 
     stopCapture, 
     setConfig 
   } = useVisualContext();
   
+  // New REST + SSE based voice client
   const {
     connectionState,
     isListening,
     isProcessing,
     isSpeaking,
     error,
+    volumeLevel,
     connect,
     disconnect,
     startListening,
     stopListening,
     sendMessage,
-    setAudioResponseHandler,
-    setAudioStartHandler,
-    setAudioEndHandler,
-  } = useVitanalandLive();
-
-  // Audio playback system
-  const { playAudio, stopAudio, cleanup: cleanupAudio } = useVitanaPCMAudio();
+  } = useOrbVoiceClient();
 
   // Handle tool execution and navigation
-  const { executeToolCall, navigateByCommand } = useVitanaOrbTools({
+  const { navigateByCommand } = useVitanaOrbTools({
     onDiaryOpen: () => setShowDiaryEntry(true),
     onAutopilotOpen: () => setShowAutopilot(true),
   });
 
-  const volumeLevel = useRef(0);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const animationFrameRef = useRef<number>();
-
-  // Set up audio handlers
-  useEffect(() => {
-    setAudioResponseHandler((blob) => {
-      console.log('[VITANALAND] Playing audio response');
-      playAudio(blob);
-    });
-
-    setAudioStartHandler(() => {
-      console.log('[VITANALAND] Audio playback started');
-    });
-
-    setAudioEndHandler(() => {
-      console.log('[VITANALAND] Audio playback ended');
-    });
-  }, [setAudioResponseHandler, setAudioStartHandler, setAudioEndHandler, playAudio]);
-
   // Connect/disconnect based on overlay visibility
   useEffect(() => {
     if (audioOverlayVisible) {
-      console.log('[VITANALAND] Overlay opened - connecting...');
-      connect(executeToolCall);
+      console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
+      connect();
     } else {
-      console.log('[VITANALAND] Overlay closed - disconnecting...');
-      stopAudio();
+      console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
       disconnect();
-      cleanupAudio();
     }
-  }, [audioOverlayVisible, connect, disconnect, executeToolCall, stopAudio, cleanupAudio]);
+  }, [audioOverlayVisible, connect, disconnect]);
 
-  // Map VITANALAND states to visual feedback
+  // Map states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'error' = 
     error ? 'error' :
     isSpeaking ? 'processing' :
@@ -125,66 +97,6 @@ export function VitanaAudioOverlay() {
     return 'Connecting...';
   };
 
-  // Set up real-time volume monitoring when listening
-  useEffect(() => {
-    if (!audioOverlayVisible || !isListening) {
-      // Clean up audio analysis
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-        audioContextRef.current = null;
-        analyserRef.current = null;
-      }
-      volumeLevel.current = 0;
-      return;
-    }
-
-    const setupAudioAnalysis = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const audioContext = new AudioContext();
-        const analyser = audioContext.createAnalyser();
-        const microphone = audioContext.createMediaStreamSource(stream);
-
-        analyser.fftSize = 256;
-        microphone.connect(analyser);
-
-        audioContextRef.current = audioContext;
-        analyserRef.current = analyser;
-
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-        const updateVolume = () => {
-          if (!analyserRef.current) return;
-
-          analyserRef.current.getByteFrequencyData(dataArray);
-          const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
-          const normalizedVolume = Math.min(average / 128, 1);
-
-          volumeLevel.current = normalizedVolume;
-          animationFrameRef.current = requestAnimationFrame(updateVolume);
-        };
-
-        updateVolume();
-      } catch (error) {
-        console.error('Failed to setup audio analysis:', error);
-      }
-    };
-
-    setupAudioAnalysis();
-
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (audioContextRef.current) {
-      audioContextRef.current.close();
-      }
-    };
-  }, [audioOverlayVisible, isListening]);
-
   // Handle ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -205,11 +117,11 @@ export function VitanaAudioOverlay() {
   };
 
   const handleMicToggle = async () => {
-    console.log('[VITANALAND] Mic toggle - current state:', { isListening, connectionState });
+    console.log('[VitanaAudioOverlay] Mic toggle - current state:', { isListening, connectionState });
     
     // Only prevent mic toggle if completely disconnected
     if (connectionState === 'disconnected') {
-      console.warn('[VITANALAND] Cannot toggle mic - disconnected');
+      console.warn('[VitanaAudioOverlay] Cannot toggle mic - disconnected');
       return;
     }
 
@@ -321,7 +233,7 @@ export function VitanaAudioOverlay() {
           >
             <VitanalandPortalSeed 
               audioState={audioState} 
-              volumeLevel={volumeLevel.current}
+              volumeLevel={volumeLevel}
               size="lg"
               layoutId="vitana-orb"
             />
