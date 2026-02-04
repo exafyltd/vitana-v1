@@ -23,9 +23,7 @@ export class OrbVoiceClient {
   private eventSource: EventSource | null = null;
   private audioContext: AudioContext | null = null;
   private inputContext: AudioContext | null = null;
-  private audioQueue: Array<{ data: string; mime: string }> = [];
-  private isPlaying = false;
-  private lastScheduledEnd: number = 0;  // CRITICAL for seamless playback
+  private nextStartTime: number = 0;
   private mediaStream: MediaStream | null = null;
   private workletNode: AudioWorkletNode | null = null;
   private analyserNode: AnalyserNode | null = null;
@@ -135,83 +133,56 @@ export class OrbVoiceClient {
   }
 
   private async initAudioOutput(): Promise<void> {
-    // Create AudioContext - use default sample rate for resampling
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    this.lastScheduledEnd = 0;  // Reset on new context
+    this.nextStartTime = 0;
   }
 
   private handleAudioChunk(base64: string): void {
-    // Queue the chunk with mime type
-    this.audioQueue.push({ data: base64, mime: 'audio/pcm;rate=24000' });
+    if (!this.audioContext) return;
     
-    // Start playback if not already playing
-    if (!this.isPlaying) {
-      this.playNextAudio();
-    }
-  }
-
-  private playNextAudio(): void {
-    if (this.audioQueue.length === 0) {
-      this.isPlaying = false;
-      this.callbacks.onSpeakingChange?.(false);
-      return;
+    // Resume if suspended (browser autoplay policy)
+    if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
     }
 
-    this.isPlaying = true;
-    const chunk = this.audioQueue.shift()!;
-    this.playPcmWithScheduling(chunk.data);
-  }
-
-  private playPcmWithScheduling(base64Data: string): void {
     try {
-      // Decode base64 to bytes
-      const binaryString = atob(base64Data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      // Decode base64 → Int16 → Float32
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const int16 = new Int16Array(bytes.buffer);
+      const float32 = new Float32Array(int16.length);
+      for (let i = 0; i < int16.length; i++) {
+        float32[i] = int16[i] / 32768.0;
       }
 
-      // Create AudioContext if needed
-      if (!this.audioContext || this.audioContext.state === 'closed') {
-        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        this.lastScheduledEnd = 0;  // Reset on new context
-      }
+      // Create audio buffer at 24kHz
+      const buffer = this.audioContext.createBuffer(1, float32.length, this.SAMPLE_RATE_OUT);
+      buffer.copyToChannel(float32, 0);
 
-      const inputSampleRate = this.SAMPLE_RATE_OUT;  // 24kHz PCM from gateway
-
-      // Convert Int16 PCM to Float32 (Web Audio API format)
-      const int16Array = new Int16Array(bytes.buffer);
-      const floatArray = new Float32Array(int16Array.length);
-      for (let j = 0; j < int16Array.length; j++) {
-        floatArray[j] = int16Array[j] / 32768.0;  // Normalize to [-1, 1]
-      }
-
-      // Create audio buffer at input sample rate
-      const audioBuffer = this.audioContext.createBuffer(1, floatArray.length, inputSampleRate);
-      audioBuffer.copyToChannel(floatArray, 0);
-
-      // Create buffer source
       const source = this.audioContext.createBufferSource();
-      source.buffer = audioBuffer;
+      source.buffer = buffer;
       source.connect(this.audioContext.destination);
 
-      // When this chunk ends, play next
-      source.onended = () => this.playNextAudio();
-
-      // *** THE FIX: Schedule to start exactly when previous chunk ends ***
+      // Schedule to start exactly when previous ends
       const now = this.audioContext.currentTime;
-      const nextStartTime = Math.max(now, this.lastScheduledEnd);
-      source.start(nextStartTime);
+      if (this.nextStartTime < now) {
+        this.nextStartTime = now;
+      }
+      source.start(this.nextStartTime);
+      this.nextStartTime += buffer.duration;
 
-      // Track when this segment will end
-      const duration = audioBuffer.duration;
-      this.lastScheduledEnd = nextStartTime + duration;
-
-      console.log(`[AUDIO] Scheduled at ${nextStartTime.toFixed(3)}s, duration: ${duration.toFixed(3)}s`);
-
+      this.callbacks.onSpeakingChange?.(true);
+      source.onended = () => {
+        // Check if timeline is empty (no more scheduled audio)
+        if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
+          this.callbacks.onSpeakingChange?.(false);
+        }
+      };
     } catch (e) {
       console.error('[OrbVoiceClient] PCM playback error:', e);
-      this.playNextAudio();  // Continue with next chunk on error
     }
   }
 
@@ -411,9 +382,7 @@ export class OrbVoiceClient {
 
     // Reset audio state
     this.sessionId = null;
-    this.audioQueue = [];
-    this.lastScheduledEnd = 0;
-    this.isPlaying = false;
+    this.nextStartTime = 0;
 
     this.callbacks.onConnectionStateChange?.('disconnected');
     this.callbacks.onSpeakingChange?.(false);
