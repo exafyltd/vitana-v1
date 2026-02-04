@@ -1,63 +1,63 @@
 
+## Internationalize Mobile KPI Strip Labels
 
-## Remove Edit (Pencil) Icon from Mobile Social Presence
+### Problem
+The mobile Business/Wallet page shows KPI card labels in English ("Total Earnings", "Last 30 Days", "Pending", "In Wallet") even when German is the selected language.
 
-### Summary
-Remove the redundant pencil/edit button from the "Social Presence" section on mobile since users can now tap directly on social platform icons to connect or visit them.
+### Root Cause
+The `MobileKPIStrip.tsx` component uses hardcoded English strings instead of the translation system. The desktop `UnifiedEarningsKPIStrip.tsx` already does this correctly.
 
----
-
-### Current Behavior
-- A pencil icon appears in the top-right corner of the Social Presence card when in edit mode
-- This was previously needed to trigger a social editing flow
-- Now, users can:
-  - **Tap connected platforms** → Opens the profile in a new tab
-  - **Tap unconnected platforms** → Opens the SocialMediaImportDialog directly
+### Solution
+Update `MobileKPIStrip.tsx` to use the `useTranslation` hook with the existing translation keys.
 
 ---
 
-### Change
+### Changes
 
-**File:** `src/components/profile/mobile/MobileIdCardBack.tsx`
+**File:** `src/components/business/MobileKPIStrip.tsx`
 
-Remove the edit button block (lines 120-130):
+1. **Add import** for the translation hook:
+   ```typescript
+   import { useTranslation } from "@/hooks/useTranslation";
+   ```
 
-```tsx
-// REMOVE THIS ENTIRE BLOCK:
-{editMode && onEdit && (
-  <Button
-    variant="ghost"
-    size="icon"
-    className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10"
-    onClick={onEdit}
-  >
-    <Pencil className="h-4 w-4" />
-  </Button>
-)}
-```
+2. **Use translate()** in the component function:
+   ```typescript
+   export function MobileKPIStrip(...) {
+     const navigate = useNavigate();
+     const { translate } = useTranslation();  // ADD
+   ```
 
-Also update the empty state section (lines 215-223) to remove the "Connect Accounts" button that called `onEdit`, since users can use the unconnected platform icons instead:
+3. **Replace hardcoded labels** with translation keys:
 
-```tsx
-// REMOVE THIS BLOCK from empty state:
-{editMode && onEdit && (
-  <Button
-    variant="outline"
-    size="sm"
-    onClick={onEdit}
-    className="border-white/20 text-white/70 hover:bg-white/10"
-  >
-    {translate('socialImport.connectAccounts', 'Connect Accounts')}
-  </Button>
-)}
-```
+| Current (hardcoded) | Updated (translated) |
+|---------------------|---------------------|
+| `label: "Total Earnings"` | `label: translate('business.kpi.totalEarnings')` |
+| `label: "Last 30 Days"` | `label: translate('business.kpi.last30Days')` |
+| `label: "Pending"` | `label: translate('business.kpi.pendingPayout')` |
+| `label: "In Wallet"` | `label: translate('business.kpi.inWallet')` |
 
-**Optional cleanup:** Remove unused `onEdit` prop from interface and remove `Pencil` from imports if no longer used.
+---
+
+### Existing Translations (already in place)
+
+**German (`de.json`):**
+- `business.kpi.totalEarnings` → "Gesamteinnahmen"
+- `business.kpi.last30Days` → "Letzte 30 Tage"
+- `business.kpi.pendingPayout` → "Ausstehende Auszahlung"
+- `business.kpi.inWallet` → "Im Wallet"
+
+**English (`en.json`):**
+- `business.kpi.totalEarnings` → "Total Earnings"
+- `business.kpi.last30Days` → "Last 30 Days"
+- `business.kpi.pendingPayout` → "Pending Payout"
+- `business.kpi.inWallet` → "In Wallet"
 
 ---
 
 ### Result
-- Cleaner UI without redundant edit button
-- Users tap directly on platform icons for all actions
-- Maintains full functionality for connecting new platforms
-
+When German is selected, the mobile KPI cards will display:
+- "Gesamteinnahmen" instead of "Total Earnings"
+- "Letzte 30 Tage" instead of "Last 30 Days"
+- "Ausstehende Auszahlung" instead of "Pending"
+- "Im Wallet" instead of "In Wallet"
