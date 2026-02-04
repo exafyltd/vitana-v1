@@ -6,6 +6,7 @@
  * - SSE for streaming audio/transcripts from AI
  * - AudioWorklet for high-quality 16kHz audio capture
  * - PCM audio queue playback at 24kHz
+ * - JWT-based authentication for multi-tenant voice sessions
  */
 
 export type OrbVoiceClientCallbacks = {
@@ -17,6 +18,11 @@ export type OrbVoiceClientCallbacks = {
   onProcessingChange?: (isProcessing: boolean) => void;
   onVolumeChange?: (volume: number) => void;
 };
+
+export interface OrbVoiceClientConfig {
+  lang: string;
+  accessToken: string;
+}
 
 export class OrbVoiceClient {
   private sessionId: string | null = null;
@@ -34,31 +40,53 @@ export class OrbVoiceClient {
   private readonly SAMPLE_RATE_IN = 16000;  // Input to gateway
   private readonly SAMPLE_RATE_OUT = 24000; // Output from gateway
 
+  private config: OrbVoiceClientConfig;
   private callbacks: OrbVoiceClientCallbacks;
-  private lang: string;
 
   constructor(
-    lang: string = 'de',
+    config: OrbVoiceClientConfig,
     callbacks: OrbVoiceClientCallbacks = {}
   ) {
-    this.lang = lang;
+    this.config = config;
     this.callbacks = callbacks;
+  }
+
+  /**
+   * Get authorization headers for all API calls
+   */
+  private getAuthHeaders(): HeadersInit {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.config.accessToken}`,
+    };
   }
 
   async start(): Promise<void> {
     try {
       this.callbacks.onConnectionStateChange?.('connecting');
       
-      // 1. Create session
+      // 1. Create session with auth
       const response = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/start`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getAuthHeaders(),
         body: JSON.stringify({
-          lang: this.lang,
+          lang: this.config.lang,
           voice_style: 'friendly, calm, empathetic',
           response_modalities: ['audio', 'text']
         })
       });
+
+      // Handle auth errors
+      if (response.status === 401) {
+        throw new Error('Session expired - please sign in again');
+      }
+      if (response.status === 400) {
+        const errorData = await response.json();
+        if (errorData.error === 'TENANT_REQUIRED') {
+          throw new Error('Please select a community first');
+        }
+        throw new Error(errorData.message || 'Bad request');
+      }
 
       const data = await response.json();
       if (!data.ok) throw new Error(data.error || 'Failed to start session');
@@ -87,8 +115,10 @@ export class OrbVoiceClient {
   private connectSSE(): void {
     if (!this.sessionId) return;
 
-    const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}`;
-    console.log('[OrbVoiceClient] Connecting SSE:', sseUrl);
+    // Include token as query parameter for SSE (EventSource doesn't support headers)
+    const token = encodeURIComponent(this.config.accessToken);
+    const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}&token=${token}`;
+    console.log('[OrbVoiceClient] Connecting SSE:', sseUrl.replace(token, '[REDACTED]'));
     
     this.eventSource = new EventSource(sseUrl);
 
@@ -270,7 +300,7 @@ export class OrbVoiceClient {
     try {
       await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getAuthHeaders(),
         body: JSON.stringify({
           session_id: this.sessionId,
           type: 'audio',
@@ -293,7 +323,7 @@ export class OrbVoiceClient {
     try {
       await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/end-turn`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getAuthHeaders(),
         body: JSON.stringify({ session_id: this.sessionId })
       });
     } catch (e) {
@@ -309,7 +339,7 @@ export class OrbVoiceClient {
     try {
       await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: this.getAuthHeaders(),
         body: JSON.stringify({
           session_id: this.sessionId,
           type: 'text',
@@ -355,12 +385,12 @@ export class OrbVoiceClient {
     // Stop listening first
     this.stopListening();
 
-    // Stop session
+    // Stop session with auth
     if (this.sessionId) {
       try {
         await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: this.getAuthHeaders(),
           body: JSON.stringify({ session_id: this.sessionId })
         });
       } catch (e) {
