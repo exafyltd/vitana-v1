@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -37,6 +38,7 @@ interface AutopilotPopupProps {
 export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const { 
     pendingActions, 
     selectedActions, 
@@ -87,8 +89,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       const successCount = results.filter(r => r.success).length;
       
       toast({
-        title: "Actions Executed",
-        description: `${successCount}/${results.length} actions completed successfully`,
+        title: translate('autopilot.popup.toastExecutedTitle'),
+        description: translate('autopilot.popup.toastExecutedDesc')
+          .replace('{success}', String(successCount))
+          .replace('{total}', String(results.length)),
       });
       
       onOpenChange(false);
@@ -96,8 +100,8 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       setExecutionProgress(0);
     } catch (error) {
       toast({
-        title: "Execution Failed", 
-        description: "Something went wrong. Please try again.",
+        title: translate('autopilot.popup.toastFailedTitle'), 
+        description: translate('autopilot.popup.toastFailedDesc'),
         variant: "destructive"
       });
     }
@@ -138,7 +142,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               className={cn("text-xs border", getPriorityColor(action.priority))}
             >
               {getPriorityIcon(action.priority)}
-              <span className="ml-1 capitalize">{action.priority}</span>
+              <span className="ml-1 capitalize">{translate(`autopilot.priorities.${action.priority}`)}</span>
             </Badge>
           </div>
         </div>
@@ -155,13 +159,15 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
               <Plane className="w-4 h-4 text-red-500" />
             </div>
-            <span>Autopilot Actions</span>
+            <span>{translate('autopilot.popup.title')}</span>
             <Badge variant="outline" className="ml-2">
-              {selectedActions.length} of {pendingActions.length} selected
+              {translate('autopilot.popup.selectedOf')
+                .replace('{selected}', String(selectedActions.length))
+                .replace('{total}', String(pendingActions.length))}
             </Badge>
           </DialogTitle>
           <DialogDescription>
-            Ready to execute {selectedActions.length} action{selectedActions.length !== 1 ? 's' : ''} prepared by your AI assistant.
+            {translate('autopilot.popup.readyToExecute').replace('{count}', String(selectedActions.length))}
           </DialogDescription>
         </DialogHeader>
 
@@ -171,12 +177,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
                 <Plane className="w-6 h-6 text-red-500 animate-pulse" />
               </div>
-              <h3 className="font-medium mb-2">Executing Actions...</h3>
-              <p className="text-sm text-muted-foreground">Please wait while AI handles your requests</p>
+              <h3 className="font-medium mb-2">{translate('autopilot.popup.executingTitle')}</h3>
+              <p className="text-sm text-muted-foreground">{translate('autopilot.popup.executingDesc')}</p>
             </div>
             <Progress value={executionProgress} className="w-full" />
             <div className="text-center mt-2">
-              <span className="text-sm text-muted-foreground">{executionProgress}% complete</span>
+              <span className="text-sm text-muted-foreground">
+                {translate('autopilot.popup.complete').replace('{percent}', String(executionProgress))}
+              </span>
             </div>
           </div>
         ) : (
@@ -200,7 +208,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                       size="sm"
                       onClick={() => setShowOptions(true)}
                     >
-                      +{selectedActions.length - 6} more actions
+                      {translate('autopilot.popup.moreActions').replace('{count}', String(selectedActions.length - 6))}
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                   </div>
@@ -219,10 +227,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                     className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
                   >
                     <Zap className="w-4 h-4 mr-2" />
-                    GO ({selectedActions.length})
+                    {translate('autopilot.popup.go').replace('{count}', String(selectedActions.length))}
                   </Button>
                   <Button variant="outline" onClick={handleNotNow}>
-                    Not Now
+                    {translate('autopilot.popup.notNow')}
                   </Button>
                   {!showOptions && (
                     <Button 
@@ -230,7 +238,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                       onClick={() => setShowOptions(true)}
                     >
                       <Settings className="w-4 h-4 mr-1" />
-                      See Options
+                      {translate('autopilot.popup.seeOptions')}
                     </Button>
                   )}
                 </div>
@@ -240,7 +248,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                   onClick={handleQuickJump}
                   className="text-sm text-muted-foreground p-0 h-auto"
                 >
-                  See All in AI Intelligence →
+                  {translate('autopilot.popup.seeAllInAI')}
                 </Button>
               </div>
             </DialogFooter>

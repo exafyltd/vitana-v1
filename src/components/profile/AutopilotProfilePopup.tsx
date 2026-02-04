@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Zap, User, Sparkles, Image, Palette } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AutopilotProfilePopupProps {
   open: boolean;
@@ -12,40 +13,41 @@ interface AutopilotProfilePopupProps {
 
 interface SuggestionOption {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   icon: typeof User;
 }
 
-const suggestions: SuggestionOption[] = [
+const suggestionConfigs: SuggestionOption[] = [
   {
     id: "polish-bio",
-    title: "Polish my Bio",
-    description: "Autopilot can rewrite About section to be more inspiring",
+    titleKey: "autopilot.profilePopup.polishBio",
+    descriptionKey: "autopilot.profilePopup.polishBioDesc",
     icon: User,
   },
   {
     id: "refresh-archetype",
-    title: "Refresh my Archetype", 
-    description: "Suggest Longevity Archetype update based on activity",
+    titleKey: "autopilot.profilePopup.refreshArchetype", 
+    descriptionKey: "autopilot.profilePopup.refreshArchetypeDesc",
     icon: Sparkles,
   },
   {
     id: "highlight-showcase",
-    title: "Highlight my Showcase",
-    description: "Suggest top posts or media for featured content",
+    titleKey: "autopilot.profilePopup.highlightShowcase",
+    descriptionKey: "autopilot.profilePopup.highlightShowcaseDesc",
     icon: Image,
   },
   {
     id: "style-profile",
-    title: "Style my Profile",
-    description: "Suggest improvements to cover photo, roles, profile picture",
+    titleKey: "autopilot.profilePopup.styleProfile",
+    descriptionKey: "autopilot.profilePopup.styleProfileDesc",
     icon: Palette,
   },
 ];
 
 export function AutopilotProfilePopup({ open, onOpenChange }: AutopilotProfilePopupProps) {
   const [selectedSuggestions, setSelectedSuggestions] = useState<string[]>([]);
+  const { translate } = useTranslation();
 
   const handleSuggestionToggle = (suggestionId: string) => {
     setSelectedSuggestions(prev => 
@@ -72,12 +74,12 @@ export function AutopilotProfilePopup({ open, onOpenChange }: AutopilotProfilePo
               </div>
             </div>
             <DialogTitle className="text-xl font-semibold text-center">
-              Let Autopilot polish your profile ✨
+              {translate('autopilot.profilePopup.title')}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-3 mb-6">
-            {suggestions.map((suggestion) => {
+            {suggestionConfigs.map((suggestion) => {
               const IconComponent = suggestion.icon;
               const isSelected = selectedSuggestions.includes(suggestion.id);
               
@@ -99,8 +101,8 @@ export function AutopilotProfilePopup({ open, onOpenChange }: AutopilotProfilePo
                       <IconComponent className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-sm mb-1">{suggestion.title}</h4>
-                      <p className="text-xs text-muted-foreground">{suggestion.description}</p>
+                      <h4 className="font-medium text-sm mb-1">{translate(suggestion.titleKey)}</h4>
+                      <p className="text-xs text-muted-foreground">{translate(suggestion.descriptionKey)}</p>
                     </div>
                   </div>
                 </Card>
@@ -113,14 +115,14 @@ export function AutopilotProfilePopup({ open, onOpenChange }: AutopilotProfilePo
               variant="outline" 
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {translate('autopilot.profilePopup.cancel')}
             </Button>
             <Button 
               onClick={handleRunAutopilot}
               disabled={selectedSuggestions.length === 0}
             >
               <Zap className="h-4 w-4 mr-2" />
-              Run Autopilot
+              {translate('autopilot.profilePopup.runAutopilot')}
             </Button>
           </div>
         </div>
