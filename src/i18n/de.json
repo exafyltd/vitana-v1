@@ -189,12 +189,15 @@
   },
   "calendar": {
     "smartCalendar": "Smart Calendar",
+    "myCalendar": "Mein Kalender",
+    "bookedActivities": "Ihre gebuchten Aktivitäten in VITANA",
     "addEvent": "Event hinzufügen",
     "synced": "Synchronisiert",
     "syncing": "Synchronisierung...",
     "today": "Heute",
     "week": "Woche",
     "month": "Monat",
+    "agenda": "Agenda",
     "nothingScheduled": "Nichts geplant",
     "tryQuickAdd": "Versuchen Sie Quick Add oder lassen Sie Autopilot Ihren Tag planen",
     "clickSlotHint": "Klicken Sie auf einen Slot, um ein Event zu erstellen • Ziehen zum Verschieben",
@@ -205,6 +208,11 @@
     "untitledEvent": "Unbenanntes Event",
     "newEvent": "Neues Event",
     "close": "Schließen",
+    "noBookingsToday": "Heute keine Buchungen",
+    "noBookingsYet": "Noch keine Buchungen",
+    "nextUpcoming": "Als Nächstes",
+    "exploreActivities": "Aktivitäten entdecken für Ihren Kalender",
+    "browseActivities": "Aktivitäten durchsuchen",
     "bookedEvents": {
       "title": "Ihre gebuchten Events",
       "todayLabel": "Heute",
@@ -217,6 +225,27 @@
       "work": "Arbeit",
       "health": "Gesundheit",
       "workout": "Training"
+    },
+    "categories": {
+      "community": "Community",
+      "fitness": "Fitness",
+      "health": "Gesundheit",
+      "nutrition": "Ernährung",
+      "professional": "Arbeit",
+      "personal": "Persönlich",
+      "training": "Training"
+    },
+    "bookingStatus": {
+      "booked": "Gebucht",
+      "rsvp": "Zusage",
+      "ticket": "Ticket",
+      "reserved": "Reserviert"
+    },
+    "timeGroups": {
+      "today": "Heute",
+      "tomorrow": "Morgen",
+      "thisWeek": "Diese Woche",
+      "later": "Später"
     },
     "autopilot": {
       "suggestions": "Autopilot-Vorschläge",
