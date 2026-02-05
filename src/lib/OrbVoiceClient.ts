@@ -35,6 +35,12 @@ export class OrbVoiceClient {
   private analyserNode: AnalyserNode | null = null;
   private volumeAnimationFrame: number | null = null;
 
+  // Silence detection for auto end-turn
+  private silenceTimer: ReturnType<typeof setTimeout> | null = null;
+  private hasSpeechStarted: boolean = false;
+  private readonly SILENCE_THRESHOLD = 0.02;
+  private readonly SILENCE_DURATION_MS = 1500;
+
   // Gateway configuration
   private readonly GATEWAY_URL = 'https://gateway-86804897789.us-central1.run.app';
   private readonly SAMPLE_RATE_IN = 16000;  // Input to gateway
@@ -104,11 +110,42 @@ export class OrbVoiceClient {
       await this.startRecording();
 
       this.callbacks.onConnectionStateChange?.('ready');
+
+      // Request welcome greeting from AI
+      await this.requestWelcome();
     } catch (err: any) {
       console.error('[OrbVoiceClient] Failed to start:', err);
       this.callbacks.onError?.(err.message || 'Failed to start ORB');
       this.callbacks.onConnectionStateChange?.('disconnected');
       throw err;
+    }
+  }
+
+  /**
+   * Request AI to greet the user when session starts
+   */
+  private async requestWelcome(): Promise<void> {
+    if (!this.sessionId) return;
+
+    console.log('[OrbVoiceClient] Requesting welcome greeting...');
+    
+    try {
+      // Send a greeting trigger to the AI
+      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({
+          session_id: this.sessionId,
+          type: 'text',
+          text: '[system] Session started. Greet the user warmly in their language.'
+        })
+      });
+
+      // Signal end of turn to trigger AI response
+      await this.endTurn();
+    } catch (e) {
+      console.warn('[OrbVoiceClient] Failed to request welcome:', e);
+      // Non-critical - session can still work without welcome
     }
   }
 
@@ -273,10 +310,38 @@ export class OrbVoiceClient {
       const normalizedVolume = Math.min(average / 128, 1);
 
       this.callbacks.onVolumeChange?.(normalizedVolume);
+
+      // Silence detection for automatic end-turn
+      this.detectSilence(normalizedVolume);
+
       this.volumeAnimationFrame = requestAnimationFrame(updateVolume);
     };
 
     updateVolume();
+  }
+
+  /**
+   * Detect silence to automatically end turn after user stops speaking
+   */
+  private detectSilence(volume: number): void {
+    if (volume > this.SILENCE_THRESHOLD) {
+      // User is speaking
+      this.hasSpeechStarted = true;
+      
+      // Clear any pending silence timer
+      if (this.silenceTimer) {
+        clearTimeout(this.silenceTimer);
+        this.silenceTimer = null;
+      }
+    } else if (this.hasSpeechStarted && !this.silenceTimer) {
+      // User stopped speaking - start silence timer
+      this.silenceTimer = setTimeout(() => {
+        console.log('[OrbVoiceClient] Silence detected - ending turn automatically');
+        this.endTurn();
+        this.hasSpeechStarted = false;
+        this.silenceTimer = null;
+      }, this.SILENCE_DURATION_MS);
+    }
   }
 
   private async sendAudio(pcmFloat32: Float32Array): Promise<void> {
@@ -353,6 +418,13 @@ export class OrbVoiceClient {
   }
 
   stopListening(): void {
+    // Clear silence detection timer
+    if (this.silenceTimer) {
+      clearTimeout(this.silenceTimer);
+      this.silenceTimer = null;
+    }
+    this.hasSpeechStarted = false;
+
     if (this.workletNode) {
       this.workletNode.disconnect();
       this.workletNode = null;
