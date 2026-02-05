@@ -1,204 +1,169 @@
 
+# Maxina Support Page
 
-# Fix: Orb Voice Session Not Responding
+## Overview
 
-## Problem Diagnosis
-
-The Orb successfully connects, authenticates, and sends audio to the gateway, but never receives a response from the AI. The user sees "I'm listening..." indefinitely with no welcome message or reply.
-
-**Root Cause Analysis:**
-
-The network logs show:
-- Session start: `session_id: "live-044657e4-d899-48ce-8b2a-4ef6ba091c89"` - Success
-- Audio chunks being sent via `POST /stream/send` with 200 responses - Success
-- No `POST /stream/end-turn` request observed
-
-The current implementation requires the user to **manually stop listening** (click the mic button again) to trigger `endTurn()`, which signals the gateway to process the audio and generate a response. Without this signal, the gateway continues buffering audio indefinitely.
+Create a dedicated public support page for Maxina at `/maxina_support` (accessible via `https://vitanaland.com/maxina_support`). This page will provide users with help resources, FAQs, and contact options specifically branded for the Maxina tenant.
 
 ---
 
-## Missing Features
+## What Will Be Built
 
-1. **No automatic welcome message** - The AI should greet the user when the session starts
-2. **No Voice Activity Detection (VAD)** - The system relies on manual end-turn instead of detecting speech pauses
-3. **Continuous listening UX** - User expects real-time conversation, not push-to-talk
+A standalone, public (no authentication required) support page that includes:
 
----
-
-## Solution Overview
-
-Two-part fix:
-
-### Part 1: Request Welcome Message on Session Start
-
-Add an automatic greeting by sending a silent "hello" turn after the session connects. This triggers the AI to introduce itself.
-
-### Part 2: Add Automatic End-Turn on Speech Pause (Optional Enhancement)
-
-Implement client-side silence detection to automatically call `endTurn()` after 1.5-2 seconds of silence, enabling natural conversation flow.
+- **Help Categories**: Getting Started, Account & Profile, Events & Community, Technical Issues, Billing & Payments
+- **FAQ Section**: Common questions with expandable answers
+- **Contact Options**: Email support, WhatsApp (if applicable), and support ticket request
+- **Quick Links**: Privacy Policy, Delete Account, Terms of Service
+- **Maxina Branding**: Pink accent colors (#FF7BAC), Maxina-specific styling
 
 ---
 
-## Technical Changes
+## Page Sections
 
-### File 1: `src/lib/OrbVoiceClient.ts`
+1. **Header**
+   - Back button for navigation
+   - "Maxina Support" title
+   - Maxina logo/branding
 
-Add welcome message request after session starts:
+2. **Search Bar** (optional, for future)
+   - Quick search through FAQs
+
+3. **Help Categories** (grid cards)
+   - Getting Started
+   - Account & Profile
+   - Events & MeetUps
+   - Payments & Billing
+   - Technical Help
+
+4. **Frequently Asked Questions** (accordion)
+   - 8-10 common questions with expandable answers
+
+5. **Contact Support Section**
+   - Email: support@exafy.io
+   - Response time information
+   - Link to support ticket form (in-app)
+
+6. **Useful Links**
+   - Privacy Policy
+   - Delete Account
+   - Back to Maxina Portal
+
+---
+
+## Files to Create/Modify
 
 ```text
-Current flow:
-  1. POST /session/start → get session_id
-  2. Connect SSE
-  3. Init audio output
-  4. Start recording
-  5. Ready (waiting for user)
-
-New flow:
-  1. POST /session/start → get session_id
-  2. Connect SSE
-  3. Init audio output
-  4. Start recording
-  5. [NEW] Send greeting trigger: POST /stream/send {type: "text", text: "Hello"}
-  6. [NEW] Call endTurn() to prompt AI response
-  7. Ready (AI greets user)
+src/
+├── pages/
+│   └── legal/
+│       └── MaxinaSupport.tsx      [NEW] - Main support page component
+├── i18n/
+│   ├── en.json                    [MODIFY] - Add support page translations
+│   └── de.json                    [MODIFY] - Add German translations
+└── App.tsx                        [MODIFY] - Add /maxina_support route
 ```
-
-Changes to `start()` method:
-- After `startRecording()`, add a call to send a greeting message
-- Call `endTurn()` immediately after to trigger AI response
-- This produces a welcome from the AI without user action
-
-### File 2: `src/lib/OrbVoiceClient.ts` (Silence Detection)
-
-Add silence detection to automatically end turns:
-
-```text
-New private properties:
-  - silenceTimer: NodeJS.Timeout | null
-  - lastVoiceTime: number
-  - SILENCE_THRESHOLD: 0.02 (volume level)
-  - SILENCE_DURATION: 1500 (ms)
-
-Modified volume monitoring:
-  - If volume > SILENCE_THRESHOLD: reset timer, update lastVoiceTime
-  - If volume < SILENCE_THRESHOLD for SILENCE_DURATION: call endTurn()
-```
-
-### File 3: `src/hooks/useOrbVoiceClient.ts`
-
-No changes needed - the hook already exposes `endTurn()` correctly.
 
 ---
 
-## Implementation Details
+## Technical Details
 
-### Welcome Message (Part 1)
+### 1. Create MaxinaSupport.tsx
 
-In `OrbVoiceClient.ts`, modify the `start()` method:
+**Location**: `src/pages/legal/MaxinaSupport.tsx`
+
+**Structure**:
+- Public page (no authentication required)
+- Follows existing legal page pattern (PrivacyPolicy.tsx, DeleteAccount.tsx)
+- Responsive design with Tailwind CSS
+- Uses existing UI components: Button, Card, Accordion
+- Maxina brand colors applied via CSS variables
+
+**Key Components Used**:
+- `<Accordion>` for FAQ section
+- `<Card>` for help category cards
+- `<Button>` for contact actions
+- SEO component for meta tags
+
+### 2. Add Route in App.tsx
+
+Add to the "Public Routes - No Auth Required" section:
 
 ```typescript
-async start(): Promise<void> {
-  try {
-    // ... existing session start, SSE connect, audio init ...
+<Route path="/maxina_support" element={<MaxinaSupport />} />
+```
 
-    await this.startRecording();
+### 3. Translation Keys
 
-    this.callbacks.onConnectionStateChange?.('ready');
+Add to both `en.json` and `de.json`:
 
-    // NEW: Trigger welcome greeting from AI
-    await this.requestWelcome();
-  } catch (err: any) {
-    // ... existing error handling ...
+```json
+{
+  "support": {
+    "maxina": {
+      "title": "Maxina Support",
+      "subtitle": "How can we help you today?",
+      "categories": {
+        "gettingStarted": "Getting Started",
+        "account": "Account & Profile",
+        "events": "Events & MeetUps",
+        "payments": "Payments & Billing",
+        "technical": "Technical Help"
+      },
+      "faq": {
+        "title": "Frequently Asked Questions",
+        // ... FAQ items
+      },
+      "contact": {
+        "title": "Contact Support",
+        "email": "Email Us",
+        "responseTime": "We typically respond within 24 hours"
+      }
+    }
   }
 }
-
-// NEW method
-private async requestWelcome(): Promise<void> {
-  if (!this.sessionId) return;
-  
-  // Send a greeting trigger to the AI
-  await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
-    method: 'POST',
-    headers: this.getAuthHeaders(),
-    body: JSON.stringify({
-      session_id: this.sessionId,
-      type: 'text',
-      text: '[system] Session started. Greet the user warmly.'
-    })
-  });
-  
-  // Signal end of turn to get AI response
-  await this.endTurn();
-}
 ```
 
-### Silence Detection (Part 2)
+---
 
-In `OrbVoiceClient.ts`, add automatic end-turn on silence:
+## FAQ Content (Initial)
+
+1. How do I create a Maxina account?
+2. How do I reset my password?
+3. How do I join events and meetups?
+4. How do I update my profile information?
+5. How can I delete my account?
+6. What payment methods are accepted?
+7. How do I contact event organizers?
+8. Is my personal data secure?
+
+---
+
+## SEO Configuration
 
 ```typescript
-private silenceTimer: NodeJS.Timeout | null = null;
-private readonly SILENCE_THRESHOLD = 0.02;
-private readonly SILENCE_DURATION_MS = 1500;
-private hasSpeechStarted = false;
-
-private startVolumeMonitoring(): void {
-  // ... existing code ...
-  
-  const updateVolume = () => {
-    // ... existing volume calculation ...
-    
-    // Silence detection
-    if (normalizedVolume > this.SILENCE_THRESHOLD) {
-      this.hasSpeechStarted = true;
-      if (this.silenceTimer) {
-        clearTimeout(this.silenceTimer);
-        this.silenceTimer = null;
-      }
-    } else if (this.hasSpeechStarted && !this.silenceTimer) {
-      // User stopped speaking - start silence timer
-      this.silenceTimer = setTimeout(() => {
-        console.log('[OrbVoiceClient] Silence detected - ending turn');
-        this.endTurn();
-        this.hasSpeechStarted = false;
-        this.silenceTimer = null;
-      }, this.SILENCE_DURATION_MS);
-    }
-    
-    // ... existing animation frame ...
-  };
-}
+<SEO 
+  title="Maxina Support | Help & FAQ"
+  description="Get help with your Maxina account. Find answers to common questions about events, payments, and your wellness journey."
+  canonical="https://vitanaland.com/maxina_support"
+/>
 ```
 
 ---
 
-## Expected Behavior After Fix
+## Mobile Considerations
 
-1. User opens Orb overlay
-2. Session connects (1-2 seconds)
-3. AI automatically greets: "Hallo! Wie kann ich dir heute helfen?"
-4. User speaks naturally
-5. After 1.5 seconds of silence, AI processes and responds
-6. Conversation continues naturally without manual button clicks
+- Fully responsive layout
+- Touch-friendly accordion interactions
+- Prominent contact buttons for mobile users
+- Safe area padding for notched devices
 
 ---
 
-## Testing Checklist
+## Implementation Order
 
-- Open Orb overlay
-- Verify AI welcome message plays within 3 seconds
-- Speak a sentence and pause
-- Verify AI responds after ~1.5 seconds of silence
-- Test interruption: speak while AI is responding
-- Verify session cleanup on overlay close
-
----
-
-## Scope Note
-
-This plan focuses on the **frontend changes only**. The gateway must support:
-1. Processing text-type messages (for welcome trigger)
-2. Generating audio responses when `end-turn` is called
-
-If the gateway doesn't respond to text messages or end-turn signals, that would be a **backend issue** requiring gateway team investigation.
+1. Create `MaxinaSupport.tsx` page component
+2. Add translation keys to `en.json` and `de.json`
+3. Add route to `App.tsx`
+4. Test on desktop and mobile viewports
 
