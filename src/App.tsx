@@ -27,6 +27,7 @@ import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import DeleteAccount from "./pages/legal/DeleteAccount";
+import MaxinaSupport from "./pages/legal/MaxinaSupport";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
@@ -328,6 +329,7 @@ const App = () => {
           {/* Public Routes - No Auth Required */}
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/maxina_support" element={<MaxinaSupport />} />
           <Route path="/redeem" element={<RedeemVoucher />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
