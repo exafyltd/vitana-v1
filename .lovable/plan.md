@@ -1,162 +1,204 @@
 
 
-# Wire Orb to Auth: Multi-Tenant Voice Implementation
+# Fix: Orb Voice Session Not Responding
 
-## Summary
+## Problem Diagnosis
 
-Implement authenticated, multi-tenant voice sessions by adding JWT authorization to all Orb API calls. The gateway extracts `user_id` and `tenant_id` from the JWT claims - we only pass the access token.
+The Orb successfully connects, authenticates, and sends audio to the gateway, but never receives a response from the AI. The user sees "I'm listening..." indefinitely with no welcome message or reply.
 
----
+**Root Cause Analysis:**
 
-## Key Clarification Applied
+The network logs show:
+- Session start: `session_id: "live-044657e4-d899-48ce-8b2a-4ef6ba091c89"` - Success
+- Audio chunks being sent via `POST /stream/send` with 200 responses - Success
+- No `POST /stream/end-turn` request observed
 
-When user is authenticated but has no `active_tenant_id` in their JWT:
-
-1. **Check localStorage** for stored `tenant_slug` (set by TenantDetector)
-2. **Auto-call `switch_to_tenant_by_slug`** to update JWT's `app_metadata.active_tenant_id`
-3. **Refresh session** to get updated JWT with tenant context
-4. **Then connect to Orb** with the updated token
-
-If no stored tenant and no active tenant → show "Please select a community first" error.
+The current implementation requires the user to **manually stop listening** (click the mic button again) to trigger `endTurn()`, which signals the gateway to process the audio and generate a response. Without this signal, the gateway continues buffering audio indefinitely.
 
 ---
 
-## Files to Modify
+## Missing Features
 
-### 1. `src/lib/OrbVoiceClient.ts`
+1. **No automatic welcome message** - The AI should greet the user when the session starts
+2. **No Voice Activity Detection (VAD)** - The system relies on manual end-turn instead of detecting speech pauses
+3. **Continuous listening UX** - User expects real-time conversation, not push-to-talk
 
-**Changes:**
+---
 
-- Add `OrbVoiceClientConfig` interface with `lang` and `accessToken`
-- Update constructor to accept config object
-- Add `getAuthHeaders()` helper method
-- Update ALL fetch calls to use auth headers:
-  - `start()` - session/start
-  - `sendAudio()` - stream/send  
-  - `sendTextMessage()` - stream/send
-  - `endTurn()` - stream/end-turn
-  - `stop()` - session/stop
-- Update SSE connection to include token as query parameter
-- Add error handling for 401 and 400 TENANT_REQUIRED
+## Solution Overview
 
-### 2. `src/hooks/useOrbVoiceClient.ts`
+Two-part fix:
 
-**Changes:**
+### Part 1: Request Welcome Message on Session Start
 
-- Import `useAuth`, `useTenant`, `useProfile` hooks
-- Import Supabase client for fresh token retrieval
-- Update `connect()` function to:
-  1. Validate user is authenticated
-  2. Get fresh access token via `supabase.auth.getSession()`
-  3. Check if `activeTenantId` exists
-  4. If no tenant, try auto-selecting from localStorage + call `setTenantBySlug`
-  5. Create `OrbVoiceClient` with config object
-- Add dependency array with auth/tenant state
+Add an automatic greeting by sending a silent "hello" turn after the session connects. This triggers the AI to introduce itself.
+
+### Part 2: Add Automatic End-Turn on Speech Pause (Optional Enhancement)
+
+Implement client-side silence detection to automatically call `endTurn()` after 1.5-2 seconds of silence, enabling natural conversation flow.
+
+---
+
+## Technical Changes
+
+### File 1: `src/lib/OrbVoiceClient.ts`
+
+Add welcome message request after session starts:
+
+```text
+Current flow:
+  1. POST /session/start → get session_id
+  2. Connect SSE
+  3. Init audio output
+  4. Start recording
+  5. Ready (waiting for user)
+
+New flow:
+  1. POST /session/start → get session_id
+  2. Connect SSE
+  3. Init audio output
+  4. Start recording
+  5. [NEW] Send greeting trigger: POST /stream/send {type: "text", text: "Hello"}
+  6. [NEW] Call endTurn() to prompt AI response
+  7. Ready (AI greets user)
+```
+
+Changes to `start()` method:
+- After `startRecording()`, add a call to send a greeting message
+- Call `endTurn()` immediately after to trigger AI response
+- This produces a welcome from the AI without user action
+
+### File 2: `src/lib/OrbVoiceClient.ts` (Silence Detection)
+
+Add silence detection to automatically end turns:
+
+```text
+New private properties:
+  - silenceTimer: NodeJS.Timeout | null
+  - lastVoiceTime: number
+  - SILENCE_THRESHOLD: 0.02 (volume level)
+  - SILENCE_DURATION: 1500 (ms)
+
+Modified volume monitoring:
+  - If volume > SILENCE_THRESHOLD: reset timer, update lastVoiceTime
+  - If volume < SILENCE_THRESHOLD for SILENCE_DURATION: call endTurn()
+```
+
+### File 3: `src/hooks/useOrbVoiceClient.ts`
+
+No changes needed - the hook already exposes `endTurn()` correctly.
 
 ---
 
 ## Implementation Details
 
-### OrbVoiceClient Constructor Change
+### Welcome Message (Part 1)
+
+In `OrbVoiceClient.ts`, modify the `start()` method:
 
 ```typescript
-// Before
-constructor(lang: string = 'de', callbacks: OrbVoiceClientCallbacks = {})
+async start(): Promise<void> {
+  try {
+    // ... existing session start, SSE connect, audio init ...
 
-// After
-export interface OrbVoiceClientConfig {
-  lang: string;
-  accessToken: string;
+    await this.startRecording();
+
+    this.callbacks.onConnectionStateChange?.('ready');
+
+    // NEW: Trigger welcome greeting from AI
+    await this.requestWelcome();
+  } catch (err: any) {
+    // ... existing error handling ...
+  }
 }
 
-constructor(config: OrbVoiceClientConfig, callbacks: OrbVoiceClientCallbacks = {})
+// NEW method
+private async requestWelcome(): Promise<void> {
+  if (!this.sessionId) return;
+  
+  // Send a greeting trigger to the AI
+  await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
+    method: 'POST',
+    headers: this.getAuthHeaders(),
+    body: JSON.stringify({
+      session_id: this.sessionId,
+      type: 'text',
+      text: '[system] Session started. Greet the user warmly.'
+    })
+  });
+  
+  // Signal end of turn to get AI response
+  await this.endTurn();
+}
 ```
 
-### Auth Headers Helper
+### Silence Detection (Part 2)
+
+In `OrbVoiceClient.ts`, add automatic end-turn on silence:
 
 ```typescript
-private getAuthHeaders(): HeadersInit {
-  return {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${this.config.accessToken}`,
+private silenceTimer: NodeJS.Timeout | null = null;
+private readonly SILENCE_THRESHOLD = 0.02;
+private readonly SILENCE_DURATION_MS = 1500;
+private hasSpeechStarted = false;
+
+private startVolumeMonitoring(): void {
+  // ... existing code ...
+  
+  const updateVolume = () => {
+    // ... existing volume calculation ...
+    
+    // Silence detection
+    if (normalizedVolume > this.SILENCE_THRESHOLD) {
+      this.hasSpeechStarted = true;
+      if (this.silenceTimer) {
+        clearTimeout(this.silenceTimer);
+        this.silenceTimer = null;
+      }
+    } else if (this.hasSpeechStarted && !this.silenceTimer) {
+      // User stopped speaking - start silence timer
+      this.silenceTimer = setTimeout(() => {
+        console.log('[OrbVoiceClient] Silence detected - ending turn');
+        this.endTurn();
+        this.hasSpeechStarted = false;
+        this.silenceTimer = null;
+      }, this.SILENCE_DURATION_MS);
+    }
+    
+    // ... existing animation frame ...
   };
 }
 ```
 
-### SSE URL with Token
-
-```typescript
-const token = encodeURIComponent(this.config.accessToken);
-const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}&token=${token}`;
-```
-
-### Error Handling
-
-```typescript
-if (response.status === 401) {
-  throw new Error('Session expired - please sign in again');
-}
-if (response.status === 400) {
-  const errorData = await response.json();
-  if (errorData.error === 'TENANT_REQUIRED') {
-    throw new Error('Please select a community first');
-  }
-}
-```
-
-### Tenant Auto-Selection in Hook
-
-```typescript
-// In connect() when no activeTenantId
-if (!activeTenantId) {
-  const storedSlug = localStorage.getItem('tenant_slug');
-  if (storedSlug) {
-    await setTenantBySlug(storedSlug);  // Updates JWT
-    // Re-fetch session to get updated token
-    const { data: { session: updatedSession } } = await supabase.auth.getSession();
-    // Use updatedSession.access_token
-  } else {
-    setError('Please select a community first');
-    return;
-  }
-}
-```
-
 ---
 
-## API Contract
+## Expected Behavior After Fix
 
-| Endpoint | Auth Header | Body |
-|----------|-------------|------|
-| `POST /session/start` | `Bearer <token>` | `{lang, voice_style, response_modalities}` |
-| `GET /stream` (SSE) | Query: `token=<token>` | - |
-| `POST /stream/send` | `Bearer <token>` | `{session_id, type, data_b64, mime}` |
-| `POST /stream/end-turn` | `Bearer <token>` | `{session_id}` |
-| `POST /session/stop` | `Bearer <token>` | `{session_id}` |
-
-**Note:** `user_id` and `tenant_id` are NOT sent in body - gateway extracts from JWT.
-
----
-
-## Error States
-
-| Condition | Error Message | Resolution |
-|-----------|---------------|------------|
-| Not signed in | "Please sign in to use voice features" | Redirect to login |
-| Token expired | "Session expired - please sign in again" | Re-authenticate |
-| No tenant selected | "Please select a community first" | Navigate to tenant portal |
-| Gateway 401 mid-session | Disconnect + show error | Re-connect with fresh token |
+1. User opens Orb overlay
+2. Session connects (1-2 seconds)
+3. AI automatically greets: "Hallo! Wie kann ich dir heute helfen?"
+4. User speaks naturally
+5. After 1.5 seconds of silence, AI processes and responds
+6. Conversation continues naturally without manual button clicks
 
 ---
 
 ## Testing Checklist
 
-1. Sign in to app
-2. Navigate to tenant portal (e.g., `/maxina`)
-3. Open Orb overlay
-4. Verify network request to `/session/start` includes `Authorization` header
-5. Verify SSE URL includes `token` query parameter
-6. Test voice conversation works
-7. Sign out and verify "Please sign in" error
-8. Clear localStorage tenant and verify "Please select a community" error
+- Open Orb overlay
+- Verify AI welcome message plays within 3 seconds
+- Speak a sentence and pause
+- Verify AI responds after ~1.5 seconds of silence
+- Test interruption: speak while AI is responding
+- Verify session cleanup on overlay close
+
+---
+
+## Scope Note
+
+This plan focuses on the **frontend changes only**. The gateway must support:
+1. Processing text-type messages (for welcome trigger)
+2. Generating audio responses when `end-turn` is called
+
+If the gateway doesn't respond to text messages or end-turn signals, that would be a **backend issue** requiring gateway team investigation.
 
