@@ -1044,7 +1044,14 @@
     "searchPlaceholder": "Suchen...",
     "noMessages": "Noch keine Nachrichten",
     "noMessagesDesc": "Starten Sie eine Unterhaltung, um loszulegen.",
-    "startConversation": "Unterhaltung starten"
+    "startConversation": "Unterhaltung starten",
+    "emptyState": {
+      "title": "Ihr Postfach ist noch leer",
+      "globalDescription": "Starten Sie eine Unterhaltung oder treten Sie einer Community bei, um sich mit anderen zu verbinden.",
+      "tenantDescription": "Verbinden Sie sich mit Kollegen und Teammitgliedern in Ihrem professionellen Netzwerk.",
+      "startConversation": "Unterhaltung starten",
+      "discoverPeople": "Personen entdecken"
+    }
   },
   "settings": {
     "title": "Einstellungen",

@@ -1044,7 +1044,14 @@
     "searchPlaceholder": "Search...",
     "noMessages": "No messages yet",
     "noMessagesDesc": "Start a conversation to get going.",
-    "startConversation": "Start Conversation"
+    "startConversation": "Start Conversation",
+    "emptyState": {
+      "title": "Your inbox is quiet for now",
+      "globalDescription": "Start a conversation or join a community to connect with others.",
+      "tenantDescription": "Connect with colleagues and team members in your professional network.",
+      "startConversation": "Start a conversation",
+      "discoverPeople": "Discover people"
+    }
   },
   "settings": {
     "title": "Settings",
