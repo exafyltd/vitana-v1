@@ -272,12 +272,14 @@ import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
+import { useAppilix } from "@/hooks/useAppilix";
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useMessageNotifications();
   useAudioPriority();
+  useAppilix(); // Detect Appilix WebView & force App Bar visibility
   return null;
 };
 
