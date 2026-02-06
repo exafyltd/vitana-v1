@@ -1,85 +1,62 @@
 
-# Fix: Appilix App Bar and Navigation Drawer Visibility
 
-## Problem
+# Fix: Appilix API Message Format -- Correct the Bridge Utility
 
-The Appilix native app wraps the VITANA web app in a WebView. It provides a native App Bar with a hamburger menu icon that opens a Navigation Drawer. Currently, the hamburger icon only appears after a page refresh -- it's invisible on initial load.
+## Root Cause Found
 
-**Root Cause**: There is zero Appilix bridge/integration code in the web app. The native shell injects a global `appilix` object into the WebView, but the web app never signals readiness or forces the App Bar state. The Appilix WebView likely finishes rendering its native UI after the web app has already loaded, causing a race condition where the hamburger icon state is not properly initialized.
+The current `src/lib/appilix.ts` uses completely **wrong message formats** that Appilix ignores silently. The Appilix native shell never receives a valid command, so the App Bar and Navigation Drawer stay uninitialized on first load. After a manual refresh, the native app re-initializes its own UI from its saved config, which is why the hamburger icon appears only after refresh.
 
-## Solution
+## What's Wrong (Current vs. Correct API)
 
-Create an Appilix bridge utility and a React hook that:
-1. Detects whether the app is running inside Appilix's WebView
-2. Forces the App Bar and Navigation Drawer visibility on load
-3. Provides a clean API for other components to interact with Appilix native features
-4. Uses `ResizeObserver` + polling as a fallback to ensure the `appilix` global is detected even if it's injected late
+| Feature | Current Code (WRONG) | Correct Appilix API |
+|---------|---------------------|---------------------|
+| Message key | `action` | `type` |
+| Settings structure | `{ action: "update_settings", settings: {...} }` | `{ type: "update_settings", updates: { modules: {...} } }` |
+| Navigation | `{ action: "navigate", direction: "backward" }` | `{ type: "url_backward" }` |
+| Share | `{ action: "share", text, subject }` | `{ type: "share", props: { text, subject } }` |
+| Launch URL | `{ action: "launch_external", url }` | `{ type: "launch_url_externally", props: { url } }` |
+| Open Drawer | `{ action: "open_drawer" }` | URL scheme `appilix-drawer://open` |
 
-## Technical Implementation
+## Implementation Plan
 
-### Step 1: Create Appilix Bridge Utility
+### Step 1: Fix `src/lib/appilix.ts` -- Correct All Message Formats
 
-**New file: `src/lib/appilix.ts`**
+Rewrite every `post()` call to match the actual Appilix API from their changelog documentation:
 
-A utility module that:
-- Detects the `appilix` global object (injected by the Appilix WebView shell)
-- Provides typed wrapper functions for all Appilix postMessage APIs:
-  - `openDrawer()` -- opens the navigation drawer
-  - `navigate(direction)` -- backward/forward/reload
-  - `updateSettings(settings)` -- runtime setting changes (e.g., App Bar colors)
-  - `share(text, subject?)` -- native share dialog
-  - `launchExternal(url)` -- open URL in external browser
-- Includes an `isAppilix()` check that returns `true` when running inside the Appilix WebView
-- Handles both old API (`appilix-drawer://open` via href) and new API (`appilix.postMessage`)
+- **`updateSettings()`**: Use `{ type: "update_settings", updates: { modules: { ... } } }` structure
+- **`forceAppBarVisibility()`**: Send correct nested module settings to enable app_bar and navigation_drawer modules
+- **`navigate()`**: Use direction-specific types (`url_backward`, `url_forward`, `url_reload`)
+- **`share()`**: Use `{ type: "share", props: { text, subject } }`
+- **`launchExternal()`**: Use `{ type: "launch_url_externally", props: { url } }`
+- **`openDrawer()`**: Keep the `appilix-drawer://open` URL scheme (this is correct per Appilix docs) as primary, with postMessage as secondary
 
-### Step 2: Create `useAppilix` Hook
+### Step 2: Add Early Detection Script in `index.html`
 
-**New file: `src/hooks/useAppilix.ts`**
+Add a small inline `<script>` block before the React bundle that:
+- Checks for `window.appilix` immediately
+- If found, fires the `update_settings` message right away (before React even mounts)
+- This catches the scenario where Appilix injects its global before the JS bundle loads
 
-A React hook that:
-- Runs on mount (useEffect) to detect the Appilix environment
-- Uses a polling mechanism (checking every 100ms for up to 3 seconds) to wait for the `appilix` global to be injected -- this solves the race condition where the WebView shell injects it after React hydration
-- Once detected, sends an `update_settings` message to force the App Bar module to be visible and ensure the hamburger icon renders
-- Exposes `isAppilix`, `openDrawer`, and `isReady` state
-- No hydration mismatch risk because the state starts as `false` and updates after mount via useEffect
+### Step 3: Enhance `useAppilix` Hook
 
-### Step 3: Integrate into App Root
+- Add `visibilitychange` listener to re-fire visibility settings when the app returns from background
+- Add `load` event listener as a secondary trigger
+- Re-fire on every SPA route change (the navigation drawer state might reset on navigation)
+- Extend polling to 5 seconds for slower devices
 
-**Modified file: `src/App.tsx`**
+### Step 4: Re-fire on Route Changes
 
-- Import and call `useAppilix()` at the top level of the app
-- This ensures the bridge initializes as early as possible during the app lifecycle
-- The hook runs its detection/force-visibility logic in a useEffect, so no SSR/hydration issues arise
-
-### Step 4: Add Drawer Open Capability to Mobile Layout
-
-**Modified file: `src/components/AppLayout.tsx`** (optional enhancement)
-
-- When running inside Appilix, the web app can programmatically open the native drawer via `openDrawer()` -- useful if you want to add a hamburger button fallback in the web UI itself
-
-## How This Fixes the Issue
-
-```text
-Current Flow (broken):
-  Appilix loads WebView
-    -> React app renders
-    -> App Bar renders but hamburger state is uninitialized
-    -> User sees no hamburger icon
-    -> After refresh: Appilix re-initializes -> hamburger appears
-
-Fixed Flow:
-  Appilix loads WebView
-    -> React app renders
-    -> useAppilix polls for 'appilix' global (up to 3s)
-    -> Detects appilix object
-    -> Sends update_settings to force App Bar visibility
-    -> Hamburger icon appears immediately
-```
+In `useAppilix`, add a location listener so that every SPA navigation re-sends the `forceAppBarVisibility()` command, ensuring the native UI stays consistent.
 
 ## Files Summary
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `src/lib/appilix.ts` | Create | Bridge utility with typed Appilix API wrappers |
-| `src/hooks/useAppilix.ts` | Create | React hook for detection, polling, and force-visibility |
-| `src/App.tsx` | Modify | Mount the useAppilix hook at app root |
+| `src/lib/appilix.ts` | Rewrite | Fix all message formats to match actual Appilix API |
+| `src/hooks/useAppilix.ts` | Enhance | Add visibilitychange, load event, route-change re-fire |
+| `index.html` | Modify | Add early inline script for pre-React detection |
+
+## Expected Result
+
+The Appilix native shell will receive correctly formatted messages and immediately show the App Bar with the hamburger menu icon on first load, without requiring a page refresh.
+
