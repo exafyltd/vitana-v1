@@ -1,24 +1,83 @@
 
-# Fix: Update German Tagline
 
-## Change Required
+# Fix: German Translations for Autopilot + Showcase → Highlights
 
-Update the German tagline in the intro/landing screen from:
-- **Current**: "Deine Langlebigkeitsreise, begleitet."
-- **New**: "Deine Langlebigkeitsreise"
+## Overview
 
-## File to Modify
+Update German translations as requested and fix hardcoded strings in the mobile showcase header.
 
-**`src/i18n/de.json`** (line 581)
+---
 
+## Changes Required
+
+### 1. Update Autopilot Profile Popup Translations
+
+**File: `src/i18n/de.json`** (lines 735, 737, 739)
+
+| Current | New |
+|---------|-----|
+| "Meine Biografie aufpolieren" | "Meine Bio optimieren" |
+| "Meinen Archetyp aktualisieren" | "Profil anpassen" |
+| "Mein Showcase hervorheben" | "Meine Highlights" |
+
+---
+
+### 2. Internationalize MobileShowcaseHeader Component
+
+**File: `src/components/profile/mobile/MobileShowcaseHeader.tsx`**
+
+Current hardcoded strings:
+- `"Showcase"` (line 19) - Change to use translation
+- `"Manage"` (line 28) - Change to use translation
+
+Add `useTranslation` hook and replace with translation keys.
+
+---
+
+### 3. Add New Translation Keys
+
+**File: `src/i18n/en.json`**
+
+Add to `editProfile` namespace:
 ```json
-// Before
-"tagline": "Deine Langlebigkeitsreise, begleitet.",
-
-// After
-"tagline": "Deine Langlebigkeitsreise"
+"showcaseTitle": "Showcase",
+"manage": "Manage"
 ```
 
-## Impact
+**File: `src/i18n/de.json`**
 
-This change affects the Maxina intro/welcome screen where the tagline appears below the tenant name.
+Add to `editProfile` namespace:
+```json
+"showcaseTitle": "Highlights",
+"manage": "Verwalten"
+```
+
+---
+
+### 4. Update Other German "Showcase" References
+
+**File: `src/i18n/de.json`**
+
+| Line | Current | New |
+|------|---------|-----|
+| 760 | "...Biografie, Ihren Archetyp und Ihr Showcase." | "...Biografie, Ihren Archetyp und Ihre Highlights." |
+| 2024 | "Bio, Archetyp & Showcase verbessern" | "Bio, Archetyp & Highlights verbessern" |
+
+---
+
+## Summary of All Changes
+
+| File | Change |
+|------|--------|
+| `src/i18n/de.json` | Update 5 translation strings (3 autopilot popup + 2 showcase references) |
+| `src/i18n/en.json` | Add 2 new keys for showcase header |
+| `MobileShowcaseHeader.tsx` | Add useTranslation hook, replace hardcoded strings |
+
+---
+
+## Expected Result
+
+- Autopilot popup shows: "Meine Bio optimieren", "Profil anpassen", "Meine Highlights"
+- Mobile profile header shows: "Highlights" instead of "Showcase" in German
+- "Manage" button shows: "Verwalten" in German
+
