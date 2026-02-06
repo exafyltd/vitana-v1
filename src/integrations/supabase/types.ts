@@ -10586,6 +10586,10 @@ export type Database = {
         Args: { p_family: string; p_module: string }
         Returns: string
       }
+      oasis_events_cleanup: {
+        Args: { retention_days?: number }
+        Returns: number
+      }
       process_wallet_exchange: {
         Args: {
           p_amount: number
