@@ -1667,6 +1667,8 @@
     "error": "Fehler",
     "refreshFailed": "Profildaten konnten nicht aktualisiert werden.",
     "showcaseHint": "Wählen Sie Posts und Inhalte aus, die oben in Ihrem Profil angezeigt werden sollen",
+    "showcaseTitle": "Highlights",
+    "manage": "Verwalten",
     "about": "Über",
     "addBio": "Bio hinzufügen...",
     "tapToEdit": "Tippen zum Bearbeiten"
