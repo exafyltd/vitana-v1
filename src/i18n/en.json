@@ -1667,6 +1667,8 @@
     "error": "Error",
     "refreshFailed": "Failed to refresh profile data.",
     "showcaseHint": "Select posts and content to feature at the top of your profile",
+    "showcaseTitle": "Showcase",
+    "manage": "Manage",
     "about": "About",
     "addBio": "Add a bio...",
     "tapToEdit": "Tap to edit"

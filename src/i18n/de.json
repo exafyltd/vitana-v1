@@ -732,11 +732,11 @@
     },
     "profilePopup": {
       "title": "Lassen Sie Autopilot Ihr Profil aufpolieren ✨",
-      "polishBio": "Meine Biografie aufpolieren",
+      "polishBio": "Meine Bio optimieren",
       "polishBioDesc": "Autopilot kann den Über-Bereich inspirierender gestalten",
-      "refreshArchetype": "Meinen Archetyp aktualisieren",
+      "refreshArchetype": "Profil anpassen",
       "refreshArchetypeDesc": "Archetyp-Aktualisierung basierend auf Aktivität vorschlagen",
-      "highlightShowcase": "Mein Showcase hervorheben",
+      "highlightShowcase": "Meine Highlights",
       "highlightShowcaseDesc": "Top-Beiträge oder Medien für Featured-Inhalte vorschlagen",
       "styleProfile": "Mein Profil gestalten",
       "styleProfileDesc": "Verbesserungen für Titelbild, Rollen und Profilbild vorschlagen",
@@ -757,7 +757,7 @@
       "archetypeDesc": "Ihre Wellness-Aktivitäten deuten darauf hin, dass Sie \"The Mindful Mover\" sein könnten - möchten Sie aktualisieren?",
       "updateArchetype": "Archetyp aktualisieren",
       "profileSectionTitle": "Autopilot kann Ihr Profil aufpolieren ✨",
-      "profileSectionDesc": "Erhalten Sie KI-gestützte Vorschläge für Ihre Biografie, Ihren Archetyp und Ihr Showcase.",
+      "profileSectionDesc": "Erhalten Sie KI-gestützte Vorschläge für Ihre Biografie, Ihren Archetyp und Ihre Highlights.",
       "tryAutopilot": "Autopilot testen"
     },
     "actions": {
@@ -1667,6 +1667,8 @@
     "error": "Fehler",
     "refreshFailed": "Profildaten konnten nicht aktualisiert werden.",
     "showcaseHint": "Wählen Sie Posts und Inhalte aus, die oben in Ihrem Profil angezeigt werden sollen",
+    "showcaseTitle": "Highlights",
+    "manage": "Verwalten",
     "about": "Über",
     "addBio": "Bio hinzufügen...",
     "tapToEdit": "Tippen zum Bearbeiten"
@@ -2021,7 +2023,7 @@
   "profile": {
     "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
     "autopilot": {
-      "polishBio": "Bio, Archetyp & Showcase verbessern",
+      "polishBio": "Bio, Archetyp & Highlights verbessern",
       "try": "Ausprobieren"
     },
     "identity": {
