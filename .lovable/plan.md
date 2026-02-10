@@ -1,47 +1,50 @@
 
-# Fix: Events Not Showing on Mobile
 
-## Root Cause
+# Fix: Snap Carousel Clipped by Layout Chain
 
-The recent vertical snap-scroll refactor of `MobileEventCarousel` created a **nested scrolling conflict**. The snap-scroll container uses a fixed height (`calc(100dvh - 216px)`), but it sits inside multiple parent containers that also scroll:
+## Problem Confirmed
 
-```text
-div.p-6.min-h-screen              (page wrapper - scrolls)
-  div.flex-1.overflow-y-auto       (content area - also scrolls!)
-    SplitBarContent                 (tab panel)
-      MobileEventCarousel
-        div.overflow-y-auto         (snap container - tries to scroll too)
-```
+The screenshot shows 65 events loaded and the debug fallback list renders, proving data flow is fine. The snap carousel container exists but has **zero visible height** because:
 
-The snap container likely collapses to zero visible height or its cards are rendered but hidden behind the competing scroll contexts. The empty state does NOT appear (which would show "No Upcoming Events" text), confirming events are being passed to the component -- they're just invisible due to CSS layout issues.
+1. The debug fallback list consumes vertical space, pushing the snap container down
+2. Radix `TabsPrimitive.Content` does not inherently participate in flex layout -- it renders as a block-level `div`. Even though we pass `flex-1 min-h-0 flex flex-col overflow-hidden` as className, the parent flex chain breaks at the `SplitBar` (Radix Tabs root) which is also not a flex container
 
-## Fix
+## Changes
 
-### 1. `MobileEventCarousel.tsx` -- Remove fixed height, use flex-grow
+### 1. `MobileEventCarousel.tsx` -- Remove fallback list, reposition debug banner
 
-The snap container should NOT use a hardcoded `calc(100dvh - 216px)` height. Instead, it should fill whatever space its parent gives it using `flex: 1` / `h-full`. The parent page layout needs to provide the constraint.
+- Delete the entire "DEBUG FALLBACK LIST" block (lines 258-265)
+- Move the debug banner to a `fixed` position so it does not consume any layout height:
+  - `className="fixed left-1/2 -translate-x-1/2 bottom-[84px] z-[9999]"`
+- Add `border border-red-500` temporarily to the snap container for visibility debugging (remove after confirmed working)
+- Add safe bottom padding to the snap container: `pb-[120px]` with `paddingBottom: calc(120px + env(safe-area-inset-bottom))`
 
-- Change the snap container from a fixed `height` style to `flex: 1; min-height: 0` so it fills available space
-- Keep `overflow-y-auto`, `snap-y`, `snap-mandatory` and `overscroll-behavior` on the container
-- Keep `scroll-snap-align: start` and `scroll-snap-stop: always` on each card wrapper
-- Each card wrapper's `min-height` should remain `calc(100dvh - 216px)` -- this is the size of each "page", not the container
+### 2. `MobileEventCarousel.tsx` -- Use explicit viewport height instead of flex-1
 
-### 2. `EventsAndMeetups.tsx` -- Fix parent layout for mobile
+Since the flex chain from page root to carousel is broken by Radix Tabs intermediaries, **stop relying on flex-1** for the snap container. Instead, give it an explicit height:
 
-On mobile, the page wrapper and content area create competing scroll surfaces. The fix:
+- Root wrapper: `className="relative w-full"` with `style={{ height: 'calc(100dvh - ${CHROME_HEIGHT_PX}px)' }}`
+- Snap container: `className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"` (no flex-1)
+- This makes the carousel self-sizing regardless of what ancestors do
 
-- On mobile, make the content area (`div.flex-1.overflow-y-auto` at line 713) use `overflow: hidden` instead of `overflow-y-auto`, so the only scrolling surface is the snap container inside `MobileEventCarousel`
-- Alternatively, remove the `overflow-y-auto` on the parent and let the snap container be the sole scroll owner
+### 3. `EventsAndMeetups.tsx` -- Keep mobile overflow suppression
 
-### 3. Ensure the outer page container doesn't scroll on mobile
+- The existing `h-[100dvh] overflow-hidden flex flex-col` on the page wrapper (line 649) stays -- it prevents background scrolling
+- The existing `flex-1 min-h-0 flex flex-col overflow-hidden` on the content div (lines 650, 713) stays
+- No other changes needed here since the carousel will now self-size with an explicit height
 
-The `div.p-6.min-h-screen` wrapper (line 649) implies the page itself can scroll. On mobile, when the snap carousel is active, this outer scroll should be suppressed so only the snap container handles scrolling. This can be done by conditionally adding `overflow: hidden; height: 100dvh` to the page wrapper on mobile when showing the carousel tabs.
+### 4. `split-bar.tsx` -- Add flex support to SplitBarContent
 
-## Summary of Changes
+- Update the `SplitBarContent` base className to include `data-[state=active]:flex` so when a tab is active, it becomes a flex container if the consumer passes flex classes
+- This is a minor enhancement but not strictly required since we're using explicit height
+
+## Summary
+
+The core fix is switching from `flex-1` (which requires an unbroken flex chain) to an **explicit `calc(100dvh - 216px)` height** on the carousel root. This makes it immune to Radix Tabs breaking the flex chain. The debug fallback list is removed from flow, and the banner becomes a fixed overlay.
 
 | File | Change |
 |------|--------|
-| `MobileEventCarousel.tsx` | Replace fixed container height with `flex: 1; min-height: 0; height: 100%` so it fills parent space. Keep card wrapper min-height as the viewport "page" size. |
-| `EventsAndMeetups.tsx` | On mobile: suppress outer scrolling (`overflow: hidden`) on parent containers so the snap container is the sole scroll surface. Ensure the layout chain from page root to carousel is a proper flex column with constrained height. |
+| `MobileEventCarousel.tsx` | Remove fallback list. Fix banner to `fixed` position. Use explicit height instead of flex-1. Add bottom padding for nav/orb. |
+| `EventsAndMeetups.tsx` | No changes needed (existing mobile overflow suppression is correct). |
+| `split-bar.tsx` | Optional: no changes strictly required. |
 
-These are minimal CSS/layout changes -- no logic, data, or component structure changes needed.
