@@ -801,7 +801,7 @@ const EventsAndMeetups = () => {
                 )}
               </SplitBarContent>
 
-              <SplitBarContent value="upcoming" className="mt-6">
+              <SplitBarContent value="upcoming" className={cn("mt-6", isMobile && "flex-1 min-h-0 flex flex-col overflow-hidden")}>
                 {loading && filteredUpcomingEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
