@@ -778,6 +778,7 @@ export type Database = {
           created_at: string
           display_name: string | null
           email: string | null
+          live_room_id: string | null
           profile: Json
           status: string
           stripe_account_id: string | null
@@ -792,6 +793,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          live_room_id?: string | null
           profile?: Json
           status?: string
           stripe_account_id?: string | null
@@ -806,6 +808,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           email?: string | null
+          live_room_id?: string | null
           profile?: Json
           status?: string
           stripe_account_id?: string | null
@@ -830,6 +833,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "fk_app_users_live_room"
+            columns: ["live_room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_app_users_live_room"
+            columns: ["live_room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms_public"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -4466,9 +4483,11 @@ export type Database = {
           metadata: Json | null
           purchased_at: string
           refund_id: string | null
+          refund_status: string | null
           revoked_at: string | null
           revoked_reason: string | null
           room_id: string
+          session_id: string | null
           stripe_payment_intent_id: string | null
           tenant_id: string
           user_id: string
@@ -4483,9 +4502,11 @@ export type Database = {
           metadata?: Json | null
           purchased_at?: string
           refund_id?: string | null
+          refund_status?: string | null
           revoked_at?: string | null
           revoked_reason?: string | null
           room_id: string
+          session_id?: string | null
           stripe_payment_intent_id?: string | null
           tenant_id: string
           user_id: string
@@ -4500,14 +4521,23 @@ export type Database = {
           metadata?: Json | null
           purchased_at?: string
           refund_id?: string | null
+          refund_status?: string | null
           revoked_at?: string | null
           revoked_reason?: string | null
           room_id?: string
+          session_id?: string | null
           stripe_payment_intent_id?: string | null
           tenant_id?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_grants_session"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_room_sessions"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "live_room_access_grants_room_id_fkey"
             columns: ["room_id"]
@@ -4548,35 +4578,57 @@ export type Database = {
       live_room_attendance: {
         Row: {
           created_at: string
+          disconnected_at: string | null
           duration_minutes: number | null
           id: string
+          is_banned: boolean | null
           joined_at: string
           left_at: string | null
           live_room_id: string
+          lobby_status: string | null
+          role: string | null
+          session_id: string | null
           tenant_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          disconnected_at?: string | null
           duration_minutes?: number | null
           id?: string
+          is_banned?: boolean | null
           joined_at?: string
           left_at?: string | null
           live_room_id: string
+          lobby_status?: string | null
+          role?: string | null
+          session_id?: string | null
           tenant_id: string
           user_id: string
         }
         Update: {
           created_at?: string
+          disconnected_at?: string | null
           duration_minutes?: number | null
           id?: string
+          is_banned?: boolean | null
           joined_at?: string
           left_at?: string | null
           live_room_id?: string
+          lobby_status?: string | null
+          role?: string | null
+          session_id?: string | null
           tenant_id?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_attendance_session"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_room_sessions"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "live_room_attendance_live_room_id_fkey"
             columns: ["live_room_id"]
@@ -4593,14 +4645,98 @@ export type Database = {
           },
         ]
       }
+      live_room_sessions: {
+        Row: {
+          access_level: string | null
+          auto_admit: boolean | null
+          created_at: string
+          ends_at: string | null
+          host_present: boolean | null
+          id: string
+          idempotency_key: string | null
+          lobby_buffer_minutes: number | null
+          lobby_open_at: string | null
+          max_participants: number | null
+          metadata: Json | null
+          room_id: string
+          session_title: string | null
+          starts_at: string
+          status: string
+          tenant_id: string
+          topic_keys: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          access_level?: string | null
+          auto_admit?: boolean | null
+          created_at?: string
+          ends_at?: string | null
+          host_present?: boolean | null
+          id?: string
+          idempotency_key?: string | null
+          lobby_buffer_minutes?: number | null
+          lobby_open_at?: string | null
+          max_participants?: number | null
+          metadata?: Json | null
+          room_id: string
+          session_title?: string | null
+          starts_at: string
+          status?: string
+          tenant_id: string
+          topic_keys?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          access_level?: string | null
+          auto_admit?: boolean | null
+          created_at?: string
+          ends_at?: string | null
+          host_present?: boolean | null
+          id?: string
+          idempotency_key?: string | null
+          lobby_buffer_minutes?: number | null
+          lobby_open_at?: string | null
+          max_participants?: number | null
+          metadata?: Json | null
+          room_id?: string
+          session_title?: string | null
+          starts_at?: string
+          status?: string
+          tenant_id?: string
+          topic_keys?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_room_sessions_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_room_sessions_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       live_rooms: {
         Row: {
           access_level: string | null
+          cover_image_url: string | null
           created_at: string
+          current_session_id: string | null
+          description: string | null
           ends_at: string | null
+          host_present: boolean | null
           host_user_id: string
           id: string
           metadata: Json | null
+          room_name: string | null
+          room_slug: string | null
           starts_at: string
           status: string
           tenant_id: string
@@ -4610,11 +4746,17 @@ export type Database = {
         }
         Insert: {
           access_level?: string | null
+          cover_image_url?: string | null
           created_at?: string
+          current_session_id?: string | null
+          description?: string | null
           ends_at?: string | null
+          host_present?: boolean | null
           host_user_id: string
           id?: string
           metadata?: Json | null
+          room_name?: string | null
+          room_slug?: string | null
           starts_at: string
           status?: string
           tenant_id: string
@@ -4624,11 +4766,17 @@ export type Database = {
         }
         Update: {
           access_level?: string | null
+          cover_image_url?: string | null
           created_at?: string
+          current_session_id?: string | null
+          description?: string | null
           ends_at?: string | null
+          host_present?: boolean | null
           host_user_id?: string
           id?: string
           metadata?: Json | null
+          room_name?: string | null
+          room_slug?: string | null
           starts_at?: string
           status?: string
           tenant_id?: string
@@ -4636,7 +4784,15 @@ export type Database = {
           topic_keys?: string[] | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_live_rooms_current_session"
+            columns: ["current_session_id"]
+            isOneToOne: false
+            referencedRelation: "live_room_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       location_preferences: {
         Row: {
@@ -10869,6 +11025,15 @@ export type Database = {
         Args: { p_live_room_id: string; p_text: string; p_type: string }
         Returns: Json
       }
+      live_room_admit_all: { Args: { p_room_id: string }; Returns: Json }
+      live_room_admit_user: {
+        Args: { p_room_id: string; p_user_id: string }
+        Returns: Json
+      }
+      live_room_ban_user: {
+        Args: { p_room_id: string; p_user_id: string }
+        Returns: Json
+      }
       live_room_check_access:
         | { Args: { p_room_id: string; p_user_id: string }; Returns: boolean }
         | {
@@ -10876,7 +11041,13 @@ export type Database = {
             Returns: boolean
           }
       live_room_create: { Args: { p_payload: Json }; Returns: Json }
+      live_room_create_session: {
+        Args: { p_payload: Json; p_room_id: string }
+        Returns: Json
+      }
+      live_room_disconnect: { Args: { p_room_id: string }; Returns: Json }
       live_room_end: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_end_session: { Args: { p_room_id: string }; Returns: Json }
       live_room_get: {
         Args: { p_live_room_id: string }
         Returns: {
@@ -10894,6 +11065,17 @@ export type Database = {
           updated_at: string
         }[]
       }
+      live_room_get_counts: { Args: { p_session_id: string }; Returns: Json }
+      live_room_get_lobby: { Args: { p_room_id: string }; Returns: Json }
+      live_room_get_paid_grants: {
+        Args: { p_session_id: string }
+        Returns: Json
+      }
+      live_room_get_sessions: { Args: { p_room_id: string }; Returns: Json }
+      live_room_get_state: {
+        Args: { p_room_id: string; p_user_id?: string }
+        Returns: Json
+      }
       live_room_grant_access: {
         Args: {
           p_access_type: string
@@ -10907,16 +11089,62 @@ export type Database = {
         Args: { p_room_id: string }
         Returns: number
       }
+      live_room_invalidate_session_grants: {
+        Args: { p_session_id: string }
+        Returns: Json
+      }
       live_room_join: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_join_session: {
+        Args: { p_room_id: string; p_session_id: string }
+        Returns: Json
+      }
+      live_room_kick_user: {
+        Args: { p_room_id: string; p_user_id: string }
+        Returns: Json
+      }
       live_room_leave: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_reject_user: {
+        Args: { p_room_id: string; p_user_id: string }
+        Returns: Json
+      }
       live_room_revoke_access: {
         Args: { p_grant_id: string; p_reason: string }
         Returns: boolean
       }
+      live_room_set_host_present: {
+        Args: { p_present: boolean; p_room_id: string }
+        Returns: Json
+      }
       live_room_start: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_transition_status: {
+        Args: {
+          p_expected_old_status: string
+          p_new_status: string
+          p_room_id: string
+        }
+        Returns: Json
+      }
+      live_room_update_grant_refund: {
+        Args: {
+          p_grant_id: string
+          p_refund_id?: string
+          p_refund_status: string
+        }
+        Returns: Json
+      }
       live_room_update_metadata: {
         Args: { p_live_room_id: string; p_metadata: Json }
         Returns: boolean
+      }
+      live_room_update_room_name: {
+        Args: {
+          p_cover_image_url?: string
+          p_description?: string
+          p_name?: string
+          p_room_id: string
+          p_slug?: string
+        }
+        Returns: Json
       }
       match_memories: {
         Args: {
