@@ -268,7 +268,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{editMode ? t('titleEdit', 'Edit Live Stream') : t('titleCreate', 'Go Live')}</DialogTitle>
+          <DialogTitle>{t('titleCreate', 'Go Live')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
