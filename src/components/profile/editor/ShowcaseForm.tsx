@@ -75,10 +75,9 @@ export function ShowcaseForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">Showcase</h3>
+        <h3 className="text-lg font-medium mb-4">{translate('editProfile.showcaseTitle')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Choose your best posts and media to feature at the top of your profile. 
-          Featured content appears in a highlights section and attracts more followers.
+          {translate('editProfile.autopilot.highlightsDesc')}
         </p>
       </div>
 
