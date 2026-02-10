@@ -219,27 +219,21 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         enable_recording: enableRecording,
       };
       
-      try {
-        await createSession({ roomId, request: sessionRequest });
-      } catch (sessionError: any) {
-        // Handle ROOM_NOT_IDLE: end the stale session and retry once
-        if (sessionError?.message?.includes('ROOM_NOT_IDLE') || sessionError?.message?.includes('active session')) {
-          console.warn('[GoLivePopup] Room not idle, attempting to reset and retry...');
-          try {
-            // Try gateway end first
-            await import('@/services/liveRoomService').then(m => m.liveRoomService.endRoom(roomId));
-          } catch {
-            // Fallback: reset directly in DB
-            await supabase.from('live_rooms').update({ status: 'idle', current_session_id: null }).eq('id', roomId);
-            await supabase.from('community_live_streams').update({ status: 'ended', ended_at: new Date().toISOString() }).eq('id', roomId);
-          }
-          // Wait briefly for state to propagate, then retry
-          await new Promise(r => setTimeout(r, 1000));
-          await createSession({ roomId, request: sessionRequest });
-        } else {
-          throw sessionError;
-        }
-      }
+      // Always reset room state before creating a new session
+      // This prevents ROOM_NOT_IDLE errors from stale sessions
+      console.log('[GoLivePopup] Resetting room state before creating session...');
+      await Promise.all([
+        supabase.from('live_rooms').update({ status: 'idle', current_session_id: null }).eq('id', roomId),
+        supabase.from('community_live_streams').update({ status: 'ended', ended_at: new Date().toISOString() }).eq('id', roomId),
+        // Also try gateway end/cancel (best-effort, ignore errors)
+        import('@/services/liveRoomService').then(m => m.liveRoomService.endRoom(roomId)).catch(() => {}),
+        import('@/services/liveRoomService').then(m => m.liveRoomService.cancelRoom(roomId)).catch(() => {}),
+      ]);
+      
+      // Brief wait for gateway to process the reset
+      await new Promise(r => setTimeout(r, 1500));
+      
+      await createSession({ roomId, request: sessionRequest });
       
       // Also insert into community_live_streams so the catalog picks it up
       try {
