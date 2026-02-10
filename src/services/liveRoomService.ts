@@ -88,6 +88,7 @@ export interface CreateSessionRequest {
   access_level?: string;
   cover_image_url?: string;
   scheduled_for?: string;
+  starts_at?: string;
   enable_chat?: boolean;
   enable_polls?: boolean;
   enable_recording?: boolean;

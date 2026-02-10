@@ -201,6 +201,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       }
       
       // Create session on permanent room via gateway
+      const scheduledIso = (scheduleDate && scheduleTime)
+        ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
+        : undefined;
+      
       const sessionRequest = {
         session_title: title,
         session_description: description || undefined,
@@ -208,9 +212,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         tags: selectedTags,
         access_level: accessLevel,
         cover_image_url: uploadedImageUrl || undefined,
-        scheduled_for: (scheduleDate && scheduleTime) 
-          ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
-          : undefined,
+        scheduled_for: scheduledIso,
+        starts_at: scheduledIso || new Date().toISOString(),
         enable_chat: enableChat,
         enable_polls: enablePolls,
         enable_recording: enableRecording,
