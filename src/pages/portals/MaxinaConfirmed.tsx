@@ -2,25 +2,27 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Heart } from "lucide-react";
+import { ArrowRight, Heart, Gift } from "lucide-react";
 import { useEmailConfirmation } from "@/hooks/useEmailConfirmation";
+import { useDiscountCode } from "@/hooks/useDiscountCode";
 import { useTenant } from "@/hooks/useTenant";
+import { useTranslation } from "@/hooks/useTranslation";
 import SEO from "@/components/SEO";
 
 export default function MaxinaConfirmed() {
   const navigate = useNavigate();
   const { isLoading, user, error } = useEmailConfirmation();
   const { setTenantBySlug } = useTenant();
+  const { discountCode, loading: discountLoading } = useDiscountCode('maxina');
+  const { translate } = useTranslation();
 
   useEffect(() => {
-    // Set tenant context
     setTenantBySlug('maxina');
     
     if (user && !isLoading) {
-      // Auto-redirect after 3 seconds
       const timer = setTimeout(() => {
         navigate('/home');
-      }, 3000);
+      }, 5000); // extended to 5s so user can see discount code
 
       return () => clearTimeout(timer);
     }
@@ -80,12 +82,33 @@ export default function MaxinaConfirmed() {
               <p className="text-sm text-pink-600 font-medium">
                 Your women's health journey starts now
               </p>
+            </div>
+
+            {/* Discount Code Card */}
+            {!discountLoading && discountCode && (
+              <div className="rounded-xl border-2 border-dashed border-pink-300 bg-gradient-to-br from-pink-50 to-rose-50 dark:from-pink-950/30 dark:to-rose-950/30 p-5 space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                  <Gift className="h-5 w-5 text-pink-600" />
+                  <span className="text-sm font-semibold text-pink-700 dark:text-pink-400">
+                    {translate('discount.welcomeTitle')}
+                  </span>
+                </div>
+                <div className="font-mono text-2xl font-extrabold tracking-widest text-pink-600">
+                  {discountCode.code}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {translate('discount.welcomeMessage')}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {translate('discount.validFor')}
+                </p>
+              </div>
+            )}
+
+            <div className="space-y-3">
               <p className="text-xs text-muted-foreground">
                 You'll be redirected to your dashboard in a few seconds...
               </p>
-            </div>
-            
-            <div className="space-y-3">
               <Button 
                 onClick={handleContinue} 
                 className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
