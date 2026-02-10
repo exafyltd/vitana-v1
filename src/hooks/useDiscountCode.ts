@@ -50,5 +50,7 @@ export function useDiscountCode(tenantSlug: string = 'maxina') {
     fetchDiscount();
   }, [tenantSlug]);
 
-  return { discountCode, loading };
+  const clearDiscount = () => setDiscountCode(null);
+
+  return { discountCode, loading, clearDiscount };
 }
