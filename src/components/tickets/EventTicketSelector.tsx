@@ -22,7 +22,7 @@ interface EventTicketSelectorProps {
 export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams, eventPrice }: EventTicketSelectorProps) {
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
-  const { discountCode, loading: discountLoading } = useDiscountCode('maxina');
+  const { discountCode, loading: discountLoading, clearDiscount } = useDiscountCode('maxina');
   const { translate } = useTranslation();
   
   const [selectedTickets, setSelectedTickets] = useState<Record<string, number>>({});
