@@ -1,50 +1,61 @@
 
 
-# Fix: Snap Carousel Clipped by Layout Chain
+# Fix: Snap Carousel Pushed Below Viewport
 
-## Problem Confirmed
+## Root Cause
 
-The screenshot shows 65 events loaded and the debug fallback list renders, proving data flow is fine. The snap carousel container exists but has **zero visible height** because:
+The layout chain from page root to carousel:
 
-1. The debug fallback list consumes vertical space, pushing the snap container down
-2. Radix `TabsPrimitive.Content` does not inherently participate in flex layout -- it renders as a block-level `div`. Even though we pass `flex-1 min-h-0 flex flex-col overflow-hidden` as className, the parent flex chain breaks at the `SplitBar` (Radix Tabs root) which is also not a flex container
+```text
+div (h-[100dvh] flex flex-col)          -- OK, constrains height
+  div (flex-1 min-h-0 flex flex-col)    -- OK, fills remaining
+    StandardHeader                       -- consumes ~80px
+    UtilityActionButton                  -- consumes ~48px
+    div (flex-1 min-h-0 flex flex-col)  -- OK
+      SplitBar/Tabs (flex-1 flex flex-col) -- OK
+        SplitBarList (tab triggers)      -- consumes ~44px
+        SplitBarContent                  -- BREAKS: display:block, not flex child
+          MobileEventCarousel            -- height: calc(100dvh - 216px) = TOO TALL
+```
 
-## Changes
+`SplitBarContent` (Radix `TabsPrimitive.Content`) renders as `display: block` when active. It does NOT participate as a flex child that grows to fill remaining space. So `flex-1` classes on it are ignored.
 
-### 1. `MobileEventCarousel.tsx` -- Remove fallback list, reposition debug banner
+Then the carousel sets its own height to `calc(100dvh - 216px)` which is the full viewport minus chrome -- but it's already placed 170+ px down the page. The result: most of it overflows below the visible area, and we see only the bottom sliver.
 
-- Delete the entire "DEBUG FALLBACK LIST" block (lines 258-265)
-- Move the debug banner to a `fixed` position so it does not consume any layout height:
-  - `className="fixed left-1/2 -translate-x-1/2 bottom-[84px] z-[9999]"`
-- Add `border border-red-500` temporarily to the snap container for visibility debugging (remove after confirmed working)
-- Add safe bottom padding to the snap container: `pb-[120px]` with `paddingBottom: calc(120px + env(safe-area-inset-bottom))`
+## Fix (2 files)
 
-### 2. `MobileEventCarousel.tsx` -- Use explicit viewport height instead of flex-1
+### 1. `split-bar.tsx` -- Make SplitBarContent a flex participant when active
 
-Since the flex chain from page root to carousel is broken by Radix Tabs intermediaries, **stop relying on flex-1** for the snap container. Instead, give it an explicit height:
+Add to the base className of `SplitBarContent`:
 
-- Root wrapper: `className="relative w-full"` with `style={{ height: 'calc(100dvh - ${CHROME_HEIGHT_PX}px)' }}`
-- Snap container: `className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"` (no flex-1)
-- This makes the carousel self-sizing regardless of what ancestors do
+```
+data-[state=active]:flex data-[state=active]:flex-col data-[state=active]:flex-1 data-[state=active]:min-h-0
+```
 
-### 3. `EventsAndMeetups.tsx` -- Keep mobile overflow suppression
+When inactive, Radix sets `display: none`. When active, this overrides to `display: flex` with `flex: 1` so it fills remaining space in the parent flex column. This is backward-compatible -- existing consumers that don't use flex just get a flex container that behaves like block for non-flex children.
 
-- The existing `h-[100dvh] overflow-hidden flex flex-col` on the page wrapper (line 649) stays -- it prevents background scrolling
-- The existing `flex-1 min-h-0 flex flex-col overflow-hidden` on the content div (lines 650, 713) stays
-- No other changes needed here since the carousel will now self-size with an explicit height
+### 2. `MobileEventCarousel.tsx` -- Use h-full instead of explicit calc height
 
-### 4. `split-bar.tsx` -- Add flex support to SplitBarContent
+Now that the flex chain is unbroken, the carousel can simply fill its parent:
 
-- Update the `SplitBarContent` base className to include `data-[state=active]:flex` so when a tab is active, it becomes a flex container if the consumer passes flex classes
-- This is a minor enhancement but not strictly required since we're using explicit height
+- Root wrapper: change from `style={{ height: calc(100dvh - 216px) }}` to `className="h-full flex flex-col min-h-0"`
+- Snap container: `className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scrollbar-hide"`
+- Remove the `CHROME_HEIGHT_PX` constant from the root wrapper (keep it only for individual card `minHeight`)
+- Remove the red debug border
+- Keep the debug banner (fixed position) for one more verification cycle
 
-## Summary
+### 3. Verify `EventsAndMeetups.tsx` -- Ensure SplitBar itself is flex
 
-The core fix is switching from `flex-1` (which requires an unbroken flex chain) to an **explicit `calc(100dvh - 216px)` height** on the carousel root. This makes it immune to Radix Tabs breaking the flex chain. The debug fallback list is removed from flow, and the banner becomes a fixed overlay.
+The `SplitBar` (Tabs root) at line 714 already has `className="flex-1 min-h-0 flex flex-col"` on mobile. This is correct and needs no change.
+
+## Technical Details
 
 | File | Change |
 |------|--------|
-| `MobileEventCarousel.tsx` | Remove fallback list. Fix banner to `fixed` position. Use explicit height instead of flex-1. Add bottom padding for nav/orb. |
-| `EventsAndMeetups.tsx` | No changes needed (existing mobile overflow suppression is correct). |
-| `split-bar.tsx` | Optional: no changes strictly required. |
+| `src/components/ui/split-bar.tsx` | Add `data-[state=active]:flex data-[state=active]:flex-col data-[state=active]:flex-1 data-[state=active]:min-h-0` to SplitBarContent base className |
+| `src/components/community/MobileEventCarousel.tsx` | Root wrapper: `h-full flex flex-col min-h-0` (remove explicit calc height). Snap container: `flex-1 min-h-0`. Remove red debug border. Keep debug banner. |
+
+## Why This Will Work
+
+With the SplitBarContent fix, the entire chain from `h-[100dvh]` page root to the carousel is an unbroken sequence of `flex flex-col` containers with `flex-1 min-h-0`. Each level takes remaining space after its siblings (headers, tab bar) consume their natural height. The carousel ends up with exactly the right amount of space -- no explicit pixel math needed.
 
