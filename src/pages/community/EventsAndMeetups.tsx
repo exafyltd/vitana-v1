@@ -646,7 +646,7 @@ const EventsAndMeetups = () => {
       <AppLayout>
         {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
         {!isMobile && <SubNavigation items={communityNavigation} />}
-        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className={cn("p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50", isMobile ? "h-[100dvh] overflow-hidden" : "min-h-screen")}>
           <div className="flex-1 overflow-hidden">
           <StandardHeader
             title={translate('events.title', 'Events & MeetUps')}
@@ -710,7 +710,7 @@ const EventsAndMeetups = () => {
             </div>
           </UtilityActionButton>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className={cn("flex-1", isMobile ? "overflow-hidden" : "overflow-y-auto")}>
             <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList>
                 <SplitBarTrigger value="today">
