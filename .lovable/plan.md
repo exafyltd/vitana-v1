@@ -1,72 +1,81 @@
 
-# Autopilot: German Text Update + Working AI Profile Suggestions
+# Enable Posting on Mobile Profile
 
-## Overview
+## Problem
 
-Two changes: (1) Update the German banner text, and (2) make the "Try/Ausprobieren" button actually generate and apply AI-powered profile suggestions via a new edge function.
+The mobile profile "Posts" tab currently shows only hardcoded mock posts. There is no way to create a post, and no database table exists for profile/community posts (only `distribution_posts` for campaigns).
 
-## 1. German Translation Fix
+## Solution
 
-**File: `src/i18n/de.json` (line 2026)**
-- From: `"polishBio": "Bio, Archetyp & Highlights verbessern"`
-- To: `"polishBio": "Bio, Profil & Highlights"`
-- English stays unchanged.
+Create a new `profile_posts` table and build a mobile-first post creation flow using a full-screen sheet (following the PWA architecture pattern).
 
-## 2. New Edge Function: `supabase/functions/autopilot-profile/index.ts`
+## What Changes
 
-Creates a backend function that calls the Lovable AI Gateway to generate profile improvement suggestions.
+### 1. New Database Table: `profile_posts`
 
-- Receives: `currentBio`, `currentArchetype`, `selectedOptions` (which checkboxes the user picked)
-- Calls `https://ai.gateway.lovable.dev/v1/chat/completions` with `LOVABLE_API_KEY` using tool calling to extract structured output (suggested bio + archetype as JSON)
-- Returns: `{ bio?: string, archetype?: string }`
-- Handles 429/402 rate limit errors gracefully
-- `verify_jwt = true` in `config.toml`
+Create a `profile_posts` table with columns:
+- `id` (uuid, PK)
+- `user_id` (uuid, FK to auth.users)
+- `content` (text, required)
+- `image_url` (text, optional)
+- `likes_count` (integer, default 0)
+- `comments_count` (integer, default 0)
+- `shares_count` (integer, default 0)
+- `is_public` (boolean, default true)
+- `created_at`, `updated_at` (timestamptz)
 
-## 3. Translation Keys for the Preview Step
+Enable RLS with policies:
+- Anyone can read public posts
+- Authenticated users can create their own posts
+- Users can update/delete their own posts
 
-Add new keys under `autopilot.profilePopup` in both `en.json` and `de.json`:
+### 2. New Component: `MobileCreatePostSheet.tsx`
 
-| Key | English | German |
-|-----|---------|--------|
-| `generating` | Generating suggestions... | Vorschlaege werden erstellt... |
-| `suggestedBio` | Suggested Bio | Vorgeschlagene Bio |
-| `suggestedArchetype` | Suggested Archetype | Vorgeschlagener Archetyp |
-| `currentValue` | Current | Aktuell |
-| `accept` | Accept | Uebernehmen |
-| `reject` | Discard | Verwerfen |
-| `acceptAll` | Accept All | Alle uebernehmen |
-| `applied` | Changes saved! | Aenderungen gespeichert! |
-| `error` | Something went wrong | Etwas ist schiefgelaufen |
+A full-screen bottom sheet (following the mobile sheet pattern) with:
+- Textarea for post content
+- Optional image attachment (using existing storage infrastructure if available, otherwise text-only initially)
+- Character counter
+- "Post" button that saves to `profile_posts` table
+- Cancel button to dismiss
 
-## 4. Refactor `AutopilotProfilePopup.tsx`
+### 3. New Hook: `useProfilePosts.ts`
 
-Transform from a stub into a two-step flow:
+A React Query hook providing:
+- `posts` query: fetches posts for a given user_id from `profile_posts`, ordered by `created_at` desc
+- `createPost` mutation: inserts a new post
+- `deletePost` mutation: deletes own post
 
-**Step 1 (Selection)** -- existing UI, unchanged. User picks which options to improve.
+### 4. Update Mobile Profile Posts Tab
 
-**Step 2 (Preview)** -- new. After clicking "Run Autopilot":
-- Shows a loading spinner with translated "Generating suggestions..." text
-- Calls the `autopilot-profile` edge function via `supabase.functions.invoke()`
-- Displays side-by-side "current vs suggested" cards for bio and/or archetype
-- Each suggestion has individual "Accept" / "Discard" buttons
-- "Accept All" button at the bottom
-- On accept: upserts to `profiles` table (`bio`, `longevity_archetype` columns) and calls `refreshProfile()` from ProfileProvider
-- Shows success toast, then closes
+**In `EditProfilePage.tsx`** (lines 341-351):
+- Add a floating "+" button or a "Create Post" card at the top of the posts tab
+- Open the `MobileCreatePostSheet` when tapped
+- After the showcase header, render real posts from `useProfilePosts` instead of nothing
 
-**New props**: The component will receive the user's current profile data (bio, archetype) and a `refreshProfile` callback. These are passed from `EditProfilePage.tsx`.
+**In `ProfilePostsTab.tsx`**:
+- Replace the mock `mockPosts` array with data from `useProfilePosts`
+- Keep the existing card design but wire it to real data
+- Show empty state with a "Write your first post" CTA
 
-## 5. Wire Up in `EditProfilePage.tsx`
+### 5. Translation Keys
 
-- Pass `profile.bio`, `profile.longevityArchetype` (fetched from context), and `refreshProfile` as new props to `AutopilotProfilePopup`
-- The component already receives `open` and `onOpenChange`
+Add to both `en.json` and `de.json`:
+- `profilePosts.createPost`: "Create Post" / "Beitrag erstellen"
+- `profilePosts.placeholder`: "What's on your mind?" / "Was bewegt dich?"
+- `profilePosts.post`: "Post" / "Posten"
+- `profilePosts.emptyTitle`: "No posts yet" / "Noch keine Beitraege"
+- `profilePosts.emptyDescription`: "Share your first update with the community" / "Teile dein erstes Update mit der Community"
+- `profilePosts.deleteConfirm`: "Delete this post?" / "Beitrag loeschen?"
 
 ## Files Changed
 
 | File | Action |
 |------|--------|
-| `src/i18n/de.json` | Edit line 2026 + add new keys at ~line 744 |
-| `src/i18n/en.json` | Add new keys at ~line 744 |
-| `supabase/functions/autopilot-profile/index.ts` | New file |
-| `supabase/config.toml` | Add `[functions.autopilot-profile]` entry |
-| `src/components/profile/AutopilotProfilePopup.tsx` | Major refactor: two-step flow with AI integration |
-| `src/pages/EditProfilePage.tsx` | Pass profile data + refreshProfile to popup |
+| SQL migration | Create `profile_posts` table + RLS |
+| `src/hooks/useProfilePosts.ts` | New hook for CRUD |
+| `src/components/profile/mobile/MobileCreatePostSheet.tsx` | New full-screen post creation sheet |
+| `src/components/profile/shared/tabs/ProfilePostsTab.tsx` | Replace mock data with real data |
+| `src/pages/EditProfilePage.tsx` | Add create post button + sheet in posts tab |
+| `src/components/profile/shared/ProfileLayout.tsx` | Wire posts tab to real data in public view |
+| `src/i18n/en.json` | Add translation keys |
+| `src/i18n/de.json` | Add translation keys |
