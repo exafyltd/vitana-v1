@@ -219,12 +219,12 @@ export function MobileEventCarousel({
     };
   };
 
-  // Debug banner (temporary — will be removed once layout is confirmed working)
+  // Debug banner — fixed overlay, does not consume layout height
   const debugBanner = (
-    <div className="sticky top-0 z-50 bg-yellow-300 text-black text-xs px-3 py-1 rounded-full mx-auto w-fit flex gap-2">
+    <div className="fixed left-1/2 -translate-x-1/2 bottom-[84px] z-[9999] bg-yellow-300 text-black text-xs px-3 py-1 rounded-full flex gap-2 shadow-lg pointer-events-none">
       <span>Events: {events.length}</span>
       <span>|</span>
-      <span>Loading: {'no'}</span>
+      <span>Idx: {currentIndex}</span>
     </div>
   );
 
