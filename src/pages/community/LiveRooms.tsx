@@ -39,6 +39,7 @@ import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useMyRoom } from "@/hooks/useMyRoom";
 
 import { supabase } from "@/integrations/supabase/client";
 

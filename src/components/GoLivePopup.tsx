@@ -39,7 +39,7 @@ type TagId = typeof TAG_IDS[number];
 const ACCESS_LEVEL_IDS = ["public", "followers", "group"] as const;
 type AccessLevelId = typeof ACCESS_LEVEL_IDS[number];
 
-export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, editMode = false, streamData }: GoLivePopupProps) {
+export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, permanentRoomId }: GoLivePopupProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
   const { notify } = useI18nNotify();
@@ -50,7 +50,6 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   
   const [title, setTitle] = useState(defaultTitle || "Live with [Name]");
   const [description, setDescription] = useState("");
-  // Use stable internal values for stream type
   const [streamType, setStreamType] = useState<"audio" | "video" | "">("");
   const [selectedTags, setSelectedTags] = useState<TagId[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -63,8 +62,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [enableRecording, setEnableRecording] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   
-  const { mutateAsync: createStream } = useCreateStream();
-  const { mutateAsync: updateStream } = useUpdateStream();
+  // Fetch user's permanent room if not passed as prop
+  const { data: myRoomData } = useMyRoom();
+  const roomId = permanentRoomId || myRoomData?.room?.id;
+  
+  const { mutateAsync: createSession } = useCreateSession();
   
   // Image upload states
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
