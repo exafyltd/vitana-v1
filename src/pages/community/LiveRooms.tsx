@@ -633,7 +633,7 @@ export default function LiveRooms() {
 
         {/* Split Bar for Live/Scheduled */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
-          <SplitBarList className="grid w-full grid-cols-2">
+          <SplitBarList className="grid w-full grid-cols-3">
             <SplitBarTrigger value="live">
               📡 {translate('liveRooms.tabs.live', 'Live Now')}
               {filteredLiveRooms.length > 0 && (
@@ -655,6 +655,9 @@ export default function LiveRooms() {
                   )}
                 </Badge>
               )}
+            </SplitBarTrigger>
+            <SplitBarTrigger value="past">
+              🕐 {translate('liveRooms.tabs.past', 'Past')}
             </SplitBarTrigger>
           </SplitBarList>
 
