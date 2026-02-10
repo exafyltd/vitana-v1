@@ -222,7 +222,7 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "https://vitana.app";
 
     // Create Stripe Checkout session with UTM/reseller metadata for webhook
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams: any = {
       customer: customerId,
       customer_email: customerId ? undefined : finalBuyerEmail,
       line_items: [
@@ -248,13 +248,22 @@ serve(async (req) => {
         ticket_type_id,
         type: "event_ticket",
         quantity: String(quantity),
-        // Include UTM/reseller info for webhook attribution
         utm_source: utm_source || "",
         utm_medium: utm_medium || "",
         utm_campaign: utm_campaign || "",
         reseller_code: resellerCode || "",
+        discount_code: validatedDiscount?.code || "",
+        discount_code_id: validatedDiscount?.id || "",
       },
-    });
+    };
+
+    // Apply discount coupon if validated
+    if (stripeCouponId) {
+      sessionParams.discounts = [{ coupon: stripeCouponId }];
+      logStep("Applying discount to session", { couponId: stripeCouponId });
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     logStep("Stripe session created", { sessionId: session.id });
 

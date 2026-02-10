@@ -225,6 +225,25 @@ serve(async (req) => {
           } else {
             console.log('Ticket purchase completed:', purchaseId);
             
+            // Mark discount code as used if applicable
+            const discountCodeId = meta.discount_code_id;
+            if (discountCodeId) {
+              console.log('[DISCOUNT] Marking discount code as used:', discountCodeId);
+              const { error: discountUpdateError } = await supabaseClient
+                .from('user_discount_codes')
+                .update({
+                  used_at: new Date().toISOString(),
+                  used_on_purchase_id: purchaseId,
+                })
+                .eq('id', discountCodeId);
+              
+              if (discountUpdateError) {
+                console.error('[DISCOUNT] Error marking discount code as used:', discountUpdateError);
+              } else {
+                console.log('[DISCOUNT] Discount code marked as used');
+              }
+            }
+
             // Get the purchase total_amount for attribution
             const { data: purchaseData } = await supabaseClient
               .from('event_ticket_purchases')
