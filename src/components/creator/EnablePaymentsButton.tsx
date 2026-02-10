@@ -27,7 +27,7 @@ export function EnablePaymentsButton() {
   if (status?.stripe_account_id && !status?.charges_enabled) {
     return (
       <Button
-        onClick={() => startOnboarding()}
+        onClick={() => startOnboarding(undefined)}
         disabled={isPending}
         variant="outline"
         className="border-yellow-500 text-yellow-700 dark:text-yellow-400"
