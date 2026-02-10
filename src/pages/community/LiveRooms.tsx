@@ -39,6 +39,7 @@ import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useMyRoom } from "@/hooks/useMyRoom";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -47,6 +48,7 @@ export default function LiveRooms() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { user } = useAuth();
+  const { data: myRoomData } = useMyRoom();
   const isMobile = useIsMobile();
   const { translate } = useTranslation();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
@@ -55,7 +57,6 @@ export default function LiveRooms() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('live');
-  const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   
@@ -272,29 +273,11 @@ export default function LiveRooms() {
   };
 
   const handleEditRoom = async () => {
-    if (!selectedRoom) return;
-
-    try {
-      const { data: stream, error } = await supabase
-        .from('community_live_streams')
-        .select('*')
-        .eq('id', selectedRoom.id)
-        .single();
-
-      if (error) throw error;
-
-      if (stream) {
-        setEditingStream(stream as LiveStream);
-        setIsGoLiveOpen(true);
-      }
-    } catch (err) {
-      console.error('Error fetching stream:', err);
-      toast({
-        title: "Error",
-        description: "Failed to load stream data",
-        variant: "destructive",
-      });
-    }
+    // Edit mode removed in session-based architecture
+    toast({
+      title: "Not yet supported",
+      description: "Editing sessions will be available soon",
+    });
   };
 
   const handleDeleteRoom = async (roomId?: string) => {
@@ -324,28 +307,10 @@ export default function LiveRooms() {
 
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    
-    // Fetch fresh data directly from database
-    const { data: stream, error } = await supabase
-      .from('community_live_streams')
-      .select('*')
-      .eq('id', roomId)
-      .single();
-    
-    if (error) {
-      console.error('Error fetching stream:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load stream data",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (stream) {
-      setEditingStream(stream as LiveStream);
-      setIsGoLiveOpen(true);
-    }
+    toast({
+      title: "Not yet supported",
+      description: "Editing sessions will be available soon",
+    });
   };
 
   const handleCardDelete = (e: React.MouseEvent, roomId: string) => {
@@ -668,7 +633,7 @@ export default function LiveRooms() {
 
         {/* Split Bar for Live/Scheduled */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
-          <SplitBarList className="grid w-full grid-cols-2">
+          <SplitBarList className="grid w-full grid-cols-3">
             <SplitBarTrigger value="live">
               📡 {translate('liveRooms.tabs.live', 'Live Now')}
               {filteredLiveRooms.length > 0 && (
@@ -690,6 +655,9 @@ export default function LiveRooms() {
                   )}
                 </Badge>
               )}
+            </SplitBarTrigger>
+            <SplitBarTrigger value="past">
+              🕐 {translate('liveRooms.tabs.past', 'Past')}
             </SplitBarTrigger>
           </SplitBarList>
 
@@ -796,6 +764,12 @@ export default function LiveRooms() {
               </div>
             )}
           </SplitBarContent>
+
+          <SplitBarContent value="past" className="mt-6">
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
+            </div>
+          </SplitBarContent>
         </SplitBar>
       </div>
 
@@ -803,15 +777,13 @@ export default function LiveRooms() {
         open={isGoLiveOpen} 
         onOpenChange={(open) => {
           setIsGoLiveOpen(open);
-          if (!open) setEditingStream(null);
         }}
         defaultTitle="Live Community Discussion"
-        editMode={!!editingStream}
-        streamData={editingStream || undefined}
-        onCreated={(streamId) => {
+        permanentRoomId={myRoomData?.room?.id}
+        onCreated={(roomId) => {
           setActiveTab('scheduled');
-          setSelectedRoomId(streamId);
-          setSearchParams({ live: streamId });
+          setSelectedRoomId(roomId);
+          setSearchParams({ live: roomId });
         }}
       />
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />

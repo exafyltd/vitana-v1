@@ -22,7 +22,6 @@ import {
 } from 'lucide-react';
 import { communityNavigation } from '@/config/navigation';
 import { LiveRoom } from '@/components/LiveRoom';
-import { useStreamLifecycle } from '@/hooks/useStreamLifecycle';
 import { useLiveChat } from '@/hooks/useLiveChat';
 import { useStreamRecording } from '@/hooks/useStreamRecording';
 import { StreamRecordingPlayer } from '@/components/StreamRecordingPlayer';
@@ -31,8 +30,9 @@ import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
+import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
+import { useHostPresence } from '@/hooks/useHostPresence';
 import type { ChatMessage, Participant } from '@/types/chat';
-import type { LiveStream } from '@/hooks/useLiveStreams';
 
 export default function LiveRoomViewer() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -55,21 +55,17 @@ export default function LiveRoomViewer() {
   const [isInRoom, setIsInRoom] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Fetch stream data
-  const { data: streamData, isLoading } = useQuery({
-    queryKey: ['live-stream', roomId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('community_live_streams')
-        .select('*')
-        .eq('id', roomId)
-        .single();
-      
-      if (error) throw error;
-      return data as LiveStream;
-    },
-    enabled: !!roomId,
-  });
+  // Room state polling (every 5s while live)
+  const { data: roomState } = useRoomState(roomId, true);
+  const roomStatus = roomState?.room?.status || room?.status;
+  const sessionData = roomState?.session;
+  const viewerCounts = roomState?.counts;
+
+  // Host presence signals
+  useHostPresence(roomId, effectiveIsHost);
+
+  // End room mutation
+  const { mutate: endRoomMutation, isPending: isEnding } = useEndRoom();
 
   // Fetch recording if stream has ended
   const { data: recordingData } = useQuery({
@@ -80,15 +76,12 @@ export default function LiveRoomViewer() {
         .select('*')
         .eq('stream_id', roomId)
         .eq('status', 'ready')
-        .single();
+        .maybeSingle();
       
-      if (error) {
-        if (error.code === 'PGRST116') return null;
-        throw error;
-      }
+      if (error) throw error;
       return data;
     },
-    enabled: streamData?.status === 'ended'
+    enabled: roomStatus === 'ended' || roomStatus === 'idle'
   });
 
   // Initialize chat
@@ -104,27 +97,18 @@ export default function LiveRoomViewer() {
     roomId: roomId || '',
     userId: effectiveUserId || '',
     isAudioEnabled: true,
-    isVideoEnabled: streamData?.stream_type === 'video',
+    isVideoEnabled: sessionData?.stream_type === 'video' || room?.type === 'video',
   });
 
-  // Track participants (from WebRTC peers + self)
+  // Track participants
   const [participants, setParticipants] = useState<Participant[]>([]);
-
-  // Stream lifecycle management
-  const { endStream } = useStreamLifecycle({
-    roomId: roomId || '',
-    isHost: effectiveIsHost,
-    viewerCount: peers.length + 1,
-    messageCount: messages.length,
-    streamStatus: streamData?.status,
-  });
 
   // Recording hook
   const { isRecording, stopRecording } = useStreamRecording({
     streamId: roomId || '',
     localStream,
     isHost: effectiveIsHost,
-    enabled: streamData?.enable_recording ?? false,
+    enabled: sessionData?.enable_recording ?? false,
   });
 
   // Auto-scroll to latest message
@@ -132,7 +116,7 @@ export default function LiveRoomViewer() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Redirect if no proper state (with fallback to authenticated user)
+  // Redirect if no proper state
   useEffect(() => {
     if (!effectiveUserId) {
       toast({
@@ -159,11 +143,11 @@ export default function LiveRoomViewer() {
   };
 
   const handleLeaveRoom = async () => {
-    if (effectiveIsHost) {
+    if (effectiveIsHost && roomId) {
       if (isRecording) {
         await stopRecording();
       }
-      await endStream();
+      endRoomMutation(roomId);
       toast({
         title: "Stream Ended",
         description: "Your live stream has ended",
@@ -181,25 +165,17 @@ export default function LiveRoomViewer() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <AppLayout>
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading stream...</p>
-          </div>
-        </div>
-      </AppLayout>
-    );
-  }
+  const streamTitle = sessionData?.session_title || room?.title || 'Live Room';
+  const streamDescription = sessionData?.session_description || room?.description;
+  const isLive = roomStatus === 'live' || roomStatus === 'lobby';
+  const hasEnded = roomStatus === 'ended' || roomStatus === 'idle';
 
-  if (!streamData) {
+  if (!roomId) {
     return (
       <AppLayout>
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <p className="text-xl mb-4">Stream not found</p>
+            <p className="text-xl mb-4">Room not found</p>
             <Button onClick={() => navigate('/comm/live-rooms')}>
               Back to Live Rooms
             </Button>
@@ -209,11 +185,41 @@ export default function LiveRoomViewer() {
     );
   }
 
+  // Show ended state
+  if (hasEnded && !isInRoom) {
+    return (
+      <>
+        <SEO title="Room Ended" />
+        <AppLayout>
+          <SubNavigation items={communityNavigation} />
+          <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
+            <Card className="p-8 text-center max-w-md">
+              <h2 className="text-2xl font-bold mb-4">This room has ended</h2>
+              <p className="text-muted-foreground mb-6">
+                The session "{streamTitle}" has concluded.
+              </p>
+              {recordingData && (
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold mb-3">Stream Replay</h3>
+                  <StreamRecordingPlayer recording={recordingData} />
+                </div>
+              )}
+              <Button onClick={() => navigate('/comm/live-rooms')}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Rooms
+              </Button>
+            </Card>
+          </div>
+        </AppLayout>
+      </>
+    );
+  }
+
   return (
     <>
       <SEO 
-        title={`${streamData.title} - Live Room`}
-        description={streamData.description || `Join ${userName}'s live stream`}
+        title={`${streamTitle} - Live Room`}
+        description={streamDescription || `Join ${effectiveUserName}'s live stream`}
       />
       <AppLayout>
         <SubNavigation items={communityNavigation} />
@@ -230,14 +236,16 @@ export default function LiveRoomViewer() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-xl font-semibold">{streamData.title}</h1>
+                <h1 className="text-xl font-semibold">{streamTitle}</h1>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="destructive" className="animate-pulse">
-                    LIVE
-                  </Badge>
+                  {isLive && (
+                    <Badge variant="destructive" className="animate-pulse">
+                      LIVE
+                    </Badge>
+                  )}
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
                     <Users className="h-4 w-4" />
-                    {participants.length} watching
+                    {viewerCounts?.in_room || participants.length} watching
                   </span>
                 </div>
               </div>
@@ -257,17 +265,10 @@ export default function LiveRoomViewer() {
           <div className="flex-1 flex overflow-hidden">
             {/* Video Area */}
             <div className="flex-1 flex flex-col bg-muted/50">
-              {streamData?.status === 'ended' && recordingData ? (
-                <div className="flex-1 flex items-center justify-center p-8">
-                  <Card className="w-full max-w-4xl p-6">
-                    <h2 className="text-2xl font-bold mb-4">Stream Replay</h2>
-                    <StreamRecordingPlayer recording={recordingData} />
-                  </Card>
-                </div>
-              ) : isInRoom ? (
+              {isInRoom ? (
                 <>
                   <LiveRoom
-                    roomId={roomId || ''}
+                    roomId={roomId}
                     userId={effectiveUserId || ''}
                     userName={effectiveUserName}
                     onLeave={handleLeaveRoom}
@@ -301,8 +302,8 @@ export default function LiveRoomViewer() {
                 </div>
               )}
 
-              {/* Reaction Buttons - Show when in room */}
-              {isInRoom && streamData?.status !== 'ended' && (
+              {/* Reaction Buttons */}
+              {isInRoom && isLive && (
                 <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
                   <Button
                     variant="outline"
@@ -322,6 +323,17 @@ export default function LiveRoomViewer() {
                     <ThumbsUp className="h-5 w-5 mr-2 text-blue-500" />
                     Like
                   </Button>
+                  {effectiveIsHost && (
+                    <Button
+                      variant="destructive"
+                      size="lg"
+                      onClick={handleLeaveRoom}
+                      disabled={isEnding}
+                      className="rounded-full"
+                    >
+                      {isEnding ? 'Ending...' : 'End Room'}
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
@@ -350,14 +362,13 @@ export default function LiveRoomViewer() {
                   onClick={() => setShowParticipants(true)}
                 >
                   <Users className="h-4 w-4 inline mr-2" />
-                  Participants ({participants.length})
+                  Participants ({viewerCounts?.in_room || participants.length})
                 </button>
               </div>
 
               {/* Content Area */}
               <ScrollArea className="flex-1 p-4">
                 {!showParticipants ? (
-                  // Chat Messages
                   <div className="space-y-4">
                     {messages.length === 0 ? (
                       <div className="text-center text-muted-foreground py-8">
@@ -395,7 +406,6 @@ export default function LiveRoomViewer() {
                     <div ref={messagesEndRef} />
                   </div>
                 ) : (
-                  // Participants List
                   <div className="space-y-2">
                     {participants.length === 0 ? (
                       <div className="text-center text-muted-foreground py-8">
@@ -431,7 +441,7 @@ export default function LiveRoomViewer() {
                 )}
               </ScrollArea>
 
-              {/* Chat Input - Only show when on chat tab */}
+              {/* Chat Input */}
               {!showParticipants && (
                 <div className="p-4 border-t">
                   <div className="flex gap-2">

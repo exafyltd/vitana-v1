@@ -14,18 +14,17 @@ import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video,
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
-import { useCreateStream, useUpdateStream, type LiveStream } from "@/hooks/useLiveStreams";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useI18nNotify } from "@/hooks/useI18nNotify";
 import { applyReplacements } from "@/lib/i18n-helpers";
+import { useMyRoom, useCreateSession } from "@/hooks/useMyRoom";
 
 interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultTitle?: string;
-  onCreated?: (streamId: string) => void;
-  editMode?: boolean;
-  streamData?: LiveStream;
+  onCreated?: (roomId: string) => void;
+  permanentRoomId?: string;
 }
 
 // Stable tag IDs mapped to translation keys
@@ -40,7 +39,7 @@ type TagId = typeof TAG_IDS[number];
 const ACCESS_LEVEL_IDS = ["public", "followers", "group"] as const;
 type AccessLevelId = typeof ACCESS_LEVEL_IDS[number];
 
-export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, editMode = false, streamData }: GoLivePopupProps) {
+export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, permanentRoomId }: GoLivePopupProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
   const { notify } = useI18nNotify();
@@ -51,7 +50,6 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   
   const [title, setTitle] = useState(defaultTitle || "Live with [Name]");
   const [description, setDescription] = useState("");
-  // Use stable internal values for stream type
   const [streamType, setStreamType] = useState<"audio" | "video" | "">("");
   const [selectedTags, setSelectedTags] = useState<TagId[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -64,37 +62,17 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [enableRecording, setEnableRecording] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   
-  const { mutateAsync: createStream } = useCreateStream();
-  const { mutateAsync: updateStream } = useUpdateStream();
+  // Fetch user's permanent room if not passed as prop
+  const { data: myRoomData } = useMyRoom();
+  const roomId = permanentRoomId || myRoomData?.room?.id;
+  
+  const { mutateAsync: createSession } = useCreateSession();
   
   // Image upload states
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [autoGenerateImage, setAutoGenerateImage] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-
-  // Pre-fill form when editing
-  useEffect(() => {
-    if (editMode && streamData) {
-      setTitle(streamData.title);
-      setDescription(streamData.description || "");
-      setStreamType(streamData.stream_type === 'audio' ? 'audio' : 'video');
-      // Map stored tags to tag IDs
-      setSelectedTags(streamData.tags as TagId[]);
-      setAccessLevel(streamData.access_level as AccessLevelId);
-      setCoHostInput(streamData.co_hosts?.[0] || "");
-      setEnableChat(streamData.enable_chat);
-      setEnablePolls(streamData.enable_polls);
-      setEnableRecording(streamData.enable_recording ?? true);
-      setImagePreviewUrl(streamData.cover_image_url || "");
-      
-      if (streamData.scheduled_for) {
-        const schedDate = new Date(streamData.scheduled_for);
-        setScheduleDate(schedDate);
-        setScheduleTime(format(schedDate, 'HH:mm'));
-      }
-    }
-  }, [editMode, streamData]);
 
   const isScheduled = !!scheduleDate && !!scheduleTime && new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}`) > new Date();
 
@@ -152,6 +130,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       return;
     }
 
+    if (!roomId) {
+      notify.error('liveRooms.goLivePopup.errors.notLoggedInTitle', 'No permanent room found. Please try again.');
+      return;
+    }
+
     setIsLoading(true);
     
     try {
@@ -162,91 +145,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         return;
       }
 
-      // Handle edit mode
-      if (editMode && streamData) {
-        let coverUrlToSave: string | null | undefined = undefined;
-
-        // A) If a new image is selected, upload it and use its public URL
-        if (selectedImage) {
-          try {
-            const ext = selectedImage.name.split(".").pop() || "jpg";
-            const fileName = `live-${Date.now()}.${ext}`;
-            const filePath = `${user.id}/${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-              .from("covers")
-              .upload(filePath, selectedImage, {
-                upsert: true,
-                contentType: selectedImage.type,
-              });
-            if (uploadError) throw uploadError;
-
-            const { data: publicUrlData } = supabase.storage
-              .from("covers")
-              .getPublicUrl(filePath);
-
-            coverUrlToSave = publicUrlData.publicUrl;
-          } catch (e) {
-            console.error("Image upload failed:", e);
-            notify.info('liveRooms.goLivePopup.errors.imageUploadFailedTitle', 'liveRooms.goLivePopup.errors.imageUploadFailedDesc');
-          }
-        } else {
-          // B) If user removed existing image (preview cleared) and there was one before, set to null
-          const hadExisting = !!streamData.cover_image_url;
-          const removedNow = !imagePreviewUrl;
-          if (hadExisting && removedNow) {
-            coverUrlToSave = null;
-          }
-          // C) Otherwise leave undefined to avoid changing this field
-        }
-
-        const updates: Partial<LiveStream> = {
-          title,
-          description: description || null,
-          stream_type: streamType,
-          tags: selectedTags,
-          access_level: accessLevel,
-          co_hosts: coHostInput ? [coHostInput] : [],
-          scheduled_for: (scheduleDate && scheduleTime) 
-            ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
-            : null,
-          enable_chat: enableChat,
-          enable_polls: enablePolls,
-          enable_recording: enableRecording,
-          ...(coverUrlToSave !== undefined ? { cover_image_url: coverUrlToSave } : {}),
-        };
-
-        await updateStream({ id: streamData.id, updates });
-        
-        notify.success('liveRooms.goLivePopup.success.streamUpdatedTitle', 'liveRooms.goLivePopup.success.streamUpdatedDesc');
-        
-        setIsLoading(false);
-        onOpenChange(false);
-        resetForm();
-        return;
-      }
-
-      // Create mode (original code)
-      // Ensure profile exists before creating stream
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      if (!existingProfile) {
-        await supabase
-          .from('profiles')
-          .insert({
-            user_id: user.id,
-            display_name: user.email?.split('@')[0] || 'User',
-            avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`,
-          });
-      }
-      
+      // Upload cover image if selected
       let uploadedImageUrl: string | undefined;
-      
-      // Upload manual image if selected
       if (selectedImage) {
         try {
           const ext = selectedImage.name.split('.').pop() || 'jpg';
@@ -273,61 +173,54 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         }
       }
       
-      // Auto-generate image if enabled and no manual image
+      // Auto-generate image hint
       if (autoGenerateImage && !uploadedImageUrl) {
         notify.info('liveRooms.goLivePopup.success.aiImageHintTitle', 'liveRooms.goLivePopup.success.aiImageHintDesc');
       }
       
-      // Prepare stream data for creation
-      const newStreamData = {
-        title,
-        description: description || null,
+      // Create session on permanent room via gateway
+      const sessionRequest = {
+        session_title: title,
+        session_description: description || undefined,
         stream_type: streamType,
         tags: selectedTags,
         access_level: accessLevel,
-        cover_image_url: uploadedImageUrl || null,
-        co_hosts: coHostInput ? [coHostInput] : [],
+        cover_image_url: uploadedImageUrl || undefined,
         scheduled_for: (scheduleDate && scheduleTime) 
           ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
-          : null,
-        status: (scheduleDate && scheduleTime) ? 'pending' : 'live',
+          : undefined,
         enable_chat: enableChat,
         enable_polls: enablePolls,
         enable_recording: enableRecording,
-        started_at: (!scheduleDate || !scheduleTime) ? new Date().toISOString() : null,
-        created_by: user.id,
       };
       
-      // Insert into database
-      const stream = await createStream(newStreamData);
+      await createSession({ roomId, request: sessionRequest });
       
-      // Notify parent if stream was scheduled
-      if (scheduleDate && scheduleTime && onCreated) {
-        onCreated(stream.id);
+      // Notify parent if scheduled
+      if (isScheduled && onCreated) {
+        onCreated(roomId);
       }
       
-      // Show appropriate toast
-      if (scheduleDate && scheduleTime) {
-        const dateStr = format(scheduleDate, "PPP");
+      // Show appropriate toast & navigate
+      if (isScheduled) {
+        const dateStr = format(scheduleDate!, "PPP");
         notify.success(
           'liveRooms.goLivePopup.success.streamScheduledTitle', 
           'liveRooms.goLivePopup.success.streamScheduledDesc',
           { date: dateStr, time: scheduleTime }
         );
       } else {
-        notify.success('liveRooms.goLivePopup.success.youAreLiveTitle', 'liveRooms.goLivePopup.success.youAreLiveDesc');
-
-        // Navigate creator to viewer as host using React Router
+        // Navigate creator to viewer as host
         setTimeout(() => {
-          navigate(`/comm/live-rooms/${stream.id}/view`, {
+          navigate(`/comm/live-rooms/${roomId}/view`, {
             state: {
-              roomId: stream.id,
+              roomId,
               userId: user.id,
               userName: user.email?.split('@')[0] || 'Host',
               isHost: true,
               room: {
-                id: stream.id,
-                title: stream.title,
+                id: roomId,
+                title,
                 isLive: true,
               }
             }
@@ -335,23 +228,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         }, 500);
       }
       
-      // Log activity
-      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
-        const { logLiveCreate, logLiveStart } = useCommunityLogger();
-        if (scheduleDate) {
-          logLiveCreate(title, streamType, true);
-        } else {
-          logLiveStart(title, streamType);
-        }
-      });
-      
       setIsLoading(false);
       onOpenChange(false);
-      
-      // Reset form
       resetForm();
     } catch (error) {
-      console.error('Error creating stream:', error);
+      console.error('Error creating session:', error);
       notify.error('liveRooms.goLivePopup.errors.genericTitle', 'liveRooms.goLivePopup.errors.genericDesc');
       setIsLoading(false);
     }
@@ -387,7 +268,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{editMode ? t('titleEdit', 'Edit Live Stream') : t('titleCreate', 'Go Live')}</DialogTitle>
+          <DialogTitle>{t('titleCreate', 'Go Live')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -701,12 +582,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               disabled={!title || !streamType || selectedTags.length === 0 || isLoading}
             >
               {isLoading 
-                ? (editMode ? t('updating', 'Updating…') : t('starting', 'Starting…')) 
-                : editMode
-                  ? t('updateStream', 'Update Stream')
-                  : isScheduled 
-                    ? t('scheduleSession', 'Schedule Live Session') 
-                    : t('goLiveNowAction', 'Go Live Now')
+                ? t('starting', 'Starting…')
+                : isScheduled 
+                  ? t('scheduleSession', 'Schedule Live Session') 
+                  : t('goLiveNowAction', 'Go Live Now')
               }
             </Button>
           </div>
