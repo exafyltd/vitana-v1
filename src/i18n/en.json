@@ -741,7 +741,16 @@
       "styleProfile": "Style my Profile",
       "styleProfileDesc": "Suggest improvements to cover photo, roles, profile picture",
       "cancel": "Cancel",
-      "runAutopilot": "Run Autopilot"
+      "runAutopilot": "Run Autopilot",
+      "generating": "Generating suggestions...",
+      "suggestedBio": "Suggested Bio",
+      "suggestedArchetype": "Suggested Archetype",
+      "currentValue": "Current",
+      "accept": "Accept",
+      "reject": "Discard",
+      "acceptAll": "Accept All",
+      "applied": "Changes saved!",
+      "error": "Something went wrong"
     },
     "suggestions": {
       "bannerTitle": "Autopilot can help optimize your profile",

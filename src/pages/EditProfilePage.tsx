@@ -410,6 +410,9 @@ export default function EditProfilePage() {
         <AutopilotProfilePopup
           open={showAutopilotPopup}
           onOpenChange={setShowAutopilotPopup}
+          currentBio={profile.bio}
+          currentArchetype={profile.longevityArchetype}
+          refreshProfile={refetchProfile}
         />
       </AppLayout>
     );
