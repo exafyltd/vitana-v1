@@ -230,7 +230,7 @@ export function MobileEventCarousel({
         ref={containerRef}
         className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
-          height: 'calc(100dvh - 216px)',
+          height: 'calc(100dvh - 296px)',
           overscrollBehavior: 'contain',
         } as React.CSSProperties}
       >
@@ -243,7 +243,7 @@ export function MobileEventCarousel({
               index !== events.length - 1 && "border-b border-border/30"
             )}
             style={{
-              height: 'calc(100dvh - 216px)',
+              height: 'calc(100dvh - 296px)',
               scrollSnapStop: 'always',
               padding: '8px 12px',
               transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
