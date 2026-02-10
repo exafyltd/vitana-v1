@@ -26,6 +26,8 @@ import { MobileShowcaseHeader } from "@/components/profile/mobile/MobileShowcase
 import { MobileMediaTabContent } from "@/components/profile/mobile/MobileMediaTabContent";
 import { MobileGroupsTabContent } from "@/components/profile/mobile/MobileGroupsTabContent";
 import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
+import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
+import { ProfilePostsTab } from "@/components/profile/shared/tabs/ProfilePostsTab";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -300,7 +302,7 @@ export default function EditProfilePage() {
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
   const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
-
+  const [showCreatePost, setShowCreatePost] = useState(false);
 
   // Mobile-specific layout - early return pattern
   if (isMobile) {
@@ -339,7 +341,7 @@ export default function EditProfilePage() {
           {/* Tab Content */}
           <div className="flex-1">
             {mobileActiveTab === "posts" && (
-              <div className="p-4">
+              <div className="p-4 space-y-4">
                 {/* Showcase Section */}
                 <MobileShowcaseHeader onManage={handleEditShowcase} />
                 <div className="px-4 py-2 text-sm text-muted-foreground">
@@ -348,6 +350,15 @@ export default function EditProfilePage() {
                 
                 {/* Autopilot Banner */}
                 <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
+
+                {/* Real Posts */}
+                <ProfilePostsTab
+                  profile={profile}
+                  scope={getScope({ isOwner: true, isFollower: false, editMode: true, viewAs: "me" })}
+                  editMode={true}
+                  onEditAbout={handleEditAbout}
+                  onCreatePost={() => setShowCreatePost(true)}
+                />
               </div>
             )}
             
@@ -413,6 +424,12 @@ export default function EditProfilePage() {
           currentBio={profile.bio}
           currentArchetype={profile.longevityArchetype}
           refreshProfile={refetchProfile}
+        />
+
+        {/* Create Post Sheet */}
+        <MobileCreatePostSheet
+          open={showCreatePost}
+          onOpenChange={setShowCreatePost}
         />
       </AppLayout>
     );
