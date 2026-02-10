@@ -185,7 +185,8 @@ export function usePurchaseTicket() {
     quantity: number,
     buyerEmail?: string,
     buyerName?: string,
-    utmParams?: UtmParams
+    utmParams?: UtmParams,
+    discountCode?: string
   ) => {
     setLoading(true);
 
@@ -199,6 +200,7 @@ export function usePurchaseTicket() {
           quantity,
           buyer_email: buyerEmail,
           buyer_name: buyerName,
+          discount_code: discountCode || undefined,
           // Pass UTM params for reseller attribution
           utm_source: utmParams?.utm_source,
           utm_medium: utmParams?.utm_medium,
