@@ -5,6 +5,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useProfile } from "@/context/ProfileProvider";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface IdentityDrawerProps {
   open: boolean;
@@ -16,11 +17,12 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
     displayName: "",
     handle: "",
     avatarUrl: "",
-    coverUrl: ""
+    longevityArchetype: ""
   });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
   const { refreshProfile } = useProfile();
+  const { translate } = useTranslation();
 
   const handleSave = async () => {
     try {
@@ -39,7 +41,7 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
           display_name: formData.displayName,
           handle: formData.handle,
           avatar_url: formData.avatarUrl,
-          cover_url: formData.coverUrl,
+          longevity_archetype: formData.longevityArchetype,
           updated_at: new Date().toISOString(),
         }, {
           onConflict: 'user_id'
@@ -57,16 +59,16 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
       refreshProfile();
 
       toast({
-        title: "Profile updated",
-        description: "Your identity information has been saved successfully.",
+        title: translate('profileEditor.identity.identityUpdated'),
+        description: translate('profileEditor.identity.identityUpdatedDesc'),
       });
       
       onOpenChange(false);
     } catch (error: any) {
       console.error('Save error:', error);
       toast({
-        title: "Save failed",
-        description: error.message || "Failed to save profile. Please try again.",
+        title: translate('profileEditor.saveFailed'),
+        description: error.message || translate('profileEditor.saveFailedDesc'),
         variant: "destructive",
       });
     } finally {
@@ -78,7 +80,7 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Identity</DialogTitle>
+          <DialogTitle>{translate('profileEditor.identity.editIdentity')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -91,14 +93,14 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
               onClick={() => onOpenChange(false)}
               disabled={saving}
             >
-              Cancel
+              {translate('profileEditor.cancel')}
             </Button>
             <Button 
               className="flex-1"
               onClick={handleSave}
               disabled={saving}
             >
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? translate('profileEditor.saving') : translate('profileEditor.save')}
             </Button>
           </div>
         </div>

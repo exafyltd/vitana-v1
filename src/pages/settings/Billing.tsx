@@ -15,6 +15,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { Progress } from "@/components/ui/progress";
 import { BillingActionPopup } from "@/components/BillingActionPopup";
 import { InvoicePreviewDialog, type InvoiceData } from "@/components/billing/InvoicePreviewDialog";
+import { CreatorPaymentsSection } from "@/components/creator/CreatorPaymentsSection";
 
 export default function Billing() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -107,6 +108,9 @@ export default function Billing() {
           </SplitBarList>
 
           <SplitBarContent value="billing" className="space-y-6">
+        {/* Creator Payments */}
+        <CreatorPaymentsSection />
+
         {/* Current Subscription */}
         <Card>
           <CardHeader>

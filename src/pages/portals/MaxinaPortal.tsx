@@ -231,7 +231,8 @@ const MaxinaPortal = () => {
     }
   };
 
-  if (authLoading) {
+  // Show loading state while checking auth OR if user exists (redirect in progress)
+  if (authLoading || user) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}

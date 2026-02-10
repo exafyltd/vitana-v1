@@ -68,7 +68,8 @@ const ExafyAdminPortal = () => {
     }
   };
 
-  if (authLoading) {
+  // Show loading state while checking auth OR if user exists (redirect in progress)
+  if (authLoading || user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

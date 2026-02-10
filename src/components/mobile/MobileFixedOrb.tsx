@@ -51,13 +51,14 @@ export function MobileFixedOrb() {
           }
         }}
         aria-label="Ask VITANA for guidance"
-        className="cursor-pointer drop-shadow-lg"
+        className="cursor-pointer"
       >
         <VitanalandPortalSeed 
           audioState="idle"
           volumeLevel={0}
           size="nav"
           layoutId="vitana-orb-mobile"
+          glowIntensity={0}
         />
       </div>
     </motion.div>

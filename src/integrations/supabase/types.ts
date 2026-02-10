@@ -780,6 +780,10 @@ export type Database = {
           email: string | null
           profile: Json
           status: string
+          stripe_account_id: string | null
+          stripe_charges_enabled: boolean | null
+          stripe_onboarded_at: string | null
+          stripe_payouts_enabled: boolean | null
           tenant_id: string
           updated_at: string
           user_id: string
@@ -790,6 +794,10 @@ export type Database = {
           email?: string | null
           profile?: Json
           status?: string
+          stripe_account_id?: string | null
+          stripe_charges_enabled?: boolean | null
+          stripe_onboarded_at?: string | null
+          stripe_payouts_enabled?: boolean | null
           tenant_id: string
           updated_at?: string
           user_id: string
@@ -800,6 +808,10 @@ export type Database = {
           email?: string | null
           profile?: Json
           status?: string
+          stripe_account_id?: string | null
+          stripe_charges_enabled?: boolean | null
+          stripe_onboarded_at?: string | null
+          stripe_payouts_enabled?: boolean | null
           tenant_id?: string
           updated_at?: string
           user_id?: string
@@ -2823,6 +2835,42 @@ export type Database = {
           },
         ]
       }
+      event_attendance: {
+        Row: {
+          attended_at: string | null
+          created_at: string
+          id: string
+          meetup_id: string
+          rsvp_at: string | null
+          status: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attended_at?: string | null
+          created_at?: string
+          id?: string
+          meetup_id: string
+          rsvp_at?: string | null
+          status?: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attended_at?: string | null
+          created_at?: string
+          id?: string
+          meetup_id?: string
+          rsvp_at?: string | null
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       event_attendees: {
         Row: {
           created_at: string
@@ -4359,6 +4407,237 @@ export type Database = {
           },
         ]
       }
+      live_highlights: {
+        Row: {
+          created_at: string
+          created_by_user_id: string
+          highlight_type: string
+          id: string
+          live_room_id: string
+          metadata: Json | null
+          tenant_id: string
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          created_by_user_id: string
+          highlight_type: string
+          id?: string
+          live_room_id: string
+          metadata?: Json | null
+          tenant_id: string
+          text: string
+        }
+        Update: {
+          created_at?: string
+          created_by_user_id?: string
+          highlight_type?: string
+          id?: string
+          live_room_id?: string
+          metadata?: Json | null
+          tenant_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_highlights_live_room_id_fkey"
+            columns: ["live_room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_highlights_live_room_id_fkey"
+            columns: ["live_room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_room_access_grants: {
+        Row: {
+          access_type: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_revoked: boolean | null
+          is_valid: boolean | null
+          metadata: Json | null
+          purchased_at: string
+          refund_id: string | null
+          revoked_at: string | null
+          revoked_reason: string | null
+          room_id: string
+          stripe_payment_intent_id: string | null
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          access_type: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_revoked?: boolean | null
+          is_valid?: boolean | null
+          metadata?: Json | null
+          purchased_at?: string
+          refund_id?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          room_id: string
+          stripe_payment_intent_id?: string | null
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          access_type?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_revoked?: boolean | null
+          is_valid?: boolean | null
+          metadata?: Json | null
+          purchased_at?: string
+          refund_id?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          room_id?: string
+          stripe_payment_intent_id?: string | null
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_room_access_grants_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_room_access_grants_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms_public"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_room_access_grants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "live_room_access_grants_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "live_room_access_grants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      live_room_attendance: {
+        Row: {
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          joined_at: string
+          left_at: string | null
+          live_room_id: string
+          tenant_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          joined_at?: string
+          left_at?: string | null
+          live_room_id: string
+          tenant_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          joined_at?: string
+          left_at?: string | null
+          live_room_id?: string
+          tenant_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_room_attendance_live_room_id_fkey"
+            columns: ["live_room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_room_attendance_live_room_id_fkey"
+            columns: ["live_room_id"]
+            isOneToOne: false
+            referencedRelation: "live_rooms_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_rooms: {
+        Row: {
+          access_level: string | null
+          created_at: string
+          ends_at: string | null
+          host_user_id: string
+          id: string
+          metadata: Json | null
+          starts_at: string
+          status: string
+          tenant_id: string
+          title: string
+          topic_keys: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          access_level?: string | null
+          created_at?: string
+          ends_at?: string | null
+          host_user_id: string
+          id?: string
+          metadata?: Json | null
+          starts_at: string
+          status?: string
+          tenant_id: string
+          title: string
+          topic_keys?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          access_level?: string | null
+          created_at?: string
+          ends_at?: string | null
+          host_user_id?: string
+          id?: string
+          metadata?: Json | null
+          starts_at?: string
+          status?: string
+          tenant_id?: string
+          title?: string
+          topic_keys?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       location_preferences: {
         Row: {
           allow_location_personalization: boolean
@@ -4928,6 +5207,29 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_category_mapping: {
+        Row: {
+          garden_category: string
+          source_category: string
+        }
+        Insert: {
+          garden_category: string
+          source_category: string
+        }
+        Update: {
+          garden_category?: string
+          source_category?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_category_mapping_garden_category_fkey"
+            columns: ["garden_category"]
+            isOneToOne: false
+            referencedRelation: "memory_garden_config"
+            referencedColumns: ["category_key"]
+          },
+        ]
+      }
       memory_diary_entries: {
         Row: {
           created_at: string
@@ -5142,6 +5444,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      memory_garden_config: {
+        Row: {
+          category_key: string
+          created_at: string
+          description: string | null
+          display_order: number
+          icon: string | null
+          is_active: boolean
+          label: string
+          longevity_message: string | null
+          target_count: number
+        }
+        Insert: {
+          category_key: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          is_active?: boolean
+          label: string
+          longevity_message?: string | null
+          target_count?: number
+        }
+        Update: {
+          category_key?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          icon?: string | null
+          is_active?: boolean
+          label?: string
+          longevity_message?: string | null
+          target_count?: number
+        }
+        Relationships: []
       }
       memory_garden_nodes: {
         Row: {
@@ -6803,6 +7141,7 @@ export type Database = {
           linkedin_url: string | null
           links: Json | null
           location: string | null
+          longevity_archetype: string | null
           medical_conditions: string[] | null
           medications: string[] | null
           phone: string | null
@@ -6863,6 +7202,7 @@ export type Database = {
           linkedin_url?: string | null
           links?: Json | null
           location?: string | null
+          longevity_archetype?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
@@ -6923,6 +7263,7 @@ export type Database = {
           linkedin_url?: string | null
           links?: Json | null
           location?: string | null
+          longevity_archetype?: string | null
           medical_conditions?: string[] | null
           medications?: string[] | null
           phone?: string | null
@@ -7262,40 +7603,76 @@ export type Database = {
           created_at: string
           edge_type: string
           id: string
-          last_interaction: string
-          metadata: Json
+          last_interaction_at: string
+          metadata: Json | null
           source_id: string
           source_type: string
           strength: number
           target_id: string
           target_type: string
           tenant_id: string
+          updated_at: string
         }
         Insert: {
           created_at?: string
           edge_type: string
           id?: string
-          last_interaction?: string
-          metadata?: Json
+          last_interaction_at?: string
+          metadata?: Json | null
           source_id: string
           source_type: string
           strength?: number
           target_id: string
           target_type: string
           tenant_id: string
+          updated_at?: string
         }
         Update: {
           created_at?: string
           edge_type?: string
           id?: string
-          last_interaction?: string
-          metadata?: Json
+          last_interaction_at?: string
+          metadata?: Json | null
           source_id?: string
           source_type?: string
           strength?: number
           target_id?: string
           target_type?: string
           tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      relationship_nodes: {
+        Row: {
+          created_at: string
+          domain: string
+          id: string
+          metadata: Json | null
+          node_type: string
+          ref_id: string | null
+          tenant_id: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          domain?: string
+          id?: string
+          metadata?: Json | null
+          node_type: string
+          ref_id?: string | null
+          tenant_id: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          domain?: string
+          id?: string
+          metadata?: Json | null
+          node_type?: string
+          ref_id?: string | null
+          tenant_id?: string
+          title?: string
         }
         Relationships: []
       }
@@ -9725,6 +10102,51 @@ export type Database = {
         }
         Relationships: []
       }
+      live_rooms_public: {
+        Row: {
+          access_level: string | null
+          created_at: string | null
+          ends_at: string | null
+          host_user_id: string | null
+          id: string | null
+          metadata: Json | null
+          starts_at: string | null
+          status: string | null
+          tenant_id: string | null
+          title: string | null
+          topic_keys: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          access_level?: string | null
+          created_at?: string | null
+          ends_at?: string | null
+          host_user_id?: string | null
+          id?: string | null
+          metadata?: never
+          starts_at?: string | null
+          status?: string | null
+          tenant_id?: string | null
+          title?: string | null
+          topic_keys?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          access_level?: string | null
+          created_at?: string | null
+          ends_at?: string | null
+          host_user_id?: string | null
+          id?: string | null
+          metadata?: never
+          starts_at?: string | null
+          status?: string | null
+          tenant_id?: string | null
+          title?: string | null
+          topic_keys?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       popular_podcast_shows: {
         Row: {
           category: string | null
@@ -10048,6 +10470,7 @@ export type Database = {
         }[]
       }
       get_follow_status: { Args: { target_user_id: string }; Returns: boolean }
+      get_live_room_summary: { Args: { p_live_room_id: string }; Returns: Json }
       get_message_reactions: {
         Args: { message_id_param: string }
         Returns: {
@@ -10283,6 +10706,22 @@ export type Database = {
           youtube_url: string
         }[]
       }
+      get_user_stripe_account: {
+        Args: { p_user_id: string }
+        Returns: {
+          stripe_account_id: string
+          stripe_charges_enabled: boolean
+        }[]
+      }
+      get_user_stripe_status: {
+        Args: never
+        Returns: {
+          stripe_account_id: string
+          stripe_charges_enabled: boolean
+          stripe_onboarded_at: string
+          stripe_payouts_enabled: boolean
+        }[]
+      }
       get_worker_connector_stats: { Args: never; Returns: Json }
       has_active_consent: {
         Args: {
@@ -10347,6 +10786,59 @@ export type Database = {
           role: string
         }[]
       }
+      live_add_highlight: {
+        Args: { p_live_room_id: string; p_text: string; p_type: string }
+        Returns: Json
+      }
+      live_room_check_access:
+        | { Args: { p_room_id: string; p_user_id: string }; Returns: boolean }
+        | {
+            Args: { p_room_id: string; p_tenant_id: string; p_user_id: string }
+            Returns: boolean
+          }
+      live_room_create: { Args: { p_payload: Json }; Returns: Json }
+      live_room_end: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_get: {
+        Args: { p_live_room_id: string }
+        Returns: {
+          access_level: string
+          created_at: string
+          ends_at: string
+          host_user_id: string
+          id: string
+          metadata: Json
+          starts_at: string
+          status: string
+          tenant_id: string
+          title: string
+          topic_keys: string[]
+          updated_at: string
+        }[]
+      }
+      live_room_grant_access: {
+        Args: {
+          p_access_type: string
+          p_room_id: string
+          p_stripe_payment_intent_id?: string
+          p_user_id: string
+        }
+        Returns: string
+      }
+      live_room_invalidate_all_grants: {
+        Args: { p_room_id: string }
+        Returns: number
+      }
+      live_room_join: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_leave: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_revoke_access: {
+        Args: { p_grant_id: string; p_reason: string }
+        Returns: boolean
+      }
+      live_room_start: { Args: { p_live_room_id: string }; Returns: Json }
+      live_room_update_metadata: {
+        Args: { p_live_room_id: string; p_metadata: Json }
+        Returns: boolean
+      }
       match_memories: {
         Args: {
           match_count?: number
@@ -10385,6 +10877,10 @@ export type Database = {
       me_context: { Args: never; Returns: Json }
       me_set_active_role: { Args: { p_role: string }; Returns: Json }
       me_tenant_id: { Args: { p_user_id: string }; Returns: string }
+      meetup_rsvp: {
+        Args: { p_meetup_id: string; p_status: string }
+        Returns: Json
+      }
       memory_add_diary_entry: {
         Args: {
           p_energy_level?: number
@@ -10491,6 +10987,10 @@ export type Database = {
         Args: { p_family: string; p_module: string }
         Returns: string
       }
+      oasis_events_cleanup: {
+        Args: { retention_days?: number }
+        Returns: number
+      }
       process_wallet_exchange: {
         Args: {
           p_amount: number
@@ -10547,6 +11047,16 @@ export type Database = {
       }
       reject_autopilot_recommendation: {
         Args: { p_reason?: string; p_recommendation_id: string }
+        Returns: Json
+      }
+      relationship_ensure_node: {
+        Args: {
+          p_domain?: string
+          p_metadata?: Json
+          p_node_type: string
+          p_ref_id?: string
+          p_title: string
+        }
         Returns: Json
       }
       release_vtid_claim: {
@@ -10701,6 +11211,18 @@ export type Database = {
         }
         Returns: number
       }
+      update_user_stripe_account: {
+        Args: { p_stripe_account_id: string }
+        Returns: undefined
+      }
+      update_user_stripe_status: {
+        Args: {
+          p_charges_enabled: boolean
+          p_payouts_enabled: boolean
+          p_stripe_account_id: string
+        }
+        Returns: undefined
+      }
       upsert_knowledge_doc: {
         Args: {
           p_content: string
@@ -10710,6 +11232,19 @@ export type Database = {
           p_title: string
         }
         Returns: string
+      }
+      upsert_relationship_edge: {
+        Args: {
+          p_edge_type: string
+          p_metadata?: Json
+          p_source_id: string
+          p_source_type: string
+          p_strength_delta: number
+          p_target_id: string
+          p_target_type: string
+          p_tenant_id: string
+        }
+        Returns: Json
       }
       validate_role_assignment: {
         Args: { p_role: string; p_tenant_id: string; p_user_id: string }

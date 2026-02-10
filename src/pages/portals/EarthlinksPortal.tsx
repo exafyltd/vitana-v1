@@ -143,7 +143,8 @@ const EarthlinksPortal = () => {
     }
   };
 
-  if (authLoading) {
+  // Show loading state while checking auth OR if user exists (redirect in progress)
+  if (authLoading || user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50">
         <Loader2 className="h-8 w-8 animate-spin text-[#4ADE80]" />

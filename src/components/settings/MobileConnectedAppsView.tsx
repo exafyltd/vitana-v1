@@ -1,0 +1,243 @@
+import { useState } from "react";
+import { Plus, Linkedin } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { useTranslation } from "@/hooks/useTranslation";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { ConnectAppPopup } from "@/components/ConnectAppPopup";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMediaImportDialog";
+import { useProfile } from "@/context/ProfileProvider";
+import { useAuth } from "@/context/AuthProvider";
+import { useToast } from "@/hooks/use-toast";
+
+import { MobileIntegrationSection } from "./MobileIntegrationSection";
+import { MobileIntegrationDetailSheet } from "./MobileIntegrationDetailSheet";
+import { MobileConnectionSummary } from "./MobileConnectionSummary";
+import {
+  socialIntegrations,
+  fitnessIntegrations,
+  healthIntegrations,
+  otherIntegrations,
+  getConnectionStats,
+  type Integration,
+} from "./integrationData";
+
+// Social platform icons for the import dialog
+import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
+import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
+import { XIcon } from "@/components/icons/XIcon";
+
+type SocialPlatform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
+
+const socialPlatformConfig: Record<SocialPlatform, { icon: React.ReactNode; name: string }> = {
+  linkedin: { icon: <LinkedInIcon className="h-6 w-6" />, name: 'LinkedIn' },
+  instagram: { icon: <InstagramIcon className="h-6 w-6" />, name: 'Instagram' },
+  tiktok: { icon: <TikTokIcon className="h-6 w-6" />, name: 'TikTok' },
+  youtube: { icon: <YouTubeIcon className="h-6 w-6" />, name: 'YouTube' },
+  facebook: { icon: <FacebookIcon className="h-6 w-6" />, name: 'Facebook' },
+  x: { icon: <XIcon className="h-6 w-6" />, name: 'X (Twitter)' },
+};
+
+const socialPlatformIds = ['linkedin', 'instagram', 'tiktok', 'youtube', 'facebook', 'x'];
+
+export function MobileConnectedAppsView() {
+  const { translate } = useTranslation();
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const { refreshProfile } = useProfile();
+  
+  const [selectedApp, setSelectedApp] = useState<Integration | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [connectPopupOpen, setConnectPopupOpen] = useState(false);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  
+  // Social media import dialog state
+  const [socialImportOpen, setSocialImportOpen] = useState(false);
+  const [socialImportPlatform, setSocialImportPlatform] = useState<SocialPlatform>('linkedin');
+
+  const { connected, syncing } = getConnectionStats();
+
+  // Filter integrations by search query
+  const filterIntegrations = (integrations: Integration[]) => {
+    if (!searchQuery.trim()) return integrations;
+    const query = searchQuery.toLowerCase();
+    return integrations.filter(
+      (i) =>
+        i.name.toLowerCase().includes(query) ||
+        i.syncData.toLowerCase().includes(query)
+    );
+  };
+
+  const filteredSocial = filterIntegrations(socialIntegrations);
+  const filteredFitness = filterIntegrations(fitnessIntegrations);
+  const filteredHealth = filterIntegrations(healthIntegrations);
+  const filteredOther = filterIntegrations(otherIntegrations);
+
+  // Handle connect action
+  const handleConnect = (integration: Integration) => {
+    // Check if it's a social platform
+    if (socialPlatformIds.includes(integration.id)) {
+      setSocialImportPlatform(integration.id as SocialPlatform);
+      setSocialImportOpen(true);
+    } else {
+      // For non-social apps, show placeholder toast
+      toast({
+        title: translate('connectedApps.actions.connect'),
+        description: translate('connectedApps.popup.connectionPlaceholder').replace('{appName}', integration.name),
+      });
+    }
+  };
+
+  // Handle disconnect action
+  const handleDisconnect = (integration: Integration) => {
+    toast({
+      title: translate('connectedApps.actions.disconnect'),
+      description: `${integration.name} ${translate('connectedApps.popup.connectionPlaceholder').replace('{appName}', '')}`,
+    });
+  };
+
+  // Handle configure action
+  const handleConfigure = (integration: Integration) => {
+    toast({
+      title: translate('connectedApps.actions.configure'),
+      description: integration.name,
+    });
+  };
+
+  // Handle successful social import
+  const handleSocialImportSuccess = () => {
+    refreshProfile();
+    toast({
+      title: translate('connectedApps.popup.connectionSuccess'),
+      description: socialPlatformConfig[socialImportPlatform].name,
+    });
+  };
+
+  const currentPlatformConfig = socialPlatformConfig[socialImportPlatform];
+
+  return (
+    <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
+      <div className="p-4 pb-32 space-y-4">
+        {/* Header */}
+        <StandardHeader
+          title={translate('connectedApps.title')}
+          description={translate('connectedApps.description')}
+        />
+
+        {/* Action Bar */}
+        <UtilityActionButton
+          afterGiftVoucherChildren={
+            <>
+              <VitanaIndexChip />
+              <AutopilotChip 
+                pendingCount={0} 
+                onClick={() => setAutopilotOpen(true)} 
+              />
+            </>
+          }
+        >
+          <ExpandableSearchButton
+            placeholder={translate('connectedApps.searchPlaceholder')}
+            onSearch={setSearchQuery}
+          />
+          <UniversalCalendarButton />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            onClick={() => setConnectPopupOpen(true)}
+          >
+            <Plus className="h-4 w-4" />
+            {translate('connectedApps.addApp')}
+          </Button>
+        </UtilityActionButton>
+
+        {/* Connection Summary */}
+        <MobileConnectionSummary
+          connectedCount={connected}
+          syncingCount={syncing}
+        />
+
+        {/* Integration Sections */}
+        <div className="space-y-3">
+          {filteredSocial.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.social')}
+              emoji="📱"
+              integrations={filteredSocial}
+              onSelect={setSelectedApp}
+            />
+          )}
+
+          {filteredFitness.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.fitness')}
+              emoji="💪"
+              integrations={filteredFitness}
+              onSelect={setSelectedApp}
+            />
+          )}
+
+          {filteredHealth.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.health')}
+              emoji="🩺"
+              integrations={filteredHealth}
+              onSelect={setSelectedApp}
+            />
+          )}
+
+          {filteredOther.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.other')}
+              emoji="🔧"
+              integrations={filteredOther}
+              onSelect={setSelectedApp}
+              defaultExpanded={false}
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Detail Sheet */}
+      <MobileIntegrationDetailSheet
+        integration={selectedApp}
+        onClose={() => setSelectedApp(null)}
+        onConnect={handleConnect}
+        onDisconnect={handleDisconnect}
+        onConfigure={handleConfigure}
+      />
+
+      {/* Connect App Popup */}
+      <ConnectAppPopup 
+        isOpen={connectPopupOpen} 
+        onClose={() => setConnectPopupOpen(false)}
+        onConnect={handleConnect}
+      />
+
+      {/* Autopilot Popup */}
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen} 
+      />
+
+      {/* Social Media Import Dialog */}
+      <SocialMediaImportDialog
+        open={socialImportOpen}
+        onOpenChange={setSocialImportOpen}
+        platform={socialImportPlatform}
+        platformName={currentPlatformConfig.name}
+        icon={currentPlatformConfig.icon}
+        profileId={user?.id || ''}
+        onSuccess={handleSocialImportSuccess}
+      />
+    </div>
+  );
+}

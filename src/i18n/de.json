@@ -1,11 +1,16 @@
 {
   "orders": {
     "myOrders": "Meine Bestellungen",
+    "title": "Bestellungen",
+    "description": "Ihre Bestellhistorie und aktive Abonnements",
     "trackDescription": "Verfolgen Sie Ihre Produktbestellungen und Event-Tickets",
     "searchPlaceholder": "Bestellungen suchen...",
     "tabs": {
       "active": "Aktiv",
-      "history": "Verlauf"
+      "history": "Verlauf",
+      "all": "Alle",
+      "completed": "Abgeschlossen",
+      "cancelled": "Storniert"
     },
     "filters": {
       "all": "Alle",
@@ -25,11 +30,18 @@
       "title": "Kein Bestellverlauf",
       "description": "Ihre abgeschlossenen Bestellungen und vergangenen Events erscheinen hier."
     },
+    "noOrders": "Noch keine Bestellungen",
+    "noOrdersDesc": "Ihre Bestellungen werden hier erscheinen, sobald Sie etwas kaufen.",
     "browseProducts": "Produkte durchsuchen",
     "findEvents": "Events entdecken",
     "startShopping": "Einkaufen starten",
     "noFilter": "Keine {filter} gefunden",
     "noFilterDesc": "Keine {filter} in Ihrem Verlauf gefunden.",
+    "orderDate": "Bestelldatum",
+    "orderNumber": "Bestellnummer",
+    "viewDetails": "Details anzeigen",
+    "trackOrder": "Bestellung verfolgen",
+    "reorder": "Erneut bestellen",
     "detailSheet": {
       "title": "Bestelldetails",
       "orderInfo": "Bestellinfo",
@@ -177,12 +189,15 @@
   },
   "calendar": {
     "smartCalendar": "Smart Calendar",
+    "myCalendar": "Mein Kalender",
+    "bookedActivities": "Ihre gebuchten Aktivitäten in VITANA",
     "addEvent": "Event hinzufügen",
     "synced": "Synchronisiert",
     "syncing": "Synchronisierung...",
     "today": "Heute",
     "week": "Woche",
     "month": "Monat",
+    "agenda": "Agenda",
     "nothingScheduled": "Nichts geplant",
     "tryQuickAdd": "Versuchen Sie Quick Add oder lassen Sie Autopilot Ihren Tag planen",
     "clickSlotHint": "Klicken Sie auf einen Slot, um ein Event zu erstellen • Ziehen zum Verschieben",
@@ -193,12 +208,44 @@
     "untitledEvent": "Unbenanntes Event",
     "newEvent": "Neues Event",
     "close": "Schließen",
+    "noBookingsToday": "Heute keine Buchungen",
+    "noBookingsYet": "Noch keine Buchungen",
+    "nextUpcoming": "Als Nächstes",
+    "exploreActivities": "Aktivitäten entdecken für Ihren Kalender",
+    "browseActivities": "Aktivitäten durchsuchen",
+    "bookedEvents": {
+      "title": "Ihre gebuchten Events",
+      "todayLabel": "Heute",
+      "nextUp": "Als Nächstes",
+      "noEventsToday": "Heute keine Events"
+    },
     "filters": {
       "personal": "Persönlich",
       "community": "Community",
       "work": "Arbeit",
       "health": "Gesundheit",
       "workout": "Training"
+    },
+    "categories": {
+      "community": "Community",
+      "fitness": "Fitness",
+      "health": "Gesundheit",
+      "nutrition": "Ernährung",
+      "professional": "Arbeit",
+      "personal": "Persönlich",
+      "training": "Training"
+    },
+    "bookingStatus": {
+      "booked": "Gebucht",
+      "rsvp": "Zusage",
+      "ticket": "Ticket",
+      "reserved": "Reserviert"
+    },
+    "timeGroups": {
+      "today": "Heute",
+      "tomorrow": "Morgen",
+      "thisWeek": "Diese Woche",
+      "later": "Später"
     },
     "autopilot": {
       "suggestions": "Autopilot-Vorschläge",
@@ -531,7 +578,7 @@
   "intro": {
     "welcomeTo": "WILLKOMMEN BEI VITANALAND",
     "experience": "Erlebnis",
-    "tagline": "Deine Langlebigkeitsreise, begleitet.",
+    "tagline": "Deine Langlebigkeitsreise",
     "playWelcome": "Willkommen abspielen",
     "preparing": "Vorbereitung...",
     "playing": "Wird abgespielt",
@@ -632,20 +679,6 @@
     "connectedApps": "Verbundene Apps",
     "support": "Support"
   },
-  "health": {
-    "emptyStates": {
-      "noNutritionPlan": "Noch kein Ernährungsplan",
-      "noNutritionPlanDesc": "Generieren Sie Ihren personalisierten Ernährungsplan mit köstlichen, ausgewogenen Rezepten, die auf Ihre Ziele und Ernährungsvorlieben abgestimmt sind.",
-      "noExercisePlan": "Noch kein Trainingsplan",
-      "noExercisePlanDesc": "Generieren Sie Ihren personalisierten Trainingsplan mit KI-optimierten Übungen, die auf Ihr Fitnessniveau, Ihre Ziele und Erholungsbedürfnisse abgestimmt sind.",
-      "noSleepPlan": "Noch kein Schlafplan",
-      "noSleepPlanDesc": "Generieren Sie Ihren personalisierten Schlafplan mit KI-optimierten Zielen, die auf Ihren zirkadianen Rhythmus, Erholungsbedürfnisse und tägliche Leistung abgestimmt sind.",
-      "noHydrationPlan": "Noch kein Hydrationsplan",
-      "noHydrationPlanDesc": "Generieren Sie Ihren personalisierten Hydrationsplan mit KI-optimierten Tageszielen, die auf Ihr Aktivitätsniveau, Ihre Umgebung und Erholungsbedürfnisse abgestimmt sind.",
-      "generating": "Wird generiert...",
-      "generatePlan": "Plan generieren"
-    }
-  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "KI-Vorschläge",
@@ -656,7 +689,93 @@
     "dismiss": "Verwerfen",
     "executing": "Wird ausgeführt...",
     "success": "Erfolgreich abgeschlossen",
-    "failed": "Fehlgeschlagen - wird später wiederholt"
+    "failed": "Fehlgeschlagen - wird später wiederholt",
+    "popup": {
+      "title": "Autopilot-Aktionen",
+      "selectedOf": "{selected} von {total} ausgewählt",
+      "readyToExecute": "Bereit, {count} Aktion(en) auszuführen, die Ihr KI-Assistent vorbereitet hat.",
+      "executingTitle": "Aktionen werden ausgeführt...",
+      "executingDesc": "Bitte warten Sie, während die KI Ihre Anfragen bearbeitet",
+      "complete": "{percent}% abgeschlossen",
+      "go": "LOS ({count})",
+      "notNow": "Nicht jetzt",
+      "seeOptions": "Optionen anzeigen",
+      "seeAllInAI": "Alle in KI-Intelligenz anzeigen →",
+      "moreActions": "+{count} weitere Aktionen",
+      "toastExecutedTitle": "Aktionen ausgeführt",
+      "toastExecutedDesc": "{success}/{total} Aktionen erfolgreich abgeschlossen",
+      "toastFailedTitle": "Ausführung fehlgeschlagen",
+      "toastFailedDesc": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    },
+    "priorities": {
+      "high": "Hoch",
+      "medium": "Mittel",
+      "low": "Niedrig"
+    },
+    "widget": {
+      "title": "Autopilot ⚡",
+      "active": "Aktiv",
+      "paused": "Pausiert",
+      "doNow": "Jetzt ausführen",
+      "allOptimized": "Alles optimiert! 🎯",
+      "enableToSee": "Aktivieren Sie Autopilot, um Vorschläge zu sehen",
+      "completeForRewards": "Autopilot-Vorschläge abschließen für Belohnungen",
+      "enableForCredits": "Autopilot aktivieren für Credits"
+    },
+    "insightBanner": {
+      "title": "Autopilot-Gesundheitsübersicht",
+      "description": "Ihr Vitana Autopilot hat aktuelle Pläne und Konsistenz analysiert.",
+      "synergyIndex": "Synergie-Index",
+      "statusBalanced": "Ausgewogen",
+      "statusNeedsAttention": "Aufmerksamkeit erforderlich",
+      "statusImproving": "Verbesserung"
+    },
+    "profilePopup": {
+      "title": "Lassen Sie Autopilot Ihr Profil aufpolieren ✨",
+      "polishBio": "Meine Bio optimieren",
+      "polishBioDesc": "Autopilot kann den Über-Bereich inspirierender gestalten",
+      "refreshArchetype": "Profil anpassen",
+      "refreshArchetypeDesc": "Archetyp-Aktualisierung basierend auf Aktivität vorschlagen",
+      "highlightShowcase": "Meine Highlights",
+      "highlightShowcaseDesc": "Top-Beiträge oder Medien für Featured-Inhalte vorschlagen",
+      "styleProfile": "Mein Profil gestalten",
+      "styleProfileDesc": "Verbesserungen für Titelbild, Rollen und Profilbild vorschlagen",
+      "cancel": "Abbrechen",
+      "runAutopilot": "Autopilot starten"
+    },
+    "suggestions": {
+      "bannerTitle": "Autopilot kann Ihr Profil optimieren",
+      "bannerDesc": "Erhalten Sie KI-gestützte Vorschläge, um Ihr Profil ansprechender zu gestalten.",
+      "enable": "Aktivieren",
+      "showcaseTitle": "Autopilot-Empfehlungen",
+      "showcaseBadge": "Smart",
+      "showcaseDesc": "Basierend auf Ihrer Aktivität könnten diese Beiträge gut als Featured-Inhalte funktionieren:",
+      "suggestPopular": "Beliebte Beiträge vorschlagen",
+      "recentHighlights": "Aktuelle Highlights",
+      "archetypeTitle": "Archetyp-Einblicke",
+      "archetypeBadge": "KI-Analyse",
+      "archetypeDesc": "Ihre Wellness-Aktivitäten deuten darauf hin, dass Sie \"The Mindful Mover\" sein könnten - möchten Sie aktualisieren?",
+      "updateArchetype": "Archetyp aktualisieren",
+      "profileSectionTitle": "Autopilot kann Ihr Profil aufpolieren ✨",
+      "profileSectionDesc": "Erhalten Sie KI-gestützte Vorschläge für Ihre Biografie, Ihren Archetyp und Ihre Highlights.",
+      "tryAutopilot": "Autopilot testen"
+    },
+    "actions": {
+      "action1Title": "Heute Abend der Langlebigkeits-Tanzgruppe beitreten?",
+      "action1Reason": "Perfekt passend zu Ihren Bewegungszielen + soziales Wellness-Gefühl",
+      "action2Title": "Neuer KI-Durchbruch entdeckt",
+      "action2Reason": "Ihr digitaler Zwilling hat etwas Faszinierendes in Ihren Mustern entdeckt",
+      "action3Title": "Hydrationssträhne bei 5 Tagen — Legendenstatus wartet",
+      "action3Reason": "Noch ein Schluck näher an Ihrer wöchentlichen Hydrationsmeisterschaft",
+      "action4Title": "Squad zum epischen Wochenend-Meetup automatisch einladen",
+      "action4Reason": "Sarah, Luna & Marcus sind perfekte Langlebigkeits-Tribe-Matches",
+      "action5Title": "Ihre Biomarker-Geschichte wartet",
+      "action5Reason": "Dr. Chen hat spannende Erkenntnisse aus Ihrem letzten Panel entschlüsselt",
+      "action6Title": "Achtsamer Morgen-Zauber",
+      "action6Reason": "Ihre Seele ruft nach diesen stressschmelzenden Techniken",
+      "newActionTitle": "Neuer KI-Vorschlag",
+      "newActionReason": "Basierend auf aktuellen Aktivitätsmustern"
+    }
   },
   "discover": {
     "title": "Entdecken Sie Ihren Langlebigkeits-Marktplatz",
@@ -724,32 +843,6 @@
       "actionSelected": "Aktion ausgewählt",
       "comingSoon": "{action} Funktion bald verfügbar!"
     }
-  },
-  "orders": {
-    "title": "Bestellungen",
-    "description": "Ihre Bestellhistorie und aktive Abonnements",
-    "tabs": {
-      "all": "Alle",
-      "active": "Aktiv",
-      "completed": "Abgeschlossen",
-      "cancelled": "Storniert"
-    },
-    "noOrders": "Noch keine Bestellungen",
-    "noOrdersDesc": "Ihre Bestellungen werden hier erscheinen, sobald Sie etwas kaufen.",
-    "browseProducts": "Produkte durchsuchen",
-    "orderDate": "Bestelldatum",
-    "orderNumber": "Bestellnummer",
-    "status": {
-      "pending": "Ausstehend",
-      "processing": "In Bearbeitung",
-      "shipped": "Versandt",
-      "delivered": "Geliefert",
-      "cancelled": "Storniert",
-      "refunded": "Erstattet"
-    },
-    "viewDetails": "Details anzeigen",
-    "trackOrder": "Bestellung verfolgen",
-    "reorder": "Erneut bestellen"
   },
   "vitanaIndex": {
     "title": "Vitana Gesundheitsindex",
@@ -951,7 +1044,14 @@
     "searchPlaceholder": "Suchen...",
     "noMessages": "Noch keine Nachrichten",
     "noMessagesDesc": "Starten Sie eine Unterhaltung, um loszulegen.",
-    "startConversation": "Unterhaltung starten"
+    "startConversation": "Unterhaltung starten",
+    "emptyState": {
+      "title": "Ihr Postfach ist noch leer",
+      "globalDescription": "Starten Sie eine Unterhaltung oder treten Sie einer Community bei, um sich mit anderen zu verbinden.",
+      "tenantDescription": "Verbinden Sie sich mit Kollegen und Teammitgliedern in Ihrem professionellen Netzwerk.",
+      "startConversation": "Unterhaltung starten",
+      "discoverPeople": "Personen entdecken"
+    }
   },
   "settings": {
     "title": "Einstellungen",
@@ -1004,13 +1104,25 @@
     "education": "Bildung & Wissenschaft",
     "educationDesc": "Gesundheitsthemen lernen und Ressourcen",
     "priorityFocus": "Priorität heute",
+    "priorityFocusExplanation": "Dieser Bereich hat derzeit den größten Einfluss auf Ihre langfristige Gesundheit.",
     "autopilotGuidance": "Autopilot-Empfehlungen",
+    "autopilotSuggests": "Autopilot empfiehlt",
     "takeAction": "Aktion ausführen",
     "uploadBloodTest": "Bluttest hochladen",
     "orderBloodTest": "Bluttest bestellen",
     "viewPlans": "Pläne anzeigen",
     "vitanaIndex": "Vitana Index",
-    "topPercentile": "Top {percent}% aller Nutzer",
+    "healthSnapshot": "Dein Gesundheits-Überblick",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Verbessernd",
+      "declining": "Abnehmend",
+      "stable": "Stabil"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Bluttestergebnisse hochladen",
+      "startFitnessChallenge": "30-Tage-Fitness-Challenge starten"
+    },
     "pillars": {
       "sleep": "Schlaf",
       "exercise": "Bewegung",
@@ -1555,6 +1667,8 @@
     "error": "Fehler",
     "refreshFailed": "Profildaten konnten nicht aktualisiert werden.",
     "showcaseHint": "Wählen Sie Posts und Inhalte aus, die oben in Ihrem Profil angezeigt werden sollen",
+    "showcaseTitle": "Highlights",
+    "manage": "Verwalten",
     "about": "Über",
     "addBio": "Bio hinzufügen...",
     "tapToEdit": "Tippen zum Bearbeiten"
@@ -1909,7 +2023,7 @@
   "profile": {
     "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
     "autopilot": {
-      "polishBio": "Bio, Archetyp & Showcase verbessern",
+      "polishBio": "Bio, Archetyp & Highlights verbessern",
       "try": "Ausprobieren"
     },
     "identity": {
@@ -1971,5 +2085,188 @@
     "discoverCta": "Gruppen entdecken",
     "viewAllCta": "Alle Gruppen ansehen",
     "membersLabel": "Mitglieder"
+  },
+  "connectedApps": {
+    "title": "Verbundene Apps",
+    "description": "Verwalten Sie Ihre verbundenen Geräte und Dienste",
+    "searchPlaceholder": "Apps suchen...",
+    "addApp": "App hinzufügen",
+    "connected": "verbunden",
+    "syncing": "synchronisiert",
+    "sections": {
+      "social": "Social & Teilen",
+      "fitness": "Fitness & Wearables",
+      "health": "Gesundheit & Labore",
+      "other": "Weitere"
+    },
+    "status": {
+      "connected": "Verbunden",
+      "notConnected": "Nicht verbunden",
+      "comingSoon": "Demnächst",
+      "soon": "Bald"
+    },
+    "actions": {
+      "connect": "Verbinden",
+      "disconnect": "Trennen",
+      "configure": "Sync konfigurieren",
+      "manage": "Verwalten"
+    },
+    "lastSync": "Letzte Sync",
+    "dataSync": "Daten-Synchronisation",
+    "comingSoonMessage": "{appName}-Integration kommt bald",
+    "popup": {
+      "title": "Apps & Services verbinden",
+      "searchPlaceholder": "Apps und Services suchen...",
+      "categories": {
+        "all": "Alle Apps",
+        "health": "Gesundheit & Fitness",
+        "social": "Social"
+      },
+      "availableApps": "Verfügbare Apps",
+      "verified": "Verifiziert",
+      "connected": "Verbunden",
+      "settings": "Einstellungen",
+      "disconnect": "Trennen",
+      "connect": "Verbinden",
+      "done": "Fertig",
+      "noResults": "Keine Apps gefunden",
+      "connectionSuccess": "Verbindung erfolgreich",
+      "connectionPlaceholder": "{appName}-Verbindung kommt bald"
+    }
+  },
+  "profileEditor": {
+    "editAbout": "Profil",
+    "aboutTitle": "Über",
+    "aboutDescription": "Teilen Sie mehr über sich. Sie können steuern, wer jedes Feld sehen kann.",
+    "bio": "Bio",
+    "bioPlaceholder": "Teilen Sie Ihre Wellness-Reise, Leidenschaften und was Sie einzigartig macht...\n\nBeispiele:\n• 'Wellness-Enthusiast mit Leidenschaft für achtsames Leben und Community-Building 🌱'\n• 'Zertifizierter Ernährungsberater, der anderen hilft, ihr gesündestes Selbst zu entdecken'\n• 'Marathonläufer, Meditationslehrer und Fürsprecher für ausgewogenes Leben'",
+    "location": "Ort",
+    "locationPlaceholder": "z.B. Berlin, DE • München, DE • Remote",
+    "links": "Links",
+    "addLink": "Link hinzufügen",
+    "linkLabelPlaceholder": "Bezeichnung (z.B. Website, Instagram, LinkedIn, Portfolio)",
+    "linkUrlPlaceholder": "https://ihre-website.com oder @benutzername",
+    "languages": "Sprachen",
+    "addLanguage": "Sprache hinzufügen",
+    "characters": "Zeichen",
+    "words": "Wörter",
+    "almostFull": "Fast voll",
+    "goodLength": "Gute Länge",
+    "visibility": {
+      "public": "Öffentlich",
+      "followers": "Follower",
+      "private": "Privat"
+    },
+    "languageOptions": {
+      "english": "Englisch",
+      "german": "Deutsch",
+      "spanish": "Spanisch",
+      "french": "Französisch",
+      "italian": "Italienisch",
+      "portuguese": "Portugiesisch",
+      "russian": "Russisch",
+      "arabic": "Arabisch",
+      "chinese": "Chinesisch",
+      "japanese": "Japanisch"
+    },
+    "cancel": "Löschen",
+    "save": "Speichern",
+    "saving": "Speichern...",
+    "profileUpdated": "Profil aktualisiert",
+    "profileUpdatedDesc": "Ihre Informationen wurden erfolgreich gespeichert.",
+    "saveFailed": "Speichern fehlgeschlagen",
+    "saveFailedDesc": "Profil konnte nicht gespeichert werden. Bitte erneut versuchen.",
+    "autopilot": {
+      "quickSuggestions": "Autopilot Schnellvorschläge",
+      "makeShorter": "Kürzer machen",
+      "moreProfessional": "Professioneller",
+      "moreInspirational": "Inspirierender",
+      "suggestion": "Autopilot-Vorschlag"
+    },
+    "identity": {
+      "editIdentity": "Identität bearbeiten",
+      "title": "Identität",
+      "description": "Verwalten Sie Ihren Anzeigenamen, Handle und Profilbilder.",
+      "profilePicture": "Profilbild",
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "Ihr Anzeigename",
+      "handle": "Handle",
+      "handlePlaceholder": "ihrhandle",
+      "handleDescription": "Ihr Handle wird in Ihrer öffentlichen Profil-URL verwendet: /u/@{handle}",
+      "personalityDescriptor": "Persönlichkeitsbeschreibung",
+      "personalityDescriptorPlaceholder": "z.B. The Mindful Mover, Der Achtsame Bewegte",
+      "personalityDescriptorDescription": "Eine kurze Beschreibung, die Ihren Wellness-Stil charakterisiert",
+      "upload": "Hochladen",
+      "uploading": "Hochladen...",
+      "remove": "Entfernen",
+      "avatarUploaded": "Profilbild hochgeladen",
+      "avatarUploadedDesc": "Ihr Profilbild wurde aktualisiert.",
+      "uploadFailed": "Hochladen fehlgeschlagen",
+      "uploadFailedDesc": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
+    "identityUpdated": "Identität aktualisiert",
+      "identityUpdatedDesc": "Ihre Identitätsinformationen wurden erfolgreich gespeichert."
+    }
+  },
+  "support": {
+    "maxina": {
+      "title": "Maxina Support",
+      "subtitle": "Wie können wir Ihnen heute helfen?",
+      "description": "Finden Sie Antworten auf häufige Fragen oder kontaktieren Sie unser Support-Team.",
+      "categoriesTitle": "Hilfethemen durchsuchen",
+      "categories": {
+        "gettingStarted": "Erste Schritte",
+        "account": "Konto & Profil",
+        "events": "Events & MeetUps",
+        "payments": "Zahlungen & Abrechnung",
+        "technical": "Technische Hilfe"
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "createAccount": {
+          "question": "Wie erstelle ich ein Maxina-Konto?",
+          "answer": "Laden Sie die Maxina-App herunter oder besuchen Sie unser Portal unter vitanaland.com/maxina. Tippen Sie auf 'Registrieren' und geben Sie Ihre E-Mail-Adresse ein. Sie erhalten eine Bestätigungs-E-Mail zur Verifizierung Ihres Kontos. Nach der Bestätigung vervollständigen Sie Ihr Profil, um Wellness-Events und Community-Funktionen zu entdecken."
+        },
+        "resetPassword": {
+          "question": "Wie setze ich mein Passwort zurück?",
+          "answer": "Tippen Sie auf dem Anmeldebildschirm auf 'Passwort vergessen' und geben Sie Ihre registrierte E-Mail-Adresse ein. Sie erhalten innerhalb weniger Minuten einen Link zum Zurücksetzen des Passworts. Prüfen Sie Ihren Spam-Ordner, falls Sie die E-Mail nicht sehen. Der Link läuft aus Sicherheitsgründen nach 24 Stunden ab."
+        },
+        "joinEvents": {
+          "question": "Wie nehme ich an Events und MeetUps teil?",
+          "answer": "Durchsuchen Sie verfügbare Events im Bereich Events & MeetUps. Tippen Sie auf ein Event, um Details wie Datum, Ort und Preis anzuzeigen. Bei kostenlosen Events tippen Sie einfach auf 'Teilnehmen' oder 'Zusagen'. Für kostenpflichtige Events können Sie Tickets sicher über unser integriertes Zahlungssystem erwerben."
+        },
+        "updateProfile": {
+          "question": "Wie aktualisiere ich meine Profilinformationen?",
+          "answer": "Gehen Sie zu Ihrem Profil-Tab und tippen Sie auf das Bearbeiten-Symbol oder 'Profil bearbeiten'. Sie können Ihren Anzeigenamen, Ihre Bio, Ihr Profilbild und Ihre Wellness-Interessen aktualisieren. Änderungen werden automatisch gespeichert. Ihr Profil hilft uns, Event-Empfehlungen für Sie zu personalisieren."
+        },
+        "deleteAccount": {
+          "question": "Wie kann ich mein Konto löschen?",
+          "answer": "Um Ihr Maxina-Konto und die zugehörigen Daten zu löschen, senden Sie bitte eine E-Mail an support@exafy.io mit dem Betreff 'Kontolöschung – Maxina'. Geben Sie die mit Ihrem Konto verknüpfte E-Mail-Adresse an. Wir bearbeiten Löschanfragen innerhalb von 30 Tagen."
+        },
+        "paymentMethods": {
+          "question": "Welche Zahlungsmethoden werden akzeptiert?",
+          "answer": "Wir akzeptieren gängige Kredit- und Debitkarten (Visa, Mastercard, American Express) über unsere sichere Stripe-Zahlungsintegration. Apple Pay und Google Pay sind auf unterstützten Geräten ebenfalls verfügbar. Alle Transaktionen sind verschlüsselt und PCI-DSS-konform."
+        },
+        "contactOrganizers": {
+          "question": "Wie kontaktiere ich Event-Organisatoren?",
+          "answer": "Auf jeder Event-Seite finden Sie das Profil des Organisators. Tippen Sie auf den Namen, um das Profil anzuzeigen und auf Nachrichtenoptionen zuzugreifen. Bei Fragen zu bestimmten Events nutzen Sie den Q&A-Bereich des Events oder kontaktieren Sie den Organisator direkt über die In-App-Nachrichten."
+        },
+        "dataSecure": {
+          "question": "Sind meine persönlichen Daten sicher?",
+          "answer": "Ja, Ihre Privatsphäre und Sicherheit haben für uns höchste Priorität. Wir verwenden branchenübliche Verschlüsselung, sichere Authentifizierung und befolgen die DSGVO-Richtlinien. Wir geben Ihre persönlichen Daten niemals ohne Ihre Zustimmung an Dritte weiter. Lesen Sie unsere vollständige Datenschutzerklärung für weitere Details."
+        }
+      },
+      "contact": {
+        "title": "Support kontaktieren",
+        "email": "E-Mail senden",
+        "responseTime": "Wir antworten in der Regel innerhalb von 24 Stunden"
+      },
+      "usefulLinks": {
+        "title": "Nützliche Links",
+        "privacy": "Datenschutzerklärung",
+        "deleteAccount": "Konto löschen",
+        "portal": "Zurück zum Maxina-Portal"
+      },
+      "footer": "Alle Rechte vorbehalten."
+    }
   }
 }

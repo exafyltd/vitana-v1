@@ -27,11 +27,13 @@ import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import DeleteAccount from "./pages/legal/DeleteAccount";
+import MaxinaSupport from "./pages/legal/MaxinaSupport";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import IntroExperience from "./pages/IntroExperience";
 import RedeemVoucher from "./pages/RedeemVoucher";
+import CreatorOnboarded from "./pages/CreatorOnboarded";
 import Logout from "./pages/Logout";
 
 // Portal pages
@@ -271,12 +273,14 @@ import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
+import { useAppilix } from "@/hooks/useAppilix";
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useMessageNotifications();
   useAudioPriority();
+  useAppilix(); // Detect Appilix WebView & force App Bar visibility
   return null;
 };
 
@@ -328,6 +332,7 @@ const App = () => {
           {/* Public Routes - No Auth Required */}
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/maxina_support" element={<MaxinaSupport />} />
           <Route path="/redeem" element={<RedeemVoucher />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
@@ -496,6 +501,11 @@ const App = () => {
           <Route path="/tickets/success" element={<TicketPurchaseSuccess />} />
           <Route path="/packages/success" element={<PackagePurchaseSuccess />} />
           <Route path="/tickets/demo" element={<TicketDemo />} />
+          <Route path="/creator/onboarded" element={
+            <AuthGuard>
+              <CreatorOnboarded />
+            </AuthGuard>
+          } />
           <Route path="/my-tickets" element={
             <AuthGuard>
               <MyTickets />

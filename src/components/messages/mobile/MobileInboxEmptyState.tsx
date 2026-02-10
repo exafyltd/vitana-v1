@@ -1,6 +1,7 @@
 import { MessageSquare, Users, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MobileInboxEmptyStateProps {
   context?: 'global' | 'tenant';
@@ -18,6 +19,7 @@ export function MobileInboxEmptyState({
   onCreateGroup
 }: MobileInboxEmptyStateProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
 
   return (
     <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
@@ -33,12 +35,12 @@ export function MobileInboxEmptyState({
 
       {/* Message */}
       <h3 className="text-lg font-semibold text-foreground mb-2">
-        Your inbox is quiet for now
+        {translate('inbox.emptyState.title')}
       </h3>
       <p className="text-sm text-muted-foreground mb-6 max-w-[280px]">
         {context === 'global' 
-          ? "Start a conversation or join a community to connect with others."
-          : "Connect with colleagues and team members in your professional network."}
+          ? translate('inbox.emptyState.globalDescription')
+          : translate('inbox.emptyState.tenantDescription')}
       </p>
 
       {/* CTAs */}
@@ -46,7 +48,7 @@ export function MobileInboxEmptyState({
         {onNewMessage && (
           <Button onClick={onNewMessage} className="w-full gap-2">
             <MessageSquare className="w-4 h-4" />
-            Start a conversation
+            {translate('inbox.emptyState.startConversation')}
           </Button>
         )}
         
@@ -56,7 +58,7 @@ export function MobileInboxEmptyState({
           className="w-full gap-2"
         >
           <Compass className="w-4 h-4" />
-          Discover people
+          {translate('inbox.emptyState.discoverPeople')}
         </Button>
       </div>
     </div>

@@ -1,11 +1,16 @@
 {
   "orders": {
     "myOrders": "My Orders",
+    "title": "Orders",
+    "description": "Your order history and active subscriptions",
     "trackDescription": "Track your product orders and event tickets",
     "searchPlaceholder": "Search orders...",
     "tabs": {
       "active": "Active",
-      "history": "History"
+      "history": "History",
+      "all": "All",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
     },
     "filters": {
       "all": "All",
@@ -25,11 +30,18 @@
       "title": "No Order History",
       "description": "Your completed orders and past events will appear here."
     },
+    "noOrders": "No orders yet",
+    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
     "browseProducts": "Browse Products",
     "findEvents": "Find Events",
     "startShopping": "Start Shopping",
     "noFilter": "No {filter}",
     "noFilterDesc": "No {filter} found in your history.",
+    "orderDate": "Order date",
+    "orderNumber": "Order number",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "reorder": "Reorder",
     "detailSheet": {
       "title": "Order Details",
       "orderInfo": "Order Info",
@@ -177,12 +189,15 @@
   },
   "calendar": {
     "smartCalendar": "Smart Calendar",
+    "myCalendar": "My Calendar",
+    "bookedActivities": "Your booked activities in VITANA",
     "addEvent": "Add Event",
     "synced": "Synced",
     "syncing": "Syncing",
     "today": "Today",
     "week": "Week",
     "month": "Month",
+    "agenda": "Agenda",
     "nothingScheduled": "Nothing scheduled",
     "tryQuickAdd": "Try Quick Add or let Autopilot plan your day",
     "clickSlotHint": "Click any slot to create an event • Drag to reschedule",
@@ -193,12 +208,44 @@
     "untitledEvent": "Untitled Event",
     "newEvent": "New Event",
     "close": "Close",
+    "noBookingsToday": "No bookings today",
+    "noBookingsYet": "No bookings yet",
+    "nextUpcoming": "Next upcoming",
+    "exploreActivities": "Explore activities to add to your calendar",
+    "browseActivities": "Browse Activities",
+    "bookedEvents": {
+      "title": "Your Booked Events",
+      "todayLabel": "Today",
+      "nextUp": "Next up",
+      "noEventsToday": "No events today"
+    },
     "filters": {
       "personal": "Personal",
       "community": "Community",
       "work": "Work",
       "health": "Health",
       "workout": "Workout"
+    },
+    "categories": {
+      "community": "Community",
+      "fitness": "Fitness",
+      "health": "Health",
+      "nutrition": "Nutrition",
+      "professional": "Work",
+      "personal": "Personal",
+      "training": "Training"
+    },
+    "bookingStatus": {
+      "booked": "Booked",
+      "rsvp": "RSVP",
+      "ticket": "Ticket",
+      "reserved": "Reserved"
+    },
+    "timeGroups": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "thisWeek": "This Week",
+      "later": "Later"
     },
     "autopilot": {
       "suggestions": "Autopilot Suggestions",
@@ -632,20 +679,6 @@
     "connectedApps": "Connected Apps & Integrations",
     "support": "Support"
   },
-  "health": {
-    "emptyStates": {
-      "noNutritionPlan": "No Nutrition Plan Yet",
-      "noNutritionPlanDesc": "Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.",
-      "noExercisePlan": "No Exercise Plan Yet",
-      "noExercisePlanDesc": "Generate your personalized workout plan with AI-optimized exercises tailored to your fitness level, goals, and recovery needs.",
-      "noSleepPlan": "No Sleep Plan Yet",
-      "noSleepPlanDesc": "Generate your personalized sleep plan with AI-optimized targets tuned to your circadian rhythm, recovery needs, and daily performance.",
-      "noHydrationPlan": "No Hydration Plan Yet",
-      "noHydrationPlanDesc": "Generate your personalized hydration plan with AI-optimized daily targets tailored to your activity level, environment, and recovery needs.",
-      "generating": "Generating...",
-      "generatePlan": "Generate Plan"
-    }
-  },
   "autopilot": {
     "title": "Autopilot",
     "suggestions": "AI suggestions",
@@ -656,7 +689,93 @@
     "dismiss": "Dismiss",
     "executing": "Executing...",
     "success": "Completed successfully",
-    "failed": "Failed - will retry later"
+    "failed": "Failed - will retry later",
+    "popup": {
+      "title": "Autopilot Actions",
+      "selectedOf": "{selected} of {total} selected",
+      "readyToExecute": "Ready to execute {count} action(s) prepared by your AI assistant.",
+      "executingTitle": "Executing Actions...",
+      "executingDesc": "Please wait while AI handles your requests",
+      "complete": "{percent}% complete",
+      "go": "GO ({count})",
+      "notNow": "Not Now",
+      "seeOptions": "See Options",
+      "seeAllInAI": "See All in AI Intelligence →",
+      "moreActions": "+{count} more actions",
+      "toastExecutedTitle": "Actions Executed",
+      "toastExecutedDesc": "{success}/{total} actions completed successfully",
+      "toastFailedTitle": "Execution Failed",
+      "toastFailedDesc": "Something went wrong. Please try again."
+    },
+    "priorities": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "widget": {
+      "title": "Autopilot ⚡",
+      "active": "Active",
+      "paused": "Paused",
+      "doNow": "Do Now",
+      "allOptimized": "All optimized! 🎯",
+      "enableToSee": "Enable Autopilot to see suggestions",
+      "completeForRewards": "Complete autopilot suggestions for rewards",
+      "enableForCredits": "Enable autopilot for credits"
+    },
+    "insightBanner": {
+      "title": "Autopilot Health Overview",
+      "description": "Your Vitana Autopilot analyzed current plans and consistency.",
+      "synergyIndex": "Synergy Index",
+      "statusBalanced": "Balanced",
+      "statusNeedsAttention": "Needs Attention",
+      "statusImproving": "Improving"
+    },
+    "profilePopup": {
+      "title": "Let Autopilot polish your profile ✨",
+      "polishBio": "Polish my Bio",
+      "polishBioDesc": "Autopilot can rewrite About section to be more inspiring",
+      "refreshArchetype": "Refresh my Archetype",
+      "refreshArchetypeDesc": "Suggest Longevity Archetype update based on activity",
+      "highlightShowcase": "Highlight my Showcase",
+      "highlightShowcaseDesc": "Suggest top posts or media for featured content",
+      "styleProfile": "Style my Profile",
+      "styleProfileDesc": "Suggest improvements to cover photo, roles, profile picture",
+      "cancel": "Cancel",
+      "runAutopilot": "Run Autopilot"
+    },
+    "suggestions": {
+      "bannerTitle": "Autopilot can help optimize your profile",
+      "bannerDesc": "Get AI-powered suggestions to make your profile more engaging and complete.",
+      "enable": "Enable",
+      "showcaseTitle": "Autopilot Recommendations",
+      "showcaseBadge": "Smart",
+      "showcaseDesc": "Based on your activity, these posts might perform well as featured content:",
+      "suggestPopular": "Suggest Popular Posts",
+      "recentHighlights": "Recent Highlights",
+      "archetypeTitle": "Archetype Insights",
+      "archetypeBadge": "AI Analysis",
+      "archetypeDesc": "Your wellness activities suggest you might be \"The Mindful Mover\" - want to update?",
+      "updateArchetype": "Update Archetype",
+      "profileSectionTitle": "Autopilot can polish your profile ✨",
+      "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and showcase.",
+      "tryAutopilot": "Try Autopilot"
+    },
+    "actions": {
+      "action1Title": "Join Longevity Dance Group Tonight?",
+      "action1Reason": "Perfect match for your movement goals + social wellness vibes",
+      "action2Title": "AI Breakthrough Insight Just Dropped",
+      "action2Reason": "Your digital twin discovered something fascinating from your patterns",
+      "action3Title": "Hydration Streak at 5 Days — Legend Status Awaits",
+      "action3Reason": "One more sip closer to your weekly hydration mastery",
+      "action4Title": "Auto-invite Squad to Epic Weekend Meetup",
+      "action4Reason": "Sarah, Luna & Marcus are perfect longevity tribe matches",
+      "action5Title": "Your Biomarker Story Awaits",
+      "action5Reason": "Dr. Chen decoded exciting insights from your latest panel",
+      "action6Title": "Mindful Morning Magic",
+      "action6Reason": "Your soul is calling for these stress-melting techniques",
+      "newActionTitle": "New AI suggestion",
+      "newActionReason": "Based on recent activity patterns"
+    }
   },
   "discover": {
     "title": "Discover your Longevity Marketplace",
@@ -724,32 +843,6 @@
       "actionSelected": "Action Selected",
       "comingSoon": "{action} feature coming soon!"
     }
-  },
-  "orders": {
-    "title": "Orders",
-    "description": "Your order history and active subscriptions",
-    "tabs": {
-      "all": "All",
-      "active": "Active",
-      "completed": "Completed",
-      "cancelled": "Cancelled"
-    },
-    "noOrders": "No orders yet",
-    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
-    "browseProducts": "Browse Products",
-    "orderDate": "Order date",
-    "orderNumber": "Order number",
-    "status": {
-      "pending": "Pending",
-      "processing": "Processing",
-      "shipped": "Shipped",
-      "delivered": "Delivered",
-      "cancelled": "Cancelled",
-      "refunded": "Refunded"
-    },
-    "viewDetails": "View Details",
-    "trackOrder": "Track Order",
-    "reorder": "Reorder"
   },
   "vitanaIndex": {
     "title": "Vitana Health Index",
@@ -951,7 +1044,14 @@
     "searchPlaceholder": "Search...",
     "noMessages": "No messages yet",
     "noMessagesDesc": "Start a conversation to get going.",
-    "startConversation": "Start Conversation"
+    "startConversation": "Start Conversation",
+    "emptyState": {
+      "title": "Your inbox is quiet for now",
+      "globalDescription": "Start a conversation or join a community to connect with others.",
+      "tenantDescription": "Connect with colleagues and team members in your professional network.",
+      "startConversation": "Start a conversation",
+      "discoverPeople": "Discover people"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -1004,13 +1104,25 @@
     "education": "Education & Science",
     "educationDesc": "Learn about health topics and access wellness resources",
     "priorityFocus": "Priority Focus",
+    "priorityFocusExplanation": "This area currently has the biggest impact on your long-term healthspan.",
     "autopilotGuidance": "Autopilot Guidance",
+    "autopilotSuggests": "Autopilot Suggests",
     "takeAction": "Take Action",
     "uploadBloodTest": "Upload Blood Test",
     "orderBloodTest": "Order Blood Test",
     "viewPlans": "View Plans",
     "vitanaIndex": "Vitana Index",
-    "topPercentile": "Top {percent}% of users",
+    "healthSnapshot": "Your Health Snapshot",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Improving",
+      "declining": "Declining",
+      "stable": "Stable"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Upload blood test results",
+      "startFitnessChallenge": "Start 30-Day Fitness Challenge"
+    },
     "pillars": {
       "sleep": "Sleep",
       "exercise": "Exercise",
@@ -1555,6 +1667,8 @@
     "error": "Error",
     "refreshFailed": "Failed to refresh profile data.",
     "showcaseHint": "Select posts and content to feature at the top of your profile",
+    "showcaseTitle": "Showcase",
+    "manage": "Manage",
     "about": "About",
     "addBio": "Add a bio...",
     "tapToEdit": "Tap to edit"
@@ -1971,5 +2085,188 @@
     "discoverCta": "Discover groups",
     "viewAllCta": "View all groups",
     "membersLabel": "members"
+  },
+  "connectedApps": {
+    "title": "Connected Apps",
+    "description": "Manage your connected devices and services",
+    "searchPlaceholder": "Search apps...",
+    "addApp": "Add App",
+    "connected": "connected",
+    "syncing": "syncing",
+    "sections": {
+      "social": "Social & Sharing",
+      "fitness": "Fitness & Wearables",
+      "health": "Health & Labs",
+      "other": "Other"
+    },
+    "status": {
+      "connected": "Connected",
+      "notConnected": "Not connected",
+      "comingSoon": "Coming Soon",
+      "soon": "Soon"
+    },
+    "actions": {
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "configure": "Configure Sync",
+      "manage": "Manage"
+    },
+    "lastSync": "Last sync",
+    "dataSync": "Data syncing",
+    "comingSoonMessage": "{appName} integration coming soon",
+    "popup": {
+      "title": "Connect Apps & Services",
+      "searchPlaceholder": "Search apps and services...",
+      "categories": {
+        "all": "All Apps",
+        "health": "Health & Fitness",
+        "social": "Social"
+      },
+      "availableApps": "Available Apps",
+      "verified": "Verified",
+      "connected": "Connected",
+      "settings": "Settings",
+      "disconnect": "Disconnect",
+      "connect": "Connect",
+      "done": "Done",
+      "noResults": "No apps found",
+      "connectionSuccess": "Connection successful",
+      "connectionPlaceholder": "{appName} connection coming soon"
+    }
+  },
+  "profileEditor": {
+    "editAbout": "Edit About",
+    "aboutTitle": "About",
+    "aboutDescription": "Share more about yourself. You can control who sees each field.",
+    "bio": "Bio",
+    "bioPlaceholder": "Share your wellness journey, passions, and what makes you unique...\n\nExamples:\n• 'Wellness enthusiast passionate about mindful living and community building 🌱'\n• 'Certified nutritionist helping others discover their healthiest selves'\n• 'Marathon runner, meditation teacher, and advocate for balanced living'",
+    "location": "Location",
+    "locationPlaceholder": "e.g., San Francisco, CA • London, UK • Remote",
+    "links": "Links",
+    "addLink": "Add Link",
+    "linkLabelPlaceholder": "Label (e.g., Website, Instagram, LinkedIn, Portfolio)",
+    "linkUrlPlaceholder": "https://your-website.com or @username",
+    "languages": "Languages",
+    "addLanguage": "Add a language",
+    "characters": "characters",
+    "words": "words",
+    "almostFull": "Almost full",
+    "goodLength": "Good length",
+    "visibility": {
+      "public": "Public",
+      "followers": "Followers",
+      "private": "Private"
+    },
+    "languageOptions": {
+      "english": "English",
+      "german": "German",
+      "spanish": "Spanish",
+      "french": "French",
+      "italian": "Italian",
+      "portuguese": "Portuguese",
+      "russian": "Russian",
+      "arabic": "Arabic",
+      "chinese": "Chinese",
+      "japanese": "Japanese"
+    },
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "profileUpdated": "Profile updated",
+    "profileUpdatedDesc": "Your about information has been saved successfully.",
+    "saveFailed": "Save failed",
+    "saveFailedDesc": "Failed to save profile. Please try again.",
+    "autopilot": {
+      "quickSuggestions": "Autopilot Quick Suggestions",
+      "makeShorter": "Make Shorter",
+      "moreProfessional": "More Professional",
+      "moreInspirational": "More Inspirational",
+      "suggestion": "Autopilot suggestion"
+    },
+    "identity": {
+      "editIdentity": "Edit Identity",
+      "title": "Identity",
+      "description": "Manage your display name, handle, and profile images.",
+      "profilePicture": "Profile Picture",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "Your display name",
+      "handle": "Handle",
+      "handlePlaceholder": "yourhandle",
+      "handleDescription": "Your handle will be used in your public profile URL: /u/@{handle}",
+      "personalityDescriptor": "Personality Descriptor",
+      "personalityDescriptorPlaceholder": "e.g., The Mindful Mover, The Zen Warrior",
+      "personalityDescriptorDescription": "A short phrase that characterizes your wellness style",
+      "upload": "Upload",
+      "uploading": "Uploading...",
+      "remove": "Remove",
+      "avatarUploaded": "Avatar uploaded",
+      "avatarUploadedDesc": "Your profile picture has been updated.",
+      "uploadFailed": "Upload failed",
+      "uploadFailedDesc": "Failed to upload image. Please try again.",
+    "identityUpdated": "Identity updated",
+      "identityUpdatedDesc": "Your identity information has been saved successfully."
+    }
+  },
+  "support": {
+    "maxina": {
+      "title": "Maxina Support",
+      "subtitle": "How can we help you today?",
+      "description": "Find answers to common questions or contact our support team.",
+      "categoriesTitle": "Browse Help Topics",
+      "categories": {
+        "gettingStarted": "Getting Started",
+        "account": "Account & Profile",
+        "events": "Events & MeetUps",
+        "payments": "Payments & Billing",
+        "technical": "Technical Help"
+      },
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "createAccount": {
+          "question": "How do I create a Maxina account?",
+          "answer": "Download the Maxina app or visit our portal at vitanaland.com/maxina. Tap 'Sign Up' and enter your email address. You'll receive a confirmation email to verify your account. Once confirmed, complete your profile to start exploring wellness events and community features."
+        },
+        "resetPassword": {
+          "question": "How do I reset my password?",
+          "answer": "On the login screen, tap 'Forgot Password' and enter your registered email address. You'll receive a password reset link within a few minutes. Check your spam folder if you don't see it. The link expires after 24 hours for security reasons."
+        },
+        "joinEvents": {
+          "question": "How do I join events and meetups?",
+          "answer": "Browse available events in the Events & MeetUps section. Tap on any event to view details including date, location, and pricing. For free events, simply tap 'Join' or 'RSVP'. For paid events, you can securely purchase tickets through our integrated payment system."
+        },
+        "updateProfile": {
+          "question": "How do I update my profile information?",
+          "answer": "Go to your Profile tab and tap the edit icon or 'Edit Profile'. You can update your display name, bio, profile picture, and wellness interests. Changes are saved automatically. Your profile helps us personalize event recommendations for you."
+        },
+        "deleteAccount": {
+          "question": "How can I delete my account?",
+          "answer": "To delete your Maxina account and associated data, please email support@exafy.io with the subject line 'Account Deletion Request – Maxina'. Include the email address linked to your account. We process deletion requests within 30 days."
+        },
+        "paymentMethods": {
+          "question": "What payment methods are accepted?",
+          "answer": "We accept major credit and debit cards (Visa, Mastercard, American Express) through our secure Stripe payment integration. Apple Pay and Google Pay are also available on supported devices. All transactions are encrypted and PCI-DSS compliant."
+        },
+        "contactOrganizers": {
+          "question": "How do I contact event organizers?",
+          "answer": "On any event page, you can find the organizer's profile. Tap their name to view their profile and access messaging options. For questions about specific events, use the event's Q&A section or contact the organizer directly through in-app messaging."
+        },
+        "dataSecure": {
+          "question": "Is my personal data secure?",
+          "answer": "Yes, your privacy and security are our top priorities. We use industry-standard encryption, secure authentication, and follow GDPR guidelines. We never share your personal information with third parties without your consent. Read our full Privacy Policy for more details."
+        }
+      },
+      "contact": {
+        "title": "Contact Support",
+        "email": "Email Us",
+        "responseTime": "We typically respond within 24 hours"
+      },
+      "usefulLinks": {
+        "title": "Useful Links",
+        "privacy": "Privacy Policy",
+        "deleteAccount": "Delete Account",
+        "portal": "Back to Maxina Portal"
+      },
+      "footer": "All rights reserved."
+    }
   }
 }

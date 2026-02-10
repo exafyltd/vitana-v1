@@ -53,7 +53,10 @@ import { CalendarListSkeleton } from "./CalendarSkeleton";
 import { CalendarFilters } from "./CalendarFilters";
 import { WeekGridView } from "./WeekGridView";
 import { AutopilotCalendarSuggestions, AutopilotSuggestion } from "./AutopilotCalendarSuggestions";
+import { BookedVitanaEventsSection } from "./BookedVitanaEventsSection";
+import { MobileCalendarModal } from "./MobileCalendarModal";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EnhancedCalendarPopupProps {
   open: boolean;
@@ -107,6 +110,7 @@ export function EnhancedCalendarPopup({
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
   const { translate } = useTranslation();
+  const isMobile = useIsMobile();
   const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = useCalendarEvents();
   
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
@@ -335,6 +339,11 @@ export function EnhancedCalendarPopup({
     return () => window.removeEventListener('keydown', handleKeyboard);
   }, [open, activeTab]);
 
+  // Render mobile-optimized modal on mobile devices
+  if (isMobile) {
+    return <MobileCalendarModal open={open} onOpenChange={onOpenChange} />;
+  }
+
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -436,6 +445,12 @@ export function EnhancedCalendarPopup({
                     <CalendarListSkeleton />
                   ) : (
                     <>
+                      {/* Booked Vitana Events Section */}
+                      <BookedVitanaEventsSection
+                        events={events}
+                        onEventClick={setDetailsPanelEvent}
+                      />
+
                       {/* Autopilot Suggestions */}
                       <AutopilotCalendarSuggestions
                         suggestions={autopilotSuggestions}

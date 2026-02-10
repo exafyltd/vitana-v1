@@ -2,7 +2,7 @@ import { useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Pencil, Check, Plus, ExternalLink } from "lucide-react";
+import { Check, Plus, ExternalLink } from "lucide-react";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
 import { InstagramIcon } from "@/components/icons/InstagramIcon";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
@@ -117,17 +117,6 @@ export function MobileIdCardBack({
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)"
         }}
       >
-        {/* Edit button - top right */}
-        {editMode && onEdit && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10"
-            onClick={onEdit}
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-        )}
 
         <div className="p-6">
           {/* Header */}
@@ -212,16 +201,6 @@ export function MobileIdCardBack({
                 <Plus className="h-5 w-5 text-white/40" />
               </div>
               <p className="text-sm text-white/50 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
-              {editMode && onEdit && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onEdit}
-                  className="border-white/20 text-white/70 hover:bg-white/10"
-                >
-                  {translate('socialImport.connectAccounts', 'Connect Accounts')}
-                </Button>
-              )}
             </div>
           )}
 
@@ -242,7 +221,7 @@ export function MobileIdCardBack({
           platform={selectedPlatform.id}
           platformName={selectedPlatform.name}
           icon={selectedPlatform.icon}
-          profileId={user?.id ?? profile.user_id ?? profile.id}
+          profileId={user?.id || (profile.user_id && profile.user_id !== 'current-user' ? profile.user_id : '')}
           onSuccess={handleImportSuccess}
         />
       )}

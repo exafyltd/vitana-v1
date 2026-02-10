@@ -1,104 +1,71 @@
-import { useState, useEffect } from "react";
-import { AutopilotAction, AutopilotState, AutopilotPriority, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
+import { useState, useEffect, useMemo } from "react";
+import { AutopilotAction, AutopilotState, AutopilotPriority, AutopilotCategory, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useTranslation } from "@/hooks/useTranslation";
 
-// Mock data generator with enhanced motivational actions
-const generateMockActions = (): AutopilotAction[] => [
-  {
-    id: "1",
-    title: "Join Longevity Dance Group Tonight?",
-    reason: "Perfect match for your movement goals + social wellness vibes",
-    category: "community",
-    priority: "high",
-    timeEstimate: "2 min",
-    icon: "💃",
-    imageUrl: "/src/assets/actions/community-dance-group.jpg",
-    timestamp: new Date(Date.now() - 5 * 60 * 1000),
-    status: "pending",
-    selected: true,
-    actionType: "join"
-  },
-  {
-    id: "2", 
-    title: "AI Breakthrough Insight Just Dropped",
-    reason: "Your digital twin discovered something fascinating from your patterns",
-    category: "discover",
-    priority: "medium",
-    timeEstimate: "1-2 min",
-    icon: "✨",
-    imageUrl: "/src/assets/actions/ai-neural-patterns.jpg",
-    timestamp: new Date(Date.now() - 8 * 60 * 1000),
-    status: "pending",
-    selected: true,
-    ctaLabel: "View Insight"
-  },
-  {
-    id: "3",
-    title: "Hydration Streak at 5 Days — Legend Status Awaits",
-    reason: "One more sip closer to your weekly hydration mastery",
-    category: "health", 
-    priority: "medium",
-    timeEstimate: "30 sec",
-    icon: "💧",
-    imageUrl: "/src/assets/actions/hydration-water-bottle.jpg",
-    timestamp: new Date(Date.now() - 12 * 60 * 1000),
-    status: "pending",
-    selected: true,
-    ctaLabel: "Log It"
-  },
-  {
-    id: "4",
-    title: "Auto-invite Squad to Epic Weekend Meetup",
-    reason: "Sarah, Luna & Marcus are perfect longevity tribe matches",
-    category: "community",
-    priority: "high", 
-    timeEstimate: "1 min",
-    icon: "🎉",
-    imageUrl: "/src/assets/actions/friends-meetup-selfie.jpg",
-    timestamp: new Date(Date.now() - 15 * 60 * 1000),
-    status: "pending",
-    selected: true,
-    ctaLabel: "Send Invites"
-  },
-  {
-    id: "5",
-    title: "Your Biomarker Story Awaits",
-    reason: "Dr. Chen decoded exciting insights from your latest panel",
-    category: "health",
-    priority: "high",
-    timeEstimate: "3 min", 
-    icon: "🩺",
-    imageUrl: "/src/assets/actions/doctor-biomarker-review.jpg",
-    timestamp: new Date(Date.now() - 18 * 60 * 1000),
-    status: "pending",
-    selected: false,
-    actionType: "review"
-  },
-  {
-    id: "6",
-    title: "Mindful Morning Magic",
-    reason: "Your soul is calling for these stress-melting techniques",
-    category: "media",
-    priority: "low",
-    timeEstimate: "30 sec",
-    icon: "🧘",
-    imageUrl: "/src/assets/actions/wellness-yoga-nature.jpg",
-    timestamp: new Date(Date.now() - 22 * 60 * 1000),
-    status: "pending", 
-    selected: true,
-    actionType: "watch"
-  }
+// Action IDs map to translation keys
+interface ActionConfig {
+  id: string;
+  titleKey: string;
+  reasonKey: string;
+  category: AutopilotCategory;
+  priority: AutopilotPriority;
+  timeEstimate: string;
+  icon: string;
+  imageUrl: string;
+  actionType?: string;
+  ctaLabel?: string;
+}
+
+const actionConfigs: ActionConfig[] = [
+  { id: "1", titleKey: "action1Title", reasonKey: "action1Reason", category: "community", priority: "high", timeEstimate: "2 min", icon: "💃", imageUrl: "/src/assets/actions/community-dance-group.jpg", actionType: "join" },
+  { id: "2", titleKey: "action2Title", reasonKey: "action2Reason", category: "discover", priority: "medium", timeEstimate: "1-2 min", icon: "✨", imageUrl: "/src/assets/actions/ai-neural-patterns.jpg", ctaLabel: "View Insight" },
+  { id: "3", titleKey: "action3Title", reasonKey: "action3Reason", category: "health", priority: "medium", timeEstimate: "30 sec", icon: "💧", imageUrl: "/src/assets/actions/hydration-water-bottle.jpg", ctaLabel: "Log It" },
+  { id: "4", titleKey: "action4Title", reasonKey: "action4Reason", category: "community", priority: "high", timeEstimate: "1 min", icon: "🎉", imageUrl: "/src/assets/actions/friends-meetup-selfie.jpg", ctaLabel: "Send Invites" },
+  { id: "5", titleKey: "action5Title", reasonKey: "action5Reason", category: "health", priority: "high", timeEstimate: "3 min", icon: "🩺", imageUrl: "/src/assets/actions/doctor-biomarker-review.jpg", actionType: "review" },
+  { id: "6", titleKey: "action6Title", reasonKey: "action6Reason", category: "media", priority: "low", timeEstimate: "30 sec", icon: "🧘", imageUrl: "/src/assets/actions/wellness-yoga-nature.jpg", actionType: "watch" },
 ];
 
 export function useAutopilot() {
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
+  const { translate } = useTranslation();
+
+  // Generate mock actions with translations
+  const generateMockActions = useMemo((): AutopilotAction[] => {
+    const now = Date.now();
+    return actionConfigs.map((config, index) => ({
+      id: config.id,
+      title: translate(`autopilot.actions.${config.titleKey}`),
+      reason: translate(`autopilot.actions.${config.reasonKey}`),
+      category: config.category,
+      priority: config.priority,
+      timeEstimate: config.timeEstimate,
+      icon: config.icon,
+      imageUrl: config.imageUrl,
+      timestamp: new Date(now - (5 + index * 4) * 60 * 1000),
+      status: "pending" as AutopilotActionStatus,
+      selected: index < 4, // First 4 selected by default
+      actionType: config.actionType,
+      ctaLabel: config.ctaLabel,
+    }));
+  }, [translate]);
+
   const [state, setState] = useState<AutopilotState>({
-    actions: generateMockActions(),
+    actions: generateMockActions,
     isExecuting: false,
     lastUpdate: new Date()
   });
+
+  // Update actions when language changes
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      actions: generateMockActions,
+      lastUpdate: new Date()
+    }));
+  }, [generateMockActions]);
 
   // Filter actions based on user preferences
   const filterActionsByPreferences = (actions: AutopilotAction[]) => {
@@ -139,8 +106,8 @@ export function useAutopilot() {
       if (Math.random() < 0.1) { // 10% chance every 5 seconds
         const newAction: AutopilotAction = {
           id: Date.now().toString(),
-          title: "New AI suggestion",
-          reason: "Based on recent activity patterns",
+          title: translate('autopilot.actions.newActionTitle'),
+          reason: translate('autopilot.actions.newActionReason'),
           category: Math.random() > 0.5 ? "health" : "community",
           priority: "medium" as AutopilotPriority,
           timeEstimate: "1-2 min",
@@ -160,7 +127,7 @@ export function useAutopilot() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [translate]);
 
   const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
     setState(prev => ({ ...prev, isExecuting: true }));
@@ -171,7 +138,7 @@ export function useAutopilot() {
         const results: ExecutionResult[] = actionIds.map(id => ({
           actionId: id,
           success: Math.random() > 0.1, // 90% success rate
-          message: Math.random() > 0.1 ? "Completed successfully" : "Failed - will retry later"
+          message: Math.random() > 0.1 ? translate('autopilot.success') : translate('autopilot.failed')
         }));
 
         setState(prev => ({

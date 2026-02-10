@@ -11,6 +11,7 @@ import { Visibility } from "@/types/profile";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface LinkItem {
   id: string;
@@ -36,6 +37,21 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const { toast } = useToast();
+  const { translate } = useTranslation();
+
+  // Language options with their translation keys
+  const languageOptions = [
+    { key: "english", value: "English" },
+    { key: "german", value: "German" },
+    { key: "spanish", value: "Spanish" },
+    { key: "french", value: "French" },
+    { key: "italian", value: "Italian" },
+    { key: "portuguese", value: "Portuguese" },
+    { key: "russian", value: "Russian" },
+    { key: "arabic", value: "Arabic" },
+    { key: "chinese", value: "Chinese" },
+    { key: "japanese", value: "Japanese" },
+  ];
 
   // Load current profile data
   useEffect(() => {
@@ -114,35 +130,32 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
     setLanguages(languages.filter(l => l !== language));
   };
 
-  const getVisibilityIcon = (visibility: Visibility) => {
-    switch (visibility) {
-      case "public": return <Globe className="w-3 h-3" />;
-      case "followers": return <Users className="w-3 h-3" />;
-      case "private": return <Lock className="w-3 h-3" />;
-    }
+  const getVisibilityLabel = (visibility: Visibility) => {
+    return translate(`profileEditor.visibility.${visibility}`);
   };
 
-  const getVisibilityLabel = (visibility: Visibility) => {
-    switch (visibility) {
-      case "public": return "Public";
-      case "followers": return "Followers";
-      case "private": return "Private";
+  // Get translated language name for display
+  const getLanguageDisplayName = (langValue: string) => {
+    const option = languageOptions.find(opt => opt.value === langValue);
+    if (option) {
+      return translate(`profileEditor.languageOptions.${option.key}`);
     }
+    return langValue;
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">About</h3>
+        <h3 className="text-lg font-medium mb-4">{translate('profileEditor.aboutTitle')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Share more about yourself. You can control who sees each field.
+          {translate('profileEditor.aboutDescription')}
         </p>
       </div>
 
       {/* Bio */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="bio">Bio</Label>
+          <Label htmlFor="bio">{translate('profileEditor.bio')}</Label>
           <Select value={bioVisibility} onValueChange={(value: Visibility) => setBioVisibility(value)}>
             <SelectTrigger className="w-auto">
               <SelectValue />
@@ -151,19 +164,19 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
               <SelectItem value="public">
                 <div className="flex items-center gap-2">
                   <Globe className="w-3 h-3" />
-                  Public
+                  {translate('profileEditor.visibility.public')}
                 </div>
               </SelectItem>
               <SelectItem value="followers">
                 <div className="flex items-center gap-2">
                   <Users className="w-3 h-3" />
-                  Followers
+                  {translate('profileEditor.visibility.followers')}
                 </div>
               </SelectItem>
               <SelectItem value="private">
                 <div className="flex items-center gap-2">
                   <Lock className="w-3 h-3" />
-                  Private
+                  {translate('profileEditor.visibility.private')}
                 </div>
               </SelectItem>
             </SelectContent>
@@ -173,22 +186,17 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
           id="bio"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="Share your wellness journey, passions, and what makes you unique... 
-
-Examples:
-• 'Wellness enthusiast passionate about mindful living and community building 🌱'
-• 'Certified nutritionist helping others discover their healthiest selves'
-• 'Marathon runner, meditation teacher, and advocate for balanced living'"
+          placeholder={translate('profileEditor.bioPlaceholder')}
           rows={4}
           maxLength={500}
         />
         <div className="flex justify-between items-center">
           <p className="text-xs text-muted-foreground">
-            {bio.length}/500 characters • {Math.ceil(bio.split(' ').length)} words
+            {bio.length}/500 {translate('profileEditor.characters')} • {Math.ceil(bio.split(' ').length)} {translate('profileEditor.words')}
           </p>
           {bio.length > 250 && (
             <Badge variant="outline" className="text-xs">
-              {bio.length > 400 ? 'Almost full' : 'Good length'}
+              {bio.length > 400 ? translate('profileEditor.almostFull') : translate('profileEditor.goodLength')}
             </Badge>
           )}
         </div>
@@ -197,7 +205,7 @@ Examples:
           type="bio" 
           onSuggestionClick={(suggestion) => {
             toast({
-              title: "Autopilot suggestion",
+              title: translate('profileEditor.autopilot.suggestion'),
               description: suggestion
             });
             // TODO: Implement actual AI suggestions
@@ -208,7 +216,7 @@ Examples:
       {/* Location */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="location">Location</Label>
+          <Label htmlFor="location">{translate('profileEditor.location')}</Label>
           <Select value={locationVisibility} onValueChange={(value: Visibility) => setLocationVisibility(value)}>
             <SelectTrigger className="w-auto">
               <SelectValue />
@@ -217,19 +225,19 @@ Examples:
               <SelectItem value="public">
                 <div className="flex items-center gap-2">
                   <Globe className="w-3 h-3" />
-                  Public
+                  {translate('profileEditor.visibility.public')}
                 </div>
               </SelectItem>
               <SelectItem value="followers">
                 <div className="flex items-center gap-2">
                   <Users className="w-3 h-3" />
-                  Followers
+                  {translate('profileEditor.visibility.followers')}
                 </div>
               </SelectItem>
               <SelectItem value="private">
                 <div className="flex items-center gap-2">
                   <Lock className="w-3 h-3" />
-                  Private
+                  {translate('profileEditor.visibility.private')}
                 </div>
               </SelectItem>
             </SelectContent>
@@ -239,17 +247,17 @@ Examples:
           id="location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder="e.g., San Francisco, CA • London, UK • Remote"
+          placeholder={translate('profileEditor.locationPlaceholder')}
         />
       </div>
 
       {/* Links */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <Label>Links</Label>
+          <Label>{translate('profileEditor.links')}</Label>
           <Button variant="outline" size="sm" onClick={addLink}>
             <Plus className="w-4 h-4 mr-2" />
-            Add Link
+            {translate('profileEditor.addLink')}
           </Button>
         </div>
         
@@ -258,7 +266,7 @@ Examples:
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <Input
-                  placeholder="Label (e.g., Website, Instagram, LinkedIn, Portfolio)"
+                  placeholder={translate('profileEditor.linkLabelPlaceholder')}
                   value={link.label}
                   onChange={(e) => updateLink(link.id, "label", e.target.value)}
                   className="flex-1 mr-2"
@@ -268,7 +276,7 @@ Examples:
                 </Button>
               </div>
               <Input
-                placeholder="https://your-website.com or @username"
+                placeholder={translate('profileEditor.linkUrlPlaceholder')}
                 value={link.url}
                 onChange={(e) => updateLink(link.id, "url", e.target.value)}
               />
@@ -283,19 +291,19 @@ Examples:
                   <SelectItem value="public">
                     <div className="flex items-center gap-2">
                       <Globe className="w-3 h-3" />
-                      Public
+                      {translate('profileEditor.visibility.public')}
                     </div>
                   </SelectItem>
                   <SelectItem value="followers">
                     <div className="flex items-center gap-2">
                       <Users className="w-3 h-3" />
-                      Followers
+                      {translate('profileEditor.visibility.followers')}
                     </div>
                   </SelectItem>
                   <SelectItem value="private">
                     <div className="flex items-center gap-2">
                       <Lock className="w-3 h-3" />
-                      Private
+                      {translate('profileEditor.visibility.private')}
                     </div>
                   </SelectItem>
                 </SelectContent>
@@ -307,11 +315,11 @@ Examples:
 
       {/* Languages */}
       <div className="space-y-2">
-        <Label>Languages</Label>
+        <Label>{translate('profileEditor.languages')}</Label>
         <div className="flex flex-wrap gap-2 mb-2">
           {languages.map((language) => (
             <Badge key={language} variant="secondary" className="gap-1">
-              {language}
+              {getLanguageDisplayName(language)}
               <Button
                 variant="ghost"
                 size="sm"
@@ -325,19 +333,14 @@ Examples:
         </div>
         <Select onValueChange={addLanguage}>
           <SelectTrigger>
-            <SelectValue placeholder="Add a language" />
+            <SelectValue placeholder={translate('profileEditor.addLanguage')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="English">English</SelectItem>
-            <SelectItem value="Spanish">Spanish</SelectItem>
-            <SelectItem value="French">French</SelectItem>
-            <SelectItem value="German">German</SelectItem>
-            <SelectItem value="Italian">Italian</SelectItem>
-            <SelectItem value="Portuguese">Portuguese</SelectItem>
-            <SelectItem value="Russian">Russian</SelectItem>
-            <SelectItem value="Arabic">Arabic</SelectItem>
-            <SelectItem value="Chinese">Chinese</SelectItem>
-            <SelectItem value="Japanese">Japanese</SelectItem>
+            {languageOptions.map((lang) => (
+              <SelectItem key={lang.key} value={lang.value}>
+                {translate(`profileEditor.languageOptions.${lang.key}`)}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
