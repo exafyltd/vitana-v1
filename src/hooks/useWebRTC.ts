@@ -31,6 +31,9 @@ export const useWebRTC = (config: WebRTCConfig) => {
   
   const channelRef = useRef<RealtimeChannel | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
+  // Use refs to avoid re-creating initializeLocalStream when toggling
+  const isAudioEnabledRef = useRef(config.isAudioEnabled ?? true);
+  const isVideoEnabledRef = useRef(config.isVideoEnabled ?? true);
 
   const createPeerConnection = useCallback((peerId: string): RTCPeerConnection => {
     const pc = new RTCPeerConnection(ICE_SERVERS);
@@ -75,10 +78,12 @@ export const useWebRTC = (config: WebRTCConfig) => {
 
   const initializeLocalStream = useCallback(async () => {
     try {
-      console.log('🎤 Requesting media devices - video:', isVideoEnabled, 'audio:', isAudioEnabled);
+      const wantVideo = isVideoEnabledRef.current;
+      const wantAudio = isAudioEnabledRef.current;
+      console.log('🎤 Requesting media devices - video:', wantVideo, 'audio:', wantAudio);
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: isVideoEnabled,
-        audio: isAudioEnabled
+        video: wantVideo,
+        audio: wantAudio
       });
       
       console.log('✅ Media devices acquired');
@@ -98,7 +103,7 @@ export const useWebRTC = (config: WebRTCConfig) => {
       }
       throw error;
     }
-  }, [isVideoEnabled, isAudioEnabled]);
+  }, []); // No state dependencies - uses refs
 
   const handleOffer = useCallback(async (offer: RTCSessionDescriptionInit, fromPeer: string) => {
     const pc = createPeerConnection(fromPeer);
@@ -198,7 +203,6 @@ export const useWebRTC = (config: WebRTCConfig) => {
         })
         .on('presence', { event: 'join' }, ({ key, newPresences }) => {
           console.log('👋 Peer joined:', newPresences);
-          // Connect to newly joined peer
           newPresences.forEach((presence: any) => {
             if (presence.user_id !== config.userId) {
               console.log('🤝 Connecting to peer:', presence.user_id);
@@ -208,7 +212,6 @@ export const useWebRTC = (config: WebRTCConfig) => {
         })
         .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
           console.log('👋 Peer left:', leftPresences);
-          // Clean up disconnected peer
           leftPresences.forEach((presence: any) => {
             setPeers(prev => {
               const updated = new Map(prev);
@@ -241,27 +244,23 @@ export const useWebRTC = (config: WebRTCConfig) => {
           throw error;
         }
         
-        // Wait before retry (2 seconds)
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
   }, [config.roomId, config.userId, initializeLocalStream, handleOffer, handleAnswer, handleIceCandidate, connectToPeer]);
 
   const leaveRoom = useCallback(() => {
-    // Stop local stream
     if (localStreamRef.current) {
       localStreamRef.current.getTracks().forEach(track => track.stop());
       localStreamRef.current = null;
       setLocalStream(null);
     }
 
-    // Close all peer connections
     peers.forEach(peer => {
       peer.connection.close();
     });
     setPeers(new Map());
 
-    // Unsubscribe from channel
     if (channelRef.current) {
       channelRef.current.unsubscribe();
       channelRef.current = null;
@@ -275,6 +274,7 @@ export const useWebRTC = (config: WebRTCConfig) => {
       const audioTrack = localStreamRef.current.getAudioTracks()[0];
       if (audioTrack) {
         audioTrack.enabled = !audioTrack.enabled;
+        isAudioEnabledRef.current = audioTrack.enabled;
         setIsAudioEnabled(audioTrack.enabled);
       }
     }
@@ -285,6 +285,7 @@ export const useWebRTC = (config: WebRTCConfig) => {
       const videoTrack = localStreamRef.current.getVideoTracks()[0];
       if (videoTrack) {
         videoTrack.enabled = !videoTrack.enabled;
+        isVideoEnabledRef.current = videoTrack.enabled;
         setIsVideoEnabled(videoTrack.enabled);
       }
     }
