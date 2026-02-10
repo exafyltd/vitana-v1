@@ -764,6 +764,12 @@ export default function LiveRooms() {
               </div>
             )}
           </SplitBarContent>
+
+          <SplitBarContent value="past" className="mt-6">
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
+            </div>
+          </SplitBarContent>
         </SplitBar>
       </div>
 
