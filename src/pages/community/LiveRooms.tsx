@@ -805,15 +805,13 @@ export default function LiveRooms() {
         open={isGoLiveOpen} 
         onOpenChange={(open) => {
           setIsGoLiveOpen(open);
-          if (!open) setEditingStream(null);
         }}
         defaultTitle="Live Community Discussion"
-        editMode={!!editingStream}
-        streamData={editingStream || undefined}
-        onCreated={(streamId) => {
+        permanentRoomId={myRoomData?.room?.id}
+        onCreated={(roomId) => {
           setActiveTab('scheduled');
-          setSelectedRoomId(streamId);
-          setSearchParams({ live: streamId });
+          setSelectedRoomId(roomId);
+          setSearchParams({ live: roomId });
         }}
       />
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
