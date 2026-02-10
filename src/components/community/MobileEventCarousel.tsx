@@ -248,17 +248,16 @@ export function MobileEventCarousel({
 
   return (
     <div 
-      className="relative w-full" 
-      style={{ height: `calc(100dvh - ${CHROME_HEIGHT_PX}px)` }}
+      className="h-full flex flex-col min-h-0" 
       role="feed" 
       aria-label="Events feed"
     >
       {debugBanner}
 
-      {/* Vertical snap-scroll container — sole scrolling surface, explicit height */}
+      {/* Vertical snap-scroll container — fills parent via flex */}
       <div 
         ref={containerRef}
-        className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide border border-red-500"
+        className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
