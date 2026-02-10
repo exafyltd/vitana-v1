@@ -225,24 +225,36 @@ export function MobileEventCarousel({
       role="feed" 
       aria-label="Events feed"
     >
-      {/* Vertical scroll container with snap */}
+      {/* Vertical scroll container with snap — container & card share same height */}
       <div 
         ref={containerRef}
-        className="overflow-y-auto snap-y snap-mandatory h-[calc(100vh-200px)] scrollbar-hide"
-        style={{ overscrollBehavior: 'contain' }}
+        className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+        style={{
+          height: 'calc(100dvh - 216px)',
+          overscrollBehavior: 'contain',
+        } as React.CSSProperties}
       >
         {events.map((event, index) => (
           <div
             key={event.id}
             data-index={index}
-            className="snap-start px-2"
-            style={{ height: 'calc(100vh - 280px)', minHeight: '400px' }}
+            className={cn(
+              "snap-start transition-all duration-300 ease-out",
+              index !== events.length - 1 && "border-b border-border/30"
+            )}
+            style={{
+              height: 'calc(100dvh - 216px)',
+              scrollSnapStop: 'always',
+              padding: '8px 12px',
+              transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
+              opacity: currentIndex === index ? 1 : 0.7,
+            } as React.CSSProperties}
             role="article"
             aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
           >
             <NewsCard
               {...transformEventToCard(event)}
-              className="h-full"
+              className="h-full rounded-2xl"
             />
           </div>
         ))}
