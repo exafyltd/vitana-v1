@@ -254,23 +254,14 @@ export function MobileEventCarousel({
     >
       {debugBanner}
 
-      {/* Debug fallback list (temporary — remove after layout fix confirmed) */}
-      <div className="px-3 py-2 space-y-2 max-h-40 overflow-y-auto bg-yellow-50 border border-yellow-200 rounded-lg mx-2 mb-1 flex-shrink-0">
-        <p className="text-[10px] text-yellow-700 font-bold">DEBUG FALLBACK LIST:</p>
-        {events.slice(0, 5).map((event) => (
-          <div key={event.id} className="p-2 bg-background rounded-xl shadow text-xs">
-            <span className="font-medium">{event.title}</span> — {new Date(event.start_time).toLocaleDateString()}
-          </div>
-        ))}
-      </div>
-
-      {/* Vertical snap-scroll container — sole scrolling surface */}
+      {/* Vertical snap-scroll container — sole scrolling surface, explicit height */}
       <div 
         ref={containerRef}
-        className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+        className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide border border-red-500"
         style={{
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
+          paddingBottom: 'calc(120px + env(safe-area-inset-bottom))',
         }}
       >
         {events.map((event, index) => {
