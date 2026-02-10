@@ -741,7 +741,16 @@
       "styleProfile": "Mein Profil gestalten",
       "styleProfileDesc": "Verbesserungen für Titelbild, Rollen und Profilbild vorschlagen",
       "cancel": "Abbrechen",
-      "runAutopilot": "Autopilot starten"
+      "runAutopilot": "Autopilot starten",
+      "generating": "Vorschläge werden erstellt...",
+      "suggestedBio": "Vorgeschlagene Bio",
+      "suggestedArchetype": "Vorgeschlagener Archetyp",
+      "currentValue": "Aktuell",
+      "accept": "Übernehmen",
+      "reject": "Verwerfen",
+      "acceptAll": "Alle übernehmen",
+      "applied": "Änderungen gespeichert!",
+      "error": "Etwas ist schiefgelaufen"
     },
     "suggestions": {
       "bannerTitle": "Autopilot kann Ihr Profil optimieren",
@@ -2023,7 +2032,7 @@
   "profile": {
     "defaultBio": "Wellness-Enthusiast mit Leidenschaft für ganzheitliche Gesundheit und Gemeinschaftsaufbau. 🌱",
     "autopilot": {
-      "polishBio": "Bio, Archetyp & Highlights verbessern",
+      "polishBio": "Bio, Profil & Highlights",
       "try": "Ausprobieren"
     },
     "identity": {

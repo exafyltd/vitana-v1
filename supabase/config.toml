@@ -170,3 +170,6 @@ verify_jwt = false
 
 [functions.og-event]
 verify_jwt = false
+
+[functions.autopilot-profile]
+verify_jwt = true
