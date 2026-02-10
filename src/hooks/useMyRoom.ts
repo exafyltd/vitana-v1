@@ -16,6 +16,8 @@ export function useMyRoom() {
     queryFn: () => liveRoomService.getMyRoom(),
     enabled: !!user,
     staleTime: 30_000,
+    retry: 2,
+    meta: { errorMessage: 'Failed to fetch permanent room from gateway' },
   });
 }
 

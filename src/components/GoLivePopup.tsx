@@ -63,8 +63,30 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [isLoading, setIsLoading] = useState(false);
   
   // Fetch user's permanent room if not passed as prop
-  const { data: myRoomData } = useMyRoom();
-  const roomId = permanentRoomId || myRoomData?.room?.id;
+  const { data: myRoomData, error: myRoomError } = useMyRoom();
+  
+  // Fallback: fetch live_room_id directly from Supabase if gateway fails
+  const [fallbackRoomId, setFallbackRoomId] = useState<string | null>(null);
+  useEffect(() => {
+    if (!permanentRoomId && !myRoomData?.room?.id && myRoomError && open) {
+      console.warn('[GoLivePopup] Gateway /rooms/me failed, falling back to Supabase:', myRoomError);
+      supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+        if (!authUser) return;
+        supabase
+          .from('app_users')
+          .select('live_room_id')
+          .eq('user_id', authUser.id)
+          .maybeSingle()
+          .then(({ data }) => {
+            if (data?.live_room_id) {
+              setFallbackRoomId(data.live_room_id);
+            }
+          });
+      });
+    }
+  }, [permanentRoomId, myRoomData, myRoomError, open]);
+  
+  const roomId = permanentRoomId || myRoomData?.room?.id || fallbackRoomId;
   
   const { mutateAsync: createSession } = useCreateSession();
   
