@@ -248,7 +248,8 @@ export function MobileEventCarousel({
 
   return (
     <div 
-      className="h-full flex flex-col min-h-0 relative w-full" 
+      className="relative w-full" 
+      style={{ height: `calc(100dvh - ${CHROME_HEIGHT_PX}px)` }}
       role="feed" 
       aria-label="Events feed"
     >
