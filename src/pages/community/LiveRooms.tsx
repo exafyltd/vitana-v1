@@ -38,8 +38,8 @@ import type { LiveStream } from "@/hooks/useLiveStreams";
 import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
-import { useTranslation } from "@/hooks/useTranslation";
 import { useMyRoom } from "@/hooks/useMyRoom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -48,7 +48,7 @@ export default function LiveRooms() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { user } = useAuth();
-  const { data: myRoomData } = useMyRoom();
+  const { room: myRoom } = useMyRoom();
   const isMobile = useIsMobile();
   const { translate } = useTranslation();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
@@ -87,7 +87,15 @@ export default function LiveRooms() {
   const transformStreamToRoom = (stream: LiveStream): LiveRoom => {
     const profile = profilesMap[stream.created_by];
     const isYou = user?.id === stream.created_by;
-    
+
+    // Map stream status to room-card-compatible status
+    const statusMap: Record<string, LiveRoom['status']> = {
+      'pending': 'scheduled',
+      'live': 'live',
+      'ended': 'ended',
+      'cancelled': 'cancelled',
+    };
+
     return {
       id: stream.id,
       title: stream.title,
@@ -107,6 +115,7 @@ export default function LiveRooms() {
       imageUrl: stream.cover_image_url || undefined,
       category: stream.tags[0] || "general",
       location: "Virtual",
+      status: statusMap[stream.status] || undefined,
     };
   };
   
@@ -631,7 +640,7 @@ export default function LiveRooms() {
           </div>
         </UtilityActionButton>
 
-        {/* Split Bar for Live/Scheduled */}
+        {/* Split Bar for Live/Scheduled/Past */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
           <SplitBarList className="grid w-full grid-cols-3">
             <SplitBarTrigger value="live">
@@ -657,7 +666,7 @@ export default function LiveRooms() {
               )}
             </SplitBarTrigger>
             <SplitBarTrigger value="past">
-              🕐 {translate('liveRooms.tabs.past', 'Past')}
+              📋 {translate('liveRooms.tabs.past', 'Past')}
             </SplitBarTrigger>
           </SplitBarList>
 
@@ -768,18 +777,21 @@ export default function LiveRooms() {
           <SplitBarContent value="past" className="mt-6">
             <div className="text-center py-12">
               <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                View summaries, highlights, and recordings from completed sessions.
+              </p>
             </div>
           </SplitBarContent>
         </SplitBar>
       </div>
 
-      <GoLivePopup 
-        open={isGoLiveOpen} 
+      <GoLivePopup
+        open={isGoLiveOpen}
         onOpenChange={(open) => {
           setIsGoLiveOpen(open);
         }}
         defaultTitle="Live Community Discussion"
-        permanentRoomId={myRoomData?.room?.id}
+        permanentRoomId={myRoom?.id}
         onCreated={(roomId) => {
           setActiveTab('scheduled');
           setSelectedRoomId(roomId);

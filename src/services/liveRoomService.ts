@@ -2,7 +2,8 @@
  * Live Room API Client
  *
  * Wraps Gateway Live Room endpoints with typed interfaces.
- * VTID-01228: Session-based Live Room management
+ * VTID-01228: Session management + permanent room model
+ * VTID-01230: Frontend integration for Daily.co Live Rooms
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -15,7 +16,10 @@ const API_BASE = `${GATEWAY_BASE}/api/v1`;
 // ============================================================================
 
 export type AccessLevel = 'public' | 'group';
-export type RoomStatus = 'idle' | 'scheduled' | 'lobby' | 'live' | 'ended';
+export type RoomStatus = 'idle' | 'scheduled' | 'lobby' | 'live' | 'ended' | 'cancelled';
+export type SessionStatus = 'scheduled' | 'lobby' | 'live' | 'ended' | 'cancelled';
+export type LobbyStatus = 'waiting' | 'admitted' | 'rejected';
+export type ParticipantRole = 'host' | 'guest';
 
 export interface LiveRoom {
   id: string;
@@ -30,6 +34,9 @@ export interface LiveRoom {
   room_name: string | null;
   room_slug: string | null;
   current_session_id: string | null;
+  cover_image_url: string | null;
+  description: string | null;
+  host_present: boolean;
   metadata: {
     price?: number;
     description?: string;
@@ -44,22 +51,21 @@ export interface LiveRoom {
 
 export interface LiveRoomSession {
   id: string;
+  tenant_id: string;
   room_id: string;
-  session_title: string;
-  session_description: string | null;
-  status: 'scheduled' | 'live' | 'ended' | 'cancelled';
-  starts_at: string | null;
+  session_title: string | null;
+  topic_keys: string[];
+  status: SessionStatus;
+  access_level: AccessLevel;
+  starts_at: string;
   ends_at: string | null;
-  scheduled_for: string | null;
-  stream_type: string | null;
-  tags: string[];
-  access_level: string;
-  cover_image_url: string | null;
-  enable_chat: boolean;
-  enable_polls: boolean;
-  enable_recording: boolean;
-  viewer_count: number;
-  peak_viewers: number;
+  lobby_open_at: string | null;
+  host_present: boolean;
+  auto_admit: boolean;
+  lobby_buffer_minutes: number;
+  max_participants: number;
+  metadata: Record<string, unknown>;
+  idempotency_key: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -80,6 +86,39 @@ export interface RoomStateResponse {
   viewer: { role: string; lobby_status: string | null; is_banned: boolean };
 }
 
+export interface RoomStateSnapshot {
+  room: {
+    id: string;
+    status: RoomStatus;
+    room_name: string | null;
+    room_slug: string | null;
+    host_user_id: string;
+    current_session_id: string | null;
+  };
+  session: {
+    id: string;
+    status: SessionStatus;
+    session_title: string | null;
+    starts_at: string;
+    ends_at: string | null;
+    lobby_open_at: string | null;
+    host_present: boolean;
+    access_level: AccessLevel;
+    auto_admit: boolean;
+    max_participants: number;
+  } | null;
+  counts: {
+    lobby_waiting: number;
+    in_room: number;
+  };
+  viewer: {
+    role: ParticipantRole | null;
+    lobby_status: LobbyStatus | null;
+    is_banned: boolean;
+    has_access_grant: boolean;
+  } | null;
+}
+
 export interface CreateSessionRequest {
   session_title: string;
   session_description?: string;
@@ -92,6 +131,26 @@ export interface CreateSessionRequest {
   enable_chat?: boolean;
   enable_polls?: boolean;
   enable_recording?: boolean;
+}
+
+export interface CreateSessionPayload {
+  session_title?: string;
+  topic_keys?: string[];
+  starts_at: string;
+  ends_at?: string;
+  access_level?: AccessLevel;
+  auto_admit?: boolean;
+  lobby_buffer_minutes?: number;
+  max_participants?: number;
+  metadata?: Record<string, unknown>;
+  idempotency_key?: string;
+}
+
+export interface UpdateRoomPayload {
+  room_name?: string;
+  room_slug?: string;
+  cover_image_url?: string;
+  description?: string;
 }
 
 export interface CreateRoomRequest {
@@ -117,6 +176,21 @@ export interface PurchaseResponse {
   client_secret: string;
   amount: number;
   currency: string;
+}
+
+export interface LobbyUser {
+  user_id: string;
+  display_name: string;
+  avatar_url: string | null;
+  waiting_since: string;
+}
+
+export interface JoinResult {
+  ok: boolean;
+  role: ParticipantRole;
+  lobby_status: LobbyStatus;
+  daily_token?: string;
+  daily_room_url?: string;
 }
 
 // ============================================================================
@@ -170,6 +244,17 @@ export const liveRoomService = {
   },
 
   /**
+   * Update permanent room identity (name, slug, cover, description)
+   */
+  async updateRoom(roomId: string, updates: UpdateRoomPayload): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    });
+    return res.json();
+  },
+
+  /**
    * Create a session on a permanent room (go live or schedule)
    */
   async createSession(roomId: string, request: CreateSessionRequest): Promise<{ ok: boolean; session: LiveRoomSession }> {
@@ -189,6 +274,21 @@ export const liveRoomService = {
   },
 
   /**
+   * Open lobby (scheduled -> lobby)
+   */
+  async openLobby(roomId: string): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/open-lobby`, { method: 'POST' });
+    return res.json();
+  },
+
+  /**
+   * Cancel a scheduled session
+   */
+  async cancelRoom(roomId: string): Promise<void> {
+    await apiFetch(`/live/rooms/${roomId}/cancel`, { method: 'POST' });
+  },
+
+  /**
    * Start a live room
    */
   async startRoom(roomId: string): Promise<void> {
@@ -200,13 +300,6 @@ export const liveRoomService = {
    */
   async endRoom(roomId: string): Promise<void> {
     await apiFetch(`/live/rooms/${roomId}/end`, { method: 'POST' });
-  },
-
-  /**
-   * Cancel a scheduled session
-   */
-  async cancelRoom(roomId: string): Promise<void> {
-    await apiFetch(`/live/rooms/${roomId}/cancel`, { method: 'POST' });
   },
 
   /**
@@ -239,6 +332,82 @@ export const liveRoomService = {
   async hostAbsent(roomId: string): Promise<void> {
     await apiFetch(`/live/rooms/${roomId}/host-absent`, { method: 'POST' });
   },
+
+  // --------------------------------------------------------------------------
+  // Lobby Management (VTID-01228) - NEWLY ADDED
+  // --------------------------------------------------------------------------
+
+  /**
+   * Get list of waiting guests (host only)
+   */
+  async getLobby(roomId: string): Promise<{ ok: boolean; users: LobbyUser[] }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/lobby`);
+    return res.json();
+  },
+
+  /**
+   * Admit guest from lobby (host only)
+   */
+  async admitUser(roomId: string, userId: string): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/admit`, {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId }),
+    });
+    return res.json();
+  },
+
+  /**
+   * Admit all waiting guests (host only)
+   */
+  async admitAll(roomId: string): Promise<{ ok: boolean; count: number }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/admit-all`, { method: 'POST' });
+    return res.json();
+  },
+
+  /**
+   * Reject guest from lobby (host only)
+   */
+  async rejectUser(roomId: string, userId: string): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId }),
+    });
+    return res.json();
+  },
+
+  /**
+   * Kick guest (can rejoin)
+   */
+  async kickUser(roomId: string, userId: string): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/kick`, {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId }),
+    });
+    return res.json();
+  },
+
+  /**
+   * Ban guest (cannot rejoin)
+   */
+  async banUser(roomId: string, userId: string): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/ban`, {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId }),
+    });
+    return res.json();
+  },
+
+  /**
+   * Signal WebRTC disconnection
+   */
+  async disconnect(roomId: string): Promise<{ ok: boolean }> {
+    const res = await apiFetch(`/live/rooms/${roomId}/disconnect`, { method: 'POST' });
+    return res.json();
+  },
+
+  // --------------------------------------------------------------------------
+  // Daily.co & Payment
+  // --------------------------------------------------------------------------
 
   /**
    * Create Daily.co video room
