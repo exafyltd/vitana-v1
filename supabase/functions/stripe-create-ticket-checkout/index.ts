@@ -134,6 +134,55 @@ serve(async (req) => {
     const unitAmount = Math.round(ticketType.price * 100); // Convert to cents
     const totalAmount = unitAmount * quantity;
 
+    // Validate discount code if provided
+    let validatedDiscount: any = null;
+    let stripeCouponId: string | undefined;
+    if (discount_code) {
+      logStep("Validating discount code", { discount_code });
+      const { data: discountData, error: discountError } = await supabaseAdmin
+        .from("user_discount_codes")
+        .select("*")
+        .eq("code", discount_code)
+        .is("used_at", null)
+        .gt("expires_at", new Date().toISOString())
+        .maybeSingle();
+
+      if (discountError || !discountData) {
+        logStep("Invalid discount code", { error: discountError });
+        throw new Error("Invalid or expired discount code");
+      }
+
+      // Verify code belongs to the authenticated user (if logged in)
+      if (user && discountData.user_id !== user.id) {
+        throw new Error("This discount code doesn't belong to you");
+      }
+
+      validatedDiscount = discountData;
+      logStep("Discount code validated", { percent: discountData.discount_percent });
+
+      // Create or find a Stripe coupon for this discount
+      const couponName = `MAXINA-${discountData.discount_percent}PCT`;
+      try {
+        // Try to retrieve existing coupon
+        const existingCoupons = await stripe.coupons.list({ limit: 100 });
+        const existing = existingCoupons.data.find(c => c.name === couponName && c.percent_off === discountData.discount_percent);
+        if (existing) {
+          stripeCouponId = existing.id;
+        } else {
+          const coupon = await stripe.coupons.create({
+            percent_off: discountData.discount_percent,
+            duration: 'once',
+            name: couponName,
+          });
+          stripeCouponId = coupon.id;
+        }
+        logStep("Stripe coupon ready", { couponId: stripeCouponId });
+      } catch (couponError: any) {
+        logStep("Error creating coupon", { error: couponError.message });
+        throw new Error("Failed to apply discount");
+      }
+    }
+
     // Create pending purchase record with UTM/reseller metadata
     const { data: purchase, error: purchaseError } = await supabaseAdmin
       .from("event_ticket_purchases")
