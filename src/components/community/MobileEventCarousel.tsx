@@ -243,9 +243,8 @@ export function MobileEventCarousel({
       {/* Vertical snap-scroll container — sole scrolling surface */}
       <div 
         ref={containerRef}
-        className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+        className="overflow-y-auto snap-y snap-mandatory scrollbar-hide flex-1 min-h-0"
         style={{
-          height: `calc(100dvh - ${CHROME_HEIGHT_PX}px)`,
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
         }}
