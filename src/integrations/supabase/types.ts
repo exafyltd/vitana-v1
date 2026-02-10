@@ -8793,6 +8793,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_discount_codes: {
+        Row: {
+          code: string
+          created_at: string
+          discount_percent: number
+          expires_at: string
+          id: string
+          tenant_slug: string
+          used_at: string | null
+          used_on_purchase_id: string | null
+          user_id: string
+          valid_for: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          discount_percent?: number
+          expires_at?: string
+          id?: string
+          tenant_slug?: string
+          used_at?: string | null
+          used_on_purchase_id?: string | null
+          user_id: string
+          valid_for?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          expires_at?: string
+          id?: string
+          tenant_slug?: string
+          used_at?: string | null
+          used_on_purchase_id?: string | null
+          user_id?: string
+          valid_for?: string
+        }
+        Relationships: []
+      }
       user_follows: {
         Row: {
           created_at: string
@@ -10437,6 +10476,7 @@ export type Database = {
       encrypt_api_key: { Args: { api_key_text: string }; Returns: string }
       expire_stale_vtid_claims: { Args: never; Returns: number }
       follow_user: { Args: { target_user_id: string }; Returns: Json }
+      generate_discount_code: { Args: { prefix?: string }; Returns: string }
       generate_event_slug: {
         Args: { event_id?: string; event_title: string }
         Returns: string
