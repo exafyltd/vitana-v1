@@ -307,28 +307,10 @@ export default function LiveRooms() {
 
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    
-    // Fetch fresh data directly from database
-    const { data: stream, error } = await supabase
-      .from('community_live_streams')
-      .select('*')
-      .eq('id', roomId)
-      .single();
-    
-    if (error) {
-      console.error('Error fetching stream:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load stream data",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (stream) {
-      setEditingStream(stream as LiveStream);
-      setIsGoLiveOpen(true);
-    }
+    toast({
+      title: "Not yet supported",
+      description: "Editing sessions will be available soon",
+    });
   };
 
   const handleCardDelete = (e: React.MouseEvent, roomId: string) => {
