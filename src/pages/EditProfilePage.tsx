@@ -26,6 +26,9 @@ import { MobileShowcaseHeader } from "@/components/profile/mobile/MobileShowcase
 import { MobileMediaTabContent } from "@/components/profile/mobile/MobileMediaTabContent";
 import { MobileGroupsTabContent } from "@/components/profile/mobile/MobileGroupsTabContent";
 import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
+import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
+import { ProfilePostsTab } from "@/components/profile/shared/tabs/ProfilePostsTab";
+import { getScope } from "@/lib/profileScope";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
