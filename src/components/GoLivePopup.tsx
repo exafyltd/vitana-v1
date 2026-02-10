@@ -74,29 +74,6 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [autoGenerateImage, setAutoGenerateImage] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
-  // Pre-fill form when editing
-  useEffect(() => {
-    if (editMode && streamData) {
-      setTitle(streamData.title);
-      setDescription(streamData.description || "");
-      setStreamType(streamData.stream_type === 'audio' ? 'audio' : 'video');
-      // Map stored tags to tag IDs
-      setSelectedTags(streamData.tags as TagId[]);
-      setAccessLevel(streamData.access_level as AccessLevelId);
-      setCoHostInput(streamData.co_hosts?.[0] || "");
-      setEnableChat(streamData.enable_chat);
-      setEnablePolls(streamData.enable_polls);
-      setEnableRecording(streamData.enable_recording ?? true);
-      setImagePreviewUrl(streamData.cover_image_url || "");
-      
-      if (streamData.scheduled_for) {
-        const schedDate = new Date(streamData.scheduled_for);
-        setScheduleDate(schedDate);
-        setScheduleTime(format(schedDate, 'HH:mm'));
-      }
-    }
-  }, [editMode, streamData]);
-
   const isScheduled = !!scheduleDate && !!scheduleTime && new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}`) > new Date();
 
   const generateTimeOptions = () => {
