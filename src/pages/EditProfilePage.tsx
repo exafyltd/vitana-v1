@@ -354,7 +354,7 @@ export default function EditProfilePage() {
                 {/* Real Posts */}
                 <ProfilePostsTab
                   profile={profile}
-                  scope={getScope(true, "me")}
+                  scope={getScope({ isOwner: true, isFollower: false, editMode: true, viewAs: "me" })}
                   editMode={true}
                   onEditAbout={handleEditAbout}
                   onCreatePost={() => setShowCreatePost(true)}
