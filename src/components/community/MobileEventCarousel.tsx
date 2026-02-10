@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -7,7 +6,6 @@ import { Edit, CalendarIcon } from 'lucide-react';
 import SocialShareButton from '@/components/sharing/SocialShareButton';
 import { getShareUrl } from '@/lib/shareUrl';
 
-// Helper functions duplicated from parent for isolation
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString('en-GB', { 
@@ -74,61 +72,68 @@ export function MobileEventCarousel({
   initialEventId,
   onSlideChange,
 }: MobileEventCarouselProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: 'start',
-    containScroll: 'trimSnaps',
-    dragFree: false,
-    skipSnaps: false,
-  });
-
+  const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Handle slide changes
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    const index = emblaApi.selectedScrollSnap();
-    setCurrentIndex(index);
-    if (events[index] && onSlideChange) {
-      onSlideChange(events[index].id, index);
-    }
-  }, [emblaApi, events, onSlideChange]);
-
+  // IntersectionObserver to detect which card is in view
   useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.on('select', onSelect);
-    onSelect();
-    return () => {
-      emblaApi.off('select', onSelect);
-    };
-  }, [emblaApi, onSelect]);
+    const container = containerRef.current;
+    if (!container || events.length === 0) return;
 
-  // Scroll to initial event if specified
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-index'));
+            if (!isNaN(index) && index !== currentIndex) {
+              setCurrentIndex(index);
+              if (events[index] && onSlideChange) {
+                onSlideChange(events[index].id, index);
+              }
+            }
+          }
+        }
+      },
+      {
+        root: container,
+        threshold: 0.6,
+      }
+    );
+
+    const cards = container.querySelectorAll('[data-index]');
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [events, onSlideChange, currentIndex]);
+
+  // Scroll to initial event on mount
   useEffect(() => {
-    if (!emblaApi || !initialEventId) return;
+    if (!containerRef.current || !initialEventId) return;
     const index = events.findIndex(e => e.id === initialEventId);
     if (index >= 0) {
-      emblaApi.scrollTo(index, false);
+      const target = containerRef.current.querySelector(`[data-index="${index}"]`);
+      target?.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
-  }, [emblaApi, initialEventId, events]);
+  }, [initialEventId, events]);
 
-  // Keyboard navigation
+  // Keyboard navigation (ArrowUp / ArrowDown)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!emblaApi) return;
-      if (e.key === 'ArrowLeft') {
+      if (!containerRef.current) return;
+      if (e.key === 'ArrowUp') {
         e.preventDefault();
-        emblaApi.scrollPrev();
-      } else if (e.key === 'ArrowRight') {
+        containerRef.current.scrollBy({ top: -containerRef.current.clientHeight, behavior: 'smooth' });
+      } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        emblaApi.scrollNext();
+        containerRef.current.scrollBy({ top: containerRef.current.clientHeight, behavior: 'smooth' });
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [emblaApi]);
+  }, []);
 
-  // Transform event to NewsCard props
+  // Transform event to NewsCard props (unchanged)
   const transformEventToCard = (event: any) => {
     const authorName = event.creator_display_name || event.author?.name || 'Community Host';
     const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
@@ -217,59 +222,48 @@ export function MobileEventCarousel({
   return (
     <div 
       className="relative w-full" 
-      role="region" 
-      aria-roledescription="carousel"
-      aria-label="Events carousel"
+      role="feed" 
+      aria-label="Events feed"
     >
-      {/* Carousel Container - full width overflow */}
+      {/* Vertical scroll container with snap */}
       <div 
-        ref={emblaRef} 
-        className="overflow-hidden -mx-6"
-        style={{ touchAction: 'pan-y pinch-zoom' }}
+        ref={containerRef}
+        className="overflow-y-auto snap-y snap-mandatory h-[calc(100vh-200px)] scrollbar-hide"
+        style={{ overscrollBehavior: 'contain' }}
       >
-        <div className="flex">
-          {events.map((event, index) => (
-            <div
-              key={event.id}
-              className="flex-none w-screen px-4"
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
-            >
-              <NewsCard
-                {...transformEventToCard(event)}
-                className="h-[calc(100vh-280px)] min-h-[400px] max-h-[600px]"
-              />
-            </div>
-          ))}
-        </div>
+        {events.map((event, index) => (
+          <div
+            key={event.id}
+            data-index={index}
+            className="snap-start px-2"
+            style={{ height: 'calc(100vh - 280px)', minHeight: '400px' }}
+            role="article"
+            aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
+          >
+            <NewsCard
+              {...transformEventToCard(event)}
+              className="h-full"
+            />
+          </div>
+        ))}
       </div>
 
-      {/* Dot Indicators */}
+      {/* Floating counter */}
       {events.length > 1 && (
-        <div className="flex justify-center items-center gap-1.5 mt-4 px-6">
-          {events.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              className={cn(
-                "rounded-full transition-all duration-200",
-                index === currentIndex 
-                  ? "w-6 h-2 bg-primary" 
-                  : "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-              )}
-              onClick={() => emblaApi?.scrollTo(index)}
-              aria-label={`Go to slide ${index + 1}`}
-              aria-current={index === currentIndex ? 'true' : 'false'}
-            />
-          ))}
+        <div className="absolute bottom-3 right-4 bg-background/80 backdrop-blur-sm text-xs text-muted-foreground px-2.5 py-1 rounded-full border border-border/50">
+          {currentIndex + 1} / {events.length}
         </div>
       )}
 
-      {/* Counter */}
-      <div className="text-center text-sm text-muted-foreground mt-2">
-        {currentIndex + 1} of {events.length}
-      </div>
+      <style>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 }
