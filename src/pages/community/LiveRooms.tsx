@@ -273,29 +273,11 @@ export default function LiveRooms() {
   };
 
   const handleEditRoom = async () => {
-    if (!selectedRoom) return;
-
-    try {
-      const { data: stream, error } = await supabase
-        .from('community_live_streams')
-        .select('*')
-        .eq('id', selectedRoom.id)
-        .single();
-
-      if (error) throw error;
-
-      if (stream) {
-        setEditingStream(stream as LiveStream);
-        setIsGoLiveOpen(true);
-      }
-    } catch (err) {
-      console.error('Error fetching stream:', err);
-      toast({
-        title: "Error",
-        description: "Failed to load stream data",
-        variant: "destructive",
-      });
-    }
+    // Edit mode removed in session-based architecture
+    toast({
+      title: "Not yet supported",
+      description: "Editing sessions will be available soon",
+    });
   };
 
   const handleDeleteRoom = async (roomId?: string) => {
