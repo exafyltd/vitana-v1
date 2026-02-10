@@ -33,6 +33,7 @@ import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import IntroExperience from "./pages/IntroExperience";
 import RedeemVoucher from "./pages/RedeemVoucher";
+import CreatorOnboarded from "./pages/CreatorOnboarded";
 import Logout from "./pages/Logout";
 
 // Portal pages
@@ -500,6 +501,11 @@ const App = () => {
           <Route path="/tickets/success" element={<TicketPurchaseSuccess />} />
           <Route path="/packages/success" element={<PackagePurchaseSuccess />} />
           <Route path="/tickets/demo" element={<TicketDemo />} />
+          <Route path="/creator/onboarded" element={
+            <AuthGuard>
+              <CreatorOnboarded />
+            </AuthGuard>
+          } />
           <Route path="/my-tickets" element={
             <AuthGuard>
               <MyTickets />
