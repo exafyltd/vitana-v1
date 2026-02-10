@@ -57,7 +57,6 @@ export default function LiveRooms() {
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('live');
-  const [editingStream, setEditingStream] = useState<LiveStream | null>(null);
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   
