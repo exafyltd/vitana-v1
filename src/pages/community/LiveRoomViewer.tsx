@@ -167,7 +167,13 @@ export default function LiveRoomViewer() {
       if (isRecording) {
         await stopRecording();
       }
-      endRoomMutation(roomId);
+      // Try gateway first, fallback to direct Supabase
+      endRoomMutation(roomId, {
+        onError: () => {
+          console.warn('[LiveRoomViewer] Gateway end failed, using Supabase fallback');
+          endRoomFallback(roomId);
+        },
+      });
       toast({
         title: "Stream Ended",
         description: "Your live stream has ended",
