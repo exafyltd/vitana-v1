@@ -736,7 +736,7 @@
       "polishBioDesc": "Autopilot can rewrite About section to be more inspiring",
       "refreshArchetype": "Refresh my Archetype",
       "refreshArchetypeDesc": "Suggest Longevity Archetype update based on activity",
-      "highlightShowcase": "Highlight my Showcase",
+      "highlightShowcase": "Highlight my Profile",
       "highlightShowcaseDesc": "Suggest top posts or media for featured content",
       "styleProfile": "Style my Profile",
       "styleProfileDesc": "Suggest improvements to cover photo, roles, profile picture",
@@ -766,7 +766,7 @@
       "archetypeDesc": "Your wellness activities suggest you might be \"The Mindful Mover\" - want to update?",
       "updateArchetype": "Update Archetype",
       "profileSectionTitle": "Autopilot can polish your profile ✨",
-      "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and showcase.",
+      "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and highlights.",
       "tryAutopilot": "Try Autopilot"
     },
     "actions": {
@@ -1686,8 +1686,8 @@
     "profileUpdatedDesc": "Your changes are now live. Your VITANA profile looks amazing.",
     "error": "Error",
     "refreshFailed": "Failed to refresh profile data.",
-    "showcaseHint": "Select posts and content to feature at the top of your profile",
-    "showcaseTitle": "Showcase",
+    "showcaseHint": "Select posts and content to highlight at the top of your profile",
+    "showcaseTitle": "Highlights",
     "manage": "Manage",
     "about": "About",
     "addBio": "Add a bio...",
@@ -2043,7 +2043,10 @@
   "profile": {
     "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
     "autopilot": {
-      "polishBio": "Polish your bio, archetype & showcase",
+      "polishBio": "Polish your bio, archetype & highlights",
+      "editHighlights": "Edit Highlights",
+      "saveHighlights": "Save Highlights",
+      "highlightsDesc": "Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers.",
       "try": "Try"
     },
     "identity": {

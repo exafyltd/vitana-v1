@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share, Star, X } from "lucide-react";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface FeaturedPost {
   id: string;
@@ -24,6 +25,7 @@ interface FeaturedPost {
 }
 
 export function ShowcaseForm() {
+  const { translate } = useTranslation();
   const [featuredPosts, setFeaturedPosts] = useState<FeaturedPost[]>([
     {
       id: "1",
@@ -73,10 +75,9 @@ export function ShowcaseForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-medium mb-4">Showcase</h3>
+        <h3 className="text-lg font-medium mb-4">{translate('editProfile.showcaseTitle')}</h3>
         <p className="text-sm text-muted-foreground mb-6">
-          Choose your best posts and media to feature at the top of your profile. 
-          Featured content appears in a highlights section and attracts more followers.
+          {translate('editProfile.autopilot.highlightsDesc')}
         </p>
       </div>
 
@@ -163,7 +164,7 @@ export function ShowcaseForm() {
       )}
 
       <div className="pt-4 border-t">
-        <Button className="w-full">Save Showcase</Button>
+        <Button className="w-full">{translate('editProfile.autopilot.saveHighlights')}</Button>
       </div>
     </div>
   );

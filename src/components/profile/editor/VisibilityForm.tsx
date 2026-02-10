@@ -8,8 +8,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Globe, Users, Lock, Heart, Activity, Info, Settings } from "lucide-react";
 import { Visibility } from "@/types/profile";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function VisibilityForm() {
+  const { translate } = useTranslation();
   const [profileVisibility, setProfileVisibility] = useState<Visibility>("public");
   const [aboutVisibility, setAboutVisibility] = useState<Visibility>("public");
   const [linksVisibility, setLinksVisibility] = useState<Visibility>("public");
@@ -111,7 +113,7 @@ export function VisibilityForm() {
           { key: 'about', label: 'About/Bio', value: aboutVisibility, setter: setAboutVisibility },
           { key: 'links', label: 'Links', value: linksVisibility, setter: setLinksVisibility },
           { key: 'location', label: 'Location', value: locationVisibility, setter: setLocationVisibility },
-          { key: 'showcase', label: 'Showcase', value: showcaseVisibility, setter: setShowcaseVisibility },
+          { key: 'showcase', label: translate('editProfile.showcaseTitle'), value: showcaseVisibility, setter: setShowcaseVisibility },
         ].map(({ key, label, value, setter }) => (
           <Card key={key} className="p-4">
             <div className="flex items-center justify-between">
