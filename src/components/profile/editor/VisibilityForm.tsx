@@ -8,8 +8,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Globe, Users, Lock, Heart, Activity, Info, Settings } from "lucide-react";
 import { Visibility } from "@/types/profile";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function VisibilityForm() {
+  const { translate } = useTranslation();
   const [profileVisibility, setProfileVisibility] = useState<Visibility>("public");
   const [aboutVisibility, setAboutVisibility] = useState<Visibility>("public");
   const [linksVisibility, setLinksVisibility] = useState<Visibility>("public");
