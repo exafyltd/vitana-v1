@@ -58,12 +58,13 @@ serve(async (req) => {
       quantity, 
       buyer_email, 
       buyer_name,
+      discount_code,
       utm_source,
       utm_medium,
       utm_campaign 
     } = await req.json();
     
-    logStep("Request received", { event_id, ticket_type_id, quantity, utm_source, utm_medium, utm_campaign });
+    logStep("Request received", { event_id, ticket_type_id, quantity, discount_code, utm_source, utm_medium, utm_campaign });
 
     if (!event_id || !ticket_type_id || !quantity) {
       throw new Error("Missing required fields: event_id, ticket_type_id, quantity");
