@@ -130,6 +130,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       return;
     }
 
+    if (!roomId) {
+      notify.error('liveRooms.goLivePopup.errors.notLoggedInTitle', 'No permanent room found. Please try again.');
+      return;
+    }
+
     setIsLoading(true);
     
     try {
@@ -140,91 +145,8 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         return;
       }
 
-      // Handle edit mode
-      if (editMode && streamData) {
-        let coverUrlToSave: string | null | undefined = undefined;
-
-        // A) If a new image is selected, upload it and use its public URL
-        if (selectedImage) {
-          try {
-            const ext = selectedImage.name.split(".").pop() || "jpg";
-            const fileName = `live-${Date.now()}.${ext}`;
-            const filePath = `${user.id}/${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-              .from("covers")
-              .upload(filePath, selectedImage, {
-                upsert: true,
-                contentType: selectedImage.type,
-              });
-            if (uploadError) throw uploadError;
-
-            const { data: publicUrlData } = supabase.storage
-              .from("covers")
-              .getPublicUrl(filePath);
-
-            coverUrlToSave = publicUrlData.publicUrl;
-          } catch (e) {
-            console.error("Image upload failed:", e);
-            notify.info('liveRooms.goLivePopup.errors.imageUploadFailedTitle', 'liveRooms.goLivePopup.errors.imageUploadFailedDesc');
-          }
-        } else {
-          // B) If user removed existing image (preview cleared) and there was one before, set to null
-          const hadExisting = !!streamData.cover_image_url;
-          const removedNow = !imagePreviewUrl;
-          if (hadExisting && removedNow) {
-            coverUrlToSave = null;
-          }
-          // C) Otherwise leave undefined to avoid changing this field
-        }
-
-        const updates: Partial<LiveStream> = {
-          title,
-          description: description || null,
-          stream_type: streamType,
-          tags: selectedTags,
-          access_level: accessLevel,
-          co_hosts: coHostInput ? [coHostInput] : [],
-          scheduled_for: (scheduleDate && scheduleTime) 
-            ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
-            : null,
-          enable_chat: enableChat,
-          enable_polls: enablePolls,
-          enable_recording: enableRecording,
-          ...(coverUrlToSave !== undefined ? { cover_image_url: coverUrlToSave } : {}),
-        };
-
-        await updateStream({ id: streamData.id, updates });
-        
-        notify.success('liveRooms.goLivePopup.success.streamUpdatedTitle', 'liveRooms.goLivePopup.success.streamUpdatedDesc');
-        
-        setIsLoading(false);
-        onOpenChange(false);
-        resetForm();
-        return;
-      }
-
-      // Create mode (original code)
-      // Ensure profile exists before creating stream
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
-
-      if (!existingProfile) {
-        await supabase
-          .from('profiles')
-          .insert({
-            user_id: user.id,
-            display_name: user.email?.split('@')[0] || 'User',
-            avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`,
-          });
-      }
-      
+      // Upload cover image if selected
       let uploadedImageUrl: string | undefined;
-      
-      // Upload manual image if selected
       if (selectedImage) {
         try {
           const ext = selectedImage.name.split('.').pop() || 'jpg';
@@ -251,61 +173,54 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         }
       }
       
-      // Auto-generate image if enabled and no manual image
+      // Auto-generate image hint
       if (autoGenerateImage && !uploadedImageUrl) {
         notify.info('liveRooms.goLivePopup.success.aiImageHintTitle', 'liveRooms.goLivePopup.success.aiImageHintDesc');
       }
       
-      // Prepare stream data for creation
-      const newStreamData = {
-        title,
-        description: description || null,
+      // Create session on permanent room via gateway
+      const sessionRequest = {
+        session_title: title,
+        session_description: description || undefined,
         stream_type: streamType,
         tags: selectedTags,
         access_level: accessLevel,
-        cover_image_url: uploadedImageUrl || null,
-        co_hosts: coHostInput ? [coHostInput] : [],
+        cover_image_url: uploadedImageUrl || undefined,
         scheduled_for: (scheduleDate && scheduleTime) 
           ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
-          : null,
-        status: (scheduleDate && scheduleTime) ? 'pending' : 'live',
+          : undefined,
         enable_chat: enableChat,
         enable_polls: enablePolls,
         enable_recording: enableRecording,
-        started_at: (!scheduleDate || !scheduleTime) ? new Date().toISOString() : null,
-        created_by: user.id,
       };
       
-      // Insert into database
-      const stream = await createStream(newStreamData);
+      await createSession({ roomId, request: sessionRequest });
       
-      // Notify parent if stream was scheduled
-      if (scheduleDate && scheduleTime && onCreated) {
-        onCreated(stream.id);
+      // Notify parent if scheduled
+      if (isScheduled && onCreated) {
+        onCreated(roomId);
       }
       
-      // Show appropriate toast
-      if (scheduleDate && scheduleTime) {
-        const dateStr = format(scheduleDate, "PPP");
+      // Show appropriate toast & navigate
+      if (isScheduled) {
+        const dateStr = format(scheduleDate!, "PPP");
         notify.success(
           'liveRooms.goLivePopup.success.streamScheduledTitle', 
           'liveRooms.goLivePopup.success.streamScheduledDesc',
           { date: dateStr, time: scheduleTime }
         );
       } else {
-        notify.success('liveRooms.goLivePopup.success.youAreLiveTitle', 'liveRooms.goLivePopup.success.youAreLiveDesc');
-
-        // Navigate creator to viewer as host using React Router
+        // Navigate creator to viewer as host
         setTimeout(() => {
-          navigate(`/comm/live-rooms/${stream.id}/view`, {
+          navigate(`/comm/live-rooms/${roomId}/view`, {
             state: {
-              roomId: stream.id,
+              roomId,
               userId: user.id,
               userName: user.email?.split('@')[0] || 'Host',
               isHost: true,
               room: {
-                id: stream.id,
-                title: stream.title,
+                id: roomId,
+                title,
                 isLive: true,
               }
             }
@@ -313,23 +228,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         }, 500);
       }
       
-      // Log activity
-      import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
-        const { logLiveCreate, logLiveStart } = useCommunityLogger();
-        if (scheduleDate) {
-          logLiveCreate(title, streamType, true);
-        } else {
-          logLiveStart(title, streamType);
-        }
-      });
-      
       setIsLoading(false);
       onOpenChange(false);
-      
-      // Reset form
       resetForm();
     } catch (error) {
-      console.error('Error creating stream:', error);
+      console.error('Error creating session:', error);
       notify.error('liveRooms.goLivePopup.errors.genericTitle', 'liveRooms.goLivePopup.errors.genericDesc');
       setIsLoading(false);
     }
