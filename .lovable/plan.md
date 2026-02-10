@@ -1,56 +1,121 @@
 
 
-# Rename "Showcase" to "Highlights" Across Profile
+# Welcome Discount for New Maxina Users
 
 ## Overview
 
-Replace all user-facing instances of "Showcase" with "Highlights" in English. German already uses "Highlights" for most keys, so only English translation values and hardcoded strings need updating.
+Give every first-time Maxina registrant a personal 10% discount code for events and meetups, delivered via a branded welcome email sent automatically after signup.
 
-## Changes
+## Why Not the Confirmation Email?
 
-### 1. English Translations (`src/i18n/en.json`)
+The confirmation email is managed by Supabase Auth's email templates (configured in the Supabase dashboard). These templates support limited variables (like the confirmation link) but cannot include custom per-user data like a unique discount code. So we'll send a **separate branded welcome email** right after account creation.
 
-| Key | Current | New |
-|-----|---------|-----|
-| `editProfile.showcaseTitle` | "Showcase" | "Highlights" |
-| `editProfile.showcaseHint` | "Select posts and content to feature at the top of your profile" | "Select posts and content to highlight at the top of your profile" |
-| `autopilot.suggestions.highlightShowcase` | "Highlight my Showcase" | "Highlight my Profile" |
-| `autopilot.suggestions.profileSectionDesc` | "...bio, archetype, and showcase." | "...bio, archetype, and highlights." |
-| `editProfile.autopilot.polishBio` | "Polish your bio, archetype & showcase" | "Polish your bio, archetype & highlights" |
+## Architecture
 
-### 2. Hardcoded Strings in Components
+```text
+User signs up on /maxina
+        |
+        v
+auth.users INSERT triggers handle_new_user()
+        |
+        v
+handle_new_user() generates discount code
+stores it in new "user_discount_codes" table
+        |
+        v
+DB trigger fires edge function "send-welcome-discount"
+(via pg_net HTTP call)
+        |
+        v
+Edge function sends branded Maxina email via Resend
+with the 10% discount code
+        |
+        v
+User also sees discount on confirmation page + dashboard
+```
 
-**`ShowcaseDrawer.tsx`** (line 15):
-- `"Edit Showcase"` -> `translate('editProfile.editHighlights')` (add key: EN "Edit Highlights" / DE "Highlights bearbeiten")
+## What Changes
 
-**`ShowcaseForm.tsx`** (line 76):
-- `"Showcase"` heading -> use `translate('editProfile.showcaseTitle')`
+### 1. New Table: `user_discount_codes`
 
-**`ShowcaseForm.tsx`** (line 78):
-- Hardcoded description -> use translation key
+| Column | Type | Description |
+|--------|------|-------------|
+| id | uuid | PK |
+| user_id | uuid | FK to auth.users |
+| code | text | Unique 8-char alphanumeric code (e.g. "MAXINA-A3K9F2") |
+| discount_percent | integer | 10 |
+| valid_for | text | "events" (scope limiter) |
+| tenant_slug | text | "maxina" |
+| expires_at | timestamptz | 90 days from creation |
+| used_at | timestamptz | null until redeemed |
+| used_on_purchase_id | uuid | null until redeemed |
+| created_at | timestamptz | default now() |
 
-**`ShowcaseForm.tsx`** (line 166):
-- `"Save Showcase"` -> use translation key (add key: EN "Save Highlights" / DE "Highlights speichern")
+RLS: Users can read their own codes only.
 
-**`VisibilityForm.tsx`** (line 114):
-- `label: 'Showcase'` -> use translation key for "Highlights"
+### 2. Update `handle_new_user()` Trigger
 
-### 3. New Translation Keys
+When `tenant_slug = 'maxina'`, also insert a row into `user_discount_codes` with:
+- A generated code like `MAXINA-` + 6 random alphanumeric characters
+- `discount_percent = 10`
+- `expires_at = now() + interval '90 days'`
+
+### 3. New Edge Function: `send-welcome-discount`
+
+Triggered via `pg_net` HTTP call from a new DB trigger on `user_discount_codes` INSERT. The function:
+- Fetches the user's email and name from profiles
+- Fetches the discount code details
+- Sends a branded Maxina-themed HTML email via Resend containing:
+  - The MAXINA logo and pink gradient styling (matching existing brand)
+  - Welcome message
+  - The personal 10% discount code prominently displayed
+  - "Valid for 90 days on all VITANA events and meetups"
+  - CTA button linking to events page
+
+**Requires**: `RESEND_API_KEY` secret (check if already configured).
+
+### 4. Apply Discount in Ticket Checkout
+
+Update `stripe-create-ticket-checkout` edge function to:
+- Accept an optional `discount_code` parameter
+- Validate it against `user_discount_codes` (not expired, not used, matches user)
+- Apply 10% discount to the Stripe checkout session via `discounts` parameter (create a Stripe coupon if needed)
+- Mark the code as used after successful payment (in the webhook)
+
+### 5. UI: Show Discount Code to User
+
+- **MaxinaConfirmed page**: After email confirmation, show the discount code in a highlighted card
+- **Events page**: Show a dismissible banner "You have a 10% discount! Use code MAXINA-XXXXX at checkout"
+- **Ticket checkout flow**: Add a "Have a discount code?" input field that auto-applies the discount
+
+### 6. Translation Keys
 
 | Key | English | German |
 |-----|---------|--------|
-| `editProfile.editHighlights` | Edit Highlights | Highlights bearbeiten |
-| `editProfile.saveHighlights` | Save Highlights | Highlights speichern |
-| `editProfile.highlightsDesc` | Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers. | Waehlen Sie Ihre besten Beitraege und Medien aus, die oben in Ihrem Profil angezeigt werden. Hervorgehobene Inhalte erscheinen im Highlights-Bereich und ziehen mehr Follower an. |
+| `discount.welcomeTitle` | Your Welcome Gift | Dein Willkommensgeschenk |
+| `discount.welcomeMessage` | Use this code for 10% off your first event | Nutze diesen Code fuer 10% Rabatt auf dein erstes Event |
+| `discount.validFor` | Valid for 90 days | 90 Tage gueltig |
+| `discount.applyCode` | Apply discount code | Rabattcode einloesen |
+| `discount.applied` | Discount applied! | Rabatt angewendet! |
+| `discount.expired` | This code has expired | Dieser Code ist abgelaufen |
+| `discount.invalid` | Invalid discount code | Ungueltiger Rabattcode |
 
-### 4. Files Changed
+## Files Changed
 
 | File | Action |
 |------|--------|
-| `src/i18n/en.json` | Update 5 existing values + add 3 new keys |
-| `src/i18n/de.json` | Add 3 new keys |
-| `src/components/profile/drawers/ShowcaseDrawer.tsx` | Replace hardcoded "Edit Showcase" with translation |
-| `src/components/profile/editor/ShowcaseForm.tsx` | Replace 3 hardcoded strings with translation keys |
-| `src/components/profile/editor/VisibilityForm.tsx` | Replace hardcoded "Showcase" label with "Highlights" |
+| SQL migration | Create `user_discount_codes` table + RLS + trigger |
+| SQL migration | Update `handle_new_user()` to generate Maxina codes |
+| `supabase/functions/send-welcome-discount/index.ts` | New edge function for welcome email |
+| `supabase/functions/stripe-create-ticket-checkout/index.ts` | Add discount code validation + Stripe discount |
+| `supabase/functions/stripe-webhook/index.ts` | Mark discount code as used on payment success |
+| `src/pages/portals/MaxinaConfirmed.tsx` | Show discount code card |
+| `src/components/tickets/DiscountCodeInput.tsx` | New component for checkout discount input |
+| `src/hooks/useDiscountCode.ts` | New hook to fetch user's active discount |
+| `src/i18n/en.json` | Add discount translation keys |
+| `src/i18n/de.json` | Add discount translation keys |
 
-Note: File names (ShowcaseForm, ShowcaseDrawer, etc.) and internal variable names remain unchanged -- only user-facing text is renamed.
+## Prerequisites
+
+- Verify that `RESEND_API_KEY` is configured in Edge Function secrets
+- Verify that `noreply@vitanaland.com` domain is verified in Resend (already used for voucher emails, so likely ready)
