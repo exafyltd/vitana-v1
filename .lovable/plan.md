@@ -1,81 +1,56 @@
 
-# Enable Posting on Mobile Profile
 
-## Problem
+# Rename "Showcase" to "Highlights" Across Profile
 
-The mobile profile "Posts" tab currently shows only hardcoded mock posts. There is no way to create a post, and no database table exists for profile/community posts (only `distribution_posts` for campaigns).
+## Overview
 
-## Solution
+Replace all user-facing instances of "Showcase" with "Highlights" in English. German already uses "Highlights" for most keys, so only English translation values and hardcoded strings need updating.
 
-Create a new `profile_posts` table and build a mobile-first post creation flow using a full-screen sheet (following the PWA architecture pattern).
+## Changes
 
-## What Changes
+### 1. English Translations (`src/i18n/en.json`)
 
-### 1. New Database Table: `profile_posts`
+| Key | Current | New |
+|-----|---------|-----|
+| `editProfile.showcaseTitle` | "Showcase" | "Highlights" |
+| `editProfile.showcaseHint` | "Select posts and content to feature at the top of your profile" | "Select posts and content to highlight at the top of your profile" |
+| `autopilot.suggestions.highlightShowcase` | "Highlight my Showcase" | "Highlight my Profile" |
+| `autopilot.suggestions.profileSectionDesc` | "...bio, archetype, and showcase." | "...bio, archetype, and highlights." |
+| `editProfile.autopilot.polishBio` | "Polish your bio, archetype & showcase" | "Polish your bio, archetype & highlights" |
 
-Create a `profile_posts` table with columns:
-- `id` (uuid, PK)
-- `user_id` (uuid, FK to auth.users)
-- `content` (text, required)
-- `image_url` (text, optional)
-- `likes_count` (integer, default 0)
-- `comments_count` (integer, default 0)
-- `shares_count` (integer, default 0)
-- `is_public` (boolean, default true)
-- `created_at`, `updated_at` (timestamptz)
+### 2. Hardcoded Strings in Components
 
-Enable RLS with policies:
-- Anyone can read public posts
-- Authenticated users can create their own posts
-- Users can update/delete their own posts
+**`ShowcaseDrawer.tsx`** (line 15):
+- `"Edit Showcase"` -> `translate('editProfile.editHighlights')` (add key: EN "Edit Highlights" / DE "Highlights bearbeiten")
 
-### 2. New Component: `MobileCreatePostSheet.tsx`
+**`ShowcaseForm.tsx`** (line 76):
+- `"Showcase"` heading -> use `translate('editProfile.showcaseTitle')`
 
-A full-screen bottom sheet (following the mobile sheet pattern) with:
-- Textarea for post content
-- Optional image attachment (using existing storage infrastructure if available, otherwise text-only initially)
-- Character counter
-- "Post" button that saves to `profile_posts` table
-- Cancel button to dismiss
+**`ShowcaseForm.tsx`** (line 78):
+- Hardcoded description -> use translation key
 
-### 3. New Hook: `useProfilePosts.ts`
+**`ShowcaseForm.tsx`** (line 166):
+- `"Save Showcase"` -> use translation key (add key: EN "Save Highlights" / DE "Highlights speichern")
 
-A React Query hook providing:
-- `posts` query: fetches posts for a given user_id from `profile_posts`, ordered by `created_at` desc
-- `createPost` mutation: inserts a new post
-- `deletePost` mutation: deletes own post
+**`VisibilityForm.tsx`** (line 114):
+- `label: 'Showcase'` -> use translation key for "Highlights"
 
-### 4. Update Mobile Profile Posts Tab
+### 3. New Translation Keys
 
-**In `EditProfilePage.tsx`** (lines 341-351):
-- Add a floating "+" button or a "Create Post" card at the top of the posts tab
-- Open the `MobileCreatePostSheet` when tapped
-- After the showcase header, render real posts from `useProfilePosts` instead of nothing
+| Key | English | German |
+|-----|---------|--------|
+| `editProfile.editHighlights` | Edit Highlights | Highlights bearbeiten |
+| `editProfile.saveHighlights` | Save Highlights | Highlights speichern |
+| `editProfile.highlightsDesc` | Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers. | Waehlen Sie Ihre besten Beitraege und Medien aus, die oben in Ihrem Profil angezeigt werden. Hervorgehobene Inhalte erscheinen im Highlights-Bereich und ziehen mehr Follower an. |
 
-**In `ProfilePostsTab.tsx`**:
-- Replace the mock `mockPosts` array with data from `useProfilePosts`
-- Keep the existing card design but wire it to real data
-- Show empty state with a "Write your first post" CTA
-
-### 5. Translation Keys
-
-Add to both `en.json` and `de.json`:
-- `profilePosts.createPost`: "Create Post" / "Beitrag erstellen"
-- `profilePosts.placeholder`: "What's on your mind?" / "Was bewegt dich?"
-- `profilePosts.post`: "Post" / "Posten"
-- `profilePosts.emptyTitle`: "No posts yet" / "Noch keine Beitraege"
-- `profilePosts.emptyDescription`: "Share your first update with the community" / "Teile dein erstes Update mit der Community"
-- `profilePosts.deleteConfirm`: "Delete this post?" / "Beitrag loeschen?"
-
-## Files Changed
+### 4. Files Changed
 
 | File | Action |
 |------|--------|
-| SQL migration | Create `profile_posts` table + RLS |
-| `src/hooks/useProfilePosts.ts` | New hook for CRUD |
-| `src/components/profile/mobile/MobileCreatePostSheet.tsx` | New full-screen post creation sheet |
-| `src/components/profile/shared/tabs/ProfilePostsTab.tsx` | Replace mock data with real data |
-| `src/pages/EditProfilePage.tsx` | Add create post button + sheet in posts tab |
-| `src/components/profile/shared/ProfileLayout.tsx` | Wire posts tab to real data in public view |
-| `src/i18n/en.json` | Add translation keys |
-| `src/i18n/de.json` | Add translation keys |
+| `src/i18n/en.json` | Update 5 existing values + add 3 new keys |
+| `src/i18n/de.json` | Add 3 new keys |
+| `src/components/profile/drawers/ShowcaseDrawer.tsx` | Replace hardcoded "Edit Showcase" with translation |
+| `src/components/profile/editor/ShowcaseForm.tsx` | Replace 3 hardcoded strings with translation keys |
+| `src/components/profile/editor/VisibilityForm.tsx` | Replace hardcoded "Showcase" label with "Highlights" |
+
+Note: File names (ShowcaseForm, ShowcaseDrawer, etc.) and internal variable names remain unchanged -- only user-facing text is renamed.
