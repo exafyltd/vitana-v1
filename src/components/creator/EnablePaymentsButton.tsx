@@ -40,7 +40,7 @@ export function EnablePaymentsButton() {
 
   return (
     <Button
-      onClick={() => startOnboarding()}
+      onClick={() => startOnboarding(undefined)}
       disabled={isPending}
       variant="default"
     >
