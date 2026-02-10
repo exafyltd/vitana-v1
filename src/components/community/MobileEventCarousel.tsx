@@ -236,9 +236,10 @@ export function MobileEventCarousel({
 
   return (
     <div 
-      className="relative w-full" 
+      className="relative w-full flex flex-col" 
       role="feed" 
       aria-label="Events feed"
+      style={{ height: `calc(100dvh - ${CHROME_HEIGHT_PX}px)` }}
     >
       {/* Vertical snap-scroll container — sole scrolling surface */}
       <div 

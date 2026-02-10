@@ -710,7 +710,7 @@ const EventsAndMeetups = () => {
             </div>
           </UtilityActionButton>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className={cn("flex-1", isMobile ? "overflow-hidden" : "overflow-y-auto")}>
             <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList>
                 <SplitBarTrigger value="today">
