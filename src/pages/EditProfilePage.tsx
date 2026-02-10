@@ -342,7 +342,7 @@ export default function EditProfilePage() {
           {/* Tab Content */}
           <div className="flex-1">
             {mobileActiveTab === "posts" && (
-              <div className="p-4">
+              <div className="p-4 space-y-4">
                 {/* Showcase Section */}
                 <MobileShowcaseHeader onManage={handleEditShowcase} />
                 <div className="px-4 py-2 text-sm text-muted-foreground">
@@ -351,6 +351,15 @@ export default function EditProfilePage() {
                 
                 {/* Autopilot Banner */}
                 <MobileAutopilotBanner onTry={() => setShowAutopilotPopup(true)} />
+
+                {/* Real Posts */}
+                <ProfilePostsTab
+                  profile={profile}
+                  scope={getScope(true, "me")}
+                  editMode={true}
+                  onEditAbout={handleEditAbout}
+                  onCreatePost={() => setShowCreatePost(true)}
+                />
               </div>
             )}
             
