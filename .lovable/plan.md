@@ -1,41 +1,69 @@
 
 
-# Mobile Events: Horizontal Carousel to Vertical Scroll
+# Fix: Mobile Events "One Card = One Screen" Snap-Scroll
 
-## What Changes
+## Problem
 
-The events overview on mobile (`/comm/events-meetups`) currently uses a **horizontal swipe carousel** (Embla Carousel) where you swipe left/right between event cards. This will be replaced with a **vertical scroll layout** where each event card takes up one full viewport height, and you scroll up/down naturally.
+Cards merge into each other because:
+1. **Height mismatch** -- the scroll container is `100vh - 200px` but cards are `100vh - 280px`, leaving 80px of dead space where the next card peeks through with no visual separator
+2. **No `scroll-snap-stop: always`** -- fast swipes skip multiple cards
+3. **Parent page scrolls freely** -- the outer `div` in `EventsAndMeetups.tsx` has `min-h-screen` and no `overflow-hidden` on mobile, so the browser's native scroll competes with the snap container
+4. **No visual boundaries** -- cards have no padding, gap, or separator between them
 
-## Why
+## Changes
 
-Vertical scrolling is more natural on mobile (matches native feed behavior). The "one event = one viewport" rule is preserved -- each card fills the screen.
+### 1. `src/components/community/MobileEventCarousel.tsx`
 
-## Technical Approach
+- Make the **container height and card height identical** using a shared CSS custom property: `--card-h: calc(100dvh - 216px)` (216px accounts for the header chrome above). Both the container `height` and each card wrapper `height` use this same value so exactly one card fills one "page"
+- Add `scroll-snap-stop: always` on each card wrapper to prevent skipping
+- Add vertical padding inside each card wrapper (`py-2 px-3`) so the NewsCard has breathing room and clear edges
+- Add a subtle visual separator line between cards (a thin `border-b border-border/30`) so you can see where one ends and another begins
+- Add a scale animation: the active card is `scale(1)`, inactive cards are `scale(0.97)` with reduced opacity, making the "page" effect more tangible
 
-### File: `src/components/community/MobileEventCarousel.tsx`
+### 2. `src/pages/community/EventsAndMeetups.tsx`
 
-**Replace the Embla horizontal carousel** with a CSS snap-scroll vertical layout:
+- On mobile, set the outermost wrapper to `h-[100dvh] overflow-hidden` instead of `min-h-screen` so the page itself cannot scroll -- only the snap container inside scrolls
+- Set the content area below the tabs to `overflow-hidden` on mobile so it doesn't create a competing scroll context
 
-- Remove the `embla-carousel-react` dependency from this component
-- Replace the horizontal `flex` container with a vertical `snap-y snap-mandatory` scroll container
-- Each event card gets `snap-start` and `h-[calc(100vh-280px)]` (same height as current cards) to fill one viewport
-- Keep the same `transformEventToCard` logic, `NewsCard` rendering, empty state, keyboard nav (change ArrowLeft/Right to ArrowUp/Down)
-- Remove dot indicators (not useful for vertical scroll with many items)
-- Replace the "X of Y" counter with a subtle floating counter or remove it
+These two changes together ensure cards are self-contained pages with clear boundaries that snap reliably one-at-a-time.
 
-### Specific Changes
+## Technical Details
 
-1. **Remove**: `useEmblaCarousel` import and hook usage
-2. **Remove**: Dot indicators section and counter
-3. **Add**: Vertical scroll container with CSS scroll-snap:
-   - Container: `overflow-y-auto snap-y snap-mandatory h-[calc(100vh-200px)]`
-   - Each card wrapper: `snap-start h-[calc(100vh-280px)] min-h-[400px]`
-4. **Update keyboard navigation**: ArrowUp/ArrowDown instead of ArrowLeft/ArrowRight
-5. **Update `onSlideChange`**: Use an `IntersectionObserver` to detect which card is in view and report it back, replacing Embla's `onSelect` callback
-6. **Keep**: `initialEventId` support via `scrollIntoView` instead of `emblaApi.scrollTo`
-7. **Keep**: All card transformation logic, edit/share buttons, empty state
+**MobileEventCarousel.tsx** key markup change:
+```tsx
+// Container - height matches exactly one card
+<div
+  ref={containerRef}
+  className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+  style={{
+    height: 'var(--card-h)',
+    overscrollBehavior: 'contain',
+    '--card-h': 'calc(100dvh - 216px)',
+  }}
+>
+  {events.map((event, index) => (
+    <div
+      key={event.id}
+      data-index={index}
+      className="snap-start"
+      style={{
+        height: 'var(--card-h)',
+        scrollSnapStop: 'always',
+        padding: '8px 12px',
+      }}
+    >
+      <NewsCard ... className="h-full rounded-2xl" />
+    </div>
+  ))}
+</div>
+```
 
-### No changes needed in `EventsAndMeetups.tsx`
-
-The parent component already branches on `isMobile` and renders `<MobileEventCarousel>`. The props interface stays the same -- only the internal rendering changes from horizontal carousel to vertical scroll.
+**EventsAndMeetups.tsx** mobile wrapper change (line ~649):
+```tsx
+// Wrap outer div conditionally on mobile
+<div className={cn(
+  "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
+  isMobile ? "h-[100dvh] overflow-hidden" : "min-h-screen"
+)}>
+```
 
