@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share, Star, X } from "lucide-react";
 import { AutopilotSuggestions } from "../AutopilotSuggestions";
 import { toast } from "sonner";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface FeaturedPost {
   id: string;
