@@ -58,12 +58,13 @@ serve(async (req) => {
       quantity, 
       buyer_email, 
       buyer_name,
+      discount_code,
       utm_source,
       utm_medium,
       utm_campaign 
     } = await req.json();
     
-    logStep("Request received", { event_id, ticket_type_id, quantity, utm_source, utm_medium, utm_campaign });
+    logStep("Request received", { event_id, ticket_type_id, quantity, discount_code, utm_source, utm_medium, utm_campaign });
 
     if (!event_id || !ticket_type_id || !quantity) {
       throw new Error("Missing required fields: event_id, ticket_type_id, quantity");
@@ -133,6 +134,55 @@ serve(async (req) => {
     const unitAmount = Math.round(ticketType.price * 100); // Convert to cents
     const totalAmount = unitAmount * quantity;
 
+    // Validate discount code if provided
+    let validatedDiscount: any = null;
+    let stripeCouponId: string | undefined;
+    if (discount_code) {
+      logStep("Validating discount code", { discount_code });
+      const { data: discountData, error: discountError } = await supabaseAdmin
+        .from("user_discount_codes")
+        .select("*")
+        .eq("code", discount_code)
+        .is("used_at", null)
+        .gt("expires_at", new Date().toISOString())
+        .maybeSingle();
+
+      if (discountError || !discountData) {
+        logStep("Invalid discount code", { error: discountError });
+        throw new Error("Invalid or expired discount code");
+      }
+
+      // Verify code belongs to the authenticated user (if logged in)
+      if (user && discountData.user_id !== user.id) {
+        throw new Error("This discount code doesn't belong to you");
+      }
+
+      validatedDiscount = discountData;
+      logStep("Discount code validated", { percent: discountData.discount_percent });
+
+      // Create or find a Stripe coupon for this discount
+      const couponName = `MAXINA-${discountData.discount_percent}PCT`;
+      try {
+        // Try to retrieve existing coupon
+        const existingCoupons = await stripe.coupons.list({ limit: 100 });
+        const existing = existingCoupons.data.find(c => c.name === couponName && c.percent_off === discountData.discount_percent);
+        if (existing) {
+          stripeCouponId = existing.id;
+        } else {
+          const coupon = await stripe.coupons.create({
+            percent_off: discountData.discount_percent,
+            duration: 'once',
+            name: couponName,
+          });
+          stripeCouponId = coupon.id;
+        }
+        logStep("Stripe coupon ready", { couponId: stripeCouponId });
+      } catch (couponError: any) {
+        logStep("Error creating coupon", { error: couponError.message });
+        throw new Error("Failed to apply discount");
+      }
+    }
+
     // Create pending purchase record with UTM/reseller metadata
     const { data: purchase, error: purchaseError } = await supabaseAdmin
       .from("event_ticket_purchases")
@@ -172,7 +222,7 @@ serve(async (req) => {
     const origin = req.headers.get("origin") || "https://vitana.app";
 
     // Create Stripe Checkout session with UTM/reseller metadata for webhook
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams: any = {
       customer: customerId,
       customer_email: customerId ? undefined : finalBuyerEmail,
       line_items: [
@@ -198,13 +248,22 @@ serve(async (req) => {
         ticket_type_id,
         type: "event_ticket",
         quantity: String(quantity),
-        // Include UTM/reseller info for webhook attribution
         utm_source: utm_source || "",
         utm_medium: utm_medium || "",
         utm_campaign: utm_campaign || "",
         reseller_code: resellerCode || "",
+        discount_code: validatedDiscount?.code || "",
+        discount_code_id: validatedDiscount?.id || "",
       },
-    });
+    };
+
+    // Apply discount coupon if validated
+    if (stripeCouponId) {
+      sessionParams.discounts = [{ coupon: stripeCouponId }];
+      logStep("Applying discount to session", { couponId: stripeCouponId });
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
 
     logStep("Stripe session created", { sessionId: session.id });
 

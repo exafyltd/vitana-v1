@@ -2291,5 +2291,14 @@
       },
       "footer": "Alle Rechte vorbehalten."
     }
+  },
+  "discount": {
+    "welcomeTitle": "Dein Willkommensgeschenk",
+    "welcomeMessage": "Nutze diesen Code für 10% Rabatt auf dein erstes Event",
+    "validFor": "90 Tage gültig",
+    "applyCode": "Rabattcode einlösen",
+    "applied": "Rabatt angewendet!",
+    "expired": "Dieser Code ist abgelaufen",
+    "invalid": "Ungültiger Rabattcode"
   }
 }

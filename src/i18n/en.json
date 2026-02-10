@@ -2291,5 +2291,14 @@
       },
       "footer": "All rights reserved."
     }
+  },
+  "discount": {
+    "welcomeTitle": "Your Welcome Gift",
+    "welcomeMessage": "Use this code for 10% off your first event",
+    "validFor": "Valid for 90 days",
+    "applyCode": "Apply discount code",
+    "applied": "Discount applied!",
+    "expired": "This code has expired",
+    "invalid": "Invalid discount code"
   }
 }
