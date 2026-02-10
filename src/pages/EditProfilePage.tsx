@@ -426,6 +426,12 @@ export default function EditProfilePage() {
           currentArchetype={profile.longevityArchetype}
           refreshProfile={refetchProfile}
         />
+
+        {/* Create Post Sheet */}
+        <MobileCreatePostSheet
+          open={showCreatePost}
+          onOpenChange={setShowCreatePost}
+        />
       </AppLayout>
     );
   }

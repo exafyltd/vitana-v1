@@ -1667,6 +1667,17 @@
     "unpublish": "Unpublish",
     "publish": "Publish"
   },
+  "profilePosts": {
+    "createPost": "Create Post",
+    "placeholder": "What's on your mind?",
+    "post": "Post",
+    "posted": "Posted!",
+    "deleted": "Post deleted",
+    "emptyTitle": "No posts yet",
+    "emptyDescription": "Share your first update with the community",
+    "deleteConfirm": "Delete this post?",
+    "error": "Something went wrong"
+  },
   "editProfile": {
     "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
     "notAuthenticated": "Not authenticated",

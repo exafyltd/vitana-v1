@@ -1667,6 +1667,17 @@
     "unpublish": "Veröffentlichung aufheben",
     "publish": "Veröffentlichen"
   },
+  "profilePosts": {
+    "createPost": "Beitrag erstellen",
+    "placeholder": "Was bewegt dich?",
+    "post": "Posten",
+    "posted": "Gepostet!",
+    "deleted": "Beitrag gelöscht",
+    "emptyTitle": "Noch keine Beiträge",
+    "emptyDescription": "Teile dein erstes Update mit der Community",
+    "deleteConfirm": "Beitrag löschen?",
+    "error": "Etwas ist schiefgelaufen"
+  },
   "editProfile": {
     "unsavedChanges": "Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass Sie verlassen möchten?",
     "notAuthenticated": "Nicht angemeldet",
