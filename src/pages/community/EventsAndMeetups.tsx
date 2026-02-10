@@ -710,8 +710,8 @@ const EventsAndMeetups = () => {
             </div>
           </UtilityActionButton>
 
-          <div className={cn("flex-1", isMobile ? "overflow-hidden" : "overflow-y-auto")}>
-            <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
+          <div className={cn(isMobile ? "flex-1 min-h-0 flex flex-col overflow-hidden" : "flex-1 overflow-y-auto")}>
+            <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab} className={cn(isMobile && "flex-1 min-h-0 flex flex-col")}>
               <SplitBarList>
                 <SplitBarTrigger value="today">
                   ☀️ {translate('events.tabs.today', 'Today')}
