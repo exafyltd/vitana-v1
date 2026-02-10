@@ -582,12 +582,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               disabled={!title || !streamType || selectedTags.length === 0 || isLoading}
             >
               {isLoading 
-                ? (editMode ? t('updating', 'Updating…') : t('starting', 'Starting…')) 
-                : editMode
-                  ? t('updateStream', 'Update Stream')
-                  : isScheduled 
-                    ? t('scheduleSession', 'Schedule Live Session') 
-                    : t('goLiveNowAction', 'Go Live Now')
+                ? t('starting', 'Starting…')
+                : isScheduled 
+                  ? t('scheduleSession', 'Schedule Live Session') 
+                  : t('goLiveNowAction', 'Go Live Now')
               }
             </Button>
           </div>

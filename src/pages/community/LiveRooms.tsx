@@ -48,6 +48,7 @@ export default function LiveRooms() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { user } = useAuth();
+  const { data: myRoomData } = useMyRoom();
   const isMobile = useIsMobile();
   const { translate } = useTranslation();
   const [isGoLiveOpen, setIsGoLiveOpen] = useState(false);
