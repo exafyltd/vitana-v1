@@ -14,18 +14,17 @@ import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video,
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
-import { useCreateStream, useUpdateStream, type LiveStream } from "@/hooks/useLiveStreams";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useI18nNotify } from "@/hooks/useI18nNotify";
 import { applyReplacements } from "@/lib/i18n-helpers";
+import { useMyRoom, useCreateSession } from "@/hooks/useMyRoom";
 
 interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   defaultTitle?: string;
-  onCreated?: (streamId: string) => void;
-  editMode?: boolean;
-  streamData?: LiveStream;
+  onCreated?: (roomId: string) => void;
+  permanentRoomId?: string;
 }
 
 // Stable tag IDs mapped to translation keys
