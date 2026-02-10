@@ -727,7 +727,7 @@ const EventsAndMeetups = () => {
                 </SplitBarTrigger>
               </SplitBarList>
 
-              <SplitBarContent value="today" className="mt-6">
+              <SplitBarContent value="today" className={cn("mt-6", isMobile && "flex-1 min-h-0 flex flex-col overflow-hidden")}>
                 {loading && filteredTodayEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
