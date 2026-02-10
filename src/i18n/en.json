@@ -2043,7 +2043,10 @@
   "profile": {
     "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
     "autopilot": {
-      "polishBio": "Polish your bio, archetype & showcase",
+      "polishBio": "Polish your bio, archetype & highlights",
+      "editHighlights": "Edit Highlights",
+      "saveHighlights": "Save Highlights",
+      "highlightsDesc": "Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers.",
       "try": "Try"
     },
     "identity": {

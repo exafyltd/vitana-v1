@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ShowcaseForm } from "../editor/ShowcaseForm";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ShowcaseDrawerProps {
   open: boolean;
@@ -8,11 +9,12 @@ interface ShowcaseDrawerProps {
 }
 
 export function ShowcaseDrawer({ open, onOpenChange }: ShowcaseDrawerProps) {
+  const { translate } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Showcase</DialogTitle>
+          <DialogTitle>{translate('editProfile.autopilot.editHighlights')}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-6">

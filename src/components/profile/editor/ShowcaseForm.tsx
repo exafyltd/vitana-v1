@@ -164,7 +164,7 @@ export function ShowcaseForm() {
       )}
 
       <div className="pt-4 border-t">
-        <Button className="w-full">Save Showcase</Button>
+        <Button className="w-full">{translate('editProfile.autopilot.saveHighlights')}</Button>
       </div>
     </div>
   );

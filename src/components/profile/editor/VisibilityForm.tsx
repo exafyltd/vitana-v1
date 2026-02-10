@@ -111,7 +111,7 @@ export function VisibilityForm() {
           { key: 'about', label: 'About/Bio', value: aboutVisibility, setter: setAboutVisibility },
           { key: 'links', label: 'Links', value: linksVisibility, setter: setLinksVisibility },
           { key: 'location', label: 'Location', value: locationVisibility, setter: setLocationVisibility },
-          { key: 'showcase', label: 'Showcase', value: showcaseVisibility, setter: setShowcaseVisibility },
+          { key: 'showcase', label: translate('editProfile.showcaseTitle'), value: showcaseVisibility, setter: setShowcaseVisibility },
         ].map(({ key, label, value, setter }) => (
           <Card key={key} className="p-4">
             <div className="flex items-center justify-between">
