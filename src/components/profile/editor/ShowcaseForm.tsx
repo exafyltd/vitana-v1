@@ -25,6 +25,7 @@ interface FeaturedPost {
 }
 
 export function ShowcaseForm() {
+  const { translate } = useTranslation();
   const [featuredPosts, setFeaturedPosts] = useState<FeaturedPost[]>([
     {
       id: "1",
