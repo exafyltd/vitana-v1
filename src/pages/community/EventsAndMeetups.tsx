@@ -646,8 +646,8 @@ const EventsAndMeetups = () => {
       <AppLayout>
         {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
         {!isMobile && <SubNavigation items={communityNavigation} />}
-        <div className={cn("p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50", isMobile ? "h-[100dvh] overflow-hidden" : "min-h-screen")}>
-          <div className="flex-1 overflow-hidden">
+        <div className={cn("p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50", isMobile ? "h-[100dvh] overflow-hidden flex flex-col" : "min-h-screen")}>
+          <div className={cn(isMobile ? "flex-1 min-h-0 flex flex-col overflow-hidden" : "flex-1 overflow-hidden")}>
           <StandardHeader
             title={translate('events.title', 'Events & MeetUps')}
             description={translate('events.description', 'Discover formal events and casual meetups in your community')}
