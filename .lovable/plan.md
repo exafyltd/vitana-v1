@@ -1,41 +1,47 @@
 
+# Fix: Events Not Showing on Mobile
 
-# Mobile Events: Horizontal Carousel to Vertical Scroll
+## Root Cause
 
-## What Changes
+The recent vertical snap-scroll refactor of `MobileEventCarousel` created a **nested scrolling conflict**. The snap-scroll container uses a fixed height (`calc(100dvh - 216px)`), but it sits inside multiple parent containers that also scroll:
 
-The events overview on mobile (`/comm/events-meetups`) currently uses a **horizontal swipe carousel** (Embla Carousel) where you swipe left/right between event cards. This will be replaced with a **vertical scroll layout** where each event card takes up one full viewport height, and you scroll up/down naturally.
+```text
+div.p-6.min-h-screen              (page wrapper - scrolls)
+  div.flex-1.overflow-y-auto       (content area - also scrolls!)
+    SplitBarContent                 (tab panel)
+      MobileEventCarousel
+        div.overflow-y-auto         (snap container - tries to scroll too)
+```
 
-## Why
+The snap container likely collapses to zero visible height or its cards are rendered but hidden behind the competing scroll contexts. The empty state does NOT appear (which would show "No Upcoming Events" text), confirming events are being passed to the component -- they're just invisible due to CSS layout issues.
 
-Vertical scrolling is more natural on mobile (matches native feed behavior). The "one event = one viewport" rule is preserved -- each card fills the screen.
+## Fix
 
-## Technical Approach
+### 1. `MobileEventCarousel.tsx` -- Remove fixed height, use flex-grow
 
-### File: `src/components/community/MobileEventCarousel.tsx`
+The snap container should NOT use a hardcoded `calc(100dvh - 216px)` height. Instead, it should fill whatever space its parent gives it using `flex: 1` / `h-full`. The parent page layout needs to provide the constraint.
 
-**Replace the Embla horizontal carousel** with a CSS snap-scroll vertical layout:
+- Change the snap container from a fixed `height` style to `flex: 1; min-height: 0` so it fills available space
+- Keep `overflow-y-auto`, `snap-y`, `snap-mandatory` and `overscroll-behavior` on the container
+- Keep `scroll-snap-align: start` and `scroll-snap-stop: always` on each card wrapper
+- Each card wrapper's `min-height` should remain `calc(100dvh - 216px)` -- this is the size of each "page", not the container
 
-- Remove the `embla-carousel-react` dependency from this component
-- Replace the horizontal `flex` container with a vertical `snap-y snap-mandatory` scroll container
-- Each event card gets `snap-start` and `h-[calc(100vh-280px)]` (same height as current cards) to fill one viewport
-- Keep the same `transformEventToCard` logic, `NewsCard` rendering, empty state, keyboard nav (change ArrowLeft/Right to ArrowUp/Down)
-- Remove dot indicators (not useful for vertical scroll with many items)
-- Replace the "X of Y" counter with a subtle floating counter or remove it
+### 2. `EventsAndMeetups.tsx` -- Fix parent layout for mobile
 
-### Specific Changes
+On mobile, the page wrapper and content area create competing scroll surfaces. The fix:
 
-1. **Remove**: `useEmblaCarousel` import and hook usage
-2. **Remove**: Dot indicators section and counter
-3. **Add**: Vertical scroll container with CSS scroll-snap:
-   - Container: `overflow-y-auto snap-y snap-mandatory h-[calc(100vh-200px)]`
-   - Each card wrapper: `snap-start h-[calc(100vh-280px)] min-h-[400px]`
-4. **Update keyboard navigation**: ArrowUp/ArrowDown instead of ArrowLeft/ArrowRight
-5. **Update `onSlideChange`**: Use an `IntersectionObserver` to detect which card is in view and report it back, replacing Embla's `onSelect` callback
-6. **Keep**: `initialEventId` support via `scrollIntoView` instead of `emblaApi.scrollTo`
-7. **Keep**: All card transformation logic, edit/share buttons, empty state
+- On mobile, make the content area (`div.flex-1.overflow-y-auto` at line 713) use `overflow: hidden` instead of `overflow-y-auto`, so the only scrolling surface is the snap container inside `MobileEventCarousel`
+- Alternatively, remove the `overflow-y-auto` on the parent and let the snap container be the sole scroll owner
 
-### No changes needed in `EventsAndMeetups.tsx`
+### 3. Ensure the outer page container doesn't scroll on mobile
 
-The parent component already branches on `isMobile` and renders `<MobileEventCarousel>`. The props interface stays the same -- only the internal rendering changes from horizontal carousel to vertical scroll.
+The `div.p-6.min-h-screen` wrapper (line 649) implies the page itself can scroll. On mobile, when the snap carousel is active, this outer scroll should be suppressed so only the snap container handles scrolling. This can be done by conditionally adding `overflow: hidden; height: 100dvh` to the page wrapper on mobile when showing the carousel tabs.
 
+## Summary of Changes
+
+| File | Change |
+|------|--------|
+| `MobileEventCarousel.tsx` | Replace fixed container height with `flex: 1; min-height: 0; height: 100%` so it fills parent space. Keep card wrapper min-height as the viewport "page" size. |
+| `EventsAndMeetups.tsx` | On mobile: suppress outer scrolling (`overflow: hidden`) on parent containers so the snap container is the sole scroll surface. Ensure the layout chain from page root to carousel is a proper flex column with constrained height. |
+
+These are minimal CSS/layout changes -- no logic, data, or component structure changes needed.
