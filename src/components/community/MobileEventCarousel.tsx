@@ -6,13 +6,6 @@ import { Edit, CalendarIcon } from 'lucide-react';
 import SocialShareButton from '@/components/sharing/SocialShareButton';
 import { getShareUrl } from '@/lib/shareUrl';
 
-/**
- * Height consumed by mobile chrome: tenant header + search/calendar/create bar
- * + Today/Upcoming tabs + bottom nav.
- * Measured: ~56 + 48 + 44 + 64 = 212px  (round to 216 for breathing room)
- */
-const CHROME_HEIGHT_PX = 216;
-
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString('en-GB', { 
@@ -81,37 +74,29 @@ export function MobileEventCarousel({
 }: MobileEventCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleSet, setVisibleSet] = useState<Set<number>>(new Set([0]));
 
-  // IntersectionObserver — track active card + visible set for scale animation
+  // IntersectionObserver to detect which card is in view
   useEffect(() => {
     const container = containerRef.current;
     if (!container || events.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const nextVisible = new Set(visibleSet);
         for (const entry of entries) {
-          const idx = Number(entry.target.getAttribute('data-index'));
-          if (isNaN(idx)) continue;
-
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-            nextVisible.add(idx);
-            if (idx !== currentIndex) {
-              setCurrentIndex(idx);
-              if (events[idx] && onSlideChange) {
-                onSlideChange(events[idx].id, idx);
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-index'));
+            if (!isNaN(index) && index !== currentIndex) {
+              setCurrentIndex(index);
+              if (events[index] && onSlideChange) {
+                onSlideChange(events[index].id, index);
               }
             }
-          } else {
-            nextVisible.delete(idx);
           }
         }
-        setVisibleSet(nextVisible);
       },
       {
         root: container,
-        threshold: [0.1, 0.6],
+        threshold: 0.6,
       }
     );
 
@@ -119,7 +104,7 @@ export function MobileEventCarousel({
     cards.forEach((card) => observer.observe(card));
 
     return () => observer.disconnect();
-  }, [events, onSlideChange, currentIndex, visibleSet]);
+  }, [events, onSlideChange, currentIndex]);
 
   // Scroll to initial event on mount
   useEffect(() => {
@@ -219,96 +204,53 @@ export function MobileEventCarousel({
     };
   };
 
-  // Debug banner — fixed overlay, does not consume layout height
-  const debugBanner = (
-    <div className="fixed left-1/2 -translate-x-1/2 bottom-[84px] z-[9999] bg-yellow-300 text-black text-xs px-3 py-1 rounded-full flex gap-2 shadow-lg pointer-events-none">
-      <span>Events: {events.length}</span>
-      <span>|</span>
-      <span>Idx: {currentIndex}</span>
-    </div>
-  );
-
   // Empty state
   if (events.length === 0) {
     return (
-      <div className="h-full flex flex-col min-h-0">
-        {debugBanner}
-        <div className="flex items-center justify-center flex-1 px-6">
-          {emptyState || (
-            <div className="text-center">
-              <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">No Events</h3>
-              <p className="text-muted-foreground">Check back soon for upcoming events!</p>
-            </div>
-          )}
-        </div>
+      <div className="flex items-center justify-center min-h-[60vh] px-6">
+        {emptyState || (
+          <div className="text-center">
+            <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-lg font-semibold mb-2">No Events</h3>
+            <p className="text-muted-foreground">Check back soon for upcoming events!</p>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div 
-      className="h-full flex flex-col min-h-0" 
+      className="relative w-full" 
       role="feed" 
       aria-label="Events feed"
     >
-      {debugBanner}
-
-      {/* Vertical snap-scroll container — fills parent via flex */}
+      {/* Vertical scroll container with snap */}
       <div 
         ref={containerRef}
-        className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scrollbar-hide"
-        style={{
-          overscrollBehavior: 'contain',
-          WebkitOverflowScrolling: 'touch',
-          paddingBottom: 'calc(120px + env(safe-area-inset-bottom))',
-        }}
+        className="overflow-y-auto snap-y snap-mandatory h-[calc(100vh-200px)] scrollbar-hide"
+        style={{ overscrollBehavior: 'contain' }}
       >
-        {events.map((event, index) => {
-          const isActive = visibleSet.has(index);
-          const isLast = index === events.length - 1;
-
-          return (
-            <div
-              key={event.id}
-              data-index={index}
-              className="flex items-center justify-center"
-              style={{
-                scrollSnapAlign: 'start',
-                scrollSnapStop: 'always',
-                minHeight: `calc(100dvh - ${CHROME_HEIGHT_PX}px)`,
-                padding: `14px 14px calc(14px + env(safe-area-inset-bottom))`,
-              }}
-              role="article"
-              aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
-            >
-              <div
-                className="w-full max-w-[520px] overflow-hidden transition-transform duration-300 ease-out"
-                style={{
-                  borderRadius: 24,
-                  boxShadow: '0 12px 30px rgba(0,0,0,0.10)',
-                  background: 'hsl(var(--card))',
-                  transform: isActive ? 'scale(1)' : 'scale(0.97)',
-                }}
-              >
-                <NewsCard
-                  {...transformEventToCard(event)}
-                  className="h-full"
-                />
-              </div>
-
-              {/* Pagination hint — shows a subtle line when more cards below */}
-              {!isLast && (
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-muted-foreground/20" />
-              )}
-            </div>
-          );
-        })}
+        {events.map((event, index) => (
+          <div
+            key={event.id}
+            data-index={index}
+            className="snap-start px-2"
+            style={{ height: 'calc(100vh - 280px)', minHeight: '400px' }}
+            role="article"
+            aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
+          >
+            <NewsCard
+              {...transformEventToCard(event)}
+              className="h-full"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Floating counter */}
       {events.length > 1 && (
-        <div className="absolute bottom-3 right-4 bg-background/80 backdrop-blur-sm text-xs text-muted-foreground px-2.5 py-1 rounded-full border border-border/50 z-10">
+        <div className="absolute bottom-3 right-4 bg-background/80 backdrop-blur-sm text-xs text-muted-foreground px-2.5 py-1 rounded-full border border-border/50">
           {currentIndex + 1} / {events.length}
         </div>
       )}

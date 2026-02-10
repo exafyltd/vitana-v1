@@ -1,61 +1,41 @@
 
 
-# Fix: Snap Carousel Pushed Below Viewport
+# Mobile Events: Horizontal Carousel to Vertical Scroll
 
-## Root Cause
+## What Changes
 
-The layout chain from page root to carousel:
+The events overview on mobile (`/comm/events-meetups`) currently uses a **horizontal swipe carousel** (Embla Carousel) where you swipe left/right between event cards. This will be replaced with a **vertical scroll layout** where each event card takes up one full viewport height, and you scroll up/down naturally.
 
-```text
-div (h-[100dvh] flex flex-col)          -- OK, constrains height
-  div (flex-1 min-h-0 flex flex-col)    -- OK, fills remaining
-    StandardHeader                       -- consumes ~80px
-    UtilityActionButton                  -- consumes ~48px
-    div (flex-1 min-h-0 flex flex-col)  -- OK
-      SplitBar/Tabs (flex-1 flex flex-col) -- OK
-        SplitBarList (tab triggers)      -- consumes ~44px
-        SplitBarContent                  -- BREAKS: display:block, not flex child
-          MobileEventCarousel            -- height: calc(100dvh - 216px) = TOO TALL
-```
+## Why
 
-`SplitBarContent` (Radix `TabsPrimitive.Content`) renders as `display: block` when active. It does NOT participate as a flex child that grows to fill remaining space. So `flex-1` classes on it are ignored.
+Vertical scrolling is more natural on mobile (matches native feed behavior). The "one event = one viewport" rule is preserved -- each card fills the screen.
 
-Then the carousel sets its own height to `calc(100dvh - 216px)` which is the full viewport minus chrome -- but it's already placed 170+ px down the page. The result: most of it overflows below the visible area, and we see only the bottom sliver.
+## Technical Approach
 
-## Fix (2 files)
+### File: `src/components/community/MobileEventCarousel.tsx`
 
-### 1. `split-bar.tsx` -- Make SplitBarContent a flex participant when active
+**Replace the Embla horizontal carousel** with a CSS snap-scroll vertical layout:
 
-Add to the base className of `SplitBarContent`:
+- Remove the `embla-carousel-react` dependency from this component
+- Replace the horizontal `flex` container with a vertical `snap-y snap-mandatory` scroll container
+- Each event card gets `snap-start` and `h-[calc(100vh-280px)]` (same height as current cards) to fill one viewport
+- Keep the same `transformEventToCard` logic, `NewsCard` rendering, empty state, keyboard nav (change ArrowLeft/Right to ArrowUp/Down)
+- Remove dot indicators (not useful for vertical scroll with many items)
+- Replace the "X of Y" counter with a subtle floating counter or remove it
 
-```
-data-[state=active]:flex data-[state=active]:flex-col data-[state=active]:flex-1 data-[state=active]:min-h-0
-```
+### Specific Changes
 
-When inactive, Radix sets `display: none`. When active, this overrides to `display: flex` with `flex: 1` so it fills remaining space in the parent flex column. This is backward-compatible -- existing consumers that don't use flex just get a flex container that behaves like block for non-flex children.
+1. **Remove**: `useEmblaCarousel` import and hook usage
+2. **Remove**: Dot indicators section and counter
+3. **Add**: Vertical scroll container with CSS scroll-snap:
+   - Container: `overflow-y-auto snap-y snap-mandatory h-[calc(100vh-200px)]`
+   - Each card wrapper: `snap-start h-[calc(100vh-280px)] min-h-[400px]`
+4. **Update keyboard navigation**: ArrowUp/ArrowDown instead of ArrowLeft/ArrowRight
+5. **Update `onSlideChange`**: Use an `IntersectionObserver` to detect which card is in view and report it back, replacing Embla's `onSelect` callback
+6. **Keep**: `initialEventId` support via `scrollIntoView` instead of `emblaApi.scrollTo`
+7. **Keep**: All card transformation logic, edit/share buttons, empty state
 
-### 2. `MobileEventCarousel.tsx` -- Use h-full instead of explicit calc height
+### No changes needed in `EventsAndMeetups.tsx`
 
-Now that the flex chain is unbroken, the carousel can simply fill its parent:
-
-- Root wrapper: change from `style={{ height: calc(100dvh - 216px) }}` to `className="h-full flex flex-col min-h-0"`
-- Snap container: `className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scrollbar-hide"`
-- Remove the `CHROME_HEIGHT_PX` constant from the root wrapper (keep it only for individual card `minHeight`)
-- Remove the red debug border
-- Keep the debug banner (fixed position) for one more verification cycle
-
-### 3. Verify `EventsAndMeetups.tsx` -- Ensure SplitBar itself is flex
-
-The `SplitBar` (Tabs root) at line 714 already has `className="flex-1 min-h-0 flex flex-col"` on mobile. This is correct and needs no change.
-
-## Technical Details
-
-| File | Change |
-|------|--------|
-| `src/components/ui/split-bar.tsx` | Add `data-[state=active]:flex data-[state=active]:flex-col data-[state=active]:flex-1 data-[state=active]:min-h-0` to SplitBarContent base className |
-| `src/components/community/MobileEventCarousel.tsx` | Root wrapper: `h-full flex flex-col min-h-0` (remove explicit calc height). Snap container: `flex-1 min-h-0`. Remove red debug border. Keep debug banner. |
-
-## Why This Will Work
-
-With the SplitBarContent fix, the entire chain from `h-[100dvh]` page root to the carousel is an unbroken sequence of `flex flex-col` containers with `flex-1 min-h-0`. Each level takes remaining space after its siblings (headers, tab bar) consume their natural height. The carousel ends up with exactly the right amount of space -- no explicit pixel math needed.
+The parent component already branches on `isMobile` and renders `<MobileEventCarousel>`. The props interface stays the same -- only the internal rendering changes from horizontal carousel to vertical scroll.
 
