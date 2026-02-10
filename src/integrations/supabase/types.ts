@@ -7073,6 +7073,45 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_posts: {
+        Row: {
+          comments_count: number
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          is_public: boolean
+          likes_count: number
+          shares_count: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comments_count?: number
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_public?: boolean
+          likes_count?: number
+          shares_count?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comments_count?: number
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_public?: boolean
+          likes_count?: number
+          shares_count?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profile_privacy_settings: {
         Row: {
           created_at: string
