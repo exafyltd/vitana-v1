@@ -33,6 +33,7 @@ import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import IntroExperience from "./pages/IntroExperience";
 import RedeemVoucher from "./pages/RedeemVoucher";
+import CreatorOnboarded from "./pages/CreatorOnboarded";
 import Logout from "./pages/Logout";
 
 // Portal pages

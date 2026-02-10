@@ -108,6 +108,9 @@ export default function Billing() {
           </SplitBarList>
 
           <SplitBarContent value="billing" className="space-y-6">
+        {/* Creator Payments */}
+        <CreatorPaymentsSection />
+
         {/* Current Subscription */}
         <Card>
           <CardHeader>

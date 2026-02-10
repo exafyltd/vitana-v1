@@ -10,19 +10,27 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Video, Users } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Video, Users, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCreatorStatus } from '@/hooks/useCreator';
+import { Link } from 'react-router-dom';
 
 interface CreateLiveRoomDialogProps {
   userId: string;
-  onRoomCreated: (roomId: string, roomName: string) => void;
+  onRoomCreated: (roomId: string, roomName: string, accessLevel?: string, price?: number) => void;
 }
 
 export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [roomName, setRoomName] = useState('');
+  const [isPaid, setIsPaid] = useState(false);
+  const [price, setPrice] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { data: creatorStatus } = useCreatorStatus();
+
+  const canCreatePaidRoom = creatorStatus?.charges_enabled === true;
 
   const handleCreateRoom = async () => {
     if (!roomName.trim()) {
@@ -34,18 +42,39 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
       return;
     }
 
+    if (isPaid && !canCreatePaidRoom) {
+      toast({
+        title: "Payment setup required",
+        description: "Please enable payments in Settings before creating paid rooms",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isPaid && (!price || parseFloat(price) < 1)) {
+      toast({
+        title: "Price required",
+        description: "Please enter a price of at least $1.00",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     
     try {
-      // Generate unique room ID
       const roomId = `room_${Date.now()}_${Math.random().toString(36).substring(7)}`;
       
-      // Here you would typically save room details to database
-      // For now, just create the room locally
-      
-      onRoomCreated(roomId, roomName);
+      onRoomCreated(
+        roomId,
+        roomName,
+        isPaid ? 'paid' : 'free',
+        isPaid ? parseFloat(price) : undefined
+      );
       setIsOpen(false);
       setRoomName('');
+      setIsPaid(false);
+      setPrice('');
       
       toast({
         title: "Live room created",
@@ -90,13 +119,60 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
               />
             </div>
 
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="paid-toggle">Paid Room</Label>
+                <p className="text-xs text-muted-foreground">Charge participants to join</p>
+              </div>
+              <Switch
+                id="paid-toggle"
+                checked={isPaid}
+                onCheckedChange={setIsPaid}
+              />
+            </div>
+
+            {isPaid && !canCreatePaidRoom && (
+              <div className="flex items-start gap-2 rounded-md border border-yellow-300 bg-yellow-50 dark:bg-yellow-950/30 dark:border-yellow-700 p-3">
+                <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mt-0.5 shrink-0" />
+                <div className="text-sm">
+                  <p className="font-medium text-yellow-800 dark:text-yellow-300">Payment setup required</p>
+                  <p className="text-yellow-700 dark:text-yellow-400 text-xs mt-1">
+                    <Link to="/settings/billing" className="underline" onClick={() => setIsOpen(false)}>
+                      Enable Payments
+                    </Link>{' '}
+                    in Settings to create paid rooms.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {isPaid && canCreatePaidRoom && (
+              <div className="space-y-2">
+                <Label htmlFor="room-price">Price ($)</Label>
+                <Input
+                  id="room-price"
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  placeholder="9.99"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+                {price && parseFloat(price) >= 1 && (
+                  <p className="text-xs text-muted-foreground">
+                    You'll receive ${(parseFloat(price) * 0.9).toFixed(2)} (90%)
+                  </p>
+                )}
+              </div>
+            )}
+
             <div className="text-sm text-muted-foreground">
               Create a multi-participant video room for events, coaching sessions, or meetups.
             </div>
 
             <Button
               onClick={handleCreateRoom}
-              disabled={isLoading}
+              disabled={isLoading || (isPaid && !canCreatePaidRoom)}
               className="w-full"
             >
               {isLoading ? 'Creating...' : 'Create Room'}
