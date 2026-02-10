@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useWebRTC } from '@/hooks/useWebRTC';
-import { Mic, MicOff, Video, VideoOff, PhoneOff, Monitor } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff, PhoneOff, Monitor, Maximize, Minimize } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 interface LiveRoomProps {
   roomId: string;
@@ -14,6 +15,8 @@ interface LiveRoomProps {
 
 export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) => {
   const { toast } = useToast();
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const {
     localStream,
     peers,
@@ -27,8 +30,11 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
   } = useWebRTC({ roomId, userId, isVideoEnabled: true, isAudioEnabled: true });
 
   const localVideoRef = useRef<HTMLVideoElement>(null);
+  const joinedRef = useRef(false);
 
   useEffect(() => {
+    if (joinedRef.current) return;
+    joinedRef.current = true;
     joinRoom().catch(error => {
       toast({
         title: "Failed to join room",
@@ -40,7 +46,9 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
     return () => {
       leaveRoom();
     };
-  }, [joinRoom, leaveRoom, toast]);
+    // Only run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (localVideoRef.current && localStream) {
@@ -53,8 +61,30 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
     onLeave();
   };
 
+  const toggleFullscreen = useCallback(async () => {
+    if (!containerRef.current) return;
+    try {
+      if (!document.fullscreenElement) {
+        await containerRef.current.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch (err) {
+      console.warn('Fullscreen not supported:', err);
+    }
+  }, []);
+
+  // Listen for fullscreen exit via Escape
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', handler);
+    return () => document.removeEventListener('fullscreenchange', handler);
+  }, []);
+
   return (
-    <div className="flex flex-col h-full bg-background">
+    <div ref={containerRef} className="flex flex-col h-full bg-background">
       {/* Video Grid */}
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 overflow-auto">
         {/* Local Video */}
@@ -116,6 +146,16 @@ export const LiveRoom = ({ roomId, userId, userName, onLeave }: LiveRoomProps) =
             className="rounded-full h-14 w-14"
           >
             <Monitor className="h-6 w-6" />
+          </Button>
+
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={toggleFullscreen}
+            className="rounded-full h-14 w-14"
+            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+          >
+            {isFullscreen ? <Minimize className="h-6 w-6" /> : <Maximize className="h-6 w-6" />}
           </Button>
 
           <Button

@@ -64,8 +64,28 @@ export default function LiveRoomViewer() {
   // Host presence signals
   useHostPresence(roomId, effectiveIsHost);
 
-  // End room mutation
+  // End room mutation (gateway)
   const { mutate: endRoomMutation, isPending: isEnding } = useEndRoom();
+
+  // Fallback: end room directly via Supabase if gateway fails
+  const endRoomFallback = async (id: string) => {
+    try {
+      await supabase
+        .from('live_rooms')
+        .update({ status: 'idle', ends_at: new Date().toISOString() })
+        .eq('id', id);
+      // Also end in community_live_streams if present
+      await supabase
+        .from('community_live_streams')
+        .update({ status: 'ended', ended_at: new Date().toISOString() })
+        .eq('id', id);
+      toast({ title: 'Room ended', description: 'Your session has ended' });
+      navigate('/comm/live-rooms');
+    } catch (err) {
+      console.error('[EndRoom] Fallback also failed:', err);
+      toast({ title: 'Failed to end room', variant: 'destructive' });
+    }
+  };
 
   // Fetch recording if stream has ended
   const { data: recordingData } = useQuery({
@@ -147,7 +167,13 @@ export default function LiveRoomViewer() {
       if (isRecording) {
         await stopRecording();
       }
-      endRoomMutation(roomId);
+      // Try gateway first, fallback to direct Supabase
+      endRoomMutation(roomId, {
+        onError: () => {
+          console.warn('[LiveRoomViewer] Gateway end failed, using Supabase fallback');
+          endRoomFallback(roomId);
+        },
+      });
       toast({
         title: "Stream Ended",
         description: "Your live stream has ended",

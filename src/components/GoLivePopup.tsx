@@ -221,6 +221,28 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       
       await createSession({ roomId, request: sessionRequest });
       
+      // Also insert into community_live_streams so the catalog picks it up
+      try {
+        await supabase.from('community_live_streams').upsert({
+          id: roomId,
+          title,
+          description: description || null,
+          stream_type: streamType,
+          tags: selectedTags,
+          access_level: accessLevel,
+          cover_image_url: uploadedImageUrl || null,
+          scheduled_for: scheduledIso || null,
+          status: isScheduled ? 'pending' : 'live',
+          started_at: isScheduled ? null : new Date().toISOString(),
+          created_by: user.id,
+          enable_chat: enableChat,
+          enable_polls: enablePolls,
+          enable_recording: enableRecording,
+        }, { onConflict: 'id' });
+      } catch (e) {
+        console.warn('[GoLivePopup] community_live_streams sync failed:', e);
+      }
+      
       // Notify parent if scheduled
       if (isScheduled && onCreated) {
         onCreated(roomId);
