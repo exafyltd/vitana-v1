@@ -219,12 +219,12 @@ export function MobileEventCarousel({
     };
   };
 
-  // Debug banner (temporary — will be removed once layout is confirmed working)
+  // Debug banner — fixed overlay, does not consume layout height
   const debugBanner = (
-    <div className="sticky top-0 z-50 bg-yellow-300 text-black text-xs px-3 py-1 rounded-full mx-auto w-fit flex gap-2">
+    <div className="fixed left-1/2 -translate-x-1/2 bottom-[84px] z-[9999] bg-yellow-300 text-black text-xs px-3 py-1 rounded-full flex gap-2 shadow-lg pointer-events-none">
       <span>Events: {events.length}</span>
       <span>|</span>
-      <span>Loading: {'no'}</span>
+      <span>Idx: {currentIndex}</span>
     </div>
   );
 
@@ -248,29 +248,21 @@ export function MobileEventCarousel({
 
   return (
     <div 
-      className="h-full flex flex-col min-h-0 relative w-full" 
+      className="relative w-full" 
+      style={{ height: `calc(100dvh - ${CHROME_HEIGHT_PX}px)` }}
       role="feed" 
       aria-label="Events feed"
     >
       {debugBanner}
 
-      {/* Debug fallback list (temporary — remove after layout fix confirmed) */}
-      <div className="px-3 py-2 space-y-2 max-h-40 overflow-y-auto bg-yellow-50 border border-yellow-200 rounded-lg mx-2 mb-1 flex-shrink-0">
-        <p className="text-[10px] text-yellow-700 font-bold">DEBUG FALLBACK LIST:</p>
-        {events.slice(0, 5).map((event) => (
-          <div key={event.id} className="p-2 bg-background rounded-xl shadow text-xs">
-            <span className="font-medium">{event.title}</span> — {new Date(event.start_time).toLocaleDateString()}
-          </div>
-        ))}
-      </div>
-
-      {/* Vertical snap-scroll container — sole scrolling surface */}
+      {/* Vertical snap-scroll container — sole scrolling surface, explicit height */}
       <div 
         ref={containerRef}
-        className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+        className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide border border-red-500"
         style={{
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
+          paddingBottom: 'calc(120px + env(safe-area-inset-bottom))',
         }}
       >
         {events.map((event, index) => {
