@@ -303,7 +303,7 @@ export default function EditProfilePage() {
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
   const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
-
+  const [showCreatePost, setShowCreatePost] = useState(false);
 
   // Mobile-specific layout - early return pattern
   if (isMobile) {
