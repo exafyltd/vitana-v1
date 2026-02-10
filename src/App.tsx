@@ -500,6 +500,11 @@ const App = () => {
           <Route path="/tickets/success" element={<TicketPurchaseSuccess />} />
           <Route path="/packages/success" element={<PackagePurchaseSuccess />} />
           <Route path="/tickets/demo" element={<TicketDemo />} />
+          <Route path="/creator/onboarded" element={
+            <AuthGuard>
+              <CreatorOnboarded />
+            </AuthGuard>
+          } />
           <Route path="/my-tickets" element={
             <AuthGuard>
               <MyTickets />
