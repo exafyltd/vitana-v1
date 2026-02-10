@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ const ACCESS_LEVEL_IDS = ["public", "followers", "group"] as const;
 type AccessLevelId = typeof ACCESS_LEVEL_IDS[number];
 
 export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, editMode = false, streamData }: GoLivePopupProps) {
+  const navigate = useNavigate();
   const { translate } = useTranslation();
   const { notify } = useI18nNotify();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -315,21 +317,21 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       } else {
         notify.success('liveRooms.goLivePopup.success.youAreLiveTitle', 'liveRooms.goLivePopup.success.youAreLiveDesc');
 
-        // Navigate creator to viewer as host (SPA-safe navigation)
+        // Navigate creator to viewer as host using React Router
         setTimeout(() => {
-          const path = `/comm/live-rooms/${stream.id}/view`;
-          window.history.pushState({
-            roomId: stream.id,
-            userId: user.id,
-            userName: user.email?.split('@')[0] || 'Host',
-            isHost: true,
-            room: {
-              id: stream.id,
-              title: stream.title,
-              isLive: true,
+          navigate(`/comm/live-rooms/${stream.id}/view`, {
+            state: {
+              roomId: stream.id,
+              userId: user.id,
+              userName: user.email?.split('@')[0] || 'Host',
+              isHost: true,
+              room: {
+                id: stream.id,
+                title: stream.title,
+                isLive: true,
+              }
             }
-          }, '', path);
-          window.dispatchEvent(new PopStateEvent('popstate'));
+          });
         }, 500);
       }
       

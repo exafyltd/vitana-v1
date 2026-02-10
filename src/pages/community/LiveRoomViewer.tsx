@@ -44,6 +44,12 @@ export default function LiveRoomViewer() {
   // Get state passed from navigation
   const { userId, userName, userAvatar, room, isHost } = location.state || {};
 
+  // Use auth context as fallback if navigation state is missing
+  const effectiveUserId = userId || user?.id;
+  const effectiveUserName = userName || user?.email?.split('@')[0] || 'Guest';
+  const effectiveUserAvatar = userAvatar;
+  const effectiveIsHost = isHost || false;
+
   const [messageInput, setMessageInput] = useState('');
   const [showParticipants, setShowParticipants] = useState(false);
   const [isInRoom, setIsInRoom] = useState(false);
@@ -88,15 +94,15 @@ export default function LiveRoomViewer() {
   // Initialize chat
   const { messages, sendMessage, sendReaction } = useLiveChat({
     roomId: roomId || '',
-    userId: userId || user?.id || '',
-    userName: userName || 'Guest',
-    userAvatar,
+    userId: effectiveUserId || '',
+    userName: effectiveUserName,
+    userAvatar: effectiveUserAvatar,
   });
 
   // Initialize WebRTC
   const { localStream, peers, isConnected, joinRoom: joinWebRTCRoom, leaveRoom: leaveWebRTCRoom } = useWebRTC({
     roomId: roomId || '',
-    userId: userId || user?.id || '',
+    userId: effectiveUserId || '',
     isAudioEnabled: true,
     isVideoEnabled: streamData?.stream_type === 'video',
   });
@@ -107,7 +113,7 @@ export default function LiveRoomViewer() {
   // Stream lifecycle management
   const { endStream } = useStreamLifecycle({
     roomId: roomId || '',
-    isHost: isHost || false,
+    isHost: effectiveIsHost,
     viewerCount: peers.length + 1,
     messageCount: messages.length,
     streamStatus: streamData?.status,
@@ -117,7 +123,7 @@ export default function LiveRoomViewer() {
   const { isRecording, stopRecording } = useStreamRecording({
     streamId: roomId || '',
     localStream,
-    isHost: isHost || false,
+    isHost: effectiveIsHost,
     enabled: streamData?.enable_recording ?? false,
   });
 
@@ -126,17 +132,17 @@ export default function LiveRoomViewer() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Redirect if no proper state
+  // Redirect if no proper state (with fallback to authenticated user)
   useEffect(() => {
-    if (!userId || !userName) {
+    if (!effectiveUserId) {
       toast({
         title: "Invalid access",
-        description: "Please join from the live rooms page",
+        description: "Please sign in to join live rooms",
         variant: "destructive",
       });
       navigate('/comm/live-rooms');
     }
-  }, [userId, userName, navigate, toast]);
+  }, [effectiveUserId, navigate, toast]);
 
   const handleSendMessage = async () => {
     if (!messageInput.trim()) return;
@@ -153,7 +159,7 @@ export default function LiveRoomViewer() {
   };
 
   const handleLeaveRoom = async () => {
-    if (isHost) {
+    if (effectiveIsHost) {
       if (isRecording) {
         await stopRecording();
       }
@@ -262,8 +268,8 @@ export default function LiveRoomViewer() {
                 <>
                   <LiveRoom
                     roomId={roomId || ''}
-                    userId={userId || ''}
-                    userName={userName || 'Guest'}
+                    userId={effectiveUserId || ''}
+                    userName={effectiveUserName}
                     onLeave={handleLeaveRoom}
                   />
                   {isRecording && (
@@ -278,18 +284,18 @@ export default function LiveRoomViewer() {
                   <Card className="p-8 text-center max-w-md">
                     <h2 className="text-2xl font-bold mb-4">Ready to join?</h2>
                     <p className="text-muted-foreground mb-6">
-                      {isHost 
+                      {effectiveIsHost
                         ? "Click below to start broadcasting to your audience"
                         : "Click below to join the live stream"
                       }
                     </p>
-                    <Button 
-                      size="lg" 
+                    <Button
+                      size="lg"
                       onClick={() => setIsInRoom(true)}
                       className="w-full"
                     >
                       <Phone className="h-5 w-5 mr-2" />
-                      {isHost ? 'Start Broadcasting' : 'Join Stream'}
+                      {effectiveIsHost ? 'Start Broadcasting' : 'Join Stream'}
                     </Button>
                   </Card>
                 </div>
