@@ -1,6 +1,4 @@
 import { AudioRecorder, ScreenRecorder, CameraRecorder, encodeAudioForVertex, playAudioData, clearAudioQueue, decodeContainerAndPlay, sniffAudioFormat } from '@/utils/vertexAudio';
-// Debug recorder disabled to prevent endless WAV downloads
-// import { getTurnRecorder } from '@/utils/wavDebug';
 
 export interface VertexLiveCallbacks {
   onConnectionChange?: (connected: boolean) => void;
@@ -147,9 +145,7 @@ export class VertexLiveService {
                   return;
                 }
                 
-                // CHECKPOINT B: Collect for per-turn playback (debug recorder disabled)
-                // const recorder = getTurnRecorder();
-                // recorder.addChunk(audioBytes);
+                // CHECKPOINT B: Collect for per-turn playback
                 if (!this.collectingTurn) {
                   this.collectingTurn = true;
                   this.turnChunks = [];
@@ -265,10 +261,6 @@ export class VertexLiveService {
       this.callbacks.onTrace?.('Received connection_ready (WebSocket open, waiting for Gemini...)');
       this.callbacks.onConnectionReady?.(); // WebSocket is ready, but not Gemini yet
       // Don't call onConnectionChange(true) yet - wait for Gemini confirmation
-      
-      // Debug recorder disabled
-      // const recorder = getTurnRecorder();
-      // recorder.startTurn();
       return;
     }
 
@@ -369,10 +361,6 @@ export class VertexLiveService {
       // Flush audio buffer when turn is complete
       if (content.turnComplete) {
         console.log('🏁 Turn complete, playing per-turn buffer + flushing audio queue');
-        
-        // Debug recorder disabled
-        // const recorder = getTurnRecorder();
-        // recorder.stopTurn();
         
         // Per-turn playback (single AudioBufferSource)
         await this.playTurnBuffer();

@@ -2810,19 +2810,19 @@ This registry catalogs every screen, view, and major UI component in the VITANA 
 - **Roles with access**: Community, Patient, Professional, Staff, Admin
 - **External Route (client URL)**: N/A (Global sidebar component)
 - **Internal/Admin Route (if any)**: N/A
-- **Dev Route (current project path)**: src/components/StreamingChat.tsx (deprecated)
-- **Component Path**: src/components/StreamingChat.tsx
+- **Dev Route (current project path)**: N/A (Removed - See VITANA Orb)
+- **Component Path**: N/A (Removed - See VITANA Orb)
 - **UI Pattern**: Fixed bottom chat bar
 - **Tenant Availability**: Global
 - **Subscreens / Tabs / Modals**: Chat input, Voice mode, Camera mode, Screen share
-- **Status**: ❌ Missing (Removed in favor of VITANA Orb)
-- **Purpose**: TBD (pending functional review)
-- **Primary APIs Used**: TBD (pending functional review)
-- **DB Tables / Models Used**: TBD (pending functional review)
-- **Compliance Notes**: TBD (pending functional review)
-- **Event Triggers**: TBD (pending functional review)
-- **Dependencies**: TBD (pending functional review)
-- **Notes**: Deprecated communication bar; replaced by VITANA Orb overlay
+- **Status**: ❌ Deprecated (Removed in favor of VITANA Orb)
+- **Purpose**: Deprecated - AI assistant functionality now provided by VITANA Orb overlay
+- **Primary APIs Used**: N/A (Deprecated)
+- **DB Tables / Models Used**: N/A (Deprecated)
+- **Compliance Notes**: N/A (Deprecated)
+- **Event Triggers**: N/A (Deprecated)
+- **Dependencies**: N/A (Deprecated)
+- **Notes**: Deprecated communication bar; replaced by VITANA Orb overlay. File has been removed from codebase.
 
 ---
 
