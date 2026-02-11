@@ -197,19 +197,70 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       return;
     }
 
-    if (!roomId) {
-      notify.error('liveRooms.goLivePopup.errors.notLoggedInTitle', 'No permanent room found. Please try again.');
-      return;
-    }
-
     setIsLoading(true);
-    
+
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         notify.error('liveRooms.goLivePopup.errors.notLoggedInTitle', 'liveRooms.goLivePopup.errors.notLoggedInDesc');
         setIsLoading(false);
         return;
+      }
+
+      // Auto-provision permanent room if needed (synchronous in handleGoLive)
+      let effectiveRoomId = roomId;
+      if (!effectiveRoomId) {
+        console.log('[GoLivePopup] No roomId - attempting to auto-provision permanent room');
+
+        // Get user's tenant_id and check for existing room
+        const { data: appUser } = await supabase
+          .from('app_users')
+          .select('live_room_id, tenant_id')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (appUser?.live_room_id) {
+          effectiveRoomId = appUser.live_room_id;
+          setFallbackRoomId(effectiveRoomId);
+        } else if (appUser?.tenant_id) {
+          // Create permanent room
+          const { data: newRoom, error: insertError } = await supabase
+            .from('live_rooms')
+            .insert({
+              tenant_id: appUser.tenant_id,
+              host_user_id: user.id,
+              title: 'My Live Room',
+              status: 'idle',
+              access_level: 'public',
+              topic_keys: [],
+              starts_at: new Date().toISOString(),
+              host_present: false,
+              metadata: {},
+            })
+            .select('id')
+            .single();
+
+          if (insertError || !newRoom) {
+            console.error('[GoLivePopup] Failed to create permanent room:', insertError);
+            notify.error('Error', 'Failed to create permanent room. Please try again.');
+            setIsLoading(false);
+            return;
+          }
+
+          // Update app_users
+          await supabase
+            .from('app_users')
+            .update({ live_room_id: newRoom.id })
+            .eq('user_id', user.id);
+
+          effectiveRoomId = newRoom.id;
+          setFallbackRoomId(effectiveRoomId);
+          console.log('[GoLivePopup] Permanent room created:', effectiveRoomId);
+        } else {
+          notify.error('Error', 'No tenant found for user. Please contact support.');
+          setIsLoading(false);
+          return;
+        }
       }
 
       // Upload cover image if selected
@@ -268,22 +319,22 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       // This prevents ROOM_NOT_IDLE errors from stale sessions
       console.log('[GoLivePopup] Resetting room state before creating session...');
       await Promise.all([
-        supabase.from('live_rooms').update({ status: 'idle', current_session_id: null }).eq('id', roomId),
-        supabase.from('community_live_streams').update({ status: 'ended', ended_at: new Date().toISOString() }).eq('id', roomId),
+        supabase.from('live_rooms').update({ status: 'idle', current_session_id: null }).eq('id', effectiveRoomId),
+        supabase.from('community_live_streams').update({ status: 'ended', ended_at: new Date().toISOString() }).eq('id', effectiveRoomId),
         // Also try gateway end/cancel (best-effort, ignore errors)
-        import('@/services/liveRoomService').then(m => m.liveRoomService.endRoom(roomId)).catch(() => {}),
-        import('@/services/liveRoomService').then(m => m.liveRoomService.cancelRoom(roomId)).catch(() => {}),
+        import('@/services/liveRoomService').then(m => m.liveRoomService.endRoom(effectiveRoomId)).catch(() => {}),
+        import('@/services/liveRoomService').then(m => m.liveRoomService.cancelRoom(effectiveRoomId)).catch(() => {}),
       ]);
-      
+
       // Brief wait for gateway to process the reset
       await new Promise(r => setTimeout(r, 1500));
-      
-      await createSession({ roomId, request: sessionRequest });
-      
+
+      await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+
       // Also insert into community_live_streams so the catalog picks it up
       try {
         await supabase.from('community_live_streams').upsert({
-          id: roomId,
+          id: effectiveRoomId,
           title,
           description: description || null,
           stream_type: streamType,
@@ -304,7 +355,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       
       // Notify parent if scheduled
       if (isScheduled && onCreated) {
-        onCreated(roomId);
+        onCreated(effectiveRoomId);
       }
       
       // Show appropriate toast & navigate
@@ -318,14 +369,14 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       } else {
         // Navigate creator to viewer as host
         setTimeout(() => {
-          navigate(`/comm/live-rooms/${roomId}/view`, {
+          navigate(`/comm/live-rooms/${effectiveRoomId}/view`, {
             state: {
-              roomId,
+              roomId: effectiveRoomId,
               userId: user.id,
               userName: user.email?.split('@')[0] || 'Host',
               isHost: true,
               room: {
-                id: roomId,
+                id: effectiveRoomId,
                 title,
                 isLive: true,
               }
