@@ -66,22 +66,67 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const { data: myRoomData, error: myRoomError } = useMyRoom();
   
   // Fallback: fetch live_room_id directly from Supabase if gateway fails
+  // If no room exists, auto-provision one
   const [fallbackRoomId, setFallbackRoomId] = useState<string | null>(null);
   useEffect(() => {
     if (!permanentRoomId && !myRoomData?.room?.id && myRoomError && open) {
       console.warn('[GoLivePopup] Gateway /rooms/me failed, falling back to Supabase:', myRoomError);
-      supabase.auth.getUser().then(({ data: { user: authUser } }) => {
+      supabase.auth.getUser().then(async ({ data: { user: authUser } }) => {
         if (!authUser) return;
-        supabase
+
+        // Check if user has a permanent room
+        const { data: appUser } = await supabase
           .from('app_users')
-          .select('live_room_id')
+          .select('live_room_id, tenant_id')
           .eq('user_id', authUser.id)
-          .maybeSingle()
-          .then(({ data }) => {
-            if (data?.live_room_id) {
-              setFallbackRoomId(data.live_room_id);
+          .maybeSingle();
+
+        if (appUser?.live_room_id) {
+          // User already has a room
+          setFallbackRoomId(appUser.live_room_id);
+        } else if (appUser?.tenant_id) {
+          // User doesn't have a room - auto-provision one
+          console.log('[GoLivePopup] Auto-provisioning permanent room for user:', authUser.id);
+
+          try {
+            // Insert new permanent room
+            const { data: newRoom, error: insertError } = await supabase
+              .from('live_rooms')
+              .insert({
+                tenant_id: appUser.tenant_id,
+                host_user_id: authUser.id,
+                title: 'My Live Room',
+                status: 'idle',
+                access_level: 'public',
+                topic_keys: [],
+                starts_at: new Date().toISOString(),
+                host_present: false,
+                metadata: {},
+              })
+              .select('id')
+              .single();
+
+            if (insertError) {
+              console.error('[GoLivePopup] Failed to create permanent room:', insertError);
+              return;
             }
-          });
+
+            // Update app_users to reference the new room
+            const { error: updateError } = await supabase
+              .from('app_users')
+              .update({ live_room_id: newRoom.id })
+              .eq('user_id', authUser.id);
+
+            if (updateError) {
+              console.error('[GoLivePopup] Failed to update app_users:', updateError);
+            }
+
+            console.log('[GoLivePopup] Permanent room created:', newRoom.id);
+            setFallbackRoomId(newRoom.id);
+          } catch (error) {
+            console.error('[GoLivePopup] Auto-provisioning failed:', error);
+          }
+        }
       });
     }
   }, [permanentRoomId, myRoomData, myRoomError, open]);
