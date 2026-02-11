@@ -260,12 +260,6 @@ export function MobileEventCarousel({
         ))}
       </div>
 
-      {/* Floating counter */}
-      {events.length > 1 && (
-        <div className="absolute bottom-3 right-4 bg-background/80 backdrop-blur-sm text-xs text-muted-foreground px-2.5 py-1 rounded-full border border-border/50">
-          {currentIndex + 1} / {events.length}
-        </div>
-      )}
 
       <style>{`
         .scrollbar-hide {
