@@ -1,38 +1,91 @@
 
 
-# Hide Discount Code After Successful Use
+# Plan: Fix Manual Bio Editing to Properly Reflect on Profile
 
 ## Problem
 
-The `useDiscountCode` hook correctly filters out used codes on page load, so returning users won't see the discount field. However, within the same browser session after a successful checkout, the banner and input remain visible until a manual refresh.
+Currently, when you manually edit your bio, location, links, and languages via the About drawer, the changes are saved to the database but **not reflected back** in the profile UI. This happens because:
+
+1. **EditProfilePage** fetches profile data from the database but only maps `bio` and social media fields -- it ignores `location`, `links`, and `languages`.
+2. **ProfileProvider** (the global context) doesn't include `location`, `links`, or `languages` in its data model, so they're never available to components.
+3. **Profile.tsx** (read-only view) hardcodes empty arrays for `links`/`languages` and an empty string for `location` instead of reading from the database.
+4. After saving in the **AboutDrawer**, `refreshProfile()` is called, but since ProfileProvider doesn't track these fields, nothing updates.
 
 ## Solution
 
-After a successful purchase with a discount code, immediately clear the discount UI state so it disappears without requiring a page reload.
+### 1. Extend ProfileProvider to include bio-related fields
 
-## Changes
+Add `location`, `links`, and `languages` to the `ProfileData` interface and fetch them from the database.
 
-### 1. `EventTicketSelector.tsx`
+**File: `src/context/ProfileProvider.tsx`**
+- Add `location`, `links`, `languages` to the `ProfileData` interface
+- Map these fields from the database response in `fetchUserProfile`
 
-- After `handlePurchase` succeeds (the `purchaseTicket` call resolves without error), if `appliedCode` was set:
-  - Clear `appliedCode` to `null`
-  - Clear `appliedPercent` to `0`
-  - This removes both the green "applied" badge and the input field from the UI
+### 2. Update EditProfilePage to load all About fields from DB
 
-### 2. `useDiscountCode.ts`
+**File: `src/pages/EditProfilePage.tsx`**
+- In `refetchProfile`, also map `location`, `links`, and `languages` from the database response into the local `profile` state
+- Remove the hardcoded defaults for `location` ("San Francisco, CA"), `links`, and `languages` -- use empty defaults instead so real data takes precedence
 
-- Export a `clearDiscount` function from the hook that sets `discountCode` to `null`
-- Call it from `EventTicketSelector` after successful purchase so the auto-detect banner also disappears
+### 3. Update Profile.tsx to show real data
 
-## Files Changed
+**File: `src/pages/Profile.tsx`**
+- Replace the hardcoded empty `links: []`, `languages: []`, and `location: ""` in `mockUserProfile` with values from `profile` context (which will now include these fields)
 
-| File | Change |
-|------|--------|
-| `src/hooks/useDiscountCode.ts` | Add `clearDiscount` method to return value |
-| `src/components/tickets/EventTicketSelector.tsx` | Call `clearDiscount()` + reset local state after successful purchase |
+### 4. Refresh EditProfilePage after AboutDrawer saves
 
-## Result
+**File: `src/pages/EditProfilePage.tsx`**
+- After the AboutDrawer closes, call `refetchProfile()` to reload the updated data so the profile view reflects the changes immediately
 
-- After checkout with a discount code, the discount section vanishes immediately
-- On next visit, the hook query returns nothing (code is marked used in DB by the webhook)
-- Manual entry field still available for users without auto-detected codes (until they use one)
+---
+
+## Technical Details
+
+### ProfileProvider changes
+```
+interface ProfileData {
+  // ... existing fields
+  location?: string;
+  links?: Array<{ label: string; url: string }>;
+  languages?: string[];
+}
+```
+
+In `fetchUserProfile`, add:
+```
+location: profileData?.location || undefined,
+links: profileData?.links || undefined,
+languages: profileData?.languages || undefined,
+```
+
+### EditProfilePage refetchProfile addition
+```
+location: data.location || '',
+links: data.links || [],
+languages: data.languages || [],
+```
+
+And remove hardcoded initial values:
+```
+// Before:
+location: 'San Francisco, CA',
+links: [{ label: 'Website', url: '...' }, ...],
+languages: ['English', 'Ukrainian'],
+
+// After:
+location: '',
+links: [],
+languages: [],
+```
+
+### Profile.tsx fix
+```
+bio: profile.bio,
+location: profile.location || '',
+links: profile.links || [],
+languages: profile.languages || [],
+```
+
+### AboutDrawer onOpenChange callback
+Wire the `refetchProfile` call when the drawer closes after save, ensuring the parent page refreshes its data.
+
