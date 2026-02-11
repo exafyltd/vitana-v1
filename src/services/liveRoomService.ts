@@ -66,6 +66,9 @@ export interface LiveRoomSession {
   max_participants: number;
   metadata: Record<string, unknown>;
   idempotency_key: string | null;
+  stream_type?: string;
+  enable_recording?: boolean;
+  session_description?: string;
   created_at: string;
   updated_at: string;
 }

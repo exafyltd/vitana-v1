@@ -28,6 +28,7 @@ export interface LiveRoom {
   isPremium?: boolean;
   category?: string;
   location?: string;
+  status?: 'scheduled' | 'live' | 'ended' | 'cancelled';
 }
 
 interface LiveRoomCardProps {
