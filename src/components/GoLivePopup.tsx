@@ -314,11 +314,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         notify.info('liveRooms.goLivePopup.success.aiImageHintTitle', 'liveRooms.goLivePopup.success.aiImageHintDesc');
       }
       
-      // Create session on permanent room via gateway
+      // Create session on permanent room via gateway (CLEAN - Gateway API only)
       const scheduledIso = (scheduleDate && scheduleTime)
         ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
         : undefined;
-      
+
       const sessionRequest = {
         session_title: title,
         session_description: description || undefined,
@@ -332,43 +332,24 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         enable_polls: enablePolls,
         enable_recording: enableRecording,
       };
-      
-      // Always reset room state before creating a new session
-      // This prevents ROOM_NOT_IDLE errors from stale sessions
-      console.log('[GoLivePopup] Resetting room state before creating session...');
-      await Promise.all([
-        supabase.from('live_rooms').update({ status: 'idle', current_session_id: null }).eq('id', effectiveRoomId),
-        supabase.from('community_live_streams').update({ status: 'ended', ended_at: new Date().toISOString() }).eq('id', effectiveRoomId),
-        // Also try gateway end/cancel (best-effort, ignore errors)
-        import('@/services/liveRoomService').then(m => m.liveRoomService.endRoom(effectiveRoomId)).catch(() => {}),
-        import('@/services/liveRoomService').then(m => m.liveRoomService.cancelRoom(effectiveRoomId)).catch(() => {}),
-      ]);
 
-      // Brief wait for gateway to process the reset
-      await new Promise(r => setTimeout(r, 1500));
+      // Step 1: Create session via Gateway
+      console.log('[GoLivePopup] Creating session via Gateway...', { roomId: effectiveRoomId });
+      const { session } = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+      console.log('[GoLivePopup] Session created:', session.id);
 
-      await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-
-      // Also insert into community_live_streams so the catalog picks it up
-      try {
-        await supabase.from('community_live_streams').upsert({
-          id: effectiveRoomId,
-          title,
-          description: description || null,
-          stream_type: streamType,
-          tags: selectedTags,
-          access_level: accessLevel,
-          cover_image_url: uploadedImageUrl || null,
-          scheduled_for: scheduledIso || null,
-          status: isScheduled ? 'pending' : 'live',
-          started_at: isScheduled ? null : new Date().toISOString(),
-          created_by: user.id,
-          enable_chat: enableChat,
-          enable_polls: enablePolls,
-          enable_recording: enableRecording,
-        }, { onConflict: 'id' });
-      } catch (e) {
-        console.warn('[GoLivePopup] community_live_streams sync failed:', e);
+      // Step 2: Create Daily.co video room (CRITICAL - was missing!)
+      if (!isScheduled) {
+        console.log('[GoLivePopup] Creating Daily.co room for video...');
+        try {
+          const dailyRoom = await import('@/services/liveRoomService').then(m =>
+            m.liveRoomService.createDailyRoom(effectiveRoomId)
+          );
+          console.log('[GoLivePopup] Daily.co room created:', dailyRoom.daily_room_url);
+        } catch (dailyError) {
+          console.error('[GoLivePopup] Daily.co room creation failed (non-blocking):', dailyError);
+          // Continue anyway - user can still join without video initially
+        }
       }
       
       // Notify parent if scheduled
