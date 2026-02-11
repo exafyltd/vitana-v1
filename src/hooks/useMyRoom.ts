@@ -43,7 +43,7 @@ export function useCreateSession() {
     mutationFn: ({ roomId, request }: { roomId: string; request: CreateSessionRequest }) =>
       liveRoomService.createSession(roomId, request),
     onSuccess: (data, variables) => {
-      const isScheduled = !!variables.request.scheduled_for;
+      const isScheduled = data.status === 'scheduled';
       toast({
         title: isScheduled ? 'Session scheduled!' : 'You are live!',
         description: isScheduled

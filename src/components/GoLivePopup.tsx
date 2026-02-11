@@ -321,22 +321,24 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
 
       const sessionRequest = {
         session_title: title,
-        session_description: description || undefined,
-        stream_type: streamType,
-        tags: selectedTags,
-        access_level: accessLevel,
-        cover_image_url: uploadedImageUrl || undefined,
-        scheduled_for: scheduledIso,
+        topic_keys: selectedTags,
         starts_at: scheduledIso || new Date().toISOString(),
-        enable_chat: enableChat,
-        enable_polls: enablePolls,
-        enable_recording: enableRecording,
+        access_level: accessLevel as 'public' | 'group',
+        auto_admit: true,
+        metadata: {
+          description: description || undefined,
+          stream_type: streamType,
+          cover_image_url: uploadedImageUrl || undefined,
+          enable_chat: enableChat,
+          enable_polls: enablePolls,
+          enable_recording: enableRecording,
+        },
       };
 
       // Step 1: Create session via Gateway
       console.log('[GoLivePopup] Creating session via Gateway...', { roomId: effectiveRoomId });
-      const { session } = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-      console.log('[GoLivePopup] Session created:', session.id);
+      const { session_id, status, daily_room_url } = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+      console.log('[GoLivePopup] Session created:', session_id, 'status:', status);
 
       // Step 2: Create Daily.co video room (CRITICAL - was missing!)
       if (!isScheduled) {

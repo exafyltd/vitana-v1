@@ -123,17 +123,16 @@ export interface RoomStateSnapshot {
 }
 
 export interface CreateSessionRequest {
-  session_title: string;
-  session_description?: string;
-  stream_type?: string;
-  tags?: string[];
-  access_level?: string;
-  cover_image_url?: string;
-  scheduled_for?: string;
-  starts_at?: string;
-  enable_chat?: boolean;
-  enable_polls?: boolean;
-  enable_recording?: boolean;
+  session_title?: string;
+  topic_keys?: string[];
+  starts_at: string;
+  ends_at?: string;
+  access_level?: AccessLevel;
+  auto_admit?: boolean;
+  lobby_buffer_minutes?: number;
+  max_participants?: number;
+  metadata?: Record<string, unknown>;
+  idempotency_key?: string;
 }
 
 export interface CreateSessionPayload {
@@ -260,7 +259,7 @@ export const liveRoomService = {
   /**
    * Create a session on a permanent room (go live or schedule)
    */
-  async createSession(roomId: string, request: CreateSessionRequest): Promise<{ ok: boolean; session: LiveRoomSession }> {
+  async createSession(roomId: string, request: CreateSessionRequest): Promise<{ ok: boolean; session_id: string; status: SessionStatus; room_id: string; daily_room_url?: string }> {
     const res = await apiFetch(`/live/rooms/${roomId}/sessions`, {
       method: 'POST',
       body: JSON.stringify(request),
