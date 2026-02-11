@@ -58,13 +58,10 @@ export default function EditProfilePage() {
     handle: contextProfile.handle || 'user',
     avatarUrl: contextProfile.avatar,
     roles: ['community'],
-    bio: localizedDefaultBio,
-    location: 'San Francisco, CA',
-    links: [
-      { label: 'Website', url: 'https://mariia.com' },
-      { label: 'Instagram', url: 'https://instagram.com/mariia' }
-    ],
-    languages: ['English', 'Ukrainian'],
+    bio: contextProfile.bio || localizedDefaultBio,
+    location: contextProfile.location || '',
+    links: contextProfile.links || [],
+    languages: contextProfile.languages || [],
     stats: {
       posts: 124,
       followers: 1205,
@@ -183,6 +180,10 @@ export default function EditProfilePage() {
         x_bio: data.x_bio,
         x_followers_count: data.x_followers_count,
         x_topics: data.x_topics,
+        // About fields
+        location: data.location || '',
+        links: (data.links as any) || [],
+        languages: (data.languages as any) || [],
       }));
     }
   }, [user?.id, contextProfile, localizedDefaultBio]);
@@ -394,7 +395,10 @@ export default function EditProfilePage() {
 
         <AboutDrawer
           open={aboutDrawerOpen}
-          onOpenChange={setAboutDrawerOpen}
+          onOpenChange={(open) => {
+            setAboutDrawerOpen(open);
+            if (!open) refetchProfile();
+          }}
         />
 
         <ServicesDrawer
@@ -471,7 +475,10 @@ export default function EditProfilePage() {
 
       <AboutDrawer
         open={aboutDrawerOpen}
-        onOpenChange={setAboutDrawerOpen}
+        onOpenChange={(open) => {
+          setAboutDrawerOpen(open);
+          if (!open) refetchProfile();
+        }}
       />
 
       <ServicesDrawer

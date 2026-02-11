@@ -16,6 +16,9 @@ interface ProfileData {
   email?: string;
   phone?: string;
   coverUrl?: string;
+  location?: string;
+  links?: Array<{ label: string; url: string }>;
+  languages?: string[];
   linkedin_url?: string;
   instagram_url?: string;
   facebook_url?: string;
@@ -90,6 +93,9 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         email: profileData?.email || user?.email || undefined,
         phone: profileData?.phone || undefined,
         coverUrl: profileData?.cover_url || undefined,
+        location: profileData?.location || undefined,
+        links: profileData?.links ? (profileData.links as any) : undefined,
+        languages: profileData?.languages ? (profileData.languages as any) : undefined,
         linkedin_url: profileData?.linkedin_url || undefined,
         instagram_url: profileData?.instagram_url || undefined,
         facebook_url: profileData?.facebook_url || undefined,
