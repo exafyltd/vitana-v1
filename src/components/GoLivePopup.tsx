@@ -220,14 +220,21 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           .maybeSingle();
 
         if (appUser?.live_room_id) {
+          // User already has a permanent room
           effectiveRoomId = appUser.live_room_id;
           setFallbackRoomId(effectiveRoomId);
-        } else if (appUser?.tenant_id) {
+        } else {
+          // User needs a permanent room - determine tenant_id
+          // If no tenant_id in app_users, use user's own ID as tenant (self-tenant pattern)
+          const tenantId = appUser?.tenant_id || user.id;
+
+          console.log('[GoLivePopup] Creating permanent room with tenant_id:', tenantId);
+
           // Create permanent room
           const { data: newRoom, error: insertError } = await supabase
             .from('live_rooms')
             .insert({
-              tenant_id: appUser.tenant_id,
+              tenant_id: tenantId,
               host_user_id: user.id,
               title: 'My Live Room',
               status: 'idle',
@@ -247,19 +254,30 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             return;
           }
 
-          // Update app_users
-          await supabase
-            .from('app_users')
-            .update({ live_room_id: newRoom.id })
-            .eq('user_id', user.id);
+          // Update or insert app_users record
+          if (appUser) {
+            // User exists in app_users - update
+            await supabase
+              .from('app_users')
+              .update({
+                live_room_id: newRoom.id,
+                tenant_id: tenantId // Ensure tenant_id is set
+              })
+              .eq('user_id', user.id);
+          } else {
+            // User doesn't exist in app_users - create record
+            await supabase
+              .from('app_users')
+              .insert({
+                user_id: user.id,
+                tenant_id: tenantId,
+                live_room_id: newRoom.id,
+              });
+          }
 
           effectiveRoomId = newRoom.id;
           setFallbackRoomId(effectiveRoomId);
           console.log('[GoLivePopup] Permanent room created:', effectiveRoomId);
-        } else {
-          notify.error('Error', 'No tenant found for user. Please contact support.');
-          setIsLoading(false);
-          return;
         }
       }
 
