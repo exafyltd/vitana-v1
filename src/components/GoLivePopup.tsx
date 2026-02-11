@@ -207,77 +207,30 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         return;
       }
 
-      // Auto-provision permanent room if needed (synchronous in handleGoLive)
+      // Auto-provision permanent room if needed via Gateway API
       let effectiveRoomId = roomId;
       if (!effectiveRoomId) {
-        console.log('[GoLivePopup] No roomId - attempting to auto-provision permanent room');
+        console.log('[GoLivePopup] No roomId - creating permanent room via Gateway API');
 
-        // Get user's tenant_id and check for existing room
-        const { data: appUser } = await supabase
-          .from('app_users')
-          .select('live_room_id, tenant_id')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (appUser?.live_room_id) {
-          // User already has a permanent room
-          effectiveRoomId = appUser.live_room_id;
-          setFallbackRoomId(effectiveRoomId);
-        } else {
-          // User needs a permanent room - determine tenant_id
-          // If no tenant_id in app_users, use user's own ID as tenant (self-tenant pattern)
-          const tenantId = appUser?.tenant_id || user.id;
-
-          console.log('[GoLivePopup] Creating permanent room with tenant_id:', tenantId);
-
-          // Create permanent room
-          const { data: newRoom, error: insertError } = await supabase
-            .from('live_rooms')
-            .insert({
-              tenant_id: tenantId,
-              host_user_id: user.id,
-              title: 'My Live Room',
-              status: 'idle',
-              access_level: 'public',
+        try {
+          // Create permanent room through Gateway (proper state management)
+          const newRoom = await import('@/services/liveRoomService').then(m =>
+            m.liveRoomService.createRoom({
+              title: `${user.email?.split('@')[0] || 'User'}'s Live Room`,
               topic_keys: [],
-              starts_at: new Date().toISOString(),
-              host_present: false,
-              metadata: {},
+              access_level: 'public',
+              metadata: {}
             })
-            .select('id')
-            .single();
-
-          if (insertError || !newRoom) {
-            console.error('[GoLivePopup] Failed to create permanent room:', insertError);
-            notify.error('Error', 'Failed to create permanent room. Please try again.');
-            setIsLoading(false);
-            return;
-          }
-
-          // Update or insert app_users record
-          if (appUser) {
-            // User exists in app_users - update
-            await supabase
-              .from('app_users')
-              .update({
-                live_room_id: newRoom.id,
-                tenant_id: tenantId // Ensure tenant_id is set
-              })
-              .eq('user_id', user.id);
-          } else {
-            // User doesn't exist in app_users - create record
-            await supabase
-              .from('app_users')
-              .insert({
-                user_id: user.id,
-                tenant_id: tenantId,
-                live_room_id: newRoom.id,
-              });
-          }
+          );
 
           effectiveRoomId = newRoom.id;
           setFallbackRoomId(effectiveRoomId);
-          console.log('[GoLivePopup] Permanent room created:', effectiveRoomId);
+          console.log('[GoLivePopup] Permanent room created via Gateway:', effectiveRoomId);
+        } catch (createError: any) {
+          console.error('[GoLivePopup] Failed to create permanent room via Gateway:', createError);
+          notify.error('Error', `Failed to create permanent room: ${createError.message}`);
+          setIsLoading(false);
+          return;
         }
       }
 
