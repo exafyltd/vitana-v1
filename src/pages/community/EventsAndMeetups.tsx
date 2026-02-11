@@ -647,8 +647,8 @@ const EventsAndMeetups = () => {
         {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
         {!isMobile && <SubNavigation items={communityNavigation} />}
         <div className={cn(
-          "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
-          isMobile ? "h-[100dvh] overflow-hidden" : "min-h-screen"
+          "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
+          isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
         )}>
           <div className="flex-1 overflow-hidden">
           <StandardHeader
@@ -715,7 +715,7 @@ const EventsAndMeetups = () => {
 
           <div className="flex-1 overflow-y-auto">
             <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
-              <SplitBarList>
+              <SplitBarList className={isMobile ? "mb-2" : undefined}>
                 <SplitBarTrigger value="today">
                   ☀️ {translate('events.tabs.today', 'Today')}
                 </SplitBarTrigger>
@@ -730,7 +730,7 @@ const EventsAndMeetups = () => {
                 </SplitBarTrigger>
               </SplitBarList>
 
-              <SplitBarContent value="today" className="mt-6">
+              <SplitBarContent value="today" className={isMobile ? "mt-1" : "mt-6"}>
                 {loading && filteredTodayEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -804,7 +804,7 @@ const EventsAndMeetups = () => {
                 )}
               </SplitBarContent>
 
-              <SplitBarContent value="upcoming" className="mt-6">
+              <SplitBarContent value="upcoming" className={isMobile ? "mt-1" : "mt-6"}>
                 {loading && filteredUpcomingEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
@@ -869,7 +869,7 @@ const EventsAndMeetups = () => {
                 )}
               </SplitBarContent>
 
-              <SplitBarContent value="following" className="mt-6">
+              <SplitBarContent value="following" className={isMobile ? "mt-1" : "mt-6"}>
                 <div className="text-center py-12">
                   <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-semibold mb-2">Posts from People You Follow</h3>
@@ -880,7 +880,7 @@ const EventsAndMeetups = () => {
                 </div>
               </SplitBarContent>
 
-              <SplitBarContent value="recommended" className="mt-6">
+              <SplitBarContent value="recommended" className={isMobile ? "mt-1" : "mt-6"}>
                 <div className="text-center py-12">
                   <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-semibold mb-2">AI-Recommended Content</h3>
