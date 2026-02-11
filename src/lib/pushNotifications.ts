@@ -76,7 +76,7 @@ class PushNotificationManager {
     }
 
     try {
-      const subscription = await this.registration.pushManager.subscribe({
+      const subscription = await (this.registration as any).pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: this.urlBase64ToUint8Array(
           'BCqrKjSJH9RR8FZkjVs9DfgZL1SMFZhZZWYm7CpZG1VN7hgMIhD0vOcCzwJ3kK5WmJTqrL8'
@@ -109,7 +109,7 @@ class PushNotificationManager {
     }
 
     try {
-      const subscription = await this.registration.pushManager.getSubscription();
+      const subscription = await (this.registration as any).pushManager.getSubscription();
       if (subscription) {
         await subscription.unsubscribe();
         // Remove from database
@@ -132,7 +132,7 @@ class PushNotificationManager {
     }
 
     try {
-      const subscription = await this.registration.pushManager.getSubscription();
+      const subscription = await (this.registration as any).pushManager.getSubscription();
       return subscription !== null;
     } catch (error) {
       console.error('Failed to check subscription status:', error);
