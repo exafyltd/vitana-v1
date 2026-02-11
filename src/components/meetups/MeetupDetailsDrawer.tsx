@@ -648,7 +648,7 @@ export function MeetupDetailsDrawer({
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
       >
-      <ScrollArea className={cn("flex-1", isMobile ? "pb-[72px]" : "pb-20")}>
+      <ScrollArea className={cn("flex-1", isMobile ? "pb-[120px]" : "pb-20")}>
         <div 
           className={cn(
             "transition-opacity duration-300",
