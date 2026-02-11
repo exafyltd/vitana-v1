@@ -648,6 +648,18 @@ export function MeetupDetailsDrawer({
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
       >
+      {isMobile && (
+        <Button
+          variant="outline"
+          size="icon"
+          className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
+          onClick={() => onOpenChange(false)}
+          aria-label="Close event details"
+          style={{ top: 'calc(env(safe-area-inset-top) + 16px)' }}
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      )}
       <ScrollArea className={cn("flex-1", isMobile ? "pb-[120px]" : "pb-20")}>
         <div 
           className={cn(
@@ -683,23 +695,7 @@ export function MeetupDetailsDrawer({
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 dark:from-background/95 via-background/50 dark:via-background/60 to-transparent" />
             
-            {/* Mobile Close Button - Top Right */}
-            {isMobile && (
-              <Button
-                variant="outline"
-                size="icon"
-                className={cn(
-                  "absolute top-4 right-4 z-20 rounded-full",
-                  "bg-background/80 backdrop-blur-md shadow-md",
-                  "border-border/40 hover:bg-background/90",
-                  "h-10 w-10"
-                )}
-                onClick={() => onOpenChange(false)}
-                aria-label="Close event details"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            )}
+            {/* Mobile Close Button moved outside ScrollArea for sticky behavior */}
             
             {/* Floating Navigation Arrows - Desktop only */}
             {!isMobile && (
