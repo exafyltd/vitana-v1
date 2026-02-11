@@ -230,7 +230,7 @@ export function MobileEventCarousel({
         ref={containerRef}
         className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
-          height: 'calc(100dvh - 296px)',
+          height: 'calc(100dvh - 220px)',
           overscrollBehavior: 'contain',
         } as React.CSSProperties}
       >
@@ -243,9 +243,9 @@ export function MobileEventCarousel({
               index !== events.length - 1 && "border-b border-border/30"
             )}
             style={{
-              height: 'calc(100dvh - 296px)',
+              height: 'calc(100dvh - 220px)',
               scrollSnapStop: 'always',
-              padding: '8px 12px',
+              padding: '6px 8px',
               transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
               opacity: currentIndex === index ? 1 : 0.7,
             } as React.CSSProperties}
@@ -254,7 +254,7 @@ export function MobileEventCarousel({
           >
             <NewsCard
               {...transformEventToCard(event)}
-              className="h-full rounded-2xl"
+              className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
             />
           </div>
         ))}
