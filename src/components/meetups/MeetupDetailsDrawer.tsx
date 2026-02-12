@@ -655,7 +655,7 @@ export function MeetupDetailsDrawer({
           className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
           onClick={() => onOpenChange(false)}
           aria-label="Close event details"
-          style={{ top: 'calc(env(safe-area-inset-top) + 16px)' }}
+          style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
         >
           <X className="h-5 w-5" />
         </Button>
