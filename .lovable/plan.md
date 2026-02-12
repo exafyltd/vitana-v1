@@ -1,41 +1,25 @@
 
 
-# Make Close (X) Button Sticky in Event Detail Drawer
+# Align Event Card Edges with Title/Subtitle
 
 ## Problem
-The X close button is currently positioned `absolute` inside the hero image container, so it scrolls away with the content and becomes invisible when viewing ticket details or other sections below the hero.
+The event card has an extra internal padding (`6px 8px`) inside its wrapper div, creating a visible "frame" or gap around the card. The page already has `px-2` (8px) side padding, so the card image ends up 16px from the screen edge -- noticeably narrower than the title and subtitle text above it.
 
 ## Solution
-Move the mobile close button **outside** the ScrollArea so it floats above all scrollable content and stays visible at all times.
+Remove the internal padding from the card wrapper so the card image and content fill the entire width available within the page's `px-2` container, aligning perfectly with the header text above.
 
 ## Technical Details
 
-### File: `src/components/meetups/MeetupDetailsDrawer.tsx`
+### File: `src/components/community/MobileEventCarousel.tsx` (line 248)
 
-**Step 1 - Remove the close button from inside the hero section (lines 686-702)**
-Delete the current mobile close button block that sits inside the hero image `div`.
+Change the card wrapper padding from `padding: '6px 8px'` to `padding: '4px 0px'`:
 
-**Step 2 - Add a sticky close button outside the ScrollArea (after line 651)**
-Place a new fixed-position close button between the `<div className="flex flex-col h-full">` wrapper and the `<ScrollArea>`, so it renders on top of the scroll content:
-
-```tsx
-{isMobile && (
-  <Button
-    variant="outline"
-    size="icon"
-    className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
-    onClick={() => onOpenChange(false)}
-    aria-label="Close event details"
-    style={{ top: 'calc(env(safe-area-inset-top) + 16px)' }}
-  >
-    <X className="h-5 w-5" />
-  </Button>
-)}
+```
+Before: padding: '6px 8px'
+After:  padding: '4px 0px'
 ```
 
-Key details:
-- Uses `fixed` positioning so it stays in place regardless of scroll
-- `z-[60]` ensures it sits above the ScrollArea content and the sticky bottom bar
-- `style={{ top: 'calc(env(safe-area-inset-top) + 16px)' }}` respects the device safe area (notch/dynamic island)
-- Same visual styling (glass background, backdrop blur, shadow) as before
+This keeps a tiny 4px vertical gap between stacked cards (for the snap boundary) but removes horizontal padding so the card stretches to match the title width. The `rounded-[26px]` corners on the NewsCard still provide visual separation from the edges.
+
+Single-line change, one file.
 
