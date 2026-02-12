@@ -289,7 +289,7 @@
     }
   },
   "liveRooms": {
-    "title": "Live-Räume",
+    "title": "Live Rooms",
     "description": "Nimm an Live-Audio- und Videodiskussionen teil",
     "tabs": {
       "live": "Jetzt Live",
@@ -298,7 +298,7 @@
     },
     "goLive": "Live gehen",
     "joinRoom": "Raum beitreten",
-    "noRooms": "Keine Live-Räume verfügbar",
+    "noRooms": "Keine Live Rooms verfügbar",
     "demoRoom": "Demo-Raum",
     "demoRoomDesc": "Dies ist ein Beispielraum. Erstelle deinen eigenen!",
     "search": {
@@ -646,7 +646,7 @@
     "dailySummary": "Tägliche Zusammenfassung",
     "companion": "KI-Begleiter",
     "eventsMeetups": "Events & Treffen",
-    "liveRooms": "Live-Räume",
+    "liveRooms": "Live Rooms",
     "mediaHub": "Medien-Hub",
     "services": "Dienste",
     "sellEarn": "Verkaufen & Verdienen",
@@ -1437,7 +1437,7 @@
     "noEventsDesc": "Schauen Sie später wieder vorbei.",
     "noOrders": "Noch keine Bestellungen",
     "noOrdersDesc": "Ihre Bestellungen erscheinen hier.",
-    "noRooms": "Keine Live-Räume",
+    "noRooms": "Keine Live Rooms",
     "noRoomsDesc": "Erstellen Sie einen Raum oder schauen Sie später vorbei.",
     "noGroups": "Noch keine Gruppen",
     "noGroupsDesc": "Treten Sie einer Gruppe bei oder erstellen Sie eine.",
