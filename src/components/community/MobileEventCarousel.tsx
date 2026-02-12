@@ -231,7 +231,7 @@ export function MobileEventCarousel({
         className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
           height: 'calc(100dvh - 220px)',
-          overscrollBehavior: 'contain',
+          
         } as React.CSSProperties}
       >
         {events.map((event, index) => (
