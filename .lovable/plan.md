@@ -1,34 +1,44 @@
 
-# Enable Pull-to-Refresh on Mobile Events Page
+
+# Fix Pull-to-Refresh on Mobile Events Page
 
 ## Problem
-The mobile events page uses `overscrollBehavior: 'contain'` on the snap-scroll container, which blocks the browser's native pull-to-refresh gesture. Every other screen in the app supports swipe-down refresh, but this one does not.
+Removing `overscrollBehavior: 'contain'` wasn't enough. The real blocker is the **parent container** on line 651 of `EventsAndMeetups.tsx`, which applies `overflow-hidden` on mobile. This creates a clipping boundary that prevents any scroll event from reaching the browser's document level, making native pull-to-refresh impossible.
 
 ## Root Cause
-The CSS property `overscroll-behavior: contain` was added to prevent scroll chaining (so the outer page doesn't scroll when the snap container reaches its boundary). However, this also prevents the browser from triggering its native pull-to-refresh when the user swipes down at the top of the list.
+The outer wrapper div has:
+```
+h-[100dvh] overflow-hidden
+```
+This tells the browser "nothing scrolls here, clip everything." The snap-scroll container inside it scrolls internally, but its overscroll can never propagate to the browser because the parent blocks it.
 
 ## Solution
-Remove `overscrollBehavior: 'contain'` from the snap-scroll container and instead change it to `overscrollBehavior: 'auto'` (or simply remove the property). Since the container already uses `snap-y snap-mandatory`, scroll chaining is naturally limited. Additionally, add an `onRefresh` prop to `MobileEventCarousel` and wire it up in `EventsAndMeetups.tsx` using the existing `fetchEvents` function, so data refreshes when the browser triggers pull-to-refresh.
+Change `overflow-hidden` to `overflow-clip` on mobile for the outer container. `overflow-clip` provides the same visual clipping (no scrollbars, content doesn't visually leak) but does **not** create a new scroll container, so overscroll from the child snap container can propagate to the browser and trigger pull-to-refresh.
 
 ## Technical Details
 
-### File 1: `src/components/community/MobileEventCarousel.tsx`
+### File: `src/pages/community/EventsAndMeetups.tsx` (line 651)
 
-**Step 1** - Remove `overscrollBehavior: 'contain'` from the scroll container's style (line 234). Either delete the property entirely or set it to `'auto'`.
+Change the mobile class from `overflow-hidden` to `overflow-clip`:
 
 ```
 Before:
-  style={{
-    height: 'calc(100dvh - 220px)',
-    overscrollBehavior: 'contain',
-  }}
+isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
 
 After:
-  style={{
-    height: 'calc(100dvh - 220px)',
-  }}
+isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-clip" : "p-6 min-h-screen"
 ```
 
-This single change restores the browser's native pull-to-refresh behavior on the events page, since the outer page scroll will now be allowed to trigger overscroll at the top boundary.
+### File: `src/pages/community/EventsAndMeetups.tsx` (line 653)
 
-No other files need changes -- the browser handles the refresh natively once `overscrollBehavior: 'contain'` is removed.
+Also change the inner flex container from `overflow-hidden` to `overflow-clip` for the same reason:
+
+```
+Before:
+<div className="flex-1 overflow-hidden">
+
+After:
+<div className="flex-1 overflow-clip">
+```
+
+Two single-word changes. The visual layout stays identical, but the browser can now detect overscroll at the top of the events list and trigger its native pull-to-refresh gesture.
