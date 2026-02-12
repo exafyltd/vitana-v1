@@ -1,80 +1,66 @@
 
 
-# Fix Pull-to-Refresh: Use Native Non-Passive Touch Listeners
+# Fix Edit Identity: Race Condition and Data Restoration
 
-## Problem
-The current implementation attaches touch handlers via React's `onTouchStart`/`onTouchMove`/`onTouchEnd` JSX props. In modern browsers, React registers touch event listeners as **passive** by default on scroll containers. This means:
+## What's Wrong
+The Identity form has a race condition: when the dialog opens, all fields start as empty strings, and the `onDataChange` callback fires immediately with those empty values. If the user hits "Save" before the database fetch completes, it overwrites real data with blanks. This is what wiped your display name and avatar previously.
 
-1. `e.preventDefault()` cannot be called (it's ignored in passive listeners)
-2. The browser consumes the touch-move as a scroll gesture before our handler can intercept it
-3. At `scrollTop === 0`, the downward drag either rubber-bands or does nothing -- our pull-to-refresh logic never gets a chance to take control
+Additionally, your profile currently has empty `display_name` and `avatar_url` in the database (from the previous wipe), so the form shows nothing to edit.
 
-## Solution
-Replace the React JSX touch handlers with **native event listeners** attached via `useEffect`, using `{ passive: false }`. This allows us to call `e.preventDefault()` when we detect a pull-down gesture at the top, preventing the browser from treating it as a scroll.
+## Plan
+
+### Step 1: Restore your profile data (database migration)
+Run a SQL update to restore:
+- `display_name` back to "Jovana Comm"  
+- `avatar_url` from your Google account metadata
+
+### Step 2: Fix the race condition in IdentityForm.tsx
+Add a `loaded` flag so the form doesn't report data changes to the parent until the profile has actually been fetched from the database:
+- Add a `loaded` state, initially `false`
+- Set it to `true` after `loadProfile()` completes
+- Guard the `onDataChange` effect so it only fires when `loaded` is `true`
+
+This prevents the initial empty values from being treated as the user's intended data.
+
+### Step 3: Add save validation in IdentityDrawer.tsx
+Before saving, check that `displayName` is not empty. If it is, show an error toast and block the save. This acts as a safety net against accidental blank overwrites.
 
 ## Technical Details
 
-### File: `src/components/community/MobileEventCarousel.tsx`
+### Files changed
 
-**Step 1** -- Remove JSX touch handlers from the scroll container div (lines 320-322):
-```
-Remove:
-  onTouchStart={handleTouchStart}
-  onTouchMove={handleTouchMove}
-  onTouchEnd={handleTouchEnd}
-```
+| File | Change |
+|------|--------|
+| SQL migration | `UPDATE profiles SET display_name = 'Jovana Comm', avatar_url = '...' WHERE user_id = 'c7d3260d-...'` |
+| `src/components/profile/editor/IdentityForm.tsx` | Add `loaded` state guard around the `onDataChange` effect |
+| `src/components/profile/drawers/IdentityDrawer.tsx` | Add empty display name validation before save |
 
-**Step 2** -- Convert handlers to use native `TouchEvent` instead of `React.TouchEvent`:
-- `handleTouchStart(e: TouchEvent)` 
-- `handleTouchMove(e: TouchEvent)` -- add `e.preventDefault()` when actively pulling down
-- `handleTouchEnd()` -- stays the same
+### IdentityForm.tsx changes
+```typescript
+const [loaded, setLoaded] = useState(false);
 
-**Step 3** -- Add a `useEffect` that attaches native listeners with `{ passive: false }`:
-
-```
+// Guard: only notify parent after data is loaded
 useEffect(() => {
-  const el = containerRef.current;
-  if (!el) return;
+  if (loaded && onDataChange) {
+    onDataChange({ displayName, handle, avatarUrl, longevityArchetype });
+  }
+}, [displayName, handle, avatarUrl, longevityArchetype, onDataChange, loaded]);
 
-  el.addEventListener('touchstart', handleTouchStart, { passive: true });
-  el.addEventListener('touchmove', handleTouchMove, { passive: false });
-  el.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-  return () => {
-    el.removeEventListener('touchstart', handleTouchStart);
-    el.removeEventListener('touchmove', handleTouchMove);
-    el.removeEventListener('touchend', handleTouchEnd);
-  };
-}, [handleTouchStart, handleTouchMove, handleTouchEnd]);
+// In loadProfile, after setting state:
+setLoaded(true);
 ```
 
-**Step 4** -- In `handleTouchMove`, call `e.preventDefault()` when pull distance is positive (user is pulling down from top):
-
-```
-const handleTouchMove = useCallback((e: TouchEvent) => {
-  if (!isPullingRef.current || isRefreshing || !containerRef.current) return;
-  if (containerRef.current.scrollTop > 0) {
-    isPullingRef.current = false;
-    setPullDistance(0);
+### IdentityDrawer.tsx changes
+```typescript
+const handleSave = async () => {
+  if (!formData.displayName.trim()) {
+    toast({
+      title: "Display name required",
+      description: "Please enter a display name before saving.",
+      variant: "destructive",
+    });
     return;
   }
-  const deltaY = e.touches[0].clientY - startYRef.current;
-  if (deltaY > 0) {
-    e.preventDefault(); // <-- This is the critical fix
-    const distance = Math.min(deltaY * RESISTANCE, MAX_PULL);
-    setPullDistance(distance);
-  } else {
-    setPullDistance(0);
-  }
-}, [isRefreshing]);
+  // ...existing save logic
+};
 ```
-
-### Summary of changes
-
-| What | Detail |
-|------|--------|
-| File changed | `src/components/community/MobileEventCarousel.tsx` only |
-| Root cause | React registers touch listeners as passive; `preventDefault()` is ignored |
-| Fix | Use native `addEventListener` with `{ passive: false }` for `touchmove` |
-| Risk | None -- `preventDefault` only fires when at top and pulling down, so normal snap scrolling is unaffected |
-
