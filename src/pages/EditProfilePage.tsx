@@ -71,7 +71,7 @@ export default function EditProfilePage() {
     },
     vitanaIndex: 742,
     vitanaPercentile: 85,
-    longevityArchetype: 'The Mindful Mover',
+    longevityArchetype: contextProfile.longevityArchetype || '',
     // Social URLs from context for immediate display
     linkedin_url: contextProfile.linkedin_url,
     instagram_url: contextProfile.instagram_url,

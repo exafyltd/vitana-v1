@@ -72,7 +72,7 @@ export default function Profile() {
     stats: dummyProfileStats,
     vitanaIndex: 750,
     vitanaPercentile: 85,
-    longevityArchetype: "The Mindful Mover",
+    longevityArchetype: profile.longevityArchetype || "",
     offerings: [],
     // Social URLs from ProfileProvider context
     linkedin_url: profile.linkedin_url,
