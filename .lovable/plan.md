@@ -1,21 +1,34 @@
 
-# Move Close (X) Button Up — Right Under the App Bar
+# Enable Pull-to-Refresh on Mobile Events Page
 
 ## Problem
-The X close button sits too low, with 16px of extra spacing below the safe area / app bar. The user wants it positioned tighter, right under the app bar.
+The mobile events page uses `overscrollBehavior: 'contain'` on the snap-scroll container, which blocks the browser's native pull-to-refresh gesture. Every other screen in the app supports swipe-down refresh, but this one does not.
+
+## Root Cause
+The CSS property `overscroll-behavior: contain` was added to prevent scroll chaining (so the outer page doesn't scroll when the snap container reaches its boundary). However, this also prevents the browser from triggering its native pull-to-refresh when the user swipes down at the top of the list.
 
 ## Solution
-Reduce the top offset from `16px` to `4px` in the inline style, so the button sits snugly just below the app bar.
+Remove `overscrollBehavior: 'contain'` from the snap-scroll container and instead change it to `overscrollBehavior: 'auto'` (or simply remove the property). Since the container already uses `snap-y snap-mandatory`, scroll chaining is naturally limited. Additionally, add an `onRefresh` prop to `MobileEventCarousel` and wire it up in `EventsAndMeetups.tsx` using the existing `fetchEvents` function, so data refreshes when the browser triggers pull-to-refresh.
 
 ## Technical Details
 
-### File: `src/components/meetups/MeetupDetailsDrawer.tsx` (line 658)
+### File 1: `src/components/community/MobileEventCarousel.tsx`
 
-Change the inline style top value:
+**Step 1** - Remove `overscrollBehavior: 'contain'` from the scroll container's style (line 234). Either delete the property entirely or set it to `'auto'`.
 
 ```
-Before: style={{ top: 'calc(env(safe-area-inset-top) + 16px)' }}
-After:  style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
+Before:
+  style={{
+    height: 'calc(100dvh - 220px)',
+    overscrollBehavior: 'contain',
+  }}
+
+After:
+  style={{
+    height: 'calc(100dvh - 220px)',
+  }}
 ```
 
-Single-line change. The `env(safe-area-inset-top)` already accounts for the status bar/notch, so `+ 4px` places the button just below the app bar with minimal gap.
+This single change restores the browser's native pull-to-refresh behavior on the events page, since the outer page scroll will now be allowed to trigger overscroll at the top boundary.
+
+No other files need changes -- the browser handles the refresh natively once `overscrollBehavior: 'contain'` is removed.
