@@ -648,9 +648,9 @@ const EventsAndMeetups = () => {
         {!isMobile && <SubNavigation items={communityNavigation} />}
         <div className={cn(
           "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
-          isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-clip" : "p-6 min-h-screen"
+          isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
         )}>
-          <div className="flex-1 overflow-clip">
+          <div className="flex-1 overflow-hidden">
           <StandardHeader
             title={translate('events.title', 'Events & MeetUps')}
             description={translate('events.description', 'Discover formal events and casual meetups in your community')}
@@ -740,6 +740,7 @@ const EventsAndMeetups = () => {
                     currentUserId={user?.id}
                     onEdit={handleEditEvent}
                     initialEventId={selectedEventId || undefined}
+                    onRefresh={fetchEvents}
                     onSlideChange={(eventId) => {
                       setFocusedCardId(eventId);
                     }}
@@ -814,6 +815,7 @@ const EventsAndMeetups = () => {
                     currentUserId={user?.id}
                     onEdit={handleEditEvent}
                     initialEventId={selectedEventId || undefined}
+                    onRefresh={fetchEvents}
                     onSlideChange={(eventId) => {
                       setFocusedCardId(eventId);
                     }}
