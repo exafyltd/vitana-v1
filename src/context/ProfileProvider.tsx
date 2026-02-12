@@ -17,6 +17,7 @@ interface ProfileData {
   phone?: string;
   coverUrl?: string;
   location?: string;
+  longevityArchetype?: string;
   links?: Array<{ label: string; url: string }>;
   languages?: string[];
   linkedin_url?: string;
@@ -102,6 +103,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         x_url: profileData?.x_url || undefined,
         youtube_url: profileData?.youtube_url || undefined,
         tiktok_url: profileData?.tiktok_url || undefined,
+        longevityArchetype: profileData?.longevity_archetype || undefined,
       };
 
       console.log('Setting profile state:', profileState);
