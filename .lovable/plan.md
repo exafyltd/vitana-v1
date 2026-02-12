@@ -1,54 +1,80 @@
 
 
-# In-App Pull-to-Refresh for Mobile Events Page
+# Fix Pull-to-Refresh: Use Native Non-Passive Touch Listeners
 
-## Overview
-Since the events page intentionally uses `overflow-hidden` to make the carousel the sole scroll surface, native browser pull-to-refresh cannot work. We'll add a custom touch-gesture-based pull-to-refresh directly inside `MobileEventCarousel`.
+## Problem
+The current implementation attaches touch handlers via React's `onTouchStart`/`onTouchMove`/`onTouchEnd` JSX props. In modern browsers, React registers touch event listeners as **passive** by default on scroll containers. This means:
 
-## Changes
+1. `e.preventDefault()` cannot be called (it's ignored in passive listeners)
+2. The browser consumes the touch-move as a scroll gesture before our handler can intercept it
+3. At `scrollTop === 0`, the downward drag either rubber-bands or does nothing -- our pull-to-refresh logic never gets a chance to take control
 
-### 1. Revert `overflow-clip` back to `overflow-hidden` (EventsAndMeetups.tsx)
+## Solution
+Replace the React JSX touch handlers with **native event listeners** attached via `useEffect`, using `{ passive: false }`. This allows us to call `e.preventDefault()` when we detect a pull-down gesture at the top, preventing the browser from treating it as a scroll.
 
-The previous change to `overflow-clip` was an attempt to enable native PTR, which doesn't work reliably with snap containers. Revert both lines (651 and 653) back to `overflow-hidden`.
+## Technical Details
 
-### 2. Add `onRefresh` prop to MobileEventCarousel
+### File: `src/components/community/MobileEventCarousel.tsx`
 
-Pass `fetchEvents` from `EventsAndMeetups.tsx` into the carousel:
+**Step 1** -- Remove JSX touch handlers from the scroll container div (lines 320-322):
+```
+Remove:
+  onTouchStart={handleTouchStart}
+  onTouchMove={handleTouchMove}
+  onTouchEnd={handleTouchEnd}
+```
+
+**Step 2** -- Convert handlers to use native `TouchEvent` instead of `React.TouchEvent`:
+- `handleTouchStart(e: TouchEvent)` 
+- `handleTouchMove(e: TouchEvent)` -- add `e.preventDefault()` when actively pulling down
+- `handleTouchEnd()` -- stays the same
+
+**Step 3** -- Add a `useEffect` that attaches native listeners with `{ passive: false }`:
 
 ```
-<MobileEventCarousel
-  ...existing props...
-  onRefresh={fetchEvents}
-/>
+useEffect(() => {
+  const el = containerRef.current;
+  if (!el) return;
+
+  el.addEventListener('touchstart', handleTouchStart, { passive: true });
+  el.addEventListener('touchmove', handleTouchMove, { passive: false });
+  el.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+  return () => {
+    el.removeEventListener('touchstart', handleTouchStart);
+    el.removeEventListener('touchmove', handleTouchMove);
+    el.removeEventListener('touchend', handleTouchEnd);
+  };
+}, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 ```
 
-### 3. Implement pull-to-refresh gesture in MobileEventCarousel.tsx
+**Step 4** -- In `handleTouchMove`, call `e.preventDefault()` when pull distance is positive (user is pulling down from top):
 
-Add touch event handling (`onTouchStart`, `onTouchMove`, `onTouchEnd`) on the snap-scroll container:
+```
+const handleTouchMove = useCallback((e: TouchEvent) => {
+  if (!isPullingRef.current || isRefreshing || !containerRef.current) return;
+  if (containerRef.current.scrollTop > 0) {
+    isPullingRef.current = false;
+    setPullDistance(0);
+    return;
+  }
+  const deltaY = e.touches[0].clientY - startYRef.current;
+  if (deltaY > 0) {
+    e.preventDefault(); // <-- This is the critical fix
+    const distance = Math.min(deltaY * RESISTANCE, MAX_PULL);
+    setPullDistance(distance);
+  } else {
+    setPullDistance(0);
+  }
+}, [isRefreshing]);
+```
 
-- **onTouchStart**: Record start Y position. Only activate if `scrollTop === 0`.
-- **onTouchMove**: If pulling down from top, calculate pull distance. Apply `translateY` transform to the container for visual feedback. Show a small refresh indicator pill when pull > 60px.
-- **onTouchEnd**: If pull distance > 60px threshold, trigger `onRefresh()`. Otherwise, animate back. Debounce to prevent re-trigger while refreshing.
+### Summary of changes
 
-**Refresh indicator UI**: A sticky pill at the top of the carousel area:
-- Centered horizontally, `z-50`, rounded-full
-- Shows a spinning `Loader2` icon + "Refreshing..." text
-- Semi-transparent background with backdrop blur for premium feel
-- Fades in/out with opacity transition
-
-**Key implementation details**:
-- Track state: `isPulling`, `pullDistance`, `isRefreshing`
-- Use `useCallback` for touch handlers
-- During active pull, set `overflow: hidden` on container to prevent snap interference
-- After refresh completes (promise resolves), animate `pullDistance` back to 0 and hide indicator
-- The touch gesture only activates when `scrollTop <= 0` to avoid interfering with normal snap scrolling
-
-### 4. File changes summary
-
-| File | Change |
+| What | Detail |
 |------|--------|
-| `src/pages/community/EventsAndMeetups.tsx` | Revert `overflow-clip` to `overflow-hidden` (2 spots). Pass `onRefresh={fetchEvents}` to `MobileEventCarousel`. |
-| `src/components/community/MobileEventCarousel.tsx` | Add `onRefresh` prop. Implement touch-based pull-to-refresh gesture with indicator UI. |
-
-No new files or dependencies needed.
+| File changed | `src/components/community/MobileEventCarousel.tsx` only |
+| Root cause | React registers touch listeners as passive; `preventDefault()` is ignored |
+| Fix | Use native `addEventListener` with `{ passive: false }` for `touchmove` |
+| Risk | None -- `preventDefault` only fires when at top and pulling down, so normal snap scrolling is unaffected |
 
