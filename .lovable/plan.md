@@ -1,25 +1,21 @@
 
-
-# Align Event Card Edges with Title/Subtitle
+# Move Close (X) Button Up — Right Under the App Bar
 
 ## Problem
-The event card has an extra internal padding (`6px 8px`) inside its wrapper div, creating a visible "frame" or gap around the card. The page already has `px-2` (8px) side padding, so the card image ends up 16px from the screen edge -- noticeably narrower than the title and subtitle text above it.
+The X close button sits too low, with 16px of extra spacing below the safe area / app bar. The user wants it positioned tighter, right under the app bar.
 
 ## Solution
-Remove the internal padding from the card wrapper so the card image and content fill the entire width available within the page's `px-2` container, aligning perfectly with the header text above.
+Reduce the top offset from `16px` to `4px` in the inline style, so the button sits snugly just below the app bar.
 
 ## Technical Details
 
-### File: `src/components/community/MobileEventCarousel.tsx` (line 248)
+### File: `src/components/meetups/MeetupDetailsDrawer.tsx` (line 658)
 
-Change the card wrapper padding from `padding: '6px 8px'` to `padding: '4px 0px'`:
+Change the inline style top value:
 
 ```
-Before: padding: '6px 8px'
-After:  padding: '4px 0px'
+Before: style={{ top: 'calc(env(safe-area-inset-top) + 16px)' }}
+After:  style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
 ```
 
-This keeps a tiny 4px vertical gap between stacked cards (for the snap boundary) but removes horizontal padding so the card stretches to match the title width. The `rounded-[26px]` corners on the NewsCard still provide visual separation from the edges.
-
-Single-line change, one file.
-
+Single-line change. The `env(safe-area-inset-top)` already accounts for the status bar/notch, so `+ 4px` places the button just below the app bar with minimal gap.
