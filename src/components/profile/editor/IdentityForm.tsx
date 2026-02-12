@@ -23,6 +23,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [longevityArchetype, setLongevityArchetype] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const { toast } = useToast();
   const { translate } = useTranslation();
 
@@ -31,12 +32,12 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
     loadProfile();
   }, []);
 
-  // Notify parent of data changes
+  // Notify parent of data changes only after initial load
   useEffect(() => {
-    if (onDataChange) {
+    if (loaded && onDataChange) {
       onDataChange({ displayName, handle, avatarUrl, longevityArchetype });
     }
-  }, [displayName, handle, avatarUrl, longevityArchetype, onDataChange]);
+  }, [displayName, handle, avatarUrl, longevityArchetype, onDataChange, loaded]);
 
   const loadProfile = async () => {
     try {
@@ -55,8 +56,10 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
         setAvatarUrl(profile.avatar_url || "");
         setLongevityArchetype(profile.longevity_archetype || "");
       }
+      setLoaded(true);
     } catch (error) {
       console.error('Error loading profile:', error);
+      setLoaded(true);
     }
   };
 
