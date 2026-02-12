@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Edit, CalendarIcon } from 'lucide-react';
+import { Edit, CalendarIcon, Loader2 } from 'lucide-react';
 import SocialShareButton from '@/components/sharing/SocialShareButton';
 import { getShareUrl } from '@/lib/shareUrl';
 
@@ -61,7 +61,12 @@ interface MobileEventCarouselProps {
   emptyState?: React.ReactNode;
   initialEventId?: string;
   onSlideChange?: (eventId: string, index: number) => void;
+  onRefresh?: () => Promise<any>;
 }
+
+const PULL_THRESHOLD = 60;
+const MAX_PULL = 80;
+const RESISTANCE = 0.45;
 
 export function MobileEventCarousel({
   events,
@@ -71,9 +76,16 @@ export function MobileEventCarousel({
   emptyState,
   initialEventId,
   onSlideChange,
+  onRefresh,
 }: MobileEventCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Pull-to-refresh state
+  const [pullDistance, setPullDistance] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const startYRef = useRef(0);
+  const isPullingRef = useRef(false);
 
   // IntersectionObserver to detect which card is in view
   useEffect(() => {
@@ -116,7 +128,7 @@ export function MobileEventCarousel({
     }
   }, [initialEventId, events]);
 
-  // Keyboard navigation (ArrowUp / ArrowDown)
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!containerRef.current) return;
@@ -128,12 +140,57 @@ export function MobileEventCarousel({
         containerRef.current.scrollBy({ top: containerRef.current.clientHeight, behavior: 'smooth' });
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Transform event to NewsCard props (unchanged)
+  // Pull-to-refresh touch handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (isRefreshing || !containerRef.current) return;
+    if (containerRef.current.scrollTop <= 0) {
+      startYRef.current = e.touches[0].clientY;
+      isPullingRef.current = true;
+    }
+  }, [isRefreshing]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isPullingRef.current || isRefreshing || !containerRef.current) return;
+    // Only pull if still at top
+    if (containerRef.current.scrollTop > 0) {
+      isPullingRef.current = false;
+      setPullDistance(0);
+      return;
+    }
+    const deltaY = e.touches[0].clientY - startYRef.current;
+    if (deltaY > 0) {
+      const distance = Math.min(deltaY * RESISTANCE, MAX_PULL);
+      setPullDistance(distance);
+    } else {
+      setPullDistance(0);
+    }
+  }, [isRefreshing]);
+
+  const handleTouchEnd = useCallback(async () => {
+    if (!isPullingRef.current || isRefreshing) return;
+    isPullingRef.current = false;
+
+    if (pullDistance >= PULL_THRESHOLD && onRefresh) {
+      setIsRefreshing(true);
+      setPullDistance(PULL_THRESHOLD); // Hold at threshold while refreshing
+      try {
+        await onRefresh();
+      } catch (err) {
+        console.error('Pull-to-refresh failed:', err);
+      } finally {
+        setIsRefreshing(false);
+        setPullDistance(0);
+      }
+    } else {
+      setPullDistance(0);
+    }
+  }, [pullDistance, isRefreshing, onRefresh]);
+
+  // Transform event to NewsCard props
   const transformEventToCard = (event: any) => {
     const authorName = event.creator_display_name || event.author?.name || 'Community Host';
     const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
@@ -225,14 +282,44 @@ export function MobileEventCarousel({
       role="feed" 
       aria-label="Events feed"
     >
-      {/* Vertical scroll container with snap — container & card share same height */}
+      {/* Pull-to-refresh indicator */}
+      <div
+        className={cn(
+          "absolute left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-full",
+          "bg-background/80 backdrop-blur-xl shadow-lg border border-border/50",
+          "transition-all duration-300 ease-out pointer-events-none"
+        )}
+        style={{
+          top: 8,
+          opacity: pullDistance > 10 || isRefreshing ? 1 : 0,
+          transform: `translateX(-50%) scale(${pullDistance > 10 || isRefreshing ? 1 : 0.8})`,
+        }}
+      >
+        <Loader2 className={cn(
+          "h-4 w-4 text-primary",
+          isRefreshing ? "animate-spin" : ""
+        )} 
+          style={{
+            transform: !isRefreshing ? `rotate(${pullDistance * 4}deg)` : undefined
+          }}
+        />
+        <span className="text-xs font-medium text-muted-foreground">
+          {isRefreshing ? 'Refreshing…' : pullDistance >= PULL_THRESHOLD ? 'Release to refresh' : 'Pull to refresh'}
+        </span>
+      </div>
+
+      {/* Vertical scroll container with snap */}
       <div 
         ref={containerRef}
         className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
           height: 'calc(100dvh - 220px)',
-          
+          transform: pullDistance > 0 ? `translateY(${pullDistance}px)` : undefined,
+          transition: isPullingRef.current ? 'none' : 'transform 0.3s ease-out',
         } as React.CSSProperties}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {events.map((event, index) => (
           <div
@@ -259,7 +346,6 @@ export function MobileEventCarousel({
           </div>
         ))}
       </div>
-
 
       <style>{`
         .scrollbar-hide {
