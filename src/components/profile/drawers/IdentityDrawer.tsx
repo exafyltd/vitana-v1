@@ -25,6 +25,15 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
   const { translate } = useTranslation();
 
   const handleSave = async () => {
+    if (!formData.displayName.trim()) {
+      toast({
+        title: translate('profileEditor.identity.displayName'),
+        description: "Display name is required.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setSaving(true);
       
