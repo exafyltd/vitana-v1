@@ -245,7 +245,7 @@ export function MobileEventCarousel({
             style={{
               height: 'calc(100dvh - 220px)',
               scrollSnapStop: 'always',
-              padding: '6px 8px',
+              padding: '4px 0px',
               transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
               opacity: currentIndex === index ? 1 : 0.7,
             } as React.CSSProperties}
