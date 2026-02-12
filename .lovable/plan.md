@@ -1,66 +1,30 @@
 
 
-# Fix Edit Identity: Race Condition and Data Restoration
+# Fix: Personality Descriptor Not Updating on Profile Display
 
-## What's Wrong
-The Identity form has a race condition: when the dialog opens, all fields start as empty strings, and the `onDataChange` callback fires immediately with those empty values. If the user hits "Save" before the database fetch completes, it overwrites real data with blanks. This is what wiped your display name and avatar previously.
+## Problem
+The personality descriptor (archetype) is hardcoded as "The Mindful Mover" in both `Profile.tsx` and `EditProfilePage.tsx`. Even though the Edit Identity form correctly saves "The Life Lover" to the database, the profile display never reads the updated value -- it always shows the hardcoded string.
 
-Additionally, your profile currently has empty `display_name` and `avatar_url` in the database (from the previous wipe), so the form shows nothing to edit.
+## Root Cause
+The `ProfileProvider` context does not fetch or expose the `longevityArchetype` field from the database. Both profile pages construct the profile object with a hardcoded value instead of using context data.
 
 ## Plan
 
-### Step 1: Restore your profile data (database migration)
-Run a SQL update to restore:
-- `display_name` back to "Jovana Comm"  
-- `avatar_url` from your Google account metadata
+### Step 1: Add `longevityArchetype` to ProfileProvider
+- Add `longevityArchetype?: string` to the `ProfileData` interface
+- Map `profileData.longevity_archetype` from the database response into the profile state (same pattern used for `bio`, `handle`, etc.)
 
-### Step 2: Fix the race condition in IdentityForm.tsx
-Add a `loaded` flag so the form doesn't report data changes to the parent until the profile has actually been fetched from the database:
-- Add a `loaded` state, initially `false`
-- Set it to `true` after `loadProfile()` completes
-- Guard the `onDataChange` effect so it only fires when `loaded` is `true`
+### Step 2: Use context value in Profile.tsx
+- Replace the hardcoded `longevityArchetype: "The Mindful Mover"` with `longevityArchetype: profile.longevityArchetype || ""` (where `profile` comes from `useProfile()`)
 
-This prevents the initial empty values from being treated as the user's intended data.
+### Step 3: Use context value in EditProfilePage.tsx
+- Same replacement: use `contextProfile.longevityArchetype` instead of the hardcoded string
 
-### Step 3: Add save validation in IdentityDrawer.tsx
-Before saving, check that `displayName` is not empty. If it is, show an error toast and block the save. This acts as a safety net against accidental blank overwrites.
-
-## Technical Details
-
-### Files changed
+## Files Changed
 
 | File | Change |
 |------|--------|
-| SQL migration | `UPDATE profiles SET display_name = 'Jovana Comm', avatar_url = '...' WHERE user_id = 'c7d3260d-...'` |
-| `src/components/profile/editor/IdentityForm.tsx` | Add `loaded` state guard around the `onDataChange` effect |
-| `src/components/profile/drawers/IdentityDrawer.tsx` | Add empty display name validation before save |
+| `src/context/ProfileProvider.tsx` | Add `longevityArchetype` to `ProfileData` interface and map it from DB |
+| `src/pages/Profile.tsx` | Replace hardcoded archetype with context value |
+| `src/pages/EditProfilePage.tsx` | Replace hardcoded archetype with context value |
 
-### IdentityForm.tsx changes
-```typescript
-const [loaded, setLoaded] = useState(false);
-
-// Guard: only notify parent after data is loaded
-useEffect(() => {
-  if (loaded && onDataChange) {
-    onDataChange({ displayName, handle, avatarUrl, longevityArchetype });
-  }
-}, [displayName, handle, avatarUrl, longevityArchetype, onDataChange, loaded]);
-
-// In loadProfile, after setting state:
-setLoaded(true);
-```
-
-### IdentityDrawer.tsx changes
-```typescript
-const handleSave = async () => {
-  if (!formData.displayName.trim()) {
-    toast({
-      title: "Display name required",
-      description: "Please enter a display name before saving.",
-      variant: "destructive",
-    });
-    return;
-  }
-  // ...existing save logic
-};
-```
