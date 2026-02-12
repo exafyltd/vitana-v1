@@ -144,8 +144,8 @@ export function MobileEventCarousel({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Pull-to-refresh touch handlers
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+  // Pull-to-refresh touch handlers (native TouchEvent, not React.TouchEvent)
+  const handleTouchStart = useCallback((e: TouchEvent) => {
     if (isRefreshing || !containerRef.current) return;
     if (containerRef.current.scrollTop <= 0) {
       startYRef.current = e.touches[0].clientY;
@@ -153,9 +153,8 @@ export function MobileEventCarousel({
     }
   }, [isRefreshing]);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+  const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!isPullingRef.current || isRefreshing || !containerRef.current) return;
-    // Only pull if still at top
     if (containerRef.current.scrollTop > 0) {
       isPullingRef.current = false;
       setPullDistance(0);
@@ -163,6 +162,7 @@ export function MobileEventCarousel({
     }
     const deltaY = e.touches[0].clientY - startYRef.current;
     if (deltaY > 0) {
+      e.preventDefault(); // Critical: prevent browser from consuming as scroll
       const distance = Math.min(deltaY * RESISTANCE, MAX_PULL);
       setPullDistance(distance);
     } else {
@@ -176,7 +176,7 @@ export function MobileEventCarousel({
 
     if (pullDistance >= PULL_THRESHOLD && onRefresh) {
       setIsRefreshing(true);
-      setPullDistance(PULL_THRESHOLD); // Hold at threshold while refreshing
+      setPullDistance(PULL_THRESHOLD);
       try {
         await onRefresh();
       } catch (err) {
@@ -189,6 +189,22 @@ export function MobileEventCarousel({
       setPullDistance(0);
     }
   }, [pullDistance, isRefreshing, onRefresh]);
+
+  // Attach native listeners with { passive: false } for touchmove
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   // Transform event to NewsCard props
   const transformEventToCard = (event: any) => {
@@ -317,9 +333,6 @@ export function MobileEventCarousel({
           transform: pullDistance > 0 ? `translateY(${pullDistance}px)` : undefined,
           transition: isPullingRef.current ? 'none' : 'transform 0.3s ease-out',
         } as React.CSSProperties}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         {events.map((event, index) => (
           <div
