@@ -15,7 +15,7 @@ import { communityNavigation } from "@/config/navigation";
 import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
@@ -380,6 +380,64 @@ const EventsAndMeetups = () => {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [eventToShare, setEventToShare] = useState<any>(null);
 
+  // Page-level pull-to-refresh for mobile
+  const [pullDistance, setPullDistance] = useState(0);
+  const [isPageRefreshing, setIsPageRefreshing] = useState(false);
+  const touchStartY = useRef(0);
+  const isPulling = useRef(false);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const container = mobileContainerRef.current;
+    if (!container) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (isPageRefreshing) return;
+      touchStartY.current = e.touches[0].clientY;
+      isPulling.current = false;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isPageRefreshing) return;
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - touchStartY.current;
+
+      // Only activate when at scroll top and pulling down
+      if (diff > 0 && container.scrollTop <= 0) {
+        isPulling.current = true;
+        e.preventDefault();
+        setPullDistance(Math.min(diff * 0.4, 100));
+      }
+    };
+
+    const handleTouchEnd = async () => {
+      if (!isPulling.current) return;
+      if (pullDistance > 60 && !isPageRefreshing) {
+        setIsPageRefreshing(true);
+        setPullDistance(0);
+        try {
+          await fetchEvents();
+        } finally {
+          setIsPageRefreshing(false);
+        }
+      } else {
+        setPullDistance(0);
+      }
+      isPulling.current = false;
+    };
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isMobile, isPageRefreshing, pullDistance, fetchEvents]);
+
   // Filter events by time
   const todayEvents = useMemo(() => {
     const today = new Date();
@@ -646,10 +704,24 @@ const EventsAndMeetups = () => {
       <AppLayout>
         {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
         {!isMobile && <SubNavigation items={communityNavigation} />}
-        <div className={cn(
-          "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
-          isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
-        )}>
+        <div 
+          ref={mobileContainerRef}
+          className={cn(
+            "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
+            isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
+          )}
+        >
+          {/* Page-level pull-to-refresh indicator */}
+          {isMobile && (pullDistance > 0 || isPageRefreshing) && (
+            <div className="flex justify-center pb-2 transition-all duration-200" style={{ 
+              transform: `translateY(${isPageRefreshing ? 0 : Math.max(0, pullDistance - 20)}px)`,
+              opacity: isPageRefreshing ? 1 : Math.min(1, pullDistance / 60)
+            }}>
+              <div className="px-4 py-1.5 rounded-full bg-background/90 backdrop-blur-sm shadow-md text-xs font-medium text-muted-foreground">
+                {isPageRefreshing ? '⟳ Refreshing...' : pullDistance > 60 ? '↑ Release to refresh' : '↓ Pull to refresh'}
+              </div>
+            </div>
+          )}
           <div className="flex-1 overflow-hidden">
           <StandardHeader
             title={translate('events.title', 'Events & MeetUps')}
