@@ -217,7 +217,7 @@ export function MobileLiveRoomCarousel({
         ref={containerRef}
         className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
-          height: 'calc(100dvh - 220px)',
+          height: 'calc(100dvh - 280px)',
           transform: pullDistance > 0 ? `translateY(${pullDistance}px)` : undefined,
           transition: isPullingRef.current ? 'none' : 'transform 0.3s ease-out',
         } as React.CSSProperties}
@@ -231,7 +231,7 @@ export function MobileLiveRoomCarousel({
               index !== rooms.length - 1 && "border-b border-border/30"
             )}
             style={{
-              height: 'calc(100dvh - 220px)',
+              height: 'calc(100dvh - 280px)',
               scrollSnapStop: 'always',
               padding: '4px 0px',
               transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
