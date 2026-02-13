@@ -1,31 +1,49 @@
 
-
-# Make Live Room Cards Full-Bleed and Fix Share Button Position
+# Match Live Rooms to Events Layout + Shift CTAs Right
 
 ## Problem
-1. There's a visible "frame" (gap) around the card caused by horizontal padding on the page container (`px-2`) and vertical padding on each card wrapper (`padding: 4px 0px`).
-2. The Share button sits in the center-left area of the bottom CTA row, overlapping with the Orb.
+1. Live Rooms cards are full-bleed (`px-0`, `rounded-none`) while Events cards have a "framed" look (`px-2`, `rounded-[26px]`, ring, shadow, padding between cards).
+2. On both screens, the CTA buttons (Share/Join on Live Rooms, Share/Reserve Spot on Events) can overlap with the centered Orb.
 
 ## Changes
 
 ### 1. `src/pages/community/LiveRooms.tsx`
-- Remove horizontal padding on mobile: change `px-2 pt-2 pb-0` to `px-0 pt-2 pb-0` so the cards go edge-to-edge.
+- Change mobile container from `px-0` back to `px-2` to match Events' framed alignment.
 
 ### 2. `src/components/community/MobileLiveRoomCarousel.tsx`
-- Remove the `padding: '4px 0px'` from each card wrapper so cards fill their slot entirely with no vertical gaps.
-- Remove the `border-b border-border/30` between cards (no visible gap means no border needed).
-- Remove the `ring-1 ring-black/5` and heavy shadow from the LiveRoomCard className since cards now fill edge-to-edge (no floating card look).
-- Keep `rounded-[26px]` only on top corners if desired, or remove rounding entirely for true full-bleed.
+- Restore card wrapper styling to match `MobileEventCarousel` exactly:
+  - Add back `padding: '4px 0px'` on each card wrapper
+  - Add back `border-b border-border/30` between cards
+  - Change `LiveRoomCard` className from `rounded-none` back to `rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]`
+- Match container height to Events: change `calc(100dvh - 280px)` to `calc(100dvh - 220px)` (same value Events uses)
 
-### 3. `src/components/liverooms/LiveRoomCard.tsx` -- CTA row adjustment
-- In the bottom CTA row (line 281), change `justify-end` to `justify-end gap-3` and add right padding (`pr-2`) to push the Share + Join buttons further right, ensuring the Share icon doesn't overlap with the Orb which sits center-bottom.
-- Alternatively, keep the current layout but add `mr-auto` or extra `ml-` spacing to the share button to push it rightward away from the Orb zone.
+### 3. `src/components/liverooms/LiveRoomCard.tsx` (CTA row)
+- Increase right padding from `pr-2` to `pr-4` to shift Share + Join buttons further right, clearing the Orb.
 
-Specifically:
-- The CTA row currently uses `justify-end gap-2`. The share button and Join button are already right-aligned, but on a full-width card the share button's left edge can land right where the Orb sits. Adding `pr-2` to the row and keeping `gap-3` between share and join will shift them slightly further right.
+### 4. `src/components/crossover/NewsCard.tsx` (Events CTA zone)
+- Change the action button zone from `right-6` to `right-4` (or add extra right offset) to shift the Reserve Spot / Share buttons further right, matching the same Orb-clearing adjustment.
+- Current: `absolute bottom-6 right-6`
+- New: `absolute bottom-6 right-4` -- this keeps them snug to the right edge, away from the center Orb.
 
-## Summary
-- Page padding: `px-2` becomes `px-0` on mobile
-- Card wrapper: remove `padding: 4px 0px` and border
-- Card className: simplify (remove ring/heavy shadow for full-bleed look)
-- CTA row: add slight right padding to avoid Orb overlap
+Wait -- looking at the screenshot again, the Events CTA ("Reserve Spot") is already quite far right. The issue is it's still close to the Orb. Let me reconsider: increasing `right` value pushes buttons further FROM the right edge (toward center/Orb). So to move buttons MORE to the right (away from Orb), we should DECREASE the right value or keep it and the current position may already be fine on Events.
+
+Looking at the Events screenshot, "Reserve Spot" button is on the right side and the Orb partially covers it. To fix this on BOTH screens, the buttons need to stay right-aligned but the card content should end above the Orb zone. Since the Orb is center-bottom, the real fix is ensuring the CTA row is high enough above the bottom of the card.
+
+Actually, re-examining: the CTA buttons ARE at the bottom-right of the card. The Orb sits center-bottom of the SCREEN, overlapping the bottom of the card. The buttons just need a bit more rightward push so they don't fall in the Orb's center zone.
+
+### Revised approach for CTAs:
+
+**LiveRoomCard.tsx**: Change CTA row to `pr-4` (from `pr-2`) -- pushes buttons further right.
+
+**NewsCard.tsx**: The action zone is at `absolute bottom-6 right-6`. To push slightly more right, change to `right-4` (closer to edge = more rightward, further from center Orb). This is a subtle 8px shift.
+
+## Summary of all changes
+
+| File | Change |
+|------|--------|
+| `LiveRooms.tsx` | Mobile container: `px-0` to `px-2` |
+| `MobileLiveRoomCarousel.tsx` | Restore framed card style matching Events (rounded, ring, shadow, padding, borders, height `220px`) |
+| `LiveRoomCard.tsx` | CTA row: `pr-2` to `pr-4` |
+| `NewsCard.tsx` | Action button zone: `right-6` to `right-4` |
+
+These four small changes make the two screens visually identical in layout while keeping CTAs clear of the Orb.
