@@ -226,14 +226,10 @@ export function MobileLiveRoomCarousel({
           <div
             key={room.id}
             data-index={index}
-            className={cn(
-              "snap-start transition-all duration-300 ease-out",
-              index !== rooms.length - 1 && "border-b border-border/30"
-            )}
+            className="snap-start transition-all duration-300 ease-out"
             style={{
               height: 'calc(100dvh - 280px)',
               scrollSnapStop: 'always',
-              padding: '4px 0px',
               transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
               opacity: currentIndex === index ? 1 : 0.7,
             } as React.CSSProperties}
@@ -255,7 +251,7 @@ export function MobileLiveRoomCarousel({
               isCreator={room.host.id === currentUserId}
               onEdit={onEdit ? (e) => onEdit(e, room.id) : undefined}
               onDelete={onDelete ? (e) => onDelete(e, room.id) : undefined}
-              className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
+              className="h-full rounded-none"
               shareButton={
                 <SocialShareButton
                   type="live_room"
