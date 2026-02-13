@@ -4737,7 +4737,7 @@ export type Database = {
           metadata: Json | null
           room_name: string | null
           room_slug: string | null
-          starts_at: string
+          starts_at: string | null
           status: string
           tenant_id: string
           title: string
@@ -4757,7 +4757,7 @@ export type Database = {
           metadata?: Json | null
           room_name?: string | null
           room_slug?: string | null
-          starts_at: string
+          starts_at?: string | null
           status?: string
           tenant_id: string
           title: string
@@ -4777,7 +4777,7 @@ export type Database = {
           metadata?: Json | null
           room_name?: string | null
           room_slug?: string | null
-          starts_at?: string
+          starts_at?: string | null
           status?: string
           tenant_id?: string
           title?: string
