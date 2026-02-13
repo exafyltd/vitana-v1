@@ -1,28 +1,47 @@
 
 
-# Compress Live Rooms Mobile Layout (Match Events Pattern)
+# Convert Live Rooms Mobile to Vertical Snap-Scroll (Match Events Pattern)
 
 ## Problem
-The Live Rooms screen on mobile has excessive spacing: `p-6` padding all around, a `mt-6` gap before the tab bar, and the SplitBarList uses a rigid `grid w-full grid-cols-3` layout that doesn't match the Events page's clean scrollable pill style. Too much vertical space is consumed before the actual content.
+The mobile Live Rooms currently use a horizontal Embla carousel (left-right swipe with dot indicators). The user wants them to match the Events screen: vertical snap-scrolling, full-width cards filling the viewport, one card per screen.
+
+## Solution
+Replace the `MobileLiveRoomCarousel` component's horizontal Embla carousel with the same vertical CSS snap-scroll pattern used in `MobileEventCarousel`.
 
 ## Changes
 
+### File: `src/components/community/MobileLiveRoomCarousel.tsx`
+
+**Remove:**
+- Embla carousel import and setup (`useEmblaCarousel`)
+- Horizontal `flex` layout with `w-screen` slides
+- Dot indicators and counter at the bottom
+- Keyboard ArrowLeft/ArrowRight navigation
+
+**Add (matching MobileEventCarousel exactly):**
+- A `containerRef` div with `overflow-y-auto snap-y snap-mandatory scrollbar-hide`
+- Container height set to `calc(100dvh - 220px)` (same as Events)
+- Each card wrapped in a `snap-start` div with the same height, `scrollSnapStop: 'always'`
+- Scale/opacity transitions for active vs inactive cards (scale 1 vs 0.97, opacity 1 vs 0.7)
+- `IntersectionObserver` (threshold 0.6) to detect current card index
+- Keyboard ArrowUp/ArrowDown navigation instead of Left/Right
+- Pull-to-refresh support (touch handlers with `passive: false`, indicator pill)
+- Hidden scrollbar CSS
+- `LiveRoomCard` fills the full card height with `h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]`
+
 ### File: `src/pages/community/LiveRooms.tsx`
 
-1. **Mobile-specific container styling** -- Replace the single `p-6 pb-24` div with conditional classes:
-   - Mobile: `px-2 pt-2 pb-0 h-[100dvh] overflow-hidden` (matching Events)
-   - Desktop: keep `p-6 pb-24 min-h-screen`
+- No structural changes needed -- it already renders `MobileLiveRoomCarousel` for mobile. The component's props interface stays the same.
 
-2. **Compress the SplitBar margin** -- Change `mt-6` to `mt-2` on mobile for the SplitBar wrapper
+## Technical Details
 
-3. **Fix the SplitBarList** -- Remove the `grid w-full grid-cols-3` class and let it use the default flex/scrollable pill layout from the SplitBar component (same as Events). Add `mb-2` on mobile instead of the default `mb-6`.
-
-4. **Tighten SplitBarContent spacing** -- Use `mt-1` on mobile (like Events does) instead of `mt-6`
-
-### Summary of visual changes
-- Page padding shrinks from 24px to 8px on mobile
-- Gap between action bar and tabs shrinks from 24px to 8px
-- Tab pills use the standard flex-scroll layout instead of rigid 3-column grid
-- Gap below tabs before cards shrinks
-- Overall: ~80px of vertical space recovered, giving more room for the live room cards
+| Aspect | Current (Horizontal) | New (Vertical Snap) |
+|--------|---------------------|---------------------|
+| Scroll direction | Horizontal (Embla) | Vertical (CSS snap) |
+| Card sizing | `h-[calc(100vh-280px)]` | `h-[calc(100dvh-220px)]` (full section) |
+| Active detection | Embla `onSelect` | IntersectionObserver (0.6 threshold) |
+| Navigation | ArrowLeft/Right | ArrowUp/Down |
+| Indicators | Dot pills + counter | None (matches Events) |
+| Card styling | Basic height constraint | `rounded-[26px] ring-1 shadow-[0_18px_45px]` |
+| Pull-to-refresh | Not supported | Supported via touch handlers |
 
