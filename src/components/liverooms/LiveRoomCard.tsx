@@ -278,7 +278,7 @@ export function LiveRoomCard({
             </div>
 
             {/* CTA row - right-aligned - Fixed height 40px */}
-            <div className="flex items-center justify-end gap-3 pr-2 h-10 pointer-events-auto">
+            <div className="flex items-center justify-end gap-3 pr-4 h-10 pointer-events-auto">
               {room.isLive ? (
                 <>
                   {shareButton || (
