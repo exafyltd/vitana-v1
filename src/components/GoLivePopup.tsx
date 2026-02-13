@@ -288,9 +288,32 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         },
       };
 
-      // Step 1: Create session via Gateway
+      // Step 1: Create session via Gateway (with retry logic for stuck rooms)
       console.log('[GoLivePopup] Creating session via Gateway...', { roomId: effectiveRoomId });
-      const { session_id, status, daily_room_url } = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+
+      let sessionResult;
+      try {
+        sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+      } catch (firstError: any) {
+        // If room is stuck in non-idle state, cancel existing session and retry
+        if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE')) {
+          console.log('[GoLivePopup] Room not idle - canceling stuck session and retrying...');
+          try {
+            await import('@/services/liveRoomService').then(m =>
+              m.liveRoomService.cancelRoom(effectiveRoomId)
+            );
+            console.log('[GoLivePopup] Stuck session canceled - retrying session creation...');
+            sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+          } catch (retryError) {
+            console.error('[GoLivePopup] Retry after cancel failed:', retryError);
+            throw firstError; // Throw original error
+          }
+        } else {
+          throw firstError;
+        }
+      }
+
+      const { session_id, status, daily_room_url } = sessionResult;
       console.log('[GoLivePopup] Session created:', session_id, 'status:', status);
 
       // Step 2: Create Daily.co video room (CRITICAL - was missing!)
