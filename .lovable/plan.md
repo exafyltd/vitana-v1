@@ -1,31 +1,28 @@
 
 
-# Page-Level Pull-to-Refresh on Mobile Events Screen
+# Compress Live Rooms Mobile Layout (Match Events Pattern)
 
 ## Problem
-The pull-to-refresh gesture currently only works inside the event card carousel area. If you swipe down on the header, tabs, or any area above/outside the cards, nothing happens. The page has `overflow-hidden` which blocks native browser refresh, and the custom pull-to-refresh logic is scoped only to the carousel container.
-
-## Solution
-Move the pull-to-refresh touch handling up to the page level in `EventsAndMeetups.tsx` so swiping down anywhere on the mobile screen triggers a refresh -- not just inside the carousel.
+The Live Rooms screen on mobile has excessive spacing: `p-6` padding all around, a `mt-6` gap before the tab bar, and the SplitBarList uses a rigid `grid w-full grid-cols-3` layout that doesn't match the Events page's clean scrollable pill style. Too much vertical space is consumed before the actual content.
 
 ## Changes
 
-### 1. `src/pages/community/EventsAndMeetups.tsx`
-- Add page-level pull-to-refresh state and touch handlers (same pattern already proven in `MobileEventCarousel`)
-- Attach native `touchstart`/`touchmove`/`touchend` listeners with `{ passive: false }` to the outer mobile container div
-- When pull threshold is reached, call `fetchEvents()` to refresh all event data
-- Render a pull-to-refresh indicator at the top of the mobile layout (sticky pill showing "Pull to refresh" / "Release to refresh" / "Refreshing...")
-- The carousel's own pull-to-refresh remains functional as a fallback
+### File: `src/pages/community/LiveRooms.tsx`
 
-### 2. `src/components/community/MobileEventCarousel.tsx`
-- No changes needed -- its internal pull-to-refresh still works when scrolling within the cards. The page-level handler will only activate when the touch starts outside the carousel or when the carousel is already at scrollTop 0.
+1. **Mobile-specific container styling** -- Replace the single `p-6 pb-24` div with conditional classes:
+   - Mobile: `px-2 pt-2 pb-0 h-[100dvh] overflow-hidden` (matching Events)
+   - Desktop: keep `p-6 pb-24 min-h-screen`
 
-## Technical Details
+2. **Compress the SplitBar margin** -- Change `mt-6` to `mt-2` on mobile for the SplitBar wrapper
 
-The page-level handler will:
-- Track `touchstart` Y position on the outer container
-- On `touchmove`, if scrolling down and the page is at the top, show the pull indicator with resistance factor
-- On `touchend`, if pulled past 60px threshold, trigger `fetchEvents()`
-- Use `e.preventDefault()` in the touchmove handler to prevent browser overscroll/rubber-banding
-- Only activate on mobile (`isMobile` guard)
+3. **Fix the SplitBarList** -- Remove the `grid w-full grid-cols-3` class and let it use the default flex/scrollable pill layout from the SplitBar component (same as Events). Add `mb-2` on mobile instead of the default `mb-6`.
+
+4. **Tighten SplitBarContent spacing** -- Use `mt-1` on mobile (like Events does) instead of `mt-6`
+
+### Summary of visual changes
+- Page padding shrinks from 24px to 8px on mobile
+- Gap between action bar and tabs shrinks from 24px to 8px
+- Tab pills use the standard flex-scroll layout instead of rigid 3-column grid
+- Gap below tabs before cards shrinks
+- Overall: ~80px of vertical space recovered, giving more room for the live room cards
 
