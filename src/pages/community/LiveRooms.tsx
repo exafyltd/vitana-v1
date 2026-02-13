@@ -578,7 +578,7 @@ export default function LiveRooms() {
       />
       {/* Hide SubNavigation on mobile for this specific route - users navigate via /comm */}
       {!isMobile && <SubNavigation items={communityNavigation} />}
-      <div className="p-6 pb-24 md:pb-32 scroll-smooth" style={{ scrollPaddingBottom: "96px" }}>
+      <div className={isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 pb-24 md:pb-32 scroll-smooth"} style={isMobile ? undefined : { scrollPaddingBottom: "96px" }}>
         <StandardHeader
           title={translate('liveRooms.title', 'Live Rooms')}
           description={translate('liveRooms.description', 'Join live audio and video discussions with community members.')}
@@ -642,8 +642,8 @@ export default function LiveRooms() {
         </UtilityActionButton>
 
         {/* Split Bar for Live/Scheduled/Past */}
-        <SplitBar value={activeTab} onValueChange={setActiveTab} className="mt-6">
-          <SplitBarList className="grid w-full grid-cols-3">
+        <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-2" : "mt-6"}>
+          <SplitBarList className={isMobile ? "mb-2" : undefined}>
             <SplitBarTrigger value="live">
               📡 {translate('liveRooms.tabs.live', 'Live Now')}
               {filteredLiveRooms.length > 0 && (
@@ -671,7 +671,7 @@ export default function LiveRooms() {
             </SplitBarTrigger>
           </SplitBarList>
 
-          <SplitBarContent value="live" className="mt-6">
+          <SplitBarContent value="live" className={isMobile ? "mt-1" : "mt-6"}>
             {isLoadingLive ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading live rooms...</p>
@@ -723,7 +723,7 @@ export default function LiveRooms() {
             )}
           </SplitBarContent>
 
-          <SplitBarContent value="scheduled" className="mt-6">
+          <SplitBarContent value="scheduled" className={isMobile ? "mt-1" : "mt-6"}>
             {isLoadingScheduled ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading scheduled rooms...</p>
@@ -775,7 +775,7 @@ export default function LiveRooms() {
             )}
           </SplitBarContent>
 
-          <SplitBarContent value="past" className="mt-6">
+          <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
             <div className="text-center py-12">
               <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
               <p className="text-sm text-muted-foreground mt-2">
