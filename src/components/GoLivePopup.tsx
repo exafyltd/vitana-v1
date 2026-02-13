@@ -296,16 +296,17 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
       } catch (firstError: any) {
         // If room is stuck in non-idle state, cancel existing session and retry
-        if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE')) {
-          console.log('[GoLivePopup] Room not idle - canceling stuck session and retrying...');
+        if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE') || firstError.message?.includes('conflict')) {
+          console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
             await import('@/services/liveRoomService').then(m =>
-              m.liveRoomService.cancelRoom(effectiveRoomId)
+              m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
             );
             console.log('[GoLivePopup] Stuck session canceled - retrying session creation...');
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-          } catch (retryError) {
+          } catch (retryError: any) {
             console.error('[GoLivePopup] Retry after cancel failed:', retryError);
+            notify.error('Error', `Room stuck. Cancel failed: ${retryError.message}`);
             throw firstError; // Throw original error
           }
         } else {

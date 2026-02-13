@@ -286,8 +286,11 @@ export const liveRoomService = {
   /**
    * Cancel a scheduled session
    */
-  async cancelRoom(roomId: string): Promise<void> {
-    await apiFetch(`/live/rooms/${roomId}/cancel`, { method: 'POST' });
+  async cancelRoom(roomId: string, userId: string): Promise<void> {
+    await apiFetch(`/live/rooms/${roomId}/cancel`, {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    });
   },
 
   /**

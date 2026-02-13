@@ -85,9 +85,13 @@ export function useEndRoom() {
 export function useCancelRoom() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   return useMutation({
-    mutationFn: (roomId: string) => liveRoomService.cancelRoom(roomId),
+    mutationFn: (roomId: string) => {
+      if (!user?.id) throw new Error('Not authenticated');
+      return liveRoomService.cancelRoom(roomId, user.id);
+    },
     onSuccess: () => {
       toast({ title: 'Session cancelled' });
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
