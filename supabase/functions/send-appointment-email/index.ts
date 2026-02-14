@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { Resend } from "npm:resend@4.0.0";
 import React from "npm:react@18.3.1";
-import { renderAsync } from "npm:@react-email/components@0.0.22";
+import { renderAsync } from "npm:@react-email/components@0.0.31";
 import { ConfirmationEmail } from "./_templates/confirmation.tsx";
 import { CancellationEmail } from "./_templates/cancellation.tsx";
 import { RescheduleEmail } from "./_templates/reschedule.tsx";

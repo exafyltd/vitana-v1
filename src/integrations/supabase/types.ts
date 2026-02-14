@@ -11393,6 +11393,7 @@ export type Database = {
           title: string
         }[]
       }
+      resolve_tenant_for_user: { Args: { p_user_id: string }; Returns: string }
       resolve_thread_id: {
         Args: {
           p_active_role?: string
