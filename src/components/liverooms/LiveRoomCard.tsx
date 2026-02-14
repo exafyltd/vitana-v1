@@ -303,9 +303,9 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onJoinClick?.(e);
                     }}
-                    aria-label="Join live room"
+                    aria-label={isCreator ? "Manage your live room" : "Join live room"}
                   >
-                    Join
+                    {isCreator ? "Manage" : "Join"}
                   </Button>
                 </>
               ) : isScheduled ? (
