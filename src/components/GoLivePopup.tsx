@@ -299,15 +299,42 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE') || firstError.message?.includes('conflict')) {
           console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
+            // Step 1: Try gateway cancel
             await import('@/services/liveRoomService').then(m =>
               m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
             );
-            console.log('[GoLivePopup] Stuck session canceled - retrying session creation...');
+            console.log('[GoLivePopup] Gateway cancel succeeded');
+          } catch (cancelErr) {
+            console.warn('[GoLivePopup] Gateway cancel failed, force-resetting via DB:', cancelErr);
+          }
+
+          // Step 2: Force-reset room state via DB (always do this as safety net)
+          try {
+            await supabase
+              .from('live_rooms')
+              .update({ status: 'idle', current_session_id: null })
+              .eq('id', effectiveRoomId);
+
+            // Also end any stuck sessions for this room
+            await supabase
+              .from('live_room_sessions')
+              .update({ status: 'ended', ends_at: new Date().toISOString() })
+              .eq('room_id', effectiveRoomId)
+              .in('status', ['lobby', 'live', 'scheduled']);
+
+            console.log('[GoLivePopup] DB force-reset complete');
+          } catch (dbErr) {
+            console.error('[GoLivePopup] DB force-reset failed:', dbErr);
+          }
+
+          // Step 3: Wait for propagation then retry
+          await new Promise(r => setTimeout(r, 1500));
+          try {
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
           } catch (retryError: any) {
-            console.error('[GoLivePopup] Retry after cancel failed:', retryError);
-            notify.error('Error', `Room stuck. Cancel failed: ${retryError.message}`);
-            throw firstError; // Throw original error
+            console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
+            notify.error('Error', `Room stuck. Please try again in a few seconds.`);
+            throw firstError;
           }
         } else {
           throw firstError;

@@ -48,7 +48,22 @@ export default function LiveRoomViewer() {
   const effectiveUserId = userId || user?.id;
   const effectiveUserName = userName || user?.email?.split('@')[0] || 'Guest';
   const effectiveUserAvatar = userAvatar;
-  const effectiveIsHost = isHost || false;
+
+  // DB-based isHost detection (survives page refresh)
+  const { data: dbRoom } = useQuery({
+    queryKey: ['live-room-host', roomId],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('live_rooms')
+        .select('host_user_id')
+        .eq('id', roomId!)
+        .maybeSingle();
+      return data;
+    },
+    enabled: !!roomId && !!user?.id,
+    staleTime: 60_000,
+  });
+  const effectiveIsHost = isHost || (!!user?.id && dbRoom?.host_user_id === user.id);
 
   const [messageInput, setMessageInput] = useState('');
   const [showParticipants, setShowParticipants] = useState(false);
@@ -70,11 +85,18 @@ export default function LiveRoomViewer() {
   // Fallback: end room directly via Supabase if gateway fails
   const endRoomFallback = async (id: string) => {
     try {
+      // Clear current_session_id and set idle
       await supabase
         .from('live_rooms')
-        .update({ status: 'idle', ends_at: new Date().toISOString() })
+        .update({ status: 'idle', current_session_id: null, ends_at: new Date().toISOString() })
         .eq('id', id);
-      // Also end in community_live_streams if present
+      // End any active sessions for this room
+      await supabase
+        .from('live_room_sessions')
+        .update({ status: 'ended', ends_at: new Date().toISOString() })
+        .eq('room_id', id)
+        .in('status', ['lobby', 'live', 'scheduled']);
+      // Sync to community_live_streams for listing visibility
       await supabase
         .from('community_live_streams')
         .update({ status: 'ended', ended_at: new Date().toISOString() })

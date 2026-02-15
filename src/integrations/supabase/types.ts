@@ -6238,6 +6238,10 @@ export type Database = {
       }
       oasis_events: {
         Row: {
+          actor_email: string | null
+          actor_id: string | null
+          actor_role: string | null
+          conversation_turn_id: string | null
           created_at: string
           event: string | null
           git_sha: string | null
@@ -6258,6 +6262,7 @@ export type Database = {
           service: string
           source: string | null
           status: string
+          surface: string | null
           task_stage: string | null
           tenant: string | null
           title: string | null
@@ -6265,6 +6270,10 @@ export type Database = {
           vtid: string | null
         }
         Insert: {
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          conversation_turn_id?: string | null
           created_at?: string
           event?: string | null
           git_sha?: string | null
@@ -6285,6 +6294,7 @@ export type Database = {
           service: string
           source?: string | null
           status: string
+          surface?: string | null
           task_stage?: string | null
           tenant?: string | null
           title?: string | null
@@ -6292,6 +6302,10 @@ export type Database = {
           vtid?: string | null
         }
         Update: {
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          conversation_turn_id?: string | null
           created_at?: string
           event?: string | null
           git_sha?: string | null
@@ -6312,6 +6326,7 @@ export type Database = {
           service?: string
           source?: string | null
           status?: string
+          surface?: string | null
           task_stage?: string | null
           tenant?: string | null
           title?: string | null
