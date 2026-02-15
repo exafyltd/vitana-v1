@@ -35,7 +35,7 @@ import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
-import { mockLiveRooms, mockScheduledRooms } from "@/data/mockLiveRooms";
+
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
 import { useMyRoom } from "@/hooks/useMyRoom";
@@ -120,31 +120,9 @@ export default function LiveRooms() {
     };
   };
   
-  // Merge real streams with mock data for hybrid approach
-  const mergeRoomsWithMocks = (
-    realStreams: LiveStream[],
-    mockRooms: LiveRoom[]
-  ): LiveRoom[] => {
-    // Transform real streams first
-    const realRooms = realStreams.map(transformStreamToRoom);
-    
-    // If we have 3+ real rooms, show only real data
-    if (realRooms.length >= 3) {
-      return realRooms;
-    } else if (realRooms.length > 0) {
-      // If we have 1-2 real rooms, fill the rest with mocks (up to 3 total)
-      const mocksNeeded = 3 - realRooms.length;
-      const mocksToShow = mockRooms.slice(0, mocksNeeded);
-      return [...realRooms, ...mocksToShow];
-    } else {
-      // No real data yet, show all mocks
-      return mockRooms;
-    }
-  };
-  
-  // Merge real data with mocks for hybrid approach
-  const liveRooms = mergeRoomsWithMocks(liveStreams, mockLiveRooms);
-  const scheduledRooms = mergeRoomsWithMocks(scheduledStreams, mockScheduledRooms);
+  // Use only real data — no mock rooms
+  const liveRooms = liveStreams.map(transformStreamToRoom);
+  const scheduledRooms = scheduledStreams.map(transformStreamToRoom);
 
   // Filter rooms by search query
   const filteredLiveRooms = useMemo(() => {
