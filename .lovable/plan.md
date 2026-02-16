@@ -1,23 +1,26 @@
 
 
-## Fix: Smooth Backward Scrolling on Mobile Event Cards
+## Remove Pull-to-Refresh from Mobile Event Cards
 
-### Problem
-Scrolling backward (upward) through event cards is significantly harder than scrolling forward. The scroll feels "sticky" and resists momentum.
+### What Changes
 
-### Root Cause
-In `MobileEventCarousel.tsx` (line 347), each card wrapper has `scrollSnapStop: 'always'`. This CSS property forces the browser to stop at **every** snap point, fighting against scroll momentum. Combined with `snap-mandatory`, it creates a one-way-door effect where flicking backward feels much harder than going forward (gravity assists downward flicks but works against upward ones).
+Remove all pull-to-refresh logic and UI from `MobileEventCarousel.tsx`. This includes state variables, touch handlers, native event listeners, and the refresh indicator pill.
 
-### Fix
-**File: `src/components/community/MobileEventCarousel.tsx`** (line 347)
+### File: `src/components/community/MobileEventCarousel.tsx`
 
-Change `scrollSnapStop: 'always'` to `scrollSnapStop: 'normal'`.
-
-This allows the browser's native scroll momentum to carry through naturally in both directions while still snapping to the nearest card when the scroll settles.
+1. **Remove pull-to-refresh state** (lines 84-88): `pullDistance`, `isRefreshing`, `startYRef`, `isPullingRef`
+2. **Remove constants** (lines 67-69): `PULL_THRESHOLD`, `MAX_PULL`, `RESISTANCE`
+3. **Remove touch handler callbacks** (lines 147-191): `handleTouchStart`, `handleTouchMove`, `handleTouchEnd`
+4. **Remove native event listener useEffect** (lines 193-207): The block that attaches/detaches touchstart/touchmove/touchend
+5. **Remove the refresh indicator UI** (lines 301-325): The floating pill that shows "Pull to refresh" / "Refreshing..."
+6. **Remove `Loader2` import** if no longer used elsewhere in the file
+7. **Keep the `onRefresh` prop** in the interface (harmless, avoids breaking callers) -- or remove it if preferred
 
 ### What Stays the Same
-- Card sizes, layout, shadows, rounded corners
-- Snap-to-card behavior (cards still snap into place)
-- Pull-to-refresh functionality
+- Card layout, sizing, shadows, rounded corners
+- Snap scrolling behavior
 - IntersectionObserver tracking
-- All other visual and interaction patterns
+- Keyboard navigation
+- All card content and CTA buttons
+- The `onRefresh` prop on callers (it simply won't be used)
+
