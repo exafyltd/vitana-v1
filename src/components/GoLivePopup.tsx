@@ -345,13 +345,15 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       console.log('[GoLivePopup] Session created:', session_id, 'status:', status);
 
       // Step 2: Create Daily.co video room (CRITICAL - was missing!)
+      let dailyUrl: string | null = daily_room_url || null;
       if (!isScheduled) {
         console.log('[GoLivePopup] Creating Daily.co room for video...');
         try {
           const dailyRoom = await import('@/services/liveRoomService').then(m =>
             m.liveRoomService.createDailyRoom(effectiveRoomId)
           );
-          console.log('[GoLivePopup] Daily.co room created:', dailyRoom.daily_room_url);
+          dailyUrl = dailyRoom.daily_room_url || dailyUrl;
+          console.log('[GoLivePopup] Daily.co room created:', dailyUrl);
         } catch (dailyError) {
           console.error('[GoLivePopup] Daily.co room creation failed (non-blocking):', dailyError);
           // Continue anyway - user can still join without video initially
@@ -380,6 +382,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               userId: user.id,
               userName: user.email?.split('@')[0] || 'Host',
               isHost: true,
+              daily_room_url: dailyUrl,
               room: {
                 id: effectiveRoomId,
                 title,
