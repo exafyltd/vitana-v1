@@ -21,11 +21,11 @@ import {
   Phone
 } from 'lucide-react';
 import { communityNavigation } from '@/config/navigation';
-import { LiveRoom } from '@/components/LiveRoom';
+import { DailyVideoRoom } from '@/components/liverooms/DailyVideoRoom';
 import { useLiveChat } from '@/hooks/useLiveChat';
 import { useStreamRecording } from '@/hooks/useStreamRecording';
 import { StreamRecordingPlayer } from '@/components/StreamRecordingPlayer';
-import { useWebRTC } from '@/hooks/useWebRTC';
+import { liveRoomService } from '@/services/liveRoomService';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -134,13 +134,8 @@ export default function LiveRoomViewer() {
     userAvatar: effectiveUserAvatar,
   });
 
-  // Initialize WebRTC
-  const { localStream, peers, isConnected, joinRoom: joinWebRTCRoom, leaveRoom: leaveWebRTCRoom } = useWebRTC({
-    roomId: roomId || '',
-    userId: effectiveUserId || '',
-    isAudioEnabled: true,
-    isVideoEnabled: sessionData?.stream_type === 'video' || room?.type === 'video',
-  });
+  // Daily.co room URL from room state metadata
+  const dailyRoomUrl = (roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | undefined || null;
 
   // Track participants
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -148,7 +143,7 @@ export default function LiveRoomViewer() {
   // Recording hook
   const { isRecording, stopRecording } = useStreamRecording({
     streamId: roomId || '',
-    localStream,
+    localStream: null,
     isHost: effectiveIsHost,
     enabled: sessionData?.enable_recording ?? false,
   });
@@ -201,7 +196,6 @@ export default function LiveRoomViewer() {
         description: "Your live stream has ended",
       });
     }
-    leaveWebRTCRoom();
     setIsInRoom(false);
     navigate('/comm/live-rooms');
   };
@@ -315,12 +309,34 @@ export default function LiveRoomViewer() {
             <div className="flex-1 flex flex-col bg-muted/50">
               {isInRoom ? (
                 <>
-                  <LiveRoom
-                    roomId={roomId}
-                    userId={effectiveUserId || ''}
-                    userName={effectiveUserName}
-                    onLeave={handleLeaveRoom}
-                  />
+                  {dailyRoomUrl ? (
+                    <DailyVideoRoom
+                      roomUrl={dailyRoomUrl}
+                      onJoined={() => {
+                        console.log('[Daily] Joined meeting');
+                        if (effectiveIsHost && roomId) {
+                          liveRoomService.hostPresent(roomId).catch(console.warn);
+                        }
+                      }}
+                      onLeft={() => {
+                        if (effectiveIsHost && roomId) {
+                          liveRoomService.hostAbsent(roomId).catch(console.warn);
+                        }
+                        handleLeaveRoom();
+                      }}
+                      onError={(err) => {
+                        console.error('[Daily] Error:', err);
+                        toast({ title: 'Video error', description: err, variant: 'destructive' });
+                      }}
+                    />
+                  ) : (
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="text-center text-muted-foreground">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+                        <p>Setting up video room...</p>
+                      </div>
+                    </div>
+                  )}
                   {isRecording && (
                     <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full animate-pulse z-10">
                       <div className="w-3 h-3 bg-white rounded-full" />
