@@ -1,48 +1,35 @@
 
 
-## Status: The fix is already applied -- adding debug logging to find the real blocker
+## Remove Redundant Chat/Participants Sidebar -- Full-Screen Stream
 
-The three-tier `dailyRoomUrl` resolution (lines 139-142 of `LiveRoomViewer.tsx`) was already applied in the previous edit. The code currently reads:
+The Daily.co video iframe already includes its own chat and participant UI. The right sidebar (Chat tab + Participants tab + message input) is redundant and steals ~384px from the video area. Removing it lets the stream fill the full width.
 
-```typescript
-const dailyRoomUrl = navDailyRoomUrl 
-  || ((roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | null)
-  || dailyRoomUrlFromDb
-  || null;
-```
-
-Since viewers still can't join despite the gateway returning the URL, the issue is likely one of:
-- The gateway `getRoomState` call is failing for viewers (auth issue, 401/403)
-- `roomState` is populated but `metadata` is nested differently than expected
-- The `useRoomState` hook's `enabled` condition isn't met for viewers
-
-### Plan
+### What changes
 
 **File: `src/pages/community/LiveRoomViewer.tsx`**
 
-Add a `useEffect` debug log right after `dailyRoomUrl` is derived (after line 142) to trace exactly what each source contains:
+1. **Remove the entire right sidebar block** (lines 420-545 approx) -- the `w-96 border-l` div containing the Chat/Participants tabs, message list, participant list, and the message input bar at the bottom.
 
-```typescript
-useEffect(() => {
-  console.log('[LiveRoomViewer] dailyRoomUrl debug:', {
-    navDailyRoomUrl,
-    roomStateMetadata: roomState?.room?.metadata,
-    dailyRoomUrlFromDb,
-    resolved: dailyRoomUrl,
-    roomStateExists: !!roomState,
-    roomId,
-  });
-}, [navDailyRoomUrl, roomState, dailyRoomUrlFromDb, dailyRoomUrl, roomId]);
-```
+2. **Remove the "Ready to join?" modal card** (lines 362-381) -- the entry screen is unnecessary since clicking "Join Stream" / "Start Stream" just sets `isInRoom = true`. Instead, auto-join: set `isInRoom` to `true` by default so the Daily.co room loads immediately when the page opens.
 
-This will confirm whether:
-1. `roomState` is null (gateway call failing for viewers)
-2. `roomState.room.metadata` exists but the key is named differently
-3. The URL is resolved but something else blocks rendering
+3. **Clean up unused state and imports** that only served the sidebar:
+   - `showParticipants` state
+   - `newMessage` state  
+   - `messagesEndRef` ref
+   - `handleSendMessage` function
+   - `messages` array (if only used in sidebar)
+   - `MessageCircle` icon import (if no longer used elsewhere)
 
-Once we see the console output, we can pinpoint the exact blocker and fix it in one shot.
+4. **Keep the reaction bar** (Heart, Like, End Room buttons) at the bottom -- those are not part of the sidebar and remain useful.
 
-### Technical Notes
-- No other files need changes
-- The debug log can be removed after confirming the fix works
-- If the gateway call fails for viewers, the fix would be in `apiFetch` auth handling, not in this component
+### Result
+
+- The video area (`flex-1 flex flex-col`) will stretch to fill the entire width below the header
+- No sidebar, no entry modal -- viewers land directly into the stream
+- Host still sees "End Room" button in the reaction bar
+- All chat/participants functionality is handled by Daily.co's built-in UI inside the iframe
+
+### Technical detail
+
+The layout parent is `flex-1 flex overflow-hidden` (line 322). Currently it contains two children: the video column (`flex-1`) and the sidebar (`w-96`). After removing the sidebar, the video column naturally fills 100% width.
+
