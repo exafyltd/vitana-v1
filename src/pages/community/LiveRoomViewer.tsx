@@ -42,7 +42,7 @@ export default function LiveRoomViewer() {
   const { toast } = useToast();
 
   // Get state passed from navigation
-  const { userId, userName, userAvatar, room, isHost } = location.state || {};
+  const { userId, userName, userAvatar, room, isHost, daily_room_url: navDailyRoomUrl } = location.state || {};
 
   // Use auth context as fallback if navigation state is missing
   const effectiveUserId = userId || user?.id;
@@ -134,8 +134,9 @@ export default function LiveRoomViewer() {
     userAvatar: effectiveUserAvatar,
   });
 
-  // Daily.co room URL from DB metadata (gateway doesn't return metadata)
-  const dailyRoomUrl = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
+  // Daily.co room URL: navigation state first (from GoLivePopup), DB metadata as fallback
+  const dailyRoomUrlFromDb = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
+  const dailyRoomUrl = navDailyRoomUrl || dailyRoomUrlFromDb;
 
   // Track participants
   const [participants, setParticipants] = useState<Participant[]>([]);
