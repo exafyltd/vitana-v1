@@ -177,7 +177,16 @@
       "recommended": "Recommended"
     },
     "noEvents": "No events scheduled",
-    "checkBack": "Check back soon for upcoming community events!"
+    "checkBack": "Check back soon for upcoming community events!",
+    "emptyStates": {
+      "noEventsToday": "No Events Today",
+      "noEventsTodayDesc": "There are no events scheduled for today. Check upcoming events or create your own!",
+      "createEvent": "Create Event",
+      "viewUpcoming": "View Upcoming Events",
+      "followingTitle": "Posts from People You Follow",
+      "followingDesc": "Content from people and groups you follow will appear here",
+      "findPeople": "Find People to Follow"
+    }
   },
   "createSelection": {
     "title": "Create New",
