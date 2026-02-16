@@ -1,24 +1,18 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import AppLayout from '@/components/AppLayout';
 import SubNavigation from '@/components/SubNavigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
   ArrowLeft, 
   Users, 
-  MessageCircle, 
-  Send,
   Heart,
   ThumbsUp,
   Settings,
   Share2,
-  Phone
 } from 'lucide-react';
 import { communityNavigation } from '@/config/navigation';
 import { DailyVideoRoom } from '@/components/liverooms/DailyVideoRoom';
@@ -32,7 +26,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
 import { useHostPresence } from '@/hooks/useHostPresence';
-import type { ChatMessage, Participant } from '@/types/chat';
 
 export default function LiveRoomViewer() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -65,10 +58,8 @@ export default function LiveRoomViewer() {
   });
   const effectiveIsHost = isHost || (!!user?.id && dbRoom?.host_user_id === user.id);
 
-  const [messageInput, setMessageInput] = useState('');
-  const [showParticipants, setShowParticipants] = useState(false);
-  const [isInRoom, setIsInRoom] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  // Auto-join: no entry modal, stream loads immediately
+  const [isInRoom] = useState(true);
 
   // Room state polling (every 5s while live)
   const { data: roomState } = useRoomState(roomId, true);
@@ -85,18 +76,15 @@ export default function LiveRoomViewer() {
   // Fallback: end room directly via Supabase if gateway fails
   const endRoomFallback = async (id: string) => {
     try {
-      // Clear current_session_id and set idle
       await supabase
         .from('live_rooms')
         .update({ status: 'idle', current_session_id: null, ends_at: new Date().toISOString() })
         .eq('id', id);
-      // End any active sessions for this room
       await supabase
         .from('live_room_sessions')
         .update({ status: 'ended', ends_at: new Date().toISOString() })
         .eq('room_id', id)
         .in('status', ['lobby', 'live', 'scheduled']);
-      // Sync to community_live_streams for listing visibility
       await supabase
         .from('community_live_streams')
         .update({ status: 'ended', ended_at: new Date().toISOString() })
@@ -119,15 +107,14 @@ export default function LiveRoomViewer() {
         .eq('stream_id', roomId)
         .eq('status', 'ready')
         .maybeSingle();
-      
       if (error) throw error;
       return data;
     },
     enabled: roomStatus === 'ended' || roomStatus === 'idle'
   });
 
-  // Initialize chat
-  const { messages, sendMessage, sendReaction } = useLiveChat({
+  // Initialize chat (kept for reactions)
+  const { sendReaction } = useLiveChat({
     roomId: roomId || '',
     userId: effectiveUserId || '',
     userName: effectiveUserName,
@@ -152,9 +139,6 @@ export default function LiveRoomViewer() {
     });
   }, [navDailyRoomUrl, roomState, dailyRoomUrlFromDb, dailyRoomUrl, roomId]);
 
-  // Track participants
-  const [participants, setParticipants] = useState<Participant[]>([]);
-
   // Recording hook
   const { isRecording, stopRecording } = useStreamRecording({
     streamId: roomId || '',
@@ -162,11 +146,6 @@ export default function LiveRoomViewer() {
     isHost: effectiveIsHost,
     enabled: sessionData?.enable_recording ?? false,
   });
-
-  // Auto-scroll to latest message
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   // Redirect if no proper state
   useEffect(() => {
@@ -179,12 +158,6 @@ export default function LiveRoomViewer() {
       navigate('/comm/live-rooms');
     }
   }, [effectiveUserId, navigate, toast]);
-
-  const handleSendMessage = async () => {
-    if (!messageInput.trim()) return;
-    await sendMessage(messageInput);
-    setMessageInput('');
-  };
 
   const handleReaction = async (emoji: string) => {
     await sendReaction(emoji);
@@ -199,7 +172,6 @@ export default function LiveRoomViewer() {
       if (isRecording) {
         await stopRecording();
       }
-      // Try gateway first, fallback to direct Supabase
       endRoomMutation(roomId, {
         onError: () => {
           console.warn('[LiveRoomViewer] Gateway end failed, using Supabase fallback');
@@ -211,15 +183,7 @@ export default function LiveRoomViewer() {
         description: "Your live stream has ended",
       });
     }
-    setIsInRoom(false);
     navigate('/comm/live-rooms');
-  };
-
-  const formatTime = (date: Date) => {
-    return new Date(date).toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    });
   };
 
   const streamTitle = sessionData?.session_title || room?.title || 'Live Room';
@@ -302,7 +266,7 @@ export default function LiveRoomViewer() {
                   )}
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
                     <Users className="h-4 w-4" />
-                    {viewerCounts?.in_room || participants.length} watching
+                    {viewerCounts?.in_room || 0} watching
                   </span>
                 </div>
               </div>
@@ -318,225 +282,79 @@ export default function LiveRoomViewer() {
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="flex-1 flex overflow-hidden">
-            {/* Video Area */}
-            <div className="flex-1 flex flex-col bg-muted/50">
-              {isInRoom ? (
-                <>
-                  {dailyRoomUrl ? (
-                    <DailyVideoRoom
-                      roomUrl={dailyRoomUrl}
-                      onJoined={() => {
-                        console.log('[Daily] Joined meeting');
-                        if (effectiveIsHost && roomId) {
-                          liveRoomService.hostPresent(roomId).catch(console.warn);
-                        }
-                      }}
-                      onLeft={() => {
-                        if (effectiveIsHost && roomId) {
-                          liveRoomService.hostAbsent(roomId).catch(console.warn);
-                        }
-                        handleLeaveRoom();
-                      }}
-                      onError={(err) => {
-                        console.error('[Daily] Error:', err);
-                        toast({ title: 'Video error', description: err, variant: 'destructive' });
-                      }}
-                    />
-                  ) : (
-                    <div className="flex-1 flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-                        <p>Setting up video room...</p>
-                      </div>
-                    </div>
-                  )}
-                  {isRecording && (
-                    <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full animate-pulse z-10">
-                      <div className="w-3 h-3 bg-white rounded-full" />
-                      Recording
-                    </div>
-                  )}
-                </>
+          {/* Main Content - Full Width */}
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col bg-muted/50 relative">
+              {dailyRoomUrl ? (
+                <DailyVideoRoom
+                  roomUrl={dailyRoomUrl}
+                  onJoined={() => {
+                    console.log('[Daily] Joined meeting');
+                    if (effectiveIsHost && roomId) {
+                      liveRoomService.hostPresent(roomId).catch(console.warn);
+                    }
+                  }}
+                  onLeft={() => {
+                    if (effectiveIsHost && roomId) {
+                      liveRoomService.hostAbsent(roomId).catch(console.warn);
+                    }
+                    handleLeaveRoom();
+                  }}
+                  onError={(err) => {
+                    console.error('[Daily] Error:', err);
+                    toast({ title: 'Video error', description: err, variant: 'destructive' });
+                  }}
+                />
               ) : (
                 <div className="flex-1 flex items-center justify-center">
-                  <Card className="p-8 text-center max-w-md">
-                    <h2 className="text-2xl font-bold mb-4">{effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}</h2>
-                    <p className="text-muted-foreground mb-6">
-                      {effectiveIsHost
-                        ? "Click below to start the live stream"
-                        : "Click below to join the live stream"
-                      }
-                    </p>
-                    <Button
-                      size="lg"
-                      onClick={() => setIsInRoom(true)}
-                      className="w-full"
-                    >
-                      <Phone className="h-5 w-5 mr-2" />
-                      {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
-                    </Button>
-                  </Card>
+                  <div className="text-center text-muted-foreground">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+                    <p>Setting up video room...</p>
+                  </div>
                 </div>
               )}
-
-              {/* Reaction Buttons */}
-              {isInRoom && isLive && (
-                <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => handleReaction('❤️')}
-                    className="rounded-full"
-                  >
-                    <Heart className="h-5 w-5 mr-2 text-red-500 fill-red-500" />
-                    Heart
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => handleReaction('👍')}
-                    className="rounded-full"
-                  >
-                    <ThumbsUp className="h-5 w-5 mr-2 text-blue-500" />
-                    Like
-                  </Button>
-                  {effectiveIsHost && (
-                    <Button
-                      variant="destructive"
-                      size="lg"
-                      onClick={handleLeaveRoom}
-                      disabled={isEnding}
-                      className="rounded-full"
-                    >
-                      {isEnding ? 'Ending...' : 'End Room'}
-                    </Button>
-                  )}
+              {isRecording && (
+                <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full animate-pulse z-10">
+                  <div className="w-3 h-3 bg-white rounded-full" />
+                  Recording
                 </div>
               )}
             </div>
 
-            {/* Right Sidebar - Chat & Participants */}
-            <div className="w-96 border-l flex flex-col bg-background">
-              {/* Tabs */}
-              <div className="flex border-b">
-                <button
-                  className={`flex-1 px-4 py-3 font-medium transition-colors ${
-                    !showParticipants 
-                      ? 'border-b-2 border-primary bg-primary/5' 
-                      : 'text-muted-foreground hover:bg-muted'
-                  }`}
-                  onClick={() => setShowParticipants(false)}
+            {/* Reaction Buttons */}
+            {isInRoom && isLive && (
+              <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => handleReaction('❤️')}
+                  className="rounded-full"
                 >
-                  <MessageCircle className="h-4 w-4 inline mr-2" />
-                  Chat
-                </button>
-                <button
-                  className={`flex-1 px-4 py-3 font-medium transition-colors ${
-                    showParticipants 
-                      ? 'border-b-2 border-primary bg-primary/5' 
-                      : 'text-muted-foreground hover:bg-muted'
-                  }`}
-                  onClick={() => setShowParticipants(true)}
+                  <Heart className="h-5 w-5 mr-2 text-red-500 fill-red-500" />
+                  Heart
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => handleReaction('👍')}
+                  className="rounded-full"
                 >
-                  <Users className="h-4 w-4 inline mr-2" />
-                  Participants ({viewerCounts?.in_room || participants.length})
-                </button>
-              </div>
-
-              {/* Content Area */}
-              <ScrollArea className="flex-1 p-4">
-                {!showParticipants ? (
-                  <div className="space-y-4">
-                    {messages.length === 0 ? (
-                      <div className="text-center text-muted-foreground py-8">
-                        <MessageCircle className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                        <p>No messages yet</p>
-                        <p className="text-sm">Be the first to say hello!</p>
-                      </div>
-                    ) : (
-                      messages.map((msg) => (
-                        <div key={msg.id} className="flex gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={msg.userAvatar} />
-                            <AvatarFallback>
-                              {msg.userName.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <div className="flex items-baseline gap-2">
-                              <span className="font-semibold text-sm">
-                                {msg.userName}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {formatTime(msg.timestamp)}
-                              </span>
-                            </div>
-                            {msg.type === 'reaction' ? (
-                              <p className="text-2xl">{msg.emoji}</p>
-                            ) : (
-                              <p className="text-sm mt-1">{msg.message}</p>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                    <div ref={messagesEndRef} />
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {participants.length === 0 ? (
-                      <div className="text-center text-muted-foreground py-8">
-                        <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                        <p>No participants yet</p>
-                      </div>
-                    ) : (
-                      participants.map((participant) => (
-                        <div
-                          key={participant.id}
-                          className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted"
-                        >
-                          <Avatar>
-                            <AvatarImage src={participant.avatar} />
-                            <AvatarFallback>
-                              {participant.name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">
-                              {participant.name}
-                            </p>
-                            {participant.isHost && (
-                              <Badge variant="secondary" className="text-xs mt-1">
-                                Host
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
+                  <ThumbsUp className="h-5 w-5 mr-2 text-blue-500" />
+                  Like
+                </Button>
+                {effectiveIsHost && (
+                  <Button
+                    variant="destructive"
+                    size="lg"
+                    onClick={handleLeaveRoom}
+                    disabled={isEnding}
+                    className="rounded-full"
+                  >
+                    {isEnding ? 'Ending...' : 'End Room'}
+                  </Button>
                 )}
-              </ScrollArea>
-
-              {/* Chat Input */}
-              {!showParticipants && (
-                <div className="p-4 border-t">
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Send a message..."
-                      value={messageInput}
-                      onChange={(e) => setMessageInput(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                    />
-                    <Button onClick={handleSendMessage} size="icon">
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </AppLayout>
