@@ -56,7 +56,6 @@ export function useWallet() {
     return deduplicateRequest('fetchBalances', async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('🔍 Fetching balances for user:', user?.id);
       if (!user) {
         setError('Not authenticated');
         return;
@@ -69,7 +68,6 @@ export function useWallet() {
           const cached: UserBalance[] = JSON.parse(cacheStr);
           if (Array.isArray(cached) && cached.length) {
             setBalances(cached);
-            console.log('🗄️ Loaded cached balances:', cached);
           }
         } catch {
           console.warn('⚠️ Failed to parse cached balances');
@@ -77,7 +75,6 @@ export function useWallet() {
       }
 
       // Fetch current balances with timeout
-      console.log('💰 Fetching balances from database...');
       const balancePromise = supabase
         .from('user_wallets')
         .select('currency_type, balance, updated_at')
@@ -94,7 +91,6 @@ export function useWallet() {
 
       // If no rows, initialize once then refetch
       if (!balanceData.length) {
-        console.log('ℹ️ No wallet rows found. Initializing once...');
         const init = supabase.rpc('initialize_user_wallet', { user_id_param: user.id });
         const initTimeout = new Promise<never>((_, reject) =>
           setTimeout(() => reject(new Error('Wallet init timeout')), 8000)
@@ -107,7 +103,6 @@ export function useWallet() {
         balanceData = (result.data as UserBalance[]) || [];
       }
 
-      console.log('📊 Final balance data:', balanceData);
       if (balanceData.length) {
         setBalances(balanceData);
         setLocalStorageItem(user.id, 'wallet', 'lastGoodBalances', JSON.stringify(balanceData));
@@ -188,12 +183,8 @@ export function useWallet() {
   const getBalance = (currency: 'USD' | 'VTNA' | 'CREDITS'): number | null => {
     const normalizedCurrency = currency.toUpperCase();
     const entry = balances.find(b => b.currency_type === normalizedCurrency);
-    if (!entry) {
-      console.log(`ℹ️ Balance for ${normalizedCurrency} not available yet`);
-      return null;
-    }
+    if (!entry) return null;
     const num = Number(entry.balance);
-    console.log(`💰 getBalance(${normalizedCurrency}):`, num, 'from balance:', entry);
     return Number.isFinite(num) ? num : null;
   };
 

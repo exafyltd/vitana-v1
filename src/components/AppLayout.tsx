@@ -128,8 +128,6 @@ function AppSidebar({
   };
 
   const getTenantDisplayName = () => {
-    console.log('getTenantDisplayName called - isExafyAdmin:', isExafyAdmin, 'tenant:', tenant, 'path:', window.location.pathname);
-    
     // For portal routes, prioritize URL-based detection
     const currentPath = window.location.pathname;
     if (currentPath.startsWith('/maxina')) {
