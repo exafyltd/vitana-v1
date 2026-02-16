@@ -70,25 +70,10 @@ export function useEndRoom() {
 
   return useMutation({
     mutationFn: (roomId: string) => liveRoomService.endRoom(roomId),
-    onSuccess: async (_data, roomId) => {
+    onSuccess: (_data, roomId) => {
       toast({ title: 'Room ended', description: 'Your session has ended' });
-
-      // Safety: clear current_session_id in DB (gateway should do this but ensure it)
-      try {
-        const { supabase } = await import('@/integrations/supabase/client');
-        await supabase
-          .from('live_rooms')
-          .update({ current_session_id: null })
-          .eq('id', roomId);
-        // Sync legacy listing table
-        await supabase
-          .from('community_live_streams')
-          .update({ status: 'ended', ended_at: new Date().toISOString() })
-          .eq('id', roomId);
-      } catch (err) {
-        console.warn('[useEndRoom] Post-end DB sync failed:', err);
-      }
-
+      // Gateway handles DB cleanup (current_session_id + community_live_streams)
+      // Removed redundant direct DB writes that caused deadlock (40P01)
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
