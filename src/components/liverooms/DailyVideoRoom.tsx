@@ -20,6 +20,11 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
   useEffect(() => {
     if (!containerRef.current || !roomUrl) return;
 
+    // Prevent duplicate instances (React Strict Mode double-mounts)
+    if (callRef.current) return;
+
+    let destroyed = false;
+
     // Create Daily call object
     const call = DailyIframe.createFrame(containerRef.current, {
       showLeaveButton: true,
@@ -35,34 +40,43 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
 
     // Event listeners
     call.on('joined-meeting', () => {
-      console.log('[Daily] Joined meeting');
-      onJoined?.();
+      if (!destroyed) {
+        console.log('[Daily] Joined meeting');
+        onJoined?.();
+      }
     });
 
     call.on('left-meeting', () => {
-      console.log('[Daily] Left meeting');
-      onLeft?.();
+      if (!destroyed) {
+        console.log('[Daily] Left meeting');
+        onLeft?.();
+      }
     });
 
     call.on('error', (error) => {
-      console.error('[Daily] Error:', error);
-      onError?.(error.errorMsg || 'Unknown error');
+      if (!destroyed) {
+        console.error('[Daily] Error:', error);
+        onError?.(error.errorMsg || 'Unknown error');
+      }
     });
 
     // Join the room
     call.join({ url: roomUrl }).catch((err) => {
-      console.error('[Daily] Failed to join:', err);
-      onError?.('Failed to join video room');
+      if (!destroyed) {
+        console.error('[Daily] Failed to join:', err);
+        onError?.('Failed to join video room');
+      }
     });
 
     // Cleanup
     return () => {
+      destroyed = true;
       if (callRef.current) {
         callRef.current.destroy();
         callRef.current = null;
       }
     };
-  }, [roomUrl, onJoined, onLeft, onError]);
+  }, [roomUrl]);
 
   return (
     <div ref={containerRef} className="w-full h-full min-h-[600px] bg-black rounded-lg" />
