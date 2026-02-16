@@ -168,40 +168,42 @@ export function MobileEventCarousel({
       onBuyTicket: (hasTickets || isPaidEvent) ? () => onCardClick(event) : undefined,
       onClick: () => onCardClick(event),
       'data-event-id': event.id,
-      utilityTopRight: canEdit && onEdit ? (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={(e) => {
-            e.stopPropagation();
-            onEdit(event);
-          }}
-        >
-          <Edit className="h-4 w-4" />
-        </Button>
-      ) : undefined,
-      actionButton: (
-        <SocialShareButton
-          type="event"
-          data={{
-            id: event.id,
-            title: event.title,
-            description: event.description,
-            image_url: imageUrl,
-            start_time: event.start_time,
-            end_time: event.end_time,
-            location: event.location,
-            link: getShareUrl('event', event.id, { 
-              utm_source: 'event_card', 
-              utm_medium: 'social',
-              utm_campaign: 'events_meetups_v2',
-              slug: event.slug
-            })
-          }}
-          variant="icon"
-          size="sm"
-        />
+      utilityTopRight: (
+        <div className="flex items-center gap-1">
+          <SocialShareButton
+            type="event"
+            data={{
+              id: event.id,
+              title: event.title,
+              description: event.description,
+              image_url: imageUrl,
+              start_time: event.start_time,
+              end_time: event.end_time,
+              location: event.location,
+              link: getShareUrl('event', event.id, { 
+                utm_source: 'event_card', 
+                utm_medium: 'social',
+                utm_campaign: 'events_meetups_v2',
+                slug: event.slug
+              })
+            }}
+            variant="icon"
+            size="sm"
+          />
+          {canEdit && onEdit && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(event);
+              }}
+            >
+              <Edit className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       ),
     };
   };
