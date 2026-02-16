@@ -3,8 +3,8 @@
  * VTID-01230: Frontend integration for Daily.co Live Rooms
  */
 
-import { useEffect, useRef } from 'react';
-import DailyIframe, { DailyCall } from '@daily-co/daily-js';
+import { useEffect, useRef, useState } from 'react';
+import DailyIframe from '@daily-co/daily-js';
 
 interface DailyVideoRoomProps {
   roomUrl: string;
@@ -15,17 +15,23 @@ interface DailyVideoRoomProps {
 
 export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVideoRoomProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const callRef = useRef<DailyCall | null>(null);
+  const [ready, setReady] = useState(false);
+
+  // Wait one tick to avoid Strict Mode double-create race
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 0);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !roomUrl) return;
+    if (!containerRef.current || !roomUrl || !ready) return;
 
-    // Prevent duplicate instances (React Strict Mode double-mounts)
-    if (callRef.current) return;
+    // Destroy any lingering global instance first
+    const existing = DailyIframe.getCallInstance();
+    if (existing) {
+      existing.destroy();
+    }
 
-    let destroyed = false;
-
-    // Create Daily call object
     const call = DailyIframe.createFrame(containerRef.current, {
       showLeaveButton: true,
       iframeStyle: {
@@ -36,9 +42,8 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
       },
     });
 
-    callRef.current = call;
+    let destroyed = false;
 
-    // Event listeners
     call.on('joined-meeting', () => {
       if (!destroyed) {
         console.log('[Daily] Joined meeting');
@@ -60,7 +65,6 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
       }
     });
 
-    // Join the room
     call.join({ url: roomUrl }).catch((err) => {
       if (!destroyed) {
         console.error('[Daily] Failed to join:', err);
@@ -68,15 +72,15 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
       }
     });
 
-    // Cleanup
     return () => {
       destroyed = true;
-      if (callRef.current) {
-        callRef.current.destroy();
-        callRef.current = null;
+      try {
+        call.destroy();
+      } catch (e) {
+        console.warn('[Daily] Cleanup error:', e);
       }
     };
-  }, [roomUrl]);
+  }, [roomUrl, ready]);
 
   return (
     <div ref={containerRef} className="w-full h-full min-h-[600px] bg-black rounded-lg" />
