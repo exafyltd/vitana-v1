@@ -1,29 +1,40 @@
 
-
-## Fix: Remove Remaining "Refreshing" Indicator and Fix Backward Scrolling
+## Move Share Button to Top-Right Action Area on Event Cards
 
 ### Problem
-The "Refreshing..." pill still appears at the top of the Events screen, and backward scrolling remains broken. The previous changes only targeted `MobileEventCarousel.tsx`, but the refresh indicator and possibly additional pull-to-refresh logic lives in a parent component.
+The Share button sits in the bottom-right of the card alongside the CTA ("Buy Ticket", "Reserve Spot"), where it collides with the centered Orb on mobile.
 
-### Investigation Needed
-Due to connectivity issues, I could not read the files. On implementation, I will:
-
-1. **Search all files** for "Refreshing" text, `pull-to-refresh`, `pullDistance`, `isRefreshing` patterns to find every location
-2. **Check parent components** — likely candidates:
-   - `src/pages/community/EventsMeetups.tsx` or similar Events page
-   - Any layout wrapper around the carousel
-   - Mobile-specific wrapper components
-3. **Verify MobileEventCarousel.tsx** — confirm previous edits (removing pull-to-refresh, changing `scrollSnapStop` to `'normal'`) were actually saved
+### Solution
+Move the Share button from `actionButton` (bottom zone) to `utilityTopRight` (top-right zone, next to the time pill and edit icon).
 
 ### Changes
-1. **Remove all pull-to-refresh logic and UI** from whichever parent component contains the "Refreshing..." pill
-2. **Confirm `scrollSnapStop: 'normal'`** is set on event card wrappers in MobileEventCarousel
-3. **Remove any touch event listeners** (touchstart/touchmove/touchend) that intercept scroll gestures for pull-to-refresh in parent components
-4. **Remove the `Loader2` spinner import** if no longer needed
+
+**File: `src/components/community/MobileEventCarousel.tsx`** (~lines 171-205)
+
+1. Remove the `actionButton` prop entirely (delete the SocialShareButton from the actionButton assignment)
+2. Update `utilityTopRight` to always include the Share button, and conditionally include the Edit icon for owners/admins
+
+Current structure:
+```
+utilityTopRight: canEdit ? <EditButton /> : undefined
+actionButton: <SocialShareButton />
+```
+
+New structure:
+```
+utilityTopRight: (
+  <div className="flex items-center gap-1">
+    <SocialShareButton ... />
+    {canEdit && <EditButton ... />}
+  </div>
+)
+// actionButton removed
+```
 
 ### What Stays the Same
-- Card layout, sizing, snap behavior
-- All card content and CTA buttons
-- Tab navigation (Today/Upcoming/Following)
-- Search, Calendar, Create action bar
-
+- CTA button ("Buy Ticket", "Reserve Spot", etc.) remains at bottom-right via `getSmartAction()`
+- Card layout, snap scrolling, sizing, shadows
+- Share button appearance (icon variant, sm size)
+- Edit button visibility logic (only for owner/admin)
+- Time pill in top-right
+- All other card content
