@@ -1,58 +1,38 @@
 
 
-## Align Live Rooms Mobile Carousel with Events Pattern
+## Fix: "Setting up video room..." - Daily.co URL Not Loading
 
-### Problem
-The mobile Live Rooms carousel uses a different card component (`LiveRoomCard`) and scroll behavior compared to the Events carousel (`NewsCard`). This creates visual inconsistency between the two community hubs.
+### Root Cause
 
-### Key Differences to Fix
+The gateway's `GET /api/v1/live/rooms/:id/state` endpoint does **not** include the `metadata` field in its response. It only returns: `id, status, room_name, room_slug, host_user_id, current_session_id`.
 
-| Aspect | Events (current) | Live Rooms (current) |
-|---|---|---|
-| Card component | `NewsCard` | `LiveRoomCard` |
-| `scrollSnapStop` | `normal` | `always` |
-| Pull-to-refresh | Removed | Active |
-| Share button | Top-right utility area | Bottom CTA row (inside LiveRoomCard) |
-
-### Changes
-
-**File: `src/components/community/MobileLiveRoomCarousel.tsx`**
-
-1. **Replace `LiveRoomCard` with `NewsCard`**: Transform each room into `NewsCard` props (same pattern as `MobileEventCarousel.transformEventToCard`), mapping `room.title`, `room.description`, `room.imageUrl`, `room.host` to the NewsCard interface. The CTA button logic (Join/Notify/Manage) moves into `showSmartAction` or a custom `actionButton` on NewsCard.
-
-2. **Move Share button to `utilityTopRight`**: Place the `SocialShareButton` in the top-right utility area alongside the kebab/edit controls, matching the Events pattern.
-
-3. **Change `scrollSnapStop` from `'always'` to `'normal'`**: Enables smooth momentum-based scrolling in both directions.
-
-4. **Remove pull-to-refresh**: Delete the pull-to-refresh state, touch handlers, and indicator UI. This matches the Events carousel which prioritizes scroll fluidity.
-
-### Technical Detail
-
-The room-to-NewsCard transformation will look similar to the event transformation:
-
+However, the code at line 138 tries to read the Daily.co URL from the gateway response:
 ```
-title: room.title
-description: room.description
-imageUrl: room.imageUrl || fallback
-category: 'community'
-pillar: room.isLive ? 'LIVE' : 'SCHEDULED'
-author: { name: room.host.name, avatar: room.host.avatar }
-location: room.location || 'Virtual'
-attendees: room.participants
-timestamp: room.isLive ? 'LIVE' : formatted scheduledTime
-price: room.isPremium ? 'Premium' : 'free'
-utilityTopRight: <ShareButton /> + {isCreator && <KebabMenu />}
-actionButton: <Join/Notify/Manage button>
+const dailyRoomUrl = (roomState?.room?.metadata as ...)?.daily_room_url
 ```
 
-The Join/Notify/Manage CTA remains as a custom `actionButton` on NewsCard (bottom-right), since Live Rooms need distinct actions (Join for live, Notify for scheduled) that differ from the event smart-action system.
+This is always `undefined`, so the fallback "Setting up video room..." spinner shows forever.
+
+The `daily_room_url` **does exist** in the database (`live_rooms.metadata`), it's just not being fetched.
+
+### Fix
+
+**File: `src/pages/community/LiveRoomViewer.tsx`**
+
+1. **Expand the existing DB query** (line 53-65) to also select `metadata` alongside `host_user_id`:
+   ```
+   .select('host_user_id, metadata')
+   ```
+
+2. **Change the `dailyRoomUrl` derivation** (line 138) to read from the DB result (`dbRoom`) instead of the gateway response (`roomState`):
+   ```
+   const dailyRoomUrl = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
+   ```
+
+That's it -- two small changes. The DB query already runs on mount and is cached for 60 seconds, so there's no extra network cost.
 
 ### What Stays the Same
-- All room data fetching, filtering, and state management in `LiveRooms.tsx`
-- Desktop grid layout (unchanged)
-- `LiveRoomCard` component itself (still used on desktop)
-- Container height `calc(100dvh - 220px)`, snap-y, rounded-[26px], ring/shadow styling
-- Empty state rendering
-- Keyboard navigation (arrow keys)
-- IntersectionObserver for slide tracking
-
+- Gateway polling via `useRoomState` (still used for status, counts, session data)
+- `DailyVideoRoom` component (unchanged)
+- Host presence signaling (unchanged)
+- All chat, reactions, and participant UI
