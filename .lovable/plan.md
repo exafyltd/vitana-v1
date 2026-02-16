@@ -1,26 +1,29 @@
 
 
-## Remove Pull-to-Refresh from Mobile Event Cards
+## Fix: Remove Remaining "Refreshing" Indicator and Fix Backward Scrolling
 
-### What Changes
+### Problem
+The "Refreshing..." pill still appears at the top of the Events screen, and backward scrolling remains broken. The previous changes only targeted `MobileEventCarousel.tsx`, but the refresh indicator and possibly additional pull-to-refresh logic lives in a parent component.
 
-Remove all pull-to-refresh logic and UI from `MobileEventCarousel.tsx`. This includes state variables, touch handlers, native event listeners, and the refresh indicator pill.
+### Investigation Needed
+Due to connectivity issues, I could not read the files. On implementation, I will:
 
-### File: `src/components/community/MobileEventCarousel.tsx`
+1. **Search all files** for "Refreshing" text, `pull-to-refresh`, `pullDistance`, `isRefreshing` patterns to find every location
+2. **Check parent components** — likely candidates:
+   - `src/pages/community/EventsMeetups.tsx` or similar Events page
+   - Any layout wrapper around the carousel
+   - Mobile-specific wrapper components
+3. **Verify MobileEventCarousel.tsx** — confirm previous edits (removing pull-to-refresh, changing `scrollSnapStop` to `'normal'`) were actually saved
 
-1. **Remove pull-to-refresh state** (lines 84-88): `pullDistance`, `isRefreshing`, `startYRef`, `isPullingRef`
-2. **Remove constants** (lines 67-69): `PULL_THRESHOLD`, `MAX_PULL`, `RESISTANCE`
-3. **Remove touch handler callbacks** (lines 147-191): `handleTouchStart`, `handleTouchMove`, `handleTouchEnd`
-4. **Remove native event listener useEffect** (lines 193-207): The block that attaches/detaches touchstart/touchmove/touchend
-5. **Remove the refresh indicator UI** (lines 301-325): The floating pill that shows "Pull to refresh" / "Refreshing..."
-6. **Remove `Loader2` import** if no longer used elsewhere in the file
-7. **Keep the `onRefresh` prop** in the interface (harmless, avoids breaking callers) -- or remove it if preferred
+### Changes
+1. **Remove all pull-to-refresh logic and UI** from whichever parent component contains the "Refreshing..." pill
+2. **Confirm `scrollSnapStop: 'normal'`** is set on event card wrappers in MobileEventCarousel
+3. **Remove any touch event listeners** (touchstart/touchmove/touchend) that intercept scroll gestures for pull-to-refresh in parent components
+4. **Remove the `Loader2` spinner import** if no longer needed
 
 ### What Stays the Same
-- Card layout, sizing, shadows, rounded corners
-- Snap scrolling behavior
-- IntersectionObserver tracking
-- Keyboard navigation
+- Card layout, sizing, snap behavior
 - All card content and CTA buttons
-- The `onRefresh` prop on callers (it simply won't be used)
+- Tab navigation (Today/Upcoming/Following)
+- Search, Calendar, Create action bar
 
