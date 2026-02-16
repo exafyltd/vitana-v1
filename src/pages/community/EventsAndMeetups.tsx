@@ -752,16 +752,16 @@ const EventsAndMeetups = () => {
                     emptyState={
                       <div className="text-center py-12">
                         <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-lg font-semibold mb-2">No Events Today</h3>
+                        <h3 className="text-lg font-semibold mb-2">{translate('events.emptyStates.noEventsToday')}</h3>
                         <p className="text-muted-foreground mb-4">
-                          There are no events scheduled for today. Check upcoming events or create your own!
+                          {translate('events.emptyStates.noEventsTodayDesc')}
                         </p>
                         <div className="flex flex-col gap-3">
                           <Button onClick={() => setCreateSelectionOpen(true)}>
-                            Create Event
+                            {translate('events.emptyStates.createEvent')}
                           </Button>
                           <Button variant="outline" onClick={() => setActiveTab('upcoming')}>
-                            View Upcoming Events
+                            {translate('events.emptyStates.viewUpcoming')}
                           </Button>
                         </div>
                       </div>
@@ -777,14 +777,14 @@ const EventsAndMeetups = () => {
                         handleEditEvent,
                         {
                           icon: <CalendarIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
-                          title: "No Events Today",
-                          description: "There are no events scheduled for today. Check upcoming events or create your own!",
+                          title: translate('events.emptyStates.noEventsToday'),
+                          description: translate('events.emptyStates.noEventsTodayDesc'),
                           primaryAction: {
-                            label: "Create Event",
+                            label: translate('events.emptyStates.createEvent'),
                             onClick: () => setCreateSelectionOpen(true)
                           },
                           secondaryAction: {
-                            label: "View Upcoming Events",
+                            label: translate('events.emptyStates.viewUpcoming'),
                             onClick: () => setActiveTab('upcoming')
                           }
                         }
@@ -879,11 +879,11 @@ const EventsAndMeetups = () => {
               <SplitBarContent value="following" className={isMobile ? "mt-1" : "mt-6"}>
                 <div className="text-center py-12">
                   <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">Posts from People You Follow</h3>
+                  <h3 className="text-lg font-semibold mb-2">{translate('events.emptyStates.followingTitle')}</h3>
                   <p className="text-muted-foreground mb-4">
-                    Content from people and groups you follow will appear here
+                    {translate('events.emptyStates.followingDesc')}
                   </p>
-                  <Button variant="outline">Find People to Follow</Button>
+                  <Button variant="outline">{translate('events.emptyStates.findPeople')}</Button>
                 </div>
               </SplitBarContent>
 
