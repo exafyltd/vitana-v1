@@ -440,7 +440,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             </div>
 
             {/* Action Button Zone - Absolutely positioned at bottom */}
-            <div className="absolute bottom-6 right-4 flex items-center gap-2">
+            <div className="absolute bottom-6 right-8 flex items-center gap-2">
               {actionButton}
               {getSmartAction()}
             </div>
