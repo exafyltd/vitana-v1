@@ -141,6 +141,17 @@ export default function LiveRoomViewer() {
     || dailyRoomUrlFromDb
     || null;
 
+  useEffect(() => {
+    console.log('[LiveRoomViewer] dailyRoomUrl debug:', {
+      navDailyRoomUrl,
+      roomStateMetadata: roomState?.room?.metadata,
+      dailyRoomUrlFromDb,
+      resolved: dailyRoomUrl,
+      roomStateExists: !!roomState,
+      roomId,
+    });
+  }, [navDailyRoomUrl, roomState, dailyRoomUrlFromDb, dailyRoomUrl, roomId]);
+
   // Track participants
   const [participants, setParticipants] = useState<Participant[]>([]);
 
