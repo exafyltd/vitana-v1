@@ -55,7 +55,7 @@ export default function LiveRoomViewer() {
     queryFn: async () => {
       const { data } = await supabase
         .from('live_rooms')
-        .select('host_user_id')
+        .select('host_user_id, metadata')
         .eq('id', roomId!)
         .maybeSingle();
       return data;
@@ -134,8 +134,8 @@ export default function LiveRoomViewer() {
     userAvatar: effectiveUserAvatar,
   });
 
-  // Daily.co room URL from room state metadata
-  const dailyRoomUrl = (roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | undefined || null;
+  // Daily.co room URL from DB metadata (gateway doesn't return metadata)
+  const dailyRoomUrl = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
 
   // Track participants
   const [participants, setParticipants] = useState<Participant[]>([]);
