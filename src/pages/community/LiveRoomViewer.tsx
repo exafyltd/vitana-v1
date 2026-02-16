@@ -58,8 +58,8 @@ export default function LiveRoomViewer() {
   });
   const effectiveIsHost = isHost || (!!user?.id && dbRoom?.host_user_id === user.id);
 
-  // Auto-join: no entry modal, stream loads immediately
-  const [isInRoom] = useState(true);
+  // Entry gate: host clicks "Start Stream", viewer clicks "Join Stream"
+  const [isInRoom, setIsInRoom] = useState(false);
 
   // Room state polling (every 5s while live)
   const { data: roomState } = useRoomState(roomId, true);
@@ -207,7 +207,7 @@ export default function LiveRoomViewer() {
   }
 
   // Show ended state
-  if (hasEnded && !isInRoom) {
+  if (hasEnded) {
     return (
       <>
         <SEO title="Room Ended" />
@@ -284,76 +284,97 @@ export default function LiveRoomViewer() {
 
           {/* Main Content - Full Width */}
           <div className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 flex flex-col bg-muted/50 relative">
-              {dailyRoomUrl ? (
-                <DailyVideoRoom
-                  roomUrl={dailyRoomUrl}
-                  onJoined={() => {
-                    console.log('[Daily] Joined meeting');
-                    if (effectiveIsHost && roomId) {
-                      liveRoomService.hostPresent(roomId).catch(console.warn);
-                    }
-                  }}
-                  onLeft={() => {
-                    if (effectiveIsHost && roomId) {
-                      liveRoomService.hostAbsent(roomId).catch(console.warn);
-                    }
-                    handleLeaveRoom();
-                  }}
-                  onError={(err) => {
-                    console.error('[Daily] Error:', err);
-                    toast({ title: 'Video error', description: err, variant: 'destructive' });
-                  }}
-                />
-              ) : (
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
-                    <p>Setting up video room...</p>
-                  </div>
-                </div>
-              )}
-              {isRecording && (
-                <div className="absolute top-4 right-4 flex items-center gap-2 bg-red-500 text-white px-3 py-1 rounded-full animate-pulse z-10">
-                  <div className="w-3 h-3 bg-white rounded-full" />
-                  Recording
-                </div>
-              )}
-            </div>
-
-            {/* Reaction Buttons */}
-            {isInRoom && isLive && (
-              <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => handleReaction('❤️')}
-                  className="rounded-full"
-                >
-                  <Heart className="h-5 w-5 mr-2 text-red-500 fill-red-500" />
-                  Heart
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={() => handleReaction('👍')}
-                  className="rounded-full"
-                >
-                  <ThumbsUp className="h-5 w-5 mr-2 text-blue-500" />
-                  Like
-                </Button>
-                {effectiveIsHost && (
-                  <Button
-                    variant="destructive"
-                    size="lg"
-                    onClick={handleLeaveRoom}
-                    disabled={isEnding}
-                    className="rounded-full"
-                  >
-                    {isEnding ? 'Ending...' : 'End Room'}
+            {!isInRoom ? (
+              /* Entry Screen */
+              <div className="flex-1 flex items-center justify-center bg-muted/50">
+                <Card className="p-8 text-center max-w-md">
+                  <h2 className="text-2xl font-bold mb-4">
+                    {effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}
+                  </h2>
+                  <p className="text-muted-foreground mb-6">
+                    {effectiveIsHost
+                      ? 'Click below to start the live stream'
+                      : 'Click below to join the live stream'}
+                  </p>
+                  <Button size="lg" onClick={() => setIsInRoom(true)} className="w-full">
+                    {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
                   </Button>
-                )}
+                </Card>
               </div>
+            ) : (
+              <>
+                <div className="flex-1 flex flex-col bg-muted/50 relative">
+                  {dailyRoomUrl ? (
+                    <DailyVideoRoom
+                      roomUrl={dailyRoomUrl}
+                      onJoined={() => {
+                        console.log('[Daily] Joined meeting');
+                        if (effectiveIsHost && roomId) {
+                          liveRoomService.hostPresent(roomId).catch(console.warn);
+                        }
+                      }}
+                      onLeft={() => {
+                        if (effectiveIsHost && roomId) {
+                          liveRoomService.hostAbsent(roomId).catch(console.warn);
+                        }
+                        handleLeaveRoom();
+                      }}
+                      onError={(err) => {
+                        console.error('[Daily] Error:', err);
+                        toast({ title: 'Video error', description: err, variant: 'destructive' });
+                      }}
+                    />
+                  ) : (
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="text-center text-muted-foreground">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+                        <p>Setting up video room...</p>
+                      </div>
+                    </div>
+                  )}
+                  {isRecording && (
+                    <div className="absolute top-4 right-4 flex items-center gap-2 bg-destructive text-destructive-foreground px-3 py-1 rounded-full animate-pulse z-10">
+                      <div className="w-3 h-3 bg-destructive-foreground rounded-full" />
+                      Recording
+                    </div>
+                  )}
+                </div>
+
+                {/* Reaction Buttons */}
+                {isLive && (
+                  <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleReaction('❤️')}
+                      className="rounded-full"
+                    >
+                      <Heart className="h-5 w-5 mr-2 text-destructive fill-destructive" />
+                      Heart
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={() => handleReaction('👍')}
+                      className="rounded-full"
+                    >
+                      <ThumbsUp className="h-5 w-5 mr-2 text-primary" />
+                      Like
+                    </Button>
+                    {effectiveIsHost && (
+                      <Button
+                        variant="destructive"
+                        size="lg"
+                        onClick={handleLeaveRoom}
+                        disabled={isEnding}
+                        className="rounded-full"
+                      >
+                        {isEnding ? 'Ending...' : 'End Room'}
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
