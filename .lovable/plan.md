@@ -1,38 +1,48 @@
 
 
-## Fix: "Setting up video room..." - Daily.co URL Not Loading
+## Status: The fix is already applied -- adding debug logging to find the real blocker
 
-### Root Cause
+The three-tier `dailyRoomUrl` resolution (lines 139-142 of `LiveRoomViewer.tsx`) was already applied in the previous edit. The code currently reads:
 
-The gateway's `GET /api/v1/live/rooms/:id/state` endpoint does **not** include the `metadata` field in its response. It only returns: `id, status, room_name, room_slug, host_user_id, current_session_id`.
-
-However, the code at line 138 tries to read the Daily.co URL from the gateway response:
+```typescript
+const dailyRoomUrl = navDailyRoomUrl 
+  || ((roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | null)
+  || dailyRoomUrlFromDb
+  || null;
 ```
-const dailyRoomUrl = (roomState?.room?.metadata as ...)?.daily_room_url
-```
 
-This is always `undefined`, so the fallback "Setting up video room..." spinner shows forever.
+Since viewers still can't join despite the gateway returning the URL, the issue is likely one of:
+- The gateway `getRoomState` call is failing for viewers (auth issue, 401/403)
+- `roomState` is populated but `metadata` is nested differently than expected
+- The `useRoomState` hook's `enabled` condition isn't met for viewers
 
-The `daily_room_url` **does exist** in the database (`live_rooms.metadata`), it's just not being fetched.
-
-### Fix
+### Plan
 
 **File: `src/pages/community/LiveRoomViewer.tsx`**
 
-1. **Expand the existing DB query** (line 53-65) to also select `metadata` alongside `host_user_id`:
-   ```
-   .select('host_user_id, metadata')
-   ```
+Add a `useEffect` debug log right after `dailyRoomUrl` is derived (after line 142) to trace exactly what each source contains:
 
-2. **Change the `dailyRoomUrl` derivation** (line 138) to read from the DB result (`dbRoom`) instead of the gateway response (`roomState`):
-   ```
-   const dailyRoomUrl = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
-   ```
+```typescript
+useEffect(() => {
+  console.log('[LiveRoomViewer] dailyRoomUrl debug:', {
+    navDailyRoomUrl,
+    roomStateMetadata: roomState?.room?.metadata,
+    dailyRoomUrlFromDb,
+    resolved: dailyRoomUrl,
+    roomStateExists: !!roomState,
+    roomId,
+  });
+}, [navDailyRoomUrl, roomState, dailyRoomUrlFromDb, dailyRoomUrl, roomId]);
+```
 
-That's it -- two small changes. The DB query already runs on mount and is cached for 60 seconds, so there's no extra network cost.
+This will confirm whether:
+1. `roomState` is null (gateway call failing for viewers)
+2. `roomState.room.metadata` exists but the key is named differently
+3. The URL is resolved but something else blocks rendering
 
-### What Stays the Same
-- Gateway polling via `useRoomState` (still used for status, counts, session data)
-- `DailyVideoRoom` component (unchanged)
-- Host presence signaling (unchanged)
-- All chat, reactions, and participant UI
+Once we see the console output, we can pinpoint the exact blocker and fix it in one shot.
+
+### Technical Notes
+- No other files need changes
+- The debug log can be removed after confirming the fix works
+- If the gateway call fails for viewers, the fix would be in `apiFetch` auth handling, not in this component
