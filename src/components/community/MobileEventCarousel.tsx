@@ -344,7 +344,7 @@ export function MobileEventCarousel({
             )}
             style={{
               height: 'calc(100dvh - 220px)',
-              scrollSnapStop: 'normal',
+              scrollSnapStop: 'always',
               padding: '4px 0px',
               transform: currentIndex === index ? 'scale(1)' : 'scale(0.97)',
               opacity: currentIndex === index ? 1 : 0.7,
