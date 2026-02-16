@@ -362,10 +362,10 @@ export default function LiveRoomViewer() {
               ) : (
                 <div className="flex-1 flex items-center justify-center">
                   <Card className="p-8 text-center max-w-md">
-                    <h2 className="text-2xl font-bold mb-4">Ready to join?</h2>
+                    <h2 className="text-2xl font-bold mb-4">{effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}</h2>
                     <p className="text-muted-foreground mb-6">
                       {effectiveIsHost
-                        ? "Click below to start broadcasting to your audience"
+                        ? "Click below to start the live stream"
                         : "Click below to join the live stream"
                       }
                     </p>
@@ -375,7 +375,7 @@ export default function LiveRoomViewer() {
                       className="w-full"
                     >
                       <Phone className="h-5 w-5 mr-2" />
-                      {effectiveIsHost ? 'Start Broadcasting' : 'Join Stream'}
+                      {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
                     </Button>
                   </Card>
                 </div>
