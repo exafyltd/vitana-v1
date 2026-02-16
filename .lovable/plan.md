@@ -1,40 +1,35 @@
 
-## Move Share Button to Top-Right Action Area on Event Cards
 
-### Problem
-The Share button sits in the bottom-right of the card alongside the CTA ("Buy Ticket", "Reserve Spot"), where it collides with the centered Orb on mobile.
+## Fix Share Dialog: Add Scrolling and Visible Close Button
 
-### Solution
-Move the Share button from `actionButton` (bottom zone) to `utilityTopRight` (top-right zone, next to the time pill and edit icon).
+### Problems
+1. **Not scrollable**: The dialog content overflows the viewport on mobile with no way to see items below the fold.
+2. **No close button visible**: The `DialogContent` base component includes `[&>button]:sr-only` which hides the X close button. The user cannot dismiss the dialog.
 
 ### Changes
 
-**File: `src/components/community/MobileEventCarousel.tsx`** (~lines 171-205)
+**File: `src/components/sharing/SocialShareButton.tsx`** (lines 198-319)
 
-1. Remove the `actionButton` prop entirely (delete the SocialShareButton from the actionButton assignment)
-2. Update `utilityTopRight` to always include the Share button, and conditionally include the Edit icon for owners/admins
+1. Add `max-h-[90vh] overflow-y-auto` to `DialogContent` so the dialog scrolls on mobile.
+2. Add a visible close button or override the sr-only hiding so users can dismiss the dialog.
 
-Current structure:
+Specifically, change line 199:
 ```
-utilityTopRight: canEdit ? <EditButton /> : undefined
-actionButton: <SocialShareButton />
+// Before
+<DialogContent className="max-w-md">
+
+// After  
+<DialogContent className="max-w-md max-h-[90dvh] overflow-y-auto [&>button]:not-sr-only [&>button]:absolute [&>button]:right-4 [&>button]:top-4">
 ```
 
-New structure:
-```
-utilityTopRight: (
-  <div className="flex items-center gap-1">
-    <SocialShareButton ... />
-    {canEdit && <EditButton ... />}
-  </div>
-)
-// actionButton removed
-```
+This:
+- Constrains the dialog to 90% of the dynamic viewport height
+- Makes the content scrollable when it overflows
+- Overrides the `sr-only` on the close button so it becomes visible and tappable
 
 ### What Stays the Same
-- CTA button ("Buy Ticket", "Reserve Spot", etc.) remains at bottom-right via `getSmartAction()`
-- Card layout, snap scrolling, sizing, shadows
-- Share button appearance (icon variant, sm size)
-- Edit button visibility logic (only for owner/admin)
-- Time pill in top-right
-- All other card content
+- All share options (Personal Share, Social Media grid)
+- Preview card content
+- Share link generation logic
+- Platform click handlers
+
