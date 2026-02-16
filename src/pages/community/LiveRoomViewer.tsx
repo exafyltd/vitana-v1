@@ -136,7 +136,10 @@ export default function LiveRoomViewer() {
 
   // Daily.co room URL: navigation state first (from GoLivePopup), DB metadata as fallback
   const dailyRoomUrlFromDb = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
-  const dailyRoomUrl = navDailyRoomUrl || dailyRoomUrlFromDb;
+  const dailyRoomUrl = navDailyRoomUrl 
+    || ((roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | null)
+    || dailyRoomUrlFromDb
+    || null;
 
   // Track participants
   const [participants, setParticipants] = useState<Participant[]>([]);
