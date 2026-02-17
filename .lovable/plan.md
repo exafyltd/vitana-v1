@@ -1,39 +1,75 @@
 
 
-## Always Start With Music on Every App Launch
+## Fix: Mobile Soundscape Auto-Play on Every Launch
 
-### Desired Behavior
-- Every time the app opens, background music (Soundscape) starts playing automatically
-- Pressing Mute stops it for the current session only
-- On the next visit, music starts fresh again (mute is not remembered across sessions)
-- Other media (videos, audio player, Orb) still take priority and pause the Soundscape as before
+### Problem
+
+On mobile, the SoundscapeContext delegates auto-play to `AudioManager.attemptMobileResume()`. But that function was designed for **resuming** after a background/tab switch -- it checks localStorage for `wasPlaying === 'true'` and `savedMuted !== 'true'`. On a first visit (or after clearing storage), both checks fail, so **no music plays on mobile**.
 
 ### Changes
 
-**File: `src/context/SoundscapeContext.tsx`**
-
-1. **Always attempt auto-play on mount** (line 83): Remove the `savedAutoPlay === 'true'` and `savedMuted !== 'true'` guards. The music should always try to play when the provider initializes, regardless of what was saved from a previous session.
-
-2. **Clear muted state on boot** (around line 58): Remove or skip the `if (savedMuted === 'true') setIsMuted(true)` block so the app always starts unmuted.
-
 **File: `src/audio/SoundscapeAudioManager.ts`**
 
-3. **Don't persist mute across sessions** (line 478): In `setMuted()`, remove the line `localStorage.setItem('soundscape_auto_play', 'false')` so muting doesn't disable auto-play for the next visit.
+**Change 1 -- `attemptMobileResume()` (line 578-584):**
+Remove the `savedMuted` check and change the `wasPlaying` check so it defaults to playing when no preference exists:
 
-4. **Reset muted state on initialize** (line 280): In `initialize()`, force `soundscapeMuted = false` instead of reading from localStorage, so each boot starts unmuted.
+```tsx
+// Before:
+const savedMuted = localStorage.getItem('soundscape_muted');
+if (savedMuted === 'true' || wasPlaying !== 'true') {
+  return;
+}
 
-5. **Mobile restore: ignore saved muted state** (lines 219-223): In `getAudio()`, skip restoring `soundscapeMuted = true` from mobile localStorage so mobile also starts fresh.
+// After:
+// Skip only if foreground media is active (mute is session-only, handled in-memory)
+if (soundscapeMuted) {
+  console.log('[AudioManager] Mobile resume skipped: muted this session');
+  return;
+}
+```
+
+This means:
+- First launch (no localStorage): music plays
+- Returning after background (wasPlaying saved): music plays
+- User muted this session (in-memory flag): music stays muted
+- Foreground media active: still respected (existing check on line 587)
+
+**File: `src/context/SoundscapeContext.tsx`**
+
+**Change 2 -- Mobile path (lines 96-101):**
+Instead of only calling `attemptMobileResume()` (which is meant for resume-from-background), also set `pendingAutoPlay` on mobile so the first user tap triggers playback if autoplay is blocked:
+
+```tsx
+} else {
+  // Mobile: attempt play, fall back to interaction-triggered play
+  AudioManager.attemptMobileResume();
+  // If autoplay is blocked, allow first-interaction trigger (don't skip mobile)
+  setPendingAutoPlay(true);
+}
+```
+
+**Change 3 -- Remove mobile skip in interaction handler (lines 128-133):**
+Currently the pending-auto-play interaction handler returns early on mobile, leaving it solely to the resume banner. Remove this early return so that a tap anywhere on the page also starts playback on mobile (better UX than requiring the banner):
+
+```tsx
+// Remove this block:
+const isMobileUA = ...;
+const isNarrowViewport = ...;
+if (isMobileUA || isNarrowViewport) {
+  return;
+}
+```
 
 ### What Stays the Same
-- Volume level is still remembered across sessions
-- Priority audio (media player, Orb, videos) still pauses Soundscape
-- The mute button works normally during a session
-- Mobile resume banner behavior unchanged
+- Resume banner still works for background-to-foreground transitions
+- Volume is still remembered
+- Priority media still pauses Soundscape
+- Desktop behavior unchanged
 
 ### Files Changed
 
 | File | Change |
 |------|--------|
-| `src/context/SoundscapeContext.tsx` | Always auto-play on mount; don't restore muted state from storage |
-| `src/audio/SoundscapeAudioManager.ts` | Reset muted on boot; don't save auto-play=false on mute; skip mobile muted restore |
+| `src/audio/SoundscapeAudioManager.ts` | Use in-memory `soundscapeMuted` instead of localStorage checks in `attemptMobileResume()` |
+| `src/context/SoundscapeContext.tsx` | Enable interaction-triggered auto-play on mobile; remove mobile early-return in interaction handler |
 
