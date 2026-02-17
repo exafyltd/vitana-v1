@@ -43,6 +43,7 @@ export function MobileBottomNav() {
     '/camera-capture',
     '/meditation-player',
     '/onboarding',
+    '/comm/live-rooms/',
     '/payment-checkout',
     '/kyc-verification',
   ];
