@@ -9,14 +9,12 @@ import { Badge } from '@/components/ui/badge';
 import { 
   ArrowLeft, 
   Users, 
-  Heart,
-  ThumbsUp,
   Settings,
   Share2,
 } from 'lucide-react';
 import { communityNavigation } from '@/config/navigation';
 import { DailyVideoRoom } from '@/components/liverooms/DailyVideoRoom';
-import { useLiveChat } from '@/hooks/useLiveChat';
+
 import { useStreamRecording } from '@/hooks/useStreamRecording';
 import { StreamRecordingPlayer } from '@/components/StreamRecordingPlayer';
 import { liveRoomService } from '@/services/liveRoomService';
@@ -113,13 +111,6 @@ export default function LiveRoomViewer() {
     enabled: roomStatus === 'ended' || roomStatus === 'idle'
   });
 
-  // Initialize chat (kept for reactions)
-  const { sendReaction } = useLiveChat({
-    roomId: roomId || '',
-    userId: effectiveUserId || '',
-    userName: effectiveUserName,
-    userAvatar: effectiveUserAvatar,
-  });
 
   // Daily.co room URL: navigation state first (from GoLivePopup), DB metadata as fallback
   const dailyRoomUrlFromDb = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
@@ -158,14 +149,6 @@ export default function LiveRoomViewer() {
       navigate('/comm/live-rooms');
     }
   }, [effectiveUserId, navigate, toast]);
-
-  const handleReaction = async (emoji: string) => {
-    await sendReaction(emoji);
-    toast({
-      title: `${emoji} Sent!`,
-      description: "Your reaction was shared with everyone",
-    });
-  };
 
   const handleLeaveRoom = async () => {
     if (effectiveIsHost && roomId) {
@@ -340,40 +323,6 @@ export default function LiveRoomViewer() {
                   )}
                 </div>
 
-                {/* Reaction Buttons */}
-                {isLive && (
-                  <div className="p-4 border-t bg-background/95 backdrop-blur flex items-center justify-center gap-4">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      onClick={() => handleReaction('❤️')}
-                      className="rounded-full"
-                    >
-                      <Heart className="h-5 w-5 mr-2 text-destructive fill-destructive" />
-                      Heart
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      onClick={() => handleReaction('👍')}
-                      className="rounded-full"
-                    >
-                      <ThumbsUp className="h-5 w-5 mr-2 text-primary" />
-                      Like
-                    </Button>
-                    {effectiveIsHost && (
-                      <Button
-                        variant="destructive"
-                        size="lg"
-                        onClick={handleLeaveRoom}
-                        disabled={isEnding}
-                        className="rounded-full"
-                      >
-                        {isEnding ? 'Ending...' : 'End Room'}
-                      </Button>
-                    )}
-                  </div>
-                )}
               </>
             )}
           </div>
