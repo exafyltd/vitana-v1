@@ -19,7 +19,7 @@ export function LanguageToggleButton({ className, size = 'md' }: LanguageToggleB
   
   const isGerman = selectedLanguage === 'de-DE';
   const targetLanguage = isGerman ? 'en-US' : 'de-DE';
-  const flagToShow = isGerman ? gbFlag : deFlag;
+  const flagToShow = isGerman ? deFlag : gbFlag;
   const ariaLabel = isGerman ? 'Switch to English' : 'Auf Deutsch wechseln';
   
   const sizeClasses = size === 'sm' 
