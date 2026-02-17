@@ -1,53 +1,20 @@
 
-
-## Fix: White Header Covering Daily.co Controls on Mobile
+## Hide MobileMuteButton During Live Sessions
 
 ### Problem
-From the screenshot, the mobile live room view shows:
-1. A white header bar ("Jovana's Session", LIVE badge, share/mute icons) sitting above the video
-2. Large empty white space below the video
-3. The Daily.co iframe is squeezed into a small area, not using the full viewport
-
-The header takes up significant vertical space, and the height calculation `h-[calc(100vh-8rem)]` reserves space for elements that are no longer visible (bottom nav, sub-navigation).
+The MobileMuteButton (fixed top-right, z-40) overlaps Daily.co's "Leave" button during active live room sessions, as visible in the screenshot.
 
 ### Solution
+Add route detection to `MobileMuteButton.tsx` using `useLocation` from react-router-dom. When the current path matches a live room route (`/comm/live-rooms/` or `/community/live-rooms/` sub-routes), return `null` to hide the button entirely.
 
-Two changes in `src/pages/community/LiveRoomViewer.tsx`:
+### File Changed
 
-**1. Hide the header on mobile when in-room**
-
-When the user has joined the room (`isInRoom === true`), the custom header (back arrow, title, LIVE badge, share/settings buttons) should be hidden on mobile. Daily.co already provides its own "Leave" button and controls, making the custom header redundant during an active session.
-
-```tsx
-{/* Header - hide on mobile when in room */}
-{!(isMobile && isInRoom) && (
-  <div className="flex items-center justify-between p-4 border-b">
-    ...existing header content...
-  </div>
-)}
-```
-
-**2. Use full viewport height on mobile when in-room**
-
-Change the container height to use the full dynamic viewport on mobile during active sessions, since both the bottom nav and header are hidden:
-
-```tsx
-<div className={cn(
-  "flex flex-col",
-  isMobile && isInRoom 
-    ? "h-[100dvh]"
-    : "h-[calc(100vh-8rem)]"
-)}>
-```
-
-### Files Changed
-
-| File | Change |
-|------|--------|
-| `src/pages/community/LiveRoomViewer.tsx` | Conditionally hide header on mobile when in-room; use full `100dvh` height on mobile |
+**`src/components/audio/MobileMuteButton.tsx`**
+- Import `useLocation` from `react-router-dom`
+- Add a check: if the pathname starts with `/comm/live-rooms/` or `/community/live-rooms/` (sub-routes only, not the list page), return `null`
+- This reuses the same route patterns already established in `MobileBottomNav.tsx`
 
 ### Result
-- On mobile during a live session: the Daily.co iframe fills the entire screen with no white header or empty space
-- On desktop: no changes, header remains visible
-- Before joining (entry gate screen): header still shows on all devices so users see the room title
-
+- During live sessions: no mute button covering Daily.co controls
+- On all other screens: mute button works as before
+- Desktop: unaffected (button is mobile-only already)
