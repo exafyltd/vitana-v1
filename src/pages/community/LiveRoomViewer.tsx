@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import AppLayout from '@/components/AppLayout';
@@ -230,9 +231,9 @@ export default function LiveRoomViewer() {
       <AppLayout>
         {!isMobile && <SubNavigation items={communityNavigation} />}
         
-        <div className="flex flex-col h-[calc(100vh-8rem)]">
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b">
+        <div className={cn("flex flex-col", isMobile && isInRoom ? "h-[100dvh]" : "h-[calc(100vh-8rem)]")}>
+          {/* Header - hide on mobile when in room */}
+          {!(isMobile && isInRoom) && <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
@@ -265,7 +266,7 @@ export default function LiveRoomViewer() {
                 <Settings className="h-5 w-5" />
               </Button>
             </div>
-          </div>
+          </div>}
 
           {/* Main Content - Full Width */}
           <div className="flex-1 flex flex-col overflow-hidden">
