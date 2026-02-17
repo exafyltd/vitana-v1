@@ -1,53 +1,51 @@
 
 
-## Fix: Host sees "Ready to join?" on their own live room
+## Fix: Entry Gate Shows Wrong Label Because Auth Loads After Query Check
 
-### Problem
-When a host opens their own live room (especially on page refresh or direct URL), the database query for `host_user_id` hasn't resolved yet, so `effectiveIsHost` is `false` during the initial render. The entry gate shows "Ready to join?" and "Join Stream" instead of "Ready to start?" and "Start Stream".
+### Root Cause
 
-### Solution
+The `useQuery` for `dbRoom` has `enabled: !!roomId && !!user?.id`. When the page loads:
+
+1. `user` is initially `undefined` (auth context still resolving)
+2. `enabled` becomes `false`
+3. React Query does NOT set `isLoading: true` for disabled queries -- it sets `isLoading: false`
+4. The gate renders immediately with `effectiveIsHost = false` (since `isHost` from navigation state is also missing on refresh)
+5. Result: "Ready to join?" flashes before auth resolves
+
+### Fix
 
 **File: `src/pages/community/LiveRoomViewer.tsx`**
 
-**Change 1: Show a loading state while host detection is resolving**
-
-The `useQuery` for `dbRoom` returns an `isLoading` state. Use it to show a brief loading spinner on the entry gate instead of defaulting to the "join" copy while host status is unknown:
+**Change the loading guard** to also account for auth not being ready yet:
 
 ```tsx
-const { data: dbRoom, isLoading: isLoadingHost } = useQuery({ ... });
+// Line ~60, after effectiveIsHost declaration
+const isHostResolving = !user || isLoadingHost;
 ```
 
-Then in the entry gate card, if `isLoadingHost` is true, show a spinner or neutral "Preparing..." text instead of the wrong role label.
-
-**Change 2: Neutral loading state for the gate**
+Then use `isHostResolving` instead of `isLoadingHost` in the entry gate conditional (line 277):
 
 ```tsx
-{isLoadingHost ? (
+{isHostResolving ? (
   <Card className="p-8 text-center max-w-md">
     <div className="animate-pulse text-muted-foreground">Loading...</div>
   </Card>
 ) : (
   <Card className="p-8 text-center max-w-md">
-    <h2 className="text-2xl font-bold mb-4">
-      {effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}
-    </h2>
-    <p className="text-muted-foreground mb-6">
-      {effectiveIsHost
-        ? 'Click below to start your live stream'
-        : 'Click below to join the live stream'}
-    </p>
-    <Button size="lg" onClick={() => setIsInRoom(true)} className="w-full">
-      {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
-    </Button>
+    ...
   </Card>
 )}
 ```
 
-This ensures the host never sees "Ready to join?" on their own room -- they either see a brief loading indicator or the correct "Ready to start?" message.
+This way, the loading state covers both scenarios:
+- Auth hasn't resolved yet (`!user`)
+- Auth resolved but DB query is still fetching (`isLoadingHost`)
+
+Once both are complete, `effectiveIsHost` will be accurate.
 
 ### Files Changed
 
 | File | Change |
 |------|--------|
-| `src/pages/community/LiveRoomViewer.tsx` | Destructure `isLoading` from the host query; show loading state on entry gate while host status is resolving |
+| `src/pages/community/LiveRoomViewer.tsx` | Add `isHostResolving` combining `!user` and `isLoadingHost`; use it in entry gate conditional |
 
