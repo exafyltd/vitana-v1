@@ -1,4 +1,5 @@
 import { Volume2, VolumeX } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
@@ -11,7 +12,8 @@ import { cn } from '@/lib/utils';
  */
 export function MobileMuteButton() {
   const isMobile = useIsMobile();
-  
+  const { pathname } = useLocation();
+  const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
   // Try to get soundscape context - may not be available during initial render
   let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;
   try {
@@ -21,7 +23,7 @@ export function MobileMuteButton() {
   }
 
   // Only show on mobile and when soundscape context is available
-  if (!isMobile || !soundscapeContext) return null;
+  if (!isMobile || !soundscapeContext || isInLiveRoom) return null;
   
   const { isMuted, toggleMute, isPlaying } = soundscapeContext;
 
