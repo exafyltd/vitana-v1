@@ -1,35 +1,28 @@
 
 
-## Remove Redundant Chat/Participants Sidebar -- Full-Screen Stream
+## Remove Reaction Bar Blocking Daily.co Controls
 
-The Daily.co video iframe already includes its own chat and participant UI. The right sidebar (Chat tab + Participants tab + message input) is redundant and steals ~384px from the video area. Removing it lets the stream fill the full width.
+### Problem
+A custom reaction bar (Heart, Like, End Room buttons) renders below the Daily.co video iframe, creating a white strip that covers Daily.co's built-in control toolbar (camera, mic, screen share, chat, leave).
 
-### What changes
+### Solution
+Remove the entire reaction bar block (lines 344-376) from `LiveRoomViewer.tsx`. Daily.co already provides:
+- Camera/mic toggle
+- Screen share
+- Chat
+- Leave button (configured via `showLeaveButton: true` in `DailyVideoRoom.tsx`)
 
-**File: `src/pages/community/LiveRoomViewer.tsx`**
+The "End Room" host action will be handled by Daily's built-in leave button combined with the existing `onLeft` callback, which already calls `handleLeaveRoom()` and triggers the gateway end-room flow for hosts.
 
-1. **Remove the entire right sidebar block** (lines 420-545 approx) -- the `w-96 border-l` div containing the Chat/Participants tabs, message list, participant list, and the message input bar at the bottom.
+### File: `src/pages/community/LiveRoomViewer.tsx`
 
-2. **Remove the "Ready to join?" modal card** (lines 362-381) -- the entry screen is unnecessary since clicking "Join Stream" / "Start Stream" just sets `isInRoom = true`. Instead, auto-join: set `isInRoom` to `true` by default so the Daily.co room loads immediately when the page opens.
+1. **Remove the reaction buttons block** (the `div` with `p-4 border-t bg-background/95` containing Heart, Like, and End Room buttons)
+2. **Remove unused imports**: `Heart`, `ThumbsUp` from lucide-react
+3. **Remove the `handleReaction` function** and the `sendReaction` / `useLiveChat` hook call (no longer needed without reaction buttons)
+4. The video container keeps `flex-1` so it fills the full remaining height with no bottom bar
 
-3. **Clean up unused state and imports** that only served the sidebar:
-   - `showParticipants` state
-   - `newMessage` state  
-   - `messagesEndRef` ref
-   - `handleSendMessage` function
-   - `messages` array (if only used in sidebar)
-   - `MessageCircle` icon import (if no longer used elsewhere)
-
-4. **Keep the reaction bar** (Heart, Like, End Room buttons) at the bottom -- those are not part of the sidebar and remain useful.
-
-### Result
-
-- The video area (`flex-1 flex flex-col`) will stretch to fill the entire width below the header
-- No sidebar, no entry modal -- viewers land directly into the stream
-- Host still sees "End Room" button in the reaction bar
-- All chat/participants functionality is handled by Daily.co's built-in UI inside the iframe
-
-### Technical detail
-
-The layout parent is `flex-1 flex overflow-hidden` (line 322). Currently it contains two children: the video column (`flex-1`) and the sidebar (`w-96`). After removing the sidebar, the video column naturally fills 100% width.
+### What stays
+- The header bar (back arrow, title, LIVE badge, viewer count, share/settings)
+- The full-width Daily.co iframe filling all space below the header
+- The `onLeft` callback on `DailyVideoRoom` which already handles host end-room logic
 
