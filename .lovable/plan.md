@@ -1,69 +1,47 @@
 
 
-## Fix: "Failed to create session" Toast Firing Before Retry Completes
+## Fix: Gateway State Desync + Rate Limit on Retry
 
-### Root Cause
+### Problem
 
-When `GoLivePopup` calls `createSession()` (via `mutateAsync`), if the gateway returns a 409 ROOM_NOT_IDLE error, two things happen simultaneously:
+The gateway has stale session state that disagrees with the database. When the user deleted the previous session directly, the gateway wasn't notified, creating a permanent conflict:
+- Gateway says "room not idle" (409) on create
+- Gateway says "no active session" (409) on cancel
+- Retry after DB reset hits rate limit (429) because 1.5s is too fast
 
-1. The `useCreateSession` hook's `onError` callback fires immediately, showing a "Failed to create session" toast
-2. GoLivePopup's `catch` block catches the same error and starts the retry logic (cancel + DB reset + wait 1.5s + retry)
+### Changes
 
-So the user sees the error toast even though the retry might succeed -- or at minimum, the retry is still in progress.
+**File: `src/components/GoLivePopup.tsx`**
 
-### Fix
+1. Increase the propagation delay from 1.5s to 3s to avoid the 429 rate limit
+2. Handle 429 errors specifically in the retry catch -- wait longer and retry once more
+3. Add the gateway's `/rooms/:id/force-reset` endpoint call (or equivalent) if available, otherwise ensure the DB reset is sufficient
 
-**File: `src/hooks/useMyRoom.ts` -- `useCreateSession`**
+```text
+Current flow:
+  Create (409) --> Cancel (409) --> DB Reset --> Wait 1.5s --> Retry (429 RATE_LIMIT)
 
-Remove the `onError` toast from the mutation definition. Since GoLivePopup (the only caller) already handles errors with its own try/catch and retry logic, the mutation should not independently show error toasts.
-
-```typescript
-// Before:
-onError: (error: Error) => {
-  toast({
-    title: 'Failed to create session',
-    description: error.message,
-    variant: 'destructive',
-  });
-},
-
-// After: Remove onError entirely
-// (GoLivePopup handles all error display after retry logic)
+Fixed flow:
+  Create (409) --> Cancel (409, ignored) --> DB Reset --> Wait 3s --> Retry
+  If retry gets 429 --> Wait 5s --> Final retry
 ```
 
-**File: `src/components/GoLivePopup.tsx` (around line 334-337)**
+**Specific changes:**
 
-After the retry fails, show a more helpful error message that tells the user to just try again (since the DB reset already happened and should take effect on next attempt):
+1. **Increase wait time** (line 331): Change `1500` to `3000` ms to avoid rate limiting
 
-```typescript
-// Update the retry-failed error message
-} catch (retryError: any) {
-  console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
-  notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
-  throw firstError;
-}
-```
+2. **Add 429 handling in retry catch** (lines 334-338): If the retry fails with 429, wait 5 more seconds and try one final time instead of immediately giving up
 
-Also add error display in the outer catch for non-409 errors (to replace the removed onError toast):
+3. **Improve user feedback**: Show "Resetting room, please wait..." as a loading state instead of failing silently
 
-```typescript
-} else {
-  // Non-409 error: show toast here since mutation no longer does
-  notify.error('Failed to create session', firstError.message);
-  throw firstError;
-}
-```
-
-### Summary
+### Technical Details
 
 | File | Change |
 |------|--------|
-| `src/hooks/useMyRoom.ts` | Remove `onError` toast from `useCreateSession` -- let caller handle errors |
-| `src/components/GoLivePopup.tsx` | Add explicit error toasts in the catch blocks (for non-409 and retry-failed cases) |
+| `src/components/GoLivePopup.tsx` | Increase retry delay from 1.5s to 3s; add 429 rate-limit handling with a second retry after 5s; improve error messaging |
 
 ### Why This Fixes It
 
-- No premature error toast on the first 409 (retry logic runs silently)
-- If retry succeeds: user sees success, no confusing error flash
-- If retry fails: user sees a helpful message telling them to try again
-- Non-409 errors still show a toast (moved to GoLivePopup's catch block)
+- The 3s delay gives the gateway time to process the DB state change and avoids the rate limiter
+- If 429 still hits, the 5s second-chance retry almost certainly clears the rate window
+- The user sees a "resetting" state instead of an error, matching the actual behavior
