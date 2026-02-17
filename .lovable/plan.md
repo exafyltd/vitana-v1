@@ -1,73 +1,53 @@
 
 
-## Fix: Remove Inaccurate Viewer Count and White Bar on Desktop
+## Fix: Host sees "Ready to join?" on their own live room
 
 ### Problem
-From the screenshot:
-1. The header shows "0 watching" while Daily.co correctly shows "3 people in call" -- the custom viewer count is unreliable and redundant
-2. The custom header and SubNavigation tabs ("Overview", "Events & MeetUps", "Live Rooms", "Media Hub") consume vertical space, pushing Daily.co's bottom controls below the visible area, creating a white bar/cutoff
+When a host opens their own live room (especially on page refresh or direct URL), the database query for `host_user_id` hasn't resolved yet, so `effectiveIsHost` is `false` during the initial render. The entry gate shows "Ready to join?" and "Join Stream" instead of "Ready to start?" and "Start Stream".
 
 ### Solution
 
 **File: `src/pages/community/LiveRoomViewer.tsx`**
 
-**Change 1: Hide header on ALL devices when in-room (not just mobile)**
+**Change 1: Show a loading state while host detection is resolving**
 
-Currently the header is only hidden on mobile (`!(isMobile && isInRoom)`). Since Daily.co provides its own participant count ("3 people in call"), leave button, and settings, the custom header is redundant during active sessions on desktop too. Change the condition to hide it whenever `isInRoom` is true:
+The `useQuery` for `dbRoom` returns an `isLoading` state. Use it to show a brief loading spinner on the entry gate instead of defaulting to the "join" copy while host status is unknown:
 
 ```tsx
-{!isInRoom && (
-  <div className="flex items-center justify-between p-4 border-b">
-    ...
-  </div>
+const { data: dbRoom, isLoading: isLoadingHost } = useQuery({ ... });
+```
+
+Then in the entry gate card, if `isLoadingHost` is true, show a spinner or neutral "Preparing..." text instead of the wrong role label.
+
+**Change 2: Neutral loading state for the gate**
+
+```tsx
+{isLoadingHost ? (
+  <Card className="p-8 text-center max-w-md">
+    <div className="animate-pulse text-muted-foreground">Loading...</div>
+  </Card>
+) : (
+  <Card className="p-8 text-center max-w-md">
+    <h2 className="text-2xl font-bold mb-4">
+      {effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}
+    </h2>
+    <p className="text-muted-foreground mb-6">
+      {effectiveIsHost
+        ? 'Click below to start your live stream'
+        : 'Click below to join the live stream'}
+    </p>
+    <Button size="lg" onClick={() => setIsInRoom(true)} className="w-full">
+      {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
+    </Button>
+  </Card>
 )}
 ```
 
-**Change 2: Remove "X watching" text entirely**
-
-Remove the `viewerCounts` display (lines 253-256) since Daily.co already shows accurate participant data. Keep only the title and LIVE badge in the header (visible on the entry gate screen):
-
-```tsx
-<div className="flex items-center gap-2 mt-1">
-  {isLive && (
-    <Badge variant="destructive" className="animate-pulse">
-      LIVE
-    </Badge>
-  )}
-</div>
-```
-
-**Change 3: Hide SubNavigation when in-room on desktop**
-
-The SubNavigation bar ("Overview | Events & MeetUps | Live Rooms | Media Hub") also takes space. Hide it when the user is actively in a room:
-
-```tsx
-{!isMobile && !isInRoom && <SubNavigation items={communityNavigation} />}
-```
-
-**Change 4: Use full height on desktop when in-room**
-
-Adjust the container height so when both header and SubNavigation are hidden, the Daily.co iframe uses the maximum available space:
-
-```tsx
-<div className={cn(
-  "flex flex-col",
-  isInRoom
-    ? (isMobile ? "h-[100dvh]" : "h-[calc(100vh-3rem)]")
-    : "h-[calc(100vh-8rem)]"
-)}>
-```
-
-The `3rem` accounts for the minimal AppLayout chrome (top border/padding) on desktop.
+This ensures the host never sees "Ready to join?" on their own room -- they either see a brief loading indicator or the correct "Ready to start?" message.
 
 ### Files Changed
 
 | File | Change |
 |------|--------|
-| `src/pages/community/LiveRoomViewer.tsx` | Hide header and SubNavigation when in-room on all devices; remove "X watching" count; adjust container height for desktop in-room |
-
-### Result
-- During active sessions: Daily.co fills the content area with no redundant header or navigation tabs -- its own "3 people in call" and controls are fully visible
-- Entry gate screen: still shows room title, LIVE badge, back button, and SubNavigation as before
-- Participant data comes exclusively from Daily.co (accurate, real-time)
+| `src/pages/community/LiveRoomViewer.tsx` | Destructure `isLoading` from the host query; show loading state on entry gate while host status is resolving |
 
