@@ -759,7 +759,8 @@
       "reject": "Discard",
       "acceptAll": "Accept All",
       "applied": "Changes saved!",
-      "error": "Something went wrong"
+      "error": "Something went wrong",
+      "comingSoon": "Coming Soon"
     },
     "suggestions": {
       "bannerTitle": "Autopilot can help optimize your profile",
