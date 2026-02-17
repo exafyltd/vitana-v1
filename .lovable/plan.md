@@ -1,93 +1,43 @@
 
 
-## Fix: "Failed to join video room" Error
+## Fix: "Failed to create stream" -- ROOM_NOT_IDLE retry not triggering
 
 ### Root Cause
 
-The `DailyVideoRoom` component's `call.join()` call is failing, but the actual Daily.co error message is being discarded -- replaced with a generic "Failed to join video room" string. This makes debugging impossible.
+The Gateway returns a `409` with `{"error":"ROOM_NOT_IDLE","message":"Room already has an active session"}`. The `GoLivePopup` retry logic checks for `'409'` or `'ROOM_NOT_IDLE'` in the error message string. However, the `apiFetch` utility in `liveRoomService.ts` throws only the Gateway's `message` field:
 
-The most likely cause is that the Daily.co room has expired or been deleted since it was created. Daily.co rooms created without explicit expiry settings are temporary and may have been cleaned up. When the user clicks into a "LIVE" room card, the stored `daily_room_url` in the room metadata points to a room that no longer exists on Daily.co's servers.
+```
+"Room already has an active session"
+```
 
-### Changes
+This string does NOT contain `'409'` or `'ROOM_NOT_IDLE'`, so the retry branch never executes and the generic error toast fires instead.
 
-**File: `src/components/liverooms/DailyVideoRoom.tsx` (line 75-79)**
+### Fix
 
-Pass the actual error details through instead of a generic message, so the toast shows actionable information:
+**File: `src/services/liveRoomService.ts` (line 222)**
 
-```tsx
+Update `apiFetch` to include the HTTP status code and error code in the thrown error message, so downstream retry logic can pattern-match on them:
+
+```typescript
 // Before:
-call.join({ url: roomUrl }).catch((err) => {
-  if (!destroyed) {
-    console.error('[Daily] Failed to join:', err);
-    onError?.('Failed to join video room');
-  }
-});
+throw new Error(error.message || error.error || `Request failed: ${response.status}`);
 
 // After:
-call.join({ url: roomUrl }).catch((err) => {
-  if (!destroyed) {
-    console.error('[Daily] Failed to join:', err);
-    const msg = err?.message || err?.errorMsg || String(err);
-    onError?.(`Failed to join video room: ${msg}`);
-  }
-});
+const msg = error.message || error.error || 'Request failed';
+throw new Error(`${msg} [${response.status} ${error.error || ''}]`.trim());
 ```
 
-**File: `src/pages/community/LiveRoomViewer.tsx` (lines 298-328)**
+This produces errors like: `"Room already has an active session [409 ROOM_NOT_IDLE]"` -- which the existing retry logic in `GoLivePopup` already matches correctly.
 
-Add a retry mechanism: when `DailyVideoRoom` reports an error, attempt to re-create the Daily room via the gateway and update the URL. This handles expired/deleted rooms automatically:
+### Why This Broke
 
-- Add a `dailyError` state and a `retryCount` state
-- On error, if host: call `liveRoomService.createDailyRoom(roomId)` to provision a fresh room
-- On error, if viewer: show a "Retry" button that re-fetches the room state to get the latest URL
-- Limit retries to 1 automatic attempt to avoid infinite loops
-
-**File: `src/pages/community/LiveRoomViewer.tsx`**
-
-Add state variables and a retry handler:
-
-```tsx
-const [dailyError, setDailyError] = useState<string | null>(null);
-const [retryCount, setRetryCount] = useState(0);
-
-const handleDailyError = async (err: string) => {
-  console.error('[Daily] Error:', err);
-  
-  // Auto-retry once: re-create Daily room (host) or re-fetch URL (viewer)
-  if (retryCount === 0 && roomId) {
-    setRetryCount(1);
-    try {
-      if (effectiveIsHost) {
-        const result = await liveRoomService.createDailyRoom(roomId);
-        // Force re-fetch room state to pick up new URL
-        queryClient.invalidateQueries({ queryKey: ['live-room-host', roomId] });
-        queryClient.invalidateQueries({ queryKey: ['room-state', roomId] });
-      } else {
-        queryClient.invalidateQueries({ queryKey: ['room-state', roomId] });
-      }
-      // Brief delay then component re-mounts with new URL
-      return;
-    } catch (retryErr) {
-      console.error('[Daily] Retry failed:', retryErr);
-    }
-  }
-  
-  setDailyError(err);
-  toast({ title: 'Video error', description: err, variant: 'destructive' });
-};
-```
-
-Update the `DailyVideoRoom` usage to use the new handler and add a manual retry UI when auto-retry fails.
+This likely regressed during an earlier refactor of `apiFetch`. The memory notes confirm this pattern was supposed to be in place but the actual code diverged.
 
 ### Summary
 
 | File | Change |
 |------|--------|
-| `src/components/liverooms/DailyVideoRoom.tsx` | Pass real error details instead of generic message |
-| `src/pages/community/LiveRoomViewer.tsx` | Add auto-retry: re-create Daily room on failure, manual retry button as fallback |
+| `src/services/liveRoomService.ts` | Append HTTP status + error code to thrown error messages in `apiFetch` |
 
-### Technical Notes
-- The auto-retry only fires once to prevent loops
-- Host auto-retry creates a fresh Daily room via gateway
-- Viewer auto-retry invalidates queries to get the updated URL
-- A manual "Retry" button appears if auto-retry also fails
+Single-line fix. No other files need changes -- the retry logic in `GoLivePopup` already handles `409`/`ROOM_NOT_IDLE` correctly once it can detect them.
+
