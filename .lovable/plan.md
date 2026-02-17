@@ -1,47 +1,57 @@
 
 
-## Fix: Gateway State Desync + Rate Limit on Retry
+## Fix: Use Gateway `/end` Instead of `/cancel` to Clear Stuck Sessions
 
-### Problem
+### Root Cause
 
-The gateway has stale session state that disagrees with the database. When the user deleted the previous session directly, the gateway wasn't notified, creating a permanent conflict:
-- Gateway says "room not idle" (409) on create
-- Gateway says "no active session" (409) on cancel
-- Retry after DB reset hits rate limit (429) because 1.5s is too fast
+The retry logic calls `/cancel` when the gateway says ROOM_NOT_IDLE, but `/cancel` only works for **scheduled** sessions. The gateway thinks there's an **active** session, so it responds with NO_ACTIVE_SESSION to the cancel call. The DB reset that follows doesn't affect the gateway's in-memory state, so every retry still gets ROOM_NOT_IDLE.
+
+```text
+Current (broken) flow:
+  Create (409 ROOM_NOT_IDLE)
+  --> Cancel (409 NO_ACTIVE_SESSION -- wrong endpoint!)
+  --> DB reset (ignored by gateway)
+  --> Retry (409 ROOM_NOT_IDLE -- gateway unchanged)
+
+Fixed flow:
+  Create (409 ROOM_NOT_IDLE)
+  --> End room via gateway (clears gateway in-memory state)
+  --> DB reset (safety net)
+  --> Wait 3s --> Retry (should succeed)
+```
 
 ### Changes
 
-**File: `src/components/GoLivePopup.tsx`**
+**File: `src/components/GoLivePopup.tsx` (lines 301-306)**
 
-1. Increase the propagation delay from 1.5s to 3s to avoid the 429 rate limit
-2. Handle 429 errors specifically in the retry catch -- wait longer and retry once more
-3. Add the gateway's `/rooms/:id/force-reset` endpoint call (or equivalent) if available, otherwise ensure the DB reset is sufficient
+Replace the gateway `cancelRoom` call with `endRoom`, which properly clears the gateway's in-memory active session state:
 
-```text
-Current flow:
-  Create (409) --> Cancel (409) --> DB Reset --> Wait 1.5s --> Retry (429 RATE_LIMIT)
+```typescript
+// Before:
+await import('@/services/liveRoomService').then(m =>
+  m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
+);
 
-Fixed flow:
-  Create (409) --> Cancel (409, ignored) --> DB Reset --> Wait 3s --> Retry
-  If retry gets 429 --> Wait 5s --> Final retry
+// After:
+await import('@/services/liveRoomService').then(m =>
+  m.liveRoomService.endRoom(effectiveRoomId)
+);
 ```
 
-**Specific changes:**
+The `endRoom` endpoint tells the gateway "this active session is over" -- which is exactly the state the gateway thinks the room is in. This clears the in-memory lock, so the subsequent retry can create a new session successfully.
 
-1. **Increase wait time** (line 331): Change `1500` to `3000` ms to avoid rate limiting
+### Why Previous Fixes Didn't Work
 
-2. **Add 429 handling in retry catch** (lines 334-338): If the retry fails with 429, wait 5 more seconds and try one final time instead of immediately giving up
+- The `apiFetch` error format fix was correct (error detection works now)
+- The `onError` toast removal was correct (no premature toasts)
+- The 3s delay was correct (avoids rate limiting)
+- But the actual **reset action** was wrong: calling `/cancel` on an "active" session does nothing on the gateway side
 
-3. **Improve user feedback**: Show "Resetting room, please wait..." as a loading state instead of failing silently
-
-### Technical Details
+### Summary
 
 | File | Change |
 |------|--------|
-| `src/components/GoLivePopup.tsx` | Increase retry delay from 1.5s to 3s; add 429 rate-limit handling with a second retry after 5s; improve error messaging |
+| `src/components/GoLivePopup.tsx` | Replace `cancelRoom()` with `endRoom()` in the 409 retry handler |
 
-### Why This Fixes It
+Single-line fix. The gateway's `/end` endpoint is already available in `liveRoomService.ts`.
 
-- The 3s delay gives the gateway time to process the DB state change and avoids the rate limiter
-- If 429 still hits, the 5s second-chance retry almost certainly clears the rate window
-- The user sees a "resetting" state instead of an error, matching the actual behavior
