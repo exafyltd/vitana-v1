@@ -44,7 +44,7 @@ export default function LiveRoomViewer() {
   const effectiveUserAvatar = userAvatar;
 
   // DB-based isHost detection (survives page refresh)
-  const { data: dbRoom } = useQuery({
+  const { data: dbRoom, isLoading: isLoadingHost } = useQuery({
     queryKey: ['live-room-host', roomId],
     queryFn: async () => {
       const { data } = await supabase
@@ -274,19 +274,25 @@ export default function LiveRoomViewer() {
             {!isInRoom ? (
               /* Entry Screen */
               <div className="flex-1 flex items-center justify-center bg-muted/50">
+              {isLoadingHost ? (
+                <Card className="p-8 text-center max-w-md">
+                  <div className="animate-pulse text-muted-foreground">Loading...</div>
+                </Card>
+              ) : (
                 <Card className="p-8 text-center max-w-md">
                   <h2 className="text-2xl font-bold mb-4">
                     {effectiveIsHost ? 'Ready to start?' : 'Ready to join?'}
                   </h2>
                   <p className="text-muted-foreground mb-6">
                     {effectiveIsHost
-                      ? 'Click below to start the live stream'
+                      ? 'Click below to start your live stream'
                       : 'Click below to join the live stream'}
                   </p>
                   <Button size="lg" onClick={() => setIsInRoom(true)} className="w-full">
                     {effectiveIsHost ? 'Start Stream' : 'Join Stream'}
                   </Button>
                 </Card>
+              )}
               </div>
             ) : (
               <>
