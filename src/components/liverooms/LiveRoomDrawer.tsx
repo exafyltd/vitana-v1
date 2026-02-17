@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
-import SocialShareButton from "@/components/sharing/SocialShareButton";
 import {
   Drawer,
   DrawerContent,
@@ -37,6 +35,7 @@ import {
   Clock,
   Users,
   Share2,
+  Bookmark,
   Bell,
   Calendar,
   Link2,
@@ -87,7 +86,7 @@ export function LiveRoomDrawer({
   onDelete,
 }: LiveRoomDrawerProps) {
   const [isNotifying, setIsNotifying] = useState(false);
-  
+  const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -130,6 +129,13 @@ export function LiveRoomDrawer({
     });
   };
 
+  const handleSave = () => {
+    setIsSaved(!isSaved);
+    toast({
+      title: isSaved ? "Removed from saved" : "Saved!",
+      description: isSaved ? "Room removed from your saved list" : "Room saved for later",
+    });
+  };
 
   const handleShare = (platform?: string) => {
     const url = `${window.location.origin}/comm/live-rooms?live=${room.id}`;
@@ -358,28 +364,24 @@ export function LiveRoomDrawer({
             </div>
           )}
 
-          {/* People Participating */}
+          {/* People Listening */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5 text-muted-foreground" />
-              <span className="font-semibold">People participating</span>
+              <span className="font-semibold">People listening</span>
             </div>
-            {room.participants > 0 ? (
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {Array.from({ length: Math.min(room.participants, 5) }).map((_, i) => (
-                    <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
-                      <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
-                    </Avatar>
-                  ))}
-                </div>
-                {room.participants > 5 && (
-                  <span className="text-sm text-muted-foreground">+{room.participants - 5} more</span>
-                )}
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {Array.from({ length: Math.min(room.participants, 5) }).map((_, i) => (
+                  <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
+                    <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
+                  </Avatar>
+                ))}
               </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No one here yet</p>
-            )}
+              {room.participants > 5 && (
+                <span className="text-sm text-muted-foreground">+{room.participants - 5} more</span>
+              )}
+            </div>
           </div>
 
           {/* When */}
@@ -401,7 +403,7 @@ export function LiveRoomDrawer({
                   </Button>
                 )}
               </div>
-              {room.status === 'live' ? (
+              {room.isLive ? (
                 <Badge className="bg-red-500 text-white border-0 gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
                   LIVE NOW
@@ -445,32 +447,17 @@ export function LiveRoomDrawer({
 
       {/* Sticky Action Bar */}
       <div className="absolute bottom-0 left-0 right-0 p-6 bg-background/95 backdrop-blur-sm border-t">
-        {room.status === 'live' ? (
+        {room.isLive ? (
           <div className="flex items-center gap-2">
             <Button size="lg" className="flex-1" onClick={handleJoin}>
               Join Room
             </Button>
-            <SocialShareButton
-              type="live_room"
-              data={{
-                id: room.id,
-                title: room.title,
-                description: room.description || '',
-                image_url: room.imageUrl,
-              }}
-              variant="icon"
-              size="lg"
-              className="h-11 w-11"
-            />
-            <BookmarkButton
-              item={{
-                item_type: 'live_room',
-                item_id: room.id,
-                item_name: room.title,
-                item_image_url: room.imageUrl,
-              }}
-              className="relative static h-11 w-11 top-0 right-0"
-            />
+            <Button size="lg" variant="outline" onClick={() => handleShare()}>
+              <Share2 className="w-4 h-4" />
+            </Button>
+            <Button size="lg" variant="outline" onClick={handleSave}>
+              <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
+            </Button>
           </div>
         ) : isScheduled ? (
           <div className="space-y-2">
@@ -501,47 +488,12 @@ export function LiveRoomDrawer({
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <SocialShareButton
-                type="live_room"
-                data={{
-                  id: room.id,
-                  title: room.title,
-                  description: room.description || '',
-                  image_url: room.imageUrl,
-                }}
-                variant="icon"
-                size="lg"
-              />
+              <Button size="lg" variant="outline" onClick={() => handleShare()}>
+                <Share2 className="w-4 h-4" />
+              </Button>
             </div>
           </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Button size="lg" className="flex-1" onClick={handleJoin}>
-              Join Room
-            </Button>
-            <SocialShareButton
-              type="live_room"
-              data={{
-                id: room.id,
-                title: room.title,
-                description: room.description || '',
-                image_url: room.imageUrl,
-              }}
-              variant="icon"
-              size="lg"
-              className="h-11 w-11"
-            />
-            <BookmarkButton
-              item={{
-                item_type: 'live_room',
-                item_id: room.id,
-                item_name: room.title,
-                item_image_url: room.imageUrl,
-              }}
-              className="relative static h-11 w-11 top-0 right-0"
-            />
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
