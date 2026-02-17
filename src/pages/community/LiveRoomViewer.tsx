@@ -229,11 +229,16 @@ export default function LiveRoomViewer() {
         description={streamDescription || `Join ${effectiveUserName}'s live stream`}
       />
       <AppLayout>
-        {!isMobile && <SubNavigation items={communityNavigation} />}
+        {!isMobile && !isInRoom && <SubNavigation items={communityNavigation} />}
         
-        <div className={cn("flex flex-col", isMobile && isInRoom ? "h-[100dvh]" : "h-[calc(100vh-8rem)]")}>
-          {/* Header - hide on mobile when in room */}
-          {!(isMobile && isInRoom) && <div className="flex items-center justify-between p-4 border-b">
+        <div className={cn(
+          "flex flex-col",
+          isInRoom
+            ? (isMobile ? "h-[100dvh]" : "h-[calc(100vh-3rem)]")
+            : "h-[calc(100vh-8rem)]"
+        )}>
+          {/* Header - hide when in room (Daily.co provides its own controls) */}
+          {!isInRoom && <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
@@ -250,10 +255,6 @@ export default function LiveRoomViewer() {
                       LIVE
                     </Badge>
                   )}
-                  <span className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    {viewerCounts?.in_room || 0} watching
-                  </span>
                 </div>
               </div>
             </div>
