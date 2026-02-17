@@ -58,6 +58,7 @@ export default function LiveRoomViewer() {
     staleTime: 60_000,
   });
   const effectiveIsHost = isHost || (!!user?.id && dbRoom?.host_user_id === user.id);
+  const isHostResolving = !user || isLoadingHost;
 
   // Entry gate: host clicks "Start Stream", viewer clicks "Join Stream"
   const [isInRoom, setIsInRoom] = useState(false);
@@ -274,7 +275,7 @@ export default function LiveRoomViewer() {
             {!isInRoom ? (
               /* Entry Screen */
               <div className="flex-1 flex items-center justify-center bg-muted/50">
-              {isLoadingHost ? (
+              {isHostResolving ? (
                 <Card className="p-8 text-center max-w-md">
                   <div className="animate-pulse text-muted-foreground">Loading...</div>
                 </Card>
