@@ -55,9 +55,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       audioRef.current.volume = vol;
     }
     
-    if (savedMuted === 'true') {
-      setIsMuted(true);
-    }
+    // Don't restore muted state from storage - always start unmuted on each visit
+    // Mute only lasts for the current session
     
     // Subscribe to manager state changes
     const unsubscribe = AudioManager.subscribe((state) => {
@@ -80,7 +79,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
     const isMobileDevice = isMobileUA || isNarrowViewport;
     
-    if (savedAutoPlay === 'true' && savedMuted !== 'true' && audioRef.current.paused) {
+    if (audioRef.current.paused) {
       if (!isMobileDevice) {
         // Desktop only: direct auto-play
         audioRef.current.play()
@@ -134,10 +133,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
     
     const handleInteraction = () => {
-      // Check if user has muted - don't auto-play if muted
-      const isMutedInStorage = localStorage.getItem('soundscape_muted') === 'true';
-      
-      if (isMutedInStorage) {
+      // Check current in-memory mute state (not localStorage, since mute is session-only)
+      if (isMuted) {
         console.log('[SoundscapeProvider] Skipping auto-play - user has muted');
         setPendingAutoPlay(false);
         document.removeEventListener('click', handleInteraction, true);
