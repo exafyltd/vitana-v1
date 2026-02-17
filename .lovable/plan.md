@@ -1,53 +1,53 @@
 
 
-## Fix Mobile Live Session View - Two Issues
+## Fix: White Header Covering Daily.co Controls on Mobile
 
-### Issue 1: Bottom Nav Not Hiding (Bug Fix)
+### Problem
+From the screenshot, the mobile live room view shows:
+1. A white header bar ("Jovana's Session", LIVE badge, share/mute icons) sitting above the video
+2. Large empty white space below the video
+3. The Daily.co iframe is squeezed into a small area, not using the full viewport
 
-The bottom navigation bar is NOT being hidden during live sessions due to a **trailing slash bug** in the route matching logic.
+The header takes up significant vertical space, and the height calculation `h-[calc(100vh-8rem)]` reserves space for elements that are no longer visible (bottom nav, sub-navigation).
 
-The `hideNavRoutes` array contains `'/comm/live-rooms/'` (with trailing slash). The matching logic on line 52 does:
+### Solution
 
+Two changes in `src/pages/community/LiveRoomViewer.tsx`:
+
+**1. Hide the header on mobile when in-room**
+
+When the user has joined the room (`isInRoom === true`), the custom header (back arrow, title, LIVE badge, share/settings buttons) should be hidden on mobile. Daily.co already provides its own "Leave" button and controls, making the custom header redundant during an active session.
+
+```tsx
+{/* Header - hide on mobile when in room */}
+{!(isMobile && isInRoom) && (
+  <div className="flex items-center justify-between p-4 border-b">
+    ...existing header content...
+  </div>
+)}
 ```
-location.pathname.startsWith(route + '/')
-```
 
-This produces `startsWith('/comm/live-rooms//')` (double slash), which **never matches** a real path like `/comm/live-rooms/abc123/view`. The exact equality check (`===`) also fails since the pathname is longer.
+**2. Use full viewport height on mobile when in-room**
 
-**Fix**: Update the `shouldHideNav` matching logic to also handle routes that already end with `/`:
+Change the container height to use the full dynamic viewport on mobile during active sessions, since both the bottom nav and header are hidden:
 
-```typescript
-const shouldHideNav = hideNavRoutes.some(route => 
-  location.pathname === route || 
-  location.pathname.startsWith(route + '/') ||
-  (route.endsWith('/') && location.pathname.startsWith(route))
-);
-```
-
-This keeps the list page (`/comm/live-rooms`) navigation visible while hiding it on viewer sub-routes (`/comm/live-rooms/xyz/view`).
-
-### Issue 2: Remove SubNavigation Bar on Mobile
-
-The "Overview | Events & MeetUps" horizontal bar is the `SubNavigation` component, rendered in `LiveRoomViewer.tsx` at two locations (lines 198 and 229). On mobile, this is redundant since the bottom nav already provides section navigation.
-
-**Fix**: Import `useIsMobile` and conditionally render `SubNavigation` only on desktop in both render locations within `LiveRoomViewer.tsx`:
-
-```typescript
-{!isMobile && <SubNavigation items={communityNavigation} />}
+```tsx
+<div className={cn(
+  "flex flex-col",
+  isMobile && isInRoom 
+    ? "h-[100dvh]"
+    : "h-[calc(100vh-8rem)]"
+)}>
 ```
 
 ### Files Changed
 
 | File | Change |
 |------|--------|
-| `src/components/mobile/MobileBottomNav.tsx` | Fix `shouldHideNav` matching logic for trailing-slash routes |
-| `src/pages/community/LiveRoomViewer.tsx` | Hide `SubNavigation` on mobile (2 locations), add `useIsMobile` import |
+| `src/pages/community/LiveRoomViewer.tsx` | Conditionally hide header on mobile when in-room; use full `100dvh` height on mobile |
 
 ### Result
-
-On mobile live sessions:
-- No bottom navigation bar (more space for video)
-- No "Overview / Events & MeetUps" bar (removes redundant navigation)
-- Daily.co controls will be fully visible and accessible
-- Desktop experience remains unchanged
+- On mobile during a live session: the Daily.co iframe fills the entire screen with no white header or empty space
+- On desktop: no changes, header remains visible
+- Before joining (entry gate screen): header still shows on all devices so users see the room title
 
