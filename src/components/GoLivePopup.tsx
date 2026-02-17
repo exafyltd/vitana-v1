@@ -299,11 +299,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE') || firstError.message?.includes('conflict')) {
           console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
-            // Step 1: Try gateway cancel
+            // Step 1: End room via gateway to clear in-memory active session state
             await import('@/services/liveRoomService').then(m =>
-              m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
+              m.liveRoomService.endRoom(effectiveRoomId)
             );
-            console.log('[GoLivePopup] Gateway cancel succeeded');
+            console.log('[GoLivePopup] Gateway end room succeeded');
           } catch (cancelErr) {
             console.warn('[GoLivePopup] Gateway cancel failed, force-resetting via DB:', cancelErr);
           }
