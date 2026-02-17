@@ -54,13 +54,7 @@ export function useCreateSession() {
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
     },
-    onError: (error: Error) => {
-      toast({
-        title: 'Failed to create session',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    // onError removed: GoLivePopup handles all error display after retry logic
   });
 }
 

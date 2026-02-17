@@ -333,10 +333,12 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
           } catch (retryError: any) {
             console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
-            notify.error('Error', `Room stuck. Please try again in a few seconds.`);
+            notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
             throw firstError;
           }
         } else {
+          // Non-409 error: show toast here since mutation no longer does
+          notify.error('Failed to create session', firstError.message);
           throw firstError;
         }
       }
