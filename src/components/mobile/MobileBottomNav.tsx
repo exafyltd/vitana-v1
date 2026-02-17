@@ -49,7 +49,9 @@ export function MobileBottomNav() {
   ];
   
   const shouldHideNav = hideNavRoutes.some(route => 
-    location.pathname === route || location.pathname.startsWith(route + '/')
+    location.pathname === route || 
+    location.pathname.startsWith(route + '/') ||
+    (route.endsWith('/') && location.pathname.startsWith(route))
   );
   
   // Only render on mobile and when not on hidden routes

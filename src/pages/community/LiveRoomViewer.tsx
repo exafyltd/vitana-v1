@@ -24,6 +24,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
 import { useHostPresence } from '@/hooks/useHostPresence';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function LiveRoomViewer() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -31,6 +32,7 @@ export default function LiveRoomViewer() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   // Get state passed from navigation
   const { userId, userName, userAvatar, room, isHost, daily_room_url: navDailyRoomUrl } = location.state || {};
@@ -195,7 +197,7 @@ export default function LiveRoomViewer() {
       <>
         <SEO title="Room Ended" />
         <AppLayout>
-          <SubNavigation items={communityNavigation} />
+          {!isMobile && <SubNavigation items={communityNavigation} />}
           <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
             <Card className="p-8 text-center max-w-md">
               <h2 className="text-2xl font-bold mb-4">This room has ended</h2>
@@ -226,7 +228,7 @@ export default function LiveRoomViewer() {
         description={streamDescription || `Join ${effectiveUserName}'s live stream`}
       />
       <AppLayout>
-        <SubNavigation items={communityNavigation} />
+        {!isMobile && <SubNavigation items={communityNavigation} />}
         
         <div className="flex flex-col h-[calc(100vh-8rem)]">
           {/* Header */}
