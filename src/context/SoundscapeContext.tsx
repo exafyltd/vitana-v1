@@ -94,10 +94,12 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
             }
           });
       } else {
-        // Mobile: let AudioManager handle resume after state is fully restored
+        // Mobile: attempt play, fall back to interaction-triggered play
         setTimeout(() => {
           AudioManager.attemptMobileResume();
         }, 100);
+        // If autoplay is blocked, allow first-interaction trigger
+        setPendingAutoPlay(true);
       }
     }
     
@@ -120,17 +122,9 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Handle pending auto-play on first interaction (desktop only)
+  // Handle pending auto-play on first interaction (desktop + mobile)
   useEffect(() => {
     if (!pendingAutoPlay) return;
-    
-    // On mobile, don't use this interaction handler - AudioManager handles resume via banner
-    const userAgent = navigator.userAgent || (navigator as any).vendor || '';
-    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
-    if (isMobileUA || isNarrowViewport) {
-      return;
-    }
     
     const handleInteraction = () => {
       // Check current in-memory mute state (not localStorage, since mute is session-only)
