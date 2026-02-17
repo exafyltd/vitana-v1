@@ -1,7 +1,7 @@
 project_id = "inmkhvwdcuyhnxkgfvsb"
 
 [functions.generate-daily-matches]
-verify_jwt = true
+verify_jwt = false
 
 [functions.crewai-proxy]
 verify_jwt = true
