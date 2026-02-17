@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useAuth } from "@/context/AuthProvider";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileCardStack } from "./ProfileCardStack";
@@ -52,6 +53,7 @@ export function PeopleDiscoveryHero() {
   const queryClient = useQueryClient();
   const { openPreview } = useProfilePreview();
   const { people: demoProfiles } = useDemoMatches();
+  const { user } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [interestFilter, setInterestFilter] = useState<string>("all");
   const [regionFilter, setRegionFilter] = useState<string>("all");
@@ -59,7 +61,8 @@ export function PeopleDiscoveryHero() {
 
   // Fetch daily matches
   const { data: matches, isLoading, refetch } = useQuery({
-    queryKey: ['daily-matches'],
+    queryKey: ['daily-matches', user?.id],
+    enabled: !!user,
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
