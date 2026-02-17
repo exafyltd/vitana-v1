@@ -327,14 +327,29 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             console.error('[GoLivePopup] DB force-reset failed:', dbErr);
           }
 
-          // Step 3: Wait for propagation then retry
-          await new Promise(r => setTimeout(r, 1500));
+          // Step 3: Wait for propagation then retry (3s to avoid rate limiter)
+          notify.info('Resetting room', 'Please wait...');
+          await new Promise(r => setTimeout(r, 3000));
           try {
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
           } catch (retryError: any) {
-            console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
-            notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
-            throw firstError;
+            const retryMsg = retryError?.message || '';
+            // If rate-limited, wait longer and try one final time
+            if (retryMsg.includes('429') || retryMsg.includes('RATE_LIMIT')) {
+              console.warn('[GoLivePopup] Rate-limited on retry, waiting 5s for final attempt...');
+              await new Promise(r => setTimeout(r, 5000));
+              try {
+                sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
+              } catch (finalError: any) {
+                console.error('[GoLivePopup] Final retry failed:', finalError);
+                notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
+                throw firstError;
+              }
+            } else {
+              console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
+              notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
+              throw firstError;
+            }
           }
         } else {
           // Non-409 error: show toast here since mutation no longer does
