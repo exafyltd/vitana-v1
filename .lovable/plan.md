@@ -1,75 +1,27 @@
 
 
-## Fix: Mobile Soundscape Auto-Play on Every Launch
+## Show Current Language Flag (Not Target)
 
-### Problem
+### What's Wrong
+The `LanguageToggleButton` currently shows the **opposite** flag -- the language you'd switch *to*. So when German is active, it shows the British flag, which is confusing because users expect the flag to represent what's currently selected.
 
-On mobile, the SoundscapeContext delegates auto-play to `AudioManager.attemptMobileResume()`. But that function was designed for **resuming** after a background/tab switch -- it checks localStorage for `wasPlaying === 'true'` and `savedMuted !== 'true'`. On a first visit (or after clearing storage), both checks fail, so **no music plays on mobile**.
+### Fix
+In `src/components/ui/language-toggle-button.tsx`, swap the flag logic so it shows the **current** language flag:
 
-### Changes
+- When German is selected: show German flag
+- When English is selected: show British flag
 
-**File: `src/audio/SoundscapeAudioManager.ts`**
+### Change
 
-**Change 1 -- `attemptMobileResume()` (line 578-584):**
-Remove the `savedMuted` check and change the `wasPlaying` check so it defaults to playing when no preference exists:
+**File: `src/components/ui/language-toggle-button.tsx` (lines 23-24)**
 
 ```tsx
 // Before:
-const savedMuted = localStorage.getItem('soundscape_muted');
-if (savedMuted === 'true' || wasPlaying !== 'true') {
-  return;
-}
+const flagToShow = isGerman ? gbFlag : deFlag;
 
 // After:
-// Skip only if foreground media is active (mute is session-only, handled in-memory)
-if (soundscapeMuted) {
-  console.log('[AudioManager] Mobile resume skipped: muted this session');
-  return;
-}
+const flagToShow = isGerman ? deFlag : gbFlag;
 ```
 
-This means:
-- First launch (no localStorage): music plays
-- Returning after background (wasPlaying saved): music plays
-- User muted this session (in-memory flag): music stays muted
-- Foreground media active: still respected (existing check on line 587)
-
-**File: `src/context/SoundscapeContext.tsx`**
-
-**Change 2 -- Mobile path (lines 96-101):**
-Instead of only calling `attemptMobileResume()` (which is meant for resume-from-background), also set `pendingAutoPlay` on mobile so the first user tap triggers playback if autoplay is blocked:
-
-```tsx
-} else {
-  // Mobile: attempt play, fall back to interaction-triggered play
-  AudioManager.attemptMobileResume();
-  // If autoplay is blocked, allow first-interaction trigger (don't skip mobile)
-  setPendingAutoPlay(true);
-}
-```
-
-**Change 3 -- Remove mobile skip in interaction handler (lines 128-133):**
-Currently the pending-auto-play interaction handler returns early on mobile, leaving it solely to the resume banner. Remove this early return so that a tap anywhere on the page also starts playback on mobile (better UX than requiring the banner):
-
-```tsx
-// Remove this block:
-const isMobileUA = ...;
-const isNarrowViewport = ...;
-if (isMobileUA || isNarrowViewport) {
-  return;
-}
-```
-
-### What Stays the Same
-- Resume banner still works for background-to-foreground transitions
-- Volume is still remembered
-- Priority media still pauses Soundscape
-- Desktop behavior unchanged
-
-### Files Changed
-
-| File | Change |
-|------|--------|
-| `src/audio/SoundscapeAudioManager.ts` | Use in-memory `soundscapeMuted` instead of localStorage checks in `attemptMobileResume()` |
-| `src/context/SoundscapeContext.tsx` | Enable interaction-triggered auto-play on mobile; remove mobile early-return in interaction handler |
+One line change. Everything else (click behavior, aria labels, styling) stays the same.
 
