@@ -575,11 +575,9 @@ export function attemptMobileResume(): void {
   const savedTime = localStorage.getItem(MOBILE_PERSIST_KEY_TIME);
   const savedTrackSrc = localStorage.getItem(MOBILE_PERSIST_KEY_TRACK_SRC);
   const wasPlaying = localStorage.getItem(MOBILE_PERSIST_KEY_PLAYING);
-  const savedMuted = localStorage.getItem('soundscape_muted');
-  
-  // Don't resume if muted or wasn't playing
-  if (savedMuted === 'true' || wasPlaying !== 'true') {
-    console.log('[AudioManager] Mobile resume skipped: muted or not playing');
+  // Skip if muted this session (in-memory only, not persisted)
+  if (soundscapeMuted) {
+    console.log('[AudioManager] Mobile resume skipped: muted this session');
     return;
   }
   
