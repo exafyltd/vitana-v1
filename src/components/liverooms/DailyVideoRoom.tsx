@@ -42,6 +42,13 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
       },
     });
 
+    // Fix iOS Safari: set iframe permissions for camera/microphone access
+    const iframe = containerRef.current.querySelector('iframe');
+    if (iframe) {
+      iframe.setAttribute('allow', 'camera; microphone; autoplay; display-capture');
+      iframe.setAttribute('playsinline', '');
+    }
+
     let destroyed = false;
 
     call.on('joined-meeting', () => {

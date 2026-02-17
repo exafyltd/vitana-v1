@@ -4,10 +4,12 @@
  * Architecture:
  * - REST endpoints for session management
  * - SSE for streaming audio/transcripts from AI
- * - AudioWorklet for high-quality 16kHz audio capture
+ * - CrossPlatformAudioRecorder for iOS-safe audio capture
  * - PCM audio queue playback at 24kHz
  * - JWT-based authentication for multi-tenant voice sessions
  */
+
+import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
@@ -28,11 +30,8 @@ export class OrbVoiceClient {
   private sessionId: string | null = null;
   private eventSource: EventSource | null = null;
   private audioContext: AudioContext | null = null;
-  private inputContext: AudioContext | null = null;
   private nextStartTime: number = 0;
-  private mediaStream: MediaStream | null = null;
-  private workletNode: AudioWorkletNode | null = null;
-  private analyserNode: AnalyserNode | null = null;
+  private recorder: CrossPlatformAudioRecorder | null = null;
   private volumeAnimationFrame: number | null = null;
 
   // Silence detection for auto end-turn
@@ -106,7 +105,7 @@ export class OrbVoiceClient {
       // 3. Initialize audio output context
       await this.initAudioOutput();
 
-      // 4. Start recording
+      // 4. Start recording (uses iOS-safe polyfill)
       await this.startRecording();
 
       this.callbacks.onConnectionStateChange?.('ready');
@@ -130,7 +129,6 @@ export class OrbVoiceClient {
     console.log('[OrbVoiceClient] Requesting welcome greeting...');
     
     try {
-      // Send a greeting trigger to the AI
       await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
         headers: this.getAuthHeaders(),
@@ -141,18 +139,15 @@ export class OrbVoiceClient {
         })
       });
 
-      // Signal end of turn to trigger AI response
       await this.endTurn();
     } catch (e) {
       console.warn('[OrbVoiceClient] Failed to request welcome:', e);
-      // Non-critical - session can still work without welcome
     }
   }
 
   private connectSSE(): void {
     if (!this.sessionId) return;
 
-    // Include token as query parameter for SSE (EventSource doesn't support headers)
     const token = encodeURIComponent(this.config.accessToken);
     const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}&token=${token}`;
     console.log('[OrbVoiceClient] Connecting SSE:', sseUrl.replace(token, '[REDACTED]'));
@@ -201,6 +196,12 @@ export class OrbVoiceClient {
 
   private async initAudioOutput(): Promise<void> {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    
+    // iOS requires explicit resume from a user gesture context
+    if (this.audioContext.state === 'suspended') {
+      await this.audioContext.resume();
+    }
+    
     this.nextStartTime = 0;
   }
 
@@ -243,7 +244,6 @@ export class OrbVoiceClient {
 
       this.callbacks.onSpeakingChange?.(true);
       source.onended = () => {
-        // Check if timeline is empty (no more scheduled audio)
         if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
           this.callbacks.onSpeakingChange?.(false);
         }
@@ -255,38 +255,18 @@ export class OrbVoiceClient {
 
   private async startRecording(): Promise<void> {
     try {
-      this.mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          sampleRate: this.SAMPLE_RATE_IN,
-          channelCount: 1,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
+      console.log('[OrbVoiceClient] Starting recording, iOS mode:', IS_IOS_SAFARI);
+
+      this.recorder = new CrossPlatformAudioRecorder(this.SAMPLE_RATE_IN, {
+        onAudioData: (pcmFloat32) => {
+          this.sendAudio(pcmFloat32);
         }
       });
 
-      // Create input context at 16kHz
-      this.inputContext = new AudioContext({ sampleRate: this.SAMPLE_RATE_IN });
-      const source = this.inputContext.createMediaStreamSource(this.mediaStream);
+      await this.recorder.start();
 
-      // Set up volume analysis
-      this.analyserNode = this.inputContext.createAnalyser();
-      this.analyserNode.fftSize = 256;
-      source.connect(this.analyserNode);
+      // Start volume monitoring using the recorder's analyser
       this.startVolumeMonitoring();
-
-      // Load AudioWorklet
-      await this.inputContext.audioWorklet.addModule('/audio-processor.js');
-      this.workletNode = new AudioWorkletNode(this.inputContext, 'audio-processor');
-
-      this.workletNode.port.onmessage = async (event) => {
-        const pcmData = event.data as Float32Array;
-        await this.sendAudio(pcmData);
-      };
-
-      source.connect(this.workletNode);
-      // Keep processor alive by connecting to destination (silent)
-      this.workletNode.connect(this.inputContext.destination);
 
       this.callbacks.onListeningChange?.(true);
       console.log('[OrbVoiceClient] Recording started');
@@ -298,14 +278,16 @@ export class OrbVoiceClient {
   }
 
   private startVolumeMonitoring(): void {
-    if (!this.analyserNode) return;
+    const analyser = this.recorder?.analyser;
+    if (!analyser) return;
 
-    const dataArray = new Uint8Array(this.analyserNode.frequencyBinCount);
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
     const updateVolume = () => {
-      if (!this.analyserNode) return;
+      const currentAnalyser = this.recorder?.analyser;
+      if (!currentAnalyser) return;
 
-      this.analyserNode.getByteFrequencyData(dataArray);
+      currentAnalyser.getByteFrequencyData(dataArray);
       const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
       const normalizedVolume = Math.min(average / 128, 1);
 
@@ -325,16 +307,13 @@ export class OrbVoiceClient {
    */
   private detectSilence(volume: number): void {
     if (volume > this.SILENCE_THRESHOLD) {
-      // User is speaking
       this.hasSpeechStarted = true;
       
-      // Clear any pending silence timer
       if (this.silenceTimer) {
         clearTimeout(this.silenceTimer);
         this.silenceTimer = null;
       }
     } else if (this.hasSpeechStarted && !this.silenceTimer) {
-      // User stopped speaking - start silence timer
       this.silenceTimer = setTimeout(() => {
         console.log('[OrbVoiceClient] Silence detected - ending turn automatically');
         this.endTurn();
@@ -374,7 +353,6 @@ export class OrbVoiceClient {
         })
       });
     } catch (e) {
-      // Silent fail for chunks to avoid log spam
       console.warn('[OrbVoiceClient] Failed to send audio chunk');
     }
   }
@@ -425,29 +403,23 @@ export class OrbVoiceClient {
     }
     this.hasSpeechStarted = false;
 
-    if (this.workletNode) {
-      this.workletNode.disconnect();
-      this.workletNode = null;
+    // Stop the cross-platform recorder
+    if (this.recorder) {
+      this.recorder.stop();
+      this.recorder = null;
     }
-    if (this.mediaStream) {
-      this.mediaStream.getTracks().forEach(track => track.stop());
-      this.mediaStream = null;
-    }
+
     if (this.volumeAnimationFrame) {
       cancelAnimationFrame(this.volumeAnimationFrame);
       this.volumeAnimationFrame = null;
     }
-    if (this.inputContext) {
-      this.inputContext.close();
-      this.inputContext = null;
-    }
-    this.analyserNode = null;
+
     this.callbacks.onListeningChange?.(false);
     this.callbacks.onVolumeChange?.(0);
   }
 
   async startListening(): Promise<void> {
-    if (this.workletNode) return; // Already listening
+    if (this.recorder?.isRecording) return; // Already listening
     await this.startRecording();
   }
 
@@ -499,6 +471,6 @@ export class OrbVoiceClient {
   }
 
   get isRecording(): boolean {
-    return this.workletNode !== null;
+    return this.recorder?.isRecording ?? false;
   }
 }
