@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Zap, User, Sparkles, Image, Palette, Loader2, Check, X } from "lucide-react";
+import { Zap, User, Sparkles, Image, Palette, Loader2, Check, X, Clock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,7 @@ interface SuggestionOption {
   titleKey: string;
   descriptionKey: string;
   icon: typeof User;
+  comingSoon?: boolean;
 }
 
 const suggestionConfigs: SuggestionOption[] = [
@@ -41,12 +43,14 @@ const suggestionConfigs: SuggestionOption[] = [
     titleKey: "autopilot.profilePopup.highlightShowcase",
     descriptionKey: "autopilot.profilePopup.highlightShowcaseDesc",
     icon: Image,
+    comingSoon: true,
   },
   {
     id: "style-profile",
     titleKey: "autopilot.profilePopup.styleProfile",
     descriptionKey: "autopilot.profilePopup.styleProfileDesc",
     icon: Palette,
+    comingSoon: true,
   },
 ];
 
@@ -193,29 +197,41 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
           {step === "select" && (
             <>
               <div className="space-y-3 mb-6">
-                {suggestionConfigs.map((suggestion) => {
+              {suggestionConfigs.map((suggestion) => {
                   const IconComponent = suggestion.icon;
                   const isSelected = selectedSuggestions.includes(suggestion.id);
+                  const isComingSoon = suggestion.comingSoon;
 
                   return (
                     <Card
                       key={suggestion.id}
-                      className={`p-4 cursor-pointer transition-colors hover:bg-accent/50 ${
-                        isSelected ? 'border-primary bg-primary/5' : 'border-border'
+                      className={`p-4 transition-colors ${
+                        isComingSoon
+                          ? 'opacity-50 cursor-not-allowed'
+                          : `cursor-pointer hover:bg-accent/50 ${isSelected ? 'border-primary bg-primary/5' : 'border-border'}`
                       }`}
-                      onClick={() => handleSuggestionToggle(suggestion.id)}
+                      onClick={() => !isComingSoon && handleSuggestionToggle(suggestion.id)}
                     >
                       <div className="flex items-start gap-3">
                         <Checkbox
                           checked={isSelected}
-                          onChange={() => handleSuggestionToggle(suggestion.id)}
+                          disabled={isComingSoon}
+                          onChange={() => !isComingSoon && handleSuggestionToggle(suggestion.id)}
                           className="mt-1"
                         />
                         <div className="flex-shrink-0 mt-1">
                           <IconComponent className="h-4 w-4 text-muted-foreground" />
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-sm mb-1">{translate(suggestion.titleKey)}</h4>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium text-sm mb-1">{translate(suggestion.titleKey)}</h4>
+                            {isComingSoon && (
+                              <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
+                                <Clock className="h-2.5 w-2.5 mr-0.5" />
+                                {translate('autopilot.profilePopup.comingSoon')}
+                              </Badge>
+                            )}
+                          </div>
                           <p className="text-xs text-muted-foreground">{translate(suggestion.descriptionKey)}</p>
                         </div>
                       </div>

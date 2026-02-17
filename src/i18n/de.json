@@ -759,7 +759,8 @@
       "reject": "Verwerfen",
       "acceptAll": "Alle übernehmen",
       "applied": "Änderungen gespeichert!",
-      "error": "Etwas ist schiefgelaufen"
+      "error": "Etwas ist schiefgelaufen",
+      "comingSoon": "Bald verfügbar"
     },
     "suggestions": {
       "bannerTitle": "Autopilot kann Ihr Profil optimieren",
