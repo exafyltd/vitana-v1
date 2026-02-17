@@ -1,57 +1,27 @@
 
 
-## Fix: Use Gateway `/end` Instead of `/cancel` to Clear Stuck Sessions
+## Show Current Language Flag (Not Target)
 
-### Root Cause
+### What's Wrong
+The `LanguageToggleButton` currently shows the **opposite** flag -- the language you'd switch *to*. So when German is active, it shows the British flag, which is confusing because users expect the flag to represent what's currently selected.
 
-The retry logic calls `/cancel` when the gateway says ROOM_NOT_IDLE, but `/cancel` only works for **scheduled** sessions. The gateway thinks there's an **active** session, so it responds with NO_ACTIVE_SESSION to the cancel call. The DB reset that follows doesn't affect the gateway's in-memory state, so every retry still gets ROOM_NOT_IDLE.
+### Fix
+In `src/components/ui/language-toggle-button.tsx`, swap the flag logic so it shows the **current** language flag:
 
-```text
-Current (broken) flow:
-  Create (409 ROOM_NOT_IDLE)
-  --> Cancel (409 NO_ACTIVE_SESSION -- wrong endpoint!)
-  --> DB reset (ignored by gateway)
-  --> Retry (409 ROOM_NOT_IDLE -- gateway unchanged)
+- When German is selected: show German flag
+- When English is selected: show British flag
 
-Fixed flow:
-  Create (409 ROOM_NOT_IDLE)
-  --> End room via gateway (clears gateway in-memory state)
-  --> DB reset (safety net)
-  --> Wait 3s --> Retry (should succeed)
-```
+### Change
 
-### Changes
+**File: `src/components/ui/language-toggle-button.tsx` (lines 23-24)**
 
-**File: `src/components/GoLivePopup.tsx` (lines 301-306)**
-
-Replace the gateway `cancelRoom` call with `endRoom`, which properly clears the gateway's in-memory active session state:
-
-```typescript
+```tsx
 // Before:
-await import('@/services/liveRoomService').then(m =>
-  m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
-);
+const flagToShow = isGerman ? gbFlag : deFlag;
 
 // After:
-await import('@/services/liveRoomService').then(m =>
-  m.liveRoomService.endRoom(effectiveRoomId)
-);
+const flagToShow = isGerman ? deFlag : gbFlag;
 ```
 
-The `endRoom` endpoint tells the gateway "this active session is over" -- which is exactly the state the gateway thinks the room is in. This clears the in-memory lock, so the subsequent retry can create a new session successfully.
-
-### Why Previous Fixes Didn't Work
-
-- The `apiFetch` error format fix was correct (error detection works now)
-- The `onError` toast removal was correct (no premature toasts)
-- The 3s delay was correct (avoids rate limiting)
-- But the actual **reset action** was wrong: calling `/cancel` on an "active" session does nothing on the gateway side
-
-### Summary
-
-| File | Change |
-|------|--------|
-| `src/components/GoLivePopup.tsx` | Replace `cancelRoom()` with `endRoom()` in the 409 retry handler |
-
-Single-line fix. The gateway's `/end` endpoint is already available in `liveRoomService.ts`.
+One line change. Everything else (click behavior, aria labels, styling) stays the same.
 

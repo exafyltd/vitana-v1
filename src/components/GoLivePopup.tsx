@@ -299,11 +299,11 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
         if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE') || firstError.message?.includes('conflict')) {
           console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
-            // Step 1: End room via gateway to clear in-memory active session state
+            // Step 1: Try gateway cancel
             await import('@/services/liveRoomService').then(m =>
-              m.liveRoomService.endRoom(effectiveRoomId)
+              m.liveRoomService.cancelRoom(effectiveRoomId, user.id)
             );
-            console.log('[GoLivePopup] Gateway end room succeeded');
+            console.log('[GoLivePopup] Gateway cancel succeeded');
           } catch (cancelErr) {
             console.warn('[GoLivePopup] Gateway cancel failed, force-resetting via DB:', cancelErr);
           }
@@ -327,33 +327,16 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
             console.error('[GoLivePopup] DB force-reset failed:', dbErr);
           }
 
-          // Step 3: Wait for propagation then retry (3s to avoid rate limiter)
-          notify.info('Resetting room', 'Please wait...');
-          await new Promise(r => setTimeout(r, 3000));
+          // Step 3: Wait for propagation then retry
+          await new Promise(r => setTimeout(r, 1500));
           try {
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
           } catch (retryError: any) {
-            const retryMsg = retryError?.message || '';
-            // If rate-limited, wait longer and try one final time
-            if (retryMsg.includes('429') || retryMsg.includes('RATE_LIMIT')) {
-              console.warn('[GoLivePopup] Rate-limited on retry, waiting 5s for final attempt...');
-              await new Promise(r => setTimeout(r, 5000));
-              try {
-                sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-              } catch (finalError: any) {
-                console.error('[GoLivePopup] Final retry failed:', finalError);
-                notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
-                throw firstError;
-              }
-            } else {
-              console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
-              notify.error('Error', 'Session reset in progress. Please close this popup and try again.');
-              throw firstError;
-            }
+            console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
+            notify.error('Error', `Room stuck. Please try again in a few seconds.`);
+            throw firstError;
           }
         } else {
-          // Non-409 error: show toast here since mutation no longer does
-          notify.error('Failed to create session', firstError.message);
           throw firstError;
         }
       }

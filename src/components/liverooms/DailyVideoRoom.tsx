@@ -75,8 +75,7 @@ export function DailyVideoRoom({ roomUrl, onJoined, onLeft, onError }: DailyVide
     call.join({ url: roomUrl }).catch((err) => {
       if (!destroyed) {
         console.error('[Daily] Failed to join:', err);
-        const msg = err?.message || err?.errorMsg || String(err);
-        onError?.(`Failed to join video room: ${msg}`);
+        onError?.('Failed to join video room');
       }
     });
 

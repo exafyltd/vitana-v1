@@ -22,7 +22,7 @@ import { liveRoomService } from '@/services/liveRoomService';
 import { useAuth } from '@/context/AuthProvider';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRoomState, useEndRoom } from '@/hooks/useMyRoom';
 import { useHostPresence } from '@/hooks/useHostPresence';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -34,7 +34,6 @@ export default function LiveRoomViewer() {
   const { user } = useAuth();
   const { toast } = useToast();
   const isMobile = useIsMobile();
-  const queryClient = useQueryClient();
 
   // Get state passed from navigation
   const { userId, userName, userAvatar, room, isHost, daily_room_url: navDailyRoomUrl } = location.state || {};
@@ -63,33 +62,6 @@ export default function LiveRoomViewer() {
 
   // Entry gate: host clicks "Start Stream", viewer clicks "Join Stream"
   const [isInRoom, setIsInRoom] = useState(false);
-  const [dailyError, setDailyError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
-
-  const handleDailyError = async (err: string) => {
-    console.error('[Daily] Error:', err);
-    
-    // Auto-retry once: re-create Daily room (host) or re-fetch URL (viewer)
-    if (retryCount === 0 && roomId) {
-      setRetryCount(1);
-      try {
-        if (effectiveIsHost) {
-          await liveRoomService.createDailyRoom(roomId);
-          queryClient.invalidateQueries({ queryKey: ['live-room-host', roomId] });
-          queryClient.invalidateQueries({ queryKey: ['room-state', roomId] });
-        } else {
-          queryClient.invalidateQueries({ queryKey: ['room-state', roomId] });
-        }
-        // Component will re-mount with new URL after query refetch
-        return;
-      } catch (retryErr) {
-        console.error('[Daily] Retry failed:', retryErr);
-      }
-    }
-    
-    setDailyError(err);
-    toast({ title: 'Video error', description: err, variant: 'destructive' });
-  };
 
   // Room state polling (every 5s while live)
   const { data: roomState } = useRoomState(roomId, true);
@@ -327,42 +299,25 @@ export default function LiveRoomViewer() {
               <>
                 <div className="flex-1 flex flex-col bg-muted/50 relative">
                   {dailyRoomUrl ? (
-                    <>
-                      <DailyVideoRoom
-                        key={`daily-${retryCount}`}
-                        roomUrl={dailyRoomUrl}
-                        onJoined={() => {
-                          console.log('[Daily] Joined meeting');
-                          setDailyError(null);
-                          if (effectiveIsHost && roomId) {
-                            liveRoomService.hostPresent(roomId).catch(console.warn);
-                          }
-                        }}
-                        onLeft={() => {
-                          if (effectiveIsHost && roomId) {
-                            liveRoomService.hostAbsent(roomId).catch(console.warn);
-                          }
-                          handleLeaveRoom();
-                        }}
-                        onError={handleDailyError}
-                      />
-                      {dailyError && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
-                          <Card className="p-6 text-center max-w-sm">
-                            <p className="text-destructive font-medium mb-2">Video Error</p>
-                            <p className="text-sm text-muted-foreground mb-4">{dailyError}</p>
-                            <Button onClick={() => {
-                              setDailyError(null);
-                              setRetryCount(0);
-                              setIsInRoom(false);
-                              setTimeout(() => setIsInRoom(true), 500);
-                            }}>
-                              Retry
-                            </Button>
-                          </Card>
-                        </div>
-                      )}
-                    </>
+                    <DailyVideoRoom
+                      roomUrl={dailyRoomUrl}
+                      onJoined={() => {
+                        console.log('[Daily] Joined meeting');
+                        if (effectiveIsHost && roomId) {
+                          liveRoomService.hostPresent(roomId).catch(console.warn);
+                        }
+                      }}
+                      onLeft={() => {
+                        if (effectiveIsHost && roomId) {
+                          liveRoomService.hostAbsent(roomId).catch(console.warn);
+                        }
+                        handleLeaveRoom();
+                      }}
+                      onError={(err) => {
+                        console.error('[Daily] Error:', err);
+                        toast({ title: 'Video error', description: err, variant: 'destructive' });
+                      }}
+                    />
                   ) : (
                     <div className="flex-1 flex items-center justify-center">
                       <div className="text-center text-muted-foreground">
