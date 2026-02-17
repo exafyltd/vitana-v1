@@ -219,7 +219,10 @@ async function apiFetch(path: string, options: RequestInit = {}): Promise<Respon
   });
   if (!response.ok) {
     const error = await response.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(error.message || error.error || `Request failed: ${response.status}`);
+    const errorMsg = error.message || error.error || `Request failed: ${response.status}`;
+    const errorCode = error.code || error.error_code || '';
+    console.error(`[liveRoomService] API error: ${response.status} ${errorCode} - ${errorMsg}`, { path, error });
+    throw new Error(`${errorMsg} [${response.status}${errorCode ? ' ' + errorCode : ''}]`);
   }
   return response;
 }
