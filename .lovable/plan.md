@@ -1,71 +1,170 @@
 
 
-## Fix: "Highlight my Profile" and "Style my Profile" Show Error
+## In-App Top App Bar + Drawer Sidebar Navigation
 
-### Problem
+### Overview
 
-The `autopilot-profile` edge function only handles two options: `polish-bio` and `refresh-archetype`. When the user selects `highlight-showcase` or `style-profile`, the function returns `{ bio: null, archetype: null }`. The preview step then has no suggestions to display and falls into the empty-state branch, which shows the generic error message "Etwas ist schiefgelaufen".
+Build a native React Top App Bar and slide-from-left Drawer to replace the Appilix-generated navigation. The existing mobile bottom nav and desktop sidebar remain untouched.
 
-### Solution
+### Key Clarification from Screenshot
 
-Since these two features are not yet implemented on the backend, the cleanest fix is to mark them as "Coming Soon" in the UI so users know they are not yet available, rather than letting them trigger an error.
+- **Left**: Kebab menu icon (three vertical dots) that opens the drawer
+- **Center**: Tenant name in uppercase (e.g., "MAXINA")
+- **Right**: Nothing (no back button, no extra icons)
 
-### Changes
+### New Files
 
-**File: `src/components/profile/AutopilotProfilePopup.tsx`**
+| File | Purpose |
+|------|---------|
+| `src/config/drawer-nav.config.ts` | Centralized navigation items: 12 entries with id, route, icon, i18n key |
+| `src/components/mobile/TopAppBar.tsx` | Fixed top bar with kebab (left) + tenant name (center) |
+| `src/components/mobile/SideDrawerNav.tsx` | Slide-from-left drawer with tenant header, nav items, active highlight, logout |
+| `src/components/mobile/MobileAppShell.tsx` | Composes TopAppBar + SideDrawerNav + children; no-op on desktop |
 
-1. Add a `comingSoon` flag to the two unimplemented options in the `suggestionConfigs` array.
-
-2. In the selection UI, render "Coming Soon" options as visually disabled (grayed out, not clickable, with a small "Coming Soon" badge).
-
-3. Prevent these options from being toggled into `selectedSuggestions`.
-
-This way:
-- Users see all four options but understand two are not yet available
-- Only `polish-bio` and `refresh-archetype` can be selected and sent to the edge function
-- No more false error messages
-
-### Technical Detail
-
-```tsx
-// Add comingSoon to the interface
-interface SuggestionOption {
-  id: string;
-  titleKey: string;
-  descriptionKey: string;
-  icon: typeof User;
-  comingSoon?: boolean;
-}
-
-// Mark the two unimplemented options
-{
-  id: "highlight-showcase",
-  ...
-  comingSoon: true,
-},
-{
-  id: "style-profile",
-  ...
-  comingSoon: true,
-},
-```
-
-In the card rendering, when `comingSoon` is true:
-- Add `opacity-50 cursor-not-allowed` styling
-- Skip the toggle on click
-- Show a small "Coming Soon" / "Bald verfuegbar" badge next to the title
-- Disable the checkbox
-
-### Translation Keys
-
-Add new key: `autopilot.profilePopup.comingSoon` with values:
-- EN: "Coming Soon"
-- DE: "Bald verfuegbar"
-
-### Files Changed
+### Changed Files
 
 | File | Change |
 |------|--------|
-| `src/components/profile/AutopilotProfilePopup.tsx` | Add `comingSoon` flag to config, disable unimplemented options in UI |
-| Translation file(s) | Add `autopilot.profilePopup.comingSoon` key |
+| `src/components/AppLayout.tsx` | Wrap children in `MobileAppShell` |
+| `src/i18n/en.json` | Add `drawerNav.*` keys (12 items) |
+| `src/i18n/de.json` | Add `drawerNav.*` keys (12 items, German) |
+| `src/lib/appilix.ts` | Add `hideAppilixAppBar()` to suppress native bar |
+| `src/hooks/useAppilix.ts` | Call `hideAppilixAppBar()` once detected |
+
+### Technical Details
+
+**1. Navigation Config (`drawer-nav.config.ts`)**
+
+Single source of truth for all drawer items, matching the Appilix categories exactly:
+
+```text
+events        /comm/events-meetups      Calendar       drawerNav.events
+live          /comm/live-rooms          Video          drawerNav.live
+media         /comm/media-hub           LayoutGrid     drawerNav.media
+business      /business                 Briefcase      drawerNav.business
+discover      /discover                 Compass        drawerNav.discover
+orders        /discover/orders          ShoppingBag    drawerNav.orders
+wallet        /wallet                   Wallet         drawerNav.wallet
+health        /health                   HeartPulse     drawerNav.health
+connectors    /settings/connected-apps  Plug           drawerNav.connectors
+inbox         /inbox                    Mail           drawerNav.inbox
+profile       /me/profile               UserCircle     drawerNav.profile
+logout        __logout__                LogOut         drawerNav.logout
+```
+
+**2. TopAppBar Layout**
+
+```text
++----------------------------------------------+
+| [kebab]          MAXINA                       |
++----------------------------------------------+
+```
+
+- Fixed position, `z-40` (below modals/drawers, above content)
+- Height: `h-14` (56px)
+- Kebab icon on the left triggers drawer open
+- Tenant name centered, uppercase, semi-bold, `tracking-wider`
+- Maxina gradient: `linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%)`
+- Text/icons: `rgba(255,255,255,0.95)` on gradient
+- Other tenants: neutral theme background
+- Only renders on mobile (`useIsMobile`)
+- Hidden on the same routes as MobileBottomNav (intro, auth, live room viewer, etc.)
+
+**3. SideDrawerNav**
+
+- Uses `framer-motion` for slide-from-left animation + backdrop fade
+- Drawer header: tenant name + sublabel on the Maxina gradient (or theme bg for others)
+- Nav list: maps `drawerNavItems`, each with `icon + translate(translationKey)`
+- Active route: highlighted background (`primary/10`) + left accent bar, using `useLocation` path matching
+- Click any item: navigate + close drawer
+- Logout: calls `signOut()` from `useAuth()`, redirects to `/`
+- Closes on backdrop click
+
+**4. MobileAppShell**
+
+```tsx
+function MobileAppShell({ children }) {
+  const isMobile = useIsMobile();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  if (!isMobile) return <>{children}</>;
+
+  return (
+    <>
+      <TopAppBar onMenuClick={() => setDrawerOpen(true)} />
+      <SideDrawerNav open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <div className="pt-14">{children}</div>
+    </>
+  );
+}
+```
+
+**5. AppLayout Integration**
+
+In the return of `AppLayout`, wrap `{children}` inside `<MobileAppShell>`:
+
+```tsx
+<main className="flex-1">
+  <MobileAppShell>{children}</MobileAppShell>
+</main>
+```
+
+The existing `MobileBottomNav` remains completely independent and unchanged.
+
+**6. Translation Keys**
+
+English (`drawerNav` block in `en.json`):
+```text
+events      Events & MeetUps
+live        Live Channels
+media       Media
+business    Business
+discover    Discover
+orders      Orders
+wallet      Wallet
+health      Health
+connectors  Connectors
+inbox       Inbox
+profile     Profile
+logout      Log Out
+```
+
+German (`drawerNav` block in `de.json`):
+```text
+events      Events & MeetUps
+live        Live Kanale
+media       Medien
+business    Business
+discover    Entdecken
+orders      Bestellungen
+wallet      Wallet
+health      Gesundheit
+connectors  Connectors
+inbox       Postfach
+profile     Profil
+logout      Abmelden
+```
+
+**7. Appilix Bridge Update**
+
+Add `hideAppilixAppBar()` to `appilix.ts`:
+
+```typescript
+export function hideAppilixAppBar(): boolean {
+  return updateSettings({
+    app_bar: false,
+    navigation_drawer: false,
+    show_menu_icon: false,
+  });
+}
+```
+
+In `useAppilix.ts`, replace `forceAppBarVisibility()` with `hideAppilixAppBar()` so the native Appilix bar disappears when the React bar is active.
+
+### What Stays Unchanged
+
+- Desktop sidebar (`AppSidebar`)
+- `MobileBottomNav` component
+- All existing routing in `App.tsx`
+- The `useAppilix` detection logic (only post-detection action changes)
 
