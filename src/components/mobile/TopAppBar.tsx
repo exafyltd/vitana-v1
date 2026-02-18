@@ -30,11 +30,11 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
         <div className="absolute inset-0 bg-background border-b border-border" />
       )}
 
-      <div className="relative h-14 flex items-center px-3">
+      <div className="relative h-11 flex items-center px-3">
         {/* Kebab menu – left */}
         <button
           onClick={onMenuClick}
-          className="relative z-10 flex items-center justify-center w-10 h-10 rounded-lg transition-colors hover:bg-white/10"
+          className="relative z-10 flex items-center justify-center w-9 h-9 rounded-lg transition-colors hover:bg-white/10"
           aria-label="Open navigation menu"
         >
           <MoreVertical className="h-6 w-6" />
@@ -49,7 +49,7 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
         </span>
 
         {/* Right spacer for symmetry */}
-        <div className="w-10 ml-auto" />
+        <div className="w-9 ml-auto" />
       </div>
     </header>
   );

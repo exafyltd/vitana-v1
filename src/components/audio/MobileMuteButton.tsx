@@ -31,7 +31,7 @@ export function MobileMuteButton() {
     <button
       onClick={toggleMute}
       aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
-      style={{ top: 'calc(env(safe-area-inset-top, 0px) + 60px)' }}
+      style={{ top: 'calc(env(safe-area-inset-top, 0px) + 48px)' }}
       className={cn(
         // Fixed positioning - top right, below app bar
         "fixed right-4 z-40",
