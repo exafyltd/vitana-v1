@@ -1,5 +1,7 @@
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, Volume2, VolumeX } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
+import { useSoundscape } from '@/context/SoundscapeContext';
 
 interface TopAppBarProps {
   onMenuClick: () => void;
@@ -7,10 +9,20 @@ interface TopAppBarProps {
 
 export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const { tenant } = useTenant();
+  const { pathname } = useLocation();
 
   const isMaxina = tenant?.slug === 'maxina';
-
   const tenantName = tenant?.name || 'Community';
+  const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
+
+  let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;
+  try {
+    soundscapeContext = useSoundscape();
+  } catch {
+    // Context not available yet
+  }
+
+  const showMute = !!soundscapeContext && !isInLiveRoom;
 
   return (
     <header
@@ -48,8 +60,22 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
           {tenantName.toUpperCase()}
         </span>
 
-        {/* Right spacer for symmetry */}
-        <div className="w-8 ml-auto" />
+        {/* Mute toggle – right */}
+        {showMute ? (
+          <button
+            onClick={soundscapeContext!.toggleMute}
+            className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10 ml-auto"
+            aria-label={soundscapeContext!.isMuted ? 'Unmute background music' : 'Mute background music'}
+          >
+            {soundscapeContext!.isMuted ? (
+              <VolumeX className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--muted-foreground))' } : undefined} />
+            ) : (
+              <Volume2 className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined} />
+            )}
+          </button>
+        ) : (
+          <div className="w-8 ml-auto" />
+        )}
       </div>
     </header>
   );

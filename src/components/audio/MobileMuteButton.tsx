@@ -22,8 +22,8 @@ export function MobileMuteButton() {
     // Context not available yet - render nothing
   }
 
-  // Only show on mobile and when soundscape context is available
-  if (!isMobile || !soundscapeContext || isInLiveRoom) return null;
+  // On mobile, the TopAppBar now handles the mute button
+  if (isMobile || !soundscapeContext || isInLiveRoom) return null;
   
   const { isMuted, toggleMute, isPlaying } = soundscapeContext;
 
