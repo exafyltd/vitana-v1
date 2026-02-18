@@ -1,170 +1,30 @@
 
 
-## In-App Top App Bar + Drawer Sidebar Navigation
+## Fix Mute Button and Event Card CTA Visibility
 
-### Overview
+### Problem
 
-Build a native React Top App Bar and slide-from-left Drawer to replace the Appilix-generated navigation. The existing mobile bottom nav and desktop sidebar remain untouched.
+After adding the new Top App Bar (56px / h-14), two UI elements are mispositioned on mobile:
 
-### Key Clarification from Screenshot
+1. **Mute button** (`MobileMuteButton.tsx`): Still at `fixed top-4 right-4` (16px from top), which is hidden behind the app bar.
+2. **Event card CTA ("Buy Ticket")**: The card height is `calc(100dvh - 220px)`, calibrated before the app bar existed. Now the `MobileAppShell` adds `pt-14` (56px) of top padding, but the card height wasn't adjusted, so the bottom of each card (and its CTA at `absolute bottom-6`) overflows behind the bottom navigation.
 
-- **Left**: Kebab menu icon (three vertical dots) that opens the drawer
-- **Center**: Tenant name in uppercase (e.g., "MAXINA")
-- **Right**: Nothing (no back button, no extra icons)
+### Changes
 
-### New Files
+**1. `src/components/audio/MobileMuteButton.tsx`**
 
-| File | Purpose |
-|------|---------|
-| `src/config/drawer-nav.config.ts` | Centralized navigation items: 12 entries with id, route, icon, i18n key |
-| `src/components/mobile/TopAppBar.tsx` | Fixed top bar with kebab (left) + tenant name (center) |
-| `src/components/mobile/SideDrawerNav.tsx` | Slide-from-left drawer with tenant header, nav items, active highlight, logout |
-| `src/components/mobile/MobileAppShell.tsx` | Composes TopAppBar + SideDrawerNav + children; no-op on desktop |
+Move the mute button from `top-4 right-4` to `top-[60px] right-4` so it sits just below the 56px app bar with a small gap.
 
-### Changed Files
+**2. `src/components/community/MobileEventCarousel.tsx`**
 
-| File | Change |
-|------|--------|
-| `src/components/AppLayout.tsx` | Wrap children in `MobileAppShell` |
-| `src/i18n/en.json` | Add `drawerNav.*` keys (12 items) |
-| `src/i18n/de.json` | Add `drawerNav.*` keys (12 items, German) |
-| `src/lib/appilix.ts` | Add `hideAppilixAppBar()` to suppress native bar |
-| `src/hooks/useAppilix.ts` | Call `hideAppilixAppBar()` once detected |
+Increase the height offset from `220px` to `276px` (adding 56px for the new app bar). This applies to both the scroll container and each card wrapper. The new value: `calc(100dvh - 276px)`.
 
-### Technical Details
+**3. `src/components/community/MobileLiveRoomCarousel.tsx`**
 
-**1. Navigation Config (`drawer-nav.config.ts`)**
+Same adjustment as above -- change `220px` to `276px` in both height declarations.
 
-Single source of truth for all drawer items, matching the Appilix categories exactly:
+### Result
 
-```text
-events        /comm/events-meetups      Calendar       drawerNav.events
-live          /comm/live-rooms          Video          drawerNav.live
-media         /comm/media-hub           LayoutGrid     drawerNav.media
-business      /business                 Briefcase      drawerNav.business
-discover      /discover                 Compass        drawerNav.discover
-orders        /discover/orders          ShoppingBag    drawerNav.orders
-wallet        /wallet                   Wallet         drawerNav.wallet
-health        /health                   HeartPulse     drawerNav.health
-connectors    /settings/connected-apps  Plug           drawerNav.connectors
-inbox         /inbox                    Mail           drawerNav.inbox
-profile       /me/profile               UserCircle     drawerNav.profile
-logout        __logout__                LogOut         drawerNav.logout
-```
-
-**2. TopAppBar Layout**
-
-```text
-+----------------------------------------------+
-| [kebab]          MAXINA                       |
-+----------------------------------------------+
-```
-
-- Fixed position, `z-40` (below modals/drawers, above content)
-- Height: `h-14` (56px)
-- Kebab icon on the left triggers drawer open
-- Tenant name centered, uppercase, semi-bold, `tracking-wider`
-- Maxina gradient: `linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%)`
-- Text/icons: `rgba(255,255,255,0.95)` on gradient
-- Other tenants: neutral theme background
-- Only renders on mobile (`useIsMobile`)
-- Hidden on the same routes as MobileBottomNav (intro, auth, live room viewer, etc.)
-
-**3. SideDrawerNav**
-
-- Uses `framer-motion` for slide-from-left animation + backdrop fade
-- Drawer header: tenant name + sublabel on the Maxina gradient (or theme bg for others)
-- Nav list: maps `drawerNavItems`, each with `icon + translate(translationKey)`
-- Active route: highlighted background (`primary/10`) + left accent bar, using `useLocation` path matching
-- Click any item: navigate + close drawer
-- Logout: calls `signOut()` from `useAuth()`, redirects to `/`
-- Closes on backdrop click
-
-**4. MobileAppShell**
-
-```tsx
-function MobileAppShell({ children }) {
-  const isMobile = useIsMobile();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  if (!isMobile) return <>{children}</>;
-
-  return (
-    <>
-      <TopAppBar onMenuClick={() => setDrawerOpen(true)} />
-      <SideDrawerNav open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      <div className="pt-14">{children}</div>
-    </>
-  );
-}
-```
-
-**5. AppLayout Integration**
-
-In the return of `AppLayout`, wrap `{children}` inside `<MobileAppShell>`:
-
-```tsx
-<main className="flex-1">
-  <MobileAppShell>{children}</MobileAppShell>
-</main>
-```
-
-The existing `MobileBottomNav` remains completely independent and unchanged.
-
-**6. Translation Keys**
-
-English (`drawerNav` block in `en.json`):
-```text
-events      Events & MeetUps
-live        Live Channels
-media       Media
-business    Business
-discover    Discover
-orders      Orders
-wallet      Wallet
-health      Health
-connectors  Connectors
-inbox       Inbox
-profile     Profile
-logout      Log Out
-```
-
-German (`drawerNav` block in `de.json`):
-```text
-events      Events & MeetUps
-live        Live Kanale
-media       Medien
-business    Business
-discover    Entdecken
-orders      Bestellungen
-wallet      Wallet
-health      Gesundheit
-connectors  Connectors
-inbox       Postfach
-profile     Profil
-logout      Abmelden
-```
-
-**7. Appilix Bridge Update**
-
-Add `hideAppilixAppBar()` to `appilix.ts`:
-
-```typescript
-export function hideAppilixAppBar(): boolean {
-  return updateSettings({
-    app_bar: false,
-    navigation_drawer: false,
-    show_menu_icon: false,
-  });
-}
-```
-
-In `useAppilix.ts`, replace `forceAppBarVisibility()` with `hideAppilixAppBar()` so the native Appilix bar disappears when the React bar is active.
-
-### What Stays Unchanged
-
-- Desktop sidebar (`AppSidebar`)
-- `MobileBottomNav` component
-- All existing routing in `App.tsx`
-- The `useAppilix` detection logic (only post-detection action changes)
-
+- Mute button appears just below the app bar in the top-right corner, fully visible and tappable
+- Event cards fit exactly between the page header/tabs and the bottom nav bar
+- The "Buy Ticket" CTA at the bottom-right of each card is fully visible above the bottom navigation, matching the second screenshot
