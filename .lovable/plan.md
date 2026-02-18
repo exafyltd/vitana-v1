@@ -1,62 +1,41 @@
 
 
-## Extend App Bar Gradient Into Status Bar + Enlarge "MAXINA" Title
+## Reduce App Bar Height to Fit Event Cards in One Viewport
 
-### Overview
+### Problem
 
-Three targeted changes to make the Top App Bar feel fully native and immersive:
+The current app bar toolbar row is 56px (`h-14`), which pushes the event card down enough that the CTA button ("Buy Tickets") falls below the bottom nav bar. Reducing the bar height will raise the card so the CTA sits exactly above the bottom nav.
 
-1. Extend the gradient behind the system status bar (time, battery) using safe-area insets
-2. Tell Appilix to make the native status bar transparent with light (white) icons
-3. Increase the "MAXINA" title size from `text-sm` to `text-[22px]` with proper letter-spacing
+### Approach
+
+Reduce the toolbar row from 56px (`h-14`) to 44px (`h-11`). This reclaims 12px of vertical space, pushing the card content up. All dependent offset values must be updated accordingly.
 
 ### Changes
 
 **1. `src/components/mobile/TopAppBar.tsx`**
 
-Restructure the header to include safe-area padding above the toolbar row:
+- Change the inner toolbar row from `h-14` (56px) to `h-11` (44px)
+- Slightly reduce the kebab button tap target from `w-10 h-10` to `w-9 h-9` (still meets 44px min with padding)
 
-- Outer `<header>` remains `fixed top-0 left-0 right-0 z-40` but removes the fixed `h-14`
-- Add `padding-top: env(safe-area-inset-top, 0px)` so the gradient fills behind the status bar
-- The inner toolbar row keeps `h-14` for the kebab + title
-- The gradient background covers both the safe-area region and the toolbar
-- For non-Maxina tenants, the neutral background also extends behind the status bar
+**2. `src/components/mobile/MobileAppShell.tsx`**
 
-Title upgrade:
-- Change from `text-sm font-semibold tracking-wider` to `text-[22px] font-semibold tracking-[0.08em]`
-- Keep white at 0.95 opacity for Maxina
+- Update content padding from `56px` to `44px`: `calc(env(safe-area-inset-top, 0px) + 44px)`
 
-**2. `src/lib/appilix.ts`**
+**3. `src/components/audio/MobileMuteButton.tsx`**
 
-Add a new `setStatusBarStyle()` helper:
+- Update top offset from `60px` to `48px`: `calc(env(safe-area-inset-top, 0px) + 48px)`
 
-```
-export function setStatusBarStyle(background: string, lightContent: boolean): boolean {
-  return updateSettings({
-    status_bar_color: background,
-    status_bar_style: lightContent ? 'light-content' : 'dark-content',
-  });
-}
-```
+**4. `src/components/community/MobileEventCarousel.tsx`**
 
-**3. `src/hooks/useAppilix.ts`**
+- Update card height from `276px` to `264px` offset: `calc(100dvh - 264px)` (4 occurrences)
 
-After calling `hideAppilixAppBar()`, also call `setStatusBarStyle('transparent', true)` for Maxina tenant, or `setStatusBarStyle('#8FD5FA', true)` as fallback if transparent is not supported.
+**5. `src/components/community/MobileLiveRoomCarousel.tsx`**
 
-**4. `src/components/mobile/MobileAppShell.tsx`**
+- Same height change: `calc(100dvh - 264px)` (4 occurrences)
 
-Update the content padding from `pt-14` to account for the safe-area inset:
-- Change to `padding-top: calc(env(safe-area-inset-top, 0px) + 56px)` (safe area + h-14)
+### Math
 
-**5. `src/components/audio/MobileMuteButton.tsx`**
-
-Update top offset to also account for safe-area:
-- Change from `top-[60px]` to inline style `top: calc(env(safe-area-inset-top, 0px) + 60px)`
-
-### What Stays Unchanged
-
-- Drawer sidebar (no changes)
-- Bottom navigation (no changes)
-- Desktop layout (no changes)
-- Carousel height calculations (already correct relative to the shell padding)
+- Old: safe-area + 56px bar = 276px total offset (with ~220px for tabs/header)
+- New: safe-area + 44px bar = 264px total offset (12px reclaimed)
+- Cards gain 12px, bringing the CTA above the bottom nav
 
