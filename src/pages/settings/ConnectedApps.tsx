@@ -58,13 +58,13 @@ function ConnectedApps() {
   // Mobile view - simplified, native-feeling experience
   if (isMobile) {
     return (
-      <>
+      <AppLayout>
         <SEO 
           title="Connected Apps & Integrations"
           description="Manage your connected devices and services"
         />
         <MobileConnectedAppsView />
-      </>
+      </AppLayout>
     );
   }
 
