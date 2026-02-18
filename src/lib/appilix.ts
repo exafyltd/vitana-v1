@@ -80,3 +80,15 @@ export function forceAppBarVisibility(): boolean {
     show_menu_icon: true,
   });
 }
+
+/**
+ * Hide the native Appilix App Bar and Navigation Drawer.
+ * Called when the React-based TopAppBar + SideDrawerNav takes over.
+ */
+export function hideAppilixAppBar(): boolean {
+  return updateSettings({
+    app_bar: false,
+    navigation_drawer: false,
+    show_menu_icon: false,
+  });
+}

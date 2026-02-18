@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import {
   isAppilix,
   openDrawer as appilixOpenDrawer,
-  forceAppBarVisibility,
+  hideAppilixAppBar,
 } from '@/lib/appilix';
 
 /**
@@ -26,7 +26,7 @@ export function useAppilix() {
     if (isAppilix()) {
       console.log('[Appilix] Detected immediately');
       setDetected(true);
-      forceAppBarVisibility();
+      hideAppilixAppBar();
       setIsReady(true);
       return;
     }
@@ -42,7 +42,7 @@ export function useAppilix() {
       if (isAppilix()) {
         console.log(`[Appilix] Detected after ${elapsed}ms`);
         setDetected(true);
-        forceAppBarVisibility();
+        hideAppilixAppBar();
         setIsReady(true);
         if (timerRef.current) clearInterval(timerRef.current);
         return;
