@@ -2330,5 +2330,19 @@
     "ticketEmailNote": "Your ticket and confirmation will be sent to this email.",
     "left": "{count} left",
     "loadFailed": "Failed to load tickets"
+  },
+  "drawerNav": {
+    "events": "Events & MeetUps",
+    "live": "Live Channels",
+    "media": "Media",
+    "business": "Business",
+    "discover": "Discover",
+    "orders": "Orders",
+    "wallet": "Wallet",
+    "health": "Health",
+    "connectors": "Connectors",
+    "inbox": "Inbox",
+    "profile": "Profile",
+    "logout": "Log Out"
   }
 }

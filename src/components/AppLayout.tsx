@@ -38,6 +38,7 @@ import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
+import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
 
 // Dynamic navigation based on user role - removed static sidebar categories
@@ -444,7 +445,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
             <div className="flex flex-col min-h-screen bg-background rounded-tl-2xl">
               <PendingCalendarEventProcessor />
               <main className="flex-1">
-                {children}
+                <MobileAppShell>{children}</MobileAppShell>
               </main>
             </div>
           </SidebarInset>

@@ -2330,5 +2330,19 @@
     "ticketEmailNote": "Ihr Ticket und die Bestätigung werden an diese E-Mail gesendet.",
     "left": "{count} übrig",
     "loadFailed": "Tickets konnten nicht geladen werden"
+  },
+  "drawerNav": {
+    "events": "Events & MeetUps",
+    "live": "Live Kanäle",
+    "media": "Medien",
+    "business": "Business",
+    "discover": "Entdecken",
+    "orders": "Bestellungen",
+    "wallet": "Wallet",
+    "health": "Gesundheit",
+    "connectors": "Connectors",
+    "inbox": "Postfach",
+    "profile": "Profil",
+    "logout": "Abmelden"
   }
 }
