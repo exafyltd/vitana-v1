@@ -17,7 +17,7 @@ export function MobileAppShell({ children }: MobileAppShellProps) {
     <>
       <TopAppBar onMenuClick={() => setDrawerOpen(true)} />
       <SideDrawerNav open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      <div style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 44px)' }}>{children}</div>
+      <div style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}>{children}</div>
     </>
   );
 }
