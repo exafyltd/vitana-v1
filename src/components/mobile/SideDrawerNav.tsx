@@ -81,7 +81,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             >
               <div>
                 <div className="font-bold text-lg tracking-wide">
-                  {tenantName}
+                  {isMaxina ? 'Vitanaland' : tenantName}
                 </div>
                 {isMaxina && (
                   <div className="text-xs opacity-80 mt-0.5">
