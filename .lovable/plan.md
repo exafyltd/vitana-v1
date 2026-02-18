@@ -1,42 +1,17 @@
 
 
-## Fix Missing App Bar on Mobile Connected Apps Screen
+## Rename "Live Channels" / "Live Kanäle" to "Live Rooms" in Drawer Navigation
 
-### Problem
-The Connected Apps page (`/settings/connected-apps`) renders its mobile view without wrapping it in `AppLayout`. All other screens use `AppLayout`, which includes `MobileAppShell` (the component that provides the Top App Bar and swipe-to-open drawer). This is why the Connected Apps screen is the only one missing the app bar.
+### Changes
 
-### Solution
+Two translation files need a single-line update each:
 
-**`src/pages/settings/ConnectedApps.tsx`** -- lines 59-68
+1. **`src/i18n/en.json`** -- line 2336: Change `"live": "Live Channels"` to `"live": "Live Rooms"`
+2. **`src/i18n/de.json`** -- line 2336: Change `"live": "Live Kanäle"` to `"live": "Live Rooms"`
 
-Wrap the mobile return branch in `AppLayout` so it gets the same `MobileAppShell` treatment as every other screen.
-
-Current:
-```tsx
-if (isMobile) {
-  return (
-    <>
-      <SEO ... />
-      <MobileConnectedAppsView />
-    </>
-  );
-}
-```
-
-Updated:
-```tsx
-if (isMobile) {
-  return (
-    <AppLayout>
-      <SEO ... />
-      <MobileConnectedAppsView />
-    </AppLayout>
-  );
-}
-```
+Both languages will display "Live Rooms" (kept in English per request).
 
 ### What stays unchanged
-- Desktop view (already wrapped in `AppLayout`)
-- `MobileConnectedAppsView` content and layout
-- All other screens
-
+- Drawer nav config (`drawer-nav.config.ts`) -- the translation key `drawerNav.live` is unchanged
+- Route (`/comm/live-rooms`) -- unchanged
+- Arabic translations -- no `drawerNav` section exists in `ar.json`
