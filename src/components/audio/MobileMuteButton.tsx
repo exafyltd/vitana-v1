@@ -33,7 +33,7 @@ export function MobileMuteButton() {
       aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
       className={cn(
         // Fixed positioning - top right, below status bar
-        "fixed top-4 right-4 z-40",
+        "fixed top-[60px] right-4 z-40",
         // Minimum 44px tap target for accessibility
         "min-h-[44px] min-w-[44px] h-11 w-11",
         // Glass morphism styling
