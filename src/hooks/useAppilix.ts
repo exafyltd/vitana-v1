@@ -3,6 +3,7 @@ import {
   isAppilix,
   openDrawer as appilixOpenDrawer,
   hideAppilixAppBar,
+  setStatusBarStyle,
 } from '@/lib/appilix';
 
 /**
@@ -27,6 +28,7 @@ export function useAppilix() {
       console.log('[Appilix] Detected immediately');
       setDetected(true);
       hideAppilixAppBar();
+      setStatusBarStyle('transparent', true);
       setIsReady(true);
       return;
     }
@@ -43,6 +45,7 @@ export function useAppilix() {
         console.log(`[Appilix] Detected after ${elapsed}ms`);
         setDetected(true);
         hideAppilixAppBar();
+        setStatusBarStyle('transparent', true);
         setIsReady(true);
         if (timerRef.current) clearInterval(timerRef.current);
         return;
