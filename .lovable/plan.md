@@ -1,19 +1,23 @@
 
 
-## Update Drawer Header: "Vitanaland" Instead of "Maxina"
+## Add Swipe-Right Gesture to Open Side Drawer
 
-### Change
+### What changes
+Add a touch swipe-right gesture detector to `MobileAppShell` so users can drag from the left edge of the screen to open the navigation drawer, in addition to the existing kebab menu button.
 
-**`src/components/mobile/SideDrawerNav.tsx`** -- lines 83-84
+### Implementation
 
-Currently the header shows the tenant name ("Maxina") from `tenant?.name`. For the Maxina tenant, it should instead display "Vitanaland" as the primary title, while keeping "Maxina Experience" as the subtitle below it.
+**`src/components/mobile/MobileAppShell.tsx`**
 
-- Line 84: Change `{tenantName}` to `{isMaxina ? 'Vitanaland' : tenantName}`
-- Everything else (subtitle, gradient, close button) stays unchanged
+Add `onTouchStart` / `onTouchEnd` handlers to the content wrapper that detect a horizontal right-swipe gesture:
+
+- On `touchstart`: record the starting X and Y coordinates.
+- On `touchend`: compute deltaX and deltaY. If the swipe started within ~30px of the left edge, moved right by at least 50px, and the horizontal distance exceeds the vertical distance (to avoid interfering with scrolling), open the drawer.
+- This keeps it simple with no extra dependencies -- just native touch events and a `useRef` for the start coordinates.
 
 ### What stays unchanged
-- "Maxina Experience" subtitle -- already present
-- Header gradient styling
-- Non-Maxina tenants still show their tenant name
-- Top App Bar ("MAXINA" centered text) -- untouched
+- Drawer component (`SideDrawerNav`) -- untouched
+- Kebab menu button still works as before
+- Desktop behavior unaffected (component returns early for non-mobile)
+- Drawer close behavior (backdrop tap, X button) unchanged
 
