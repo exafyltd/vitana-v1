@@ -54,7 +54,7 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
 
         {/* Tenant name – centered */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 z-10 leading-none select-none ${isMaxina ? 'font-medium tracking-[0.24em] text-[22px]' : 'font-semibold tracking-[0.08em] text-[20px]'}`}
+          className={`absolute left-1/2 -translate-x-1/2 z-10 leading-none select-none ${isMaxina ? 'font-medium tracking-[0.18em] text-[21px] text-white/[0.92]' : 'font-semibold tracking-[0.08em] text-[20px]'}`}
           style={!isMaxina ? { color: 'var(--foreground, inherit)' } : undefined}
         >
           {tenantName.toUpperCase()}
