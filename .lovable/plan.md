@@ -1,22 +1,28 @@
 
 
-## Remove Desktop Mute Button and "Live" Indicator
+## Update MAXINA App Bar Typography
 
 ### Problem
-1. The floating mute button still shows on desktop, but desktop already has mute controls in the sidebar -- so it's redundant.
-2. The "Live" connection status badge (green wifi icon + "Live" text) appears in the SubNavigation bar on desktop and is unnecessary clutter.
+The current tenant name in the app bar uses `font-semibold` (600) and `tracking-[0.08em]` at `text-[20px]`. The desired Maxina style requires `font-medium` (500) with wider letter-spacing (`0.24em`) at `22px`.
 
-### Changes
+### Change
 
-**1. `src/components/audio/MobileMuteButton.tsx`**
-- Make the component always return `null` (it was originally mobile-only, mobile now uses TopAppBar, and desktop has sidebar controls). This effectively removes the floating mute button everywhere.
+**`src/components/mobile/TopAppBar.tsx`** -- line 57
 
-**2. `src/components/SubNavigation.tsx`**
-- Remove the `ConnectionStatus` component from the right-actions area
-- Remove the import of `ConnectionStatus`
-- Keep the `rightActions` slot intact for other uses
+Current:
+```
+className="absolute left-1/2 -translate-x-1/2 z-10 font-semibold tracking-[0.08em] text-[20px] select-none"
+```
+
+Updated (Maxina-conditional):
+- When `isMaxina`: `font-medium tracking-[0.24em] text-[22px]`
+- When not Maxina: keep existing `font-semibold tracking-[0.08em] text-[20px]`
+
+The `leading-none` utility will be added to prevent the 2px font-size increase from affecting the container's `h-8` height.
 
 ### What stays unchanged
-- TopAppBar mute button (mobile) -- untouched
-- Sidebar mute controls (desktop) -- untouched
-- SubNavigation tab links and layout -- untouched
+- App bar height (`h-8` / 32px)
+- Gradient background and color
+- Mute button and menu button
+- Non-Maxina tenant styling
+
