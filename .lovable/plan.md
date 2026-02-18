@@ -1,17 +1,30 @@
 
 
-## Rename "Live Channels" / "Live Kanäle" to "Live Rooms" in Drawer Navigation
+## Refine MAXINA Title Styling in Top App Bar
 
-### Changes
+### Change
 
-Two translation files need a single-line update each:
+Update the Maxina-specific branch of the tenant name `<span>` in `src/components/mobile/TopAppBar.tsx` (line 57) to match the requested styling:
 
-1. **`src/i18n/en.json`** -- line 2336: Change `"live": "Live Channels"` to `"live": "Live Rooms"`
-2. **`src/i18n/de.json`** -- line 2336: Change `"live": "Live Kanäle"` to `"live": "Live Rooms"`
+- `text-[22px]` → `text-[21px]`
+- `tracking-[0.24em]` → `tracking-[0.18em]`
+- Add `text-white/[0.92]` (currently inherits `rgba(255,255,255,0.95)` from parent)
 
-Both languages will display "Live Rooms" (kept in English per request).
+Everything else stays the same: bar height (`h-8`), vertical alignment (`items-center`, `leading-none`), gradient, structure, and non-Maxina tenant styling.
 
-### What stays unchanged
-- Drawer nav config (`drawer-nav.config.ts`) -- the translation key `drawerNav.live` is unchanged
-- Route (`/comm/live-rooms`) -- unchanged
-- Arabic translations -- no `drawerNav` section exists in `ar.json`
+### Technical detail
+
+Line 57 class string for the `isMaxina` branch changes from:
+
+```
+font-medium tracking-[0.24em] text-[22px]
+```
+
+to:
+
+```
+font-medium tracking-[0.18em] text-[21px] text-white/[0.92]
+```
+
+**File edited:** `src/components/mobile/TopAppBar.tsx` (single line change).
+
