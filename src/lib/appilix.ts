@@ -92,3 +92,13 @@ export function hideAppilixAppBar(): boolean {
     show_menu_icon: false,
   });
 }
+
+/**
+ * Set the native status bar style (background color and icon tint).
+ */
+export function setStatusBarStyle(background: string, lightContent: boolean): boolean {
+  return updateSettings({
+    status_bar_color: background,
+    status_bar_style: lightContent ? 'light-content' : 'dark-content',
+  });
+}
