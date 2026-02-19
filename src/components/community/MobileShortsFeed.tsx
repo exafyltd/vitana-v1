@@ -38,6 +38,11 @@ export function MobileShortsFeed({
   const [likeAdjustments, setLikeAdjustments] = useState<Map<string, number>>(new Map());
   const toggleLike = useToggleLike();
 
+  // Clear optimistic adjustments when fresh data arrives from server
+  useEffect(() => {
+    setLikeAdjustments(new Map());
+  }, [shorts]);
+
   // Handle scroll snap detection
   useEffect(() => {
     const container = containerRef.current;
