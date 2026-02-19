@@ -1,32 +1,50 @@
 
 
-## Fix "COMMUNITY" Flash in Top App Bar
+## Fix Language Resetting to English After Login
 
 ### Problem
-When logging into the Maxina app, the Top App Bar briefly shows "COMMUNITY" for 1-2 seconds before switching to "MAXINA". This happens because tenant data is loaded asynchronously from the database, and the fallback text is hardcoded as `'Community'`.
+When you switch language on the intro screen (before logging in) and then log in, the app briefly shows the correct language but then reverts to English. This is because:
 
-### Root Cause
-In `TopAppBar.tsx` (line 15) and `SideDrawerNav.tsx` (line 22):
-```
-const tenantName = tenant?.name || 'Community';
-```
-While the tenant query is in flight, `tenant` is null, so the fallback "Community" is displayed.
+1. On the intro screen, you toggle language to German -- this saves to localStorage but cannot sync to the server (you're not logged in yet)
+2. After login, the server preferences load with the old language (`en-US`)
+3. The "initial sync from server" effect blindly overrides your local choice with the stale server value
 
 ### Solution
-Use the URL path to determine the tenant name immediately (synchronously) instead of waiting for the database query. The tenant slug is already in the URL (e.g., `/maxina/...`, `/comm/...`), so we can derive a display name from it instantly.
+When syncing from the server on initial load, check if the user made a **recent local change** (within a time window). If they did, prefer the local value and push it to the server instead of the other way around.
 
-### Changes
+### Technical Details
 
-**File: `src/components/mobile/TopAppBar.tsx`**
-- Read the tenant name from the URL path as an immediate fallback instead of the generic "Community"
-- Logic: if path starts with `/maxina` or user is on `/comm` routes and localStorage has `tenant_slug`, use that slug to look up the name
-- Simpler approach: just use `tenant?.name || ''` (empty string) so nothing shows while loading, avoiding the incorrect "COMMUNITY" label entirely. The bar still renders, just without text for a brief moment.
+**File: `src/contexts/LanguageContext.tsx`**
 
-**File: `src/components/mobile/SideDrawerNav.tsx`**
-- Same fix: replace the `'Community'` fallback with `''` or a URL-derived name
+Modify the server sync effect (lines 55-61) to respect recent local changes:
 
-### Recommended Approach
-The simplest and cleanest fix: change the fallback from `'Community'` to an empty string `''`. This means for 1-2 seconds the bar appears without a title (which is far less jarring than showing the wrong brand name), then the correct name appears.
+```tsx
+useEffect(() => {
+  if (!hasInitializedFromServer && preferences?.stt_language) {
+    // Check if user changed language locally BEFORE auth loaded
+    // (e.g., on intro screen). localStorage is the source of truth
+    // for pre-auth changes.
+    const localStored = getLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY);
+    
+    if (localStored && localStored !== preferences.stt_language) {
+      // Local value differs from server -- local wins, push to server
+      console.log('[LANG] Local override:', localStored, '(server had:', preferences.stt_language, ')');
+      setLocalLanguage(localStored);
+      updatePreferences({ stt_language: localStored });
+    } else {
+      // No local override -- use server value as before
+      console.log('[LANG] Initial sync from server:', preferences.stt_language);
+      setLocalLanguage(preferences.stt_language);
+    }
+    
+    setHasInitializedFromServer(true);
+  }
+}, [preferences?.stt_language, hasInitializedFromServer]);
+```
 
-Alternatively, we can read `localStorage.getItem('tenant_slug')` (which is already persisted on tenant switch) and map it to a display name for an instant, synchronous fallback -- giving us the correct name from the very first render.
+The logic is:
+- If localStorage has a language that **differs** from the server value, the user changed it locally (likely on the intro screen before login) -- keep the local value and update the server
+- If localStorage matches the server or is empty, use the server value as normal
+
+This is a single-file change with no new dependencies.
 
