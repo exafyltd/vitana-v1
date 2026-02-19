@@ -75,9 +75,9 @@ export function VitanaAudioOverlay() {
   }, [audioOverlayVisible, connect, disconnect]);
 
   // Map states to visual feedback
-  const audioState: 'idle' | 'listening' | 'processing' | 'error' = 
+  const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 
     error ? 'error' :
-    isSpeaking ? 'processing' :
+    isSpeaking ? 'speaking' :
     isProcessing ? 'processing' :
     isListening ? 'listening' :
     connectionState === 'ready' ? 'idle' :

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 interface VitanalandPortalSeedProps {
-  audioState: 'idle' | 'listening' | 'processing' | 'error';
+  audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
   volumeLevel: number; // 0-1 range
   size?: 'sm' | 'nav' | 'md' | 'lg';
   layoutId?: string;
