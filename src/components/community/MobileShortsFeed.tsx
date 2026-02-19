@@ -89,9 +89,7 @@ export function MobileShortsFeed({
       });
 
       // Persist to DB
-      if (isLiking) {
-        toggleLike.mutate(videoId);
-      }
+      toggleLike.mutate({ videoId, action: isLiking ? 'like' : 'unlike' });
 
       return newSet;
     });
