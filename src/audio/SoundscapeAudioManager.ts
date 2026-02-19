@@ -519,19 +519,17 @@ export function getCurrentTrackId(): string {
  * If so, returns false (do not restart). If different, returns true.
  */
 export function shouldLoadTrack(trackIdOrSrc: string): boolean {
-  if (!isMobileDevice) return true; // Desktop always allows reload
-  
   const audio = getAudio();
   
-  // Check by track ID
+  // Check by track ID (universal, not mobile-only)
   if (trackIdOrSrc === currentTrackId) {
-    console.log('[AudioManager] Mobile engine guard: same trackId, skip reload');
+    console.log('[AudioManager] Engine guard: same trackId, skip reload');
     return false;
   }
   
   // Check by src
   if (audio.src && (audio.src === trackIdOrSrc || audio.src.includes(trackIdOrSrc))) {
-    console.log('[AudioManager] Mobile engine guard: same src, skip reload');
+    console.log('[AudioManager] Engine guard: same src, skip reload');
     return false;
   }
   
@@ -703,6 +701,9 @@ export function startFresh(initialVolume = 0.05) {
   
   // Don't check saved mute — each visit starts fresh with music
   
+  // Save position in case browser resets on play()
+  const savedTime = audio.currentTime;
+  
   soundscapeMuted = false;
   audio.muted = false;
   
@@ -714,6 +715,11 @@ export function startFresh(initialVolume = 0.05) {
   
   audio.play()
     .then(() => {
+      // Restore position if browser reset it during play()
+      if (savedTime > 1 && audio.currentTime < 1) {
+        audio.currentTime = savedTime;
+        console.log('[AudioManager] startFresh: restored currentTime to', savedTime);
+      }
       localStorage.setItem('soundscape_auto_play', 'true');
       console.log('[AudioManager] startFresh succeeded');
       notifyListeners();
