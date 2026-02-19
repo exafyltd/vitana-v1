@@ -34,6 +34,7 @@ export function VitanaAudioOverlay() {
   const [textInputValue, setTextInputValue] = useState('');
   const [showDiaryEntry, setShowDiaryEntry] = useState(false);
   const [showAutopilot, setShowAutopilot] = useState(false);
+  const [micMuted, setMicMuted] = useState(false); // User-controlled mute state
   
   // Visual context for screen/camera sharing (preserved for future multimodal)
   const { 
@@ -67,6 +68,7 @@ export function VitanaAudioOverlay() {
   useEffect(() => {
     if (audioOverlayVisible) {
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
+      setMicMuted(false); // Always start with open mic
       connect();
     } else {
       console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
@@ -117,7 +119,7 @@ export function VitanaAudioOverlay() {
   };
 
   const handleMicToggle = async () => {
-    console.log('[VitanaAudioOverlay] Mic toggle - current state:', { isListening, connectionState });
+    console.log('[VitanaAudioOverlay] Mic toggle - current micMuted:', micMuted, 'isListening:', isListening);
     
     // Only prevent mic toggle if completely disconnected
     if (connectionState === 'disconnected') {
@@ -125,10 +127,14 @@ export function VitanaAudioOverlay() {
       return;
     }
 
-    if (isListening) {
+    if (!micMuted) {
+      // User wants to mute — stop the recorder
       stopListening();
+      setMicMuted(true);
     } else {
+      // User wants to unmute — restart the recorder
       await startListening();
+      setMicMuted(false);
     }
   };
 
@@ -298,7 +304,7 @@ export function VitanaAudioOverlay() {
             className="absolute bottom-16 lg:bottom-20"
           >
             <AudioControls
-              micActive={isListening}
+              micActive={!micMuted}
               cameraActive={cameraActive}
               screenShareActive={screenShareActive}
               onMicToggle={handleMicToggle}
