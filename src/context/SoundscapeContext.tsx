@@ -227,9 +227,9 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   }, [isMuted, killOrphanedAudio]);
 
   const startFresh = useCallback((initialVolume = DEFAULT_VOLUME) => {
-    // On mobile, use engine guard - don't restart if already playing same track
-    if (AudioManager.isMobile() && !AudioManager.shouldLoadTrack('ambient')) {
-      console.log('[SoundscapeProvider] Mobile: skipping startFresh, same track active');
+    // Universal guard: if already playing the ambient track, do nothing (any platform)
+    if (AudioManager.getIsPlaying() && !AudioManager.shouldLoadTrack('ambient')) {
+      console.log('[SoundscapeProvider] Skipping startFresh, same track already playing');
       return;
     }
     
