@@ -50,20 +50,15 @@ export function AudioControls({
           'flex items-center justify-center',
           'transition-all duration-200',
           micActive
-            ? 'bg-red-600 hover:bg-red-700 ring-4 ring-red-500/30'
-            : 'bg-card/80 backdrop-blur-xl hover:bg-card border border-border/50'
+            ? 'bg-card/80 backdrop-blur-xl hover:bg-card border border-border/50'
+            : 'bg-red-600 hover:bg-red-700 ring-4 ring-red-500/30'
         )}
-        aria-label={micActive ? 'Stop recording' : 'Start recording'}
+        aria-label={micActive ? 'Mute microphone' : 'Unmute microphone'}
       >
         {micActive ? (
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <Mic className="h-5 w-5 text-white" />
-          </motion.div>
+          <Mic className="h-5 w-5 text-foreground" />
         ) : (
-          <MicOff className="h-5 w-5 text-foreground" />
+          <MicOff className="h-5 w-5 text-white" />
         )}
       </motion.button>
 

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 interface OrbCoreProps {
   size: 'sm' | 'md' | 'xl';
-  audioState?: 'idle' | 'listening' | 'processing' | 'error';
+  audioState?: 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
   volumeLevel?: number;
   enableFloat?: boolean;
   layoutId?: string;

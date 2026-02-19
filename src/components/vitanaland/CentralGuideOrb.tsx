@@ -5,7 +5,7 @@ import { playLoopingSound } from '@/lib/playLoopingSound';
 import { OrbCore } from './OrbCore';
 
 interface CentralGuideOrbProps {
-  audioState: 'idle' | 'listening' | 'processing' | 'error';
+  audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
   volumeLevel: number;
 }
 
