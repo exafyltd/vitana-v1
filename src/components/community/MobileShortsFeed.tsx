@@ -100,7 +100,7 @@ export function MobileShortsFeed({
 
   if (shorts.length === 0) {
     return (
-      <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+      <div className="fixed inset-0 bg-black z-[60] flex items-center justify-center">
         <div className="text-center text-white">
           <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
           <p>Loading shorts...</p>
@@ -112,7 +112,7 @@ export function MobileShortsFeed({
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 bg-black z-50 overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
+      className="fixed inset-0 bg-black z-[60] overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
       style={{
         scrollSnapType: 'y mandatory',
         overscrollBehavior: 'contain',
@@ -131,7 +131,7 @@ export function MobileShortsFeed({
       ))}
 
       {/* Progress indicator */}
-      <div className="fixed top-16 left-0 right-0 flex justify-center gap-1 z-20 pointer-events-none">
+      <div className="fixed top-16 left-0 right-0 flex justify-center gap-1 z-[62] pointer-events-none">
         {shorts.length <= 10 && shorts.map((_, index) => (
           <div
             key={index}
