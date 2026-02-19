@@ -5,6 +5,7 @@ import { drawerNavItems } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
+import { getInstantTenantName } from '@/lib/tenant-display';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -19,7 +20,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { signOut } = useAuth();
 
   const isMaxina = tenant?.slug === 'maxina';
-  const tenantName = tenant?.name || 'Community';
+  const tenantName = tenant?.name || getInstantTenantName(location.pathname);
 
   const handleItemClick = async (item: (typeof drawerNavItems)[number]) => {
     onClose();

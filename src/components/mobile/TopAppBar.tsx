@@ -2,6 +2,7 @@ import { MoreVertical, Volume2, VolumeX } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
 import { useSoundscape } from '@/context/SoundscapeContext';
+import { getInstantTenantName } from '@/lib/tenant-display';
 
 interface TopAppBarProps {
   onMenuClick: () => void;
@@ -12,7 +13,7 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const { pathname } = useLocation();
 
   const isMaxina = tenant?.slug === 'maxina';
-  const tenantName = tenant?.name || 'Community';
+  const tenantName = tenant?.name || getInstantTenantName(pathname);
   const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
 
   let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;
