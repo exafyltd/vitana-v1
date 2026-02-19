@@ -196,7 +196,7 @@ export const useToggleLike = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (videoId: string) => {
+    mutationFn: async ({ videoId, action }: { videoId: string; action: 'like' | 'unlike' }) => {
       const { data: video } = await supabase
         .from('media_videos')
         .select('likes_count')
@@ -204,9 +204,13 @@ export const useToggleLike = () => {
         .single();
 
       if (video) {
+        const newCount = action === 'like'
+          ? video.likes_count + 1
+          : Math.max(0, video.likes_count - 1);
+
         const { error } = await supabase
           .from('media_videos')
-          .update({ likes_count: video.likes_count + 1 })
+          .update({ likes_count: newCount })
           .eq('id', videoId);
 
         if (error) throw error;
