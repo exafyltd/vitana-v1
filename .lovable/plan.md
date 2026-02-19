@@ -1,30 +1,47 @@
 
 
-## Refine MAXINA Title Styling in Top App Bar
+## Fix Mic Button Colors and Status Text
 
-### Change
+### Issue 1: Mic Button Colors Are Inverted
 
-Update the Maxina-specific branch of the tenant name `<span>` in `src/components/mobile/TopAppBar.tsx` (line 57) to match the requested styling:
+**Current (wrong):** `AudioControls.tsx` shows RED when `micActive=true` (mic open) and neutral/white when `micActive=false` (mic muted). This is backwards.
 
-- `text-[22px]` → `text-[21px]`
-- `tracking-[0.24em]` → `tracking-[0.18em]`
-- Add `text-white/[0.92]` (currently inherits `rgba(255,255,255,0.95)` from parent)
+**Correct behavior spec:**
+- Mic OPEN (listening, unmuted) = neutral/white button with white `Mic` icon (default state on session start)
+- Mic MUTED (not listening) = RED button with white `MicOff` icon + red ring
 
-Everything else stays the same: bar height (`h-8`), vertical alignment (`items-center`, `leading-none`), gradient, structure, and non-Maxina tenant styling.
+**File:** `src/components/audio/AudioControls.tsx` (lines 48-67)
 
-### Technical detail
+Swap the color logic:
+- `micActive` (open) gets the neutral card style: `bg-card/80 backdrop-blur-xl hover:bg-card border border-border/50`
+- `!micActive` (muted) gets the red alert style: `bg-red-600 hover:bg-red-700 ring-4 ring-red-500/30`
 
-Line 57 class string for the `isMaxina` branch changes from:
+Also swap the icon logic:
+- `micActive` shows plain `Mic` icon (no pulse animation needed for "normal" state)
+- `!micActive` shows `MicOff` icon in white on the red background
 
-```
-font-medium tracking-[0.24em] text-[22px]
-```
+### Issue 2: Status Text Stuck on "Einen Moment..." During Listening
 
-to:
+**Current (wrong):** `isSpeaking` maps to `audioState = 'processing'`, which renders "One moment..." / "Einen Moment...". After the AI finishes speaking and the session transitions to listening, the status should update to "I'm listening..." / "Ich hore dir zu".
 
-```
-font-medium tracking-[0.18em] text-[21px] text-white/[0.92]
-```
+The `audioState` mapping in `VitanaAudioOverlay.tsx` (line 80) maps `isSpeaking` to `'processing'`. This is correct for when the AI is actually speaking. However, the `AudioStatusText` component needs a new `'speaking'` state so we can distinguish AI-speaking from processing.
 
-**File edited:** `src/components/mobile/TopAppBar.tsx` (single line change).
+**Fix approach:** Add a `'speaking'` audio state:
+
+- In `AudioStatusText.tsx`: Add a `speaking` status message -- in English: "VITANA is speaking..." / in German use existing translate key
+- In `VitanaAudioOverlay.tsx` (line 80): Map `isSpeaking` to `'speaking'` instead of `'processing'`, so `'processing'` is only used for the actual thinking/processing phase
+
+This ensures:
+- While AI speaks: shows "VITANA is speaking..."
+- While processing (thinking): shows "Einen Moment..." / "One moment..."
+- While listening: shows "Ich hore dir zu" / "I'm listening..."
+- Idle/ready: empty (orb speaks for itself)
+
+### Technical Details
+
+**Files to modify:**
+
+1. `src/components/audio/AudioControls.tsx` -- Swap mic color/icon logic (lines 48-67)
+2. `src/components/audio/AudioStatusText.tsx` -- Add `'speaking'` state to type and status messages
+3. `src/components/audio/VitanaAudioOverlay.tsx` -- Map `isSpeaking` to `'speaking'` instead of `'processing'` (line 80)
 
