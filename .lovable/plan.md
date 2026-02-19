@@ -1,40 +1,32 @@
 
 
-## Fix Unlike (Unheart) on Shorts
+## Fix "COMMUNITY" Flash in Top App Bar
 
 ### Problem
-Two issues prevent unliking from working:
+When logging into the Maxina app, the Top App Bar briefly shows "COMMUNITY" for 1-2 seconds before switching to "MAXINA". This happens because tenant data is loaded asynchronously from the database, and the fallback text is hardcoded as `'Community'`.
 
-1. The `handleLike` function in `MobileShortsFeed.tsx` only calls the database mutation when **liking** (`if (isLiking)`), so an unlike is never sent to the server.
-2. The `useToggleLike` hook in `useShorts.ts` always **increments** `likes_count + 1` -- it has no logic to decrement.
-
-The optimistic local count does go down (-1), but after the query refetches, the DB still has the old (higher) count, so the number jumps back up.
+### Root Cause
+In `TopAppBar.tsx` (line 15) and `SideDrawerNav.tsx` (line 22):
+```
+const tenantName = tenant?.name || 'Community';
+```
+While the tenant query is in flight, `tenant` is null, so the fallback "Community" is displayed.
 
 ### Solution
+Use the URL path to determine the tenant name immediately (synchronously) instead of waiting for the database query. The tenant slug is already in the URL (e.g., `/maxina/...`, `/comm/...`), so we can derive a display name from it instantly.
 
-**1. Update `useToggleLike` in `src/hooks/useShorts.ts`**
+### Changes
 
-Accept a second parameter indicating the action ("like" or "unlike"). When unliking, decrement the count (with a floor of 0):
+**File: `src/components/mobile/TopAppBar.tsx`**
+- Read the tenant name from the URL path as an immediate fallback instead of the generic "Community"
+- Logic: if path starts with `/maxina` or user is on `/comm` routes and localStorage has `tenant_slug`, use that slug to look up the name
+- Simpler approach: just use `tenant?.name || ''` (empty string) so nothing shows while loading, avoiding the incorrect "COMMUNITY" label entirely. The bar still renders, just without text for a brief moment.
 
-```
-mutationFn: async ({ videoId, action }: { videoId: string; action: 'like' | 'unlike' }) => {
-  // fetch current likes_count
-  // if action === 'like', set likes_count + 1
-  // if action === 'unlike', set Math.max(0, likes_count - 1)
-}
-```
+**File: `src/components/mobile/SideDrawerNav.tsx`**
+- Same fix: replace the `'Community'` fallback with `''` or a URL-derived name
 
-**2. Update `handleLike` in `src/components/community/MobileShortsFeed.tsx`**
+### Recommended Approach
+The simplest and cleanest fix: change the fallback from `'Community'` to an empty string `''`. This means for 1-2 seconds the bar appears without a title (which is far less jarring than showing the wrong brand name), then the correct name appears.
 
-Call the mutation for **both** like and unlike, passing the appropriate action:
-
-```
-// Remove the `if (isLiking)` guard
-toggleLike.mutate({ videoId, action: isLiking ? 'like' : 'unlike' });
-```
-
-### Files to Edit
-
-- `src/hooks/useShorts.ts` -- change `useToggleLike` to accept and handle like/unlike
-- `src/components/community/MobileShortsFeed.tsx` -- call mutation on both like and unlike
+Alternatively, we can read `localStorage.getItem('tenant_slug')` (which is already persisted on tenant switch) and map it to a display name for an instant, synchronous fallback -- giving us the correct name from the very first render.
 
