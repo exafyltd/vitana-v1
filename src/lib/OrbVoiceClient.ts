@@ -315,7 +315,8 @@ export class OrbVoiceClient {
       }
     } else if (this.hasSpeechStarted && !this.silenceTimer) {
       this.silenceTimer = setTimeout(() => {
-        console.log('[OrbVoiceClient] Silence detected - ending turn automatically');
+        console.log('[OrbVoiceClient] Silence detected - ending turn');
+        this.stopListening();
         this.endTurn();
         this.hasSpeechStarted = false;
         this.silenceTimer = null;
@@ -360,7 +361,6 @@ export class OrbVoiceClient {
   async endTurn(): Promise<void> {
     if (!this.sessionId) return;
 
-    this.callbacks.onListeningChange?.(false);
     this.callbacks.onProcessingChange?.(true);
 
     try {

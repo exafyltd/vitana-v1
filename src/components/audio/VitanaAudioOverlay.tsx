@@ -76,6 +76,13 @@ export function VitanaAudioOverlay() {
     }
   }, [audioOverlayVisible, connect, disconnect]);
 
+  // Auto-resume listening after AI finishes speaking (unless user muted)
+  useEffect(() => {
+    if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
+      startListening();
+    }
+  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening, startListening]);
+
   // Map states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 
     error ? 'error' :
