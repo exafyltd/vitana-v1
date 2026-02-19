@@ -1,7 +1,8 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { MobileShortSlide } from './MobileShortSlide';
 import { toast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { useToggleLike } from '@/hooks/useShorts';
 
 interface VideoShort {
   id?: string;
@@ -34,6 +35,8 @@ export function MobileShortsFeed({
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const [likedVideos, setLikedVideos] = useState<Set<string>>(new Set());
+  const [likeAdjustments, setLikeAdjustments] = useState<Map<string, number>>(new Map());
+  const toggleLike = useToggleLike();
 
   // Handle scroll snap detection
   useEffect(() => {
@@ -61,18 +64,33 @@ export function MobileShortsFeed({
     }
   }, [initialIndex]);
 
-  // Handle like
+  // Handle like with optimistic count update + DB persistence
   const handleLike = useCallback((videoId: string) => {
     setLikedVideos(prev => {
       const newSet = new Set(prev);
-      if (newSet.has(videoId)) {
-        newSet.delete(videoId);
-      } else {
+      const isLiking = !newSet.has(videoId);
+      if (isLiking) {
         newSet.add(videoId);
+      } else {
+        newSet.delete(videoId);
       }
+
+      // Update local count adjustment
+      setLikeAdjustments(prevAdj => {
+        const newMap = new Map(prevAdj);
+        const current = newMap.get(videoId) || 0;
+        newMap.set(videoId, isLiking ? current + 1 : current - 1);
+        return newMap;
+      });
+
+      // Persist to DB
+      if (isLiking) {
+        toggleLike.mutate(videoId);
+      }
+
       return newSet;
     });
-  }, []);
+  }, [toggleLike]);
 
   // Handle share
   const handleShare = useCallback(async (video: VideoShort) => {
@@ -118,17 +136,20 @@ export function MobileShortsFeed({
         overscrollBehavior: 'contain',
       }}
     >
-      {shorts.map((video, index) => (
-        <MobileShortSlide
-          key={video.id || index}
-          video={video}
-          isActive={index === activeIndex}
-          onLike={() => video.id && handleLike(video.id)}
-          onShare={() => handleShare(video)}
-          onBack={onClose}
-          isLiked={video.id ? likedVideos.has(video.id) : false}
-        />
-      ))}
+      {shorts.map((video, index) => {
+        const adjustedLikes = video.likes + (likeAdjustments.get(video.id || '') || 0);
+        return (
+          <MobileShortSlide
+            key={video.id || index}
+            video={{ ...video, likes: Math.max(0, adjustedLikes) }}
+            isActive={index === activeIndex}
+            onLike={() => video.id && handleLike(video.id)}
+            onShare={() => handleShare(video)}
+            onBack={onClose}
+            isLiked={video.id ? likedVideos.has(video.id) : false}
+          />
+        );
+      })}
 
       {/* Progress indicator */}
       <div className="fixed top-16 left-0 right-0 flex justify-center gap-1 z-[62] pointer-events-none">
