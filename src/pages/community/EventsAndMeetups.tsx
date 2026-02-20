@@ -427,9 +427,16 @@ const EventsAndMeetups = () => {
     );
   }, [upcomingEvents, searchQuery]);
 
+  const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
+
+  const maxinaEvents = useMemo(() => {
+    return dbEvents.filter(event => event.created_by === MAXINA_CREATOR_ID);
+  }, [dbEvents]);
+
   // Get all events from current tab
   const currentEvents = activeTab === "today" ? filteredTodayEvents : 
-                        activeTab === "upcoming" ? filteredUpcomingEvents : [];
+                        activeTab === "upcoming" ? filteredUpcomingEvents :
+                        activeTab === "recommended" ? maxinaEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
   // Track if we've initialized the tab from URL (prevents resetting on data refresh)
@@ -888,14 +895,62 @@ const EventsAndMeetups = () => {
               </SplitBarContent>
 
               <SplitBarContent value="recommended" className={isMobile ? "mt-1" : "mt-6"}>
-                <div className="text-center py-12">
-                  <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">AI-Recommended Content</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Personalized recommendations based on your interests will appear here
-                  </p>
-                  <Button variant="outline">Update Preferences</Button>
-                </div>
+                {loading && maxinaEvents.length === 0 ? (
+                  <EventCardSkeleton count={4} className="px-2" />
+                ) : isMobile ? (
+                  <MobileEventCarousel
+                    events={maxinaEvents}
+                    onCardClick={handleCardClick}
+                    currentUserId={user?.id}
+                    onEdit={handleEditEvent}
+                    initialEventId={selectedEventId || undefined}
+                    onRefresh={fetchEvents}
+                    onSlideChange={(eventId) => {
+                      setFocusedCardId(eventId);
+                    }}
+                    emptyState={
+                      <div className="text-center py-12">
+                        <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-semibold mb-2">No Recommended Events</h3>
+                        <p className="text-muted-foreground mb-4">
+                          Check back soon for curated events.
+                        </p>
+                      </div>
+                    }
+                  />
+                ) : (
+                  <>
+                    {maxinaEvents.length === 0 ? (
+                      renderEventGrid(
+                        [],
+                        handleCardClick,
+                        user?.id,
+                        handleEditEvent,
+                        {
+                          icon: <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
+                          title: "No Recommended Events",
+                          description: "Check back soon for curated events.",
+                        }
+                      )
+                    ) : (
+                      <>
+                        {chunkEvents(maxinaEvents).map((chunk, chunkIndex) => (
+                          <div key={`recommended-chunk-${chunkIndex}`}>
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {chunkIndex < chunkEvents(maxinaEvents).length - 1 && (
+                              <div className="px-6 mb-8 mt-8">
+                                <MotivationalBanner variant="encouragement" />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                        <div className="px-6 mb-8 mt-8">
+                          <MotivationalBanner variant="partnership" />
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
               </SplitBarContent>
             </SplitBar>
           </div>
