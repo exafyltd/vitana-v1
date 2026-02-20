@@ -687,9 +687,20 @@ export function subscribe(listener: StateListener): () => void {
 export function startFresh(initialVolume = 0.05) {
   const audio = getAudio();
   
-  // IDEMPOTENT: If already playing, do not restart
+  // IDEMPOTENT guard 1: Already playing the ambient track → do nothing
   if (!audio.paused && audio.src.includes('maxina-ambient-music')) {
     console.log('[AudioManager] startFresh skipped - already playing');
+    return;
+  }
+  
+  // Guard 2: Audio is mid-session (has position) → just resume, don't reinitialize
+  // This catches the race condition where audio is briefly paused (foreground transition)
+  // but currentTime > 0.5 means it's clearly mid-playback, not a fresh start.
+  if (audio.src.includes('maxina-ambient-music') && audio.currentTime > 0.5) {
+    console.log('[AudioManager] startFresh: audio mid-session, resuming in place at', audio.currentTime);
+    if (audio.paused) {
+      audio.play().catch(err => console.warn('[AudioManager] Resume in place failed:', err));
+    }
     return;
   }
   
