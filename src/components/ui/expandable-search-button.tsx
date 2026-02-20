@@ -8,12 +8,14 @@ import { useTranslation } from "@/hooks/useTranslation";
 interface ExpandableSearchButtonProps {
   placeholder?: string;
   onSearch?: (query: string) => void;
+  onClear?: () => void;
   className?: string;
 }
 
 export function ExpandableSearchButton({ 
   placeholder, 
   onSearch,
+  onClear,
   className 
 }: ExpandableSearchButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,6 +37,8 @@ export function ExpandableSearchButton({
   const handleCollapse = () => {
     setIsExpanded(false);
     setSearchQuery("");
+    onSearch?.("");
+    onClear?.();
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -58,7 +62,10 @@ export function ExpandableSearchButton({
           <Input
             ref={inputRef}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              onSearch?.(e.target.value);
+            }}
             onKeyDown={handleKeyDown}
             placeholder={placeholder || `${translate('actionBar.search', 'Search')}…`}
             className="pl-10 pr-10 h-9 rounded-lg transition-all duration-300 ease-in-out"
