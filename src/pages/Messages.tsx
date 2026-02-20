@@ -867,7 +867,10 @@ export default function Messages() {
           <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
             {/* When viewing a conversation, show full-screen chat */}
             {selectedThreadId ? (
-              <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+              <div 
+                className="fixed inset-0 z-50 flex flex-col bg-background"
+                style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}
+              >
                 <ConversationErrorBoundary>
                   <ConversationView 
                     threadId={selectedThreadId}
