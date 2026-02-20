@@ -1,57 +1,99 @@
 
-## Show Maxina Events in the Recommended Tab
+## Fix: Seamless Soundscape Across Intro → Sign-In Navigation
 
-### What Needs to Change
+### Root Cause
 
-The Recommended tab in `src/pages/community/EventsAndMeetups.tsx` currently shows a placeholder empty state. The goal is to replace it with real events — specifically all events created by Mariia Maksina (user ID: `07ade9bf-9c2f-4fe1-a733-29e85a1d253b`).
+When navigating from `IntroExperience` to `MaxinaPortal` (via `navigate(`/${tenantSlug}`)`, which lands on `/maxina`), the `SoundscapeProvider` is **not unmounted** — it lives at the app root level in `App.tsx` and wraps all routes. So the provider itself stays mounted.
 
-All the necessary data is already available: `dbEvents` (from `useCommunityEvents`) already contains every event with `created_by` populated. No new data fetching or API calls are needed.
+The restart happens because of **two compounding issues**:
 
-### Plan
+**Issue 1 — `SoundscapeProvider` init effect re-runs during navigation**
 
-**Single file to edit:** `src/pages/community/EventsAndMeetups.tsx`
+The provider's `useEffect` (line 39, `SoundscapeContext.tsx`) has an empty dependency array `[]` so it only runs on mount. This is fine. BUT: on the IntroExperience page, `continueToMaxina()` calls `navigate(/${tenantSlug}, { replace: true })` with an 800ms fade delay. During this window, `IntroExperience` calls `setVolume(0.04)` in a cleanup because `isPlayingAudio` becomes false (audio ended → `continueToMaxina()` is called). This is harmless.
 
-**Change 1 — Add a constant for Mariia's user ID** (near the top of the `EventsAndMeetups` component, alongside the other state):
+**Issue 2 — `startFresh()` is called on MaxinaPortal mount and its guard fails when audio is briefly paused**
 
+In `MaxinaPortal.tsx`, the page renders `<Card onClick={ensureSoundscapePlaying}>` and input fields with `onFocus={ensureSoundscapePlaying}`. Neither of these auto-fires on mount, so `startFresh` is not called automatically.
+
+**The actual restart trigger** is in `SoundscapeContext.tsx` lines 82–103. The provider's init effect checks `if (audioRef.current.paused)` and calls `audioRef.current.play()`. Since the provider only mounts once, this does NOT re-run on route change.
+
+**After deeper analysis, the real problem is `startFresh` in AudioManager:**
+
+In `SoundscapeAudioManager.ts` line 687–729, `startFresh()` does:
 ```typescript
-const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
+const savedTime = audio.currentTime;  // capture position
+// ...
+audio.play()
+  .then(() => {
+    // Restore position if browser reset it during play()
+    if (savedTime > 1 && audio.currentTime < 1) {
+      audio.currentTime = savedTime;
+    }
+  })
 ```
 
-**Change 2 — Derive `maxinaEvents` from existing data** (alongside the `todayEvents` / `upcomingEvents` useMemo blocks):
-
+The guard on line 691 is:
 ```typescript
-const maxinaEvents = useMemo(() => {
-  return dbEvents.filter(event => event.created_by === MAXINA_CREATOR_ID);
-}, [dbEvents]);
+if (!audio.paused && audio.src.includes('maxina-ambient-music')) { return; }
 ```
 
-This reuses the already-cached data — no extra fetch needed.
+This guard only fires if the audio is **not paused**. But `IntroExperience` calls `setVolume(0.015)` when TTS plays (lines 83–89), and the `GlobalMediaPrecedence` hook in `SoundscapeProvider` has a `handleGlobalPlay` listener. When the TTS `<audio>` element plays (it's a raw `new Audio(...)` — **not** the soundscape element), it fires a `play` event that gets caught by the global listener, which calls `pauseForForeground()`. This **pauses** the soundscape.
 
-**Change 3 — Replace the placeholder in `<SplitBarContent value="recommended">`** (lines 890–899) with actual event rendering, using the same `MobileEventCarousel` / `renderEventGrid` pattern already used in the Today and Upcoming tabs:
+Then when TTS ends → `continueToMaxina()` → `handleGlobalPauseOrEnd` fires → `resumeAfterForeground()` plays soundscape. So far so good.
 
-- On **mobile**: render `<MobileEventCarousel events={maxinaEvents} ... />`
-- On **desktop**: render using `renderEventGrid` / `chunkEvents` (same as Today/Upcoming)
-- Add a small header badge/label "Maxina Events" to visually distinguish the source
-- Include a proper empty state if no events found
+But when `navigate()` fires, `MaxinaPortal` mounts. Its `ensureSoundscapePlaying` is wired to `onClick`/`onFocus` on form elements. On **mobile**, when the page loads, the browser sometimes auto-focuses the email input, triggering `onFocus={ensureSoundscapePlaying}` which calls `startFresh()`.
 
-**Change 4 — Fix the drawer navigation for the recommended tab**
+`startFresh` then runs `audio.play()` on an element that is **already playing** from the `resumeAfterForeground()` call. The browser handles this by restarting the audio from `currentTime` — but `savedTime` was captured **before** `audio.play()` was called, and if the audio engine resets `currentTime` to 0 during the `.play()` promise resolution, the restore logic triggers and seeks back to the saved position. This seek + restart is what the user perceives as a "restart".
 
-The `selectedEventData` lookup and `visibleEventIds` currently only work for Today/Upcoming tabs. The recommended tab also needs its events accessible in the selection context so the drawer navigation arrows work correctly:
+**Additionally:** The `shouldLoadTrack('ambient')` guard in `SoundscapeContext.startFresh` (line 231) calls `AudioManager.shouldLoadTrack('ambient')`. This returns `false` (meaning "same track, skip") — but the guard logic is inverted: it checks `!AudioManager.shouldLoadTrack('ambient')`. When `shouldLoadTrack` returns `false` (same track), `!false = true`, meaning the guard expression `getIsPlaying() && !shouldLoadTrack()` is `true && true = true` → skips correctly. 
+
+Wait — re-reading: if audio IS playing AND same track → `getIsPlaying()=true`, `shouldLoadTrack=false`, `!false=true` → `true && true` → skip. That's correct.
+
+**So the actual failure mode**: `startFresh` is being called when audio is **already playing** via `resumeAfterForeground()` but `getIsPlaying()` might briefly return `false` between the `pause()` and `play()` calls in `resumeAfterForeground()`. This race condition means the guard misses, `audio.play()` is called again from scratch, resetting `currentTime`.
+
+### The Fix
+
+**Single file change: `src/audio/SoundscapeAudioManager.ts`**
+
+The `startFresh` guard needs to be strengthened. Currently it only checks `!audio.paused`. It should also guard against the case where the audio is **currently in the process of resuming** (i.e., `currentlyPausedByForeground = false` but audio may still be transitioning). 
+
+The simplest and most reliable fix: also guard `startFresh` when the audio `src` is already set to the ambient track, regardless of paused state — because calling `play()` on an already-loaded-and-positioned audio element will reset `currentTime` if the browser buffers, which is the root restart.
+
+**Change in `startFresh()`**: Add a second guard — if the src is already the ambient track AND `currentTime > 0`, the audio is mid-playback (even if briefly paused for foreground). In that case, just call `audio.play()` directly to resume without resetting, instead of going through the full `startFresh` initialization flow:
 
 ```typescript
-// Update currentEvents to also cover recommended tab
-const currentEvents = activeTab === "today" ? filteredTodayEvents :
-                      activeTab === "upcoming" ? filteredUpcomingEvents :
-                      activeTab === "recommended" ? maxinaEvents : [];
+export function startFresh(initialVolume = 0.05) {
+  const audio = getAudio();
+  
+  // IDEMPOTENT guard 1: Already playing the ambient track → do nothing
+  if (!audio.paused && audio.src.includes('maxina-ambient-music')) {
+    console.log('[AudioManager] startFresh skipped - already playing');
+    return;
+  }
+  
+  // NEW guard 2: Audio is mid-session (has position) → just resume, don't reinitialize
+  if (audio.src.includes('maxina-ambient-music') && audio.currentTime > 0.5) {
+    console.log('[AudioManager] startFresh: audio mid-session, resuming in place at', audio.currentTime);
+    if (audio.paused) {
+      audio.play().catch(err => console.warn('[AudioManager] Resume in place failed:', err));
+    }
+    return;
+  }
+  
+  // If user explicitly paused, don't auto-start
+  if (userExplicitlyPaused) {
+    console.log('[AudioManager] startFresh skipped - user explicitly paused');
+    return;
+  }
+  
+  // ... rest of existing logic unchanged
 ```
 
-### Technical Details
+This guard catches the exact failure: audio is briefly paused (during foreground transition) but has `currentTime > 0.5`, meaning it's mid-playback. Instead of calling the full initialization flow (which captures `savedTime`, calls `play()`, and then conditionally seeks — introducing a stutter), it simply resumes in place with a clean `audio.play()`.
 
-- **No database changes** needed — events are already fetched
-- **No new hooks** needed — filter from `dbEvents` in a `useMemo`
-- **Mariia Maksina's user ID** is hardcoded as a constant (same pattern as `DOMAIN_TENANT_MAP` for tenant config — this is a platform-level constant, not user-generated)
-- Both her Gmail (`07ade9bf...`) and Outlook (`67c971fc...`) accounts exist; only the Gmail account has events created under it, so only one ID is needed
-- The `handleCardClick` handler works correctly for any tab since it uses the event ID generically
+### Why 0.5 seconds threshold?
+
+A brand-new audio element starts at `currentTime = 0`. After 0.5 seconds of playback, it's clearly mid-session. This threshold is conservative and prevents false positives on initial load.
 
 ### Files to Edit
-- `src/pages/community/EventsAndMeetups.tsx` — 4 targeted changes (constant, useMemo, SplitBarContent, currentEvents)
+- `src/audio/SoundscapeAudioManager.ts` — add one guard block inside `startFresh()` (5 lines)
