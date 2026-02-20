@@ -165,8 +165,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   const stopListening = useCallback(() => {
     if (clientRef.current) {
       clientRef.current.stopListening();
-      // Signal end of turn when user stops listening
-      clientRef.current.endTurn();
+      // endTurn() intentionally NOT called — muting is a pause, not end-of-turn
     }
   }, []);
 
