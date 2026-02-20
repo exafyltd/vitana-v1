@@ -26,6 +26,7 @@ export class CrossPlatformAudioRecorder {
   private analyserNode: AnalyserNode | null = null;
   private callbacks: AudioRecorderCallbacks;
   private targetSampleRate: number;
+  private _muted: boolean = false;
 
   constructor(targetSampleRate: number, callbacks: AudioRecorderCallbacks) {
     this.targetSampleRate = targetSampleRate;
@@ -42,6 +43,30 @@ export class CrossPlatformAudioRecorder {
 
   get isRecording(): boolean {
     return this.workletNode !== null || this.scriptNode !== null;
+  }
+
+  get isMuted(): boolean {
+    return this._muted;
+  }
+
+  mute(): void {
+    if (this.mediaStream) {
+      this.mediaStream.getAudioTracks().forEach(track => {
+        track.enabled = false;
+      });
+    }
+    this._muted = true;
+    console.log('[AudioRecorder] Soft-muted (track.enabled = false)');
+  }
+
+  unmute(): void {
+    if (this.mediaStream) {
+      this.mediaStream.getAudioTracks().forEach(track => {
+        track.enabled = true;
+      });
+    }
+    this._muted = false;
+    console.log('[AudioRecorder] Soft-unmuted (track.enabled = true)');
   }
 
   async start(): Promise<void> {

@@ -403,10 +403,10 @@ export class OrbVoiceClient {
     }
     this.hasSpeechStarted = false;
 
-    // Stop the cross-platform recorder
+    // Soft-mute: disable tracks but keep MediaStream alive
+    // (prevents iOS from resetting AVAudioSession routing)
     if (this.recorder) {
-      this.recorder.stop();
-      this.recorder = null;
+      this.recorder.mute();
     }
 
     if (this.volumeAnimationFrame) {
@@ -419,15 +419,37 @@ export class OrbVoiceClient {
   }
 
   async startListening(): Promise<void> {
-    if (this.recorder?.isRecording) return; // Already listening
+    // If recorder exists and is soft-muted, just unmute (avoids new getUserMedia → iOS route switch)
+    if (this.recorder && this.recorder.isMuted) {
+      this.recorder.unmute();
+      this.callbacks.onListeningChange?.(true);
+      return;
+    }
+    if (this.recorder) return; // Already actively recording
     await this.startRecording();
   }
 
   async stop(): Promise<void> {
     console.log('[OrbVoiceClient] Stopping...');
 
-    // Stop listening first
-    this.stopListening();
+    // Clear silence detection
+    if (this.silenceTimer) {
+      clearTimeout(this.silenceTimer);
+      this.silenceTimer = null;
+    }
+    this.hasSpeechStarted = false;
+
+    // Cancel volume monitoring
+    if (this.volumeAnimationFrame) {
+      cancelAnimationFrame(this.volumeAnimationFrame);
+      this.volumeAnimationFrame = null;
+    }
+
+    // Full recorder teardown — only place where MediaStream is destroyed
+    if (this.recorder) {
+      this.recorder.stop();
+      this.recorder = null;
+    }
 
     // Stop session with auth
     if (this.sessionId) {
