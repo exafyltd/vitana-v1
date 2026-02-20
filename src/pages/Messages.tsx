@@ -18,7 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search } from "lucide-react";
+import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -69,6 +70,7 @@ export default function Messages() {
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
   const [conversationFilter, setConversationFilter] = useState<'all' | 'groups' | 'direct' | 'contacts'>('all');
   const [inboxSearchQuery, setInboxSearchQuery] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
   
@@ -928,11 +930,16 @@ export default function Messages() {
                   }
                 >
                   <div className="flex items-center gap-2 min-w-max">
-                    <ExpandableSearchButton 
-                      placeholder={translate('inbox.searchPlaceholder')}
-                      onSearch={(query) => setInboxSearchQuery(query)}
-                      onClear={() => setInboxSearchQuery("")}
-                    />
+                    {/* Search pill — tap expands full-width row below utility bar */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsSearchExpanded(true)}
+                      className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                    >
+                      <Search className="w-4 h-4" />
+                      <span className="text-sm">{translate('actionBar.search', 'Search')}</span>
+                    </Button>
                     <UniversalCalendarButton />
                     
                     {/* New Message button - primary action */}
@@ -947,6 +954,39 @@ export default function Messages() {
                     </Button>
                   </div>
                 </UtilityActionButton>
+                
+                {/* Full-width search row — outside scroll container so it's never clipped */}
+                {isSearchExpanded && (
+                  <div className="relative flex items-center gap-2 pb-2">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                      <Input
+                        autoFocus
+                        value={inboxSearchQuery}
+                        onChange={(e) => setInboxSearchQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Escape') {
+                            setIsSearchExpanded(false);
+                            setInboxSearchQuery("");
+                          }
+                        }}
+                        placeholder={translate('inbox.searchPlaceholder', 'Search conversations…')}
+                        className="pl-10 pr-4 h-10 w-full rounded-xl"
+                      />
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setIsSearchExpanded(false);
+                        setInboxSearchQuery("");
+                      }}
+                      className="h-10 w-10 p-0 rounded-full shrink-0"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
                 
                 {/* Mobile Tabs - consolidated SplitBar */}
                 <SplitBar 
