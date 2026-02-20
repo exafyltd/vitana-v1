@@ -1,133 +1,189 @@
 
-## Fix: Mobile Conversation View — Three Issues
+## iOS Audio Routing Fix — Soft Mute Implementation
 
-### The Three Problems
-
-**Issue 1 — Scrolls to the top (oldest messages) instead of the bottom (latest)**
-
-The component has a `useLayoutEffect` at line 416–440 of `ConversationView.tsx` that scrolls to the bottom on entry, and it works correctly. However, the **container** in `Messages.tsx` (line 870) is:
-
-```tsx
-<div className="flex-1 flex flex-col min-h-0 overflow-hidden">
-```
-
-The outer shell in `MobileAppShell` wraps children in a plain `<div>` with `paddingTop` (line 33–39 of `MobileAppShell.tsx`). The outer page is `min-h-dvh` with `flex flex-col` — but the conversation container is `flex-1 flex flex-col min-h-0 overflow-hidden`. The issue is the `MobileAppShell` wrapping div has **no fixed height** — it expands to content height, meaning the scrollable `div#chat-scroll` inside `ConversationView` also has no bounded height to scroll within. On mobile, the scroll container grows to accommodate all messages instead of being bounded, so `el.scrollTop` can't be set to scroll to the bottom (there's nothing to scroll *in*).
-
-**Fix**: The conversation wrapper in `Messages.tsx` needs to be `h-dvh` (or `h-screen`) rather than `min-h-dvh`, and the `ConversationView` container must form a proper flex column that fills exactly the viewport. Currently `<div className="flex flex-col min-h-dvh ...">` at line 867 allows vertical growth beyond the viewport — it needs to be `h-dvh` with `overflow-hidden` so the inner flex layout properly constrains the scroll area.
-
-**Issue 2 — No message input box visible (can't send messages)**
-
-The `ConversationView` renders the composer at line 1157:
-```tsx
-<div className="conversation-composer shrink-0 bg-background/95 ...border-t shadow-sm">
-```
-This exists and is correct in the component code. The problem is the same container constraint issue: when the outer container doesn't have a bounded height, the flex layout puts the composer below all the messages — off-screen at the bottom of an infinitely-tall scroll container. Fixing the height constraint (Issue 1) will also fix the composer visibility.
-
-**Issue 3 — Cannot scroll through messages**
-
-Same root cause: `div#chat-scroll` at line 1058 has `overflow-y-auto` but its parent has no bounded height, so it can't create a scrollable region — it just expands. Fixing the container height fixes scrolling too.
+### Exact Changes (3 files, all surgical)
 
 ---
 
-### Root Cause Summary
+### File 1 — `src/lib/ios-audio-polyfill.ts`
 
-The `MobileAppShell` wraps everything in an unsized div (`paddingTop` only, no height). The Messages page then uses `min-h-dvh` which means "at least viewport height" — it can grow. When the conversation view is shown, `ConversationView`'s `flex-1 min-h-0` inside an unconstrained parent can't calculate a bounded height, so the inner scroll container expands to show all content at once instead of being a scrollable viewport.
+Add `_muted` field, `mute()`, `unmute()`, and `isMuted` getter to `CrossPlatformAudioRecorder`.
+
+The stream field in this class is `this.mediaStream` (line 22) — that's the correct name to use in `mute()`/`unmute()`. No rename needed.
+
+**Add after line 28** (`private targetSampleRate: number;`):
+```typescript
+private _muted: boolean = false;
+```
+
+**Add after the existing `isRecording` getter (after line 45)**:
+```typescript
+get isMuted(): boolean {
+  return this._muted;
+}
+
+mute(): void {
+  if (this.mediaStream) {
+    this.mediaStream.getAudioTracks().forEach(track => {
+      track.enabled = false;
+    });
+  }
+  this._muted = true;
+  console.log('[AudioRecorder] Soft-muted (track.enabled = false)');
+}
+
+unmute(): void {
+  if (this.mediaStream) {
+    this.mediaStream.getAudioTracks().forEach(track => {
+      track.enabled = true;
+    });
+  }
+  this._muted = false;
+  console.log('[AudioRecorder] Soft-unmuted (track.enabled = true)');
+}
+```
+
+`stop()` is **not touched** — it remains the only place that calls `track.stop()` and destroys the `MediaStream`.
 
 ---
 
-### The Fix
+### File 2 — `src/lib/OrbVoiceClient.ts`
 
-**File 1: `src/pages/Messages.tsx`**
+Three targeted edits:
 
-Change the conversation mode container from the current `min-h-dvh` outer + `flex-1 flex flex-col min-h-0 overflow-hidden` inner to a properly bounded `h-dvh` layout:
+**Edit A — `stopListening()` (lines 398–419): soft-mute instead of destroy**
 
-```tsx
-// BEFORE (line 867):
-<div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
-  {selectedThreadId ? (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+Replace `this.recorder.stop(); this.recorder = null;` with `this.recorder.mute()`. Keep the recorder alive so iOS does not reset `AVAudioSession` routing.
 
-// AFTER:
-<div className="flex flex-col bg-gradient-to-b from-primary/5 to-background" 
-     style={{ height: '100dvh', overflow: 'hidden' }}>
-  {selectedThreadId ? (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+```typescript
+stopListening(): void {
+  if (this.silenceTimer) {
+    clearTimeout(this.silenceTimer);
+    this.silenceTimer = null;
+  }
+  this.hasSpeechStarted = false;
+
+  // Soft-mute: disable tracks but keep MediaStream alive
+  // (prevents iOS from resetting AVAudioSession routing)
+  if (this.recorder) {
+    this.recorder.mute();
+  }
+
+  if (this.volumeAnimationFrame) {
+    cancelAnimationFrame(this.volumeAnimationFrame);
+    this.volumeAnimationFrame = null;
+  }
+
+  this.callbacks.onListeningChange?.(false);
+  this.callbacks.onVolumeChange?.(0);
+}
 ```
 
-The key change: `min-h-dvh` → `height: 100dvh` + `overflow: hidden`. This makes the outer container exactly the viewport height, bounded. The `flex-1 flex flex-col min-h-0 overflow-hidden` inner div now correctly fills the remaining space with a bounded height, allowing `ConversationView`'s internal layout to work properly.
+**Edit B — `startListening()` (lines 421–424): resume from mute without new getUserMedia**
 
-**File 2: `src/components/mobile/MobileAppShell.tsx`**
+- Guard: `this.recorder?.isRecording` → `this.recorder` (if a recorder exists at all and is muted, we just unmute it)
+- Fast-path: `unmute()` + fire callback. No `startVolumeMonitoring()` call (the audio callback on the existing `ScriptProcessorNode`/`AudioWorklet` is still running and handles everything)
 
-The `MobileAppShell` wrapping div needs to be a flex column that takes the full screen height minus the top bar. Currently it's just a paddingTop div that grows unbounded. When in conversation mode, we need it to constrain to screen height.
-
-The simplest fix: make the wrapping div use `100dvh` height accounting for the TopAppBar:
-
-```tsx
-// BEFORE:
-<div
-  onTouchStart={handleTouchStart}
-  onTouchEnd={handleTouchEnd}
-  style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}
->
-  {children}
-</div>
-
-// AFTER:
-<div
-  onTouchStart={handleTouchStart}
-  onTouchEnd={handleTouchEnd}
-  style={{ 
-    paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)',
-    minHeight: '100dvh',
-    display: 'flex',
-    flexDirection: 'column'
-  }}
->
-  {children}
-</div>
+```typescript
+async startListening(): Promise<void> {
+  // If recorder exists and is soft-muted, just unmute (avoids new getUserMedia → iOS route switch)
+  if (this.recorder && this.recorder.isMuted) {
+    this.recorder.unmute();
+    this.callbacks.onListeningChange?.(true);
+    return;
+  }
+  if (this.recorder) return; // Already actively recording
+  await this.startRecording();
+}
 ```
 
-Wait — this alone won't bound the height. The cleanest approach that won't break other pages is to handle this **per-page** in Messages.tsx, not globally in MobileAppShell. Pages like the inbox list *should* scroll freely (it uses `pb-32 space-y-4` with natural height). Only the conversation detail view needs exact-height behavior.
+**Edit C — `stop()` (lines 426–466): inline full recorder teardown**
 
-**Revised approach — only in `Messages.tsx`:**
+`stop()` currently calls `this.stopListening()` (line 430) — after Edit A that would only mute, not destroy the stream. So `stop()` needs to do the full teardown directly instead:
 
-When `selectedThreadId` is set, we switch to a full-screen conversation mode. Use inline style `height: '100dvh'` with `position: fixed; inset: 0` on the conversation wrapper, so it sits above the MobileAppShell padding entirely:
+```typescript
+async stop(): Promise<void> {
+  console.log('[OrbVoiceClient] Stopping...');
 
-```tsx
-{selectedThreadId ? (
-  <div 
-    className="fixed inset-0 z-50 flex flex-col bg-background"
-    style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}
-  >
-    <ConversationErrorBoundary>
-      <ConversationView 
-        threadId={selectedThreadId}
-        ...
-        className="flex-1 min-h-0 min-w-0"
-        onBack={() => setSelectedThreadId(null)}
-      />
-    </ConversationErrorBoundary>
-  </div>
+  // Clear silence detection
+  if (this.silenceTimer) {
+    clearTimeout(this.silenceTimer);
+    this.silenceTimer = null;
+  }
+  this.hasSpeechStarted = false;
+
+  // Cancel volume monitoring
+  if (this.volumeAnimationFrame) {
+    cancelAnimationFrame(this.volumeAnimationFrame);
+    this.volumeAnimationFrame = null;
+  }
+
+  // Full recorder teardown — only place where MediaStream is destroyed
+  if (this.recorder) {
+    this.recorder.stop();
+    this.recorder = null;
+  }
+
+  // Stop session with auth
+  if (this.sessionId) {
+    try {
+      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({ session_id: this.sessionId })
+      });
+    } catch (e) {
+      console.warn('[OrbVoiceClient] Error stopping session', e);
+    }
+  }
+
+  // Close SSE
+  if (this.eventSource) {
+    this.eventSource.close();
+    this.eventSource = null;
+  }
+
+  // Close audio output context
+  if (this.audioContext) {
+    this.audioContext.close().catch(() => {});
+    this.audioContext = null;
+  }
+
+  // Reset audio state
+  this.sessionId = null;
+  this.nextStartTime = 0;
+
+  this.callbacks.onConnectionStateChange?.('disconnected');
+  this.callbacks.onSpeakingChange?.(false);
+  this.callbacks.onProcessingChange?.(false);
+
+  console.log('[OrbVoiceClient] Stopped');
+}
 ```
-
-Using `position: fixed; inset: 0` means the conversation view takes the **entire screen** as its bounding box, independent of the MobileAppShell's padding or any ancestor scroll context. `flex flex-col` + `ConversationView`'s own `flex-1 min-h-0` then correctly creates a three-zone layout (header / scrollable messages / sticky composer) within the bounded viewport.
-
-The `paddingTop` matches the TopAppBar height so the header area isn't occluded by the app bar. Alternatively, since the TopAppBar is already positioned with `position: fixed` (most mobile app bars are), the conversation header can simply start at `top: 0` with `z-index: 50`.
 
 ---
 
-### Summary of Changes
+### File 3 — `src/hooks/useOrbVoiceClient.ts`
 
-**`src/pages/Messages.tsx` — 1 change:**
+Remove `clientRef.current.endTurn()` from the `stopListening` callback (lines 165–171):
 
-Change the `selectedThreadId` conversation branch from a `flex-1 flex-col min-h-0 overflow-hidden` div inside an unbounded outer div to a `fixed inset-0 z-50 flex flex-col` div that takes full-screen ownership. Add `paddingTop` matching the `TopAppBar` height so the conversation header is not covered.
+```typescript
+const stopListening = useCallback(() => {
+  if (clientRef.current) {
+    clientRef.current.stopListening();
+    // endTurn() intentionally NOT called — muting is a pause, not end-of-turn
+  }
+}, []);
+```
 
-This single change resolves all three bugs:
-- Scroll-to-bottom works because the scroll container now has a bounded height
-- The composer is visible because it's pushed to the bottom of a bounded flex column
-- Scrolling works because `overflow-y-auto` on the messages div now has a finite container
+---
 
-**No changes needed to `ConversationView.tsx`** — its internal layout (sticky header / flex-1 scroll area / shrink-0 composer) is already correct.
+### Why Each Change Matters
 
-### Files to Edit
-- `src/pages/Messages.tsx` — change `selectedThreadId` branch wrapper from `flex-1 flex flex-col min-h-0 overflow-hidden` inside `min-h-dvh` outer to `fixed inset-0 z-50 flex flex-col` (with safe-area paddingTop)
+| Change | Why |
+|--------|-----|
+| `mute()` uses `this.mediaStream.getAudioTracks()` | `mediaStream` is the correct field name (line 22 of polyfill) — `this.stream` does not exist |
+| Guard is `this.recorder` not `this.recorder?.isRecording` | After soft-mute, `isRecording` is still `true` (nodes still exist) — we need to check `isMuted` specifically, not re-enter `startRecording()` |
+| No `startVolumeMonitoring()` in unmute fast-path | The `ScriptProcessorNode`/`AudioWorklet` and its `onaudioprocess` callback keep running while muted; `startVolumeMonitoring()` would start a second `requestAnimationFrame` loop, doubling the monitoring overhead |
+| `stop()` inlines teardown instead of calling `stopListening()` | After Edit A, `stopListening()` only mutes — full `recorder.stop()` must happen explicitly in `stop()` |
+| `endTurn()` removed from `useOrbVoiceClient.stopListening` | Muting is a pause — the user should be able to unmute and continue the same turn |
