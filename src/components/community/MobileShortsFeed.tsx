@@ -38,6 +38,21 @@ export function MobileShortsFeed({
   const [likeAdjustments, setLikeAdjustments] = useState<Map<string, number>>(new Map());
   const toggleLike = useToggleLike();
 
+  // Android hardware back button support
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+      onClose();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [onClose]);
+
   // Clear optimistic adjustments when fresh data arrives from server
   useEffect(() => {
     setLikeAdjustments(new Map());
