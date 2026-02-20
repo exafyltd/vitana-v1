@@ -1,54 +1,79 @@
 
-## Add Android Hardware Back Button Support to Shorts Feed
+## Fix: Inbox Search on Mobile
 
-### What Needs to Change
+### What's Broken
 
-The Shorts feed (`MobileShortsFeed`) currently only supports closing via the on-screen arrow button (`onBack`). The Android hardware back button does nothing while inside the Shorts feed because the feed renders as a fixed overlay (not a new route), so React Router has no history entry to pop.
+There are three compounding issues causing search to appear completely broken:
 
-The fix is to intercept the browser's `popstate` event (which fires when the Android back button is pressed in a WebView) inside `MobileShortsFeed`, and call `onClose()` when it fires.
-
-### How Android Back Works in WebViews
-
-Android's hardware back button fires `window.history.go(-1)` in WebViews, which triggers the browser's `popstate` event. The standard pattern to intercept it is:
-1. On mount: push a dummy history entry (`window.history.pushState(null, '', window.location.href)`) so there is something to pop
-2. Listen for `popstate` — when it fires, call `onClose()` instead of navigating away
-3. On unmount: clean up the listener (and optionally pop the dummy entry with `window.history.back()`, though the browser handles this automatically)
-
-### Plan
-
-**Single file to edit:** `src/components/community/MobileShortsFeed.tsx`
-
-**Change — Add a `useEffect` that pushes a history entry and listens for `popstate`:**
-
+**Issue 1 — The search callback is a stub**
+Line 913 of `Messages.tsx`:
 ```typescript
-// Android hardware back button support
-useEffect(() => {
-  // Push a dummy history entry so the back button has something to pop
-  window.history.pushState(null, '', window.location.href);
+onSearch={(query) => console.log('Search:', query)}
+```
+The result is discarded. There is no `inboxSearchQuery` state variable, so nothing ever gets filtered.
 
-  const handlePopState = () => {
-    onClose();
-  };
+**Issue 2 — `renderMobileConversationList` doesn't filter by name**
+The function reads from `displayThreads` and applies only the `conversationFilter` (all/direct/groups) filter. No name/text search filter exists anywhere in this path.
 
-  window.addEventListener('popstate', handlePopState);
+**Issue 3 — `ExpandableSearchButton` only fires on Enter, not on typing**
+The component calls `onSearch` only on form submit — not on `onChange`. On mobile this is unexpected: users expect results to update live as they type.
 
-  return () => {
-    window.removeEventListener('popstate', handlePopState);
-  };
-}, [onClose]);
+---
+
+### The Fix
+
+**Single file to edit:** `src/pages/Messages.tsx`
+
+**Change 1 — Add `inboxSearchQuery` state** (alongside the existing state declarations ~line 70):
+```typescript
+const [inboxSearchQuery, setInboxSearchQuery] = useState("");
 ```
 
-This effect:
-- Runs once on mount (when the Shorts feed opens)
-- Pushes a dummy entry into browser history so the back button pops it instead of navigating away from the page
-- When `popstate` fires (back button pressed), calls `onClose()` which already handles closing the overlay
-- Cleans up on unmount so no stale listeners remain
+**Change 2 — Wire the search button to state** (line 911–914):
+```typescript
+onSearch={(query) => setInboxSearchQuery(query)}
+```
 
-### Why This Works
+Also pass `onClear` so collapsing/clearing the search resets the filter:
+```typescript
+// Inside ExpandableSearchButton collapse handler → call onSearch("") 
+```
+Since `ExpandableSearchButton` already clears its internal state on collapse (line 37: `setSearchQuery("")`) but doesn't notify the parent, we also need to add an `onClear` prop to `ExpandableSearchButton` that fires when the X button is clicked, resetting `inboxSearchQuery` to `""`.
 
-- The `MobileShortsFeed` is a `fixed inset-0` overlay, not a route change — so React Router doesn't manage its lifecycle
-- `window.history.pushState` + `popstate` listener is the standard WebView pattern for intercepting the Android back button (used by YouTube Shorts, Instagram Reels, TikTok)
-- The `onClose` prop already has all the cleanup logic (pausing videos, restoring state) — we just need to call it from the hardware back button path too
+**Change 3 — Make `ExpandableSearchButton` call `onSearch` live on each keystroke** (in `expandable-search-button.tsx`):
+Change the `onChange` handler from only updating local state to also calling `onSearch?.(value)` immediately (live search), so results update as the user types — matching the UX of Events and Orders screens.
+
+**Change 4 — Apply the search filter in `renderMobileConversationList`**
+After the `getFilteredThreads` call, add a name-based filter:
+```typescript
+const searchFiltered = inboxSearchQuery.trim()
+  ? filteredThreads.filter(thread => {
+      const name = getConversationDisplayTitle(thread, user?.id) || '';
+      const lastMsg = thread.last_message?.body || '';
+      const q = inboxSearchQuery.toLowerCase();
+      return name.toLowerCase().includes(q) || lastMsg.toLowerCase().includes(q);
+    })
+  : filteredThreads;
+```
+Then use `searchFiltered` instead of `filteredThreads` for the rest of the render logic.
+
+**Change 5 — Show "no results" state when search has no matches** (instead of the generic `MobileInboxEmptyState`):
+```typescript
+if (searchFiltered.length === 0 && inboxSearchQuery.trim()) {
+  return (
+    <div className="text-center py-12">
+      <Search className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+      <p className="text-muted-foreground">No conversations matching "{inboxSearchQuery}"</p>
+    </div>
+  );
+}
+```
+
+**Change 6 — Reset search when context (global/tenant tab) changes**
+Add `setInboxSearchQuery("")` inside the existing `useEffect` that resets on `messageContext` change (line 124–129).
+
+---
 
 ### Files to Edit
-- `src/components/community/MobileShortsFeed.tsx` — add one `useEffect` (8 lines)
+- `src/pages/Messages.tsx` — 5 targeted changes (add state, wire handler, apply filter, empty state, reset on context switch)
+- `src/components/ui/expandable-search-button.tsx` — make `onChange` call `onSearch` live (live-as-you-type) + add `onClear` prop
