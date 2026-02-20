@@ -802,7 +802,7 @@ export default function Messages() {
     }
 
     // Sort and dedupe threads
-    const sortedThreads = [...filteredThreads]
+    const sortedThreads = [...searchFiltered]
       .sort((a, b) => {
         const ap = pinnedThreads.has(a.id) ? 1 : 0;
         const bp = pinnedThreads.has(b.id) ? 1 : 0;
