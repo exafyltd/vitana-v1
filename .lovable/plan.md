@@ -1,110 +1,79 @@
 
-## Fix: Inbox Search Utility Bar — Input Gets Clipped by Scroll Container
+## Fix: Inbox Search on Mobile
 
-### Root Cause
+### What's Broken
 
-The `ExpandableSearchButton` lives inside `UtilityActionButton`, which wraps its children in a **horizontally scrollable row** (`overflow-x-auto`). When the search expands to `w-64`, the input form is clipped by the scroll container — on mobile this means the input is either not visible, not focusable properly, or appears to do nothing visually. The logic works (state updates, filter runs) but the user never sees filtered results because the expanded input is hidden inside the scroll overflow.
+There are three compounding issues causing search to appear completely broken:
 
-The relevant container in `utility-action-button.tsx`:
+**Issue 1 — The search callback is a stub**
+Line 913 of `Messages.tsx`:
 ```typescript
-<div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2 -my-2">
-  {children}   {/* ← ExpandableSearchButton is here, clipped when expanded */}
+onSearch={(query) => console.log('Search:', query)}
 ```
+The result is discarded. There is no `inboxSearchQuery` state variable, so nothing ever gets filtered.
+
+**Issue 2 — `renderMobileConversationList` doesn't filter by name**
+The function reads from `displayThreads` and applies only the `conversationFilter` (all/direct/groups) filter. No name/text search filter exists anywhere in this path.
+
+**Issue 3 — `ExpandableSearchButton` only fires on Enter, not on typing**
+The component calls `onSearch` only on form submit — not on `onChange`. On mobile this is unexpected: users expect results to update live as they type.
+
+---
 
 ### The Fix
 
-**Move the `ExpandableSearchButton` out of the `UtilityActionButton` children** and place it as a separate full-width search row below the utility bar, only when expanded. The simplest approach: keep the Search pill button inside the utility bar (collapsed state), but when expanded, render a **full-width search input** as a separate `<div>` below the utility rail, outside the scroll container.
+**Single file to edit:** `src/pages/Messages.tsx`
 
-The cleanest implementation is to **lift the expanded state up** into `Messages.tsx` and render the expanded search input as its own row:
-
-**Pattern (conceptual):**
-```
-[Utility Bar: Search pill | Gift Voucher | Autopilot | Calendar | + New]
-[Full-width search input row — only shown when search is active]
+**Change 1 — Add `inboxSearchQuery` state** (alongside the existing state declarations ~line 70):
+```typescript
+const [inboxSearchQuery, setInboxSearchQuery] = useState("");
 ```
 
-This matches the pattern used by apps like iOS Mail and WhatsApp where the search bar drops down as its own full-width row separate from the action toolbar.
+**Change 2 — Wire the search button to state** (line 911–914):
+```typescript
+onSearch={(query) => setInboxSearchQuery(query)}
+```
+
+Also pass `onClear` so collapsing/clearing the search resets the filter:
+```typescript
+// Inside ExpandableSearchButton collapse handler → call onSearch("") 
+```
+Since `ExpandableSearchButton` already clears its internal state on collapse (line 37: `setSearchQuery("")`) but doesn't notify the parent, we also need to add an `onClear` prop to `ExpandableSearchButton` that fires when the X button is clicked, resetting `inboxSearchQuery` to `""`.
+
+**Change 3 — Make `ExpandableSearchButton` call `onSearch` live on each keystroke** (in `expandable-search-button.tsx`):
+Change the `onChange` handler from only updating local state to also calling `onSearch?.(value)` immediately (live search), so results update as the user types — matching the UX of Events and Orders screens.
+
+**Change 4 — Apply the search filter in `renderMobileConversationList`**
+After the `getFilteredThreads` call, add a name-based filter:
+```typescript
+const searchFiltered = inboxSearchQuery.trim()
+  ? filteredThreads.filter(thread => {
+      const name = getConversationDisplayTitle(thread, user?.id) || '';
+      const lastMsg = thread.last_message?.body || '';
+      const q = inboxSearchQuery.toLowerCase();
+      return name.toLowerCase().includes(q) || lastMsg.toLowerCase().includes(q);
+    })
+  : filteredThreads;
+```
+Then use `searchFiltered` instead of `filteredThreads` for the rest of the render logic.
+
+**Change 5 — Show "no results" state when search has no matches** (instead of the generic `MobileInboxEmptyState`):
+```typescript
+if (searchFiltered.length === 0 && inboxSearchQuery.trim()) {
+  return (
+    <div className="text-center py-12">
+      <Search className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+      <p className="text-muted-foreground">No conversations matching "{inboxSearchQuery}"</p>
+    </div>
+  );
+}
+```
+
+**Change 6 — Reset search when context (global/tenant tab) changes**
+Add `setInboxSearchQuery("")` inside the existing `useEffect` that resets on `messageContext` change (line 124–129).
+
+---
 
 ### Files to Edit
-
-**1. `src/components/ui/expandable-search-button.tsx`**
-Add an `isExpanded` / `onExpandedChange` prop pair so the parent can know when search is active, OR split into two exports: a collapsed trigger button and a separate expanded input. The simplest change: add an `onExpandChange` callback prop.
-
-**2. `src/pages/Messages.tsx`**
-- Add `isSearchExpanded` state (boolean)
-- Keep the `ExpandableSearchButton` in the utility bar but pass `onExpandChange` to track its state
-- Render a separate full-width search input row below the `UtilityActionButton` when `isSearchExpanded` is true
-- OR: replace `ExpandableSearchButton` in the utility bar with a simple icon-only `Search` button, and manage the full expanded state entirely in `Messages.tsx` as a separate row
-
-The most self-contained fix (least risk of regressions to other pages using `ExpandableSearchButton`):
-
-**In `Messages.tsx` mobile layout**, replace the current `ExpandableSearchButton` with:
-1. A plain Search icon button inside the utility rail (collapsed state only)
-2. A full-width animated search input row below the utility bar (expanded state)
-
-This avoids touching `ExpandableSearchButton` at all and keeps the fix local to the Inbox screen.
-
-### Detailed Changes
-
-**`src/pages/Messages.tsx`** — mobile inbox section (lines 893–950):
-
-Replace:
-```tsx
-<UtilityActionButton className="min-w-0" afterGiftVoucherChildren={...}>
-  <div className="flex items-center gap-2 min-w-max">
-    <ExpandableSearchButton 
-      onSearch={(query) => setInboxSearchQuery(query)}
-      onClear={() => setInboxSearchQuery("")}
-    />
-    <UniversalCalendarButton />
-    <Button ...>+ New</Button>
-  </div>
-</UtilityActionButton>
-```
-
-With:
-```tsx
-<UtilityActionButton className="min-w-0" afterGiftVoucherChildren={...}>
-  <div className="flex items-center gap-2 min-w-max">
-    {/* Search icon pill — tapping expands a separate full-width row below */}
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={() => setIsSearchExpanded(true)}
-      className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-    >
-      <Search className="w-4 h-4" />
-      <span className="text-sm">Search</span>
-    </Button>
-    <UniversalCalendarButton />
-    <Button ...>+ New</Button>
-  </div>
-</UtilityActionButton>
-
-{/* Full-width search row — rendered outside the scroll container */}
-{isSearchExpanded && (
-  <div className="relative">
-    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-    <Input
-      autoFocus
-      value={inboxSearchQuery}
-      onChange={(e) => setInboxSearchQuery(e.target.value)}
-      onKeyDown={(e) => e.key === 'Escape' && closeSearch()}
-      placeholder="Search conversations..."
-      className="pl-10 pr-10 h-10 w-full rounded-xl"
-    />
-    <Button ... onClick={closeSearch}><X /></Button>
-  </div>
-)}
-```
-
-Where `closeSearch` sets `isSearchExpanded = false` and `inboxSearchQuery = ""`.
-
-### New State to Add
-```typescript
-const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-```
-
-### Summary of Changes
-- `src/pages/Messages.tsx`: Add `isSearchExpanded` state; replace `ExpandableSearchButton` in mobile inbox with a simple Search pill button + a separate full-width input row below the utility bar; add `closeSearch` helper
-- No changes to `expandable-search-button.tsx` (this fix is self-contained to Inbox)
+- `src/pages/Messages.tsx` — 5 targeted changes (add state, wire handler, apply filter, empty state, reset on context switch)
+- `src/components/ui/expandable-search-button.tsx` — make `onChange` call `onSearch` live (live-as-you-type) + add `onClear` prop
