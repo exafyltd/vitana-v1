@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Users, MessageSquareText, Globe, Building, Plane } from "lucide-react";
+import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -68,6 +68,7 @@ export default function Messages() {
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
   const [pinnedThreads, setPinnedThreads] = useState<Set<string>>(new Set());
   const [conversationFilter, setConversationFilter] = useState<'all' | 'groups' | 'direct' | 'contacts'>('all');
+  const [inboxSearchQuery, setInboxSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
   
@@ -126,6 +127,7 @@ export default function Messages() {
     setSelectedThreadId(null);
     setSelectedRecipientId(null);
     setOptimisticUnreadUpdates({}); // Clear optimistic updates
+    setInboxSearchQuery(""); // Reset search on context switch
   }, [messageContext]);
 
   // Handle real-time unread sync across tabs/devices - update optimistic state
@@ -767,11 +769,29 @@ export default function Messages() {
     );
   };
 
-  // Helper to render mobile conversation list with new cards
   const renderMobileConversationList = () => {
     const filteredThreads = getFilteredThreads(displayThreads, conversationFilter);
+
+    // Apply search filter
+    const searchFiltered = inboxSearchQuery.trim()
+      ? filteredThreads.filter(thread => {
+          const name = getConversationDisplayTitle(thread, user?.id) || '';
+          const lastMsg = (thread as any).last_message?.body || '';
+          const q = inboxSearchQuery.toLowerCase();
+          return name.toLowerCase().includes(q) || lastMsg.toLowerCase().includes(q);
+        })
+      : filteredThreads;
     
-    if (filteredThreads.length === 0) {
+    if (searchFiltered.length === 0 && inboxSearchQuery.trim()) {
+      return (
+        <div className="text-center py-12">
+          <Search className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+          <p className="text-muted-foreground">No conversations matching "{inboxSearchQuery}"</p>
+        </div>
+      );
+    }
+
+    if (searchFiltered.length === 0) {
       return (
         <MobileInboxEmptyState 
           context={messageContext}
@@ -910,7 +930,8 @@ export default function Messages() {
                   <div className="flex items-center gap-2 min-w-max">
                     <ExpandableSearchButton 
                       placeholder={translate('inbox.searchPlaceholder')}
-                      onSearch={(query) => console.log('Search:', query)}
+                      onSearch={(query) => setInboxSearchQuery(query)}
+                      onClear={() => setInboxSearchQuery("")}
                     />
                     <UniversalCalendarButton />
                     
