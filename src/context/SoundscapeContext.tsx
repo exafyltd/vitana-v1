@@ -29,7 +29,7 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   const [volume, setVolumeState] = useState(DEFAULT_VOLUME);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrack] = useState(AMBIENT_TRACK);
-  const [pendingAutoPlay, setPendingAutoPlay] = useState(false);
+  // pendingAutoPlay removed — music only starts via explicit startFresh() calls
   
   // Keep ref to audio for handoff
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -71,37 +71,10 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     setVolumeState(state.volume);
     setIsMuted(state.isMuted);
     
-    // Handle auto-play if enabled AND not muted
-    // ON MOBILE: Skip provider auto-play - let AudioManager.attemptMobileResume() handle it
-    // This prevents race conditions where play() starts at t=0 before restore completes
-    const userAgent = navigator.userAgent || (navigator as any).vendor || '';
-    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-    const isNarrowViewport = window.matchMedia('(max-width: 767px)').matches;
-    const isMobileDevice = isMobileUA || isNarrowViewport;
-    
-    if (audioRef.current.paused) {
-      if (!isMobileDevice) {
-        // Desktop only: direct auto-play
-        audioRef.current.play()
-          .then(() => {
-            console.log('[SoundscapeProvider] Auto-play succeeded');
-            setIsPlaying(true);
-          })
-          .catch((err) => {
-            if (err.name === 'NotAllowedError') {
-              console.log('[SoundscapeProvider] Auto-play blocked, waiting for interaction');
-              setPendingAutoPlay(true);
-            }
-          });
-      } else {
-        // Mobile: attempt play, fall back to interaction-triggered play
-        setTimeout(() => {
-          AudioManager.attemptMobileResume();
-        }, 100);
-        // If autoplay is blocked, allow first-interaction trigger
-        setPendingAutoPlay(true);
-      }
-    }
+    // Audio element is created and configured but NOT auto-played.
+    // Playback only starts when startFresh() is explicitly called
+    // from MaxinaPortal or IntroExperience.
+    console.log('[SoundscapeProvider] Audio initialized, waiting for explicit startFresh()');
     
     // Attach play/pause listeners for state sync
     const handlePlay = () => setIsPlaying(true);
@@ -122,44 +95,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Handle pending auto-play on first interaction (desktop + mobile)
-  useEffect(() => {
-    if (!pendingAutoPlay) return;
-    
-    const handleInteraction = () => {
-      // Check current in-memory mute state (not localStorage, since mute is session-only)
-      if (isMuted) {
-        console.log('[SoundscapeProvider] Skipping auto-play - user has muted');
-        setPendingAutoPlay(false);
-        document.removeEventListener('click', handleInteraction, true);
-        document.removeEventListener('touchstart', handleInteraction, true);
-        return;
-      }
-      
-      if (audioRef.current && pendingAutoPlay) {
-        audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-            setPendingAutoPlay(false);
-            console.log('[SoundscapeProvider] Audio started after user interaction');
-          })
-          .catch((err) => {
-            console.warn('[SoundscapeProvider] Failed to start audio:', err);
-          });
-      }
-      
-      document.removeEventListener('click', handleInteraction, true);
-      document.removeEventListener('touchstart', handleInteraction, true);
-    };
-    
-    document.addEventListener('click', handleInteraction, true);
-    document.addEventListener('touchstart', handleInteraction, true);
-    
-    return () => {
-      document.removeEventListener('click', handleInteraction, true);
-      document.removeEventListener('touchstart', handleInteraction, true);
-    };
-  }, [pendingAutoPlay]);
+  // pendingAutoPlay effect removed — no global interaction listener.
+  // Music only starts via explicit startFresh() from Maxina-context pages.
 
   // Kill orphaned audio helper
   const killOrphanedAudio = useCallback(() => {
@@ -179,12 +116,9 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     AudioManager.play()
       .then(() => {
         setIsPlaying(true);
-        setPendingAutoPlay(false);
       })
       .catch((err) => {
-        if (err.name === 'NotAllowedError') {
-          setPendingAutoPlay(true);
-        } else {
+        if (err.name !== 'NotAllowedError') {
           console.warn('[SoundscapeProvider] Play failed:', err);
         }
       });
@@ -233,10 +167,13 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       return;
     }
     
+    // Proactively clean up any orphaned audio elements before starting
+    killOrphanedAudio();
+    
     AudioManager.startFresh(initialVolume);
     setVolumeState(initialVolume);
     previousVolumeRef.current = initialVolume;
-  }, []);
+  }, [killOrphanedAudio]);
 
   const handoffAudio = useCallback((externalAudio: HTMLAudioElement) => {
     console.log('[SoundscapeProvider] handoffAudio called');
