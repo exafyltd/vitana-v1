@@ -8,6 +8,9 @@ interface EventParticipation {
   participantCount: number;
 }
 
+const isValidUUID = (id: string) =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
 export function useEventParticipation(eventId: string, initialCount: number = 0) {
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
@@ -17,8 +20,8 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
   // Check if user is already participating
   useEffect(() => {
     const checkParticipation = async () => {
-      if (!eventId) return;
-      
+      if (!eventId || !isValidUUID(eventId)) return;
+
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
@@ -47,7 +50,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
 
   // Subscribe to real-time participant count updates
   useEffect(() => {
-    if (!eventId) return;
+    if (!eventId || !isValidUUID(eventId)) return;
 
     const channel = supabase
       .channel(`event-participants-${eventId}`)
@@ -80,8 +83,8 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
   }, [eventId]);
 
   const toggleParticipation = async () => {
-    if (loading) return;
-    
+    if (loading || !isValidUUID(eventId)) return;
+
     setLoading(true);
     
     try {
