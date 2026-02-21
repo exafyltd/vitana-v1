@@ -169,9 +169,21 @@ function detectNavigationType(): 'reload' | 'navigate' | 'back_forward' | 'prere
  * Get or create the singleton audio element
  */
 export function getAudio(): HTMLAudioElement {
+  // INVARIANT: There must never be two audio elements for the ambient track.
+  
   // Check window singleton first (survives HMR)
   if (window.__SOUNDSCAPE_AUDIO__) {
-    audioElement = window.__SOUNDSCAPE_AUDIO__;
+    const winAudio = window.__SOUNDSCAPE_AUDIO__;
+    
+    // If module-level audioElement is a DIFFERENT element, dispose the duplicate
+    if (audioElement && audioElement !== winAudio) {
+      console.log('[AudioManager] Disposing duplicate module-level audio element');
+      audioElement.pause();
+      audioElement.src = '';
+      audioElement.load();
+    }
+    
+    audioElement = winAudio;
     return audioElement;
   }
   
@@ -682,6 +694,23 @@ export function hasActiveForegroundMedia(): boolean {
 }
 
 /**
+ * Kill any duplicate audio elements in the DOM that match the ambient track
+ * but aren't the current singleton. Safety net against duplicate streams.
+ */
+function killDuplicateAudio() {
+  const singleton = audioElement || window.__SOUNDSCAPE_AUDIO__;
+  const allAudio = document.querySelectorAll('audio');
+  allAudio.forEach((el) => {
+    if (el.src?.includes('maxina-ambient-music') && el !== singleton) {
+      console.log('[AudioManager] killDuplicateAudio: destroying duplicate', el.src?.substring(0, 60));
+      el.pause();
+      el.src = '';
+      el.load();
+    }
+  });
+}
+
+/**
  * Subscribe to state changes
  */
 export function subscribe(listener: StateListener): () => void {
@@ -695,6 +724,9 @@ export function subscribe(listener: StateListener): () => void {
  * This prevents route changes from restarting music.
  */
 export function startFresh(initialVolume = 0.05) {
+  // Safety net: scan DOM for duplicate ambient audio elements and destroy them
+  killDuplicateAudio();
+  
   const audio = getAudio();
   
   // IDEMPOTENT guard 1: Already playing the ambient track → do nothing
