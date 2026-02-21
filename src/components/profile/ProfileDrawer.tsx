@@ -23,6 +23,7 @@ import { useTenant, TenantType } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
 import { useProfileTheme, ProfileTheme } from "@/hooks/useProfileTheme";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProfileDrawerProps {
   trigger: React.ReactNode;
@@ -51,6 +52,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
   const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
   const { theme, setTheme, loading: themeLoading } = useProfileTheme(user?.id);
+  const isMobile = useIsMobile();
   
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
   
@@ -78,11 +80,14 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             navigate("/admin");
             break;
           case "professional":
-            navigate("/dashboard"); 
+            navigate("/professional/dashboard"); 
             break;
           case "patient":
+            navigate("/patient/dashboard");
+            break;
           case "community":
-            navigate("/dashboard");
+          default:
+            navigate("/home");
             break;
         }
       }, 100);
@@ -197,8 +202,8 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             </div>
           </div>
 
-          {/* Role Switcher - show available roles (all roles for admin, membership roles for others) */}
-          {availableRoles && availableRoles.length > 0 && (
+          {/* Role Switcher - desktop only, mobile is community-only */}
+          {!isMobile && availableRoles && availableRoles.length > 0 && (
             <>
               <Separator />
               <div className="space-y-2">
