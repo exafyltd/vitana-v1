@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
 import { toast } from 'sonner';
+import { pausePersisting, resumePersisting } from '@/audio/SoundscapeAudioManager';
 
 export function VitanaAudioOverlay() {
   const { 
@@ -69,9 +70,11 @@ export function VitanaAudioOverlay() {
     if (audioOverlayVisible) {
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
       setMicMuted(false); // Always start with open mic
+      pausePersisting(); // Stop soundscape I/O during voice session
       connect();
     } else {
       console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
+      resumePersisting(); // Restore soundscape persistence
       disconnect();
     }
   }, [audioOverlayVisible, connect, disconnect]);

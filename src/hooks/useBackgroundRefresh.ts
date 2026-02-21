@@ -8,6 +8,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useStreamingState } from '@/context/StreamingStateContext';
 
 interface RefreshConfig {
   queryKey: string[];
@@ -33,29 +34,33 @@ const REFRESH_CONFIGS: RefreshConfig[] = [
 
 export function useBackgroundRefresh() {
   const queryClient = useQueryClient();
+  const { audioOverlayVisible } = useStreamingState();
   const intervalsRef = useRef<NodeJS.Timeout[]>([]);
   const isVisibleRef = useRef(true);
 
   useEffect(() => {
+    // Pause all background refresh during active ORB/Live sessions
+    if (audioOverlayVisible) return;
+
     // Track tab visibility
     const handleVisibilityChange = () => {
       isVisibleRef.current = document.visibilityState === 'visible';
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     // Set up refresh intervals
     REFRESH_CONFIGS.forEach(config => {
       const intervalId = setInterval(() => {
         // Skip if tab is hidden
         if (!isVisibleRef.current) return;
-        
+
         queryClient.invalidateQueries({
           queryKey: config.queryKey,
           refetchType: config.refetchType,
         });
       }, config.intervalMs);
-      
+
       intervalsRef.current.push(intervalId);
     });
 
@@ -64,5 +69,5 @@ export function useBackgroundRefresh() {
       intervalsRef.current.forEach(clearInterval);
       intervalsRef.current = [];
     };
-  }, [queryClient]);
+  }, [queryClient, audioOverlayVisible]);
 }

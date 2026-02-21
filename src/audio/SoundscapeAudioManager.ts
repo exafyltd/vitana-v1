@@ -134,6 +134,16 @@ function stopPersisting() {
   }
 }
 
+/** Pause persistence during active ORB/Live sessions to reduce CPU/I/O */
+export function pausePersisting() {
+  stopPersisting();
+}
+
+/** Resume persistence after ORB/Live session ends */
+export function resumePersisting() {
+  startPersisting();
+}
+
 // Boot ID for detecting full page reloads (changes on every app boot)
 const BOOT_ID = `boot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
