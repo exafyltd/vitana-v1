@@ -37,7 +37,42 @@ export function useSmartRouting() {
       if (isExafyAdmin) {
         // Only redirect from root path to avoid interfering with navigation
         if (location.pathname === '/' || location.pathname === '/home') {
-          navigate('/admin/tenant-management');
+          // Route based on stored role preference, not always to admin
+          switch (currentRole) {
+            case "admin":
+            case "staff":
+              navigate('/admin');
+              break;
+            case "professional":
+              navigate('/professional/dashboard');
+              break;
+            case "patient":
+              navigate('/patient/dashboard');
+              break;
+            case "community":
+            default:
+              // Default to community experience based on tenant
+              const isMobileDevice = window.innerWidth < 768;
+              if (tenant?.slug) {
+                switch (tenant.slug) {
+                  case 'alkalma':
+                    navigate("/alkalma");
+                    break;
+                  case 'earthlinks':
+                    navigate("/earthlinks");
+                    break;
+                  case 'maxina':
+                    navigate(isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina");
+                    break;
+                  default:
+                    navigate("/maxina");
+                    break;
+                }
+              } else {
+                navigate("/home");
+              }
+              break;
+          }
         }
         return;
       }
@@ -93,10 +128,7 @@ export function useRoleBasedRedirect() {
   const { currentRole } = useRole();
 
   const getRedirectUrl = () => {
-    if (isExafyAdmin) {
-      return "/admin/tenant-management";
-    }
-
+    // Exafy Admins fall through to the same currentRole switch — no hardcoded admin redirect
     switch (currentRole) {
       case "admin":
       case "staff":

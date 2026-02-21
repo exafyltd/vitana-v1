@@ -77,8 +77,16 @@ function AppSidebar({
   const { cartCount } = useCart();
   const { translate } = useTranslation();
 
-  // Get dynamic navigation based on current role
-  const sidebarCategories = getRoleNavigation(currentRole);
+  // Get dynamic navigation: URL path takes priority over stored role
+  const getEffectiveNavigation = () => {
+    const path = location.pathname;
+    if (path === '/admin' || path.startsWith('/admin/')) return getRoleNavigation('admin');
+    if (path === '/staff' || path.startsWith('/staff/')) return getRoleNavigation('staff');
+    if (path === '/professional' || path.startsWith('/professional/')) return getRoleNavigation('professional');
+    if (path === '/patient' || path.startsWith('/patient/')) return getRoleNavigation('patient');
+    return getRoleNavigation(currentRole);
+  };
+  const sidebarCategories = getEffectiveNavigation();
 
   // Check if current path matches category (including subpages)
   // But exclude parent paths if a more specific sibling path matches
