@@ -5541,6 +5541,9 @@ export type Database = {
       }
       memory_facts: {
         Row: {
+          embedding: string | null
+          embedding_model: string | null
+          embedding_updated_at: string | null
           entity: string
           extracted_at: string
           fact_key: string
@@ -5558,6 +5561,9 @@ export type Database = {
           vtid: string | null
         }
         Insert: {
+          embedding?: string | null
+          embedding_model?: string | null
+          embedding_updated_at?: string | null
           entity?: string
           extracted_at?: string
           fact_key: string
@@ -5575,6 +5581,9 @@ export type Database = {
           vtid?: string | null
         }
         Update: {
+          embedding?: string | null
+          embedding_model?: string | null
+          embedding_updated_at?: string | null
           entity?: string
           extracted_at?: string
           fact_key?: string
@@ -11049,6 +11058,38 @@ export type Database = {
       memory_extract_garden_nodes: {
         Args: { p_diary_entry_id: string }
         Returns: Json
+      }
+      memory_facts_needing_embeddings: {
+        Args: { p_batch_size?: number; p_tenant_id?: string }
+        Returns: {
+          entity: string
+          fact_key: string
+          fact_value: string
+          id: string
+          tenant_id: string
+          user_id: string
+        }[]
+      }
+      memory_facts_semantic_search: {
+        Args: {
+          p_entity?: string
+          p_min_confidence?: number
+          p_query_embedding: string
+          p_tenant_id?: string
+          p_top_k?: number
+          p_user_id?: string
+        }
+        Returns: {
+          entity: string
+          extracted_at: string
+          fact_key: string
+          fact_value: string
+          fact_value_type: string
+          id: string
+          provenance_confidence: number
+          provenance_source: string
+          similarity_score: number
+        }[]
       }
       memory_garden_node_upsert: {
         Args: {
