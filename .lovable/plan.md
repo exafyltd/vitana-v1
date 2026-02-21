@@ -1,189 +1,84 @@
 
-## iOS Audio Routing Fix — Soft Mute Implementation
 
-### Exact Changes (3 files, all surgical)
+## Fix: Strict Role-Based Screen Separation (Revised)
 
----
-
-### File 1 — `src/lib/ios-audio-polyfill.ts`
-
-Add `_muted` field, `mute()`, `unmute()`, and `isMuted` getter to `CrossPlatformAudioRecorder`.
-
-The stream field in this class is `this.mediaStream` (line 22) — that's the correct name to use in `mute()`/`unmute()`. No rename needed.
-
-**Add after line 28** (`private targetSampleRate: number;`):
-```typescript
-private _muted: boolean = false;
-```
-
-**Add after the existing `isRecording` getter (after line 45)**:
-```typescript
-get isMuted(): boolean {
-  return this._muted;
-}
-
-mute(): void {
-  if (this.mediaStream) {
-    this.mediaStream.getAudioTracks().forEach(track => {
-      track.enabled = false;
-    });
-  }
-  this._muted = true;
-  console.log('[AudioRecorder] Soft-muted (track.enabled = false)');
-}
-
-unmute(): void {
-  if (this.mediaStream) {
-    this.mediaStream.getAudioTracks().forEach(track => {
-      track.enabled = true;
-    });
-  }
-  this._muted = false;
-  console.log('[AudioRecorder] Soft-unmuted (track.enabled = true)');
-}
-```
-
-`stop()` is **not touched** — it remains the only place that calls `track.stop()` and destroys the `MediaStream`.
+Incorporates all feedback from your review. Four files, five fixes.
 
 ---
 
-### File 2 — `src/lib/OrbVoiceClient.ts`
+### Fix 1: `src/hooks/useSmartRouting.tsx` — `useSmartRouting()` (lines 37-42)
 
-Three targeted edits:
+**Problem**: Exafy Admins are always redirected to `/admin/tenant-management` regardless of their stored `currentRole`.
 
-**Edit A — `stopListening()` (lines 398–419): soft-mute instead of destroy**
+**Change**: Replace the Exafy Admin block with `currentRole`-aware routing:
 
-Replace `this.recorder.stop(); this.recorder = null;` with `this.recorder.mute()`. Keep the recorder alive so iOS does not reset `AVAudioSession` routing.
+- `admin` or `staff` role selected --> navigate to `/admin`
+- `professional` --> `/professional/dashboard`
+- `patient` --> `/patient/dashboard`
+- `community` (default) --> use the same tenant-based community routing logic (e.g., Maxina events on mobile, `/maxina` on desktop)
 
-```typescript
-stopListening(): void {
-  if (this.silenceTimer) {
-    clearTimeout(this.silenceTimer);
-    this.silenceTimer = null;
-  }
-  this.hasSpeechStarted = false;
+---
 
-  // Soft-mute: disable tracks but keep MediaStream alive
-  // (prevents iOS from resetting AVAudioSession routing)
-  if (this.recorder) {
-    this.recorder.mute();
-  }
+### Fix 2: `src/hooks/useSmartRouting.tsx` — `useRoleBasedRedirect()` (lines 95-98)
 
-  if (this.volumeAnimationFrame) {
-    cancelAnimationFrame(this.volumeAnimationFrame);
-    this.volumeAnimationFrame = null;
-  }
+**Problem**: Same hardcoded `/admin/tenant-management` for all Exafy Admins, used in post-login redirects.
 
-  this.callbacks.onListeningChange?.(false);
-  this.callbacks.onVolumeChange?.(0);
-}
+**Change**: Remove the `if (isExafyAdmin) return "/admin/tenant-management"` early return. Instead, let Exafy Admins fall through to the same `currentRole` switch statement that already handles all roles correctly. The existing `switch(currentRole)` at line 100 already does the right thing -- the early return just short-circuits it.
+
+---
+
+### Fix 3: `src/components/AppLayout.tsx` — Sidebar navigation (line 81)
+
+**Problem**: Sidebar always shows `currentRole` navigation, even when the user is on a page belonging to a different role (e.g., admin page with community sidebar).
+
+**Change**: Replace line 81 with a URL-aware function:
+
+```text
+pathname === '/admin' OR starts with '/admin/'  --> admin nav
+pathname === '/staff' OR starts with '/staff/'  --> staff nav
+pathname === '/professional' OR starts with '/professional/'  --> professional nav
+pathname === '/patient' OR starts with '/patient/'  --> patient nav
+everything else  --> getRoleNavigation(currentRole)
 ```
 
-**Edit B — `startListening()` (lines 421–424): resume from mute without new getUserMedia**
+Uses precise matching (`=== '/admin' || startsWith('/admin/')`) to avoid false positives on hypothetical paths like `/admin-something`.
 
-- Guard: `this.recorder?.isRecording` → `this.recorder` (if a recorder exists at all and is muted, we just unmute it)
-- Fast-path: `unmute()` + fire callback. No `startVolumeMonitoring()` call (the audio callback on the existing `ScriptProcessorNode`/`AudioWorklet` is still running and handles everything)
+---
 
-```typescript
-async startListening(): Promise<void> {
-  // If recorder exists and is soft-muted, just unmute (avoids new getUserMedia → iOS route switch)
-  if (this.recorder && this.recorder.isMuted) {
-    this.recorder.unmute();
-    this.callbacks.onListeningChange?.(true);
-    return;
-  }
-  if (this.recorder) return; // Already actively recording
-  await this.startRecording();
-}
+### Fix 4: `src/components/profile/ProfileDrawer.tsx` — `handleRoleChange` navigation (lines 74-87)
+
+**Problem**: After switching roles, navigation targets are wrong:
+
+- `professional` navigates to `/dashboard` (should be `/professional/dashboard`)
+- `patient` navigates to `/dashboard` (should be `/patient/dashboard`)
+- `community` navigates to `/dashboard` (should be `/home` or tenant-based)
+
+**Change**: Fix the switch statement to match the actual routes in `role-navigation.ts`:
+
 ```
-
-**Edit C — `stop()` (lines 426–466): inline full recorder teardown**
-
-`stop()` currently calls `this.stopListening()` (line 430) — after Edit A that would only mute, not destroy the stream. So `stop()` needs to do the full teardown directly instead:
-
-```typescript
-async stop(): Promise<void> {
-  console.log('[OrbVoiceClient] Stopping...');
-
-  // Clear silence detection
-  if (this.silenceTimer) {
-    clearTimeout(this.silenceTimer);
-    this.silenceTimer = null;
-  }
-  this.hasSpeechStarted = false;
-
-  // Cancel volume monitoring
-  if (this.volumeAnimationFrame) {
-    cancelAnimationFrame(this.volumeAnimationFrame);
-    this.volumeAnimationFrame = null;
-  }
-
-  // Full recorder teardown — only place where MediaStream is destroyed
-  if (this.recorder) {
-    this.recorder.stop();
-    this.recorder = null;
-  }
-
-  // Stop session with auth
-  if (this.sessionId) {
-    try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({ session_id: this.sessionId })
-      });
-    } catch (e) {
-      console.warn('[OrbVoiceClient] Error stopping session', e);
-    }
-  }
-
-  // Close SSE
-  if (this.eventSource) {
-    this.eventSource.close();
-    this.eventSource = null;
-  }
-
-  // Close audio output context
-  if (this.audioContext) {
-    this.audioContext.close().catch(() => {});
-    this.audioContext = null;
-  }
-
-  // Reset audio state
-  this.sessionId = null;
-  this.nextStartTime = 0;
-
-  this.callbacks.onConnectionStateChange?.('disconnected');
-  this.callbacks.onSpeakingChange?.(false);
-  this.callbacks.onProcessingChange?.(false);
-
-  console.log('[OrbVoiceClient] Stopped');
-}
+admin / staff   --> /admin
+professional    --> /professional/dashboard
+patient         --> /patient/dashboard
+community       --> /home
 ```
 
 ---
 
-### File 3 — `src/hooks/useOrbVoiceClient.ts`
+### Fix 5: `src/components/profile/ProfileDrawer.tsx` — Hide role switcher on mobile (lines 200-223)
 
-Remove `clientRef.current.endTurn()` from the `stopListening` callback (lines 165–171):
+**Problem**: Mobile should be community-only with no role switching capability.
 
-```typescript
-const stopListening = useCallback(() => {
-  if (clientRef.current) {
-    clientRef.current.stopListening();
-    // endTurn() intentionally NOT called — muting is a pause, not end-of-turn
-  }
-}, []);
-```
+**Change**: Import `useIsMobile` and wrap the entire role switcher section (lines 200-223) with `!isMobile`, so it only renders on desktop. Mobile users will never see the Switch Role dropdown.
 
 ---
 
-### Why Each Change Matters
+### Summary
 
-| Change | Why |
-|--------|-----|
-| `mute()` uses `this.mediaStream.getAudioTracks()` | `mediaStream` is the correct field name (line 22 of polyfill) — `this.stream` does not exist |
-| Guard is `this.recorder` not `this.recorder?.isRecording` | After soft-mute, `isRecording` is still `true` (nodes still exist) — we need to check `isMuted` specifically, not re-enter `startRecording()` |
-| No `startVolumeMonitoring()` in unmute fast-path | The `ScriptProcessorNode`/`AudioWorklet` and its `onaudioprocess` callback keep running while muted; `startVolumeMonitoring()` would start a second `requestAnimationFrame` loop, doubling the monitoring overhead |
-| `stop()` inlines teardown instead of calling `stopListening()` | After Edit A, `stopListening()` only mutes — full `recorder.stop()` must happen explicitly in `stop()` |
-| `endTurn()` removed from `useOrbVoiceClient.stopListening` | Muting is a pause — the user should be able to unmute and continue the same turn |
+| File | Fix | Lines |
+|------|-----|-------|
+| `useSmartRouting.tsx` | Exafy Admin respects `currentRole` in `useSmartRouting()` | 37-42 |
+| `useSmartRouting.tsx` | Remove hardcoded admin redirect in `useRoleBasedRedirect()` | 95-98 |
+| `AppLayout.tsx` | URL-aware sidebar with precise prefix matching | 81 |
+| `ProfileDrawer.tsx` | Fix wrong navigation paths after role switch | 74-87 |
+| `ProfileDrawer.tsx` | Hide role switcher on mobile | 200-223 |
+
