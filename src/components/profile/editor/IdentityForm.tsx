@@ -96,10 +96,36 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   const handleAvatarUpload = async () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'image/*';
+    input.accept = 'image/jpeg,image/png,image/gif,image/webp,image/svg+xml';
     input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
+
+      // Validate file format - reject HEIC/HEIF and unsupported types
+      const fileName = file.name.toLowerCase();
+      const fileExt = fileName.split('.').pop() || '';
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+      const isHeic = file.type === 'image/heic' || file.type === 'image/heif' || fileExt === 'heic' || fileExt === 'heif';
+
+      if (isHeic) {
+        toast({
+          title: translate('profileEditor.identity.uploadFailed'),
+          description: 'HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.',
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!file.type.startsWith('image/') || !allowedExtensions.includes(fileExt)) {
+        if (!allowedExtensions.includes(fileExt)) {
+          toast({
+            title: translate('profileEditor.identity.uploadFailed'),
+            description: `Unsupported image format (.${fileExt}). Please use JPG, PNG, GIF, or WebP.`,
+            variant: "destructive",
+          });
+          return;
+        }
+      }
 
       setUploading(true);
       const url = await uploadFile(file, 'avatars', 'avatar');
