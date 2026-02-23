@@ -60,14 +60,15 @@ export function MobileIdentityCard({
         {onShare && (
           <Button
             variant="ghost"
-            size="icon"
-            className="absolute top-3 left-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10"
+            size="sm"
+            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white/80 hover:text-white z-10 text-xs font-medium gap-1.5"
             onClick={(e) => {
               e.stopPropagation();
               onShare();
             }}
           >
-            <Share2 className="h-4 w-4" />
+            <Share2 className="h-3.5 w-3.5" />
+            Share
           </Button>
         )}
 
