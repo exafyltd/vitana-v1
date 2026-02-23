@@ -1,37 +1,49 @@
 
 
-## Fix: iOS Screen Enlarges After Sending a Message
+## Add Search Dropdown to Events Search
 
-### Root Cause
+When typing in the search field on the Events & MeetUps page, a dropdown will appear below the input showing matching events. Clicking an event in the dropdown navigates to it. This works on both desktop and mobile.
 
-On iOS Safari, when a text input has a font-size smaller than 16px, the browser automatically zooms in when the input receives focus. The message composer textarea uses Tailwind's `text-sm` class (14px font-size). After sending a message, the code at line 193 of `MessageInput.tsx` calls `textareaRef.current.focus()`, which re-triggers this iOS auto-zoom -- causing the viewport to appear "enlarged" and exceed the screen.
+### Changes
 
-### Fix (2 changes)
+**File 1: `src/components/ui/expandable-search-button.tsx`**
 
-**1. `index.html` -- Prevent iOS auto-zoom globally**
+Add a new optional prop `dropdownItems` that accepts an array of search result objects (`{ id, title, subtitle?, imageUrl? }`), and a new `onItemClick` callback.
 
-Update the viewport meta tag (line 5) to include `maximum-scale=1`:
+When `dropdownItems` is provided and the input has focus with a non-empty query:
+- Render an absolutely-positioned dropdown below the search input (z-50, white bg, rounded, shadow, border, max-h-64 with overflow-y-auto)
+- Each item shows the event title and optional subtitle (location or date) in a clickable row
+- Clicking an item calls `onItemClick(id)` and collapses the search
+- Dropdown closes on blur (with a small delay to allow click registration) or Escape key
+- On mobile, the dropdown uses `fixed` or full-width positioning to avoid clipping by the utility bar's horizontal scroll
 
+**File 2: `src/pages/community/EventsAndMeetups.tsx`**
+
+- Create a `searchResults` memo that filters ALL `dbEvents` (not tab-scoped) by the search query, limited to 6 results
+- Pass `dropdownItems` and `onItemClick` to `ExpandableSearchButton`:
+  - `dropdownItems`: mapped from `searchResults` with `id`, `title`, `subtitle` (location or formatted date)
+  - `onItemClick`: calls `handleCardClick` with the matching event (navigates to event detail or opens drawer)
+- Existing inline grid filtering remains as-is (the dropdown is an addition, not a replacement)
+
+### Technical Details
+
+```text
++---------------------------+
+| Search input: "sunset"    |
++---------------------------+
+| Sunset Yoga by the Sea    |  <-- clickable row
+|   Cala Major Beach        |
+|---------------------------|
+| Detox Sunset Dinner       |
+|   Vineyard Restaurant     |
+|---------------------------|
+| Maxina Sunset Networking  |
+|   Beach Lounge, Palma     |
++---------------------------+
 ```
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-```
 
-This prevents Safari from auto-zooming when any input is focused, regardless of font size. This is standard practice for web apps that manage their own layout (WhatsApp Web, Telegram, etc.).
+- The dropdown uses `onMouseDown` (not `onClick`) on items to fire before the input's `onBlur`
+- A `ref` wrapper around the entire search component handles outside clicks to close the dropdown
+- Results are capped at 6 items to keep the dropdown compact
+- The existing grid filtering behavior is unchanged -- typing still filters the active tab's cards as before
 
-**2. `src/components/messages/MessageInput.tsx` -- Set textarea font to 16px on mobile**
-
-As a defense-in-depth measure, override the textarea's font-size to 16px on iOS to avoid the zoom trigger even if the viewport meta is later changed:
-
-On the Textarea element (line 579), add an explicit `text-base` (16px) class so that even without the viewport restriction, iOS won't zoom. The change is minimal:
-
-```
-className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 py-3 text-base"
-```
-
-This replaces the inherited `text-sm` (14px) from the Textarea component's default with `text-base` (16px), which is the threshold below which iOS triggers zoom.
-
-### What stays the same
-
-- Desktop appearance is unaffected (16px vs 14px is a subtle change)
-- All other form inputs across the app benefit from the viewport meta fix
-- Send behavior, focus management, and auto-resize logic unchanged
