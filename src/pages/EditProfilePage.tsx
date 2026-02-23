@@ -420,7 +420,7 @@ export default function EditProfilePage() {
                   onDelete={(id) => deletePhoto.mutate(id)}
                   isUploading={uploadPhoto.isPending}
                 />
-                <VideoGallery userId={profile.id} />
+                <VideoGallery userId={user?.id} />
               </div>
             )}
             
