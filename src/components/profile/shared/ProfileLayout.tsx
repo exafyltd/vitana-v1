@@ -32,6 +32,7 @@ import { MobileGroupsTabContent } from "../mobile/MobileGroupsTabContent";
 import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { PhotoGallery } from "../gallery/PhotoGallery";
+import { VideoGallery } from "../gallery/VideoGallery";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { ShareProfileModal } from "./ShareProfileModal";
 import { useProfileShare } from "@/hooks/useProfileShare";
@@ -212,7 +213,7 @@ export function ProfileLayout({
           )}
 
           {mobileActiveTab === "media" && (
-            <div className="p-4 space-y-4">
+            <div className="p-4 space-y-6">
               <PhotoGallery
                 photos={photos}
                 isOwner={isGalleryOwner}
@@ -220,6 +221,7 @@ export function ProfileLayout({
                 onDelete={(id) => deletePhoto.mutate(id)}
                 isUploading={uploadPhoto.isPending}
               />
+              <VideoGallery userId={profile.id} />
             </div>
           )}
 

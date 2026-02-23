@@ -39,7 +39,7 @@ export function useProfileGallery(userId?: string) {
       if (!user?.id) throw new Error('Not authenticated');
       
       const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-      const filePath = `gallery/${user.id}/${uuidv4()}.${ext}`;
+      const filePath = `${user.id}/gallery/${uuidv4()}.${ext}`;
       
       const { error: uploadError } = await supabase.storage
         .from('media-uploads')
