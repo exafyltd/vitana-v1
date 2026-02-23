@@ -1,46 +1,31 @@
 
-## Add Search Dropdown to Inbox (Messages) Screen
 
-When typing in the Inbox search field, a dropdown will appear showing matching conversations. Clicking a result opens that conversation directly.
+## Fix: Message Modal and Profile Preview Appearing Behind Event Drawer
 
-### How it works today
+### Root Cause
 
-The Inbox search (`inboxSearchQuery`) already filters the conversation list inline -- matching by participant name and last message. But there is no dropdown preview of results while typing.
+The event detail drawer (`MeetupDetailsDrawer`) uses a full-screen `Sheet` at `z-50`. Two interactive elements inside it -- the **Message Compose Modal** and the **Profile Preview Dialog** -- also render their Dialog at `z-50`. Since both the Sheet and Dialogs share the same z-index, the secondary dialogs appear behind the drawer overlay.
+
+This is the same pattern already solved for the Share and Campaign dialogs (documented in the project's drawer-modal-stacking pattern).
+
+### Solution
+
+Apply `z-[60]` to both the overlay and content of the two affected dialogs so they stack above the event drawer.
 
 ### Changes
 
-**File: `src/pages/Messages.tsx`**
+**1. `src/components/profile/shared/MessageComposeModal.tsx`**
 
-1. Add a `useMemo` that builds `searchDropdownItems` from `displayThreads` filtered by `inboxSearchQuery`:
-   - Matches against conversation title (participant name) and last message body
-   - Limited to 6 results
-   - Each item: `{ id: thread.id, title: conversationDisplayTitle, subtitle: lastMessage (truncated) }`
+- Add `overlayClassName="z-[60]"` to the `DialogContent` component
+- Add `z-[60]` to the `DialogContent` className so the modal content also renders above the drawer
 
-2. Create a `handleSearchItemClick` callback that:
-   - Sets `selectedThreadId` to the clicked thread's ID
-   - Clears `selectedRecipientId`
-   - Marks it as read (calls `handleConversationOpened` if unread)
+**2. `src/components/profile/ProfilePreviewDialog.tsx`**
 
-3. Pass `dropdownItems` and `onItemClick` to both `ExpandableSearchButton` instances:
-   - **Mobile** (line ~934): the one inside the mobile layout's `UtilityActionButton`
-   - **Desktop** (line ~1057): the one inside the desktop layout's `UtilityActionButton`
+- Add `overlayClassName="z-[60]"` to the `DialogContent` component
+- Add `z-[60]` to the `DialogContent` className so the profile preview renders above the drawer
+- This also fixes the "endless loading" issue -- the profile was loading fine but was visually hidden behind the drawer overlay, making it look stuck
 
-The existing inline filtering behavior is preserved -- the dropdown is an addition on top of it. Tapping a dropdown item immediately opens the conversation (on mobile, it navigates into the chat view; on desktop, it selects the conversation panel).
+### Why This Works
 
-### Technical Details
+The `DialogContent` component already supports an `overlayClassName` prop (line 46-47 of dialog.tsx) that is passed through to `DialogOverlay`. By setting both the overlay and content to `z-[60]`, the secondary dialog fully covers the `z-50` drawer, matching the established pattern used by `UniversalShareDialog` and `CampaignDialog`.
 
-```text
-+-------------------------------+
-| Search: "John"                |
-+-------------------------------+
-| John Doe                      |  <-- tap to open conversation
-|   Hey, are you coming today?  |
-|-------------------------------|
-| John & Sarah (Group)          |
-|   Let's meet at 5pm           |
-+-------------------------------+
-```
-
-- Reuses the portal-based dropdown already built in `ExpandableSearchButton` (same `createPortal` + `getBoundingClientRect` approach from the Events fix)
-- No new components or dependencies needed
-- Works identically on mobile and desktop since the same `ExpandableSearchButton` component is used in both layouts
