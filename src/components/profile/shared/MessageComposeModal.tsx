@@ -49,7 +49,7 @@ export function MessageComposeModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[520px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-300">
+      <DialogContent overlayClassName="z-[60]" className="z-[60] sm:max-w-[520px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-300">
         <DialogHeader className="p-6 pb-4 border-b border-white/20 dark:border-gray-800/20">
           <DialogTitle className="flex items-center gap-3">
             <Avatar className="h-12 w-12 border-2 border-white/80 dark:border-gray-800/80 shadow-lg">
