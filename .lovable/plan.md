@@ -1,40 +1,96 @@
 
 
-## Fix: Wire Milestones, Gallery, Share & QR into Mobile Edit Profile
+## Fix Photo Upload & Add Video Support to Mobile Media Tab
 
-### Root Cause
+### Problem 1: Photo Upload Fails Silently
 
-`EditProfilePage.tsx` has its **own** mobile rendering (lines 309-439) that completely bypasses `ProfileLayout.tsx`. All the new features (milestones, photo gallery, share button, QR screen) were added to `ProfileLayout`, but when you view your own profile on mobile, `EditProfilePage` renders directly without ever calling `ProfileLayout`. That's why nothing changed.
+Two bugs prevent gallery photo uploads from working:
 
-### Changes
+**Bug A: Wrong storage bucket for images.**
+The `useProfileGallery` hook uploads to the `media-uploads` bucket, but that bucket only allows video/audio MIME types (`video/mp4`, `video/webm`, `audio/mpeg`, etc.). Image files (`image/jpeg`, `image/png`, `image/webp`) are rejected by Supabase storage.
 
-**File: `src/pages/EditProfilePage.tsx`**
+**Bug B: Storage path doesn't match RLS policy.**
+The upload path is `gallery/{userId}/{uuid}.jpg`, but the storage RLS policy checks `(storage.foldername(name))[1] = auth.uid()`. Since the first folder is `gallery` (not the user ID), the policy denies the upload.
 
-1. **Add imports** for `MilestoneTimeline`, `useProfileMilestones`, `PhotoGallery`, `useProfileGallery`, `useProfileShare`, `ShareProfileModal`, `MobileQRShareScreen`
+### Problem 2: No Video Support in Media Tab
 
-2. **Add hooks** in the component body (before the `isMobile` check):
-   - `useProfileMilestones(profile.id)` for milestone CRUD
-   - `useProfileGallery(profile.id)` for gallery CRUD
-   - `useProfileShare(...)` for share functionality
-   - `useState` for QR screen visibility
+The Media tab only shows the Photo Gallery section. There's no way to browse or upload video content from the profile.
 
-3. **Add `onShare` prop** to the `MobileIdCardSwitcher` at line 321-327:
-   - Pass `onShare={shareHook.openShare}` so the share button on the ID card works
+---
 
-4. **Add milestones to the "about" tab** (lines 366-378):
-   - Below the bio card, render `MilestoneTimeline` with full CRUD callbacks
+### Fix Plan
 
-5. **Replace mock media tab** (lines 380-382):
-   - Replace `<MobileMediaTabContent />` with `<PhotoGallery>` using real data from `useProfileGallery`
+**1. SQL Migration -- Update `media-uploads` bucket to also allow image types**
 
-6. **Add ShareProfileModal and MobileQRShareScreen** in the mobile return block (before closing `</AppLayout>`):
-   - Render `ShareProfileModal` with share hook callbacks
-   - Render `MobileQRShareScreen` for Instagram-style QR sharing
+Add image MIME types to the `media-uploads` bucket's allowed list so it accepts both images and videos:
+- Add: `image/jpeg`, `image/png`, `image/webp`
 
-### Result
+**2. Fix upload path in `useProfileGallery.ts`**
 
-After this fix, viewing your own profile on mobile will show:
-- Life Milestones section in the "About" tab
-- Real Photo Gallery in the "Media" tab (replacing mock data)
-- Share button on the identity card that opens the share modal
-- Instagram-style QR code full-screen overlay accessible from the share flow
+Change the file path from `gallery/{userId}/{uuid}.ext` to `{userId}/gallery/{uuid}.ext` so the user ID is the first folder segment and matches the existing storage RLS policy.
+
+**3. Add Video Gallery section to the Media tab in `EditProfilePage.tsx`**
+
+Below the Photo Gallery, add a "Video Gallery" section that:
+- Uses the existing `useMediaUpload` hook and queries `media_uploads` table filtered by `media_type = 'video'`
+- Shows a grid of video thumbnails (using the first frame or a play icon overlay)
+- Allows uploading new videos (reusing the existing upload infrastructure)
+- Links to the media player when tapped
+
+**4. Create `VideoGallery` component**
+
+New file: `src/components/profile/gallery/VideoGallery.tsx`
+- Queries `media_uploads` where `user_id = targetUserId` and `media_type = 'video'`
+- Displays video thumbnails in a grid (similar layout to PhotoGallery)
+- Each video card shows: thumbnail with play icon overlay, title, duration
+- Owner sees upload button and delete option
+- Clicking a video navigates to the media player page
+
+**5. Create `VideoUploadDialog` component**
+
+New file: `src/components/profile/gallery/VideoUploadDialog.tsx`
+- Similar to PhotoUploadDialog but for video files
+- Accepts `video/mp4`, `video/webm`, `video/quicktime`
+- Shows video preview after selection
+- Fields: title (required), description (optional), visibility toggle
+- Uses the existing `useMediaUpload` hook for the actual upload
+
+**6. Add video gallery to both mobile implementations**
+
+- `EditProfilePage.tsx`: Add `VideoGallery` below `PhotoGallery` in the media tab
+- `ProfileLayout.tsx`: Same integration for visitor view
+
+**7. i18n translations**
+
+Add keys for the video gallery section in both `en.json` and `de.json`:
+
+| Key | English | German |
+|-----|---------|--------|
+| `gallery.videos` | Video Gallery | Videogalerie |
+| `gallery.uploadVideo` | Upload Video | Video hochladen |
+| `gallery.noVideos` | No videos yet | Noch keine Videos |
+| `gallery.addFirstVideo` | Add your first video | Erstes Video hinzufuegen |
+
+---
+
+### Technical Details
+
+**SQL Migration:**
+```sql
+UPDATE storage.buckets
+SET allowed_mime_types = array['video/mp4','video/webm','video/quicktime','audio/mpeg','audio/wav','audio/ogg','audio/mp4','image/jpeg','image/png','image/webp']
+WHERE id = 'media-uploads';
+```
+
+**Path fix in `useProfileGallery.ts`:**
+Line 42: change `gallery/${user.id}/${uuidv4()}.${ext}` to `${user.id}/gallery/${uuidv4()}.${ext}`
+
+**VideoGallery component** will use a new `useProfileVideos` hook that queries:
+```ts
+supabase.from('media_uploads')
+  .select('*')
+  .eq('user_id', targetUserId)
+  .eq('media_type', 'video')
+  .order('created_at', { ascending: false })
+```
+
