@@ -427,6 +427,25 @@ const EventsAndMeetups = () => {
     );
   }, [upcomingEvents, searchQuery]);
 
+  // Search dropdown results - filter ALL events regardless of tab
+  const searchDropdownItems = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const query = searchQuery.toLowerCase();
+    return dbEvents
+      .filter(event =>
+        event.title.toLowerCase().includes(query) ||
+        event.description?.toLowerCase().includes(query) ||
+        event.location?.toLowerCase().includes(query)
+      )
+      .slice(0, 6)
+      .map(event => ({
+        id: event.id,
+        title: event.title,
+        subtitle: event.location || formatEventTime(event.start_time),
+      }));
+  }, [dbEvents, searchQuery]);
+
+
   const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
 
   const maxinaEvents = useMemo(() => {
@@ -503,11 +522,16 @@ const EventsAndMeetups = () => {
   }, [dbEvents]);
 
   // Handle card click
-  const handleCardClick = (event: any) => {
+  const handleCardClick = useCallback((event: any) => {
     setFocusedCardId(event.id);
     selectEvent(event.id);
     setSearchParams({ event: event.id, tab: activeTab });
-  };
+  }, [activeTab, selectEvent, setSearchParams]);
+
+  const handleSearchItemClick = useCallback((id: string) => {
+    const event = dbEvents.find(e => e.id === id);
+    if (event) handleCardClick(event);
+  }, [dbEvents, handleCardClick]);
 
   // Handle edit
   const handleEditEvent = (event: any) => {
@@ -708,6 +732,8 @@ const EventsAndMeetups = () => {
               <ExpandableSearchButton 
                 placeholder={translate('events.searchPlaceholder', 'Search events and meetups...')} 
                 onSearch={(query) => setSearchQuery(query)}
+                dropdownItems={searchDropdownItems}
+                onItemClick={handleSearchItemClick}
               />
               <UniversalCalendarButton />
               
