@@ -1,57 +1,31 @@
 
+## Make Profile Preview and Message Compose Mobile-Friendly
 
-## Fix Profile Preview Loading and Message Modal Issues from Event Drawer
-
-### Problem 1: Profile Preview Loads Forever
-
-The `ProfilePreviewDialog` is rendered **inside** the Sheet/Drawer content (line 1540 of `MeetupDetailsDrawer.tsx`). When it opens, Radix UI's focus trap on the Sheet conflicts with the Dialog's own focus management, preventing the component from functioning correctly. The query fires but the UI gets stuck in a loading state.
-
-This is the same class of issue that was already solved for the Share Dialog and Campaign Dialog -- those were moved to the parent component (`EventsAndMeetups.tsx`) and triggered via callback props.
-
-### Problem 2: Message Modal Behavior
-
-The message compose modal now appears correctly above the drawer (z-index fix is working). The sending delay is inherent to the two-step process (create thread, then send message) and is normal behavior.
-
-### Solution
-
-Move the `ProfilePreviewDialog` out of the `MeetupDetailsDrawer` and into the parent `EventsAndMeetups.tsx` page, following the established drawer-modal-stacking pattern.
+Both the Profile Preview dialog and Message Compose modal currently use the standard centered `Dialog`, which doesn't adapt for mobile. They need to use the `ResponsiveDialog` component (bottom sheet on mobile, centered dialog on desktop) while maintaining the `z-[60]` stacking so they appear above the event drawer.
 
 ### Changes
 
-**1. `src/components/meetups/MeetupDetailsDrawer.tsx`**
+**1. `src/components/ui/responsive-dialog.tsx`**
 
-- Remove the `ProfilePreviewDialog` component render (line 1540)
-- Remove the import of `ProfilePreviewDialog`
-- Keep the `useProfilePreview()` hook call and `openPreview` usage (these work via the global context provider in App.tsx)
+Add an `overlayClassName` prop to `ResponsiveDialogContent`, passed through to `ResponsiveDialogOverlay`. This enables z-index overrides (like `z-[60]`) needed when these dialogs open above a Sheet/Drawer.
 
-**2. `src/pages/community/EventsAndMeetups.tsx`**
+**2. `src/components/profile/ProfilePreviewDialog.tsx`**
 
-- Import and render `ProfilePreviewDialog` at the page level, alongside the existing `UniversalShareDialog` and `CampaignDialog`
-- This ensures the dialog renders outside the Sheet portal, avoiding focus-trap conflicts
+- Switch from `Dialog`/`DialogContent` to `ResponsiveDialog`/`ResponsiveDialogContent` with `ResponsiveDialogBody` for scrollable content
+- On mobile: renders as a bottom sheet with vertically stacked ID cards (front then back), stats, and the "View Full Profile" button
+- On desktop: keeps the current side-by-side two-card layout
+- Apply `z-[60]` via both `overlayClassName` and `className` to maintain stacking above the event drawer
+- Loading and error states remain the same
 
-### Why This Works
+**3. `src/components/profile/shared/MessageComposeModal.tsx`**
 
-The `ProfilePreviewProvider` is already at the App level (in `App.tsx`). The `openPreview()` call inside the drawer sets the context state, and the `ProfilePreviewDialog` reads from the same context. Moving where the Dialog component renders doesn't change the data flow -- it just ensures the Dialog portal isn't nested inside the Sheet portal, eliminating the focus-trap conflict.
-
-```text
-Before (broken):
-  App (ProfilePreviewProvider)
-    EventsAndMeetups
-      MeetupDetailsDrawer (Sheet portal)
-        ProfilePreviewDialog (Dialog portal nested inside Sheet)
-          -> Focus trap conflict -> stuck loading
-
-After (fixed):
-  App (ProfilePreviewProvider)
-    EventsAndMeetups
-      MeetupDetailsDrawer (Sheet portal)
-        -> openPreview() sets context
-      ProfilePreviewDialog (Dialog portal at page level)
-        -> No focus trap conflict -> works correctly
-```
+- Switch from `Dialog`/`DialogContent`/`DialogHeader`/`DialogTitle` to their `ResponsiveDialog` equivalents
+- On mobile: renders as a bottom sheet with the recipient header sticky at top, textarea in scrollable body, and send/cancel buttons in a sticky footer
+- On desktop: keeps the current centered modal design
+- Apply `z-[60]` via both `overlayClassName` and `className`
 
 ### Technical Details
 
-- No new dependencies or components
-- Follows the exact same pattern already used for `UniversalShareDialog` and `CampaignDialog` in this codebase
-- The `useProfilePreview` context handles all state synchronization automatically
+The `ResponsiveDialogOverlay` currently hardcodes `z-50`. Adding the `overlayClassName` prop follows the exact same pattern as the regular `DialogContent` component (line 46-47 of dialog.tsx). Both the overlay and content get `z-[60]` so they fully cover the event drawer's `z-50` Sheet.
+
+No new dependencies needed. The `ResponsiveDialog` component already handles all mobile-specific behavior (bottom sheet slide-up, drag handle, safe area padding, sticky header/footer).
