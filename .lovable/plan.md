@@ -1,59 +1,111 @@
 
 
-## Fix "Reserve Spot" Persistence and Calendar Integration
+## Internationalize MeetupDetailsDrawer -- Full German Translation
 
-### Root Causes Found
+The event detail drawer currently has ~35 hardcoded English strings that remain untranslated when German is selected. These need to be wrapped with `translate()` calls and corresponding keys added to both `de.json` and `en.json`.
 
-Three interconnected bugs prevent the "Reserve Spot" flow from working end-to-end:
+### Hardcoded Strings to Translate
 
-1. **Drawer never checks existing participation on open**: `isJoined` is initialized as `useState(false)` and is never synced with the database. So every time the drawer opens, it shows "Reserve Spot" even if the user already joined.
+**Host Bar area (lines 839-887)**
+- `"Host"` (badge label) -> `eventDrawer.host`
+- `"Follow"` / `"Following"` / `"Following..."` -> `eventDrawer.follow` / `.following` / `.followingLoading`
+- `"Unfollowed"` / `"Following!"` toast titles -> `eventDrawer.unfollowed` / `.followingToast`
+- `"Community Host"` fallback -> `eventDrawer.communityHost`
 
-2. **Card "Reserve Spot" skips calendar**: The `NewsCard` component calls `useEventParticipation.toggleParticipation()` which only writes to `global_event_participants` but never adds the event to the VITANA Smart Calendar (`calendar_events` table).
+**Social Proof (lines 911-946)**
+- `"People you follow are going"` -> `eventDrawer.followersGoing`
+- `"Follow back"` tooltip -> `eventDrawer.followBack`
 
-3. **Drawer "Cancel Reservation" is a no-op**: The leave/cancel handler (lines 1307-1324) only calls `setIsJoined(false)` -- it never deletes from `global_event_participants` or removes from `calendar_events`. The reservation stays in the database forever.
+**Badges (lines 894-908)**
+- `"Community"` fallback -> `eventDrawer.community`
+- `"Meetup"` fallback -> `eventDrawer.meetup`
+- `"Accessible"` -> `eventDrawer.accessible`
 
-### Changes
+**When and Where section (lines 949-1046)**
+- `"When & Where"` heading -> `eventDrawer.whenWhere`
+- `"Local"` / `"UTC"` toggle labels -> `eventDrawer.local` / `.utc`
+- `"Starts {time}"` countdown -> `eventDrawer.startsIn`
+- `"{duration} minutes"` -> `eventDrawer.durationMinutes`
+- `"Virtual Event"` -> `eventDrawer.virtualEvent`
+- `"Join link · Opens 5 min before"` -> `eventDrawer.joinLinkOpens`
+- `"Get directions"` -> `eventDrawer.getDirections`
 
-**1. `src/hooks/useEventParticipation.ts`**
+**Capacity (lines 1050-1066)**
+- `"{current} / {capacity} attending"` -> `eventDrawer.attending`
+- `"Only {count} left!"` -> `eventDrawer.spotsLeft`
 
-- Accept optional event metadata (title, start_time, end_time, location, slug) so it can also add to the Smart Calendar
-- When joining: after inserting into `global_event_participants`, also call `addEvent` from `useCalendarEvents` to add to the VITANA calendar (with `meetup_id` in metadata)
-- When leaving: after deleting from `global_event_participants`, also remove the matching calendar event
-- This makes the hook the single source of truth for participation, used by both the card and the drawer
+**Autopilot (lines 1068-1090)**
+- `"Autopilot Suggestions"` -> `eventDrawer.autopilotSuggestions`
+- `"Fit into my week"` -> `eventDrawer.fitIntoWeek`
+- `"Resolve schedule conflict"` -> `eventDrawer.resolveConflict`
+- `"Plan commute"` -> `eventDrawer.planCommute`
 
-**2. `src/components/meetups/MeetupDetailsDrawer.tsx`**
+**Section headings (lines 1092-1255)**
+- `"About"` -> `eventDrawer.about`
+- `"No description provided."` -> `eventDrawer.noDescription`
+- `"Agenda"` -> `eventDrawer.agenda`
+- `"Host"` (section heading) -> reuse `eventDrawer.host`
+- `"Organizer"` -> `eventDrawer.organizer`
+- `"Message"` / `"Sending..."` -> `eventDrawer.message` / `.sending`
+- `"Attendees ({count})"` -> `eventDrawer.attendees`
+- `"Tickets"` -> `eventDrawer.tickets`
+- `"Sold Out"` badge -> reuse `eventCta.soldOut`
+- `"View Sales"` / `"Hide Sales"` -> `eventDrawer.viewSales` / `.hideSales`
+- `"Free tickets available"` -> `eventDrawer.freeTickets`
+- `"From {price}"` -> `eventDrawer.fromPrice`
+- `"Policies"` / `"Requirements"` / `"Cancellation"` -> `eventDrawer.policies` / `.requirements` / `.cancellation`
 
-- Add a `useEffect` that checks participation status when the drawer opens (query `global_event_participants` for the current user and event)
-- Set `isJoined` to `true` if a record exists with status `attending`
-- Replace the broken leave/cancel handler (lines 1307-1324) with actual database deletion from `global_event_participants` and removal from `calendar_events`
-- Use `removeEvent` (already imported) to clean up the calendar entry on cancellation
+**Toast messages (lines 600-660, 1401-1411)**
+- `"Authentication required"` / `"Please sign in to message the host"` -> reuse auth keys
+- `"Cannot message host"` / `"Cannot message yourself"` toasts -> `eventDrawer.cannotMessageHost` etc.
+- `"Message sent!"` -> `eventDrawer.messageSent`
+- `"Left MeetUp"` / `"Reservation Cancelled"` -> `eventDrawer.leftMeetup` / `.reservationCancelled`
 
-**3. `src/components/crossover/NewsCard.tsx`**
+**Calendar dropdown (lines 1516-1548)**
+- `"Add to calendar"` aria-label -> `eventDrawer.addToCalendar`
+- `"Google Calendar"` / `"Outlook"` / `"Apple Calendar"` / `"Download ICS"` -> `eventDrawer.googleCal` etc.
 
-- Pass event metadata (title, start_time, location, etc.) to `useEventParticipation` so it can create the calendar entry
-- No change to the CTA action mapping -- `toggleParticipation()` will now handle both DB and calendar
+**Date formatting (line 984)**
+- `format(startDate, 'EEEE, MMMM d, yyyy')` needs `date-fns/locale/de` when German is selected
 
-### Technical Details
+### Files Changed
 
-The `useEventParticipation` hook will be enhanced with an optional `eventDetails` parameter:
+**1. `src/i18n/de.json`** -- Add `eventDrawer` namespace with all German translations
 
-```text
-useEventParticipation(eventId, initialCount, {
-  title: "Event Name",
-  start_time: "2026-02-20T13:00:00",
-  end_time: "2026-02-20T15:00:00",
-  location: "HQ",
-  slug: "event-slug"
-})
-```
+**2. `src/i18n/en.json`** -- Add matching `eventDrawer` namespace with English values
 
-When these details are provided and the user joins, the hook will:
-1. Insert into `global_event_participants` (existing behavior)
-2. Call `addEvent()` to create a `calendar_events` record with `metadata.meetup_id` set (new behavior)
+**3. `src/components/meetups/MeetupDetailsDrawer.tsx`** -- Replace all hardcoded strings with `translate('eventDrawer.key', 'English fallback')` calls. Import `de` locale from `date-fns` and use it conditionally for date formatting.
 
-When the user leaves, the hook will:
-1. Delete from `global_event_participants` (existing behavior)
-2. Find and remove the matching calendar event by `metadata.meetup_id` (new behavior)
+**4. `src/lib/eventsCtaUtils.ts`** -- No changes needed (already localized via `getLocalizedEventCta`)
 
-The drawer's `handleJoin` will be simplified to delegate to a shared function or directly use the enhanced hook, eliminating the duplicate calendar-add logic currently in `handleJoin`.
+### German Translations (key samples)
+
+| Key | German |
+|-----|--------|
+| `eventDrawer.host` | Gastgeber |
+| `eventDrawer.follow` | Folgen |
+| `eventDrawer.following` | Folge ich |
+| `eventDrawer.followersGoing` | Personen, denen Sie folgen, nehmen teil |
+| `eventDrawer.whenWhere` | Wann & Wo |
+| `eventDrawer.local` | Lokal |
+| `eventDrawer.virtualEvent` | Virtuelles Event |
+| `eventDrawer.getDirections` | Route planen |
+| `eventDrawer.attending` | {current} / {capacity} Teilnehmer |
+| `eventDrawer.spotsLeft` | Nur noch {count} Plätze! |
+| `eventDrawer.autopilotSuggestions` | Autopilot-Vorschläge |
+| `eventDrawer.fitIntoWeek` | In meine Woche einpassen |
+| `eventDrawer.resolveConflict` | Terminkonflikt lösen |
+| `eventDrawer.planCommute` | Anfahrt planen |
+| `eventDrawer.about` | Über |
+| `eventDrawer.agenda` | Agenda |
+| `eventDrawer.organizer` | Veranstalter |
+| `eventDrawer.message` | Nachricht |
+| `eventDrawer.attendees` | Teilnehmer ({count}) |
+| `eventDrawer.policies` | Richtlinien |
+| `eventDrawer.requirements` | Voraussetzungen |
+| `eventDrawer.cancellation` | Stornierung |
+| `eventDrawer.accessible` | Barrierefrei |
+| `eventDrawer.durationMinutes` | {duration} Minuten |
+| `eventDrawer.addToCalendar` | Zum Kalender hinzufügen |
+| `eventDrawer.downloadIcs` | ICS herunterladen |
 
