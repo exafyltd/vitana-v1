@@ -1,31 +1,57 @@
 
 
-## Fix: Message Modal and Profile Preview Appearing Behind Event Drawer
+## Fix Profile Preview Loading and Message Modal Issues from Event Drawer
 
-### Root Cause
+### Problem 1: Profile Preview Loads Forever
 
-The event detail drawer (`MeetupDetailsDrawer`) uses a full-screen `Sheet` at `z-50`. Two interactive elements inside it -- the **Message Compose Modal** and the **Profile Preview Dialog** -- also render their Dialog at `z-50`. Since both the Sheet and Dialogs share the same z-index, the secondary dialogs appear behind the drawer overlay.
+The `ProfilePreviewDialog` is rendered **inside** the Sheet/Drawer content (line 1540 of `MeetupDetailsDrawer.tsx`). When it opens, Radix UI's focus trap on the Sheet conflicts with the Dialog's own focus management, preventing the component from functioning correctly. The query fires but the UI gets stuck in a loading state.
 
-This is the same pattern already solved for the Share and Campaign dialogs (documented in the project's drawer-modal-stacking pattern).
+This is the same class of issue that was already solved for the Share Dialog and Campaign Dialog -- those were moved to the parent component (`EventsAndMeetups.tsx`) and triggered via callback props.
+
+### Problem 2: Message Modal Behavior
+
+The message compose modal now appears correctly above the drawer (z-index fix is working). The sending delay is inherent to the two-step process (create thread, then send message) and is normal behavior.
 
 ### Solution
 
-Apply `z-[60]` to both the overlay and content of the two affected dialogs so they stack above the event drawer.
+Move the `ProfilePreviewDialog` out of the `MeetupDetailsDrawer` and into the parent `EventsAndMeetups.tsx` page, following the established drawer-modal-stacking pattern.
 
 ### Changes
 
-**1. `src/components/profile/shared/MessageComposeModal.tsx`**
+**1. `src/components/meetups/MeetupDetailsDrawer.tsx`**
 
-- Add `overlayClassName="z-[60]"` to the `DialogContent` component
-- Add `z-[60]` to the `DialogContent` className so the modal content also renders above the drawer
+- Remove the `ProfilePreviewDialog` component render (line 1540)
+- Remove the import of `ProfilePreviewDialog`
+- Keep the `useProfilePreview()` hook call and `openPreview` usage (these work via the global context provider in App.tsx)
 
-**2. `src/components/profile/ProfilePreviewDialog.tsx`**
+**2. `src/pages/community/EventsAndMeetups.tsx`**
 
-- Add `overlayClassName="z-[60]"` to the `DialogContent` component
-- Add `z-[60]` to the `DialogContent` className so the profile preview renders above the drawer
-- This also fixes the "endless loading" issue -- the profile was loading fine but was visually hidden behind the drawer overlay, making it look stuck
+- Import and render `ProfilePreviewDialog` at the page level, alongside the existing `UniversalShareDialog` and `CampaignDialog`
+- This ensures the dialog renders outside the Sheet portal, avoiding focus-trap conflicts
 
 ### Why This Works
 
-The `DialogContent` component already supports an `overlayClassName` prop (line 46-47 of dialog.tsx) that is passed through to `DialogOverlay`. By setting both the overlay and content to `z-[60]`, the secondary dialog fully covers the `z-50` drawer, matching the established pattern used by `UniversalShareDialog` and `CampaignDialog`.
+The `ProfilePreviewProvider` is already at the App level (in `App.tsx`). The `openPreview()` call inside the drawer sets the context state, and the `ProfilePreviewDialog` reads from the same context. Moving where the Dialog component renders doesn't change the data flow -- it just ensures the Dialog portal isn't nested inside the Sheet portal, eliminating the focus-trap conflict.
 
+```text
+Before (broken):
+  App (ProfilePreviewProvider)
+    EventsAndMeetups
+      MeetupDetailsDrawer (Sheet portal)
+        ProfilePreviewDialog (Dialog portal nested inside Sheet)
+          -> Focus trap conflict -> stuck loading
+
+After (fixed):
+  App (ProfilePreviewProvider)
+    EventsAndMeetups
+      MeetupDetailsDrawer (Sheet portal)
+        -> openPreview() sets context
+      ProfilePreviewDialog (Dialog portal at page level)
+        -> No focus trap conflict -> works correctly
+```
+
+### Technical Details
+
+- No new dependencies or components
+- Follows the exact same pattern already used for `UniversalShareDialog` and `CampaignDialog` in this codebase
+- The `useProfilePreview` context handles all state synchronization automatically
