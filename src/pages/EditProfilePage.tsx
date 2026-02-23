@@ -28,6 +28,13 @@ import { MobileGroupsTabContent } from "@/components/profile/mobile/MobileGroups
 import { AutopilotProfilePopup } from "@/components/profile/AutopilotProfilePopup";
 import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
 import { ProfilePostsTab } from "@/components/profile/shared/tabs/ProfilePostsTab";
+import { MilestoneTimeline } from "@/components/profile/milestones/MilestoneTimeline";
+import { useProfileMilestones } from "@/hooks/useProfileMilestones";
+import { PhotoGallery } from "@/components/profile/gallery/PhotoGallery";
+import { useProfileGallery } from "@/hooks/useProfileGallery";
+import { ShareProfileModal } from "@/components/profile/shared/ShareProfileModal";
+import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareScreen";
+import { useProfileShare } from "@/hooks/useProfileShare";
 
 // Default bio constants for language sync - OUTSIDE component for stability
 const DEFAULT_BIO_EN = 'Wellness enthusiast passionate about holistic health and community building. 🌱';
@@ -304,6 +311,21 @@ export default function EditProfilePage() {
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
   const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [showQRScreen, setShowQRScreen] = useState(false);
+
+  // Milestones hook
+  const { milestones, isOwner: milestoneIsOwner, addMilestone, updateMilestone, deleteMilestone, isLoading: milestonesLoading } = useProfileMilestones(user?.id);
+
+  // Gallery hook
+  const { photos, isOwner: galleryIsOwner, uploadPhoto, deletePhoto } = useProfileGallery(user?.id);
+
+  // Share hook
+  const shareHook = useProfileShare({
+    handle: profile.handle,
+    name: profile.name,
+    profileId: profile.id,
+    isPublic: true,
+  });
 
   // Mobile-specific layout - early return pattern
   if (isMobile) {
@@ -324,6 +346,7 @@ export default function EditProfilePage() {
             onEditIdentity={handleEditIdentity}
             onEditSocial={handleEditAbout}
             onRefreshProfile={refetchProfile}
+            onShare={shareHook.openShare}
           />
           
           {/* Compact Stats Strip */}
@@ -374,11 +397,29 @@ export default function EditProfilePage() {
                   <p className="text-sm text-muted-foreground">{profile.bio || translate('editProfile.addBio', 'Add a bio...')}</p>
                   <p className="text-xs text-primary mt-2">{translate('editProfile.tapToEdit', 'Tap to edit')}</p>
                 </button>
+
+                {/* Life Milestones */}
+                <MilestoneTimeline
+                  milestones={milestones}
+                  isOwner={true}
+                  onAdd={(input) => addMilestone.mutate(input)}
+                  onUpdate={(input) => updateMilestone.mutate(input)}
+                  onDelete={(id) => deleteMilestone.mutate(id)}
+                  isAdding={addMilestone.isPending}
+                />
               </div>
             )}
             
             {mobileActiveTab === "media" && (
-              <MobileMediaTabContent />
+              <div className="p-4 space-y-4">
+                <PhotoGallery
+                  photos={photos}
+                  isOwner={true}
+                  onUpload={(data) => uploadPhoto.mutate(data)}
+                  onDelete={(id) => deletePhoto.mutate(id)}
+                  isUploading={uploadPhoto.isPending}
+                />
+              </div>
             )}
             
             {mobileActiveTab === "groups" && (
@@ -434,6 +475,28 @@ export default function EditProfilePage() {
         <MobileCreatePostSheet
           open={showCreatePost}
           onOpenChange={setShowCreatePost}
+        />
+
+        {/* Share Profile Modal */}
+        <ShareProfileModal
+          isOpen={shareHook.isShareOpen}
+          onOpenChange={shareHook.setIsShareOpen}
+          profile={profile}
+          onCopyLink={shareHook.copyLink}
+          onShareToX={shareHook.shareToX}
+          onShareToLinkedIn={shareHook.shareToLinkedIn}
+          onShareToFacebook={() => {}}
+          onViewPublicProfile={() => navigate(`/u/${profile.handle}`)}
+        />
+
+        {/* Instagram-style QR Share Screen */}
+        <MobileQRShareScreen
+          isOpen={showQRScreen}
+          onClose={() => setShowQRScreen(false)}
+          profileUrl={shareHook.getShareUrl()}
+          profileName={profile.name}
+          profileHandle={profile.handle}
+          avatarUrl={profile.avatarUrl}
         />
       </AppLayout>
     );
