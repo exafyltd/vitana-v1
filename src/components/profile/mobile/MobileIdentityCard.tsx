@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Pencil, ChevronRight, Share2 } from "lucide-react";
+import { Pencil, ChevronRight, Share2, UserPlus, UserCheck, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -13,8 +13,13 @@ interface MobileIdentityCardProps {
   vitanaIndex?: number;
   vitanaPercentile?: number;
   editMode?: boolean;
+  isOwner?: boolean;
   onEdit?: () => void;
   onShare?: () => void;
+  onFollow?: () => void;
+  onMessage?: () => void;
+  isFollowing?: boolean;
+  followLoading?: boolean;
   onViewFullId?: () => void;
   className?: string;
 }
@@ -27,8 +32,13 @@ export function MobileIdentityCard({
   vitanaIndex = 742,
   vitanaPercentile = 15,
   editMode = false,
+  isOwner = true,
   onEdit,
   onShare,
+  onFollow,
+  onMessage,
+  isFollowing = false,
+  followLoading = false,
   onViewFullId,
   className
 }: MobileIdentityCardProps) {
@@ -56,8 +66,8 @@ export function MobileIdentityCard({
         role={onViewFullId ? "button" : undefined}
         tabIndex={onViewFullId ? 0 : undefined}
       >
-        {/* Share button - top left */}
-        {onShare && (
+        {/* Share button - top left (only for owner view) */}
+        {isOwner && onShare && (
           <Button
             variant="ghost"
             size="sm"
@@ -113,6 +123,64 @@ export function MobileIdentityCard({
             {handle && archetype && <span> · </span>}
             {archetype && <span>{archetype}</span>}
           </p>
+
+          {/* Action buttons row for non-owner */}
+          {!isOwner && (
+            <div className="flex gap-2 justify-center mt-4">
+              {onShare && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white/80 hover:text-white text-xs font-medium gap-1.5"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onShare();
+                  }}
+                >
+                  <Share2 className="h-3.5 w-3.5" />
+                  Share
+                </Button>
+              )}
+              {onFollow && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={cn(
+                    "h-8 px-3 rounded-full backdrop-blur-sm border border-white/20 text-xs font-medium gap-1.5",
+                    isFollowing
+                      ? "bg-white/20 text-white hover:bg-white/10"
+                      : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
+                  )}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFollow();
+                  }}
+                  disabled={followLoading}
+                >
+                  {isFollowing ? (
+                    <UserCheck className="h-3.5 w-3.5" />
+                  ) : (
+                    <UserPlus className="h-3.5 w-3.5" />
+                  )}
+                  {isFollowing ? "Following" : "Follow"}
+                </Button>
+              )}
+              {onMessage && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 px-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white/80 hover:text-white text-xs font-medium gap-1.5"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onMessage();
+                  }}
+                >
+                  <MessageSquare className="h-3.5 w-3.5" />
+                  Message
+                </Button>
+              )}
+            </div>
+          )}
 
           {/* Divider */}
           <div className="w-full h-px bg-white/5 my-5" />
