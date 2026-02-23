@@ -1,60 +1,34 @@
 
 
-## Multi-Photo Upload Support
+## Fix: Video Gallery Not Showing on Mobile
 
-Currently the upload dialog only allows selecting and uploading one photo at a time. This plan converts it to support batch selection and sequential upload.
+### Root Cause
 
-### Changes
+The `profile.id` in `EditProfilePage.tsx` is hardcoded to `'current-user'` (line 63), not the actual user UUID. When `VideoGallery` receives `userId="current-user"`:
 
-**1. `src/components/profile/gallery/PhotoUploadDialog.tsx` -- Support multiple files**
+1. `isOwner` becomes `false` because `user.id` (a real UUID) does not equal `"current-user"`
+2. Since there are no videos yet AND `isOwner` is false, line 71 returns `null` -- hiding the entire component
 
-- Change state from single `file`/`preview` to arrays: `files: File[]` and `previews: string[]`
-- Add `multiple` attribute to the file input
-- Update drop handler to accept multiple files from `e.dataTransfer.files`
-- Show a scrollable grid of preview thumbnails instead of a single image
-- Each preview gets an X button to remove it from the batch
-- Allow adding more files (clicking the drop zone again appends, doesn't replace)
-- Optional: shared caption field applies to all photos, or no caption for batch
-- Update the dropzone text to say "Select multiple photos"
-- Submit button shows count: "Upload 5 Photos"
+### Fix
 
-- On submit, call `onUpload` once per file sequentially
-- Show a progress indicator (e.g., "Uploading 2 of 5...")
-- Disable close/cancel while uploading is in progress
+**File: `src/pages/EditProfilePage.tsx` (line 423)**
 
-**2. `src/components/profile/gallery/PhotoGallery.tsx` -- Update `onUpload` prop type**
+Change the `VideoGallery` prop from `profile.id` to `user?.id` (the actual auth UUID), same as how `PhotoGallery` already uses `user.id` via `useProfileGallery`:
 
-- Change `onUpload` prop to accept a batch: `(data: { file: File; caption?: string; is_public?: boolean }[]) => void`
-- OR keep the single-file signature and let the dialog call it multiple times (simpler, no changes needed here)
+```tsx
+// Before
+<VideoGallery userId={profile.id} />
 
-Decision: Keep the existing single-file `onUpload` signature unchanged. The dialog will loop and call it for each file. This avoids changing the hook or any parent components.
-
-**3. `src/hooks/useProfileGallery.ts` -- No changes needed**
-
-The existing `uploadPhoto.mutateAsync` already handles one file at a time. The dialog will call it sequentially for each file in the batch.
-
-### Technical Details
-
-**State changes in PhotoUploadDialog:**
-```
-- file: File | null        -->  files: File[]
-- preview: string | null   -->  previews: string[]
-+ uploadProgress: { current: number; total: number } | null
+// After
+<VideoGallery userId={user?.id} />
 ```
 
-**Submit flow:**
-```
-for (let i = 0; i < files.length; i++) {
-  setUploadProgress({ current: i + 1, total: files.length });
-  await onUpload({ file: files[i], caption, is_public: isPublic });
-}
-// reset and close
-```
+This single-line fix ensures:
+- `isOwner` correctly resolves to `true`
+- The empty-state UI with "Upload Video" button renders
+- Video queries use the correct UUID to fetch from `media_uploads`
 
-The `onUpload` prop type changes to return a Promise so we can await each upload:
-```ts
-onUpload: (data: { file: File; caption?: string; is_public?: boolean }) => void | Promise<void>
-```
+### Also fix in ProfileLayout.tsx
 
-**Preview grid:** A 3-column grid of thumbnails inside the drop zone area, each with a small remove button. Max height with scroll if many photos selected.
+Check if the same issue exists in the visitor-view profile layout and apply the same fix if needed -- pass the actual user UUID rather than a potentially incorrect `profile.id`.
 
