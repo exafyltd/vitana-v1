@@ -1,46 +1,46 @@
 
+## Add Search Dropdown to Inbox (Messages) Screen
 
-## Fix: Search Dropdown Not Visible
+When typing in the Inbox search field, a dropdown will appear showing matching conversations. Clicking a result opens that conversation directly.
 
-### Root Cause
+### How it works today
 
-The `ExpandableSearchButton` renders its dropdown with `position: absolute` inside a container that has `overflow-x-auto` (line 36 of `utility-action-button.tsx`). This CSS property clips any content that overflows vertically too, so the dropdown is rendered but hidden.
-
-### Solution
-
-Use a React Portal to render the dropdown outside of the clipped container, positioning it relative to the search input using `getBoundingClientRect()`.
+The Inbox search (`inboxSearchQuery`) already filters the conversation list inline -- matching by participant name and last message. But there is no dropdown preview of results while typing.
 
 ### Changes
 
-**File: `src/components/ui/expandable-search-button.tsx`**
+**File: `src/pages/Messages.tsx`**
 
-1. Import `createPortal` from `react-dom`
-2. Track the input wrapper's position using a ref and compute dropdown coordinates with `getBoundingClientRect()`
-3. Render the dropdown via `createPortal(...)` into `document.body` using `position: fixed` with `top` and `left` calculated from the input's bounding rect
-4. Recalculate position on scroll/resize using a layout effect or by computing on each render when `showDropdown` is true
-5. The dropdown width matches the input width (from `getBoundingClientRect().width`)
+1. Add a `useMemo` that builds `searchDropdownItems` from `displayThreads` filtered by `inboxSearchQuery`:
+   - Matches against conversation title (participant name) and last message body
+   - Limited to 6 results
+   - Each item: `{ id: thread.id, title: conversationDisplayTitle, subtitle: lastMessage (truncated) }`
 
-The outside-click handler and `onMouseDown` approach remain unchanged. The only visual difference is the dropdown now escapes the scrollable utility bar and appears correctly below the search input.
+2. Create a `handleSearchItemClick` callback that:
+   - Sets `selectedThreadId` to the clicked thread's ID
+   - Clears `selectedRecipientId`
+   - Marks it as read (calls `handleConversationOpened` if unread)
+
+3. Pass `dropdownItems` and `onItemClick` to both `ExpandableSearchButton` instances:
+   - **Mobile** (line ~934): the one inside the mobile layout's `UtilityActionButton`
+   - **Desktop** (line ~1057): the one inside the desktop layout's `UtilityActionButton`
+
+The existing inline filtering behavior is preserved -- the dropdown is an addition on top of it. Tapping a dropdown item immediately opens the conversation (on mobile, it navigates into the chat view; on desktop, it selects the conversation panel).
 
 ### Technical Details
 
 ```text
-Before (clipped):
-  UtilityActionButton [overflow-x-auto]
-    ExpandableSearchButton
-      Input
-      Dropdown [absolute] -- CLIPPED by parent overflow
-
-After (portal):
-  UtilityActionButton [overflow-x-auto]
-    ExpandableSearchButton
-      Input
-  document.body
-    Dropdown [fixed, positioned via getBoundingClientRect] -- VISIBLE
++-------------------------------+
+| Search: "John"                |
++-------------------------------+
+| John Doe                      |  <-- tap to open conversation
+|   Hey, are you coming today?  |
+|-------------------------------|
+| John & Sarah (Group)          |
+|   Let's meet at 5pm           |
++-------------------------------+
 ```
 
-Key implementation points:
-- Use `useEffect` to update position when `showDropdown` changes
-- Store position in state: `{ top, left, width }`
-- The portal div gets the same styling (z-50, bg-popover, border, rounded-lg, shadow-lg, max-h-64, overflow-y-auto)
-- Close on scroll of the parent container to avoid stale positioning (optional, escape already handles this)
+- Reuses the portal-based dropdown already built in `ExpandableSearchButton` (same `createPortal` + `getBoundingClientRect` approach from the Events fix)
+- No new components or dependencies needed
+- Works identically on mobile and desktop since the same `ExpandableSearchButton` component is used in both layouts
