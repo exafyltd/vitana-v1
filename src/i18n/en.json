@@ -2431,7 +2431,11 @@
     "uploadFirst": "Add your first photo",
     "photo": "Photo",
     "dropzone": "Drag & drop or click to select",
-    "publicLabel": "Visible to everyone"
+    "publicLabel": "Visible to everyone",
+    "videos": "Video Gallery",
+    "uploadVideo": "Upload Video",
+    "noVideos": "No videos yet",
+    "addFirstVideo": "Add your first video"
   },
   "publicProfile": {
     "viewFull": "View Full Profile",

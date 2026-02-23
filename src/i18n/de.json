@@ -2431,7 +2431,11 @@
     "uploadFirst": "Erstes Foto hinzufügen",
     "photo": "Foto",
     "dropzone": "Ziehen & ablegen oder klicken",
-    "publicLabel": "Für alle sichtbar"
+    "publicLabel": "Für alle sichtbar",
+    "videos": "Videogalerie",
+    "uploadVideo": "Video hochladen",
+    "noVideos": "Noch keine Videos",
+    "addFirstVideo": "Erstes Video hinzufügen"
   },
   "publicProfile": {
     "viewFull": "Vollständiges Profil ansehen",

@@ -31,6 +31,7 @@ import { ProfilePostsTab } from "@/components/profile/shared/tabs/ProfilePostsTa
 import { MilestoneTimeline } from "@/components/profile/milestones/MilestoneTimeline";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { PhotoGallery } from "@/components/profile/gallery/PhotoGallery";
+import { VideoGallery } from "@/components/profile/gallery/VideoGallery";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { ShareProfileModal } from "@/components/profile/shared/ShareProfileModal";
 import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareScreen";
@@ -411,7 +412,7 @@ export default function EditProfilePage() {
             )}
             
             {mobileActiveTab === "media" && (
-              <div className="p-4 space-y-4">
+              <div className="p-4 space-y-6">
                 <PhotoGallery
                   photos={photos}
                   isOwner={true}
@@ -419,6 +420,7 @@ export default function EditProfilePage() {
                   onDelete={(id) => deletePhoto.mutate(id)}
                   isUploading={uploadPhoto.isPending}
                 />
+                <VideoGallery userId={profile.id} />
               </div>
             )}
             
