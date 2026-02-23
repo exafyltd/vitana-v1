@@ -114,9 +114,18 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
     const MediaIcon = getMediaIcon();
     
+    // Build event details for calendar integration
+    const eventDetailsForCalendar = eventId && title && timestamp ? {
+      title,
+      start_time: timestamp,
+      location: location || '',
+      description: description || '',
+    } : undefined;
+    
     const eventParticipation = useEventParticipation(
       eventId || '', 
-      attendees || 0
+      attendees || 0,
+      eventDetailsForCalendar
     );
     
     const displayAttendees = eventId ? eventParticipation.participantCount : attendees;
