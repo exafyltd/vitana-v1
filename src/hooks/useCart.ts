@@ -33,6 +33,15 @@ export function useCart() {
 
     try {
       setIsLoading(true);
+
+      // Ensure token is ready before querying
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        setCartItems([]);
+        setCartCount(0);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('cart_items')
         .select('*')
@@ -46,7 +55,6 @@ export function useCart() {
       setCartCount(items.reduce((sum, item) => sum + item.quantity, 0));
     } catch (error) {
       console.error('Error fetching cart:', error);
-      toast.error('Failed to load cart');
     } finally {
       setIsLoading(false);
     }
