@@ -1181,7 +1181,7 @@
     "myProfile": "Mein Profil",
     "tabs": {
       "posts": "Posts",
-      "about": "Über Uns",
+      "about": "Über Mich",
       "media": "Medien",
       "groups": "Gruppen",
       "events": "Events",
@@ -1212,7 +1212,7 @@
   },
   "profileTabs": {
     "posts": "Posts",
-    "about": "Über Uns",
+    "about": "Über Mich",
     "media": "Medien",
     "groups": "Gruppen",
     "events": "Events",
