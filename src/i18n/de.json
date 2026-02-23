@@ -2442,5 +2442,13 @@
     "followers": "Follower",
     "following": "Folge ich",
     "groups": "Gruppen"
+  },
+  "qrShare": {
+    "title": "QR-Code",
+    "scanToView": "Scannen um Profil anzuzeigen",
+    "shareProfile": "Profil teilen",
+    "copyLink": "Link kopieren",
+    "download": "Herunterladen",
+    "linkCopied": "Link kopiert!"
   }
 }

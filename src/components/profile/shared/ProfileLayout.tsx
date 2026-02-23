@@ -29,6 +29,13 @@ import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "../mobile/MobileShowcaseHeader";
 import { MobileMediaTabContent } from "../mobile/MobileMediaTabContent";
 import { MobileGroupsTabContent } from "../mobile/MobileGroupsTabContent";
+import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
+import { useProfileMilestones } from "@/hooks/useProfileMilestones";
+import { PhotoGallery } from "../gallery/PhotoGallery";
+import { useProfileGallery } from "@/hooks/useProfileGallery";
+import { ShareProfileModal } from "./ShareProfileModal";
+import { useProfileShare } from "@/hooks/useProfileShare";
+import { MobileQRShareScreen } from "../mobile/MobileQRShareScreen";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -126,12 +133,21 @@ export function ProfileLayout({
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
 
+  // Mobile-specific hooks
+  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profile.id);
+  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profile.id);
+  const shareHook = useProfileShare({
+    handle: profile.handle,
+    name: profile.name,
+    profileId: profile.id,
+    isPublic: profile.visibility?.indexPublic !== false,
+  });
+  const [showQRScreen, setShowQRScreen] = useState(false);
+
   // Mobile-specific layout for public profile view
   if (isMobile) {
     return (
       <div className="min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
-        {/* NO SmartEditingToolbar on mobile! */}
-        
         {/* ID Card Switcher - Front/Back with segmented control */}
         <MobileIdCardSwitcher
           profile={profile}
@@ -139,6 +155,7 @@ export function ProfileLayout({
           onEditIdentity={onEditIdentity}
           onEditSocial={onEditAbout}
           onRefreshProfile={onRefreshProfile}
+          onShare={shareHook.openShare}
         />
         
         {/* Compact Stats Strip */}
@@ -181,17 +198,59 @@ export function ProfileLayout({
                 <p className="text-sm text-muted-foreground">{profile.bio || "No bio yet"}</p>
                 {effectiveEditMode && <p className="text-xs text-primary mt-2">Tap to edit</p>}
               </button>
+
+              {/* Life Milestones */}
+              <MilestoneTimeline
+                milestones={milestones}
+                isOwner={isMilestoneOwner}
+                onAdd={(input) => addMilestone.mutate(input)}
+                onUpdate={(input) => updateMilestone.mutate(input)}
+                onDelete={(id) => deleteMilestone.mutate(id)}
+                isAdding={addMilestone.isPending}
+              />
             </div>
           )}
 
           {mobileActiveTab === "media" && (
-            <MobileMediaTabContent />
+            <div className="p-4 space-y-4">
+              <PhotoGallery
+                photos={photos}
+                isOwner={isGalleryOwner}
+                onUpload={(data) => uploadPhoto.mutate(data)}
+                onDelete={(id) => deletePhoto.mutate(id)}
+                isUploading={uploadPhoto.isPending}
+              />
+            </div>
           )}
 
           {mobileActiveTab === "groups" && (
             <MobileGroupsTabContent />
           )}
         </div>
+
+        {/* Share Modal */}
+        <ShareProfileModal
+          isOpen={shareHook.isShareOpen}
+          onOpenChange={shareHook.setIsShareOpen}
+          profile={profile}
+          onCopyLink={shareHook.copyLink}
+          onShareToX={shareHook.shareToX}
+          onShareToLinkedIn={shareHook.shareToLinkedIn}
+          onShareToFacebook={() => {}}
+          onViewPublicProfile={() => {
+            window.open(`/u/${profile.handle}`, '_blank');
+          }}
+        />
+
+        {/* QR Share Screen */}
+        <MobileQRShareScreen
+          isOpen={showQRScreen}
+          onClose={() => setShowQRScreen(false)}
+          profileUrl={shareHook.getShareUrl()}
+          profileName={profile.name}
+          profileHandle={profile.handle}
+          avatarUrl={profile.avatarUrl}
+        />
 
         {/* Popups still work on mobile */}
         <CredentialUploadPopup
