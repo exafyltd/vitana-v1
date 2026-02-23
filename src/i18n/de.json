@@ -1218,7 +1218,8 @@
     "events": "Events",
     "health": "Gesundheit",
     "services": "Dienste",
-    "insight": "Einblick"
+    "insight": "Einblick",
+    "milestones": "Meilensteine"
   },
   "profileStats": {
     "posts": "Posts",
@@ -2441,8 +2442,5 @@
     "followers": "Follower",
     "following": "Folge ich",
     "groups": "Gruppen"
-  },
-  "profileTabs": {
-    "milestones": "Meilensteine"
   }
 }
