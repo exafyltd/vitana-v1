@@ -13,6 +13,7 @@ interface MobileIdCardSwitcherProps {
   onEditIdentity?: () => void;
   onEditSocial?: () => void;
   onRefreshProfile?: () => void;
+  onShare?: () => void;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ export function MobileIdCardSwitcher({
   onEditIdentity,
   onEditSocial,
   onRefreshProfile,
+  onShare,
   className
 }: MobileIdCardSwitcherProps) {
   const [activeSide, setActiveSide] = useState<CardSide>("front");
@@ -100,6 +102,7 @@ export function MobileIdCardSwitcher({
                 vitanaPercentile={profile.vitanaPercentile}
                 editMode={editMode}
                 onEdit={onEditIdentity}
+                onShare={onShare}
               />
             </motion.div>
           ) : (

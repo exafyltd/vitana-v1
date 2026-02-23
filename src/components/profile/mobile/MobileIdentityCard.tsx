@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Pencil, ChevronRight } from "lucide-react";
+import { Pencil, ChevronRight, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -14,6 +14,7 @@ interface MobileIdentityCardProps {
   vitanaPercentile?: number;
   editMode?: boolean;
   onEdit?: () => void;
+  onShare?: () => void;
   onViewFullId?: () => void;
   className?: string;
 }
@@ -27,6 +28,7 @@ export function MobileIdentityCard({
   vitanaPercentile = 15,
   editMode = false,
   onEdit,
+  onShare,
   onViewFullId,
   className
 }: MobileIdentityCardProps) {
@@ -54,6 +56,21 @@ export function MobileIdentityCard({
         role={onViewFullId ? "button" : undefined}
         tabIndex={onViewFullId ? 0 : undefined}
       >
+        {/* Share button - top left */}
+        {onShare && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-3 left-3 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              onShare();
+            }}
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
+        )}
+
         {/* Edit button - top right */}
         {editMode && onEdit && (
           <Button
