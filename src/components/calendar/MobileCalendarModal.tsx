@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { format, isSameDay, addDays, endOfWeek, isAfter, isBefore, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, getDay } from "date-fns";
+import { de as deLocale } from "date-fns/locale/de";
 import { Calendar, Plus, ChevronLeft, ChevronRight, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +43,7 @@ const getStatusPillStyle = (status: string) => {
 };
 
 export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalProps) {
-  const { translate } = useTranslation();
+  const { translate, isGerman } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { events, loading, addEvent, fetchEvents } = useCalendarEvents();
@@ -270,7 +271,7 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
           <div className="mb-5">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-sm font-semibold">{format(todayDate, 'EEEE, MMM d')}</p>
+                <p className="text-sm font-semibold">{format(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
                 <p className="text-xs text-muted-foreground">{translate('calendar.timeGroups.today', 'Today')}</p>
               </div>
             </div>
@@ -401,7 +402,7 @@ export function MobileCalendarModal({ open, onOpenChange }: MobileCalendarModalP
               {selectedDay && (
                 <div className="border-t pt-4">
                   <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
-                    {format(selectedDay, 'EEEE, MMM d')}
+                    {format(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
                   </p>
                   {selectedDayEvents.length > 0 ? (
                     <div className="bg-card rounded-xl border p-2">
