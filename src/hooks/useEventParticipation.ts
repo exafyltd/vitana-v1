@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import { useAuth } from "@/context/AuthProvider";
 
 interface EventParticipation {
   eventId: string;
@@ -25,32 +26,14 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const { user } = useAuth();
   const { toast } = useToast();
   const { addEvent, removeEvent } = useCalendarEvents();
 
-  // Track auth state changes
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUserId(user?.id ?? null);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUserId(session?.user?.id ?? null);
-        if (!session?.user) {
-          setIsParticipating(false);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // Check if user is already participating - re-runs on auth change
+  // Check if user is already participating - re-runs when AuthProvider confirms user
   useEffect(() => {
     const checkParticipation = async () => {
-      if (!eventId || !isValidUUID(eventId) || !userId) {
+      if (!eventId || !isValidUUID(eventId) || !user?.id) {
         setIsParticipating(false);
         return;
       }
@@ -60,7 +43,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           .from('global_event_participants')
           .select('*')
           .eq('event_id', eventId)
-          .eq('user_id', userId)
+          .eq('user_id', user.id)
           .eq('status', 'attending')
           .single();
 
@@ -76,7 +59,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     };
 
     checkParticipation();
-  }, [eventId, userId]);
+  }, [eventId, user?.id]);
 
   // Subscribe to real-time participant count updates
   useEffect(() => {
