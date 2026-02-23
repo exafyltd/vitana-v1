@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { de as deLocale } from "date-fns/locale/de";
 import { 
   format, 
   startOfWeek, 
@@ -109,7 +110,7 @@ export function EnhancedCalendarPopup({
   initialView = 'today'
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
-  const { translate } = useTranslation();
+  const { translate, isGerman } = useTranslation();
   const isMobile = useIsMobile();
   const { events, loading, addEvent, removeEvent, getEventsForDate, fetchEvents } = useCalendarEvents();
   
@@ -699,7 +700,7 @@ export function EnhancedCalendarPopup({
                 {/* Selected Day Agenda */}
                 <div className="w-80 border-l pl-6">
                   <h4 className="text-sm font-semibold mb-3">
-                    {format(selectedMonthDay, 'EEEE, MMM d')}
+                    {format(selectedMonthDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
                   </h4>
 
                   <ScrollArea className="h-[calc(80vh-320px)]">

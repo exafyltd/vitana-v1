@@ -1,5 +1,7 @@
 import React from "react";
 import { format } from "date-fns";
+import { de as deLocale } from "date-fns/locale/de";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Clock, MapPin, Users, Video, MessageSquare, UserPlus, Edit, Trash2, X, Share2, Zap, Bell, Tag, Paperclip, Calendar as CalendarIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -46,7 +48,8 @@ export function EventDetailsPanel({
   onMessage,
   onReschedule
 }: EventDetailsPanelProps) {
-  if (!event) return null;
+  const { isGerman } = useTranslation();
+  const dateLocale = isGerman ? deLocale : undefined;
 
   // Close panel on ESC key
   React.useEffect(() => {
@@ -58,6 +61,8 @@ export function EventDetailsPanel({
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [open, onOpenChange]);
+
+  if (!event) return null;
 
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
@@ -112,7 +117,7 @@ export function EventDetailsPanel({
               <Clock className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-semibold">
-                  {format(new Date(event.start_time), 'EEEE, MMMM d, yyyy')}
+                  {format(new Date(event.start_time), 'EEEE, MMMM d, yyyy', { locale: dateLocale })}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {formatEventTime(event.start_time, event.end_time)}
