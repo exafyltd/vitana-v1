@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 
 interface EventParticipation {
   eventId: string;
@@ -8,14 +9,24 @@ interface EventParticipation {
   participantCount: number;
 }
 
+export interface EventDetails {
+  title: string;
+  start_time: string;
+  end_time?: string | null;
+  location?: string;
+  slug?: string;
+  description?: string;
+}
+
 const isValidUUID = (id: string) =>
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
-export function useEventParticipation(eventId: string, initialCount: number = 0) {
+export function useEventParticipation(eventId: string, initialCount: number = 0, eventDetails?: EventDetails) {
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { addEvent, removeEvent } = useCalendarEvents();
 
   // Check if user is already participating
   useEffect(() => {
@@ -99,7 +110,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
       }
 
       if (isParticipating) {
-        // Leave event
+        // Leave event - delete from global_event_participants
         const { error } = await supabase
           .from('global_event_participants')
           .delete()
@@ -107,6 +118,26 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
           .eq('user_id', user.id);
 
         if (error) throw error;
+
+        // Also remove matching calendar event
+        try {
+          const { data: calendarEvents } = await supabase
+            .from('calendar_events')
+            .select('id, metadata')
+            .eq('user_id', user.id);
+
+          if (calendarEvents) {
+            const matchingEvent = calendarEvents.find((ce: any) => {
+              const meta = ce.metadata;
+              return meta && typeof meta === 'object' && (meta as any).meetup_id === eventId;
+            });
+            if (matchingEvent) {
+              await removeEvent(matchingEvent.id);
+            }
+          }
+        } catch (calError) {
+          console.error('Error removing calendar event:', calError);
+        }
 
         setIsParticipating(false);
         setParticipantCount(prev => Math.max(0, prev - 1));
@@ -116,7 +147,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
           description: "You've successfully left this event"
         });
       } else {
-        // Join event
+        // Join event - insert into global_event_participants
         const { error } = await supabase
           .from('global_event_participants')
           .insert({
@@ -127,12 +158,39 @@ export function useEventParticipation(eventId: string, initialCount: number = 0)
 
         if (error) throw error;
 
+        // Also add to VITANA Smart Calendar if event details provided
+        if (eventDetails) {
+          try {
+            await addEvent({
+              user_id: '',
+              title: eventDetails.title,
+              description: eventDetails.description || '',
+              start_time: eventDetails.start_time,
+              end_time: eventDetails.end_time,
+              location: eventDetails.location || '',
+              event_type: 'community' as const,
+              status: 'confirmed' as const,
+              priority: 'medium' as const,
+              is_recurring: false,
+              source_type: 'manual' as const,
+              metadata: {
+                meetup_id: eventId,
+                meetup_slug: eventDetails.slug,
+              }
+            }, { showToast: false });
+          } catch (calError) {
+            console.error('Error adding calendar event:', calError);
+          }
+        }
+
         setIsParticipating(true);
         setParticipantCount(prev => prev + 1);
         
         toast({
           title: "Joined Event! 🎉",
-          description: "You've successfully joined this event"
+          description: eventDetails 
+            ? "Event added to your VITANA Smart Calendar"
+            : "You've successfully joined this event"
         });
       }
     } catch (error: any) {

@@ -181,6 +181,7 @@ export function MeetupDetailsDrawer({
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
+  const [isCheckingParticipation, setIsCheckingParticipation] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowLoading, setIsFollowLoading] = useState(false);
@@ -296,6 +297,36 @@ export function MeetupDetailsDrawer({
     return () => clearTimeout(timeoutId);
   }, [open, isTicketed]);
 
+  // Check participation status when drawer opens
+  useEffect(() => {
+    const checkParticipation = async () => {
+      if (!open || !event?.id || !user) {
+        return;
+      }
+      
+      setIsCheckingParticipation(true);
+      try {
+        const { data, error } = await supabase
+          .from('global_event_participants')
+          .select('id')
+          .eq('event_id', event.id)
+          .eq('user_id', user.id)
+          .eq('status', 'attending')
+          .maybeSingle();
+        
+        if (!error) {
+          setIsJoined(!!data);
+        }
+      } catch (err) {
+        console.error('Error checking participation:', err);
+      } finally {
+        setIsCheckingParticipation(false);
+      }
+    };
+
+    checkParticipation();
+  }, [open, event?.id, user]);
+
   // Track event changes for transitions
   useEffect(() => {
     if (event?.id && event.id !== previousEventId) {
@@ -337,8 +368,30 @@ export function MeetupDetailsDrawer({
     setIsJoining(true);
     
     try {
+      if (!user) {
+        toast({
+          title: "Sign in required",
+          description: "Please sign in to join events",
+          variant: "destructive",
+        });
+        setIsJoining(false);
+        return;
+      }
+
+      // Insert into global_event_participants
+      const { error: participateError } = await supabase
+        .from('global_event_participants')
+        .insert({
+          event_id: event.id,
+          user_id: user.id,
+          status: 'attending'
+        });
+
+      if (participateError) throw participateError;
+
+      // Add to VITANA Smart Calendar
       const calendarEvent = {
-        user_id: '', // Will be set by the hook from auth context
+        user_id: '',
         title: event.title,
         description: event.description || '',
         start_time: event.start_time,
@@ -355,7 +408,7 @@ export function MeetupDetailsDrawer({
         }
       };
       
-      const addedEvent = await addEvent(calendarEvent);
+      const addedEvent = await addEvent(calendarEvent, { showToast: false });
       
       setIsJoined(true);
       setIsJoining(false);
@@ -369,6 +422,12 @@ export function MeetupDetailsDrawer({
             variant="ghost"
             size="sm"
             onClick={async () => {
+              // Undo: remove from both tables
+              await supabase
+                .from('global_event_participants')
+                .delete()
+                .eq('event_id', event.id)
+                .eq('user_id', user.id);
               await removeEvent(addedEvent.id);
               setIsJoined(false);
               toast({
@@ -1304,9 +1363,40 @@ export function MeetupDetailsDrawer({
                   break;
                 case 'leave':
                 case 'cancel':
-                  // Handle leave/cancel
+                  // Handle leave/cancel - actually delete from DB
                   setIsJoining(true);
                   try {
+                    if (!user) throw new Error('Not authenticated');
+                    
+                    // Delete from global_event_participants
+                    const { error: deleteError } = await supabase
+                      .from('global_event_participants')
+                      .delete()
+                      .eq('event_id', event.id)
+                      .eq('user_id', user.id);
+                    
+                    if (deleteError) throw deleteError;
+                    
+                    // Remove matching calendar event
+                    try {
+                      const { data: calendarEvents } = await supabase
+                        .from('calendar_events')
+                        .select('id, metadata')
+                        .eq('user_id', user.id);
+                      
+                      if (calendarEvents) {
+                        const matchingEvent = calendarEvents.find((ce: any) => {
+                          const meta = ce.metadata;
+                          return meta && typeof meta === 'object' && (meta as any).meetup_id === event.id;
+                        });
+                        if (matchingEvent) {
+                          await removeEvent(matchingEvent.id);
+                        }
+                      }
+                    } catch (calError) {
+                      console.error('Error removing calendar event:', calError);
+                    }
+                    
                     setIsJoined(false);
                     toast({
                       title: ctaConfig.action === 'leave' ? "Left MeetUp" : "Reservation Cancelled",
