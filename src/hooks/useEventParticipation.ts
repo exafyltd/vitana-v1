@@ -25,23 +25,42 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
   const { addEvent, removeEvent } = useCalendarEvents();
 
-  // Check if user is already participating
+  // Track auth state changes
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUserId(user?.id ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUserId(session?.user?.id ?? null);
+        if (!session?.user) {
+          setIsParticipating(false);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Check if user is already participating - re-runs on auth change
   useEffect(() => {
     const checkParticipation = async () => {
-      if (!eventId || !isValidUUID(eventId)) return;
+      if (!eventId || !isValidUUID(eventId) || !userId) {
+        setIsParticipating(false);
+        return;
+      }
 
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-
         const { data, error } = await supabase
           .from('global_event_participants')
           .select('*')
           .eq('event_id', eventId)
-          .eq('user_id', user.id)
+          .eq('user_id', userId)
           .eq('status', 'attending')
           .single();
 
@@ -57,7 +76,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     };
 
     checkParticipation();
-  }, [eventId]);
+  }, [eventId, userId]);
 
   // Subscribe to real-time participant count updates
   useEffect(() => {
