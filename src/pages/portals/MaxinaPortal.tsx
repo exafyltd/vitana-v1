@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Heart, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-react";
+import { Loader2, Users, Eye, EyeOff } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { supabase } from "@/integrations/supabase/client";
@@ -516,48 +516,6 @@ const MaxinaPortal = () => {
                       </div>
                     </div>
 
-                    {/* Compact Role Selection */}
-                    <div className="space-y-2">
-                      <Label className="text-sm">{translate('portals.maxina.joiningAs', 'I am joining as:')}</Label>
-                      <div className="grid grid-cols-4 gap-1.5 md:gap-2">
-                        <Button
-                          type="button"
-                          variant={selectedRole === "community" ? "default" : "outline"}
-                          className="p-2 h-auto flex-col"
-                          onClick={() => setSelectedRole("community")}
-                        >
-                          <Users className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.community', 'Community')}</span>
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={selectedRole === "patient" ? "default" : "outline"}
-                          className="p-2 h-auto flex-col"
-                          onClick={() => setSelectedRole("patient")}
-                        >
-                          <Heart className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.patient', 'Patient')}</span>
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={selectedRole === "professional" ? "default" : "outline"}
-                          className="p-2 h-auto flex-col"
-                          onClick={() => setSelectedRole("professional")}
-                        >
-                          <Stethoscope className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.professional', 'Pro')}</span>
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={selectedRole === "admin" ? "default" : "outline"}
-                          className="p-2 h-auto flex-col"
-                          onClick={() => setSelectedRole("admin")}
-                        >
-                          <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 mb-0.5" />
-                          <span className="text-[10px] md:text-xs">{translate('portals.maxina.roles.admin', 'Admin')}</span>
-                        </Button>
-                      </div>
-                    </div>
                     
                       <Button 
                         type="submit" 
