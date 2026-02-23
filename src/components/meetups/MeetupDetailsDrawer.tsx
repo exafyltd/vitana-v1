@@ -22,7 +22,7 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
-import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
+
 import { getShareUrl } from "@/lib/shareUrl";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
@@ -1536,8 +1536,7 @@ export function MeetupDetailsDrawer({
 
       {/* Share Dialog is now managed by parent component via onShareEvent callback */}
       
-      {/* Profile Preview Dialog */}
-      <ProfilePreviewDialog />
+      {/* Profile Preview Dialog is now managed at page level to avoid focus-trap conflicts */}
     </div>
     </>
   );

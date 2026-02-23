@@ -37,6 +37,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 
 // Helper functions
 const formatEventTime = (dateString: string) => {
@@ -1092,6 +1093,9 @@ const EventsAndMeetups = () => {
           }}
         />
       )}
+
+      {/* Profile Preview Dialog - Rendered at root level to avoid focus-trap conflicts with Sheet */}
+      <ProfilePreviewDialog />
 
       {/* Autopilot Popup (mobile) */}
       <AutopilotPopup 
