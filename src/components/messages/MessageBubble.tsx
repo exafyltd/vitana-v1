@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
+import { format, isToday, isYesterday, isThisYear } from 'date-fns';
 import { CalendarInviteStatus } from './CalendarInviteStatus';
 import { 
   Clock, 
@@ -598,7 +598,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               isOwnMessage ? "justify-end" : "justify-start"
             )}>
               <span className="text-xs text-muted-foreground">
-                {format(new Date(message.created_at), 'HH:mm')}
+                {(() => {
+                  const d = new Date(message.created_at);
+                  if (isToday(d)) return format(d, 'HH:mm');
+                  if (isYesterday(d)) return `Yesterday, ${format(d, 'HH:mm')}`;
+                  if (isThisYear(d)) return format(d, 'd MMM, HH:mm');
+                  return format(d, 'd MMM yyyy, HH:mm');
+                })()}
               </span>
               {renderStatusIcon()}
             </div>

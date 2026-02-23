@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import PresenceIndicator from "@/components/messages/PresenceIndicator";
 import { formatDistanceToNow } from "date-fns";
@@ -14,6 +14,7 @@ interface MobileConversationCardProps {
   isPinned?: boolean;
   isGroup?: boolean;
   participantUserId?: string;
+  participantHandle?: string;
   context?: 'global' | 'tenant';
   onClick?: () => void;
 }
@@ -33,6 +34,7 @@ export function MobileConversationCard({
   isPinned = false,
   isGroup = false,
   participantUserId,
+  participantHandle,
   context = 'global',
   onClick
 }: MobileConversationCardProps) {
@@ -60,12 +62,14 @@ export function MobileConversationCard({
     >
       {/* Avatar with presence */}
       <div className="relative shrink-0">
-        <Avatar className="w-12 h-12">
-          <AvatarImage src={avatarUrl} alt={name} />
-          <AvatarFallback className="bg-muted text-muted-foreground text-sm font-medium">
-            {name?.[0]?.toUpperCase() || '?'}
-          </AvatarFallback>
-        </Avatar>
+        <ClickableAvatar
+          userId={participantUserId}
+          handle={participantHandle}
+          src={avatarUrl}
+          fallback={name?.[0]?.toUpperCase() || '?'}
+          alt={name}
+          className="w-12 h-12"
+        />
         {!isGroup && participantUserId && (
           <div className="absolute -bottom-0.5 -right-0.5">
             <PresenceIndicator 

@@ -185,39 +185,27 @@ export const MessageThreadCallButtons = ({
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1">
       <Button
-        variant="outline"
-        size="sm"
+        variant="ghost"
+        size="icon"
         onClick={handleAudioCall}
         disabled={isCalling || !!activeCall}
-        className="gap-2 relative"
+        className="h-8 w-8"
+        title={activeCall?.state === 'calling' ? 'Calling...' : 'Audio call'}
       >
         <Phone className="h-4 w-4" />
-        {activeCall?.state === 'calling' ? 'Calling...' : 'Call'}
-        {recipientPresence && (
-          <span 
-            className={`absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(recipientPresence.status)}`}
-            title={isRecipientOnline ? 'Online' : 'Offline'}
-          />
-        )}
       </Button>
 
       <Button
-        variant="outline"
-        size="sm"
+        variant="ghost"
+        size="icon"
         onClick={handleVideoCall}
         disabled={isCalling || !!activeCall}
-        className="gap-2 relative"
+        className="h-8 w-8"
+        title={activeCall?.state === 'calling' ? 'Calling...' : 'Video call'}
       >
         <Video className="h-4 w-4" />
-        {activeCall?.state === 'calling' ? 'Calling...' : 'Video Call'}
-        {recipientPresence && (
-          <span 
-            className={`absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(recipientPresence.status)}`}
-            title={isRecipientOnline ? 'Online' : 'Offline'}
-          />
-        )}
       </Button>
     </div>
   );
