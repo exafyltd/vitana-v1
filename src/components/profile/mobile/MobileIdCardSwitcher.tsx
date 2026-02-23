@@ -10,20 +10,30 @@ type CardSide = "front" | "back";
 interface MobileIdCardSwitcherProps {
   profile: UserProfile;
   editMode?: boolean;
+  isOwner?: boolean;
   onEditIdentity?: () => void;
   onEditSocial?: () => void;
   onRefreshProfile?: () => void;
   onShare?: () => void;
+  onFollow?: () => void;
+  onMessage?: () => void;
+  isFollowing?: boolean;
+  followLoading?: boolean;
   className?: string;
 }
 
 export function MobileIdCardSwitcher({
   profile,
   editMode = false,
+  isOwner = true,
   onEditIdentity,
   onEditSocial,
   onRefreshProfile,
   onShare,
+  onFollow,
+  onMessage,
+  isFollowing = false,
+  followLoading = false,
   className
 }: MobileIdCardSwitcherProps) {
   const [activeSide, setActiveSide] = useState<CardSide>("front");
@@ -101,8 +111,13 @@ export function MobileIdCardSwitcher({
                 vitanaIndex={profile.vitanaIndex}
                 vitanaPercentile={profile.vitanaPercentile}
                 editMode={editMode}
+                isOwner={isOwner}
                 onEdit={onEditIdentity}
                 onShare={onShare}
+                onFollow={onFollow}
+                onMessage={onMessage}
+                isFollowing={isFollowing}
+                followLoading={followLoading}
               />
             </motion.div>
           ) : (

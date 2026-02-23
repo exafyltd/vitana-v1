@@ -37,6 +37,13 @@ import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { ShareProfileModal } from "./ShareProfileModal";
 import { useProfileShare } from "@/hooks/useProfileShare";
 import { MobileQRShareScreen } from "../mobile/MobileQRShareScreen";
+import { useFollow } from "@/hooks/useFollow";
+import { useHybridMessages } from "@/hooks/useHybridMessages";
+import { useAuth } from "@/context/AuthProvider";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { MessageComposeModal } from "./MessageComposeModal";
+import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 
 interface ProfileLayoutProps {
   profile: UserProfile;
@@ -145,6 +152,52 @@ export function ProfileLayout({
   });
   const [showQRScreen, setShowQRScreen] = useState(false);
 
+  // Follow & Message hooks for mobile visitor view
+  const isOwner = scope === 'owner' || isOwnProfile;
+  const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
+  const { createThread, sendMessage } = useHybridMessages('global');
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { logFollow, logUnfollow, logMessageSend } = useCommunityLogger();
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [isCreatingThread, setIsCreatingThread] = useState(false);
+
+  const handleFollowClick = async () => {
+    if (isFollowing) {
+      await unfollowUser();
+      logUnfollow(profile.id, profile.name);
+    } else {
+      await followUser();
+      logFollow(profile.id, profile.name);
+    }
+  };
+
+  const handleMessageClick = () => {
+    if (!user) {
+      toast({ title: "Authentication required", description: "Please sign in to send messages", variant: "destructive" });
+      return;
+    }
+    setMessageModalOpen(true);
+  };
+
+  const handleSendMessage = async (message: string) => {
+    setIsCreatingThread(true);
+    try {
+      const thread = await createThread([profile.id]);
+      if (!thread?.id) throw new Error('Failed to create thread');
+      await sendMessage({ context: 'global', threadId: thread.id, content: message, type: 'text' });
+      logMessageSend(thread.id, 'text', 'global');
+      toast({ title: "Message sent", description: "Your message has been sent successfully" });
+      navigate('/inbox', { state: { selectedThreadId: thread.id } });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to send message. Please try again.", variant: "destructive" });
+      throw error;
+    } finally {
+      setIsCreatingThread(false);
+    }
+  };
+
   // Mobile-specific layout for public profile view
   if (isMobile) {
     return (
@@ -153,10 +206,15 @@ export function ProfileLayout({
         <MobileIdCardSwitcher
           profile={profile}
           editMode={effectiveEditMode}
+          isOwner={isOwner}
           onEditIdentity={onEditIdentity}
           onEditSocial={onEditAbout}
           onRefreshProfile={onRefreshProfile}
           onShare={shareHook.openShare}
+          onFollow={!isOwner ? handleFollowClick : undefined}
+          onMessage={!isOwner ? handleMessageClick : undefined}
+          isFollowing={isFollowing}
+          followLoading={followLoading}
         />
         
         {/* Compact Stats Strip */}
@@ -253,6 +311,16 @@ export function ProfileLayout({
           profileHandle={profile.handle}
           avatarUrl={profile.avatarUrl}
         />
+
+        {/* Message Compose Modal for visitor view */}
+        {!isOwner && (
+          <MessageComposeModal
+            isOpen={messageModalOpen}
+            onOpenChange={setMessageModalOpen}
+            recipient={profile}
+            onSend={handleSendMessage}
+          />
+        )}
 
         {/* Popups still work on mobile */}
         <CredentialUploadPopup
