@@ -7253,6 +7253,75 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_gallery: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          image_url: string
+          is_public: boolean
+          sort_order: number | null
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          is_public?: boolean
+          sort_order?: number | null
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_public?: boolean
+          sort_order?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profile_milestones: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_public: boolean
+          milestone_date: string | null
+          sort_order: number | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_public?: boolean
+          milestone_date?: string | null
+          sort_order?: number | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_public?: boolean
+          milestone_date?: string | null
+          sort_order?: number | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profile_posts: {
         Row: {
           comments_count: number

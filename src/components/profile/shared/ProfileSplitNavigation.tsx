@@ -17,8 +17,12 @@ import { shouldShowField } from "@/lib/profileScope";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Activity, MessageSquare, Video, Users, Calendar, Heart, Briefcase, Lightbulb } from "lucide-react";
+import { Activity, MessageSquare, Video, Users, Calendar, Heart, Briefcase, Lightbulb, Trophy, ImageIcon } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
+import { PhotoGallery } from "../gallery/PhotoGallery";
+import { useProfileMilestones } from "@/hooks/useProfileMilestones";
+import { useProfileGallery } from "@/hooks/useProfileGallery";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
@@ -49,6 +53,10 @@ export function ProfileSplitNavigation({
 }: ProfileSplitNavigationProps) {
   const { translate } = useTranslation();
 
+  // Milestones & Gallery hooks
+  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profile.id);
+  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profile.id);
+
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
     shouldShowField('public', scope);
@@ -59,6 +67,7 @@ export function ProfileSplitNavigation({
   const tabs = [
     { id: 'posts', name: translate('profileTabs.posts', 'Posts') },
     { id: 'media', name: translate('profileTabs.media', 'Media') },
+    { id: 'milestones', name: translate('profileTabs.milestones', 'Milestones') },
     { id: 'groups', name: translate('profileTabs.groups', 'Groups') },
     { id: 'events', name: translate('profileTabs.events', 'Events') },
   ];
@@ -81,6 +90,7 @@ export function ProfileSplitNavigation({
       case 'media': return <Video className="h-4 w-4" />;
       case 'groups': return <Users className="h-4 w-4" />;
       case 'events': return <Calendar className="h-4 w-4" />;
+      case 'milestones': return <Trophy className="h-4 w-4" />;
       case 'health': return <Heart className="h-4 w-4" />;
       case 'services': return <Briefcase className="h-4 w-4" />;
       case 'insight': return <Lightbulb className="h-4 w-4" />;
@@ -108,10 +118,31 @@ export function ProfileSplitNavigation({
         </div>
       </SplitBarContent>
 
-      {/* Media Tab */}
+      {/* Media Tab - with Photo Gallery */}
       <SplitBarContent value="media">
-        <div className="mt-6">
+        <div className="mt-6 space-y-8">
+          <PhotoGallery
+            photos={photos}
+            isOwner={isGalleryOwner}
+            onUpload={(data) => uploadPhoto.mutate(data)}
+            onDelete={(id) => deletePhoto.mutate(id)}
+            isUploading={uploadPhoto.isPending}
+          />
           <ProfileMediaTab profile={profile} scope={scope} editMode={editMode} />
+        </div>
+      </SplitBarContent>
+
+      {/* Milestones Tab */}
+      <SplitBarContent value="milestones">
+        <div className="mt-6">
+          <MilestoneTimeline
+            milestones={milestones}
+            isOwner={isMilestoneOwner}
+            onAdd={(input) => addMilestone.mutate(input)}
+            onUpdate={(input) => updateMilestone.mutate(input)}
+            onDelete={(id) => deleteMilestone.mutate(id)}
+            isAdding={addMilestone.isPending}
+          />
         </div>
       </SplitBarContent>
 

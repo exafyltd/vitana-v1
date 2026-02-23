@@ -1,12 +1,15 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
 import { ProfileLayout } from "@/components/profile/shared/ProfileLayout";
+import { PublicProfileLanding } from "@/components/profile/public/PublicProfileLanding";
 import { getScope } from "@/lib/profileScope";
 import { UserProfile } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
+import { Milestone } from "@/hooks/useProfileMilestones";
+import { GalleryPhoto } from "@/hooks/useProfileGallery";
 
 interface DatabaseProfile {
   user_id: string;
@@ -53,10 +56,15 @@ export default function PublicProfilePage() {
   const { identifier } = useParams<{ identifier: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [galleryPhotos, setGalleryPhotos] = useState<GalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFollower, setIsFollower] = useState(false);
+
+  const isSharedLink = searchParams.get('utm_source') === 'profile' || !user;
 
   useEffect(() => {
     if (identifier) {
@@ -164,6 +172,25 @@ export default function PublicProfilePage() {
         
         setProfile(transformedProfile);
 
+        // Fetch milestones and gallery in parallel
+        const [milestonesRes, galleryRes] = await Promise.all([
+          supabase
+            .from('profile_milestones')
+            .select('*')
+            .eq('user_id', dbProfile.user_id)
+            .eq('is_public', true)
+            .order('milestone_date', { ascending: false }),
+          supabase
+            .from('profile_gallery')
+            .select('*')
+            .eq('user_id', dbProfile.user_id)
+            .eq('is_public', true)
+            .order('sort_order', { ascending: true }),
+        ]);
+
+        setMilestones((milestonesRes.data || []) as Milestone[]);
+        setGalleryPhotos((galleryRes.data || []) as GalleryPhoto[]);
+
         // Fetch follow status if user is authenticated
         if (user && transformedProfile.id !== user.id) {
           const { data: followStatus } = await supabase
@@ -218,11 +245,34 @@ export default function PublicProfilePage() {
 
   const scope = getScope(scopeContext);
 
+  // Show immersive landing for shared links / unauthenticated users
+  if (isSharedLink) {
+    return (
+      <>
+        <SEO 
+          title={`${profile.name} (@${profile.handle}) - VITANA`}
+          description={profile.bio || `${profile.name}'s profile on VITANA`}
+          image={profile.avatarUrl}
+          imageAlt={`${profile.name}'s profile photo`}
+          url={`https://vitana-v1.lovable.app/u/${profile.handle}`}
+        />
+        <PublicProfileLanding 
+          profile={profile} 
+          milestones={milestones} 
+          galleryPhotos={galleryPhotos} 
+        />
+      </>
+    );
+  }
+
   return (
     <AppLayout>
       <SEO 
         title={`${profile.name} (@${profile.handle}) - VITANA`}
         description={profile.bio || `${profile.name}'s profile on VITANA`}
+        image={profile.avatarUrl}
+        imageAlt={`${profile.name}'s profile photo`}
+        url={`https://vitana-v1.lovable.app/u/${profile.handle}`}
       />
       
       <ProfileLayout 

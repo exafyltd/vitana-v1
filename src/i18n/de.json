@@ -2405,5 +2405,44 @@
     "inbox": "Postfach",
     "profile": "Profil",
     "logout": "Abmelden"
+  },
+  "milestones": {
+    "title": "Lebensmeilensteine",
+    "add": "Meilenstein hinzufügen",
+    "edit": "Meilenstein bearbeiten",
+    "empty": "Noch keine Meilensteine",
+    "addFirst": "Ersten Meilenstein hinzufügen",
+    "date": "Datum",
+    "description": "Was ist passiert?",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "z.B. Universitätsabschluss",
+    "descPlaceholder": "Beschreibe diesen Moment...",
+    "icon": "Symbol",
+    "publicLabel": "Für alle sichtbar",
+    "private": "Privat"
+  },
+  "gallery": {
+    "title": "Fotogalerie",
+    "upload": "Foto hochladen",
+    "caption": "Beschriftung",
+    "captionPlaceholder": "Beschriftung hinzufügen...",
+    "empty": "Noch keine Fotos",
+    "uploadFirst": "Erstes Foto hinzufügen",
+    "photo": "Foto",
+    "dropzone": "Ziehen & ablegen oder klicken",
+    "publicLabel": "Für alle sichtbar"
+  },
+  "publicProfile": {
+    "viewFull": "Vollständiges Profil ansehen",
+    "sendMessage": "Nachricht",
+    "follow": "Folgen",
+    "milestones": "Lebensmeilensteine",
+    "posts": "Beiträge",
+    "followers": "Follower",
+    "following": "Folge ich",
+    "groups": "Gruppen"
+  },
+  "profileTabs": {
+    "milestones": "Meilensteine"
   }
 }
