@@ -71,6 +71,7 @@ export default function Messages() {
   const [inboxSearchQuery, setInboxSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
+
   
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
@@ -149,6 +150,37 @@ export default function Messages() {
       [threadId]: 0
     }));
   }, []);
+
+  // Search dropdown items for inbox search
+  const searchDropdownItems = React.useMemo(() => {
+    if (!inboxSearchQuery.trim()) return [];
+    const query = inboxSearchQuery.toLowerCase();
+    return displayThreads
+      .filter(thread => {
+        const title = getConversationDisplayTitle(thread, user?.id).toLowerCase();
+        const lastMsg = (thread.last_message?.content || '').toLowerCase();
+        return title.includes(query) || lastMsg.includes(query);
+      })
+      .slice(0, 6)
+      .map(thread => ({
+        id: thread.id,
+        title: getConversationDisplayTitle(thread, user?.id),
+        subtitle: thread.last_message?.content
+          ? thread.last_message.content.length > 60
+            ? thread.last_message.content.slice(0, 60) + '…'
+            : thread.last_message.content
+          : undefined,
+      }));
+  }, [displayThreads, inboxSearchQuery, user?.id]);
+
+  const handleSearchItemClick = useCallback((threadId: string) => {
+    setSelectedThreadId(threadId);
+    setSelectedRecipientId(null);
+    const thread = displayThreads.find(t => t.id === threadId);
+    if (thread && thread.unread_count > 0) {
+      handleConversationOpened(threadId);
+    }
+  }, [displayThreads, handleConversationOpened]);
 
   // Move the just-sent conversation to the top instantly via React Query cache
   const handleMessageSent = useCallback((threadId: string, newMessage: any, ctx: 'global' | 'tenant') => {
@@ -935,6 +967,8 @@ export default function Messages() {
                       placeholder={translate('inbox.searchPlaceholder')}
                       onSearch={(query) => setInboxSearchQuery(query)}
                       onClear={() => setInboxSearchQuery("")}
+                      dropdownItems={searchDropdownItems}
+                      onItemClick={handleSearchItemClick}
                     />
                     <UniversalCalendarButton />
                     
@@ -1056,7 +1090,10 @@ export default function Messages() {
           <UtilityActionButton>
             <ExpandableSearchButton 
               placeholder="Search conversations, people, or groups…"
-              onSearch={(query) => console.log('Search:', query)}
+              onSearch={(query) => setInboxSearchQuery(query)}
+              onClear={() => setInboxSearchQuery("")}
+              dropdownItems={searchDropdownItems}
+              onItemClick={handleSearchItemClick}
             />
             <UniversalCalendarButton />
             <DropdownMenu>
