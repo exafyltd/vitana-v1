@@ -125,7 +125,7 @@ export function ProfilePreviewDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={closePreview}>
-      <DialogContent className="max-w-6xl p-0 gap-0 overflow-hidden">
+      <DialogContent overlayClassName="z-[60]" className="z-[60] max-w-6xl p-0 gap-0 overflow-hidden">
         {isLoading ? (
           <div className="flex items-center justify-center h-[500px]">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
