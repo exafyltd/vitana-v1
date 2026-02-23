@@ -1,34 +1,35 @@
 
 
-## Fix: Video Gallery Not Showing on Mobile
+## Make Share Button More Prominent on Identity Card
 
-### Root Cause
+The current share button is a small, nearly invisible ghost icon in the top-left corner of the dark identity card. The plan is to make it more noticeable while keeping the elegant card aesthetic.
 
-The `profile.id` in `EditProfilePage.tsx` is hardcoded to `'current-user'` (line 63), not the actual user UUID. When `VideoGallery` receives `userId="current-user"`:
+### Change
 
-1. `isOwner` becomes `false` because `user.id` (a real UUID) does not equal `"current-user"`
-2. Since there are no videos yet AND `isOwner` is false, line 71 returns `null` -- hiding the entire component
+**File: `src/components/profile/mobile/MobileIdentityCard.tsx` (lines 61-71)**
 
-### Fix
+Replace the minimal ghost icon button with a slightly larger, pill-shaped button that includes a label:
 
-**File: `src/pages/EditProfilePage.tsx` (line 423)**
+- Increase size from `h-8 w-8` icon-only to a pill shape with text
+- Use a semi-transparent glassmorphism background: `bg-white/10 backdrop-blur-sm border border-white/20`
+- Add "Share" text label next to the icon
+- Slightly larger touch target for mobile usability
+- Hover state: `hover:bg-white/20` for subtle feedback
+- Keep the rounded-full pill shape to match the edit button aesthetic
 
-Change the `VideoGallery` prop from `profile.id` to `user?.id` (the actual auth UUID), same as how `PhotoGallery` already uses `user.id` via `useProfileGallery`:
+The result will look like a frosted-glass pill button reading "[icon] Share" -- visible but not distracting on the dark card.
+
+### Technical Detail
 
 ```tsx
-// Before
-<VideoGallery userId={profile.id} />
-
-// After
-<VideoGallery userId={user?.id} />
+<Button
+  variant="ghost"
+  size="sm"
+  className="absolute top-3 left-3 h-8 px-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white/80 hover:text-white z-10 text-xs font-medium gap-1.5"
+  onClick={...}
+>
+  <Share2 className="h-3.5 w-3.5" />
+  Share
+</Button>
 ```
-
-This single-line fix ensures:
-- `isOwner` correctly resolves to `true`
-- The empty-state UI with "Upload Video" button renders
-- Video queries use the correct UUID to fetch from `media_uploads`
-
-### Also fix in ProfileLayout.tsx
-
-Check if the same issue exists in the visitor-view profile layout and apply the same fix if needed -- pass the actual user UUID rather than a potentially incorrect `profile.id`.
 
