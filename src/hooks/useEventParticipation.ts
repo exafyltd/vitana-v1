@@ -39,6 +39,13 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
       }
 
       try {
+        // Ensure the Supabase client has the latest token before querying
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          setIsParticipating(false);
+          return;
+        }
+
         const { data, error } = await supabase
           .from('global_event_participants')
           .select('*')
