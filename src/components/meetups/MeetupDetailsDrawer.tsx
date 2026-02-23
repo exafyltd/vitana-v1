@@ -86,6 +86,7 @@ import {
 } from "lucide-react";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
+import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 
@@ -203,7 +204,7 @@ export function MeetupDetailsDrawer({
   const { addEvent, removeEvent } = useCalendarEvents();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { translate } = useTranslation();
+  const { translate, isGerman } = useTranslation();
   
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
@@ -600,8 +601,8 @@ export function MeetupDetailsDrawer({
   const handleMessageHost = () => {
     if (!user) {
       toast({
-        title: "Authentication required",
-        description: "Please sign in to message the host",
+        title: translate('eventDrawer.authRequired', 'Authentication required'),
+        description: translate('eventDrawer.signInToMessage', 'Please sign in to message the host'),
         variant: "destructive"
       });
       return;
@@ -612,8 +613,8 @@ export function MeetupDetailsDrawer({
     
     if (!hostId) {
       toast({
-        title: "Cannot message host",
-        description: "Host information not available",
+        title: translate('eventDrawer.cannotMessageHost', 'Cannot message host'),
+        description: translate('eventDrawer.hostNotAvailable', 'Host information not available'),
         variant: "destructive"
       });
       return;
@@ -621,8 +622,8 @@ export function MeetupDetailsDrawer({
 
     if (hostId === user.id) {
       toast({
-        title: "Cannot message yourself",
-        description: "You are the host of this event",
+        title: translate('eventDrawer.cannotMessageSelf', 'Cannot message yourself'),
+        description: translate('eventDrawer.youAreHost', 'You are the host of this event'),
         variant: "destructive"
       });
       return;
@@ -656,8 +657,8 @@ export function MeetupDetailsDrawer({
 
       // 3. Show success message
       toast({
-        title: "Message sent! 📨",
-        description: `Your message has been sent to ${event.creator_display_name || event.author?.name || 'the host'}`,
+        title: translate('eventDrawer.messageSent', 'Message sent! 📨'),
+        description: translate('eventDrawer.messageSentDesc', 'Your message has been sent to {name}').replace('{name}', event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')),
       });
 
       // 4. Close modal and drawer
@@ -833,12 +834,12 @@ export function MeetupDetailsDrawer({
                   />
                   <div className="flex items-center gap-1.5 pr-2">
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
-                      {event.creator_display_name || event.author?.name || 'Community Host'}
+                      {event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}
                     </span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
                     <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
-                      Host
-                    </span>
+                       {translate('eventDrawer.host', 'Host')}
+                     </span>
                   </div>
                 </div>
 
@@ -850,10 +851,10 @@ export function MeetupDetailsDrawer({
                     setIsFollowing(!isFollowing);
                     setIsFollowLoading(false);
                     toast({
-                      title: isFollowing ? "Unfollowed" : "Following!",
+                      title: isFollowing ? translate('eventDrawer.unfollowed', 'Unfollowed') : translate('eventDrawer.followingToast', 'Following!'),
                       description: isFollowing 
-                        ? `You unfollowed ${event.creator_display_name || event.author?.name || 'the host'}` 
-                        : `You're now following ${event.creator_display_name || event.author?.name || 'the host'}`,
+                        ? `You unfollowed ${event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')}` 
+                        : `You're now following ${event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')}`,
                     });
                   }}
                   disabled={isFollowLoading}
@@ -871,17 +872,17 @@ export function MeetupDetailsDrawer({
                   {isFollowLoading ? (
                     <>
                       <Loader2 className="h-[18px] w-[18px] animate-spin" />
-                      <span className="text-sm">Following…</span>
+                      <span className="text-sm">{translate('eventDrawer.followingLoading', 'Following…')}</span>
                     </>
                   ) : isFollowing ? (
                     <>
                       <Check className="h-[18px] w-[18px]" />
-                      <span className="text-sm">Following</span>
+                      <span className="text-sm">{translate('eventDrawer.following', 'Following')}</span>
                     </>
                   ) : (
                     <>
                       <UserPlus className="h-[18px] w-[18px]" />
-                      <span className="text-sm">Follow</span>
+                      <span className="text-sm">{translate('eventDrawer.follow', 'Follow')}</span>
                     </>
                   )}
                 </Button>
@@ -892,8 +893,8 @@ export function MeetupDetailsDrawer({
           <div className="p-5 space-y-5">
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">{event.pillar || 'Community'}</Badge>
-              <Badge variant="outline">{event.event_type || 'Meetup'}</Badge>
+              <Badge variant="secondary">{event.pillar || translate('eventDrawer.community', 'Community')}</Badge>
+              <Badge variant="outline">{event.event_type || translate('eventDrawer.meetup', 'Meetup')}</Badge>
               {event.language && (
                 <Badge variant="outline" className="gap-1">
                   <Languages className="h-3 w-3" />
@@ -903,7 +904,7 @@ export function MeetupDetailsDrawer({
               {event.accessible && (
                 <Badge variant="outline" className="gap-1">
                   <Accessibility className="h-3 w-3" />
-                  Accessible
+                  {translate('eventDrawer.accessible', 'Accessible')}
                 </Badge>
               )}
             </div>
@@ -928,7 +929,7 @@ export function MeetupDetailsDrawer({
                       {i === 0 && (
                         <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
                           <div className="px-2 py-1 text-[11px] font-medium bg-primary text-primary-foreground rounded-full whitespace-nowrap shadow-lg">
-                            Follow back
+                             {translate('eventDrawer.followBack', 'Follow back')}
                           </div>
                         </div>
                       )}
@@ -941,8 +942,8 @@ export function MeetupDetailsDrawer({
                   )}
                 </div>
                 <p className="text-sm font-medium flex-1">
-                  People you follow are going
-                </p>
+                   {translate('eventDrawer.followersGoing', 'People you follow are going')}
+                 </p>
               </button>
             )}
 
@@ -951,7 +952,7 @@ export function MeetupDetailsDrawer({
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">When & Where</h3>
+                  <h3 className="font-semibold text-[17px]">{translate('eventDrawer.whenWhere', 'When & Where')}</h3>
                 </div>
                 <div className="flex items-center gap-0 p-1 bg-background/50 rounded-full">
                   <button
@@ -962,7 +963,7 @@ export function MeetupDetailsDrawer({
                       showLocalTime ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
-                    Local
+                     {translate('eventDrawer.local', 'Local')}
                   </button>
                   <button
                     onClick={() => setShowLocalTime(false)}
@@ -972,7 +973,7 @@ export function MeetupDetailsDrawer({
                       !showLocalTime ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                   >
-                    UTC
+                     {translate('eventDrawer.utc', 'UTC')}
                   </button>
                 </div>
               </div>
@@ -981,7 +982,7 @@ export function MeetupDetailsDrawer({
                 <div className="flex items-start gap-3">
                   <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-[15px]">{format(startDate, 'EEEE, MMMM d, yyyy')}</p>
+                    <p className="font-medium text-[15px]">{format(startDate, 'EEEE, MMMM d, yyyy', { locale: isGerman ? deLocale : undefined })}</p>
                     <p className="text-[14px] text-muted-foreground">
                       {format(startDate, 'HH:mm')} {endDate && `- ${format(endDate, 'HH:mm')}`}
                       {!showLocalTime && ' UTC'}
@@ -989,7 +990,7 @@ export function MeetupDetailsDrawer({
                     {showCountdown && (
                       <div className="flex items-center gap-1.5 mt-1.5 px-2 py-1 bg-primary/10 rounded-full w-fit">
                         <Timer className="h-3 w-3 text-primary" />
-                        <span className="text-xs font-medium text-primary">Starts {formatDistanceToNow(startDate, { addSuffix: true })}</span>
+                        <span className="text-xs font-medium text-primary">{translate('eventDrawer.startsIn', 'Starts {time}').replace('{time}', formatDistanceToNow(startDate, { addSuffix: true, locale: isGerman ? deLocale : undefined }))}</span>
                       </div>
                     )}
                   </div>
@@ -998,7 +999,7 @@ export function MeetupDetailsDrawer({
                 <div className="flex items-start gap-3">
                   <Clock className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                   <div>
-                    <p className="font-medium text-[15px]">{duration} minutes</p>
+                    <p className="font-medium text-[15px]">{translate('eventDrawer.durationMinutes', '{duration} minutes').replace('{duration}', String(duration))}</p>
                   </div>
                 </div>
 
@@ -1006,11 +1007,11 @@ export function MeetupDetailsDrawer({
                   <div className="flex items-start gap-3">
                     <Globe className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-[15px]">Virtual Event</p>
-                      <Button variant="link" className="h-auto p-0 text-primary text-[13px]" asChild>
-                        <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
-                          Join link · Opens 5 min before
-                        </a>
+                       <p className="font-medium text-[15px]">{translate('eventDrawer.virtualEvent', 'Virtual Event')}</p>
+                       <Button variant="link" className="h-auto p-0 text-primary text-[13px]" asChild>
+                         <a href={event.virtual_link} target="_blank" rel="noopener noreferrer">
+                           {translate('eventDrawer.joinLinkOpens', 'Join link · Opens 5 min before')}
+                         </a>
                       </Button>
                     </div>
                   </div>
@@ -1033,7 +1034,7 @@ export function MeetupDetailsDrawer({
                           onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(event.location)}`, '_blank')}
                         >
                           <Navigation className="h-3 w-3" />
-                          Get directions
+                          {translate('eventDrawer.getDirections', 'Get directions')}
                         </Button>
                       </div>
                     </div>
@@ -1051,14 +1052,14 @@ export function MeetupDetailsDrawer({
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">
-                    {current} / {capacity} attending
-                  </span>
+                   <span className="font-medium">
+                     {translate('eventDrawer.attending', '{current} / {capacity} attending').replace('{current}', String(current)).replace('{capacity}', String(capacity))}
+                   </span>
                 </div>
                 {isLowCapacity && (
                   <div className="flex items-center gap-1 text-destructive">
                     <AlertCircle className="h-4 w-4" />
-                    <span className="font-medium">Only {spotsLeft} left!</span>
+                    <span className="font-medium">{translate('eventDrawer.spotsLeft', 'Only {count} left!').replace('{count}', String(spotsLeft))}</span>
                   </div>
                 )}
               </div>
@@ -1069,21 +1070,21 @@ export function MeetupDetailsDrawer({
             <div className="space-y-3 p-4 bg-sys-autopilot-tint/20 border border-sys-autopilot-accent/30 rounded-2xl">
               <div className="flex items-center gap-2">
                 <Plane className="h-4 w-4 text-sys-autopilot-accent" />
-                <span className="text-sm font-semibold">Autopilot Suggestions</span>
+                <span className="text-sm font-semibold">{translate('eventDrawer.autopilotSuggestions', 'Autopilot Suggestions')}</span>
               </div>
               <div className="space-y-2">
                 <Button variant="outline" size="sm" className="w-full justify-start gap-2 h-auto py-2.5">
                   <Target className="h-4 w-4 shrink-0" />
-                  <span className="text-left">Fit into my week</span>
+                  <span className="text-left">{translate('eventDrawer.fitIntoWeek', 'Fit into my week')}</span>
                 </Button>
                 <Button variant="outline" size="sm" className="w-full justify-start gap-2 h-auto py-2.5">
                   <AlertCircle className="h-4 w-4 shrink-0" />
-                  <span className="text-left">Resolve schedule conflict</span>
+                  <span className="text-left">{translate('eventDrawer.resolveConflict', 'Resolve schedule conflict')}</span>
                 </Button>
                 {!event.virtual_link && event.location && (
                   <Button variant="outline" size="sm" className="w-full justify-start gap-2 h-auto py-2.5">
                     <Car className="h-4 w-4 shrink-0" />
-                    <span className="text-left">Plan commute</span>
+                    <span className="text-left">{translate('eventDrawer.planCommute', 'Plan commute')}</span>
                   </Button>
                 )}
               </div>
@@ -1093,10 +1094,10 @@ export function MeetupDetailsDrawer({
             <div className="space-y-3 pt-5 border-t border-border/50">
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-semibold text-[17px]">About</h3>
+                <h3 className="font-semibold text-[17px]">{translate('eventDrawer.about', 'About')}</h3>
               </div>
               <p className="text-[14px] text-muted-foreground leading-relaxed">
-                {event.description || 'No description provided.'}
+                {event.description || translate('eventDrawer.noDescription', 'No description provided.')}
               </p>
             </div>
 
@@ -1105,7 +1106,7 @@ export function MeetupDetailsDrawer({
               <div className="space-y-3 pt-5 border-t border-border/50">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">Agenda</h3>
+                  <h3 className="font-semibold text-[17px]">{translate('eventDrawer.agenda', 'Agenda')}</h3>
                 </div>
                 <p className="text-[14px] text-muted-foreground leading-relaxed">{event.agenda}</p>
               </div>
@@ -1115,14 +1116,14 @@ export function MeetupDetailsDrawer({
             <div className="space-y-4 pt-5 border-t border-border/50">
               <div className="flex items-center gap-2">
                 <UserPlus className="h-4 w-4 text-muted-foreground" />
-                <h3 className="font-semibold text-[17px]">Host</h3>
+                <h3 className="font-semibold text-[17px]">{translate('eventDrawer.host', 'Host')}</h3>
               </div>
               <div className="flex items-center gap-3 p-4 bg-muted/40 rounded-2xl">
                 <ClickableAvatar
                   userId={event.created_by}
                   src={event.creator_avatar_url || event.author?.avatar}
                   fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
-                  alt={event.creator_display_name || event.author?.name || 'Community Host'}
+                   alt={event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}
                   className="h-14 w-14 border-2 border-primary"
                   onPreview={(uid, e) => {
                     e.stopPropagation();
@@ -1131,10 +1132,10 @@ export function MeetupDetailsDrawer({
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
-                    <p className="font-semibold text-[15px]">{event.creator_display_name || event.author?.name || 'Community Host'}</p>
+                    <p className="font-semibold text-[15px]">{event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}</p>
                     <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
                   </div>
-                  <p className="text-[13px] text-muted-foreground">Organizer</p>
+                  <p className="text-[13px] text-muted-foreground">{translate('eventDrawer.organizer', 'Organizer')}</p>
                 </div>
                 <Button 
                   variant="outline" 
@@ -1146,12 +1147,12 @@ export function MeetupDetailsDrawer({
                   {isCreatingThread ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Sending...
+                      {translate('eventDrawer.sending', 'Sending...')}
                     </>
                   ) : (
                     <>
                       <MessageCircle className="h-4 w-4" />
-                      Message
+                       {translate('eventDrawer.message', 'Message')}
                     </>
                   )}
                 </Button>
@@ -1163,7 +1164,7 @@ export function MeetupDetailsDrawer({
               <div className="space-y-4 pt-5 border-t border-border/50" data-section="attendees">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">Attendees ({current})</h3>
+                  <h3 className="font-semibold text-[17px]">{translate('eventDrawer.attendees', 'Attendees ({count})').replace('{count}', String(current))}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {attendees.map((attendee, i) => (
@@ -1187,9 +1188,9 @@ export function MeetupDetailsDrawer({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Ticket className="h-4 w-4 text-muted-foreground" />
-                    <h3 className="font-semibold text-[17px]">Tickets</h3>
+                    <h3 className="font-semibold text-[17px]">{translate('eventDrawer.tickets', 'Tickets')}</h3>
                     {isSoldOut && (
-                      <Badge variant="secondary" className="ml-2">Sold Out</Badge>
+                      <Badge variant="secondary" className="ml-2">{translate('eventCta.soldOut', 'Sold Out')}</Badge>
                     )}
                   </div>
                   {isOrganizer && (
@@ -1200,7 +1201,7 @@ export function MeetupDetailsDrawer({
                       className="gap-1.5"
                     >
                       <BarChart3 className="h-4 w-4" />
-                      {showSalesDashboard ? "Hide Sales" : "View Sales"}
+                      {showSalesDashboard ? translate('eventDrawer.hideSales', 'Hide Sales') : translate('eventDrawer.viewSales', 'View Sales')}
                     </Button>
                   )}
                 </div>
@@ -1208,7 +1209,7 @@ export function MeetupDetailsDrawer({
                 {/* Price preview */}
                 {!isSoldOut && lowestPrice !== null && (
                   <div className="text-sm text-muted-foreground">
-                    {isPaid ? `From ${formatTicketPrice(lowestPrice, ticketCurrency)}` : 'Free tickets available'}
+                    {isPaid ? translate('eventDrawer.fromPrice', 'From {price}').replace('{price}', formatTicketPrice(lowestPrice, ticketCurrency)) : translate('eventDrawer.freeTickets', 'Free tickets available')}
                   </div>
                 )}
                 
@@ -1237,17 +1238,17 @@ export function MeetupDetailsDrawer({
               <div className="space-y-4 pt-5 border-t border-border/50">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-[17px]">Policies</h3>
+                  <h3 className="font-semibold text-[17px]">{translate('eventDrawer.policies', 'Policies')}</h3>
                 </div>
                 {event.requirements && (
                   <div className="p-4 bg-muted/30 rounded-2xl">
-                    <h4 className="font-medium mb-1.5 text-[14px]">Requirements</h4>
+                    <h4 className="font-medium mb-1.5 text-[14px]">{translate('eventDrawer.requirements', 'Requirements')}</h4>
                     <p className="text-[13px] text-muted-foreground leading-relaxed">{event.requirements}</p>
                   </div>
                 )}
                 {event.cancellation_policy && (
                   <div className="p-4 bg-muted/30 rounded-2xl">
-                    <h4 className="font-medium mb-1.5 text-[14px]">Cancellation</h4>
+                    <h4 className="font-medium mb-1.5 text-[14px]">{translate('eventDrawer.cancellation', 'Cancellation')}</h4>
                     <p className="text-[13px] text-muted-foreground leading-relaxed">{event.cancellation_policy}</p>
                   </div>
                 )}
@@ -1398,17 +1399,17 @@ export function MeetupDetailsDrawer({
                     }
                     
                     setIsJoined(false);
-                    toast({
-                      title: ctaConfig.action === 'leave' ? "Left MeetUp" : "Reservation Cancelled",
-                      description: "You've been removed from this event.",
-                    });
-                  } catch (error) {
-                    console.error('Failed to leave event:', error);
-                    toast({
-                      title: "Error",
-                      description: "Failed to leave the event. Please try again.",
-                      variant: "destructive",
-                    });
+                     toast({
+                       title: ctaConfig.action === 'leave' ? translate('eventDrawer.leftMeetup', 'Left MeetUp') : translate('eventDrawer.reservationCancelled', 'Reservation Cancelled'),
+                       description: translate('eventDrawer.removedFromEvent', "You've been removed from this event."),
+                     });
+                   } catch (error) {
+                     console.error('Failed to leave event:', error);
+                     toast({
+                       title: translate('eventDrawer.error', 'Error'),
+                       description: translate('eventDrawer.leaveError', 'Failed to leave the event. Please try again.'),
+                       variant: "destructive",
+                     });
                   } finally {
                     setIsJoining(false);
                   }
@@ -1513,7 +1514,7 @@ export function MeetupDetailsDrawer({
                 } : undefined}
                 onPointerDown={(e) => isMobile && e.stopPropagation()}
                 onTouchEnd={(e) => isMobile && e.stopPropagation()}
-                aria-label="Add to calendar"
+                aria-label={translate('eventDrawer.addToCalendar', 'Add to calendar')}
               >
                 <Calendar className="h-4 w-4" />
               </Button>
@@ -1532,18 +1533,18 @@ export function MeetupDetailsDrawer({
               <DropdownMenuSeparator />
               {/* External calendars */}
               <DropdownMenuItem onSelect={() => handleExportToCalendar('google')}>
-                Google Calendar
+                 {translate('eventDrawer.googleCal', 'Google Calendar')}
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => handleExportToCalendar('outlook')}>
-                Outlook
+                 {translate('eventDrawer.outlook', 'Outlook')}
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => handleExportToCalendar('apple')}>
-                Apple Calendar
+                {translate('eventDrawer.appleCal', 'Apple Calendar')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={() => handleExportToCalendar('ics')}>
                 <Download className="h-4 w-4 mr-2" />
-                Download ICS
+                {translate('eventDrawer.downloadIcs', 'Download ICS')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
