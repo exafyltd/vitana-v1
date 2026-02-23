@@ -1,77 +1,56 @@
 
-## Fix: Event Reservation Not Persisting After Re-login
+
+## Fix: Event Reservation Disappearing on Second Login
 
 ### Root Cause
 
-The `useEventParticipation` hook checks if the user has reserved a spot only when the `eventId` changes. After logging out and back in, the event ID stays the same, so the check never re-runs. The reservation data is still in the database -- it's just not being read again after authentication changes.
+The `useEventParticipation` hook sets up its own `onAuthStateChange` listener, which fires `SIGNED_IN` before the Supabase client has fully updated its internal auth token. The subsequent database query then uses the old/expired token and silently returns no data, making the UI show "Reserve Spot" instead of "Cancel Reservation."
 
-### Fix 1: Re-check participation when auth state changes
+This explains the exact pattern you described:
+- First re-login: token is still fresh enough in the client, query works
+- Second re-login: previous token fully expired during logout, the query fires before the new token is ready, returns nothing
+
+### Fix
 
 **File: `src/hooks/useEventParticipation.ts`**
 
-Add an auth state listener so that when the user logs in or out, the participation check re-runs automatically.
+Replace the custom auth state listener with the `useAuth()` hook from `AuthProvider`, which already properly manages session state and guarantees the token is ready when `user` is set.
 
-- Add a `userId` state variable that updates on `onAuthStateChange`
-- Add `userId` to the dependency array of the `checkParticipation` effect
-- When user logs out, reset `isParticipating` to `false`
-- When user logs in, re-fetch participation status from the database
+- Remove the entire first `useEffect` that calls `getUser()` and sets up `onAuthStateChange`
+- Remove the `userId` state variable
+- Import `useAuth` and get `user` from it
+- Derive `userId` directly from `user?.id`
+- The check effect depends on `[eventId, user?.id]` -- when AuthProvider updates the user (after the token is confirmed valid), the check re-runs with a valid session
 
-### Fix 2: Add missing DELETE RLS policy
-
-**Database migration**
-
-The `global_event_participants` table currently has INSERT, SELECT, and UPDATE policies but no DELETE policy. This means users cannot actually leave events (the `.delete()` call fails silently). Add:
-
-```sql
-CREATE POLICY "Users can leave events"
-  ON global_event_participants
-  FOR DELETE
-  USING (user_id = auth.uid() AND is_community_user());
-```
+This eliminates the race condition because `AuthProvider.onAuthStateChange` sets the user only after Supabase has fully processed the session, and all subsequent queries use the now-valid token.
 
 ### Technical Details
 
-Updated hook structure:
-
 ```tsx
+import { useAuth } from "@/context/AuthProvider";
+
 export function useEventParticipation(eventId, initialCount, eventDetails) {
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null);
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const { addEvent, removeEvent } = useCalendarEvents();
 
-  // Track auth state changes
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUserId(user?.id ?? null);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUserId(session?.user?.id ?? null);
-        if (!session?.user) {
-          setIsParticipating(false);
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // Check participation -- now depends on userId too
+  // Check participation -- depends on user from AuthProvider
   useEffect(() => {
     const checkParticipation = async () => {
-      if (!eventId || !isValidUUID(eventId) || !userId) {
+      if (!eventId || !isValidUUID(eventId) || !user?.id) {
         setIsParticipating(false);
         return;
       }
-      // ... existing fetch logic using userId instead of getUser()
+      // ... existing fetch logic using user.id
     };
     checkParticipation();
-  }, [eventId, userId]);
+  }, [eventId, user?.id]);
 
   // ... rest unchanged
 }
 ```
 
-This ensures that every time the user's auth state changes (login, logout, token refresh), the hook re-checks participation status from the database.
+This is a minimal change -- we remove ~15 lines of duplicate auth tracking and replace them with a single `useAuth()` call, which is the established pattern in the rest of the codebase.
