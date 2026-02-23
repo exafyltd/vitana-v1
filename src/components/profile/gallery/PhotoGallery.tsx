@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 interface PhotoGalleryProps {
   photos: GalleryPhoto[];
   isOwner: boolean;
-  onUpload: (data: { file: File; caption?: string; is_public?: boolean }) => void;
+  onUpload: (data: { file: File; caption?: string; is_public?: boolean }) => void | Promise<void>;
   onDelete: (id: string) => void;
   isUploading?: boolean;
   compact?: boolean;
