@@ -1,56 +1,47 @@
 
-
-## Fix: Event Reservation Disappearing on Second Login
+## Fix: Duplicate Key Error on Reserve Spot
 
 ### Root Cause
 
-The `useEventParticipation` hook sets up its own `onAuthStateChange` listener, which fires `SIGNED_IN` before the Supabase client has fully updated its internal auth token. The subsequent database query then uses the old/expired token and silently returns no data, making the UI show "Reserve Spot" instead of "Cancel Reservation."
+The participation check query filters by `status = 'attending'` AND uses `.single()`. If the record exists with any other status, or if `.single()` fails for any reason, the hook thinks the user isn't participating. When they click "Reserve Spot", it tries to INSERT a new row, but the unique constraint on `(event_id, user_id)` blocks it.
 
-This explains the exact pattern you described:
-- First re-login: token is still fresh enough in the client, query works
-- Second re-login: previous token fully expired during logout, the query fires before the new token is ready, returns nothing
-
-### Fix
+### Changes
 
 **File: `src/hooks/useEventParticipation.ts`**
 
-Replace the custom auth state listener with the `useAuth()` hook from `AuthProvider`, which already properly manages session state and guarantees the token is ready when `user` is set.
+Two fixes:
 
-- Remove the entire first `useEffect` that calls `getUser()` and sets up `onAuthStateChange`
-- Remove the `userId` state variable
-- Import `useAuth` and get `user` from it
-- Derive `userId` directly from `user?.id`
-- The check effect depends on `[eventId, user?.id]` -- when AuthProvider updates the user (after the token is confirmed valid), the check re-runs with a valid session
+1. **Check query**: Remove the `status` filter and use `.maybeSingle()` instead of `.single()`. This finds the record regardless of status, preventing the false negative that causes the duplicate insert.
 
-This eliminates the race condition because `AuthProvider.onAuthStateChange` sets the user only after Supabase has fully processed the session, and all subsequent queries use the now-valid token.
+2. **Join operation**: Replace `.insert()` with `.upsert()` using `onConflict: 'event_id,user_id'`. This way, if a record already exists for any reason, it gets updated to `status: 'attending'` instead of throwing a duplicate key error.
 
 ### Technical Details
 
 ```tsx
-import { useAuth } from "@/context/AuthProvider";
+// Fix 1: Check query (line 42-48)
+const { data, error } = await supabase
+  .from('global_event_participants')
+  .select('*')
+  .eq('event_id', eventId)
+  .eq('user_id', user.id)
+  .maybeSingle();  // no status filter, use maybeSingle
 
-export function useEventParticipation(eventId, initialCount, eventDetails) {
-  const [isParticipating, setIsParticipating] = useState(false);
-  const [participantCount, setParticipantCount] = useState(initialCount);
-  const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const { addEvent, removeEvent } = useCalendarEvents();
+// Then check: data exists AND status is 'attending'
+setIsParticipating(!!data && data.status === 'attending');
 
-  // Check participation -- depends on user from AuthProvider
-  useEffect(() => {
-    const checkParticipation = async () => {
-      if (!eventId || !isValidUUID(eventId) || !user?.id) {
-        setIsParticipating(false);
-        return;
-      }
-      // ... existing fetch logic using user.id
-    };
-    checkParticipation();
-  }, [eventId, user?.id]);
-
-  // ... rest unchanged
-}
+// Fix 2: Join operation (line 153-159)
+const { error } = await supabase
+  .from('global_event_participants')
+  .upsert(
+    {
+      event_id: eventId,
+      user_id: user.id,
+      status: 'attending'
+    },
+    { onConflict: 'event_id,user_id' }
+  );
 ```
 
-This is a minimal change -- we remove ~15 lines of duplicate auth tracking and replace them with a single `useAuth()` call, which is the established pattern in the rest of the codebase.
+These two changes together ensure:
+- The check always finds existing records regardless of status
+- Even if the check somehow misses a record, the upsert gracefully updates it instead of crashing
