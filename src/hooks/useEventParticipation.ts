@@ -44,15 +44,14 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           .select('*')
           .eq('event_id', eventId)
           .eq('user_id', user.id)
-          .eq('status', 'attending')
-          .single();
+          .maybeSingle();
 
-        if (error && error.code !== 'PGRST116') {
+        if (error) {
           console.error('Error checking participation:', error);
           return;
         }
 
-        setIsParticipating(!!data);
+        setIsParticipating(!!data && data.status === 'attending');
       } catch (error) {
         console.error('Error checking participation:', error);
       }
@@ -152,11 +151,14 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
         // Join event - insert into global_event_participants
         const { error } = await supabase
           .from('global_event_participants')
-          .insert({
-            event_id: eventId,
-            user_id: user.id,
-            status: 'attending'
-          });
+          .upsert(
+            {
+              event_id: eventId,
+              user_id: user.id,
+              status: 'attending'
+            },
+            { onConflict: 'event_id,user_id' }
+          );
 
         if (error) throw error;
 
