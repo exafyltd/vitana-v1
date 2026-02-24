@@ -104,23 +104,36 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
             {/* Search bar */}
             <div className="px-4 py-3 border-b border-border/50">
-              <div className="relative">
+              <form
+                className="relative"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (searchQuery.trim()) {
+                    const q = searchQuery.trim();
+                    setSearchQuery('');
+                    navigate(`/search?q=${encodeURIComponent(q)}`);
+                    onClose();
+                  }
+                }}
+              >
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="text"
                   placeholder="Search members, groups, or..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && searchQuery.trim()) {
-                      onClose();
-                      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-                      setSearchQuery('');
-                    }
-                  }}
-                  className="pl-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
+                  className="pl-9 pr-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
                 />
-              </div>
+                {searchQuery.trim() && (
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-primary-foreground"
+                    aria-label="Search"
+                  >
+                    <Search className="h-3 w-3" />
+                  </button>
+                )}
+              </form>
             </div>
 
             {/* Nav items */}
