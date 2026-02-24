@@ -1,75 +1,47 @@
 
 
-## Fix: Multiple "Failed to load cart" Toasts on Login
+## Make Profile Preview Fullscreen on Mobile
 
-### Root Cause
+### Current Issue
+The profile preview renders as a bottom sheet on mobile (default `ResponsiveDialogContent` behavior), showing a drag handle and not covering the full screen. The close button is a plain square X in the top-right corner.
 
-`useCart()` is called independently in 5+ components (AppLayout, CartBadge, CartSidebar, AddToCartButton, Cart page). Each creates its own state and runs `fetchCart()` via:
+### Changes
 
-```tsx
-useEffect(() => {
-  fetchCart();
-}, [user]);
-```
+**File: `src/components/profile/ProfilePreviewDialog.tsx`**
 
-During login, when `user` transitions from `null` to a valid object, every instance fires `fetchCart()` simultaneously. Some queries hit the database before the Supabase client token is fully synced, causing RLS policy failures. Each failure triggers `toast.error('Failed to load cart')`, resulting in multiple stacked error toasts.
+1. Add `fullscreenOnMobile` prop to `ResponsiveDialogContent` -- this is already supported by the responsive-dialog component and switches from bottom sheet to `inset-0 rounded-none` fullscreen mode.
 
-### Fix
+2. Add `hideCloseButton` prop and render a custom circular close button instead -- a `40px` circle with glassmorphism styling (`bg-white/10 backdrop-blur border-white/20`) positioned in the top-right corner with safe-area padding, matching the app's existing mobile design language.
 
-**File: `src/hooks/useCart.ts`**
-
-Two changes:
-
-1. **Add session check before querying** (same pattern as the event participation fix): call `supabase.auth.getSession()` before the cart query to ensure the token is ready. If no session, silently return empty cart instead of showing an error toast.
-
-2. **Suppress error toast during auth transitions**: When the query fails due to an auth/RLS issue, log it but don't show a toast -- the effect will re-run once the token is ready and succeed.
+3. Update the mobile content wrapper to use fullscreen-friendly styling -- remove the `p-4` padding and use flex-col layout with scrolling to fill the viewport.
 
 ### Technical Details
 
 ```tsx
-const fetchCart = async () => {
-  if (!user) {
-    setCartItems([]);
-    setCartCount(0);
-    return;
-  }
-
-  try {
-    setIsLoading(true);
-
-    // Ensure token is ready before querying
-    const { data: sessionData } = await supabase.auth.getSession();
-    if (!sessionData.session) {
-      setCartItems([]);
-      setCartCount(0);
-      return; // silently return -- effect will re-run when auth settles
-    }
-
-    const { data, error } = await supabase
-      .from('cart_items')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-
-    const items = (data || []) as CartItem[];
-    setCartItems(items);
-    setCartCount(items.reduce((sum, item) => sum + item.quantity, 0));
-  } catch (error) {
-    console.error('Error fetching cart:', error);
-    // Don't show toast -- this likely fired during auth transition
-    // The effect will re-run when the session is fully ready
-  } finally {
-    setIsLoading(false);
-  }
-};
+// In the return JSX:
+<ResponsiveDialogContent
+  overlayClassName="z-[60]"
+  fullscreenOnMobile
+  hideCloseButton={isMobile}
+  className={isMobile 
+    ? "z-[60] bg-[hsl(222,47%,11%)]" 
+    : "z-[60] max-w-6xl p-0 gap-0 overflow-hidden"}
+>
+  {/* Custom circular close button for mobile */}
+  {isMobile && (
+    <button
+      onClick={closePreview}
+      className="absolute right-3 z-20 w-10 h-10 rounded-full 
+        bg-white/10 backdrop-blur-md border border-white/20 
+        flex items-center justify-center text-white/80 
+        hover:bg-white/20 transition-colors"
+      style={{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
+    >
+      <X className="h-5 w-5" />
+    </button>
+  )}
+  ...
 ```
 
-### What This Fixes
-
-- No more "Failed to load cart" error toasts during login
-- Cart still loads correctly once the auth token is ready
-- Errors during actual user interactions (add/remove/clear) still show toasts as before
-- Only the `fetchCart` function changes -- all other cart operations keep their error toasts
+The mobile content area will scroll naturally within the fullscreen container, and the circular X button will float fixed in the upper-right corner, respecting the device safe area.
 
