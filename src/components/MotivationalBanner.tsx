@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useProfile } from "@/context/ProfileProvider";
 import { Heart, Sparkles, Target, TrendingUp } from "lucide-react";
 
@@ -65,9 +66,11 @@ export function MotivationalBanner({ variant = "encouragement", className }: Mot
   const firstName = profile?.displayName?.split(' ')[0] || 'there';
   
   const config = bannerVariants[variant];
-  const messageList = messages[variant];
-  const randomMessage = messageList[Math.floor(Math.random() * messageList.length)];
-  const personalizedMessage = randomMessage.replace("{name}", firstName);
+  const personalizedMessage = useMemo(() => {
+    const messageList = messages[variant];
+    const randomMessage = messageList[Math.floor(Math.random() * messageList.length)];
+    return randomMessage.replace("{name}", firstName);
+  }, [variant, firstName]);
   
   const Icon = config.icon;
 
