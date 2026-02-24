@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { ExternalLink, Loader2 } from "lucide-react";
+import { ExternalLink, Loader2, X } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { ProfileIdCardFront } from "@/components/profile/shared/ProfileIdCardFront";
 import { ProfileIdCardBack } from "@/components/profile/shared/ProfileIdCardBack";
@@ -124,8 +124,21 @@ export function ProfilePreviewDialog() {
     <ResponsiveDialog open={isOpen} onOpenChange={closePreview}>
       <ResponsiveDialogContent
         overlayClassName="z-[60]"
-        className={isMobile ? "z-[60]" : "z-[60] max-w-6xl p-0 gap-0 overflow-hidden"}
+        fullscreenOnMobile
+        hideCloseButton={isMobile}
+        className={isMobile 
+          ? "z-[60] bg-[hsl(222,47%,11%)]" 
+          : "z-[60] max-w-6xl p-0 gap-0 overflow-hidden"}
       >
+        {isMobile && (
+          <button
+            onClick={closePreview}
+            className="absolute right-3 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white/80 hover:bg-white/20 transition-colors"
+            style={{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
+          >
+            <X className="h-5 w-5" />
+          </button>
+        )}
         <ResponsiveDialogBody>
           {isLoading ? (
             <div className="flex items-center justify-center h-[300px] sm:h-[500px]">
@@ -139,7 +152,7 @@ export function ProfilePreviewDialog() {
               </Button>
             </div>
           ) : (
-            <div className={isMobile ? "p-4 space-y-4" : "p-0"}>
+            <div className={isMobile ? "px-4 pt-14 pb-6 space-y-4 overflow-y-auto" : "p-0"}>
               {/* ID Cards */}
               <div className={isMobile
                 ? "flex flex-col gap-4"
