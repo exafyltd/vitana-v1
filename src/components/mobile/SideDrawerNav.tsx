@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { drawerNavItems } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
@@ -18,6 +20,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { translate } = useTranslation();
   const { tenant } = useTenant();
   const { signOut } = useAuth();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isMaxina = tenant?.slug === 'maxina';
   const tenantName = tenant?.name || getInstantTenantName(location.pathname);
@@ -97,6 +100,27 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               >
                 <X className="h-5 w-5" />
               </button>
+            </div>
+
+            {/* Search bar */}
+            <div className="px-4 py-3 border-b border-border/50">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search members, groups, or..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && searchQuery.trim()) {
+                      onClose();
+                      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+                      setSearchQuery('');
+                    }
+                  }}
+                  className="pl-9 h-9 text-sm rounded-xl bg-muted/40 border-border"
+                />
+              </div>
             </div>
 
             {/* Nav items */}
