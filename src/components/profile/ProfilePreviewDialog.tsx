@@ -116,7 +116,8 @@ export function ProfilePreviewDialog() {
 
   const handleViewFullProfile = () => {
     if (!profile) return;
-    navigate(`/u/${profile.handle}`);
+    const identifier = dbProfile?.handle || profile.id;
+    navigate(`/u/${identifier}`);
     closePreview();
   };
 
