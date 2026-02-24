@@ -1,47 +1,40 @@
 
 
-## Make Profile Preview Fullscreen on Mobile
+## Fix: "View Full Profile" Shows "User Not Found"
 
-### Current Issue
-The profile preview renders as a bottom sheet on mobile (default `ResponsiveDialogContent` behavior), showing a drag handle and not covering the full screen. The close button is a plain square X in the top-right corner.
+### Root Cause
 
-### Changes
+In `ProfilePreviewDialog.tsx`, the "View Full Profile" button navigates to `/u/${profile.handle}`. The handle is set as:
+
+```tsx
+handle: dbProfile.handle || dbProfile.user_id.slice(0, 8)
+```
+
+Two problems:
+1. If the user has no `handle` set in the database, the fallback is the first 8 characters of their UUID (e.g., `bc34a5ca`). This partial string doesn't match any handle or UUID pattern in the `get_user_profile_by_identifier` RPC, so the profile page shows "User Not Found".
+2. Even with a valid handle, the RPC also requires a matching row in `global_community_profiles` with `is_visible = true`. If that row is missing, the profile won't load.
+
+The preview dialog itself works fine because it queries the RPC with the full UUID directly. The problem only appears when navigating to the full profile page.
+
+### Fix
 
 **File: `src/components/profile/ProfilePreviewDialog.tsx`**
 
-1. Add `fullscreenOnMobile` prop to `ResponsiveDialogContent` -- this is already supported by the responsive-dialog component and switches from bottom sheet to `inset-0 rounded-none` fullscreen mode.
-
-2. Add `hideCloseButton` prop and render a custom circular close button instead -- a `40px` circle with glassmorphism styling (`bg-white/10 backdrop-blur border-white/20`) positioned in the top-right corner with safe-area padding, matching the app's existing mobile design language.
-
-3. Update the mobile content wrapper to use fullscreen-friendly styling -- remove the `p-4` padding and use flex-col layout with scrolling to fill the viewport.
-
-### Technical Details
+Change `handleViewFullProfile` to navigate using the full user_id (UUID) when no proper handle exists, instead of the truncated 8-character fallback:
 
 ```tsx
-// In the return JSX:
-<ResponsiveDialogContent
-  overlayClassName="z-[60]"
-  fullscreenOnMobile
-  hideCloseButton={isMobile}
-  className={isMobile 
-    ? "z-[60] bg-[hsl(222,47%,11%)]" 
-    : "z-[60] max-w-6xl p-0 gap-0 overflow-hidden"}
->
-  {/* Custom circular close button for mobile */}
-  {isMobile && (
-    <button
-      onClick={closePreview}
-      className="absolute right-3 z-20 w-10 h-10 rounded-full 
-        bg-white/10 backdrop-blur-md border border-white/20 
-        flex items-center justify-center text-white/80 
-        hover:bg-white/20 transition-colors"
-      style={{ top: 'calc(env(safe-area-inset-top, 0px) + 12px)' }}
-    >
-      <X className="h-5 w-5" />
-    </button>
-  )}
-  ...
+const handleViewFullProfile = () => {
+  if (!profile) return;
+  // Prefer handle, fall back to full user_id (UUID) for reliable lookup
+  const identifier = dbProfile?.handle || profile.id;
+  navigate(`/u/${identifier}`);
+  closePreview();
+};
 ```
 
-The mobile content area will scroll naturally within the fullscreen container, and the circular X button will float fixed in the upper-right corner, respecting the device safe area.
+This ensures the RPC receives either a valid handle or a full UUID, both of which it can resolve correctly.
+
+### What Changes
+
+One file, one function -- `handleViewFullProfile` in `ProfilePreviewDialog.tsx`. The navigation identifier falls back to the full UUID instead of a truncated 8-char string.
 
