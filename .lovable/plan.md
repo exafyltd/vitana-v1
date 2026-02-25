@@ -1,55 +1,114 @@
 
+Goal: explain why host names still fall back to “Community Host” and define a robust fix so host data remains stable across refreshes, edits, and real-time updates.
 
-## Investigation Results
+What is most likely causing it now
+1) Host metadata is still being dropped in non-realtime cache writes
+- In `src/hooks/useCommunityEvents.ts`, the realtime UPDATE path now preserves:
+  - `creator_display_name`
+  - `creator_avatar_url`
+  - `is_co_creator`
+- But `updateEvent()` still does an optimistic cache replace with raw DB row:
+  - `event.id === eventId ? data : event`
+- That raw `data` does not include enriched creator fields, so UI falls back to “Community Host”.
+- This can happen after editing an event, then it “sticks” because future realtime merges preserve the already-empty metadata.
 
-I found **two distinct bugs**, both in `src/hooks/useCommunityEvents.ts`:
+2) Query result can be hydrated from stale cache without host enrichment context
+- `global-community-events` is persisted in localStorage globally.
+- Query key is not user-scoped (`['global-community-events']`), so data fetched in a weaker context can be reused in a stronger context.
+- If cache contains events without creator fields, those values can keep rendering until a full enrichment refetch overwrites them.
 
-### Bug 1: Creator Name Shows "Community Host" Instead of Actual Name
+3) Silent partial success pattern makes missing host data look “valid”
+- `fetchCommunityEventsQueryFn()` runs parallel requests and only throws for the base events query.
+- If enrichment requests return empty/unexpected data, the hook still returns success with undefined creator fields, so fallback text appears instead of triggering retry/diagnostics.
 
-**Root cause**: The real-time subscription handlers (lines 273-291) replace cached events with raw `payload.new` data directly from Postgres. This raw payload does NOT contain `creator_display_name` or `creator_avatar_url` (those are enriched client-side during the initial fetch). So whenever any event receives a real-time UPDATE (e.g., participant_count changes, metadata edits), the cached event loses its creator info and falls back to "Community Host".
+Implementation plan
 
-**Fix**: In the INSERT and UPDATE real-time handlers, preserve the existing `creator_display_name` and `creator_avatar_url` from the cached event. For INSERT (new events), fetch the creator profile before inserting into cache.
+1. Fix optimistic update paths to preserve enrichment
+File: `src/hooks/useCommunityEvents.ts`
 
-### Bug 2: Reserved Spots Not Persisting Visually
+A) `updateEvent()` cache write
+- Replace raw overwrite with merge that keeps existing enriched fields:
+  - `creator_display_name`
+  - `creator_avatar_url`
+  - `is_co_creator`
+- Pattern:
+  - find existing cached event by id
+  - return `{ ...data, creator_display_name: existing?.creator_display_name, ... }`
 
-**Root cause**: The `participant_count` column on `global_community_events` is **never incremented** when someone joins via `useEventParticipation`. The hook inserts into `global_event_participants` but does not update `global_community_events.participant_count`. The database shows `participant_count: 0` for events that actually have participants.
+B) `createEvent()` cache write
+- For newly created event, do not leave raw row as final state.
+- Keep current optimistic append if needed for snappy UX, but immediately invalidate/refetch the events query after mutation success to enrich creator fields from profile table.
+- This mirrors the fix already applied for realtime INSERT.
 
-The `NewsCard` component does use `useEventParticipation` to show a live count, but:
-- The initial value passed is `event.participant_count` (always 0)
-- `useEventParticipation` only queries the real count after the component mounts and the user is authenticated
-- If the auth session isn't ready yet, it shows 0
+2. Make event query auth-aware and context-safe
+File: `src/hooks/useCommunityEvents.ts`
 
-**Fix**: Update `useEventParticipation.toggleParticipation()` to also increment/decrement `global_community_events.participant_count` after joining/leaving. Additionally, the initial query in `fetchCommunityEventsQueryFn` should fetch actual participant counts from `global_event_participants` instead of relying on the stale column.
+A) Use auth loading state
+- Pull `loading` from `useAuth()` in the hook.
+- Set query `enabled: !authLoading` so first fetch doesn’t run during unknown auth state.
 
-### Changes
+B) Scope query key by auth context
+- Change key from `['global-community-events']` to something like:
+  - `['global-community-events', user?.id ?? 'anonymous']`
+- This prevents polluted cross-context cache reuse.
+- Update all related `setQueryData` / `invalidateQueries` calls to use the same scoped key pattern.
 
-**1. `src/hooks/useCommunityEvents.ts`** — Real-time handler fix
-- UPDATE handler: merge `payload.new` with existing cached event's `creator_display_name`, `creator_avatar_url`, and `is_co_creator` instead of replacing wholesale
-- INSERT handler: same — fetch creator profile or at minimum preserve structure
+C) Optional cache migration safeguard
+- On first run after deploy, invalidate old unscoped key to flush stale persisted entries:
+  - invalidate `['global-community-events']` legacy key once.
 
-**2. `src/hooks/useCommunityEvents.ts`** — Accurate participant counts
-- In `fetchCommunityEventsQueryFn`, after fetching events, batch-query `global_event_participants` grouped by `event_id` to get real attending counts, and override `participant_count` on each event
+3. Strengthen enrichment reliability
+File: `src/hooks/useCommunityEvents.ts`
 
-**3. `src/hooks/useEventParticipation.ts`** — Sync participant_count column
-- After successful join: update `global_community_events` set `participant_count = participant_count + 1` where id = eventId
-- After successful leave: update `global_community_events` set `participant_count = participant_count - 1` where id = eventId
-- This keeps the column in sync for other queries and initial renders
+A) Explicitly handle enrichment query failures
+- After `Promise.all`, inspect:
+  - `coCreatorResult.error`
+  - `profilesResult.error`
+  - `participantsResult.error`
+- Log structured errors.
+- For critical enrichment failure (profiles), either:
+  - throw (forces retry), or
+  - keep events but trigger `invalidateQueries` backoff retry path.
+- Recommended: throw for profiles error so host names aren’t silently degraded.
 
-### Technical Detail
+B) Keep fallback behavior in UI unchanged
+- UI fallback (“Community Host”) remains as safety net.
+- But data pipeline should now consistently provide real names.
 
-The real-time UPDATE handler fix (most impactful change):
-```typescript
-// BEFORE (loses enriched data):
-event.id === payload.new.id ? payload.new as CommunityEvent : event
+4. Verification plan (end-to-end)
+- Case 1: Existing event, host visible
+  - Open community events list + details drawer, confirm host name/avatar render.
+- Case 2: Edit an event
+  - Update title/description as host/co-host.
+  - Confirm host name does not regress to “Community Host” after save.
+- Case 3: Hard refresh + reopen app
+  - Confirm persisted cache still resolves to real host names after initial fetch.
+- Case 4: Realtime update after reservation changes
+  - Join/leave event from another client/user.
+  - Confirm participant count updates and host metadata remains intact.
+- Case 5: Login transition
+  - Start unauthenticated, then sign in.
+  - Confirm event list refetches under user-scoped key and host names appear.
 
-// AFTER (preserves enriched data):
-event.id === payload.new.id 
-  ? { ...payload.new as CommunityEvent, 
-      creator_display_name: event.creator_display_name,
-      creator_avatar_url: event.creator_avatar_url,
-      is_co_creator: event.is_co_creator }
-  : event
+Technical notes (for implementation)
+- Keep enrichment-preservation architecture consistent in all write paths, not only realtime handlers.
+- Ensure query key consistency across:
+  - `useQuery`
+  - `setQueryData`
+  - `invalidateQueries`
+  - any prefetch registry entries using `fetchCommunityEventsQueryFn`.
+- Avoid introducing DB schema changes; this is a client cache/state-consistency fix.
+
+ASCII flow (after fix)
+```text
+DB row (raw event)
+   -> fetchCommunityEventsQueryFn
+      -> enrich with profile + co-creator + participant counts
+         -> cache[user-scoped key]
+            -> UI (host name/avatar)
+
+Mutation/realtime update
+   -> merge raw payload with existing enriched fields
+   -> invalidate/refetch for canonical enrichment
+   -> UI remains stable (no "Community Host" regression)
 ```
-
-Three targeted fixes across two files. No UI changes needed — the existing components already read from the correct fields.
-
