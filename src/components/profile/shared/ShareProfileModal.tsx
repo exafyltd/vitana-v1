@@ -142,12 +142,12 @@ export function ShareProfileModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-300">
+      <DialogContent className="sm:max-w-[500px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-3xl animate-in fade-in-0 zoom-in-95 duration-300">
         <DialogHeader className="p-6 pb-4 border-b border-white/20 dark:border-gray-800/20">
           <DialogTitle className="text-xl font-bold text-foreground">{translate('share.shareProfile', 'Share Profile')}</DialogTitle>
         </DialogHeader>
 
-        <div className="p-6 space-y-5">
+        <div className="p-6 space-y-5 overflow-y-auto max-h-[80vh]">
           {/* Mini ID Card Preview */}
           <div className="relative p-5 rounded-2xl bg-gradient-to-br from-white/80 via-white/50 to-white/20 dark:from-gray-900/80 dark:via-gray-900/50 dark:to-gray-900/20 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)]">
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/5 via-transparent to-[hsl(var(--pill-nutrition-accent))]/5 rounded-2xl pointer-events-none" />
