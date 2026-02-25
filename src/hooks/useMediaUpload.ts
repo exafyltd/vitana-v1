@@ -18,9 +18,9 @@ interface UploadMetadata {
 }
 
 const BUCKET_MAP = {
-  music: 'media-music',
-  podcast: 'media-podcasts',
-  video: 'media-videos',
+  music: 'media-uploads',
+  podcast: 'media-uploads',
+  video: 'media-uploads',
 } as const;
 
 const SIZE_LIMITS = {
