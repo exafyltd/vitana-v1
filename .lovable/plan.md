@@ -1,45 +1,70 @@
 
 
-## Fix: Eliminate white space between composer and device navigation
-
-### Problem
-The `ComposerDock` portal sits at `fixed bottom-0`, but on devices with a home indicator / navigation bar, the system's safe area below the composer is not covered by the composer's background — leaving a visible white gap.
+## Fix: Remove bottom margin pushing composer away from device edge
 
 ### Root Cause
-We previously removed `paddingBottom: env(safe-area-inset-bottom)` entirely. This was correct for not **lifting** the composer, but wrong for not **extending** its background through the safe area. WhatsApp solves this by making the composer's background color fill the safe area zone while keeping the interactive content above it.
 
-### Fix — 1 file, 1 change
+The `.conversation-composer` class in `src/index.css` (line 766) has:
 
-**`src/components/messages/ConversationView.tsx`** — line 1171
-
-Add `pb-[env(safe-area-inset-bottom)]` to the inner composer div (the one with `bg-background`). This extends the opaque background through the safe area without lifting the input controls.
-
-```tsx
-// BEFORE (line 1171)
-<div className="conversation-composer bg-background border-t">
-  <div className="px-2 py-1.5">
-
-// AFTER
-<div 
-  className="conversation-composer bg-background border-t"
-  style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
->
-  <div className="px-2 py-1.5">
+```css
+margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
 ```
 
-### How it works
+This was designed to lift the composer above the bottom navigation dock. But in the chat conversation view, the bottom nav is **hidden** (the conversation overlay covers it at z-[55]). So this 72px+ margin creates a huge white gap between the input and the device edge.
+
+Additionally, `viewport-fit=cover` is missing from `index.html`, so `env(safe-area-inset-bottom)` always resolves to `0px`.
+
+### Fix — 2 files
+
+**1. `src/index.css`** — Lines 762-783
+
+Since the composer is now portaled to `document.body` with `fixed bottom-0`, it no longer needs `margin-bottom` at all. Remove it:
+
+```css
+/* BEFORE */
+.conversation-composer {
+  flex-shrink: 0;
+  z-index: 20;
+  margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+  box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
+}
+
+@media (max-width: 768px) {
+  .conversation-composer {
+    margin-bottom: calc(var(--comm-dock-h, 72px) + 4px + env(safe-area-inset-bottom));
+  }
+}
+
+/* AFTER */
+.conversation-composer {
+  flex-shrink: 0;
+  z-index: 20;
+  margin-bottom: 0;
+  box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
+}
+```
+
+**2. `index.html`** — Line 5
+
+Add `viewport-fit=cover` so `env(safe-area-inset-bottom)` actually works on iOS:
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+```
+
+### Result
 
 ```text
 ┌────────────────────────────┐
-│ Messages                   │
-├────────────────────────────┤ ← fixed bottom-0
-│ ╭────────────────╮    🎤   │ ← interactive area (py-1.5)
+│ Messages (scrollable)      │
+│                            │
+│   last message             │
+├────────────────────────────┤ ← fixed bottom-0, margin-bottom: 0
+│ ╭────────────────╮    🎤   │ ← input controls
 │ ╰────────────────╯         │
-│ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │ ← bg-background fills safe-area
-├────────────────────────────┤ ← device nav bar edge
-│ ◁       ○       □          │
-└────────────────────────────┘
+│ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │ ← bg fills safe-area (via paddingBottom)
+└────────────────────────────┘ ← device edge
 ```
 
-The background extends down, the input stays where it is. One line change.
+Two files, three line changes. The 72px phantom margin is eliminated.
 
