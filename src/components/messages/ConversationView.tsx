@@ -1149,12 +1149,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           )}
           
           {/* Bottom padding and scroll anchor */}
-          <div className="h-1" />
+          <div style={{ height: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px) + 8px)' }} />
           <div ref={messagesEndRef} />
         </div>
 
         {/* Composer - Fixed at bottom */}
-        <div className="conversation-composer shrink-0 bg-background border-t" style={{ paddingBottom: 'max(6px, env(safe-area-inset-bottom))' }}>
+        <div className="conversation-composer fixed bottom-0 left-0 right-0 z-50 bg-background border-t" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
           <div className="px-2 py-1.5">
             {/* Typing Indicators */}
             {typingUsers.length > 0 && (
