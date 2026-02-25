@@ -9042,6 +9042,36 @@ export type Database = {
         }
         Relationships: []
       }
+      user_device_tokens: {
+        Row: {
+          created_at: string
+          device_label: string | null
+          fcm_token: string
+          id: string
+          tenant_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_label?: string | null
+          fcm_token: string
+          id?: string
+          tenant_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_label?: string | null
+          fcm_token?: string
+          id?: string
+          tenant_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_discount_codes: {
         Row: {
           code: string
@@ -9305,6 +9335,111 @@ export type Database = {
           last_ai_sync_at?: string | null
           total_memories_count?: number | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_notification_preferences: {
+        Row: {
+          community_notifications: boolean
+          created_at: string
+          dnd_enabled: boolean
+          dnd_end_time: string | null
+          dnd_start_time: string | null
+          health_notifications: boolean
+          live_room_notifications: boolean
+          match_notifications: boolean
+          memory_notifications: boolean
+          muted_threads: string[] | null
+          push_enabled: boolean
+          recommendation_notifications: boolean
+          social_notifications: boolean
+          system_notifications: boolean
+          task_notifications: boolean
+          tenant_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          community_notifications?: boolean
+          created_at?: string
+          dnd_enabled?: boolean
+          dnd_end_time?: string | null
+          dnd_start_time?: string | null
+          health_notifications?: boolean
+          live_room_notifications?: boolean
+          match_notifications?: boolean
+          memory_notifications?: boolean
+          muted_threads?: string[] | null
+          push_enabled?: boolean
+          recommendation_notifications?: boolean
+          social_notifications?: boolean
+          system_notifications?: boolean
+          task_notifications?: boolean
+          tenant_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          community_notifications?: boolean
+          created_at?: string
+          dnd_enabled?: boolean
+          dnd_end_time?: string | null
+          dnd_start_time?: string | null
+          health_notifications?: boolean
+          live_room_notifications?: boolean
+          match_notifications?: boolean
+          memory_notifications?: boolean
+          muted_threads?: string[] | null
+          push_enabled?: boolean
+          recommendation_notifications?: boolean
+          social_notifications?: boolean
+          system_notifications?: boolean
+          task_notifications?: boolean
+          tenant_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_notifications: {
+        Row: {
+          body: string | null
+          channel: string
+          created_at: string
+          data: Json | null
+          id: string
+          priority: string
+          read_at: string | null
+          tenant_id: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          channel?: string
+          created_at?: string
+          data?: Json | null
+          id?: string
+          priority?: string
+          read_at?: string | null
+          tenant_id: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          channel?: string
+          created_at?: string
+          data?: Json | null
+          id?: string
+          priority?: string
+          read_at?: string | null
+          tenant_id?: string
+          title?: string
+          type?: string
           user_id?: string
         }
         Relationships: []
