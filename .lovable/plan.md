@@ -1,38 +1,50 @@
 
 
-## Fix: Remove bottom margin pushing composer away from device edge
+## Fix: Increase scroll area bottom padding to account for safe-area + reduce composer internal padding
 
-### Root Cause
+### Problem
 
-The `.conversation-composer` class in `src/index.css` (line 766) has:
+Two issues from the screenshot:
 
-```css
-margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+1. **Last message is cut off** — the scroll area's `paddingBottom` is `var(--composer-h, 56px)` but the composer now also has `env(safe-area-inset-bottom)` padding. The scroll area doesn't account for this extra height, so the last message hides behind the composer.
+
+2. **Composer still has visual gap** — the `py-1.5` inner padding and `border-t` + `box-shadow` add unnecessary vertical space. We can tighten these.
+
+### Changes — 2 files
+
+**1. `src/components/messages/ConversationView.tsx`**
+
+**Line 1076** — Update scroll area padding to include safe-area inset so messages aren't hidden:
+
+```tsx
+// BEFORE
+style={{ paddingBottom: 'var(--composer-h, 56px)' }}
+
+// AFTER
+style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
 ```
 
-This was designed to lift the composer above the bottom navigation dock. But in the chat conversation view, the bottom nav is **hidden** (the conversation overlay covers it at z-[55]). So this 72px+ margin creates a huge white gap between the input and the device edge.
+**Line 1171-1172** — Reduce composer inner padding from `py-1.5` to `py-1` and remove the border-t (shadow is enough):
 
-Additionally, `viewport-fit=cover` is missing from `index.html`, so `env(safe-area-inset-bottom)` always resolves to `0px`.
+```tsx
+// BEFORE
+<div className="conversation-composer bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+  <div className="px-2 py-1.5">
 
-### Fix — 2 files
+// AFTER
+<div className="conversation-composer bg-background" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+  <div className="px-2 py-1">
+```
 
-**1. `src/index.css`** — Lines 762-783
-
-Since the composer is now portaled to `document.body` with `fixed bottom-0`, it no longer needs `margin-bottom` at all. Remove it:
+**2. `src/index.css`** — Line 767 — Remove the box-shadow to eliminate the visual separator gap:
 
 ```css
 /* BEFORE */
 .conversation-composer {
   flex-shrink: 0;
   z-index: 20;
-  margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+  margin-bottom: 0;
   box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
-}
-
-@media (max-width: 768px) {
-  .conversation-composer {
-    margin-bottom: calc(var(--comm-dock-h, 72px) + 4px + env(safe-area-inset-bottom));
-  }
 }
 
 /* AFTER */
@@ -40,31 +52,13 @@ Since the composer is now portaled to `document.body` with `fixed bottom-0`, it 
   flex-shrink: 0;
   z-index: 20;
   margin-bottom: 0;
-  box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
+  box-shadow: none;
 }
-```
-
-**2. `index.html`** — Line 5
-
-Add `viewport-fit=cover` so `env(safe-area-inset-bottom)` actually works on iOS:
-
-```html
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
 ```
 
 ### Result
 
-```text
-┌────────────────────────────┐
-│ Messages (scrollable)      │
-│                            │
-│   last message             │
-├────────────────────────────┤ ← fixed bottom-0, margin-bottom: 0
-│ ╭────────────────╮    🎤   │ ← input controls
-│ ╰────────────────╯         │
-│ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │ ← bg fills safe-area (via paddingBottom)
-└────────────────────────────┘ ← device edge
-```
-
-Two files, three line changes. The 72px phantom margin is eliminated.
+- Scroll area now has enough bottom padding so the last message is fully visible above the composer
+- Composer sits tighter to the bottom edge with reduced internal padding
+- No border or shadow adding visual height
 
