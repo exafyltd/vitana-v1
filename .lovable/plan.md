@@ -1,42 +1,131 @@
 
 
-## Fix: Video upload fails because it targets a non-existent storage bucket
+## Fix: Differentiate Live Room drawer for Host vs Guest
 
 ### Problem
 
-The `useMediaUpload` hook (used by the Video Gallery) maps each media type to a different storage bucket:
+The `LiveRoomDrawer` component renders the same view for both the host/creator and guest viewers. When a host creates a scheduled room and opens its detail drawer, they see guest-oriented actions ("Follow", "Notify me") that don't apply to their own room. The host needs management controls instead.
 
-- `music` → `media-music`
-- `podcast` → `media-podcasts`
-- `video` → `media-videos`
+### Current behavior
 
-However, only the `media-uploads` bucket exists and is configured with the correct RLS policies and MIME type allowances. When a user tries to upload a video, Supabase returns an error because the `media-videos` bucket does not exist.
+- **Host bar** (lines 319-350): Always shows the host avatar with a "Follow" button — even when the viewer IS the host.
+- **Sticky action bar** (lines 448-497): For scheduled rooms, always shows "Notify me", calendar, and share — no host-specific actions like "Go Live", "Edit", or "Cancel".
+- The `isCreator` prop exists but is only used to show a kebab menu (Edit/Delete) in the hero overlay (lines 267-294). It doesn't affect the main content or action bar.
 
 ### Changes — 1 file
 
-**`src/hooks/useMediaUpload.ts`**
+**`src/components/liverooms/LiveRoomDrawer.tsx`**
 
-Change all three bucket mappings to use the single existing `media-uploads` bucket:
+#### 1. Host bar section (lines 318-351) — Hide "Follow" button for creator
+
+Wrap the host bar in a conditional: if `isCreator`, show a simpler "Your Room" indicator instead of "Follow" button.
 
 ```tsx
-// BEFORE (lines 19-24)
-const BUCKET_MAP = {
-  music: 'media-music',
-  podcast: 'media-podcasts',
-  video: 'media-videos',
-} as const;
-
-// AFTER
-const BUCKET_MAP = {
-  music: 'media-uploads',
-  podcast: 'media-uploads',
-  video: 'media-uploads',
-} as const;
+// Host Bar — lines 318-351
+{!isCreator ? (
+  // Existing host bar with Follow button (unchanged)
+  <div className="flex items-center gap-2 mt-3">
+    <button onClick={handleFollow} className={cn(/* existing styles */)}>
+      {/* avatar + name + Host badge */}
+    </button>
+    <Button onClick={handleFollow} variant={isFollowing ? "secondary" : "outline"} className="...">
+      <UserPlus /> {isFollowing ? "Following" : "Follow"}
+    </Button>
+  </div>
+) : (
+  // Creator sees their own info without Follow
+  <div className="flex items-center gap-2 mt-3">
+    <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg">
+      <Avatar className="h-7 w-7 ring-1 ring-white/50">
+        <AvatarImage src={room.host.avatar} />
+        <AvatarFallback>{room.host.name[0]}</AvatarFallback>
+      </Avatar>
+      <span className="text-sm font-semibold">{room.host.name}</span>
+      <Badge variant="secondary" className="text-xs">Your Room</Badge>
+    </div>
+  </div>
+)}
 ```
 
-This aligns with the existing photo gallery upload flow (in `useProfileGallery.ts`), which already uploads to `media-uploads`. The file path already includes the user ID and a timestamp, so there are no collision concerns.
+#### 2. Sticky action bar — Scheduled rooms (lines 462-495) — Different actions for host vs guest
 
-### Why this fixes it
+Replace the single scheduled-room action block with a conditional:
 
-The photo upload works because `useProfileGallery` uploads directly to `media-uploads`. The video upload fails because `useMediaUpload` tries to use `media-videos`, which was never created. Pointing all media types at the existing bucket resolves the issue without requiring any database migrations.
+**Host (isCreator) sees:**
+- Primary "Go Live Now" button (calls `onJoin`) — allows starting early
+- "Edit" button (calls `onEdit`)
+- "Cancel Session" button (calls `onDelete` with confirmation)
+
+**Guest (!isCreator) sees:**
+- "Notify me" button (existing behavior)
+- Calendar dropdown (existing)
+- Share button (existing)
+
+```tsx
+{isScheduled ? (
+  isCreator ? (
+    // HOST action bar
+    <div className="flex items-center gap-2">
+      <Button size="lg" className="flex-1" onClick={handleJoin}>
+        Go Live Now
+      </Button>
+      <Button size="lg" variant="outline" onClick={onEdit}>
+        <Pencil className="w-4 h-4" />
+      </Button>
+      <Button size="lg" variant="outline" onClick={() => setShowDeleteDialog(true)}>
+        <Trash2 className="w-4 h-4" />
+      </Button>
+    </div>
+  ) : (
+    // GUEST action bar (existing Notify me + Calendar + Share)
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <Button size="lg" variant="outline" className="flex-1" onClick={handleNotifyMe}>
+          <Bell className={cn("w-4 h-4 mr-2", isNotifying && "fill-current")} />
+          {isNotifying ? "Notifying" : "Notify me"}
+        </Button>
+        {/* Calendar dropdown + Share — unchanged */}
+      </div>
+    </div>
+  )
+) : null}
+```
+
+#### 3. Live room action bar (lines 450-461) — Host gets "End Room" instead of "Join"
+
+When the room is live and the user is the creator:
+
+```tsx
+{room.isLive ? (
+  isCreator ? (
+    <div className="flex items-center gap-2">
+      <Button size="lg" variant="destructive" className="flex-1" onClick={handleJoin}>
+        End Room
+      </Button>
+      <Button size="lg" variant="outline" onClick={() => handleShare()}>
+        <Share2 className="w-4 h-4" />
+      </Button>
+    </div>
+  ) : (
+    // Existing guest Join Room + Share + Bookmark
+    <div className="flex items-center gap-2">
+      <Button size="lg" className="flex-1" onClick={handleJoin}>Join Room</Button>
+      {/* Share + Bookmark unchanged */}
+    </div>
+  )
+) : /* scheduled block */ }
+```
+
+### Summary of role-based differences
+
+```text
+┌──────────────┬─────────────────────────┬─────────────────────────┐
+│ Section      │ Host (isCreator)        │ Guest                   │
+├──────────────┼─────────────────────────┼─────────────────────────┤
+│ Host bar     │ "Your Room" badge       │ Follow button           │
+│ Hero overlay │ ⋮ menu (Edit/Delete)    │ (none)                  │
+│ Scheduled    │ Go Live / Edit / Cancel │ Notify me / Cal / Share │
+│ Live         │ End Room / Share        │ Join Room / Share / Save│
+└──────────────┴─────────────────────────┴─────────────────────────┘
+```
 
