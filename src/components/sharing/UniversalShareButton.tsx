@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Share2 } from "lucide-react";
 import { UniversalShareDialog } from "./UniversalShareDialog";
 import { analytics } from "@/lib/analytics";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ShareableContent {
   type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service" | "music";
@@ -29,6 +30,7 @@ export function UniversalShareButton({
   className,
 }: UniversalShareButtonProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { translate } = useTranslation();
 
   const handleShareClick = () => {
     analytics.trackShare(
@@ -49,7 +51,7 @@ export function UniversalShareButton({
         className={className}
       >
         <Share2 className="h-4 w-4" />
-        {showLabel && size !== "icon" && <span className="ml-2">Share</span>}
+        {showLabel && size !== "icon" && <span className="ml-2">{translate('common.share', 'Share')}</span>}
       </Button>
 
       <UniversalShareDialog
