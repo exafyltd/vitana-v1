@@ -98,12 +98,9 @@ const MessageInput: React.FC<MessageInputProps> = ({
       // Enable scrolling if content exceeds max height
       textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
       
-      // Update the CSS variable for layout calculations
-      const composerElement = document.getElementById('composer');
-      if (composerElement) {
-        const totalComposerHeight = newHeight + 32; // padding and borders
-        composerElement.style.setProperty('--composer-h', `${Math.max(56, totalComposerHeight)}px`);
-      }
+      // Update the CSS variable on :root so any element can read it
+      const totalComposerHeight = newHeight + 32; // padding and borders
+      document.documentElement.style.setProperty('--composer-h', `${Math.max(56, totalComposerHeight)}px`);
     }
   }, [message]);
 
@@ -466,8 +463,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
     <form 
       id="composer"
       onSubmit={handleSend} 
-      className={cn("flex flex-col gap-1.5 px-1 py-1", className)}
-      style={{ '--composer-h': '56px' } as React.CSSProperties}
+      className={cn("flex flex-col gap-1 px-1 py-0.5 m-0", className)}
     >
       {/* Reply Preview */}
       {replyingTo && onCancelReply && (
