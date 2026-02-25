@@ -1,23 +1,31 @@
 
 
-## Fix: Eliminate White Gap Between Composer and Bottom Nav
+## Fix: Anchor Composer to Bottom (WhatsApp-style)
 
-### Root Cause
-
-The conversation overlay uses `fixed inset-0 z-50` and the `MobileBottomNav` also uses `fixed bottom-0 z-50`. Since they share the same z-index and the nav renders later in the DOM, the nav appears on top of the conversation. The composer's `paddingBottom: max(6px, env(safe-area-inset-bottom))` then creates a visible gap above the nav bar.
-
-WhatsApp solves this by hiding the tab bar entirely when inside a conversation. The conversation fills the full screen.
+The screenshot shows a large white gap below the composer. The composer is currently inside the flex column flow (`shrink-0`) rather than being fixed to the bottom. The messages area and composer are siblings in a flex column, but the messages area isn't filling all available space properly, leaving dead space below the composer.
 
 ### Changes
 
-**1. `src/pages/Messages.tsx`** — Raise conversation overlay z-index
+**1. `src/components/messages/ConversationView.tsx`** — Make composer fixed-positioned
 
-- Line 903: Change `z-50` to `z-[55]` on the conversation container
-- This puts the conversation above the bottom nav (z-50) and the orb (z-[53]), fully covering them during a chat — exactly like WhatsApp
+**Line 1156-1197**: Change the composer wrapper from `shrink-0` flex child to `fixed bottom-0 left-0 right-0 z-50`:
 
-**2. No other changes needed**
+```tsx
+<div 
+  className="conversation-composer fixed bottom-0 left-0 right-0 z-50 bg-background border-t" 
+  style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
+>
+```
 
-The composer already has correct bottom safe-area padding (`max(6px, env(safe-area-inset-bottom))`). Once the conversation overlay sits above the nav bar, the composer will be flush with the bottom of the screen with only the safe-area inset below it — no more white gap.
+**Line 1152**: Remove the `h-1` spacer div and replace with a dynamic bottom padding spacer so messages don't get hidden behind the fixed composer. Add a spacer div with enough height to clear the composer:
+
+```tsx
+<div style={{ height: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px) + 8px)' }} />
+```
+
+**2. `src/components/messages/MessageInput.tsx`** — No changes needed
+
+The `--composer-h` CSS variable is already being set dynamically. The fixed composer will use this for sizing.
 
 ### Result
 
@@ -26,19 +34,16 @@ BEFORE                              AFTER
 ┌────────────────────────────┐      ┌────────────────────────────┐
 │ Header                     │      │ Header                     │
 ├────────────────────────────┤      ├────────────────────────────┤
-│                            │      │                            │
 │   Messages                 │      │   Messages                 │
-│                            │      │   (more vertical space)    │
-│                            │      │                            │
-├────────────────────────────┤      ├────────────────────────────┤
-│ ╭────────────────╮    🎤   │      │ ╭────────────────╮    🎤   │
-│ ╰────────────────╯         │      │ ╰────────────────╯         │
-│                            │      │ safe-area-bottom (6px)     │
-│   ~60px white gap          │      └────────────────────────────┘
-├────────────────────────────┤      (bottom nav hidden behind overlay)
-│ Events  Business 🔮 Live   │
-└────────────────────────────┘
+│                            │      │   (fills all space)        │
+├────────────────────────────┤      │                            │
+│ ╭────────────────╮    🎤   │      │   spacer for composer      │
+│ ╰────────────────╯         │      ├────────────────────────────┤ ← fixed
+│                            │      │ ╭────────────────╮    🎤   │
+│   large white gap          │      │ ╰────────────────╯         │
+│                            │      │ 8px / safe-area            │
+└────────────────────────────┘      └────────────────────────────┘
 ```
 
-One line change in one file. The bottom nav is simply covered by the conversation — matching WhatsApp where the tab bar disappears when you open a chat thread.
+One file changed (`ConversationView.tsx`), two edits: composer positioning and bottom spacer.
 
