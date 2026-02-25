@@ -1,24 +1,38 @@
 
-## Unified Notification System (Push + In-App) — IMPLEMENTED
 
-### Files Created
-- `src/lib/firebase.ts` — Firebase init + FCM token + foreground listener
-- `public/firebase-messaging-sw.js` — Background push service worker
-- `src/lib/notification-types.ts` — 70-type notification registry
-- `src/hooks/useNotifications.ts` — Gateway-backed notification + preferences hooks
+## Remove Appearance Theme & Center Role Badge in Profile Drawer
 
-### Files Replaced
-- `src/lib/pushNotifications.ts` — FCM-based push manager (was Web Push API)
-- `src/components/NotificationBell.tsx` — Gateway-backed bell with type-aware icons
-- `src/pages/settings/SettingsNotifications.tsx` — New preferences UI
+### Changes — 1 file
 
-### Files Modified
-- `src/lib/appilix.ts` — Merged `appilix_fcm_token` into Window + added `requestNativeFcmToken`
-- `src/App.tsx` — Removed `useMessageNotifications`, added `initializePushNotifications`
-- `src/pages/Settings.tsx` — Switched to `useNotificationPreferences` from new hook
+**`src/components/profile/ProfileDrawer.tsx`**
 
-### Files Deleted
-- `src/hooks/useMessageNotifications.ts` — Replaced by `useNotifications.ts`
+#### 1. Remove the Appearance Theme section (lines 155-203)
+Delete the entire Theme Switcher block: the `<Separator />`, the label with `Palette` icon, and the 3-button grid (Serenity / Focus / Expression). This removes ~48 lines.
 
-### Env Var
-Uses `VITE_GATEWAY_BASE` (existing) — NOT `VITE_GATEWAY_URL`
+#### 2. Center the "Community" role badge under the avatar and name
+Currently the badge is inside a `space-y-1` div alongside the `DrawerTitle`. The structure is:
+```
+<div className="flex flex-col items-center gap-3 mb-2">
+  <Avatar />
+  <div className="space-y-1">
+    <DrawerTitle>Name</DrawerTitle>
+    <Badge>Community</Badge>  ← inside space-y-1, not explicitly centered
+  </div>
+</div>
+```
+
+Change the inner div to explicitly center content:
+```
+<div className="space-y-1 flex flex-col items-center">
+```
+
+This ensures the role badge is horizontally centered beneath the name on all screen sizes.
+
+#### 3. Clean up unused imports
+Remove `Palette`, `Check` from lucide-react imports and `useProfileTheme, ProfileTheme` from hook imports since the theme switcher is gone. Also remove `theme`, `setTheme`, `themeLoading` from the destructured hook call (line 54).
+
+### Summary
+- **Removed**: Appearance Theme switcher (Serenity/Focus/Expression buttons)
+- **Centered**: Role badge explicitly centered under avatar + name
+- **Cleaned**: Unused imports (`Palette`, `Check`, `useProfileTheme`, `ProfileTheme`)
+
