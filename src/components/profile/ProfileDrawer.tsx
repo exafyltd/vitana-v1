@@ -15,14 +15,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Building, Palette, Check } from "lucide-react";
+import { User, LogOut, Shield, Building } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole, UserRole } from "@/hooks/useRole";
 import { useTenant, TenantType } from "@/hooks/useTenant";
 import { useMemberships } from "@/hooks/useMemberships";
 import { useTenantLogoutRedirect } from "@/hooks/useSmartRouting";
-import { useProfileTheme, ProfileTheme } from "@/hooks/useProfileTheme";
+
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProfileDrawerProps {
@@ -51,7 +51,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { currentRole, setRole } = useRole();
   const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
   const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
-  const { theme, setTheme, loading: themeLoading } = useProfileTheme(user?.id);
+  
   const isMobile = useIsMobile();
   
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
@@ -130,7 +130,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 {profile.initials}
               </AvatarFallback>
             </Avatar>
-            <div className="space-y-1">
+            <div className="space-y-1 flex flex-col items-center">
               <DrawerTitle className="text-lg">{profile.displayName}</DrawerTitle>
               <Badge variant="secondary" className="text-xs">
                 {ROLE_LABELS[profile.role]}
@@ -152,55 +152,6 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             </DrawerClose>
           </div>
 
-          {/* Theme Switcher */}
-          <Separator />
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Palette className="h-4 w-4" />
-              Appearance Theme
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              <Button
-                variant={theme === 'serenity' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setTheme('serenity')}
-                disabled={themeLoading}
-                className="flex flex-col gap-1 h-auto py-3 relative"
-              >
-                {theme === 'serenity' && (
-                  <Check className="h-3 w-3 absolute top-1 right-1" />
-                )}
-                <span className="text-xl">🌅</span>
-                <span className="text-xs">Serenity</span>
-              </Button>
-              <Button
-                variant={theme === 'focus' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setTheme('focus')}
-                disabled={themeLoading}
-                className="flex flex-col gap-1 h-auto py-3 relative"
-              >
-                {theme === 'focus' && (
-                  <Check className="h-3 w-3 absolute top-1 right-1" />
-                )}
-                <span className="text-xl">🌓</span>
-                <span className="text-xs">Focus</span>
-              </Button>
-              <Button
-                variant={theme === 'expression' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setTheme('expression')}
-                disabled={themeLoading}
-                className="flex flex-col gap-1 h-auto py-3 relative"
-              >
-                {theme === 'expression' && (
-                  <Check className="h-3 w-3 absolute top-1 right-1" />
-                )}
-                <span className="text-xl">💎</span>
-                <span className="text-xs">Expression</span>
-              </Button>
-            </div>
-          </div>
 
           {/* Role Switcher - desktop only, mobile is community-only */}
           {!isMobile && availableRoles && availableRoles.length > 0 && (
