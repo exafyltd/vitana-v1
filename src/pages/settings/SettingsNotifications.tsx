@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -6,8 +6,8 @@ import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Mail, Smartphone, Moon } from "lucide-react";
-import { useNotificationSettings, type NotificationSettings } from "@/hooks/useMessageNotifications";
+import { Bell, Smartphone, Moon, Users, Brain } from "lucide-react";
+import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -22,65 +22,23 @@ const settingsSubItems = [
 ];
 
 export default function SettingsNotifications() {
-  const { getNotificationSettings, updateNotificationSettings } = useNotificationSettings();
-  const [settings, setSettings] = useState<NotificationSettings | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { prefs, loading, updatePref } = useNotificationPreferences();
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  const loadSettings = async () => {
+  const handleToggle = async (field: keyof typeof prefs, value: boolean) => {
     try {
-      setLoading(true);
-      const data = await getNotificationSettings();
-      setSettings(data);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load notification settings",
-        variant: "destructive"
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleToggle = async (field: keyof NotificationSettings, value: boolean) => {
-    if (!settings) return;
-    
-    try {
-      await updateNotificationSettings({ [field]: value });
-      setSettings({ ...settings, [field]: value });
-      toast({
-        title: "Settings updated",
-        description: "Your notification preferences have been saved",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update settings",
-        variant: "destructive"
-      });
+      await updatePref(field, value);
+      toast({ title: "Settings updated", description: "Your notification preferences have been saved" });
+    } catch {
+      toast({ title: "Error", description: "Failed to update settings", variant: "destructive" });
     }
   };
 
   const handleTimeChange = async (field: 'dnd_start_time' | 'dnd_end_time', value: string) => {
-    if (!settings) return;
-    
     try {
-      await updateNotificationSettings({ [field]: value });
-      setSettings({ ...settings, [field]: value });
-      toast({
-        title: "Settings updated",
-        description: "Your quiet hours have been updated",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update quiet hours",
-        variant: "destructive"
-      });
+      await updatePref(field, value);
+      toast({ title: "Settings updated", description: "Your quiet hours have been updated" });
+    } catch {
+      toast({ title: "Error", description: "Failed to update quiet hours", variant: "destructive" });
     }
   };
 
@@ -96,85 +54,18 @@ export default function SettingsNotifications() {
     );
   }
 
-  if (!settings) {
-    return (
-      <AppLayout>
-        <SEO title="Notifications | Settings" description="Configure your notification preferences" canonical={window.location.href} />
-        <SubNavigation items={settingsSubItems} />
-        <div className="p-6 max-w-4xl mx-auto">
-          <p className="text-center text-muted-foreground">Failed to load settings. Please try again.</p>
-        </div>
-      </AppLayout>
-    );
-  }
-
   return (
     <AppLayout>
       <SEO title="Notifications | Settings" description="Configure your notification preferences" canonical={window.location.href} />
       <SubNavigation items={settingsSubItems} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
-        <StandardHeader 
+        <StandardHeader
           title="Customize your alerts!"
           description="Configure your notification preferences"
           emoji="🔕"
         />
-        
-        {/* Email Notifications */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Mail className="w-5 h-5" />
-              Email Notifications
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Community Events</h4>
-                <p className="text-sm text-muted-foreground">Get notified about new events and meetups</p>
-              </div>
-              <Switch 
-                checked={settings.email_events} 
-                onCheckedChange={(checked) => handleToggle('email_events', checked)}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Appointment Reminders</h4>
-                <p className="text-sm text-muted-foreground">Reminders for upcoming appointments</p>
-              </div>
-              <Switch 
-                checked={settings.email_appointments} 
-                onCheckedChange={(checked) => handleToggle('email_appointments', checked)}
-              />
-            </div>
 
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">AI Tips & Insights</h4>
-                <p className="text-sm text-muted-foreground">Personalized health and wellness tips</p>
-              </div>
-              <Switch 
-                checked={settings.email_ai_tips} 
-                onCheckedChange={(checked) => handleToggle('email_ai_tips', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Weekly Reports</h4>
-                <p className="text-sm text-muted-foreground">Summary of your weekly progress</p>
-              </div>
-              <Switch 
-                checked={settings.email_weekly_reports} 
-                onCheckedChange={(checked) => handleToggle('email_weekly_reports', checked)}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Push Notifications */}
+        {/* Push Notifications (Global) */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -182,92 +73,117 @@ export default function SettingsNotifications() {
               Push Notifications
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium">Group Messages</h4>
-                <p className="text-sm text-muted-foreground">New messages in your groups</p>
+                <h4 className="font-medium">Enable Push Notifications</h4>
+                <p className="text-sm text-muted-foreground">Receive notifications on your device</p>
               </div>
-              <Switch 
-                checked={settings.push_group_messages} 
-                onCheckedChange={(checked) => handleToggle('push_group_messages', checked)}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Goal Reminders</h4>
-                <p className="text-sm text-muted-foreground">Daily reminders for your wellness goals</p>
-              </div>
-              <Switch 
-                checked={settings.push_goal_reminders} 
-                onCheckedChange={(checked) => handleToggle('push_goal_reminders', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Friend Activity</h4>
-                <p className="text-sm text-muted-foreground">When friends complete challenges or milestones</p>
-              </div>
-              <Switch 
-                checked={settings.push_friend_activity} 
-                onCheckedChange={(checked) => handleToggle('push_friend_activity', checked)}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="font-medium">Breaking News</h4>
-                <p className="text-sm text-muted-foreground">Important health and wellness updates</p>
-              </div>
-              <Switch 
-                checked={settings.push_breaking_news} 
-                onCheckedChange={(checked) => handleToggle('push_breaking_news', checked)}
+              <Switch
+                checked={prefs.push_enabled}
+                onCheckedChange={(checked) => handleToggle('push_enabled', checked)}
               />
             </div>
           </CardContent>
         </Card>
 
-        {/* In-App Notifications */}
+        {/* Live Rooms */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bell className="w-5 h-5" />
-              In-App Notifications
+              Live Rooms
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-medium">Live Room Notifications</h4>
+                <p className="text-sm text-muted-foreground">Room starting, invites, and summaries</p>
+              </div>
+              <Switch
+                checked={prefs.live_room_notifications}
+                onCheckedChange={(checked) => handleToggle('live_room_notifications', checked)}
+                disabled={!prefs.push_enabled}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Social & Community */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              Social & Community
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium">Real-time Messages</h4>
-                <p className="text-sm text-muted-foreground">Show message notifications while using the app</p>
+                <h4 className="font-medium">Match Notifications</h4>
+                <p className="text-sm text-muted-foreground">New matches, accepted matches, and suggestions</p>
               </div>
-              <Switch 
-                checked={settings.inapp_messages} 
-                onCheckedChange={(checked) => handleToggle('inapp_messages', checked)}
+              <Switch
+                checked={prefs.match_notifications}
+                onCheckedChange={(checked) => handleToggle('match_notifications', checked)}
+                disabled={!prefs.push_enabled}
               />
             </div>
-            
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium">System Updates</h4>
-                <p className="text-sm text-muted-foreground">App updates and maintenance notifications</p>
+                <h4 className="font-medium">Community Notifications</h4>
+                <p className="text-sm text-muted-foreground">Groups, meetups, and community activity</p>
               </div>
-              <Switch 
-                checked={settings.inapp_system} 
-                onCheckedChange={(checked) => handleToggle('inapp_system', checked)}
+              <Switch
+                checked={prefs.community_notifications}
+                onCheckedChange={(checked) => handleToggle('community_notifications', checked)}
+                disabled={!prefs.push_enabled}
               />
             </div>
+          </CardContent>
+        </Card>
 
+        {/* Intelligence */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="w-5 h-5" />
+              Intelligence
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium">Achievement Alerts</h4>
-                <p className="text-sm text-muted-foreground">Celebrate when you reach milestones</p>
+                <h4 className="font-medium">Recommendations</h4>
+                <p className="text-sm text-muted-foreground">AI recommendations and suggestions</p>
               </div>
-              <Switch 
-                checked={settings.inapp_achievements} 
-                onCheckedChange={(checked) => handleToggle('inapp_achievements', checked)}
+              <Switch
+                checked={prefs.recommendation_notifications}
+                onCheckedChange={(checked) => handleToggle('recommendation_notifications', checked)}
+                disabled={!prefs.push_enabled}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-medium">Task Notifications</h4>
+                <p className="text-sm text-muted-foreground">Task updates and reminders</p>
+              </div>
+              <Switch
+                checked={prefs.task_notifications}
+                onCheckedChange={(checked) => handleToggle('task_notifications', checked)}
+                disabled={!prefs.push_enabled}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-medium">Memory & Diary</h4>
+                <p className="text-sm text-muted-foreground">Diary reminders and memory updates</p>
+              </div>
+              <Switch
+                checked={prefs.memory_notifications}
+                onCheckedChange={(checked) => handleToggle('memory_notifications', checked)}
+                disabled={!prefs.push_enabled}
               />
             </div>
           </CardContent>
@@ -287,19 +203,19 @@ export default function SettingsNotifications() {
                 <h4 className="font-medium">Enable Quiet Hours</h4>
                 <p className="text-sm text-muted-foreground">Pause non-urgent notifications during specified times</p>
               </div>
-              <Switch 
-                checked={settings.dnd_enabled} 
+              <Switch
+                checked={prefs.dnd_enabled}
                 onCheckedChange={(checked) => handleToggle('dnd_enabled', checked)}
               />
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium mb-2 block">Start Time</label>
-                <Select 
-                  value={settings.dnd_start_time || undefined}
+                <Select
+                  value={prefs.dnd_start_time || undefined}
                   onValueChange={(value) => handleTimeChange('dnd_start_time', value)}
-                  disabled={!settings.dnd_enabled}
+                  disabled={!prefs.dnd_enabled}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select time" />
@@ -313,13 +229,12 @@ export default function SettingsNotifications() {
                   </SelectContent>
                 </Select>
               </div>
-
               <div>
                 <label className="text-sm font-medium mb-2 block">End Time</label>
-                <Select 
-                  value={settings.dnd_end_time || undefined}
+                <Select
+                  value={prefs.dnd_end_time || undefined}
                   onValueChange={(value) => handleTimeChange('dnd_end_time', value)}
-                  disabled={!settings.dnd_enabled}
+                  disabled={!prefs.dnd_enabled}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select time" />

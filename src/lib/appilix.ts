@@ -11,6 +11,8 @@ declare global {
     appilix?: {
       postMessage: (message: string) => void;
     };
+    /** Native FCM token injected by Appilix before page load */
+    appilix_fcm_token?: string;
   }
 }
 
@@ -100,5 +102,42 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
   return updateSettings({
     status_bar_color: background,
     status_bar_style: lightContent ? 'light-content' : 'dark-content',
+  });
+}
+
+// ── FCM Push Token Bridge ─────────────────────────────────
+
+export function getNativeFcmToken(): string | null {
+  if (typeof window !== 'undefined' && window.appilix_fcm_token) {
+    return window.appilix_fcm_token;
+  }
+  return null;
+}
+
+export function requestNativeFcmToken(): Promise<string | null> {
+  const preInjected = getNativeFcmToken();
+  if (preInjected) return Promise.resolve(preInjected);
+  if (!isAppilix()) return Promise.resolve(null);
+
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => {
+      window.removeEventListener('message', handler);
+      resolve(null);
+    }, 3000);
+
+    function handler(event: MessageEvent) {
+      try {
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (data?.type === 'fcm_token' && data.token) {
+          clearTimeout(timeout);
+          window.removeEventListener('message', handler);
+          window.appilix_fcm_token = data.token;
+          resolve(data.token);
+        }
+      } catch {}
+    }
+
+    window.addEventListener('message', handler);
+    post({ action: 'get_fcm_token' });
   });
 }
