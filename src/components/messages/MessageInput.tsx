@@ -466,8 +466,8 @@ const MessageInput: React.FC<MessageInputProps> = ({
     <form 
       id="composer"
       onSubmit={handleSend} 
-      className={cn("flex flex-col gap-2 px-3 py-2", className)}
-      style={{ '--composer-h': '112px' } as React.CSSProperties}
+      className={cn("flex flex-col gap-1.5 px-1 py-1", className)}
+      style={{ '--composer-h': '56px' } as React.CSSProperties}
     >
       {/* Reply Preview */}
       {replyingTo && onCancelReply && (
@@ -533,59 +533,62 @@ const MessageInput: React.FC<MessageInputProps> = ({
         </div>
       )}
 
-      <div className="flex items-end gap-3">
-        {/* Left: Emoji button */}
-        <EmojiPicker 
-          onEmojiSelect={(emoji) => {
-            setMessage(prev => prev + emoji);
-            textareaRef.current?.focus();
-          }}
-          className="h-9 w-9"
-        />
-
-        {/* Left: Attachment menu */}
-        <AttachmentMenu 
-          onFileAttach={() => fileInputRef.current?.click()}
-          onSendMessage={async (content, messageType, contentData) => {
-            await onSendMessage(content, messageType, contentData);
-          }}
-          onCalendarInvite={sendCalendarInvite}
-          recipient={effectiveRecipient}
-          recipientIdHint={effectiveRecipientId || recipientId}
-          threadId={threadId}
-          disabled={disabled || isUploading}
-          conversationType={conversationType}
-        />
-
-        {/* Hidden file input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-
-        {/* Text input takes all remaining space */}
-        <div className="flex-1">
-          <Textarea
-            ref={textareaRef}
-            value={message}
-            onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-            onBlur={handleBlur}
-            placeholder={placeholder}
-            disabled={disabled}
-            className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-3 py-3 text-base"
-            rows={1}
-            aria-label="Message composer"
-            aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
+      <div className="flex items-end gap-1.5">
+        {/* Pill-shaped input container (WhatsApp style) */}
+        <div className="flex items-end gap-1 flex-1 bg-muted/50 rounded-full px-2 py-1 border border-border/50">
+          {/* Emoji button */}
+          <EmojiPicker 
+            onEmojiSelect={(emoji) => {
+              setMessage(prev => prev + emoji);
+              textareaRef.current?.focus();
+            }}
+            className="h-8 w-8 shrink-0"
           />
+
+          {/* Attachment menu */}
+          <AttachmentMenu 
+            onFileAttach={() => fileInputRef.current?.click()}
+            onSendMessage={async (content, messageType, contentData) => {
+              await onSendMessage(content, messageType, contentData);
+            }}
+            onCalendarInvite={sendCalendarInvite}
+            recipient={effectiveRecipient}
+            recipientIdHint={effectiveRecipientId || recipientId}
+            threadId={threadId}
+            disabled={disabled || isUploading}
+            conversationType={conversationType}
+          />
+
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+
+          {/* Text input */}
+          <div className="flex-1 min-w-0">
+            <Textarea
+              ref={textareaRef}
+              value={message}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              onBlur={handleBlur}
+              placeholder={placeholder}
+              disabled={disabled}
+              className="min-h-[24px] resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-2 text-base"
+              rows={1}
+              aria-label="Message composer"
+              aria-describedby={attachments.length > 0 ? "attachment-status" : undefined}
+            />
+          </div>
         </div>
 
-        {/* Right: Send or Mic */}
+        {/* Send/Mic button outside the pill */}
         {canSend ? (
-          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label="Send message">
+          <Button type="submit" size="sm" className="h-9 w-9 p-0 rounded-full shrink-0 bg-domain-messages-accent text-white hover:bg-domain-messages-accent/90" aria-label="Send message">
             {isUploading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
@@ -599,7 +602,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
             size="sm"
             onClick={() => setShowVoiceRecorder(true)}
             disabled={isUploading || showVoiceRecorder}
-            className="h-9 w-9 p-0"
+            className="h-9 w-9 p-0 rounded-full shrink-0"
             aria-label="Record voice message"
           >
             <Mic className="h-4 w-4" />

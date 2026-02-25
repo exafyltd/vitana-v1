@@ -989,9 +989,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     <>
       <div className={cn("flex flex-col h-full min-w-0 overflow-hidden w-full", className)}>
         {/* Header - Sticky at top */}
-        <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b shadow-sm">
-          <div className="flex items-center justify-between px-4 py-3">
-            <div className="flex items-center gap-3 min-w-0">
+        <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
+          <div className="flex items-center justify-between px-3 py-2">
+            <div className="flex items-center gap-2 min-w-0">
               {onBack && (
                 <Button size="sm" variant="ghost" onClick={onBack}>
                   <ArrowLeft className="w-4 h-4" />
@@ -1023,8 +1023,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 className={cn("min-w-0 flex-1", isGroupChat() ? "cursor-pointer" : "")}
                 onClick={isGroupChat() ? () => setShowMembersModal(true) : undefined}
               >
-                <h2 className="text-base font-semibold truncate">{getConversationTitle()}</h2>
-                <p className="text-sm text-muted-foreground truncate">{getConversationSubtitle()}</p>
+                <h2 className="text-sm font-semibold truncate">{getConversationTitle()}</h2>
+                <p className="text-xs text-muted-foreground truncate">{getConversationSubtitle()}</p>
               </div>
             </div>
           
@@ -1036,7 +1036,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   recipientName={getConversationTitle()}
                 />
               )}
-              <Button size="sm" variant="ghost">
+              <Button size="sm" variant="ghost" className="hidden md:inline-flex">
                 <Info className="w-4 h-4" />
               </Button>
               {shouldShowAddToContacts && (
@@ -1154,8 +1154,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
 
         {/* Composer - Fixed at bottom */}
-        <div className="conversation-composer shrink-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t shadow-sm">
-          <div className="px-4 py-3">
+        <div className="conversation-composer shrink-0 bg-background border-t">
+          <div className="px-2 py-1.5">
             {/* Typing Indicators */}
             {typingUsers.length > 0 && (
               <div className="mb-2">
