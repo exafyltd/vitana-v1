@@ -1,64 +1,62 @@
 
 
-## Fix: Increase scroll area bottom padding to account for safe-area + reduce composer internal padding
+## Fix: Push chat composer flush to the bottom edge
 
 ### Problem
+The screenshot shows white space between the input field and the device's navigation bar. Three sources contribute:
 
-Two issues from the screenshot:
+1. **`paddingBottom: env(safe-area-inset-bottom)`** on the composer wrapper adds space below the input on devices with a home indicator
+2. **`py-1`** inner padding adds vertical spacing around the input
+3. **`border-top`** from a duplicate `.conversation-composer` rule at line 689 in `index.css` adds a visual separator
 
-1. **Last message is cut off** — the scroll area's `paddingBottom` is `var(--composer-h, 56px)` but the composer now also has `env(safe-area-inset-bottom)` padding. The scroll area doesn't account for this extra height, so the last message hides behind the composer.
-
-2. **Composer still has visual gap** — the `py-1.5` inner padding and `border-t` + `box-shadow` add unnecessary vertical space. We can tighten these.
-
-### Changes — 2 files
+### Changes — 2 files, 4 edits
 
 **1. `src/components/messages/ConversationView.tsx`**
 
-**Line 1076** — Update scroll area padding to include safe-area inset so messages aren't hidden:
+- **Line 1171** — Remove `paddingBottom: env(safe-area-inset-bottom)` from the composer wrapper. This was extending the background into the safe area but also pushing the input up. Instead, let the `ComposerDock` (which is `fixed bottom-0`) sit flush.
 
 ```tsx
 // BEFORE
-style={{ paddingBottom: 'var(--composer-h, 56px)' }}
-
-// AFTER
-style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
-```
-
-**Line 1171-1172** — Reduce composer inner padding from `py-1.5` to `py-1` and remove the border-t (shadow is enough):
-
-```tsx
-// BEFORE
-<div className="conversation-composer bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-  <div className="px-2 py-1.5">
-
-// AFTER
 <div className="conversation-composer bg-background" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
   <div className="px-2 py-1">
+
+// AFTER
+<div className="conversation-composer bg-background">
+  <div className="px-2 py-0.5 pb-1">
 ```
 
-**2. `src/index.css`** — Line 767 — Remove the box-shadow to eliminate the visual separator gap:
+The `py-0.5 pb-1` gives minimal top breathing room and a tiny bottom pad (4px) so the pill input doesn't touch the absolute edge.
+
+- **Line 1076** — Adjust scroll area padding to match (no safe-area addition needed since composer is flush):
+
+```tsx
+// BEFORE
+style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
+
+// AFTER
+style={{ paddingBottom: 'var(--composer-h, 56px)' }}
+```
+
+**2. `src/index.css`**
+
+- **Line 689-692** — Remove `border-top` from the first `.conversation-composer` rule:
 
 ```css
 /* BEFORE */
 .conversation-composer {
   flex-shrink: 0;
-  z-index: 20;
-  margin-bottom: 0;
-  box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
+  border-top: 1px solid hsl(var(--border));
 }
 
 /* AFTER */
 .conversation-composer {
   flex-shrink: 0;
-  z-index: 20;
-  margin-bottom: 0;
-  box-shadow: none;
 }
 ```
 
+- **Lines 762-768** — Already has `margin-bottom: 0` and `box-shadow: none` — no change needed here.
+
 ### Result
 
-- Scroll area now has enough bottom padding so the last message is fully visible above the composer
-- Composer sits tighter to the bottom edge with reduced internal padding
-- No border or shadow adding visual height
+The input field sits right above the device navigation bar with only 4px of padding below it — matching the WhatsApp reference screenshot. The last message will be fully visible since the scroll padding matches the actual composer height without the safe-area addition.
 
