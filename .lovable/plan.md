@@ -1,49 +1,49 @@
 
 
-## Fix: Anchor Composer to Bottom (WhatsApp-style)
+## Fix: Remove safe-area padding, dock composer flush to device edge
 
-The screenshot shows a large white gap below the composer. The composer is currently inside the flex column flow (`shrink-0`) rather than being fixed to the bottom. The messages area and composer are siblings in a flex column, but the messages area isn't filling all available space properly, leaving dead space below the composer.
+The `ComposerDock` portal currently applies `paddingBottom: max(8px, env(safe-area-inset-bottom))` which adds ~34px on iPhones with a home indicator. This lifts the composer away from the device edge. To match WhatsApp (which renders its input field right at the absolute bottom), we remove this padding entirely.
 
-### Changes
+### Changes — 1 file
 
-**1. `src/components/messages/ConversationView.tsx`** — Make composer fixed-positioned
+**`src/components/messages/ConversationView.tsx`**
 
-**Line 1156-1197**: Change the composer wrapper from `shrink-0` flex child to `fixed bottom-0 left-0 right-0 z-50`:
+**Line 63**: Remove the `paddingBottom` style from the ComposerDock portal container:
 
 ```tsx
-<div 
-  className="conversation-composer fixed bottom-0 left-0 right-0 z-50 bg-background border-t" 
+// BEFORE
+<div
+  className="fixed left-0 right-0 bottom-0 z-[60]"
   style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
 >
+
+// AFTER
+<div className="fixed left-0 right-0 bottom-0 z-[60]">
 ```
 
-**Line 1152**: Remove the `h-1` spacer div and replace with a dynamic bottom padding spacer so messages don't get hidden behind the fixed composer. Add a spacer div with enough height to clear the composer:
+**Line 1077**: Simplify the scroll area's bottom padding to only account for composer height (no safe-area addition needed since composer no longer has safe-area padding):
 
 ```tsx
-<div style={{ height: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px) + 8px)' }} />
+// BEFORE
+style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
+
+// AFTER
+style={{ paddingBottom: 'var(--composer-h, 56px)' }}
 ```
-
-**2. `src/components/messages/MessageInput.tsx`** — No changes needed
-
-The `--composer-h` CSS variable is already being set dynamically. The fixed composer will use this for sizing.
 
 ### Result
 
 ```text
-BEFORE                              AFTER
-┌────────────────────────────┐      ┌────────────────────────────┐
-│ Header                     │      │ Header                     │
-├────────────────────────────┤      ├────────────────────────────┤
-│   Messages                 │      │   Messages                 │
-│                            │      │   (fills all space)        │
-├────────────────────────────┤      │                            │
-│ ╭────────────────╮    🎤   │      │   spacer for composer      │
-│ ╰────────────────╯         │      ├────────────────────────────┤ ← fixed
-│                            │      │ ╭────────────────╮    🎤   │
-│   large white gap          │      │ ╰────────────────╯         │
-│                            │      │ 8px / safe-area            │
-└────────────────────────────┘      └────────────────────────────┘
+┌────────────────────────────┐
+│ Header                     │
+├────────────────────────────┤
+│   Messages (scrollable)    │
+│   paddingBottom = composer  │
+├────────────────────────────┤ ← fixed bottom-0
+│ ╭────────────────╮    🎤   │
+│ ╰────────────────╯         │
+└────────────────────────────┘ ← device edge, 0px gap
 ```
 
-One file changed (`ConversationView.tsx`), two edits: composer positioning and bottom spacer.
+Two line edits in one file. No safe-area inset, no extra padding — composer touches the device edge.
 
