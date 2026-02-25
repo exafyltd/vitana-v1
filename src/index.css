@@ -763,7 +763,7 @@ All colors MUST be HSL.
   .conversation-composer {
     flex-shrink: 0;
     z-index: 20;
-    margin-bottom: calc(var(--comm-dock-h, 72px) + 8px + env(safe-area-inset-bottom));
+    margin-bottom: 0;
     box-shadow: 0 -2px 8px -2px hsl(var(--border) / 0.15);
   }
 
@@ -772,13 +772,6 @@ All colors MUST be HSL.
     .conversation-header,
     .conversation-composer {
       background: hsl(var(--background) / 0.85);
-    }
-  }
-
-  /* Mobile responsiveness */
-  @media (max-width: 768px) {
-    .conversation-composer {
-      margin-bottom: calc(var(--comm-dock-h, 72px) + 4px + env(safe-area-inset-bottom));
     }
   }
 
