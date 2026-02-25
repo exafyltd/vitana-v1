@@ -316,38 +316,51 @@ export function LiveRoomDrawer({
             </h2>
 
             {/* Host Bar */}
-            <div className="flex items-center gap-2 mt-3">
-              <button
-                onClick={handleFollow}
-                className={cn(
-                  "group flex items-center gap-2 h-11 px-2 rounded-full",
-                  "bg-background/95 backdrop-blur-sm shadow-lg",
-                  "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
-                  "transition-all duration-200"
-                )}
-              >
-                <Avatar className="h-7 w-7 ring-1 ring-white/50">
-                  <AvatarImage src={room.host.avatar} />
-                  <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
-                </Avatar>
-                <div className="flex items-center gap-1.5 pr-2">
-                  <span className="text-sm font-semibold">{room.host.name}</span>
-                  <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
-                    Host
-                  </span>
-                </div>
-              </button>
+            {!isCreator ? (
+              <div className="flex items-center gap-2 mt-3">
+                <button
+                  onClick={handleFollow}
+                  className={cn(
+                    "group flex items-center gap-2 h-11 px-2 rounded-full",
+                    "bg-background/95 backdrop-blur-sm shadow-lg",
+                    "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
+                    "transition-all duration-200"
+                  )}
+                >
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
+                    <AvatarImage src={room.host.avatar} />
+                    <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center gap-1.5 pr-2">
+                    <span className="text-sm font-semibold">{room.host.name}</span>
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
+                      Host
+                    </span>
+                  </div>
+                </button>
 
-              <Button
-                onClick={handleFollow}
-                variant={isFollowing ? "secondary" : "outline"}
-                className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg"
-              >
-                <UserPlus className="h-4 w-4 mr-1.5" />
-                {isFollowing ? "Following" : "Follow"}
-              </Button>
-            </div>
+                <Button
+                  onClick={handleFollow}
+                  variant={isFollowing ? "secondary" : "outline"}
+                  className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg"
+                >
+                  <UserPlus className="h-4 w-4 mr-1.5" />
+                  {isFollowing ? "Following" : "Follow"}
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 mt-3">
+                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg">
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
+                    <AvatarImage src={room.host.avatar} />
+                    <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-semibold">{room.host.name}</span>
+                  <Badge variant="secondary" className="text-xs">Your Room</Badge>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -448,51 +461,76 @@ export function LiveRoomDrawer({
       {/* Sticky Action Bar */}
       <div className="absolute bottom-0 left-0 right-0 p-6 bg-background/95 backdrop-blur-sm border-t">
         {room.isLive ? (
-          <div className="flex items-center gap-2">
-            <Button size="lg" className="flex-1" onClick={handleJoin}>
-              Join Room
-            </Button>
-            <Button size="lg" variant="outline" onClick={() => handleShare()}>
-              <Share2 className="w-4 h-4" />
-            </Button>
-            <Button size="lg" variant="outline" onClick={handleSave}>
-              <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
-            </Button>
-          </div>
-        ) : isScheduled ? (
-          <div className="space-y-2">
+          isCreator ? (
             <div className="flex items-center gap-2">
-              <Button size="lg" variant="outline" className="flex-1" onClick={handleNotifyMe}>
-                <Bell className={cn("w-4 h-4 mr-2", isNotifying && "fill-current")} />
-                {isNotifying ? "Notifying" : "Notify me"}
+              <Button size="lg" variant="destructive" className="flex-1" onClick={handleJoin}>
+                End Room
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="lg" variant="outline">
-                    <Calendar className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleAddToCalendar("google")}>
-                    Google Calendar
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleAddToCalendar("outlook")}>
-                    Outlook
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleAddToCalendar("apple")}>
-                    Apple Calendar
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleAddToCalendar("ics")}>
-                    <Download className="w-4 h-4 mr-2" />
-                    Download ICS
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
               <Button size="lg" variant="outline" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
               </Button>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button size="lg" className="flex-1" onClick={handleJoin}>
+                Join Room
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => handleShare()}>
+                <Share2 className="w-4 h-4" />
+              </Button>
+              <Button size="lg" variant="outline" onClick={handleSave}>
+                <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
+              </Button>
+            </div>
+          )
+        ) : isScheduled ? (
+          isCreator ? (
+            <div className="flex items-center gap-2">
+              <Button size="lg" className="flex-1" onClick={handleJoin}>
+                Go Live Now
+              </Button>
+              <Button size="lg" variant="outline" onClick={onEdit}>
+                <Pencil className="w-4 h-4" />
+              </Button>
+              <Button size="lg" variant="outline" onClick={() => setShowDeleteDialog(true)}>
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Button size="lg" variant="outline" className="flex-1" onClick={handleNotifyMe}>
+                  <Bell className={cn("w-4 h-4 mr-2", isNotifying && "fill-current")} />
+                  {isNotifying ? "Notifying" : "Notify me"}
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="lg" variant="outline">
+                      <Calendar className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleAddToCalendar("google")}>
+                      Google Calendar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleAddToCalendar("outlook")}>
+                      Outlook
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleAddToCalendar("apple")}>
+                      Apple Calendar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleAddToCalendar("ics")}>
+                      <Download className="w-4 h-4 mr-2" />
+                      Download ICS
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button size="lg" variant="outline" onClick={() => handleShare()}>
+                  <Share2 className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          )
         ) : null}
       </div>
     </div>
