@@ -271,16 +271,24 @@ import StreamSettings from "./pages/admin/StreamSettings";
 import ProactiveSettings from "./pages/admin/ai-assistant/ProactiveSettings";
 import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
-import { useMessageNotifications } from "@/hooks/useMessageNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
+import { useAuth } from "@/context/AuthProvider";
+import { initializePushNotifications } from "@/lib/pushNotifications";
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
-  useMessageNotifications();
   useAudioPriority();
   useAppilix(); // Detect Appilix WebView & force App Bar visibility
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      initializePushNotifications();
+    }
+  }, [user]);
+
   return null;
 };
 
