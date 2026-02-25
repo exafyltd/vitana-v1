@@ -1219,7 +1219,7 @@
     "health": "Gesundheit",
     "services": "Dienste",
     "insight": "Einblick",
-    "milestones": "Meilensteine"
+    "milestones": "Magic Moments"
   },
   "profileStats": {
     "posts": "Posts",
@@ -2408,11 +2408,11 @@
     "logout": "Abmelden"
   },
   "milestones": {
-    "title": "Lebensmeilensteine",
-    "add": "Meilenstein hinzufügen",
-    "edit": "Meilenstein bearbeiten",
-    "empty": "Noch keine Meilensteine",
-    "addFirst": "Ersten Meilenstein hinzufügen",
+    "title": "Magic Moments",
+    "add": "Moment hinzufügen",
+    "edit": "Moment bearbeiten",
+    "empty": "Noch keine Magic Moments",
+    "addFirst": "Ersten Magic Moment hinzufügen",
     "date": "Datum",
     "description": "Was ist passiert?",
     "titleLabel": "Titel",
@@ -2441,7 +2441,7 @@
     "viewFull": "Vollständiges Profil ansehen",
     "sendMessage": "Nachricht",
     "follow": "Folgen",
-    "milestones": "Lebensmeilensteine",
+    "milestones": "Magic Moments",
     "posts": "Beiträge",
     "followers": "Follower",
     "following": "Folge ich",
