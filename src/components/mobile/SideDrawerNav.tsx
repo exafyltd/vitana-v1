@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search } from 'lucide-react';
+import { X, Search, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { drawerNavItems } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
 import { getInstantTenantName } from '@/lib/tenant-display';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -21,9 +23,31 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { tenant } = useTenant();
   const { signOut } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
+  const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
+  const [searching, setSearching] = useState(false);
 
   const isMaxina = tenant?.slug === 'maxina';
   const tenantName = tenant?.name || getInstantTenantName(location.pathname);
+
+  // Debounced live search
+  useEffect(() => {
+    if (searchQuery.trim().length < 2) {
+      setResults([]);
+      return;
+    }
+    const timeout = setTimeout(async () => {
+      setSearching(true);
+      const { data } = await supabase
+        .from('global_community_profiles')
+        .select('user_id, display_name, avatar_url')
+        .eq('is_visible', true)
+        .ilike('display_name', `%${searchQuery.trim()}%`)
+        .limit(6);
+      setResults(data || []);
+      setSearching(false);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [searchQuery]);
 
   const handleItemClick = async (item: (typeof drawerNavItems)[number]) => {
     onClose();
@@ -132,6 +156,45 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   >
                     <Search className="h-3 w-3" />
                   </button>
+                )}
+
+                {/* Live search dropdown */}
+                {searchQuery.trim().length >= 2 && (
+                  <div className="absolute left-0 right-0 top-full mt-1 bg-background border border-border rounded-xl shadow-lg z-[60] overflow-hidden max-h-72 overflow-y-auto">
+                    {searching && (
+                      <div className="flex items-center justify-center gap-2 px-3 py-3 text-sm text-muted-foreground">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Searching…</span>
+                      </div>
+                    )}
+                    {!searching && results.length === 0 && (
+                      <div className="px-3 py-3 text-sm text-muted-foreground">No members found</div>
+                    )}
+                    {results.map((r) => {
+                      const name = r.display_name || 'Unknown';
+                      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                      return (
+                        <button
+                          key={r.user_id}
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            setSearchQuery('');
+                            setResults([]);
+                            navigate(`/u/${r.user_id}`);
+                            onClose();
+                          }}
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted text-sm text-foreground transition-colors"
+                        >
+                          <Avatar className="h-8 w-8">
+                            {r.avatar_url && <AvatarImage src={r.avatar_url} alt={name} />}
+                            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                          </Avatar>
+                          <span className="truncate">{name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 )}
               </form>
             </div>
