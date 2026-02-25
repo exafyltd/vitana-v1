@@ -63,32 +63,44 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
     throw error;
   }
 
-  // Fetch co-creator status for current user
-  let coCreatorEventIds = new Set<string>();
-  if (user) {
-    const { data: coCreatorData } = await supabase
-      .from('event_co_creators')
-      .select('event_id')
-      .eq('user_id', user.id);
-    coCreatorEventIds = new Set(coCreatorData?.map(cc => cc.event_id) || []);
-  }
+  const eventIds = data?.map(e => e.id) || [];
 
-  // Fetch creator profiles
-  const creatorIds = [...new Set(data?.map(event => event.created_by) || [])];
-  const { data: profilesData } = await supabase
-    .from('global_community_profiles')
-    .select('user_id, display_name, avatar_url')
-    .in('user_id', creatorIds);
-  
+  // Fetch co-creator status, creator profiles, and real participant counts in parallel
+  const [coCreatorResult, profilesResult, participantsResult] = await Promise.all([
+    user
+      ? supabase.from('event_co_creators').select('event_id').eq('user_id', user.id)
+      : Promise.resolve({ data: [] as { event_id: string }[] }),
+    supabase
+      .from('global_community_profiles')
+      .select('user_id, display_name, avatar_url')
+      .in('user_id', [...new Set(data?.map(event => event.created_by) || [])]),
+    eventIds.length > 0
+      ? supabase
+          .from('global_event_participants')
+          .select('event_id')
+          .in('event_id', eventIds)
+          .eq('status', 'attending')
+      : Promise.resolve({ data: [] as { event_id: string }[] }),
+  ]);
+
+  const coCreatorEventIds = new Set(coCreatorResult.data?.map(cc => cc.event_id) || []);
+
   const profilesMap = new Map(
-    profilesData?.map(p => [p.user_id, p]) || []
+    profilesResult.data?.map(p => [p.user_id, p]) || []
   );
 
-  // Add is_co_creator flag and creator info to events
+  // Count participants per event
+  const participantCounts = new Map<string, number>();
+  for (const row of participantsResult.data || []) {
+    participantCounts.set(row.event_id, (participantCounts.get(row.event_id) || 0) + 1);
+  }
+
+  // Add is_co_creator flag, creator info, and real participant counts to events
   const eventsWithMetadata = (data || []).map(event => {
     const creatorProfile = profilesMap.get(event.created_by);
     return {
       ...event,
+      participant_count: participantCounts.get(event.id) || 0,
       is_co_creator: coCreatorEventIds.has(event.id),
       creator_display_name: creatorProfile?.display_name || undefined,
       creator_avatar_url: creatorProfile?.avatar_url || undefined
@@ -271,9 +283,12 @@ export function useCommunityEvents() {
           table: 'global_community_events'
         },
         (payload) => {
+          // For new events, add to cache but trigger a refetch to get enriched data
           queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
             return old ? [...old, payload.new as CommunityEvent] : [payload.new as CommunityEvent];
           });
+          // Refetch to get creator profile info for the new event
+          queryClient.invalidateQueries({ queryKey: ['global-community-events'] });
         }
       )
       .on(
@@ -286,7 +301,14 @@ export function useCommunityEvents() {
         (payload) => {
           queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
             return old?.map(event => 
-              event.id === payload.new.id ? payload.new as CommunityEvent : event
+              event.id === payload.new.id 
+                ? { 
+                    ...payload.new as CommunityEvent,
+                    creator_display_name: event.creator_display_name,
+                    creator_avatar_url: event.creator_avatar_url,
+                    is_co_creator: event.is_co_creator,
+                  }
+                : event
             ) || [];
           });
         }
