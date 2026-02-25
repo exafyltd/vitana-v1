@@ -127,6 +127,12 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
 
         if (error) throw error;
 
+        // Sync participant_count on the event row
+        await supabase
+          .from('global_community_events')
+          .update({ participant_count: Math.max(0, participantCount - 1) })
+          .eq('id', eventId);
+
         // Also remove matching calendar event
         try {
           const { data: calendarEvents } = await supabase
@@ -168,6 +174,12 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           );
 
         if (error) throw error;
+
+        // Sync participant_count on the event row
+        await supabase
+          .from('global_community_events')
+          .update({ participant_count: participantCount + 1 })
+          .eq('id', eventId);
 
         // Also add to VITANA Smart Calendar if event details provided
         if (eventDetails) {
