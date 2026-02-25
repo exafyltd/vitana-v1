@@ -1,16 +1,20 @@
 
 
-## Change "Über" to "Über mich" in Profile About Section
+## Translate "Life Milestones" to "Magic Moments" in German
 
-The screenshot shows two places displaying "Über" — the section heading and the edit button. Both come from translation keys in `de.json`.
+The user wants all milestone-related German labels changed from "Lebensmeilensteine"/"Meilenstein" terminology to "Magic Moments" branding.
 
 ### Changes
 
-**File: `src/i18n/de.json`**
+**File: `src/i18n/de.json`** — Update all milestone-related German strings:
 
-1. **Line 1703** — `editProfile.about`: Change `"Über"` to `"Über mich"` (used for both the section title and the edit button label in `ProfilePostsTab.tsx`)
+1. **Line 1222** — `profileTabs.milestones`: `"Meilensteine"` → `"Magic Moments"`
+2. **Line 2411** — `milestones.title`: `"Lebensmeilensteine"` → `"Magic Moments"`
+3. **Line 2412** — `milestones.add`: `"Meilenstein hinzufügen"` → `"Moment hinzufügen"`
+4. **Line 2413** — `milestones.edit`: `"Meilenstein bearbeiten"` → `"Moment bearbeiten"`
+5. **Line 2414** — `milestones.empty`: `"Noch keine Meilensteine"` → `"Noch keine Magic Moments"`
+6. **Line 2415** — `milestones.addFirst`: `"Ersten Meilenstein hinzufügen"` → `"Ersten Magic Moment hinzufügen"`
+7. **Line 2444** — `publicProfile.milestones`: `"Lebensmeilensteine"` → `"Magic Moments"`
 
-2. **Line 2173** — `profileEditor.aboutTitle`: Change `"Über"` to `"Über mich"` (used in the `AboutForm.tsx` heading)
-
-Two string changes in one file. No component changes needed.
+Seven string changes in one file. No component changes needed.
 
