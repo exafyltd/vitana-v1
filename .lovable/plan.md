@@ -1,24 +1,42 @@
 
 
-## Fix: Make drawer navigation scrollable on small screens
+## Fix: Video upload fails because it targets a non-existent storage bucket
 
 ### Problem
 
-The drawer panel uses `flex-1 overflow-y-auto` on the nav items container (line 203), which should scroll. However, the drawer itself (`fixed top-0 left-0 bottom-0`) doesn't account for the device's bottom safe-area inset, so on phones with a gesture bar the last items (Profile, Log Out) get clipped behind it and appear unreachable.
+The `useMediaUpload` hook (used by the Video Gallery) maps each media type to a different storage bucket:
+
+- `music` → `media-music`
+- `podcast` → `media-podcasts`
+- `video` → `media-videos`
+
+However, only the `media-uploads` bucket exists and is configured with the correct RLS policies and MIME type allowances. When a user tries to upload a video, Supabase returns an error because the `media-videos` bucket does not exist.
 
 ### Changes — 1 file
 
-**`src/components/mobile/SideDrawerNav.tsx`**
+**`src/hooks/useMediaUpload.ts`**
 
-**Line 203** — Add bottom safe-area padding to the scrollable nav list so the last item (Log Out) clears the device gesture bar:
+Change all three bucket mappings to use the single existing `media-uploads` bucket:
 
 ```tsx
-// BEFORE
-<div className="flex-1 overflow-y-auto py-2 px-3">
+// BEFORE (lines 19-24)
+const BUCKET_MAP = {
+  music: 'media-music',
+  podcast: 'media-podcasts',
+  video: 'media-videos',
+} as const;
 
 // AFTER
-<div className="flex-1 overflow-y-auto py-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
+const BUCKET_MAP = {
+  music: 'media-uploads',
+  podcast: 'media-uploads',
+  video: 'media-uploads',
+} as const;
 ```
 
-This single change ensures the scroll container has enough bottom padding for the Log Out button to be fully visible and tappable, even on devices with a home indicator or gesture bar.
+This aligns with the existing photo gallery upload flow (in `useProfileGallery.ts`), which already uploads to `media-uploads`. The file path already includes the user ID and a timestamp, so there are no collision concerns.
+
+### Why this fixes it
+
+The photo upload works because `useProfileGallery` uploads directly to `media-uploads`. The video upload fails because `useMediaUpload` tries to use `media-videos`, which was never created. Pointing all media types at the existing bucket resolves the issue without requiring any database migrations.
 
