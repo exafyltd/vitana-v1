@@ -1,35 +1,16 @@
 
 
-## Translate All Hardcoded "Share" Labels to "Teilen" (German)
+## Change "Über" to "Über mich" in Profile About Section
 
-The word "Share" appears hardcoded in several components. When German is selected, these should display "Teilen" instead. The translation key `common.share` already exists in `de.json` as `"Teilen"`.
+The screenshot shows two places displaying "Über" — the section heading and the edit button. Both come from translation keys in `de.json`.
 
-### Files to Change
+### Changes
 
-**1. `src/components/profile/mobile/MobileIdentityCard.tsx`** (lines 81, 141)
-- Replace hardcoded `Share` with `translate('common.share', 'Share')` in both the owner and non-owner share buttons.
-- Add `useTranslation` import and hook call.
+**File: `src/i18n/de.json`**
 
-**2. `src/components/profile/shared/ProfileIdCardFront.tsx`** (line 365)
-- Replace `<span>Share</span>` with `<span>{translate('common.share', 'Share')}</span>`.
-- Add `useTranslation` if not already imported.
+1. **Line 1703** — `editProfile.about`: Change `"Über"` to `"Über mich"` (used for both the section title and the edit button label in `ProfilePostsTab.tsx`)
 
-**3. `src/components/sharing/UniversalShareButton.tsx`** (line 52)
-- Replace `<span className="ml-2">Share</span>` with `<span className="ml-2">{translate('common.share', 'Share')}</span>`.
+2. **Line 2173** — `profileEditor.aboutTitle`: Change `"Über"` to `"Über mich"` (used in the `AboutForm.tsx` heading)
 
-**4. `src/components/sharing/SocialShareButton.tsx`** (line 179)
-- Replace `<span className="ml-2">Share</span>` with `<span className="ml-2">{translate('common.share', 'Share')}</span>`.
-
-**5. `src/components/messages/MessageContextMenu.tsx`** (line 116)
-- Replace `<span>Share</span>` with `<span>{translate('common.share', 'Share')}</span>`.
-
-**6. `src/components/community/MobileShortSlide.tsx`** (line 258)
-- Replace `<span ...>Share</span>` with translated version.
-
-**7. `src/components/sharing/CampaignCard.tsx`** (line 702)
-- Replace `<p className="text-xs">Share</p>` tooltip with translated version.
-
-Each component will import and use `useTranslation` to call `translate('common.share', 'Share')`, which resolves to `"Teilen"` in German and falls back to `"Share"` in English.
-
-Seven files changed. No new dependencies or translation keys needed — `common.share` already exists as `"Teilen"` in `de.json`.
+Two string changes in one file. No component changes needed.
 
