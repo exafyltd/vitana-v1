@@ -1700,7 +1700,7 @@
     "showcaseHint": "Wählen Sie Posts und Inhalte aus, die oben in Ihrem Profil angezeigt werden sollen",
     "showcaseTitle": "Highlights",
     "manage": "Verwalten",
-    "about": "Über",
+    "about": "Über mich",
     "addBio": "Bio hinzufügen...",
     "tapToEdit": "Tippen zum Bearbeiten"
   },
@@ -2170,7 +2170,7 @@
   },
   "profileEditor": {
     "editAbout": "Profil",
-    "aboutTitle": "Über",
+    "aboutTitle": "Über mich",
     "aboutDescription": "Teilen Sie mehr über sich. Sie können steuern, wer jedes Feld sehen kann.",
     "bio": "Bio",
     "bioPlaceholder": "Teilen Sie Ihre Wellness-Reise, Leidenschaften und was Sie einzigartig macht...\n\nBeispiele:\n• 'Wellness-Enthusiast mit Leidenschaft für achtsames Leben und Community-Building 🌱'\n• 'Zertifizierter Ernährungsberater, der anderen hilft, ihr gesündestes Selbst zu entdecken'\n• 'Marathonläufer, Meditationslehrer und Fürsprecher für ausgewogenes Leben'",
