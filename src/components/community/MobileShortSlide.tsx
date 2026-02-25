@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface MobileShortSlideProps {
   video: {
@@ -35,6 +36,7 @@ export function MobileShortSlide({
   isLiked = false,
 }: MobileShortSlideProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { translate } = useTranslation();
   const [isPlaying, setIsPlaying] = useState(false);
   // Start unmuted on mobile - user preference stored in sessionStorage
   // This ensures Shorts have sound by default when user opens them
@@ -255,7 +257,7 @@ export function MobileShortSlide({
           <div className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center">
             <Share2 className="h-6 w-6 text-white" />
           </div>
-          <span className="text-white text-xs font-medium drop-shadow-lg">Share</span>
+          <span className="text-white text-xs font-medium drop-shadow-lg">{translate('common.share', 'Share')}</span>
         </button>
       </div>
 

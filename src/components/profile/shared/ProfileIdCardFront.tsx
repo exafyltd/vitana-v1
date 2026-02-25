@@ -15,6 +15,7 @@ import { MessageComposeModal } from "./MessageComposeModal";
 import { ShareProfileModal } from "./ShareProfileModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -36,6 +37,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const { translate } = useTranslation();
 
   const handleFollowClick = async () => {
     if (isFollowing) {
@@ -362,7 +364,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
                   onClick={() => setShareModalOpen(true)}
                 >
                   <Share2 className="h-4 w-4" />
-                  <span>Share</span>
+                  <span>{translate('common.share', 'Share')}</span>
                 </Button>
               </>
             )}

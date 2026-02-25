@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { cn } from '@/lib/utils';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface MessageContextMenuProps {
   children: React.ReactNode;
@@ -53,6 +54,7 @@ export function MessageContextMenu({
   isStarred = false,
   isPinned = false,
 }: MessageContextMenuProps) {
+  const { translate } = useTranslation();
   
   const handleCopy = () => {
     onCopy?.();
@@ -113,7 +115,7 @@ export function MessageContextMenu({
         {onShare && (
           <ContextMenuItem onClick={onShare} className="flex items-center gap-2 px-3 py-2">
             <Share className="w-4 h-4" />
-            <span>Share</span>
+            <span>{translate('common.share', 'Share')}</span>
           </ContextMenuItem>
         )}
 

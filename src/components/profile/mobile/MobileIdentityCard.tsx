@@ -78,7 +78,7 @@ export function MobileIdentityCard({
             }}
           >
             <Share2 className="h-3.5 w-3.5" />
-            Share
+            {translate('common.share', 'Share')}
           </Button>
         )}
 
@@ -138,7 +138,7 @@ export function MobileIdentityCard({
                   }}
                 >
                   <Share2 className="h-3.5 w-3.5" />
-                  Share
+                  {translate('common.share', 'Share')}
                 </Button>
               )}
               {onFollow && (

@@ -45,6 +45,7 @@ import { DeleteCampaignDialog } from "./DeleteCampaignDialog";
 import { CampaignAnalyticsExpanded } from "./CampaignAnalyticsExpanded";
 import { ShareCampaignModal } from "./ShareCampaignModal";
 import { ActivateCampaignDialog } from "./ActivateCampaignDialog";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -130,6 +131,7 @@ export function CampaignCard({
   onToggleSelect,
 }: CampaignCardProps) {
   const navigate = useNavigate();
+  const { translate } = useTranslation();
   const { duplicateCampaign, deleteCampaign, activateCampaign, updateCampaign } = useCampaigns();
   const { activateAllPosts } = useCampaignActions();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -699,7 +701,7 @@ export function CampaignCard({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Share</p>
+                <p className="text-xs">{translate('common.share', 'Share')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

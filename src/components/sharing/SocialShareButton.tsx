@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { PersonalShareButtons } from "@/components/sharing/PersonalShareButtons";
 import { InstagramShareModal } from "@/components/sharing/InstagramShareModal";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral' | 'live_room';
@@ -55,6 +56,7 @@ export default function SocialShareButton({
   const { user } = useAuth();
   const { allPlatforms, loading } = useSocialPlatforms();
   const navigate = useNavigate();
+  const { translate } = useTranslation();
 
   const getShareText = () => {
     switch (type) {
@@ -176,7 +178,7 @@ export default function SocialShareButton({
         className={variant === 'icon' ? `p-2 ${className || ''}` : className}
       >
         <Share2 className="w-4 h-4" />
-        {variant === 'button' && <span className="ml-2">Share</span>}
+        {variant === 'button' && <span className="ml-2">{translate('common.share', 'Share')}</span>}
       </Button>
 
       {/* Instagram Share Modal */}
