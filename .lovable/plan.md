@@ -1,20 +1,35 @@
 
 
-## Remove Duplicate Close Button
+## Translate All Hardcoded "Share" Labels to "Teilen" (German)
 
-The `SheetContent` component from `src/components/ui/sheet.tsx` automatically renders a Radix close button (X) in the top-right corner. The `MobileCreatePostSheet` already has its own X button in the top-left of the header. This creates two close buttons.
+The word "Share" appears hardcoded in several components. When German is selected, these should display "Teilen" instead. The translation key `common.share` already exists in `de.json` as `"Teilen"`.
 
-### Change
+### Files to Change
 
-**File: `src/components/profile/mobile/MobileCreatePostSheet.tsx`**
+**1. `src/components/profile/mobile/MobileIdentityCard.tsx`** (lines 81, 141)
+- Replace hardcoded `Share` with `translate('common.share', 'Share')` in both the owner and non-owner share buttons.
+- Add `useTranslation` import and hook call.
 
-Add a custom class to `SheetContent` to hide the default Radix close button:
+**2. `src/components/profile/shared/ProfileIdCardFront.tsx`** (line 365)
+- Replace `<span>Share</span>` with `<span>{translate('common.share', 'Share')}</span>`.
+- Add `useTranslation` if not already imported.
 
-```tsx
-<SheetContent side="bottom" className="h-[85dvh] rounded-t-2xl p-0 flex flex-col [&>button.absolute]:hidden">
-```
+**3. `src/components/sharing/UniversalShareButton.tsx`** (line 52)
+- Replace `<span className="ml-2">Share</span>` with `<span className="ml-2">{translate('common.share', 'Share')}</span>`.
 
-This CSS selector targets the auto-injected `<SheetPrimitive.Close>` button (which has `className="absolute right-4 top-4 ..."`) and hides it, keeping only the custom X in the header.
+**4. `src/components/sharing/SocialShareButton.tsx`** (line 179)
+- Replace `<span className="ml-2">Share</span>` with `<span className="ml-2">{translate('common.share', 'Share')}</span>`.
 
-One line changed in one file.
+**5. `src/components/messages/MessageContextMenu.tsx`** (line 116)
+- Replace `<span>Share</span>` with `<span>{translate('common.share', 'Share')}</span>`.
+
+**6. `src/components/community/MobileShortSlide.tsx`** (line 258)
+- Replace `<span ...>Share</span>` with translated version.
+
+**7. `src/components/sharing/CampaignCard.tsx`** (line 702)
+- Replace `<p className="text-xs">Share</p>` tooltip with translated version.
+
+Each component will import and use `useTranslation` to call `translate('common.share', 'Share')`, which resolves to `"Teilen"` in German and falls back to `"Share"` in English.
+
+Seven files changed. No new dependencies or translation keys needed — `common.share` already exists as `"Teilen"` in `de.json`.
 
