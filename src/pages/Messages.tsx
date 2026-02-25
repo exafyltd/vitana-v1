@@ -901,7 +901,7 @@ export default function Messages() {
             {selectedThreadId ? (
               <div 
                 className="fixed inset-0 z-50 flex flex-col bg-background"
-                style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}
+                style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
               >
                 <ConversationErrorBoundary>
                   <ConversationView 
