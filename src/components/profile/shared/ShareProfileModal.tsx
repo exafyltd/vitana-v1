@@ -66,7 +66,7 @@ export function ShareProfileModal({
 }: ShareProfileModalProps) {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const profileUrl = `${window.location.origin}/u/${profile.handle}`;
+  const profileUrl = `${window.location.origin}/u/${profile.handle || profile.user_id || profile.id}`;
   const { translate } = useTranslation();
 
   const handleCopyLink = async () => {
@@ -104,7 +104,7 @@ export function ShareProfileModal({
       });
     };
 
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
   };
 
   // Define all 6 platforms

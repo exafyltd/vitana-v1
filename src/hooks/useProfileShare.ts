@@ -15,7 +15,7 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
   // Generate canonical profile URL with UTM parameters
   const getShareUrl = useCallback(() => {
     const baseUrl = window.location.origin;
-    const profilePath = `/u/${handle}`;
+    const profilePath = `/u/${handle || profileId}`;
     const utmParams = new URLSearchParams({
       utm_source: 'profile',
       utm_medium: 'share_button',

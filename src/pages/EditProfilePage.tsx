@@ -63,7 +63,7 @@ export default function EditProfilePage() {
     id: 'current-user',
     user_id: user?.id,
     name: contextProfile.displayName,
-    handle: contextProfile.handle || 'user',
+    handle: contextProfile.handle || user?.id || 'user',
     avatarUrl: contextProfile.avatar,
     roles: ['community'],
     bio: contextProfile.bio || localizedDefaultBio,
@@ -148,7 +148,7 @@ export default function EditProfilePage() {
         ...prev,
         user_id: user.id,
         name: data.display_name || contextProfile.displayName,
-        handle: data.handle || contextProfile.handle || 'user',
+        handle: data.handle || contextProfile.handle || user?.id || 'user',
         avatarUrl: data.avatar_url || contextProfile.avatar,
         // Localize bio if it's a default placeholder from database
         bio: (() => {
