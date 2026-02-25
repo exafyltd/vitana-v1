@@ -1055,7 +1055,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-3 overscroll-contain touch-pan-y" 
+          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain touch-pan-y" 
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
@@ -1149,12 +1149,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           )}
           
           {/* Bottom padding and scroll anchor */}
-          <div className="h-4" />
+          <div className="h-1" />
           <div ref={messagesEndRef} />
         </div>
 
         {/* Composer - Fixed at bottom */}
-        <div className="conversation-composer shrink-0 bg-background border-t">
+        <div className="conversation-composer shrink-0 bg-background border-t" style={{ paddingBottom: 'max(6px, env(safe-area-inset-bottom))' }}>
           <div className="px-2 py-1.5">
             {/* Typing Indicators */}
             {typingUsers.length > 0 && (

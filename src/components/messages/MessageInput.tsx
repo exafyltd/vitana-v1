@@ -102,7 +102,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
       const composerElement = document.getElementById('composer');
       if (composerElement) {
         const totalComposerHeight = newHeight + 32; // padding and borders
-        composerElement.style.setProperty('--composer-h', `${Math.max(112, totalComposerHeight)}px`);
+        composerElement.style.setProperty('--composer-h', `${Math.max(56, totalComposerHeight)}px`);
       }
     }
   }, [message]);
