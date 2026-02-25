@@ -1168,7 +1168,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
 
         <ComposerDock>
-          <div className="conversation-composer bg-background border-t">
+          <div className="conversation-composer bg-background border-t" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
             <div className="px-2 py-1.5">
               {/* Typing Indicators */}
               {typingUsers.length > 0 && (
