@@ -688,7 +688,6 @@ All colors MUST be HSL.
   /* Message composer - fixed at bottom */
   .conversation-composer {
     flex-shrink: 0;
-    border-top: 1px solid hsl(var(--border));
   }
 
   /* Message spacing grid - 8pt system */

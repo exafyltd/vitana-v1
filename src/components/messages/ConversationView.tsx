@@ -1073,7 +1073,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
-          style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
+          style={{ paddingBottom: 'var(--composer-h, 56px)' }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
@@ -1168,8 +1168,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         </div>
 
         <ComposerDock>
-          <div className="conversation-composer bg-background" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-            <div className="px-2 py-1">
+          <div className="conversation-composer bg-background">
+            <div className="px-2 py-0.5 pb-1">
               {/* Typing Indicators */}
               {typingUsers.length > 0 && (
                 <div className="mb-2">
