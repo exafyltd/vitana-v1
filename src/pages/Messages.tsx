@@ -900,7 +900,7 @@ export default function Messages() {
             {/* When viewing a conversation, show full-screen chat */}
             {selectedThreadId ? (
               <div 
-                className="fixed inset-0 z-50 flex flex-col bg-background"
+                className="fixed inset-0 z-[55] flex flex-col bg-background"
                 style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
               >
                 <ConversationErrorBoundary>
