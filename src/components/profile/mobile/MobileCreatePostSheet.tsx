@@ -81,7 +81,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="h-[85dvh] rounded-t-2xl p-0 flex flex-col">
+      <SheetContent side="bottom" className="h-[85dvh] rounded-t-2xl p-0 flex flex-col [&>button.absolute]:hidden">
         <SheetHeader className="sr-only">
           <SheetTitle>{translate('profilePosts.createPost', 'Create Post')}</SheetTitle>
           <SheetDescription>{translate('profilePosts.placeholder', "What's on your mind?")}</SheetDescription>
