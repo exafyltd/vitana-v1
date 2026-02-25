@@ -200,7 +200,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             </div>
 
             {/* Nav items */}
-            <div className="flex-1 overflow-y-auto py-2 px-3">
+            <div className="flex-1 overflow-y-auto py-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
               {drawerNavItems.map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
