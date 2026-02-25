@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -52,6 +53,20 @@ interface ConversationViewProps {
   onConversationOpened?: (threadId: string) => void;
   onMessageSent?: (threadId: string, newMessage: any, context: 'global' | 'tenant') => void;
 }
+
+const ComposerDock: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
+    <div
+      className="fixed left-0 right-0 bottom-0 z-[60]"
+      style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
+    >
+      {children}
+    </div>,
+    document.body
+  );
+};
 
 const ConversationView: React.FC<ConversationViewProps> = ({
   threadId,
@@ -1059,6 +1074,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
+          style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
@@ -1148,53 +1164,53 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             </div>
           )}
           
-          {/* Bottom padding and scroll anchor */}
-          <div style={{ height: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px) + 8px)' }} />
+          {/* Scroll anchor */}
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Composer - Fixed dock at very bottom of viewport */}
-        <div className="conversation-composer fixed bottom-0 left-0 right-0 z-[60] bg-background border-t" style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}>
-          <div className="px-2 py-1.5">
-            {/* Typing Indicators */}
-            {typingUsers.length > 0 && (
-              <div className="mb-2">
-                <TypingIndicator users={typingUsers} />
-              </div>
-            )}
-            
-            {sendError && (
-              <div className="mb-2">
-                <ErrorMessage 
-                  title="Message failed to send"
-                  description={sendError}
-                  onRetry={() => setSendError(null)}
-                  variant="inline"
-                  className="text-xs"
+        <ComposerDock>
+          <div className="conversation-composer bg-background border-t">
+            <div className="px-2 py-1.5">
+              {/* Typing Indicators */}
+              {typingUsers.length > 0 && (
+                <div className="mb-2">
+                  <TypingIndicator users={typingUsers} />
+                </div>
+              )}
+              
+              {sendError && (
+                <div className="mb-2">
+                  <ErrorMessage 
+                    title="Message failed to send"
+                    description={sendError}
+                    onRetry={() => setSendError(null)}
+                    variant="inline"
+                    className="text-xs"
+                  />
+                </div>
+              )}
+              
+              <div className="flex-1 min-w-0">
+                <MessageInput
+                  onSendMessage={handleSendMessage}
+                  onTypingStart={startTyping}
+                  onTypingStop={stopTyping}
+                  disabled={isSending}
+                  isSending={isSending}
+                  placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
+                  threadId={threadId}
+                  recipientId={recipientId}
+                  effectiveRecipientId={effectiveRecipientId}
+                  effectiveRecipient={effectiveRecipient}
+                  activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
+                  replyingTo={replyingTo}
+                  onCancelReply={handleCancelReply}
+                  conversationType={conversationType}
                 />
               </div>
-            )}
-            
-            <div className="flex-1 min-w-0">
-              <MessageInput
-                onSendMessage={handleSendMessage}
-                onTypingStart={startTyping}
-                onTypingStop={stopTyping}
-                disabled={isSending}
-                isSending={isSending}
-                placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
-                threadId={threadId}
-                recipientId={recipientId}
-                effectiveRecipientId={effectiveRecipientId}
-                effectiveRecipient={effectiveRecipient}
-                activeThread={threadId ? (threads.find(t => t.id === threadId) || { id: threadId }) : recipientId ? { id: 'new-conversation' } : undefined}
-                replyingTo={replyingTo}
-                onCancelReply={handleCancelReply}
-                conversationType={conversationType}
-              />
             </div>
           </div>
-        </div>
+        </ComposerDock>
       </div>
 
       <GroupMembersModal
