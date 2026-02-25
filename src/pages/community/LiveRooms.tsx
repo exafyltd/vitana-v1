@@ -687,7 +687,7 @@ export default function LiveRooms() {
               )
             ) : (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No live rooms at the moment</p>
+                <p className="text-muted-foreground">{translate('liveRooms.noRooms', 'No live rooms at the moment')}</p>
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -695,7 +695,7 @@ export default function LiveRooms() {
                   onClick={() => setIsGoLiveOpen(true)}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Be the first to go live
+                  {translate('liveRooms.beFirst', 'Be the first to go live')}
                 </Button>
               </div>
             )}

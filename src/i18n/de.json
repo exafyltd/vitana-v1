@@ -303,11 +303,13 @@
     "tabs": {
       "live": "Jetzt Live",
       "scheduled": "Geplant",
-      "all": "Alle Räume"
+      "all": "Alle Räume",
+      "past": "Rückblick"
     },
     "goLive": "Live gehen",
     "joinRoom": "Raum beitreten",
-    "noRooms": "Keine Live Rooms verfügbar",
+    "noRooms": "Derzeit keiner live",
+    "beFirst": "Sei der Erste, der live geht",
     "demoRoom": "Demo-Raum",
     "demoRoomDesc": "Dies ist ein Beispielraum. Erstelle deinen eigenen!",
     "search": {
