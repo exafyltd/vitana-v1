@@ -194,7 +194,7 @@ class AnalyticsService {
   // Track share events for profiles
   trackShare(
     eventName: 'share_opened' | 'share_completed',
-    channel: 'sheet' | 'copy_link' | 'x' | 'linkedin' | 'whatsapp' | 'email' | 'web_share' | 'universal',
+    channel: 'sheet' | 'copy_link' | 'x' | 'linkedin' | 'facebook' | 'instagram' | 'tiktok' | 'youtube' | 'whatsapp' | 'email' | 'web_share' | 'universal',
     contentId: string,
     contentType: string
   ): void {

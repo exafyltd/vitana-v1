@@ -123,11 +123,7 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
     }
   };
 
-  const handleShareToFacebook = () => {
-    const url = shareHook.getShareUrl ? shareHook.getShareUrl() : `${window.location.origin}/u/${profile.handle}`;
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-    window.open(facebookUrl, '_blank', 'noopener,noreferrer');
-  };
+  const handleShareToFacebook = shareHook.shareToFacebook;
 
   const handleViewPublicProfile = () => {
     window.open(`/u/${profile.handle}`, '_blank');
@@ -392,7 +388,18 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
           onShareToX={shareHook.shareToX}
           onShareToLinkedIn={shareHook.shareToLinkedIn}
           onShareToFacebook={handleShareToFacebook}
+          onShareToInstagram={shareHook.shareToInstagram}
+          onShareToTikTok={shareHook.shareToTikTok}
+          onShareToYouTube={shareHook.shareToYouTube}
           onViewPublicProfile={handleViewPublicProfile}
+          connectedPlatforms={{
+            linkedin: !!profile.linkedin_url,
+            instagram: !!profile.instagram_url,
+            facebook: !!profile.facebook_url,
+            x: !!profile.x_url,
+            youtube: !!profile.youtube_url,
+            tiktok: !!profile.tiktok_url,
+          }}
         />
       )}
     </>

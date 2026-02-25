@@ -296,9 +296,20 @@ export function ProfileLayout({
           onCopyLink={shareHook.copyLink}
           onShareToX={shareHook.shareToX}
           onShareToLinkedIn={shareHook.shareToLinkedIn}
-          onShareToFacebook={() => {}}
+          onShareToFacebook={shareHook.shareToFacebook}
+          onShareToInstagram={shareHook.shareToInstagram}
+          onShareToTikTok={shareHook.shareToTikTok}
+          onShareToYouTube={shareHook.shareToYouTube}
           onViewPublicProfile={() => {
             window.open(`/u/${profile.handle}`, '_blank');
+          }}
+          connectedPlatforms={{
+            linkedin: !!profile.linkedin_url,
+            instagram: !!profile.instagram_url,
+            facebook: !!profile.facebook_url,
+            x: !!profile.x_url,
+            youtube: !!profile.youtube_url,
+            tiktok: !!profile.tiktok_url,
           }}
         />
 

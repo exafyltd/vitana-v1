@@ -83,6 +83,15 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
     setIsShareOpen(false);
   }, [getShareUrl, profileId, handle]);
 
+  // Share to Facebook
+  const shareToFacebook = useCallback(() => {
+    const url = getShareUrl();
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    window.open(facebookUrl, '_blank', 'noopener,noreferrer');
+    analytics.trackShare('share_completed', 'facebook', profileId, handle);
+    setIsShareOpen(false);
+  }, [getShareUrl, profileId, handle]);
+
   // Share via WhatsApp
   const shareToWhatsApp = useCallback(() => {
     const url = getShareUrl();
@@ -104,6 +113,54 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
     setIsShareOpen(false);
   }, [getShareUrl, name, profileId, handle]);
 
+  // Share to Instagram (copy link + guidance toast)
+  const shareToInstagram = useCallback(async () => {
+    try {
+      const url = getShareUrl();
+      await navigator.clipboard.writeText(url);
+      toast({
+        title: "Link copied!",
+        description: "Paste it in your Instagram story or post"
+      });
+      analytics.trackShare('share_completed', 'instagram', profileId, handle);
+      setIsShareOpen(false);
+    } catch {
+      toast({ title: "Failed to copy", description: "Please try again", variant: "destructive" });
+    }
+  }, [getShareUrl, profileId, handle]);
+
+  // Share to TikTok (copy link + guidance toast)
+  const shareToTikTok = useCallback(async () => {
+    try {
+      const url = getShareUrl();
+      await navigator.clipboard.writeText(url);
+      toast({
+        title: "Link copied!",
+        description: "Paste it in your TikTok bio or video description"
+      });
+      analytics.trackShare('share_completed', 'tiktok', profileId, handle);
+      setIsShareOpen(false);
+    } catch {
+      toast({ title: "Failed to copy", description: "Please try again", variant: "destructive" });
+    }
+  }, [getShareUrl, profileId, handle]);
+
+  // Share to YouTube (copy link + guidance toast)
+  const shareToYouTube = useCallback(async () => {
+    try {
+      const url = getShareUrl();
+      await navigator.clipboard.writeText(url);
+      toast({
+        title: "Link copied!",
+        description: "Paste it in your YouTube video description or community post"
+      });
+      analytics.trackShare('share_completed', 'youtube', profileId, handle);
+      setIsShareOpen(false);
+    } catch {
+      toast({ title: "Failed to copy", description: "Please try again", variant: "destructive" });
+    }
+  }, [getShareUrl, profileId, handle]);
+
   // Native Web Share API
   const shareNative = useCallback(async () => {
     if (!canUseNativeShare()) return;
@@ -118,7 +175,6 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
       analytics.trackShare('share_completed', 'web_share', profileId, handle);
       setIsShareOpen(false);
     } catch (error) {
-      // User cancelled or error occurred
       if ((error as Error).name !== 'AbortError') {
         toast({
           title: "Share failed",
@@ -136,8 +192,12 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
     copyLink,
     shareToX,
     shareToLinkedIn,
+    shareToFacebook,
     shareToWhatsApp,
     shareViaEmail,
+    shareToInstagram,
+    shareToTikTok,
+    shareToYouTube,
     shareNative,
     canUseNativeShare: canUseNativeShare(),
     isPublic,
