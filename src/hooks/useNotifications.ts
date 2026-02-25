@@ -124,7 +124,7 @@ export function useNotifications(limit = 20) {
   }, []);
 
   const deleteNotification = useCallback(async (notificationId: string) => {
-    const { error } = await supabase.from('user_notifications').delete().eq('id', notificationId);
+    const { error } = await (supabase as any).from('user_notifications').delete().eq('id', notificationId);
     if (error) return;
     setNotifications((prev) => {
       const removed = prev.find((n) => n.id === notificationId);
@@ -147,7 +147,7 @@ export function useNotificationPreferences() {
     if (!user) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase.from('user_notification_preferences')
+      const { data, error } = await (supabase as any).from('user_notification_preferences')
         .select('*').eq('user_id', user.id).maybeSingle();
       if (error) throw error;
       if (data) {
@@ -167,7 +167,7 @@ export function useNotificationPreferences() {
     const updated = { ...prefs, [field]: value };
     setPrefs(updated);
     try {
-      const { error } = await supabase.from('user_notification_preferences').upsert(
+      const { error } = await (supabase as any).from('user_notification_preferences').upsert(
         { user_id: user.id, ...updated, updated_at: new Date().toISOString() },
         { onConflict: 'user_id' }
       );

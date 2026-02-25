@@ -135,7 +135,7 @@ class PushNotificationManager {
     try {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) return;
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('user_notification_preferences')
         .select('muted_threads')
         .eq('user_id', user.user.id)
@@ -164,7 +164,7 @@ class PushNotificationManager {
     try {
       const { data: user } = await supabase.auth.getUser();
       if (!user.user) return;
-      await supabase.from('user_notification_preferences').upsert({
+      await (supabase as any).from('user_notification_preferences').upsert({
         user_id: user.user.id, muted_threads: this.mutedThreads, updated_at: new Date().toISOString(),
       }, { onConflict: 'user_id' });
     } catch {}
