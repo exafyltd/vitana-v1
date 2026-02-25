@@ -1,34 +1,24 @@
 
 
-## Fix: Remove double safe-area top padding causing header gap
+## Fix: Make drawer navigation scrollable on small screens
 
 ### Problem
 
-The conversation header appears pushed down from the top edge because safe-area top padding is applied **twice**:
-
-1. **Line 904 in `Messages.tsx`** — the full-screen overlay wrapper has `paddingTop: 'env(safe-area-inset-top, 0px)'`
-2. **Line 1006 in `ConversationView.tsx`** — the header itself also has `paddingTop: 'env(safe-area-inset-top, 0px)'`
-
-This creates a visible white gap between the status bar and the header content.
+The drawer panel uses `flex-1 overflow-y-auto` on the nav items container (line 203), which should scroll. However, the drawer itself (`fixed top-0 left-0 bottom-0`) doesn't account for the device's bottom safe-area inset, so on phones with a gesture bar the last items (Profile, Log Out) get clipped behind it and appear unreachable.
 
 ### Changes — 1 file
 
-**`src/pages/Messages.tsx` — Line 904**
+**`src/components/mobile/SideDrawerNav.tsx`**
 
-Remove the `paddingTop` style from the overlay container since the header inside `ConversationView` already handles it:
+**Line 203** — Add bottom safe-area padding to the scrollable nav list so the last item (Log Out) clears the device gesture bar:
 
 ```tsx
 // BEFORE
-<div 
-  className="fixed inset-0 z-[55] flex flex-col bg-background"
-  style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
->
+<div className="flex-1 overflow-y-auto py-2 px-3">
 
 // AFTER
-<div className="fixed inset-0 z-[55] flex flex-col bg-background">
+<div className="flex-1 overflow-y-auto py-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
 ```
 
-### Result
-
-The header background extends behind the status bar and its content sits immediately below it — exactly where the Top App Bar normally lives. No double gap.
+This single change ensures the scroll container has enough bottom padding for the Log Out button to be fully visible and tappable, even on devices with a home indicator or gesture bar.
 
