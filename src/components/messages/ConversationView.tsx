@@ -60,7 +60,6 @@ const ComposerDock: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   return createPortal(
     <div
       className="fixed left-0 right-0 bottom-0 z-[60]"
-      style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
     >
       {children}
     </div>,
@@ -1074,7 +1073,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
-          style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
+          style={{ paddingBottom: 'var(--composer-h, 56px)' }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
