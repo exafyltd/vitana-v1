@@ -46,6 +46,11 @@ interface CreateEventData {
   default_reseller_commission_rate?: number;
 }
 
+/** Helper to build the user-scoped query key */
+function eventsQueryKey(userId: string | undefined) {
+  return ['global-community-events', userId ?? 'anonymous'];
+}
+
 /**
  * Shared query function for fetching community events
  * Used by both the hook and prefetch registry for cache consistency
@@ -69,7 +74,7 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
   const [coCreatorResult, profilesResult, participantsResult] = await Promise.all([
     user
       ? supabase.from('event_co_creators').select('event_id').eq('user_id', user.id)
-      : Promise.resolve({ data: [] as { event_id: string }[] }),
+      : Promise.resolve({ data: [] as { event_id: string }[], error: null }),
     supabase
       .from('global_community_profiles')
       .select('user_id, display_name, avatar_url')
@@ -80,8 +85,21 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
           .select('event_id')
           .in('event_id', eventIds)
           .eq('status', 'attending')
-      : Promise.resolve({ data: [] as { event_id: string }[] }),
+      : Promise.resolve({ data: [] as { event_id: string }[], error: null }),
   ]);
+
+  // Throw on profiles error so host names aren't silently degraded
+  if (profilesResult.error) {
+    console.error('[CommunityEvents] Profiles enrichment failed:', profilesResult.error);
+    throw new Error(`Profiles enrichment failed: ${profilesResult.error.message}`);
+  }
+
+  if (coCreatorResult.error) {
+    console.warn('[CommunityEvents] Co-creator enrichment failed:', coCreatorResult.error);
+  }
+  if (participantsResult.error) {
+    console.warn('[CommunityEvents] Participants enrichment failed:', participantsResult.error);
+  }
 
   const coCreatorEventIds = new Set(coCreatorResult.data?.map(cc => cc.event_id) || []);
 
@@ -113,8 +131,15 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
 export function useCommunityEvents() {
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const queryClient = useQueryClient();
+
+  const queryKey = useMemo(() => eventsQueryKey(user?.id), [user?.id]);
+
+  // Flush legacy unscoped cache key on first mount
+  useEffect(() => {
+    queryClient.removeQueries({ queryKey: ['global-community-events'], exact: true });
+  }, [queryClient]);
 
   // Use React Query for cache-first rendering with stale-while-revalidate
   const { 
@@ -123,9 +148,10 @@ export function useCommunityEvents() {
     isFetching,
     refetch 
   } = useQuery({
-    queryKey: ['global-community-events'],
+    queryKey,
     queryFn: fetchCommunityEventsQueryFn,
     staleTime: 2 * 60 * 1000, // 2 minutes
+    enabled: !authLoading,
   });
 
   // Create a new community event
@@ -160,10 +186,11 @@ export function useCommunityEvents() {
 
       if (error) throw error;
 
-      // Optimistically update the cache
-      queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+      // Optimistically add, then invalidate to get enriched data (creator profile)
+      queryClient.setQueryData(queryKey, (old: CommunityEvent[] | undefined) => {
         return old ? [...old, data] : [data];
       });
+      queryClient.invalidateQueries({ queryKey });
       
       toast({
         title: "Meetup Created! 🎉",
@@ -211,9 +238,18 @@ export function useCommunityEvents() {
 
       if (error) throw error;
 
-      // Optimistically update the cache
-      queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
-        return old?.map(event => event.id === eventId ? data : event) || [];
+      // Merge with existing enriched fields to prevent "Community Host" regression
+      queryClient.setQueryData(queryKey, (old: CommunityEvent[] | undefined) => {
+        return old?.map(event => {
+          if (event.id !== eventId) return event;
+          return {
+            ...data,
+            creator_display_name: event.creator_display_name,
+            creator_avatar_url: event.creator_avatar_url,
+            is_co_creator: event.is_co_creator,
+            participant_count: event.participant_count,
+          };
+        }) || [];
       });
       
       toast({
@@ -284,11 +320,11 @@ export function useCommunityEvents() {
         },
         (payload) => {
           // For new events, add to cache but trigger a refetch to get enriched data
-          queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+          queryClient.setQueryData(queryKey, (old: CommunityEvent[] | undefined) => {
             return old ? [...old, payload.new as CommunityEvent] : [payload.new as CommunityEvent];
           });
           // Refetch to get creator profile info for the new event
-          queryClient.invalidateQueries({ queryKey: ['global-community-events'] });
+          queryClient.invalidateQueries({ queryKey });
         }
       )
       .on(
@@ -299,7 +335,7 @@ export function useCommunityEvents() {
           table: 'global_community_events'
         },
         (payload) => {
-          queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+          queryClient.setQueryData(queryKey, (old: CommunityEvent[] | undefined) => {
             return old?.map(event => 
               event.id === payload.new.id 
                 ? { 
@@ -321,7 +357,7 @@ export function useCommunityEvents() {
           table: 'global_community_events'
         },
         (payload) => {
-          queryClient.setQueryData(['global-community-events'], (old: CommunityEvent[] | undefined) => {
+          queryClient.setQueryData(queryKey, (old: CommunityEvent[] | undefined) => {
             return old?.filter(event => event.id !== payload.old.id) || [];
           });
         }
@@ -331,7 +367,7 @@ export function useCommunityEvents() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [queryClient, queryKey]);
 
   return {
     events: filteredEvents,

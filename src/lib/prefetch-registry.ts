@@ -34,6 +34,7 @@ export async function prefetchForPath(
   if (!userId) return;
 
   const staleTime = 2 * 60 * 1000;
+  const eventsKey = ['global-community-events', userId ?? 'anonymous'];
 
   // Prefetch based on path
   if (path.startsWith('/business')) {
@@ -61,9 +62,9 @@ export async function prefetchForPath(
 
   // Community prefetch - uses /comm route
   if (path.startsWith('/comm')) {
-    // Global Community Events - uses shared queryFn for exact cache match
+    // Global Community Events - uses shared queryFn with user-scoped key
     await queryClient.prefetchQuery({
-      queryKey: ['global-community-events'],
+      queryKey: eventsKey,
       queryFn: fetchCommunityEventsQueryFn,
       staleTime,
     });
@@ -118,7 +119,7 @@ export async function prefetchForPath(
 
   if (path.startsWith('/discover')) {
     await queryClient.prefetchQuery({
-      queryKey: ['global-community-events'],
+      queryKey: eventsKey,
       queryFn: fetchCommunityEventsQueryFn,
       staleTime,
     });
