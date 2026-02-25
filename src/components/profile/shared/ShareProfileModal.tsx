@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, QrCode, Download, ExternalLink, Twitter, Linkedin, Facebook } from "lucide-react";
+import { Copy, Check, QrCode, Download, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -11,6 +11,22 @@ import {
 import { UserProfile } from "@/types/profile";
 import { QRCodeSVG } from "qrcode.react";
 import { toast } from "@/hooks/use-toast";
+import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
+import { XIcon } from "@/components/icons/XIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
+import { InstagramIcon } from "@/components/icons/InstagramIcon";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
+import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
+import { useTranslation } from "@/hooks/useTranslation";
+
+export interface ConnectedPlatforms {
+  linkedin?: boolean;
+  instagram?: boolean;
+  facebook?: boolean;
+  x?: boolean;
+  youtube?: boolean;
+  tiktok?: boolean;
+}
 
 interface ShareProfileModalProps {
   isOpen: boolean;
@@ -20,7 +36,18 @@ interface ShareProfileModalProps {
   onShareToX: () => void;
   onShareToLinkedIn: () => void;
   onShareToFacebook: () => void;
+  onShareToInstagram?: () => void;
+  onShareToTikTok?: () => void;
+  onShareToYouTube?: () => void;
   onViewPublicProfile: () => void;
+  connectedPlatforms?: ConnectedPlatforms;
+}
+
+interface PlatformDef {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+  handler: () => void;
 }
 
 export function ShareProfileModal({
@@ -31,11 +58,16 @@ export function ShareProfileModal({
   onShareToX,
   onShareToLinkedIn,
   onShareToFacebook,
+  onShareToInstagram,
+  onShareToTikTok,
+  onShareToYouTube,
   onViewPublicProfile,
+  connectedPlatforms = {},
 }: ShareProfileModalProps) {
   const [copied, setCopied] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const profileUrl = `${window.location.origin}/u/${profile.handle}`;
+  const { translate } = useTranslation();
 
   const handleCopyLink = async () => {
     await onCopyLink();
@@ -75,11 +107,44 @@ export function ShareProfileModal({
     img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
   };
 
+  // Define all 6 platforms
+  const allPlatforms: PlatformDef[] = [
+    { id: 'linkedin', name: 'LinkedIn', icon: <LinkedInIcon className="h-5 w-5" connected={!!connectedPlatforms.linkedin} />, handler: onShareToLinkedIn },
+    { id: 'x', name: 'X', icon: <XIcon className="h-5 w-5" />, handler: onShareToX },
+    { id: 'facebook', name: 'Facebook', icon: <FacebookIcon className="h-5 w-5" connected={!!connectedPlatforms.facebook} />, handler: onShareToFacebook },
+    { id: 'instagram', name: 'Instagram', icon: <InstagramIcon className="h-5 w-5" connected={!!connectedPlatforms.instagram} />, handler: onShareToInstagram || (() => {}) },
+    { id: 'tiktok', name: 'TikTok', icon: <TikTokIcon className="h-5 w-5" connected={!!connectedPlatforms.tiktok} />, handler: onShareToTikTok || (() => {}) },
+    { id: 'youtube', name: 'YouTube', icon: <YouTubeIcon className="h-5 w-5" connected={!!connectedPlatforms.youtube} />, handler: onShareToYouTube || (() => {}) },
+  ];
+
+  const connected = allPlatforms.filter(p => connectedPlatforms[p.id as keyof ConnectedPlatforms]);
+  const unconnected = allPlatforms.filter(p => !connectedPlatforms[p.id as keyof ConnectedPlatforms]);
+  const hasConnected = connected.length > 0;
+
+  const renderPlatformButton = (platform: PlatformDef, isConnected: boolean) => (
+    <Button
+      key={platform.id}
+      onClick={platform.handler}
+      variant="outline"
+      className={`gap-2 h-12 rounded-2xl backdrop-blur-sm transition-all flex flex-col items-center justify-center py-2 px-3 ${
+        isConnected
+          ? 'bg-[hsl(var(--sys-vitana-accent))]/5 border-[hsl(var(--sys-vitana-accent))]/30 hover:bg-[hsl(var(--sys-vitana-accent))]/10 relative'
+          : 'bg-white/40 dark:bg-gray-800/40 border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60'
+      }`}
+    >
+      {isConnected && (
+        <CheckCircle2 className="absolute top-1 right-1 h-3.5 w-3.5 text-[hsl(var(--sys-vitana-accent))]" />
+      )}
+      {platform.icon}
+      <span className="text-xs font-medium">{platform.name}</span>
+    </Button>
+  );
+
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-3xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-300">
         <DialogHeader className="p-6 pb-4 border-b border-white/20 dark:border-gray-800/20">
-          <DialogTitle className="text-xl font-bold text-foreground">Share Profile</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-foreground">{translate('share.shareProfile', 'Share Profile')}</DialogTitle>
         </DialogHeader>
 
         <div className="p-6 space-y-5">
@@ -116,12 +181,12 @@ export function ShareProfileModal({
             {copied ? (
               <>
                 <Check className="h-5 w-5 animate-in zoom-in-50 duration-200" />
-                <span className="font-semibold">Link Copied!</span>
+                <span className="font-semibold">{translate('share.linkCopied', 'Link Copied!')}</span>
               </>
             ) : (
               <>
                 <Copy className="h-5 w-5" />
-                <span className="font-semibold">Copy Profile Link</span>
+                <span className="font-semibold">{translate('share.copyProfileLink', 'Copy Profile Link')}</span>
               </>
             )}
           </Button>
@@ -134,7 +199,7 @@ export function ShareProfileModal({
               className="w-full justify-start gap-3 h-12 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
             >
               <QrCode className="h-5 w-5" />
-              <span className="font-medium">Show QR Code</span>
+              <span className="font-medium">{translate('share.showQRCode', 'Show QR Code')}</span>
             </Button>
           ) : (
             <div className="space-y-3 animate-in fade-in-0 slide-in-from-top-2 duration-300">
@@ -153,40 +218,36 @@ export function ShareProfileModal({
                 className="w-full gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
               >
                 <Download className="h-4 w-4" />
-                <span className="font-medium">Download QR Code</span>
+                <span className="font-medium">{translate('share.downloadQR', 'Download QR Code')}</span>
               </Button>
             </div>
           )}
 
           {/* Social Share Buttons */}
           <div className="space-y-3">
-            <p className="text-sm font-semibold text-muted-foreground">Share to social</p>
-            <div className="grid grid-cols-3 gap-2">
-              <Button
-                onClick={onShareToLinkedIn}
-                variant="outline"
-                className="gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-[#0077B5]/10 hover:border-[#0077B5]/30 hover:text-[#0077B5] transition-all"
-              >
-                <Linkedin className="h-4 w-4" />
-                <span className="font-medium">LinkedIn</span>
-              </Button>
-              <Button
-                onClick={onShareToX}
-                variant="outline"
-                className="gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-foreground/10 hover:border-foreground/30 transition-all"
-              >
-                <Twitter className="h-4 w-4" />
-                <span className="font-medium">X</span>
-              </Button>
-              <Button
-                onClick={onShareToFacebook}
-                variant="outline"
-                className="gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-[#1877F2]/10 hover:border-[#1877F2]/30 hover:text-[#1877F2] transition-all"
-              >
-                <Facebook className="h-4 w-4" />
-                <span className="font-medium">Facebook</span>
-              </Button>
-            </div>
+            {hasConnected ? (
+              <>
+                <p className="text-sm font-semibold text-muted-foreground">{translate('share.shareToSocial', 'Share to social')}</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {connected.map(p => renderPlatformButton(p, true))}
+                </div>
+                {unconnected.length > 0 && (
+                  <>
+                    <p className="text-xs font-medium text-muted-foreground mt-3">{translate('share.alsoShareTo', 'Also share to')}</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {unconnected.map(p => renderPlatformButton(p, false))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="text-sm font-semibold text-muted-foreground">{translate('share.shareToSocial', 'Share to social')}</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {allPlatforms.map(p => renderPlatformButton(p, false))}
+                </div>
+              </>
+            )}
           </div>
 
           {/* View Public Profile */}
@@ -196,7 +257,7 @@ export function ShareProfileModal({
             className="w-full gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
           >
             <ExternalLink className="h-4 w-4" />
-            <span className="font-medium">View Public Profile</span>
+            <span className="font-medium">{translate('share.viewPublicProfile', 'View Public Profile')}</span>
           </Button>
         </div>
       </DialogContent>

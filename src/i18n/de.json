@@ -2454,5 +2454,15 @@
     "copyLink": "Link kopieren",
     "download": "Herunterladen",
     "linkCopied": "Link kopiert!"
+  },
+  "share": {
+    "shareProfile": "Profil teilen",
+    "linkCopied": "Link kopiert!",
+    "copyProfileLink": "Profillink kopieren",
+    "showQRCode": "QR-Code anzeigen",
+    "downloadQR": "QR-Code herunterladen",
+    "shareToSocial": "In sozialen Netzwerken teilen",
+    "alsoShareTo": "Auch teilen auf",
+    "viewPublicProfile": "Öffentliches Profil anzeigen"
   }
 }
