@@ -1,71 +1,35 @@
 
 
-## Enhance Share Profile Social Section with Connected Networks
+## Fix QR Code Not Working for Some Profiles
 
-### Current State
-The `ShareProfileModal` hardcodes exactly 3 social platforms (LinkedIn, X, Facebook) with no awareness of which platforms the user has connected. The `onShareToFacebook` is even passed as `() => {}` (no-op) in most places. There's no support for Instagram, TikTok, or YouTube sharing.
+### Root Cause
 
-### Goal
-Show the user's **connected** social networks first (highlighted), followed by unconnected ones. Support all 6 profile platforms: LinkedIn, X, Facebook, Instagram, TikTok, YouTube.
+The QR code URL is built as `/u/${profile.handle}`. When a profile has no handle set in the database, the fallback is `'user'` (EditProfilePage line 66) or `''` (PublicProfilePage line 111), producing invalid URLs like `/u/user` or `/u/`. The `get_user_profile_by_identifier` RPC supports both handle AND user_id lookup, so using the user_id as fallback produces a valid, resolvable URL.
 
-### Social Share URL Capabilities
-- **LinkedIn**: `https://www.linkedin.com/sharing/share-offsite/?url=` (direct web share)
-- **X/Twitter**: `https://twitter.com/intent/tweet?text=&url=` (direct web share)
-- **Facebook**: `https://www.facebook.com/sharer/sharer.php?u=` (direct web share)
-- **Instagram**: No web share URL — copies link to clipboard with toast guidance ("Link copied! Paste it in your Instagram story or post")
-- **TikTok**: No web share URL — copies link to clipboard with toast guidance
-- **YouTube**: No web share URL — copies link to clipboard with toast guidance
+Additionally, the QR download function uses `btoa(svgData)` which crashes on non-ASCII characters (e.g., accented names like "Tadić" in avatar fallback text embedded in SVG).
 
 ### Changes
 
-**1. `src/hooks/useProfileShare.ts`** — Add missing share functions
-- Add `shareToFacebook` (Facebook sharer URL)
-- Add `shareToInstagram` (copy link + toast with Instagram-specific guidance)
-- Add `shareToTikTok` (copy link + toast with TikTok-specific guidance)  
-- Add `shareToYouTube` (copy link + toast with YouTube-specific guidance)
-- Export all new functions from the hook
+**1. `src/pages/EditProfilePage.tsx`** (line 66)
+- Change handle fallback from `'user'` to `user?.id || 'user'`
+- Same on line 151 where handle is re-derived after save
 
-**2. `src/components/profile/shared/ShareProfileModal.tsx`** — Major update
-- Add a new `connectedPlatforms` prop: `{ linkedin?: boolean; instagram?: boolean; facebook?: boolean; x?: boolean; youtube?: boolean; tiktok?: boolean }`
-- Add handler props for all 6 platforms
-- Render a **two-row grid**: connected platforms first (with a green checkmark/dot indicator), then unconnected platforms below
-- Each platform button shows its branded icon and name
-- Section label stays "Share to social" but connected ones get a subtle accent border/background
+**2. `src/components/profile/shared/ShareProfileModal.tsx`** (line 69)
+- Change `profileUrl` to use `profile.id` (user_id) when `profile.handle` is empty/falsy:
+  `const profileUrl = \`\${window.location.origin}/u/\${profile.handle || profile.id}\`;`
 
-**3. `src/pages/EditProfilePage.tsx`** — Pass connected platform info and new handlers
-- Derive connected platforms from `profile` social URL fields (e.g., `!!profile.linkedin_url`)
-- Pass all 6 share handlers and the `connectedPlatforms` object to `ShareProfileModal`
+**3. `src/components/profile/shared/ShareProfileModal.tsx`** (line 107)
+- Fix `btoa(svgData)` to handle non-ASCII: use `btoa(unescape(encodeURIComponent(svgData)))` (same pattern already used in `MobileQRShareScreen.tsx`)
 
-**4. `src/components/profile/shared/ProfileLayout.tsx`** — Same as above
-- Pass connected platform info and all 6 handlers
+**4. `src/hooks/useProfileShare.ts`** (line 21)
+- The `getShareUrl` builds URL from `handle` param. Add a fallback: accept an optional `profileId` as the identifier fallback if handle is empty.
+- Change URL path: `const profilePath = \`/u/\${handle || profileId}\`;`
 
-**5. `src/components/profile/shared/ProfileIdCardFront.tsx`** — Same as above
-- Pass connected platform info and all 6 handlers
+**5. `src/components/profile/shared/ProfileIdCardFront.tsx`**
+- Ensure the share hook receives the user_id-based handle fallback consistently
 
-### UI Layout (Share to Social section)
+**6. `src/components/profile/shared/ProfileLayout.tsx`**
+- Same: ensure handle fallback to `profile.id` for share hook
 
-```text
-┌─────────────────────────────────────┐
-│ Share to social                     │
-│                                     │
-│ Connected:                          │
-│ ┌──────┐ ┌──────┐ ┌──────┐        │
-│ │ in ✓ │ │ 𝕏 ✓ │ │ f ✓  │        │
-│ │Linked│ │  X   │ │ FB   │        │
-│ └──────┘ └──────┘ └──────┘        │
-│                                     │
-│ Also share to:                      │
-│ ┌──────┐ ┌──────┐ ┌──────┐        │
-│ │  📸  │ │  🎵  │ │  ▶️  │        │
-│ │Insta │ │TikTok│ │ YT   │        │
-│ └──────┘ └──────┘ └──────┘        │
-└─────────────────────────────────────┘
-```
-
-Connected platforms show with an accent border and checkmark. Unconnected platforms are styled as regular outline buttons. If no platforms are connected, all 6 show in a single grid under "Share to social".
-
-### Translation
-- Add German translations for new labels: "Also share to" → "Auch teilen auf", platform-specific copy-link toasts
-
-Six files changed total (1 hook, 1 modal component, 3 parent components, 1 i18n file).
+This ensures every profile gets a working QR code URL regardless of whether a custom handle has been set.
 
