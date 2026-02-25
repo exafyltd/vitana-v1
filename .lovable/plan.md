@@ -1,49 +1,44 @@
 
 
-## Fix: Remove Excessive White Space in Conversation Thread (WhatsApp-density)
+## Fix: Eliminate White Gap Between Composer and Bottom Nav
 
-### Root Cause Analysis
+### Root Cause
 
-The mobile conversation view (`Messages.tsx` line 902-918) renders as a `fixed inset-0` overlay with `paddingTop: calc(env(safe-area-inset-top) + 32px)`. This top padding reserves space for the TopAppBar, but the TopAppBar itself already handles its own safe-area padding. The result is a ~32px blank gap at the top. Additionally, the composer has no bottom safe-area padding, and there are unnecessary spacer divs.
+The conversation overlay uses `fixed inset-0 z-50` and the `MobileBottomNav` also uses `fixed bottom-0 z-50`. Since they share the same z-index and the nav renders later in the DOM, the nav appears on top of the conversation. The composer's `paddingBottom: max(6px, env(safe-area-inset-bottom))` then creates a visible gap above the nav bar.
+
+WhatsApp solves this by hiding the tab bar entirely when inside a conversation. The conversation fills the full screen.
 
 ### Changes
 
-**1. `src/pages/Messages.tsx`** — Fix the mobile conversation overlay container
+**1. `src/pages/Messages.tsx`** — Raise conversation overlay z-index
 
-- Line 903-904: Change from `paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)'` to just `paddingTop: 'env(safe-area-inset-top, 0px)'` — the 32px was for the TopAppBar, but since this is a `fixed inset-0 z-50` overlay that covers the TopAppBar, only the bare safe-area inset is needed for the notch
-- Change `fixed inset-0 z-50 flex flex-col bg-background` to use `h-[100dvh]` instead of relying on `inset-0` for height calculation
-- Actually keep `inset-0` (it pins all edges) but ensure no extra wrappers add padding
+- Line 903: Change `z-50` to `z-[55]` on the conversation container
+- This puts the conversation above the bottom nav (z-50) and the orb (z-[53]), fully covering them during a chat — exactly like WhatsApp
 
-**2. `src/components/messages/ConversationView.tsx`** — Tighten the layout
+**2. No other changes needed**
 
-- Line 990: The root `div` uses `h-full` — keep this, it fills the parent correctly
-- Line 1058: Messages scroll area has `px-4 py-3` — reduce `py-3` to `py-1` to minimize top/bottom gap in message list
-- Line 1152: Remove `<div className="h-4" />` spacer — unnecessary dead space at bottom of messages
-- Line 1157-1158: Composer wrapper — add bottom safe-area: `style={{ paddingBottom: 'max(6px, env(safe-area-inset-bottom))' }}`
+The composer already has correct bottom safe-area padding (`max(6px, env(safe-area-inset-bottom))`). Once the conversation overlay sits above the nav bar, the composer will be flush with the bottom of the screen with only the safe-area inset below it — no more white gap.
 
-**3. `src/components/messages/MessageInput.tsx`** — Reduce composer height variable
-
-- Line 105: Change `Math.max(112, totalComposerHeight)` to `Math.max(56, totalComposerHeight)` — the 112px minimum is way too tall and was meant to be 56px per the previous redesign
-
-### Summary of spacing impact
+### Result
 
 ```text
 BEFORE                              AFTER
-┌─── safe-area ──────────────┐      ┌─── safe-area ──────────────┐
-│                            │      │← [Av] Name         📞 🎥  │ ← header starts immediately
-│ 32px blank gap             │      ├────────────────────────────┤
-│← [Av] Name         📞 🎥  │      │                            │
-├────────────────────────────┤      │   Messages (more space)    │
-│   py-3 top gap             │      │                            │
-│   Messages                 │      │                            │
+┌────────────────────────────┐      ┌────────────────────────────┐
+│ Header                     │      │ Header                     │
+├────────────────────────────┤      ├────────────────────────────┤
 │                            │      │                            │
-│   h-4 spacer               │      ├────────────────────────────┤
-├────────────────────────────┤      │ ╭────────────────╮    🎤   │
-│ ╭────────────────╮    🎤   │      │ ╰────────────────╯         │
-│ ╰────────────────╯         │      │ safe-area-bottom           │
-│ no safe-area-bottom        │      └────────────────────────────┘
+│   Messages                 │      │   Messages                 │
+│                            │      │   (more vertical space)    │
+│                            │      │                            │
+├────────────────────────────┤      ├────────────────────────────┤
+│ ╭────────────────╮    🎤   │      │ ╭────────────────╮    🎤   │
+│ ╰────────────────╯         │      │ ╰────────────────╯         │
+│                            │      │ safe-area-bottom (6px)     │
+│   ~60px white gap          │      └────────────────────────────┘
+├────────────────────────────┤      (bottom nav hidden behind overlay)
+│ Events  Business 🔮 Live   │
 └────────────────────────────┘
 ```
 
-Three files, purely CSS/layout changes. No logic changes.
+One line change in one file. The bottom nav is simply covered by the conversation — matching WhatsApp where the tab bar disappears when you open a chat thread.
 
