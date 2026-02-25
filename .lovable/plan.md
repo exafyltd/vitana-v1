@@ -1,62 +1,39 @@
 
 
-## Fix: Push chat composer flush to the bottom edge
+## Fix: Push conversation header flush to the top edge
 
 ### Problem
-The screenshot shows white space between the input field and the device's navigation bar. Three sources contribute:
 
-1. **`paddingBottom: env(safe-area-inset-bottom)`** on the composer wrapper adds space below the input on devices with a home indicator
-2. **`py-1`** inner padding adds vertical spacing around the input
-3. **`border-top`** from a duplicate `.conversation-composer` rule at line 689 in `index.css` adds a visual separator
+The conversation header (line 1006-1007) has `py-2` padding and sits below the Top App Bar. On mobile, the conversation overlay covers the entire screen at `z-[55]`, so the header should extend flush to the very top of the device screen — behind the status bar — just like the reference screenshot shows.
 
-### Changes — 2 files, 4 edits
+### Changes — 1 file
 
-**1. `src/components/messages/ConversationView.tsx`**
+**`src/components/messages/ConversationView.tsx`**
 
-- **Line 1171** — Remove `paddingBottom: env(safe-area-inset-bottom)` from the composer wrapper. This was extending the background into the safe area but also pushing the input up. Instead, let the `ComposerDock` (which is `fixed bottom-0`) sit flush.
+**Line 1006-1007** — Add top padding equal to the safe-area inset so the header extends behind the status bar, and reduce vertical padding:
 
 ```tsx
 // BEFORE
-<div className="conversation-composer bg-background" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-  <div className="px-2 py-1">
+<div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
+  <div className="flex items-center justify-between px-3 py-2">
 
 // AFTER
-<div className="conversation-composer bg-background">
-  <div className="px-2 py-0.5 pb-1">
+<div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+  <div className="flex items-center justify-between px-3 py-1.5">
 ```
 
-The `py-0.5 pb-1` gives minimal top breathing room and a tiny bottom pad (4px) so the pill input doesn't touch the absolute edge.
-
-- **Line 1076** — Adjust scroll area padding to match (no safe-area addition needed since composer is flush):
-
-```tsx
-// BEFORE
-style={{ paddingBottom: 'calc(var(--composer-h, 56px) + env(safe-area-inset-bottom, 0px))' }}
-
-// AFTER
-style={{ paddingBottom: 'var(--composer-h, 56px)' }}
-```
-
-**2. `src/index.css`**
-
-- **Line 689-692** — Remove `border-top` from the first `.conversation-composer` rule:
-
-```css
-/* BEFORE */
-.conversation-composer {
-  flex-shrink: 0;
-  border-top: 1px solid hsl(var(--border));
-}
-
-/* AFTER */
-.conversation-composer {
-  flex-shrink: 0;
-}
-```
-
-- **Lines 762-768** — Already has `margin-bottom: 0` and `box-shadow: none` — no change needed here.
+This makes the header background extend up behind the system status bar (using safe-area padding), while the actual content (back button, avatar, name) sits just below it. The `py-2` → `py-1.5` tightens the toolbar vertically to match the reference screenshot's compact header.
 
 ### Result
 
-The input field sits right above the device navigation bar with only 4px of padding below it — matching the WhatsApp reference screenshot. The last message will be fully visible since the scroll padding matches the actual composer height without the safe-area addition.
+```text
+┌────────────────────────────┐ ← device top edge
+│ ▓▓▓▓▓ status bar ▓▓▓▓▓▓▓▓ │ ← header bg extends behind this
+├────────────────────────────┤ ← env(safe-area-inset-top)
+│ ← Avatar  Name     📞 🎥  │ ← compact toolbar (py-1.5)
+├────────────────────────────┤ ← border-b
+│ Messages...                │
+```
+
+One file, two line changes. The header sits flush against the top edge with the background extending behind the status bar.
 
