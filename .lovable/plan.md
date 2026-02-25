@@ -1,39 +1,34 @@
 
 
-## Fix: Push conversation header flush to the top edge
+## Fix: Remove double safe-area top padding causing header gap
 
 ### Problem
 
-The conversation header (line 1006-1007) has `py-2` padding and sits below the Top App Bar. On mobile, the conversation overlay covers the entire screen at `z-[55]`, so the header should extend flush to the very top of the device screen — behind the status bar — just like the reference screenshot shows.
+The conversation header appears pushed down from the top edge because safe-area top padding is applied **twice**:
+
+1. **Line 904 in `Messages.tsx`** — the full-screen overlay wrapper has `paddingTop: 'env(safe-area-inset-top, 0px)'`
+2. **Line 1006 in `ConversationView.tsx`** — the header itself also has `paddingTop: 'env(safe-area-inset-top, 0px)'`
+
+This creates a visible white gap between the status bar and the header content.
 
 ### Changes — 1 file
 
-**`src/components/messages/ConversationView.tsx`**
+**`src/pages/Messages.tsx` — Line 904**
 
-**Line 1006-1007** — Add top padding equal to the safe-area inset so the header extends behind the status bar, and reduce vertical padding:
+Remove the `paddingTop` style from the overlay container since the header inside `ConversationView` already handles it:
 
 ```tsx
 // BEFORE
-<div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b">
-  <div className="flex items-center justify-between px-3 py-2">
+<div 
+  className="fixed inset-0 z-[55] flex flex-col bg-background"
+  style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+>
 
 // AFTER
-<div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
-  <div className="flex items-center justify-between px-3 py-1.5">
+<div className="fixed inset-0 z-[55] flex flex-col bg-background">
 ```
-
-This makes the header background extend up behind the system status bar (using safe-area padding), while the actual content (back button, avatar, name) sits just below it. The `py-2` → `py-1.5` tightens the toolbar vertically to match the reference screenshot's compact header.
 
 ### Result
 
-```text
-┌────────────────────────────┐ ← device top edge
-│ ▓▓▓▓▓ status bar ▓▓▓▓▓▓▓▓ │ ← header bg extends behind this
-├────────────────────────────┤ ← env(safe-area-inset-top)
-│ ← Avatar  Name     📞 🎥  │ ← compact toolbar (py-1.5)
-├────────────────────────────┤ ← border-b
-│ Messages...                │
-```
-
-One file, two line changes. The header sits flush against the top edge with the background extending behind the status bar.
+The header background extends behind the status bar and its content sits immediately below it — exactly where the Top App Bar normally lives. No double gap.
 
