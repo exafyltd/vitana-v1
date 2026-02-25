@@ -69,7 +69,7 @@ const MaxinaPortal = () => {
             const queryClient = (window as any).queryClient;
             if (queryClient) {
               await queryClient.prefetchQuery({
-                queryKey: ['global-community-events'],
+                queryKey: ['global-community-events', session.user.id],
                 queryFn: fetchCommunityEventsQueryFn,
                 staleTime: 2 * 60 * 1000,
               });
