@@ -8,6 +8,7 @@ import { drawerNavItems } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
 import { useAuth } from '@/context/AuthProvider';
+import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
 import { getInstantTenantName } from '@/lib/tenant-display';
 import { supabase } from '@/integrations/supabase/client';
 
