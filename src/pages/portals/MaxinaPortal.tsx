@@ -46,6 +46,7 @@ const MaxinaPortal = () => {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
