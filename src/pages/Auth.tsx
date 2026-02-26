@@ -139,6 +139,9 @@ export default function Auth() {
 
       console.log('[Auth] Sign up successful');
 
+      // Track email for resend button
+      setSignupEmail(emailValidation.data);
+      
       // Show success message for email verification
       setError('✅ Registration successful! Please check your email for a confirmation link to activate your account.');
       
