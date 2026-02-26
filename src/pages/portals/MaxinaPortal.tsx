@@ -26,6 +26,7 @@ import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
 import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ResendConfirmationButton } from "@/components/auth/ResendConfirmationButton";
 
 const MaxinaPortal = () => {
   const { translate } = useTranslation();
