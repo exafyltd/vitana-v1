@@ -373,7 +373,20 @@ const MaxinaPortal = () => {
           <p className="text-white text-lg font-medium">Something went wrong</p>
           <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
           <Button
-            onClick={() => window.location.replace('/maxina')}
+            onClick={async () => {
+              setOauthTimedOut(false);
+              // Try one more session check before restarting OAuth
+              const { data: { session: s } } = await supabase.auth.getSession();
+              if (s) {
+                const isMobile = window.innerWidth < 768;
+                const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+                setTenantBySlug('maxina').catch(console.warn);
+                navigate(target);
+              } else {
+                // Restart Google OAuth instead of hard reload
+                handleSocialLogin('google');
+              }
+            }}
             className="rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
           >
             Tap to try again
