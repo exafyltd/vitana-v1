@@ -1,43 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Problem
-
-The 8-second OAuth safety net calls `window.location.replace('/maxina')` — a **hard page reload** that strips the `#access_token=...` hash. If Supabase hasn't finished persisting the session to storage yet (common on mobile), the reload lands on an unauthenticated sign-in screen. This is the direct cause of the "bounces back to sign-in" regression.
-
-## Fix — `src/pages/portals/MaxinaPortal.tsx`
-
-### 1. Replace destructive reload with active session polling
-
-Remove the current OAuth safety net (lines 58-68) that does `window.location.replace('/maxina')`.
-
-Replace with a new effect that, when `isProcessingOAuth` is true and `user` is null:
-- Polls `supabase.auth.getSession()` every 1 second
-- When a session is found, immediately navigates to the target (`/comm/events-meetups?tab=upcoming` on mobile, `/home` on desktop) — bypassing the need to wait for React state propagation
-- Calls `setTenantBySlug('maxina')` in the background (fire-and-forget, non-blocking)
-- After 15 seconds with no session, shows a "Something went wrong — Tap to try again" button instead of auto-reloading
-
-### 2. Simplify the spinner guard (line 277)
-
-Change `if (authLoading || user || isProcessingOAuth)` to track an explicit `oauthResolved` state so the spinner only shows during active processing, not indefinitely.
-
-### 3. Keep existing redirect effect (lines 74-132) unchanged
-
-It still handles the happy path where `onAuthStateChange` fires normally and `user` becomes available through React state.
-
-### Technical details
+### Architecture
 
 ```
-OAuth return flow after fix:
-
-/maxina#access_token=...
-  ├─ isProcessingOAuth = true → spinner shows
-  ├─ New effect starts polling getSession() every 1s
-  │   ├─ Session found → navigate('/comm/events-meetups?tab=upcoming')
-  │   │                   + setTenantBySlug('maxina') fire-and-forget
-  │   └─ 15s timeout → show "Tap to retry" button (no auto-reload)
-  └─ OR: Supabase onAuthStateChange fires → user set → existing redirect effect runs
-     (whichever happens first wins via hasRedirectedRef guard)
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-Single file change: `src/pages/portals/MaxinaPortal.tsx`
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
+
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set

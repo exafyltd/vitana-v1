@@ -39,6 +39,7 @@ const MaxinaPortal = () => {
   const { setAudioOverlayVisible } = useStreamingState();
   const { startFresh } = useSoundscape();
   const isProcessingOAuth = window.location.hash.includes('access_token');
+  const [oauthTimedOut, setOauthTimedOut] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -55,17 +56,41 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
-  // OAuth hash processing safety net — if hash is present but user never appears, reload cleanly
+  // OAuth hash processing safety net — poll for session instead of destructive reload
   useEffect(() => {
-    if (!isProcessingOAuth) return;
-    const oauthDeadline = setTimeout(() => {
-      if (!user) {
-        console.warn('[MaxinaPortal] OAuth hash processing stalled after 8s, reloading without hash');
-        window.location.replace('/maxina');
+    if (!isProcessingOAuth || user) return;
+    setOauthTimedOut(false);
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const { data: { session: polledSession } } = await supabase.auth.getSession();
+        if (polledSession) {
+          clearInterval(pollInterval);
+          clearTimeout(deadline);
+          if (hasRedirectedRef.current) return;
+          hasRedirectedRef.current = true;
+          const isMobile = window.innerWidth < 768;
+          const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+          console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
+          setTenantBySlug('maxina').catch(console.warn);
+          navigate(target);
+        }
+      } catch (err) {
+        console.warn('[MaxinaPortal] Session poll error:', err);
       }
-    }, 8000);
-    return () => clearTimeout(oauthDeadline);
-  }, [isProcessingOAuth, user]);
+    }, 1000);
+
+    const deadline = setTimeout(() => {
+      clearInterval(pollInterval);
+      console.warn('[MaxinaPortal] OAuth processing timed out after 15s');
+      setOauthTimedOut(true);
+    }, 15000);
+
+    return () => {
+      clearInterval(pollInterval);
+      clearTimeout(deadline);
+    };
+  }, [isProcessingOAuth, user, navigate, setTenantBySlug, searchParams]);
 
   // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
@@ -274,7 +299,8 @@ const MaxinaPortal = () => {
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  if (authLoading || user || isProcessingOAuth) {
+  // OR if OAuth hash is being processed (but not timed out yet)
+  if (authLoading || user || (isProcessingOAuth && !oauthTimedOut)) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
@@ -293,8 +319,33 @@ const MaxinaPortal = () => {
         <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
         
         {/* Content */}
-        <div className="relative z-20 min-h-screen flex items-center justify-center">
+        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
+          {isProcessingOAuth && (
+            <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // OAuth timed out — show retry
+  if (oauthTimedOut) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {videoSrc && (
+          <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" src={videoSrc} />
+        )}
+        <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
+        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
+          <p className="text-white text-lg font-medium">Something went wrong</p>
+          <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
+          <Button
+            onClick={() => window.location.replace('/maxina')}
+            className="rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
+          >
+            Tap to try again
+          </Button>
         </div>
       </div>
     );
