@@ -59,40 +59,56 @@ const MaxinaPortal = () => {
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
   useEffect(() => {
-    if (!authLoading && user) {
-      // Verify session is still valid before redirecting
-      supabase.auth.getSession().then(async ({ data: { session } }) => {
-        if (session) {
-          const redirectTo = searchParams.get('redirectTo');
-          const isMobile = window.innerWidth < 768;
-          // Default to Events Upcoming on mobile if no explicit redirect
-          const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
-          
-          // Prefetch events in parallel with tenant switch for mobile users
-          const prefetchPromise = isMobile ? (async () => {
-            const queryClient = (window as any).queryClient;
-            if (queryClient) {
-              await queryClient.prefetchQuery({
-                queryKey: ['global-community-events', session.user.id],
-                queryFn: fetchCommunityEventsQueryFn,
-                staleTime: 2 * 60 * 1000,
-              });
-            }
-          })() : Promise.resolve();
-          
-          // Run prefetch and tenant switch in parallel with a 5s timeout safety net
-          const timeout = new Promise(resolve => setTimeout(resolve, 5000));
-          const setup = Promise.all([
-            prefetchPromise,
-            setTenantBySlug('maxina')
-          ]).catch(err => console.warn('[MaxinaPortal] Setup error:', err));
-          
-          await Promise.race([setup, timeout]);
-          navigate(redirectTo || defaultRedirect);
+    if (authLoading || !user || hasRedirectedRef.current) return;
+
+    // If session isn't ready yet (mobile OAuth hydration lag), poll briefly
+    const handleRedirect = async () => {
+      let activeSession = session;
+      if (!activeSession) {
+        // Bounded retry: poll up to 3s for session to hydrate
+        for (let i = 0; i < 6; i++) {
+          await new Promise(r => setTimeout(r, 500));
+          const { data } = await supabase.auth.getSession();
+          if (data.session) { activeSession = data.session; break; }
         }
-      });
-    }
-  }, [user, authLoading, navigate, setTenantBySlug, searchParams]);
+      }
+
+      // Even if session never arrived, navigate anyway to avoid infinite spinner
+      hasRedirectedRef.current = true;
+
+      const redirectTo = searchParams.get('redirectTo');
+      const isMobile = window.innerWidth < 768;
+      const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
+
+      try {
+        // Prefetch events in parallel with tenant switch for mobile users
+        const prefetchPromise = isMobile && activeSession ? (async () => {
+          const queryClient = (window as any).queryClient;
+          if (queryClient) {
+            await queryClient.prefetchQuery({
+              queryKey: ['global-community-events', activeSession.user.id],
+              queryFn: fetchCommunityEventsQueryFn,
+              staleTime: 2 * 60 * 1000,
+            });
+          }
+        })() : Promise.resolve();
+
+        const timeout = new Promise(resolve => setTimeout(resolve, 5000));
+        const setup = Promise.all([
+          prefetchPromise,
+          setTenantBySlug('maxina')
+        ]).catch(err => console.warn('[MaxinaPortal] Setup error:', err));
+
+        await Promise.race([setup, timeout]);
+      } catch (err) {
+        console.warn('[MaxinaPortal] Redirect setup failed:', err);
+      } finally {
+        navigate(redirectTo || defaultRedirect);
+      }
+    };
+
+    handleRedirect();
+  }, [user, session, authLoading, navigate, setTenantBySlug, searchParams]);
 
   // Set tenant theme
   useEffect(() => {
