@@ -30,7 +30,8 @@ import { ResendConfirmationButton } from "@/components/auth/ResendConfirmationBu
 
 const MaxinaPortal = () => {
   const { translate } = useTranslation();
-  const { user, loading: authLoading } = useAuth();
+  const { user, session, loading: authLoading } = useAuth();
+  const hasRedirectedRef = useRef(false);
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
