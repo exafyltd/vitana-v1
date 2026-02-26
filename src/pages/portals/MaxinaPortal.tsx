@@ -200,6 +200,7 @@ const MaxinaPortal = () => {
       if (error) {
         setError(error.message);
       } else {
+        setSignupEmail(email);
         setError(translate('portals.maxina.checkEmail', "Please check your email to confirm your account."));
       }
     } catch (err) {
