@@ -112,14 +112,10 @@ export function useCommunityMembers() {
       }
 
     } catch (error) {
-      console.error('Error fetching community members:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Error details:', errorMessage);
-      toast({
-        title: 'Failed to load members',
-        description: `Could not fetch community members: ${errorMessage}`,
-        variant: 'destructive'
-      });
+      console.warn('useCommunityMembers: fetch error (suppressed):', errorMessage);
+      // Don't toast transient auth errors (lock timeouts, session races)
+      // The hook will retry automatically once the session stabilizes
     } finally {
       setLoading(false);
     }
