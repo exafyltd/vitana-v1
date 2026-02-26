@@ -50,7 +50,7 @@ export default function NotificationsCompose() {
         payload.recipient_ids = data.recipients.userIds;
       }
 
-      const result = await composeMutation.mutateAsync(payload);
+      const result = await composeMutation.mutateAsync(payload as any);
 
       toast({
         title: "Notification Sent",

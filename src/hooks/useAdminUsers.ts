@@ -10,13 +10,15 @@ interface UserTenant {
   created_at: string;
 }
 
-interface AppUser {
-  id: string;
-  email: string;
+export interface AppUser {
+  user_id: string;
+  email: string | null;
   display_name: string | null;
-  avatar_url: string | null;
+  status: string;
   created_at: string;
   updated_at: string;
+  tenant_id: string;
+  profile: any;
   user_tenants: UserTenant[];
 }
 

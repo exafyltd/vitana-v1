@@ -161,12 +161,13 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
                 <div className="p-3 text-sm text-muted-foreground">No users found</div>
               ) : (
                 filteredUsers.slice(0, 20).map((user) => {
-                  const isSelected = value.userIds?.includes(user.user_id);
+                  const userId = user.user_id;
+                  const isSelected = value.userIds?.includes(userId);
                   return (
                     <button
-                      key={user.user_id}
+                      key={userId}
                       type="button"
-                      onClick={() => toggleUser(user.user_id)}
+                      onClick={() => toggleUser(userId)}
                       className={`flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-muted ${
                         isSelected ? "bg-muted/50" : ""
                       }`}
