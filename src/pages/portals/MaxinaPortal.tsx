@@ -56,17 +56,41 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
-  // OAuth hash processing safety net — if hash is present but user never appears, reload cleanly
+  // OAuth hash processing safety net — poll for session instead of destructive reload
   useEffect(() => {
-    if (!isProcessingOAuth) return;
-    const oauthDeadline = setTimeout(() => {
-      if (!user) {
-        console.warn('[MaxinaPortal] OAuth hash processing stalled after 8s, reloading without hash');
-        window.location.replace('/maxina');
+    if (!isProcessingOAuth || user) return;
+    setOauthTimedOut(false);
+
+    const pollInterval = setInterval(async () => {
+      try {
+        const { data: { session: polledSession } } = await supabase.auth.getSession();
+        if (polledSession) {
+          clearInterval(pollInterval);
+          clearTimeout(deadline);
+          if (hasRedirectedRef.current) return;
+          hasRedirectedRef.current = true;
+          const isMobile = window.innerWidth < 768;
+          const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+          console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
+          setTenantBySlug('maxina').catch(console.warn);
+          navigate(target);
+        }
+      } catch (err) {
+        console.warn('[MaxinaPortal] Session poll error:', err);
       }
-    }, 8000);
-    return () => clearTimeout(oauthDeadline);
-  }, [isProcessingOAuth, user]);
+    }, 1000);
+
+    const deadline = setTimeout(() => {
+      clearInterval(pollInterval);
+      console.warn('[MaxinaPortal] OAuth processing timed out after 15s');
+      setOauthTimedOut(true);
+    }, 15000);
+
+    return () => {
+      clearInterval(pollInterval);
+      clearTimeout(deadline);
+    };
+  }, [isProcessingOAuth, user, navigate, setTenantBySlug, searchParams]);
 
   // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
