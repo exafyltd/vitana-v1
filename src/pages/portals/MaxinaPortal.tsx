@@ -83,8 +83,7 @@ const MaxinaPortal = () => {
 
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const isMobile = window.innerWidth < 768;
-            const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=upcoming';
             console.debug('[MaxinaPortal] OAuth session recovered, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
