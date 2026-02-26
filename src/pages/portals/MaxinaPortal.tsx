@@ -39,6 +39,7 @@ const MaxinaPortal = () => {
   const { setAudioOverlayVisible } = useStreamingState();
   const { startFresh } = useSoundscape();
   const isProcessingOAuth = window.location.hash.includes('access_token');
+  const [oauthTimedOut, setOauthTimedOut] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
