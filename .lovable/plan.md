@@ -1,35 +1,37 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Fix: Mobile Google Sign-In Endless Loading
 
+**Problem:** OAuth `redirectTo` is set to `/maxina` (line 217). After Google auth, the user lands back on the portal page, which must process the hash tokens, switch tenant, prefetch events, and then navigate. This chain stalls on mobile, causing endless loading. Previously it worked because OAuth landed directly on `/comm/events-meetups`.
+
+**Root cause:** The `redirectTo` was changed from the destination route to `/maxina` in a previous fix attempt. The portal's redirect effect (lines 60-91) runs `setTenantBySlug` + prefetch in `Promise.all` with no timeout — if either hangs, `navigate()` never fires.
+
+### Changes in `src/pages/portals/MaxinaPortal.tsx`
+
+**1. Revert `redirectTo` to land directly on destination (line 217)**
+```typescript
+// Before
+const redirectPath = '/maxina';
+
+// After
+const isMobileDevice = window.innerWidth < 768;
+const redirectPath = isMobileDevice ? '/comm/events-meetups?tab=upcoming' : '/home';
 ```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
+
+This bypasses the portal's fragile redirect chain entirely. The hash-aware `AuthGuard` (already in place) prevents premature `/auth` redirects while Supabase processes the tokens.
+
+**2. Add 5-second timeout to the redirect effect (lines 82-88) as a safety net**
+```typescript
+// Wrap Promise.all with Promise.race timeout
+const timeout = new Promise(resolve => setTimeout(resolve, 5000));
+const setup = Promise.all([
+  prefetchPromise,
+  setTenantBySlug('maxina')
+]).catch(err => console.warn('[MaxinaPortal] Setup error:', err));
+
+await Promise.race([setup, timeout]);
+navigate(redirectTo || defaultRedirect);
 ```
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+This ensures that even if a user lands on `/maxina` (e.g., via direct navigation after login), the redirect fires within 5 seconds regardless of tenant switch or prefetch status.
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
-
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
-
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
