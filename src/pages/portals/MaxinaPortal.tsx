@@ -156,7 +156,7 @@ const MaxinaPortal = () => {
         }
 
         // Tenant switch + prefetch with 4s timeout
-        const prefetchPromise = isMobile && activeSession ? (async () => {
+        const prefetchPromise = window.innerWidth < 768 && activeSession ? (async () => {
           const queryClient = (window as any).queryClient;
           if (queryClient) {
             await queryClient.prefetchQuery({
