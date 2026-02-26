@@ -16,7 +16,7 @@ export interface PushNotificationPayload {
   actions?: Array<{ action: string; title: string; icon?: string }>;
 }
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || '';
+const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-86804897789.us-central1.run.app';
 
 class PushNotificationManager {
   private registration: ServiceWorkerRegistration | null = null;
@@ -30,16 +30,24 @@ class PushNotificationManager {
   }
 
   async initialize(): Promise<boolean> {
+    await this.loadMutedThreads();
     if (isAppilix()) {
-      console.log('[Push] Appilix detected — native push mode');
-      await this.loadMutedThreads();
+      console.log('[Push] Appilix detected — trying native push first');
+      // Also register SW as fallback in case native FCM is not configured
+      if (this.isSupported) {
+        try {
+          this.registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+          console.log('[Push] Service Worker registered (Appilix fallback)');
+        } catch {
+          // WebView may not support SW — that's fine, native path is primary
+        }
+      }
       return true;
     }
     if (!this.isSupported) return false;
     try {
       this.registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
       console.log('[Push] Service Worker registered');
-      await this.loadMutedThreads();
       return true;
     } catch (error) {
       console.error('[Push] SW registration failed:', error);
@@ -52,12 +60,23 @@ class PushNotificationManager {
       let token: string | null = null;
       if (isAppilix()) {
         token = await requestNativeFcmToken();
+        if (token) {
+          console.log('[Push] Native FCM token obtained from Appilix');
+        } else {
+          console.log('[Push] Native FCM failed, trying web FCM fallback...');
+        }
       }
       if (!token && this.isSupported) {
         token = await requestFCMToken();
-        if (token) this.setupForegroundHandler();
+        if (token) {
+          console.log('[Push] Web FCM token obtained' + (isAppilix() ? ' (Appilix fallback)' : ''));
+          this.setupForegroundHandler();
+        }
       }
-      if (!token) return null;
+      if (!token) {
+        console.warn('[Push] No FCM token obtained — push notifications unavailable');
+        return null;
+      }
       this.fcmToken = token;
       await this.registerTokenWithBackend(token);
       return token;
