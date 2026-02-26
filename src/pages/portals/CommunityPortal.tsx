@@ -78,6 +78,7 @@ const CommunityPortal = () => {
       if (error) {
         setError(error.message);
       } else {
+        setSignupEmail(email);
         setError("Please check your email to confirm your account.");
       }
     } catch (err) {
