@@ -279,6 +279,9 @@ export default function Auth() {
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
+                  {signInEmailNotConfirmed && signupEmail && (
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.auth)} />
+                  )}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {translate('authPage.signIn', 'Sign In')}
