@@ -47,7 +47,7 @@ export interface TenantMessageThread {
   unread_count: number;
 }
 
-export function useTenantMessages(activeThreadId?: string | null) {
+export function useTenantMessages(activeThreadId?: string | null, forceActive?: boolean) {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { activeTenantId } = useTenant();
@@ -57,7 +57,7 @@ export function useTenantMessages(activeThreadId?: string | null) {
   const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
   // Only use tenant messages for professional roles
-  const isTenantContext = currentRole && ['patient', 'professional', 'staff', 'admin'].includes(currentRole);
+  const isTenantContext = forceActive ?? (currentRole && ['patient', 'professional', 'staff', 'admin'].includes(currentRole));
 
   // React Query for threads - cache-first rendering
   const {

@@ -23,12 +23,13 @@ export type SendMessageArgs = {
  */
 export function useHybridMessages(forceContext?: 'global' | 'tenant', threadId?: string | null) {
   const { currentRole } = useRole();
-  const globalMessages = useGlobalMessages(threadId);
-  const tenantMessages = useTenantMessages(threadId);
 
   // Route to appropriate context based on role or forced context
   const isGlobalContext = forceContext === 'global' || 
     (forceContext !== 'tenant' && currentRole === 'community');
+
+  const globalMessages = useGlobalMessages(threadId, isGlobalContext);
+  const tenantMessages = useTenantMessages(threadId, !isGlobalContext);
   
   const context = isGlobalContext ? 'global' : 'tenant';
   const { typingUsers, startTyping, stopTyping } = useTypingIndicators(threadId, context);
