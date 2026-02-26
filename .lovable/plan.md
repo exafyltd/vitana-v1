@@ -1,32 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Fix: OAuth should always land back on `/maxina`
+### Architecture
 
-### Problem
-OAuth `redirectTo` currently sends mobile users to `/comm/events-meetups`, bypassing the portal's `setTenantBySlug('maxina')` call. New users end up with the wrong tenant (Earthlinks) because `TenantDetector` doesn't recognize `/comm/events-meetups` as a Maxina path.
-
-### Changes in `src/pages/portals/MaxinaPortal.tsx`
-
-**1. Line 220 — Revert `redirectPath` to always use `/maxina`**
-```typescript
-// Before
-const redirectPath = isMobileDevice ? '/comm/events-meetups?tab=upcoming' : '/home';
-
-// After
-const redirectPath = '/maxina';
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-**2. Line 219 — Add `localStorage.setItem('tenant_slug', 'maxina')` before the redirect**
-This ensures `TopAppBar` shows "MAXINA" instantly via `getInstantTenantName` even during the loading transition.
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-```typescript
-localStorage.setItem('tenant_slug', 'maxina');
-const redirectPath = '/maxina';
-```
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-The existing flow handles the rest correctly:
-- OAuth returns to `/maxina#access_token=...`
-- `isProcessingOAuth` shows spinner (no flash)
-- Supabase processes tokens → `user` is set
-- Redirect effect (lines 60-91) runs `setTenantBySlug('maxina')` with 5s timeout → navigates to `/comm/events-meetups` (mobile) or `/home` (desktop)
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
