@@ -37,6 +37,7 @@ const MaxinaPortal = () => {
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
   const { startFresh } = useSoundscape();
+  const isProcessingOAuth = window.location.hash.includes('access_token');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
@@ -232,7 +233,7 @@ const MaxinaPortal = () => {
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  if (authLoading || user) {
+  if (authLoading || user || isProcessingOAuth) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}

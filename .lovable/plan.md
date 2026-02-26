@@ -1,28 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Problem
+### Architecture
 
-On mobile, after Google OAuth redirects back to `/maxina#access_token=...`, there's a brief window where `authLoading=false` and `user=null` (hash tokens not yet processed by Supabase). The portal's guard at line 235 (`if (authLoading || user)`) fails, so the sign-in form renders instead of the loading spinner. The user gets stuck on the sign-in page.
-
-On desktop this works because the timing is slightly different or the page processes faster.
-
-## Fix: One change in `MaxinaPortal.tsx`
-
-**Make the portal page hash-aware**, same pattern as AuthGuard:
-
-At the top of the component (around line 38), add:
-```typescript
-const isProcessingOAuth = window.location.hash.includes('access_token');
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-Then change line 235 from:
-```typescript
-if (authLoading || user) {
-```
-to:
-```typescript
-if (authLoading || user || isProcessingOAuth) {
-```
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-This ensures that when OAuth redirects back with hash tokens, the portal shows the loading spinner (with the video background) instead of the sign-in form, giving `onAuthStateChange` time to process the tokens and set `user`, which then triggers the existing redirect logic at line 59-91.
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
+
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
