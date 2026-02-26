@@ -58,30 +58,40 @@ const MaxinaPortal = () => {
   // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
+  // HARD DEADLINE: always navigate within 6s of detecting user, no dead paths
   useEffect(() => {
-    if (authLoading || !user || hasRedirectedRef.current) return;
+    if (authLoading) return;
+    if (!user && !isProcessingOAuth) return;
+    if (hasRedirectedRef.current) return;
+    // If we have a user, start redirect immediately
+    if (!user) return;
 
-    // If session isn't ready yet (mobile OAuth hydration lag), poll briefly
-    const handleRedirect = async () => {
-      let activeSession = session;
-      if (!activeSession) {
-        // Bounded retry: poll up to 3s for session to hydrate
-        for (let i = 0; i < 6; i++) {
-          await new Promise(r => setTimeout(r, 500));
-          const { data } = await supabase.auth.getSession();
-          if (data.session) { activeSession = data.session; break; }
-        }
-      }
+    hasRedirectedRef.current = true;
+    console.debug('[MaxinaPortal] Redirect started, user:', user.id);
 
-      // Even if session never arrived, navigate anyway to avoid infinite spinner
-      hasRedirectedRef.current = true;
+    const redirectTo = searchParams.get('redirectTo');
+    const isMobile = window.innerWidth < 768;
+    const target = redirectTo || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
 
-      const redirectTo = searchParams.get('redirectTo');
-      const isMobile = window.innerWidth < 768;
-      const defaultRedirect = isMobile ? '/comm/events-meetups?tab=upcoming' : '/home';
+    // Hard deadline: navigate no matter what after 6s
+    const deadlineTimer = setTimeout(() => {
+      console.debug('[MaxinaPortal] Hard deadline reached, navigating to', target);
+      navigate(target);
+    }, 6000);
 
+    const run = async () => {
       try {
-        // Prefetch events in parallel with tenant switch for mobile users
+        // Wait for session if needed (mobile OAuth hydration)
+        let activeSession = session;
+        if (!activeSession) {
+          for (let i = 0; i < 6; i++) {
+            await new Promise(r => setTimeout(r, 500));
+            const { data } = await supabase.auth.getSession();
+            if (data.session) { activeSession = data.session; break; }
+          }
+        }
+
+        // Tenant switch + prefetch with 4s timeout
         const prefetchPromise = isMobile && activeSession ? (async () => {
           const queryClient = (window as any).queryClient;
           if (queryClient) {
@@ -93,22 +103,23 @@ const MaxinaPortal = () => {
           }
         })() : Promise.resolve();
 
-        const timeout = new Promise(resolve => setTimeout(resolve, 5000));
         const setup = Promise.all([
           prefetchPromise,
           setTenantBySlug('maxina')
         ]).catch(err => console.warn('[MaxinaPortal] Setup error:', err));
 
-        await Promise.race([setup, timeout]);
+        await Promise.race([setup, new Promise(r => setTimeout(r, 4000))]);
       } catch (err) {
         console.warn('[MaxinaPortal] Redirect setup failed:', err);
       } finally {
-        navigate(redirectTo || defaultRedirect);
+        clearTimeout(deadlineTimer);
+        console.debug('[MaxinaPortal] Navigating to', target);
+        navigate(target);
       }
     };
 
-    handleRedirect();
-  }, [user, session, authLoading, navigate, setTenantBySlug, searchParams]);
+    run();
+  }, [user, authLoading, navigate, setTenantBySlug, searchParams, session, isProcessingOAuth]);
 
   // Set tenant theme
   useEffect(() => {

@@ -12,8 +12,12 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const { tenant } = useTenant();
   const { pathname } = useLocation();
 
-  const isMaxina = tenant?.slug === 'maxina';
-  const tenantName = tenant?.name || getInstantTenantName(pathname);
+  // Deterministic branding: prefer instant slug from URL/localStorage over async tenant context
+  // This prevents "Earthlinks" flash during Maxina OAuth hydration
+  const instantName = getInstantTenantName(pathname);
+  const tenantName = instantName || tenant?.name || '';
+  const resolvedSlug = instantName ? instantName.toLowerCase() : tenant?.slug;
+  const isMaxina = resolvedSlug === 'maxina';
   const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
 
   let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;

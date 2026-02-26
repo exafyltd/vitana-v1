@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,21 +58,47 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   // Get Exafy admin status
   const isExafyAdmin = user?.app_metadata?.exafy_admin === true;
 
-  // Get active tenant ID from user metadata or fallback to first tenant
+  // Monotonic version counter to prevent stale async overwrites
+  const tenantVersionRef = useRef(0);
+
+  // Get active tenant ID from user metadata or deterministic fallback
+  // Priority: app_metadata → URL slug → localStorage → no forced tenant
   useEffect(() => {
     if (user) {
       const userActiveTenantId = user.app_metadata?.active_tenant_id;
       if (userActiveTenantId) {
+        console.debug('[useTenant] Using app_metadata tenant:', userActiveTenantId);
         setActiveTenantIdState(userActiveTenantId);
       } else {
-        // Fallback to first available tenant
-        const fallbackTenantQuery = async () => {
-          const { data } = await supabase.from('tenants').select('tenant_id').limit(1).single();
-          if (data) {
-            setActiveTenantIdState(data.tenant_id);
+        // Deterministic fallback: URL slug → localStorage → skip
+        const slugFromUrl = (() => {
+          const path = window.location.pathname;
+          for (const slug of Object.keys(TENANT_CONFIGS)) {
+            if (path.startsWith(`/${slug}`)) return slug;
           }
-        };
-        fallbackTenantQuery();
+          return null;
+        })();
+        const slugFromStorage = localStorage.getItem('tenant_slug');
+        const fallbackSlug = slugFromUrl || slugFromStorage;
+
+        if (fallbackSlug) {
+          console.debug('[useTenant] Deterministic fallback to slug:', fallbackSlug);
+          const version = ++tenantVersionRef.current;
+          const resolveTenant = async () => {
+            const { data } = await supabase
+              .from('tenants')
+              .select('tenant_id')
+              .eq('slug', fallbackSlug)
+              .single();
+            // Only apply if no newer call superseded us
+            if (data && tenantVersionRef.current === version) {
+              setActiveTenantIdState(data.tenant_id);
+            }
+          };
+          resolveTenant();
+        } else {
+          console.debug('[useTenant] No tenant fallback available, skipping');
+        }
       }
     }
   }, [user]);
