@@ -6460,7 +6460,7 @@ export type Database = {
           parent_message_id: string | null
           read_at: string | null
           recipient_id: string | null
-          sender_id: string
+          sender_id: string | null
           sent_at: string | null
           tenant_id: string
           thread_id: string | null
@@ -6479,7 +6479,7 @@ export type Database = {
           parent_message_id?: string | null
           read_at?: string | null
           recipient_id?: string | null
-          sender_id: string
+          sender_id?: string | null
           sent_at?: string | null
           tenant_id: string
           thread_id?: string | null
@@ -6498,7 +6498,7 @@ export type Database = {
           parent_message_id?: string | null
           read_at?: string | null
           recipient_id?: string | null
-          sender_id?: string
+          sender_id?: string | null
           sent_at?: string | null
           tenant_id?: string
           thread_id?: string | null
