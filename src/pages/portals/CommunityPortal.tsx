@@ -26,6 +26,7 @@ const CommunityPortal = () => {
   const [selectedTenant, setSelectedTenant] = useState<"maxina" | "alkalma" | "earthlinks">("maxina");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
 
   // Redirect authenticated users to their appropriate dashboard
   useEffect(() => {
