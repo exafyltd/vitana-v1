@@ -79,12 +79,14 @@ const MaxinaPortal = () => {
             }
           })() : Promise.resolve();
           
-          // Run prefetch and tenant switch in parallel
-          await Promise.all([
+          // Run prefetch and tenant switch in parallel with a 5s timeout safety net
+          const timeout = new Promise(resolve => setTimeout(resolve, 5000));
+          const setup = Promise.all([
             prefetchPromise,
             setTenantBySlug('maxina')
-          ]);
+          ]).catch(err => console.warn('[MaxinaPortal] Setup error:', err));
           
+          await Promise.race([setup, timeout]);
           navigate(redirectTo || defaultRedirect);
         }
       });
