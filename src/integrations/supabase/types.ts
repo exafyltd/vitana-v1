@@ -2485,6 +2485,42 @@ export type Database = {
           },
         ]
       }
+      conversation_messages: {
+        Row: {
+          channel: string
+          content: string
+          created_at: string
+          id: string
+          metadata: Json
+          role: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          content: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          role: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          content?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          role?: string
+          tenant_id?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       crew_memory: {
         Row: {
           agent: string
@@ -10747,6 +10783,26 @@ export type Database = {
       }
       generate_voucher_code: { Args: never; Returns: string }
       get_active_role: { Args: never; Returns: string }
+      get_active_thread_messages: {
+        Args: { p_limit?: number; p_thread_id: string }
+        Returns: {
+          channel: string
+          content: string
+          created_at: string
+          id: string
+          metadata: Json
+          role: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "conversation_messages"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
       get_autopilot_recommendations: {
         Args: {
