@@ -41,7 +41,7 @@ export interface GlobalMessageThread {
   unread_count: number;
 }
 
-export function useGlobalMessages(activeThreadId?: string | null) {
+export function useGlobalMessages(activeThreadId?: string | null, forceActive?: boolean) {
   const { user } = useAuth();
   const { currentRole } = useRole();
   const { addEvent } = useCalendarEvents();
@@ -49,8 +49,8 @@ export function useGlobalMessages(activeThreadId?: string | null) {
   const [isSending, setIsSending] = useState(false);
   const [typingUsers, setTypingUsers] = useState<Array<{ id: string; name: string; avatar?: string }>>([]);
 
-  // Only use global messages for community users
-  const isGlobalContext = currentRole === 'community';
+  // Use global messages when forced active by useHybridMessages, or for community users
+  const isGlobalContext = forceActive ?? (currentRole === 'community');
 
   // React Query for threads - cache-first rendering
   const {

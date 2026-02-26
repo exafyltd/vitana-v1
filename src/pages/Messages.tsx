@@ -58,9 +58,23 @@ export default function Messages() {
   const { translate } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
+  // Default to the context matching the user's role to avoid mismatches
+  const defaultCtx = currentRole === 'community' || !currentRole ? 'global' : 'tenant';
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(defaultCtx);
   const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
+
+  // Sync context when role finishes loading (avoids stale default)
+  const roleLoadedRef = React.useRef(false);
+  useEffect(() => {
+    if (currentRole && !roleLoadedRef.current) {
+      roleLoadedRef.current = true;
+      const correctCtx = currentRole === 'community' ? 'global' : 'tenant';
+      if (correctCtx !== messageContext) {
+        setMessageContext(correctCtx);
+      }
+    }
+  }, [currentRole]);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
