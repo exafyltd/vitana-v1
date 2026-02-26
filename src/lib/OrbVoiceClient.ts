@@ -40,6 +40,10 @@ export class OrbVoiceClient {
   private readonly SILENCE_THRESHOLD = 0.02;
   private readonly SILENCE_DURATION_MS = 1500;
 
+  // Track consecutive send failures to detect broken sessions
+  private consecutiveSendErrors: number = 0;
+  private readonly MAX_SEND_ERRORS = 5;
+
   // Gateway configuration
   private readonly GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
   private readonly SAMPLE_RATE_IN = 16000;  // Input to gateway
@@ -343,7 +347,7 @@ export class OrbVoiceClient {
     const base64 = btoa(binary);
 
     try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
+      const resp = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
         headers: this.getAuthHeaders(),
         body: JSON.stringify({
@@ -353,8 +357,29 @@ export class OrbVoiceClient {
           mime: 'audio/pcm;rate=16000'
         })
       });
+
+      if (resp.ok) {
+        this.consecutiveSendErrors = 0;
+      } else {
+        this.consecutiveSendErrors++;
+        if (this.consecutiveSendErrors === 1) {
+          console.warn(`[OrbVoiceClient] Send failed: status=${resp.status}`);
+        }
+        if (this.consecutiveSendErrors >= this.MAX_SEND_ERRORS) {
+          console.error(`[OrbVoiceClient] ${this.consecutiveSendErrors} consecutive send failures (status=${resp.status}) — session broken, stopping`);
+          this.callbacks.onError?.('Voice connection lost — please try again');
+          this.stop();
+          return;
+        }
+      }
     } catch (e) {
-      console.warn('[OrbVoiceClient] Failed to send audio chunk');
+      this.consecutiveSendErrors++;
+      if (this.consecutiveSendErrors >= this.MAX_SEND_ERRORS) {
+        console.error(`[OrbVoiceClient] ${this.consecutiveSendErrors} consecutive send failures (network) — session broken, stopping`);
+        this.callbacks.onError?.('Voice connection lost — please try again');
+        this.stop();
+        return;
+      }
     }
   }
 

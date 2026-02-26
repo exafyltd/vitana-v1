@@ -2125,6 +2125,42 @@ export type Database = {
         }
         Relationships: []
       }
+      community_group_invitations: {
+        Row: {
+          created_at: string
+          group_id: string
+          id: string
+          invited_by: string
+          invited_user_id: string
+          message: string | null
+          responded_at: string | null
+          status: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          group_id: string
+          id?: string
+          invited_by: string
+          invited_user_id: string
+          message?: string | null
+          responded_at?: string | null
+          status?: string
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          group_id?: string
+          id?: string
+          invited_by?: string
+          invited_user_id?: string
+          message?: string | null
+          responded_at?: string | null
+          status?: string
+          tenant_id?: string
+        }
+        Relationships: []
+      }
       community_live_streams: {
         Row: {
           access_level: string | null
@@ -9410,6 +9446,7 @@ export type Database = {
           data: Json | null
           id: string
           priority: string
+          push_sent_at: string | null
           read_at: string | null
           tenant_id: string
           title: string
@@ -9423,6 +9460,7 @@ export type Database = {
           data?: Json | null
           id?: string
           priority?: string
+          push_sent_at?: string | null
           read_at?: string | null
           tenant_id: string
           title: string
@@ -9436,6 +9474,7 @@ export type Database = {
           data?: Json | null
           id?: string
           priority?: string
+          push_sent_at?: string | null
           read_at?: string | null
           tenant_id?: string
           title?: string
