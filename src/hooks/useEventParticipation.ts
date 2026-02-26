@@ -26,26 +26,21 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const { toast } = useToast();
   const { addEvent, removeEvent } = useCalendarEvents();
 
-  // Check if user is already participating - re-runs when AuthProvider confirms user
+  // Check if user is already participating.
+  // Depends on session?.access_token so the check re-runs after re-login
+  // (user?.id alone can be the same value after logout/login with the same account).
   useEffect(() => {
     const checkParticipation = async () => {
-      if (!eventId || !isValidUUID(eventId) || !user?.id) {
+      if (!eventId || !isValidUUID(eventId) || !user?.id || !session) {
         setIsParticipating(false);
         return;
       }
 
       try {
-        // Ensure the Supabase client has the latest token before querying
-        const { data: sessionData } = await supabase.auth.getSession();
-        if (!sessionData.session) {
-          setIsParticipating(false);
-          return;
-        }
-
         const { data, error } = await supabase
           .from('global_event_participants')
           .select('*')
@@ -65,9 +60,10 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     };
 
     checkParticipation();
-  }, [eventId, user?.id]);
+  }, [eventId, user?.id, session?.access_token]);
 
-  // Subscribe to real-time participant count updates
+  // Subscribe to real-time participant changes.
+  // Updates BOTH participantCount AND isParticipating for the current user.
   useEffect(() => {
     if (!eventId || !isValidUUID(eventId)) return;
 
@@ -81,8 +77,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           table: 'global_event_participants',
           filter: `event_id=eq.${eventId}`
         },
-        async (payload) => {
-          // Refetch participant count
+        async () => {
           const { data, error } = await supabase
             .from('global_event_participants')
             .select('*', { count: 'exact' })
@@ -91,6 +86,14 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
 
           if (!error && data !== null) {
             setParticipantCount(data.length);
+
+            // Also update isParticipating for the current user
+            if (user?.id) {
+              const userIsAttending = data.some(
+                (row: any) => row.user_id === user.id
+              );
+              setIsParticipating(userIsAttending);
+            }
           }
         }
       )
@@ -99,7 +102,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [eventId]);
+  }, [eventId, user?.id]);
 
   const toggleParticipation = async () => {
     if (loading || !isValidUUID(eventId)) return;

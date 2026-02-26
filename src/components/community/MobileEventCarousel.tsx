@@ -162,6 +162,7 @@ export function MobileEventCarousel({
       timestamp: formatEventTime(event.start_time),
       price: event.metadata?.is_paid ? Number(event.metadata?.price || 0) : ('free' as const),
       eventId: event.id,
+      eventType: event.event_type,
       showSmartAction: true,
       hasTickets,
       isPaidEvent,
