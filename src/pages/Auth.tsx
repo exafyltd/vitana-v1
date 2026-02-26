@@ -13,6 +13,7 @@ import SEO from '@/components/SEO';
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { z } from 'zod';
 import { useTranslation } from '@/hooks/useTranslation';
+import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 
 // Input validation schemas
 const emailSchema = z.string()
