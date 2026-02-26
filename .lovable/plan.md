@@ -1,38 +1,35 @@
-
-
-## Remove Appearance Theme & Center Role Badge in Profile Drawer
-
-### Changes — 1 file
-
-**`src/components/profile/ProfileDrawer.tsx`**
-
-#### 1. Remove the Appearance Theme section (lines 155-203)
-Delete the entire Theme Switcher block: the `<Separator />`, the label with `Palette` icon, and the 3-button grid (Serenity / Focus / Expression). This removes ~48 lines.
-
-#### 2. Center the "Community" role badge under the avatar and name
-Currently the badge is inside a `space-y-1` div alongside the `DrawerTitle`. The structure is:
-```
-<div className="flex flex-col items-center gap-3 mb-2">
-  <Avatar />
-  <div className="space-y-1">
-    <DrawerTitle>Name</DrawerTitle>
-    <Badge>Community</Badge>  ← inside space-y-1, not explicitly centered
-  </div>
-</div>
-```
-
-Change the inner div to explicitly center content:
-```
-<div className="space-y-1 flex flex-col items-center">
-```
-
-This ensures the role badge is horizontally centered beneath the name on all screen sizes.
-
-#### 3. Clean up unused imports
-Remove `Palette`, `Check` from lucide-react imports and `useProfileTheme, ProfileTheme` from hook imports since the theme switcher is gone. Also remove `theme`, `setTheme`, `themeLoading` from the destructured hook call (line 54).
+## Chat / Direct Messaging — Gateway API Rewire
 
 ### Summary
-- **Removed**: Appearance Theme switcher (Serenity/Focus/Expression buttons)
-- **Centered**: Role badge explicitly centered under avatar + name
-- **Cleaned**: Unused imports (`Palette`, `Check`, `useProfileTheme`, `ProfileTheme`)
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
+### Architecture
+
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
+```
+
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
+
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
