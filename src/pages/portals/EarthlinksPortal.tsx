@@ -314,9 +314,12 @@ const EarthlinksPortal = () => {
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
                     {error && (
-                      <Alert variant="destructive">
+                      <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
+                    )}
+                    {signupEmail && error?.includes('check your email') && (
+                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.earthlinks)} />
                     )}
                     
                     <div className="space-y-2">

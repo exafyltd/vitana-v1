@@ -458,9 +458,12 @@ const MaxinaPortal = () => {
                 <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
                   <form onSubmit={handleSignUp} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant="destructive" className="py-2">
+                      <Alert variant={error.includes('check your email') || error.includes('confirm') ? 'default' : 'destructive'} className="py-2">
                         <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
+                    )}
+                    {signupEmail && error?.includes('check your email') && (
+                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.maxina)} />
                     )}
                     
                     <div className="space-y-1.5">

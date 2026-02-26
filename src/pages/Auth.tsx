@@ -393,11 +393,14 @@ export default function Auth() {
                       </Button>
                     </div>
                   </div>
-                  {error && (
+                   {error && (
                     <Alert variant={error.startsWith('✅') ? 'default' : error.includes('check your email') ? 'default' : 'destructive'}
                            className={error.startsWith('✅') ? 'border-green-500 bg-green-50 text-green-700' : ''}>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
+                  )}
+                  {signupEmail && error?.startsWith('✅') && (
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.auth)} />
                   )}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
