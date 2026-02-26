@@ -155,7 +155,7 @@ export function RecipientSelector({ value, onChange, tenantId }: RecipientSelect
           {/* Search results */}
           {search && (
             <div className="max-h-48 overflow-y-auto rounded-md border">
-              {loading ? (
+              {isLoading ? (
                 <div className="p-3 text-sm text-muted-foreground">Loading...</div>
               ) : filteredUsers.length === 0 ? (
                 <div className="p-3 text-sm text-muted-foreground">No users found</div>
