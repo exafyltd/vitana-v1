@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Drawer,
   DrawerContent,
@@ -195,6 +196,7 @@ export function MeetupDetailsDrawer({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [userHasTicket, setUserHasTicket] = useState(false);
   const [isTicketSectionVisible, setIsTicketSectionVisible] = useState(false);
+  const [liveParticipantCount, setLiveParticipantCount] = useState<number | null>(null);
   
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
@@ -205,6 +207,24 @@ export function MeetupDetailsDrawer({
   const navigate = useNavigate();
   const { user } = useAuth();
   const { translate, isGerman } = useTranslation();
+  const queryClient = useQueryClient();
+
+  // Invalidate events cache so list cards update immediately
+  const invalidateEventsCache = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['global-community-events'] });
+  }, [queryClient]);
+
+  // Sync participant count back to global_community_events table
+  const syncEventParticipantCount = useCallback(async (eventId: string, count: number) => {
+    try {
+      await supabase
+        .from('global_community_events')
+        .update({ participant_count: count })
+        .eq('id', eventId);
+    } catch (err) {
+      console.error('[MeetupDrawer] Failed to sync participant count:', err);
+    }
+  }, []);
   
   // Fetch ticket types for the event
   const { ticketTypes, loading: ticketsLoading } = useEventTicketTypes(event?.id || '');
@@ -328,6 +348,43 @@ export function MeetupDetailsDrawer({
     checkParticipation();
   }, [open, event?.id, user]);
 
+  // Realtime subscription for live participant count
+  useEffect(() => {
+    if (!open || !event?.id) return;
+
+    // Initialize from event prop
+    setLiveParticipantCount(event.participant_count || 0);
+
+    const channel = supabase
+      .channel(`drawer-participants-${event.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'global_event_participants',
+          filter: `event_id=eq.${event.id}`
+        },
+        async () => {
+          // Refetch actual count
+          const { data, error } = await supabase
+            .from('global_event_participants')
+            .select('id', { count: 'exact' })
+            .eq('event_id', event.id)
+            .eq('status', 'attending');
+
+          if (!error && data !== null) {
+            setLiveParticipantCount(data.length);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [open, event?.id]);
+
   // Track event changes for transitions
   useEffect(() => {
     if (event?.id && event.id !== previousEventId) {
@@ -412,7 +469,12 @@ export function MeetupDetailsDrawer({
       const addedEvent = await addEvent(calendarEvent, { showToast: false });
       
       setIsJoined(true);
+      setLiveParticipantCount(prev => (prev ?? 0) + 1);
       setIsJoining(false);
+      // Sync count to DB and invalidate cache
+      const newCount = (liveParticipantCount ?? (event.participant_count || 0)) + 1;
+      syncEventParticipantCount(event.id, newCount);
+      invalidateEventsCache();
       
       toast({
         title: "Added to Smart Calendar ✓",
@@ -431,6 +493,8 @@ export function MeetupDetailsDrawer({
                 .eq('user_id', user.id);
               await removeEvent(addedEvent.id);
               setIsJoined(false);
+              setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
+              invalidateEventsCache();
               toast({
                 title: "Removed from calendar",
                 description: "You've left this meetup.",
@@ -546,7 +610,7 @@ export function MeetupDetailsDrawer({
   };
 
   const capacity = event.max_participants || 30;
-  const current = event.participant_count || 0;
+  const current = liveParticipantCount ?? (event.participant_count || 0);
   const capacityPercent = (current / capacity) * 100;
   const spotsLeft = capacity - current;
   const isLowCapacity = spotsLeft > 0 && spotsLeft <= capacity * 0.2;
@@ -1399,6 +1463,11 @@ export function MeetupDetailsDrawer({
                     }
                     
                     setIsJoined(false);
+                    setLiveParticipantCount(prev => Math.max(0, (prev ?? 1) - 1));
+                    // Sync count to DB and invalidate cache
+                    const newCancelCount = Math.max(0, (liveParticipantCount ?? (event.participant_count || 0)) - 1);
+                    syncEventParticipantCount(event.id, newCancelCount);
+                    invalidateEventsCache();
                      toast({
                        title: ctaConfig.action === 'leave' ? translate('eventDrawer.leftMeetup', 'Left MeetUp') : translate('eventDrawer.reservationCancelled', 'Reservation Cancelled'),
                        description: translate('eventDrawer.removedFromEvent', "You've been removed from this event."),
