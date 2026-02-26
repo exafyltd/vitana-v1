@@ -37,6 +37,7 @@ const MaxinaPortal = () => {
   const { expandToFull } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
   const { startFresh } = useSoundscape();
+  const isProcessingOAuth = window.location.hash.includes('access_token');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
