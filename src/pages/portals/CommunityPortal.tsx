@@ -13,6 +13,7 @@ import { Loader2, Users, Heart, BookOpen, Leaf, Eye, EyeOff } from "lucide-react
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 
 const CommunityPortal = () => {
   const { user, loading: authLoading } = useAuth();
