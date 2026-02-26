@@ -64,7 +64,7 @@ export function useAdminUsers(options?: UseAdminUsersOptions) {
       if (error) throw error;
 
       return {
-        users: (data as AppUser[]) ?? [],
+        users: (data as unknown as AppUser[]) ?? [],
         total: count ?? 0,
       };
     },
