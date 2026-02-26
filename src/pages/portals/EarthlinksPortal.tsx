@@ -14,6 +14,7 @@ import { Loader2, Leaf, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-r
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 
 const EarthlinksPortal = () => {
   const { user, loading: authLoading } = useAuth();
