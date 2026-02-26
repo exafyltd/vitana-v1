@@ -55,16 +55,26 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
+  // OAuth hash processing safety net — if hash is present but user never appears, reload cleanly
+  useEffect(() => {
+    if (!isProcessingOAuth) return;
+    const oauthDeadline = setTimeout(() => {
+      if (!user) {
+        console.warn('[MaxinaPortal] OAuth hash processing stalled after 8s, reloading without hash');
+        window.location.replace('/maxina');
+      }
+    }, 8000);
+    return () => clearTimeout(oauthDeadline);
+  }, [isProcessingOAuth, user]);
+
   // Switch to maxina tenant if already authenticated
   // Default post-login redirect to Events → Upcoming on mobile
   // Prefetch events BEFORE navigation for instant first paint
   // HARD DEADLINE: always navigate within 6s of detecting user, no dead paths
   useEffect(() => {
     if (authLoading) return;
-    if (!user && !isProcessingOAuth) return;
-    if (hasRedirectedRef.current) return;
-    // If we have a user, start redirect immediately
     if (!user) return;
+    if (hasRedirectedRef.current) return;
 
     hasRedirectedRef.current = true;
     console.debug('[MaxinaPortal] Redirect started, user:', user.id);
