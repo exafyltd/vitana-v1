@@ -6,17 +6,20 @@ interface UserTenant {
   tenant_id: string;
   user_id: string;
   active_role: string;
-  status: string;
-  created_at: string;
-}
-
-interface AppUser {
-  id: string;
-  email: string;
-  display_name: string | null;
-  avatar_url: string | null;
+  is_primary: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface AppUser {
+  user_id: string;
+  email: string | null;
+  display_name: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  tenant_id: string;
+  profile: any;
   user_tenants: UserTenant[];
 }
 
@@ -61,7 +64,7 @@ export function useAdminUsers(options?: UseAdminUsersOptions) {
       if (error) throw error;
 
       return {
-        users: (data as AppUser[]) ?? [],
+        users: (data as unknown as AppUser[]) ?? [],
         total: count ?? 0,
       };
     },
