@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTenant } from "@/hooks/useTenant";
+import { useAuth } from "@/context/AuthProvider";
 
 /**
  * Component to detect tenant from URL and update context
  * Must be used inside Router context
+ * Re-evaluates when auth session becomes available (critical for OAuth returns)
  */
 export function TenantDetector() {
   const location = useLocation();
   const { setTenantBySlug, tenant } = useTenant();
+  const { user } = useAuth();
 
   useEffect(() => {
     const getTenantSlugFromPath = (): string | null => {
@@ -21,14 +24,14 @@ export function TenantDetector() {
     const urlTenantSlug = getTenantSlugFromPath();
     
     // Always prioritize URL-based tenant detection
-    // This allows users to switch tenants by navigating to different portal URLs
+    // Re-triggers when user becomes available (post-OAuth) so tenant is set correctly
     if (urlTenantSlug) {
-      // Check if we need to switch to a different tenant
       if (tenant?.slug !== urlTenantSlug) {
+        console.debug('[TenantDetector] Switching to', urlTenantSlug, 'user:', !!user);
         setTenantBySlug(urlTenantSlug);
       }
     }
-  }, [location.pathname, setTenantBySlug, tenant?.slug]);
+  }, [location.pathname, setTenantBySlug, tenant?.slug, user]);
 
-  return null; // This component doesn't render anything
+  return null;
 }
