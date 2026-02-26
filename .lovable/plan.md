@@ -1,35 +1,47 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
+Goal: stop the mobile OAuth “endless loading until pull-to-refresh” on Maxina while always landing through `/maxina`.
 
-### Architecture
+Root cause confirmed
+1) `MaxinaPortal` blocks on `authLoading || user || isProcessingOAuth`, so it shows spinner until navigation runs.
+2) Redirect logic is one-shot and gated by `supabase.auth.getSession()` inside effect. On some mobile OAuth returns, this first call can be temporarily empty/not-ready even though auth state soon stabilizes.
+3) If that one-shot gate misses, no follow-up retry runs, so spinner persists; manual refresh re-runs startup and then navigation succeeds.
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+Implementation plan
+1) Update `src/pages/portals/MaxinaPortal.tsx` redirect effect to be session-driven and retry-safe.
+   - Use `session` from `useAuth()` (instead of one-shot `supabase.auth.getSession()` gate).
+   - Add `hasRedirectedRef` guard to prevent duplicate navigations.
+   - Trigger redirect when `!authLoading && user && (session || !isProcessingOAuth)` with bounded fallback.
+2) Add bounded retry for session readiness.
+   - If `user` exists but `session` is still null, poll `supabase.auth.getSession()` for up to ~2–3s (short interval) before continuing.
+   - This handles mobile OAuth hydration lag without hanging forever.
+3) Keep tenant enforcement + timeout, but move navigation to `finally`.
+   - Run `setTenantBySlug('maxina')` and mobile prefetch in parallel.
+   - Keep existing 5s safety timeout (`Promise.race`) so setup can never block forever.
+   - Always call `navigate(target)` in `finally` (once, guarded by ref), even if setup errors.
+4) Preserve “always land on Maxina” behavior.
+   - Keep `handleSocialLogin` with:
+     - `localStorage.setItem('tenant_slug', 'maxina')`
+     - `redirectPath = '/maxina'`
+   - Do not change this.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+Technical details
+- File: `src/pages/portals/MaxinaPortal.tsx`
+- Precise refactor points:
+  - `const { user, loading: authLoading } = useAuth();` → include `session`.
+  - Replace `supabase.auth.getSession().then(...)` wrapper in the main redirect `useEffect`.
+  - Add:
+    - `const hasRedirectedRef = useRef(false);`
+    - optional `waitForSessionReady()` helper (local to component/effect).
+  - Keep existing mobile default target:
+    - `/comm/events-meetups?tab=upcoming` on mobile, `/home` on desktop.
+- Safety behavior:
+  - Never infinite spinner due to missed one-shot session check.
+  - Never duplicate redirect due to ref guard.
+  - Tenant switch still attempted before leaving portal, but cannot trap user.
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
-
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
-
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+Validation plan
+1) Mobile first-time Google signup on `/maxina` with a brand-new account.
+2) Confirm flow: Google chooser → returns to `/maxina#...` → spinner briefly → auto lands `/comm/events-meetups?tab=upcoming`.
+3) Confirm app bar brand is `Maxina` on first load (no refresh).
+4) Repeat on slower network (throttled) to verify no endless loading.
+5) Regression check: desktop OAuth still lands `/home`; email/password signin still works.
