@@ -28,6 +28,7 @@ const EarthlinksPortal = () => {
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
 
   // Switch to earthlinks tenant if already authenticated
   useEffect(() => {
