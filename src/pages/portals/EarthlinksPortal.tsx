@@ -14,6 +14,7 @@ import { Loader2, Leaf, Users, Stethoscope, Shield, Eye, EyeOff } from "lucide-r
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 
 const EarthlinksPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -27,6 +28,7 @@ const EarthlinksPortal = () => {
   const [selectedRole, setSelectedRole] = useState<"community" | "patient" | "professional" | "admin">("community");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
 
   // Switch to earthlinks tenant if already authenticated
   useEffect(() => {
@@ -109,13 +111,13 @@ const EarthlinksPortal = () => {
       });
 
       if (error) {
-        // Handle case where user already exists but tries to sign up again
         if (error.message.includes('already registered')) {
           setError("This email is already registered. Please sign in or try switching to this tenant if you're already logged in.");
         } else {
           setError(error.message);
         }
       } else {
+        setSignupEmail(email);
         setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the Earthlinks portal.");
       }
     } catch (err) {
@@ -312,9 +314,12 @@ const EarthlinksPortal = () => {
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
                     {error && (
-                      <Alert variant="destructive">
+                      <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
+                    )}
+                    {signupEmail && error?.includes('check your email') && (
+                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.earthlinks)} />
                     )}
                     
                     <div className="space-y-2">

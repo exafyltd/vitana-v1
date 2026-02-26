@@ -13,6 +13,7 @@ import { Loader2, Users, Heart, BookOpen, Leaf, Eye, EyeOff } from "lucide-react
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 
 const CommunityPortal = () => {
   const { user, loading: authLoading } = useAuth();
@@ -25,6 +26,7 @@ const CommunityPortal = () => {
   const [selectedTenant, setSelectedTenant] = useState<"maxina" | "alkalma" | "earthlinks">("maxina");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
 
   // Redirect authenticated users to their appropriate dashboard
   useEffect(() => {
@@ -76,6 +78,7 @@ const CommunityPortal = () => {
       if (error) {
         setError(error.message);
       } else {
+        setSignupEmail(email);
         setError("Please check your email to confirm your account.");
       }
     } catch (err) {
@@ -289,9 +292,12 @@ const CommunityPortal = () => {
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
                     {error && (
-                      <Alert variant="destructive">
+                      <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
+                    )}
+                    {signupEmail && error?.includes('check your email') && (
+                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.community)} />
                     )}
                     
                     <div className="space-y-2">

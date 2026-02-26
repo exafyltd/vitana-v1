@@ -13,6 +13,7 @@ import SEO from '@/components/SEO';
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { z } from 'zod';
 import { useTranslation } from '@/hooks/useTranslation';
+import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 
 // Input validation schemas
 const emailSchema = z.string()
@@ -82,6 +83,8 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
+  const [signInEmailNotConfirmed, setSignInEmailNotConfirmed] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -136,6 +139,9 @@ export default function Auth() {
 
       console.log('[Auth] Sign up successful');
 
+      // Track email for resend button
+      setSignupEmail(emailValidation.data);
+      
       // Show success message for email verification
       setError('✅ Registration successful! Please check your email for a confirmation link to activate your account.');
       
@@ -177,9 +183,14 @@ export default function Auth() {
 
       if (signInError) {
         console.error('[Auth] Sign in error:', signInError);
+        if (signInError.message?.includes('Email not confirmed')) {
+          setSignInEmailNotConfirmed(true);
+          setSignupEmail(emailValidation.data);
+        }
         throw signInError;
       }
 
+      setSignInEmailNotConfirmed(false);
       console.log('[Auth] Sign in successful');
       navigate('/home');
       
@@ -272,6 +283,9 @@ export default function Auth() {
                            className={error.startsWith('✅') ? 'border-green-500 bg-green-50 text-green-700' : ''}>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
+                  )}
+                  {signInEmailNotConfirmed && signupEmail && (
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.auth)} />
                   )}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -384,11 +398,14 @@ export default function Auth() {
                       </Button>
                     </div>
                   </div>
-                  {error && (
+                   {error && (
                     <Alert variant={error.startsWith('✅') ? 'default' : error.includes('check your email') ? 'default' : 'destructive'}
                            className={error.startsWith('✅') ? 'border-green-500 bg-green-50 text-green-700' : ''}>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
+                  )}
+                  {signupEmail && error?.startsWith('✅') && (
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.auth)} />
                   )}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

@@ -26,6 +26,7 @@ import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
 import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ResendConfirmationButton } from "@/components/auth/ResendConfirmationButton";
 
 const MaxinaPortal = () => {
   const { translate } = useTranslation();
@@ -45,6 +46,7 @@ const MaxinaPortal = () => {
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
@@ -198,6 +200,7 @@ const MaxinaPortal = () => {
       if (error) {
         setError(error.message);
       } else {
+        setSignupEmail(email);
         setError(translate('portals.maxina.checkEmail', "Please check your email to confirm your account."));
       }
     } catch (err) {
@@ -455,9 +458,12 @@ const MaxinaPortal = () => {
                 <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
                   <form onSubmit={handleSignUp} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant="destructive" className="py-2">
+                      <Alert variant={error.includes('check your email') || error.includes('confirm') ? 'default' : 'destructive'} className="py-2">
                         <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
+                    )}
+                    {signupEmail && error?.includes('check your email') && (
+                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.maxina)} />
                     )}
                     
                     <div className="space-y-1.5">
