@@ -10,11 +10,13 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
+  const isProcessingOAuth = window.location.hash.includes('access_token');
+
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !user && !isProcessingOAuth) {
       navigate('/auth');
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, isProcessingOAuth]);
 
   if (loading) {
     return (
