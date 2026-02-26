@@ -183,9 +183,14 @@ export default function Auth() {
 
       if (signInError) {
         console.error('[Auth] Sign in error:', signInError);
+        if (signInError.message?.includes('Email not confirmed')) {
+          setSignInEmailNotConfirmed(true);
+          setSignupEmail(emailValidation.data);
+        }
         throw signInError;
       }
 
+      setSignInEmailNotConfirmed(false);
       console.log('[Auth] Sign in successful');
       navigate('/home');
       
