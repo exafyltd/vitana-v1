@@ -83,8 +83,7 @@ const MaxinaPortal = () => {
 
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const isMobile = window.innerWidth < 768;
-            const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=upcoming';
             console.debug('[MaxinaPortal] OAuth session recovered, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -100,8 +99,7 @@ const MaxinaPortal = () => {
             window.history.replaceState(null, '', window.location.pathname + window.location.search);
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const isMobile = window.innerWidth < 768;
-            const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=upcoming';
             console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -137,8 +135,7 @@ const MaxinaPortal = () => {
     console.debug('[MaxinaPortal] Redirect started, user:', user.id);
 
     const redirectTo = searchParams.get('redirectTo');
-    const isMobile = window.innerWidth < 768;
-    const target = redirectTo || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+    const target = redirectTo || '/comm/events-meetups?tab=upcoming';
 
     // Hard deadline: navigate no matter what after 6s
     const deadlineTimer = setTimeout(() => {
@@ -159,7 +156,7 @@ const MaxinaPortal = () => {
         }
 
         // Tenant switch + prefetch with 4s timeout
-        const prefetchPromise = isMobile && activeSession ? (async () => {
+        const prefetchPromise = window.innerWidth < 768 && activeSession ? (async () => {
           const queryClient = (window as any).queryClient;
           if (queryClient) {
             await queryClient.prefetchQuery({

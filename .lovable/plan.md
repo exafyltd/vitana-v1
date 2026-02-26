@@ -1,38 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Root Cause: Navigation Loop on Desktop
-
-**MaxinaPortal** navigates authenticated desktop users to `/home` (line 87, 104, 141 in MaxinaPortal).
-
-But **`useSmartRouting`** (line 64-65, 108) intercepts `/home` for Maxina tenant users on desktop and navigates them **back to `/maxina`**:
+### Architecture
 
 ```
-navigate(isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina");
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-This creates an infinite loop:
-```text
-/maxina → user truthy → navigate('/home')
-  → /home → useSmartRouting → navigate('/maxina')
-    → /maxina → user truthy → navigate('/home')
-      → ∞ endless spinner
-```
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-On mobile it works because both MaxinaPortal and useSmartRouting agree on `/comm/events-meetups?tab=upcoming`.
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-## Fix
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-**Single change in `src/pages/portals/MaxinaPortal.tsx`**: Change the desktop redirect target from `/home` to `/comm/events-meetups?tab=upcoming` (same as mobile). This eliminates the loop since the user lands on a real content page.
-
-Three locations to update:
-1. **Line 87** (OAuth recovery): `const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');` → remove the ternary, always use `/comm/events-meetups?tab=upcoming`
-2. **Line 104** (OAuth polling fallback): same change
-3. **Line 141** (main redirect effect): same change
-
-All three become:
-```typescript
-const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=upcoming';
-```
-
-The `isMobile` check and `/home` target are removed entirely.
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
