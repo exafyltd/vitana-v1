@@ -111,13 +111,13 @@ const AlkalmaPortal = () => {
       });
 
       if (error) {
-        // Handle case where user already exists but tries to sign up again
         if (error.message.includes('already registered')) {
           setError("This email is already registered. Please sign in or try switching to this tenant if you're already logged in.");
         } else {
           setError(error.message);
         }
       } else {
+        setSignupEmail(email);
         setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the AlKalma portal.");
       }
     } catch (err) {
