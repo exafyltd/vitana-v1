@@ -135,8 +135,7 @@ const MaxinaPortal = () => {
     console.debug('[MaxinaPortal] Redirect started, user:', user.id);
 
     const redirectTo = searchParams.get('redirectTo');
-    const isMobile = window.innerWidth < 768;
-    const target = redirectTo || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+    const target = redirectTo || '/comm/events-meetups?tab=upcoming';
 
     // Hard deadline: navigate no matter what after 6s
     const deadlineTimer = setTimeout(() => {
