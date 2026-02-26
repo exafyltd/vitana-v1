@@ -79,12 +79,14 @@ const MaxinaPortal = () => {
             }
           })() : Promise.resolve();
           
-          // Run prefetch and tenant switch in parallel
-          await Promise.all([
+          // Run prefetch and tenant switch in parallel with a 5s timeout safety net
+          const timeout = new Promise(resolve => setTimeout(resolve, 5000));
+          const setup = Promise.all([
             prefetchPromise,
             setTenantBySlug('maxina')
-          ]);
+          ]).catch(err => console.warn('[MaxinaPortal] Setup error:', err));
           
+          await Promise.race([setup, timeout]);
           navigate(redirectTo || defaultRedirect);
         }
       });
@@ -214,7 +216,8 @@ const MaxinaPortal = () => {
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
       // Detect mobile via screen width (matches useIsMobile hook breakpoint)
-      const redirectPath = '/maxina';
+      const isMobileDevice = window.innerWidth < 768;
+      const redirectPath = isMobileDevice ? '/comm/events-meetups?tab=upcoming' : '/home';
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
