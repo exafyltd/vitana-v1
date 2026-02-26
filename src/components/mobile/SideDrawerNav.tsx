@@ -26,6 +26,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Array<{ user_id: string; display_name: string | null; avatar_url: string | null }>>([]);
   const [searching, setSearching] = useState(false);
+  const { unreadCount } = useChatUnreadCount();
 
   const isMaxina = tenant?.slug === 'maxina';
   const tenantName = tenant?.name || getInstantTenantName(location.pathname);
