@@ -83,6 +83,8 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [signupEmail, setSignupEmail] = useState<string | null>(null);
+  const [signInEmailNotConfirmed, setSignInEmailNotConfirmed] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
