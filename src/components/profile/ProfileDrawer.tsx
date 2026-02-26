@@ -61,39 +61,34 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
     : membershipRoles || [];
 
-  const handleRoleChange = async (newRole: UserRole) => {
-    try {
-      await setRole(newRole);
-      
-      // Close drawer immediately after role change
-      const drawerCloseButton = document.querySelector('[data-vaul-drawer-close]') as HTMLButtonElement;
-      if (drawerCloseButton) {
-        drawerCloseButton.click();
-      }
-      
-      // Small delay to ensure drawer closes before navigation
-      setTimeout(() => {
-        // Navigation logic based on new role
-        switch (newRole) {
-          case "admin":
-          case "staff":
-            navigate("/admin");
-            break;
-          case "professional":
-            navigate("/professional/dashboard"); 
-            break;
-          case "patient":
-            navigate("/patient/dashboard");
-            break;
-          case "community":
-          default:
-            navigate("/home");
-            break;
-        }
-      }, 100);
-    } catch (error) {
-      console.error('Error setting role:', error);
+  const handleRoleChange = (newRole: UserRole) => {
+    setRole(newRole);
+    
+    // Close drawer immediately
+    const drawerCloseButton = document.querySelector('[data-vaul-drawer-close]') as HTMLButtonElement;
+    if (drawerCloseButton) {
+      drawerCloseButton.click();
     }
+    
+    // Navigate immediately
+    setTimeout(() => {
+      switch (newRole) {
+        case "admin":
+        case "staff":
+          navigate("/admin");
+          break;
+        case "professional":
+          navigate("/professional/dashboard"); 
+          break;
+        case "patient":
+          navigate("/patient/dashboard");
+          break;
+        case "community":
+        default:
+          navigate("/home");
+          break;
+      }
+    }, 100);
   };
 
   const handleSignOut = async () => {
