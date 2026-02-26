@@ -56,40 +56,72 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
-  // OAuth hash processing safety net — poll for session instead of destructive reload
+  // OAuth hash recovery — manually parse tokens and call setSession
   useEffect(() => {
     if (!isProcessingOAuth || user) return;
     setOauthTimedOut(false);
+    let cancelled = false;
 
-    const pollInterval = setInterval(async () => {
+    const recoverSession = async () => {
       try {
-        const { data: { session: polledSession } } = await supabase.auth.getSession();
-        if (polledSession) {
-          clearInterval(pollInterval);
-          clearTimeout(deadline);
-          if (hasRedirectedRef.current) return;
-          hasRedirectedRef.current = true;
-          const isMobile = window.innerWidth < 768;
-          const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
-          console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
-          setTenantBySlug('maxina').catch(console.warn);
-          navigate(target);
+        // Parse tokens from hash
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const access_token = params.get('access_token');
+        const refresh_token = params.get('refresh_token');
+
+        console.debug('[MaxinaPortal] OAuth hash detected, tokens present:', !!access_token, !!refresh_token);
+
+        if (access_token && refresh_token) {
+          // Force session hydration
+          const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
+          console.debug('[MaxinaPortal] setSession result:', !!data.session, error?.message);
+
+          if (!error && data.session && !cancelled) {
+            // Clear hash without reload
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+
+            if (hasRedirectedRef.current) return;
+            hasRedirectedRef.current = true;
+            const isMobile = window.innerWidth < 768;
+            const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+            console.debug('[MaxinaPortal] OAuth session recovered, navigating to', target);
+            setTenantBySlug('maxina').catch(console.warn);
+            navigate(target);
+            return;
+          }
+        }
+
+        // Fallback: poll getSession in case Supabase already processed the hash internally
+        for (let i = 0; i < 15 && !cancelled; i++) {
+          await new Promise(r => setTimeout(r, 1000));
+          const { data: { session: s } } = await supabase.auth.getSession();
+          if (s && !cancelled) {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            if (hasRedirectedRef.current) return;
+            hasRedirectedRef.current = true;
+            const isMobile = window.innerWidth < 768;
+            const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+            console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
+            setTenantBySlug('maxina').catch(console.warn);
+            navigate(target);
+            return;
+          }
+        }
+
+        // All attempts exhausted
+        if (!cancelled) {
+          console.warn('[MaxinaPortal] OAuth processing timed out after 15s');
+          setOauthTimedOut(true);
         }
       } catch (err) {
-        console.warn('[MaxinaPortal] Session poll error:', err);
+        console.error('[MaxinaPortal] OAuth recovery error:', err);
+        if (!cancelled) setOauthTimedOut(true);
       }
-    }, 1000);
-
-    const deadline = setTimeout(() => {
-      clearInterval(pollInterval);
-      console.warn('[MaxinaPortal] OAuth processing timed out after 15s');
-      setOauthTimedOut(true);
-    }, 15000);
-
-    return () => {
-      clearInterval(pollInterval);
-      clearTimeout(deadline);
     };
+
+    recoverSession();
+    return () => { cancelled = true; };
   }, [isProcessingOAuth, user, navigate, setTenantBySlug, searchParams]);
 
   // Switch to maxina tenant if already authenticated
@@ -341,7 +373,20 @@ const MaxinaPortal = () => {
           <p className="text-white text-lg font-medium">Something went wrong</p>
           <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
           <Button
-            onClick={() => window.location.replace('/maxina')}
+            onClick={async () => {
+              setOauthTimedOut(false);
+              // Try one more session check before restarting OAuth
+              const { data: { session: s } } = await supabase.auth.getSession();
+              if (s) {
+                const isMobile = window.innerWidth < 768;
+                const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+                setTenantBySlug('maxina').catch(console.warn);
+                navigate(target);
+              } else {
+                // Restart Google OAuth instead of hard reload
+                handleSocialLogin('google');
+              }
+            }}
             className="rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
           >
             Tap to try again
