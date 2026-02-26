@@ -37,34 +37,33 @@ export function useRole() {
     enabled: !!activeTenantId,
   });
 
-  const setRole = async (role: UserRole) => {
+  const setRole = (role: UserRole) => {
     if (!activeTenantId) return;
     
-    try {
-      const { data, error } = await supabase.rpc("set_role_preference", { 
-        p_tenant_id: activeTenantId, 
-        p_role: role 
-      });
-      
+    const previousRole = query.data;
+    
+    // Optimistic: update cache + emit event immediately
+    queryClient.setQueryData(["rolePref", activeTenantId], role);
+    window.dispatchEvent(new CustomEvent("role.changed", {
+      detail: { from: previousRole, to: role }
+    }));
+    
+    // Fire RPC in background — don't block the caller
+    supabase.rpc("set_role_preference", { 
+      p_tenant_id: activeTenantId, 
+      p_role: role 
+    }).then(({ error }) => {
       if (error) {
-        throw error;
+        console.error('Error setting role preference:', error);
+        // Rollback on failure
+        queryClient.setQueryData(["rolePref", activeTenantId], previousRole);
+        window.dispatchEvent(new CustomEvent("role.changed", {
+          detail: { from: role, to: previousRole }
+        }));
       }
-      
-      // Force immediate cache update
-      queryClient.setQueryData(["rolePref", activeTenantId], role);
-      
-      await queryClient.invalidateQueries({ 
-        queryKey: ["rolePref", activeTenantId] 
-      });
-
-      // Emit role change event
-      window.dispatchEvent(new CustomEvent("role.changed", {
-        detail: { from: query.data, to: role }
-      }));
-    } catch (error) {
-      console.error('Error setting role preference:', error);
-      throw error;
-    }
+      // Background revalidation
+      queryClient.invalidateQueries({ queryKey: ["rolePref", activeTenantId] });
+    });
   };
 
   const hasPermission = (requiredRole: UserRole): boolean => {
