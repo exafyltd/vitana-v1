@@ -78,3 +78,17 @@ ALTER TABLE public.vouchers DROP CONSTRAINT IF EXISTS vouchers_redeemed_by_user_
 ALTER TABLE public.vouchers
   ADD CONSTRAINT vouchers_redeemed_by_user_id_fkey
   FOREIGN KEY (redeemed_by_user_id) REFERENCES auth.users(id) ON DELETE SET NULL;
+
+-- 13. messages.sender_id → SET NULL (preserve message history for recipient)
+--     Must make column nullable first since it was originally NOT NULL
+ALTER TABLE public.messages ALTER COLUMN sender_id DROP NOT NULL;
+ALTER TABLE public.messages DROP CONSTRAINT IF EXISTS messages_sender_id_fkey;
+ALTER TABLE public.messages
+  ADD CONSTRAINT messages_sender_id_fkey
+  FOREIGN KEY (sender_id) REFERENCES auth.users(id) ON DELETE SET NULL;
+
+-- 14. messages.recipient_id → SET NULL (already nullable, preserve message for sender)
+ALTER TABLE public.messages DROP CONSTRAINT IF EXISTS messages_recipient_id_fkey;
+ALTER TABLE public.messages
+  ADD CONSTRAINT messages_recipient_id_fkey
+  FOREIGN KEY (recipient_id) REFERENCES auth.users(id) ON DELETE SET NULL;
