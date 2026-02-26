@@ -214,7 +214,8 @@ const MaxinaPortal = () => {
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
     try {
       // Detect mobile via screen width (matches useIsMobile hook breakpoint)
-      const redirectPath = '/maxina';
+      const isMobileDevice = window.innerWidth < 768;
+      const redirectPath = isMobileDevice ? '/comm/events-meetups?tab=upcoming' : '/home';
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
