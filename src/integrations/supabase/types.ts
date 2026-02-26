@@ -53,6 +53,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "access_audit_log_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "access_audit_log_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
@@ -132,7 +139,15 @@ export type Database = {
           updated_at?: string
           updated_by?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "admin_proactive_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       agent_keys: {
         Row: {
@@ -204,6 +219,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
           },
+          {
+            foreignKeyName: "ai_conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       ai_memory: {
@@ -256,6 +278,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "ai_conversations"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_memory_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -639,7 +668,15 @@ export type Database = {
           throughput?: number | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "api_integrations_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       api_performance_metrics: {
         Row: {
@@ -729,6 +766,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "api_integrations"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_test_logs_triggered_by_fkey"
+            columns: ["triggered_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -833,6 +877,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "app_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
           {
             foreignKeyName: "fk_app_users_live_room"
@@ -1011,7 +1062,22 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "automation_rules_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "automation_rules_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       autopilot_action_templates: {
         Row: {
@@ -1142,6 +1208,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "autopilot_actions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -1337,7 +1410,15 @@ export type Database = {
           updated_at?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "autopilot_recommendations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       autopilot_run_state: {
         Row: {
@@ -1513,7 +1594,15 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookmarked_items_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       business_packages: {
         Row: {
@@ -1577,6 +1666,13 @@ export type Database = {
           validity_days?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "business_packages_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
           {
             foreignKeyName: "business_packages_tenant_id_fkey"
             columns: ["tenant_id"]
@@ -1875,7 +1971,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       cart_items: {
         Row: {
@@ -1922,6 +2026,36 @@ export type Database = {
           quantity?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          read_at: string | null
+          receiver_id: string
+          sender_id: string
+          tenant_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          receiver_id: string
+          sender_id: string
+          tenant_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          receiver_id?: string
+          sender_id?: string
+          tenant_id?: string
         }
         Relationships: []
       }
@@ -2023,6 +2157,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "checkout_sessions"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cj_orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -2240,7 +2381,15 @@ export type Database = {
           updated_at?: string | null
           viewer_count?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "community_live_streams_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       connection_requests: {
         Row: {
@@ -2273,7 +2422,22 @@ export type Database = {
           status?: string | null
           to_user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "connection_requests_from_user_id_fkey"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "connection_requests_to_user_id_fkey"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       consents: {
         Row: {
@@ -2330,6 +2494,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
           },
+          {
+            foreignKeyName: "consents_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       contacts: {
@@ -2372,7 +2543,22 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "contacts_contact_user_id_fkey"
+            columns: ["contact_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "contacts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       content_reports: {
         Row: {
@@ -2420,7 +2606,22 @@ export type Database = {
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "content_reports_reporter_user_id_fkey"
+            columns: ["reporter_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "content_reports_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       contradiction_flags: {
         Row: {
@@ -2482,6 +2683,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "contradiction_flags_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -2680,6 +2888,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
           },
+          {
+            foreignKeyName: "curated_memories_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       daily_matches: {
@@ -2716,7 +2931,22 @@ export type Database = {
           user_id?: string
           viewed_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "daily_matches_matched_user_id_fkey"
+            columns: ["matched_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "daily_matches_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       diary_entries: {
         Row: {
@@ -2800,7 +3030,15 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "distribution_channels_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       distribution_posts: {
         Row: {
@@ -2864,6 +3102,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "campaigns"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "distribution_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -2997,7 +3242,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "event_attendees_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       event_co_creators: {
         Row: {
@@ -3023,11 +3276,25 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "event_co_creators_added_by_fkey"
+            columns: ["added_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "event_co_creators_event_id_fkey"
             columns: ["event_id"]
             isOneToOne: false
             referencedRelation: "global_community_events"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_co_creators_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -3099,6 +3366,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "global_community_events"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_recommendations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -3177,6 +3451,20 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "event_ticket_purchases_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "event_ticket_purchases_checked_in_by_fkey"
+            columns: ["checked_in_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "event_ticket_purchases_event_id_fkey"
             columns: ["event_id"]
             isOneToOne: false
@@ -3224,6 +3512,13 @@ export type Database = {
           ticket_purchase_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "event_ticket_scans_scanned_by_fkey"
+            columns: ["scanned_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
           {
             foreignKeyName: "event_ticket_scans_ticket_purchase_id_fkey"
             columns: ["ticket_purchase_id"]
@@ -3443,7 +3738,15 @@ export type Database = {
           updated_at?: string
           virtual_link?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "global_community_events_moderated_by_fkey"
+            columns: ["moderated_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       global_community_group_members: {
         Row: {
@@ -3474,6 +3777,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "global_community_groups"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "global_community_group_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -3529,7 +3839,15 @@ export type Database = {
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "global_community_groups_moderated_by_fkey"
+            columns: ["moderated_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       global_community_profiles: {
         Row: {
@@ -4119,6 +4437,13 @@ export type Database = {
             referencedRelation: "global_community_groups"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "group_recommendations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       health_features_daily: {
@@ -4319,6 +4644,13 @@ export type Database = {
             referencedRelation: "lab_tests"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "lab_test_orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       lab_test_results: {
@@ -4359,6 +4691,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "lab_test_orders"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lab_test_results_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -4453,7 +4792,15 @@ export type Database = {
           user_id?: string
           version?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "life_compass_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       life_compass_subgoals: {
         Row: {
@@ -4644,6 +4991,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "app_users"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "live_room_access_grants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["app_user_id"]
           },
         ]
       }
@@ -5071,6 +5425,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "mcp_tool_executions_executed_by_fkey"
+            columns: ["executed_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "mcp_tool_executions_integration_id_fkey"
             columns: ["integration_id"]
             isOneToOne: false
@@ -5190,7 +5551,15 @@ export type Database = {
           view_count?: number | null
           wellness_pillar?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "media_content_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       media_events: {
         Row: {
@@ -5555,6 +5924,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
           },
+          {
+            foreignKeyName: "memory_embeddings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       memory_events: {
@@ -5608,6 +5984,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "memory_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -6131,6 +6514,20 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "messages_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "messages_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
@@ -6315,7 +6712,15 @@ export type Database = {
           type?: Database["public"]["Enums"]["notification_type"]
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       oasis_events: {
         Row: {
@@ -6683,6 +7088,89 @@ export type Database = {
         }
         Relationships: []
       }
+      onboarding_invitations: {
+        Row: {
+          clicked_at: string | null
+          converted_at: string | null
+          created_at: string | null
+          email: string
+          expires_at: string | null
+          id: string
+          invited_by: string
+          message: string | null
+          opened_at: string | null
+          sent_at: string | null
+          signup_attempt_id: string | null
+          status: string
+          target_user_id: string | null
+          tenant_id: string
+          type: string
+        }
+        Insert: {
+          clicked_at?: string | null
+          converted_at?: string | null
+          created_at?: string | null
+          email: string
+          expires_at?: string | null
+          id?: string
+          invited_by: string
+          message?: string | null
+          opened_at?: string | null
+          sent_at?: string | null
+          signup_attempt_id?: string | null
+          status?: string
+          target_user_id?: string | null
+          tenant_id: string
+          type?: string
+        }
+        Update: {
+          clicked_at?: string | null
+          converted_at?: string | null
+          created_at?: string | null
+          email?: string
+          expires_at?: string | null
+          id?: string
+          invited_by?: string
+          message?: string | null
+          opened_at?: string | null
+          sent_at?: string | null
+          signup_attempt_id?: string | null
+          status?: string
+          target_user_id?: string | null
+          tenant_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_invitations_signup_attempt_id_fkey"
+            columns: ["signup_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "signup_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "onboarding_invitations_signup_attempt_id_fkey"
+            columns: ["signup_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["attempt_id"]
+          },
+          {
+            foreignKeyName: "onboarding_invitations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "onboarding_invitations_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       package_item_redemptions: {
         Row: {
           completed_at: string | null
@@ -6910,6 +7398,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "package_purchases_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "package_purchases_package_id_fkey"
             columns: ["package_id"]
             isOneToOne: false
@@ -7116,6 +7611,13 @@ export type Database = {
             referencedRelation: "user_health_plans"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "plan_adherence_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       podcast_favorites: {
@@ -7210,7 +7712,15 @@ export type Database = {
           subscribed_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "podcast_show_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       post_analytics: {
         Row: {
@@ -7269,6 +7779,13 @@ export type Database = {
             referencedRelation: "distribution_posts"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "post_analytics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       proactive_context_cache: {
@@ -7293,7 +7810,15 @@ export type Database = {
           id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "proactive_context_cache_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       proactive_engagement: {
         Row: {
@@ -7323,7 +7848,15 @@ export type Database = {
           user_response?: string | null
           was_helpful?: boolean | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "proactive_engagement_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       profile_gallery: {
         Row: {
@@ -7431,7 +7964,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profile_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       profile_privacy_settings: {
         Row: {
@@ -7665,6 +8206,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
           },
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       projection_offsets: {
@@ -7764,7 +8312,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "provider_appointments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       provider_notes: {
         Row: {
@@ -7803,7 +8359,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "provider_notes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       push_subscriptions: {
         Row: {
@@ -8216,6 +8780,13 @@ export type Database = {
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
           },
+          {
+            foreignKeyName: "reseller_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       retrieval_traces: {
@@ -8259,6 +8830,13 @@ export type Database = {
           trace_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "retrieval_traces_actor_user_id_fkey"
+            columns: ["actor_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
           {
             foreignKeyName: "retrieval_traces_tenant_id_fkey"
             columns: ["tenant_id"]
@@ -8347,6 +8925,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "role_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -8437,6 +9022,13 @@ export type Database = {
             referencedRelation: "distribution_posts"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "scheduled_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
         ]
       }
       search_audit_log: {
@@ -8468,6 +9060,66 @@ export type Database = {
           tenant_id?: string | null
         }
         Relationships: []
+      }
+      signup_attempts: {
+        Row: {
+          auth_user_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          email: string
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          started_at: string | null
+          status: string
+          tenant_id: string
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          auth_user_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          started_at?: string | null
+          status?: string
+          tenant_id: string
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          auth_user_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          started_at?: string | null
+          status?: string
+          tenant_id?: string
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signup_attempts_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "signup_attempts_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
       }
       skills_mcp: {
         Row: {
@@ -8769,7 +9421,15 @@ export type Database = {
           user_id?: string
           variables?: Json | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "templates_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       tenants: {
         Row: {
@@ -8839,6 +9499,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "message_threads"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_thread_participants_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
           {
             foreignKeyName: "thread_participants_thread_id_fkey"
@@ -8986,7 +9653,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_active_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_activity_log: {
         Row: {
@@ -9022,7 +9697,15 @@ export type Database = {
           session_id?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_activity_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_activity_log_archive: {
         Row: {
@@ -9088,7 +9771,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_api_keys_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_context_cache: {
         Row: {
@@ -9112,7 +9803,15 @@ export type Database = {
           id?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_context_cache_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_device_tokens: {
         Row: {
@@ -9181,7 +9880,15 @@ export type Database = {
           user_id?: string
           valid_for?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_discount_codes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_follows: {
         Row: {
@@ -9202,7 +9909,22 @@ export type Database = {
           following_id?: string
           id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_follows_follower_id_fkey"
+            columns: ["follower_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "user_follows_following_id_fkey"
+            columns: ["following_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_health_plans: {
         Row: {
@@ -9241,7 +9963,15 @@ export type Database = {
           plan_type?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_health_plans_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_interests: {
         Row: {
@@ -9274,7 +10004,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_interests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_journey: {
         Row: {
@@ -9313,7 +10051,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_journey_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_match_interactions: {
         Row: {
@@ -9409,7 +10155,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_memory_metadata_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_notification_preferences: {
         Row: {
@@ -9619,7 +10373,15 @@ export type Database = {
           user_id?: string
           wellness_goals?: string[] | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -9648,6 +10410,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "user_roles_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "user_roles_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
@@ -9660,6 +10429,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -9755,6 +10531,13 @@ export type Database = {
             referencedRelation: "app_users"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "user_tenants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["app_user_id"]
+          },
         ]
       }
       user_wallets: {
@@ -9806,7 +10589,15 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_wellness_interests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       video_metadata: {
         Row: {
@@ -9874,7 +10665,15 @@ export type Database = {
           updated_at?: string | null
           version?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "vitana_index_config_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       vitana_index_scores: {
         Row: {
@@ -10106,6 +10905,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "vouchers_redeemed_by_user_id_fkey"
+            columns: ["redeemed_by_user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
             foreignKeyName: "vouchers_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
@@ -10277,6 +11083,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "tenants"
             referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "wallet_credits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
           },
         ]
       }
@@ -10527,13 +11340,66 @@ export type Database = {
         }
         Relationships: []
       }
+      signup_funnel: {
+        Row: {
+          active_role: string | null
+          app_user_id: string | null
+          attempt_id: string | null
+          attempt_status: string | null
+          auth_created_at: string | null
+          auth_user_id: string | null
+          completed_at: string | null
+          display_name: string | null
+          email: string | null
+          email_confirmed_at: string | null
+          funnel_stage: string | null
+          is_primary: boolean | null
+          last_sign_in_at: string | null
+          membership_created_at: string | null
+          metadata: Json | null
+          profile_created_at: string | null
+          started_at: string | null
+          tenant_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "app_users_user_id_fkey"
+            columns: ["app_user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+          {
+            foreignKeyName: "signup_attempts_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "signup_attempts_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+        ]
+      }
       user_follow_counts: {
         Row: {
           followers_count: number | null
           following_count: number | null
           user_id: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
       }
       vtid_specs: {
         Row: {
