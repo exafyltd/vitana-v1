@@ -299,7 +299,8 @@ const MaxinaPortal = () => {
   };
 
   // Show loading state while checking auth OR if user exists (redirect in progress)
-  if (authLoading || user || isProcessingOAuth) {
+  // OR if OAuth hash is being processed (but not timed out yet)
+  if (authLoading || user || (isProcessingOAuth && !oauthTimedOut)) {
     return (
       <div className="min-h-screen relative overflow-hidden">
         {/* Video Background */}
@@ -318,8 +319,33 @@ const MaxinaPortal = () => {
         <div className="fixed inset-0 bg-gradient-to-b from-black/25 via-black/5 to-transparent z-10" />
         
         {/* Content */}
-        <div className="relative z-20 min-h-screen flex items-center justify-center">
+        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
+          {isProcessingOAuth && (
+            <p className="text-white/70 text-sm animate-pulse">Signing you in…</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // OAuth timed out — show retry
+  if (oauthTimedOut) {
+    return (
+      <div className="min-h-screen relative overflow-hidden">
+        {videoSrc && (
+          <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover" src={videoSrc} />
+        )}
+        <div className="fixed inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 z-10" />
+        <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
+          <p className="text-white text-lg font-medium">Something went wrong</p>
+          <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
+          <Button
+            onClick={() => window.location.replace('/maxina')}
+            className="rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
+          >
+            Tap to try again
+          </Button>
         </div>
       </div>
     );
