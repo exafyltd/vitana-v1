@@ -37,7 +37,7 @@ const ROLE_OPTIONS = [
 
 export function RecipientSelector({ value, onChange, tenantId }: RecipientSelectorProps) {
   const [search, setSearch] = useState("");
-  const { users, loading } = useAdminUsers();
+  const { users, isLoading } = useAdminUsers();
 
   const filteredUsers = users.filter((u) => {
     if (!search) return false; // Only show when searching
