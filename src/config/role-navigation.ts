@@ -69,19 +69,17 @@ export const staffNavigation: NavigationItem[] = [
   { title: "Settings", path: "/settings", icon: Settings, i18nKey: "sidebar.settings" },
 ];
 
-// Admin Role Navigation - System management focused
+// Admin Role Navigation - Restructured (9 sections)
 export const adminNavigation: NavigationItem[] = [
   { title: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard, i18nKey: "sidebar.dashboard" },
-  { title: "User Management", path: "/admin/user-management", icon: Users, i18nKey: "sidebar.userManagement" },
-  { title: "Community Supervision", path: "/admin/community", icon: Flag, i18nKey: "sidebar.communitySupervision" },
-  { title: "Media Management", path: "/admin/media", icon: Video, i18nKey: "sidebar.mediaManagement" },
-  { title: "AI Assistant", path: "/admin/ai-assistant", icon: Sparkles, i18nKey: "sidebar.aiAssistant" },
-  { title: "Automation", path: "/admin/automation", icon: Zap, i18nKey: "sidebar.automation" },
-  { title: "Live & Stream", path: "/admin/live-stream", icon: Radio, i18nKey: "sidebar.liveStream" },
-  { title: "Tenant Management", path: "/admin/tenant-management", icon: Shield, i18nKey: "sidebar.tenantManagement" },
-  { title: "System Admin", path: "/admin/system/bootstrap", icon: Settings, i18nKey: "sidebar.systemAdmin" },
-  { title: "Clinical Ops", path: "/admin/clinical/patient-records", icon: Stethoscope, i18nKey: "sidebar.clinicalOps" },
-  { title: "Monitoring", path: "/admin/monitoring/reports", icon: Activity, i18nKey: "sidebar.monitoring" },
+  { title: "Users & Growth", path: "/admin/users", icon: Users, i18nKey: "sidebar.usersGrowth" },
+  { title: "Notifications", path: "/admin/notifications", icon: Bell, i18nKey: "sidebar.notifications" },
+  { title: "Community", path: "/admin/community", icon: MessageSquare, i18nKey: "sidebar.community" },
+  { title: "Live Rooms", path: "/admin/live", icon: Radio, i18nKey: "sidebar.liveRooms" },
+  { title: "Content", path: "/admin/content", icon: Video, i18nKey: "sidebar.content" },
+  { title: "Intelligence", path: "/admin/intelligence", icon: Sparkles, i18nKey: "sidebar.intelligence" },
+  { title: "System", path: "/admin/system", icon: Settings, i18nKey: "sidebar.system" },
+  { title: "Audit & Logs", path: "/admin/audit", icon: Activity, i18nKey: "sidebar.auditLogs" },
 ];
 
 // Function to get navigation based on user role

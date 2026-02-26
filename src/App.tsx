@@ -152,7 +152,6 @@ import ProfessionalPatients from "./pages/professional/Patients";
 import StaffDashboard from "./pages/staff/Dashboard";
 import StaffQueue from "./pages/staff/Queue";
 import AdminDashboard from "./pages/admin/Dashboard";
-import TenantManagement from "./pages/admin/TenantManagement";
 import AIAssistant from "./pages/assistant/AIAssistant";
 
 // Home sub-pages
@@ -231,23 +230,34 @@ import Recall from "./pages/memory/Recall";
 import MemoryPermissions from "./pages/memory/Permissions";
 import Diary from "./pages/memory/Diary";
 
-// Admin sub-pages
-import Queue from "./pages/admin/Queue";
-import PatientRecords from "./pages/admin/PatientRecords";
-import StreamSupervision from "./pages/admin/StreamSupervision";
-import Staff from "./pages/admin/Staff";
-import Bootstrap from "./pages/admin/Bootstrap";
-import Reports from "./pages/admin/Reports";
-import Audit from "./pages/admin/Audit";
-import UserManagement from "./pages/admin/UserManagement";
-import NotificationDashboard from "./pages/admin/NotificationDashboard";
-import SystemHealth from "./pages/admin/SystemHealth";
-import APIMonitoring from "./pages/admin/APIMonitoring";
-import UserAudit from "./pages/admin/UserAudit";
-import TenantConfig from "./pages/admin/TenantConfig";
-import TenantAudit from "./pages/admin/TenantAudit";
-import SystemConfig from "./pages/admin/SystemConfig";
-import SystemSecurity from "./pages/admin/SystemSecurity";
+// Admin sub-pages — Restructured (Phase 1: Dashboard + Users & Growth)
+import AdminDashboardHealth from "./pages/admin/dashboard/SystemHealth";
+import AdminDashboardActivity from "./pages/admin/dashboard/ActivityFeed";
+import AdminAllUsers from "./pages/admin/users/AllUsers";
+import AdminSignupFunnel from "./pages/admin/users/SignupFunnel";
+import AdminInvitations from "./pages/admin/users/Invitations";
+import AdminRolesAccess from "./pages/admin/users/RolesAccess";
+// Admin sub-pages — Notifications (Phase 2)
+import AdminNotificationsCompose from "./pages/admin/notifications/Compose";
+import AdminNotificationsSentLog from "./pages/admin/notifications/SentLog";
+import AdminNotificationsPreferences from "./pages/admin/notifications/Preferences";
+// Admin sub-pages — Live Rooms (Phase 3)
+import AdminLiveSessions from "./pages/admin/live/Sessions";
+import AdminLiveAttendance from "./pages/admin/live/Attendance";
+// Admin sub-pages — Intelligence (Phase 3)
+import AdminIntelligenceMemory from "./pages/admin/intelligence/Memory";
+import AdminIntelligenceEmbeddings from "./pages/admin/intelligence/Embeddings";
+import AdminIntelligenceSignals from "./pages/admin/intelligence/Signals";
+import AdminIntelligenceRelationships from "./pages/admin/intelligence/Relationships";
+// Admin sub-pages — System (Phase 3)
+import AdminSystemConfiguration from "./pages/admin/system/Configuration";
+import AdminSystemCreators from "./pages/admin/system/Creators";
+// Admin sub-pages — Audit (Phase 3)
+import AdminAuditEvents from "./pages/admin/audit/Events";
+import AdminAuditUserActivity from "./pages/admin/audit/UserActivity";
+import AdminAuditApiMonitor from "./pages/admin/audit/ApiMonitor";
+import AdminAuditSecurity from "./pages/admin/audit/Security";
+// Admin sub-pages — Legacy (kept for existing pages reused in new structure)
 import CommunitySupervision from "./pages/admin/CommunitySupervision";
 import EventsModeration from "./pages/admin/community/Events";
 import GroupsModeration from "./pages/admin/community/Groups";
@@ -256,19 +266,10 @@ import MediaManagement from "./pages/admin/MediaManagement";
 import VideosManagement from "./pages/admin/media/Videos";
 import PodcastsManagement from "./pages/admin/media/Podcasts";
 import MusicManagement from "./pages/admin/media/Music";
-import AnalyticsManagement from "./pages/admin/media/Analytics";
-import AIAssistantOverview from "./pages/admin/AIAssistant";
-import AutomationOverview from "./pages/admin/Automation";
-import AutomationBuilder from "./pages/admin/automation/AutomationBuilder";
-import AISituationAnalyzer from "./pages/admin/ai-assistant/AISituationAnalyzer";
-import PatternDiscovery from "./pages/admin/ai-assistant/PatternDiscovery";
-import AIAssistantAnalytics from "./pages/admin/ai-assistant/Analytics";
 import LiveStreamOverview from "./pages/admin/LiveStreamOverview";
-import VertexTesting from "./pages/admin/VertexTesting";
 import CommunityRoomsAdmin from "./pages/admin/CommunityRoomsAdmin";
-import TelemedicineSessions from "./pages/admin/TelemedicineSessions";
-import StreamSettings from "./pages/admin/StreamSettings";
-import ProactiveSettings from "./pages/admin/ai-assistant/ProactiveSettings";
+import Bootstrap from "./pages/admin/Bootstrap";
+import TenantManagementLegacy from "./pages/admin/TenantManagement";
 import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
@@ -1005,344 +1006,148 @@ const App = () => {
             </AuthGuard>
           } />
 
-          {/* Admin Role Routes */}
+          {/* ══════════════════════════════════════════════════════════ */}
+          {/* ADMIN ROUTES — Restructured (9 Sections)                  */}
+          {/* ══════════════════════════════════════════════════════════ */}
+
+          {/* Root redirect */}
+          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+
+          {/* 1. Dashboard Section */}
           <Route path="/admin/dashboard" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            </AuthGuard>
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/users" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <UserManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/dashboard/health" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboardHealth /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/user-management" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <UserManagement />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/system" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <div className="p-6"><h1 className="text-3xl font-bold">System Health</h1><p className="text-muted-foreground">Monitor system performance and status</p></div>
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/analytics" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <div className="p-6"><h1 className="text-3xl font-bold">Analytics</h1><p className="text-muted-foreground">Usage statistics and insights</p></div>
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/security" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <div className="p-6"><h1 className="text-3xl font-bold">Security</h1><p className="text-muted-foreground">Security settings and access control</p></div>
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/settings" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <div className="p-6"><h1 className="text-3xl font-bold">System Settings</h1><p className="text-muted-foreground">Global system configuration</p></div>
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/dashboard/activity" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDashboardActivity /></ProtectedRoute></AuthGuard>
           } />
 
-          {/* Admin Pages - Reorganized navigation structure */}
-          {/* Dashboard Section */}
-          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="/admin/system-health" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <SystemHealth />
-              </ProtectedRoute>
-            </AuthGuard>
+          {/* 2. Users & Growth Section */}
+          <Route path="/admin/users" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAllUsers /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* User Management Section */}
-          <Route path="/admin/user-management/staff" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <Staff />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/users/funnel" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminSignupFunnel /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/user-management/audit" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <UserAudit />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/users/invitations" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminInvitations /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* Tenant Management Section */}
-          <Route path="/admin/tenant-management" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <TenantManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/users/roles" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminRolesAccess /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/tenant-management/config" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <TenantConfig />
-              </ProtectedRoute>
-            </AuthGuard>
+
+          {/* 3. Notifications Section */}
+          <Route path="/admin/notifications" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsCompose /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/tenant-management/audit" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <TenantAudit />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/notifications/sent" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsSentLog /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* System Administration Section */}
-          <Route path="/admin/system/bootstrap" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <Bootstrap />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/notifications/preferences" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNotificationsPreferences /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/system/config" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <SystemConfig />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/system/security" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <SystemSecurity />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          
-          {/* Clinical Operations Section */}
-          <Route path="/admin/clinical/patient-records" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <PatientRecords />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/clinical/queue" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <Queue />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          
-          {/* Monitoring & Compliance Section */}
-          <Route path="/admin/monitoring/apis" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <APIMonitoring />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/monitoring/stream-supervision" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <StreamSupervision />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/monitoring/reports" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <Reports />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          <Route path="/admin/monitoring/notifications" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <NotificationDashboard />
-              </ProtectedRoute>
-            </AuthGuard>
-          } />
-          
-          {/* Community Supervision Section */}
+
+          {/* 4. Community Section (reuses existing pages) */}
           <Route path="/admin/community" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <CommunitySupervision />
-              </ProtectedRoute>
-            </AuthGuard>
+            <AuthGuard><ProtectedRoute requiredRole="admin"><CommunitySupervision /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/community/events" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <EventsModeration />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/community/meetups" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><EventsModeration /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/community/groups" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <GroupsModeration />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/community/invitations" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><GroupsModeration /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/community/reported" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <ReportedContent />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/community/moderation" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><ReportedContent /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* Media Management Section */}
-          <Route path="/admin/media" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <MediaManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+
+          {/* 5. Live Rooms Section */}
+          <Route path="/admin/live" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><LiveStreamOverview /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/media/videos" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <VideosManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/live/rooms" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><CommunityRoomsAdmin /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/media/podcasts" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <PodcastsManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/live/sessions" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminLiveSessions /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/media/music" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <MusicManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/live/attendance" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminLiveAttendance /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/media/analytics" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="staff">
-                <AnalyticsManagement />
-              </ProtectedRoute>
-            </AuthGuard>
+
+          {/* 6. Content Section (reuses existing media pages) */}
+          <Route path="/admin/content" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MediaManagement /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* AI Assistant Routes */}
-          <Route path="/admin/ai-assistant" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AIAssistantOverview />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/content/videos" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><VideosManagement /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/ai-assistant/ai-analyzer" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AISituationAnalyzer />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/content/podcasts" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><PodcastsManagement /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/ai-assistant/pattern-discovery" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <PatternDiscovery />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/content/music" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><MusicManagement /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/ai-assistant/proactive-settings" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <ProactiveSettings />
-              </ProtectedRoute>
-            </AuthGuard>
+
+          {/* 7. Intelligence Section */}
+          <Route path="/admin/intelligence" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminIntelligenceMemory /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/ai-assistant/analytics" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AIAssistantAnalytics />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/intelligence/embeddings" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminIntelligenceEmbeddings /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* Automation Routes */}
-          <Route path="/admin/automation" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AutomationOverview />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/intelligence/signals" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminIntelligenceSignals /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/automation/builder" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <AutomationBuilder />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/intelligence/relationships" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminIntelligenceRelationships /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* Live & Stream Routes */}
-          <Route path="/admin/live-stream" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <LiveStreamOverview />
-              </ProtectedRoute>
-            </AuthGuard>
+
+          {/* 8. System Section */}
+          <Route path="/admin/system" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminSystemConfiguration /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/live-stream/vertex-testing" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <VertexTesting />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/system/tenants" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><TenantManagementLegacy /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/live-stream/community-rooms" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <CommunityRoomsAdmin />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/system/creators" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminSystemCreators /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/live-stream/telemedicine" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <TelemedicineSessions />
-              </ProtectedRoute>
-            </AuthGuard>
+          <Route path="/admin/system/bootstrap" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><Bootstrap /></ProtectedRoute></AuthGuard>
           } />
-          <Route path="/admin/live-stream/settings" element={
-            <AuthGuard>
-              <ProtectedRoute requiredRole="admin">
-                <StreamSettings />
-              </ProtectedRoute>
-            </AuthGuard>
+
+          {/* 9. Audit & Logs Section */}
+          <Route path="/admin/audit" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditEvents /></ProtectedRoute></AuthGuard>
           } />
-          
-          {/* Legacy redirects for backward compatibility */}
+          <Route path="/admin/audit/users" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditUserActivity /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/audit/apis" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditApiMonitor /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/audit/security" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAuditSecurity /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Legacy admin routes — redirects for backward compatibility */}
           <Route path="/admin/init-events" element={<InitEvents />} />
-          <Route path="/admin/ai-assistant/automation-builder" element={<Navigate to="/admin/automation/builder" replace />} />
+          <Route path="/admin/user-management" element={<Navigate to="/admin/users" replace />} />
+          <Route path="/admin/user-management/staff" element={<Navigate to="/admin/users/roles" replace />} />
+          <Route path="/admin/user-management/audit" element={<Navigate to="/admin/audit/users" replace />} />
+          <Route path="/admin/tenant-management" element={<Navigate to="/admin/system/tenants" replace />} />
+          <Route path="/admin/system-health" element={<Navigate to="/admin/dashboard/health" replace />} />
+          <Route path="/admin/monitoring/reports" element={<Navigate to="/admin/audit" replace />} />
+          <Route path="/admin/monitoring/notifications" element={<Navigate to="/admin/notifications" replace />} />
+          <Route path="/admin/monitoring/apis" element={<Navigate to="/admin/audit/apis" replace />} />
+          <Route path="/admin/ai-assistant" element={<Navigate to="/admin/intelligence" replace />} />
+          <Route path="/admin/automation" element={<Navigate to="/admin/intelligence" replace />} />
+          <Route path="/admin/live-stream" element={<Navigate to="/admin/live" replace />} />
+          <Route path="/admin/media" element={<Navigate to="/admin/content" replace />} />
           <Route path="/admin/bootstrap" element={<Navigate to="/admin/system/bootstrap" replace />} />
-          <Route path="/admin/staff" element={<Navigate to="/admin/user-management/staff" replace />} />
-          <Route path="/admin/queue" element={<Navigate to="/admin/clinical/queue" replace />} />
-          <Route path="/admin/patient-records" element={<Navigate to="/admin/clinical/patient-records" replace />} />
-          <Route path="/admin/stream-supervision" element={<Navigate to="/admin/monitoring/stream-supervision" replace />} />
-          <Route path="/admin/reports" element={<Navigate to="/admin/monitoring/reports" replace />} />
-          <Route path="/admin/notifications" element={<Navigate to="/admin/monitoring/notifications" replace />} />
-          <Route path="/admin/audit" element={<Navigate to="/admin/monitoring/reports" replace />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

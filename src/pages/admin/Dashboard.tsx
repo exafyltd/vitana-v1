@@ -1,67 +1,110 @@
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Users, Bell, MessageSquare, Settings, TrendingUp, UserPlus, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Users, Shield, Activity, TrendingUp, MessageSquare, Building, Flag, Calendar, UsersRound } from "lucide-react";
 import { AdminStatsCard } from "@/components/admin/AdminStatsCard";
 import { AdminActivityFeed } from "@/components/admin/AdminActivityFeed";
-import { AdminTable } from "@/components/admin/AdminTable";
-import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
-import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
-import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { adminDashboardNavigation } from "@/config/navigation";
 
 export default function AdminDashboard() {
-  const { userAnalytics, systemHealth, tenantAnalytics, loading } = useAdminAnalytics();
   const navigate = useNavigate();
 
-  const tenantColumns = [
+  // Total Users
+  const { data: totalUsers, isLoading: loadingUsers } = useQuery({
+    queryKey: ["admin-stats-total-users"],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("app_users")
+        .select("*", { count: "exact", head: true });
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+
+  // New users this week
+  const { data: newThisWeek, isLoading: loadingNewUsers } = useQuery({
+    queryKey: ["admin-stats-new-this-week"],
+    queryFn: async () => {
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const { count, error } = await supabase
+        .from("app_users")
+        .select("*", { count: "exact", head: true })
+        .gte("created_at", weekAgo.toISOString());
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+
+  // Pending Signups
+  const { data: pendingSignups, isLoading: loadingSignups } = useQuery({
+    queryKey: ["admin-stats-pending-signups"],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("signup_attempts")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "started");
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+
+  // Active Notifications (unread)
+  const { data: activeNotifications, isLoading: loadingNotifications } = useQuery({
+    queryKey: ["admin-stats-active-notifications"],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("user_notifications")
+        .select("*", { count: "exact", head: true })
+        .is("read_at", null);
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
+
+  const quickAccessCards = [
     {
-      key: "tenant_name",
-      label: "Workspace",
-      sortable: true,
+      title: "Users & Growth",
+      description: "Manage users, signups, invitations, and role assignments",
+      icon: Users,
+      path: "/admin/users",
+      gradient: "from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30",
+      iconColor: "text-blue-600 dark:text-blue-400",
     },
     {
-      key: "total_users",
-      label: "Total Users",
-      sortable: true,
-      render: (value: number) => (
-        <span className="font-medium">{value.toLocaleString()}</span>
-      ),
+      title: "Notifications",
+      description: "Compose, send, and track notification campaigns",
+      icon: Bell,
+      path: "/admin/notifications",
+      gradient: "from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30",
+      iconColor: "text-amber-600 dark:text-amber-400",
     },
     {
-      key: "active_users",
-      label: "Active Users",
-      sortable: true,
-      render: (value: number) => (
-        <span className="text-green-600 dark:text-green-400 font-medium">
-          {value.toLocaleString()}
-        </span>
-      ),
+      title: "Community",
+      description: "Moderate groups, meetups, and community content",
+      icon: MessageSquare,
+      path: "/admin/community",
+      gradient: "from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30",
+      iconColor: "text-green-600 dark:text-green-400",
     },
     {
-      key: "admin_count",
-      label: "Admins",
-      sortable: true,
-    },
-    {
-      key: "staff_count",
-      label: "Staff",
-      sortable: true,
+      title: "System",
+      description: "Configuration, tenants, bootstrap, and infrastructure",
+      icon: Settings,
+      path: "/admin/system",
+      gradient: "from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30",
+      iconColor: "text-purple-600 dark:text-purple-400",
     },
   ];
 
   return (
     <AppLayout>
-      <SEO 
-        title="Admin Dashboard | VITANA" 
-        description="Real-time system management and oversight center" 
-        canonical={window.location.href} 
-      />
       <SubNavigation items={adminDashboardNavigation} />
-      
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-white to-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto space-y-6">
           <AdminHeader
             title="Admin Dashboard"
@@ -69,129 +112,95 @@ export default function AdminDashboard() {
             emoji="📊"
           />
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <AdminStatsCard
-          title="Total Users"
-          value={userAnalytics?.total_users || 0}
-          subtitle={`+${userAnalytics?.new_users_7d || 0} new this week`}
-          icon={Users}
-          loading={loading}
-        />
-
-        <AdminStatsCard
-          title="Active Users (24h)"
-          value={userAnalytics?.active_users_24h || 0}
-          subtitle={`${userAnalytics?.active_users_7d || 0} active this week`}
-          icon={Activity}
-          loading={loading}
-          variant="success"
-        />
-
-        <AdminStatsCard
-          title="Total Workspaces"
-          value={systemHealth?.total_tenants || 0}
-          subtitle={`${systemHealth?.active_memberships || 0} active memberships`}
-          icon={Building}
-          loading={loading}
-        />
-
-        <AdminStatsCard
-          title="Messages Sent"
-          value={
-            (systemHealth?.total_messages || 0) +
-            (systemHealth?.total_global_messages || 0)
-          }
-          subtitle={`${systemHealth?.total_threads || 0} active threads`}
-          icon={MessageSquare}
-          loading={loading}
-        />
-      </div>
-
-      {/* Quick Access */}
-      <div>
-        <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/ai-assistant')}>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 rounded-lg">
-                  <TrendingUp className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                  <CardTitle className="text-base">AI Assistant</CardTitle>
-                  <CardDescription>Intelligent automation engine</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/community')}>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                  <Flag className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                  <CardTitle className="text-base">Community Supervision</CardTitle>
-                  <CardDescription>Moderate content, events & groups</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/users')}>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <CardTitle className="text-base">User Management</CardTitle>
-                  <CardDescription>Manage users & permissions</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/monitoring')}>
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                  <Activity className="h-6 w-6 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <CardTitle className="text-base">System Monitoring</CardTitle>
-                  <CardDescription>Track system health & metrics</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
-        </div>
-      </div>
-
-      {/* Activity & Workspaces */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AdminActivityFeed />
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Workspace Overview</CardTitle>
-            <CardDescription>User distribution across workspaces</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AdminTable
-              data={tenantAnalytics}
-              columns={tenantColumns}
-              loading={loading}
-              searchable
-              searchPlaceholder="Search workspaces..."
-              emptyMessage="No workspaces found"
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <AdminStatsCard
+              title="Total Users"
+              value={totalUsers ?? 0}
+              subtitle="All registered users"
+              icon={Users}
+              loading={loadingUsers}
             />
-          </CardContent>
-        </Card>
-      </div>
+            <AdminStatsCard
+              title="New This Week"
+              value={newThisWeek ?? 0}
+              subtitle="Joined in the last 7 days"
+              icon={TrendingUp}
+              loading={loadingNewUsers}
+              variant="success"
+            />
+            <AdminStatsCard
+              title="Pending Signups"
+              value={pendingSignups ?? 0}
+              subtitle="Status: started"
+              icon={UserPlus}
+              loading={loadingSignups}
+              variant="warning"
+            />
+            <AdminStatsCard
+              title="Active Notifications"
+              value={activeNotifications ?? 0}
+              subtitle="Unread notifications"
+              icon={Bell}
+              loading={loadingNotifications}
+              variant="error"
+            />
+          </div>
 
+          {/* Quick Access */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">Quick Access</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {quickAccessCards.map((card) => (
+                <Card
+                  key={card.path}
+                  className="hover:shadow-lg transition-all cursor-pointer group"
+                  onClick={() => navigate(card.path)}
+                >
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className={`p-3 bg-gradient-to-br ${card.gradient} rounded-lg`}>
+                        <card.icon className={`h-6 w-6 ${card.iconColor}`} />
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-base flex items-center gap-2">
+                          {card.title}
+                          <ArrowRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                        </CardTitle>
+                        <CardDescription>{card.description}</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AdminActivityFeed />
+            <Card>
+              <CardHeader>
+                <CardTitle>OASIS Events</CardTitle>
+                <CardDescription>Recent system state transitions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col items-center justify-center h-[360px] text-muted-foreground">
+                  <TrendingUp className="h-12 w-12 mb-4 opacity-30" />
+                  <p className="text-sm">Recent OASIS events will appear here</p>
+                  <p className="text-xs mt-1">
+                    View the full log in{" "}
+                    <button
+                      onClick={() => navigate("/admin/dashboard/activity")}
+                      className="text-primary underline hover:no-underline"
+                    >
+                      Activity Feed
+                    </button>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </AppLayout>

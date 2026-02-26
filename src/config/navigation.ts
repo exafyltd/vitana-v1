@@ -82,86 +82,76 @@ export const memoryNavigation = [
   { id: "permissions", name: "Permissions", path: "/memory/permissions" },
 ];
 
-// Admin Dashboard - landing page with high-level metrics
+// ── ADMIN NAVIGATION (Restructured - 9 Sections) ────────────
+
+// Admin Dashboard
 export const adminDashboardNavigation = [
-  { id: "overview", name: "Overview", path: "/admin" },
-  { id: "system-health", name: "System Health", path: "/admin/system-health" },
+  { id: "overview", name: "Overview", path: "/admin/dashboard" },
+  { id: "system-health", name: "System Health", path: "/admin/dashboard/health" },
+  { id: "activity", name: "Activity Feed", path: "/admin/dashboard/activity" },
 ];
 
-// User Management - consolidated user/staff/audit
-export const adminUserManagementNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/user-management" },
-  { id: "staff", name: "Staff Management", path: "/admin/user-management/staff" },
-  { id: "audit", name: "User Audit Logs", path: "/admin/user-management/audit" },
+// Users & Growth (PRIORITY 1)
+export const adminUsersNavigation = [
+  { id: "all-users", name: "All Users", path: "/admin/users" },
+  { id: "funnel", name: "Signup Funnel", path: "/admin/users/funnel" },
+  { id: "invitations", name: "Invitations", path: "/admin/users/invitations" },
+  { id: "roles", name: "Roles & Access", path: "/admin/users/roles" },
 ];
 
-// Tenant Management - tenant config and audit
-export const adminTenantManagementNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/tenant-management" },
-  { id: "configuration", name: "Configuration", path: "/admin/tenant-management/config" },
-  { id: "audit", name: "Tenant Audit Logs", path: "/admin/tenant-management/audit" },
+// Notifications (PRIORITY 2)
+export const adminNotificationsNavigation = [
+  { id: "compose", name: "Compose", path: "/admin/notifications" },
+  { id: "sent", name: "Sent Log", path: "/admin/notifications/sent" },
+  { id: "preferences", name: "Preferences", path: "/admin/notifications/preferences" },
 ];
 
-// System Administration - critical system-level tools
-export const adminSystemNavigation = [
-  { id: "bootstrap", name: "Super Admin Bootstrap", path: "/admin/system/bootstrap" },
-  { id: "config", name: "System Configuration", path: "/admin/system/config" },
-  { id: "security", name: "Security Settings", path: "/admin/system/security" },
-];
-
-// Clinical Operations - healthcare-specific (Alkalma/Earthlinks)
-export const adminClinicalNavigation = [
-  { id: "patient-records", name: "Patient Records", path: "/admin/clinical/patient-records" },
-  { id: "queue", name: "Queue & Check-In", path: "/admin/clinical/queue" },
-];
-
-// Monitoring & Compliance - oversight tools
-export const adminMonitoringNavigation = [
-  { id: "apis", name: "API & MCP Monitor", path: "/admin/monitoring/apis" },
-  { id: "stream-supervision", name: "Stream Supervision", path: "/admin/monitoring/stream-supervision" },
-  { id: "reports", name: "Reports & KPIs", path: "/admin/monitoring/reports" },
-  { id: "notifications", name: "Notifications", path: "/admin/monitoring/notifications" },
-];
-
-// Community Supervision - content moderation
+// Community
 export const adminCommunityNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/community" },
-  { id: "events", name: "Events", path: "/admin/community/events" },
-  { id: "groups", name: "Groups", path: "/admin/community/groups" },
-  { id: "reported", name: "Reported Content", path: "/admin/community/reported" },
+  { id: "groups", name: "Groups", path: "/admin/community" },
+  { id: "meetups", name: "Meetups", path: "/admin/community/meetups" },
+  { id: "invitations", name: "Invitations", path: "/admin/community/invitations" },
+  { id: "moderation", name: "Moderation", path: "/admin/community/moderation" },
 ];
 
-// Media Management - content uploads and moderation
-export const adminMediaNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/media" },
-  { id: "videos", name: "Videos", path: "/admin/media/videos" },
-  { id: "podcasts", name: "Podcasts", path: "/admin/media/podcasts" },
-  { id: "music", name: "Music", path: "/admin/media/music" },
-  { id: "analytics", name: "Analytics", path: "/admin/media/analytics" },
+// Live Rooms
+export const adminLiveNavigation = [
+  { id: "active", name: "Active Now", path: "/admin/live" },
+  { id: "rooms", name: "All Rooms", path: "/admin/live/rooms" },
+  { id: "sessions", name: "Sessions", path: "/admin/live/sessions" },
+  { id: "attendance", name: "Attendance", path: "/admin/live/attendance" },
 ];
 
-// AI Assistant - automation & intelligence system
-export const adminAIAssistantNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/ai-assistant" },
-  { id: "ai-analyzer", name: "AI Situation Analyzer", path: "/admin/ai-assistant/ai-analyzer" },
-  { id: "pattern-discovery", name: "Pattern Discovery", path: "/admin/ai-assistant/pattern-discovery" },
-  { id: "proactive-settings", name: "Proactive Settings", path: "/admin/ai-assistant/proactive-settings" },
-  { id: "analytics", name: "Analytics & Performance", path: "/admin/ai-assistant/analytics" },
+// Content
+export const adminContentNavigation = [
+  { id: "overview", name: "Overview", path: "/admin/content" },
+  { id: "videos", name: "Videos", path: "/admin/content/videos" },
+  { id: "podcasts", name: "Podcasts", path: "/admin/content/podcasts" },
+  { id: "music", name: "Music", path: "/admin/content/music" },
 ];
 
-// Automation - workflow automation system
-export const adminAutomationNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/automation" },
-  { id: "builder", name: "Automation Builder", path: "/admin/automation/builder" },
+// Intelligence
+export const adminIntelligenceNavigation = [
+  { id: "memory", name: "Memory", path: "/admin/intelligence" },
+  { id: "embeddings", name: "Embeddings", path: "/admin/intelligence/embeddings" },
+  { id: "signals", name: "Signals", path: "/admin/intelligence/signals" },
+  { id: "relationships", name: "Relationships", path: "/admin/intelligence/relationships" },
 ];
 
-// Live & Stream - streaming management
-export const adminLiveStreamNavigation = [
-  { id: "overview", name: "Overview", path: "/admin/live-stream" },
-  { id: "vertex-testing", name: "Vertex AI Testing", path: "/admin/live-stream/vertex-testing" },
-  { id: "community-rooms", name: "Community Rooms", path: "/admin/live-stream/community-rooms" },
-  { id: "telemedicine", name: "Telemedicine Sessions", path: "/admin/live-stream/telemedicine" },
-  { id: "settings", name: "Stream Settings", path: "/admin/live-stream/settings" },
+// System
+export const adminSystemNavigation = [
+  { id: "configuration", name: "Configuration", path: "/admin/system" },
+  { id: "tenants", name: "Tenants", path: "/admin/system/tenants" },
+  { id: "creators", name: "Creators", path: "/admin/system/creators" },
+  { id: "bootstrap", name: "Bootstrap", path: "/admin/system/bootstrap" },
+];
+
+// Audit & Logs
+export const adminAuditNavigation = [
+  { id: "events", name: "Events", path: "/admin/audit" },
+  { id: "users", name: "User Activity", path: "/admin/audit/users" },
+  { id: "apis", name: "API Monitor", path: "/admin/audit/apis" },
+  { id: "security", name: "Security", path: "/admin/audit/security" },
 ];
 
 export const settingsNavigation = [
@@ -172,3 +162,16 @@ export const settingsNavigation = [
   { id: "billing", name: "Billing", path: "/settings/billing" },
   { id: "support", name: "Support", path: "/settings/support" },
 ];
+
+// ── Legacy aliases (backward compatibility for old pages) ────
+// These old names are used by legacy admin pages that haven't been
+// rebuilt yet. They point to the new navigation arrays so the old
+// pages can still render without breaking the build.
+export const adminUserManagementNavigation = adminUsersNavigation;
+export const adminTenantManagementNavigation = adminSystemNavigation;
+export const adminClinicalNavigation = adminSystemNavigation;
+export const adminMonitoringNavigation = adminAuditNavigation;
+export const adminMediaNavigation = adminContentNavigation;
+export const adminAIAssistantNavigation = adminIntelligenceNavigation;
+export const adminAutomationNavigation = adminIntelligenceNavigation;
+export const adminLiveStreamNavigation = adminLiveNavigation;
