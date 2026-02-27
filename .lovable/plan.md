@@ -1,35 +1,20 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Root Cause: "Failed to fetch" at 30% on Android
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+The upload fails exactly at the `supabase.storage.upload()` call (progress 30%). On Android, when a video file is selected from WhatsApp or a file manager, the browser's file descriptor can become invalid before the upload starts — the Fetch API then throws `TypeError: Failed to fetch` because it cannot read the file body.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+The fix is to **read the file into an ArrayBuffer immediately** when selected, so the data lives in memory and is not dependent on the OS-level file descriptor remaining valid.
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+Additionally, the `extractDuration` function is never called for video uploads (only music/podcast), so videos never get duration metadata extracted.
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+### Changes
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+**1. `src/hooks/useMediaUpload.ts`**
+- Before uploading, convert `file` to `ArrayBuffer` → `Blob` with explicit `type`, so the upload body is a memory-resident blob rather than a file descriptor reference
+- Also extract duration for video files (not just music/podcast)
+- Add more granular `console.log` around the storage upload step
+
+**2. `src/components/profile/gallery/VideoUploadDialog.tsx`**
+- When the user selects a file, immediately read it into an `ArrayBuffer` and create a new `File` from that buffer — this "materializes" the file into memory before any upload attempt
+
