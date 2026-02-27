@@ -64,15 +64,19 @@ export default function MobileDailyDiary() {
   return (
     <MobileAppShell>
       <div className="px-2 pt-2 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
-        {/* Compact header */}
-        <div className="pt-2 pb-1 px-1">
-          <h1 className="text-xl font-bold text-foreground">
-            📔 {translate("drawerNav.diary", "Daily Diary")}
-          </h1>
-        </div>
+        {/* Standard header with subtitle */}
+        <StandardHeader
+          title="📔 Daily Diary"
+          description="Track your wellness journey and help us improve"
+        />
+
+        {/* Utility action bar */}
+        <UtilityActionButton className="pt-1 pb-2 px-1">
+          <span />
+        </UtilityActionButton>
 
         {/* Two-segment tabs */}
-        <div className="flex gap-1 px-1 py-2">
+        <div className="flex gap-1 px-1 py-1">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
