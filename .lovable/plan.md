@@ -1,35 +1,32 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Restructure Daily Diary: Two-Category Layout
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+Replace the three pill tabs (Voice, Photo, Text) with two top-level horizontal segment tabs: **Health Diary** and **Bug Reports**.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+### Health Diary Tab
+- **Prominent microphone button** centered (the existing `VoiceDiaryRecorder` mic UI).
+- **"+" button** next to or near the mic that opens a bottom sheet/popover with options: Text entry, Camera capture, Photo upload.
+- When "+" option is selected, the corresponding input UI (TextDiaryEditor or PhotoDiaryUploader) appears inline or in a sheet.
+- Below the input area: `DiaryEntryList` showing all diary entries (voice + photo + text combined, not filtered by type).
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+### Bug Reports Tab
+- Shows `FeedbackRecorder` directly (no collapsible wrapper).
+- Below it: `FeedbackReportList`.
+- Uses the existing red/destructive visual distinction.
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+### Changes
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+**1. `src/pages/MobileDailyDiary.tsx`** - Full rewrite of the tab structure:
+- Replace `EntryMode` type with `CategoryTab = "health" | "bugs"`.
+- Two segment-style tabs at top: "🩺 Health Diary" and "🐛 Bug Reports".
+- Health tab: render VoiceDiaryRecorder prominently + a floating/inline "+" button that toggles a small action menu (Text, Camera, Photo) using a Popover or simple expandable row.
+- When a "+" option is picked, show the relevant component (TextDiaryEditor or PhotoDiaryUploader) in a card below the mic.
+- DiaryEntryList without entryType filter (show all sources).
+- Bug tab: render FeedbackRecorder + FeedbackReportList directly, no collapsible.
+- Remove the old feedbackOpen state and collapsible section.
+
+**2. `src/components/diary/DiaryEntryList.tsx`** - Make `entryType` prop optional:
+- When `entryType` is undefined/not provided, don't apply the `.eq('source', entryType)` filter — fetch all diary entries.
+- Adjust icon/badge display to be dynamic per-entry based on `entry.source` rather than the prop.
+
