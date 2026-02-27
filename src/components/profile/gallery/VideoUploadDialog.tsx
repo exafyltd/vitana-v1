@@ -59,10 +59,15 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
     setDescription("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!file || !title.trim()) return;
-    onUpload({ file, title: title.trim(), description: description.trim() || undefined, isPublic });
-    reset();
+    try {
+      await onUpload({ file, title: title.trim(), description: description.trim() || undefined, isPublic });
+      reset();
+    } catch (err) {
+      // Dialog stays open so user can retry
+      console.error('Video upload failed:', err);
+    }
   };
 
   return (
