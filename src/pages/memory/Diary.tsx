@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Plus, Mic, Image, PenSquare, LayoutGrid, List } from "lucide-react";
+import { Plus, Mic, Image, PenSquare, LayoutGrid, List, Bug } from "lucide-react";
+import { FeedbackRecorder } from "@/components/feedback/FeedbackRecorder";
+import { FeedbackReportList } from "@/components/feedback/FeedbackReportList";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
