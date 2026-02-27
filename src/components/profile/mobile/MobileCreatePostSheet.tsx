@@ -145,8 +145,14 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             className="hidden"
             onChange={handleImageSelect}
           />
-          <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()} className="text-muted-foreground">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+            className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
+          >
             <ImagePlus className="h-5 w-5" />
+            <span className="text-sm font-medium">Foto / Video</span>
           </Button>
           <span className={`text-sm ${content.length > MAX_CHARS ? 'text-destructive' : 'text-muted-foreground'}`}>
             {content.length}/{MAX_CHARS}
