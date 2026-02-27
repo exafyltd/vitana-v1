@@ -60,23 +60,35 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
     try {
       let imageUrl: string | undefined;
       if (imageFile) {
+        console.log('[PostUpload] auth check...');
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Not authenticated');
+
         const fileExt = imageFile.name.split('.').pop();
         const path = `${user.id}/posts/${Date.now()}.${fileExt}`;
-        const arrayBuffer = await imageFile.arrayBuffer();
-        const blob = new Blob([arrayBuffer], { type: imageFile.type });
-        const { error: uploadError } = await supabase.storage.from('media-uploads').upload(path, blob, { contentType: imageFile.type });
-        if (uploadError) throw uploadError;
-        const { data } = await supabase.storage.from('media-uploads').createSignedUrl(path, 31536000);
-        imageUrl = data?.signedUrl;
+
+        console.log('[PostUpload] uploading...', { size: imageFile.size, type: imageFile.type, path });
+        const { error: uploadError } = await supabase.storage
+          .from('media-uploads')
+          .upload(path, imageFile, { contentType: imageFile.type, upsert: false });
+        if (uploadError) {
+          console.error('[PostUpload] upload failed:', uploadError);
+          throw new Error(`Upload failed: ${uploadError.message}`);
+        }
+
+        console.log('[PostUpload] getting public URL...');
+        const { data: { publicUrl } } = supabase.storage.from('media-uploads').getPublicUrl(path);
+        imageUrl = publicUrl;
+        console.log('[PostUpload] imageUrl:', imageUrl);
       }
+      console.log('[PostUpload] inserting post...');
       await createPost.mutateAsync({ content: content.trim(), imageUrl });
       toast({ title: translate('profilePosts.posted', 'Posted!') });
       cleanup();
       onOpenChange(false);
-    } catch {
-      toast({ title: translate('profilePosts.error', 'Something went wrong'), variant: 'destructive' });
+    } catch (err: any) {
+      console.error('[PostUpload] error:', err);
+      toast({ title: translate('profilePosts.error', 'Something went wrong'), description: err?.message || '', variant: 'destructive' });
     }
   };
 
