@@ -1,29 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Fix: Post image upload failing on Android
+### Architecture
 
-The image selection works (preview shows), but the upload fails. The post upload code at line 58 has the same two issues we already fixed for video uploads:
-
-1. **No `contentType`** — `supabase.storage.upload(path, imageFile)` without explicit `contentType` causes Android rejection
-2. **No memory materialization** — the file descriptor can go stale on Android before upload completes
-
-### Changes to `src/components/profile/mobile/MobileCreatePostSheet.tsx`
-
-**In `handlePost` (lines 53-61)**, before uploading:
-- Read `imageFile` into `ArrayBuffer` → `Blob` with explicit type
-- Pass `{ contentType: imageFile.type }` to `supabase.storage.upload()`
-
-```typescript
-// Current (line 58):
-const { error: uploadError } = await supabase.storage.from('media-uploads').upload(path, imageFile);
-
-// Fixed:
-const arrayBuffer = await imageFile.arrayBuffer();
-const blob = new Blob([arrayBuffer], { type: imageFile.type });
-const { error: uploadError } = await supabase.storage
-  .from('media-uploads')
-  .upload(path, blob, { contentType: imageFile.type });
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-This applies the exact same materialization pattern that fixed the video upload.
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
+
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set

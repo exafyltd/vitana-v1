@@ -55,7 +55,9 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
         if (!user) throw new Error('Not authenticated');
         const fileExt = imageFile.name.split('.').pop();
         const path = `${user.id}/posts/${Date.now()}.${fileExt}`;
-        const { error: uploadError } = await supabase.storage.from('media-uploads').upload(path, imageFile);
+        const arrayBuffer = await imageFile.arrayBuffer();
+        const blob = new Blob([arrayBuffer], { type: imageFile.type });
+        const { error: uploadError } = await supabase.storage.from('media-uploads').upload(path, blob, { contentType: imageFile.type });
         if (uploadError) throw uploadError;
         const { data } = await supabase.storage.from('media-uploads').createSignedUrl(path, 31536000);
         imageUrl = data?.signedUrl;
