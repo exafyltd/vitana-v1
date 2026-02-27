@@ -120,5 +120,6 @@ export default function MobileDailyDiary() {
         </div>
       </div>
     </div>
+    </MobileAppShell>
   );
 }
