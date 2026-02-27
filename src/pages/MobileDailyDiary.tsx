@@ -102,17 +102,20 @@ export default function MobileDailyDiary() {
         <div className="flex-1 overflow-y-auto pb-[120px] space-y-4 px-1">
           {activeTab === "health" && (
             <>
-              {/* Mic + Plus row */}
+              {/* Prominent mic area */}
               <Card className="border-border/50 shadow-sm">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-2">
-                    <div className="flex-1">
+                <CardContent className="py-8 px-4">
+                  <div className="flex flex-col items-center justify-center relative">
+                    <div className="w-full max-w-[280px]">
                       <VoiceDiaryRecorder onRecordingChange={() => {}} />
                     </div>
+                    <p className="text-xs text-muted-foreground mt-3">Tap the mic to start recording</p>
+                    
+                    {/* Plus button - absolute right */}
                     <Popover open={plusOpen} onOpenChange={setPlusOpen}>
                       <PopoverTrigger asChild>
                         <button
-                          className="mt-1 flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:opacity-90 transition-opacity"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
                           aria-label="Add entry"
                         >
                           <Plus className="h-5 w-5" />
