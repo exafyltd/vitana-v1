@@ -37,6 +37,7 @@ function Diary() {
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [photoViewMode, setPhotoViewMode] = useState<"list" | "gallery">("list");
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
+  const [feedbackRefreshKey, setFeedbackRefreshKey] = useState(0);
 
   // Query for photo entries (used in gallery view)
   const { data: photoEntries } = useQuery({
