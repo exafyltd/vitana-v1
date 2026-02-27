@@ -26,7 +26,7 @@ const BUCKET_MAP = {
 const SIZE_LIMITS = {
   music: 50 * 1024 * 1024, // 50MB
   podcast: 100 * 1024 * 1024, // 100MB
-  video: 5 * 1024 * 1024 * 1024, // 5GB
+  video: 50 * 1024 * 1024, // 50MB
 } as const;
 
 export const useMediaUpload = () => {
