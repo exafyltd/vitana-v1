@@ -297,7 +297,8 @@ const MaxinaPortal = () => {
         setError(error.message);
       } else {
         setSignupEmail(email);
-        setError(translate('portals.maxina.checkEmail', "Please check your email to confirm your account."));
+        setSignupSuccess(true);
+        setError("");
       }
     } catch (err) {
       setError("An unexpected error occurred");
