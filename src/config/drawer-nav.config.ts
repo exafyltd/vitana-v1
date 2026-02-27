@@ -31,6 +31,7 @@ export const drawerNavItems: DrawerNavItem[] = [
   { id: 'orders',     route: '/discover/orders',         icon: ShoppingBag, translationKey: 'drawerNav.orders' },
   { id: 'wallet',     route: '/wallet',                  icon: Wallet,      translationKey: 'drawerNav.wallet' },
   { id: 'health',     route: '/health',                  icon: HeartPulse,  translationKey: 'drawerNav.health' },
+  { id: 'diary',      route: '/daily-diary',             icon: BookOpen,    translationKey: 'drawerNav.diary' },
   { id: 'connectors', route: '/settings/connected-apps', icon: Plug,        translationKey: 'drawerNav.connectors' },
   { id: 'inbox',      route: '/inbox',                   icon: Mail,        translationKey: 'drawerNav.inbox' },
   { id: 'profile',    route: '/me/profile',              icon: UserCircle,  translationKey: 'drawerNav.profile' },
