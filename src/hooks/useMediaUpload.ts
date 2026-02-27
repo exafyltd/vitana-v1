@@ -154,10 +154,10 @@ export const useMediaUpload = () => {
           throw new Error('Failed to save podcast metadata. Please try again.');
         }
       } else if (metadata.mediaType === 'video' && mediaUpload) {
+        console.log('[MediaUpload] Inserting video metadata for:', mediaUpload.id);
         const { error: videoError } = await supabase.from('video_metadata').insert({
           media_id: mediaUpload.id,
           topic: metadata.topic || null,
-          thumbnail_url: metadata.thumbnailUrl || null,
         });
         
         if (videoError) {
