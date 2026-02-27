@@ -9890,6 +9890,76 @@ export type Database = {
           },
         ]
       }
+      user_feedback_reports: {
+        Row: {
+          admin_notes: string | null
+          affected_screen: string | null
+          attachments: string[] | null
+          created_at: string
+          id: string
+          report_type: string
+          severity: string
+          status: string
+          tenant_id: string | null
+          transcript: string
+          updated_at: string
+          user_id: string
+          vtid: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          affected_screen?: string | null
+          attachments?: string[] | null
+          created_at?: string
+          id?: string
+          report_type?: string
+          severity?: string
+          status?: string
+          tenant_id?: string | null
+          transcript: string
+          updated_at?: string
+          user_id: string
+          vtid?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          affected_screen?: string | null
+          attachments?: string[] | null
+          created_at?: string
+          id?: string
+          report_type?: string
+          severity?: string
+          status?: string
+          tenant_id?: string | null
+          transcript?: string
+          updated_at?: string
+          user_id?: string
+          vtid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_feedback_reports_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "admin_tenant_analytics"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_feedback_reports_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["tenant_id"]
+          },
+          {
+            foreignKeyName: "user_feedback_reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "signup_funnel"
+            referencedColumns: ["auth_user_id"]
+          },
+        ]
+      }
       user_follows: {
         Row: {
           created_at: string
