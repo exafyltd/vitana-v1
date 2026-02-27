@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Users, Eye, EyeOff } from "lucide-react";
+import { Loader2, Users, Eye, EyeOff, MailCheck } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { supabase } from "@/integrations/supabase/client";
@@ -50,6 +50,7 @@ const MaxinaPortal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const [signupEmail, setSignupEmail] = useState<string | null>(null);
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   // Helper to ensure soundscape starts playing (for user interaction)
   const ensureSoundscapePlaying = useCallback(() => {
@@ -296,7 +297,8 @@ const MaxinaPortal = () => {
         setError(error.message);
       } else {
         setSignupEmail(email);
-        setError(translate('portals.maxina.checkEmail', "Please check your email to confirm your account."));
+        setSignupSuccess(true);
+        setError("");
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -579,6 +581,26 @@ const MaxinaPortal = () => {
               </TabsContent>
               
               <TabsContent value="signup">
+                {signupSuccess && signupEmail ? (
+                  <div className="px-4 md:px-6 py-8 text-center space-y-4">
+                    <div className="mx-auto w-14 h-14 rounded-full bg-[#FF7BAC]/10 flex items-center justify-center">
+                      <MailCheck className="h-7 w-7 text-[#FF7BAC]" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">Check your email</h3>
+                    <p className="text-sm text-muted-foreground">
+                      We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
+                    </p>
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.maxina)} />
+                    <button
+                      type="button"
+                      onClick={() => { setSignupSuccess(false); setSignupEmail(null); setError(""); }}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      ← Use a different email
+                    </button>
+                  </div>
+                ) : (
+                <>
                 {/* Compact header */}
                 <CardHeader className="pb-2 pt-4 md:pb-3 md:pt-5 px-4 md:px-6">
                   <CardTitle className="text-lg md:text-xl">{translate('portals.maxina.joinCommunity', 'Join the Maxina community.')}</CardTitle>
@@ -590,12 +612,9 @@ const MaxinaPortal = () => {
                 <CardContent className="px-4 md:px-6 pt-0 pb-4 md:pb-5">
                   <form onSubmit={handleSignUp} className="space-y-2.5 md:space-y-3">
                     {error && (
-                      <Alert variant={error.includes('check your email') || error.includes('confirm') ? 'default' : 'destructive'} className="py-2">
+                      <Alert variant="destructive" className="py-2">
                         <AlertDescription className="text-sm">{error}</AlertDescription>
                       </Alert>
-                    )}
-                    {signupEmail && error?.includes('check your email') && (
-                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.maxina)} />
                     )}
                     
                     <div className="space-y-1.5">
@@ -715,6 +734,8 @@ const MaxinaPortal = () => {
                       </div>
                   </form>
                 </CardContent>
+                </>
+                )}
               </TabsContent>
             </Tabs>
           </Card>

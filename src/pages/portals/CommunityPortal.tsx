@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Users, Heart, BookOpen, Leaf, Eye, EyeOff } from "lucide-react";
+import { Loader2, Users, Heart, BookOpen, Leaf, Eye, EyeOff, MailCheck } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
@@ -27,6 +27,7 @@ const CommunityPortal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const [signupEmail, setSignupEmail] = useState<string | null>(null);
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   // Redirect authenticated users to their appropriate dashboard
   useEffect(() => {
@@ -79,7 +80,8 @@ const CommunityPortal = () => {
         setError(error.message);
       } else {
         setSignupEmail(email);
-        setError("Please check your email to confirm your account.");
+        setSignupSuccess(true);
+        setError("");
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -285,6 +287,26 @@ const CommunityPortal = () => {
               </TabsContent>
               
               <TabsContent value="signup">
+                {signupSuccess && signupEmail ? (
+                  <div className="px-6 py-8 text-center space-y-4">
+                    <div className="mx-auto w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                      <MailCheck className="h-7 w-7 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">Check your email</h3>
+                    <p className="text-sm text-muted-foreground">
+                      We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
+                    </p>
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.community)} />
+                    <button
+                      type="button"
+                      onClick={() => { setSignupSuccess(false); setSignupEmail(null); setError(""); }}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      ← Use a different email
+                    </button>
+                  </div>
+                ) : (
+                <>
                 <CardHeader>
                   <CardTitle>Join the Community</CardTitle>
                   <CardDescription>Create your account and choose your platform</CardDescription>
@@ -292,12 +314,9 @@ const CommunityPortal = () => {
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
                     {error && (
-                      <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
+                      <Alert variant="destructive">
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
-                    )}
-                    {signupEmail && error?.includes('check your email') && (
-                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.community)} />
                     )}
                     
                     <div className="space-y-2">
@@ -376,6 +395,8 @@ const CommunityPortal = () => {
                     </Button>
                   </form>
                 </CardContent>
+                </>
+                )}
               </TabsContent>
             </Tabs>
           </Card>
