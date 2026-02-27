@@ -2442,7 +2442,11 @@
     "videos": "Videogalerie",
     "uploadVideo": "Video hochladen",
     "noVideos": "Noch keine Videos",
-    "addFirstVideo": "Erstes Video hinzufügen"
+    "addFirstVideo": "Erstes Video hinzufügen",
+    "invalidFormat": "Ungültiges Format",
+    "fileTooLarge": "Datei zu groß",
+    "maxSize": "Maximale Dateigröße: 500 MB",
+    "maxSizeHint": "Max. 500 MB"
   },
   "publicProfile": {
     "viewFull": "Vollständiges Profil ansehen",
