@@ -119,7 +119,8 @@ const AlkalmaPortal = () => {
         }
       } else {
         setSignupEmail(email);
-        setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the AlKalma portal.");
+        setSignupSuccess(true);
+        setError("");
       }
     } catch (err) {
       setError("An unexpected error occurred");
