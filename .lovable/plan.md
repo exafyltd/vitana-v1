@@ -1,35 +1,32 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Make the media upload button more prominent in the Create Post sheet
 
+The current implementation uses a small ghost icon button (`ImagePlus`) tucked in the bottom-left footer — hard to notice on mobile.
+
+### Changes to `src/components/profile/mobile/MobileCreatePostSheet.tsx`
+
+Replace the footer's small ghost icon button with a larger, visually distinct button that has a colored background, label text, and more padding:
+
+**Current** (lines 149-151):
+```tsx
+<Button variant="ghost" size="icon" onClick={...} className="text-muted-foreground">
+  <ImagePlus className="h-5 w-5" />
+</Button>
 ```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
+
+**New**:
+```tsx
+<Button
+  variant="outline"
+  size="sm"
+  onClick={...}
+  className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
+>
+  <ImagePlus className="h-5 w-5" />
+  <span className="text-sm font-medium">Foto / Video</span>
+</Button>
 ```
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+This gives the button a tinted background, a visible border, icon + label text, and a pill shape — making it immediately recognizable as an action button rather than a subtle icon.
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
-
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
-
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
