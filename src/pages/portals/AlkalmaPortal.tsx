@@ -309,6 +309,26 @@ const AlkalmaPortal = () => {
               </TabsContent>
               
               <TabsContent value="signup">
+                {signupSuccess && signupEmail ? (
+                  <div className="px-6 py-8 text-center space-y-4">
+                    <div className="mx-auto w-14 h-14 rounded-full bg-[#3B82F6]/10 flex items-center justify-center">
+                      <MailCheck className="h-7 w-7 text-[#3B82F6]" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">Check your email</h3>
+                    <p className="text-sm text-muted-foreground">
+                      We've sent a confirmation link to <span className="font-medium text-foreground">{signupEmail}</span>
+                    </p>
+                    <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.alkalma)} />
+                    <button
+                      type="button"
+                      onClick={() => { setSignupSuccess(false); setSignupEmail(null); setError(""); }}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      ← Use a different email
+                    </button>
+                  </div>
+                ) : (
+                <>
                 <CardHeader>
                   <CardTitle>Join AlKalma</CardTitle>
                   <CardDescription>Create your account and choose your role</CardDescription>
@@ -316,12 +336,9 @@ const AlkalmaPortal = () => {
                 <CardContent>
                   <form onSubmit={handleSignUp} className="space-y-4">
                     {error && (
-                      <Alert variant={error.includes('check your email') ? 'default' : 'destructive'}>
+                      <Alert variant="destructive">
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
-                    )}
-                    {signupEmail && error?.includes('check your email') && (
-                      <ResendConfirmationButton email={signupEmail} redirectUrl={getEmailRedirectUrl(CONFIRMATION_PATHS.alkalma)} />
                     )}
                     
                     <div className="space-y-2">

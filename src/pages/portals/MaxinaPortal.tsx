@@ -734,6 +734,8 @@ const MaxinaPortal = () => {
                       </div>
                   </form>
                 </CardContent>
+                </>
+                )}
               </TabsContent>
             </Tabs>
           </Card>

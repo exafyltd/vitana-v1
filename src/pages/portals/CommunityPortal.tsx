@@ -395,6 +395,8 @@ const CommunityPortal = () => {
                     </Button>
                   </form>
                 </CardContent>
+                </>
+                )}
               </TabsContent>
             </Tabs>
           </Card>
