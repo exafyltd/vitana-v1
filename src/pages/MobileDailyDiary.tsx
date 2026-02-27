@@ -48,6 +48,9 @@ export default function MobileDailyDiary() {
   const [activePlusOption, setActivePlusOption] = useState<PlusOption | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [feedbackRefreshKey, setFeedbackRefreshKey] = useState(0);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { pendingCount } = useAutopilot();
 
   useEffect(() => {
     if (!isMobile) {
