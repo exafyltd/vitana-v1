@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   Wallet,
   HeartPulse,
+  BookOpen,
   Plug,
   Mail,
   UserCircle,
