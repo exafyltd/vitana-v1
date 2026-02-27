@@ -524,6 +524,13 @@ const App = () => {
             </AuthGuard>
           } />
           
+          {/* Daily Diary (mobile-optimized) */}
+          <Route path="/daily-diary" element={
+            <AuthGuard>
+              <MobileDailyDiary />
+            </AuthGuard>
+          } />
+
           {/* Health routes */}
           <Route path="/health" element={
             <AuthGuard>
