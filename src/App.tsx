@@ -35,6 +35,7 @@ import IntroExperience from "./pages/IntroExperience";
 import RedeemVoucher from "./pages/RedeemVoucher";
 import CreatorOnboarded from "./pages/CreatorOnboarded";
 import Logout from "./pages/Logout";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 // Portal pages
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
