@@ -38,7 +38,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
       return;
     }
     if (f.size > MAX_VIDEO_SIZE) {
-      toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 500 MB"), variant: "destructive" });
+      toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 50 MB"), variant: "destructive" });
       return;
     }
     setFile(f);
