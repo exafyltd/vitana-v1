@@ -1,35 +1,37 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Add "Daily Diary" as a sidebar nav item + create a mobile-optimized diary page
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+### What this does
+Adds a new "Daily Diary" entry in the mobile sidebar drawer (between Health and Connectors), pointing to a new mobile-optimized page at `/daily-diary`. This page follows the same compressed mobile layout patterns used by Events, Live Rooms, Media Hub, etc. — full viewport height, compact header, scrollable pill tabs for entry modes, and the feedback section at the bottom.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+### Changes
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+**1. Add nav item to drawer config**
+- `src/config/drawer-nav.config.ts`: Import `BookOpen` icon, add `{ id: 'diary', route: '/daily-diary', icon: BookOpen, translationKey: 'drawerNav.diary' }` between `health` and `connectors`.
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+**2. Add translations**
+- `src/i18n/en.json`: Add `"diary": "Daily Diary"` to `drawerNav` section.
+- `src/i18n/de.json`: Add `"diary": "Tägliches Tagebuch"` to `drawerNav` section.
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+**3. Create the mobile diary page: `src/pages/MobileDailyDiary.tsx`**
+
+Layout follows mobile hub pattern:
+- Outer container: `px-2 pt-2 pb-0 h-[100dvh] overflow-hidden` with gradient background.
+- Compact header: title "Daily Diary" with 📔 emoji, compressed padding (`pt-2 pb-1`).
+- Horizontal scrollable pill tabs (3 tabs): 🎤 Voice, 📸 Photo, ✍️ Text.
+- Each tab shows the respective recorder/uploader component (VoiceDiaryRecorder, PhotoDiaryUploader, TextDiaryEditor) in a compact card, followed by the entry list (DiaryEntryList).
+- Below the tab content, a collapsible "Test Feedback" section with FeedbackRecorder and FeedbackReportList (same red/orange gradient card).
+- The whole content area scrolls vertically within the viewport-height container (overflow-y-auto with bottom padding `pb-[120px]` for safe area + bottom nav clearance).
+- Uses `useIsMobile()` — if accessed on desktop, redirects to `/memory/diary`.
+
+**4. Add route in `src/App.tsx`**
+- Import `MobileDailyDiary` and add route: `<Route path="/daily-diary" element={<AuthGuard><MobileDailyDiary /></AuthGuard>} />`.
+
+### Technical details
+- Reuses existing components: `VoiceDiaryRecorder`, `PhotoDiaryUploader`, `TextDiaryEditor`, `DiaryEntryList`, `FeedbackRecorder`, `FeedbackReportList`.
+- No new DB tables or migrations needed.
+- Mobile-only page; desktop users are redirected to the existing `/memory/diary` route.
+- Follows the "one decision layer" navigation compression rule — tabs are page-internal, not a second nav bar.
+- Photo gallery/carousel modal support carried over for the photo tab.
+
