@@ -1,35 +1,27 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Plan: Create Reset Password Page for Maxina
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+### Step 1: Create `src/pages/auth/ResetPassword.tsx`
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+A new page with two views, Maxina-themed (pink gradient):
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+**Request view** (default):
+- Maxina-branded card with mail icon
+- Email input + "Send reset link" button
+- Calls `supabase.auth.resetPasswordForEmail(email, { redirectTo: origin + '/reset-password?type=recovery' })`
+- On success: shows confirmation screen ("Check your email for a reset link")
+- "Back to Maxina" link → `/maxina`
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+**Update view** (when URL has `type=recovery` or hash has `type=recovery`):
+- Password + confirm password inputs with show/hide toggle
+- Calls `supabase.auth.updateUser({ password })`
+- On success: confirmation screen with "Continue to Maxina" button → `/maxina`
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+### Step 2: Add route in `src/App.tsx`
+
+- Import `ResetPassword` (lazy or direct)
+- Add `<Route path="/reset-password" element={<ResetPassword />} />` in the public routes section (around line 341-346)
+
+No changes needed to MaxinaPortal — the "Forgot password?" link already points to `/reset-password`.
+
