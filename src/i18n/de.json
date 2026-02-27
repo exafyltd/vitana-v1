@@ -941,7 +941,8 @@
     "download": "Herunterladen",
     "upload": "Hochladen",
     "refresh": "Aktualisieren",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "uploading": "Wird hochgeladen..."
   },
   "wallet": {
     "title": "Wallet",
