@@ -11,7 +11,7 @@ import { PhotoCarouselModal } from "./PhotoCarouselModal";
 import { DateGroupHeader } from "./DateGroupHeader";
 
 interface DiaryEntryListProps {
-  entryType: "voice" | "photo" | "text";
+  entryType?: "voice" | "photo" | "text";
 }
 
 interface SelectedEntry {
