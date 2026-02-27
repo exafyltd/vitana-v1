@@ -243,6 +243,11 @@ export default function MobileDailyDiary() {
           )}
         </div>
       </div>
+
+      <AutopilotPopup 
+        open={autopilotOpen} 
+        onOpenChange={setAutopilotOpen} 
+      />
     </MobileAppShell>
   );
 }
