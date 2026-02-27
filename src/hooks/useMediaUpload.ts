@@ -69,7 +69,7 @@ export const useMediaUpload = () => {
 
       // Extract duration if not provided
       let duration = metadata.duration;
-      if (!duration && (metadata.mediaType === 'music' || metadata.mediaType === 'podcast')) {
+      if (!duration && (metadata.mediaType === 'music' || metadata.mediaType === 'podcast' || metadata.mediaType === 'video')) {
         duration = await extractDuration(file);
       }
 
