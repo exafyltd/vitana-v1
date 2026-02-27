@@ -303,67 +303,84 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessageThread[]> => {
       if (!user || !isGlobalContext) return [];
 
-      const conversations = await fetchConversations();
-      if (!conversations || conversations.length === 0) return [];
+      // Fetch from both gateway and legacy in parallel
+      const [conversations, legacyThreads] = await Promise.all([
+        fetchConversations().catch((err) => {
+          console.warn("Gateway fetchConversations failed, using legacy only:", err.message);
+          return [] as ChatConversation[];
+        }),
+        fetchLegacyThreads(user.id),
+      ]);
 
-      // Collect all peer IDs + own user ID for profile enrichment
-      const allUserIds = new Set<string>([user.id]);
-      conversations.forEach((c) => {
-        allUserIds.add(c.peer_id);
-        if (c.last_message) {
-          allUserIds.add(c.last_message.sender_id);
-          allUserIds.add(c.last_message.receiver_id);
-        }
-      });
+      // Build gateway threads
+      let gatewayThreads: GlobalMessageThread[] = [];
+      if (conversations && conversations.length > 0) {
+        const allUserIds = new Set<string>([user.id]);
+        conversations.forEach((c) => {
+          allUserIds.add(c.peer_id);
+          if (c.last_message) {
+            allUserIds.add(c.last_message.sender_id);
+            allUserIds.add(c.last_message.receiver_id);
+          }
+        });
 
-      const profileMap = await enrichProfiles(Array.from(allUserIds));
+        const profileMap = await enrichProfiles(Array.from(allUserIds));
 
-      return conversations.map((conv) => {
-        const peer = profileMap[conv.peer_id] || {
-          display_name: "Unknown User",
-          avatar_url: null,
-        };
-        const me = profileMap[user.id] || {
-          display_name: "Me",
-          avatar_url: null,
-        };
+        gatewayThreads = conversations.map((conv) => {
+          const peer = profileMap[conv.peer_id] || {
+            display_name: "Unknown User",
+            avatar_url: null,
+          };
+          const me = profileMap[user.id] || {
+            display_name: "Me",
+            avatar_url: null,
+          };
 
-        const lastMsg = conv.last_message;
-        // Compute unread: messages FROM peer that haven't been read
-        const unreadCount =
-          lastMsg &&
-          lastMsg.sender_id !== user.id &&
-          !lastMsg.read_at
-            ? 1 // Gateway only gives last_message; real count comes from badge hook
-            : 0;
+          const lastMsg = conv.last_message;
+          const unreadCount =
+            lastMsg &&
+            lastMsg.sender_id !== user.id &&
+            !lastMsg.read_at
+              ? 1
+              : 0;
 
-        return {
-          id: conv.peer_id, // thread ID = peer ID for direct chats
-          name: undefined, // direct chats show participant name
-          type: "direct" as const,
-          created_by: user.id,
-          created_at: lastMsg?.created_at || new Date().toISOString(),
-          updated_at: lastMsg?.created_at || new Date().toISOString(),
-          participants: [
-            {
-              user_id: user.id,
-              display_name: me.display_name,
-              avatar_url: me.avatar_url,
-              role: "member",
-            },
-            {
-              user_id: conv.peer_id,
-              display_name: peer.display_name,
-              avatar_url: peer.avatar_url,
-              role: "member",
-            },
-          ],
-          last_message: lastMsg
-            ? toGlobalMessage(lastMsg, conv.peer_id, profileMap)
-            : undefined,
-          unread_count: unreadCount,
-        } satisfies GlobalMessageThread;
-      });
+          return {
+            id: conv.peer_id,
+            name: undefined,
+            type: "direct" as const,
+            created_by: user.id,
+            created_at: lastMsg?.created_at || new Date().toISOString(),
+            updated_at: lastMsg?.created_at || new Date().toISOString(),
+            participants: [
+              {
+                user_id: user.id,
+                display_name: me.display_name,
+                avatar_url: me.avatar_url,
+                role: "member",
+              },
+              {
+                user_id: conv.peer_id,
+                display_name: peer.display_name,
+                avatar_url: peer.avatar_url,
+                role: "member",
+              },
+            ],
+            last_message: lastMsg
+              ? toGlobalMessage(lastMsg, conv.peer_id, profileMap)
+              : undefined,
+            unread_count: unreadCount,
+          } satisfies GlobalMessageThread;
+        });
+      }
+
+      // Merge: gateway wins on duplicates (same peer_id as thread id)
+      const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
+      const uniqueLegacy = legacyThreads.filter((t) => !gatewayIds.has(t.id));
+      const merged = [...gatewayThreads, ...uniqueLegacy].sort(
+        (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+      );
+
+      return merged;
     },
     enabled: !!user && isGlobalContext,
     staleTime: 2 * 60 * 1000,
