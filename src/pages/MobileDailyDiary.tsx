@@ -92,10 +92,10 @@ export default function MobileDailyDiary() {
         <div className="mt-4">
           <button
             onClick={() => setFeedbackOpen(!feedbackOpen)}
-            className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-gradient-to-r from-red-500/10 to-orange-500/10 border border-red-500/20 text-sm font-medium text-foreground"
+            className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-sm font-medium text-foreground"
           >
             <span className="flex items-center gap-2">
-              <Bug className="h-4 w-4 text-red-500" />
+              <Bug className="h-4 w-4 text-destructive" />
               {translate("diary.testFeedback", "Test Feedback")}
             </span>
             {feedbackOpen ? (
