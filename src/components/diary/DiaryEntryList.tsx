@@ -50,15 +50,16 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
 
   // Set up real-time subscription
   useEffect(() => {
+    const filterStr = entryType ? `source=eq.${entryType}` : undefined;
     const channel = supabase
-      .channel('diary-entries-changes')
+      .channel(`diary-entries-changes-${entryType ?? 'all'}`)
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'diary_entries',
-          filter: `source=eq.${entryType}`
+          ...(filterStr ? { filter: filterStr } : {}),
         },
         () => {
           refetch();
