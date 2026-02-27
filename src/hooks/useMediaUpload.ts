@@ -82,9 +82,11 @@ export const useMediaUpload = () => {
 
       // Upload to storage
       const bucket = BUCKET_MAP[metadata.mediaType];
+      console.log('[MediaUpload] Uploading to storage:', { bucket, filePath, contentType: file.type, size: file.size });
       const { error: uploadError } = await supabase.storage
         .from(bucket)
         .upload(filePath, file, {
+          contentType: file.type,
           cacheControl: '3600',
           upsert: false
         });
