@@ -140,10 +140,10 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     return (
       <Card>
         <CardContent className="pt-6 text-center text-muted-foreground">
-          <div className={`w-12 h-12 rounded-full ${getIconBg()} flex items-center justify-center mx-auto mb-2`}>
-            {getIcon()}
+          <div className={`w-12 h-12 rounded-full ${getIconBgForSource(entryType)} flex items-center justify-center mx-auto mb-2`}>
+            {getIconForSource(entryType)}
           </div>
-          <p>No {entryType} entries yet</p>
+          <p>No {entryType || ''} entries yet</p>
           <p className="text-sm mt-1">Start recording your wellness journey</p>
         </CardContent>
       </Card>
