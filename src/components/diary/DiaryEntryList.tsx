@@ -26,19 +26,23 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
 
   const { data: entries, isLoading, refetch } = useQuery({
-    queryKey: ['diary-entries', entryType],
+    queryKey: ['diary-entries', entryType ?? 'all'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase
+      let query = supabase
         .from('diary_entries')
         .select('*')
         .eq('user_id', user.id)
-        .eq('source', entryType)
         .order('created_at', { ascending: false })
         .limit(20);
 
+      if (entryType) {
+        query = query.eq('source', entryType);
+      }
+
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },
