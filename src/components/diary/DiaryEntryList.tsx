@@ -195,7 +195,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
                             <Badge variant="secondary">
-                              {getBadgeLabel()}
+                              {getBadgeLabelForSource(entry.source)}
                             </Badge>
                             {entry.duration && (
                               <Badge variant="outline">{Math.round(entry.duration)}s</Badge>
