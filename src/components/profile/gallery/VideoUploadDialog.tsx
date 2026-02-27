@@ -101,7 +101,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
             <input
               ref={fileRef}
               type="file"
-              accept="video/mp4,video/webm,video/quicktime"
+              accept="video/mp4,video/webm,video/quicktime,video/3gpp,video/3gpp2"
               className="hidden"
               onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
             />
