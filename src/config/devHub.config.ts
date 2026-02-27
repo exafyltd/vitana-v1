@@ -7,17 +7,26 @@ export const DEV_HUB_CONFIG = {
   // Feature flags
   enabled: import.meta.env.VITE_DEV_HUB_ENABLED !== 'false', // Default true
   readonly: import.meta.env.VITE_DEV_HUB_READONLY !== 'false', // Default true (Phase 1)
-  
+
   // Gateway configuration (single source of truth)
   gatewayBase: import.meta.env.VITE_GATEWAY_BASE || null,
-  
+
   // Polling intervals (ms)
   eventsRefreshInterval: 10000, // 10 seconds
   vtidRefreshInterval: 30000, // 30 seconds
-  
+  oasisRefreshInterval: 10000, // 10 seconds
+  governanceRefreshInterval: 30000, // 30 seconds
+  workersRefreshInterval: 15000, // 15 seconds
+  cicdRefreshInterval: 30000, // 30 seconds
+  gatewayLogsRefreshInterval: 15000, // 15 seconds
+  telemetryRefreshInterval: 30000, // 30 seconds
+  llmRefreshInterval: 60000, // 60 seconds
+
   // UI limits
   maxRecentEvents: 25,
   maxRecentVTIDs: 25,
+  maxOasisEvents: 100,
+  maxGatewayLogs: 100,
 } as const;
 
 /**

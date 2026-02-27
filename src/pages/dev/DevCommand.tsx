@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useSessionAutosave } from "@/hooks/dev/useSessionAutosave";
 import { DevStandardHeader } from "@/components/dev/DevStandardHeader";
-import { DevEmptyState } from "@/components/dev/DevEmptyState";
+import { DevDataTable } from "@/components/dev/DevDataTable";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import SubNavigation from "@/components/SubNavigation";
 import SEO from "@/components/SEO";
 import { Plus, Plane, Users, Activity } from "lucide-react";
@@ -21,6 +22,9 @@ import { CreateTaskModal } from "@/components/dev/modals/CreateTaskModal";
 import { TriggerRunModal } from "@/components/dev/modals/TriggerRunModal";
 import { RestoreSessionButton } from "@/components/dev/RestoreSessionButton";
 import { RestoreSessionModal } from "@/components/dev/modals/RestoreSessionModal";
+import { useOasisEvents } from "@/hooks/dev/useOasisEvents";
+import { OasisEvent } from "@/lib/devGatewayClient";
+import { formatDistanceToNow } from "date-fns";
 
 export default function DevCommand() {
   const location = useLocation();
@@ -51,6 +55,9 @@ export default function DevCommand() {
       saveCurrentSession();
     }
   }, [createCommandOpen, createTaskOpen, triggerRunOpen]);
+
+  // History data
+  const { events: historyEvents, error: historyError, available: historyAvailable, isLoading: historyLoading, refetch: historyRefetch } = useOasisEvents({ limit: 100 });
 
   const getButtonLabel = () => {
     switch (activeTab) {
@@ -152,15 +159,27 @@ export default function DevCommand() {
           )}
 
           {activeTab === "history" && (
-            <div className="grid grid-cols-12 gap-6">
-              <div className="col-span-12">
-                <DevEmptyState 
-                  title="Command History" 
-                  description="View past operations and executions"
-                  icon={Activity}
-                />
-              </div>
-            </div>
+            <DevDataTable
+              title="Command History"
+              description="Past operations and execution logs"
+              columns={[
+                { key: "created_at", label: "Time", sortable: true, render: (row: OasisEvent & Record<string, unknown>) => <span className="text-xs text-muted-foreground whitespace-nowrap">{formatDistanceToNow(new Date(row.created_at), { addSuffix: true })}</span> },
+                { key: "type", label: "Type", sortable: true, render: (row: OasisEvent & Record<string, unknown>) => <Badge variant="outline" className="text-xs">{row.type}</Badge> },
+                { key: "service", label: "Service", sortable: true, render: (row: OasisEvent & Record<string, unknown>) => <span className="font-medium text-sm">{row.service}</span> },
+                { key: "status", label: "Status", sortable: true, render: (row: OasisEvent & Record<string, unknown>) => <Badge className={`text-xs ${row.status === "green" ? "bg-green-100 text-green-800" : row.status === "red" ? "bg-red-100 text-red-800" : row.status === "yellow" ? "bg-yellow-100 text-yellow-800" : "bg-blue-100 text-blue-800"}`}>{row.status}</Badge> },
+                { key: "vtid", label: "VTID", render: (row: OasisEvent & Record<string, unknown>) => row.vtid ? <Badge variant="secondary" className="text-xs font-mono">{row.vtid}</Badge> : <span className="text-muted-foreground">—</span> },
+                { key: "message", label: "Message", className: "max-w-[300px]", render: (row: OasisEvent & Record<string, unknown>) => <span className="text-sm truncate block">{row.message}</span> },
+              ]}
+              data={historyEvents.map(e => ({ ...e } as OasisEvent & Record<string, unknown>))}
+              isLoading={historyLoading}
+              error={historyError}
+              available={historyAvailable}
+              onRefresh={historyRefetch}
+              searchable
+              searchPlaceholder="Filter history…"
+              searchKeys={["type", "service", "vtid", "message", "status"]}
+              emptyMessage="No command history"
+            />
           )}
         </div>
       </div>
