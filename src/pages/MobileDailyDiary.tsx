@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Type, Camera, Image, X } from "lucide-react";
+import { Plus, Type, Camera, Image, X, Plane } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
 import { PhotoDiaryUploader } from "@/components/diary/PhotoDiaryUploader";
 import { TextDiaryEditor } from "@/components/diary/TextDiaryEditor";
