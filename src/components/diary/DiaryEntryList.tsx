@@ -187,8 +187,8 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                     <CardContent className="pt-6">
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
-                          <div className={`w-10 h-10 rounded-full ${getIconBg()} flex items-center justify-center`}>
-                            {getIcon()}
+                          <div className={`w-10 h-10 rounded-full ${getIconBgForSource(entry.source)} flex items-center justify-center`}>
+                            {getIconForSource(entry.source)}
                           </div>
                         </div>
 
