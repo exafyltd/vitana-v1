@@ -80,7 +80,8 @@ const CommunityPortal = () => {
         setError(error.message);
       } else {
         setSignupEmail(email);
-        setError("Please check your email to confirm your account.");
+        setSignupSuccess(true);
+        setError("");
       }
     } catch (err) {
       setError("An unexpected error occurred");
