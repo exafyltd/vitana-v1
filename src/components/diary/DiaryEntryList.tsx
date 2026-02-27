@@ -11,7 +11,7 @@ import { PhotoCarouselModal } from "./PhotoCarouselModal";
 import { DateGroupHeader } from "./DateGroupHeader";
 
 interface DiaryEntryListProps {
-  entryType: "voice" | "photo" | "text";
+  entryType?: "voice" | "photo" | "text";
 }
 
 interface SelectedEntry {
@@ -26,19 +26,23 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
 
   const { data: entries, isLoading, refetch } = useQuery({
-    queryKey: ['diary-entries', entryType],
+    queryKey: ['diary-entries', entryType ?? 'all'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase
+      let query = supabase
         .from('diary_entries')
         .select('*')
         .eq('user_id', user.id)
-        .eq('source', entryType)
         .order('created_at', { ascending: false })
         .limit(20);
 
+      if (entryType) {
+        query = query.eq('source', entryType);
+      }
+
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },
@@ -46,15 +50,16 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
 
   // Set up real-time subscription
   useEffect(() => {
+    const filterStr = entryType ? `source=eq.${entryType}` : undefined;
     const channel = supabase
-      .channel('diary-entries-changes')
+      .channel(`diary-entries-changes-${entryType ?? 'all'}`)
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'diary_entries',
-          filter: `source=eq.${entryType}`
+          ...(filterStr ? { filter: filterStr } : {}),
         },
         () => {
           refetch();
@@ -67,36 +72,42 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     };
   }, [entryType, refetch]);
 
-  const getIcon = () => {
-    switch (entryType) {
+  const getIconForSource = (source?: string) => {
+    switch (source) {
       case "voice":
-        return <Mic className="w-5 h-5 text-purple-600 dark:text-purple-400" />;
+        return <Mic className="w-5 h-5 text-primary" />;
       case "photo":
-        return <ImageIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+        return <ImageIcon className="w-5 h-5 text-primary" />;
       case "text":
-        return <Type className="w-5 h-5 text-green-600 dark:text-green-400" />;
+        return <Type className="w-5 h-5 text-primary" />;
+      default:
+        return <Mic className="w-5 h-5 text-primary" />;
     }
   };
 
-  const getIconBg = () => {
-    switch (entryType) {
+  const getIconBgForSource = (source?: string) => {
+    switch (source) {
       case "voice":
-        return "bg-purple-100 dark:bg-purple-900/20";
+        return "bg-primary/10";
       case "photo":
-        return "bg-blue-100 dark:bg-blue-900/20";
+        return "bg-primary/10";
       case "text":
-        return "bg-green-100 dark:bg-green-900/20";
+        return "bg-primary/10";
+      default:
+        return "bg-primary/10";
     }
   };
 
-  const getBadgeLabel = () => {
-    switch (entryType) {
+  const getBadgeLabelForSource = (source?: string) => {
+    switch (source) {
       case "voice":
         return "Voice Recording";
       case "photo":
         return "Photo";
       case "text":
         return "Text Entry";
+      default:
+        return "Entry";
     }
   };
 
@@ -129,10 +140,10 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     return (
       <Card>
         <CardContent className="pt-6 text-center text-muted-foreground">
-          <div className={`w-12 h-12 rounded-full ${getIconBg()} flex items-center justify-center mx-auto mb-2`}>
-            {getIcon()}
+          <div className={`w-12 h-12 rounded-full ${getIconBgForSource(entryType)} flex items-center justify-center mx-auto mb-2`}>
+            {getIconForSource(entryType)}
           </div>
-          <p>No {entryType} entries yet</p>
+          <p>No {entryType || ''} entries yet</p>
           <p className="text-sm mt-1">Start recording your wellness journey</p>
         </CardContent>
       </Card>
@@ -176,15 +187,15 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                     <CardContent className="pt-6">
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
-                          <div className={`w-10 h-10 rounded-full ${getIconBg()} flex items-center justify-center`}>
-                            {getIcon()}
+                          <div className={`w-10 h-10 rounded-full ${getIconBgForSource(entry.source)} flex items-center justify-center`}>
+                            {getIconForSource(entry.source)}
                           </div>
                         </div>
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
                             <Badge variant="secondary">
-                              {getBadgeLabel()}
+                              {getBadgeLabelForSource(entry.source)}
                             </Badge>
                             {entry.duration && (
                               <Badge variant="outline">{Math.round(entry.duration)}s</Badge>

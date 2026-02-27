@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronDown, ChevronUp, Bug } from "lucide-react";
+import { Plus, Type, Camera, Image, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -11,21 +11,33 @@ import { DiaryEntryList } from "@/components/diary/DiaryEntryList";
 import { FeedbackRecorder } from "@/components/feedback/FeedbackRecorder";
 import { FeedbackReportList } from "@/components/feedback/FeedbackReportList";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-type EntryMode = "voice" | "photo" | "text";
+type CategoryTab = "health" | "bugs";
+type PlusOption = "text" | "camera" | "photo";
 
-const TABS: { id: EntryMode; emoji: string; label: string }[] = [
-  { id: "voice", emoji: "🎤", label: "Voice" },
-  { id: "photo", emoji: "📸", label: "Photo" },
-  { id: "text",  emoji: "✍️", label: "Text" },
+const CATEGORIES: { id: CategoryTab; emoji: string; label: string }[] = [
+  { id: "health", emoji: "🩺", label: "Health Diary" },
+  { id: "bugs", emoji: "🐛", label: "Bug Reports" },
+];
+
+const PLUS_OPTIONS: { id: PlusOption; icon: typeof Type; label: string }[] = [
+  { id: "text", icon: Type, label: "Text" },
+  { id: "camera", icon: Camera, label: "Camera" },
+  { id: "photo", icon: Image, label: "Photo" },
 ];
 
 export default function MobileDailyDiary() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const [activeTab, setActiveTab] = useState<EntryMode>("voice");
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<CategoryTab>("health");
+  const [plusOpen, setPlusOpen] = useState(false);
+  const [activePlusOption, setActivePlusOption] = useState<PlusOption | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [feedbackRefreshKey, setFeedbackRefreshKey] = useState(0);
 
@@ -37,7 +49,15 @@ export default function MobileDailyDiary() {
 
   if (!isMobile) return null;
 
-  const handleEntryComplete = () => setRefreshKey((k) => k + 1);
+  const handleEntryComplete = () => {
+    setRefreshKey((k) => k + 1);
+    setActivePlusOption(null);
+  };
+
+  const handlePlusSelect = (option: PlusOption) => {
+    setActivePlusOption(option);
+    setPlusOpen(false);
+  };
 
   return (
     <MobileAppShell>
@@ -47,79 +67,115 @@ export default function MobileDailyDiary() {
           <h1 className="text-xl font-bold text-foreground">
             📔 {translate("drawerNav.diary", "Daily Diary")}
           </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {translate("diary.subtitle", "Track your day & help us improve")}
-          </p>
         </div>
 
-        {/* Pill tabs */}
-        <div className="flex gap-2 px-1 py-2 overflow-x-auto scrollbar-none">
-          {TABS.map((tab) => (
+        {/* Two-segment tabs */}
+        <div className="flex gap-1 px-1 py-2">
+          {CATEGORIES.map((cat) => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                activeTab === tab.id
-                  ? "bg-primary text-primary-foreground shadow-sm"
+              key={cat.id}
+              onClick={() => {
+                setActiveTab(cat.id);
+                setActivePlusOption(null);
+              }}
+              className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                activeTab === cat.id
+                  ? cat.id === "health"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "bg-destructive text-destructive-foreground shadow-sm"
                   : "bg-muted/60 text-muted-foreground hover:bg-muted"
               }`}
             >
-              <span>{tab.emoji}</span>
-              <span>{tab.label}</span>
+              <span>{cat.emoji}</span>
+              <span>{cat.label}</span>
             </button>
           ))}
         </div>
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto pb-[120px] space-y-4 px-1">
-          {/* Entry card */}
-          <Card className="border-border/50 shadow-sm">
-            <CardContent className="p-3">
-              {activeTab === "voice" && (
-                <VoiceDiaryRecorder onRecordingChange={() => {}} />
-              )}
-              {activeTab === "photo" && (
-                <PhotoDiaryUploader onUploadComplete={handleEntryComplete} />
-              )}
-              {activeTab === "text" && (
-                <TextDiaryEditor onSaveComplete={handleEntryComplete} />
-              )}
-            </CardContent>
-          </Card>
+          {activeTab === "health" && (
+            <>
+              {/* Mic + Plus row */}
+              <Card className="border-border/50 shadow-sm">
+                <CardContent className="p-3">
+                  <div className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <VoiceDiaryRecorder onRecordingChange={() => {}} />
+                    </div>
+                    <Popover open={plusOpen} onOpenChange={setPlusOpen}>
+                      <PopoverTrigger asChild>
+                        <button
+                          className="mt-1 flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:opacity-90 transition-opacity"
+                          aria-label="Add entry"
+                        >
+                          <Plus className="h-5 w-5" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        side="bottom"
+                        align="end"
+                        className="w-40 p-1"
+                      >
+                        {PLUS_OPTIONS.map((opt) => (
+                          <button
+                            key={opt.id}
+                            onClick={() => handlePlusSelect(opt.id)}
+                            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                          >
+                            <opt.icon className="h-4 w-4 text-muted-foreground" />
+                            {opt.label}
+                          </button>
+                        ))}
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </CardContent>
+              </Card>
 
-          {/* Entry list */}
-          <DiaryEntryList entryType={activeTab} />
-
-          {/* Feedback section */}
-          <div className="mt-4">
-            <button
-              onClick={() => setFeedbackOpen(!feedbackOpen)}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-sm font-medium text-foreground"
-            >
-              <span className="flex items-center gap-2">
-                <Bug className="h-4 w-4 text-destructive" />
-                {translate("diary.testFeedback", "Test Feedback")}
-              </span>
-              {feedbackOpen ? (
-                <ChevronUp className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-              )}
-            </button>
-
-            {feedbackOpen && (
-              <div className="mt-2 space-y-3">
-                <Card className="border-destructive/20 bg-destructive/5">
+              {/* Active plus option inline */}
+              {activePlusOption && (
+                <Card className="border-border/50 shadow-sm">
                   <CardContent className="p-3">
-                    <FeedbackRecorder
-                      onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)}
-                    />
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {activePlusOption === "text" && "✍️ Text Entry"}
+                        {(activePlusOption === "camera" || activePlusOption === "photo") && "📸 Photo Entry"}
+                      </span>
+                      <button
+                        onClick={() => setActivePlusOption(null)}
+                        className="p-1 rounded-full hover:bg-muted"
+                      >
+                        <X className="h-4 w-4 text-muted-foreground" />
+                      </button>
+                    </div>
+                    {activePlusOption === "text" && (
+                      <TextDiaryEditor onSaveComplete={handleEntryComplete} />
+                    )}
+                    {(activePlusOption === "camera" || activePlusOption === "photo") && (
+                      <PhotoDiaryUploader onUploadComplete={handleEntryComplete} />
+                    )}
                   </CardContent>
                 </Card>
-                <FeedbackReportList refreshKey={feedbackRefreshKey} />
-              </div>
-            )}
-          </div>
+              )}
+
+              {/* Unified entry list */}
+              <DiaryEntryList />
+            </>
+          )}
+
+          {activeTab === "bugs" && (
+            <>
+              <Card className="border-destructive/20 bg-destructive/5 shadow-sm">
+                <CardContent className="p-3">
+                  <FeedbackRecorder
+                    onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)}
+                  />
+                </CardContent>
+              </Card>
+              <FeedbackReportList refreshKey={feedbackRefreshKey} />
+            </>
+          )}
         </div>
       </div>
     </MobileAppShell>
