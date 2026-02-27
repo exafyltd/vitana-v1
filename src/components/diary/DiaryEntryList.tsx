@@ -72,36 +72,42 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     };
   }, [entryType, refetch]);
 
-  const getIcon = () => {
-    switch (entryType) {
+  const getIconForSource = (source?: string) => {
+    switch (source) {
       case "voice":
-        return <Mic className="w-5 h-5 text-purple-600 dark:text-purple-400" />;
+        return <Mic className="w-5 h-5 text-primary" />;
       case "photo":
-        return <ImageIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />;
+        return <ImageIcon className="w-5 h-5 text-primary" />;
       case "text":
-        return <Type className="w-5 h-5 text-green-600 dark:text-green-400" />;
+        return <Type className="w-5 h-5 text-primary" />;
+      default:
+        return <Mic className="w-5 h-5 text-primary" />;
     }
   };
 
-  const getIconBg = () => {
-    switch (entryType) {
+  const getIconBgForSource = (source?: string) => {
+    switch (source) {
       case "voice":
-        return "bg-purple-100 dark:bg-purple-900/20";
+        return "bg-primary/10";
       case "photo":
-        return "bg-blue-100 dark:bg-blue-900/20";
+        return "bg-primary/10";
       case "text":
-        return "bg-green-100 dark:bg-green-900/20";
+        return "bg-primary/10";
+      default:
+        return "bg-primary/10";
     }
   };
 
-  const getBadgeLabel = () => {
-    switch (entryType) {
+  const getBadgeLabelForSource = (source?: string) => {
+    switch (source) {
       case "voice":
         return "Voice Recording";
       case "photo":
         return "Photo";
       case "text":
         return "Text Entry";
+      default:
+        return "Entry";
     }
   };
 
