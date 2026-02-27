@@ -189,6 +189,36 @@ function Diary() {
           </SplitBarContent>
         </SplitBar>
 
+        {/* Test Feedback Section */}
+        <div className="border-t border-border mt-8 pt-8 space-y-6">
+          <div>
+            <h2 className="text-lg font-semibold flex items-center gap-2">
+              <Bug className="h-5 w-5 text-destructive" />
+              Test Feedback
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Help Exafy improve Vitanaland — report bugs and suggest improvements with your voice.
+            </p>
+          </div>
+
+          <Card className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 border-red-200 dark:border-red-800">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Mic className="h-5 w-5 text-red-600 dark:text-red-400" />
+                Record Feedback
+              </CardTitle>
+              <CardDescription>
+                Describe the issue or improvement — attach screenshots if needed
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <FeedbackRecorder onSubmitted={() => setFeedbackRefreshKey(k => k + 1)} />
+            </CardContent>
+          </Card>
+
+          <FeedbackReportList refreshKey={feedbackRefreshKey} />
+        </div>
+
         <DiaryMasterActionPopup 
           open={actionPopupOpen}
           onOpenChange={setActionPopupOpen}
