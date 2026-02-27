@@ -38,7 +38,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
       return;
     }
     if (f.size > MAX_VIDEO_SIZE) {
-      toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 50 MB"), variant: "destructive" });
+      toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 50 MB"), variant: "destructive" });
       return;
     }
     setFile(f);
@@ -95,7 +95,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
                 <p className="text-sm text-muted-foreground">
                   {translate("gallery.dropzone", "Drag & drop or click to select")}
                 </p>
-                <p className="text-xs text-muted-foreground/60">MP4, WebM, MOV · {translate("gallery.maxSizeHint", "<p className="text-xs text-muted-foreground/60">MP4, WebM, MOV · {translate("gallery.maxSizeHint", "Max. 50 MB")}</p>")}</p>
+                <p className="text-xs text-muted-foreground/60">MP4, WebM, MOV · {translate("gallery.maxSizeHint", "Max. 50 MB")}</p>
               </div>
             )}
             <input
