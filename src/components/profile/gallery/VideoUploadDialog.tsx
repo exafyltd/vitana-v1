@@ -19,9 +19,11 @@ interface VideoUploadDialogProps {
 }
 
 const ACCEPTED_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
+const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500MB practical limit
 
 export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, progress }: VideoUploadDialogProps) {
   const { translate } = useTranslation();
+  const { toast } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
