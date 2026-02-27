@@ -102,7 +102,7 @@ export const useMediaUpload = () => {
 
       setProgress(70);
 
-      // Insert into media_uploads table
+      console.log('[MediaUpload] Storage upload success, inserting DB record');
       const { data: mediaUpload, error: dbError } = await supabase
         .from('media_uploads')
         .insert({
