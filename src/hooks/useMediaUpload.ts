@@ -69,7 +69,7 @@ export const useMediaUpload = () => {
 
       // Extract duration if not provided
       let duration = metadata.duration;
-      if (!duration && (metadata.mediaType === 'music' || metadata.mediaType === 'podcast')) {
+      if (!duration && (metadata.mediaType === 'music' || metadata.mediaType === 'podcast' || metadata.mediaType === 'video')) {
         duration = await extractDuration(file);
       }
 
@@ -80,12 +80,18 @@ export const useMediaUpload = () => {
       const fileExt = file.name.split('.').pop();
       const filePath = `${user.id}/${timestamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
+      // Materialize file into memory to prevent Android file descriptor issues
+      console.log('[MediaUpload] Materializing file into memory buffer...');
+      const arrayBuffer = await file.arrayBuffer();
+      const blob = new Blob([arrayBuffer], { type: file.type });
+      console.log('[MediaUpload] File materialized, blob size:', blob.size, 'type:', blob.type);
+
       // Upload to storage
       const bucket = BUCKET_MAP[metadata.mediaType];
-      console.log('[MediaUpload] Uploading to storage:', { bucket, filePath, contentType: file.type, size: file.size });
+      console.log('[MediaUpload] Uploading to storage:', { bucket, filePath, contentType: file.type, size: blob.size });
       const { error: uploadError } = await supabase.storage
         .from(bucket)
-        .upload(filePath, file, {
+        .upload(filePath, blob, {
           contentType: file.type,
           cacheControl: '3600',
           upsert: false

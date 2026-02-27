@@ -32,7 +32,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
   const [isPublic, setIsPublic] = useState(true);
   const [dragActive, setDragActive] = useState(false);
 
-  const handleFile = (f: File) => {
+  const handleFile = async (f: File) => {
     if (!ACCEPTED_TYPES.includes(f.type)) {
       toast({ title: translate("gallery.invalidFormat", "Ungültiges Format"), description: "MP4, WebM, MOV", variant: "destructive" });
       return;
@@ -41,8 +41,16 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
       toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 50 MB"), variant: "destructive" });
       return;
     }
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
+    // Materialize file into memory immediately to prevent Android file descriptor issues
+    try {
+      const buffer = await f.arrayBuffer();
+      const materializedFile = new File([buffer], f.name, { type: f.type, lastModified: f.lastModified });
+      setFile(materializedFile);
+      setPreview(URL.createObjectURL(materializedFile));
+    } catch (err) {
+      console.error('[VideoUpload] Failed to read file into memory:', err);
+      toast({ title: translate("gallery.readError", "Fehler beim Lesen"), description: String(err), variant: "destructive" });
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
