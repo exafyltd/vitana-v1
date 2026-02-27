@@ -23,9 +23,11 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // Reset input so the same file can be re-selected
+    e.target.value = '';
     if (!file.type.startsWith('image/')) {
       toast({ title: 'Only images are allowed', variant: 'destructive' });
       return;
@@ -34,10 +36,17 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       toast({ title: 'Image must be under 10MB', variant: 'destructive' });
       return;
     }
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-    // Reset input so the same file can be re-selected
-    e.target.value = '';
+    // Materialize into memory immediately to prevent Android file descriptor issues
+    try {
+      const buffer = await file.arrayBuffer();
+      const materializedFile = new File([buffer], file.name, { type: file.type, lastModified: file.lastModified });
+      console.log('[PostUpload] File materialized:', materializedFile.size, materializedFile.type);
+      setImageFile(materializedFile);
+      setImagePreview(URL.createObjectURL(materializedFile));
+    } catch (err) {
+      console.error('[PostUpload] Failed to read file:', err);
+      toast({ title: 'Could not read selected image', variant: 'destructive' });
+    }
   };
 
   const removeImage = () => {
