@@ -1,49 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Add full utility bar to Daily Diary
+### Architecture
 
-The current utility bar at line 74-76 has only `<span />` as children (empty). It needs: search, calendar, + action button, gift voucher (auto), Vitana Index, Autopilot — matching EventsAndMeetups pattern.
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
+```
 
-### Changes to `src/pages/MobileDailyDiary.tsx`
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-1. **Add imports**: `ExpandableSearchButton`, `UniversalCalendarButton`, `Button`, `Badge`, `Plane`, `VitanaIndexChip`/`AutopilotChip` (or inline like Events), `useAutopilot`, `AutopilotPopup`, `useNavigate` (already imported).
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-2. **Add state/hooks**: `useAutopilot()` for `pendingCount`, `autopilotOpen` state for the popup, search query state.
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-3. **Replace the empty `<UtilityActionButton>` block** (lines 74-76) with the full pattern:
-   ```tsx
-   <UtilityActionButton 
-     className="min-w-0"
-     afterGiftVoucherChildren={(
-       <>
-         {/* Vitana Index pill */}
-         <Button variant="ghost" size="sm" onClick={() => navigate('/health')}
-           className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0">
-           <span className="text-xs opacity-60">🧬</span>
-           <span className="text-sm font-medium text-primary">742</span>
-         </Button>
-         {/* Autopilot pill */}
-         <Button variant="ghost" size="sm" onClick={() => setAutopilotOpen(true)}
-           className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0">
-           <Plane className="h-4 w-4 text-muted-foreground" />
-           <span className="text-sm">Autopilot</span>
-           {pendingCount > 0 && <Badge ...>{pendingCount}</Badge>}
-         </Button>
-       </>
-     )}
-   >
-     <div className="flex items-center gap-2 min-w-max">
-       <ExpandableSearchButton placeholder="Search diary..." onSearch={...} />
-       <UniversalCalendarButton />
-       <Button variant="ghost" size="sm" 
-         className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-         onClick={() => setPlusOpen(true)}>
-         <Plus className="h-4 w-4" />
-         <span className="text-sm">Add</span>
-       </Button>
-     </div>
-   </UtilityActionButton>
-   ```
-
-4. **Add `<AutopilotPopup>`** at the bottom of the return, before closing `</MobileAppShell>`.
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
