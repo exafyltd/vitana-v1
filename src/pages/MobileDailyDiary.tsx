@@ -4,6 +4,8 @@ import { Plus, Type, Camera, Image, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
+import StandardHeader from "@/components/StandardHeader";
+import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
 import { PhotoDiaryUploader } from "@/components/diary/PhotoDiaryUploader";
 import { TextDiaryEditor } from "@/components/diary/TextDiaryEditor";
@@ -62,15 +64,19 @@ export default function MobileDailyDiary() {
   return (
     <MobileAppShell>
       <div className="px-2 pt-2 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
-        {/* Compact header */}
-        <div className="pt-2 pb-1 px-1">
-          <h1 className="text-xl font-bold text-foreground">
-            📔 {translate("drawerNav.diary", "Daily Diary")}
-          </h1>
-        </div>
+        {/* Standard header with subtitle */}
+        <StandardHeader
+          title="📔 Daily Diary"
+          description="Track your wellness journey and help us improve"
+        />
+
+        {/* Utility action bar */}
+        <UtilityActionButton className="pt-1 pb-2 px-1">
+          <span />
+        </UtilityActionButton>
 
         {/* Two-segment tabs */}
-        <div className="flex gap-1 px-1 py-2">
+        <div className="flex gap-1 px-1 py-1">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
@@ -96,17 +102,20 @@ export default function MobileDailyDiary() {
         <div className="flex-1 overflow-y-auto pb-[120px] space-y-4 px-1">
           {activeTab === "health" && (
             <>
-              {/* Mic + Plus row */}
+              {/* Prominent mic area */}
               <Card className="border-border/50 shadow-sm">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-2">
-                    <div className="flex-1">
+                <CardContent className="py-8 px-4">
+                  <div className="flex flex-col items-center justify-center relative">
+                    <div className="w-full max-w-[280px]">
                       <VoiceDiaryRecorder onRecordingChange={() => {}} />
                     </div>
+                    <p className="text-xs text-muted-foreground mt-3">Tap the mic to start recording</p>
+                    
+                    {/* Plus button - absolute right */}
                     <Popover open={plusOpen} onOpenChange={setPlusOpen}>
                       <PopoverTrigger asChild>
                         <button
-                          className="mt-1 flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:opacity-90 transition-opacity"
+                          className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
                           aria-label="Add entry"
                         >
                           <Plus className="h-5 w-5" />

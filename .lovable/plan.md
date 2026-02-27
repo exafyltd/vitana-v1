@@ -1,23 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Enhance Daily Diary mobile header + mic prominence
+### Architecture
 
-### Changes to `src/pages/MobileDailyDiary.tsx`
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
+```
 
-**1. Replace inline header with StandardHeader**
-- Import `StandardHeader` and use it with title "📔 Daily Diary" and description "Track your wellness journey and help us improve".
-- This gives us the consistent title + subtitle pattern used by Events, Live Rooms, etc.
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-**2. Add UtilityActionButton bar below header**
-- Import `UtilityActionButton` and render it between the header and the category tabs, matching the Events screen pattern.
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-**3. Enlarge the mic area in Health Diary tab**
-- Replace the current compact Card wrapping VoiceDiaryRecorder + Plus button with a taller, centered layout:
-  - Large centered mic button area (like the screenshot: big purple circle with mic icon, ~20h card with centered content)
-  - The "+" button positioned to the right of the mic area
-  - When no recording is active and no transcription exists, show placeholder text: "No voice entries yet" / "Start recording your wellness journey" below the mic icon
-  - The VoiceDiaryRecorder component itself handles recording state — we keep using it but the card gets more vertical breathing room (py-8 instead of p-3)
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-### Files to edit
-- `src/pages/MobileDailyDiary.tsx` — replace header, add utility bar, enlarge mic card
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
