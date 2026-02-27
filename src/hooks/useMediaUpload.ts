@@ -61,7 +61,7 @@ export const useMediaUpload = () => {
         throw new Error(`File exceeds ${sizeLimit / 1024 / 1024}MB limit for ${metadata.mediaType}`);
       }
 
-      // Get current user
+      console.log('[MediaUpload] Starting upload:', { mediaType: metadata.mediaType, fileType: file.type, fileSize: file.size });
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Authentication required');
 
@@ -82,9 +82,11 @@ export const useMediaUpload = () => {
 
       // Upload to storage
       const bucket = BUCKET_MAP[metadata.mediaType];
+      console.log('[MediaUpload] Uploading to storage:', { bucket, filePath, contentType: file.type, size: file.size });
       const { error: uploadError } = await supabase.storage
         .from(bucket)
         .upload(filePath, file, {
+          contentType: file.type,
           cacheControl: '3600',
           upsert: false
         });
@@ -100,7 +102,7 @@ export const useMediaUpload = () => {
 
       setProgress(70);
 
-      // Insert into media_uploads table
+      console.log('[MediaUpload] Storage upload success, inserting DB record');
       const { data: mediaUpload, error: dbError } = await supabase
         .from('media_uploads')
         .insert({
@@ -152,10 +154,10 @@ export const useMediaUpload = () => {
           throw new Error('Failed to save podcast metadata. Please try again.');
         }
       } else if (metadata.mediaType === 'video' && mediaUpload) {
+        console.log('[MediaUpload] Inserting video metadata for:', mediaUpload.id);
         const { error: videoError } = await supabase.from('video_metadata').insert({
           media_id: mediaUpload.id,
           topic: metadata.topic || null,
-          thumbnail_url: metadata.thumbnailUrl || null,
         });
         
         if (videoError) {
