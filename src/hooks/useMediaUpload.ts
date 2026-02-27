@@ -61,7 +61,7 @@ export const useMediaUpload = () => {
         throw new Error(`File exceeds ${sizeLimit / 1024 / 1024}MB limit for ${metadata.mediaType}`);
       }
 
-      // Get current user
+      console.log('[MediaUpload] Starting upload:', { mediaType: metadata.mediaType, fileType: file.type, fileSize: file.size });
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Authentication required');
 
