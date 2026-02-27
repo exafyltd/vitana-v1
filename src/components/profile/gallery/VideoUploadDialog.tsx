@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 interface VideoUploadDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onUpload: (data: { file: File; title: string; description?: string; isPublic: boolean }) => void;
+  onUpload: (data: { file: File; title: string; description?: string; isPublic: boolean }) => Promise<void>;
   isUploading?: boolean;
   progress?: number;
 }
