@@ -23,9 +23,11 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // Reset input so the same file can be re-selected
+    e.target.value = '';
     if (!file.type.startsWith('image/')) {
       toast({ title: 'Only images are allowed', variant: 'destructive' });
       return;
@@ -34,10 +36,17 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       toast({ title: 'Image must be under 10MB', variant: 'destructive' });
       return;
     }
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-    // Reset input so the same file can be re-selected
-    e.target.value = '';
+    // Materialize into memory immediately to prevent Android file descriptor issues
+    try {
+      const buffer = await file.arrayBuffer();
+      const materializedFile = new File([buffer], file.name, { type: file.type, lastModified: file.lastModified });
+      console.log('[PostUpload] File materialized:', materializedFile.size, materializedFile.type);
+      setImageFile(materializedFile);
+      setImagePreview(URL.createObjectURL(materializedFile));
+    } catch (err) {
+      console.error('[PostUpload] Failed to read file:', err);
+      toast({ title: 'Could not read selected image', variant: 'destructive' });
+    }
   };
 
   const removeImage = () => {
@@ -51,23 +60,35 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
     try {
       let imageUrl: string | undefined;
       if (imageFile) {
+        console.log('[PostUpload] auth check...');
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Not authenticated');
+
         const fileExt = imageFile.name.split('.').pop();
         const path = `${user.id}/posts/${Date.now()}.${fileExt}`;
-        const arrayBuffer = await imageFile.arrayBuffer();
-        const blob = new Blob([arrayBuffer], { type: imageFile.type });
-        const { error: uploadError } = await supabase.storage.from('media-uploads').upload(path, blob, { contentType: imageFile.type });
-        if (uploadError) throw uploadError;
-        const { data } = await supabase.storage.from('media-uploads').createSignedUrl(path, 31536000);
-        imageUrl = data?.signedUrl;
+
+        console.log('[PostUpload] uploading...', { size: imageFile.size, type: imageFile.type, path });
+        const { error: uploadError } = await supabase.storage
+          .from('media-uploads')
+          .upload(path, imageFile, { contentType: imageFile.type, upsert: false });
+        if (uploadError) {
+          console.error('[PostUpload] upload failed:', uploadError);
+          throw new Error(`Upload failed: ${uploadError.message}`);
+        }
+
+        console.log('[PostUpload] getting public URL...');
+        const { data: { publicUrl } } = supabase.storage.from('media-uploads').getPublicUrl(path);
+        imageUrl = publicUrl;
+        console.log('[PostUpload] imageUrl:', imageUrl);
       }
+      console.log('[PostUpload] inserting post...');
       await createPost.mutateAsync({ content: content.trim(), imageUrl });
       toast({ title: translate('profilePosts.posted', 'Posted!') });
       cleanup();
       onOpenChange(false);
-    } catch {
-      toast({ title: translate('profilePosts.error', 'Something went wrong'), variant: 'destructive' });
+    } catch (err: any) {
+      console.error('[PostUpload] error:', err);
+      toast({ title: translate('profilePosts.error', 'Something went wrong'), description: err?.message || '', variant: 'destructive' });
     }
   };
 
@@ -154,7 +175,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />
-            <span className="text-sm font-medium">Foto / Video</span>
+            <span className="text-sm font-medium">Foto</span>
           </Button>
           <span className={`text-sm ${content.length > MAX_CHARS ? 'text-destructive' : 'text-muted-foreground'}`}>
             {content.length}/{MAX_CHARS}
