@@ -119,7 +119,8 @@ const EarthlinksPortal = () => {
         }
       } else {
         setSignupEmail(email);
-        setError("Please check your email to confirm your account. After confirmation, you'll be redirected to the Earthlinks portal.");
+        setSignupSuccess(true);
+        setError("");
       }
     } catch (err) {
       setError("An unexpected error occurred");
