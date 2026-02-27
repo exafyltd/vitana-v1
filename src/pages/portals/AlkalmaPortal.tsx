@@ -29,6 +29,7 @@ const AlkalmaPortal = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
   const [signupEmail, setSignupEmail] = useState<string | null>(null);
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
   // Switch to alkalma tenant if already authenticated
   useEffect(() => {
