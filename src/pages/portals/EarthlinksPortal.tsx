@@ -434,6 +434,8 @@ const EarthlinksPortal = () => {
                     </Button>
                   </form>
                 </CardContent>
+                </>
+                )}
               </TabsContent>
             </Tabs>
           </Card>
