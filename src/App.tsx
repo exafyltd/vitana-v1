@@ -35,6 +35,7 @@ import IntroExperience from "./pages/IntroExperience";
 import RedeemVoucher from "./pages/RedeemVoucher";
 import CreatorOnboarded from "./pages/CreatorOnboarded";
 import Logout from "./pages/Logout";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 // Portal pages
 import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
@@ -339,6 +340,7 @@ const App = () => {
           <Route path="/community/confirmed" element={<CommunityConfirmed />} />
           
           {/* Public Routes - No Auth Required */}
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/maxina_support" element={<MaxinaSupport />} />
