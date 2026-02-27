@@ -80,8 +80,55 @@ export default function MobileDailyDiary() {
         />
 
         {/* Utility action bar */}
-        <UtilityActionButton className="pt-1 pb-2 px-1">
-          <span />
+        <UtilityActionButton 
+          className="pt-1 pb-2 px-1 min-w-0"
+          afterGiftVoucherChildren={(
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => navigate('/health')}
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+              >
+                <span className="text-xs opacity-60">🧬</span>
+                <span className="text-sm font-medium text-primary">742</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => setAutopilotOpen(true)}
+                className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+              >
+                <Plane className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                {pendingCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                  >
+                    {pendingCount}
+                  </Badge>
+                )}
+              </Button>
+            </>
+          )}
+        >
+          <div className="flex items-center gap-2 min-w-max">
+            <ExpandableSearchButton 
+              placeholder={translate('diary.searchPlaceholder', 'Search diary...')}
+              onSearch={(query) => setSearchQuery(query)}
+            />
+            <UniversalCalendarButton />
+            <Button 
+              onClick={() => setPlusOpen(true)}
+              variant="ghost"
+              size="sm"
+              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="text-sm">{translate('buttons.add', 'Add')}</span>
+            </Button>
+          </div>
         </UtilityActionButton>
 
         {/* Two-segment tabs */}
