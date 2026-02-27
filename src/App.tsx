@@ -230,6 +230,7 @@ import Timeline from "./pages/memory/Timeline";
 import Recall from "./pages/memory/Recall";
 import MemoryPermissions from "./pages/memory/Permissions";
 import Diary from "./pages/memory/Diary";
+import MobileDailyDiary from "./pages/MobileDailyDiary";
 
 // Admin sub-pages — Restructured (Phase 1: Dashboard + Users & Growth)
 import AdminDashboardHealth from "./pages/admin/dashboard/SystemHealth";
