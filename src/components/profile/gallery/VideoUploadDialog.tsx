@@ -33,7 +33,14 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
   const [dragActive, setDragActive] = useState(false);
 
   const handleFile = (f: File) => {
-    if (!ACCEPTED_TYPES.includes(f.type)) return;
+    if (!ACCEPTED_TYPES.includes(f.type)) {
+      toast({ title: translate("gallery.invalidFormat", "Ungültiges Format"), description: "MP4, WebM, MOV", variant: "destructive" });
+      return;
+    }
+    if (f.size > MAX_VIDEO_SIZE) {
+      toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 500 MB"), variant: "destructive" });
+      return;
+    }
     setFile(f);
     setPreview(URL.createObjectURL(f));
   };
