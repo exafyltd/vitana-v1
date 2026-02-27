@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Upload, Video } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useToast } from "@/hooks/use-toast";
 
 interface VideoUploadDialogProps {
   open: boolean;
@@ -18,9 +19,11 @@ interface VideoUploadDialogProps {
 }
 
 const ACCEPTED_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
+const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500MB practical limit
 
 export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, progress }: VideoUploadDialogProps) {
   const { translate } = useTranslation();
+  const { toast } = useToast();
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -30,7 +33,14 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
   const [dragActive, setDragActive] = useState(false);
 
   const handleFile = (f: File) => {
-    if (!ACCEPTED_TYPES.includes(f.type)) return;
+    if (!ACCEPTED_TYPES.includes(f.type)) {
+      toast({ title: translate("gallery.invalidFormat", "Ungültiges Format"), description: "MP4, WebM, MOV", variant: "destructive" });
+      return;
+    }
+    if (f.size > MAX_VIDEO_SIZE) {
+      toast({ title: translate("gallery.fileTooLarge", "Datei zu groß"), description: translate("gallery.maxSize", "Maximale Dateigröße: 500 MB"), variant: "destructive" });
+      return;
+    }
     setFile(f);
     setPreview(URL.createObjectURL(f));
   };
@@ -80,7 +90,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
                 <p className="text-sm text-muted-foreground">
                   {translate("gallery.dropzone", "Drag & drop or click to select")}
                 </p>
-                <p className="text-xs text-muted-foreground/60">MP4, WebM, MOV</p>
+                <p className="text-xs text-muted-foreground/60">MP4, WebM, MOV · {translate("gallery.maxSizeHint", "Max. 500 MB")}</p>
               </div>
             )}
             <input
