@@ -48,15 +48,17 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
   });
 
   const handleUpload = async (data: { file: File; title: string; description?: string; isPublic: boolean }) => {
-    await uploadMedia(data.file, {
+    const result = await uploadMedia(data.file, {
       title: data.title,
       description: data.description || "",
       mediaType: "video",
       tags: [],
       visibility: data.isPublic ? "public" : "private",
     });
-    queryClient.invalidateQueries({ queryKey: ["profile-videos", targetUserId] });
-    setUploadOpen(false);
+    if (result) {
+      queryClient.invalidateQueries({ queryKey: ["profile-videos", targetUserId] });
+      setUploadOpen(false);
+    }
   };
 
   const formatDuration = (seconds?: number | null) => {

@@ -179,7 +179,7 @@ export const useMediaUpload = () => {
         description: error.message || 'Please try again',
         variant: 'destructive',
       });
-      throw error;
+      return null;
     } finally {
       setIsUploading(false);
       setProgress(0);

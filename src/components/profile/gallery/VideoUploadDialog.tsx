@@ -13,12 +13,12 @@ import { useToast } from "@/hooks/use-toast";
 interface VideoUploadDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onUpload: (data: { file: File; title: string; description?: string; isPublic: boolean }) => void;
+  onUpload: (data: { file: File; title: string; description?: string; isPublic: boolean }) => Promise<void>;
   isUploading?: boolean;
   progress?: number;
 }
 
-const ACCEPTED_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
+const ACCEPTED_TYPES = ["video/mp4", "video/webm", "video/quicktime", "video/3gpp", "video/3gpp2"];
 const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500MB practical limit
 
 export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, progress }: VideoUploadDialogProps) {
@@ -59,10 +59,15 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
     setDescription("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!file || !title.trim()) return;
-    onUpload({ file, title: title.trim(), description: description.trim() || undefined, isPublic });
-    reset();
+    try {
+      await onUpload({ file, title: title.trim(), description: description.trim() || undefined, isPublic });
+      reset();
+    } catch (err) {
+      // Dialog stays open so user can retry
+      console.error('Video upload failed:', err);
+    }
   };
 
   return (
@@ -96,7 +101,7 @@ export function VideoUploadDialog({ open, onOpenChange, onUpload, isUploading, p
             <input
               ref={fileRef}
               type="file"
-              accept="video/mp4,video/webm,video/quicktime"
+              accept="video/mp4,video/webm,video/quicktime,video/3gpp,video/3gpp2"
               className="hidden"
               onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
             />
