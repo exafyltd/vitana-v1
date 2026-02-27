@@ -107,7 +107,7 @@ export default function MobileDailyDiary() {
 
           {feedbackOpen && (
             <div className="mt-2 space-y-3">
-              <Card className="border-red-500/20 bg-gradient-to-br from-red-500/5 to-orange-500/5">
+              <Card className="border-destructive/20 bg-destructive/5">
                 <CardContent className="p-3">
                   <FeedbackRecorder
                     onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)}
