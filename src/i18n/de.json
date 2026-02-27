@@ -1704,7 +1704,11 @@
     "manage": "Verwalten",
     "about": "Über mich",
     "addBio": "Bio hinzufügen...",
-    "tapToEdit": "Tippen zum Bearbeiten"
+    "tapToEdit": "Tippen zum Bearbeiten",
+    "title": "Titel",
+    "titlePlaceholder": "Videotitel",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Optionale Beschreibung..."
   },
   "navigation": {
     "navigatingTo": "Navigiere zu",
