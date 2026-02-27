@@ -399,19 +399,37 @@ export function useGlobalMessages(
       if (!user || !isGlobalContext || !activeThreadId) return [];
 
       // activeThreadId is the peer's user ID
-      const rawMessages = await fetchConversation(activeThreadId);
+      let gatewayMessages: GlobalMessage[] = [];
+      try {
+        const rawMessages = await fetchConversation(activeThreadId);
+        const sorted = [...rawMessages].reverse();
+        const senderIds = Array.from(
+          new Set(sorted.map((m) => m.sender_id).filter(Boolean))
+        );
+        const profileMap = await enrichProfiles(senderIds);
+        gatewayMessages = sorted.map((m) =>
+          toGlobalMessage(m, activeThreadId, profileMap)
+        );
+      } catch (err) {
+        console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
+      }
 
-      // Gateway returns newest-first; UI expects ascending
-      const sorted = [...rawMessages].reverse();
+      // If gateway returned messages, use them
+      if (gatewayMessages.length > 0) return gatewayMessages;
 
-      const senderIds = Array.from(
-        new Set(sorted.map((m) => m.sender_id).filter(Boolean))
-      );
-      const profileMap = await enrichProfiles(senderIds);
+      // Fallback: check if there's a legacy thread for this peer
+      // Look up the legacy thread id from the threads cache
+      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+      const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
+      const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
-      return sorted.map((m) =>
-        toGlobalMessage(m, activeThreadId, profileMap)
-      );
+      if (legacyThreadId) {
+        return fetchLegacyMessages(legacyThreadId);
+      }
+
+      // Also try using activeThreadId directly as a legacy thread id
+      const legacyMessages = await fetchLegacyMessages(activeThreadId);
+      return legacyMessages;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: 2 * 60 * 1000,
