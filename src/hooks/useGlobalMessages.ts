@@ -103,6 +103,178 @@ async function enrichProfiles(
   return map;
 }
 
+// ── Legacy Supabase fallback ─────────────────────────────────────────
+
+/**
+ * Fetch threads from legacy global_message_threads + global_thread_participants.
+ * Uses the other participant's user_id as thread id (same as gateway peer_id)
+ * so legacy direct threads naturally dedup with gateway threads.
+ */
+async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]> {
+  try {
+    // 1. Get threads the user participates in
+    const { data: participations, error: partErr } = await supabase
+      .from("global_thread_participants")
+      .select("thread_id, role, last_read_at")
+      .eq("user_id", userId) as any;
+
+    if (partErr || !participations || participations.length === 0) {
+      if (partErr) console.warn("Legacy threads fallback failed (participants):", partErr.message);
+      return [];
+    }
+
+    const threadIds = participations.map((p: any) => p.thread_id);
+
+    // 2. Get thread metadata
+    const { data: threadRows, error: threadErr } = await supabase
+      .from("global_message_threads")
+      .select("id, name, type, created_by, created_at, updated_at")
+      .in("id", threadIds)
+      .order("updated_at", { ascending: false }) as any;
+
+    if (threadErr || !threadRows) {
+      console.warn("Legacy threads fallback failed (threads):", threadErr?.message);
+      return [];
+    }
+
+    // 3. Get all participants for these threads
+    const { data: allParticipants } = await supabase
+      .from("global_thread_participants")
+      .select("thread_id, user_id, role, last_read_at")
+      .in("thread_id", threadIds) as any;
+
+    // 4. Get last message per thread
+    const { data: lastMessages } = await supabase
+      .from("global_messages")
+      .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
+      .in("thread_id", threadIds)
+      .order("created_at", { ascending: false }) as any;
+
+    // Group last messages by thread (take first per thread = most recent)
+    const lastMsgByThread: Record<string, any> = {};
+    (lastMessages || []).forEach((m: any) => {
+      if (!lastMsgByThread[m.thread_id]) lastMsgByThread[m.thread_id] = m;
+    });
+
+    // Collect all user IDs for profile enrichment
+    const allUserIds = new Set<string>([userId]);
+    (allParticipants || []).forEach((p: any) => allUserIds.add(p.user_id));
+    Object.values(lastMsgByThread).forEach((m: any) => allUserIds.add(m.sender_id));
+
+    const profileMap = await enrichProfiles(Array.from(allUserIds));
+
+    // 5. Build GlobalMessageThread objects
+    return threadRows
+      .filter((t: any) => t.type === "direct") // only direct threads (group not supported by gateway)
+      .map((t: any) => {
+        const threadParticipants = (allParticipants || []).filter(
+          (p: any) => p.thread_id === t.id
+        );
+        const otherParticipant = threadParticipants.find(
+          (p: any) => p.user_id !== userId
+        );
+
+        // Use peer user_id as thread id (matches gateway convention)
+        const peerId = otherParticipant?.user_id;
+        if (!peerId) return null; // skip threads with no other participant
+
+        const enrichedParticipants = threadParticipants.map((p: any) => ({
+          user_id: p.user_id,
+          display_name: profileMap[p.user_id]?.display_name || "Unknown",
+          avatar_url: profileMap[p.user_id]?.avatar_url || null,
+          role: p.role || "member",
+          last_read_at: p.last_read_at,
+        }));
+
+        const lastMsg = lastMsgByThread[t.id];
+        const lastMessage: GlobalMessage | undefined = lastMsg
+          ? {
+              id: lastMsg.id,
+              thread_id: peerId,
+              sender_id: lastMsg.sender_id,
+              body: lastMsg.body,
+              message_type: lastMsg.message_type || "text",
+              content_data: lastMsg.content_data,
+              created_at: lastMsg.created_at,
+              updated_at: lastMsg.updated_at || lastMsg.created_at,
+              sender: profileMap[lastMsg.sender_id]
+                ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
+                : null,
+            }
+          : undefined;
+
+        // Compute unread based on last_read_at
+        const myParticipation = participations.find(
+          (p: any) => p.thread_id === t.id
+        );
+        const unreadCount =
+          lastMsg && myParticipation?.last_read_at
+            ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
+              ? 1
+              : 0
+            : lastMsg && lastMsg.sender_id !== userId
+            ? 1
+            : 0;
+
+        return {
+          id: peerId, // peer user_id as thread id
+          name: t.name,
+          type: "direct" as const,
+          created_by: t.created_by,
+          created_at: t.created_at,
+          updated_at: t.updated_at,
+          participants: enrichedParticipants,
+          last_message: lastMessage,
+          unread_count: unreadCount,
+          _legacyThreadId: t.id, // keep original for message fetching
+        } as GlobalMessageThread & { _legacyThreadId: string };
+      })
+      .filter(Boolean) as GlobalMessageThread[];
+  } catch (err) {
+    console.warn("Legacy threads fallback error:", err);
+    return [];
+  }
+}
+
+/**
+ * Fetch messages from legacy global_messages table for a given legacy thread id.
+ */
+async function fetchLegacyMessages(legacyThreadId: string): Promise<GlobalMessage[]> {
+  try {
+    const { data, error } = await supabase
+      .from("global_messages")
+      .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
+      .eq("thread_id", legacyThreadId)
+      .order("created_at", { ascending: true })
+      .limit(100) as any;
+
+    if (error || !data) {
+      console.warn("Legacy messages fallback failed:", error?.message);
+      return [];
+    }
+
+    const senderIds = Array.from(new Set(data.map((m: any) => m.sender_id).filter(Boolean)));
+    const profileMap = await enrichProfiles(senderIds as string[]);
+
+    return data.map((m: any) => ({
+      id: m.id,
+      thread_id: m.thread_id,
+      sender_id: m.sender_id,
+      body: m.body,
+      message_type: m.message_type || "text",
+      content_data: m.content_data,
+      created_at: m.created_at,
+      updated_at: m.updated_at || m.created_at,
+      sender: profileMap[m.sender_id]
+        ? { user_id: m.sender_id, ...profileMap[m.sender_id] }
+        : null,
+    }));
+  } catch (err) {
+    console.warn("Legacy messages fallback error:", err);
+    return [];
+  }
+}
+
 // ── Hook ─────────────────────────────────────────────────────────────
 
 export function useGlobalMessages(
