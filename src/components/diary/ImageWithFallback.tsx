@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw } from "lucide-react";
 
@@ -12,6 +12,20 @@ interface ImageWithFallbackProps {
 export function ImageWithFallback({ src, alt, className = "", onClick }: ImageWithFallbackProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setHasError(false);
+    setRetryKey(0);
+  }, [src]);
+
+  const imageSrc = useMemo(() => {
+    if (!src) return "";
+    if (retryKey === 0) return src;
+    const separator = src.includes("?") ? "&" : "?";
+    return `${src}${separator}retry=${retryKey}`;
+  }, [src, retryKey]);
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -26,9 +40,10 @@ export function ImageWithFallback({ src, alt, className = "", onClick }: ImageWi
   const handleRetry = () => {
     setIsLoading(true);
     setHasError(false);
+    setRetryKey((prev) => prev + 1);
   };
 
-  if (hasError) {
+  if (hasError || !imageSrc) {
     return (
       <div
         className={`flex flex-col items-center justify-center bg-muted text-muted-foreground ${className}`}
@@ -50,17 +65,16 @@ export function ImageWithFallback({ src, alt, className = "", onClick }: ImageWi
   }
 
   return (
-    <>
-      {isLoading && <Skeleton className={className} />}
+    <div className={`relative overflow-hidden ${className}`} onClick={onClick}>
+      {isLoading && <Skeleton className="absolute inset-0 h-full w-full" />}
       <img
-        src={src}
+        src={imageSrc}
         alt={alt}
         loading="lazy"
-        className={`${className} ${isLoading ? "hidden" : "block"} object-cover transition-opacity duration-300`}
+        className={`h-full w-full object-cover transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}
         onLoad={handleLoad}
         onError={handleError}
-        onClick={onClick}
       />
-    </>
+    </div>
   );
 }
