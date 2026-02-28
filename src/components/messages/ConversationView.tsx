@@ -83,6 +83,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Import calendar hook at the top
   const { respondToInvite, getInviteResponse, addEvent, fetchEvents } = useCalendarEvents();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   
   // Use paginated messages for performance
   const paginatedMessages = usePaginatedMessages({
