@@ -24,6 +24,7 @@ interface SelectedEntry {
 
 export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
+  const [displayCount, setDisplayCount] = useState(5);
 
   const { data: entries, isLoading, refetch } = useQuery({
     queryKey: ['diary-entries', entryType ?? 'all'],
@@ -36,7 +37,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(100);
 
       if (entryType) {
         query = query.eq('source', entryType);
@@ -47,6 +48,9 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       return data;
     },
   });
+
+  const visibleEntries = entries?.slice(0, displayCount);
+  const hasMore = entries && entries.length > displayCount;
 
   // Set up real-time subscription
   useEffect(() => {
