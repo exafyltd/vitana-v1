@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { OrbVoiceClient, OrbVoiceClientConfig } from '@/lib/OrbVoiceClient';
 import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
