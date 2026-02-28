@@ -293,13 +293,15 @@ export function VitanalandPortalSeed({
             }}
           />
 
-          {/* Inner rim layer */}
-          <div
-            className="absolute inset-[2px] rounded-full pointer-events-none"
-            style={{
-              border: `1px solid rgba(255, 255, 255, ${config.rimOpacity})`,
-            }}
-          />
+          {/* Inner rim layer — hidden for lg to remove visible edge */}
+          {size !== 'lg' && (
+            <div
+              className="absolute inset-[2px] rounded-full pointer-events-none"
+              style={{
+                border: `1px solid rgba(255, 255, 255, ${config.rimOpacity})`,
+              }}
+            />
+          )}
 
           {/* Rim iridescence */}
           <motion.div

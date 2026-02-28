@@ -7,26 +7,28 @@ interface OrbSoundwaveRingsProps {
 }
 
 const STATE_COLORS: Record<string, string> = {
-  listening: '#3B82F6',   // Bright blue
-  speaking: '#06D6A0',    // Bright turquoise
-  processing: '#FBBF24',  // Pastel yellow
-  idle: '#F87171',        // Pastel red
-  error: '#F87171',       // Pastel red
+  listening: '#3B82F6',
+  speaking: '#06D6A0',
+  processing: '#FBBF24',
+  idle: '#F87171',
+  error: '#F87171',
 };
 
 const RING_COUNT = 4;
 
-// Ring offsets from center (px beyond the orb radius)
-const RING_OFFSETS = [24, 44, 66, 90];
-const RING_OPACITIES = [0.4, 0.3, 0.2, 0.1];
-const RING_DELAYS = [0, 0.15, 0.3, 0.45];
+// Exponential spacing — like waves in water, gaps grow dramatically
+// Gaps: 20, 26, 48, 90 → gap 3→4 (90) > gaps 1+2+3 combined (94 ≈ close)
+const RING_OFFSETS = [20, 46, 94, 184];
+const RING_OPACITIES = [0.35, 0.25, 0.15, 0.08];
+const RING_BLURS = [3, 6, 10, 16];
+const RING_WIDTHS = [6, 8, 12, 18]; // Soft glow band thickness
+const RING_DELAYS = [0, 0.12, 0.28, 0.5];
 
 export function OrbSoundwaveRings({ audioState, volumeLevel, children }: OrbSoundwaveRingsProps) {
   const color = STATE_COLORS[audioState] || STATE_COLORS.idle;
 
   return (
     <div className="relative flex items-center justify-center">
-      {/* Rings behind the orb */}
       {Array.from({ length: RING_COUNT }).map((_, i) => (
         <Ring
           key={i}
@@ -36,7 +38,6 @@ export function OrbSoundwaveRings({ audioState, volumeLevel, children }: OrbSoun
           volumeLevel={volumeLevel}
         />
       ))}
-      {/* The orb itself */}
       {children}
     </div>
   );
@@ -52,39 +53,36 @@ interface RingProps {
 function Ring({ index, color, audioState, volumeLevel }: RingProps) {
   const offset = RING_OFFSETS[index];
   const baseOpacity = RING_OPACITIES[index];
+  const blur = RING_BLURS[index];
+  const width = RING_WIDTHS[index];
   const delay = RING_DELAYS[index];
   const size = offset * 2;
 
-  // State-driven animation variants
   const getAnimation = () => {
     switch (audioState) {
       case 'listening': {
-        // Pulse based on volume, staggered per ring
-        const volScale = 1 + volumeLevel * (0.15 + index * 0.08);
+        const volScale = 1 + volumeLevel * (0.12 + index * 0.06);
         return {
-          scale: [volScale * 0.95, volScale, volScale * 0.95],
-          opacity: [baseOpacity * 0.7, baseOpacity, baseOpacity * 0.7],
+          scale: [volScale * 0.96, volScale, volScale * 0.96],
+          opacity: [baseOpacity * 0.6, baseOpacity, baseOpacity * 0.6],
         };
       }
       case 'speaking': {
-        // Ripple outward sequentially
         return {
-          scale: [1, 1.15 + index * 0.05, 1],
-          opacity: [baseOpacity * 0.5, baseOpacity, baseOpacity * 0.5],
+          scale: [1, 1.12 + index * 0.04, 1],
+          opacity: [baseOpacity * 0.4, baseOpacity, baseOpacity * 0.4],
         };
       }
       case 'processing': {
-        // Slow breathing
         return {
-          scale: [1, 1.08, 1],
-          opacity: [baseOpacity * 0.4, baseOpacity * 0.8, baseOpacity * 0.4],
+          scale: [1, 1.06, 1],
+          opacity: [baseOpacity * 0.3, baseOpacity * 0.7, baseOpacity * 0.3],
         };
       }
       default: {
-        // Idle/error — static, low opacity
         return {
           scale: 1,
-          opacity: baseOpacity * 0.35,
+          opacity: baseOpacity * 0.3,
         };
       }
     }
@@ -93,31 +91,13 @@ function Ring({ index, color, audioState, volumeLevel }: RingProps) {
   const getTransition = () => {
     switch (audioState) {
       case 'listening':
-        return {
-          duration: 0.6,
-          repeat: Infinity,
-          ease: 'easeInOut' as const,
-          delay,
-        };
+        return { duration: 0.6, repeat: Infinity, ease: 'easeInOut' as const, delay };
       case 'speaking':
-        return {
-          duration: 1.2,
-          repeat: Infinity,
-          ease: 'easeOut' as const,
-          delay: delay * 2,
-        };
+        return { duration: 1.2, repeat: Infinity, ease: 'easeOut' as const, delay: delay * 2 };
       case 'processing':
-        return {
-          duration: 2.5,
-          repeat: Infinity,
-          ease: 'easeInOut' as const,
-          delay,
-        };
+        return { duration: 2.5, repeat: Infinity, ease: 'easeInOut' as const, delay };
       default:
-        return {
-          duration: 0.5,
-          ease: 'easeOut' as const,
-        };
+        return { duration: 0.5, ease: 'easeOut' as const };
     }
   };
 
@@ -127,8 +107,10 @@ function Ring({ index, color, audioState, volumeLevel }: RingProps) {
       style={{
         width: `calc(100% + ${size}px)`,
         height: `calc(100% + ${size}px)`,
-        border: `1.5px solid ${color}`,
-        filter: `blur(${0.5 + index * 0.3}px)`,
+        // Soft glow band — no hard border, just a diffused color wash
+        boxShadow: `0 0 ${width}px ${Math.round(width * 0.6)}px ${color}`,
+        background: 'transparent',
+        filter: `blur(${blur}px)`,
       }}
       animate={getAnimation()}
       transition={getTransition()}
