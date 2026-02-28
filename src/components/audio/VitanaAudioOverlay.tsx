@@ -5,7 +5,6 @@ import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
-import { OrbSoundwaveRings } from './OrbSoundwaveRings';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
 import { VitanaOrbStatusBar } from '@/components/vitanaland/VitanaOrbStatusBar';
@@ -78,14 +77,14 @@ export function VitanaAudioOverlay() {
       resumePersisting(); // Restore soundscape persistence
       disconnect();
     }
-  }, [audioOverlayVisible]); // connect/disconnect are now stable refs — safe to omit
+  }, [audioOverlayVisible, connect, disconnect]);
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
     if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
       startListening();
     }
-  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening]); // startListening is now a stable ref
+  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening, startListening]);
 
   // Map states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 
@@ -220,7 +219,7 @@ export function VitanaAudioOverlay() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-2xl"
+        className="fixed inset-0 z-[100]"
         role="dialog"
         aria-label="VITANA Audio Mode"
         style={{ pointerEvents: 'auto' }}
@@ -248,15 +247,12 @@ export function VitanaAudioOverlay() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
           >
-            <OrbSoundwaveRings audioState={audioState} volumeLevel={volumeLevel}>
-              <VitanalandPortalSeed 
-                audioState={audioState} 
-                volumeLevel={volumeLevel}
-                size="lg"
-                glowIntensity={0}
-                layoutId="vitana-orb"
-              />
-            </OrbSoundwaveRings>
+            <VitanalandPortalSeed 
+              audioState={audioState} 
+              volumeLevel={volumeLevel}
+              size="lg"
+              layoutId="vitana-orb"
+            />
           </motion.div>
 
           {/* Status text */}

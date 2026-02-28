@@ -628,19 +628,10 @@ export function useGlobalMessages(
 
   // ── Realtime: listen for new chat_messages ────────────────────────
 
-  const updateMessagesOptimisticallyRef = useRef(updateMessagesOptimistically);
-  const updateThreadsOptimisticallyRef = useRef(updateThreadsOptimistically);
-  const refetchThreadsRef = useRef(refetchThreads);
-  const realtimeChannelIdRef = useRef(crypto.randomUUID());
-
-  updateMessagesOptimisticallyRef.current = updateMessagesOptimistically;
-  updateThreadsOptimisticallyRef.current = updateThreadsOptimistically;
-  refetchThreadsRef.current = refetchThreads;
-
   useEffect(() => {
-    if (!user?.id || !isGlobalContext) return;
+    if (!user || !isGlobalContext) return;
 
-    const channelName = `chat_messages_realtime_${realtimeChannelIdRef.current}`;
+    const channelName = `chat_messages_realtime_${crypto.randomUUID()}`;
     const channel = supabase
       .channel(channelName)
       .on(
@@ -659,13 +650,13 @@ export function useGlobalMessages(
           const msg = toGlobalMessage(raw, peerId, profileMap);
 
           // Append to the peer's message list
-          updateMessagesOptimisticallyRef.current(peerId, (prev) => {
+          updateMessagesOptimistically(peerId, (prev) => {
             if (prev.some((m) => m.id === msg.id)) return prev;
             return [...prev, msg];
           });
 
           // Bump thread to top + increment unread
-          updateThreadsOptimisticallyRef.current((prev) => {
+          updateThreadsOptimistically((prev) => {
             const existing = prev.find((t) => t.id === peerId);
             if (existing) {
               return [
@@ -679,7 +670,7 @@ export function useGlobalMessages(
               ];
             }
             // New conversation from unknown peer – refetch full list
-            refetchThreadsRef.current();
+            refetchThreads();
             return prev;
           });
         }
@@ -689,7 +680,7 @@ export function useGlobalMessages(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user?.id, isGlobalContext]);
+  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads]);
 
   // ── Legacy compat shims ───────────────────────────────────────────
 

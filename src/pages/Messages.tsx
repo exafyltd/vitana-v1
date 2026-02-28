@@ -83,7 +83,6 @@ export default function Messages() {
   const [inboxSearchQuery, setInboxSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
-  const skipNextContextResetRef = React.useRef(false);
 
   // Parse query params to auto-select thread from notifications
   const [searchParams, setSearchParams] = useSearchParams();
@@ -98,10 +97,7 @@ export default function Messages() {
       setSelectedRecipientId(null);
 
       if (urlContext && (urlContext === 'global' || urlContext === 'tenant')) {
-        if (urlContext !== messageContext) {
-          skipNextContextResetRef.current = true;
-          setMessageContext(urlContext);
-        }
+        setMessageContext(urlContext);
       }
 
       // Clear URL params after applying
@@ -110,7 +106,7 @@ export default function Messages() {
       newParams.delete('context');
       setSearchParams(newParams, { replace: true });
     }
-  }, [urlThreadId, urlContext, messageContext, searchParams, setSearchParams]);
+  }, [urlThreadId, urlContext, setSearchParams]);
 
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
@@ -164,11 +160,6 @@ export default function Messages() {
 
   // Reset selection when context changes
   useEffect(() => {
-    if (skipNextContextResetRef.current) {
-      skipNextContextResetRef.current = false;
-      return;
-    }
-
     setSelectedThreadId(null);
     setSelectedRecipientId(null);
     setOptimisticUnreadUpdates({}); // Clear optimistic updates
