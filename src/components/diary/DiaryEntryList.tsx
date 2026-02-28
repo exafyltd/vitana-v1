@@ -234,6 +234,17 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
         ))}
       </div>
 
+      {hasMore && (
+        <div className="flex justify-center pt-2 pb-4">
+          <button
+            onClick={() => setDisplayCount(prev => prev + 10)}
+            className="px-6 py-2 text-sm font-medium text-primary hover:text-primary/80 bg-muted/60 hover:bg-muted rounded-full transition-colors"
+          >
+            Load more ({entries!.length - displayCount} remaining)
+          </button>
+        </div>
+      )}
+
       <PhotoCarouselModal
         open={!!selectedEntry}
         onOpenChange={(open) => !open && setSelectedEntry(null)}

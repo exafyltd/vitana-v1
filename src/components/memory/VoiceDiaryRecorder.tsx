@@ -268,6 +268,10 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
       setTranscribedText("");
       setRecordingDuration(0);
       
+      // Refresh diary list
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
+      onSaveComplete?.();
+      
       toast({
         title: "Entry Saved",
         description: "Your diary entry has been added to your memory timeline.",
