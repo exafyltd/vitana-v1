@@ -1170,7 +1170,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           <div ref={messagesEndRef} />
         </div>
 
-        <ComposerDock>
+        <ComposerDock isMobile={isMobile}>
           <div className="conversation-composer bg-background">
             <div className="px-2 py-0.5 pb-1">
               {/* Typing Indicators */}
