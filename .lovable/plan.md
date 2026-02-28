@@ -1,35 +1,45 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Plan: Align Bug Reports with Health Diary — Full Parity
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+### Problem
+The FeedbackRecorder has none of the STT fixes applied to VoiceDiaryRecorder (overlap merging, duplicate detection, auto-restart, Android continuous-mode workaround, isRecordingRef). The UI also looks completely different from the Health Diary tab. The history list (FeedbackReportList) lacks delete functionality and visual consistency.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+### Changes Overview
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+#### 1. FeedbackRecorder.tsx — Port all STT fixes
+- Add `isRecordingRef` to prevent stale closure issues
+- Add `restartTimeoutRef`, `lastFinalTranscriptRef`, `lastFinalAtRef` for duplicate detection
+- Port `normalizeWords()` and `mergeFinalTranscript()` helper functions
+- Disable `continuous` mode on Android (`!isAndroid`)
+- Use `getLocalStorageItem` for language, defaulting to `de-DE`
+- Re-assert language via `sttRef.current.setLanguage()` before start
+- Treat `no-speech`, `aborted`, `audio-capture` as recoverable errors (don't stop recording)
+- Add `onEnd` auto-restart logic with debounced timeout (750ms Android, 350ms otherwise)
+- Clear interim text before restart
+- In `stopRecording`: set `isRecordingRef = false` first, clear restart timeout
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+#### 2. FeedbackRecorder.tsx — UI redesign to match Health Diary
+- Replace the current flat layout with a centered mic card matching VoiceDiaryRecorder style:
+  - Large round mic button (h-16 w-16) centered, using red/orange tones instead of purple
+  - A `+` button (absolute right) that opens file input for screenshot attachments (replaces the "Attach Screenshots" button)
+  - Same audio visualization bars style
+  - Report type toggle (Bug/UX) and severity/screen selectors shown below mic card
+  - Transcript area in a Card component matching VoiceDiaryRecorder layout
+- Remove the standalone "Attach Screenshots" button entirely
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+#### 3. FeedbackReportList.tsx — Match DiaryEntryList patterns
+- Add pagination: show last 5 entries, "Load more" button (+10)
+- Add trash icon (Trash2) on each report card with confirmation dialog (same as DiaryEntryList)
+- Use `useQueryClient` to invalidate after delete
+- Visual card styling consistent with DiaryEntryList cards
+
+#### 4. MobileDailyDiary.tsx — Bug tab layout
+- Wrap FeedbackRecorder in same card style as VoiceDiaryRecorder (neutral border, not destructive)
+- Pass `onSubmitted` that also invalidates feedback query cache
+
+### Files to Edit
+1. `src/components/feedback/FeedbackRecorder.tsx` — STT fixes + UI overhaul
+2. `src/components/feedback/FeedbackReportList.tsx` — Pagination + delete + visual consistency
+3. `src/pages/MobileDailyDiary.tsx` — Bug tab card wrapper styling
+
