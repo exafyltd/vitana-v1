@@ -40,6 +40,55 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const normalizeWords = (value: string) =>
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s'-]+/gu, ' ')
+      .split(/\s+/)
+      .filter(Boolean);
+
+  const mergeFinalTranscript = (existing: string, incoming: string) => {
+    const existingTrimmed = existing.trim();
+    const incomingTrimmed = incoming.trim();
+
+    if (!incomingTrimmed) return existingTrimmed;
+    if (!existingTrimmed) return incomingTrimmed;
+
+    const existingNormalized = normalizeWords(existingTrimmed).join(' ');
+    const incomingNormalized = normalizeWords(incomingTrimmed).join(' ');
+
+    if (!incomingNormalized) return existingTrimmed;
+    if (
+      existingNormalized === incomingNormalized ||
+      existingNormalized.includes(incomingNormalized)
+    ) {
+      return existingTrimmed;
+    }
+
+    const existingWords = existingTrimmed.split(/\s+/);
+    const incomingWords = incomingTrimmed.split(/\s+/);
+    const existingWordsNorm = existingWords.map((word) => normalizeWords(word).join(''));
+    const incomingWordsNorm = incomingWords.map((word) => normalizeWords(word).join(''));
+
+    let overlap = 0;
+    const maxOverlap = Math.min(existingWordsNorm.length, incomingWordsNorm.length);
+
+    for (let size = maxOverlap; size > 0; size--) {
+      const existingSuffix = existingWordsNorm.slice(-size).join(' ');
+      const incomingPrefix = incomingWordsNorm.slice(0, size).join(' ');
+      if (existingSuffix && existingSuffix === incomingPrefix) {
+        overlap = size;
+        break;
+      }
+    }
+
+    const tailWords = incomingWords.slice(overlap).join(' ').trim();
+    if (!tailWords) return existingTrimmed;
+
+    return `${existingTrimmed} ${tailWords}`.trim();
+  };
+
   const startRecording = async () => {
     if (!ClientSTT.isSupported()) {
       toast({
