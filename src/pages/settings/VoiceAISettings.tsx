@@ -15,6 +15,7 @@ import { Loader2, Volume2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
