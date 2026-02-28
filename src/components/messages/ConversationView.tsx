@@ -56,12 +56,17 @@ interface ConversationViewProps {
 }
 
 const ComposerDock: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  if (typeof document === 'undefined') return null;
+  const isMobile = useIsMobile();
 
+  // Desktop: render inline within the chat panel
+  if (!isMobile) {
+    return <div className="bg-background border-t border-border">{children}</div>;
+  }
+
+  // Mobile: portal to body with fixed positioning
+  if (typeof document === 'undefined') return null;
   return createPortal(
-    <div
-      className="fixed left-0 right-0 bottom-0 z-[60] bg-background"
-    >
+    <div className="fixed left-0 right-0 bottom-0 z-[60] bg-background">
       {children}
     </div>,
     document.body

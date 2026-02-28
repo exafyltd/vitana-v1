@@ -631,8 +631,9 @@ export function useGlobalMessages(
   useEffect(() => {
     if (!user || !isGlobalContext) return;
 
+    const channelName = `chat_messages_realtime_${crypto.randomUUID()}`;
     const channel = supabase
-      .channel("chat_messages_realtime")
+      .channel(channelName)
       .on(
         "postgres_changes",
         {
