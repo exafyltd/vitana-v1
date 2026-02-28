@@ -5,6 +5,7 @@ import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
+import { OrbSoundwaveRings } from './OrbSoundwaveRings';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
 import { VitanaOrbStatusBar } from '@/components/vitanaland/VitanaOrbStatusBar';
