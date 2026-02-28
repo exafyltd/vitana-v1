@@ -15,11 +15,13 @@ interface PhotoEntryCardProps {
 }
 
 export function PhotoEntryCard({
+  id,
   text,
   attachments,
   tags,
   createdAt,
   onThumbnailClick,
+  onDelete,
 }: PhotoEntryCardProps) {
   const photoCount = attachments.length;
   const hasMultiplePhotos = photoCount > 1;
