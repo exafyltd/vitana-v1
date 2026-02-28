@@ -161,7 +161,9 @@ export class ClientSTT {
 
   setLanguage(language: string): void {
     if (this.recognition) {
-      this.recognition.lang = this.normalizeLanguage(language);
+      const normalized = this.normalizeLanguage(language);
+      this.options.language = normalized;
+      this.recognition.lang = normalized;
     }
   }
 
