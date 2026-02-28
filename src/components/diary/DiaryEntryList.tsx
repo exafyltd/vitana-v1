@@ -91,6 +91,37 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     };
   }, [entryType, refetch]);
 
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
+    try {
+      // Also delete storage files if entry has attachments
+      const entry = entries?.find(e => e.id === deleteTarget);
+      if (entry?.attachments && Array.isArray(entry.attachments)) {
+        const filePaths = (entry.attachments as string[])
+          .map(url => {
+            const match = url.match(/diary-photos\/(.+)$/);
+            return match ? match[1] : null;
+          })
+          .filter(Boolean) as string[];
+        if (filePaths.length > 0) {
+          await supabase.storage.from('diary-photos').remove(filePaths);
+        }
+      }
+
+      const { error } = await supabase.from('diary_entries').delete().eq('id', deleteTarget);
+      if (error) throw error;
+      
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
+      toast({ title: "Entry deleted", description: "The diary entry has been removed." });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete entry. Please try again.", variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
+      setDeleteTarget(null);
+    }
+  };
+
   const getIconForSource = (source?: string) => {
     switch (source) {
       case "voice":
