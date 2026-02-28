@@ -111,7 +111,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     if (preferred?.name) {
       updatePreferences({ tts_voice: preferred.name });
     }
-  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
+  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences, setSelectedLanguage]);
 
   const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
     'sr-RS': [
