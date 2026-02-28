@@ -113,6 +113,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
 
   const stopRecording = () => {
     if (sttRef.current && isRecording) {
+      isRecordingRef.current = false;
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
