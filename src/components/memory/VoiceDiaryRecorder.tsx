@@ -131,8 +131,16 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   };
 
   const stopRecording = () => {
+    // Set ref FIRST to prevent onEnd from restarting
+    isRecordingRef.current = false;
+    
+    // Clear any pending restart
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+    
     if (sttRef.current && isRecording) {
-      isRecordingRef.current = false;
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
