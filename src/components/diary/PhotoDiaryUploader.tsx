@@ -84,7 +84,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       console.log('All uploads complete. URLs:', uploadedUrls);
 
       // Save entry to database with photo URLs
-      const { error } = await supabase
+      const { data: insertedEntry, error } = await supabase
         .from('diary_entries')
         .insert({
           user_id: user.id,
@@ -92,9 +92,28 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
           source: 'photo',
           tags: ['diary', 'photo'],
           attachments: uploadedUrls
-        });
+        })
+        .select('*')
+        .single();
 
       if (error) throw error;
+
+      // Optimistically update active diary caches so the new card appears instantly
+      const prependIfMissing = (oldData: any[] | undefined) => {
+        if (!insertedEntry) return oldData;
+        const entries = Array.isArray(oldData) ? oldData : [];
+        if (entries.some((entry) => entry.id === insertedEntry.id)) {
+          return entries;
+        }
+
+        return [insertedEntry, ...entries].sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      };
+
+      queryClient.setQueryData(['diary-entries', 'all'], prependIfMissing);
+      queryClient.setQueryData(['diary-entries', 'photo'], prependIfMissing);
+      await queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
 
       toast({
         title: "Photos uploaded!",
@@ -105,7 +124,6 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       setSelectedFiles([]);
       setPreviewUrls([]);
       setCaption("");
-      queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
       onUploadComplete?.();
     } catch (error) {
       console.error('Error uploading photos:', error);
