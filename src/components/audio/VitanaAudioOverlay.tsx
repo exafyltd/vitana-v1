@@ -78,7 +78,7 @@ export function VitanaAudioOverlay() {
       resumePersisting(); // Restore soundscape persistence
       disconnect();
     }
-  }, [audioOverlayVisible, connect, disconnect]);
+  }, [audioOverlayVisible]); // connect/disconnect are now stable refs — safe to omit
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
