@@ -1,35 +1,41 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Plan: ORB Status Soundwave Rings + Status Text
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+### Color Scheme (user-specified)
+| State | Color | Hex |
+|---|---|---|
+| **Listening** | Bright blue | `#3B82F6` |
+| **Talking** | Bright turquoise | `#06D6A0` |
+| **Thinking** | Pastel yellow | `#FBBF24` |
+| **Offline/Error/Idle** | Stronger pastel red | `#F87171` |
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+### Implementation
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+#### 1. Create `src/components/audio/OrbSoundwaveRings.tsx`
+- New component rendering 4 concentric animated ring circles around the orb
+- Props: `audioState`, `volumeLevel`
+- Each ring is an absolutely positioned `border` circle with increasing radius, decreasing opacity (0.4 → 0.1), and staggered animation delay (0s, 0.15s, 0.3s, 0.45s)
+- **Listening**: rings pulse/scale based on `volumeLevel` input, bright blue
+- **Talking (speaking)**: rings ripple outward sequentially, bright turquoise
+- **Thinking (processing)**: slow breathing scale animation, pastel yellow
+- **Offline (idle/error)**: static rings with low opacity, pastel red
+- Uses framer-motion for smooth state transitions between colors and animations
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+#### 2. Edit `src/components/audio/VitanaAudioOverlay.tsx`
+- Wrap the `VitanalandPortalSeed` (lines 244-256) with `OrbSoundwaveRings`, passing `audioState` and `volumeLevel`
+- The rings component renders as a parent container with the orb centered inside
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+#### 3. Edit `src/components/audio/AudioStatusText.tsx`
+- Update status messages:
+  - listening → "VITANA is listening..."
+  - speaking → "VITANA is talking..."
+  - processing → "VITANA is thinking..."
+  - idle/error → "VITANA is offline"
+- Color-match the text to the ring color for each state
+
+### Files
+- **Create**: `src/components/audio/OrbSoundwaveRings.tsx`
+- **Edit**: `src/components/audio/VitanaAudioOverlay.tsx`
+- **Edit**: `src/components/audio/AudioStatusText.tsx`
+
