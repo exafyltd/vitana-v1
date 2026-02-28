@@ -19,6 +19,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
+  const { setSelectedLanguage } = useLanguage();
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
