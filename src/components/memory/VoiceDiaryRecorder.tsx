@@ -22,6 +22,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   const sttRef = useRef<ClientSTT | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isRecordingRef = useRef(false);
+  const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
 
