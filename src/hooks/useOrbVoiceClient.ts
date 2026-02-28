@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { OrbVoiceClient, OrbVoiceClientConfig } from '@/lib/OrbVoiceClient';
 import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
@@ -47,6 +47,11 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   }, []);
 
   const connect = useCallback(async () => {
+    // Guard: prevent duplicate sessions
+    if (clientRef.current) {
+      console.warn('[useOrbVoiceClient] Session already active, skipping duplicate connect');
+      return;
+    }
     try {
       setError(null);
       setConnectionState('connecting');
@@ -181,6 +186,28 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     }
   }, []);
 
+  // Stable function refs — prevents downstream useEffect re-triggers
+  const connectRef = useRef(connect);
+  const disconnectRef = useRef(disconnect);
+  const startListeningRef = useRef(startListening);
+  const stopListeningRef = useRef(stopListening);
+  const sendMessageRef = useRef(sendMessage);
+  const endTurnRef = useRef(endTurn);
+
+  useEffect(() => { connectRef.current = connect; }, [connect]);
+  useEffect(() => { disconnectRef.current = disconnect; }, [disconnect]);
+  useEffect(() => { startListeningRef.current = startListening; }, [startListening]);
+  useEffect(() => { stopListeningRef.current = stopListening; }, [stopListening]);
+  useEffect(() => { sendMessageRef.current = sendMessage; }, [sendMessage]);
+  useEffect(() => { endTurnRef.current = endTurn; }, [endTurn]);
+
+  const stableConnect = useCallback(async () => connectRef.current(), []);
+  const stableDisconnect = useCallback(() => disconnectRef.current(), []);
+  const stableStartListening = useCallback(async () => startListeningRef.current(), []);
+  const stableStopListening = useCallback(() => stopListeningRef.current(), []);
+  const stableSendMessage = useCallback((text: string) => sendMessageRef.current(text), []);
+  const stableEndTurn = useCallback(() => endTurnRef.current(), []);
+
   return {
     connectionState,
     isListening,
@@ -189,11 +216,11 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     error,
     volumeLevel,
     transcript,
-    connect,
-    disconnect,
-    startListening,
-    stopListening,
-    sendMessage,
-    endTurn,
+    connect: stableConnect,
+    disconnect: stableDisconnect,
+    startListening: stableStartListening,
+    stopListening: stableStopListening,
+    sendMessage: stableSendMessage,
+    endTurn: stableEndTurn,
   };
 }
