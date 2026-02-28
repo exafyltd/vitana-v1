@@ -88,6 +88,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
 
       sttRef.current.start();
       setIsRecording(true);
+      isRecordingRef.current = true;
       setRecordingDuration(0);
       setTranscribedText('');
       setInterimText('');
