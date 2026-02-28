@@ -227,6 +227,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                           initialIndex: 0,
                         });
                       }}
+                      onDelete={(id) => setDeleteTarget(id)}
                     />
                   );
                 }
