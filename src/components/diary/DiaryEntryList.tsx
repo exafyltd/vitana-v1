@@ -140,7 +140,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     );
   }
 
-  if (!entries || entries.length === 0) {
+  if (!visibleEntries || visibleEntries.length === 0) {
     return (
       <Card>
         <CardContent className="pt-6 text-center text-muted-foreground">
