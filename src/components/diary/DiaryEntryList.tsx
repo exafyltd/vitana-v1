@@ -308,6 +308,27 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
         createdAt={selectedEntry?.createdAt}
         initialIndex={selectedEntry?.initialIndex || 0}
       />
+
+      <ResponsiveConfirmDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <ResponsiveConfirmDialogContent className="max-w-sm">
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>Delete Entry?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
+              This diary entry will be permanently deleted. This action cannot be undone.
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel disabled={isDeleting}>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
     </>
   );
 }
