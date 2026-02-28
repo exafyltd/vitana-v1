@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Mic, Square, Send, Paperclip, X, Bug, Lightbulb, CheckCircle2 } from "lucide-react";
+import { Mic, Square, Send, Plus, X, Bug, Lightbulb, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getLocalStorageItem } from "@/lib/localStorage";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
 
@@ -63,13 +64,68 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
   const sttRef = useRef<ClientSTT | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const isRecordingRef = useRef(false);
+  const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastFinalTranscriptRef = useRef('');
+  const lastFinalAtRef = useRef(0);
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  const isAndroid = /Android/i.test(navigator.userAgent);
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // --- Ported STT helpers from VoiceDiaryRecorder ---
+  const normalizeWords = (value: string) =>
+    value
+      .trim()
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s'-]+/gu, ' ')
+      .split(/\s+/)
+      .filter(Boolean);
+
+  const mergeFinalTranscript = (existing: string, incoming: string) => {
+    const existingTrimmed = existing.trim();
+    const incomingTrimmed = incoming.trim();
+
+    if (!incomingTrimmed) return existingTrimmed;
+    if (!existingTrimmed) return incomingTrimmed;
+
+    const existingNormalized = normalizeWords(existingTrimmed).join(' ');
+    const incomingNormalized = normalizeWords(incomingTrimmed).join(' ');
+
+    if (!incomingNormalized) return existingTrimmed;
+    if (
+      existingNormalized === incomingNormalized ||
+      existingNormalized.includes(incomingNormalized)
+    ) {
+      return existingTrimmed;
+    }
+
+    const existingWords = existingTrimmed.split(/\s+/);
+    const incomingWords = incomingTrimmed.split(/\s+/);
+    const existingWordsNorm = existingWords.map((word) => normalizeWords(word).join(''));
+    const incomingWordsNorm = incomingWords.map((word) => normalizeWords(word).join(''));
+
+    let overlap = 0;
+    const maxOverlap = Math.min(existingWordsNorm.length, incomingWordsNorm.length);
+
+    for (let size = maxOverlap; size > 0; size--) {
+      const existingSuffix = existingWordsNorm.slice(-size).join(' ');
+      const incomingPrefix = incomingWordsNorm.slice(0, size).join(' ');
+      if (existingSuffix && existingSuffix === incomingPrefix) {
+        overlap = size;
+        break;
+      }
+    }
+
+    const tailWords = incomingWords.slice(overlap).join(' ').trim();
+    if (!tailWords) return existingTrimmed;
+
+    return `${existingTrimmed} ${tailWords}`.trim();
   };
 
   const startRecording = () => {
@@ -82,19 +138,44 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
       return;
     }
 
+    const storedLanguage = getLocalStorageItem('global', 'language', 'selected_language');
+    const sttLanguage = (typeof storedLanguage === 'string' ? storedLanguage : selectedLanguage)?.trim() || 'de-DE';
+    const useContinuous = !isAndroid;
+
     sttRef.current = new ClientSTT({
-      language: selectedLanguage || 'en-US',
-      continuous: true,
+      language: sttLanguage,
+      continuous: useContinuous,
       interimResults: true,
       onResult: (text, isFinal) => {
+        const cleaned = text.trim();
+        if (!cleaned) return;
+
         if (isFinal) {
-          setTranscript(prev => prev + (prev ? ' ' : '') + text);
+          const normalized = cleaned.toLowerCase();
+          const now = Date.now();
+          const isImmediateDuplicate =
+            normalized === lastFinalTranscriptRef.current &&
+            now - lastFinalAtRef.current < 1500;
+
+          if (isImmediateDuplicate) {
+            setInterimText('');
+            return;
+          }
+
+          lastFinalTranscriptRef.current = normalized;
+          lastFinalAtRef.current = now;
+
+          setTranscript(prev => mergeFinalTranscript(prev, cleaned));
           setInterimText('');
         } else {
-          setInterimText(text);
+          setInterimText(cleaned);
         }
       },
-      onError: () => {
+      onError: (error) => {
+        // Recoverable errors on mobile — let onEnd auto-restart
+        if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
+          return;
+        }
         toast({
           title: "Recognition Error",
           description: "Speech recognition encountered an error. Please try again.",
@@ -103,15 +184,36 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
         stopRecording();
       },
       onEnd: () => {
-        // Auto-restart if still recording
+        if (restartTimeoutRef.current) {
+          clearTimeout(restartTimeoutRef.current);
+          restartTimeoutRef.current = null;
+        }
+
+        if (!isRecordingRef.current || !sttRef.current) return;
+
+        setInterimText('');
+
+        restartTimeoutRef.current = setTimeout(() => {
+          if (!isRecordingRef.current || !sttRef.current) return;
+          try {
+            sttRef.current.setLanguage(sttLanguage);
+            sttRef.current.start();
+          } catch (e) {
+            console.warn('[FeedbackRecorder] Failed to restart STT:', e);
+          }
+        }, isAndroid ? 750 : 350);
       }
     });
 
+    sttRef.current.setLanguage(sttLanguage);
     sttRef.current.start();
     setIsRecording(true);
+    isRecordingRef.current = true;
     setRecordingDuration(0);
     setTranscript('');
     setInterimText('');
+    lastFinalTranscriptRef.current = '';
+    lastFinalAtRef.current = 0;
     setShowConfirmation(false);
 
     timerRef.current = setInterval(() => {
@@ -120,7 +222,15 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
   };
 
   const stopRecording = () => {
-    if (sttRef.current && isRecording) {
+    // Set ref FIRST to prevent onEnd from restarting
+    isRecordingRef.current = false;
+
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+
+    if (sttRef.current) {
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
@@ -248,128 +358,38 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
 
   return (
     <div className="space-y-4">
-      {/* Report Type Toggle */}
-      <div className="flex gap-2">
-        <Button
-          variant={reportType === "bug_report" ? "default" : "outline"}
-          size="sm"
-          className="gap-2"
-          onClick={() => setReportType("bug_report")}
-        >
-          <Bug className="h-4 w-4" />
-          Bug Report
-        </Button>
-        <Button
-          variant={reportType === "ux_improvement" ? "default" : "outline"}
-          size="sm"
-          className="gap-2"
-          onClick={() => setReportType("ux_improvement")}
-        >
-          <Lightbulb className="h-4 w-4" />
-          UX Improvement
-        </Button>
-      </div>
-
-      {/* Recording Controls */}
-      <div className="flex items-center gap-3">
+      {/* Recording Controls - matching VoiceDiaryRecorder layout */}
+      <div className="flex items-center justify-center relative py-4">
         {!isRecording ? (
-          <Button onClick={startRecording} size="lg" className="gap-2">
-            <Mic className="h-5 w-5" />
+          <Button
+            onClick={startRecording}
+            size="lg"
+            className="h-16 w-16 rounded-full bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/40 dark:hover:bg-orange-900/60 text-orange-700 dark:text-orange-300"
+          >
+            <Mic className="h-8 w-8" />
           </Button>
         ) : (
-          <div className="flex items-center gap-3">
-            <Button variant="destructive" onClick={stopRecording} size="lg" className="gap-2">
-              <Square className="h-5 w-5" />
+          <div className="flex items-center gap-4">
+            <Button
+              onClick={stopRecording}
+              size="lg"
+              variant="destructive"
+              className="h-16 w-16 rounded-full"
+            >
+              <Square className="h-8 w-8" />
             </Button>
-            <div className="flex flex-col">
+            <div className="text-center">
               <Badge variant="destructive" className="animate-pulse">
                 Recording
               </Badge>
-              <span className="text-xs text-muted-foreground tabular-nums mt-1">
+              <div className="text-2xl font-mono font-bold text-destructive mt-1">
                 {formatDuration(recordingDuration)}
-              </span>
+              </div>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Audio Visualization */}
-      {isRecording && (
-        <div className="flex items-center justify-center py-3">
-          <div className="flex items-end gap-1 h-8">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="w-1.5 bg-destructive rounded-full animate-pulse"
-                style={{
-                  height: `${Math.random() * 100}%`,
-                  animationDelay: `${i * 0.1}s`,
-                  minHeight: '4px',
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Transcript Area */}
-      {(isRecording || transcript) && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">
-              {isRecording ? "Live Transcription" : "Your Feedback"}
-            </span>
-            {!isRecording && recordingDuration > 0 && (
-              <span className="text-xs text-muted-foreground">
-                Duration: {formatDuration(recordingDuration)}
-              </span>
-            )}
-          </div>
-          <Textarea
-            value={isRecording ? transcript + (interimText ? ` ${interimText}` : '') : transcript}
-            onChange={(e) => !isRecording && setTranscript(e.target.value)}
-            placeholder={isRecording ? "Start speaking..." : "Edit your feedback or type directly..."}
-            className="min-h-24"
-            disabled={isRecording}
-          />
-        </div>
-      )}
-
-      {/* Metadata: Severity + Affected Screen */}
-      {(transcript || !isRecording) && (
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Severity</label>
-            <Select value={severity} onValueChange={(v: any) => setSeverity(v)}>
-              <SelectTrigger className="h-9">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Affected Screen</label>
-            <Select value={affectedScreen} onValueChange={setAffectedScreen}>
-              <SelectTrigger className="h-9">
-                <SelectValue placeholder="Select..." />
-              </SelectTrigger>
-              <SelectContent>
-                {SCREEN_OPTIONS.map(s => (
-                  <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      )}
-
-      {/* Attachments */}
-      <div className="space-y-2">
+        {/* + button for attachments — absolute right, matching Health Diary layout */}
         <input
           ref={fileInputRef}
           type="file"
@@ -378,31 +398,133 @@ export function FeedbackRecorder({ onSubmitted }: FeedbackRecorderProps) {
           className="hidden"
           onChange={(e) => handleFileSelect(e.target.files)}
         />
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
+        <button
           onClick={() => fileInputRef.current?.click()}
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
+          aria-label="Attach screenshots"
         >
-          <Paperclip className="h-4 w-4" />
-          Attach Screenshots
-        </Button>
+          <Plus className="h-5 w-5" />
+        </button>
+      </div>
 
-        {previewUrls.length > 0 && (
-          <div className="flex gap-2 flex-wrap">
-            {previewUrls.map((url, i) => (
-              <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border">
-                <img src={url} alt={`Attachment ${i + 1}`} className="w-full h-full object-cover" />
-                <button
-                  onClick={() => removeAttachment(i)}
-                  className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </div>
+      <p className="text-xs text-muted-foreground text-center">Tap the mic to describe the issue</p>
+
+      {/* Audio Visualization - matching VoiceDiaryRecorder */}
+      {isRecording && (
+        <div className="flex justify-center">
+          <div className="flex items-end gap-1 h-12">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-primary rounded-full w-2 animate-pulse"
+                style={{
+                  height: `${Math.random() * 40 + 20}px`,
+                  animationDelay: `${i * 100}ms`
+                }}
+              />
             ))}
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Attachment Previews */}
+      {previewUrls.length > 0 && (
+        <div className="flex gap-2 flex-wrap">
+          {previewUrls.map((url, i) => (
+            <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border">
+              <img src={url} alt={`Attachment ${i + 1}`} className="w-full h-full object-cover" />
+              <button
+                onClick={() => removeAttachment(i)}
+                className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Transcript Area - in a Card matching VoiceDiaryRecorder */}
+      {(isRecording || transcript) && (
+        <Card>
+          <CardContent className="p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold">
+                {isRecording ? "Live Transcription" : "Your Feedback"}
+              </span>
+              {!isRecording && recordingDuration > 0 && (
+                <Badge variant="outline">
+                  Duration: {formatDuration(recordingDuration)}
+                </Badge>
+              )}
+            </div>
+            <Textarea
+              value={transcript + (interimText ? ` ${interimText}` : '')}
+              onChange={(e) => !isRecording && setTranscript(e.target.value)}
+              placeholder={isRecording ? "Start speaking..." : "Edit your feedback or type directly..."}
+              className="min-h-24"
+              disabled={isRecording}
+            />
+            {interimText && isRecording && (
+              <p className="text-xs text-muted-foreground italic">
+                Interim text appears in gray until finalized...
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Report Type Toggle */}
+      <div className="flex gap-2">
+        <Button
+          variant={reportType === "bug_report" ? "default" : "outline"}
+          size="sm"
+          className="gap-2 flex-1"
+          onClick={() => setReportType("bug_report")}
+        >
+          <Bug className="h-4 w-4" />
+          Bug Report
+        </Button>
+        <Button
+          variant={reportType === "ux_improvement" ? "default" : "outline"}
+          size="sm"
+          className="gap-2 flex-1"
+          onClick={() => setReportType("ux_improvement")}
+        >
+          <Lightbulb className="h-4 w-4" />
+          UX Improvement
+        </Button>
+      </div>
+
+      {/* Metadata: Severity + Affected Screen */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Severity</label>
+          <Select value={severity} onValueChange={(v: any) => setSeverity(v)}>
+            <SelectTrigger className="h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="low">Low</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="critical">Critical</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Affected Screen</label>
+          <Select value={affectedScreen} onValueChange={setAffectedScreen}>
+            <SelectTrigger className="h-9">
+              <SelectValue placeholder="Select..." />
+            </SelectTrigger>
+            <SelectContent>
+              {SCREEN_OPTIONS.map(s => (
+                <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Send Button */}

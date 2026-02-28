@@ -231,8 +231,8 @@ export default function MobileDailyDiary() {
 
           {activeTab === "bugs" && (
             <>
-              <Card className="border-destructive/20 bg-destructive/5 shadow-sm">
-                <CardContent className="p-3">
+              <Card className="border-border/50 shadow-sm">
+                <CardContent className="py-8 px-4">
                   <FeedbackRecorder
                     onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)}
                   />
