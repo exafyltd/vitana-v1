@@ -69,6 +69,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [preferences?.stt_language, hasInitializedFromServer]);
 
+  // Keep runtime language in sync when preferences are changed outside LanguageContext
+  useEffect(() => {
+    if (!hasInitializedFromServer || !preferences?.stt_language) return;
+
+    if (preferences.stt_language !== selectedLanguage) {
+      console.log('[LANG] Syncing runtime language from preferences:', preferences.stt_language);
+      setLocalLanguage(preferences.stt_language);
+      setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, preferences.stt_language);
+    }
+  }, [hasInitializedFromServer, preferences?.stt_language, selectedLanguage]);
+
   const setSelectedLanguage = (language: string) => {
     // RULE 2: Validate against allowed set
     if (!ALLOWED_LANGUAGES.includes(language)) {

@@ -15,9 +15,11 @@ import { Loader2, Volume2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function VoiceAISettings() {
   const { preferences, isLoading, updatePreferences, isUpdating } = useUserPreferences();
+  const { setSelectedLanguage } = useLanguage();
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
@@ -130,12 +132,14 @@ export default function VoiceAISettings() {
     
     const preferred = pickPreferredVoice(candidates);
     
-    // Update both language and voice in one call
-    updatePreferences({ 
-      stt_language: newLanguage,
-      tts_voice: preferred?.name || ''
-    });
-  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
+    // Keep LanguageContext + localStorage in sync with settings change
+    setSelectedLanguage(newLanguage);
+
+    // Preserve best matching voice for this language
+    if (preferred?.name) {
+      updatePreferences({ tts_voice: preferred.name });
+    }
+  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences, setSelectedLanguage]);
 
   if (isLoading) {
     return (

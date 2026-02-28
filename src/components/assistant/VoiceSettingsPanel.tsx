@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Volume2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface VoiceSettingsPanelProps {
   preferences: any;
@@ -16,6 +17,7 @@ interface VoiceSettingsPanelProps {
 export default function VoiceSettingsPanel({ preferences, isUpdating, updatePreferences }: VoiceSettingsPanelProps) {
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const { setSelectedLanguage } = useLanguage();
 
   const baseLang = useCallback((l: string) => (l || '').toLowerCase().replace('_', '-').split('-')[0], []);
 
@@ -102,11 +104,14 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     const newBase = baseLang(newLanguage);
     const candidates = availableVoices.filter(v => baseLang(v.lang) === newBase);
     const preferred = pickPreferredVoice(candidates);
-    updatePreferences({
-      stt_language: newLanguage,
-      tts_voice: preferred?.name || ''
-    });
-  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
+    // Keep LanguageContext + localStorage in sync with settings change
+    setSelectedLanguage(newLanguage);
+
+    // Preserve best matching voice for this language
+    if (preferred?.name) {
+      updatePreferences({ tts_voice: preferred.name });
+    }
+  }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences, setSelectedLanguage]);
 
   const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
     'sr-RS': [
