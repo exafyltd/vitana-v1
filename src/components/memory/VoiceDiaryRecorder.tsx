@@ -51,28 +51,52 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
 
     try {
       // Initialize ClientSTT with real-time callbacks
-      const sttLanguage = selectedLanguage || 'de-DE';
-      console.log('[Voice Diary] Starting STT with language:', sttLanguage);
+      const sttLanguage = (selectedLanguage && selectedLanguage.trim()) || 'de-DE';
+      const useContinuous = !isAndroid;
+      console.log('[Voice Diary] Starting STT with language:', sttLanguage, 'continuous:', useContinuous);
       
       sttRef.current = new ClientSTT({
         language: sttLanguage,
-        continuous: true,
+        // Chrome Android does not reliably support continuous mode
+        continuous: useContinuous,
         interimResults: true,
         onResult: (transcript, isFinal) => {
+          const cleanedTranscript = transcript.trim();
+          if (!cleanedTranscript) return;
+
           if (isFinal) {
-            // Append final transcription
-            setTranscribedText(prev => prev + (prev ? ' ' : '') + transcript);
+            const normalized = cleanedTranscript.toLowerCase();
+            const now = Date.now();
+            const isImmediateDuplicate =
+              normalized === lastFinalTranscriptRef.current &&
+              now - lastFinalAtRef.current < 1500;
+
+            if (isImmediateDuplicate) {
+              console.log('[Voice Diary] Skipping duplicate final transcript:', cleanedTranscript);
+              setInterimText('');
+              return;
+            }
+
+            lastFinalTranscriptRef.current = normalized;
+            lastFinalAtRef.current = now;
+
+            setTranscribedText(prev => {
+              const prevTrimmed = prev.trim().toLowerCase();
+              if (prevTrimmed.endsWith(normalized)) {
+                return prev;
+              }
+              return prev + (prev ? ' ' : '') + cleanedTranscript;
+            });
             setInterimText('');
           } else {
             // Show interim results
-            setInterimText(transcript);
+            setInterimText(cleanedTranscript);
           }
         },
         onError: (error) => {
           console.error('[Voice Diary] STT Error:', error);
-          // Don't stop on "no-speech" or "aborted" — these are recoverable on mobile
-          if (error === 'no-speech' || error === 'aborted') {
-            console.log('[Voice Diary] Recoverable error, will auto-restart via onEnd');
+          // Recoverable on mobile; let onEnd auto-restart
+          if (error === 'no-speech' || error === 'aborted' || error === 'audio-capture') {
             return;
           }
           toast({
@@ -83,37 +107,40 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
           stopRecording();
         },
         onEnd: () => {
-          console.log('[Voice Diary] STT onEnd fired, isRecordingRef:', isRecordingRef.current);
           // Clear any pending restart
           if (restartTimeoutRef.current) {
             clearTimeout(restartTimeoutRef.current);
             restartTimeoutRef.current = null;
           }
-          
-          if (isRecordingRef.current && sttRef.current) {
-            // Clear interim text before restart to prevent duplication
-            setInterimText('');
-            // Delay restart to let browser fully tear down previous session
-            restartTimeoutRef.current = setTimeout(() => {
-              if (isRecordingRef.current && sttRef.current) {
-                try {
-                  console.log('[Voice Diary] Restarting STT...');
-                  sttRef.current.start();
-                } catch (e) {
-                  console.warn('[Voice Diary] Failed to restart STT:', e);
-                }
-              }
-            }, 500);
+
+          if (!isRecordingRef.current || !sttRef.current) {
+            return;
           }
+
+          // Clear interim text before restart to prevent stale carryover
+          setInterimText('');
+
+          restartTimeoutRef.current = setTimeout(() => {
+            if (!isRecordingRef.current || !sttRef.current) return;
+            try {
+              sttRef.current.setLanguage(sttLanguage);
+              sttRef.current.start();
+            } catch (e) {
+              console.warn('[Voice Diary] Failed to restart STT:', e);
+            }
+          }, isAndroid ? 750 : 350);
         }
       });
 
+      sttRef.current.setLanguage(sttLanguage);
       sttRef.current.start();
       setIsRecording(true);
       isRecordingRef.current = true;
       setRecordingDuration(0);
       setTranscribedText('');
       setInterimText('');
+      lastFinalTranscriptRef.current = '';
+      lastFinalAtRef.current = 0;
       
       // Start timer
       timerRef.current = setInterval(() => {
