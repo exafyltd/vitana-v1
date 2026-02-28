@@ -36,6 +36,10 @@ interface SelectedEntry {
 export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
   const [displayCount, setDisplayCount] = useState(5);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data: entries, isLoading, refetch } = useQuery({
     queryKey: ['diary-entries', entryType ?? 'all'],
