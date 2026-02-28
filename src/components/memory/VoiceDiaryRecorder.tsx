@@ -170,7 +170,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
       restartTimeoutRef.current = null;
     }
     
-    if (sttRef.current && isRecording) {
+    if (sttRef.current) {
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
