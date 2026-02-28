@@ -17,6 +17,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return;
