@@ -238,7 +238,7 @@ export function VitanalandPortalSeed({
                   ? `0 0 ${config.rimHighlight}px rgba(239, 68, 68, 0.3), inset 0 0 ${config.rimHighlight * 0.6}px rgba(239, 68, 68, 0.2)`
                   : `0 0 ${config.rimHighlight}px rgba(76, 200, 244, 0.4), inset 0 0 ${config.rimHighlight * 0.6}px rgba(255, 109, 168, 0.25)`)
               : '0 0 24px rgba(0, 0, 0, 0.42), 0 0 10px rgba(255, 255, 255, 0.25), inset 0 0 40px rgba(255, 255, 255, 0.15)',
-            border: `${config.shellBorder}px solid rgba(255, 255, 255, 0.4)`,
+            border: size === 'lg' ? 'none' : `${config.shellBorder}px solid rgba(255, 255, 255, 0.4)`,
             backdropFilter: 'blur(12px) saturate(125%)',
             WebkitBackdropFilter: 'blur(12px) saturate(125%)',
             isolation: 'isolate',
@@ -293,13 +293,15 @@ export function VitanalandPortalSeed({
             }}
           />
 
-          {/* Inner rim layer */}
-          <div
-            className="absolute inset-[2px] rounded-full pointer-events-none"
-            style={{
-              border: `1px solid rgba(255, 255, 255, ${config.rimOpacity})`,
-            }}
-          />
+          {/* Inner rim layer — hidden for lg to remove visible edge */}
+          {size !== 'lg' && (
+            <div
+              className="absolute inset-[2px] rounded-full pointer-events-none"
+              style={{
+                border: `1px solid rgba(255, 255, 255, ${config.rimOpacity})`,
+              }}
+            />
+          )}
 
           {/* Rim iridescence */}
           <motion.div
