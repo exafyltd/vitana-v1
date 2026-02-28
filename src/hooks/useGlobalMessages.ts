@@ -628,10 +628,19 @@ export function useGlobalMessages(
 
   // ── Realtime: listen for new chat_messages ────────────────────────
 
-  useEffect(() => {
-    if (!user || !isGlobalContext) return;
+  const updateMessagesOptimisticallyRef = useRef(updateMessagesOptimistically);
+  const updateThreadsOptimisticallyRef = useRef(updateThreadsOptimistically);
+  const refetchThreadsRef = useRef(refetchThreads);
+  const realtimeChannelIdRef = useRef(crypto.randomUUID());
 
-    const channelName = `chat_messages_realtime_${crypto.randomUUID()}`;
+  updateMessagesOptimisticallyRef.current = updateMessagesOptimistically;
+  updateThreadsOptimisticallyRef.current = updateThreadsOptimistically;
+  refetchThreadsRef.current = refetchThreads;
+
+  useEffect(() => {
+    if (!user?.id || !isGlobalContext) return;
+
+    const channelName = `chat_messages_realtime_${realtimeChannelIdRef.current}`;
     const channel = supabase
       .channel(channelName)
       .on(
@@ -650,13 +659,13 @@ export function useGlobalMessages(
           const msg = toGlobalMessage(raw, peerId, profileMap);
 
           // Append to the peer's message list
-          updateMessagesOptimistically(peerId, (prev) => {
+          updateMessagesOptimisticallyRef.current(peerId, (prev) => {
             if (prev.some((m) => m.id === msg.id)) return prev;
             return [...prev, msg];
           });
 
           // Bump thread to top + increment unread
-          updateThreadsOptimistically((prev) => {
+          updateThreadsOptimisticallyRef.current((prev) => {
             const existing = prev.find((t) => t.id === peerId);
             if (existing) {
               return [
@@ -670,7 +679,7 @@ export function useGlobalMessages(
               ];
             }
             // New conversation from unknown peer – refetch full list
-            refetchThreads();
+            refetchThreadsRef.current();
             return prev;
           });
         }
@@ -680,7 +689,7 @@ export function useGlobalMessages(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads]);
+  }, [user?.id, isGlobalContext]);
 
   // ── Legacy compat shims ───────────────────────────────────────────
 
