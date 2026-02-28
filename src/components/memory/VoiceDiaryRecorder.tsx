@@ -23,8 +23,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isRecordingRef = useRef(false);
   const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastFinalTranscriptRef = useRef('');
+  const lastFinalAtRef = useRef(0);
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  const isAndroid = /Android/i.test(navigator.userAgent);
 
   useEffect(() => {
     onRecordingChange?.(isRecording);
