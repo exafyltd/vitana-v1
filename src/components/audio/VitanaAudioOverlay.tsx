@@ -248,12 +248,14 @@ export function VitanaAudioOverlay() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
           >
-            <VitanalandPortalSeed 
-              audioState={audioState} 
-              volumeLevel={volumeLevel}
-              size="lg"
-              layoutId="vitana-orb"
-            />
+            <OrbSoundwaveRings audioState={audioState} volumeLevel={volumeLevel}>
+              <VitanalandPortalSeed 
+                audioState={audioState} 
+                volumeLevel={volumeLevel}
+                size="lg"
+                layoutId="vitana-orb"
+              />
+            </OrbSoundwaveRings>
           </motion.div>
 
           {/* Status text */}
