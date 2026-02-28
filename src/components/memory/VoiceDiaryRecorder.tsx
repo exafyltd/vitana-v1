@@ -22,6 +22,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   const sttRef = useRef<ClientSTT | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isRecordingRef = useRef(false);
+  const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
 
@@ -47,8 +48,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
 
     try {
       // Initialize ClientSTT with real-time callbacks
+      const sttLanguage = selectedLanguage || 'de-DE';
+      console.log('[Voice Diary] Starting STT with language:', sttLanguage);
+      
       sttRef.current = new ClientSTT({
-        language: selectedLanguage || 'en-US',
+        language: sttLanguage,
         continuous: true,
         interimResults: true,
         onResult: (transcript, isFinal) => {
@@ -63,6 +67,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
         },
         onError: (error) => {
           console.error('[Voice Diary] STT Error:', error);
+          // Don't stop on "no-speech" or "aborted" — these are recoverable on mobile
+          if (error === 'no-speech' || error === 'aborted') {
+            console.log('[Voice Diary] Recoverable error, will auto-restart via onEnd');
+            return;
+          }
           toast({
             title: "Recognition Error",
             description: "Speech recognition encountered an error. Please try again.",
@@ -71,17 +80,27 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
           stopRecording();
         },
         onEnd: () => {
-          if (isRecordingRef.current) {
-            // Delay restart to prevent duplicate processing on mobile
-            setTimeout(() => {
+          console.log('[Voice Diary] STT onEnd fired, isRecordingRef:', isRecordingRef.current);
+          // Clear any pending restart
+          if (restartTimeoutRef.current) {
+            clearTimeout(restartTimeoutRef.current);
+            restartTimeoutRef.current = null;
+          }
+          
+          if (isRecordingRef.current && sttRef.current) {
+            // Clear interim text before restart to prevent duplication
+            setInterimText('');
+            // Delay restart to let browser fully tear down previous session
+            restartTimeoutRef.current = setTimeout(() => {
               if (isRecordingRef.current && sttRef.current) {
                 try {
+                  console.log('[Voice Diary] Restarting STT...');
                   sttRef.current.start();
                 } catch (e) {
                   console.warn('[Voice Diary] Failed to restart STT:', e);
                 }
               }
-            }, 300);
+            }, 500);
           }
         }
       });
@@ -112,8 +131,16 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   };
 
   const stopRecording = () => {
+    // Set ref FIRST to prevent onEnd from restarting
+    isRecordingRef.current = false;
+    
+    // Clear any pending restart
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
+    
     if (sttRef.current && isRecording) {
-      isRecordingRef.current = false;
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
