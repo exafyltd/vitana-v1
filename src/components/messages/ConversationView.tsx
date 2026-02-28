@@ -55,16 +55,13 @@ interface ConversationViewProps {
   onMessageSent?: (threadId: string, newMessage: any, context: 'global' | 'tenant') => void;
 }
 
-const ComposerDock: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const isMobile = useIsMobile();
-
-  // Desktop: render inline within the chat panel
-  if (!isMobile) {
-    return <div className="bg-background border-t border-border">{children}</div>;
+const ComposerDock: React.FC<{ children: React.ReactNode; isMobile: boolean }> = ({ children, isMobile }) => {
+  // Desktop: render inline (no portal)
+  if (!isMobile || typeof document === 'undefined') {
+    return <div className="bg-background">{children}</div>;
   }
 
-  // Mobile: portal to body with fixed positioning
-  if (typeof document === 'undefined') return null;
+  // Mobile: use portal with safe-area handling
   return createPortal(
     <div className="fixed left-0 right-0 bottom-0 z-[60] bg-background">
       {children}
@@ -86,6 +83,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Import calendar hook at the top
   const { respondToInvite, getInviteResponse, addEvent, fetchEvents } = useCalendarEvents();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   
   // Use paginated messages for performance
   const paginatedMessages = usePaginatedMessages({
@@ -1173,7 +1171,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           <div ref={messagesEndRef} />
         </div>
 
-        <ComposerDock>
+        <ComposerDock isMobile={isMobile}>
           <div className="conversation-composer bg-background">
             <div className="px-2 py-0.5 pb-1">
               {/* Typing Indicators */}

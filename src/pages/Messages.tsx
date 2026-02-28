@@ -27,7 +27,7 @@ import { useRole } from "@/hooks/useRole";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
@@ -84,7 +84,30 @@ export default function Messages() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
 
-  
+  // Parse query params to auto-select thread from notifications
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlThreadId = searchParams.get('thread');
+  const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
+
+  // Apply URL params on mount
+  useEffect(() => {
+    if (urlThreadId) {
+      console.log('[Messages] Opening thread from URL:', { urlThreadId, urlContext });
+      setSelectedThreadId(urlThreadId);
+      setSelectedRecipientId(null);
+
+      if (urlContext && (urlContext === 'global' || urlContext === 'tenant')) {
+        setMessageContext(urlContext);
+      }
+
+      // Clear URL params after applying
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('thread');
+      newParams.delete('context');
+      setSearchParams(newParams, { replace: true });
+    }
+  }, [urlThreadId, urlContext, setSearchParams]);
+
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
 
