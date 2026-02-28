@@ -253,6 +253,7 @@ export function VitanaAudioOverlay() {
                 audioState={audioState} 
                 volumeLevel={volumeLevel}
                 size="lg"
+                glowIntensity={0}
                 layoutId="vitana-orb"
               />
             </OrbSoundwaveRings>
