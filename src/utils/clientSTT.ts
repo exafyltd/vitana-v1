@@ -133,6 +133,8 @@ export class ClientSTT {
     }
 
     try {
+      // Re-assert language before every start (mobile browsers may reset it between sessions)
+      this.recognition.lang = this.normalizeLanguage(this.options.language || this.recognition.lang || 'de-DE');
       this.recognition.start();
     } catch (error) {
       console.error('[ClientSTT] Failed to start recognition:', error);
