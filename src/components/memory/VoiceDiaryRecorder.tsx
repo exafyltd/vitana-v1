@@ -31,6 +31,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
   const isAndroid = /Android/i.test(navigator.userAgent);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     onRecordingChange?.(isRecording);
