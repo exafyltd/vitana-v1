@@ -115,8 +115,8 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     }
   };
 
-  // Group entries by date
-  const groupedEntries = entries?.reduce((groups, entry) => {
+  // Group visible entries by date
+  const groupedEntries = visibleEntries?.reduce((groups, entry) => {
     const date = startOfDay(parseISO(entry.created_at));
     const dateKey = date.toISOString();
     if (!groups[dateKey]) {
