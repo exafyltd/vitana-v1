@@ -52,7 +52,8 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
 
     try {
       // Initialize ClientSTT with real-time callbacks
-      const sttLanguage = (selectedLanguage && selectedLanguage.trim()) || 'de-DE';
+      const storedLanguage = getLocalStorageItem('global', 'language', 'selected_language');
+      const sttLanguage = (typeof storedLanguage === 'string' ? storedLanguage : selectedLanguage)?.trim() || 'de-DE';
       const useContinuous = !isAndroid;
       console.log('[Voice Diary] Starting STT with language:', sttLanguage, 'continuous:', useContinuous);
       
