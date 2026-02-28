@@ -48,6 +48,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
       });
 
       setText("");
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
       onSaveComplete?.();
     } catch (error) {
       console.error('Error saving text entry:', error);

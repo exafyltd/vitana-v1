@@ -116,6 +116,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
       setSelectedFiles([]);
       setPreviewUrls([]);
       setCaption("");
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
       onUploadComplete?.();
     } catch (error) {
       console.error('Error uploading photos:', error);
