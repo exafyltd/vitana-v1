@@ -10,6 +10,7 @@ interface PhotoEntryCardProps {
   tags: string[];
   createdAt: string;
   onThumbnailClick: () => void;
+  onDelete?: (id: string) => void;
 }
 
 export function PhotoEntryCard({

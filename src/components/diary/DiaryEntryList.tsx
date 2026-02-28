@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import { formatDistanceToNow, startOfDay, parseISO, isToday, isYesterday, isThisWeek, format } from "date-fns";
-import { Mic, Image as ImageIcon, Type, Tag } from "lucide-react";
+import { Mic, Image as ImageIcon, Type, Tag, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PhotoEntryCard } from "./PhotoEntryCard";
 import { PhotoCarouselModal } from "./PhotoCarouselModal";
 import { DateGroupHeader } from "./DateGroupHeader";
+import { useToast } from "@/hooks/use-toast";
+import {
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 
 interface DiaryEntryListProps {
   entryType?: "voice" | "photo" | "text";
