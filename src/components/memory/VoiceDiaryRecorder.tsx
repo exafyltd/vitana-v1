@@ -71,9 +71,17 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
           stopRecording();
         },
         onEnd: () => {
-          if (isRecording) {
-            // Restart if it stops unexpectedly
-            sttRef.current?.start();
+          if (isRecordingRef.current) {
+            // Delay restart to prevent duplicate processing on mobile
+            setTimeout(() => {
+              if (isRecordingRef.current && sttRef.current) {
+                try {
+                  sttRef.current.start();
+                } catch (e) {
+                  console.warn('[Voice Diary] Failed to restart STT:', e);
+                }
+              }
+            }, 300);
           }
         }
       });
