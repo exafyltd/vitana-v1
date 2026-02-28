@@ -17,6 +17,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
 import { useIsContactInList } from '@/hooks/useIsContactInList';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { 
