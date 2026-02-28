@@ -5,6 +5,7 @@ import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
 import { useVitanaOrbTools } from '@/hooks/useVitanaOrbTools';
 import { useVisualContext } from '@/hooks/useVisualContext';
 import { VitanalandPortalSeed } from './VitanalandPortalSeed';
+import { OrbSoundwaveRings } from './OrbSoundwaveRings';
 import { AudioControls } from './AudioControls';
 import { AudioStatusText } from './AudioStatusText';
 import { VitanaOrbStatusBar } from '@/components/vitanaland/VitanaOrbStatusBar';
@@ -247,12 +248,14 @@ export function VitanaAudioOverlay() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
           >
-            <VitanalandPortalSeed 
-              audioState={audioState} 
-              volumeLevel={volumeLevel}
-              size="lg"
-              layoutId="vitana-orb"
-            />
+            <OrbSoundwaveRings audioState={audioState} volumeLevel={volumeLevel}>
+              <VitanalandPortalSeed 
+                audioState={audioState} 
+                volumeLevel={volumeLevel}
+                size="lg"
+                layoutId="vitana-orb"
+              />
+            </OrbSoundwaveRings>
           </motion.div>
 
           {/* Status text */}
