@@ -9,12 +9,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
+  onSaveComplete?: () => void;
 }
 
-export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryRecorderProps) {
+export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }: VoiceDiaryRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [transcribedText, setTranscribedText] = useState("");
   const [interimText, setInterimText] = useState("");
@@ -29,6 +31,7 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
   const isAndroid = /Android/i.test(navigator.userAgent);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     onRecordingChange?.(isRecording);
@@ -264,6 +267,10 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
       // Reset form
       setTranscribedText("");
       setRecordingDuration(0);
+      
+      // Refresh diary list
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
+      onSaveComplete?.();
       
       toast({
         title: "Entry Saved",

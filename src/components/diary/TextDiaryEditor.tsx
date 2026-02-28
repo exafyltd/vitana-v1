@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface TextDiaryEditorProps {
   onSaveComplete?: () => void;
@@ -13,6 +14,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
   const [text, setText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleSave = async () => {
     if (!text.trim()) {
@@ -46,6 +48,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
       });
 
       setText("");
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
       onSaveComplete?.();
     } catch (error) {
       console.error('Error saving text entry:', error);

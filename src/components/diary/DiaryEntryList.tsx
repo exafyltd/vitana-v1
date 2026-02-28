@@ -24,6 +24,7 @@ interface SelectedEntry {
 
 export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
+  const [displayCount, setDisplayCount] = useState(5);
 
   const { data: entries, isLoading, refetch } = useQuery({
     queryKey: ['diary-entries', entryType ?? 'all'],
@@ -36,7 +37,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(100);
 
       if (entryType) {
         query = query.eq('source', entryType);
@@ -47,6 +48,9 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       return data;
     },
   });
+
+  const visibleEntries = entries?.slice(0, displayCount);
+  const hasMore = entries && entries.length > displayCount;
 
   // Set up real-time subscription
   useEffect(() => {
@@ -111,8 +115,8 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     }
   };
 
-  // Group entries by date
-  const groupedEntries = entries?.reduce((groups, entry) => {
+  // Group visible entries by date
+  const groupedEntries = visibleEntries?.reduce((groups, entry) => {
     const date = startOfDay(parseISO(entry.created_at));
     const dateKey = date.toISOString();
     if (!groups[dateKey]) {
@@ -136,7 +140,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
     );
   }
 
-  if (!entries || entries.length === 0) {
+  if (!visibleEntries || visibleEntries.length === 0) {
     return (
       <Card>
         <CardContent className="pt-6 text-center text-muted-foreground">
@@ -229,6 +233,17 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
           </div>
         ))}
       </div>
+
+      {hasMore && (
+        <div className="flex justify-center pt-2 pb-4">
+          <button
+            onClick={() => setDisplayCount(prev => prev + 10)}
+            className="px-6 py-2 text-sm font-medium text-primary hover:text-primary/80 bg-muted/60 hover:bg-muted rounded-full transition-colors"
+          >
+            Load more ({entries!.length - displayCount} remaining)
+          </button>
+        </div>
+      )}
 
       <PhotoCarouselModal
         open={!!selectedEntry}
