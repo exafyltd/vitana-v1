@@ -104,10 +104,13 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     const newBase = baseLang(newLanguage);
     const candidates = availableVoices.filter(v => baseLang(v.lang) === newBase);
     const preferred = pickPreferredVoice(candidates);
-    updatePreferences({
-      stt_language: newLanguage,
-      tts_voice: preferred?.name || ''
-    });
+    // Keep LanguageContext + localStorage in sync with settings change
+    setSelectedLanguage(newLanguage);
+
+    // Preserve best matching voice for this language
+    if (preferred?.name) {
+      updatePreferences({ tts_voice: preferred.name });
+    }
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
 
   const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {

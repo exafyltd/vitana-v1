@@ -132,11 +132,13 @@ export default function VoiceAISettings() {
     
     const preferred = pickPreferredVoice(candidates);
     
-    // Update both language and voice in one call
-    updatePreferences({ 
-      stt_language: newLanguage,
-      tts_voice: preferred?.name || ''
-    });
+    // Keep LanguageContext + localStorage in sync with settings change
+    setSelectedLanguage(newLanguage);
+
+    // Preserve best matching voice for this language
+    if (preferred?.name) {
+      updatePreferences({ tts_voice: preferred.name });
+    }
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences]);
 
   if (isLoading) {
