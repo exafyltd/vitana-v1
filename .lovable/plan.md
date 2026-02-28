@@ -1,22 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Two Issues Found
+### Architecture
 
-### Issue 1: Web Composer Portaled to Bottom of Screen
-`ConversationView.tsx` lines 57-68: `ComposerDock` uses `createPortal(... document.body)` with `fixed left-0 right-0 bottom-0 z-[60]`. This was built for mobile (full-width dock) but on desktop it escapes the chat panel and spans the entire viewport width at the absolute bottom -- breaking the layout as shown in the screenshot.
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
+```
 
-**Fix**: Detect mobile in `ComposerDock`. On desktop, render children inline (no portal, no fixed positioning). On mobile, keep the portal behavior.
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-### Issue 2: Realtime Messages Not Appearing on Web
-`useGlobalMessages.ts` line 634: The realtime subscription uses a static channel name `"chat_messages_realtime"`. However, `useGlobalMessages` is instantiated **twice** on the Messages page:
-1. In `Messages.tsx` line 63 via `useHybridMessages(messageContext)` (thread list)
-2. In `ConversationView.tsx` line 105 via `useHybridMessages(context, threadId)` (conversation)
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-Both create the same Supabase channel `"chat_messages_realtime"`. When either hook re-renders and its cleanup runs `supabase.removeChannel(channel)`, it kills the subscription for **both** instances. This means incoming messages from mobile are received intermittently or not at all.
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-**Fix**: Make the channel name unique per hook instance using a `useRef(crypto.randomUUID())` suffix, e.g. `"chat_messages_realtime_" + instanceId`. This ensures each subscription is independent and cleanup doesn't interfere.
-
-### Files to Edit
-1. `src/components/messages/ConversationView.tsx` -- Make `ComposerDock` conditional: inline on desktop, portal on mobile
-2. `src/hooks/useGlobalMessages.ts` -- Unique realtime channel name per instance
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
