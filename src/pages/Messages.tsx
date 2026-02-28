@@ -27,7 +27,7 @@ import { useRole } from "@/hooks/useRole";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
