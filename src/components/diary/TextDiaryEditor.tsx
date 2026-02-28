@@ -14,6 +14,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
   const [text, setText] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleSave = async () => {
     if (!text.trim()) {
