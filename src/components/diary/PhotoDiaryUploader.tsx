@@ -72,24 +72,13 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
           throw uploadError;
         }
 
-        console.log('File uploaded successfully, creating signed URL...');
-        // Get authenticated URL (valid for 1 year)
-        const { data, error: signedUrlError } = await supabase.storage
+        // Get public URL (bucket is public)
+        const { data: { publicUrl } } = supabase.storage
           .from('diary-photos')
-          .createSignedUrl(fileName, 31536000); // 1 year in seconds
+          .getPublicUrl(fileName);
 
-        if (signedUrlError) {
-          console.error('Signed URL error:', signedUrlError);
-          throw signedUrlError;
-        }
-
-        if (!data?.signedUrl) {
-          console.error('No signed URL returned');
-          throw new Error('Failed to generate signed URL');
-        }
-
-        console.log('Signed URL created:', data.signedUrl);
-        uploadedUrls.push(data.signedUrl);
+        console.log('Public URL created:', publicUrl);
+        uploadedUrls.push(publicUrl);
       }
 
       console.log('All uploads complete. URLs:', uploadedUrls);
