@@ -47,6 +47,11 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   }, []);
 
   const connect = useCallback(async () => {
+    // Guard: prevent duplicate sessions
+    if (clientRef.current) {
+      console.warn('[useOrbVoiceClient] Session already active, skipping duplicate connect');
+      return;
+    }
     try {
       setError(null);
       setConnectionState('connecting');
