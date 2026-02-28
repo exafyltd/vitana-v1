@@ -132,11 +132,11 @@ export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryReco
             lastFinalAtRef.current = now;
 
             setTranscribedText(prev => {
-              const prevTrimmed = prev.trim().toLowerCase();
-              if (prevTrimmed.endsWith(normalized)) {
-                return prev;
+              const merged = mergeFinalTranscript(prev, cleanedTranscript);
+              if (merged === prev.trim()) {
+                console.log('[Voice Diary] Ignoring repeated final transcript chunk:', cleanedTranscript);
               }
-              return prev + (prev ? ' ' : '') + cleanedTranscript;
+              return merged;
             });
             setInterimText('');
           } else {
