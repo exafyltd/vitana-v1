@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 import { formatDistanceToNow, startOfDay, parseISO, isToday, isYesterday, isThisWeek, format } from "date-fns";
-import { Mic, Image as ImageIcon, Type, Tag } from "lucide-react";
+import { Mic, Image as ImageIcon, Type, Tag, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PhotoEntryCard } from "./PhotoEntryCard";
 import { PhotoCarouselModal } from "./PhotoCarouselModal";
 import { DateGroupHeader } from "./DateGroupHeader";
+import { useToast } from "@/hooks/use-toast";
+import {
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 
 interface DiaryEntryListProps {
   entryType?: "voice" | "photo" | "text";
@@ -25,6 +36,10 @@ interface SelectedEntry {
 export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);
   const [displayCount, setDisplayCount] = useState(5);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data: entries, isLoading, refetch } = useQuery({
     queryKey: ['diary-entries', entryType ?? 'all'],
@@ -75,6 +90,37 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
       supabase.removeChannel(channel);
     };
   }, [entryType, refetch]);
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setIsDeleting(true);
+    try {
+      // Also delete storage files if entry has attachments
+      const entry = entries?.find(e => e.id === deleteTarget);
+      if (entry?.attachments && Array.isArray(entry.attachments)) {
+        const filePaths = (entry.attachments as string[])
+          .map(url => {
+            const match = url.match(/diary-photos\/(.+)$/);
+            return match ? match[1] : null;
+          })
+          .filter(Boolean) as string[];
+        if (filePaths.length > 0) {
+          await supabase.storage.from('diary-photos').remove(filePaths);
+        }
+      }
+
+      const { error } = await supabase.from('diary_entries').delete().eq('id', deleteTarget);
+      if (error) throw error;
+      
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'], exact: false });
+      toast({ title: "Entry deleted", description: "The diary entry has been removed." });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete entry. Please try again.", variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
+      setDeleteTarget(null);
+    }
+  };
 
   const getIconForSource = (source?: string) => {
     switch (source) {
@@ -181,6 +227,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                           initialIndex: 0,
                         });
                       }}
+                      onDelete={(id) => setDeleteTarget(id)}
                     />
                   );
                 }
@@ -207,6 +254,13 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                             <span className="text-xs text-muted-foreground ml-auto">
                               {formatDistanceToNow(new Date(entry.created_at), { addSuffix: true })}
                             </span>
+                            <button
+                              onClick={() => setDeleteTarget(entry.id)}
+                              className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                              aria-label="Delete entry"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
                           </div>
 
                           <p className="text-sm text-foreground leading-relaxed mb-3">
@@ -254,6 +308,27 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
         createdAt={selectedEntry?.createdAt}
         initialIndex={selectedEntry?.initialIndex || 0}
       />
+
+      <ResponsiveConfirmDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <ResponsiveConfirmDialogContent className="max-w-sm">
+          <ResponsiveConfirmDialogHeader>
+            <ResponsiveConfirmDialogTitle>Delete Entry?</ResponsiveConfirmDialogTitle>
+            <ResponsiveConfirmDialogDescription>
+              This diary entry will be permanently deleted. This action cannot be undone.
+            </ResponsiveConfirmDialogDescription>
+          </ResponsiveConfirmDialogHeader>
+          <ResponsiveConfirmDialogFooter>
+            <ResponsiveConfirmDialogCancel disabled={isDeleting}>Cancel</ResponsiveConfirmDialogCancel>
+            <ResponsiveConfirmDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </ResponsiveConfirmDialogAction>
+          </ResponsiveConfirmDialogFooter>
+        </ResponsiveConfirmDialogContent>
+      </ResponsiveConfirmDialog>
     </>
   );
 }

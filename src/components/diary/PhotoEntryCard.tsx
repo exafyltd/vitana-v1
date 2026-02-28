@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Trash2 } from "lucide-react";
 import { ImageWithFallback } from "./ImageWithFallback";
 import { formatDistanceToNow } from "date-fns";
 
@@ -10,14 +11,17 @@ interface PhotoEntryCardProps {
   tags: string[];
   createdAt: string;
   onThumbnailClick: () => void;
+  onDelete?: (id: string) => void;
 }
 
 export function PhotoEntryCard({
+  id,
   text,
   attachments,
   tags,
   createdAt,
   onThumbnailClick,
+  onDelete,
 }: PhotoEntryCardProps) {
   const photoCount = attachments.length;
   const hasMultiplePhotos = photoCount > 1;
@@ -31,9 +35,18 @@ export function PhotoEntryCard({
           )}
           
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground flex-1">
               {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
             </span>
+            {onDelete && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onDelete(id); }}
+                className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                aria-label="Delete entry"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           {tags && tags.length > 0 && (
