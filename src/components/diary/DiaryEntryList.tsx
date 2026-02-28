@@ -254,7 +254,13 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
                             <span className="text-xs text-muted-foreground ml-auto">
                               {formatDistanceToNow(new Date(entry.created_at), { addSuffix: true })}
                             </span>
-                          </div>
+                            <button
+                              onClick={() => setDeleteTarget(entry.id)}
+                              className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                              aria-label="Delete entry"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
 
                           <p className="text-sm text-foreground leading-relaxed mb-3">
                             {entry.text}
