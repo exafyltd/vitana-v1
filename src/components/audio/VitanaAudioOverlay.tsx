@@ -85,7 +85,7 @@ export function VitanaAudioOverlay() {
     if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
       startListening();
     }
-  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening, startListening]);
+  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening]); // startListening is now a stable ref
 
   // Map states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 
