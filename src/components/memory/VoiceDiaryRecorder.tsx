@@ -13,9 +13,10 @@ import { useQueryClient } from "@tanstack/react-query";
 
 interface VoiceDiaryRecorderProps {
   onRecordingChange?: (isRecording: boolean) => void;
+  onSaveComplete?: () => void;
 }
 
-export default function VoiceDiaryRecorder({ onRecordingChange }: VoiceDiaryRecorderProps) {
+export default function VoiceDiaryRecorder({ onRecordingChange, onSaveComplete }: VoiceDiaryRecorderProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [transcribedText, setTranscribedText] = useState("");
   const [interimText, setInterimText] = useState("");
