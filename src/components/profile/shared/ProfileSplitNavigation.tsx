@@ -21,6 +21,7 @@ import { Activity, MessageSquare, Video, Users, Calendar, Heart, Briefcase, Ligh
 import { useTranslation } from "@/hooks/useTranslation";
 import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { PhotoGallery } from "../gallery/PhotoGallery";
+import { VideoGallery } from "../gallery/VideoGallery";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 
