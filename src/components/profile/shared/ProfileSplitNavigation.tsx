@@ -24,6 +24,7 @@ import { PhotoGallery } from "../gallery/PhotoGallery";
 import { VideoGallery } from "../gallery/VideoGallery";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
+import { useAuth } from "@/context/AuthProvider";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
