@@ -411,6 +411,28 @@ export function useGlobalMessages(
         gatewayMessages = sorted.map((m) =>
           toGlobalMessage(m, activeThreadId, profileMap)
         );
+
+        // Enrich gateway messages with content_data from global_messages table
+        // (gateway API doesn't return content_data for attachments)
+        const msgIds = gatewayMessages.map((m) => m.id);
+        if (msgIds.length > 0) {
+          const { data: dbMsgs } = await supabase
+            .from("global_messages")
+            .select("id, message_type, content_data")
+            .in("id", msgIds)
+            .not("message_type", "eq", "text");
+          
+          if (dbMsgs && dbMsgs.length > 0) {
+            const dbMap = new Map(dbMsgs.map((m) => [m.id, m]));
+            gatewayMessages = gatewayMessages.map((m) => {
+              const dbMsg = dbMap.get(m.id);
+              if (dbMsg) {
+                return { ...m, message_type: dbMsg.message_type, content_data: dbMsg.content_data };
+              }
+              return m;
+            });
+          }
+        }
       } catch (err) {
         console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
       }
