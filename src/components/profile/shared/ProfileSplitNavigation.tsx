@@ -54,10 +54,14 @@ export function ProfileSplitNavigation({
   onUploadCredentials,
 }: ProfileSplitNavigationProps) {
   const { translate } = useTranslation();
+  const { user } = useAuth();
+
+  // Resolve the correct user_id for DB queries (profile.id can be "current-user")
+  const profileUserId = profile.user_id || user?.id || profile.id;
 
   // Milestones & Gallery hooks
-  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profile.id);
-  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profile.id);
+  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
+  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
 
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
