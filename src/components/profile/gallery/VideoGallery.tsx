@@ -33,8 +33,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
   const isOwner = user?.id === targetUserId;
   const [uploadOpen, setUploadOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const { uploadMedia, isUploading, progress } = useMediaUpload();
 
   const { data: videos = [], isLoading } = useQuery({
