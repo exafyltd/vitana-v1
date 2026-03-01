@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Play, Pause, Video } from "lucide-react";
+import { Plus, Trash2, Play, Video } from "lucide-react";
 import { VideoUploadDialog } from "./VideoUploadDialog";
+import { VideoLightbox } from "./VideoLightbox";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
@@ -32,8 +33,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
   const isOwner = user?.id === targetUserId;
   const [uploadOpen, setUploadOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const { uploadMedia, isUploading, progress } = useMediaUpload();
 
   const { data: videos = [], isLoading } = useQuery({
@@ -71,22 +71,6 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
     if (result) {
       queryClient.invalidateQueries({ queryKey: ["profile-videos", targetUserId] });
       setUploadOpen(false);
-    }
-  };
-
-  const togglePlay = (videoId: string) => {
-    const videoEl = videoRefs.current[videoId];
-    if (!videoEl) return;
-    if (playingId === videoId) {
-      videoEl.pause();
-      setPlayingId(null);
-    } else {
-      // Pause any other playing video
-      if (playingId && videoRefs.current[playingId]) {
-        videoRefs.current[playingId]?.pause();
-      }
-      videoEl.play();
-      setPlayingId(videoId);
     }
   };
 
@@ -131,34 +115,22 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
         </div>
       ) : (
         <div className={cn("grid gap-2", compact ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-3")}>
-          {displayVideos.map((video) => (
+          {displayVideos.map((video, index) => (
             <div
               key={video.id}
-              className="relative group aspect-video rounded-xl overflow-hidden cursor-pointer bg-muted"
-              onClick={() => togglePlay(video.id)}
+              className="relative group aspect-square rounded-xl overflow-hidden cursor-pointer bg-muted"
+              onClick={() => setLightboxIndex(index)}
             >
               <video
-                ref={(el) => { videoRefs.current[video.id] = el; }}
                 src={video.file_url}
                 className="w-full h-full object-cover"
                 preload="metadata"
                 muted
-                onEnded={() => setPlayingId(null)}
               />
-              {/* Play/Pause icon overlay */}
-              <div className={cn(
-                "absolute inset-0 flex items-center justify-center transition-colors",
-                playingId === video.id ? "bg-black/0 group-hover:bg-black/20" : "bg-black/20 group-hover:bg-black/40"
-              )}>
-                <div className={cn(
-                  "w-10 h-10 rounded-full bg-white/90 flex items-center justify-center transition-opacity",
-                  playingId === video.id ? "opacity-0 group-hover:opacity-100" : "opacity-100"
-                )}>
-                  {playingId === video.id ? (
-                    <Pause className="h-5 w-5 text-foreground" />
-                  ) : (
-                    <Play className="h-5 w-5 text-foreground fill-current ml-0.5" />
-                  )}
+              {/* Play icon overlay */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
+                  <Play className="h-5 w-5 text-foreground fill-current ml-0.5" />
                 </div>
               </div>
               {/* Title & duration */}
@@ -195,6 +167,14 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
         isUploading={isUploading}
         progress={progress}
       />
+
+      {lightboxIndex !== null && (
+        <VideoLightbox
+          videos={videos}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
 
       <AlertDialog open={!!deleteId} onOpenChange={(open) => { if (!open) setDeleteId(null); }}>
         <AlertDialogContent>
