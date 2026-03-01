@@ -141,9 +141,10 @@ export function ProfileLayout({
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
 
-  // Mobile-specific hooks
-  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profile.id);
-  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profile.id);
+  // Mobile-specific hooks — resolve real user_id (profile.id can be "current-user")
+  const profileUserId = profile.user_id || user?.id || profile.id;
+  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
+  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
   const shareHook = useProfileShare({
     handle: profile.handle,
     name: profile.name,
