@@ -2,7 +2,7 @@ import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { ProfilePostsTab } from "./tabs/ProfilePostsTab";
-import { ProfileMediaTab } from "./tabs/ProfileMediaTab";
+import { ProfileMediaTab } from "./tabs/ProfileMediaTab"; // kept for potential future use
 import { ProfileGroupsTab } from "./tabs/ProfileGroupsTab";
 import { ProfileEventsTab } from "./tabs/ProfileEventsTab";
 import { ProfileHealthTab } from "./tabs/ProfileHealthTab";
@@ -21,6 +21,7 @@ import { Activity, MessageSquare, Video, Users, Calendar, Heart, Briefcase, Ligh
 import { useTranslation } from "@/hooks/useTranslation";
 import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { PhotoGallery } from "../gallery/PhotoGallery";
+import { VideoGallery } from "../gallery/VideoGallery";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 
@@ -118,7 +119,7 @@ export function ProfileSplitNavigation({
         </div>
       </SplitBarContent>
 
-      {/* Media Tab - with Photo Gallery */}
+      {/* Media Tab - with Photo & Video Gallery */}
       <SplitBarContent value="media">
         <div className="mt-6 space-y-8">
           <PhotoGallery
@@ -128,7 +129,7 @@ export function ProfileSplitNavigation({
             onDelete={(id) => deletePhoto.mutate(id)}
             isUploading={uploadPhoto.isPending}
           />
-          <ProfileMediaTab profile={profile} scope={scope} editMode={editMode} />
+          <VideoGallery userId={profile.id} />
         </div>
       </SplitBarContent>
 

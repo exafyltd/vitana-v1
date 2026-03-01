@@ -1,58 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Problem
+### Architecture
 
-The desktop profile "Media" tab in `ProfileSplitNavigation.tsx` renders two things:
-1. `PhotoGallery` -- queries real `profile_gallery` table (works correctly)
-2. `ProfileMediaTab` -- **372 lines of 100% hardcoded mock data** with fake Unsplash images, fake creators, fake view counts, and a "Now Playing Dock" placeholder
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
+```
 
-Your real uploaded photos and videos are in the database (`profile_gallery` and `media_uploads` tables), but the desktop never shows them properly because `ProfileMediaTab` dominates the view with 8 fake cards. The `VideoGallery` component (which queries real data) is completely missing from the desktop media tab.
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-Additionally, both `PhotoGallery` and `VideoGallery` delete immediately on trash icon click with no confirmation dialog.
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-Mobile works because `ProfileLayout.tsx` uses `PhotoGallery` + `VideoGallery` directly (both query real DB).
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
----
-
-## Plan (4 changes)
-
-### 1. Rewrite `ProfileMediaTab.tsx` -- remove all mock data, query real DB
-
-- Delete the entire `mockMedia` array (lines 24-129) and all fake creator data
-- Delete the "Now Playing Dock" placeholder (lines 360-369)
-- Import `useProfileGallery` hook and query `media_uploads` table (same pattern as `VideoGallery`)
-- Render real photos as image cards, real videos as playable `<video>` elements with play/pause on click
-- Keep the category filter dropdown (all/video/music/photos) wired to real `media_type` values
-- Show proper empty state when no media exists
-- Each item gets a trash icon (visible on hover for owner) that opens a confirmation AlertDialog before deleting
-
-### 2. Add `VideoGallery` to desktop in `ProfileSplitNavigation.tsx`
-
-- Import `VideoGallery`
-- Add `<VideoGallery userId={profile.id} />` inside the media tab content (line 131), alongside `PhotoGallery` -- matching what mobile already does
-
-### 3. Add delete confirmation dialog to `PhotoGallery.tsx` and `VideoGallery.tsx`
-
-- Both components currently delete immediately on trash click with no confirmation
-- Add an `AlertDialog` that asks "Are you sure you want to delete this?" before executing the delete
-- Use the existing `AlertDialog` component from `@/components/ui/alert-dialog`
-- Applies to both mobile and desktop (same components used everywhere)
-
-### 4. Replace placeholders in `MobileMediaTabContent.tsx`
-
-- Delete the `PLACEHOLDER_MEDIA` array (lines 20-57) with 6 fake Unsplash URLs
-- Query real data from `profile_gallery` + `media_uploads` using `useProfileGallery` and a media_uploads query
-- Or if this component is redundant (mobile already uses `PhotoGallery` + `VideoGallery` in `ProfileLayout.tsx`), remove usage and simplify
-
----
-
-## Files to change
-
-| File | What changes |
-|------|-------------|
-| `src/components/profile/shared/tabs/ProfileMediaTab.tsx` | Full rewrite: remove 8 mock items + Now Playing Dock, add real DB queries, playable videos, delete with confirmation |
-| `src/components/profile/shared/ProfileSplitNavigation.tsx` | Add `VideoGallery` import and render in media tab |
-| `src/components/profile/gallery/PhotoGallery.tsx` | Add AlertDialog confirmation before delete |
-| `src/components/profile/gallery/VideoGallery.tsx` | Add AlertDialog confirmation before delete |
-| `src/components/profile/mobile/MobileMediaTabContent.tsx` | Remove hardcoded placeholders, use real queries |
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set

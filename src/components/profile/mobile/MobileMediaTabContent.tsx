@@ -1,81 +1,61 @@
-import { Play, Upload, Image as ImageIcon, ChevronRight } from "lucide-react";
+import { Play, ImageIcon, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslation";
-
-interface MediaItem {
-  id: string;
-  thumbnail: string;
-  type: 'video' | 'image' | 'audio';
-  title?: string;
-}
+import { useProfileGallery } from "@/hooks/useProfileGallery";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthProvider";
+import { Upload } from "lucide-react";
 
 interface MobileMediaTabContentProps {
-  media?: MediaItem[];
+  userId?: string;
   className?: string;
 }
 
-// Placeholder media for demo
-const PLACEHOLDER_MEDIA: MediaItem[] = [
-  {
-    id: '1',
-    thumbnail: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=400',
-    type: 'video',
-    title: 'Morning Flow'
-  },
-  {
-    id: '2',
-    thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400',
-    type: 'image',
-    title: 'Sunset Yoga'
-  },
-  {
-    id: '3',
-    thumbnail: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=400',
-    type: 'video',
-    title: 'Breathwork'
-  },
-  {
-    id: '4',
-    thumbnail: 'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400',
-    type: 'image',
-    title: 'Evening Routine'
-  },
-  {
-    id: '5',
-    thumbnail: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
-    type: 'video',
-    title: 'Mindful Movement'
-  },
-  {
-    id: '6',
-    thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
-    type: 'image',
-    title: 'Wellness Session'
-  }
-];
-
 export function MobileMediaTabContent({ 
-  media = PLACEHOLDER_MEDIA,
+  userId,
   className 
 }: MobileMediaTabContentProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const hasMedia = media.length > 0;
-  const previewMedia = media.slice(0, 6);
+  const { user } = useAuth();
+  const targetUserId = userId || user?.id;
+
+  const { photos } = useProfileGallery(targetUserId);
+
+  const { data: videos = [] } = useQuery({
+    queryKey: ["profile-videos-preview", targetUserId],
+    queryFn: async () => {
+      if (!targetUserId) return [];
+      const { data, error } = await supabase
+        .from("media_uploads")
+        .select("id, file_url, title, media_type, thumbnail_url")
+        .eq("user_id", targetUserId)
+        .eq("media_type", "video")
+        .order("created_at", { ascending: false })
+        .limit(6);
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!targetUserId,
+  });
+
+  // Combine photos and videos into a unified preview list
+  const mediaItems = [
+    ...photos.map(p => ({ id: p.id, thumbnail: p.image_url, type: 'image' as const, title: p.caption })),
+    ...videos.map(v => ({ id: v.id, thumbnail: v.thumbnail_url || v.file_url, type: 'video' as const, title: v.title })),
+  ].slice(0, 6);
+
+  const hasMedia = mediaItems.length > 0;
 
   const handleViewAll = () => {
     navigate('/media');
   };
 
   const handleUpload = () => {
-    // TODO: Open upload modal
     console.log('Open upload modal');
-  };
-
-  const handleThumbnailClick = (item: MediaItem) => {
-    navigate(`/media/${item.id}`);
   };
 
   // Empty state
@@ -111,10 +91,9 @@ export function MobileMediaTabContent({
     <div className={cn("p-4 space-y-4", className)}>
       {/* Preview Grid - 3 columns, 2 rows */}
       <div className="grid grid-cols-3 gap-1.5">
-        {previewMedia.map((item) => (
+        {mediaItems.map((item) => (
           <button
             key={item.id}
-            onClick={() => handleThumbnailClick(item)}
             className="relative aspect-square rounded-lg overflow-hidden bg-muted group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             <img
@@ -130,7 +109,6 @@ export function MobileMediaTabContent({
                 </div>
               </div>
             )}
-            {/* Hover overlay */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
           </button>
         ))}

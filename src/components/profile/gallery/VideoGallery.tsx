@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Play, Video } from "lucide-react";
+import { Plus, Trash2, Play, Pause, Video } from "lucide-react";
 import { VideoUploadDialog } from "./VideoUploadDialog";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface VideoGalleryProps {
   userId?: string;
@@ -21,6 +31,9 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
   const targetUserId = userId || user?.id;
   const isOwner = user?.id === targetUserId;
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
   const { uploadMedia, isUploading, progress } = useMediaUpload();
 
   const { data: videos = [], isLoading } = useQuery({
@@ -58,6 +71,22 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
     if (result) {
       queryClient.invalidateQueries({ queryKey: ["profile-videos", targetUserId] });
       setUploadOpen(false);
+    }
+  };
+
+  const togglePlay = (videoId: string) => {
+    const videoEl = videoRefs.current[videoId];
+    if (!videoEl) return;
+    if (playingId === videoId) {
+      videoEl.pause();
+      setPlayingId(null);
+    } else {
+      // Pause any other playing video
+      if (playingId && videoRefs.current[playingId]) {
+        videoRefs.current[playingId]?.pause();
+      }
+      videoEl.play();
+      setPlayingId(videoId);
     }
   };
 
@@ -106,17 +135,30 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
             <div
               key={video.id}
               className="relative group aspect-video rounded-xl overflow-hidden cursor-pointer bg-muted"
+              onClick={() => togglePlay(video.id)}
             >
               <video
+                ref={(el) => { videoRefs.current[video.id] = el; }}
                 src={video.file_url}
                 className="w-full h-full object-cover"
                 preload="metadata"
                 muted
+                onEnded={() => setPlayingId(null)}
               />
-              {/* Play icon overlay */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
-                  <Play className="h-5 w-5 text-foreground fill-current ml-0.5" />
+              {/* Play/Pause icon overlay */}
+              <div className={cn(
+                "absolute inset-0 flex items-center justify-center transition-colors",
+                playingId === video.id ? "bg-black/0 group-hover:bg-black/20" : "bg-black/20 group-hover:bg-black/40"
+              )}>
+                <div className={cn(
+                  "w-10 h-10 rounded-full bg-white/90 flex items-center justify-center transition-opacity",
+                  playingId === video.id ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+                )}>
+                  {playingId === video.id ? (
+                    <Pause className="h-5 w-5 text-foreground" />
+                  ) : (
+                    <Play className="h-5 w-5 text-foreground fill-current ml-0.5" />
+                  )}
                 </div>
               </div>
               {/* Title & duration */}
@@ -132,7 +174,7 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
                   variant="destructive"
                   size="icon"
                   className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(e) => { e.stopPropagation(); deleteVideo.mutate(video.id); }}
+                  onClick={(e) => { e.stopPropagation(); setDeleteId(video.id); }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -153,6 +195,26 @@ export function VideoGallery({ userId, compact }: VideoGalleryProps) {
         isUploading={isUploading}
         progress={progress}
       />
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => { if (!open) setDeleteId(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{translate('gallery.deleteTitle', 'Are you sure?')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {translate('gallery.deleteVideoDescription', 'This video will be permanently deleted. This action cannot be undone.')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{translate('common.cancel', 'Cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => { if (deleteId) { deleteVideo.mutate(deleteId); setDeleteId(null); } }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {translate('common.delete', 'Delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

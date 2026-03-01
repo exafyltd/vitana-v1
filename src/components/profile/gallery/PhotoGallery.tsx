@@ -6,6 +6,16 @@ import { PhotoUploadDialog } from "./PhotoUploadDialog";
 import { PhotoLightbox } from "./PhotoLightbox";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface PhotoGalleryProps {
   photos: GalleryPhoto[];
@@ -20,6 +30,7 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
   const { translate } = useTranslation();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const displayPhotos = compact ? photos.slice(0, 6) : photos;
 
@@ -75,19 +86,17 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
               />
-              {/* Caption overlay */}
               {photo.caption && (
                 <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                   <p className="text-xs text-white line-clamp-2">{photo.caption}</p>
                 </div>
               )}
-              {/* Delete button for owner */}
               {isOwner && (
                 <Button
                   variant="destructive"
                   size="icon"
                   className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(e) => { e.stopPropagation(); onDelete(photo.id); }}
+                  onClick={(e) => { e.stopPropagation(); setDeleteId(photo.id); }}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -117,6 +126,26 @@ export function PhotoGallery({ photos, isOwner, onUpload, onDelete, isUploading,
           onClose={() => setLightboxIndex(null)}
         />
       )}
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => { if (!open) setDeleteId(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{translate('gallery.deleteTitle', 'Are you sure?')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {translate('gallery.deleteDescription', 'This photo will be permanently deleted. This action cannot be undone.')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{translate('common.cancel', 'Cancel')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => { if (deleteId) { onDelete(deleteId); setDeleteId(null); } }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {translate('common.delete', 'Delete')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
