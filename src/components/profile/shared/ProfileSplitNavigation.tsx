@@ -2,7 +2,7 @@ import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { ProfilePostsTab } from "./tabs/ProfilePostsTab";
-import { ProfileMediaTab } from "./tabs/ProfileMediaTab";
+import { ProfileMediaTab } from "./tabs/ProfileMediaTab"; // kept for potential future use
 import { ProfileGroupsTab } from "./tabs/ProfileGroupsTab";
 import { ProfileEventsTab } from "./tabs/ProfileEventsTab";
 import { ProfileHealthTab } from "./tabs/ProfileHealthTab";
