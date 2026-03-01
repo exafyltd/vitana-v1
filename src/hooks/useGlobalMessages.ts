@@ -464,8 +464,8 @@ export function useGlobalMessages(
     async (
       threadId: string,
       body: string,
-      _messageType = "text",
-      _contentData?: any,
+      messageType = "text",
+      contentData?: any,
       _parentMessageId?: string,
       _actionButtons?: any[]
     ) => {
@@ -474,13 +474,14 @@ export function useGlobalMessages(
       try {
         setIsSending(true);
 
-        // Optimistic message
+        // Optimistic message - preserve messageType and contentData
         const optimistic: GlobalMessage = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
           sender_id: user.id,
           body,
-          message_type: "text",
+          message_type: messageType,
+          content_data: contentData || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           sender: {
@@ -496,14 +497,29 @@ export function useGlobalMessages(
         // threadId is the peer's user ID
         const created = await sendChatMessage(threadId, body);
 
-        // Replace optimistic with real
+        // Replace optimistic with real, preserving content_data
         const profileMap = await enrichProfiles([created.sender_id]);
-        const realMsg = toGlobalMessage(created, threadId, profileMap);
+        const realMsg = toGlobalMessage(
+          { ...created, message_type: messageType, content_data: contentData } as any,
+          threadId,
+          profileMap
+        );
 
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
         messageCache.updateMessage(threadId, "global", optimistic.id, realMsg);
+
+        // If we have attachment data, update the global_messages record in DB
+        if (messageType !== "text" && contentData) {
+          supabase
+            .from("global_messages")
+            .update({ message_type: messageType, content_data: contentData })
+            .eq("id", created.id)
+            .then(({ error }) => {
+              if (error) console.warn("Failed to update global message content_data:", error);
+            });
+        }
 
         // Move thread to top
         const now = new Date().toISOString();
