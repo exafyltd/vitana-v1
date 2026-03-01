@@ -1,48 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Problem
+### Architecture
 
-When you upload or replace your profile image via the Identity Drawer, the change saves to the database correctly but **does not reflect on the profile page** until you do a full page reload. Two issues:
-
-1. **`IdentityDrawer` does not trigger a local profile refetch** -- It calls `refreshProfile()` (context-level) but `EditProfilePage` has its own local `profile` state that never re-syncs avatar/name/handle from the context after initial load.
-
-2. **No sync effect for identity fields** -- `EditProfilePage` has a `useEffect` that syncs social URLs from `contextProfile` (lines 112-129), but avatar, name, handle, and archetype are excluded from this sync.
-
-## Plan (2 changes)
-
-### 1. Call `refetchProfile` when IdentityDrawer closes after save
-
-In `EditProfilePage.tsx`, update the `IdentityDrawer` usage to call the local `refetchProfile` when the drawer closes (same pattern already used for `AboutDrawer` on line 441-444):
-
-```tsx
-<IdentityDrawer
-  open={identityDrawerOpen}
-  onOpenChange={(open) => {
-    setIdentityDrawerOpen(open);
-    if (!open) refetchProfile();
-  }}
-/>
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-### 2. Add identity field sync from contextProfile
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-In `EditProfilePage.tsx`, add a `useEffect` that syncs avatar, name, handle, and archetype from `contextProfile` — matching the existing social URL sync pattern:
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-```tsx
-useEffect(() => {
-  setProfile(prev => ({
-    ...prev,
-    avatarUrl: contextProfile.avatar || prev.avatarUrl,
-    name: contextProfile.displayName || prev.name,
-    handle: contextProfile.handle || prev.handle,
-    longevityArchetype: contextProfile.longevityArchetype || prev.longevityArchetype,
-  }));
-}, [contextProfile.avatar, contextProfile.displayName, contextProfile.handle, contextProfile.longevityArchetype]);
-```
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-### Files to change
-
-| File | Change |
-|------|--------|
-| `src/pages/EditProfilePage.tsx` | Add `refetchProfile` call on IdentityDrawer close + add identity sync useEffect |
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
