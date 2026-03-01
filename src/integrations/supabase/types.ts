@@ -329,6 +329,63 @@ export type Database = {
           },
         ]
       }
+      ai_personality_config: {
+        Row: {
+          config: Json
+          is_customized: boolean
+          surface_key: string
+          updated_at: string | null
+          updated_by: string | null
+          updated_by_role: string | null
+        }
+        Insert: {
+          config?: Json
+          is_customized?: boolean
+          surface_key: string
+          updated_at?: string | null
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Update: {
+          config?: Json
+          is_customized?: boolean
+          surface_key?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          updated_by_role?: string | null
+        }
+        Relationships: []
+      }
+      ai_personality_config_audit: {
+        Row: {
+          created_at: string | null
+          from_config: Json | null
+          id: string
+          reason: string | null
+          surface_key: string
+          to_config: Json | null
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          from_config?: Json | null
+          id?: string
+          reason?: string | null
+          surface_key: string
+          to_config?: Json | null
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          from_config?: Json | null
+          id?: string
+          reason?: string | null
+          surface_key?: string
+          to_config?: Json | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       ai_recommendations: {
         Row: {
           actions: Json
