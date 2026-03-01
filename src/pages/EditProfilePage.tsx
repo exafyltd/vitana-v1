@@ -108,6 +108,17 @@ export default function EditProfilePage() {
     });
   }, [localizedDefaultBio]);
 
+  // Sync identity fields when contextProfile updates (after IdentityDrawer save)
+  useEffect(() => {
+    setProfile(prev => ({
+      ...prev,
+      avatarUrl: contextProfile.avatar || prev.avatarUrl,
+      name: contextProfile.displayName || prev.name,
+      handle: contextProfile.handle || prev.handle,
+      longevityArchetype: contextProfile.longevityArchetype || prev.longevityArchetype,
+    }));
+  }, [contextProfile.avatar, contextProfile.displayName, contextProfile.handle, contextProfile.longevityArchetype]);
+
   // Sync social URLs when contextProfile updates (realtime subscription)
   useEffect(() => {
     setProfile(prev => ({
@@ -433,7 +444,10 @@ export default function EditProfilePage() {
         {/* Drawers - same on mobile */}
         <IdentityDrawer
           open={identityDrawerOpen}
-          onOpenChange={setIdentityDrawerOpen}
+          onOpenChange={(open) => {
+            setIdentityDrawerOpen(open);
+            if (!open) refetchProfile();
+          }}
         />
 
         <AboutDrawer
