@@ -140,10 +140,12 @@ export function ProfileLayout({
 
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
+  const { user } = useAuth();
 
-  // Mobile-specific hooks
-  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profile.id);
-  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profile.id);
+  // Mobile-specific hooks — resolve real user_id (profile.id can be "current-user")
+  const profileUserId = profile.user_id || user?.id || profile.id;
+  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
+  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
   const shareHook = useProfileShare({
     handle: profile.handle,
     name: profile.name,
@@ -156,7 +158,6 @@ export function ProfileLayout({
   const isOwner = scope === 'owner' || isOwnProfile;
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
   const { createThread, sendMessage } = useHybridMessages('global');
-  const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { logFollow, logUnfollow, logMessageSend } = useCommunityLogger();
@@ -279,7 +280,7 @@ export function ProfileLayout({
                 onDelete={(id) => deletePhoto.mutate(id)}
                 isUploading={uploadPhoto.isPending}
               />
-              <VideoGallery userId={profile.user_id || profile.id} />
+              <VideoGallery userId={profileUserId} />
             </div>
           )}
 

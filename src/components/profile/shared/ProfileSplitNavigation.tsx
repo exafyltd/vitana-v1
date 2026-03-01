@@ -24,6 +24,7 @@ import { PhotoGallery } from "../gallery/PhotoGallery";
 import { VideoGallery } from "../gallery/VideoGallery";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
+import { useAuth } from "@/context/AuthProvider";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
@@ -53,10 +54,14 @@ export function ProfileSplitNavigation({
   onUploadCredentials,
 }: ProfileSplitNavigationProps) {
   const { translate } = useTranslation();
+  const { user } = useAuth();
+
+  // Resolve the correct user_id for DB queries (profile.id can be "current-user")
+  const profileUserId = profile.user_id || user?.id || profile.id;
 
   // Milestones & Gallery hooks
-  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profile.id);
-  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profile.id);
+  const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
+  const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
 
   // Determine which tabs to show
   const showHealthTab = profile.visibility.healthShareConsent && 
@@ -129,7 +134,7 @@ export function ProfileSplitNavigation({
             onDelete={(id) => deletePhoto.mutate(id)}
             isUploading={uploadPhoto.isPending}
           />
-          <VideoGallery userId={profile.id} />
+          <VideoGallery userId={profileUserId} />
         </div>
       </SplitBarContent>
 
