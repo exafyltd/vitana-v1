@@ -1,35 +1,54 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
+Goal: restore your real uploaded media visibility on both desktop and mobile, and keep delete confirmation behavior.
 
-### Architecture
+What I verified (from your actual DB)
+- `profile_gallery`: 4 images for your user (`user_id = 0adc6ff6-acb0-4dca-99d0-295211a40e3e`)
+- `media_uploads`: 4 videos for the same user
+- So your media is not deleted; it exists in database.
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+Root cause
+- Media queries are using the wrong identifier in key places:
+  - `ProfileSplitNavigation.tsx` uses `useProfileGallery(profile.id)` and `VideoGallery userId={profile.id}`
+  - `ProfileLayout.tsx` uses `useProfileGallery(profile.id)` / `useProfileMilestones(profile.id)`
+- On `/me/profile`, `EditProfilePage` initializes `profile.id` as `"current-user"` (not auth `user.id`), so desktop queries run with wrong `user_id` and return empty.
+- In other flows, `profile.id` can be profile-row ID (not auth user ID), same visibility failure pattern.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+Implementation plan
+1) Normalize user id resolution for all profile media queries
+- In `ProfileSplitNavigation.tsx` and `ProfileLayout.tsx`, create one resolved id:
+  - `const profileUserId = profile.user_id || profile.id`
+- Use `profileUserId` everywhere media/milestones are queried:
+  - `useProfileGallery(profileUserId)`
+  - `useProfileMilestones(profileUserId)`
+  - `<VideoGallery userId={profileUserId} />`
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+2) Fix `/me/profile` profile identity source
+- In `EditProfilePage.tsx`, ensure `profile.id` is set to authenticated `user.id` once available (not `"current-user"` placeholder long-term).
+- Keep `profile.user_id = user.id` in sync after `refetchProfile`.
+- This prevents downstream components from querying with invalid IDs.
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+3) Prevent “blank media tab” confusion
+- In desktop media tab container, add a unified empty-state block when both:
+  - `photos.length === 0`
+  - `videos.length === 0`
+- This makes UI explicit instead of appearing “removed”.
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+4) Keep current delete UX (already correct)
+- Preserve current trash flow:
+  - trash icon -> confirmation popup -> delete on confirm
+- No rollback needed there; just ensure it still works after id-fix.
+
+Technical details
+- No DB migration needed.
+- No RLS policy change needed (policies already allow owner reads and your rows exist).
+- This is a client-side identity wiring bug, not data loss.
+- Do not edit `src/integrations/supabase/types.ts`.
+
+Validation checklist (must pass)
+- Desktop `/me/profile` Media tab shows exactly:
+  - 4 photos
+  - 4 videos
+- Mobile profile Media shows same content.
+- Videos are playable (tap/click toggles play/pause).
+- Trash icon opens confirmation dialog; Cancel keeps item; Confirm removes item and refreshes list.
+- Network requests use `user_id=eq.0adc6ff6-acb0-4dca-99d0-295211a40e3e` (not `current-user`, not profile row UUID).
