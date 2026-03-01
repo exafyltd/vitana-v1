@@ -54,7 +54,7 @@ export interface GlobalMessageThread {
 
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
 function toGlobalMessage(
-  msg: ChatMessage,
+  msg: ChatMessage & { message_type?: string; content_data?: any },
   peerId: string,
   profileMap: Record<string, { display_name: string; avatar_url: string | null }>
 ): GlobalMessage {
@@ -63,7 +63,8 @@ function toGlobalMessage(
     thread_id: peerId,
     sender_id: msg.sender_id,
     body: msg.content,
-    message_type: "text",
+    message_type: (msg as any).message_type || "text",
+    content_data: (msg as any).content_data || null,
     created_at: msg.created_at,
     updated_at: msg.created_at,
     sender: profileMap[msg.sender_id]
