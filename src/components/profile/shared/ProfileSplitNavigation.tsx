@@ -119,7 +119,7 @@ export function ProfileSplitNavigation({
         </div>
       </SplitBarContent>
 
-      {/* Media Tab - with Photo Gallery */}
+      {/* Media Tab - with Photo & Video Gallery */}
       <SplitBarContent value="media">
         <div className="mt-6 space-y-8">
           <PhotoGallery
@@ -129,7 +129,7 @@ export function ProfileSplitNavigation({
             onDelete={(id) => deletePhoto.mutate(id)}
             isUploading={uploadPhoto.isPending}
           />
-          <ProfileMediaTab profile={profile} scope={scope} editMode={editMode} />
+          <VideoGallery userId={profile.id} />
         </div>
       </SplitBarContent>
 
