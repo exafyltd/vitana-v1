@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Play, Pause, Video } from "lucide-react";
+import { Plus, Trash2, Play, Video } from "lucide-react";
 import { VideoUploadDialog } from "./VideoUploadDialog";
+import { VideoLightbox } from "./VideoLightbox";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
