@@ -54,7 +54,7 @@ export interface GlobalMessageThread {
 
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
 function toGlobalMessage(
-  msg: ChatMessage,
+  msg: ChatMessage & { message_type?: string; content_data?: any },
   peerId: string,
   profileMap: Record<string, { display_name: string; avatar_url: string | null }>
 ): GlobalMessage {
@@ -63,7 +63,8 @@ function toGlobalMessage(
     thread_id: peerId,
     sender_id: msg.sender_id,
     body: msg.content,
-    message_type: "text",
+    message_type: (msg as any).message_type || "text",
+    content_data: (msg as any).content_data || null,
     created_at: msg.created_at,
     updated_at: msg.created_at,
     sender: profileMap[msg.sender_id]
@@ -410,6 +411,28 @@ export function useGlobalMessages(
         gatewayMessages = sorted.map((m) =>
           toGlobalMessage(m, activeThreadId, profileMap)
         );
+
+        // Enrich gateway messages with content_data from global_messages table
+        // (gateway API doesn't return content_data for attachments)
+        const msgIds = gatewayMessages.map((m) => m.id);
+        if (msgIds.length > 0) {
+          const { data: dbMsgs } = await supabase
+            .from("global_messages")
+            .select("id, message_type, content_data")
+            .in("id", msgIds)
+            .not("message_type", "eq", "text");
+          
+          if (dbMsgs && dbMsgs.length > 0) {
+            const dbMap = new Map(dbMsgs.map((m) => [m.id, m]));
+            gatewayMessages = gatewayMessages.map((m) => {
+              const dbMsg = dbMap.get(m.id);
+              if (dbMsg) {
+                return { ...m, message_type: dbMsg.message_type, content_data: dbMsg.content_data };
+              }
+              return m;
+            });
+          }
+        }
       } catch (err) {
         console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
       }
@@ -463,8 +486,8 @@ export function useGlobalMessages(
     async (
       threadId: string,
       body: string,
-      _messageType = "text",
-      _contentData?: any,
+      messageType = "text",
+      contentData?: any,
       _parentMessageId?: string,
       _actionButtons?: any[]
     ) => {
@@ -473,13 +496,14 @@ export function useGlobalMessages(
       try {
         setIsSending(true);
 
-        // Optimistic message
+        // Optimistic message - preserve messageType and contentData
         const optimistic: GlobalMessage = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
           sender_id: user.id,
           body,
-          message_type: "text",
+          message_type: messageType,
+          content_data: contentData || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           sender: {
@@ -495,14 +519,29 @@ export function useGlobalMessages(
         // threadId is the peer's user ID
         const created = await sendChatMessage(threadId, body);
 
-        // Replace optimistic with real
+        // Replace optimistic with real, preserving content_data
         const profileMap = await enrichProfiles([created.sender_id]);
-        const realMsg = toGlobalMessage(created, threadId, profileMap);
+        const realMsg = toGlobalMessage(
+          { ...created, message_type: messageType, content_data: contentData } as any,
+          threadId,
+          profileMap
+        );
 
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
         messageCache.updateMessage(threadId, "global", optimistic.id, realMsg);
+
+        // If we have attachment data, update the global_messages record in DB
+        if (messageType !== "text" && contentData) {
+          supabase
+            .from("global_messages")
+            .update({ message_type: messageType, content_data: contentData })
+            .eq("id", created.id)
+            .then(({ error }) => {
+              if (error) console.warn("Failed to update global message content_data:", error);
+            });
+        }
 
         // Move thread to top
         const now = new Date().toISOString();
