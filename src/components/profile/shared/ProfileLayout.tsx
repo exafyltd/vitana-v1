@@ -140,6 +140,7 @@ export function ProfileLayout({
 
   const isMobile = useIsMobile();
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
+  const { user } = useAuth();
 
   // Mobile-specific hooks — resolve real user_id (profile.id can be "current-user")
   const profileUserId = profile.user_id || user?.id || profile.id;
@@ -157,7 +158,6 @@ export function ProfileLayout({
   const isOwner = scope === 'owner' || isOwnProfile;
   const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
   const { createThread, sendMessage } = useHybridMessages('global');
-  const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { logFollow, logUnfollow, logMessageSend } = useCommunityLogger();
