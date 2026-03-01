@@ -60,7 +60,7 @@ export default function EditProfilePage() {
   const localizedDefaultBio = translate('profile.defaultBio', DEFAULT_BIO_EN);
   
   const [profile, setProfile] = useState<UserProfile>({
-    id: 'current-user',
+    id: user?.id || 'current-user',
     user_id: user?.id,
     name: contextProfile.displayName,
     handle: contextProfile.handle || user?.id || 'user',

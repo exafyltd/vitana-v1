@@ -280,7 +280,7 @@ export function ProfileLayout({
                 onDelete={(id) => deletePhoto.mutate(id)}
                 isUploading={uploadPhoto.isPending}
               />
-              <VideoGallery userId={profile.user_id || profile.id} />
+              <VideoGallery userId={profileUserId} />
             </div>
           )}
 
