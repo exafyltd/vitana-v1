@@ -38,14 +38,16 @@ export function VideoLightbox({ videos, initialIndex, onClose }: VideoLightboxPr
   return (
     <Dialog open onOpenChange={() => onClose()}>
       <DialogContent className="max-w-6xl h-[90vh] p-0 bg-black/95 border-none">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-4 right-4 z-50 text-white hover:bg-white/20"
-          onClick={onClose}
-        >
-          <X className="h-6 w-6" />
-        </Button>
+        <div className="absolute top-4 right-4 z-50">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20 h-10 w-10 rounded-full"
+            onClick={onClose}
+          >
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
 
         <div className="flex items-center justify-center h-full relative">
           {videos.length > 1 && currentIndex > 0 && (
