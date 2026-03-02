@@ -157,7 +157,7 @@ export function ProfileLayout({
 
   // Follow & Message hooks for mobile visitor view
   const isOwner = scope === 'owner' || isOwnProfile;
-  const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
+  const { isFollowing, loading: followLoading, followUser, unfollowUser, followersCount, followingCount } = useFollow(profile.id);
   const { createThread, sendMessage } = useHybridMessages('global');
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -393,7 +393,7 @@ export function ProfileLayout({
         </div>
         
         <div className="mt-2">
-          <ProfileStats profile={profile} />
+          <ProfileStats profile={profile} followersCount={followersCount} followingCount={followingCount} />
         </div>
         
         {/* Main Profile Content - Unified spacing container */}
