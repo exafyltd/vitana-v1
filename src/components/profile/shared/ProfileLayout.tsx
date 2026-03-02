@@ -28,6 +28,7 @@ import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs
 import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "../mobile/MobileShowcaseHeader";
 import { MobileMediaTabContent } from "../mobile/MobileMediaTabContent";
+import { ProfilePostsTab } from "./tabs/ProfilePostsTab";
 import { MobileGroupsTabContent } from "../mobile/MobileGroupsTabContent";
 import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
