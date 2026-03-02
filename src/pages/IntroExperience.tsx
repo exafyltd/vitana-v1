@@ -260,7 +260,7 @@ export default function IntroExperience() {
         className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-32 md:pb-6 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
-        onClick={ensureSoundscapePlaying}
+        
         data-maxina-app="true"
       >
         {/* Eyebrow - Small, uppercase, tracking-wide */}
