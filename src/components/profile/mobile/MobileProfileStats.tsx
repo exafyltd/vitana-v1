@@ -44,24 +44,22 @@ export function MobileProfileStats({
     );
   }
 
+  const stats = [
+    { value: postsCount, label: translate('profileStats.posts', 'Posts') },
+    { value: followersCount, label: translate('profileStats.followers', 'Followers') },
+    { value: followingCount, label: translate('profileStats.following', 'Following') },
+    { value: mediaCount, label: translate('profileStats.media', 'Media') },
+    { value: groupsCount, label: translate('profileStats.groups', 'Groups') },
+  ];
+
   return (
-    <div className={cn("flex items-center justify-center py-2", className)}>
-      <p className="text-xs text-muted-foreground">
-        <span className="font-medium text-foreground">{formatCount(postsCount)}</span>
-        <span> {translate('profileStats.posts', 'Posts')}</span>
-        <span className="mx-1.5">·</span>
-        <span className="font-medium text-foreground">{formatCount(followersCount)}</span>
-        <span> {translate('profileStats.followers', 'Followers')}</span>
-        <span className="mx-1.5">·</span>
-        <span className="font-medium text-foreground">{formatCount(followingCount)}</span>
-        <span> {translate('profileStats.following', 'Following')}</span>
-        <span className="mx-1.5">·</span>
-        <span className="font-medium text-foreground">{formatCount(mediaCount)}</span>
-        <span> {translate('profileStats.media', 'Media')}</span>
-        <span className="mx-1.5">·</span>
-        <span className="font-medium text-foreground">{formatCount(groupsCount)}</span>
-        <span> {translate('profileStats.groups', 'Groups')}</span>
-      </p>
+    <div className={cn("grid grid-cols-5 gap-1 py-3 px-2", className)}>
+      {stats.map((stat) => (
+        <div key={stat.label} className="flex flex-col items-center gap-0.5">
+          <span className="text-base font-semibold text-foreground">{formatCount(stat.value)}</span>
+          <span className="text-[10px] text-muted-foreground">{stat.label}</span>
+        </div>
+      ))}
     </div>
   );
 }
