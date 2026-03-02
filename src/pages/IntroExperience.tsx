@@ -75,9 +75,25 @@ export default function IntroExperience() {
     }
   }, [videoSrc]);
 
-  // NOTE: Do NOT auto-start soundscape on mount/video load
-  // Soundscape should only start on explicit user gesture (click)
-  // The ensureSoundscapePlaying callback handles this correctly
+  // Attempt optimistic autoplay on mount (works on desktop/Android, silently blocked on iOS)
+  useEffect(() => {
+    startFresh();
+  }, [startFresh]);
+
+  // iOS fallback: start soundscape on first touch/click (touchstart fires before click on iOS)
+  useEffect(() => {
+    const startOnFirstTouch = () => {
+      startFresh();
+      document.removeEventListener('touchstart', startOnFirstTouch);
+      document.removeEventListener('click', startOnFirstTouch);
+    };
+    document.addEventListener('touchstart', startOnFirstTouch, { once: true });
+    document.addEventListener('click', startOnFirstTouch, { once: true });
+    return () => {
+      document.removeEventListener('touchstart', startOnFirstTouch);
+      document.removeEventListener('click', startOnFirstTouch);
+    };
+  }, [startFresh]);
 
   // Fade soundscape volume when TTS is playing
   useEffect(() => {
