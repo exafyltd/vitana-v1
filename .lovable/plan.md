@@ -1,35 +1,61 @@
-## Chat / Direct Messaging — Gateway API Rewire
+
+
+## Problem
+
+Both the mobile (`MobileGroupsTabContent`) and desktop (`ProfileGroupsTab`) groups tabs display hardcoded mock data instead of querying the user's actual group memberships from the database.
+
+The database tables already exist:
+- **`global_community_groups`** — stores group details (name, description, category, cover_url, avatar_url, member_count, status)
+- **`global_community_group_members`** — stores membership links (user_id, group_id, role, joined_at)
+
+## Plan
+
+### 1. Create `useUserGroups` hook
+
+**New file: `src/hooks/useUserGroups.ts`**
+
+A React Query hook that:
+- Queries `global_community_group_members` filtered by `user_id`
+- Joins with `global_community_groups` to get group details (name, description, category, cover_url, avatar_url, member_count)
+- Returns the user's groups with their role in each
+- Falls back to the existing wellness cover images (from `generateGroupImage`) when `cover_url` is null
+- Cache key: `['user-groups', userId]`
+
+### 2. Update `MobileGroupsTabContent` (mobile)
+
+**File: `src/components/profile/mobile/MobileGroupsTabContent.tsx`**
+
+- Accept a `userId` prop
+- Call `useUserGroups(userId)` internally
+- Remove `PLACEHOLDER_GROUPS` constant
+- Show loading skeleton while fetching
+- Display real groups using the existing card layout (avatar, name, member count, chevron)
+
+### 3. Update `ProfileGroupsTab` (desktop)
+
+**File: `src/components/profile/shared/tabs/ProfileGroupsTab.tsx`**
+
+- Call `useUserGroups(profile.user_id || profile.id)` instead of using `mockCommunities`
+- Map real data into the existing card design (cover image, role badge, member count, description)
+- Use `generateGroupImage(group.id)` as fallback when `cover_url` is null — preserving the current visual style
+- Show loading skeleton while fetching
+
+### 4. Wire `userId` into callers
+
+**Files: `ProfileLayout.tsx`, `EditProfilePage.tsx`**
+
+- Pass `userId={profileUserId}` (or `user?.id`) to `MobileGroupsTabContent`
+- `ProfileGroupsTab` already receives `profile`, so it can derive the userId internally
 
 ### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+| File | Change |
+|------|--------|
+| `src/hooks/useUserGroups.ts` | New hook — queries group memberships with group details |
+| `MobileGroupsTabContent.tsx` | Accept `userId`, use hook, remove mock data |
+| `ProfileGroupsTab.tsx` | Use hook instead of `mockCommunities`, keep existing card design |
+| `ProfileLayout.tsx` | Pass `userId` to `MobileGroupsTabContent` |
+| `EditProfilePage.tsx` | Pass `userId` to `MobileGroupsTabContent` |
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+No database or RLS changes needed — the tables and relationships already exist.
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
-
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
-
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
-
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
