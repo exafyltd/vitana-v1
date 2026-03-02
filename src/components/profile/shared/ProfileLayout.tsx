@@ -291,7 +291,7 @@ export function ProfileLayout({
           )}
 
           {mobileActiveTab === "groups" && (
-            <MobileGroupsTabContent />
+            <MobileGroupsTabContent userId={profileUserId} />
           )}
         </div>
 

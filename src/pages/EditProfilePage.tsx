@@ -434,7 +434,7 @@ export default function EditProfilePage() {
             )}
             
             {mobileActiveTab === "groups" && (
-              <MobileGroupsTabContent />
+              <MobileGroupsTabContent userId={user?.id} />
             )}
           </div>
         </div>
