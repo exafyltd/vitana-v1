@@ -221,9 +221,7 @@ export function ProfileLayout({
         
         {/* Compact Stats Strip */}
         <MobileProfileStats
-          postsCount={profile.stats?.posts}
-          mediaCount={profile.stats?.mediaUploads}
-          groupsCount={profile.stats?.groupsJoined}
+          userId={profileUserId}
         />
         
         {/* Sticky Tab Bar for content below ID card */}

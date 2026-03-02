@@ -1,20 +1,19 @@
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface MobileProfileStatsProps {
-  postsCount?: number;
-  mediaCount?: number;
-  groupsCount?: number;
+  userId?: string;
   className?: string;
 }
 
 export function MobileProfileStats({
-  postsCount = 0,
-  mediaCount = 0,
-  groupsCount = 0,
+  userId,
   className
 }: MobileProfileStatsProps) {
   const { translate } = useTranslation();
+  const { postsCount, mediaCount, groupsCount, isLoading } = useProfileStatsCount(userId);
   
   const formatCount = (count: number) => {
     if (count >= 1000) {
@@ -22,6 +21,16 @@ export function MobileProfileStats({
     }
     return count.toString();
   };
+
+  if (isLoading) {
+    return (
+      <div className={cn("flex items-center justify-center py-2 gap-2", className)}>
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-4 w-20" />
+      </div>
+    );
+  }
 
   return (
     <div className={cn("flex items-center justify-center py-2", className)}>
