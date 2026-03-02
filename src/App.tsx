@@ -190,6 +190,7 @@ import MediaHub from "./pages/community/MediaHub";
 import LiveRooms from "./pages/community/LiveRooms";
 import AIInsights from "./pages/community/AIInsights";
 import GroupDetail from "./pages/community/GroupDetail";
+import Groups from "./pages/community/Groups";
 import LiveRoomViewer from "./pages/community/LiveRoomViewer";
 
 // AI sub-pages
@@ -592,6 +593,16 @@ const App = () => {
               <Community />
             </AuthGuard>
           } />
+          <Route path="/comm/groups" element={
+            <AuthGuard>
+              <Groups />
+            </AuthGuard>
+          } />
+          <Route path="/comm/groups/:id" element={
+            <AuthGuard>
+              <GroupDetail />
+            </AuthGuard>
+          } />
           <Route path="/comm/my-groups/:id" element={
             <AuthGuard>
               <GroupDetail />
@@ -643,8 +654,10 @@ const App = () => {
           <Route path="/community/my-business" element={<Navigate to="/business" replace />} />
           
           {/* Redirect old community routes */}
-          <Route path="/community/my-groups" element={<Navigate to="/inbox" replace />} />
-          <Route path="/comm/my-groups" element={<Navigate to="/inbox" replace />} />
+          <Route path="/community/groups" element={<Navigate to="/comm/groups" replace />} />
+          <Route path="/community/groups/:id" element={<Navigate to="/comm/groups/:id" replace />} />
+          <Route path="/community/my-groups" element={<Navigate to="/comm/groups" replace />} />
+          <Route path="/comm/my-groups" element={<Navigate to="/comm/groups" replace />} />
           <Route path="/community/feed" element={<Navigate to="/comm/events-meetups?tab=following" replace />} />
           <Route path="/community/events" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />
           <Route path="/community/meetups" element={<Navigate to="/comm/events-meetups?tab=today" replace />} />

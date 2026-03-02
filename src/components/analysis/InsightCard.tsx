@@ -74,7 +74,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
         {/* Mini Group Banner */}
         <div 
           className="relative rounded-xl overflow-hidden h-24 cursor-pointer group"
-          onClick={() => navigate(`/community/groups/${data.group.id}`)}
+          onClick={() => navigate(`/comm/groups/${data.group.id}`)}
         >
           <img 
             src={data.group.image_url || data.group.cover_img} 
@@ -93,7 +93,7 @@ export function InsightCard({ type, data }: InsightCardProps) {
           variant="ghost" 
           size="sm" 
           className="w-full text-xs"
-          onClick={() => navigate(`/community/groups/${data.group.id}`)}
+          onClick={() => navigate(`/comm/groups/${data.group.id}`)}
         >
           Explore →
         </Button>

@@ -42,7 +42,7 @@ const intentChips: IntentChip[] = [
     description: 'Join meetups, groups, and connect with like-minded people',
     icon: Users,
     color: 'bg-purple-500',
-    path: '/community/groups',
+    path: '/comm/groups',
     keywords: ['meetup', 'group', 'community', 'friends', 'social', 'connect', 'network', 'events']
   }
 ];

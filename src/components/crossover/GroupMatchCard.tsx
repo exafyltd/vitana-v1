@@ -149,7 +149,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
       });
       return;
     }
-    navigate(`/community/groups/${group.id}`);
+    navigate(`/comm/groups/${group.id}`);
   };
 
   const handleEventClick = (event: UnifiedEventCard) => {
@@ -179,7 +179,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
           <Button 
             variant="outline" 
             size="sm" 
-            onClick={() => navigate('/community/groups')}
+            onClick={() => navigate('/comm/groups')}
           >
             View All
           </Button>
@@ -213,7 +213,7 @@ function GroupMatchCardBase({ className }: GroupMatchCardProps) {
               <Button 
                 variant="link" 
                 size="sm" 
-                onClick={() => navigate('/community/groups?recommended=1')}
+                onClick={() => navigate('/comm/groups?recommended=1')}
                 className="text-sm"
               >
                 See more →

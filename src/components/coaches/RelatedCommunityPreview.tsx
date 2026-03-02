@@ -21,7 +21,7 @@ export function RelatedCommunityPreview() {
             <div 
               key={group.id}
               className="flex items-center gap-3 p-3 rounded-xl bg-background/50 hover:bg-background/80 transition-colors cursor-pointer border border-white/5"
-              onClick={() => navigate(`/community/groups/${group.id}`)}
+              onClick={() => navigate(`/comm/groups/${group.id}`)}
             >
               <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                 <img 

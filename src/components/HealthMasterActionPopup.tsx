@@ -48,7 +48,7 @@ export function HealthMasterActionPopup({ open, onOpenChange }: HealthMasterActi
       description: "Connect with health-focused community",
       icon: Users,
       action: () => {
-        navigate('/community/groups');
+        navigate('/comm/groups');
         onOpenChange(false);
       },
       color: "from-blue-500/20 to-cyan-500/20"
