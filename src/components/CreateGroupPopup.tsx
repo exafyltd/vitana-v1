@@ -10,6 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Globe, Lock, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 interface CreateGroupPopupProps {
   isOpen: boolean;
@@ -18,6 +22,10 @@ interface CreateGroupPopupProps {
 
 export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -37,28 +45,68 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
     );
   };
 
-  const handleSubmit = () => {
-    // Log group creation activity
-    import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
-      const { logGroupCreate } = useCommunityLogger();
-      logGroupCreate(formData.name, formData.category, formData.privacy);
-    });
-    
-    toast({
-      title: "Group Created! 🎉",
-      description: `${formData.name} has been created successfully.`
-    });
-    onClose();
-    setFormData({
-      name: "",
-      description: "",
-      category: "",
-      privacy: "public",
-      location: "",
-      isVirtual: false,
-      rules: ""
-    });
-    setSelectedTags([]);
+  const handleSubmit = async () => {
+    if (!formData.name.trim()) {
+      toast({ title: "Name required", description: "Please enter a group name.", variant: "destructive" });
+      return;
+    }
+    if (!user?.id) {
+      toast({ title: "Not logged in", description: "Please log in to create a group.", variant: "destructive" });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Insert group
+      const { data: newGroup, error: groupError } = await supabase
+        .from('global_community_groups')
+        .insert({
+          name: formData.name.trim(),
+          description: formData.description.trim() || null,
+          category: formData.category || null,
+          is_public: formData.privacy === 'public',
+          created_by: user.id,
+          status: 'approved',
+          member_count: 1,
+        })
+        .select('id')
+        .single();
+
+      if (groupError) throw groupError;
+
+      // Add creator as admin member
+      const { error: memberError } = await supabase
+        .from('global_community_group_members')
+        .insert({
+          group_id: newGroup.id,
+          user_id: user.id,
+          role: 'admin',
+        });
+
+      if (memberError) {
+        console.error('[CreateGroup] member insert error:', memberError);
+      }
+
+      // Invalidate caches
+      queryClient.invalidateQueries({ queryKey: ['user-groups'] });
+      queryClient.invalidateQueries({ queryKey: ['group-directory'] });
+      queryClient.invalidateQueries({ queryKey: ['profile-stats-count'] });
+
+      toast({
+        title: "Group Created! 🎉",
+        description: `${formData.name} has been created successfully.`
+      });
+
+      onClose();
+      setFormData({ name: "", description: "", category: "", privacy: "public", location: "", isVirtual: false, rules: "" });
+      setSelectedTags([]);
+      navigate(`/comm/groups/${newGroup.id}`);
+    } catch (err: any) {
+      console.error('[CreateGroup] error:', err);
+      toast({ title: "Error", description: err.message || "Could not create group.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,7 +114,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <Users className="w-6 h-6 text-green-600" />
+            <Users className="w-6 h-6 text-primary" />
             Create New Group
           </DialogTitle>
         </DialogHeader>
@@ -203,11 +251,11 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
           </Card>
 
           <div className="flex gap-3 pt-4">
-            <Button variant="outline" onClick={onClose} className="flex-1">
+            <Button variant="outline" onClick={onClose} className="flex-1" disabled={isSubmitting}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit} className="flex-1">
-              Create Group
+            <Button onClick={handleSubmit} className="flex-1" disabled={isSubmitting}>
+              {isSubmitting ? 'Creating...' : 'Create Group'}
             </Button>
           </div>
         </div>

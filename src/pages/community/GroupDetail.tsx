@@ -1,193 +1,182 @@
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
-import StandardHeader from "@/components/StandardHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { communityNavigation } from "@/config/navigation";
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useGroupMembership } from "@/hooks/useGroupMembership";
+import { generateGroupImage } from "@/lib/groupCardTransformers";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Textarea } from "@/components/ui/textarea";
-import { communityNavigation } from "@/config/navigation";
-import { useParams } from "react-router-dom";
-import { Users, MessageCircle, Calendar, Settings, Send, Pin, Hash } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Users, Globe, Lock, ArrowLeft, Calendar, MessageCircle } from "lucide-react";
 
 export default function GroupDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  const { isMember, joinGroup, leaveGroup, isJoining, isLeaving, checkingMembership } = useGroupMembership(id);
+
+  const { data: group, isLoading } = useQuery({
+    queryKey: ['group-detail', id],
+    queryFn: async () => {
+      if (!id) return null;
+      const { data, error } = await supabase
+        .from('global_community_groups')
+        .select('*')
+        .eq('id', id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id,
+  });
+
+  // Fetch members preview
+  const { data: members = [] } = useQuery({
+    queryKey: ['group-members-preview', id],
+    queryFn: async () => {
+      if (!id) return [];
+      const { data, error } = await supabase
+        .from('global_community_group_members')
+        .select('user_id, role, joined_at')
+        .eq('group_id', id)
+        .order('joined_at', { ascending: true })
+        .limit(12);
+      if (error) return [];
+      return data || [];
+    },
+    enabled: !!id,
+  });
+
+  if (isLoading) {
+    return (
+      <AppLayout>
+        {!isMobile && <SubNavigation items={communityNavigation} />}
+        <div className="p-6 max-w-4xl mx-auto space-y-6">
+          <Skeleton className="h-64 rounded-2xl" />
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-4 w-96" />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (!group) {
+    return (
+      <AppLayout>
+        {!isMobile && <SubNavigation items={communityNavigation} />}
+        <div className="p-6 max-w-4xl mx-auto text-center py-20">
+          <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+          <h2 className="text-xl font-semibold mb-2">Group not found</h2>
+          <p className="text-muted-foreground mb-4">This group may have been removed or doesn't exist.</p>
+          <Button onClick={() => navigate('/comm/groups')}>Browse Groups</Button>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  const coverImage = group.cover_url || generateGroupImage(group.id);
 
   return (
     <AppLayout>
-      <SEO title="Wellness Warriors Group | Community" description="Group discussion and activities" canonical={window.location.href} />
-      <SubNavigation items={communityNavigation} />
-      <div className="p-6 max-w-6xl mx-auto space-y-6">
-          <StandardHeader 
-            title="Wellness Warriors"
-            description="Supporting each other on our fitness journey"
-            emoji="💪"
-          />
-        
-        {/* Group Info */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
-                  <Users className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="flex items-center gap-2">
-                    Wellness Warriors
-                    <Badge className="bg-green-100 text-green-700">Active</Badge>
-                  </CardTitle>
-                  <p className="text-muted-foreground">156 members • Private Group</p>
-                </div>
+      <SEO title={`${group.name} | Community`} description={group.description || 'Community group'} canonical={window.location.href} />
+      {!isMobile && <SubNavigation items={communityNavigation} />}
+      
+      <div className="max-w-4xl mx-auto">
+        {/* Cover Image */}
+        <div className="relative h-48 md:h-64 overflow-hidden">
+          <img src={coverImage} alt={group.name} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-4 left-4 text-white hover:bg-white/20"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" /> Back
+          </Button>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="space-y-2">
+              <h1 className="text-2xl font-bold text-foreground">{group.name}</h1>
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Users className="h-4 w-4" />
+                  {group.member_count.toLocaleString()} members
+                </span>
+                <Badge variant="outline" className="gap-1">
+                  {group.is_public ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
+                  {group.is_public ? 'Public' : 'Private'}
+                </Badge>
+                {group.category && (
+                  <Badge variant="secondary" className="capitalize">{group.category}</Badge>
+                )}
               </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Events
+            </div>
+            
+            {!checkingMembership && (
+              isMember ? (
+                <Button variant="outline" onClick={leaveGroup} disabled={isLeaving}>
+                  {isLeaving ? 'Leaving...' : 'Leave Group'}
                 </Button>
-                <Button variant="outline" size="sm">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
+              ) : (
+                <Button onClick={joinGroup} disabled={isJoining}>
+                  {isJoining ? 'Joining...' : 'Join Group'}
                 </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              A supportive community for fitness enthusiasts sharing workout tips, nutrition advice, and motivation. 
-              Weekly challenges and group workouts every Saturday!
-            </p>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Hash className="w-4 h-4" />
-                #fitness #nutrition #wellness
-              </span>
-              <span>Created March 2024</span>
-            </div>
-          </CardContent>
-        </Card>
+              )
+            )}
+          </div>
 
-        {/* Pinned Messages */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Pin className="w-5 h-5" />
-              Pinned Messages
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="p-3 bg-muted rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <Avatar className="w-6 h-6">
-                  <AvatarImage src="/lovable-uploads/sarah-miller-avatar.jpg" />
-                  <AvatarFallback>SM</AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium">Sarah Miller</span>
-                <Badge variant="outline" className="text-xs">Admin</Badge>
-              </div>
-              <p className="text-sm">Welcome to Wellness Warriors! Please read our community guidelines and introduce yourself. 🌟</p>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Description */}
+          {group.description && (
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-muted-foreground leading-relaxed">{group.description}</p>
+              </CardContent>
+            </Card>
+          )}
 
-        {/* Group Chat */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MessageCircle className="w-5 h-5" />
-              Group Chat
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Messages */}
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              <div className="flex items-start gap-3">
-                <Avatar>
-                  <AvatarImage src="/lovable-uploads/james-davis-avatar.jpg" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium">James Davis</span>
-                    <span className="text-xs text-muted-foreground">2 hours ago</span>
+          {/* Members Preview */}
+          <Card>
+            <CardContent className="pt-6">
+              <h3 className="text-base font-semibold mb-4 flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Members ({group.member_count})
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {members.map((m) => (
+                  <Avatar key={m.user_id} className="h-10 w-10">
+                    <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                      {m.role === 'admin' ? '👑' : '👤'}
+                    </AvatarFallback>
+                  </Avatar>
+                ))}
+                {group.member_count > members.length && (
+                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs text-muted-foreground font-medium">
+                    +{group.member_count - members.length}
                   </div>
-                  <p className="text-sm">Just finished my morning 5K run! The weather was perfect. Who else is joining the weekend group hike?</p>
-                </div>
+                )}
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="flex items-start gap-3">
-                <Avatar>
-                  <AvatarImage src="/lovable-uploads/lisa-chen-avatar.jpg" />
-                  <AvatarFallback>LC</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium">Lisa Chen</span>
-                    <span className="text-xs text-muted-foreground">1 hour ago</span>
-                  </div>
-                  <p className="text-sm">Count me in for the hike! I'll bring healthy snacks for everyone 🥜🍎</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Avatar>
-                  <AvatarImage src="/lovable-uploads/mike-thompson-avatar.jpg" />
-                  <AvatarFallback>MT</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium">Mike Thompson</span>
-                    <span className="text-xs text-muted-foreground">30 minutes ago</span>
-                  </div>
-                  <p className="text-sm">Has anyone tried the new yoga studio downtown? Thinking of checking it out this week.</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Message Composer */}
-            <div className="flex gap-2">
-              <Textarea 
-                placeholder="Type your message..."
-                className="flex-1 min-h-10 resize-none"
-                rows={1}
-              />
-              <Button size="sm">
-                <Send className="w-4 h-4" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Recent Activity */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src="/lovable-uploads/emma-wilson-avatar.jpg" />
-                <AvatarFallback>EW</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <p className="text-sm"><span className="font-medium">Emma Wilson</span> joined the group</p>
-                <p className="text-xs text-muted-foreground">5 minutes ago</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
-              <Avatar className="w-8 h-8">
-                <AvatarImage src="/lovable-uploads/sarah-miller-avatar.jpg" />
-                <AvatarFallback>SM</AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <p className="text-sm"><span className="font-medium">Sarah Miller</span> created a new event: "Saturday Morning Hike"</p>
-                <p className="text-xs text-muted-foreground">1 hour ago</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Placeholder for group feed */}
+          <Card>
+            <CardContent className="pt-6 text-center py-12">
+              <MessageCircle className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
+              <h3 className="font-medium mb-1">Group Feed</h3>
+              <p className="text-sm text-muted-foreground">Group discussions and posts coming soon.</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </AppLayout>
   );
