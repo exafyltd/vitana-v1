@@ -143,7 +143,7 @@ export function ProfileLayout({
   const { user } = useAuth();
 
   // Mobile-specific hooks — resolve real user_id (profile.id can be "current-user")
-  const profileUserId = profile.user_id || user?.id || profile.id;
+  const profileUserId = profile.user_id || profile.id || user?.id;
   const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
   const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
   const shareHook = useProfileShare({
@@ -246,6 +246,13 @@ export function ProfileLayout({
                 }
               }} />
             </div>
+          )}
+          {mobileActiveTab === "posts" && !effectiveEditMode && (
+            <ProfilePostsTab
+              profile={profile}
+              scope={scope}
+              editMode={false}
+            />
           )}
           
           {mobileActiveTab === "about" && (
