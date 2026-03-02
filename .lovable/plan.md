@@ -1,40 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Problem
+### Architecture
 
-On iPhone, updating the profile picture via the Identity editor appears to succeed (upload completes, save shows success toast) but the avatar doesn't actually change. Two iOS-specific issues cause this:
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
+```
 
-### 1. Dynamically created file input is unreliable on iOS Safari
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-`handleAvatarUpload` creates a detached `<input type="file">` via `document.createElement`, attaches an async `onchange` handler, and calls `.click()`. On iOS Safari, when the photo picker opens, the page may lose context of the detached element. The `onchange` async handler can be interrupted or the `File` reference can become invalid before the upload completes — the upload appears to work but may silently fail or the state update (`setAvatarUrl`) may not persist.
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-### 2. File not materialized before upload
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-Per the project's established mobile upload pattern (see memory), files should be read into an `ArrayBuffer`/`Blob` before transmission to prevent `Failed to fetch` errors on mobile. The avatar upload passes the raw `File` object directly, bypassing this safeguard.
-
-## Plan
-
-**File: `src/components/profile/editor/IdentityForm.tsx`**
-
-### A. Replace dynamic file input with a persistent `<input ref>` in JSX
-
-Add a `useRef<HTMLInputElement>` and render a hidden `<input type="file">` in the component's JSX. The upload button triggers `ref.current.click()`. The `onChange` handler reads the file. This is the reliable pattern for iOS Safari.
-
-### B. Materialize file into Blob before upload
-
-In the onChange handler, read the selected file into an `ArrayBuffer`, create a new `Blob` with the correct MIME type, and pass that to `uploadFile`. This prevents iOS from invalidating the file handle mid-upload.
-
-### C. Add explicit `contentType` to the storage upload
-
-Set `contentType: file.type` in the upload options (matching the project's storage convention) to ensure iOS-taken photos have correct MIME types.
-
-### Summary of changes
-
-| What | Where |
-|------|-------|
-| Replace `document.createElement('input')` with persistent `<input ref>` in JSX | `IdentityForm.tsx` |
-| Materialize file to ArrayBuffer/Blob before upload | `IdentityForm.tsx` |
-| Add explicit `contentType` to storage upload call | `IdentityForm.tsx` |
-
-Single file changed. No database or RLS changes needed.
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -71,9 +71,13 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/${folder}-${Date.now()}.${fileExt}`;
 
+      // Materialize file into memory for mobile reliability
+      const arrayBuffer = await file.arrayBuffer();
+      const blob = new Blob([arrayBuffer], { type: file.type });
+
       const { error: uploadError } = await supabase.storage
         .from(bucket)
-        .upload(fileName, file, { upsert: true });
+        .upload(fileName, blob, { upsert: true, contentType: file.type });
 
       if (uploadError) throw uploadError;
 
@@ -93,52 +97,55 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
     }
   };
 
-  const handleAvatarUpload = async () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/jpeg,image/png,image/gif,image/webp,image/svg+xml';
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-      // Validate file format - reject HEIC/HEIF and unsupported types
-      const fileName = file.name.toLowerCase();
-      const fileExt = fileName.split('.').pop() || '';
-      const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
-      const isHeic = file.type === 'image/heic' || file.type === 'image/heif' || fileExt === 'heic' || fileExt === 'heif';
+  const handleAvatarUpload = () => {
+    fileInputRef.current?.click();
+  };
 
-      if (isHeic) {
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Reset input so the same file can be re-selected
+    if (fileInputRef.current) fileInputRef.current.value = '';
+
+    // Validate file format - reject HEIC/HEIF and unsupported types
+    const fileName = file.name.toLowerCase();
+    const fileExt = fileName.split('.').pop() || '';
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'];
+    const isHeic = file.type === 'image/heic' || file.type === 'image/heif' || fileExt === 'heic' || fileExt === 'heif';
+
+    if (isHeic) {
+      toast({
+        title: translate('profileEditor.identity.uploadFailed'),
+        description: 'HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.',
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!file.type.startsWith('image/') || !allowedExtensions.includes(fileExt)) {
+      if (!allowedExtensions.includes(fileExt)) {
         toast({
           title: translate('profileEditor.identity.uploadFailed'),
-          description: 'HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.',
+          description: `Unsupported image format (.${fileExt}). Please use JPG, PNG, GIF, or WebP.`,
           variant: "destructive",
         });
         return;
       }
+    }
 
-      if (!file.type.startsWith('image/') || !allowedExtensions.includes(fileExt)) {
-        if (!allowedExtensions.includes(fileExt)) {
-          toast({
-            title: translate('profileEditor.identity.uploadFailed'),
-            description: `Unsupported image format (.${fileExt}). Please use JPG, PNG, GIF, or WebP.`,
-            variant: "destructive",
-          });
-          return;
-        }
-      }
-
-      setUploading(true);
-      const url = await uploadFile(file, 'avatars', 'avatar');
-      if (url) {
-        setAvatarUrl(url);
-        toast({
-          title: translate('profileEditor.identity.avatarUploaded'),
-          description: translate('profileEditor.identity.avatarUploadedDesc'),
-        });
-      }
-      setUploading(false);
-    };
-    input.click();
+    setUploading(true);
+    const url = await uploadFile(file, 'avatars', 'avatar');
+    if (url) {
+      setAvatarUrl(url);
+      toast({
+        title: translate('profileEditor.identity.avatarUploaded'),
+        description: translate('profileEditor.identity.avatarUploadedDesc'),
+      });
+    }
+    setUploading(false);
   };
 
   return (
@@ -149,6 +156,15 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
           {translate('profileEditor.identity.description')}
         </p>
       </div>
+
+      {/* Hidden file input for iOS Safari reliability */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+        className="hidden"
+        onChange={handleFileSelected}
+      />
 
       {/* Avatar */}
       <div className="space-y-2">
