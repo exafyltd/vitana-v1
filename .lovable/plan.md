@@ -1,35 +1,31 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Problem
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+When the user logs back in, `useEventParticipation` initializes `isParticipating` as `false` (the `useState` default). The actual participation check runs asynchronously in a `useEffect`. During the gap between render and query completion, the button shows "Reserve Spot" / "Join MeetUp" — even if the user already reserved. Tapping it during this window creates a duplicate booking (the `upsert` prevents a DB error, but the UX is broken — toast fires, calendar entry duplicated, count incremented).
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+## Root Cause
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+There is no `checking` / `initialLoading` state. The hook returns `isParticipating: false` immediately, and nothing tells consuming components to wait.
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+## Solution
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+Add a `checking` boolean to `useEventParticipation` that starts `true` and flips to `false` once the initial participation query completes. Consuming components disable the CTA button while `checking` is true.
+
+### Changes
+
+**1. `src/hooks/useEventParticipation.ts`**
+- Add `const [checking, setChecking] = useState(true)`
+- Set `setChecking(true)` at start of the `checkParticipation` effect, `setChecking(false)` in finally block
+- Return `checking` from the hook
+- Guard `toggleParticipation` to also bail if `checking` is true
+
+**2. `src/components/crossover/NewsCard.tsx`**
+- Destructure `checking` from `useEventParticipation`
+- Pass `checking` into the button disabled state — when `checking` is true, the CTA button shows a loading spinner and is non-interactive
+
+**3. `src/components/meetups/MeetupDetailsDrawer.tsx`**
+- Same pattern: if it has its own participation check, disable the Join/Reserve button while checking
+
+This is a minimal 2-3 file change. No database changes needed.
+
