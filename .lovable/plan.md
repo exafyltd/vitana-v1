@@ -1,35 +1,27 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Problem
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
+The previous fix corrected `ProfileLayout.tsx` (mobile) but missed `ProfileSplitNavigation.tsx` (desktop). Line 60 still has the wrong fallback order:
+
+```typescript
+const profileUserId = profile.user_id || user?.id || profile.id;
 ```
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+When `profile.user_id` is undefined (as it is for public profiles), this falls back to `user?.id` (the logged-in viewer), so all media queries on desktop fetch the viewer's own photos and videos.
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+## Fix
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+**File: `src/components/profile/shared/ProfileSplitNavigation.tsx`** (line 60)
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+Change:
+```typescript
+const profileUserId = profile.user_id || user?.id || profile.id;
+```
+to:
+```typescript
+const profileUserId = profile.user_id || profile.id || user?.id;
+```
+
+This is the same one-line fix applied to `ProfileLayout.tsx` previously -- just missed in this parallel component.
+
