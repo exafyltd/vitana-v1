@@ -1,35 +1,35 @@
-## Chat / Direct Messaging — Gateway API Rewire
 
-### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-### Architecture
+## Problem
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+Multiple components (`ProfileLayout`, `ProfileStats`, `ProfileIdCardFront`) each call `useFollow(profile.id)` independently. Each creates its own local state (`followersCount`, `isFollowing`). When the follow button in `ProfileLayout` or `ProfileIdCardFront` does an optimistic update (`setFollowersCount(prev => prev + 1)`), that only updates its own local state. The `ProfileStats` component's separate `useFollow` instance doesn't see it until the realtime subscription fires (which can be slow or unreliable).
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+## Solution
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+Stop duplicating `useFollow` calls. Instead, call `useFollow` once at the top level (`ProfileLayout`) and pass the follow data down to child components that need it.
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+### Changes
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+**1. `src/components/profile/shared/ProfileLayout.tsx`**
+- Already calls `useFollow(profile.id)` — extend it to also destructure `followersCount` and `followingCount`
+- Pass these values down to `ProfileStats` as props
+
+**2. `src/components/profile/shared/ProfileStats.tsx`**
+- Add optional `followersCount` and `followingCount` props
+- When provided, use props instead of calling `useFollow` internally
+- Remove the internal `useFollow` call when props are supplied
+
+**3. `src/components/profile/shared/ProfileIdCardFront.tsx`**
+- This component also has its own `useFollow` — accept follow state as props from the parent (`ProfileLayout`) to stay in sync
+- Alternatively, since this is the desktop ID card and may render independently, keep its own `useFollow` but ensure the realtime subscription works
+
+The simplest and most impactful fix: **ProfileStats should accept followersCount/followingCount as props** from the parent that already has the optimistic-update-aware state, eliminating the duplicate hook call.
+
+### Files to modify
+| File | Change |
+|------|--------|
+| `ProfileStats.tsx` | Accept optional `followersCount`/`followingCount` props; skip internal `useFollow` when provided |
+| `ProfileLayout.tsx` | Destructure `followersCount`/`followingCount` from existing `useFollow` call; pass to `ProfileStats` |
+
+This is a 2-file, minimal change that ensures the optimistic count update from the follow button instantly reflects in the stats display.
+
