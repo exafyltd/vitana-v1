@@ -66,6 +66,7 @@ export function VitanaAudioOverlay() {
   });
 
   // Connect/disconnect based on overlay visibility
+  // connect/disconnect are stable refs — only audioOverlayVisible triggers this
   useEffect(() => {
     if (audioOverlayVisible) {
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
@@ -77,14 +78,16 @@ export function VitanaAudioOverlay() {
       resumePersisting(); // Restore soundscape persistence
       disconnect();
     }
-  }, [audioOverlayVisible, connect, disconnect]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioOverlayVisible]);
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
     if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
       startListening();
     }
-  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening, startListening]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening]);
 
   // Map states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 

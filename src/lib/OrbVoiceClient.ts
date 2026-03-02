@@ -7,6 +7,7 @@
  * - CrossPlatformAudioRecorder for iOS-safe audio capture
  * - PCM audio queue playback at 24kHz
  * - JWT-based authentication for multi-tenant voice sessions
+ * - Sequential audio upload queue with flush-before-endTurn
  */
 
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
@@ -26,6 +27,19 @@ export interface OrbVoiceClientConfig {
   accessToken: string;
 }
 
+// Session diagnostics for debugging "no speech detected"
+interface SessionDiagnostics {
+  sessionId: string;
+  startedAt: number;
+  chunksCapt: number;
+  chunksSent: number;
+  chunksFailed: number;
+  mutedDurationMs: number;
+  lastSuccessfulSendAt: number | null;
+  endTurnFlushWaitMs: number;
+  silentFramesSinceLastSpeech: number;
+}
+
 export class OrbVoiceClient {
   private sessionId: string | null = null;
   private eventSource: EventSource | null = null;
@@ -43,6 +57,24 @@ export class OrbVoiceClient {
   // Track consecutive send failures to detect broken sessions
   private consecutiveSendErrors: number = 0;
   private readonly MAX_SEND_ERRORS = 5;
+
+  // Explicit internal listening state - gates audio sending
+  private _isListening: boolean = false;
+
+  // Sequential audio upload queue
+  private audioQueue: string[] = [];
+  private isProcessingQueue: boolean = false;
+  private readonly MAX_QUEUE_SIZE = 50; // Drop oldest if exceeded
+
+  // No-speech warning timer
+  private noSpeechWarningTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly NO_SPEECH_WARNING_MS = 15000; // Warn after 15s of mic active but no speech
+
+  // Muted duration tracking
+  private mutedSince: number | null = null;
+
+  // Session diagnostics
+  private diagnostics: SessionDiagnostics | null = null;
 
   // Gateway configuration
   private readonly GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
@@ -101,7 +133,21 @@ export class OrbVoiceClient {
       if (!data.ok) throw new Error(data.error || 'Failed to start session');
 
       this.sessionId = data.session_id;
-      console.log('[OrbVoiceClient] Session started:', this.sessionId);
+      
+      // Initialize diagnostics
+      this.diagnostics = {
+        sessionId: this.sessionId!,
+        startedAt: Date.now(),
+        chunksCapt: 0,
+        chunksSent: 0,
+        chunksFailed: 0,
+        mutedDurationMs: 0,
+        lastSuccessfulSendAt: null,
+        endTurnFlushWaitMs: 0,
+        silentFramesSinceLastSpeech: 0,
+      };
+      
+      console.log('[OrbVoiceClient] Session started:', this.sessionId, 'lang:', this.config.lang);
 
       // 2. Connect to SSE stream
       this.connectSSE();
@@ -263,14 +309,23 @@ export class OrbVoiceClient {
 
       this.recorder = new CrossPlatformAudioRecorder(this.SAMPLE_RATE_IN, {
         onAudioData: (pcmFloat32) => {
-          this.sendAudio(pcmFloat32);
+          // Gate: only enqueue audio when actively listening (not muted)
+          if (!this._isListening) return;
+          
+          if (this.diagnostics) this.diagnostics.chunksCapt++;
+          this.enqueueAudio(pcmFloat32);
         }
       });
 
       await this.recorder.start();
 
+      this._isListening = true;
+      
       // Start volume monitoring using the recorder's analyser
       this.startVolumeMonitoring();
+      
+      // Start no-speech warning timer
+      this.resetNoSpeechWarning();
 
       this.callbacks.onListeningChange?.(true);
       console.log('[OrbVoiceClient] Recording started');
@@ -282,6 +337,12 @@ export class OrbVoiceClient {
   }
 
   private startVolumeMonitoring(): void {
+    // Cancel any existing loop first
+    if (this.volumeAnimationFrame) {
+      cancelAnimationFrame(this.volumeAnimationFrame);
+      this.volumeAnimationFrame = null;
+    }
+    
     const analyser = this.recorder?.analyser;
     if (!analyser) return;
 
@@ -312,12 +373,18 @@ export class OrbVoiceClient {
   private detectSilence(volume: number): void {
     if (volume > this.SILENCE_THRESHOLD) {
       this.hasSpeechStarted = true;
+      if (this.diagnostics) this.diagnostics.silentFramesSinceLastSpeech = 0;
+      
+      // Clear no-speech warning since user is speaking
+      this.clearNoSpeechWarning();
       
       if (this.silenceTimer) {
         clearTimeout(this.silenceTimer);
         this.silenceTimer = null;
       }
     } else if (this.hasSpeechStarted && !this.silenceTimer) {
+      if (this.diagnostics) this.diagnostics.silentFramesSinceLastSpeech++;
+      
       this.silenceTimer = setTimeout(() => {
         console.log('[OrbVoiceClient] Silence detected - ending turn');
         this.stopListening();
@@ -328,9 +395,32 @@ export class OrbVoiceClient {
     }
   }
 
-  private async sendAudio(pcmFloat32: Float32Array): Promise<void> {
-    if (!this.sessionId) return;
+  /**
+   * Reset the no-speech warning timer (called when mic becomes active)
+   */
+  private resetNoSpeechWarning(): void {
+    this.clearNoSpeechWarning();
+    this.noSpeechWarningTimer = setTimeout(() => {
+      // Only warn if still listening and no speech was ever detected
+      if (this._isListening && !this.hasSpeechStarted) {
+        console.warn('[OrbVoiceClient] No speech detected for', this.NO_SPEECH_WARNING_MS / 1000, 
+          's while mic active. Diagnostics:', JSON.stringify(this.diagnostics));
+        this.callbacks.onError?.('Microphone active but no speech detected — check mic permissions');
+      }
+    }, this.NO_SPEECH_WARNING_MS);
+  }
 
+  private clearNoSpeechWarning(): void {
+    if (this.noSpeechWarningTimer) {
+      clearTimeout(this.noSpeechWarningTimer);
+      this.noSpeechWarningTimer = null;
+    }
+  }
+
+  /**
+   * Enqueue audio chunk for sequential upload (replaces fire-and-forget)
+   */
+  private enqueueAudio(pcmFloat32: Float32Array): void {
     // Convert Float32 to Int16 PCM
     const int16 = new Int16Array(pcmFloat32.length);
     for (let i = 0; i < pcmFloat32.length; i++) {
@@ -346,6 +436,38 @@ export class OrbVoiceClient {
     }
     const base64 = btoa(binary);
 
+    // Bounded queue: drop oldest if full
+    if (this.audioQueue.length >= this.MAX_QUEUE_SIZE) {
+      this.audioQueue.shift();
+      console.warn('[OrbVoiceClient] Audio queue full, dropping oldest chunk');
+    }
+
+    this.audioQueue.push(base64);
+    this.processQueue();
+  }
+
+  /**
+   * Process audio queue sequentially (one chunk at a time)
+   */
+  private async processQueue(): Promise<void> {
+    if (this.isProcessingQueue || this.audioQueue.length === 0 || !this.sessionId) return;
+
+    this.isProcessingQueue = true;
+
+    while (this.audioQueue.length > 0 && this.sessionId) {
+      const base64 = this.audioQueue.shift()!;
+      await this.sendAudioChunk(base64);
+    }
+
+    this.isProcessingQueue = false;
+  }
+
+  /**
+   * Send a single audio chunk to the gateway
+   */
+  private async sendAudioChunk(base64: string): Promise<void> {
+    if (!this.sessionId) return;
+
     try {
       const resp = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
@@ -360,13 +482,19 @@ export class OrbVoiceClient {
 
       if (resp.ok) {
         this.consecutiveSendErrors = 0;
+        if (this.diagnostics) {
+          this.diagnostics.chunksSent++;
+          this.diagnostics.lastSuccessfulSendAt = Date.now();
+        }
       } else {
         this.consecutiveSendErrors++;
+        if (this.diagnostics) this.diagnostics.chunksFailed++;
         if (this.consecutiveSendErrors === 1) {
           console.warn(`[OrbVoiceClient] Send failed: status=${resp.status}`);
         }
         if (this.consecutiveSendErrors >= this.MAX_SEND_ERRORS) {
           console.error(`[OrbVoiceClient] ${this.consecutiveSendErrors} consecutive send failures (status=${resp.status}) — session broken, stopping`);
+          this.logDiagnostics('session_broken_send_errors');
           this.callbacks.onError?.('Voice connection lost — please try again');
           this.stop();
           return;
@@ -374,8 +502,10 @@ export class OrbVoiceClient {
       }
     } catch (e) {
       this.consecutiveSendErrors++;
+      if (this.diagnostics) this.diagnostics.chunksFailed++;
       if (this.consecutiveSendErrors >= this.MAX_SEND_ERRORS) {
         console.error(`[OrbVoiceClient] ${this.consecutiveSendErrors} consecutive send failures (network) — session broken, stopping`);
+        this.logDiagnostics('session_broken_network');
         this.callbacks.onError?.('Voice connection lost — please try again');
         this.stop();
         return;
@@ -383,8 +513,32 @@ export class OrbVoiceClient {
     }
   }
 
+  /**
+   * Flush the audio queue - wait for all pending chunks to be sent
+   * Returns after queue is empty or timeout
+   */
+  private async flushQueue(timeoutMs: number = 5000): Promise<void> {
+    const start = Date.now();
+    
+    while (this.audioQueue.length > 0 || this.isProcessingQueue) {
+      if (Date.now() - start > timeoutMs) {
+        console.warn('[OrbVoiceClient] Flush timeout after', timeoutMs, 'ms, remaining:', this.audioQueue.length);
+        this.audioQueue.length = 0; // Clear remaining
+        break;
+      }
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    if (this.diagnostics) {
+      this.diagnostics.endTurnFlushWaitMs = Date.now() - start;
+    }
+  }
+
   async endTurn(): Promise<void> {
     if (!this.sessionId) return;
+
+    // Flush pending audio before signaling end-turn
+    await this.flushQueue();
 
     this.callbacks.onProcessingChange?.(true);
 
@@ -421,12 +575,18 @@ export class OrbVoiceClient {
   }
 
   stopListening(): void {
+    this._isListening = false;
+    this.mutedSince = Date.now();
+
     // Clear silence detection timer
     if (this.silenceTimer) {
       clearTimeout(this.silenceTimer);
       this.silenceTimer = null;
     }
     this.hasSpeechStarted = false;
+    
+    // Clear no-speech warning
+    this.clearNoSpeechWarning();
 
     // Soft-mute: disable tracks but keep MediaStream alive
     // (prevents iOS from resetting AVAudioSession routing)
@@ -447,6 +607,21 @@ export class OrbVoiceClient {
     // If recorder exists and is soft-muted, just unmute (avoids new getUserMedia → iOS route switch)
     if (this.recorder && this.recorder.isMuted) {
       this.recorder.unmute();
+      this._isListening = true;
+      
+      // Track muted duration
+      if (this.mutedSince && this.diagnostics) {
+        this.diagnostics.mutedDurationMs += Date.now() - this.mutedSince;
+        this.mutedSince = null;
+      }
+
+      // CRITICAL FIX: Restart volume monitoring after unmute
+      // Without this, VAD/silence detection stops working after mute/unmute cycles
+      this.startVolumeMonitoring();
+      
+      // Restart no-speech warning
+      this.resetNoSpeechWarning();
+      
       this.callbacks.onListeningChange?.(true);
       return;
     }
@@ -454,8 +629,27 @@ export class OrbVoiceClient {
     await this.startRecording();
   }
 
+  /**
+   * Log session diagnostics for debugging
+   */
+  private logDiagnostics(reason: string): void {
+    if (!this.diagnostics) return;
+    const elapsed = Date.now() - this.diagnostics.startedAt;
+    console.log(`[OrbVoiceClient] DIAGNOSTICS (${reason}):`, {
+      ...this.diagnostics,
+      elapsedMs: elapsed,
+      sendRate: this.diagnostics.chunksSent / (elapsed / 1000),
+      failRate: this.diagnostics.chunksFailed / Math.max(1, this.diagnostics.chunksSent + this.diagnostics.chunksFailed),
+    });
+  }
+
   async stop(): Promise<void> {
     console.log('[OrbVoiceClient] Stopping...');
+    
+    // Log final diagnostics
+    this.logDiagnostics('session_stop');
+
+    this._isListening = false;
 
     // Clear silence detection
     if (this.silenceTimer) {
@@ -463,12 +657,19 @@ export class OrbVoiceClient {
       this.silenceTimer = null;
     }
     this.hasSpeechStarted = false;
+    
+    // Clear no-speech warning
+    this.clearNoSpeechWarning();
 
     // Cancel volume monitoring
     if (this.volumeAnimationFrame) {
       cancelAnimationFrame(this.volumeAnimationFrame);
       this.volumeAnimationFrame = null;
     }
+
+    // Clear audio queue
+    this.audioQueue.length = 0;
+    this.isProcessingQueue = false;
 
     // Full recorder teardown — only place where MediaStream is destroyed
     if (this.recorder) {
@@ -504,6 +705,7 @@ export class OrbVoiceClient {
     // Reset audio state
     this.sessionId = null;
     this.nextStartTime = 0;
+    this.diagnostics = null;
 
     this.callbacks.onConnectionStateChange?.('disconnected');
     this.callbacks.onSpeakingChange?.(false);
