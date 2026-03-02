@@ -23,15 +23,15 @@ export function MobileGroupsTabContent({
   const previewGroups = groups.slice(0, 3);
 
   const handleViewAll = () => {
-    navigate('/community/groups');
+    navigate('/comm/groups');
   };
 
   const handleDiscover = () => {
-    navigate('/community/groups?discover=true');
+    navigate('/comm/groups?discover=true');
   };
 
   const handleGroupClick = (groupId: string) => {
-    navigate(`/community/groups/${groupId}`);
+    navigate(`/comm/groups/${groupId}`);
   };
 
   const getInitials = (name: string) => {

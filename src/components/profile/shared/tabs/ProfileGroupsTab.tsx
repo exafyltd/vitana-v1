@@ -82,7 +82,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
             <Card 
               key={group.id} 
               className="group relative overflow-hidden rounded-2xl border-0 h-80 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-              onClick={() => navigate(`/community/groups/${group.id}`)}
+              onClick={() => navigate(`/comm/groups/${group.id}`)}
             >
               <div 
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
@@ -129,7 +129,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                       className="bg-white/90 hover:bg-white text-gray-900"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/community/groups/${group.id}`);
+                        navigate(`/comm/groups/${group.id}`);
                       }}
                     >
                       View
