@@ -28,6 +28,7 @@ import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs
 import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "../mobile/MobileShowcaseHeader";
 import { MobileMediaTabContent } from "../mobile/MobileMediaTabContent";
+import { ProfilePostsTab } from "./tabs/ProfilePostsTab";
 import { MobileGroupsTabContent } from "../mobile/MobileGroupsTabContent";
 import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
@@ -143,7 +144,7 @@ export function ProfileLayout({
   const { user } = useAuth();
 
   // Mobile-specific hooks — resolve real user_id (profile.id can be "current-user")
-  const profileUserId = profile.user_id || user?.id || profile.id;
+  const profileUserId = profile.user_id || profile.id || user?.id;
   const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
   const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
   const shareHook = useProfileShare({
@@ -246,6 +247,13 @@ export function ProfileLayout({
                 }
               }} />
             </div>
+          )}
+          {mobileActiveTab === "posts" && !effectiveEditMode && (
+            <ProfilePostsTab
+              profile={profile}
+              scope={scope}
+              editMode={false}
+            />
           )}
           
           {mobileActiveTab === "about" && (

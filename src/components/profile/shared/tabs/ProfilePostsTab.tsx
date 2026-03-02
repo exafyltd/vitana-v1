@@ -24,7 +24,7 @@ interface ProfilePostsTabProps {
 export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreatePost }: ProfilePostsTabProps) {
   const { user } = useAuth();
   const { translate } = useTranslation();
-  const { posts, isLoading, deletePost } = useProfilePosts(profile.user_id || user?.id);
+  const { posts, isLoading, deletePost } = useProfilePosts(profile.user_id || profile.id);
   const isOwner = user?.id === (profile.user_id || profile.id);
 
   const handleDelete = async (postId: string) => {
