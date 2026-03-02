@@ -3,53 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { generateGroupImage } from "@/lib/groupCardTransformers";
 import { useTranslation } from "@/hooks/useTranslation";
-
-interface GroupItem {
-  id: string;
-  name: string;
-  avatar_url?: string | null;
-  members?: number;
-  gradient?: string;
-}
+import { useUserGroups } from "@/hooks/useUserGroups";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface MobileGroupsTabContentProps {
-  groups?: GroupItem[];
+  userId?: string;
   className?: string;
 }
 
-// Placeholder groups for demo with wellness-themed images
-const PLACEHOLDER_GROUPS: GroupItem[] = [
-  {
-    id: '1',
-    name: 'Mindful Movement',
-    avatar_url: generateGroupImage('1'),
-    members: 1250,
-    gradient: 'from-violet-400 to-purple-500'
-  },
-  {
-    id: '2',
-    name: 'Morning Yoga Sessions',
-    avatar_url: generateGroupImage('2'),
-    members: 850,
-    gradient: 'from-amber-400 to-orange-500'
-  },
-  {
-    id: '3',
-    name: 'Wellness Warriors',
-    avatar_url: generateGroupImage('3'),
-    members: 2100,
-    gradient: 'from-emerald-400 to-teal-500'
-  }
-];
-
 export function MobileGroupsTabContent({ 
-  groups = PLACEHOLDER_GROUPS,
+  userId,
   className 
 }: MobileGroupsTabContentProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
+  const { data: groups = [], isLoading } = useUserGroups(userId);
   const hasGroups = groups.length > 0;
   const previewGroups = groups.slice(0, 3);
 
@@ -61,8 +30,8 @@ export function MobileGroupsTabContent({
     navigate('/community/groups?discover=true');
   };
 
-  const handleGroupClick = (group: GroupItem) => {
-    navigate(`/community/groups/${group.id}`);
+  const handleGroupClick = (groupId: string) => {
+    navigate(`/community/groups/${groupId}`);
   };
 
   const getInitials = (name: string) => {
@@ -73,6 +42,23 @@ export function MobileGroupsTabContent({
       .slice(0, 2)
       .toUpperCase();
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className={cn("p-4 space-y-3", className)}>
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-border/50">
+            <Skeleton className="h-12 w-12 rounded-xl shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-3 w-1/2" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   // Empty state
   if (!hasGroups) {
@@ -110,15 +96,12 @@ export function MobileGroupsTabContent({
         {previewGroups.map((group) => (
           <button
             key={group.id}
-            onClick={() => handleGroupClick(group)}
+            onClick={() => handleGroupClick(group.id)}
             className="w-full flex items-center gap-3 p-3 rounded-xl bg-card/50 hover:bg-card/80 border border-border/50 transition-colors text-left focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             <Avatar className="h-12 w-12 rounded-xl shrink-0">
               <AvatarImage src={group.avatar_url || undefined} alt={group.name} />
-              <AvatarFallback className={cn(
-                "rounded-xl text-white text-sm font-medium bg-gradient-to-br",
-                group.gradient || "from-primary to-primary/80"
-              )}>
+              <AvatarFallback className="rounded-xl text-sm font-medium bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
                 {getInitials(group.name)}
               </AvatarFallback>
             </Avatar>
@@ -126,12 +109,10 @@ export function MobileGroupsTabContent({
               <h4 className="text-sm font-medium text-foreground truncate">
                 {group.name}
               </h4>
-              {group.members && (
-                <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                  <Users className="h-3 w-3" />
-                  {group.members.toLocaleString()} {translate('profileGroups.membersLabel', 'members')}
-                </p>
-              )}
+              <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                <Users className="h-3 w-3" />
+                {group.member_count.toLocaleString()} {translate('profileGroups.membersLabel', 'members')}
+              </p>
             </div>
             <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
           </button>
@@ -140,7 +121,6 @@ export function MobileGroupsTabContent({
 
       {/* CTAs */}
       <div className="space-y-2 pt-1">
-        {/* View all groups */}
         <button
           onClick={handleViewAll}
           className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-card/50 hover:bg-card/80 border border-border/50 transition-colors text-sm font-medium text-foreground"
@@ -149,7 +129,6 @@ export function MobileGroupsTabContent({
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </button>
 
-        {/* Discover groups */}
         <button
           onClick={handleDiscover}
           className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary/10 hover:bg-primary/15 border border-primary/20 transition-colors text-sm font-medium text-primary"
