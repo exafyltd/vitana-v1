@@ -1,65 +1,35 @@
+## Chat / Direct Messaging — Gateway API Rewire
 
+### Summary
+Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
 
-## Problem
+### Architecture
 
-On iPhone (iOS Safari), the Soundscape background music does not auto-start when the intro screen loads. The user must tap the screen before music begins. This is caused by **iOS Safari's autoplay policy**: audio cannot play without a prior user gesture — there is no workaround for this browser restriction.
-
-Currently, the code explicitly avoids auto-starting soundscape on mount (line 78-80 of `IntroExperience.tsx`), and instead attaches `ensureSoundscapePlaying` to a generic `onClick` on the content wrapper (line 247). This means the user has to tap *somewhere* before the music kicks in, which feels broken.
-
-## What we can do
-
-Since we **cannot bypass iOS autoplay restrictions**, the best approach is to make the first meaningful interaction start the music seamlessly, so it *feels* automatic:
-
-### 1. Auto-start soundscape on first touch/scroll (not just click)
-
-Add a **one-shot `touchstart` listener** to the intro page that calls `startFresh()`. On iOS, `touchstart` counts as a user gesture and fires the instant a finger touches the glass — before any visible UI interaction. This makes the music start the moment the user touches the screen, which feels nearly automatic.
-
-**File:** `src/pages/IntroExperience.tsx`
-
-Add a `useEffect` that registers a one-time `touchstart` + `click` listener on the document:
-
-```typescript
-useEffect(() => {
-  const startOnFirstTouch = () => {
-    startFresh();
-    document.removeEventListener('touchstart', startOnFirstTouch);
-    document.removeEventListener('click', startOnFirstTouch);
-  };
-  document.addEventListener('touchstart', startOnFirstTouch, { once: true });
-  document.addEventListener('click', startOnFirstTouch, { once: true });
-  return () => {
-    document.removeEventListener('touchstart', startOnFirstTouch);
-    document.removeEventListener('click', startOnFirstTouch);
-  };
-}, [startFresh]);
+```
+Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
+                                                                   + Supabase Realtime on chat_messages
 ```
 
-### 2. Attempt autoplay optimistically (works on Android/desktop, silently fails on iOS)
+### Files Created
+- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
+- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
 
-Also call `startFresh()` on mount inside a try/catch. On desktop and Android this will succeed immediately. On iOS it will fail silently, and the touchstart listener from step 1 will handle it.
+### Files Modified
+- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
+  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
+  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
+  - sendMessage → `POST /api/v1/chat/send`
+  - markAsRead → `POST /api/v1/chat/read`
+  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
+  - createThread → virtual thread creation (peer = thread ID)
+- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
 
-**File:** `src/pages/IntroExperience.tsx`
+### Data Shape Mapping
+- Gateway `peer_id` → Thread `id`
+- Gateway `content` → `body`
+- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
+- All conversations are `type: 'direct'`
 
-Replace the comment block at lines 78-80 with:
-
-```typescript
-useEffect(() => {
-  // Attempt autoplay — succeeds on desktop/Android, silently blocked on iOS
-  startFresh();
-}, [startFresh]);
-```
-
-### 3. Remove redundant onClick from content wrapper
-
-The generic `onClick={ensureSoundscapePlaying}` on the content div (line 247) becomes unnecessary since the one-shot listener handles it. Remove it to avoid double-triggering.
-
-## Summary
-
-| Change | File |
-|--------|------|
-| Add one-shot `touchstart`/`click` listener for instant music start | `IntroExperience.tsx` |
-| Attempt optimistic autoplay on mount | `IntroExperience.tsx` |
-| Remove redundant `onClick` from content wrapper | `IntroExperience.tsx` |
-
-This makes music start instantly on desktop/Android, and on iOS it starts the very first time the user touches the screen — before they even lift their finger.
-
+### Prerequisites
+- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
+- `VITE_GATEWAY_BASE` env var must be set
