@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { OrbVoiceClient, OrbVoiceClientConfig } from '@/lib/OrbVoiceClient';
 import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
@@ -22,9 +23,19 @@ interface UseOrbVoiceClientReturn {
   endTurn: () => void;
 }
 
+/**
+ * Derive the 2-letter ORB lang code from the full BCP-47 locale.
+ * e.g. "de-DE" → "de", "en-US" → "en", "zh-CN" → "zh"
+ */
+function localeToOrbLang(locale: string): string {
+  const base = locale.split('-')[0].toLowerCase();
+  return base || 'de'; // fallback to German
+}
+
 export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   const { user } = useAuth();
   const { activeTenantId, setTenantBySlug } = useTenant();
+  const { selectedLanguage } = useLanguage();
   
   const [connectionState, setConnectionState] = useState<ConnectionState>('disconnected');
   const [isListening, setIsListening] = useState(false);
@@ -35,6 +46,14 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   const [transcript, setTranscript] = useState('');
 
   const clientRef = useRef<OrbVoiceClient | null>(null);
+  
+  // Use refs for stable callback identities
+  const connectRef = useRef<() => Promise<void>>();
+  const disconnectRef = useRef<() => void>();
+  const startListeningRef = useRef<() => Promise<void>>();
+  const stopListeningRef = useRef<() => void>();
+  const sendMessageRef = useRef<(text: string) => void>();
+  const endTurnRef = useRef<() => void>();
 
   // Cleanup on unmount
   useEffect(() => {
@@ -46,8 +65,14 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     };
   }, []);
 
-  const connect = useCallback(async () => {
+  connectRef.current = async () => {
     try {
+      // SESSION GUARD: Prevent duplicate sessions
+      if (clientRef.current) {
+        console.log('[useOrbVoiceClient] Session already active, ignoring connect');
+        return;
+      }
+
       setError(null);
       setConnectionState('connecting');
 
@@ -67,50 +92,40 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
       }
 
       // 3. Check tenant context - try auto-selecting if needed
-      let currentTenantId = activeTenantId;
       let accessToken = freshSession.access_token;
 
-      if (!currentTenantId) {
-        // Try to get stored tenant slug from localStorage (set by TenantDetector)
+      if (!activeTenantId) {
         const storedSlug = localStorage.getItem('tenant_slug');
         
         if (storedSlug) {
           console.log('[useOrbVoiceClient] Auto-selecting tenant from localStorage:', storedSlug);
-          
-          // Call setTenantBySlug to update JWT's app_metadata.active_tenant_id
           await setTenantBySlug(storedSlug);
           
-          // Re-fetch session to get updated token with tenant context
           const { data: { session: updatedSession } } = await supabase.auth.getSession();
-          
           if (!updatedSession?.access_token) {
             setError('Failed to refresh session after tenant selection');
             setConnectionState('disconnected');
             return;
           }
-          
           accessToken = updatedSession.access_token;
-          
-          // Verify tenant was set by checking user metadata
-          const updatedTenantId = updatedSession.user?.app_metadata?.active_tenant_id;
-          if (!updatedTenantId) {
-            console.warn('[useOrbVoiceClient] Tenant selection may not have taken effect yet');
-          }
         } else {
-          // No stored tenant and no active tenant
           setError('Please select a community first');
           setConnectionState('disconnected');
           return;
         }
       }
 
-      // 4. Create config for OrbVoiceClient
+      // 4. Derive ORB lang from user's language preference
+      const orbLang = localeToOrbLang(selectedLanguage);
+      console.log('[useOrbVoiceClient] Using language:', selectedLanguage, '→ ORB lang:', orbLang);
+
+      // 5. Create config for OrbVoiceClient
       const config: OrbVoiceClientConfig = {
-        lang: 'de', // TODO: derive from profile.preferred_languages or inferred_language
+        lang: orbLang,
         accessToken: accessToken,
       };
 
-      // 5. Create new client with callbacks
+      // 6. Create new client with callbacks
       const client = new OrbVoiceClient(config, {
         onConnectionStateChange: (state) => {
           setConnectionState(state);
@@ -141,10 +156,12 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
       console.error('[useOrbVoiceClient] Connect error:', err);
       setError(err.message || 'Failed to connect');
       setConnectionState('disconnected');
+      // Ensure clientRef is cleaned up on failure
+      clientRef.current = null;
     }
-  }, [user, activeTenantId, setTenantBySlug]);
+  };
 
-  const disconnect = useCallback(() => {
+  disconnectRef.current = () => {
     if (clientRef.current) {
       clientRef.current.stop();
       clientRef.current = null;
@@ -154,32 +171,39 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
     setIsProcessing(false);
     setIsSpeaking(false);
     setVolumeLevel(0);
-  }, []);
+  };
 
-  const startListening = useCallback(async () => {
+  startListeningRef.current = async () => {
     if (clientRef.current) {
       await clientRef.current.startListening();
     }
-  }, []);
+  };
 
-  const stopListening = useCallback(() => {
+  stopListeningRef.current = () => {
     if (clientRef.current) {
       clientRef.current.stopListening();
-      // endTurn() intentionally NOT called — muting is a pause, not end-of-turn
     }
-  }, []);
+  };
 
-  const sendMessage = useCallback((text: string) => {
+  sendMessageRef.current = (text: string) => {
     if (clientRef.current && text.trim()) {
       clientRef.current.sendTextMessage(text);
     }
-  }, []);
+  };
 
-  const endTurn = useCallback(() => {
+  endTurnRef.current = () => {
     if (clientRef.current) {
       clientRef.current.endTurn();
     }
-  }, []);
+  };
+
+  // Stable function references that never change identity
+  const connect = useCallback(() => connectRef.current!(), []);
+  const disconnect = useCallback(() => disconnectRef.current!(), []);
+  const startListening = useCallback(() => startListeningRef.current!(), []);
+  const stopListening = useCallback(() => stopListeningRef.current!(), []);
+  const sendMessage = useCallback((text: string) => sendMessageRef.current!(text), []);
+  const endTurn = useCallback(() => endTurnRef.current!(), []);
 
   return {
     connectionState,
