@@ -262,7 +262,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         }
       };
       
-      const isLoading = eventId ? eventParticipation?.loading : (category === "people" ? isFollowLoading : false);
+      const isLoading = eventId ? (eventParticipation?.loading || eventParticipation?.checking) : (category === "people" ? isFollowLoading : false);
       
       return (
         <Button

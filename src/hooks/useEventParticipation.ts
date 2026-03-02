@@ -26,6 +26,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
   const { user, session } = useAuth();
   const { toast } = useToast();
   const { addEvent, removeEvent } = useCalendarEvents();
@@ -37,9 +38,11 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     const checkParticipation = async () => {
       if (!eventId || !isValidUUID(eventId) || !user?.id || !session) {
         setIsParticipating(false);
+        setChecking(false);
         return;
       }
 
+      setChecking(true);
       try {
         const { data, error } = await supabase
           .from('global_event_participants')
@@ -56,6 +59,8 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
         setIsParticipating(!!data && data.status === 'attending');
       } catch (error) {
         console.error('Error checking participation:', error);
+      } finally {
+        setChecking(false);
       }
     };
 
@@ -105,7 +110,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
   }, [eventId, user?.id]);
 
   const toggleParticipation = async () => {
-    if (loading || !isValidUUID(eventId)) return;
+    if (loading || checking || !isValidUUID(eventId)) return;
 
     setLoading(true);
     
@@ -235,6 +240,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
     isParticipating,
     participantCount,
     loading,
+    checking,
     toggleParticipation
   };
 }

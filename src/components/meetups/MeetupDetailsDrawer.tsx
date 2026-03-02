@@ -183,7 +183,7 @@ export function MeetupDetailsDrawer({
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
-  const [isCheckingParticipation, setIsCheckingParticipation] = useState(false);
+  const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFollowLoading, setIsFollowLoading] = useState(false);
