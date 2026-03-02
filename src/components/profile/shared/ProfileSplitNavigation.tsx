@@ -57,7 +57,7 @@ export function ProfileSplitNavigation({
   const { user } = useAuth();
 
   // Resolve the correct user_id for DB queries (profile.id can be "current-user")
-  const profileUserId = profile.user_id || user?.id || profile.id;
+  const profileUserId = profile.user_id || profile.id || user?.id;
 
   // Milestones & Gallery hooks
   const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
