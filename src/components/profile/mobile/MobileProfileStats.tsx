@@ -23,7 +23,7 @@ export function MobileProfileStats({
   className
 }: MobileProfileStatsProps) {
   const { translate } = useTranslation();
-  const { postsCount, mediaCount, groupsCount, isLoading } = useProfileStatsCount(userId);
+  const { postsCount, mediaCount, groupsCount, isPending } = useProfileStatsCount(userId);
   const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profileId || userId);
   const followersCount = propFollowers ?? hookFollowers;
   const followingCount = propFollowing ?? hookFollowing;
@@ -78,7 +78,7 @@ export function MobileProfileStats({
               if (stat.key === "groups") setGroupListOpen(true);
             }}
           >
-            {stat.async && isLoading ? (
+            {stat.async && isPending ? (
               <Skeleton className="h-5 w-8 mb-0.5" />
             ) : (
               <span className="text-base font-semibold text-foreground">{formatCount(stat.value)}</span>

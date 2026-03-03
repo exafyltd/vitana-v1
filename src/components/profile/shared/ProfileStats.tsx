@@ -20,7 +20,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
   const followersCount = propFollowers ?? hookFollowers;
   const followingCount = propFollowing ?? hookFollowing;
   const { translate } = useTranslation();
-  const { postsCount, mediaCount, groupsCount, isLoading } = useProfileStatsCount(profileUserId);
+  const { postsCount, mediaCount, groupsCount, isPending } = useProfileStatsCount(profileUserId);
   const [groupListOpen, setGroupListOpen] = useState(false);
   const [followListType, setFollowListType] = useState<"followers" | "following" | null>(null);
   

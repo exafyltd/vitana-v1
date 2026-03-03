@@ -38,7 +38,7 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
           .rpc('get_user_follow_counts', { user_id_param: validTarget! });
         if (error) throw error;
         if (data && typeof data === 'object' && data !== null) {
-          const counts = data as FollowCounts;
+          const counts = data as unknown as FollowCounts;
           return { followers_count: counts.followers_count || 0, following_count: counts.following_count || 0 };
         }
       } catch {
