@@ -1,47 +1,48 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+## Problem: Language Toggle Broken on Landing Page
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+### Root Cause
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+The console logs show a clear fight loop:
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+```
+[LANG] Rule-based change: en-US          ← user clicks toggle
+[LANG] User not authenticated, skipping server sync  ← no server update (not logged in)
+[LANG] Syncing runtime language from preferences: de-DE  ← effect REVERTS it back
+```
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+The second `useEffect` on line 73-81 of `LanguageContext.tsx` watches `selectedLanguage` as a dependency. When the user (unauthenticated on the intro page) clicks the toggle:
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+1. `setSelectedLanguage('en-US')` fires → updates local state + localStorage
+2. But `preferences.stt_language` is still `de-DE` (server value, or stale cached value)
+3. The sync effect sees `preferences.stt_language !== selectedLanguage` → reverts to `de-DE`
+4. This triggers the toggle logic again → infinite loop
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+The sync effect was designed for logged-in users where preferences change externally, but it also fires for unauthenticated users on the landing page, overriding their local toggle.
+
+### Fix (1 file)
+
+**`src/contexts/LanguageContext.tsx`** — Guard the sync-back effect so it does NOT override local changes:
+
+1. **Skip sync when user is not authenticated** — add `if (!user) return;` at the top of the second `useEffect` (line 73). Unauthenticated users have no server preferences to sync from, so the effect should be a no-op.
+
+2. **Add a recency guard** — after `setSelectedLanguage` fires, set a timestamp (`lastLanguageChangeAt` state already exists). In the sync effect, skip if the last local change was less than 2 seconds ago, preventing the server echo from reverting a fresh user choice even for logged-in users.
+
+The combined guard on lines 73-81 becomes:
+```typescript
+useEffect(() => {
+  if (!user) return; // No server prefs for unauthenticated users
+  if (!hasInitializedFromServer || !preferences?.stt_language) return;
+  if (Date.now() - lastLanguageChangeAt < 2000) return; // Don't revert recent local changes
+
+  if (preferences.stt_language !== selectedLanguage) {
+    console.log('[LANG] Syncing runtime language from preferences:', preferences.stt_language);
+    setLocalLanguage(preferences.stt_language);
+    setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, preferences.stt_language);
+  }
+}, [user, hasInitializedFromServer, preferences?.stt_language, selectedLanguage, lastLanguageChangeAt]);
+```
+
+This is a 6-line change in one file. No other files need modification.
+
