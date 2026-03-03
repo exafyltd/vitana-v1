@@ -872,8 +872,16 @@ export function useGlobalMessages(
           const raw = payload.new as any;
           // Only handle messages for group threads we're part of
           if (!groupThreadIds.includes(raw.thread_id)) return;
-          // Skip our own messages (already handled optimistically)
-          if (raw.sender_id === user.id) return;
+
+          // Find the UI thread ID for this message
+          const uiThread = cachedThreads.find(
+            (t) => ((t as any)._legacyThreadId || t.id) === raw.thread_id
+          );
+          const uiThreadId = uiThread?.id || raw.thread_id;
+
+          // Skip if message already exists in cache (e.g. from optimistic update)
+          const currentMessages = queryClient.getQueryData<GlobalMessage[]>(["global-messages", uiThreadId]) || [];
+          if (currentMessages.some((m) => m.id === raw.id)) return;
 
           const profileMap = await enrichProfiles([raw.sender_id]);
           
