@@ -5,6 +5,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GroupListDialog } from "@/components/profile/GroupListDialog";
+import { FollowListDialog } from "@/components/profile/FollowListDialog";
 
 interface ProfileStatsProps {
   profile: UserProfile;
@@ -21,6 +22,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
   const { translate } = useTranslation();
   const { postsCount, mediaCount, groupsCount, isLoading } = useProfileStatsCount(profileUserId);
   const [groupListOpen, setGroupListOpen] = useState(false);
+  const [followListType, setFollowListType] = useState<"followers" | "following" | null>(null);
   
   return (
     <>
@@ -35,13 +37,19 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           )}
           <div className="text-sm text-muted-foreground">{translate('profileStats.posts', 'Posts')}</div>
         </div>
-        <div className="text-center">
+        <div
+          className="text-center cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => setFollowListType("followers")}
+        >
           <div className="text-2xl md:text-3xl font-bold text-foreground">
             {followersCount.toLocaleString()}
           </div>
           <div className="text-sm text-muted-foreground">{translate('profileStats.followers', 'Followers')}</div>
         </div>
-        <div className="text-center">
+        <div
+          className="text-center cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => setFollowListType("following")}
+        >
           <div className="text-2xl md:text-3xl font-bold text-foreground">
             {followingCount.toLocaleString()}
           </div>
@@ -71,6 +79,13 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           <div className="text-sm text-muted-foreground">{translate('profileStats.groups', 'Groups')}</div>
         </div>
       </div>
+
+      <FollowListDialog
+        open={followListType !== null}
+        onOpenChange={(open) => { if (!open) setFollowListType(null); }}
+        userId={profileUserId}
+        type={followListType || "followers"}
+      />
 
       <GroupListDialog
         open={groupListOpen}

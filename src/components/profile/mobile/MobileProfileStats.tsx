@@ -38,26 +38,28 @@ export function MobileProfileStats({
     return count.toString();
   };
 
-  if (isLoading) {
-    return (
-      <div className={cn("flex items-center justify-center py-2 gap-2", className)}>
-        <Skeleton className="h-4 w-16" />
-        <Skeleton className="h-4 w-16" />
-        <Skeleton className="h-4 w-16" />
-        <Skeleton className="h-4 w-16" />
-        <Skeleton className="h-4 w-16" />
-      </div>
-    );
-  }
-
   const targetId = profileId || userId || "";
 
+  // Stats that depend on useProfileStatsCount (may still be loading)
+  const asyncStats = [
+    { key: "posts", value: postsCount, label: translate('profileStats.posts', 'Posts'), clickable: false, async: true },
+    { key: "media", value: mediaCount, label: translate('profileStats.media', 'Media'), clickable: false, async: true },
+    { key: "groups", value: groupsCount, label: translate('profileStats.groups', 'Groups'), clickable: true, async: true },
+  ];
+
+  // Stats that are always available immediately (from useFollow or props)
+  const immediateStats = [
+    { key: "followers", value: followersCount, label: translate('profileStats.followers', 'Followers'), clickable: true, async: false },
+    { key: "following", value: followingCount, label: translate('profileStats.following', 'Following'), clickable: true, async: false },
+  ];
+
+  // Ordered display
   const stats = [
-    { key: "posts", value: postsCount, label: translate('profileStats.posts', 'Posts'), clickable: false },
-    { key: "followers", value: followersCount, label: translate('profileStats.followers', 'Followers'), clickable: true },
-    { key: "following", value: followingCount, label: translate('profileStats.following', 'Following'), clickable: true },
-    { key: "media", value: mediaCount, label: translate('profileStats.media', 'Media'), clickable: false },
-    { key: "groups", value: groupsCount, label: translate('profileStats.groups', 'Groups'), clickable: true },
+    asyncStats[0],   // posts
+    immediateStats[0], // followers
+    immediateStats[1], // following
+    asyncStats[1],   // media
+    asyncStats[2],   // groups
   ];
 
   return (
@@ -76,7 +78,11 @@ export function MobileProfileStats({
               if (stat.key === "groups") setGroupListOpen(true);
             }}
           >
-            <span className="text-base font-semibold text-foreground">{formatCount(stat.value)}</span>
+            {stat.async && isLoading ? (
+              <Skeleton className="h-5 w-8 mb-0.5" />
+            ) : (
+              <span className="text-base font-semibold text-foreground">{formatCount(stat.value)}</span>
+            )}
             <span className="text-[10px] text-muted-foreground">{stat.label}</span>
           </div>
         ))}
