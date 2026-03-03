@@ -367,7 +367,7 @@ const EventsAndMeetups = () => {
   const isMobile = useIsMobile();
   
   // Mobile defaults to "upcoming" since Today is often empty
-  const initialTab = searchParams.get('tab') || (isMobile ? 'upcoming' : 'today');
+  const initialTab = searchParams.get('tab') || 'hot';
   const [activeTab, setActiveTab] = useState(initialTab);
   const [focusedCardId, setFocusedCardId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -452,7 +452,7 @@ const EventsAndMeetups = () => {
   // Get all events from current tab
   const currentEvents = activeTab === "today" ? filteredTodayEvents : 
                         activeTab === "upcoming" ? filteredUpcomingEvents :
-                        activeTab === "recommended" ? maxinaEvents : [];
+                        activeTab === "hot" ? maxinaEvents : [];
   const visibleEventIds = useMemo(() => currentEvents.map(e => e.id), [currentEvents, activeTab]);
 
   // Track if we've initialized the tab from URL (prevents resetting on data refresh)
@@ -466,11 +466,11 @@ const EventsAndMeetups = () => {
     const eventParam = searchParams.get('event');
     const tabParam = searchParams.get('tab');
     const isMobileView = window.innerWidth < 768;
-    const validTabs = ['today', 'upcoming', 'following', 'recommended'];
+    const validTabs = ['hot', 'upcoming', 'today', 'following'];
     
     // On mobile, if no tab specified, set to upcoming
     if (isMobileView && !tabParam && !eventParam) {
-      setActiveTab('upcoming');
+      setActiveTab('hot');
       return;
     }
     
@@ -749,19 +749,19 @@ const EventsAndMeetups = () => {
           </UtilityActionButton>
 
           <div className="flex-1 overflow-y-auto">
-            <SplitBar defaultValue="today" value={activeTab} onValueChange={setActiveTab}>
+            <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList className={isMobile ? "mb-2" : undefined}>
-                <SplitBarTrigger value="today">
-                  ☀️ {translate('events.tabs.today', 'Today')}
+                <SplitBarTrigger value="hot">
+                  🔥 {translate('events.tabs.hot', 'Hot')}
                 </SplitBarTrigger>
                 <SplitBarTrigger value="upcoming">
                   📅 {translate('events.tabs.upcoming', 'Upcoming')}
                 </SplitBarTrigger>
+                <SplitBarTrigger value="today">
+                  ☀️ {translate('events.tabs.today', 'Today')}
+                </SplitBarTrigger>
                 <SplitBarTrigger value="following">
                   👥 {translate('events.tabs.following', 'Following')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="recommended">
-                  ✨ {translate('events.tabs.recommended', 'Recommended')}
                 </SplitBarTrigger>
               </SplitBarList>
 
