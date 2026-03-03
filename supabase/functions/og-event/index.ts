@@ -15,7 +15,7 @@ function isCrawler(userAgent: string): boolean {
 }
 
 function ensureAbsoluteUrl(url: string | null | undefined): string {
-  if (!url) return 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  if (!url) return 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   // Relative URLs should resolve to Supabase storage, not vitanaland.com
   if (url.startsWith('/storage/')) return `https://inmkhvwdcuyhnxkgfvsb.supabase.co${url}`;
