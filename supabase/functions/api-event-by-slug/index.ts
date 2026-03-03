@@ -1,0 +1,93 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+// Ensure image URL is absolute and NOT WebP
+function getOgImageUrl(url: string | null | undefined): string {
+  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  
+  if (!url) return defaultImage;
+
+  let imageUrl = url;
+
+  // Make absolute
+  if (!imageUrl.startsWith('http')) {
+    imageUrl = `https://inmkhvwdcuyhnxkgfvsb.supabase.co${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+  }
+
+  // Reject WebP — force JPEG via Supabase image transformation or strip extension
+  if (imageUrl.toLowerCase().includes('.webp')) {
+    // If it's a Supabase storage URL, use render/image endpoint with format=origin
+    if (imageUrl.includes('supabase.co/storage')) {
+      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
+      const separator = imageUrl.includes('?') ? '&' : '?';
+      imageUrl = `${imageUrl}${separator}format=origin`;
+    }
+  }
+
+  return imageUrl;
+}
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const url = new URL(req.url);
+    const slug = url.searchParams.get('slug');
+
+    if (!slug) {
+      return new Response(
+        JSON.stringify({ error: 'Missing slug parameter' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Use existing RPC to resolve event by slug
+    const { data, error } = await supabase.rpc('resolve_event_by_slug', { identifier: slug });
+
+    if (error || !data || (Array.isArray(data) && data.length === 0)) {
+      console.error('Event not found for slug:', slug, error);
+      return new Response(
+        JSON.stringify({ error: 'Event not found' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const event = Array.isArray(data) ? data[0] : data;
+
+    // Build short description from full description
+    const shortDescription = event.description
+      ? event.description.replace(/<[^>]*>/g, '').substring(0, 160).trim()
+      : '';
+
+    const response = {
+      title: event.title || '',
+      short_description: shortDescription,
+      image_url: getOgImageUrl(event.image_url),
+      event_id: event.id,
+    };
+
+    return new Response(JSON.stringify(response), {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=300, s-maxage=600',
+      },
+    });
+  } catch (err) {
+    console.error('api-event-by-slug error:', err);
+    return new Response(
+      JSON.stringify({ error: 'Internal server error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+});

@@ -525,11 +525,7 @@ export function MeetupDetailsDrawer({
   };
 
   // Share URL for the dialog
-  const shareUrl = getShareUrl('event', event.id, {
-    utm_source: 'event_details',
-    utm_medium: 'share_dialog',
-    slug: event.slug
-  });
+  const shareUrl = getShareUrl('event', event.id, { slug: event.slug });
 
   // Add to VITANA Smart Calendar (primary action)
   const handleAddToVitanaCalendar = async () => {
