@@ -454,7 +454,18 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessage[]> => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
 
-      // activeThreadId is the peer's user ID
+      // Check if this is a group thread - if so, skip gateway and use legacy directly
+      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+      const cachedThread = cachedThreads.find((t) => t.id === activeThreadId);
+      const isGroupThread = cachedThread?.type === 'group';
+
+      if (isGroupThread) {
+        // Group threads always use legacy messages
+        const legacyThreadId = (cachedThread as any)?._legacyThreadId || activeThreadId;
+        return fetchLegacyMessages(legacyThreadId);
+      }
+
+      // Direct threads: try gateway first
       let gatewayMessages: GlobalMessage[] = [];
       try {
         const rawMessages = await fetchConversation(activeThreadId);
@@ -468,7 +479,6 @@ export function useGlobalMessages(
         );
 
         // Enrich gateway messages with content_data from global_messages table
-        // (gateway API doesn't return content_data for attachments)
         const msgIds = gatewayMessages.map((m) => m.id);
         if (msgIds.length > 0) {
           const { data: dbMsgs } = await supabase
@@ -496,8 +506,6 @@ export function useGlobalMessages(
       if (gatewayMessages.length > 0) return gatewayMessages;
 
       // Fallback: check if there's a legacy thread for this peer
-      // Look up the legacy thread id from the threads cache
-      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
       const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
