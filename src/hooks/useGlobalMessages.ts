@@ -166,11 +166,66 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
 
     // 5. Build GlobalMessageThread objects
     return threadRows
-      .filter((t: any) => t.type === "direct") // only direct threads (group not supported by gateway)
       .map((t: any) => {
         const threadParticipants = (allParticipants || []).filter(
           (p: any) => p.thread_id === t.id
         );
+
+        // For group threads, use thread id directly
+        if (t.type === 'group') {
+          const enrichedParticipants = threadParticipants.map((p: any) => ({
+            user_id: p.user_id,
+            display_name: profileMap[p.user_id]?.display_name || "Unknown",
+            avatar_url: profileMap[p.user_id]?.avatar_url || null,
+            role: p.role || "member",
+            last_read_at: p.last_read_at,
+          }));
+
+          const lastMsg = lastMsgByThread[t.id];
+          const lastMessage: GlobalMessage | undefined = lastMsg
+            ? {
+                id: lastMsg.id,
+                thread_id: t.id,
+                sender_id: lastMsg.sender_id,
+                body: lastMsg.body,
+                message_type: lastMsg.message_type || "text",
+                content_data: lastMsg.content_data,
+                created_at: lastMsg.created_at,
+                updated_at: lastMsg.updated_at || lastMsg.created_at,
+                sender: profileMap[lastMsg.sender_id]
+                  ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
+                  : null,
+              }
+            : undefined;
+
+          const myParticipation = participations.find(
+            (p: any) => p.thread_id === t.id
+          );
+          const unreadCount =
+            lastMsg && myParticipation?.last_read_at
+              ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
+                ? 1
+                : 0
+              : lastMsg && lastMsg.sender_id !== userId
+              ? 1
+              : 0;
+
+          return {
+            id: t.id,
+            name: t.name,
+            type: "group" as const,
+            created_by: t.created_by,
+            created_at: t.created_at,
+            updated_at: lastMsg?.created_at || t.updated_at,
+            participants: enrichedParticipants,
+            last_message: lastMessage,
+            unread_count: unreadCount,
+            _legacyThreadId: t.id,
+            _metadata: t.metadata,
+          } as GlobalMessageThread & { _legacyThreadId: string; _metadata?: any };
+        }
+
+        // Direct threads: use peer user_id as thread id
         const otherParticipant = threadParticipants.find(
           (p: any) => p.user_id !== userId
         );
