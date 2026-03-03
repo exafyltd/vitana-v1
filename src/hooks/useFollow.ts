@@ -1,9 +1,17 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useRealtimeConnection } from "./useRealtimeConnection";
 import { measurePerformance } from "@/utils/performanceLogger";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { isValidUUID } from "@/lib/resolveProfileUserId";
+import { useEffect } from "react";
+
+interface FollowCounts {
+  followers_count: number;
+  following_count: number;
+}
 
 interface UseFollowReturn {
   isFollowing: boolean;
@@ -14,326 +22,194 @@ interface UseFollowReturn {
   unfollowUser: () => Promise<void>;
 }
 
-export function useFollow(targetUserId: string): UseFollowReturn {
+export function useFollow(targetUserId: string | undefined): UseFollowReturn {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [followersCount, setFollowersCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const validTarget = isValidUUID(targetUserId) ? targetUserId : undefined;
+  const validViewer = isValidUUID(user?.id) ? user!.id : undefined;
 
-  // Fetch follow status and counts - extracted as reusable function
-  const fetchFollowData = useCallback(async () => {
-    if (!user || !targetUserId) return;
-    
-    try {
-      // Get follow status
-      const { data: statusData, error: statusError } = await supabase
-        .rpc('get_follow_status', { target_user_id: targetUserId });
-
-      if (statusError) throw statusError;
-      setIsFollowing(statusData || false);
-
-      // Get follow counts with fallback
+  // ─── Query 1: Follow counts ───
+  const countsQuery = useQuery({
+    queryKey: ['follow-counts', validTarget],
+    queryFn: async (): Promise<FollowCounts> => {
       try {
-        const { data: countsData, error: countsError } = await supabase
-          .rpc('get_user_follow_counts', { user_id_param: targetUserId });
-
-        if (countsError) throw countsError;
-        if (countsData && typeof countsData === 'object' && countsData !== null) {
-          const counts = countsData as { followers_count: number; following_count: number };
-          setFollowersCount(counts.followers_count || 0);
-          setFollowingCount(counts.following_count || 0);
+        const { data, error } = await supabase
+          .rpc('get_user_follow_counts', { user_id_param: validTarget! });
+        if (error) throw error;
+        if (data && typeof data === 'object' && data !== null) {
+          const counts = data as FollowCounts;
+          return { followers_count: counts.followers_count || 0, following_count: counts.following_count || 0 };
         }
-      } catch (countsError) {
-        console.warn('RPC call failed, using direct query fallback:', countsError);
-        // Fallback: Query user_follows table directly
-        const { count: followersCount } = await supabase
-          .from('user_follows')
-          .select('*', { count: 'exact', head: true })
-          .eq('following_id', targetUserId);
-
-        const { count: followingCount } = await supabase
-          .from('user_follows')
-          .select('*', { count: 'exact', head: true })
-          .eq('follower_id', targetUserId);
-
-        setFollowersCount(followersCount || 0);
-        setFollowingCount(followingCount || 0);
+      } catch {
+        // Fallback: direct count queries
+        const [followersRes, followingRes] = await Promise.all([
+          supabase.from('user_follows').select('*', { count: 'exact', head: true }).eq('following_id', validTarget!),
+          supabase.from('user_follows').select('*', { count: 'exact', head: true }).eq('follower_id', validTarget!),
+        ]);
+        return {
+          followers_count: followersRes.count ?? 0,
+          following_count: followingRes.count ?? 0,
+        };
       }
-    } catch (error) {
-      console.error('Error fetching follow data:', error);
-    }
-  }, [user, targetUserId]);
+      return { followers_count: 0, following_count: 0 };
+    },
+    enabled: !!validTarget,
+    staleTime: 30_000,
+  });
 
-  // Fetch initial follow status and counts
+  // ─── Query 2: Follow status (does viewer follow target?) ───
+  const statusQuery = useQuery({
+    queryKey: ['follow-status', validViewer, validTarget],
+    queryFn: async (): Promise<boolean> => {
+      const { data, error } = await supabase
+        .rpc('get_follow_status', { target_user_id: validTarget! });
+      if (error) throw error;
+      return data || false;
+    },
+    enabled: !!validViewer && !!validTarget && validViewer !== validTarget,
+    staleTime: 30_000,
+  });
+
+  // ─── Realtime: invalidate on changes ───
   useEffect(() => {
-    fetchFollowData();
-  }, [fetchFollowData]);
+    if (!validTarget) return;
 
-  // Real-time subscriptions for follow changes
-  useEffect(() => {
-    if (!user || !targetUserId) return;
-
-    // SUBSCRIPTION 1: Watch target user's followers (when OTHERS follow them)
-    const targetFollowersChannel = supabase
-      .channel(`target-followers-${targetUserId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'user_follows',
-          filter: `following_id=eq.${targetUserId}`,
-        },
-        async (payload) => {
-          console.log('🔔 Target user follower change:', payload);
-          
-          try {
-            // Refresh follow counts for target user
-            const { data: countsData, error } = await supabase
-              .rpc('get_user_follow_counts', { user_id_param: targetUserId });
-            
-            if (error) throw error;
-            
-            if (countsData && typeof countsData === 'object' && countsData !== null) {
-              const counts = countsData as { followers_count: number; following_count: number };
-              console.log('📊 Updated follower counts:', counts);
-              setFollowersCount(counts.followers_count || 0);
-              setFollowingCount(counts.following_count || 0);
-            }
-            
-            // Also refresh follow status if current user was involved
-            const newFollowerId = (payload.new as any)?.follower_id;
-            const oldFollowerId = (payload.old as any)?.follower_id;
-            if (newFollowerId === user.id || oldFollowerId === user.id) {
-              const { data: statusData } = await supabase
-                .rpc('get_follow_status', { target_user_id: targetUserId });
-              setIsFollowing(statusData || false);
-            }
-          } catch (error) {
-            console.warn('⚠️ Error in real-time handler, refetching data:', error);
-            await fetchFollowData();
-          }
+    const channel = supabase
+      .channel(`follow-rt-${validTarget}`)
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'user_follows',
+        filter: `following_id=eq.${validTarget}`,
+      }, () => {
+        queryClient.invalidateQueries({ queryKey: ['follow-counts', validTarget] });
+        if (validViewer) {
+          queryClient.invalidateQueries({ queryKey: ['follow-status', validViewer, validTarget] });
         }
-      )
-      .subscribe((status) => {
-        console.log('🔌 Target followers channel status:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Successfully subscribed to target followers updates');
-        } else if (status === 'TIMED_OUT') {
-          console.error('⏱️ Target followers subscription timed out');
-        } else if (status === 'CLOSED') {
-          console.log('🔴 Target followers subscription closed');
-        }
-      });
+      })
+      .subscribe();
 
-    // SUBSCRIPTION 2: Watch current user's following list (when YOU follow someone)
-    const currentUserFollowingChannel = supabase
-      .channel(`current-user-following-${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'user_follows',
-          filter: `follower_id=eq.${user.id}`,
-        },
-        async (payload) => {
-          console.log('🔔 You followed/unfollowed someone:', payload);
-          
-          // Only update if this change is relevant to the current target user
-          const newFollowingId = (payload.new as any)?.following_id;
-          const oldFollowingId = (payload.old as any)?.following_id;
-          const isRelevant = 
-            newFollowingId === targetUserId || 
-            oldFollowingId === targetUserId;
-          
-          if (isRelevant) {
-            console.log('🎯 Change affects target user, updating...');
-            try {
-              // Refresh follow status immediately
-              const { data: statusData } = await supabase
-                .rpc('get_follow_status', { target_user_id: targetUserId });
-              setIsFollowing(statusData || false);
-              
-              // Refresh counts
-              const { data: countsData, error } = await supabase
-                .rpc('get_user_follow_counts', { user_id_param: targetUserId });
-              
-              if (error) throw error;
-              
-              if (countsData && typeof countsData === 'object' && countsData !== null) {
-                const counts = countsData as { followers_count: number; following_count: number };
-                console.log('📊 Updated counts for target:', counts);
-                setFollowersCount(counts.followers_count || 0);
-                setFollowingCount(counts.following_count || 0);
-              }
-            } catch (error) {
-              console.warn('⚠️ Error in real-time handler, refetching data:', error);
-              await fetchFollowData();
-            }
-          }
-        }
-      )
-      .subscribe((status) => {
-        console.log('🔌 Current user following channel status:', status);
-        if (status === 'SUBSCRIBED') {
-          console.log('✅ Successfully subscribed to current user following updates');
-        } else if (status === 'TIMED_OUT') {
-          console.error('⏱️ Current user following subscription timed out');
-        } else if (status === 'CLOSED') {
-          console.log('🔴 Current user following subscription closed');
-        }
-      });
+    return () => { supabase.removeChannel(channel); };
+  }, [validTarget, validViewer, queryClient]);
 
-    return () => {
-      supabase.removeChannel(targetFollowersChannel);
-      supabase.removeChannel(currentUserFollowingChannel);
-    };
-  }, [user, targetUserId]);
-
-  // Smart fallback polling when real-time is disconnected
+  // ─── Fallback polling when realtime disconnected ───
   const { isConnected } = useRealtimeConnection();
 
   useEffect(() => {
-    if (isConnected || !user || !targetUserId) return; // Real-time working, no polling needed
-
-    console.warn('⚠️ Real-time disconnected, activating follow fallback polling');
-
-    // Poll every 10 seconds when disconnected
+    if (isConnected || !validTarget) return;
     const interval = setInterval(() => {
-      console.log('🔄 Polling follow data (fallback mode)');
-      fetchFollowData();
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [isConnected, user, targetUserId, fetchFollowData]);
-
-  const followUser = async () => {
-    const perf = measurePerformance('followUser');
-    
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to follow users",
-        variant: "destructive",
-      });
-      perf.end({ success: false, reason: 'not_authenticated' });
-      return;
-    }
-
-    if (user.id === targetUserId) {
-      toast({
-        title: "Invalid action",
-        description: "You cannot follow yourself",
-        variant: "destructive",
-      });
-      perf.end({ success: false, reason: 'self_follow' });
-      return;
-    }
-
-    setLoading(true);
-    // Optimistic update
-    setIsFollowing(true);
-    setFollowersCount(prev => prev + 1);
-
-    try {
-      const { data, error } = await supabase
-        .rpc('follow_user', { target_user_id: targetUserId });
-
-      if (error) throw error;
-
-      const result = data as { success: boolean; error?: string } | null;
-      if (!result?.success) {
-        throw new Error(result?.error || 'Failed to follow user');
+      queryClient.invalidateQueries({ queryKey: ['follow-counts', validTarget] });
+      if (validViewer) {
+        queryClient.invalidateQueries({ queryKey: ['follow-status', validViewer, validTarget] });
       }
+    }, 10_000);
+    return () => clearInterval(interval);
+  }, [isConnected, validTarget, validViewer, queryClient]);
 
-      toast({
-        title: "Success",
-        description: "You are now following this user",
-      });
-      
+  // ─── Mutations with optimistic updates ───
+  const followMutation = useMutation({
+    mutationFn: async () => {
+      const perf = measurePerformance('followUser');
+      const { data, error } = await supabase.rpc('follow_user', { target_user_id: validTarget! });
+      if (error) { perf.end({ success: false }); throw error; }
+      const result = data as { success: boolean; error?: string } | null;
+      if (!result?.success) { perf.end({ success: false }); throw new Error(result?.error || 'Failed to follow'); }
+      perf.end({ success: true });
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['follow-counts', validTarget] });
+      await queryClient.cancelQueries({ queryKey: ['follow-status', validViewer, validTarget] });
+      const prevCounts = queryClient.getQueryData<FollowCounts>(['follow-counts', validTarget]);
+      const prevStatus = queryClient.getQueryData<boolean>(['follow-status', validViewer, validTarget]);
+      queryClient.setQueryData(['follow-status', validViewer, validTarget], true);
+      queryClient.setQueryData(['follow-counts', validTarget], (old: FollowCounts | undefined) => ({
+        followers_count: (old?.followers_count ?? 0) + 1,
+        following_count: old?.following_count ?? 0,
+      }));
+      return { prevCounts, prevStatus };
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.prevCounts) queryClient.setQueryData(['follow-counts', validTarget], context.prevCounts);
+      if (context?.prevStatus !== undefined) queryClient.setQueryData(['follow-status', validViewer, validTarget], context.prevStatus);
+      toast({ title: "Error", description: "Failed to follow user", variant: "destructive" });
+    },
+    onSuccess: () => {
+      toast({ title: "Success", description: "You are now following this user" });
       // Log follow activity
       import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
         const { logFollow } = useCommunityLogger();
-        logFollow(targetUserId, 'User');
+        logFollow(validTarget!, 'User');
       });
-      
-      perf.end({ success: true, targetUserId });
-    } catch (error: any) {
-      // Rollback optimistic update
-      setIsFollowing(false);
-      setFollowersCount(prev => Math.max(0, prev - 1));
-      
-      toast({
-        title: "Error",
-        description: error.message || "Failed to follow user",
-        variant: "destructive",
-      });
-      
-      perf.end({ success: false, error: error.message });
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['follow-counts', validTarget] });
+      queryClient.invalidateQueries({ queryKey: ['follow-status', validViewer, validTarget] });
+    },
+  });
 
-  const unfollowUser = async () => {
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to unfollow users",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setLoading(true);
-    // Optimistic update
-    setIsFollowing(false);
-    setFollowersCount(prev => Math.max(0, prev - 1));
-
-    try {
-      const { data, error } = await supabase
-        .rpc('unfollow_user', { target_user_id: targetUserId });
-
+  const unfollowMutation = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.rpc('unfollow_user', { target_user_id: validTarget! });
       if (error) throw error;
-
       const result = data as { success: boolean; error?: string } | null;
-      if (!result?.success) {
-        throw new Error(result?.error || 'Failed to unfollow user');
-      }
-
-      toast({
-        title: "Success",
-        description: "You have unfollowed this user",
-      });
-      
-      // Log unfollow activity
+      if (!result?.success) throw new Error(result?.error || 'Failed to unfollow');
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['follow-counts', validTarget] });
+      await queryClient.cancelQueries({ queryKey: ['follow-status', validViewer, validTarget] });
+      const prevCounts = queryClient.getQueryData<FollowCounts>(['follow-counts', validTarget]);
+      const prevStatus = queryClient.getQueryData<boolean>(['follow-status', validViewer, validTarget]);
+      queryClient.setQueryData(['follow-status', validViewer, validTarget], false);
+      queryClient.setQueryData(['follow-counts', validTarget], (old: FollowCounts | undefined) => ({
+        followers_count: Math.max(0, (old?.followers_count ?? 0) - 1),
+        following_count: old?.following_count ?? 0,
+      }));
+      return { prevCounts, prevStatus };
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.prevCounts) queryClient.setQueryData(['follow-counts', validTarget], context.prevCounts);
+      if (context?.prevStatus !== undefined) queryClient.setQueryData(['follow-status', validViewer, validTarget], context.prevStatus);
+      toast({ title: "Error", description: "Failed to unfollow user", variant: "destructive" });
+    },
+    onSuccess: () => {
+      toast({ title: "Success", description: "You have unfollowed this user" });
       import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
         const { logUnfollow } = useCommunityLogger();
-        logUnfollow(targetUserId, 'User');
+        logUnfollow(validTarget!, 'User');
       });
-    } catch (error: any) {
-      // Rollback optimistic update
-      setIsFollowing(true);
-      setFollowersCount(prev => prev + 1);
-      
-      toast({
-        title: "Error",
-        description: error.message || "Failed to unfollow user",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['follow-counts', validTarget] });
+      queryClient.invalidateQueries({ queryKey: ['follow-status', validViewer, validTarget] });
+    },
+  });
+
+  const followUser = useCallback(async () => {
+    if (!validViewer) {
+      toast({ title: "Authentication required", description: "Please sign in to follow users", variant: "destructive" });
+      return;
     }
-  };
+    if (validViewer === validTarget) {
+      toast({ title: "Invalid action", description: "You cannot follow yourself", variant: "destructive" });
+      return;
+    }
+    await followMutation.mutateAsync();
+  }, [validViewer, validTarget, followMutation, toast]);
+
+  const unfollowUser = useCallback(async () => {
+    if (!validViewer) {
+      toast({ title: "Authentication required", description: "Please sign in to unfollow users", variant: "destructive" });
+      return;
+    }
+    await unfollowMutation.mutateAsync();
+  }, [validViewer, unfollowMutation, toast]);
 
   return {
-    isFollowing,
-    followersCount,
-    followingCount,
-    loading,
+    isFollowing: statusQuery.data ?? false,
+    followersCount: countsQuery.data?.followers_count ?? 0,
+    followingCount: countsQuery.data?.following_count ?? 0,
+    loading: followMutation.isPending || unfollowMutation.isPending,
     followUser,
     unfollowUser,
   };
