@@ -6,12 +6,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 interface ProfileStatsProps {
   profile: UserProfile;
+  profileUserId?: string;
   followersCount?: number;
   followingCount?: number;
 }
 
-export function ProfileStats({ profile, followersCount: propFollowers, followingCount: propFollowing }: ProfileStatsProps) {
-  const profileUserId = profile.user_id || profile.id;
+export function ProfileStats({ profile, profileUserId: propUserId, followersCount: propFollowers, followingCount: propFollowing }: ProfileStatsProps) {
+  const profileUserId = propUserId || profile.user_id || profile.id;
   const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profile.id);
   const followersCount = propFollowers ?? hookFollowers;
   const followingCount = propFollowing ?? hookFollowing;

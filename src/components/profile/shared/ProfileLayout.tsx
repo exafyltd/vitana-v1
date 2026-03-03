@@ -393,7 +393,7 @@ export function ProfileLayout({
         </div>
         
         <div className="mt-2">
-          <ProfileStats profile={profile} followersCount={followersCount} followingCount={followingCount} />
+          <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
         </div>
         
         {/* Main Profile Content - Unified spacing container */}
