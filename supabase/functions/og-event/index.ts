@@ -17,24 +17,26 @@ function isCrawler(userAgent: string): boolean {
 function ensureAbsoluteUrl(url: string | null | undefined): string {
   if (!url) return 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  if (url.startsWith('/')) return `https://vitanaland.com${url}`;
-  return `https://vitanaland.com/${url}`;
+  // Relative URLs should resolve to Supabase storage, not vitanaland.com
+  if (url.startsWith('/storage/')) return `https://inmkhvwdcuyhnxkgfvsb.supabase.co${url}`;
+  if (url.startsWith('/')) return `https://inmkhvwdcuyhnxkgfvsb.supabase.co${url}`;
+  return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/${url}`;
 }
 
-// Ensure image is NOT WebP for OG compatibility
+// Ensure image is NOT WebP for OG compatibility — force JPEG transcoding
 function getOptimizedImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   if (!url) return defaultImage;
 
   let imageUrl = ensureAbsoluteUrl(url);
 
-  // Reject WebP — crawlers need JPEG/PNG
-  if (imageUrl.toLowerCase().includes('.webp')) {
-    if (imageUrl.includes('supabase.co/storage')) {
-      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
-      const separator = imageUrl.includes('?') ? '&' : '?';
-      imageUrl = `${imageUrl}${separator}format=origin`;
-    }
+  // For ALL Supabase storage images, use render endpoint for consistent format
+  if (imageUrl.includes('supabase.co/storage')) {
+    // Convert to render endpoint for image transformation
+    imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
+    // Strip any existing query params and force JPEG at 1200px width
+    const baseUrl = imageUrl.split('?')[0];
+    imageUrl = `${baseUrl}?width=1200&format=jpeg`;
   }
 
   return imageUrl;
@@ -42,7 +44,18 @@ function getOptimizedImageUrl(url: string | null | undefined): string {
 
 function sanitizeText(text: string | null | undefined): string {
   if (!text) return '';
-  return text.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').substring(0, 160);
+  return text
+    .replace(/<[^>]*>/g, '')           // Strip HTML tags
+    .replace(/[\r\n]+/g, ' ')          // Strip newlines
+    .replace(/\u201C|\u201D/g, '"')    // Curly double quotes → straight
+    .replace(/\u2018|\u2019/g, "'")    // Curly single quotes → straight
+    .replace(/`/g, "'")               // Backticks → straight quote
+    .replace(/&/g, '&amp;')           // Escape ampersand
+    .replace(/"/g, '&quot;')          // Escape double quotes
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .trim()
+    .substring(0, 160);
 }
 
 function getImageMimeType(url: string): string {

@@ -1,80 +1,47 @@
+## Cloudflare Worker OG Handling — Implementation Complete
 
+### Summary
+Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-## Fix OG Event Image + Sanitize + Cloudflare Worker Guidance
+### What Was Done
 
-### Verified: og-event works correctly
-Direct test confirms: `GET /functions/v1/og-event?slug=zugspitze-hikers-reunion-trail-friends` with `User-Agent: facebookexternalhit/1.1` returns correct OG HTML with event title, JPEG image URL, and canonical URL. **The edge function is working.**
+#### 1. Database: Unique Slug Constraint + Auto-Generation
+- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
+- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
+- Trigger fires on INSERT/UPDATE of `global_community_events`
 
-### Root cause: Cloudflare Worker is not proxying crawler requests
-Meta Sharing Debugger scrapes `vitanaland.com/e/{slug}` and gets the SPA's `index.html` (with generic "VITANA - Longevity Community" OG tags) instead of the og-event response. This means **your Cloudflare Worker is either not deployed or is serving the SPA fallback for all requests**.
+#### 2. New Edge Function: `api-event-by-slug`
+- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
+- **Returns:** `{ title, short_description, image_url, event_id }`
+- Uses `resolve_event_by_slug` RPC
+- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
+- No auth required, cached 5min client / 10min CDN
 
-### Changes needed
+#### 3. Updated `og-event` Edge Function
+- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
+- Canonical URL: `https://vitanaland.com/e/{slug}`
+- Image MIME type never returns `image/webp`
+- WebP images auto-converted via Supabase render endpoint
 
-#### 1. Fix `og-event` — WebP→JPEG + sanitize curly quotes
-**File:** `supabase/functions/og-event/index.ts`
-- `getOptimizedImageUrl`: Change `format=origin` → `width=1200&format=jpeg` (forces actual transcoding)
-- `sanitizeText`: Strip HTML tags, replace `\u201C`/`\u201D` (curly double quotes) and `\u2018`/`\u2019` (curly single quotes) with safe equivalents, strip newlines, escape `&`
-- `ensureAbsoluteUrl`: Fix relative URLs to use Supabase storage base (not vitanaland.com)
+#### 4. Share URLs — Canonical Only
+- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
+- `getCleanEventUrl()` → same canonical base
+- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
 
-#### 2. Fix `api-event-by-slug` — same WebP + sanitize fix
-**File:** `supabase/functions/api-event-by-slug/index.ts`
-- `getOgImageUrl`: Change `format=origin` → `width=1200&format=jpeg`
-- `shortDescription`: Strip HTML, normalize curly quotes, trim newlines
+### Cloudflare Worker Integration
+Your Cloudflare Worker at `vitanaland.com/e/*` should:
+1. Detect crawler via User-Agent
+2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
+3. **Human:** Pass through to SPA (serve index.html)
 
-#### 3. Cloudflare Worker — CRITICAL (your side)
-Your Cloudflare Worker at `vitanaland.com/e/*` must proxy crawler requests to `og-event`. Here's the exact Worker code:
-
-```text
-// Cloudflare Worker for vitanaland.com/e/*
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    
-    // Only handle /e/{slug} routes
-    const match = url.pathname.match(/^\/e\/([^\/]+)$/);
-    if (!match) return fetch(request);
-    
-    const slug = match[1];
-    const ua = request.headers.get('user-agent') || '';
-    
-    // Detect crawlers
-    const isCrawler = /facebookexternalhit|Facebot|WhatsApp|Twitterbot|LinkedInBot|Slackbot|TelegramBot|Discordbot|redditbot/i.test(ua);
-    
-    if (isCrawler) {
-      // Proxy to og-event edge function
-      const ogUrl = `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`;
-      const ogResponse = await fetch(ogUrl, {
-        headers: { 'User-Agent': ua }
-      });
-      
-      // Return OG HTML with correct Content-Type
-      const html = await ogResponse.text();
-      return new Response(html, {
-        status: 200,
-        headers: {
-          'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'public, max-age=3600',
-        }
-      });
-    }
-    
-    // Human users: serve SPA (pass through to origin)
-    return fetch(request);
-  }
-};
-```
-
-**Key point**: The Worker MUST explicitly set `Content-Type: text/html; charset=utf-8` on the proxied response, because Supabase edge functions may return `text/plain` which Facebook ignores.
-
-### Files changed
-| File | Change |
+### Files
+| File | Action |
 |------|--------|
-| `supabase/functions/og-event/index.ts` | WebP→JPEG (`format=jpeg`), sanitize curly quotes + newlines, fix relative URLs |
-| `supabase/functions/api-event-by-slug/index.ts` | WebP→JPEG, sanitize description |
-
-### Acceptance verification
-After deploying both edge functions AND updating the Cloudflare Worker:
-1. Test: `https://developers.facebook.com/tools/debug/` with `https://vitanaland.com/e/zugspitze-hikers-reunion-trail-friends`
-2. Expected: og:title = "Zugspitze Hikers Reunion – Trail Friends", og:image = .jpg URL, og:description clean
-3. WhatsApp: Share the URL, preview should show event image + title
-
+| `supabase/functions/api-event-by-slug/index.ts` | Created |
+| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
+| `supabase/config.toml` | Added `api-event-by-slug` |
+| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
+| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
+| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
+| Migration | Unique slug index + auto-slug trigger |
