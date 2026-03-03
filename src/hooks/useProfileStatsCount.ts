@@ -51,8 +51,8 @@ export function useProfileStatsCount(userId?: string): ProfileStatsCountResult {
       }
 
       const groupIds = new Set<string>();
-      const membershipRows = (membershipsRes.data ?? []) as Array<{ group_id: string | null }>;
-      const createdRows = (createdGroupsRes.data ?? []) as Array<{ id: string | null }>;
+      const membershipRows = ((membershipsRes.data ?? []) as unknown) as Array<{ group_id: string | null }>;
+      const createdRows = ((createdGroupsRes.data ?? []) as unknown) as Array<{ id: string | null }>;
 
       membershipRows.forEach((row) => {
         if (row.group_id) groupIds.add(row.group_id);
