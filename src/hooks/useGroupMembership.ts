@@ -14,6 +14,16 @@ export function useGroupMembership(groupId?: string) {
     queryFn: async () => {
       if (!groupId || !userId) return false;
 
+      const { data: groupMeta, error: groupMetaError } = await supabase
+        .from('global_community_groups')
+        .select('created_by')
+        .eq('id', groupId)
+        .maybeSingle();
+
+      if (!groupMetaError && groupMeta?.created_by === userId) {
+        return true;
+      }
+
       const { count, error } = await supabase
         .from('global_community_group_members')
         .select('id', { count: 'exact', head: true })
