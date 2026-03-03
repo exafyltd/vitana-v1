@@ -25,47 +25,25 @@ export function useProfileStatsCount(userId?: string): ProfileStatsCountResult {
           .eq('user_id', userId),
         supabase
           .from('global_community_group_members' as any)
-          .select('group_id')
+          .select('id', { count: 'exact', head: true })
           .eq('user_id', userId),
         supabase
           .from('global_community_groups' as any)
-          .select('id')
+          .select('id', { count: 'exact', head: true })
           .eq('created_by', userId)
           .eq('status', 'approved'),
       ]);
 
-      if (postsRes.error) {
-        console.error('[useProfileStatsCount] posts count error:', postsRes.error);
-      }
-
-      if (galleryRes.error) {
-        console.error('[useProfileStatsCount] media count error:', galleryRes.error);
-      }
-
-      if (membershipsRes.error) {
-        console.error('[useProfileStatsCount] memberships fetch error:', membershipsRes.error);
-      }
-
-      if (createdGroupsRes.error) {
-        console.error('[useProfileStatsCount] created groups fetch error:', createdGroupsRes.error);
-      }
-
-      const groupIds = new Set<string>();
-      const membershipRows = ((membershipsRes.data ?? []) as unknown) as Array<{ group_id: string | null }>;
-      const createdRows = ((createdGroupsRes.data ?? []) as unknown) as Array<{ id: string | null }>;
-
-      membershipRows.forEach((row) => {
-        if (row.group_id) groupIds.add(row.group_id);
-      });
-
-      createdRows.forEach((row) => {
-        if (row.id) groupIds.add(row.id);
-      });
+      // Use the larger of the two counts as a fast approximation
+      // (creators are typically also members, so memberships usually >= created)
+      const membershipCount = membershipsRes.count ?? 0;
+      const createdCount = createdGroupsRes.count ?? 0;
+      const groupsCount = Math.max(membershipCount, createdCount);
 
       return {
         postsCount: postsRes.count ?? 0,
         mediaCount: galleryRes.count ?? 0,
-        groupsCount: groupIds.size,
+        groupsCount,
       };
     },
     enabled: !!userId,
