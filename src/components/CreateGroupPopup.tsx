@@ -85,6 +85,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
       if (memberError) {
         console.error('[CreateGroup] member insert error:', memberError);
+        throw memberError;
       }
 
       // Invalidate caches

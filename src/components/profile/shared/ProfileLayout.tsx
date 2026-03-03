@@ -222,6 +222,9 @@ export function ProfileLayout({
         {/* Compact Stats Strip */}
         <MobileProfileStats
           userId={profileUserId}
+          profileId={profile.id}
+          followersCount={followersCount}
+          followingCount={followingCount}
         />
         
         {/* Sticky Tab Bar for content below ID card */}
@@ -393,7 +396,7 @@ export function ProfileLayout({
         </div>
         
         <div className="mt-2">
-          <ProfileStats profile={profile} followersCount={followersCount} followingCount={followingCount} />
+          <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
         </div>
         
         {/* Main Profile Content - Unified spacing container */}
