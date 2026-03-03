@@ -4,30 +4,35 @@ import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 
 export function useGroupMembership(groupId?: string) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const userId = user?.id;
 
-  const { data: isMember = false, isLoading: checkingMembership } = useQuery({
+  const membershipQuery = useQuery({
     queryKey: ['group-membership', groupId, userId],
     queryFn: async () => {
       if (!groupId || !userId) return false;
-      const { data, error } = await supabase
+
+      const { count, error } = await supabase
         .from('global_community_group_members')
-        .select('id')
+        .select('id', { count: 'exact', head: true })
         .eq('group_id', groupId)
-        .eq('user_id', userId)
-        .maybeSingle();
+        .eq('user_id', userId);
+
       if (error) {
         console.error('[useGroupMembership] check error:', error);
         return false;
       }
-      return !!data;
+
+      return (count ?? 0) > 0;
     },
-    enabled: !!groupId && !!userId,
+    enabled: !!groupId && !!userId && !authLoading,
     staleTime: 30_000,
   });
+
+  const isMember = membershipQuery.data ?? false;
+  const checkingMembership = authLoading || membershipQuery.isLoading;
 
   const invalidateAll = () => {
     queryClient.invalidateQueries({ queryKey: ['group-membership', groupId] });

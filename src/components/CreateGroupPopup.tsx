@@ -74,18 +74,28 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
 
       if (groupError) throw groupError;
 
-      // Add creator as admin member
-      const { error: memberError } = await supabase
+      // Ensure creator is a member (trigger should do this, fallback for safety)
+      const { count: existingMembershipCount, error: membershipCheckError } = await supabase
         .from('global_community_group_members')
-        .insert({
-          group_id: newGroup.id,
-          user_id: user.id,
-          role: 'admin',
-        });
+        .select('id', { count: 'exact', head: true })
+        .eq('group_id', newGroup.id)
+        .eq('user_id', user.id);
 
-      if (memberError) {
-        console.error('[CreateGroup] member insert error:', memberError);
-        throw memberError;
+      if (membershipCheckError) throw membershipCheckError;
+
+      if ((existingMembershipCount ?? 0) === 0) {
+        const { error: memberError } = await supabase
+          .from('global_community_group_members')
+          .insert({
+            group_id: newGroup.id,
+            user_id: user.id,
+            role: 'admin',
+          });
+
+        if (memberError) {
+          console.error('[CreateGroup] member insert error:', memberError);
+          throw memberError;
+        }
       }
 
       // Invalidate caches
