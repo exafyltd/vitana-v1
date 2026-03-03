@@ -678,6 +678,11 @@ export function useGlobalMessages(
         return realMsg;
       } catch (error) {
         console.error("Error sending chat message:", error);
+        // Rollback optimistic message so ghost messages don't linger
+        updateMessagesOptimistically(threadId, (prev) =>
+          prev.filter((m) => !m.id.startsWith("temp-"))
+        );
+        messageCache.removeMessage?.(threadId, "global", `temp-`);
         throw error;
       } finally {
         setIsSending(false);
