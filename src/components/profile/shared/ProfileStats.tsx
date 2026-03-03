@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { useFollow } from "@/hooks/useFollow";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
 import { Skeleton } from "@/components/ui/skeleton";
+import { GroupListDialog } from "@/components/profile/GroupListDialog";
 
 interface ProfileStatsProps {
   profile: UserProfile;
@@ -18,51 +20,63 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
   const followingCount = propFollowing ?? hookFollowing;
   const { translate } = useTranslation();
   const { postsCount, mediaCount, groupsCount, isLoading } = useProfileStatsCount(profileUserId);
+  const [groupListOpen, setGroupListOpen] = useState(false);
   
   return (
-    <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
-      <div className="text-center">
-        {isLoading ? (
-          <Skeleton className="h-8 w-10 mx-auto mb-1" />
-        ) : (
-          <div className="text-2xl md:text-3xl font-bold text-foreground">
-            {postsCount.toLocaleString()}
-          </div>
-        )}
-        <div className="text-sm text-muted-foreground">{translate('profileStats.posts', 'Posts')}</div>
-      </div>
-      <div className="text-center">
-        <div className="text-2xl md:text-3xl font-bold text-foreground">
-          {followersCount.toLocaleString()}
+    <>
+      <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
+        <div className="text-center">
+          {isLoading ? (
+            <Skeleton className="h-8 w-10 mx-auto mb-1" />
+          ) : (
+            <div className="text-2xl md:text-3xl font-bold text-foreground">
+              {postsCount.toLocaleString()}
+            </div>
+          )}
+          <div className="text-sm text-muted-foreground">{translate('profileStats.posts', 'Posts')}</div>
         </div>
-        <div className="text-sm text-muted-foreground">{translate('profileStats.followers', 'Followers')}</div>
-      </div>
-      <div className="text-center">
-        <div className="text-2xl md:text-3xl font-bold text-foreground">
-          {followingCount.toLocaleString()}
+        <div className="text-center">
+          <div className="text-2xl md:text-3xl font-bold text-foreground">
+            {followersCount.toLocaleString()}
+          </div>
+          <div className="text-sm text-muted-foreground">{translate('profileStats.followers', 'Followers')}</div>
         </div>
-        <div className="text-sm text-muted-foreground">{translate('profileStats.following', 'Following')}</div>
-      </div>
-      <div className="text-center">
-        {isLoading ? (
-          <Skeleton className="h-8 w-10 mx-auto mb-1" />
-        ) : (
+        <div className="text-center">
           <div className="text-2xl md:text-3xl font-bold text-foreground">
-            {mediaCount.toLocaleString()}
+            {followingCount.toLocaleString()}
           </div>
-        )}
-        <div className="text-sm text-muted-foreground">{translate('profileStats.media', 'Media')}</div>
+          <div className="text-sm text-muted-foreground">{translate('profileStats.following', 'Following')}</div>
+        </div>
+        <div className="text-center">
+          {isLoading ? (
+            <Skeleton className="h-8 w-10 mx-auto mb-1" />
+          ) : (
+            <div className="text-2xl md:text-3xl font-bold text-foreground">
+              {mediaCount.toLocaleString()}
+            </div>
+          )}
+          <div className="text-sm text-muted-foreground">{translate('profileStats.media', 'Media')}</div>
+        </div>
+        <div
+          className="text-center cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={() => setGroupListOpen(true)}
+        >
+          {isLoading ? (
+            <Skeleton className="h-8 w-10 mx-auto mb-1" />
+          ) : (
+            <div className="text-2xl md:text-3xl font-bold text-foreground">
+              {groupsCount.toLocaleString()}
+            </div>
+          )}
+          <div className="text-sm text-muted-foreground">{translate('profileStats.groups', 'Groups')}</div>
+        </div>
       </div>
-      <div className="text-center">
-        {isLoading ? (
-          <Skeleton className="h-8 w-10 mx-auto mb-1" />
-        ) : (
-          <div className="text-2xl md:text-3xl font-bold text-foreground">
-            {groupsCount.toLocaleString()}
-          </div>
-        )}
-        <div className="text-sm text-muted-foreground">{translate('profileStats.groups', 'Groups')}</div>
-      </div>
-    </div>
+
+      <GroupListDialog
+        open={groupListOpen}
+        onOpenChange={setGroupListOpen}
+        userId={profileUserId}
+      />
+    </>
   );
 }
