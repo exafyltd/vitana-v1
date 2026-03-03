@@ -5,7 +5,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Ensure image URL is absolute and NOT WebP
+// Ensure image URL is absolute and force JPEG for OG compatibility
 function getOgImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
   
@@ -18,17 +18,26 @@ function getOgImageUrl(url: string | null | undefined): string {
     imageUrl = `https://inmkhvwdcuyhnxkgfvsb.supabase.co${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
   }
 
-  // Reject WebP — force JPEG via Supabase image transformation or strip extension
-  if (imageUrl.toLowerCase().includes('.webp')) {
-    // If it's a Supabase storage URL, use render/image endpoint with format=origin
-    if (imageUrl.includes('supabase.co/storage')) {
-      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
-      const separator = imageUrl.includes('?') ? '&' : '?';
-      imageUrl = `${imageUrl}${separator}format=origin`;
-    }
+  // For ALL Supabase storage images, use render endpoint and force JPEG
+  if (imageUrl.includes('supabase.co/storage')) {
+    imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
+    const baseUrl = imageUrl.split('?')[0];
+    imageUrl = `${baseUrl}?width=1200&format=jpeg`;
   }
 
   return imageUrl;
+}
+
+function sanitizeDescription(text: string | null | undefined): string {
+  if (!text) return '';
+  return text
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/\u201C|\u201D/g, '"')
+    .replace(/\u2018|\u2019/g, "'")
+    .replace(/`/g, "'")
+    .trim()
+    .substring(0, 160);
 }
 
 Deno.serve(async (req) => {
