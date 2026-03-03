@@ -102,6 +102,8 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
       queryClient.invalidateQueries({ queryKey: ['user-groups'] });
       queryClient.invalidateQueries({ queryKey: ['group-directory'] });
       queryClient.invalidateQueries({ queryKey: ['profile-stats-count'] });
+      // Refresh inbox so the new group chat thread appears
+      queryClient.invalidateQueries({ queryKey: ['global-threads'] });
 
       toast({
         title: "Group Created! 🎉",
