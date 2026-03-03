@@ -67,7 +67,7 @@ export function CreateGroupPopup({ isOpen, onClose }: CreateGroupPopupProps) {
           is_public: formData.privacy === 'public',
           created_by: user.id,
           status: 'approved',
-          member_count: 1,
+          member_count: 0,
         })
         .select('id')
         .single();
