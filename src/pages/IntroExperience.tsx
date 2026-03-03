@@ -14,19 +14,9 @@ import { playSound } from '@/lib/playSound';
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
 import { useTranslation } from '@/hooks/useTranslation';
 
-// English welcome SSML
-const MAXINA_WELCOME_SSML_EN = `<speak>
-  Welcome to <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> land.
-  You're entering the Maxina experience — where calm begins and energy awakens.
-  Let's explore, connect, and feel amazing together.
-</speak>`;
-
-// German welcome SSML
-const MAXINA_WELCOME_SSML_DE = `<speak>
-  Willkommen bei <phoneme alphabet="ipa" ph="viːˈtɑːnə">VITANA</phoneme> <break time="40ms"/> Land.
-  Du betrittst die Maxina Erfahrung — wo Ruhe beginnt und Energie erwacht.
-  Lass uns gemeinsam erkunden, verbinden und uns großartig fühlen.
-</speak>`;
+// Pre-recorded welcome audio paths
+const WELCOME_AUDIO_EN = '/sounds/intro/maxina-welcome-en.wav';
+const WELCOME_AUDIO_DE = '/sounds/intro/maxina-welcome-de.wav';
 
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
@@ -155,32 +145,13 @@ export default function IntroExperience() {
       return;
     }
     
-    // Otherwise, fetch and play new audio
+    // Otherwise, play pre-recorded welcome audio
     setIsPreparingAudio(true);
     
-    // Select SSML and voice based on current language
-    const ssml = isGerman ? MAXINA_WELCOME_SSML_DE : MAXINA_WELCOME_SSML_EN;
-    const voiceId = isGerman ? 'de-DE-Wavenet-F' : 'en-US-Wavenet-F';
-    const languageCode = isGerman ? 'de-DE' : 'en-US';
+    const audioSrc = isGerman ? WELCOME_AUDIO_DE : WELCOME_AUDIO_EN;
     
     try {
-      // Call Google Cloud TTS edge function
-      const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-        body: {
-          text: ssml,
-          voiceId: voiceId,
-          languageCode: languageCode,
-          speakingRate: 0.96,
-          pitch: 1.0,
-          useSSML: true
-        }
-      });
-
-      if (error) throw error;
-      if (!data?.audioContent) throw new Error('No audio content received');
-
-      // Create and play audio
-      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+      const audio = new Audio(audioSrc);
       audioRef.current = audio;
       
       audio.onended = () => {
@@ -198,7 +169,7 @@ export default function IntroExperience() {
       await audio.play();
       
     } catch (error) {
-      console.error('TTS error:', error);
+      console.error('Welcome audio error:', error);
       setIsPreparingAudio(false);
       toast.error('Audio unavailable now');
     }
