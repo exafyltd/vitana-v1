@@ -23,20 +23,21 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/${url}`;
 }
 
-// Ensure image is NOT WebP for OG compatibility — force JPEG transcoding
+// Return direct public storage URL — no render transforms needed
 function getOptimizedImageUrl(url: string | null | undefined): string {
-  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   if (!url) return defaultImage;
 
   let imageUrl = ensureAbsoluteUrl(url);
 
-  // For ALL Supabase storage images, use render endpoint for consistent format
+  // Ensure we use /object/public/ (direct URL), not /render/image/
+  if (imageUrl.includes('supabase.co/storage') && imageUrl.includes('/render/image/')) {
+    imageUrl = imageUrl.replace('/render/image/public/', '/object/public/');
+  }
+
+  // Strip any query params (like format=jpeg) that may cause 400 errors
   if (imageUrl.includes('supabase.co/storage')) {
-    // Convert to render endpoint for image transformation
-    imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
-    // Strip any existing query params and force JPEG at 1200px width
-    const baseUrl = imageUrl.split('?')[0];
-    imageUrl = `${baseUrl}?width=1200&format=jpeg`;
+    imageUrl = imageUrl.split('?')[0];
   }
 
   return imageUrl;
@@ -62,13 +63,12 @@ function getImageMimeType(url: string): string {
   const lowerUrl = url.toLowerCase();
   if (lowerUrl.includes('.png')) return 'image/png';
   if (lowerUrl.includes('.gif')) return 'image/gif';
-  if (lowerUrl.includes('.jpg') || lowerUrl.includes('.jpeg')) return 'image/jpeg';
-  // Default to jpeg — never return webp for OG
+  if (lowerUrl.includes('.webp')) return 'image/webp';
   return 'image/jpeg';
 }
 
 function generateFallbackHTML(): string {
-  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   const homeUrl = 'https://vitanaland.com';
 
   return `<!DOCTYPE html>
