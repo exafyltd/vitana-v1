@@ -157,7 +157,6 @@ export function ProfileLayout({
 
   // Follow & Message hooks for mobile visitor view
   const isOwner = scope === 'owner' || isOwnProfile;
-  const profileUserId = profile.user_id || profile.id;
   const { isFollowing, loading: followLoading, followUser, unfollowUser, followersCount, followingCount } = useFollow(profileUserId);
   const { createThread, sendMessage } = useHybridMessages('global');
   const { toast } = useToast();
