@@ -41,6 +41,7 @@ import { MobileQRShareScreen } from "../mobile/MobileQRShareScreen";
 import { useFollow } from "@/hooks/useFollow";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useAuth } from "@/context/AuthProvider";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { MessageComposeModal } from "./MessageComposeModal";
@@ -144,7 +145,7 @@ export function ProfileLayout({
   const { user } = useAuth();
 
   // Mobile-specific hooks — resolve real user_id (profile.id can be "current-user")
-  const profileUserId = profile.user_id || profile.id || user?.id;
+  const profileUserId = resolveProfileUserId(profile.user_id, profile.id, user?.id);
   const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);
   const { photos, isOwner: isGalleryOwner, uploadPhoto, deletePhoto } = useProfileGallery(profileUserId);
   const shareHook = useProfileShare({
