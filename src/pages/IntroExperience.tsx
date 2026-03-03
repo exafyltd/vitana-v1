@@ -158,35 +158,29 @@ export default function IntroExperience() {
     // Otherwise, fetch and play new audio
     setIsPreparingAudio(true);
     
+    // Select SSML and voice based on current language
+    const ssml = isGerman ? MAXINA_WELCOME_SSML_DE : MAXINA_WELCOME_SSML_EN;
+    const voiceId = isGerman ? 'de-DE-Wavenet-F' : 'en-US-Wavenet-F';
+    const languageCode = isGerman ? 'de-DE' : 'en-US';
+    
     try {
-      let audio: HTMLAudioElement;
+      // Call Google Cloud TTS edge function
+      const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+        body: {
+          text: ssml,
+          voiceId: voiceId,
+          languageCode: languageCode,
+          speakingRate: 0.96,
+          pitch: 1.0,
+          useSSML: true
+        }
+      });
 
-      if (isGerman) {
-        // Use pre-recorded German welcome audio (no TTS API call needed)
-        audio = new Audio('/sounds/vitanaland/WelcomeVitanaGER.wav');
-      } else {
-        // English: use Google Cloud TTS
-        const ssml = MAXINA_WELCOME_SSML_EN;
-        const voiceId = 'en-US-Wavenet-F';
-        const languageCode = 'en-US';
+      if (error) throw error;
+      if (!data?.audioContent) throw new Error('No audio content received');
 
-        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-          body: {
-            text: ssml,
-            voiceId,
-            languageCode,
-            speakingRate: 0.96,
-            pitch: 1.0,
-            useSSML: true
-          }
-        });
-
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-
-        audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-      }
-
+      // Create and play audio
+      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
       audioRef.current = audio;
       
       audio.onended = () => {
@@ -307,7 +301,7 @@ export default function IntroExperience() {
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Button row: Play Welcome + Language Toggle */}
-          <div className="flex items-center gap-2.5 w-full relative z-50">
+          <div className="flex items-center gap-2.5 w-full">
             {/* Primary Play/Pause Button - Premium glass style */}
             <Button
               onClick={handlePlayPauseAudio}
