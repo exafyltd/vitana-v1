@@ -46,8 +46,8 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
 
       const userIds = memberRows.map(m => m.user_id);
       const { data: profiles } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, avatar_url, handle')
+        .from('global_community_profiles')
+        .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
 
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
@@ -56,7 +56,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
         ...m,
         display_name: profileMap.get(m.user_id)?.display_name || null,
         avatar_url: profileMap.get(m.user_id)?.avatar_url || null,
-        handle: profileMap.get(m.user_id)?.handle || null,
+        handle: null,
       })));
     } catch (err) {
       console.error('Error fetching group members:', err);
