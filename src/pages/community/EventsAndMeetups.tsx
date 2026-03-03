@@ -917,7 +917,7 @@ const EventsAndMeetups = () => {
                 </div>
               </SplitBarContent>
 
-              <SplitBarContent value="recommended" className={isMobile ? "mt-1" : "mt-6"}>
+              <SplitBarContent value="hot" className={isMobile ? "mt-1" : "mt-6"}>
                 {loading && maxinaEvents.length === 0 ? (
                   <EventCardSkeleton count={4} className="px-2" />
                 ) : isMobile ? (
