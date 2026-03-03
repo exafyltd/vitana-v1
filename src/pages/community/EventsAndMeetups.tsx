@@ -168,12 +168,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
           start_time: event.start_time,
           end_time: event.end_time,
           location: event.location,
-          link: getShareUrl('event', event.id, { 
-            utm_source: 'event_card', 
-            utm_medium: 'social',
-            utm_campaign: 'events_meetups_v2',
-            slug: event.slug
-          })
+          link: getShareUrl('event', event.id, { slug: event.slug })
         }}
         variant="icon"
         size="sm"
@@ -1059,11 +1054,7 @@ const EventsAndMeetups = () => {
             title: eventToShare.title,
             description: eventToShare.description,
             image_url: eventToShare.image_url || eventToShare.cover_image_url,
-            url: getShareUrl('event', eventToShare.id, {
-              utm_source: 'event_details',
-              utm_medium: 'share_dialog',
-              slug: eventToShare.slug
-            })
+            url: getShareUrl('event', eventToShare.id, { slug: eventToShare.slug })
           }}
         />
       )}

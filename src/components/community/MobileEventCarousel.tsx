@@ -181,12 +181,7 @@ export function MobileEventCarousel({
               start_time: event.start_time,
               end_time: event.end_time,
               location: event.location,
-              link: getShareUrl('event', event.id, { 
-                utm_source: 'event_card', 
-                utm_medium: 'social',
-                utm_campaign: 'events_meetups_v2',
-                slug: event.slug
-              })
+              link: getShareUrl('event', event.id, { slug: event.slug })
             }}
             variant="icon"
             size="sm"

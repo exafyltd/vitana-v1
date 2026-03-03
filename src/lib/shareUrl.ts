@@ -31,24 +31,17 @@ export function getShareUrl(
     return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
   }
 
-  // Events/meetups use clean app URLs for sharing
-  // OG previews work via client-side meta tag injection
+  // Events/meetups use canonical vitanaland.com URLs for sharing
+  // Cloudflare Worker handles OG meta for crawlers — NO UTM params on shared links
   if (type === 'event' || type === 'meetup') {
-    const appUrl = window.location.origin;
+    const canonicalBase = 'https://vitanaland.com';
     
     // Build clean URL path - prefer slug for SEO-friendly URLs
     const path = options?.slug 
       ? `/e/${encodeURIComponent(options.slug)}`
       : `/pub/events/${encodeURIComponent(id)}`;
     
-    // Add UTM parameters for attribution tracking
-    const params = new URLSearchParams();
-    if (options?.utm_source) params.set('utm_source', options.utm_source);
-    if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
-    if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
-    
-    const queryString = params.toString();
-    return `${appUrl}${path}${queryString ? '?' + queryString : ''}`;
+    return `${canonicalBase}${path}`;
   }
   
   // Other content types use direct app URLs
@@ -102,12 +95,12 @@ export function getResellerShareUrl(
  * @returns Clean event URL
  */
 export function getCleanEventUrl(slug?: string | null, id?: string): string {
-  const appUrl = window.location.origin;
+  const canonicalBase = 'https://vitanaland.com';
   if (slug) {
-    return `${appUrl}/e/${encodeURIComponent(slug)}`;
+    return `${canonicalBase}/e/${encodeURIComponent(slug)}`;
   }
   if (id) {
-    return `${appUrl}/pub/events/${encodeURIComponent(id)}`;
+    return `${canonicalBase}/pub/events/${encodeURIComponent(id)}`;
   }
-  return appUrl;
+  return canonicalBase;
 }
