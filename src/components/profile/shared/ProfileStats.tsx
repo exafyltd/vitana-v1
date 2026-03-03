@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { useFollow } from "@/hooks/useFollow";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,8 +16,8 @@ interface ProfileStatsProps {
 }
 
 export function ProfileStats({ profile, profileUserId: propUserId, followersCount: propFollowers, followingCount: propFollowing }: ProfileStatsProps) {
-  const profileUserId = propUserId || profile.user_id || profile.id;
-  const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profile.id);
+  const profileUserId = resolveProfileUserId(propUserId, profile.user_id, profile.id);
+  const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profileUserId);
   const followersCount = propFollowers ?? hookFollowers;
   const followingCount = propFollowing ?? hookFollowing;
   const { translate } = useTranslation();

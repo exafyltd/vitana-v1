@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
 import { useFollow } from "@/hooks/useFollow";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FollowListDialog } from "@/components/profile/FollowListDialog";
 import { GroupListDialog } from "@/components/profile/GroupListDialog";
@@ -23,8 +24,9 @@ export function MobileProfileStats({
   className
 }: MobileProfileStatsProps) {
   const { translate } = useTranslation();
-  const { postsCount, mediaCount, groupsCount, isPending } = useProfileStatsCount(userId);
-  const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profileId || userId);
+  const resolvedUserId = resolveProfileUserId(userId, profileId);
+  const { postsCount, mediaCount, groupsCount, isPending } = useProfileStatsCount(resolvedUserId);
+  const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(resolvedUserId);
   const followersCount = propFollowers ?? hookFollowers;
   const followingCount = propFollowing ?? hookFollowing;
   
