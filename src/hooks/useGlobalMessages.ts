@@ -830,6 +830,89 @@ export function useGlobalMessages(
     };
   }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads]);
 
+  // ── Realtime: listen for new global_messages (group chats) ────────
+
+  useEffect(() => {
+    if (!user || !isGlobalContext) return;
+
+    // Get group thread IDs from cache to listen for
+    const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+    const groupThreadIds = cachedThreads
+      .filter((t) => t.type === 'group')
+      .map((t) => (t as any)._legacyThreadId || t.id);
+
+    if (groupThreadIds.length === 0) return;
+
+    const channelName = `group_messages_realtime_${crypto.randomUUID()}`;
+    const channel = supabase
+      .channel(channelName)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "global_messages",
+        },
+        async (payload) => {
+          const raw = payload.new as any;
+          // Only handle messages for group threads we're part of
+          if (!groupThreadIds.includes(raw.thread_id)) return;
+          // Skip our own messages (already handled optimistically)
+          if (raw.sender_id === user.id) return;
+
+          const profileMap = await enrichProfiles([raw.sender_id]);
+          
+          // Find the thread ID used in UI (may differ from legacy thread_id)
+          const uiThread = cachedThreads.find(
+            (t) => ((t as any)._legacyThreadId || t.id) === raw.thread_id
+          );
+          const uiThreadId = uiThread?.id || raw.thread_id;
+
+          const msg: GlobalMessage = {
+            id: raw.id,
+            thread_id: uiThreadId,
+            sender_id: raw.sender_id,
+            body: raw.body,
+            message_type: raw.message_type || "text",
+            content_data: raw.content_data,
+            created_at: raw.created_at,
+            updated_at: raw.updated_at || raw.created_at,
+            sender: profileMap[raw.sender_id]
+              ? { user_id: raw.sender_id, ...profileMap[raw.sender_id] }
+              : null,
+          };
+
+          // Append to message list
+          updateMessagesOptimistically(uiThreadId, (prev) => {
+            if (prev.some((m) => m.id === msg.id)) return prev;
+            return [...prev, msg];
+          });
+
+          // Bump thread to top + increment unread
+          updateThreadsOptimistically((prev) => {
+            const existing = prev.find((t) => t.id === uiThreadId);
+            if (existing) {
+              return [
+                {
+                  ...existing,
+                  updated_at: raw.created_at,
+                  last_message: msg,
+                  unread_count: existing.unread_count + 1,
+                },
+                ...prev.filter((t) => t.id !== uiThreadId),
+              ];
+            }
+            return prev;
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, queryClient]);
+
   // ── Legacy compat shims ───────────────────────────────────────────
 
   const fetchThreads = useCallback(async () => {
