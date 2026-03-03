@@ -73,10 +73,7 @@ Deno.serve(async (req) => {
 
     const event = Array.isArray(data) ? data[0] : data;
 
-    // Build short description from full description
-    const shortDescription = event.description
-      ? event.description.replace(/<[^>]*>/g, '').substring(0, 160).trim()
-      : '';
+    const shortDescription = sanitizeDescription(event.description);
 
     const response = {
       title: event.title || '',
