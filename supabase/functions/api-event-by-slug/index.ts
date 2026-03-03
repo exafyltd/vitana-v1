@@ -5,9 +5,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Ensure image URL is absolute and force JPEG for OG compatibility
+// Ensure image URL is absolute — use direct public storage URLs
 function getOgImageUrl(url: string | null | undefined): string {
-  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg';
+  const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   
   if (!url) return defaultImage;
 
@@ -18,11 +18,14 @@ function getOgImageUrl(url: string | null | undefined): string {
     imageUrl = `https://inmkhvwdcuyhnxkgfvsb.supabase.co${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
   }
 
-  // For ALL Supabase storage images, use render endpoint and force JPEG
+  // Ensure we use /object/public/ (direct URL), not /render/image/
+  if (imageUrl.includes('supabase.co/storage') && imageUrl.includes('/render/image/')) {
+    imageUrl = imageUrl.replace('/render/image/public/', '/object/public/');
+  }
+
+  // Strip query params that may cause 400 errors
   if (imageUrl.includes('supabase.co/storage')) {
-    imageUrl = imageUrl.replace('/object/public/', '/render/image/public/');
-    const baseUrl = imageUrl.split('?')[0];
-    imageUrl = `${baseUrl}?width=1200&format=jpeg`;
+    imageUrl = imageUrl.split('?')[0];
   }
 
   return imageUrl;
