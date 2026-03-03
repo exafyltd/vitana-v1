@@ -50,6 +50,8 @@ export function useGroupMembership(groupId?: string) {
     queryClient.invalidateQueries({ queryKey: ['group-directory'] });
     queryClient.invalidateQueries({ queryKey: ['group-detail', groupId] });
     queryClient.invalidateQueries({ queryKey: ['profile-stats-count'] });
+    // Also refresh inbox threads so group chat appears/disappears
+    queryClient.invalidateQueries({ queryKey: ['global-threads'] });
   };
 
   const joinMutation = useMutation({
