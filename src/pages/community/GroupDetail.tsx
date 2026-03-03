@@ -13,13 +13,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Users, Globe, Lock, ArrowLeft, Calendar, MessageCircle } from "lucide-react";
+import { Users, Globe, Lock, ArrowLeft, Calendar } from "lucide-react";
+import { useState } from "react";
+import { GroupFeed } from "@/components/community/GroupFeed";
+import { GroupMembersDialog } from "@/components/community/GroupMembersDialog";
 
 export default function GroupDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { isMember, joinGroup, leaveGroup, isJoining, isLeaving, checkingMembership } = useGroupMembership(id);
+  const [membersDialogOpen, setMembersDialogOpen] = useState(false);
 
   const { data: group, isLoading } = useQuery({
     queryKey: ['group-detail', id],
@@ -144,8 +148,11 @@ export default function GroupDetail() {
             </Card>
           )}
 
-          {/* Members Preview */}
-          <Card>
+          {/* Members Preview — clickable to open full list */}
+          <Card
+            className="cursor-pointer hover:bg-muted/30 transition-colors"
+            onClick={() => setMembersDialogOpen(true)}
+          >
             <CardContent className="pt-6">
               <h3 className="text-base font-semibold mb-4 flex items-center gap-2">
                 <Users className="h-4 w-4" />
@@ -168,16 +175,18 @@ export default function GroupDetail() {
             </CardContent>
           </Card>
 
-          {/* Placeholder for group feed */}
-          <Card>
-            <CardContent className="pt-6 text-center py-12">
-              <MessageCircle className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
-              <h3 className="font-medium mb-1">Group Feed</h3>
-              <p className="text-sm text-muted-foreground">Group discussions and posts coming soon.</p>
-            </CardContent>
-          </Card>
+          {/* Group Feed */}
+          <GroupFeed groupId={group.id} isMember={isMember} />
         </div>
       </div>
+
+      {/* Members List Dialog */}
+      <GroupMembersDialog
+        open={membersDialogOpen}
+        onOpenChange={setMembersDialogOpen}
+        groupId={group.id}
+        memberCount={group.member_count}
+      />
     </AppLayout>
   );
 }
