@@ -28,7 +28,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
     <>
       <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
         <div className="text-center">
-          {isLoading ? (
+          {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
@@ -56,7 +56,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           <div className="text-sm text-muted-foreground">{translate('profileStats.following', 'Following')}</div>
         </div>
         <div className="text-center">
-          {isLoading ? (
+          {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
@@ -69,7 +69,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           className="text-center cursor-pointer hover:opacity-80 transition-opacity"
           onClick={() => setGroupListOpen(true)}
         >
-          {isLoading ? (
+          {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
