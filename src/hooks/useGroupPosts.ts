@@ -1,193 +1,178 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { useEffect, useState } from 'react';
 
 export interface GroupPost {
   id: string;
-  group_id: string;
-  user_id: string;
-  content: string;
-  image_url: string | null;
-  likes_count: number;
-  comments_count: number;
+  thread_id: string;
+  sender_id: string;
+  body: string;
+  message_type: string;
+  content_data: any;
   created_at: string;
-  updated_at: string;
   // Joined
   author_name?: string;
   author_avatar?: string;
 }
 
-export interface GroupPostComment {
-  id: string;
-  post_id: string;
-  user_id: string;
-  content: string;
-  created_at: string;
-  author_name?: string;
-  author_avatar?: string;
-}
-
+/**
+ * Unified group feed hook that reads/writes from global_messages
+ * via the group's chat_thread_id. This ensures messages posted
+ * on the group card appear in the Messenger chat and vice versa.
+ */
 export function useGroupPosts(groupId?: string) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const [chatThreadId, setChatThreadId] = useState<string | null>(null);
 
+  // Step 1: Resolve chat_thread_id for this group
+  const threadQuery = useQuery({
+    queryKey: ['group-chat-thread', groupId],
+    queryFn: async () => {
+      if (!groupId) return null;
+      const { data, error } = await supabase
+        .from('global_community_groups')
+        .select('chat_thread_id')
+        .eq('id', groupId)
+        .single();
+      if (error) throw error;
+      return data?.chat_thread_id || null;
+    },
+    enabled: !!groupId,
+    staleTime: 60_000,
+  });
+
+  useEffect(() => {
+    if (threadQuery.data) setChatThreadId(threadQuery.data);
+  }, [threadQuery.data]);
+
+  // Step 2: Fetch messages from global_messages for this thread
   const postsQuery = useQuery({
     queryKey: ['group-posts', groupId],
     queryFn: async () => {
-      if (!groupId) return [];
+      if (!chatThreadId) return [];
       const { data, error } = await supabase
-        .from('group_posts')
+        .from('global_messages')
         .select('*')
-        .eq('group_id', groupId)
+        .eq('thread_id', chatThreadId)
         .order('created_at', { ascending: false })
         .limit(50);
       if (error) throw error;
 
       // Enrich with author profiles
-      const userIds = [...new Set((data || []).map(p => p.user_id))];
+      const userIds = [...new Set((data || []).map(m => m.sender_id))];
+      if (userIds.length === 0) return [];
+      
       const { data: profiles } = await supabase
         .from('profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
-      
+
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
 
-      return (data || []).map(post => ({
-        ...post,
-        author_name: profileMap.get(post.user_id)?.display_name || 'Unknown',
-        author_avatar: profileMap.get(post.user_id)?.avatar_url || undefined,
+      return (data || []).map(msg => ({
+        id: msg.id,
+        thread_id: msg.thread_id,
+        sender_id: msg.sender_id,
+        body: msg.body || '',
+        message_type: msg.message_type || 'text',
+        content_data: msg.content_data,
+        created_at: msg.created_at,
+        author_name: profileMap.get(msg.sender_id)?.display_name || 'Unknown',
+        author_avatar: profileMap.get(msg.sender_id)?.avatar_url || undefined,
       })) as GroupPost[];
     },
-    enabled: !!groupId,
+    enabled: !!groupId && !!chatThreadId,
     staleTime: 15_000,
   });
 
+  // Step 3: Realtime subscription for live updates
+  useEffect(() => {
+    if (!chatThreadId) return;
+
+    const channel = supabase
+      .channel(`group-feed-${chatThreadId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'global_messages',
+          filter: `thread_id=eq.${chatThreadId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['group-posts', groupId] });
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'DELETE',
+          schema: 'public',
+          table: 'global_messages',
+          filter: `thread_id=eq.${chatThreadId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({ queryKey: ['group-posts', groupId] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [chatThreadId, groupId, queryClient]);
+
+  // Step 4: Create post → insert into global_messages
   const createPost = useMutation({
-    mutationFn: async ({ content, imageUrl }: { content: string; imageUrl?: string }) => {
-      if (!user?.id || !groupId) throw new Error('Not authenticated or no group');
+    mutationFn: async ({ content }: { content: string }) => {
+      if (!user?.id || !chatThreadId) throw new Error('Not authenticated or no thread');
       const { data, error } = await supabase
-        .from('group_posts')
-        .insert({ group_id: groupId, user_id: user.id, content, image_url: imageUrl || null })
+        .from('global_messages')
+        .insert({
+          thread_id: chatThreadId,
+          sender_id: user.id,
+          body: content,
+          message_type: 'text',
+        })
         .select()
         .single();
       if (error) throw error;
+
+      // Update thread timestamp so Messenger inbox sorts correctly
+      await supabase
+        .from('global_message_threads')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', chatThreadId);
+
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['group-posts', groupId] });
+      queryClient.invalidateQueries({ queryKey: ['global-threads'] });
+      queryClient.invalidateQueries({ queryKey: ['global-messages', chatThreadId] });
     },
   });
 
+  // Step 5: Delete post → delete from global_messages
   const deletePost = useMutation({
-    mutationFn: async (postId: string) => {
-      const { error } = await supabase.from('group_posts').delete().eq('id', postId);
+    mutationFn: async (messageId: string) => {
+      const { error } = await supabase.from('global_messages').delete().eq('id', messageId);
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['group-posts', groupId] });
-    },
-  });
-
-  const toggleLike = useMutation({
-    mutationFn: async (postId: string) => {
-      if (!user?.id) throw new Error('Not authenticated');
-      // Check if already liked
-      const { data: existing } = await supabase
-        .from('group_post_likes')
-        .select('id')
-        .eq('post_id', postId)
-        .eq('user_id', user.id)
-        .maybeSingle();
-      
-      if (existing) {
-        await supabase.from('group_post_likes').delete().eq('id', existing.id);
-        return { liked: false };
-      } else {
-        await supabase.from('group_post_likes').insert({ post_id: postId, user_id: user.id });
-        return { liked: true };
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['group-posts', groupId] });
+      queryClient.invalidateQueries({ queryKey: ['global-threads'] });
+      queryClient.invalidateQueries({ queryKey: ['global-messages', chatThreadId] });
     },
   });
 
   return {
     posts: postsQuery.data || [],
-    isLoading: postsQuery.isLoading,
+    isLoading: postsQuery.isLoading || threadQuery.isLoading,
     createPost,
     deletePost,
-    toggleLike,
-  };
-}
-
-export function useGroupPostComments(postId?: string) {
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
-
-  const commentsQuery = useQuery({
-    queryKey: ['group-post-comments', postId],
-    queryFn: async () => {
-      if (!postId) return [];
-      const { data, error } = await supabase
-        .from('group_post_comments')
-        .select('*')
-        .eq('post_id', postId)
-        .order('created_at', { ascending: true })
-        .limit(100);
-      if (error) throw error;
-
-      const userIds = [...new Set((data || []).map(c => c.user_id))];
-      const { data: profiles } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, avatar_url')
-        .in('user_id', userIds);
-      
-      const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
-
-      return (data || []).map(c => ({
-        ...c,
-        author_name: profileMap.get(c.user_id)?.display_name || 'Unknown',
-        author_avatar: profileMap.get(c.user_id)?.avatar_url || undefined,
-      })) as GroupPostComment[];
-    },
-    enabled: !!postId,
-    staleTime: 10_000,
-  });
-
-  const addComment = useMutation({
-    mutationFn: async (content: string) => {
-      if (!user?.id || !postId) throw new Error('Not authenticated');
-      const { data, error } = await supabase
-        .from('group_post_comments')
-        .insert({ post_id: postId, user_id: user.id, content })
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['group-post-comments', postId] });
-      // Also refresh posts to update comments_count
-      queryClient.invalidateQueries({ queryKey: ['group-posts'] });
-    },
-  });
-
-  const deleteComment = useMutation({
-    mutationFn: async (commentId: string) => {
-      const { error } = await supabase.from('group_post_comments').delete().eq('id', commentId);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['group-post-comments', postId] });
-      queryClient.invalidateQueries({ queryKey: ['group-posts'] });
-    },
-  });
-
-  return {
-    comments: commentsQuery.data || [],
-    isLoading: commentsQuery.isLoading,
-    addComment,
-    deleteComment,
+    chatThreadId,
   };
 }
