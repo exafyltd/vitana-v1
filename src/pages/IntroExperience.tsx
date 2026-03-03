@@ -307,7 +307,7 @@ export default function IntroExperience() {
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Button row: Play Welcome + Language Toggle */}
-          <div className="flex items-center gap-2.5 w-full">
+          <div className="flex items-center gap-2.5 w-full relative z-50">
             {/* Primary Play/Pause Button - Premium glass style */}
             <Button
               onClick={handlePlayPauseAudio}
