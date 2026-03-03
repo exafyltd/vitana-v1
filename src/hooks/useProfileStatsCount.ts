@@ -14,7 +14,7 @@ export function useProfileStatsCount(userId?: string): ProfileStatsCountResult {
     queryFn: async () => {
       if (!userId) return { postsCount: 0, mediaCount: 0, groupsCount: 0 };
 
-      const [postsRes, galleryRes, groupsRes] = await Promise.all([
+      const [postsRes, galleryRes, membershipsRes, createdGroupsRes] = await Promise.all([
         supabase
           .from('profile_posts' as any)
           .select('id', { count: 'exact', head: true })
@@ -25,14 +25,47 @@ export function useProfileStatsCount(userId?: string): ProfileStatsCountResult {
           .eq('user_id', userId),
         supabase
           .from('global_community_group_members' as any)
-          .select('id', { count: 'exact', head: true })
+          .select('group_id')
           .eq('user_id', userId),
+        supabase
+          .from('global_community_groups' as any)
+          .select('id')
+          .eq('created_by', userId)
+          .eq('status', 'approved'),
       ]);
+
+      if (postsRes.error) {
+        console.error('[useProfileStatsCount] posts count error:', postsRes.error);
+      }
+
+      if (galleryRes.error) {
+        console.error('[useProfileStatsCount] media count error:', galleryRes.error);
+      }
+
+      if (membershipsRes.error) {
+        console.error('[useProfileStatsCount] memberships fetch error:', membershipsRes.error);
+      }
+
+      if (createdGroupsRes.error) {
+        console.error('[useProfileStatsCount] created groups fetch error:', createdGroupsRes.error);
+      }
+
+      const groupIds = new Set<string>();
+      const membershipRows = ((membershipsRes.data ?? []) as unknown) as Array<{ group_id: string | null }>;
+      const createdRows = ((createdGroupsRes.data ?? []) as unknown) as Array<{ id: string | null }>;
+
+      membershipRows.forEach((row) => {
+        if (row.group_id) groupIds.add(row.group_id);
+      });
+
+      createdRows.forEach((row) => {
+        if (row.id) groupIds.add(row.id);
+      });
 
       return {
         postsCount: postsRes.count ?? 0,
         mediaCount: galleryRes.count ?? 0,
-        groupsCount: groupsRes.count ?? 0,
+        groupsCount: groupIds.size,
       };
     },
     enabled: !!userId,
