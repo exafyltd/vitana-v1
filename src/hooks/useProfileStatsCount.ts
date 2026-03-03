@@ -51,12 +51,14 @@ export function useProfileStatsCount(userId?: string): ProfileStatsCountResult {
       }
 
       const groupIds = new Set<string>();
+      const membershipRows = (membershipsRes.data ?? []) as Array<{ group_id: string | null }>;
+      const createdRows = (createdGroupsRes.data ?? []) as Array<{ id: string | null }>;
 
-      (membershipsRes.data || []).forEach((row: { group_id: string }) => {
+      membershipRows.forEach((row) => {
         if (row.group_id) groupIds.add(row.group_id);
       });
 
-      (createdGroupsRes.data || []).forEach((row: { id: string }) => {
+      createdRows.forEach((row) => {
         if (row.id) groupIds.add(row.id);
       });
 
