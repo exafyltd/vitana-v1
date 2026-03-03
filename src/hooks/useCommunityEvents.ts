@@ -58,9 +58,13 @@ function eventsQueryKey(userId: string | undefined) {
 export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
   const { data: { user } } = await supabase.auth.getUser();
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const { data, error } = await supabase
     .from("global_community_events")
     .select("*")
+    .gte("start_time", today.toISOString())
     .order("start_time", { ascending: true });
 
   if (error) {
