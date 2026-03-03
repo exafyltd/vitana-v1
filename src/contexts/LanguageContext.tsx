@@ -71,14 +71,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   // Keep runtime language in sync when preferences are changed outside LanguageContext
   useEffect(() => {
+    if (!user) return; // No server prefs for unauthenticated users
     if (!hasInitializedFromServer || !preferences?.stt_language) return;
+    if (Date.now() - lastLanguageChangeAt < 2000) return; // Don't revert recent local changes
 
     if (preferences.stt_language !== selectedLanguage) {
       console.log('[LANG] Syncing runtime language from preferences:', preferences.stt_language);
       setLocalLanguage(preferences.stt_language);
       setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, preferences.stt_language);
     }
-  }, [hasInitializedFromServer, preferences?.stt_language, selectedLanguage]);
+  }, [user, hasInitializedFromServer, preferences?.stt_language, selectedLanguage, lastLanguageChangeAt]);
 
   const setSelectedLanguage = (language: string) => {
     // RULE 2: Validate against allowed set
