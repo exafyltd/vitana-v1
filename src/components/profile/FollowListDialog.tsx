@@ -62,12 +62,12 @@ export function FollowListDialog({
         }
 
         const { data: profiles, error: pErr } = await supabase
-          .from("profiles")
-          .select("user_id, display_name, avatar_url, handle")
+          .from("global_community_profiles")
+          .select("user_id, display_name, avatar_url")
           .in("user_id", followerIds);
 
         if (pErr) throw pErr;
-        setUsers(profiles || []);
+        setUsers((profiles || []).map((p) => ({ ...p, handle: null })));
       } else {
         // Get users this userId is following
         const { data, error } = await supabase
@@ -84,12 +84,12 @@ export function FollowListDialog({
         }
 
         const { data: profiles, error: pErr } = await supabase
-          .from("profiles")
-          .select("user_id, display_name, avatar_url, handle")
+          .from("global_community_profiles")
+          .select("user_id, display_name, avatar_url")
           .in("user_id", followingIds);
 
         if (pErr) throw pErr;
-        setUsers(profiles || []);
+        setUsers((profiles || []).map((p) => ({ ...p, handle: null })));
       }
     } catch (error) {
       console.error("Error fetching follow list:", error);

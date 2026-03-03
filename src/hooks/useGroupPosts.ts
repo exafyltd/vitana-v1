@@ -65,7 +65,7 @@ export function useGroupPosts(groupId?: string) {
       if (userIds.length === 0) return [];
       
       const { data: profiles } = await supabase
-        .from('profiles')
+        .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
 
