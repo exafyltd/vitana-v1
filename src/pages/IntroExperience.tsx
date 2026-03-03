@@ -158,29 +158,35 @@ export default function IntroExperience() {
     // Otherwise, fetch and play new audio
     setIsPreparingAudio(true);
     
-    // Select SSML and voice based on current language
-    const ssml = isGerman ? MAXINA_WELCOME_SSML_DE : MAXINA_WELCOME_SSML_EN;
-    const voiceId = isGerman ? 'de-DE-Wavenet-F' : 'en-US-Wavenet-F';
-    const languageCode = isGerman ? 'de-DE' : 'en-US';
-    
     try {
-      // Call Google Cloud TTS edge function
-      const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-        body: {
-          text: ssml,
-          voiceId: voiceId,
-          languageCode: languageCode,
-          speakingRate: 0.96,
-          pitch: 1.0,
-          useSSML: true
-        }
-      });
+      let audio: HTMLAudioElement;
 
-      if (error) throw error;
-      if (!data?.audioContent) throw new Error('No audio content received');
+      if (isGerman) {
+        // Use pre-recorded German welcome audio (no TTS API call needed)
+        audio = new Audio('/sounds/vitanaland/WelcomeVitanaGER.wav');
+      } else {
+        // English: use Google Cloud TTS
+        const ssml = MAXINA_WELCOME_SSML_EN;
+        const voiceId = 'en-US-Wavenet-F';
+        const languageCode = 'en-US';
 
-      // Create and play audio
-      const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
+          body: {
+            text: ssml,
+            voiceId,
+            languageCode,
+            speakingRate: 0.96,
+            pitch: 1.0,
+            useSSML: true
+          }
+        });
+
+        if (error) throw error;
+        if (!data?.audioContent) throw new Error('No audio content received');
+
+        audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+      }
+
       audioRef.current = audio;
       
       audio.onended = () => {
