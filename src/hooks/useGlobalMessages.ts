@@ -579,10 +579,22 @@ export function useGlobalMessages(
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
         messageCache.addMessage(threadId, "global", optimistic);
 
-        // Check if this is a group thread
+        // Check if this is a group thread (cache first, then DB fallback)
         const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
         const thread = cachedThreads.find((t) => t.id === threadId);
-        const isGroupThread = thread?.type === 'group';
+        let isGroupThread = thread?.type === 'group';
+
+        // If thread not found in cache, check DB to avoid routing group messages to gateway
+        if (!thread) {
+          const { data: dbThread } = await supabase
+            .from("global_message_threads")
+            .select("id, type")
+            .eq("id", threadId)
+            .maybeSingle();
+          if (dbThread?.type === 'group') {
+            isGroupThread = true;
+          }
+        }
 
         let realMsg: GlobalMessage;
 
@@ -666,6 +678,11 @@ export function useGlobalMessages(
         return realMsg;
       } catch (error) {
         console.error("Error sending chat message:", error);
+        // Rollback optimistic message so ghost messages don't linger
+        updateMessagesOptimistically(threadId, (prev) =>
+          prev.filter((m) => !m.id.startsWith("temp-"))
+        );
+        messageCache.removeMessage?.(threadId, "global", `temp-`);
         throw error;
       } finally {
         setIsSending(false);
