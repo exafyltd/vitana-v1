@@ -5,6 +5,7 @@ import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
 import { useFollow } from "@/hooks/useFollow";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FollowListDialog } from "@/components/profile/FollowListDialog";
+import { GroupListDialog } from "@/components/profile/GroupListDialog";
 
 interface MobileProfileStatsProps {
   userId?: string;
@@ -28,6 +29,7 @@ export function MobileProfileStats({
   const followingCount = propFollowing ?? hookFollowing;
   
   const [followListType, setFollowListType] = useState<"followers" | "following" | null>(null);
+  const [groupListOpen, setGroupListOpen] = useState(false);
   
   const formatCount = (count: number) => {
     if (count >= 1000) {
@@ -55,7 +57,7 @@ export function MobileProfileStats({
     { key: "followers", value: followersCount, label: translate('profileStats.followers', 'Followers'), clickable: true },
     { key: "following", value: followingCount, label: translate('profileStats.following', 'Following'), clickable: true },
     { key: "media", value: mediaCount, label: translate('profileStats.media', 'Media'), clickable: false },
-    { key: "groups", value: groupsCount, label: translate('profileStats.groups', 'Groups'), clickable: false },
+    { key: "groups", value: groupsCount, label: translate('profileStats.groups', 'Groups'), clickable: true },
   ];
 
   return (
@@ -71,6 +73,7 @@ export function MobileProfileStats({
             onClick={() => {
               if (stat.key === "followers") setFollowListType("followers");
               if (stat.key === "following") setFollowListType("following");
+              if (stat.key === "groups") setGroupListOpen(true);
             }}
           >
             <span className="text-base font-semibold text-foreground">{formatCount(stat.value)}</span>
@@ -85,6 +88,14 @@ export function MobileProfileStats({
           onOpenChange={(open) => { if (!open) setFollowListType(null); }}
           userId={targetId}
           type={followListType || "followers"}
+        />
+      )}
+
+      {targetId && (
+        <GroupListDialog
+          open={groupListOpen}
+          onOpenChange={setGroupListOpen}
+          userId={targetId}
         />
       )}
     </>
