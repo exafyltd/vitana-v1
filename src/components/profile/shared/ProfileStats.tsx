@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UserProfile } from "@/types/profile";
 import { useFollow } from "@/hooks/useFollow";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useProfileStatsCount } from "@/hooks/useProfileStatsCount";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,12 +16,12 @@ interface ProfileStatsProps {
 }
 
 export function ProfileStats({ profile, profileUserId: propUserId, followersCount: propFollowers, followingCount: propFollowing }: ProfileStatsProps) {
-  const profileUserId = propUserId || profile.user_id || profile.id;
-  const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profile.id);
+  const profileUserId = resolveProfileUserId(propUserId, profile.user_id, profile.id);
+  const { followersCount: hookFollowers, followingCount: hookFollowing } = useFollow(profileUserId);
   const followersCount = propFollowers ?? hookFollowers;
   const followingCount = propFollowing ?? hookFollowing;
   const { translate } = useTranslation();
-  const { postsCount, mediaCount, groupsCount, isLoading } = useProfileStatsCount(profileUserId);
+  const { postsCount, mediaCount, groupsCount, isPending } = useProfileStatsCount(profileUserId);
   const [groupListOpen, setGroupListOpen] = useState(false);
   const [followListType, setFollowListType] = useState<"followers" | "following" | null>(null);
   
@@ -28,7 +29,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
     <>
       <div className="flex items-center justify-center gap-8 md:gap-12 pt-2 pb-6 border-y border-border/50">
         <div className="text-center">
-          {isLoading ? (
+          {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
@@ -56,7 +57,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           <div className="text-sm text-muted-foreground">{translate('profileStats.following', 'Following')}</div>
         </div>
         <div className="text-center">
-          {isLoading ? (
+          {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">
@@ -69,7 +70,7 @@ export function ProfileStats({ profile, profileUserId: propUserId, followersCoun
           className="text-center cursor-pointer hover:opacity-80 transition-opacity"
           onClick={() => setGroupListOpen(true)}
         >
-          {isLoading ? (
+          {isPending ? (
             <Skeleton className="h-8 w-10 mx-auto mb-1" />
           ) : (
             <div className="text-2xl md:text-3xl font-bold text-foreground">

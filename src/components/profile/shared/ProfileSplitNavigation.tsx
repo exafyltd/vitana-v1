@@ -25,6 +25,7 @@ import { VideoGallery } from "../gallery/VideoGallery";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { useAuth } from "@/context/AuthProvider";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 
 interface ProfileSplitNavigationProps {
   profile: UserProfile;
@@ -57,7 +58,7 @@ export function ProfileSplitNavigation({
   const { user } = useAuth();
 
   // Resolve the correct user_id for DB queries (profile.id can be "current-user")
-  const profileUserId = profile.user_id || profile.id || user?.id;
+  const profileUserId = resolveProfileUserId(profile.user_id, profile.id, user?.id);
 
   // Milestones & Gallery hooks
   const { milestones, isOwner: isMilestoneOwner, addMilestone, updateMilestone, deleteMilestone } = useProfileMilestones(profileUserId);

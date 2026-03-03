@@ -16,6 +16,7 @@ import { ShareProfileModal } from "./ShareProfileModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { ThemeConfig } from "@/hooks/useProfileTheme";
 import { useTranslation } from "@/hooks/useTranslation";
+import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 
 interface ProfileIdCardFrontProps {
   profile: UserProfile;
@@ -33,7 +34,8 @@ export function ProfileIdCardFront({ profile, scope, editMode, onEdit, themeConf
   const { createThread, sendMessage } = useHybridMessages('global');
   const { toast } = useToast();
   const [isCreatingThread, setIsCreatingThread] = useState(false);
-  const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(profile.id);
+  const resolvedId = resolveProfileUserId(profile.user_id, profile.id, user?.id);
+  const { isFollowing, loading: followLoading, followUser, unfollowUser } = useFollow(resolvedId);
   const { logFollow, logUnfollow, logProfileView, logMessageSend } = useCommunityLogger();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
