@@ -3848,6 +3848,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           category: string | null
+          chat_thread_id: string | null
           cover_url: string | null
           created_at: string
           created_by: string
@@ -3865,6 +3866,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           category?: string | null
+          chat_thread_id?: string | null
           cover_url?: string | null
           created_at?: string
           created_by: string
@@ -3882,6 +3884,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           category?: string | null
+          chat_thread_id?: string | null
           cover_url?: string | null
           created_at?: string
           created_by?: string
@@ -3897,6 +3900,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "global_community_groups_chat_thread_id_fkey"
+            columns: ["chat_thread_id"]
+            isOneToOne: false
+            referencedRelation: "global_message_threads"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "global_community_groups_moderated_by_fkey"
             columns: ["moderated_by"]

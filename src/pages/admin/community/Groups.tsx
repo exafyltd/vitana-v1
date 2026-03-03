@@ -21,10 +21,11 @@ interface CommunityGroup {
   description: string | null;
   category: string;
   member_count: number;
-  max_members: number | null;
+  max_members?: number | null;
   is_public?: boolean;
   avatar_url?: string | null;
   cover_url?: string | null;
+  chat_thread_id?: string | null;
   created_by: string;
   status: string;
   moderation_notes: string | null;

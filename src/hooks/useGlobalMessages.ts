@@ -166,11 +166,66 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
 
     // 5. Build GlobalMessageThread objects
     return threadRows
-      .filter((t: any) => t.type === "direct") // only direct threads (group not supported by gateway)
       .map((t: any) => {
         const threadParticipants = (allParticipants || []).filter(
           (p: any) => p.thread_id === t.id
         );
+
+        // For group threads, use thread id directly
+        if (t.type === 'group') {
+          const enrichedParticipants = threadParticipants.map((p: any) => ({
+            user_id: p.user_id,
+            display_name: profileMap[p.user_id]?.display_name || "Unknown",
+            avatar_url: profileMap[p.user_id]?.avatar_url || null,
+            role: p.role || "member",
+            last_read_at: p.last_read_at,
+          }));
+
+          const lastMsg = lastMsgByThread[t.id];
+          const lastMessage: GlobalMessage | undefined = lastMsg
+            ? {
+                id: lastMsg.id,
+                thread_id: t.id,
+                sender_id: lastMsg.sender_id,
+                body: lastMsg.body,
+                message_type: lastMsg.message_type || "text",
+                content_data: lastMsg.content_data,
+                created_at: lastMsg.created_at,
+                updated_at: lastMsg.updated_at || lastMsg.created_at,
+                sender: profileMap[lastMsg.sender_id]
+                  ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
+                  : null,
+              }
+            : undefined;
+
+          const myParticipation = participations.find(
+            (p: any) => p.thread_id === t.id
+          );
+          const unreadCount =
+            lastMsg && myParticipation?.last_read_at
+              ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
+                ? 1
+                : 0
+              : lastMsg && lastMsg.sender_id !== userId
+              ? 1
+              : 0;
+
+          return {
+            id: t.id,
+            name: t.name,
+            type: "group" as const,
+            created_by: t.created_by,
+            created_at: t.created_at,
+            updated_at: lastMsg?.created_at || t.updated_at,
+            participants: enrichedParticipants,
+            last_message: lastMessage,
+            unread_count: unreadCount,
+            _legacyThreadId: t.id,
+            _metadata: t.metadata,
+          } as GlobalMessageThread & { _legacyThreadId: string; _metadata?: any };
+        }
+
+        // Direct threads: use peer user_id as thread id
         const otherParticipant = threadParticipants.find(
           (p: any) => p.user_id !== userId
         );
@@ -399,7 +454,18 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessage[]> => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
 
-      // activeThreadId is the peer's user ID
+      // Check if this is a group thread - if so, skip gateway and use legacy directly
+      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+      const cachedThread = cachedThreads.find((t) => t.id === activeThreadId);
+      const isGroupThread = cachedThread?.type === 'group';
+
+      if (isGroupThread) {
+        // Group threads always use legacy messages
+        const legacyThreadId = (cachedThread as any)?._legacyThreadId || activeThreadId;
+        return fetchLegacyMessages(legacyThreadId);
+      }
+
+      // Direct threads: try gateway first
       let gatewayMessages: GlobalMessage[] = [];
       try {
         const rawMessages = await fetchConversation(activeThreadId);
@@ -413,7 +479,6 @@ export function useGlobalMessages(
         );
 
         // Enrich gateway messages with content_data from global_messages table
-        // (gateway API doesn't return content_data for attachments)
         const msgIds = gatewayMessages.map((m) => m.id);
         if (msgIds.length > 0) {
           const { data: dbMsgs } = await supabase
@@ -441,8 +506,6 @@ export function useGlobalMessages(
       if (gatewayMessages.length > 0) return gatewayMessages;
 
       // Fallback: check if there's a legacy thread for this peer
-      // Look up the legacy thread id from the threads cache
-      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
       const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
@@ -496,7 +559,7 @@ export function useGlobalMessages(
       try {
         setIsSending(true);
 
-        // Optimistic message - preserve messageType and contentData
+        // Optimistic message
         const optimistic: GlobalMessage = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
@@ -516,32 +579,78 @@ export function useGlobalMessages(
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
         messageCache.addMessage(threadId, "global", optimistic);
 
-        // threadId is the peer's user ID
-        const created = await sendChatMessage(threadId, body);
+        // Check if this is a group thread
+        const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+        const thread = cachedThreads.find((t) => t.id === threadId);
+        const isGroupThread = thread?.type === 'group';
 
-        // Replace optimistic with real, preserving content_data
-        const profileMap = await enrichProfiles([created.sender_id]);
-        const realMsg = toGlobalMessage(
-          { ...created, message_type: messageType, content_data: contentData } as any,
-          threadId,
-          profileMap
-        );
+        let realMsg: GlobalMessage;
 
+        if (isGroupThread) {
+          // Group threads: insert directly into global_messages
+          const legacyThreadId = (thread as any)?._legacyThreadId || threadId;
+          const { data: inserted, error } = await supabase
+            .from("global_messages")
+            .insert({
+              thread_id: legacyThreadId,
+              sender_id: user.id,
+              body,
+              message_type: messageType,
+              content_data: contentData || null,
+            })
+            .select()
+            .single() as any;
+
+          if (error) throw error;
+
+          // Update thread's updated_at
+          await supabase
+            .from("global_message_threads")
+            .update({ updated_at: new Date().toISOString() })
+            .eq("id", legacyThreadId);
+
+          const profileMap = await enrichProfiles([user.id]);
+          realMsg = {
+            id: inserted.id,
+            thread_id: threadId,
+            sender_id: inserted.sender_id,
+            body: inserted.body,
+            message_type: inserted.message_type || "text",
+            content_data: inserted.content_data,
+            created_at: inserted.created_at,
+            updated_at: inserted.updated_at || inserted.created_at,
+            sender: profileMap[user.id]
+              ? { user_id: user.id, ...profileMap[user.id] }
+              : null,
+          };
+        } else {
+          // Direct threads: use gateway API
+          const created = await sendChatMessage(threadId, body);
+
+          const profileMap = await enrichProfiles([created.sender_id]);
+          realMsg = toGlobalMessage(
+            { ...created, message_type: messageType, content_data: contentData } as any,
+            threadId,
+            profileMap
+          );
+
+          // If we have attachment data, update the global_messages record in DB
+          if (messageType !== "text" && contentData) {
+            supabase
+              .from("global_messages")
+              .update({ message_type: messageType, content_data: contentData })
+              .eq("id", created.id)
+              .then(({ error }) => {
+                if (error) console.warn("Failed to update global message content_data:", error);
+              });
+          }
+        }
+
+        // Replace optimistic with real
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
         messageCache.updateMessage(threadId, "global", optimistic.id, realMsg);
-
-        // If we have attachment data, update the global_messages record in DB
-        if (messageType !== "text" && contentData) {
-          supabase
-            .from("global_messages")
-            .update({ message_type: messageType, content_data: contentData })
-            .eq("id", created.id)
-            .then(({ error }) => {
-              if (error) console.warn("Failed to update global message content_data:", error);
-            });
-        }
 
         // Move thread to top
         const now = new Date().toISOString();
@@ -562,7 +671,7 @@ export function useGlobalMessages(
         setIsSending(false);
       }
     },
-    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically]
+    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, queryClient]
   );
 
   const sendMessage = useCallback(
@@ -634,7 +743,22 @@ export function useGlobalMessages(
 
       const timeout = setTimeout(async () => {
         try {
-          await markChatRead(threadId);
+          // Check if group thread
+          const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+          const thread = cachedThreads.find((t) => t.id === threadId);
+          const isGroupThread = thread?.type === 'group';
+
+          if (isGroupThread) {
+            // For group threads, update last_read_at in global_thread_participants
+            const legacyThreadId = (thread as any)?._legacyThreadId || threadId;
+            await supabase
+              .from("global_thread_participants")
+              .update({ last_read_at: new Date().toISOString() })
+              .eq("thread_id", legacyThreadId)
+              .eq("user_id", user.id);
+          } else {
+            await markChatRead(threadId);
+          }
 
           updateThreadsOptimistically((prev) =>
             prev.map((t) =>
@@ -662,7 +786,7 @@ export function useGlobalMessages(
 
       markAsReadTimeouts.current.set(threadId, timeout);
     },
-    [user, isGlobalContext, updateThreadsOptimistically]
+    [user, isGlobalContext, updateThreadsOptimistically, queryClient]
   );
 
   // ── Realtime: listen for new chat_messages ────────────────────────
@@ -720,6 +844,89 @@ export function useGlobalMessages(
       supabase.removeChannel(channel);
     };
   }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads]);
+
+  // ── Realtime: listen for new global_messages (group chats) ────────
+
+  useEffect(() => {
+    if (!user || !isGlobalContext) return;
+
+    // Get group thread IDs from cache to listen for
+    const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+    const groupThreadIds = cachedThreads
+      .filter((t) => t.type === 'group')
+      .map((t) => (t as any)._legacyThreadId || t.id);
+
+    if (groupThreadIds.length === 0) return;
+
+    const channelName = `group_messages_realtime_${crypto.randomUUID()}`;
+    const channel = supabase
+      .channel(channelName)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "global_messages",
+        },
+        async (payload) => {
+          const raw = payload.new as any;
+          // Only handle messages for group threads we're part of
+          if (!groupThreadIds.includes(raw.thread_id)) return;
+          // Skip our own messages (already handled optimistically)
+          if (raw.sender_id === user.id) return;
+
+          const profileMap = await enrichProfiles([raw.sender_id]);
+          
+          // Find the thread ID used in UI (may differ from legacy thread_id)
+          const uiThread = cachedThreads.find(
+            (t) => ((t as any)._legacyThreadId || t.id) === raw.thread_id
+          );
+          const uiThreadId = uiThread?.id || raw.thread_id;
+
+          const msg: GlobalMessage = {
+            id: raw.id,
+            thread_id: uiThreadId,
+            sender_id: raw.sender_id,
+            body: raw.body,
+            message_type: raw.message_type || "text",
+            content_data: raw.content_data,
+            created_at: raw.created_at,
+            updated_at: raw.updated_at || raw.created_at,
+            sender: profileMap[raw.sender_id]
+              ? { user_id: raw.sender_id, ...profileMap[raw.sender_id] }
+              : null,
+          };
+
+          // Append to message list
+          updateMessagesOptimistically(uiThreadId, (prev) => {
+            if (prev.some((m) => m.id === msg.id)) return prev;
+            return [...prev, msg];
+          });
+
+          // Bump thread to top + increment unread
+          updateThreadsOptimistically((prev) => {
+            const existing = prev.find((t) => t.id === uiThreadId);
+            if (existing) {
+              return [
+                {
+                  ...existing,
+                  updated_at: raw.created_at,
+                  last_message: msg,
+                  unread_count: existing.unread_count + 1,
+                },
+                ...prev.filter((t) => t.id !== uiThreadId),
+              ];
+            }
+            return prev;
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, queryClient]);
 
   // ── Legacy compat shims ───────────────────────────────────────────
 
