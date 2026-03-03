@@ -551,7 +551,7 @@ export function useGlobalMessages(
       try {
         setIsSending(true);
 
-        // Optimistic message - preserve messageType and contentData
+        // Optimistic message
         const optimistic: GlobalMessage = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
@@ -571,32 +571,78 @@ export function useGlobalMessages(
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
         messageCache.addMessage(threadId, "global", optimistic);
 
-        // threadId is the peer's user ID
-        const created = await sendChatMessage(threadId, body);
+        // Check if this is a group thread
+        const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+        const thread = cachedThreads.find((t) => t.id === threadId);
+        const isGroupThread = thread?.type === 'group';
 
-        // Replace optimistic with real, preserving content_data
-        const profileMap = await enrichProfiles([created.sender_id]);
-        const realMsg = toGlobalMessage(
-          { ...created, message_type: messageType, content_data: contentData } as any,
-          threadId,
-          profileMap
-        );
+        let realMsg: GlobalMessage;
 
+        if (isGroupThread) {
+          // Group threads: insert directly into global_messages
+          const legacyThreadId = (thread as any)?._legacyThreadId || threadId;
+          const { data: inserted, error } = await supabase
+            .from("global_messages")
+            .insert({
+              thread_id: legacyThreadId,
+              sender_id: user.id,
+              body,
+              message_type: messageType,
+              content_data: contentData || null,
+            })
+            .select()
+            .single() as any;
+
+          if (error) throw error;
+
+          // Update thread's updated_at
+          await supabase
+            .from("global_message_threads")
+            .update({ updated_at: new Date().toISOString() })
+            .eq("id", legacyThreadId);
+
+          const profileMap = await enrichProfiles([user.id]);
+          realMsg = {
+            id: inserted.id,
+            thread_id: threadId,
+            sender_id: inserted.sender_id,
+            body: inserted.body,
+            message_type: inserted.message_type || "text",
+            content_data: inserted.content_data,
+            created_at: inserted.created_at,
+            updated_at: inserted.updated_at || inserted.created_at,
+            sender: profileMap[user.id]
+              ? { user_id: user.id, ...profileMap[user.id] }
+              : null,
+          };
+        } else {
+          // Direct threads: use gateway API
+          const created = await sendChatMessage(threadId, body);
+
+          const profileMap = await enrichProfiles([created.sender_id]);
+          realMsg = toGlobalMessage(
+            { ...created, message_type: messageType, content_data: contentData } as any,
+            threadId,
+            profileMap
+          );
+
+          // If we have attachment data, update the global_messages record in DB
+          if (messageType !== "text" && contentData) {
+            supabase
+              .from("global_messages")
+              .update({ message_type: messageType, content_data: contentData })
+              .eq("id", created.id)
+              .then(({ error }) => {
+                if (error) console.warn("Failed to update global message content_data:", error);
+              });
+          }
+        }
+
+        // Replace optimistic with real
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
         messageCache.updateMessage(threadId, "global", optimistic.id, realMsg);
-
-        // If we have attachment data, update the global_messages record in DB
-        if (messageType !== "text" && contentData) {
-          supabase
-            .from("global_messages")
-            .update({ message_type: messageType, content_data: contentData })
-            .eq("id", created.id)
-            .then(({ error }) => {
-              if (error) console.warn("Failed to update global message content_data:", error);
-            });
-        }
 
         // Move thread to top
         const now = new Date().toISOString();
@@ -617,7 +663,7 @@ export function useGlobalMessages(
         setIsSending(false);
       }
     },
-    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically]
+    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, queryClient]
   );
 
   const sendMessage = useCallback(
