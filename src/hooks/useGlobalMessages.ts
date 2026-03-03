@@ -743,7 +743,22 @@ export function useGlobalMessages(
 
       const timeout = setTimeout(async () => {
         try {
-          await markChatRead(threadId);
+          // Check if group thread
+          const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+          const thread = cachedThreads.find((t) => t.id === threadId);
+          const isGroupThread = thread?.type === 'group';
+
+          if (isGroupThread) {
+            // For group threads, update last_read_at in global_thread_participants
+            const legacyThreadId = (thread as any)?._legacyThreadId || threadId;
+            await supabase
+              .from("global_thread_participants")
+              .update({ last_read_at: new Date().toISOString() })
+              .eq("thread_id", legacyThreadId)
+              .eq("user_id", user.id);
+          } else {
+            await markChatRead(threadId);
+          }
 
           updateThreadsOptimistically((prev) =>
             prev.map((t) =>
@@ -771,7 +786,7 @@ export function useGlobalMessages(
 
       markAsReadTimeouts.current.set(threadId, timeout);
     },
-    [user, isGlobalContext, updateThreadsOptimistically]
+    [user, isGlobalContext, updateThreadsOptimistically, queryClient]
   );
 
   // ── Realtime: listen for new chat_messages ────────────────────────
