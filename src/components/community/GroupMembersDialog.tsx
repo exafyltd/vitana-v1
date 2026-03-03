@@ -44,6 +44,7 @@ export function GroupMembersDialog({ open, onOpenChange, groupId, memberCount }:
       if (error) throw error;
       if (!memberRows?.length) { setMembers([]); return; }
 
+      const userIds = memberRows.map(m => m.user_id);
       const { data: profiles } = await supabase
         .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
