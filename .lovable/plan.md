@@ -1,35 +1,47 @@
-## Chat / Direct Messaging — Gateway API Rewire
+## Cloudflare Worker OG Handling — Implementation Complete
 
 ### Summary
-Rewired the Inbox (Postfach) data layer from direct Supabase queries to the gateway chat API at `VITE_GATEWAY_BASE`. UI layout, tabs, routes, and styling are **unchanged**.
+Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### Architecture
+### What Was Done
 
-```
-Messages.tsx → useHybridMessages → useGlobalMessages → useChatApi → GET/POST gateway/api/v1/chat/*
-                                                                   + Supabase Realtime on chat_messages
-```
+#### 1. Database: Unique Slug Constraint + Auto-Generation
+- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
+- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
+- Trigger fires on INSERT/UPDATE of `global_community_events`
 
-### Files Created
-- **`src/hooks/useChatApi.ts`** — Pure REST client (fetchConversations, fetchConversation, sendChatMessage, markChatRead, fetchUnreadCount)
-- **`src/hooks/useChatUnreadCount.ts`** — Polls GET /unread-count + listens to Realtime INSERT on chat_messages for live badge
+#### 2. New Edge Function: `api-event-by-slug`
+- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
+- **Returns:** `{ title, short_description, image_url, event_id }`
+- Uses `resolve_event_by_slug` RPC
+- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
+- No auth required, cached 5min client / 10min CDN
 
-### Files Modified
-- **`src/hooks/useGlobalMessages.ts`** — Complete rewrite of data fetching:
-  - Threads query → `GET /api/v1/chat/conversations` + profile enrichment
-  - Messages query → `GET /api/v1/chat/conversation/:peerId` (reversed to ascending)
-  - sendMessage → `POST /api/v1/chat/send`
-  - markAsRead → `POST /api/v1/chat/read`
-  - Realtime → `chat_messages` table filtered by `receiver_id=eq.${userId}`
-  - createThread → virtual thread creation (peer = thread ID)
-- **`src/components/mobile/SideDrawerNav.tsx`** — Added unread count badge on "Postfach" nav item
+#### 3. Updated `og-event` Edge Function
+- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
+- Canonical URL: `https://vitanaland.com/e/{slug}`
+- Image MIME type never returns `image/webp`
+- WebP images auto-converted via Supabase render endpoint
 
-### Data Shape Mapping
-- Gateway `peer_id` → Thread `id`
-- Gateway `content` → `body`
-- Gateway `sender_id/receiver_id` → participants array (enriched from profiles table)
-- All conversations are `type: 'direct'`
+#### 4. Share URLs — Canonical Only
+- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
+- `getCleanEventUrl()` → same canonical base
+- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
 
-### Prerequisites
-- Users MUST have `active_tenant_id` in their JWT `app_metadata` or gateway calls will fail with `400 TENANT_REQUIRED`
-- `VITE_GATEWAY_BASE` env var must be set
+### Cloudflare Worker Integration
+Your Cloudflare Worker at `vitanaland.com/e/*` should:
+1. Detect crawler via User-Agent
+2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
+3. **Human:** Pass through to SPA (serve index.html)
+
+### Files
+| File | Action |
+|------|--------|
+| `supabase/functions/api-event-by-slug/index.ts` | Created |
+| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
+| `supabase/config.toml` | Added `api-event-by-slug` |
+| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
+| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
+| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
+| Migration | Unique slug index + auto-slug trigger |
