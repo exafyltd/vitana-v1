@@ -12310,6 +12310,14 @@ export type Database = {
       }
       is_community_user: { Args: never; Returns: boolean }
       is_exafy_admin: { Args: { user_id_param: string }; Returns: boolean }
+      is_group_admin: {
+        Args: { _group_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_group_member: {
+        Args: { _group_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_participant_of_global_thread: {
         Args: { thread_id_param: string }
         Returns: boolean
