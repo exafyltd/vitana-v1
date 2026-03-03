@@ -884,12 +884,6 @@ export function useGlobalMessages(
           if (currentMessages.some((m) => m.id === raw.id)) return;
 
           const profileMap = await enrichProfiles([raw.sender_id]);
-          
-          // Find the thread ID used in UI (may differ from legacy thread_id)
-          const uiThread = cachedThreads.find(
-            (t) => ((t as any)._legacyThreadId || t.id) === raw.thread_id
-          );
-          const uiThreadId = uiThread?.id || raw.thread_id;
 
           const msg: GlobalMessage = {
             id: raw.id,
