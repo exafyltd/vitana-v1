@@ -214,22 +214,7 @@ export function usePurchaseTicket() {
 
       const { url } = response.data;
       if (url) {
-        // Open Stripe checkout in a centered popup window
-        const width = 600;
-        const height = 800;
-        const left = (window.screen.width - width) / 2;
-        const top = (window.screen.height - height) / 2;
-        const features = `width=${width},height=${height},left=${left},top=${top},toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes`;
-        
-        const popup = window.open(url, 'stripe-ticket-checkout', features);
-        
-        if (!popup) {
-          toast({
-            title: "Popup Blocked",
-            description: "Please allow popups to complete your ticket purchase",
-            variant: "destructive",
-          });
-        }
+        window.location.href = url;
       }
 
       return response.data;
