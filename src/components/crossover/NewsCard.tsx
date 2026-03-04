@@ -33,6 +33,7 @@ interface NewsCardProps {
   attendees?: number;
   timestamp?: string;
   price?: number | "free";
+  currency?: string;
   className?: string;
   onClick?: () => void;
   actionButton?: React.ReactNode;
@@ -72,6 +73,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     attendees, 
     timestamp, 
     price,
+    currency,
     className, 
     onClick,
     actionButton,
@@ -376,7 +378,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                       ? "bg-green-500/90 text-white border-green-400/50" 
                       : "bg-primary/90 text-primary-foreground border-primary/50"
                   )}>
-                    {price === "free" ? "FREE" : `$${price}`}
+                    {price === "free" ? "FREE" : `${currency === 'EUR' ? '€' : '$'}${price}`}
                   </div>
                 )}
               </div>

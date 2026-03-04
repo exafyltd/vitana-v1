@@ -84,6 +84,7 @@ export const eventCardToNewsCardProps = (
     eventId: event.id,
     eventType: event.event_type,
     showSmartAction: true,
+    currency: (event as any).currency || 'USD',
     onClick,
     'data-event-id': event.id,
   };

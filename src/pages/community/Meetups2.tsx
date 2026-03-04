@@ -268,6 +268,7 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
     price: isPaidEvent ? Number(event.metadata?.price || 0) : ('free' as const),
+    currency: event.metadata?.display_currency || 'USD',
     showSmartAction: true,
     hasTickets,
     isPaidEvent,

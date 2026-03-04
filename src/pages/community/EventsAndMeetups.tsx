@@ -136,6 +136,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     attendees: event.participant_count || 0,
     timestamp: formatEventTime(event.start_time),
     price: event.metadata?.is_paid ? Number(event.metadata?.price || 0) : ('free' as const),
+    currency: event.metadata?.display_currency || 'USD',
     eventId: event.id,
     eventType: event.event_type,
     showSmartAction: true,
