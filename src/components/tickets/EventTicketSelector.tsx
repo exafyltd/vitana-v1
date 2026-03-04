@@ -11,6 +11,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { useTranslation } from "@/hooks/useTranslation";
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: '$', EUR: '€', GBP: '£', JPY: '¥',
+};
+
+const getCurrencySymbol = (currency: string = 'USD'): string =>
+  CURRENCY_SYMBOLS[currency.toUpperCase()] || currency + ' ';
+
+const formatPrice = (amount: number, currency: string = 'USD'): string => {
+  const sym = getCurrencySymbol(currency);
+  return amount === Math.floor(amount) ? `${sym}${amount}` : `${sym}${amount.toFixed(2)}`;
+};
+
 interface EventTicketSelectorProps {
   eventId: string;
   eventTitle: string;
@@ -55,6 +67,9 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
     return sum + tt.price * qty;
   }, 0);
   const discountedTotal = appliedCode ? totalAmount * (1 - appliedPercent / 100) : totalAmount;
+
+  // Derive currency from the first ticket type (all ticket types on an event share the same currency)
+  const summaryCurrency = ticketTypes.length > 0 ? ticketTypes[0].currency : 'USD';
 
   const validateCode = useCallback(async (code: string): Promise<{ valid: boolean; message?: string }> => {
     try {
@@ -270,13 +285,13 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
             {translate('discount.ticketsSelected', '{count} ticket(s) selected').replace('{count}', String(totalTickets))}
           </span>
           <span className="font-semibold text-foreground">
-            {totalTickets === 0 ? "$0.00" : totalAmount === 0 ? translate('discount.free', 'Free') : (
+            {totalTickets === 0 ? formatPrice(0, summaryCurrency) : totalAmount === 0 ? translate('discount.free', 'Free') : (
               appliedCode && discountedTotal !== totalAmount ? (
                 <>
-                  <span className="line-through text-muted-foreground mr-2">${totalAmount.toFixed(2)}</span>
-                  <span className="text-green-600">${discountedTotal.toFixed(2)}</span>
+                  <span className="line-through text-muted-foreground mr-2">{formatPrice(totalAmount, summaryCurrency)}</span>
+                  <span className="text-green-600">{formatPrice(discountedTotal, summaryCurrency)}</span>
                 </>
-              ) : `$${totalAmount.toFixed(2)}`
+              ) : formatPrice(totalAmount, summaryCurrency)
             )}
           </span>
         </div>
@@ -297,7 +312,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
           ) : totalAmount === 0 ? (
             translate('eventCta.getFreeTicket', 'Get Free Ticket')
           ) : (
-            translate('eventCta.buyTicketsTotal', `Buy Tickets – $${totalAmount.toFixed(2)}`).replace('{total}', `$${(appliedCode ? discountedTotal : totalAmount).toFixed(2)}`)
+            translate('eventCta.buyTicketsTotal', `Buy Tickets – ${formatPrice(totalAmount, summaryCurrency)}`).replace('{total}', formatPrice(appliedCode ? discountedTotal : totalAmount, summaryCurrency))
           )}
         </Button>
       </div>
@@ -361,12 +376,12 @@ function TicketTypeCard({ ticketType, quantity, onQuantityChange, discountPercen
           <div className="flex items-center gap-2">
             {discountPercent > 0 && ticketType.price > 0 ? (
               <>
-                <span className="text-sm line-through text-muted-foreground">${ticketType.price.toFixed(2)}</span>
-                <span className="text-lg font-semibold text-green-600">${discountedPrice.toFixed(2)}</span>
+                <span className="text-sm line-through text-muted-foreground">{formatPrice(ticketType.price, ticketType.currency)}</span>
+                <span className="text-lg font-semibold text-green-600">{formatPrice(discountedPrice, ticketType.currency)}</span>
               </>
             ) : (
               <span className="text-lg font-semibold text-primary">
-                {ticketType.price === 0 ? translate('discount.free', 'Free') : `$${ticketType.price.toFixed(2)}`}
+                {ticketType.price === 0 ? translate('discount.free', 'Free') : formatPrice(ticketType.price, ticketType.currency)}
               </span>
             )}
           </div>
