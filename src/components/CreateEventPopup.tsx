@@ -829,6 +829,7 @@ export function CreateEventPopup({
                           name: "General Admission",
                           description: "Standard entry ticket",
                           price: 25,
+                          currency: 'USD',
                           quantity: 50,
                           saleStartDate: new Date().toISOString().split('T')[0],
                           saleEndDate: formData.date || "",
