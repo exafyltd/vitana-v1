@@ -1,47 +1,49 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: Fix Stripe Checkout Popup Being Blocked
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Problem
+The edge function returns a valid URL (confirmed by network logs showing 200 with a Stripe checkout URL), but `window.open()` is being blocked by the browser's popup blocker. Browsers block `window.open()` when it's not called in the direct call stack of a user gesture — and here, the `window.open()` happens after an async `await` (the edge function call), breaking the user-gesture chain.
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+## Solution
+Pre-open the popup window **before** the async call (while still in the user-gesture call stack), then redirect it to the Stripe URL once the response arrives. If the call fails, close the pre-opened window.
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+### File: `src/hooks/useEventTickets.ts` (~lines 195-227)
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+```typescript
+// Pre-open popup BEFORE the async call (preserves user gesture context)
+const isMobile = window.innerWidth < 768;
+let popupWindow: Window | null = null;
+if (!isMobile) {
+  const width = 500;
+  const height = 700;
+  const left = (window.screen.width - width) / 2;
+  const top = (window.screen.height - height) / 2;
+  popupWindow = window.open('about:blank', 'stripe-checkout', 
+    `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+}
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+const response = await supabase.functions.invoke("stripe-create-ticket-checkout", { ... });
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+if (response.error) {
+  popupWindow?.close();
+  throw new Error(response.error.message || "Failed to create checkout");
+}
+
+const { url } = response.data;
+if (url) {
+  if (isMobile) {
+    window.location.href = url;
+  } else if (popupWindow) {
+    popupWindow.location.href = url;
+  } else {
+    // Fallback if popup was still blocked
+    window.location.href = url;
+  }
+}
+```
+
+## Scope
+- 1 file changed (`src/hooks/useEventTickets.ts`)
+- No backend changes
+
