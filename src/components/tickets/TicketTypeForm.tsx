@@ -4,12 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Ticket } from "lucide-react";
 
 export interface TicketTypeInput {
   name: string;
   description: string;
   price: number;
+  currency: 'USD' | 'EUR';
   quantity: number;
   saleStartDate: string;
   saleEndDate: string;
@@ -20,6 +22,11 @@ interface TicketTypeFormProps {
   onChange: (ticketTypes: TicketTypeInput[]) => void;
   eventDate?: string;
 }
+
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: '$',
+  EUR: '€',
+};
 
 const DEFAULT_TICKET_TEMPLATES = [
   { name: "Early Bird", description: "Limited early access tickets at a discounted price", priceMultiplier: 0.8 },
@@ -35,6 +42,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
         name: "",
         description: "",
         price: 0,
+        currency: 'USD',
         quantity: 50,
         saleStartDate: new Date().toISOString().split('T')[0],
         saleEndDate: eventDate || "",
@@ -59,6 +67,7 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
         name: template.name,
         description: template.description,
         price: Math.round(basePrice * template.priceMultiplier),
+        currency: 'USD',
         quantity: template.name === "VIP" ? 20 : 50,
         saleStartDate: new Date().toISOString().split('T')[0],
         saleEndDate: eventDate || "",
@@ -128,16 +137,32 @@ export function TicketTypeForm({ ticketTypes, onChange, eventDate }: TicketTypeF
                 />
               </div>
               <div>
-                <Label className="text-xs">Price ($) *</Label>
-                <Input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={ticket.price}
-                  onChange={(e) => updateTicketType(index, "price", parseFloat(e.target.value) || 0)}
-                  placeholder="0.00"
-                  className="mt-1"
-                />
+                <Label className="text-xs">
+                  Price ({CURRENCY_SYMBOLS[ticket.currency] || ticket.currency}) *
+                </Label>
+                <div className="flex gap-2 mt-1">
+                  <Input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={ticket.price}
+                    onChange={(e) => updateTicketType(index, "price", parseFloat(e.target.value) || 0)}
+                    placeholder="0.00"
+                    className="flex-1"
+                  />
+                  <Select
+                    value={ticket.currency}
+                    onValueChange={(val) => updateTicketType(index, "currency", val)}
+                  >
+                    <SelectTrigger className="w-[80px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="USD">$ USD</SelectItem>
+                      <SelectItem value="EUR">€ EUR</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
 
