@@ -1501,7 +1501,7 @@ export function MeetupDetailsDrawer({
                 )}
                 style={isMobile && ctaConfig.variant === 'join' ? getMobilePrimaryCtaStyle() : undefined}
                 onClick={handleCtaClick}
-                disabled={ctaConfig.disabled || isJoining || isCheckingParticipation || shouldFade}
+                disabled={ctaConfig.disabled || isJoining || (!isTicketCta && isCheckingParticipation) || shouldFade}
               >
                 {isJoining ? (
                   <>
