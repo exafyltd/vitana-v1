@@ -197,6 +197,7 @@ export function MeetupDetailsDrawer({
   const [userHasTicket, setUserHasTicket] = useState(false);
   const [isTicketSectionVisible, setIsTicketSectionVisible] = useState(false);
   const [liveParticipantCount, setLiveParticipantCount] = useState<number | null>(null);
+  const [hasTicketSelection, setHasTicketSelection] = useState(false);
   
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
