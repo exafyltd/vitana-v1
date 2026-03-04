@@ -214,7 +214,16 @@ export function usePurchaseTicket() {
 
       const { url } = response.data;
       if (url) {
-        window.location.href = url;
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          window.location.href = url;
+        } else {
+          const width = 500;
+          const height = 700;
+          const left = (window.screen.width - width) / 2;
+          const top = (window.screen.height - height) / 2;
+          window.open(url, 'stripe-checkout', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+        }
       }
 
       return response.data;
