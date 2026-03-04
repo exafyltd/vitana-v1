@@ -1489,18 +1489,15 @@ export function MeetupDetailsDrawer({
             };
 
             const isTicketCta = ctaConfig.action === 'buy-ticket' || ctaConfig.action === 'get-free-ticket';
-            const shouldFade = isTicketCta && isTicketSectionVisible;
-
             return (
               <Button
                 className={cn(
                   getCtaButtonClasses(),
-                  "transition-opacity duration-300",
-                  shouldFade && "opacity-0 pointer-events-none"
+                  "transition-opacity duration-300"
                 )}
                 style={isMobile && ctaConfig.variant === 'join' ? getMobilePrimaryCtaStyle() : undefined}
                 onClick={handleCtaClick}
-                disabled={ctaConfig.disabled || isJoining || isCheckingParticipation || shouldFade}
+                disabled={ctaConfig.disabled || isJoining || isCheckingParticipation}
               >
                 {isJoining ? (
                   <>
