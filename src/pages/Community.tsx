@@ -1012,7 +1012,7 @@ export default withScreenId(function Community() {
   // Mobile users should never see /comm - redirect to Events
   useEffect(() => {
     if (isMobile) {
-      navigate('/comm/events-meetups?tab=upcoming', { replace: true });
+      navigate('/comm/events-meetups?tab=hot', { replace: true });
     }
   }, [isMobile, navigate]);
 
