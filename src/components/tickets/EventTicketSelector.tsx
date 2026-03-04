@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Ticket, Minus, Plus, Loader2, AlertCircle, Gift, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,9 +17,10 @@ interface EventTicketSelectorProps {
   forceGuestMode?: boolean;
   utmParams?: UtmParams;
   eventPrice?: number;
+  onSelectionChange?: (hasSelection: boolean) => void;
 }
 
-export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams, eventPrice }: EventTicketSelectorProps) {
+export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = false, utmParams, eventPrice, onSelectionChange }: EventTicketSelectorProps) {
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
   const { discountCode, loading: discountLoading, clearDiscount } = useDiscountCode('maxina');
@@ -45,6 +46,10 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
   };
 
   const totalTickets = Object.values(selectedTickets).reduce((sum, qty) => sum + qty, 0);
+
+  useEffect(() => {
+    onSelectionChange?.(totalTickets > 0);
+  }, [totalTickets, onSelectionChange]);
   const totalAmount = ticketTypes.reduce((sum, tt) => {
     const qty = selectedTickets[tt.id] || 0;
     return sum + tt.price * qty;

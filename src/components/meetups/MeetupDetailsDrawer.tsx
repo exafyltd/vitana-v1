@@ -197,6 +197,7 @@ export function MeetupDetailsDrawer({
   const [userHasTicket, setUserHasTicket] = useState(false);
   const [isTicketSectionVisible, setIsTicketSectionVisible] = useState(false);
   const [liveParticipantCount, setLiveParticipantCount] = useState<number | null>(null);
+  const [hasTicketSelection, setHasTicketSelection] = useState(false);
   
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
@@ -1293,6 +1294,7 @@ export function MeetupDetailsDrawer({
                     <EventTicketSelector 
                       eventId={event.id} 
                       eventTitle={event.title}
+                      onSelectionChange={setHasTicketSelection}
                     />
                   </div>
                 )}
@@ -1489,15 +1491,17 @@ export function MeetupDetailsDrawer({
             };
 
             const isTicketCta = ctaConfig.action === 'buy-ticket' || ctaConfig.action === 'get-free-ticket';
+            const shouldFade = isTicketCta && hasTicketSelection;
             return (
               <Button
                 className={cn(
                   getCtaButtonClasses(),
-                  "transition-opacity duration-300"
+                  "transition-opacity duration-300",
+                  shouldFade && "opacity-0 pointer-events-none"
                 )}
                 style={isMobile && ctaConfig.variant === 'join' ? getMobilePrimaryCtaStyle() : undefined}
                 onClick={handleCtaClick}
-                disabled={ctaConfig.disabled || isJoining || isCheckingParticipation}
+                disabled={ctaConfig.disabled || isJoining || isCheckingParticipation || shouldFade}
               >
                 {isJoining ? (
                   <>
