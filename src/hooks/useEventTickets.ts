@@ -191,6 +191,18 @@ export function usePurchaseTicket() {
     setLoading(true);
 
     try {
+      // Pre-open popup BEFORE async call to preserve user gesture context
+      const isMobile = window.innerWidth < 768;
+      let popupWindow: Window | null = null;
+      if (!isMobile) {
+        const width = 500;
+        const height = 700;
+        const left = (window.screen.width - width) / 2;
+        const top = (window.screen.height - height) / 2;
+        popupWindow = window.open('about:blank', 'stripe-checkout', 
+          `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       
       const response = await supabase.functions.invoke("stripe-create-ticket-checkout", {
@@ -201,7 +213,6 @@ export function usePurchaseTicket() {
           buyer_email: buyerEmail,
           buyer_name: buyerName,
           discount_code: discountCode || undefined,
-          // Pass UTM params for reseller attribution
           utm_source: utmParams?.utm_source,
           utm_medium: utmParams?.utm_medium,
           utm_campaign: utmParams?.utm_campaign,
@@ -209,21 +220,22 @@ export function usePurchaseTicket() {
       });
 
       if (response.error) {
+        popupWindow?.close();
         throw new Error(response.error.message || "Failed to create checkout");
       }
 
       const { url } = response.data;
       if (url) {
-        const isMobile = window.innerWidth < 768;
         if (isMobile) {
           window.location.href = url;
+        } else if (popupWindow) {
+          popupWindow.location.href = url;
         } else {
-          const width = 500;
-          const height = 700;
-          const left = (window.screen.width - width) / 2;
-          const top = (window.screen.height - height) / 2;
-          window.open(url, 'stripe-checkout', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes`);
+          // Fallback if popup was still blocked
+          window.location.href = url;
         }
+      } else {
+        popupWindow?.close();
       }
 
       return response.data;
