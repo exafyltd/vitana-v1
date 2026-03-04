@@ -85,15 +85,32 @@ serve(async (req) => {
       throw new Error("Buyer email is required");
     }
 
-    // Fetch ticket type and event details
-    const { data: ticketType, error: ticketError } = await supabaseAdmin
-      .from("event_ticket_types")
-      .select(`
-        *,
-        event:global_community_events(id, title, start_time, location, image_url, created_by)
-      `)
-      .eq("id", ticket_type_id)
-      .single();
+    // Initialize Stripe early so we can parallelize
+    const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
+
+    // Parallelize independent calls: ticket type, Stripe customer, discount validation
+    const [ticketTypeResult, customersResult, discountResult] = await Promise.all([
+      supabaseAdmin
+        .from("event_ticket_types")
+        .select(`
+          *,
+          event:global_community_events(id, title, start_time, location, image_url, created_by)
+        `)
+        .eq("id", ticket_type_id)
+        .single(),
+      stripe.customers.list({ email: finalBuyerEmail, limit: 1 }),
+      discount_code
+        ? supabaseAdmin
+            .from("user_discount_codes")
+            .select("*")
+            .eq("code", discount_code)
+            .is("used_at", null)
+            .gt("expires_at", new Date().toISOString())
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null }),
+    ]);
+
+    const { data: ticketType, error: ticketError } = ticketTypeResult;
 
     if (ticketError || !ticketType) {
       logStep("Ticket type not found", { error: ticketError });
@@ -120,32 +137,21 @@ serve(async (req) => {
     // Generate unique QR code token
     const qrCodeToken = crypto.randomUUID() + "-" + Date.now().toString(36);
 
-    // Initialize Stripe
-    const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
-
-    // Check for existing Stripe customer
-    const customers = await stripe.customers.list({ email: finalBuyerEmail, limit: 1 });
     let customerId;
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id;
+    if (customersResult.data.length > 0) {
+      customerId = customersResult.data[0].id;
       logStep("Existing customer found", { customerId });
     }
 
     const unitAmount = Math.round(ticketType.price * 100); // Convert to cents
     const totalAmount = unitAmount * quantity;
 
-    // Validate discount code if provided
+    // Process discount result from parallel call
     let validatedDiscount: any = null;
     let stripeCouponId: string | undefined;
     if (discount_code) {
+      const { data: discountData, error: discountError } = discountResult;
       logStep("Validating discount code", { discount_code });
-      const { data: discountData, error: discountError } = await supabaseAdmin
-        .from("user_discount_codes")
-        .select("*")
-        .eq("code", discount_code)
-        .is("used_at", null)
-        .gt("expires_at", new Date().toISOString())
-        .maybeSingle();
 
       if (discountError || !discountData) {
         logStep("Invalid discount code", { error: discountError });
@@ -160,27 +166,22 @@ serve(async (req) => {
       validatedDiscount = discountData;
       logStep("Discount code validated", { percent: discountData.discount_percent });
 
-      // Create or find a Stripe coupon for this discount
-      const couponName = `MAXINA-${discountData.discount_percent}PCT`;
+      // Use deterministic coupon ID for direct retrieval instead of listing all coupons
+      const couponId = `maxina-${discountData.discount_percent}pct`;
       try {
-        // Try to retrieve existing coupon
-        const existingCoupons = await stripe.coupons.list({ limit: 100 });
-        const existing = existingCoupons.data.find(c => c.name === couponName && c.percent_off === discountData.discount_percent);
-        if (existing) {
-          stripeCouponId = existing.id;
-        } else {
-          const coupon = await stripe.coupons.create({
-            percent_off: discountData.discount_percent,
-            duration: 'once',
-            name: couponName,
-          });
-          stripeCouponId = coupon.id;
-        }
-        logStep("Stripe coupon ready", { couponId: stripeCouponId });
-      } catch (couponError: any) {
-        logStep("Error creating coupon", { error: couponError.message });
-        throw new Error("Failed to apply discount");
+        await stripe.coupons.retrieve(couponId);
+        stripeCouponId = couponId;
+      } catch {
+        // Coupon doesn't exist, create it
+        const coupon = await stripe.coupons.create({
+          id: couponId,
+          percent_off: discountData.discount_percent,
+          duration: 'once',
+          name: `MAXINA-${discountData.discount_percent}PCT`,
+        });
+        stripeCouponId = coupon.id;
       }
+      logStep("Stripe coupon ready", { couponId: stripeCouponId });
     }
 
     // Create pending purchase record with UTM/reseller metadata
@@ -267,8 +268,8 @@ serve(async (req) => {
 
     logStep("Stripe session created", { sessionId: session.id });
 
-    // Update purchase with stripe session id
-    await supabaseAdmin
+    // Fire-and-forget: update purchase with stripe session id (no need to await)
+    supabaseAdmin
       .from("event_ticket_purchases")
       .update({ stripe_session_id: session.id })
       .eq("id", purchase.id);

@@ -1,63 +1,47 @@
+## Cloudflare Worker OG Handling — Implementation Complete
 
+### Summary
+Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-# Plan: Speed Up Stripe Ticket Checkout Edge Function
+### What Was Done
 
-## Root Cause
-The `stripe-create-ticket-checkout` edge function makes 7-8 sequential network calls (4 to Stripe, 4 to Supabase), each taking 200-800ms. Combined with cold start (~1-2s), total time can reach 5-8 seconds.
+#### 1. Database: Unique Slug Constraint + Auto-Generation
+- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
+- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
+- Trigger fires on INSERT/UPDATE of `global_community_events`
 
-## Optimizations
+#### 2. New Edge Function: `api-event-by-slug`
+- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
+- **Returns:** `{ title, short_description, image_url, event_id }`
+- Uses `resolve_event_by_slug` RPC
+- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
+- No auth required, cached 5min client / 10min CDN
 
-### File: `supabase/functions/stripe-create-ticket-checkout/index.ts`
+#### 3. Updated `og-event` Edge Function
+- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
+- Canonical URL: `https://vitanaland.com/e/{slug}`
+- Image MIME type never returns `image/webp`
+- WebP images auto-converted via Supabase render endpoint
 
-**1. Parallelize independent calls** — Run operations that don't depend on each other concurrently using `Promise.all`:
+#### 4. Share URLs — Canonical Only
+- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
+- `getCleanEventUrl()` → same canonical base
+- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
 
-```typescript
-// Before: sequential
-const { data: ticketType } = await supabaseAdmin.from("event_ticket_types")...
-const customers = await stripe.customers.list(...)
-const { data: discountData } = await supabaseAdmin.from("user_discount_codes")...
+### Cloudflare Worker Integration
+Your Cloudflare Worker at `vitanaland.com/e/*` should:
+1. Detect crawler via User-Agent
+2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
+3. **Human:** Pass through to SPA (serve index.html)
 
-// After: parallel
-const [ticketTypeResult, customersResult, discountResult] = await Promise.all([
-  supabaseAdmin.from("event_ticket_types").select(...).eq(...).single(),
-  stripe.customers.list({ email: finalBuyerEmail, limit: 1 }),
-  discount_code 
-    ? supabaseAdmin.from("user_discount_codes").select("*").eq("code", discount_code).is("used_at", null).gt("expires_at", new Date().toISOString()).maybeSingle()
-    : Promise.resolve({ data: null, error: null }),
-]);
-```
-
-**2. Fire-and-forget the final update** — The last DB update (saving `stripe_session_id` back to the purchase) isn't needed before returning the URL to the user. Use `waitUntil` or just don't await it:
-
-```typescript
-// Don't await — response can be sent immediately
-supabaseAdmin
-  .from("event_ticket_purchases")
-  .update({ stripe_session_id: session.id })
-  .eq("id", purchase.id);
-```
-
-**3. Skip coupon list scan** — Instead of listing up to 100 coupons and searching, use a deterministic coupon ID so we can retrieve directly:
-
-```typescript
-const couponId = `maxina-${discountData.discount_percent}pct`;
-try {
-  await stripe.coupons.retrieve(couponId);
-} catch {
-  await stripe.coupons.create({ id: couponId, percent_off: discountData.discount_percent, duration: 'once', name: couponId });
-}
-```
-
-## Expected Impact
-- Parallelizing 3 calls saves ~600-1500ms
-- Fire-and-forget saves ~200-400ms  
-- Coupon lookup optimization saves ~300-500ms
-- **Total: ~1-2.5 seconds faster**
-
-Cold start is unavoidable with Supabase Edge Functions, but these changes should reduce total time from ~5-8s to ~3-5s.
-
-## Scope
-- 1 edge function file modified
-- No frontend changes
-- No database changes
-
+### Files
+| File | Action |
+|------|--------|
+| `supabase/functions/api-event-by-slug/index.ts` | Created |
+| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
+| `supabase/config.toml` | Added `api-event-by-slug` |
+| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
+| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
+| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
+| Migration | Unique slug index + auto-slug trigger |
