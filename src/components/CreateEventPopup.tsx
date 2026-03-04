@@ -287,7 +287,7 @@ export function CreateEventPopup({
               name: ticket.name,
               description: ticket.description || null,
               price: ticket.price,
-              currency: 'USD',
+              currency: ticket.currency || 'USD',
               quantity_available: ticket.quantity,
               sale_start_date: ticket.saleStartDate ? new Date(ticket.saleStartDate).toISOString() : null,
               sale_end_date: ticket.saleEndDate ? new Date(ticket.saleEndDate).toISOString() : null,
