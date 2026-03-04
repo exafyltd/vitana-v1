@@ -1294,6 +1294,7 @@ export function MeetupDetailsDrawer({
                     <EventTicketSelector 
                       eventId={event.id} 
                       eventTitle={event.title}
+                      onSelectionChange={setHasTicketSelection}
                     />
                   </div>
                 )}
