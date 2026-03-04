@@ -446,7 +446,9 @@ const EventsAndMeetups = () => {
   const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
 
   const maxinaEvents = useMemo(() => {
-    return dbEvents.filter(event => event.created_by === MAXINA_CREATOR_ID);
+    return dbEvents
+      .filter(event => event.created_by === MAXINA_CREATOR_ID)
+      .map(event => ({ ...event, event_type: 'event' }));
   }, [dbEvents]);
 
   // Get all events from current tab
