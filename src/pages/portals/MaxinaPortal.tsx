@@ -84,7 +84,7 @@ const MaxinaPortal = () => {
 
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=upcoming';
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
             console.debug('[MaxinaPortal] OAuth session recovered, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -100,7 +100,7 @@ const MaxinaPortal = () => {
             window.history.replaceState(null, '', window.location.pathname + window.location.search);
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
-            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=upcoming';
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
             console.debug('[MaxinaPortal] OAuth session found via polling, navigating to', target);
             setTenantBySlug('maxina').catch(console.warn);
             navigate(target);
@@ -136,7 +136,7 @@ const MaxinaPortal = () => {
     console.debug('[MaxinaPortal] Redirect started, user:', user.id);
 
     const redirectTo = searchParams.get('redirectTo');
-    const target = redirectTo || '/comm/events-meetups?tab=upcoming';
+    const target = redirectTo || '/comm/events-meetups?tab=hot';
 
     // Hard deadline: navigate no matter what after 6s
     const deadlineTimer = setTimeout(() => {
@@ -378,7 +378,7 @@ const MaxinaPortal = () => {
               const { data: { session: s } } = await supabase.auth.getSession();
               if (s) {
                 const isMobile = window.innerWidth < 768;
-                const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=upcoming' : '/home');
+                const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=hot' : '/home');
                 setTenantBySlug('maxina').catch(console.warn);
                 navigate(target);
               } else {

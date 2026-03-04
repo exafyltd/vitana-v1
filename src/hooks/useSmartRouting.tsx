@@ -62,7 +62,7 @@ export function useSmartRouting() {
                     navigate("/earthlinks");
                     break;
                   case 'maxina':
-                    navigate(isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina");
+                    navigate(isMobileDevice ? "/comm/events-meetups?tab=hot" : "/maxina");
                     break;
                   default:
                     navigate("/maxina");
@@ -93,7 +93,7 @@ export function useSmartRouting() {
           case "community":
           default:
             // Redirect community users to tenant-specific pages based on their active tenant
-            // On mobile, Maxina users go to Events → Upcoming
+            // On mobile, Maxina users go to Events → Hot
             const isMobileDevice = window.innerWidth < 768;
             if (tenant?.slug) {
               switch (tenant.slug) {
@@ -104,8 +104,8 @@ export function useSmartRouting() {
                   navigate("/earthlinks");
                   break;
                 case 'maxina':
-                  // Mobile: default to Events Upcoming
-                  navigate(isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina");
+                  // Mobile: default to Events Hot
+                  navigate(isMobileDevice ? "/comm/events-meetups?tab=hot" : "/maxina");
                   break;
                 default:
                   navigate("/maxina");
@@ -149,7 +149,7 @@ export function useRoleBasedRedirect() {
             case 'earthlinks':
               return "/earthlinks";
             case 'maxina':
-              return isMobileDevice ? "/comm/events-meetups?tab=upcoming" : "/maxina";
+              return isMobileDevice ? "/comm/events-meetups?tab=hot" : "/maxina";
             default:
               return "/maxina";
           }
