@@ -1,47 +1,43 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: Fix Currency Display in Ticket Purchase Flow
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Problem
+The event card correctly shows **€149** (reading from event metadata with proper currency), but the ticket purchase UI hardcodes `$` everywhere. The `EventTicketSelector` and `TicketTypeCard` components ignore `ticketType.currency`, always displaying dollar signs.
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+## Root Cause
+Multiple locations hardcode `$` instead of using the ticket type's `currency` field:
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+1. **`EventTicketSelector.tsx`** — 10+ instances of hardcoded `$` in price displays (lines 273-280, 300, 364-369)
+2. **`PublicEventLanding.tsx`** — hardcoded `currency: 'USD'` on line 161
+3. **`PublicCampaignLanding.tsx`** — hardcoded `From $` on line 320
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+## Changes
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+### 1. `src/components/tickets/EventTicketSelector.tsx`
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+Add a currency symbol helper (reuse the `CURRENCY_SYMBOLS` map from `TicketTypeForm.tsx`) and replace all hardcoded `$` with the dynamic symbol from `ticketType.currency`:
+
+- **TicketTypeCard** (lines 361-371): Use `ticketType.currency` to pick `€` or `$`
+- **Summary section** (lines 272-280): Derive currency from first selected ticket type's currency
+- **Buy button** (line 300): Same currency-aware formatting
+- **"From $" header**: If present, use currency from first ticket type
+
+All `$${price.toFixed(2)}` patterns become `${symbol}${price.toFixed(2)}`.
+
+### 2. `src/pages/PublicEventLanding.tsx` (line 161)
+
+Replace hardcoded `currency: 'USD'` with the actual currency from the event's ticket types or metadata:
+```typescript
+currency: event?.metadata?.display_currency || 'USD',
+```
+
+### 3. `src/pages/PublicCampaignLanding.tsx` (line 320)
+
+Replace `From $${eventPrice}` with currency-aware formatting using the linked event's currency.
+
+## Scope
+- 3 files modified
+- No backend/database changes
+- Mobile and desktop both affected (same component)
+
