@@ -1,0 +1,1 @@
+UPDATE global_community_events SET event_type = 'event' WHERE created_by = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b' AND event_type IN ('networking', 'workshop', 'meetup');
