@@ -1,47 +1,58 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: Fix MEETUP badges persisting in Hot tab
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Root Cause
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+The issue has **two sources**:
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+1. **Database: Jovana's events not updated** -- The Hot tab code filters by `MAXINA_CREATOR_ID` (Mariia, `07ade9bf`), and those 41 events ARE already `event_type = 'event'` in the Test DB. However, Jovana (`c7d3260d-8311-4a0b-ab1c-53928a37caec`) has 38 events still typed as `meetup` that may appear in other tabs or when the logged-in user is Jovana.
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+2. **Live environment not updated** -- The SQL was run as a migration (Test environment only). The Live database was never updated despite the user attempting to run the SQL manually.
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+3. **No code safeguard** -- The `transformEventToNewsCard` function and `MobileEventCarousel` both use `event.event_type === 'event' ? 'EVENT' : 'MEETUP'` with no override for Hot tab items.
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+## Plan
+
+### Step 1: Update Jovana's events in database (both catalogs)
+Run a data update using the insert tool to convert all meetup-type events from Jovana's catalog:
+```sql
+UPDATE global_community_events 
+SET event_type = 'event' 
+WHERE created_by = 'c7d3260d-8311-4a0b-ab1c-53928a37caec' 
+  AND event_type != 'event';
+```
+
+### Step 2: Add code-level safeguard in Hot tab
+Override `event_type` to `'event'` for all items rendered in the Hot tab, so even if new meetups are created by these creators, they will always display as events in Hot.
+
+**Files to modify:**
+
+- **`src/pages/community/EventsAndMeetups.tsx`** (line ~448-450): After filtering `maxinaEvents`, map each event to override `event_type`:
+  ```ts
+  const maxinaEvents = useMemo(() => {
+    return dbEvents
+      .filter(event => event.created_by === MAXINA_CREATOR_ID)
+      .map(event => ({ ...event, event_type: 'event' }));
+  }, [dbEvents]);
+  ```
+
+- Both the desktop `transformEventToNewsCard` and `MobileEventCarousel.transformEventToCard` will then naturally receive `event_type: 'event'` and render "EVENT" badges, "Reserve Spot" CTAs, and event-specific edit drawers.
+
+### Step 3: Live environment SQL
+Provide the user with the SQL to run manually in Supabase Cloud View with **Live** selected:
+```sql
+UPDATE global_community_events 
+SET event_type = 'event' 
+WHERE created_by IN (
+  '07ade9bf-9c2f-4fe1-a733-29e85a1d253b',
+  'c7d3260d-8311-4a0b-ab1c-53928a37caec'
+) AND event_type != 'event';
+```
+
+## Impact
+- Hot tab: All items show "EVENT" badge, "Reserve Spot" or "Buy Ticket" CTA
+- Edit drawer: Shows "Edit Event" with pricing and reseller sections (already conditional on `event_type === 'event'`)
+- Details drawer: Event badges and labels update automatically via unified CTA logic
+- No regressions to other tabs (Today, Upcoming, Following) -- those still read `event_type` from DB
+
