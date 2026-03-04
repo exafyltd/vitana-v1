@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useFollow } from "@/hooks/useFollow";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -185,8 +186,7 @@ export function MeetupDetailsDrawer({
   const [isJoined, setIsJoined] = useState(false);
   const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isFollowLoading, setIsFollowLoading] = useState(false);
+  const { isFollowing, loading: isFollowLoading, followUser, unfollowUser } = useFollow(event.created_by);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -906,16 +906,11 @@ export function MeetupDetailsDrawer({
                 {/* Follow Button - Same height as chip */}
                 <Button
                   onClick={async () => {
-                    setIsFollowLoading(true);
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                    setIsFollowing(!isFollowing);
-                    setIsFollowLoading(false);
-                    toast({
-                      title: isFollowing ? translate('eventDrawer.unfollowed', 'Unfollowed') : translate('eventDrawer.followingToast', 'Following!'),
-                      description: isFollowing 
-                        ? `You unfollowed ${event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')}` 
-                        : `You're now following ${event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')}`,
-                    });
+                    if (isFollowing) {
+                      await unfollowUser();
+                    } else {
+                      await followUser();
+                    }
                   }}
                   disabled={isFollowLoading}
                   aria-label={`Follow ${event.creator_display_name || event.author?.name || 'host'}`}
