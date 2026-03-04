@@ -1,47 +1,33 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: Fix Stripe Ticket Purchase Flow
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Issues Found
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+### 1. CORS headers are incomplete (likely blocking requests entirely)
+The `stripe-create-ticket-checkout` edge function has outdated CORS headers missing required Supabase client headers. The current headers:
+```
+"authorization, x-client-info, apikey, content-type"
+```
+Should be:
+```
+"authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version"
+```
+This is the most likely cause -- the browser's preflight (OPTIONS) request fails silently, blocking the actual POST.
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+### 2. Popup-based checkout gets blocked by browsers
+The `usePurchaseTicket` hook uses `window.open()` to open Stripe checkout in a popup. Since this happens after an `await` (the edge function call), browsers block it as a non-user-initiated popup. Per your project's established pattern, this should use `window.location.href = url` for reliable redirect.
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+## Changes
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+### File 1: `supabase/functions/stripe-create-ticket-checkout/index.ts`
+- Update CORS `Access-Control-Allow-Headers` to include the full set of Supabase client headers
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+### File 2: `src/hooks/useEventTickets.ts`
+- Replace `window.open()` popup logic (lines 217-234) with `window.location.href = url` redirect
+
+## Scope
+- 2 files modified
+- Edge function will need redeployment (automatic)
+- No database changes
+
