@@ -906,16 +906,11 @@ export function MeetupDetailsDrawer({
                 {/* Follow Button - Same height as chip */}
                 <Button
                   onClick={async () => {
-                    setIsFollowLoading(true);
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                    setIsFollowing(!isFollowing);
-                    setIsFollowLoading(false);
-                    toast({
-                      title: isFollowing ? translate('eventDrawer.unfollowed', 'Unfollowed') : translate('eventDrawer.followingToast', 'Following!'),
-                      description: isFollowing 
-                        ? `You unfollowed ${event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')}` 
-                        : `You're now following ${event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')}`,
-                    });
+                    if (isFollowing) {
+                      await unfollowUser();
+                    } else {
+                      await followUser();
+                    }
                   }}
                   disabled={isFollowLoading}
                   aria-label={`Follow ${event.creator_display_name || event.author?.name || 'host'}`}
