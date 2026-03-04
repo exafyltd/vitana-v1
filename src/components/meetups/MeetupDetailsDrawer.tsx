@@ -1156,6 +1156,17 @@ export function MeetupDetailsDrawer({
               </p>
             </div>
 
+            {/* Detailed Description / Program */}
+            {event.metadata?.detailed_description && (
+              <div className="space-y-3 pt-5 border-t border-border/50">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="font-semibold text-[17px]">Details & Program</h3>
+                </div>
+                <p className="text-[14px] text-muted-foreground leading-relaxed whitespace-pre-line">{event.metadata.detailed_description}</p>
+              </div>
+            )}
+
             {/* Agenda */}
             {event.agenda && (
               <div className="space-y-3 pt-5 border-t border-border/50">

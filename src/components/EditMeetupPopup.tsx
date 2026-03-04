@@ -49,6 +49,7 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    detailedDescription: "",
     category: "",
     date: "",
     time: "",
@@ -61,7 +62,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
     recurringType: "weekly",
     imageUrl: "",
     isPaid: false,
-    price: ""
+    price: "",
+    displayCurrency: "USD" as "USD" | "EUR"
   });
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -95,13 +97,17 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         if (diffMinutes === 30) duration = "30min";
         else if (diffMinutes === 60) duration = "1hour";
         else if (diffMinutes === 120) duration = "2hour";
-        else if (diffMinutes === 240) duration = "half-day";
-        else if (diffMinutes === 480) duration = "full-day";
+        else if (diffMinutes === 180) duration = "3hour";
+        else if (diffMinutes === 240) duration = "4hour";
+        else if (diffMinutes === 300) duration = "5hour";
+        else if (diffMinutes === 360) duration = "6hour";
+        else if (diffMinutes === 480) duration = "8hour";
       }
 
       setFormData({
         title: event.title || "",
         description: event.description || "",
+        detailedDescription: event.metadata?.detailed_description || "",
         category: "",
         date: startDate.toISOString().split('T')[0],
         time: startDate.toTimeString().slice(0, 5),
@@ -114,7 +120,8 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         recurringType: "weekly",
         imageUrl: event.image_url || "",
         isPaid: event.metadata?.is_paid || false,
-        price: event.metadata?.price?.toString() || ""
+        price: event.metadata?.price?.toString() || "",
+        displayCurrency: event.metadata?.display_currency || "USD"
       });
       
       setGeneratedImagePreview(event.image_url || null);
@@ -262,13 +269,18 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       let endTime: string | undefined = undefined;
       if (formData.duration) {
         const start = new Date(startTime);
-        const durationMap = {
+        const durationMap: Record<string, number> = {
           "30min": 30,
           "1hour": 60,
           "2hour": 120,
+          "3hour": 180,
+          "4hour": 240,
+          "5hour": 300,
+          "6hour": 360,
+          "8hour": 480,
           "half-day": 240,
           "full-day": 480
-        } as const;
+        };
         const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
         start.setMinutes(start.getMinutes() + minutes);
         endTime = start.toISOString();
@@ -314,7 +326,9 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
         metadata: {
           ...(event.metadata || {}),
           is_paid: formData.isPaid,
-          ...(formData.isPaid ? { price: parseFloat(formData.price) || 0 } : {})
+          ...(formData.isPaid ? { price: parseFloat(formData.price) || 0 } : {}),
+          detailed_description: formData.detailedDescription || null,
+          display_currency: formData.displayCurrency
         },
         // Reselling options
         resellable: resellable,
@@ -388,6 +402,21 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                 />
               </div>
 
+              <div>
+                <Label htmlFor="detailedDescription">Detailed Description (Optional)</Label>
+                <Textarea
+                  id="detailedDescription"
+                  value={formData.detailedDescription}
+                  onChange={(e) => setFormData({...formData, detailedDescription: e.target.value})}
+                  placeholder="Describe the agenda, program, what's included, giveaways, sponsors..."
+                  className="mt-1"
+                  rows={6}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  This will be shown in the event details drawer. Use it for agenda, program details, inclusions, etc.
+                </p>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="category">Category</Label>
@@ -416,6 +445,11 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                       <SelectItem value="30min">30 minutes</SelectItem>
                       <SelectItem value="1hour">1 hour</SelectItem>
                       <SelectItem value="2hour">2 hours</SelectItem>
+                      <SelectItem value="3hour">3 hours</SelectItem>
+                      <SelectItem value="4hour">4 hours</SelectItem>
+                      <SelectItem value="5hour">5 hours</SelectItem>
+                      <SelectItem value="6hour">6 hours</SelectItem>
+                      <SelectItem value="8hour">8 hours</SelectItem>
                       <SelectItem value="half-day">Half day</SelectItem>
                       <SelectItem value="full-day">Full day</SelectItem>
                     </SelectContent>
@@ -644,27 +678,41 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
                 {formData.isPaid && (
                   <div>
                     <Label htmlFor="price">
-                      Price ($) <span className="text-destructive">*</span>
+                      Price <span className="text-destructive">*</span>
                     </Label>
-                    <Input
-                      id="price"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      placeholder="Enter ticket price"
-                      value={formData.price}
-                      onChange={(e) => {
-                        setFormData(prev => ({ ...prev, price: e.target.value }));
-                        if (errors.price) {
-                          setErrors(prev => {
-                            const newErrors = {...prev};
-                            delete newErrors.price;
-                            return newErrors;
-                          });
-                        }
-                      }}
-                      className={errors.price ? "border-destructive" : ""}
-                    />
+                    <div className="flex gap-2 mt-1">
+                      <Select 
+                        value={formData.displayCurrency} 
+                        onValueChange={(v) => setFormData(prev => ({...prev, displayCurrency: v as "USD" | "EUR"}))}
+                      >
+                        <SelectTrigger className="w-24 shrink-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="USD">$ USD</SelectItem>
+                          <SelectItem value="EUR">€ EUR</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        id="price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Enter ticket price"
+                        value={formData.price}
+                        onChange={(e) => {
+                          setFormData(prev => ({ ...prev, price: e.target.value }));
+                          if (errors.price) {
+                            setErrors(prev => {
+                              const newErrors = {...prev};
+                              delete newErrors.price;
+                              return newErrors;
+                            });
+                          }
+                        }}
+                        className={errors.price ? "border-destructive" : ""}
+                      />
+                    </div>
                     {errors.price && (
                       <p className="text-sm text-destructive mt-1 flex items-center gap-1">
                         <AlertCircle className="h-3 w-3" />
