@@ -179,7 +179,7 @@ export default function PublicCampaignLanding() {
     isPaid: isEventPaid,
     isSoldOut: false, // TODO: Fetch from event data
     lowestPrice: eventPrice,
-    currency: 'USD',
+    currency: campaign?.metadata?.display_currency || 'USD',
     isAuthenticated: !!user,
     userHasTicket,
   }, translate);
@@ -317,7 +317,7 @@ export default function PublicCampaignLanding() {
                   {hasTickets && eventPrice !== null && (
                     <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
                       <Ticket className="h-3.5 w-3.5" />
-                      {eventPrice === 0 ? "Free" : `From $${eventPrice}`}
+                      {eventPrice === 0 ? "Free" : `From ${formatTicketPrice(eventPrice, campaign?.metadata?.display_currency || 'USD')}`}
                     </div>
                   )}
                 </div>

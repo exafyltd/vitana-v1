@@ -158,7 +158,7 @@ export default function PublicEventLanding() {
     isPaid: event?.is_paid_event || false,
     isSoldOut: event?.is_sold_out || false,
     lowestPrice: event?.lowest_ticket_price,
-    currency: 'USD',
+    currency: event?.metadata?.display_currency || 'USD',
     isAuthenticated: !!user,
     userHasTicket,
   }, translate);
