@@ -287,7 +287,7 @@ export default function PublicEventLanding() {
                   {event.has_tickets && event.lowest_ticket_price !== null && (
                     <div className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm font-medium">
                       <Ticket className="h-3.5 w-3.5" />
-                      {event.lowest_ticket_price === 0 ? "Free" : `From $${event.lowest_ticket_price}`}
+                      {event.lowest_ticket_price === 0 ? "Free" : `From ${(event?.metadata?.display_currency || 'USD').toUpperCase() === 'EUR' ? '€' : '$'}${event.lowest_ticket_price}`}
                     </div>
                   )}
                 </div>

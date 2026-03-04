@@ -339,6 +339,17 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       const result = await updateEvent(event.id, eventData);
       
       if (result.success) {
+        // Sync ticket type prices/currency when event price changes
+        if (formData.isPaid) {
+          await supabase.from('event_ticket_types')
+            .update({ 
+              price: parseFloat(formData.price) || 0,
+              currency: (formData.displayCurrency || 'USD').toUpperCase()
+            })
+            .eq('event_id', event.id)
+            .eq('is_active', true);
+        }
+
         toast({
           title: "Meetup Updated!",
           description: "Your meetup has been successfully updated.",
