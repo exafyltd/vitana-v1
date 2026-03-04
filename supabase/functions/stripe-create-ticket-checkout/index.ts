@@ -112,6 +112,31 @@ serve(async (req) => {
 
     const { data: ticketType, error: ticketError } = ticketTypeResult;
 
+    if (ticketError || !ticketType) {
+      logStep("Ticket type not found", { error: ticketError });
+      throw new Error("Ticket type not found");
+    }
+
+    logStep("Ticket type found", { name: ticketType.name, price: ticketType.price });
+
+    // Check availability
+    const availableQuantity = ticketType.quantity_available - ticketType.quantity_sold;
+    if (quantity > availableQuantity) {
+      throw new Error(`Only ${availableQuantity} tickets available`);
+    }
+
+    // Check sale dates
+    const now = new Date();
+    if (ticketType.sale_start_date && new Date(ticketType.sale_start_date) > now) {
+      throw new Error("Ticket sales have not started yet");
+    }
+    if (ticketType.sale_end_date && new Date(ticketType.sale_end_date) < now) {
+      throw new Error("Ticket sales have ended");
+    }
+
+    // Generate unique QR code token
+    const qrCodeToken = crypto.randomUUID() + "-" + Date.now().toString(36);
+
     let customerId;
     if (customersResult.data.length > 0) {
       customerId = customersResult.data[0].id;
