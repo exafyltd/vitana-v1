@@ -52,6 +52,7 @@ export function CreateEventPopup({
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    detailedDescription: "",
     category: "",
     date: "",
     time: "",
@@ -62,7 +63,8 @@ export function CreateEventPopup({
     capacity: "",
     isVirtual: false,
     price: "",
-    isPaid: false
+    isPaid: false,
+    displayCurrency: "USD" as "USD" | "EUR"
   });
 
   // Helper function to validate UUID
@@ -98,6 +100,7 @@ export function CreateEventPopup({
     setFormData({
       title: "",
       description: "",
+      detailedDescription: "",
       category: "",
       date: "",
       time: "",
@@ -108,7 +111,8 @@ export function CreateEventPopup({
       capacity: "",
       isVirtual: false,
       price: "",
-      isPaid: false
+      isPaid: false,
+      displayCurrency: "USD" as "USD" | "EUR"
     });
   };
 
@@ -187,13 +191,18 @@ export function CreateEventPopup({
       } else if (formData.duration) {
         // Calculate end time based on duration if no manual end time is set
         const start = new Date(startTime);
-        const durationMap = {
+        const durationMap: Record<string, number> = {
           "30min": 30,
           "1hour": 60,
           "2hour": 120,
+          "3hour": 180,
+          "4hour": 240,
+          "5hour": 300,
+          "6hour": 360,
+          "8hour": 480,
           "half-day": 240,
           "full-day": 480
-        } as const;
+        };
         const minutes = durationMap[formData.duration as keyof typeof durationMap] || 60;
         start.setMinutes(start.getMinutes() + minutes);
         endTime = start.toISOString();
@@ -243,11 +252,19 @@ export function CreateEventPopup({
         const metadata = enableTicketSales && ticketTypes.length > 0 ? { 
           is_paid: true, 
           has_tickets: true,
-          price: ticketTypes[0]?.price || 0 
+          price: ticketTypes[0]?.price || 0,
+          ...(formData.detailedDescription ? { detailed_description: formData.detailedDescription } : {}),
+          display_currency: formData.displayCurrency
         } : formData.isPaid ? { 
           is_paid: true, 
-          price: parseFloat(formData.price) || 0 
-        } : { is_paid: false };
+          price: parseFloat(formData.price) || 0,
+          ...(formData.detailedDescription ? { detailed_description: formData.detailedDescription } : {}),
+          display_currency: formData.displayCurrency
+        } : { 
+          is_paid: false,
+          ...(formData.detailedDescription ? { detailed_description: formData.detailedDescription } : {}),
+          display_currency: formData.displayCurrency
+        };
 
         const communityEventData = {
           title: formData.title,
@@ -511,6 +528,21 @@ export function CreateEventPopup({
                 />
               </div>
 
+              <div>
+                <Label htmlFor="detailedDescription">Detailed Description (Optional)</Label>
+                <Textarea
+                  id="detailedDescription"
+                  value={formData.detailedDescription}
+                  onChange={(e) => setFormData({...formData, detailedDescription: e.target.value})}
+                  placeholder="Describe the agenda, program, what's included, giveaways, sponsors..."
+                  className="mt-1"
+                  rows={6}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  This will be shown in the event details drawer. Use it for agenda, program details, inclusions, etc.
+                </p>
+              </div>
+
               {/* Event Image Upload */}
               <div>
                 <Label>Event Image (Optional)</Label>
@@ -612,7 +644,7 @@ export function CreateEventPopup({
                 <div>
                   <Label htmlFor="duration">Duration (Optional)</Label>
                   <Select 
-                    value={["30min", "1hour", "2hour", "half-day", "full-day"].includes(formData.duration) ? formData.duration : formData.duration ? "custom" : ""} 
+                    value={["30min", "1hour", "2hour", "3hour", "4hour", "5hour", "6hour", "8hour", "half-day", "full-day"].includes(formData.duration) ? formData.duration : formData.duration ? "custom" : ""} 
                     onValueChange={(value) => {
                       if (value === "custom") {
                         setFormData({...formData, duration: customDuration || ""});
@@ -628,12 +660,17 @@ export function CreateEventPopup({
                       <SelectItem value="30min">30 minutes</SelectItem>
                       <SelectItem value="1hour">1 hour</SelectItem>
                       <SelectItem value="2hour">2 hours</SelectItem>
+                      <SelectItem value="3hour">3 hours</SelectItem>
+                      <SelectItem value="4hour">4 hours</SelectItem>
+                      <SelectItem value="5hour">5 hours</SelectItem>
+                      <SelectItem value="6hour">6 hours</SelectItem>
+                      <SelectItem value="8hour">8 hours</SelectItem>
                       <SelectItem value="half-day">Half day</SelectItem>
                       <SelectItem value="full-day">Full day</SelectItem>
                       <SelectItem value="custom">Custom duration...</SelectItem>
                     </SelectContent>
                   </Select>
-                  {formData.duration && !["30min", "1hour", "2hour", "half-day", "full-day"].includes(formData.duration) && (
+                  {formData.duration && !["30min", "1hour", "2hour", "3hour", "4hour", "5hour", "6hour", "8hour", "half-day", "full-day"].includes(formData.duration) && (
                     <Input
                       type="text"
                       value={customDuration}
@@ -863,14 +900,27 @@ export function CreateEventPopup({
                     {formData.isPaid && (
                       <div>
                         <Label htmlFor="price">Display Price</Label>
-                        <Input
-                          id="price"
-                          type="number"
-                          value={formData.price}
-                          onChange={(e) => setFormData({...formData, price: e.target.value})}
-                          placeholder="0.00"
-                          className="mt-1"
-                        />
+                        <div className="flex gap-2 mt-1">
+                          <Select 
+                            value={formData.displayCurrency} 
+                            onValueChange={(v) => setFormData({...formData, displayCurrency: v as "USD" | "EUR"})}
+                          >
+                            <SelectTrigger className="w-24 shrink-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="USD">$ USD</SelectItem>
+                              <SelectItem value="EUR">€ EUR</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Input
+                            id="price"
+                            type="number"
+                            value={formData.price}
+                            onChange={(e) => setFormData({...formData, price: e.target.value})}
+                            placeholder="0.00"
+                          />
+                        </div>
                         <p className="text-xs text-muted-foreground mt-1">
                           For display only. Enable ticket sales above for integrated payments.
                         </p>
