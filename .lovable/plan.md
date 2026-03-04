@@ -1,47 +1,40 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: Fix "Buy Ticket" Sticky Bar Being Inactive in Drawer
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Problem
+The sticky "Buy Ticket" bar in the MeetupDetailsDrawer becomes invisible and disabled when the ticket section is visible on screen. This is caused by the `shouldFade` logic:
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+```typescript
+const shouldFade = isTicketCta && isTicketSectionVisible;
+// Results in: opacity-0, pointer-events-none, disabled=true
+```
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+On mobile, the ticket section can be visible as soon as the drawer opens (or after scrolling), making the sticky bar completely disappear. The user sees "Buy Ticket" briefly, then it fades to invisible — appearing broken.
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+Additionally, the sticky bar button only scrolls to the ticket section; it does not directly purchase. This two-step flow (tap sticky bar → scroll → select quantity → tap Buy Tickets) is confusing.
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+## Changes
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+### File: `src/components/meetups/MeetupDetailsDrawer.tsx`
+
+1. **Remove the fade-out behavior** for the sticky Buy Ticket bar. Instead of hiding it when the ticket section is visible, keep it always visible but change its behavior:
+   - When ticket section is NOT visible: scroll to it (current behavior)
+   - When ticket section IS visible: auto-select 1 ticket of the cheapest type and scroll to the Buy Tickets submit button
+
+2. **Remove `shouldFade` from the disabled prop** so the button is never disabled just because tickets are on screen
+
+3. **Keep the visual styling** (gradient green/teal) regardless of ticket section visibility
+
+Specifically:
+- Line ~1492: Remove `const shouldFade = isTicketCta && isTicketSectionVisible;`
+- Line ~1496-1499: Remove `shouldFade && "opacity-0 pointer-events-none"` from className
+- Line ~1503: Remove `|| shouldFade` from disabled prop
+- The button always remains visible and functional in the sticky bar
+
+## Scope
+- 1 file modified: `MeetupDetailsDrawer.tsx`
+- ~5 lines changed
+- No backend/edge function changes
+- No database changes
+
