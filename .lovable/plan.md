@@ -1,47 +1,30 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: Fix EUR Currency Display on Event Cards
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Problem
+The currency selector saves correctly to `metadata.display_currency`, but the event card always shows `$` because it's hardcoded in `NewsCard.tsx` line 379: `` `$${price}` ``.
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+## Changes
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+### 1. Add `currency` prop to `NewsCard` (`src/components/crossover/NewsCard.tsx`)
+- Add `currency?: string` to `NewsCardProps` interface (line ~35)
+- Update line 379 from `` `$${price}` `` to use the currency symbol:
+  ```
+  {price === "free" ? "FREE" : `${currency === 'EUR' ? '€' : '$'}${price}`}
+  ```
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+### 2. Pass currency from event metadata in all `transformEventToNewsCard` functions
+Three files have this function — each needs `currency: event.metadata?.display_currency || 'USD'` added to the returned object:
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+- **`src/pages/community/EventsAndMeetups.tsx`** (line ~138)
+- **`src/pages/community/Events.tsx`** (~line 240+)
+- **`src/pages/community/Meetups2.tsx`** (~line 231+)
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+### 3. Update `eventCardToNewsCardProps` transformer (`src/lib/eventCardTransformers.ts`)
+- Pass through currency if available in the unified event card type
+
+## Scope
+- 4-5 files, minimal changes per file
+- No database or Stripe changes
+
