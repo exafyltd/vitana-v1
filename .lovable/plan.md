@@ -1,47 +1,40 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Plan: EUR Currency + Detailed Description + Extended Durations
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+No disruption to Stripe payments — the edge function already reads currency from the DB and passes it to Stripe, which natively supports EUR.
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+## 1. Currency selector on event pricing fields
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+**Files:** `CreateEventPopup.tsx`, `EditMeetupPopup.tsx`
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+- Add a USD/EUR dropdown next to the "Display Price" input field in both popups
+- Store selected currency in component state (default: `'USD'`)
+- Persist to `metadata.display_currency` when saving
+- Update price label to show `$` or `€` dynamically
+- The ticket-level currency in `TicketTypeForm.tsx` was already updated — verify it's working
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+## 2. Detailed Description field
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+**Files:** `CreateEventPopup.tsx`, `EditMeetupPopup.tsx`, `MeetupDetailsDrawer.tsx`
+
+- Add a `Textarea` labeled "Detailed Description" below the existing Description field
+  - Placeholder: "Describe the agenda, program, what's included, giveaways..."
+  - ~6 rows, optional
+- Store in `metadata.detailed_description` (no schema change needed)
+- In `MeetupDetailsDrawer.tsx`: render below the "About" section in a "Details & Program" section, preserving whitespace/newlines
+
+## 3. Extended duration options
+
+**Files:** `CreateEventPopup.tsx`, `EditMeetupPopup.tsx`
+
+- Add options: 3 hours, 4 hours, 5 hours, 6 hours, 8 hours
+- Update `durationMap` with corresponding minute values (180, 240, 300, 360, 480)
+- Add matching `SelectItem` entries in the duration dropdown
+
+## Scope
+- 3 files modified
+- No database migration
+- No Stripe changes needed
+- Works on mobile and desktop
+
