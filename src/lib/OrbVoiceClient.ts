@@ -458,6 +458,8 @@ export class OrbVoiceClient {
       this.speakingDoneTimer = null;
     }
   }
+
+  private async initAudioOutput(): Promise<void> {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     
     // iOS requires explicit resume from a user gesture context
