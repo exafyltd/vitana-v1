@@ -23,21 +23,22 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/${url}`;
 }
 
-// Return direct public storage URL — no render transforms needed
+// Return crawler-safe OG image URL optimized for WhatsApp/Facebook
 function getOptimizedImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   if (!url) return defaultImage;
 
-  let imageUrl = ensureAbsoluteUrl(url);
+  let imageUrl = ensureAbsoluteUrl(url).split('?')[0];
 
-  // Ensure we use /object/public/ (direct URL), not /render/image/
-  if (imageUrl.includes('supabase.co/storage') && imageUrl.includes('/render/image/')) {
-    imageUrl = imageUrl.replace('/render/image/public/', '/object/public/');
-  }
+  // Prefer transformed image for better crawler compatibility (smaller payload)
+  if (imageUrl.includes('/storage/v1/object/public/')) {
+    const [base, objectPath] = imageUrl.split('/storage/v1/object/public/');
+    const [bucket, ...pathParts] = objectPath.split('/');
+    const filePath = pathParts.join('/');
 
-  // Strip any query params (like format=jpeg) that may cause 400 errors
-  if (imageUrl.includes('supabase.co/storage')) {
-    imageUrl = imageUrl.split('?')[0];
+    if (base && bucket && filePath) {
+      return `${base}/storage/v1/render/image/public/${bucket}/${filePath}?width=1200&height=630&resize=cover&quality=75`;
+    }
   }
 
   return imageUrl;
@@ -120,6 +121,7 @@ function generateOGHTML(event: EventData, canonicalUrl: string, destinationUrl: 
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${description}" />
   <meta property="og:image" content="${imageUrl}" />
+  <meta property="og:image:url" content="${imageUrl}" />
   <meta property="og:image:secure_url" content="${imageUrl}" />
   <meta property="og:image:type" content="${imageMimeType}" />
   <meta property="og:image:width" content="1200" />
@@ -198,7 +200,11 @@ Deno.serve(async (req) => {
 
     if (isCrawler(userAgent)) {
       return new Response(generateOGHTML(event, canonicalUrl, destinationUrl), {
-        headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600' },
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=120, s-maxage=120',
+        },
       });
     }
 
