@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useIntelligentGreeting } from '@/hooks/useIntelligentGreeting';
 import { useAuth } from './AuthProvider';
+import { useStreamingState } from './StreamingStateContext';
 
 interface IntelligentGreetingContextValue {
   triggerGreeting: () => Promise<void>;
@@ -28,6 +29,7 @@ export function IntelligentGreetingProvider({
   sessionReady = false
 }: IntelligentGreetingProviderProps) {
   const { user } = useAuth();
+  const { audioOverlayVisible } = useStreamingState();
   const [hasPendingTTS, setHasPendingTTS] = useState(false);
   
   const { 
@@ -60,7 +62,7 @@ export function IntelligentGreetingProvider({
 
   // Trigger greeting once per session after authentication AND session ready
   useEffect(() => {
-    if (user && sessionReady && !glassModeActive && !micActive) {
+    if (user && sessionReady && !glassModeActive && !micActive && !audioOverlayVisible) {
       // Wait 5s to ensure everything is stable
       const timer = setTimeout(() => {
         triggerGreeting();
