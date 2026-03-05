@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { useIntelligentGreeting } from '@/hooks/useIntelligentGreeting';
 import { useAuth } from './AuthProvider';
+import { useStreamingState } from './StreamingStateContext';
 
 interface IntelligentGreetingContextValue {
   triggerGreeting: () => Promise<void>;

@@ -8,6 +8,7 @@
  * - PCM audio queue playback at 24kHz
  * - JWT-based authentication for multi-tenant voice sessions
  * - Sequential audio upload queue with flush-before-endTurn
+ * - SSE readiness gate to prevent race conditions on cross-origin
  */
 
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
@@ -75,6 +76,15 @@ export class OrbVoiceClient {
 
   // Session diagnostics
   private diagnostics: SessionDiagnostics | null = null;
+
+  // SSE error tracking & reconnection
+  private sseConsecutiveErrors: number = 0;
+  private readonly MAX_SSE_ERRORS = 3;
+  private sseReconnectAttempted: boolean = false;
+
+  // Response timeout after endTurn
+  private responseTimeoutTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly RESPONSE_TIMEOUT_MS = 15000;
 
   // Gateway configuration
   private readonly GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
@@ -149,8 +159,8 @@ export class OrbVoiceClient {
       
       console.log('[OrbVoiceClient] Session started:', this.sessionId, 'lang:', this.config.lang);
 
-      // 2. Connect to SSE stream
-      this.connectSSE();
+      // 2. Connect to SSE stream and WAIT for it to be open
+      await this.connectSSE();
 
       // 3. Initialize audio output context
       await this.initAudioOutput();
@@ -160,7 +170,7 @@ export class OrbVoiceClient {
 
       this.callbacks.onConnectionStateChange?.('ready');
 
-      // Request welcome greeting from AI
+      // 5. Request welcome greeting from AI (SSE is guaranteed open now)
       await this.requestWelcome();
     } catch (err: any) {
       console.error('[OrbVoiceClient] Failed to start:', err);
@@ -179,7 +189,7 @@ export class OrbVoiceClient {
     console.log('[OrbVoiceClient] Requesting welcome greeting...');
     
     try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
+      const resp = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
         headers: this.getAuthHeaders(),
         body: JSON.stringify({
@@ -189,29 +199,163 @@ export class OrbVoiceClient {
         })
       });
 
+      if (!resp.ok) {
+        console.warn('[OrbVoiceClient] Welcome request failed:', resp.status, await resp.text().catch(() => ''));
+        // Don't block session — user can still speak first
+        return;
+      }
+
       await this.endTurn();
     } catch (e) {
       console.warn('[OrbVoiceClient] Failed to request welcome:', e);
     }
   }
 
-  private connectSSE(): void {
+  /**
+   * Connect SSE and return a Promise that resolves when the connection is open.
+   * Times out after 10s to prevent hanging on failed cross-origin connections.
+   */
+  private connectSSE(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.sessionId) {
+        reject(new Error('No session ID'));
+        return;
+      }
+
+      const token = encodeURIComponent(this.config.accessToken);
+      const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}&token=${token}`;
+      console.log('[OrbVoiceClient] Connecting SSE:', sseUrl.replace(token, '[REDACTED]'));
+      
+      // Timeout for SSE open
+      const SSE_OPEN_TIMEOUT_MS = 10000;
+      let settled = false;
+      
+      const timeoutId = setTimeout(() => {
+        if (!settled) {
+          settled = true;
+          console.error('[OrbVoiceClient] SSE open timeout after', SSE_OPEN_TIMEOUT_MS, 'ms');
+          if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
+          }
+          reject(new Error('SSE connection timeout — check your network'));
+        }
+      }, SSE_OPEN_TIMEOUT_MS);
+
+      this.eventSource = new EventSource(sseUrl);
+      this.sseConsecutiveErrors = 0;
+      this.sseReconnectAttempted = false;
+
+      this.eventSource.onopen = () => {
+        console.log('[OrbVoiceClient] SSE connected');
+        if (!settled) {
+          settled = true;
+          clearTimeout(timeoutId);
+          resolve();
+        }
+      };
+
+      this.eventSource.onmessage = (event) => {
+        // Reset SSE error counter on any successful message
+        this.sseConsecutiveErrors = 0;
+        
+        // Clear response timeout on any incoming message
+        this.clearResponseTimeout();
+
+        try {
+          const msg = JSON.parse(event.data);
+
+          switch (msg.type) {
+            case 'audio':
+              if (msg.data_b64) {
+                this.callbacks.onSpeakingChange?.(true);
+                this.callbacks.onProcessingChange?.(false);
+                this.handleAudioChunk(msg.data_b64);
+              }
+              break;
+            case 'transcript':
+              if (msg.text) {
+                this.callbacks.onTranscript?.(msg.text);
+              }
+              break;
+            case 'assistant_text':
+              if (msg.text) {
+                this.callbacks.onTranscript?.(msg.text);
+              }
+              break;
+            case 'error':
+              this.callbacks.onError?.(msg.message);
+              break;
+          }
+        } catch (e) {
+          console.error('[OrbVoiceClient] Failed to parse SSE message', e);
+        }
+      };
+
+      this.eventSource.onerror = (error) => {
+        this.sseConsecutiveErrors++;
+        console.warn(`[OrbVoiceClient] SSE error (${this.sseConsecutiveErrors}/${this.MAX_SSE_ERRORS})`, error);
+
+        // If SSE never opened, reject the connect promise
+        if (!settled) {
+          settled = true;
+          clearTimeout(timeoutId);
+          if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
+          }
+          reject(new Error('SSE connection failed'));
+          return;
+        }
+
+        // If we exceed max consecutive errors, the session is dead
+        if (this.sseConsecutiveErrors >= this.MAX_SSE_ERRORS) {
+          console.error('[OrbVoiceClient] SSE dead after', this.MAX_SSE_ERRORS, 'consecutive errors');
+          
+          if (!this.sseReconnectAttempted) {
+            // Try one reconnect
+            this.sseReconnectAttempted = true;
+            console.log('[OrbVoiceClient] Attempting SSE reconnect...');
+            if (this.eventSource) {
+              this.eventSource.close();
+              this.eventSource = null;
+            }
+            this.sseConsecutiveErrors = 0;
+            // Reconnect without awaiting (fire-and-forget for mid-session)
+            this.reconnectSSE();
+          } else {
+            // Already tried reconnecting — give up
+            this.callbacks.onError?.('Voice connection lost — please try again');
+            this.callbacks.onConnectionStateChange?.('disconnected');
+            this.stop();
+          }
+        }
+      };
+    });
+  }
+
+  /**
+   * Mid-session SSE reconnect (does not re-create the session)
+   */
+  private reconnectSSE(): void {
     if (!this.sessionId) return;
 
     const token = encodeURIComponent(this.config.accessToken);
     const sseUrl = `${this.GATEWAY_URL}/api/v1/orb/live/stream?session_id=${this.sessionId}&token=${token}`;
-    console.log('[OrbVoiceClient] Connecting SSE:', sseUrl.replace(token, '[REDACTED]'));
     
     this.eventSource = new EventSource(sseUrl);
-
+    
     this.eventSource.onopen = () => {
-      console.log('[OrbVoiceClient] SSE connected');
+      console.log('[OrbVoiceClient] SSE reconnected successfully');
+      this.sseConsecutiveErrors = 0;
     };
 
     this.eventSource.onmessage = (event) => {
+      this.sseConsecutiveErrors = 0;
+      this.clearResponseTimeout();
+      
       try {
         const msg = JSON.parse(event.data);
-
         switch (msg.type) {
           case 'audio':
             if (msg.data_b64) {
@@ -221,14 +365,8 @@ export class OrbVoiceClient {
             }
             break;
           case 'transcript':
-            if (msg.text) {
-              this.callbacks.onTranscript?.(msg.text);
-            }
-            break;
           case 'assistant_text':
-            if (msg.text) {
-              this.callbacks.onTranscript?.(msg.text);
-            }
+            if (msg.text) this.callbacks.onTranscript?.(msg.text);
             break;
           case 'error':
             this.callbacks.onError?.(msg.message);
@@ -239,9 +377,36 @@ export class OrbVoiceClient {
       }
     };
 
-    this.eventSource.onerror = (error) => {
-      console.warn('[OrbVoiceClient] SSE connection issue', error);
+    this.eventSource.onerror = () => {
+      this.sseConsecutiveErrors++;
+      if (this.sseConsecutiveErrors >= this.MAX_SSE_ERRORS) {
+        console.error('[OrbVoiceClient] SSE reconnect also failed — giving up');
+        this.callbacks.onError?.('Voice connection lost — please try again');
+        this.callbacks.onConnectionStateChange?.('disconnected');
+        this.stop();
+      }
     };
+  }
+
+  /**
+   * Start a response timeout timer. If no SSE message arrives within
+   * RESPONSE_TIMEOUT_MS after an endTurn, reset isProcessing so
+   * auto-resume can kick in.
+   */
+  private startResponseTimeout(): void {
+    this.clearResponseTimeout();
+    this.responseTimeoutTimer = setTimeout(() => {
+      console.warn('[OrbVoiceClient] Response timeout — no AI response after', this.RESPONSE_TIMEOUT_MS, 'ms');
+      this.callbacks.onProcessingChange?.(false);
+      // Don't kill the session — just allow user to speak again
+    }, this.RESPONSE_TIMEOUT_MS);
+  }
+
+  private clearResponseTimeout(): void {
+    if (this.responseTimeoutTimer) {
+      clearTimeout(this.responseTimeoutTimer);
+      this.responseTimeoutTimer = null;
+    }
   }
 
   private async initAudioOutput(): Promise<void> {
@@ -542,12 +707,19 @@ export class OrbVoiceClient {
 
     this.callbacks.onProcessingChange?.(true);
 
+    // Start response timeout — if no SSE message arrives, reset isProcessing
+    this.startResponseTimeout();
+
     try {
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/end-turn`, {
+      const resp = await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/end-turn`, {
         method: 'POST',
         headers: this.getAuthHeaders(),
         body: JSON.stringify({ session_id: this.sessionId })
       });
+      
+      if (!resp.ok) {
+        console.warn('[OrbVoiceClient] end-turn failed:', resp.status);
+      }
     } catch (e) {
       console.error('[OrbVoiceClient] Failed to end turn', e);
     }
@@ -650,6 +822,9 @@ export class OrbVoiceClient {
     this.logDiagnostics('session_stop');
 
     this._isListening = false;
+
+    // Clear response timeout
+    this.clearResponseTimeout();
 
     // Clear silence detection
     if (this.silenceTimer) {
