@@ -348,10 +348,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
-            {/* Top Section - Category + Price on left, Timestamp + Actions on right */}
-            <div className="flex flex-wrap justify-between items-start gap-y-2">
-              {/* Left side - Category + Price */}
-              <div className="flex items-center gap-2 min-w-0 flex-shrink">
+            {/* Top Section - Badges on left, Edit on right */}
+            <div className="flex items-start w-full">
+              {/* Left side - Category + Price + Timestamp (wraps naturally) */}
+              <div className="flex flex-wrap gap-2 items-center flex-1 min-w-0">
                 {/* Pillar badge with gradient accents */}
                 {pillar && (
                   <div className={cn(
@@ -381,18 +381,19 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                     {price === "free" ? "FREE" : `${currency === 'EUR' ? '€' : '$'}${price}`}
                   </div>
                 )}
+
+                {/* Timestamp */}
+                {timestamp && (
+                  <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm">
+                    <Calendar className="w-3 h-3 flex-shrink-0" />
+                    <span className="font-medium max-w-[140px] truncate">{timestamp}</span>
+                  </div>
+                )}
               </div>
               
-              {/* Right side - Timestamp + utilityTopRight */}
-              {(timestamp || utilityTopRight) && (
-                <div className="flex items-center gap-2 flex-shrink-0 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
-                  {/* Timestamp */}
-                  {timestamp && (
-                    <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm">
-                      <Calendar className="w-3 h-3 flex-shrink-0" />
-                      <span className="font-medium max-w-[140px] truncate">{timestamp}</span>
-                    </div>
-                  )}
+              {/* Right side - Edit button pinned top-right */}
+              {utilityTopRight && (
+                <div className="flex-shrink-0 ml-auto pointer-events-auto" onClick={(e) => e.stopPropagation()}>
                   {utilityTopRight}
                 </div>
               )}
