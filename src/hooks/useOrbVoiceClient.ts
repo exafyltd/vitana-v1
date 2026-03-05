@@ -162,11 +162,12 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   };
 
   disconnectRef.current = () => {
+    // Set disconnected FIRST to prevent auto-resume race condition
+    setConnectionState('disconnected');
     if (clientRef.current) {
       clientRef.current.stop();
       clientRef.current = null;
     }
-    setConnectionState('disconnected');
     setIsListening(false);
     setIsProcessing(false);
     setIsSpeaking(false);
