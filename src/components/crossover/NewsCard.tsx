@@ -349,9 +349,9 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
             {/* Top Section - Category + Price on left, Timestamp + Actions on right */}
-            <div className="flex justify-between items-center">
+            <div className="flex flex-wrap justify-between items-start gap-y-2">
               {/* Left side - Category + Price */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 min-w-0 flex-shrink">
                 {/* Pillar badge with gradient accents */}
                 {pillar && (
                   <div className={cn(
@@ -385,12 +385,12 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               
               {/* Right side - Timestamp + utilityTopRight */}
               {(timestamp || utilityTopRight) && (
-                <div className="flex items-center gap-2 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center gap-2 flex-shrink-0 pointer-events-auto" onClick={(e) => e.stopPropagation()}>
                   {/* Timestamp */}
                   {timestamp && (
-                    <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm whitespace-nowrap">
-                      <Calendar className="w-3 h-3" />
-                      <span className="font-medium">{timestamp}</span>
+                    <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm">
+                      <Calendar className="w-3 h-3 flex-shrink-0" />
+                      <span className="font-medium max-w-[140px] truncate">{timestamp}</span>
                     </div>
                   )}
                   {utilityTopRight}
