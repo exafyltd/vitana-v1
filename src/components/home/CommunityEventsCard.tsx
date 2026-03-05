@@ -85,13 +85,9 @@ function CommunityEventsCardBase({ maxEvents = 3, className }: CommunityEventsCa
       return `Tomorrow ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
     }
     
-    return date.toLocaleDateString('en-GB', { 
-      month: 'short', 
-      day: 'numeric',
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: false
-    });
+    const day = date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
+    const time = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+    return `${day} · ${time}`;
   };
 
   return (

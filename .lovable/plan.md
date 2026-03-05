@@ -1,36 +1,47 @@
+## Cloudflare Worker OG Handling — Implementation Complete
 
+### Summary
+Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-# Plan: Add Date to Event Cards
+### What Was Done
 
-## Problem
-All event cards across the app only show the **time** (e.g., "14:00") — the date is completely missing. Users can't tell *when* an event is without opening the drawer.
+#### 1. Database: Unique Slug Constraint + Auto-Generation
+- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
+- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
+- Trigger fires on INSERT/UPDATE of `global_community_events`
 
-## Root Cause
-There are **7+ copies** of `formatEventTime` across the codebase, all returning only `HH:mm`. Meanwhile, `eventCardTransformers.ts` correctly formats as `"Mon, Mar 5 · 14:00"` but is only used by `EventImageCard`.
+#### 2. New Edge Function: `api-event-by-slug`
+- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
+- **Returns:** `{ title, short_description, image_url, event_id }`
+- Uses `resolve_event_by_slug` RPC
+- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
+- No auth required, cached 5min client / 10min CDN
 
-## Solution
-Update the `formatEventTime` function in all event listing pages to include the date. The format will be `"Mon, Mar 5 · 14:00"` — short day name, month, day number, then time. This matches what `eventCardTransformers.ts` already does.
+#### 3. Updated `og-event` Edge Function
+- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
+- Canonical URL: `https://vitanaland.com/e/{slug}`
+- Image MIME type never returns `image/webp`
+- WebP images auto-converted via Supabase render endpoint
 
-### Files to update (same one-line change in each)
+#### 4. Share URLs — Canonical Only
+- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
+- `getCleanEventUrl()` → same canonical base
+- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
 
-Replace the `formatEventTime` body from:
-```typescript
-return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-```
-To:
-```typescript
-return `${date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' })} · ${date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false })}`;
-```
+### Cloudflare Worker Integration
+Your Cloudflare Worker at `vitanaland.com/e/*` should:
+1. Detect crawler via User-Agent
+2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
+3. **Human:** Pass through to SPA (serve index.html)
 
-**Files affected:**
-1. `src/pages/community/EventsAndMeetups.tsx` (line ~44)
-2. `src/pages/community/Events.tsx` (line ~232)
-3. `src/pages/community/Meetups2.tsx` (line ~354)
-4. `src/components/community/MobileEventCarousel.tsx` (line ~9)
-5. `src/components/home/CommunityEventsCard.tsx` (line ~73) — this one already has relative formatting ("Today", "Tomorrow"), so we'll keep that logic but add the day name for other dates
-
-## Result
-Event cards will show e.g. **"Mon, 5 Mar · 14:00"** in the timestamp badge at the top-right, making the date immediately visible without opening the drawer.
-
-No backend changes. Works on both mobile and desktop.
-
+### Files
+| File | Action |
+|------|--------|
+| `supabase/functions/api-event-by-slug/index.ts` | Created |
+| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
+| `supabase/config.toml` | Added `api-event-by-slug` |
+| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
+| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
+| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
+| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
+| Migration | Unique slug index + auto-slug trigger |
