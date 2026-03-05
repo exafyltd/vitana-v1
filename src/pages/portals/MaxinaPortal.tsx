@@ -59,7 +59,7 @@ const MaxinaPortal = () => {
     startFresh();
   }, [startFresh]);
 
-  // OAuth hash recovery — manually parse tokens and call setSession
+  // OAuth callback recovery — handles hash tokens + PKCE code
   useEffect(() => {
     if (!isProcessingOAuth || user) return;
     setOauthTimedOut(false);
@@ -69,21 +69,41 @@ const MaxinaPortal = () => {
       try {
         // Parse tokens from hash
         const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const access_token = params.get('access_token');
-        const refresh_token = params.get('refresh_token');
+        const hashParams = new URLSearchParams(hash);
+        const queryParams = new URLSearchParams(window.location.search);
+        const access_token = hashParams.get('access_token');
+        const refresh_token = hashParams.get('refresh_token');
+        const pkceCode = queryParams.get('code') || hashParams.get('code');
 
-        console.debug('[MaxinaPortal] OAuth hash detected, tokens present:', !!access_token, !!refresh_token);
+        console.debug('[MaxinaPortal] OAuth callback detected, tokens:', !!access_token, !!refresh_token, 'code:', !!pkceCode);
 
-        if (access_token && refresh_token) {
-          // Force session hydration
+        let recovered = false;
+
+        // 1. Try PKCE code exchange first
+        if (pkceCode && !recovered) {
+          console.debug('[MaxinaPortal] Attempting PKCE code exchange');
+          const { data, error } = await supabase.auth.exchangeCodeForSession(pkceCode);
+          if (!error && data.session && !cancelled) {
+            window.history.replaceState(null, '', window.location.pathname);
+            if (hasRedirectedRef.current) return;
+            hasRedirectedRef.current = true;
+            const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
+            console.debug('[MaxinaPortal] PKCE exchange succeeded, navigating to', target);
+            setTenantBySlug('maxina').catch(console.warn);
+            navigate(target);
+            return;
+          } else {
+            console.warn('[MaxinaPortal] PKCE exchange failed:', error?.message);
+          }
+        }
+
+        // 2. Try implicit hash tokens
+        if (access_token && refresh_token && !recovered) {
           const { data, error } = await supabase.auth.setSession({ access_token, refresh_token });
           console.debug('[MaxinaPortal] setSession result:', !!data.session, error?.message);
 
           if (!error && data.session && !cancelled) {
-            // Clear hash without reload
             window.history.replaceState(null, '', window.location.pathname + window.location.search);
-
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
             const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
@@ -94,12 +114,16 @@ const MaxinaPortal = () => {
           }
         }
 
-        // Fallback: poll getSession in case Supabase already processed the hash internally
+        // 3. Fallback: refreshSession then poll
+        console.debug('[MaxinaPortal] Attempting refreshSession fallback');
+        await supabase.auth.refreshSession().catch(() => {});
+
+        // Poll getSession
         for (let i = 0; i < 15 && !cancelled; i++) {
           await new Promise(r => setTimeout(r, 1000));
           const { data: { session: s } } = await supabase.auth.getSession();
           if (s && !cancelled) {
-            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            window.history.replaceState(null, '', window.location.pathname);
             if (hasRedirectedRef.current) return;
             hasRedirectedRef.current = true;
             const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
@@ -362,7 +386,7 @@ const MaxinaPortal = () => {
     );
   }
 
-  // OAuth timed out — show retry
+  // OAuth timed out — show retry + back to login
   if (oauthTimedOut) {
     return (
       <div className="min-h-screen relative overflow-hidden">
@@ -373,25 +397,40 @@ const MaxinaPortal = () => {
         <div className="relative z-20 min-h-screen flex flex-col items-center justify-center gap-4 px-6">
           <p className="text-white text-lg font-medium">Something went wrong</p>
           <p className="text-white/70 text-sm text-center">Sign-in is taking longer than expected.</p>
-          <Button
-            onClick={async () => {
-              setOauthTimedOut(false);
-              // Try one more session check before restarting OAuth
-              const { data: { session: s } } = await supabase.auth.getSession();
-              if (s) {
-                const isMobile = window.innerWidth < 768;
-                const target = searchParams.get('redirectTo') || (isMobile ? '/comm/events-meetups?tab=hot' : '/home');
-                setTenantBySlug('maxina').catch(console.warn);
-                navigate(target);
-              } else {
-                // Restart Google OAuth instead of hard reload
-                handleSocialLogin('google');
-              }
-            }}
-            className="rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
-          >
-            Tap to try again
-          </Button>
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            <Button
+              onClick={async () => {
+                setOauthTimedOut(false);
+                // Clear stale callback params
+                window.history.replaceState(null, '', window.location.pathname);
+                // Try one more session check before restarting OAuth
+                const { data: { session: s } } = await supabase.auth.getSession();
+                if (s) {
+                  const target = searchParams.get('redirectTo') || '/comm/events-meetups?tab=hot';
+                  setTenantBySlug('maxina').catch(console.warn);
+                  navigate(target);
+                } else {
+                  // Restart Apple OAuth
+                  handleSocialLogin('apple');
+                }
+              }}
+              className="w-full rounded-full bg-gradient-to-r from-[#FF6FB3] to-[#FF4FA0] hover:from-[#FF85BE] hover:to-[#FF5FAB] text-white px-8"
+            >
+              Try Apple Sign-In again
+            </Button>
+            <Button
+              onClick={() => {
+                setOauthTimedOut(false);
+                window.history.replaceState(null, '', '/maxina');
+                hasRedirectedRef.current = false;
+                navigate('/maxina');
+              }}
+              variant="ghost"
+              className="w-full rounded-full text-white/80 hover:text-white hover:bg-white/10"
+            >
+              Back to login
+            </Button>
+          </div>
         </div>
       </div>
     );
