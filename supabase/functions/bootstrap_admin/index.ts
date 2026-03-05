@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -26,25 +25,51 @@ serve(async (req) => {
       }
     );
 
-    // Get admin emails from request body or environment
+    // SECURITY: Verify the caller is already an exafy_admin
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized: No authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const callerToken = authHeader.replace('Bearer ', '');
+    const { data: { user: caller }, error: callerError } = await supabaseClient.auth.getUser(callerToken);
+    
+    if (callerError || !caller) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized: Invalid token' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (caller.app_metadata?.exafy_admin !== true) {
+      console.error(`Forbidden: User ${caller.email} attempted admin bootstrap without privileges`);
+      return new Response(
+        JSON.stringify({ error: 'Forbidden: Exafy admin privileges required' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Get admin emails from request body
     const { emails } = await req.json();
     let emailList: string[] = [];
     
     if (emails && Array.isArray(emails) && emails.length > 0) {
-      // Use emails from UI request
       emailList = emails.map((email: string) => email.trim()).filter(Boolean);
     } else {
-      // Fallback to environment variable
-      const adminEmails = Deno.env.get('EXAFY_SUPERADMIN_EMAILS') || 'dstevanovic@hotmail.com';
-      emailList = adminEmails.split(',').map(email => email.trim());
+      return new Response(
+        JSON.stringify({ error: 'emails array is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     const results = [];
 
     for (const email of emailList) {
-      console.log(`Checking admin privileges for: ${email}`);
+      console.log(`[bootstrap_admin] Caller ${caller.email} elevating: ${email}`);
 
-      // Find user by email
       const { data: users, error: userError } = await supabaseClient.auth.admin.listUsers({
         page: 1,
         perPage: 1000
@@ -57,20 +82,16 @@ serve(async (req) => {
 
       const user = users.users.find(u => u.email === email);
       if (!user) {
-        console.log(`User not found: ${email}`);
         results.push({ email, status: 'user_not_found' });
         continue;
       }
 
-      // Check if already admin
       const isAlreadyAdmin = user.app_metadata?.exafy_admin === true;
       if (isAlreadyAdmin) {
-        console.log(`User ${email} is already an Exafy admin`);
         results.push({ email, status: 'already_admin', user_id: user.id });
         continue;
       }
 
-      // Elevate to admin
       const { error: updateError } = await supabaseClient.auth.admin.updateUserById(
         user.id,
         {
@@ -107,10 +128,10 @@ serve(async (req) => {
         );
       }
 
-      console.log(`Successfully elevated ${email} to Exafy admin`);
+      console.log(`Successfully elevated ${email} to Exafy admin by ${caller.email}`);
       results.push({ email, status: 'elevated', user_id: user.id });
 
-      // Log audit event
+      // Log audit event with caller identity
       await supabaseClient
         .from('audit_events')
         .insert({
@@ -118,7 +139,8 @@ serve(async (req) => {
           event_type: 'admin_elevated',
           event_data: {
             email: email,
-            elevated_by: 'bootstrap_system'
+            elevated_by: caller.email,
+            elevated_by_id: caller.id
           }
         });
     }
@@ -135,7 +157,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in bootstrap_admin function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'Internal server error' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

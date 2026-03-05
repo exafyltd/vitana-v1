@@ -17,17 +17,32 @@ export interface UploadProgress {
 export interface AttachmentData {
   type: 'image' | 'file' | 'voice' | 'video' | 'audio';
   url: string;
-  path?: string; // Storage path for future signed URL support
+  path?: string; // Storage path for signed URL generation
   filename?: string;
   name: string;
   size: number;
   mime?: string;
-  duration?: number; // For voice/video messages
+  duration?: number;
 }
 
 export interface FileValidationResult {
   valid: boolean;
   error?: string;
+}
+
+/**
+ * Generate a signed URL for a chat attachment (private bucket)
+ */
+export async function getSignedAttachmentUrl(path: string): Promise<string | null> {
+  const { data, error } = await supabase.storage
+    .from('chat-attachments')
+    .createSignedUrl(path, 3600); // 1 hour expiry
+  
+  if (error) {
+    console.error('Error creating signed URL:', error);
+    return null;
+  }
+  return data.signedUrl;
 }
 
 /**
@@ -73,10 +88,11 @@ export async function uploadChatAttachment(
 
     if (error) throw error;
 
-    // Get public URL
-    const { data: urlData } = supabase.storage
-      .from('chat-attachments')
-      .getPublicUrl(data.path);
+    // Use signed URL instead of public URL (bucket is now private)
+    const signedUrl = await getSignedAttachmentUrl(data.path);
+    if (!signedUrl) {
+      throw new Error('Failed to generate signed URL for uploaded file');
+    }
 
     // Simulate progress updates for better UX
     if (onProgress) {
@@ -84,7 +100,7 @@ export async function uploadChatAttachment(
     }
 
     return {
-      url: urlData.publicUrl,
+      url: signedUrl,
       path: data.path,
       size: file.size,
       type: file.type,
