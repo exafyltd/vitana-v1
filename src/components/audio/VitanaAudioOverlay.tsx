@@ -83,11 +83,11 @@ export function VitanaAudioOverlay() {
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
-    if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
+    if (audioOverlayVisible && !isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
       startListening();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening]);
+  }, [audioOverlayVisible, isSpeaking, isProcessing, micMuted, connectionState, isListening]);
 
   // UI-level safety timeout: if stuck in "processing" for 20s, force-reset
   useEffect(() => {
