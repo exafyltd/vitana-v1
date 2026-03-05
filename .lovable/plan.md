@@ -1,54 +1,51 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-# Fix: Auto-regenerate event slug when title changes
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-## Problem
-The event was renamed from "Sunrise Detox Flow" to "Maxina Experience by Janina Restaurant", but the URL slug is still `sunrise-detox-flow`. The current DB trigger only generates a slug when it's NULL or empty — it doesn't update when the title changes.
+### Fix: Deploy/Update Cloudflare Worker
 
-## Changes
+In **Cloudflare Dashboard → Workers & Routes**:
 
-### 1. Update the `generate_event_slug()` trigger function (migration)
-Add a condition: if `TG_OP = 'UPDATE' AND OLD.title IS DISTINCT FROM NEW.title`, regenerate the slug.
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
 
-```sql
-CREATE OR REPLACE FUNCTION public.generate_event_slug()
-RETURNS TRIGGER AS $$
-DECLARE
-  base_slug TEXT;
-  final_slug TEXT;
-  counter INT := 0;
-BEGIN
-  IF NEW.slug IS NULL OR NEW.slug = ''
-     OR (TG_OP = 'UPDATE' AND OLD.title IS DISTINCT FROM NEW.title) THEN
-    base_slug := lower(regexp_replace(NEW.title, '[^a-z0-9]+', '-', 'gi'));
-    base_slug := trim(both '-' from base_slug);
-    IF length(base_slug) > 80 THEN
-      base_slug := left(base_slug, 80);
-    END IF;
-    final_slug := base_slug;
-    WHILE EXISTS (SELECT 1 FROM public.global_community_events WHERE slug = final_slug AND id != NEW.id) LOOP
-      counter := counter + 1;
-      final_slug := base_slug || '-' || counter;
-    END LOOP;
-    NEW.slug := final_slug;
-  END IF;
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SET search_path = public;
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
 ```
 
-### 2. Fix existing stale slugs (data update via insert tool)
-Reset slugs for events whose titles no longer match their slugs:
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
 
-```sql
-UPDATE global_community_events SET slug = NULL
-WHERE title ILIKE '%Maxina Experience%';
-```
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
 
-This triggers the function to regenerate correct slugs automatically.
-
-### Scope
-- 1 migration (update trigger function)
-- 1 data fix (reset stale slugs)
-- No application code changes needed
-
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
