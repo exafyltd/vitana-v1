@@ -6,12 +6,13 @@ const corsHeaders = {
 };
 
 function isCrawler(userAgent: string): boolean {
+  const ua = userAgent.toLowerCase();
   const crawlers = [
-    'WhatsApp', 'facebookexternalhit', 'Facebot', 'Twitterbot',
-    'LinkedInBot', 'Slackbot', 'TelegramBot', 'SkypeUriPreview',
-    'Discordbot', 'redditbot',
+    'whatsapp', 'facebookexternalhit', 'facebot', 'twitterbot',
+    'linkedinbot', 'slackbot', 'telegrambot', 'skypeuripreview',
+    'discordbot', 'redditbot', 'bot', 'crawler', 'spider',
   ];
-  return crawlers.some(crawler => userAgent.includes(crawler));
+  return crawlers.some((crawler) => ua.includes(crawler));
 }
 
 function ensureAbsoluteUrl(url: string | null | undefined): string {
@@ -132,9 +133,8 @@ function generateOGHTML(event: EventData, canonicalUrl: string, destinationUrl: 
   <meta name="twitter:description" content="${description}" />
   <meta name="twitter:image" content="${imageUrl}" />
   <link rel="canonical" href="${canonicalUrl}" />
-  <meta http-equiv="refresh" content="0;url=${destinationUrl}">
 </head>
-<body><p>Redirecting to ${title}...</p><a href="${destinationUrl}">Click here</a></body>
+<body><p>${title}</p><a href="${destinationUrl}">Open event</a></body>
 </html>`;
 }
 
