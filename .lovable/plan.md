@@ -1,51 +1,32 @@
-## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
-### Status: Requires Manual Action (Outside Lovable)
 
-### Diagnosis
-- ✅ `og-event` edge function — working, returns correct OG HTML
-- ✅ `api-event-by-slug` edge function — working, returns correct JSON
-- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
+# Rebrand Link Preview: VITANA → MAXINA
 
-### Fix: Deploy/Update Cloudflare Worker
+Replace all user-facing "VITANA" text in OG/SEO metadata across 3 files. File names like `vitana-og-default.jpg` stay unchanged (they're storage paths, not displayed text).
 
-In **Cloudflare Dashboard → Workers & Routes**:
+## Changes
 
-1. **Create or update** worker `vitanaland-og-proxy` with this code:
+### `index.html`
+- Line 9: title → "VITANA Platform" (keep as-is per user)
+- Line 10: description → "Join MAXINA to discover..."
+- Line 11: author → "MAXINA"
+- Line 14: og:site_name → "MAXINA"
+- Line 15: og:title → "MAXINA - Longevity Community"
+- Line 23: twitter:title → "MAXINA - Longevity Community"
 
-```javascript
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    const slug = url.pathname.replace('/e/', '');
-    const ua = request.headers.get('user-agent') || '';
-    
-    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
-      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
-    const isCrawler = crawlers.some(c => ua.includes(c));
-    
-    if (isCrawler) {
-      const ogResp = await fetch(
-        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
-        { headers: { 'User-Agent': ua } }
-      );
-      const html = await ogResp.text();
-      return new Response(html, {
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      });
-    }
-    
-    // Human → redirect to SPA
-    return Response.redirect(
-      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
-    );
-  }
-};
-```
+### `src/components/SEO.tsx`
+- Line 49: og:site_name → "MAXINA"
 
-2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
+### `supabase/functions/og-event/index.ts`
+- Line 79: `<title>` → "MAXINA - Discover Events"
+- Line 81: og:site_name → "MAXINA"
+- Line 82: og:title → "MAXINA - Discover Events"
+- Line 83: og:description → "Join the MAXINA longevity community..."
+- Line 92: body text → "Redirecting to MAXINA..."
+- Line 107: fallback title → "MAXINA Event"
+- Line 108: fallback description → "Join us for this event on MAXINA"
+- Line 117: title suffix → "| MAXINA"
+- Line 119: og:site_name → "MAXINA"
 
-3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
+Edge function will need redeployment after edit.
 
-### Test After Fix
-Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
