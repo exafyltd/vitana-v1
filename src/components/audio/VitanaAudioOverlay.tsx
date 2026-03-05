@@ -83,29 +83,11 @@ export function VitanaAudioOverlay() {
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
-    if (audioOverlayVisible && !isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
+    if (!isSpeaking && !isProcessing && !micMuted && connectionState === 'ready' && !isListening) {
       startListening();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioOverlayVisible, isSpeaking, isProcessing, micMuted, connectionState, isListening]);
-
-  // UI-level safety timeout: if stuck in "processing" for 20s, force-reset
-  useEffect(() => {
-    if (!isProcessing) return;
-    const safetyTimer = setTimeout(() => {
-      console.warn('[VitanaAudioOverlay] UI safety timeout — stuck in processing for 20s, force-resetting');
-      // The hook doesn't expose a direct reset, but stopping+starting listening
-      // will trigger the auto-resume effect above
-      stopListening();
-      setTimeout(() => {
-        if (connectionState === 'ready' && !micMuted) {
-          startListening();
-        }
-      }, 200);
-    }, 20000);
-    return () => clearTimeout(safetyTimer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isProcessing]);
+  }, [isSpeaking, isProcessing, micMuted, connectionState, isListening]);
 
   // Map states to visual feedback
   const audioState: 'idle' | 'listening' | 'processing' | 'speaking' | 'error' = 
@@ -240,7 +222,7 @@ export function VitanaAudioOverlay() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-2xl"
+        className="fixed inset-0 z-[100]"
         role="dialog"
         aria-label="VITANA Audio Mode"
         style={{ pointerEvents: 'auto' }}
