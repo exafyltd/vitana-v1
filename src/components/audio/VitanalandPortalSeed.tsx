@@ -106,7 +106,8 @@ export function VitanalandPortalSeed({
   const tiltAngle = isListening ? volumeLevel * 2 : 0;
 
   // Wave animation speed varies by state
-  const waveDuration = isSpeaking ? 2 : isListening ? 3 : isProcessing ? 2.5 : 4;
+  const waveDuration = isSpeaking ? 3.5 : isListening ? 5 : 4;
+  const showWaves = (isSpeaking || isListening) && glowIntensity > 0;
 
   const microFragments = [
     { size: 10 * config.fragmentScale, blur: 4 * config.fragmentScale, opacity: 0.85, zDepth: 1.3, color: 'rgba(255, 255, 255, 0.9)', angle: 0.3, radius: 35 * config.fragmentScale },
@@ -137,7 +138,7 @@ export function VitanalandPortalSeed({
       layoutId={layoutId}
     >
       {/* === WATER WAVE RIPPLES === */}
-      {glowIntensity > 0 && waves.map((wave, i) => (
+      {showWaves && waves.map((wave, i) => (
         <motion.div
           key={`wave-${i}`}
           className="absolute inset-0 rounded-full pointer-events-none"
