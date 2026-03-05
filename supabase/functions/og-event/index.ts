@@ -121,6 +121,7 @@ function generateOGHTML(event: EventData, canonicalUrl: string, destinationUrl: 
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${description}" />
   <meta property="og:image" content="${imageUrl}" />
+  <meta property="og:image:url" content="${imageUrl}" />
   <meta property="og:image:secure_url" content="${imageUrl}" />
   <meta property="og:image:type" content="${imageMimeType}" />
   <meta property="og:image:width" content="1200" />
