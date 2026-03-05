@@ -372,7 +372,92 @@ export class OrbVoiceClient {
     }
   }
 
-  private async initAudioOutput(): Promise<void> {
+  /**
+   * Centralized SSE message handler — used by both initial and reconnect EventSources.
+   * Only clears response timeout on meaningful messages (audio, turn_complete),
+   * NOT on heartbeats/pings.
+   */
+  private handleSSEMessage(msg: any): void {
+    switch (msg.type) {
+      case 'audio':
+        if (msg.data_b64) {
+          // Clear timeout — we're getting actual content
+          this.clearResponseTimeout();
+          this.callbacks.onSpeakingChange?.(true);
+          this.callbacks.onProcessingChange?.(false);
+          this.handleAudioChunk(msg.data_b64);
+          // Reset speaking-done timer on each audio chunk
+          this.resetSpeakingDoneTimer();
+        }
+        break;
+
+      case 'turn_complete':
+      case 'end_of_turn':
+      case 'done':
+        console.log('[OrbVoiceClient] Turn complete signal received:', msg.type);
+        this.clearResponseTimeout();
+        this.clearSpeakingDoneTimer();
+        this.callbacks.onProcessingChange?.(false);
+        // Allow current audio to finish playing, then mark speaking done
+        // Use a short delay to let buffered audio play out
+        setTimeout(() => {
+          if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.1) {
+            this.callbacks.onSpeakingChange?.(false);
+          } else {
+            // Audio still playing — let onended handle it, but set a safety
+            this.resetSpeakingDoneTimer();
+          }
+        }, 200);
+        break;
+
+      case 'transcript':
+        if (msg.text) {
+          this.callbacks.onTranscript?.(msg.text);
+        }
+        break;
+
+      case 'assistant_text':
+        if (msg.text) {
+          this.callbacks.onTranscript?.(msg.text);
+        }
+        break;
+
+      case 'error':
+        this.clearResponseTimeout();
+        this.callbacks.onError?.(msg.message);
+        break;
+
+      case 'heartbeat':
+      case 'ping':
+      case 'keep_alive':
+        // Intentionally do NOT clear response timeout
+        break;
+
+      default:
+        console.log('[OrbVoiceClient] Unhandled SSE message type:', msg.type, msg);
+        break;
+    }
+  }
+
+  /**
+   * Speaking-done fallback timer: if no audio chunk arrives for SPEAKING_DONE_DELAY_MS
+   * after the last one, force isSpeaking = false.
+   */
+  private resetSpeakingDoneTimer(): void {
+    this.clearSpeakingDoneTimer();
+    this.speakingDoneTimer = setTimeout(() => {
+      console.log('[OrbVoiceClient] Speaking-done timer fired (no audio for', this.SPEAKING_DONE_DELAY_MS, 'ms)');
+      this.callbacks.onSpeakingChange?.(false);
+      this.callbacks.onProcessingChange?.(false);
+    }, this.SPEAKING_DONE_DELAY_MS);
+  }
+
+  private clearSpeakingDoneTimer(): void {
+    if (this.speakingDoneTimer) {
+      clearTimeout(this.speakingDoneTimer);
+      this.speakingDoneTimer = null;
+    }
+  }
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     
     // iOS requires explicit resume from a user gesture context
