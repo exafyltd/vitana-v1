@@ -24,22 +24,16 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/${url}`;
 }
 
-// Return crawler-safe OG image URL optimized for WhatsApp/Facebook
+// Return direct public storage URL — no transformation, no redirects
 function getOptimizedImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   if (!url) return defaultImage;
 
   let imageUrl = ensureAbsoluteUrl(url).split('?')[0];
 
-  // Prefer transformed image for better crawler compatibility (smaller payload)
-  if (imageUrl.includes('/storage/v1/object/public/')) {
-    const [base, objectPath] = imageUrl.split('/storage/v1/object/public/');
-    const [bucket, ...pathParts] = objectPath.split('/');
-    const filePath = pathParts.join('/');
-
-    if (base && bucket && filePath) {
-      return `${base}/storage/v1/render/image/public/${bucket}/${filePath}?width=1200&height=630&resize=cover&quality=75`;
-    }
+  // If somehow a /render/image/ URL got stored, convert back to /object/public/
+  if (imageUrl.includes('/storage/v1/render/image/public/')) {
+    imageUrl = imageUrl.replace('/storage/v1/render/image/public/', '/storage/v1/object/public/');
   }
 
   return imageUrl;

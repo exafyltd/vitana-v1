@@ -1,25 +1,51 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-## Diagnosis
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-I verified:
-- **Edge function** (`og-event`): Returns HTTP 200 with correct HTML
-- **Direct image** (`/object/public/covers/...`): Accessible, returns valid JPEG
-- **Transformed image** (`/render/image/public/covers/...`): Also accessible
-- **Cloudflare Worker**: Route `vitanaland.com/e/*` is active and correctly redirects non-crawlers to the SPA
+### Fix: Deploy/Update Cloudflare Worker
 
-**Root cause**: The `og-event` function generates `og:image` URLs using Supabase Image Transformations (`/render/image/public/...?width=1200&height=630&resize=cover&quality=75`). WhatsApp's crawler likely cannot follow the redirect chain or does not accept the response from the transformation endpoint. Per project architecture notes: *"OG images use direct public storage URLs without transformation parameters"*.
+In **Cloudflare Dashboard → Workers & Routes**:
 
-## Fix
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
 
-**Single change** in `supabase/functions/og-event/index.ts`:
-
-Replace the `getOptimizedImageUrl` function to return the direct public storage URL (`/object/public/`) without any transformation parameters. Strip query strings and return the raw image URL as-is.
-
-This eliminates the redirect chain WhatsApp encounters when trying to fetch a `/render/image/` URL.
-
-After updating, the edge function will need to be redeployed to the live project:
-```bash
-supabase functions deploy og-event --no-verify-jwt --project-ref inmkhvwdcuyhnxkgfvsb
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
 ```
 
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
+
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
+
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
