@@ -1,33 +1,18 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-# Why WhatsApp Previews Show No Image — Diagnosis
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-## Root Cause: Cloudflare Worker is NOT serving OG tags
+### Fix: Deploy/Update Cloudflare Worker
 
-I fetched `https://vitanaland.com/e/selbsterfahrung` and the response is **the raw SPA HTML with no OG meta tags in the `<head>`**. The page has no `<meta property="og:image">`, no `<meta property="og:title">`, nothing. WhatsApp's crawler gets this HTML, finds no OG tags, and shows a blank preview.
+In **Cloudflare Dashboard → Workers & Routes**:
 
-**Both edge functions work perfectly** — I verified:
-- `api-event-by-slug?slug=selbsterfahrung` → returns correct JSON with title, image, description
-- `og-event?slug=selbsterfahrung` (with WhatsApp UA) → returns correct OG HTML with all meta tags
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
 
-The problem is that **the Cloudflare Worker at `vitanaland.com/e/*` is not intercepting crawler requests**. It's passing all traffic (including WhatsApp's bot) straight to the SPA, which renders client-side with no server-side OG tags.
-
-## What Needs to Be Fixed (Outside Lovable)
-
-This is a **Cloudflare Worker configuration issue**, not a code issue in this repo. You need to verify/fix in your Cloudflare dashboard:
-
-### 1. Check the Worker Route
-In Cloudflare dashboard → Workers Routes, confirm a route like `vitanaland.com/e/*` is bound to your `vitanaland-og-proxy` worker.
-
-### 2. Verify the Worker Code
-The worker should:
-```
-1. Check User-Agent for crawlers (WhatsApp, facebookexternalhit, etc.)
-2. If crawler → fetch og-event edge function → return that HTML with Content-Type: text/html
-3. If human → redirect to SPA (vitanaland.com/?share=event&slug=...)
-```
-
-### 3. Minimal Cloudflare Worker Example
 ```javascript
 export default {
   async fetch(request) {
@@ -58,11 +43,9 @@ export default {
 };
 ```
 
-### 4. Additional Check: Image Accessibility
-The cover image for "Selbsterfahrung" appears to be a PNG with a white/transparent background — it loaded as a blank white screenshot. Verify the actual image file exists and has visible content. WhatsApp also prefers **JPEG images under 300KB** for reliable previews.
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
 
-## Summary
-- Edge functions: Working correctly, no code changes needed
-- Problem: Cloudflare Worker route/code at `vitanaland.com/e/*` — needs to be deployed or fixed in the Cloudflare dashboard
-- Secondary: Verify cover images are visible JPEGs, not transparent PNGs
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
 
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
