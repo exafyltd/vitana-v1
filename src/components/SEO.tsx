@@ -46,7 +46,7 @@ const SEO = ({ title, description, canonical, image, imageAlt, type = 'website',
     }
 
     // Open Graph tags
-    updateMetaTag('meta[property="og:site_name"]', 'content', 'VITANA');
+    updateMetaTag('meta[property="og:site_name"]', 'content', 'MAXINA');
     updateMetaTag('meta[property="og:title"]', 'content', title);
     if (description) {
       updateMetaTag('meta[property="og:description"]', 'content', description);
