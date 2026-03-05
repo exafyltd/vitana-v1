@@ -23,21 +23,22 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/${url}`;
 }
 
-// Return direct public storage URL — no render transforms needed
+// Return crawler-safe OG image URL optimized for WhatsApp/Facebook
 function getOptimizedImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   if (!url) return defaultImage;
 
-  let imageUrl = ensureAbsoluteUrl(url);
+  let imageUrl = ensureAbsoluteUrl(url).split('?')[0];
 
-  // Ensure we use /object/public/ (direct URL), not /render/image/
-  if (imageUrl.includes('supabase.co/storage') && imageUrl.includes('/render/image/')) {
-    imageUrl = imageUrl.replace('/render/image/public/', '/object/public/');
-  }
+  // Prefer transformed image for better crawler compatibility (smaller payload)
+  if (imageUrl.includes('/storage/v1/object/public/')) {
+    const [base, objectPath] = imageUrl.split('/storage/v1/object/public/');
+    const [bucket, ...pathParts] = objectPath.split('/');
+    const filePath = pathParts.join('/');
 
-  // Strip any query params (like format=jpeg) that may cause 400 errors
-  if (imageUrl.includes('supabase.co/storage')) {
-    imageUrl = imageUrl.split('?')[0];
+    if (base && bucket && filePath) {
+      return `${base}/storage/v1/render/image/public/${bucket}/${filePath}?width=1200&height=630&resize=cover&quality=75`;
+    }
   }
 
   return imageUrl;
