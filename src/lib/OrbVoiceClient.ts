@@ -86,6 +86,10 @@ export class OrbVoiceClient {
   private responseTimeoutTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly RESPONSE_TIMEOUT_MS = 15000;
 
+  // Speaking-done fallback timer: fires 1.5s after last audio chunk
+  private speakingDoneTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly SPEAKING_DONE_DELAY_MS = 1500;
+
   // Gateway configuration
   private readonly GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
   private readonly SAMPLE_RATE_IN = 16000;  // Input to gateway
@@ -258,35 +262,10 @@ export class OrbVoiceClient {
       this.eventSource.onmessage = (event) => {
         // Reset SSE error counter on any successful message
         this.sseConsecutiveErrors = 0;
-        
-        // Clear response timeout on any incoming message
-        this.clearResponseTimeout();
 
         try {
           const msg = JSON.parse(event.data);
-
-          switch (msg.type) {
-            case 'audio':
-              if (msg.data_b64) {
-                this.callbacks.onSpeakingChange?.(true);
-                this.callbacks.onProcessingChange?.(false);
-                this.handleAudioChunk(msg.data_b64);
-              }
-              break;
-            case 'transcript':
-              if (msg.text) {
-                this.callbacks.onTranscript?.(msg.text);
-              }
-              break;
-            case 'assistant_text':
-              if (msg.text) {
-                this.callbacks.onTranscript?.(msg.text);
-              }
-              break;
-            case 'error':
-              this.callbacks.onError?.(msg.message);
-              break;
-          }
+          this.handleSSEMessage(msg);
         } catch (e) {
           console.error('[OrbVoiceClient] Failed to parse SSE message', e);
         }
@@ -352,26 +331,10 @@ export class OrbVoiceClient {
 
     this.eventSource.onmessage = (event) => {
       this.sseConsecutiveErrors = 0;
-      this.clearResponseTimeout();
       
       try {
         const msg = JSON.parse(event.data);
-        switch (msg.type) {
-          case 'audio':
-            if (msg.data_b64) {
-              this.callbacks.onSpeakingChange?.(true);
-              this.callbacks.onProcessingChange?.(false);
-              this.handleAudioChunk(msg.data_b64);
-            }
-            break;
-          case 'transcript':
-          case 'assistant_text':
-            if (msg.text) this.callbacks.onTranscript?.(msg.text);
-            break;
-          case 'error':
-            this.callbacks.onError?.(msg.message);
-            break;
-        }
+        this.handleSSEMessage(msg);
       } catch (e) {
         console.error('[OrbVoiceClient] Failed to parse SSE message', e);
       }
