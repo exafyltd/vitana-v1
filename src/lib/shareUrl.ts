@@ -38,10 +38,16 @@ export function getShareUrl(
     
     // Build clean URL path - prefer slug for SEO-friendly URLs
     const path = options?.slug 
-      ? `/${encodeURIComponent(options.slug)}`
+      ? `/events/${encodeURIComponent(options.slug)}`
       : `/pub/events/${encodeURIComponent(id)}`;
     
     return `${canonicalBase}${path}`;
+  }
+
+  // Profiles use e.vitanaland.com for OG image previews
+  if (type === 'profile') {
+    const canonicalBase = 'https://e.vitanaland.com';
+    return `${canonicalBase}/profiles/${encodeURIComponent(id)}`;
   }
   
   // Other content types use direct app URLs
@@ -97,7 +103,7 @@ export function getResellerShareUrl(
 export function getCleanEventUrl(slug?: string | null, id?: string): string {
   const canonicalBase = 'https://e.vitanaland.com';
   if (slug) {
-    return `${canonicalBase}/${encodeURIComponent(slug)}`;
+    return `${canonicalBase}/events/${encodeURIComponent(slug)}`;
   }
   if (id) {
     return `${canonicalBase}/pub/events/${encodeURIComponent(id)}`;
