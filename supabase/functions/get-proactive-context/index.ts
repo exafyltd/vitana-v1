@@ -21,7 +21,42 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
-    
+
+    // SECURITY: Validate the caller owns this user_id
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const anonClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(
+      authHeader.replace('Bearer ', '')
+    );
+
+    if (claimsError || !claimsData?.claims) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const callerId = claimsData.claims.sub;
+    if (callerId !== user_id) {
+      return new Response(
+        JSON.stringify({ error: 'Forbidden: Cannot access other user context' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Use service role for data fetching (bypasses RLS for aggregation)
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -36,7 +71,6 @@ serve(async (req) => {
       .eq('user_id', userId)
       .single();
 
-    // Return cached context if still valid
     if (cachedContext && new Date(cachedContext.expires_at) > new Date()) {
       console.log('Returning cached context for user:', userId);
       return new Response(JSON.stringify(cachedContext.context_data), {
@@ -59,28 +93,21 @@ serve(async (req) => {
       adminSettingsResult,
       recentDiaryResult
     ] = await Promise.all([
-      // Profile with demographics
       supabaseClient
         .from('profiles')
         .select('display_name, full_name, age_range, gender, activity_level, timezone, preferred_languages, inferred_language')
         .eq('user_id', userId)
         .maybeSingle(),
-      
-      // User journey
       supabaseClient
         .from('user_journey')
         .select('*')
         .eq('user_id', userId)
         .maybeSingle(),
-      
-      // User preferences
       supabaseClient
         .from('user_preferences')
         .select('*')
         .eq('user_id', userId)
         .maybeSingle(),
-      
-      // Recent AI memory (last 30 days, top 10 by confidence)
       supabaseClient
         .from('ai_memory')
         .select('content, memory_type, confidence_score, created_at')
@@ -89,16 +116,12 @@ serve(async (req) => {
         .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
         .order('confidence_score', { ascending: false })
         .limit(10),
-      
-      // User interests
       supabaseClient
         .from('user_interests')
         .select('interest, category, strength')
         .eq('user_id', userId)
         .order('strength', { ascending: false })
         .limit(10),
-      
-      // Recent autopilot actions (pending or executed in last 7 days)
       supabaseClient
         .from('autopilot_actions')
         .select('title, category, priority, status, created_at')
@@ -106,8 +129,6 @@ serve(async (req) => {
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false })
         .limit(5),
-      
-      // Upcoming events (next 7 days)
       supabaseClient
         .from('calendar_events')
         .select('title, start_time, event_type')
@@ -116,8 +137,6 @@ serve(async (req) => {
         .lte('start_time', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString())
         .order('start_time', { ascending: true })
         .limit(5),
-      
-      // Recent engagement history (last 7 days)
       supabaseClient
         .from('proactive_engagement')
         .select('engagement_type, was_helpful, created_at')
@@ -125,13 +144,9 @@ serve(async (req) => {
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
         .order('created_at', { ascending: false })
         .limit(10),
-      
-      // Admin proactive settings
       supabaseClient
         .from('admin_proactive_settings')
         .select('setting_key, setting_value'),
-      
-      // Recent diary entries (last 7 days)
       supabaseClient
         .from('diary_entries')
         .select('text, source, tags, created_at, attachments')
@@ -141,13 +156,11 @@ serve(async (req) => {
         .limit(5)
     ]);
 
-    // Compute engagement score
     const engagementData = engagementResult.data || [];
     const helpfulCount = engagementData.filter(e => e.was_helpful === true).length;
     const totalEngagements = engagementData.length;
     const engagementSuccessRate = totalEngagements > 0 ? (helpfulCount / totalEngagements) : 0.5;
 
-    // Build comprehensive context
     const context = {
       user: {
         id: userId,
@@ -215,7 +228,7 @@ serve(async (req) => {
       }, {} as Record<string, any>),
       diary_insights: {
         recent_entries: (recentDiaryResult.data || []).map(e => ({
-          content: e.text.substring(0, 500), // Limit to 500 chars for context
+          content: e.text.substring(0, 500),
           source: e.source,
           tags: e.tags,
           date: e.created_at,
@@ -245,7 +258,7 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error fetching proactive context:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

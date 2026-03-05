@@ -15,15 +15,48 @@ serve(async (req) => {
     const body = await req.json();
     const { override_language, user_id } = body;
     
-    // RULE 1: Validate user_id
     if (!user_id) {
       return new Response(
         JSON.stringify({ error: 'user_id is required' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // SECURITY: Validate the caller owns this user_id
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const anonClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(
+      authHeader.replace('Bearer ', '')
+    );
+
+    if (claimsError || !claimsData?.claims) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const callerId = claimsData.claims.sub;
+    if (callerId !== user_id) {
+      return new Response(
+        JSON.stringify({ error: 'Forbidden' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
     
-    // RULE 2: Validate language
+    // Validate language
     const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT'];
     const targetLanguage = override_language || 'en-US';
     
@@ -34,7 +67,7 @@ serve(async (req) => {
       );
     }
     
-    console.log('[greeting] RULE: target_language=', targetLanguage);
+    console.log('[greeting] target_language=', targetLanguage);
     
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -46,9 +79,10 @@ serve(async (req) => {
       throw new Error('GOOGLE_GEMINI_API_KEY is not configured');
     }
 
-    // Get comprehensive user context
+    // Get comprehensive user context - pass auth header through
     const contextResponse = await supabaseClient.functions.invoke('get-proactive-context', {
-      body: { user_id }
+      body: { user_id },
+      headers: authHeader ? { Authorization: authHeader } : {}
     });
     if (contextResponse.error) {
       throw contextResponse.error;
@@ -64,7 +98,6 @@ serve(async (req) => {
     else if (hour < 22) timeOfDay = 'evening';
     else timeOfDay = 'night';
 
-    // Build personalized system prompt
     const systemPrompt = `You are a warm, empathetic AI assistant for Vitana, a holistic wellness and community platform.
 
 USER CONTEXT:
@@ -90,7 +123,6 @@ IMPORTANT GUIDELINES:
 
 Generate a personalized greeting now.`;
 
-    // Call Gemini API - Phase 1
     const { generateContent } = await import("../_shared/gemini-client.ts");
     const greetingResponse = await generateContent(
       GEMINI_API_KEY,
@@ -105,10 +137,7 @@ Generate a personalized greeting now.`;
     if (!initialGreeting) {
       throw new Error('Failed to generate greeting');
     }
-    
-    console.log('[greeting] Phase 1 output:', initialGreeting.substring(0, 100));
 
-    // RULE 4: Phase 2 - Translator pass
     const LANGUAGE_NAMES: Record<string, string> = {
       'en-US': 'English', 'sr-RS': 'Serbian', 'de-DE': 'German',
       'ar-XA': 'Arabic', 'es-ES': 'Spanish', 'ru-RU': 'Russian',
@@ -117,7 +146,6 @@ Generate a personalized greeting now.`;
     
     const targetLanguageName = LANGUAGE_NAMES[targetLanguage] || 'English';
     
-    // Phase 2 - Translation
     const translateResp = await generateContent(
       GEMINI_API_KEY,
       [
@@ -134,8 +162,6 @@ Generate a personalized greeting now.`;
     if (!greeting) {
       throw new Error(`Translation to ${targetLanguageName} produced no output`);
     }
-
-    console.log('[greeting] RULE: Translation complete:', greeting.substring(0, 100));
 
     // Log engagement for analytics
     await supabaseClient
@@ -163,7 +189,7 @@ Generate a personalized greeting now.`;
 
   } catch (error) {
     console.error('Error generating greeting:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
