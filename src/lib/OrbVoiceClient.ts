@@ -875,6 +875,7 @@ export class OrbVoiceClient {
 
     // Clear response timeout
     this.clearResponseTimeout();
+    this.clearSpeakingDoneTimer();
 
     // Clear silence detection
     if (this.silenceTimer) {
