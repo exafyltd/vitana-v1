@@ -1,31 +1,51 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-## Fix: Restore missing dark backdrop on ORB overlay
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-### What happened
-During the previous edits to `VitanaAudioOverlay.tsx`, the dark frosted backdrop classes were removed from the overlay container at line 243. The line currently reads:
+### Fix: Deploy/Update Cloudflare Worker
 
+In **Cloudflare Dashboard → Workers & Routes**:
+
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
+
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
 ```
-className="fixed inset-0 z-[100]"
-```
 
-It should be:
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
 
-```
-className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-2xl"
-```
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
 
-### What to change
-
-**File: `src/components/audio/VitanaAudioOverlay.tsx` (line 243)**
-
-Add `bg-black/85 backdrop-blur-2xl` back to the container's className. This is the only change needed — all other elements (ORB, mic controls, status text) are intact and rendering, just invisible against the bright page.
-
-### Nothing else was damaged
-- The ORB component (`VitanalandPortalSeed`) is still rendered at line 271
-- Status text (`AudioStatusText`) is at line 280
-- Audio controls are present further down
-- The SSE/timeout fixes from the previous edit are functional improvements, not visual regressions
-
-This is a one-line class restoration.
-
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
