@@ -1,47 +1,68 @@
-## Cloudflare Worker OG Handling — Implementation Complete
 
-### Summary
-Implemented server-side OG handling for premium WhatsApp/social previews via Cloudflare Worker architecture.
 
-### What Was Done
+# Why WhatsApp Previews Show No Image — Diagnosis
 
-#### 1. Database: Unique Slug Constraint + Auto-Generation
-- Added `UNIQUE` partial index on `slug` column (WHERE slug IS NOT NULL)
-- Created `generate_event_slug()` trigger function — auto-generates URL-safe slugs from titles with collision handling
-- Trigger fires on INSERT/UPDATE of `global_community_events`
+## Root Cause: Cloudflare Worker is NOT serving OG tags
 
-#### 2. New Edge Function: `api-event-by-slug`
-- **Endpoint:** `GET /functions/v1/api-event-by-slug?slug=xyz`
-- **Returns:** `{ title, short_description, image_url, event_id }`
-- Uses `resolve_event_by_slug` RPC
-- Forces non-WebP images (converts Supabase storage URLs to JPEG fallback)
-- No auth required, cached 5min client / 10min CDN
+I fetched `https://vitanaland.com/e/selbsterfahrung` and the response is **the raw SPA HTML with no OG meta tags in the `<head>`**. The page has no `<meta property="og:image">`, no `<meta property="og:title">`, nothing. WhatsApp's crawler gets this HTML, finds no OG tags, and shows a blank preview.
 
-#### 3. Updated `og-event` Edge Function
-- Base URL changed from `vitana.exafy.io` → `vitanaland.com`
-- Canonical URL: `https://vitanaland.com/e/{slug}`
-- Image MIME type never returns `image/webp`
-- WebP images auto-converted via Supabase render endpoint
+**Both edge functions work perfectly** — I verified:
+- `api-event-by-slug?slug=selbsterfahrung` → returns correct JSON with title, image, description
+- `og-event?slug=selbsterfahrung` (with WhatsApp UA) → returns correct OG HTML with all meta tags
 
-#### 4. Share URLs — Canonical Only
-- `getShareUrl('event', id, { slug })` → `https://vitanaland.com/e/{slug}` (NO UTM params)
-- `getCleanEventUrl()` → same canonical base
-- Updated all callers: `MobileEventCarousel`, `MeetupDetailsDrawer`, `EventsAndMeetups`
+The problem is that **the Cloudflare Worker at `vitanaland.com/e/*` is not intercepting crawler requests**. It's passing all traffic (including WhatsApp's bot) straight to the SPA, which renders client-side with no server-side OG tags.
 
-### Cloudflare Worker Integration
-Your Cloudflare Worker at `vitanaland.com/e/*` should:
-1. Detect crawler via User-Agent
-2. **Crawler:** `fetch('https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/api-event-by-slug?slug={slug}')` → build OG HTML
-3. **Human:** Pass through to SPA (serve index.html)
+## What Needs to Be Fixed (Outside Lovable)
 
-### Files
-| File | Action |
-|------|--------|
-| `supabase/functions/api-event-by-slug/index.ts` | Created |
-| `supabase/functions/og-event/index.ts` | Updated — vitanaland.com base, no WebP |
-| `supabase/config.toml` | Added `api-event-by-slug` |
-| `src/lib/shareUrl.ts` | Canonical URLs, no UTMs for events |
-| `src/components/community/MobileEventCarousel.tsx` | Simplified share URL |
-| `src/components/meetups/MeetupDetailsDrawer.tsx` | Simplified share URL |
-| `src/pages/community/EventsAndMeetups.tsx` | Simplified share URL (2 locations) |
-| Migration | Unique slug index + auto-slug trigger |
+This is a **Cloudflare Worker configuration issue**, not a code issue in this repo. You need to verify/fix in your Cloudflare dashboard:
+
+### 1. Check the Worker Route
+In Cloudflare dashboard → Workers Routes, confirm a route like `vitanaland.com/e/*` is bound to your `vitanaland-og-proxy` worker.
+
+### 2. Verify the Worker Code
+The worker should:
+```
+1. Check User-Agent for crawlers (WhatsApp, facebookexternalhit, etc.)
+2. If crawler → fetch og-event edge function → return that HTML with Content-Type: text/html
+3. If human → redirect to SPA (vitanaland.com/?share=event&slug=...)
+```
+
+### 3. Minimal Cloudflare Worker Example
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
+```
+
+### 4. Additional Check: Image Accessibility
+The cover image for "Selbsterfahrung" appears to be a PNG with a white/transparent background — it loaded as a blank white screenshot. Verify the actual image file exists and has visible content. WhatsApp also prefers **JPEG images under 300KB** for reliable previews.
+
+## Summary
+- Edge functions: Working correctly, no code changes needed
+- Problem: Cloudflare Worker route/code at `vitanaland.com/e/*` — needs to be deployed or fixed in the Cloudflare dashboard
+- Secondary: Verify cover images are visible JPEGs, not transparent PNGs
+
