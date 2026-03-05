@@ -86,6 +86,10 @@ export class OrbVoiceClient {
   private responseTimeoutTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly RESPONSE_TIMEOUT_MS = 15000;
 
+  // Speaking-done fallback timer: fires 1.5s after last audio chunk
+  private speakingDoneTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly SPEAKING_DONE_DELAY_MS = 1500;
+
   // Gateway configuration
   private readonly GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || 'https://gateway-q74ibpv6ia-uc.a.run.app';
   private readonly SAMPLE_RATE_IN = 16000;  // Input to gateway
@@ -258,35 +262,10 @@ export class OrbVoiceClient {
       this.eventSource.onmessage = (event) => {
         // Reset SSE error counter on any successful message
         this.sseConsecutiveErrors = 0;
-        
-        // Clear response timeout on any incoming message
-        this.clearResponseTimeout();
 
         try {
           const msg = JSON.parse(event.data);
-
-          switch (msg.type) {
-            case 'audio':
-              if (msg.data_b64) {
-                this.callbacks.onSpeakingChange?.(true);
-                this.callbacks.onProcessingChange?.(false);
-                this.handleAudioChunk(msg.data_b64);
-              }
-              break;
-            case 'transcript':
-              if (msg.text) {
-                this.callbacks.onTranscript?.(msg.text);
-              }
-              break;
-            case 'assistant_text':
-              if (msg.text) {
-                this.callbacks.onTranscript?.(msg.text);
-              }
-              break;
-            case 'error':
-              this.callbacks.onError?.(msg.message);
-              break;
-          }
+          this.handleSSEMessage(msg);
         } catch (e) {
           console.error('[OrbVoiceClient] Failed to parse SSE message', e);
         }
@@ -352,26 +331,10 @@ export class OrbVoiceClient {
 
     this.eventSource.onmessage = (event) => {
       this.sseConsecutiveErrors = 0;
-      this.clearResponseTimeout();
       
       try {
         const msg = JSON.parse(event.data);
-        switch (msg.type) {
-          case 'audio':
-            if (msg.data_b64) {
-              this.callbacks.onSpeakingChange?.(true);
-              this.callbacks.onProcessingChange?.(false);
-              this.handleAudioChunk(msg.data_b64);
-            }
-            break;
-          case 'transcript':
-          case 'assistant_text':
-            if (msg.text) this.callbacks.onTranscript?.(msg.text);
-            break;
-          case 'error':
-            this.callbacks.onError?.(msg.message);
-            break;
-        }
+        this.handleSSEMessage(msg);
       } catch (e) {
         console.error('[OrbVoiceClient] Failed to parse SSE message', e);
       }
@@ -406,6 +369,93 @@ export class OrbVoiceClient {
     if (this.responseTimeoutTimer) {
       clearTimeout(this.responseTimeoutTimer);
       this.responseTimeoutTimer = null;
+    }
+  }
+
+  /**
+   * Centralized SSE message handler — used by both initial and reconnect EventSources.
+   * Only clears response timeout on meaningful messages (audio, turn_complete),
+   * NOT on heartbeats/pings.
+   */
+  private handleSSEMessage(msg: any): void {
+    switch (msg.type) {
+      case 'audio':
+        if (msg.data_b64) {
+          // Clear timeout — we're getting actual content
+          this.clearResponseTimeout();
+          this.callbacks.onSpeakingChange?.(true);
+          this.callbacks.onProcessingChange?.(false);
+          this.handleAudioChunk(msg.data_b64);
+          // Reset speaking-done timer on each audio chunk
+          this.resetSpeakingDoneTimer();
+        }
+        break;
+
+      case 'turn_complete':
+      case 'end_of_turn':
+      case 'done':
+        console.log('[OrbVoiceClient] Turn complete signal received:', msg.type);
+        this.clearResponseTimeout();
+        this.clearSpeakingDoneTimer();
+        this.callbacks.onProcessingChange?.(false);
+        // Allow current audio to finish playing, then mark speaking done
+        // Use a short delay to let buffered audio play out
+        setTimeout(() => {
+          if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.1) {
+            this.callbacks.onSpeakingChange?.(false);
+          } else {
+            // Audio still playing — let onended handle it, but set a safety
+            this.resetSpeakingDoneTimer();
+          }
+        }, 200);
+        break;
+
+      case 'transcript':
+        if (msg.text) {
+          this.callbacks.onTranscript?.(msg.text);
+        }
+        break;
+
+      case 'assistant_text':
+        if (msg.text) {
+          this.callbacks.onTranscript?.(msg.text);
+        }
+        break;
+
+      case 'error':
+        this.clearResponseTimeout();
+        this.callbacks.onError?.(msg.message);
+        break;
+
+      case 'heartbeat':
+      case 'ping':
+      case 'keep_alive':
+        // Intentionally do NOT clear response timeout
+        break;
+
+      default:
+        console.log('[OrbVoiceClient] Unhandled SSE message type:', msg.type, msg);
+        break;
+    }
+  }
+
+  /**
+   * Speaking-done fallback timer: if no audio chunk arrives for SPEAKING_DONE_DELAY_MS
+   * after the last one, force isSpeaking = false.
+   */
+  private resetSpeakingDoneTimer(): void {
+    this.clearSpeakingDoneTimer();
+    this.speakingDoneTimer = setTimeout(() => {
+      console.log('[OrbVoiceClient] Speaking-done timer fired (no audio for', this.SPEAKING_DONE_DELAY_MS, 'ms)');
+      this.callbacks.onSpeakingChange?.(false);
+      this.callbacks.onProcessingChange?.(false);
+    }, this.SPEAKING_DONE_DELAY_MS);
+  }
+
+  private clearSpeakingDoneTimer(): void {
+    if (this.speakingDoneTimer) {
+      clearTimeout(this.speakingDoneTimer);
+      this.speakingDoneTimer = null;
     }
   }
 
@@ -825,6 +875,7 @@ export class OrbVoiceClient {
 
     // Clear response timeout
     this.clearResponseTimeout();
+    this.clearSpeakingDoneTimer();
 
     // Clear silence detection
     if (this.silenceTimer) {
