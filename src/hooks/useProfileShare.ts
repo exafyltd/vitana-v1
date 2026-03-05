@@ -14,15 +14,9 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
 
   // Generate canonical profile URL with UTM parameters
   const getShareUrl = useCallback(() => {
-    const baseUrl = window.location.origin;
-    const profilePath = `/u/${handle || profileId}`;
-    const utmParams = new URLSearchParams({
-      utm_source: 'profile',
-      utm_medium: 'share_button',
-      utm_campaign: 'user_profile'
-    });
-    return `${baseUrl}${profilePath}?${utmParams.toString()}`;
-  }, [handle]);
+    const canonicalBase = 'https://e.vitanaland.com';
+    return `${canonicalBase}/profiles/${encodeURIComponent(profileId)}`;
+  }, [profileId]);
 
   // Check if Web Share API is available
   const canUseNativeShare = useCallback(() => {
