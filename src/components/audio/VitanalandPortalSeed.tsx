@@ -138,7 +138,7 @@ export function VitanalandPortalSeed({
       layoutId={layoutId}
     >
       {/* === WATER WAVE RIPPLES === */}
-      {glowIntensity > 0 && waves.map((wave, i) => (
+      {showWaves && waves.map((wave, i) => (
         <motion.div
           key={`wave-${i}`}
           className="absolute inset-0 rounded-full pointer-events-none"
