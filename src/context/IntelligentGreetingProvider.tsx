@@ -29,6 +29,7 @@ export function IntelligentGreetingProvider({
   sessionReady = false
 }: IntelligentGreetingProviderProps) {
   const { user } = useAuth();
+  const { audioOverlayVisible } = useStreamingState();
   const [hasPendingTTS, setHasPendingTTS] = useState(false);
   
   const { 
