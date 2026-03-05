@@ -62,7 +62,7 @@ export function IntelligentGreetingProvider({
 
   // Trigger greeting once per session after authentication AND session ready
   useEffect(() => {
-    if (user && sessionReady && !glassModeActive && !micActive) {
+    if (user && sessionReady && !glassModeActive && !micActive && !audioOverlayVisible) {
       // Wait 5s to ensure everything is stable
       const timer = setTimeout(() => {
         triggerGreeting();
