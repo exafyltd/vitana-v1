@@ -76,11 +76,11 @@ function generateFallbackHTML(): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VITANA - Discover Events</title>
+  <title>MAXINA - Discover Events</title>
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="VITANA" />
-  <meta property="og:title" content="VITANA - Discover Events" />
-  <meta property="og:description" content="Join the VITANA longevity community and discover events near you" />
+  <meta property="og:site_name" content="MAXINA" />
+  <meta property="og:title" content="MAXINA - Discover Events" />
+  <meta property="og:description" content="Join the MAXINA longevity community and discover events near you" />
   <meta property="og:image" content="${defaultImage}" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
@@ -89,7 +89,7 @@ function generateFallbackHTML(): string {
   <meta name="twitter:card" content="summary_large_image" />
   <meta http-equiv="refresh" content="0;url=${homeUrl}">
 </head>
-<body><p>Redirecting to VITANA...</p><a href="${homeUrl}">Click here</a></body>
+<body><p>Redirecting to MAXINA...</p><a href="${homeUrl}">Click here</a></body>
 </html>`;
 }
 
@@ -104,8 +104,8 @@ interface EventData {
 }
 
 function generateOGHTML(event: EventData, canonicalUrl: string, destinationUrl: string): string {
-  const title = sanitizeText(event.title) || 'VITANA Event';
-  const description = sanitizeText(event.description) || 'Join us for this event on VITANA';
+  const title = sanitizeText(event.title) || 'MAXINA Event';
+  const description = sanitizeText(event.description) || 'Join us for this event on MAXINA';
   const imageUrl = getOptimizedImageUrl(event.image_url);
   const imageMimeType = getImageMimeType(imageUrl);
 
@@ -114,9 +114,9 @@ function generateOGHTML(event: EventData, canonicalUrl: string, destinationUrl: 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title} | VITANA</title>
+  <title>${title} | MAXINA</title>
   <meta property="og:type" content="event" />
-  <meta property="og:site_name" content="VITANA" />
+  <meta property="og:site_name" content="MAXINA" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${description}" />
   <meta property="og:image" content="${imageUrl}" />
