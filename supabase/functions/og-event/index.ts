@@ -200,7 +200,11 @@ Deno.serve(async (req) => {
 
     if (isCrawler(userAgent)) {
       return new Response(generateOGHTML(event, canonicalUrl, destinationUrl), {
-        headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600' },
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=120, s-maxage=120',
+        },
       });
     }
 
