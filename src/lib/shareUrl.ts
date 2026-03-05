@@ -34,11 +34,11 @@ export function getShareUrl(
   // Events/meetups use canonical vitanaland.com URLs for sharing
   // Cloudflare Worker handles OG meta for crawlers — NO UTM params on shared links
   if (type === 'event' || type === 'meetup') {
-    const canonicalBase = 'https://vitanaland.com';
+    const canonicalBase = 'https://e.vitanaland.com';
     
     // Build clean URL path - prefer slug for SEO-friendly URLs
     const path = options?.slug 
-      ? `/e/${encodeURIComponent(options.slug)}`
+      ? `/${encodeURIComponent(options.slug)}`
       : `/pub/events/${encodeURIComponent(id)}`;
     
     return `${canonicalBase}${path}`;
@@ -95,9 +95,9 @@ export function getResellerShareUrl(
  * @returns Clean event URL
  */
 export function getCleanEventUrl(slug?: string | null, id?: string): string {
-  const canonicalBase = 'https://vitanaland.com';
+  const canonicalBase = 'https://e.vitanaland.com';
   if (slug) {
-    return `${canonicalBase}/e/${encodeURIComponent(slug)}`;
+    return `${canonicalBase}/${encodeURIComponent(slug)}`;
   }
   if (id) {
     return `${canonicalBase}/pub/events/${encodeURIComponent(id)}`;

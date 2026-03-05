@@ -5,6 +5,7 @@
 export const DOMAIN_TENANT_MAP: Record<string, string> = {
   'vitanaland.com': 'maxina',
   'www.vitanaland.com': 'maxina',
+  'e.vitanaland.com': 'maxina',
   // Future tenant domains:
   // 'alkalma.health': 'alkalma',
   // 'earthlinks.org': 'earthlinks',
