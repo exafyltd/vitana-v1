@@ -68,8 +68,22 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
     }
   };
 
-  // Don't render if no actions available (non-creator with no share handler)
-  if (!canEdit && !canDelete && !onShare) return null;
+  // Non-creator/co-creator: show standalone Share button
+  if (!canEdit && !canDelete) {
+    if (!onShare) return null;
+    return (
+      <Button
+        variant="ghost"
+        size="sm"
+        className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
+        aria-label="Share event"
+        onClick={(e) => { e.stopPropagation(); onShare(event); }}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        <Share2 className="h-4 w-4" />
+      </Button>
+    );
+  }
 
   return (
     <>
