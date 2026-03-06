@@ -346,7 +346,7 @@ const formatEventTime = (dateString: string) => {
   return `${day} · ${time}`;
 };
 
-const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
+const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void, onDelete?: (eventId: string) => void, onShare?: (event: any) => void) => {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
