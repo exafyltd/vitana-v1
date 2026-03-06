@@ -1,37 +1,51 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-## Problem: Memories Save as "general" Instead of Selected Category
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-### Root Cause
+### Fix: Deploy/Update Cloudflare Worker
 
-I confirmed the bug by querying your database. Both recent entries have tags `["general", "diary"]` -- the "business-projects" category was never persisted.
+In **Cloudflare Dashboard → Workers & Routes**:
 
-The bug is in `AddMemoryDialog.tsx` line 40:
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
 
-```typescript
-const [selectedCategory, setSelectedCategory] = useState(defaultCategory || "");
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
 ```
 
-`useState` only uses its initial value **on first mount**. When you open the dialog from the "Business & Projects" category card, the component may already be mounted (it's rendered in `MemoryCategoryGrid` permanently), so `defaultCategory` changing to `"business-projects"` has no effect on the state. The category stays as `""`, and line 98 falls back to `"general"`.
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
 
-### Plan
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
 
-**Fix 1: `src/components/memory/AddMemoryDialog.tsx`**
-- Add a `useEffect` that syncs `selectedCategory` whenever `defaultCategory` or `open` changes:
-  ```typescript
-  useEffect(() => {
-    if (open) {
-      setSelectedCategory(defaultCategory || "");
-    }
-  }, [open, defaultCategory]);
-  ```
-- This ensures that when the dialog opens from a category card, the correct category is pre-selected.
-
-**Fix 2: Fix past entries via SQL update**
-- Run an update on the two incorrectly-tagged diary entries for your user to change `["general", "diary"]` to `["business-projects", "diary"]` (the entries about Maxina Experience events).
-
-**Fix 3: Refresh metadata**
-- After fixing past entries, invoke `refresh-memory-metadata` to recalculate the category counts so the Business & Projects card shows the correct number.
-
-No changes needed to `CategoryDetailDialog`, `useKnowledgeBase`, or the edge function -- those were already fixed in the last round.
-
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.

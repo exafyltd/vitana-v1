@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,6 +38,13 @@ export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemo
   const [inputMode, setInputMode] = useState<InputMode>("text");
   const [content, setContent] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(defaultCategory || "");
+
+  // Sync selectedCategory when dialog opens or defaultCategory changes
+  useEffect(() => {
+    if (open) {
+      setSelectedCategory(defaultCategory || "");
+    }
+  }, [open, defaultCategory]);
   const [isRecording, setIsRecording] = useState(false);
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
