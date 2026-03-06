@@ -825,13 +825,15 @@ const EventsAndMeetups = () => {
                             label: translate('events.emptyStates.viewUpcoming'),
                             onClick: () => setActiveTab('upcoming')
                           }
-                        }
+                        },
+                        handleDeleteEvent,
+                        handleShareEvent,
                       )
                     ) : (
                       <>
                         {chunkEvents(filteredTodayEvents).map((chunk, chunkIndex) => (
                           <div key={`today-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
                             {chunkIndex < chunkEvents(filteredTodayEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="encouragement" />
@@ -891,13 +893,15 @@ const EventsAndMeetups = () => {
                             label: "Create Event",
                             onClick: () => setCreateSelectionOpen(true)
                           }
-                        }
+                        },
+                        handleDeleteEvent,
+                        handleShareEvent,
                       )
                     ) : (
                       <>
                         {chunkEvents(filteredUpcomingEvents).map((chunk, chunkIndex) => (
                           <div key={`upcoming-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
                             {chunkIndex < chunkEvents(filteredUpcomingEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="achievement" />
@@ -961,13 +965,15 @@ const EventsAndMeetups = () => {
                           icon: <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
                           title: "No Recommended Events",
                           description: "Check back soon for curated events.",
-                        }
+                        },
+                        handleDeleteEvent,
+                        handleShareEvent,
                       )
                     ) : (
                       <>
                         {chunkEvents(maxinaEvents).map((chunk, chunkIndex) => (
                           <div key={`recommended-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
                             {chunkIndex < chunkEvents(maxinaEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="encouragement" />
