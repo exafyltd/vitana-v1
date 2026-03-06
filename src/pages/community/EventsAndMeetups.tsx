@@ -1054,6 +1054,8 @@ const EventsAndMeetups = () => {
           isMobile={isMobile}
           onPromoteEvent={handlePromoteEvent}
           onShareEvent={handleShareEvent}
+          onEditEvent={handleEditEvent}
+          onDeleteEvent={handleDeleteEvent}
         />
       )}
 
