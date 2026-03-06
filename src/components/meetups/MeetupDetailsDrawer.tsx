@@ -91,6 +91,7 @@ import { format, formatDistanceToNow, differenceInHours } from "date-fns";
 import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
+import { EventKebabMenu } from "@/components/events/EventKebabMenu";
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
