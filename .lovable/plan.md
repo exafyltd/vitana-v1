@@ -1,51 +1,27 @@
-## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
-### Status: Requires Manual Action (Outside Lovable)
 
-### Diagnosis
-- ✅ `og-event` edge function — working, returns correct OG HTML
-- ✅ `api-event-by-slug` edge function — working, returns correct JSON
-- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
+## Move Kebab Menu to Right Corner & Make More Visible in Drawer
 
-### Fix: Deploy/Update Cloudflare Worker
+### Change
 
-In **Cloudflare Dashboard → Workers & Routes**:
+**`src/components/meetups/MeetupDetailsDrawer.tsx`** (lines 802-812)
 
-1. **Create or update** worker `vitanaland-og-proxy` with this code:
+Move the desktop kebab menu from `right-14` to `right-4` (true right corner) and make it more visible with a semi-transparent dark background circle:
 
-```javascript
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    const slug = url.pathname.replace('/e/', '');
-    const ua = request.headers.get('user-agent') || '';
-    
-    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
-      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
-    const isCrawler = crawlers.some(c => ua.includes(c));
-    
-    if (isCrawler) {
-      const ogResp = await fetch(
-        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
-        { headers: { 'User-Agent': ua } }
-      );
-      const html = await ogResp.text();
-      return new Response(html, {
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      });
-    }
-    
-    // Human → redirect to SPA
-    return Response.redirect(
-      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
-    );
-  }
-};
+```tsx
+{!isMobile && (
+  <div className="absolute top-4 right-4 z-[60]">
+    <EventKebabMenu
+      event={event}
+      currentUserId={user?.id}
+      onEdit={...}
+      onDelete={...}
+      onShare={onShareEvent}
+      className="text-white bg-black/40 hover:bg-black/60 rounded-full h-9 w-9"
+    />
+  </div>
+)}
 ```
 
-2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
+This positions it flush to the right corner (matching the close button style on mobile) and adds a dark semi-transparent backdrop so the dots are visible against any hero image.
 
-3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
-
-### Test After Fix
-Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
