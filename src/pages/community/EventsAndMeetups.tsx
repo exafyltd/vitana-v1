@@ -547,6 +547,15 @@ const EventsAndMeetups = () => {
     setShareDialogOpen(true);
   };
 
+  // Handle delete event - remove from list and refresh
+  const handleDeleteEvent = (eventId: string) => {
+    fetchEvents();
+    // Close the drawer if the deleted event was selected
+    if (selectedEventId === eventId) {
+      handleDrawerClose();
+    }
+  };
+
   // Handle event creation - show the newly created event
   const handleEventCreated = async (eventId: string) => {
     console.log('🎯 Event created, handling:', eventId);
