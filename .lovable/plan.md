@@ -1,42 +1,51 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-## Show Share Button for Non-Creators, Kebab Menu for Creators/Co-Creators
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-Currently, `EventKebabMenu` always renders a kebab (three-dot) dropdown. For non-creators who only see "Share" inside it, this is unnecessary — they should see a direct Share icon button instead.
+### Fix: Deploy/Update Cloudflare Worker
 
-### Changes
+In **Cloudflare Dashboard → Workers & Routes**:
 
-**`src/components/events/EventKebabMenu.tsx`**
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
 
-Add conditional rendering logic:
-- If user is **not** a creator or co-creator (`!canEdit && !canDelete`), render a standalone `Share2` icon button (same size/style as the kebab) that directly calls `onShare`. No dropdown needed.
-- If user **is** a creator/co-creator, render the existing kebab menu with Edit, Share, and Delete options as today.
-- Import `Button` from ui/button for the standalone share button.
-
-```tsx
-// Non-creator: render a direct share button, no kebab
-if (!canEdit && !canDelete) {
-  if (!onShare) return null;
-  return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className={`h-8 w-8 p-0 hover:bg-sidebar-accent/50 ${className}`}
-      aria-label="Share event"
-      onClick={(e) => { e.stopPropagation(); onShare(event); }}
-      onPointerDown={(e) => e.stopPropagation()}
-    >
-      <Share2 className="h-4 w-4" />
-    </Button>
-  );
-}
-
-// Creator/co-creator: render full kebab menu (existing code)
-return ( <KebabMenu ...> ... </KebabMenu> );
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
 ```
 
-This single change applies everywhere the component is used — drawer (mobile + desktop), card grids, and carousels — with no changes needed in parent components.
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
 
-### Files to Change
-1. `src/components/events/EventKebabMenu.tsx` — add conditional Share-only button for non-creators
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
 
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
