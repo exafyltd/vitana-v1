@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NewsCard } from '@/components/crossover/NewsCard';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Edit, CalendarIcon } from 'lucide-react';
-import SocialShareButton from '@/components/sharing/SocialShareButton';
-import { getShareUrl } from '@/lib/shareUrl';
+import { CalendarIcon } from 'lucide-react';
+import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -56,6 +54,8 @@ interface MobileEventCarouselProps {
   onCardClick: (event: any) => void;
   currentUserId?: string;
   onEdit?: (event: any) => void;
+  onDelete?: (eventId: string) => void;
+  onShare?: (event: any) => void;
   emptyState?: React.ReactNode;
   initialEventId?: string;
   onSlideChange?: (eventId: string, index: number) => void;
@@ -67,6 +67,8 @@ export function MobileEventCarousel({
   onCardClick,
   currentUserId,
   onEdit,
+  onDelete,
+  onShare,
   emptyState,
   initialEventId,
   onSlideChange,
@@ -169,36 +171,14 @@ export function MobileEventCarousel({
       onClick: () => onCardClick(event),
       'data-event-id': event.id,
       utilityTopRight: (
-        <div className="flex items-center gap-1">
-          <SocialShareButton
-            type="event"
-            data={{
-              id: event.id,
-              title: event.title,
-              description: event.description,
-              image_url: imageUrl,
-              start_time: event.start_time,
-              end_time: event.end_time,
-              location: event.location,
-              link: getShareUrl('event', event.id, { slug: event.slug })
-            }}
-            variant="icon"
-            size="sm"
-          />
-          {canEdit && onEdit && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(event);
-              }}
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
+        <EventKebabMenu
+          event={event}
+          currentUserId={currentUserId}
+          onEdit={onEdit ? () => onEdit(event) : undefined}
+          onDelete={onDelete}
+          onShare={onShare}
+          className="text-white hover:bg-white/20"
+        />
       ),
     };
   };
