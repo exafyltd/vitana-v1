@@ -266,7 +266,7 @@ const renderEventGrid = (
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
+                {...mkProps(rowEvents[0])}
                 className={cn(
                   "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -277,7 +277,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
+                  {...mkProps(rowEvents[1])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -289,7 +289,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
+                  {...mkProps(rowEvents[2])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -304,7 +304,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
+                  {...mkProps(rowEvents[0])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -316,7 +316,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
+                  {...mkProps(rowEvents[1])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -328,7 +328,7 @@ const renderEventGrid = (
               <div className="col-span-6">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
+                  {...mkProps(rowEvents[2])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                     onClick && "hover:ring-2 hover:ring-primary"
