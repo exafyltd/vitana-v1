@@ -372,7 +372,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick)}
+                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick, onDelete, onShare)}
                 className={cn(
                   "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -383,7 +383,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -395,7 +395,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -411,7 +411,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -423,7 +423,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -435,7 +435,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-6">
               <NewsCard
                 key={`${i}-2`}
-                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick)}
+                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick, onDelete, onShare)}
                 className={cn(
                   "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
                   onClick && "hover:ring-2 hover:ring-primary"
