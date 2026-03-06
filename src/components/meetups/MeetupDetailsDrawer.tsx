@@ -168,6 +168,8 @@ interface MeetupDetailsDrawerProps {
   isMobile?: boolean;
   onPromoteEvent?: (event: any) => void;
   onShareEvent?: (event: any) => void;
+  onEditEvent?: (event: any) => void;
+  onDeleteEvent?: (eventId: string) => void;
 }
 
 export function MeetupDetailsDrawer({
@@ -181,6 +183,8 @@ export function MeetupDetailsDrawer({
   isMobile = false,
   onPromoteEvent,
   onShareEvent,
+  onEditEvent,
+  onDeleteEvent,
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
