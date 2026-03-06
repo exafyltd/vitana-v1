@@ -23,7 +23,8 @@ import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, Brain, Users, Megaphone, Plane } from 'lucide-react';
+import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -91,7 +92,7 @@ const generateImageUrl = (title: string, description?: string): string => {
   return images[Math.abs(hash) % images.length];
 };
 
-const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void) => {
+const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void) => {
   // Construct author object with proper fallback chain
   const authorName = event.creator_display_name || event.author?.name || 'Community Host';
   const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
@@ -143,19 +144,16 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     onBuyTicket: (hasTickets || isPaidEvent) ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
-    utilityTopRight: canEdit && onEdit ? (
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
-        onClick={(e) => {
-          e.stopPropagation();
-          onEdit();
-        }}
-      >
-        <Edit className="h-4 w-4" />
-      </Button>
-    ) : undefined,
+    utilityTopRight: (
+      <EventKebabMenu
+        event={event}
+        currentUserId={currentUserId}
+        onEdit={onEdit ? () => onEdit() : undefined}
+        onDelete={onDeleteEvent}
+        onShare={onShareEvent}
+        className="text-white hover:bg-white/20"
+      />
+    ),
     actionButton: (
       <SocialShareButton
         type="event"
