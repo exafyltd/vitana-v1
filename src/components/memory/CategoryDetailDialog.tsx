@@ -65,10 +65,10 @@ export function CategoryDetailDialog({
     });
   };
 
-  // Filter memories by category
+  // Filter memories by category (check both tags and memoryType)
   const categoryMemories = knowledgeItems.filter((item) => {
     const tags = item.tags || [];
-    return tags.includes(category.id);
+    return tags.includes(category.id) || item.memoryType === category.id;
   });
 
   // Filter by subcategory if selected
