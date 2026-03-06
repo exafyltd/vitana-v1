@@ -32,11 +32,11 @@ import {
   Heart,
   Activity,
   BookOpen,
-  Edit,
   UserPlus,
   UserMinus,
   Share2
 } from 'lucide-react';
+import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -228,7 +228,7 @@ const sanitizeUrl = (url?: string) => {
 };
 
 // Transform event data to NewsCard format
-const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
+const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void, onDelete?: (eventId: string) => void, onShare?: (event: any) => void) => {
   const rawImage = event.image_url || event.imageUrl;
   console.log('[MEETUP-IMG] Transform event:', {
     eventId: event.id,
@@ -285,28 +285,17 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
         }
       : { eventId: String(event.id) }
     ),
-    // Top-right utility edit button (creators only)
-    utilityTopRight: canEdit && onEdit ? (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-8 w-8 p-0 text-white hover:bg-white/20"
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(event);
-              }}
-              aria-label="Edit meetup"
-            >
-              <Edit className="w-4 h-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent sideOffset={6}>Edit meetup</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    ) : undefined,
+    // Top-right utility kebab menu
+    utilityTopRight: (
+      <EventKebabMenu
+        event={event}
+        currentUserId={currentUserId}
+        onEdit={onEdit ? () => onEdit(event) : undefined}
+        onDelete={onDelete}
+        onShare={onShare}
+        className="text-white hover:bg-white/20"
+      />
+    ),
     // Bottom row actions: only Share now
     actionButton: (
       <div className="flex items-center gap-2">
