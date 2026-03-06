@@ -21,16 +21,17 @@ type InputMode = "text" | "voice" | "photo";
 const MEMORY_CATEGORIES = [
   { id: "personal-identity", label: "Personal Identity" },
   { id: "health-wellness", label: "Health & Wellness" },
+  { id: "lifestyle-routines", label: "Lifestyle & Routines" },
+  { id: "business-projects", label: "Business & Projects" },
   { id: "network-relationships", label: "Relationships" },
-  { id: "business-projects", label: "Career & Goals" },
-  { id: "values-aspirations", label: "Values & Beliefs" },
-  { id: "lifestyle-routines", label: "Life Events" },
   { id: "learning-knowledge", label: "Skills & Knowledge" },
-  { id: "personal-identity", label: "Preferences" },
-  { id: "health-wellness", label: "Emotions & Mental State" },
-  { id: "lifestyle-routines", label: "Habits & Routines" },
-  { id: "location-environment", label: "Environment" },
   { id: "finance-assets", label: "Financial" },
+  { id: "location-environment", label: "Environment" },
+  { id: "digital-footprint", label: "Digital Footprint" },
+  { id: "values-aspirations", label: "Values & Aspirations" },
+  { id: "autopilot-settings", label: "Autopilot & Context" },
+  { id: "future-plans", label: "Future Plans" },
+  { id: "general", label: "Uncategorized" },
 ];
 
 export function AddMemoryDialog({ open, onOpenChange, defaultCategory }: AddMemoryDialogProps) {

@@ -60,6 +60,7 @@ export function useKnowledgeBase(filter: "all" | "insights" | "diary" = "all") {
             content: mem.content,
             source: "ai" as const,
             memoryType: mem.memory_type,
+            tags: [mem.memory_type, "ai"].filter(Boolean) as string[],
             confidenceScore: mem.confidence_score,
             createdAt: mem.created_at,
             metadata: mem.metadata,

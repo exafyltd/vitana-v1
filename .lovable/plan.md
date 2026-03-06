@@ -1,44 +1,51 @@
+## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
+### Status: Requires Manual Action (Outside Lovable)
 
-## Problem: Memories Not Appearing in Category Cards
+### Diagnosis
+- ✅ `og-event` edge function — working, returns correct OG HTML
+- ✅ `api-event-by-slug` edge function — working, returns correct JSON
+- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
 
-### What I Found
+### Fix: Deploy/Update Cloudflare Worker
 
-I traced the full data flow and found **three bugs** causing your memories to disappear after saving:
+In **Cloudflare Dashboard → Workers & Routes**:
 
-### Bug 1: Category Not Saved Correctly
-Your latest diary entry was saved with tags `["general", "diary"]` instead of `["business-projects", "diary"]`. This means the "Business & Projects" category selection either wasn't applied or defaulted to "general". The AddMemoryDialog has duplicate category IDs in its list (e.g., two entries with `personal-identity`, two with `health-wellness`, two with `lifestyle-routines`), which causes React key conflicts and badge selection bugs.
+1. **Create or update** worker `vitanaland-og-proxy` with this code:
 
-### Bug 2: ai_memory Items Never Show in Category Detail
-`CategoryDetailDialog` filters items by `tags.includes(category.id)`, but items from `ai_memory` come through `useKnowledgeBase` without tags — they have `memoryType` instead. So your 8 existing ai_memory items (facts, preferences, goals) are invisible in the category cards.
+```javascript
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const slug = url.pathname.replace('/e/', '');
+    const ua = request.headers.get('user-agent') || '';
+    
+    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
+      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
+    const isCrawler = crawlers.some(c => ua.includes(c));
+    
+    if (isCrawler) {
+      const ogResp = await fetch(
+        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
+        { headers: { 'User-Agent': ua } }
+      );
+      const html = await ogResp.text();
+      return new Response(html, {
+        headers: { 'Content-Type': 'text/html; charset=utf-8' }
+      });
+    }
+    
+    // Human → redirect to SPA
+    return Response.redirect(
+      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
+    );
+  }
+};
+```
 
-### Bug 3: Metadata Progress Miscounts
-The `refresh-memory-metadata` edge function counts `ai_memory` by `memory_type` (which stores values like "fact", "preference", "goal" — not category IDs like "business-projects"), so category progress is always wrong for ai_memory items.
+2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
 
-### Plan
+3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
 
-**File 1: `src/components/memory/AddMemoryDialog.tsx`**
-- Fix the `MEMORY_CATEGORIES` list: remove duplicate IDs, add missing categories (digital-footprint, autopilot-settings, future-plans) to match all 13 categories in `MemoryCategoryGrid`
-- Each category gets a unique ID so badge selection works correctly
-
-**File 2: `src/hooks/useKnowledgeBase.ts`**
-- When mapping `ai_memory` items, include `memoryType` as a tag so `CategoryDetailDialog` filtering works:
-  ```
-  tags: [mem.memory_type, "ai"].filter(Boolean)
-  ```
-
-**File 3: `src/components/memory/CategoryDetailDialog.tsx`**
-- Update the filter to also match items by `memoryType` (not just tags):
-  ```
-  return tags.includes(category.id) || item.memoryType === category.id;
-  ```
-
-**File 4: `supabase/functions/refresh-memory-metadata/index.ts`**
-- Update the edge function to count diary entries by their category tag (first non-diary/voice/photo tag) mapped to the correct category ID
-- For `ai_memory`, map `memory_type` values ("fact", "preference", "goal") to a default category like "personal-identity" since they don't use category IDs
-
-These changes ensure that:
-- Saving a memory with a selected category correctly stores that category tag
-- All memories (both diary and ai_memory) appear in the correct category cards
-- Category progress counts reflect actual data
-
+### Test After Fix
+Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.

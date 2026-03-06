@@ -73,8 +73,14 @@ Deno.serve(async (req) => {
     const categoryProgress: Record<string, any> = {};
     const categoryMemories: Record<string, { count: number; totalConfidence: number }> = {};
 
+    // Map ai_memory memory_type values to category IDs
+    // memory_type stores values like "fact", "preference", "goal" which aren't category IDs
+    // so we map them to a default category unless the memory_type IS a valid category ID
+    const validCategoryIds = Object.keys(CATEGORY_TARGETS);
+    
     aiMemories?.forEach((memory) => {
-      const category = memory.memory_type || 'personal-identity';
+      const memType = memory.memory_type || 'personal-identity';
+      const category = validCategoryIds.includes(memType) ? memType : 'personal-identity';
       if (!categoryMemories[category]) {
         categoryMemories[category] = { count: 0, totalConfidence: 0 };
       }
