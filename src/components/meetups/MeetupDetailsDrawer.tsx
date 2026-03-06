@@ -62,8 +62,6 @@ import {
   Share2,
   MessageCircle,
   Navigation,
-  ChevronLeft,
-  ChevronRight,
   Bookmark,
   Check,
   Loader2,
@@ -850,45 +848,6 @@ export function MeetupDetailsDrawer({
             
             {/* Mobile Close Button moved outside ScrollArea for sticky behavior */}
             
-            {/* Floating Navigation Arrows - Desktop only */}
-            {!isMobile && (
-              <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-10">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className={cn(
-                    "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
-                    "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
-                    "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                    "opacity-75 hover:opacity-100 focus-visible:opacity-100",
-                    !hasPrev && "pointer-events-none"
-                  )}
-                  onClick={onNavigatePrev}
-                  disabled={!hasPrev}
-                  aria-label="Previous meetup (← key)"
-                  title="Previous meetup (← key)"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className={cn(
-                    "rounded-full bg-background/70 dark:bg-background/80 backdrop-blur-md shadow-md pointer-events-auto",
-                    "border-border/40 hover:bg-background/90 hover:scale-110 active:scale-95",
-                    "transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                    "opacity-75 hover:opacity-100 focus-visible:opacity-100",
-                    !hasNext && "pointer-events-none"
-                  )}
-                  onClick={onNavigateNext}
-                  disabled={!hasNext}
-                  aria-label="Next meetup (→ key)"
-                  title="Next meetup (→ key)"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-              </div>
-            )}
 
             {/* Title Overlay */}
             <div 
