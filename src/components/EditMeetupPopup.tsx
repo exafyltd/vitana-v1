@@ -339,15 +339,25 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       const result = await updateEvent(event.id, eventData);
       
       if (result.success) {
-        // Sync ticket type prices/currency when event price changes
-        if (formData.isPaid) {
-          await supabase.from('event_ticket_types')
-            .update({ 
-              price: parseFloat(formData.price) || 0,
-              currency: (formData.displayCurrency || 'USD').toUpperCase()
-            })
+        // Always sync ticket type prices/currency for paid events
+        const price = parseFloat(formData.price) || 0;
+        const currency = (formData.displayCurrency || 'USD').toUpperCase();
+        
+        if (price > 0) {
+          const { error: ticketSyncError } = await supabase
+            .from('event_ticket_types')
+            .update({ price, currency })
             .eq('event_id', event.id)
             .eq('is_active', true);
+
+          if (ticketSyncError) {
+            console.error('Ticket price sync failed:', ticketSyncError);
+            toast({
+              title: "Warning",
+              description: "Event updated but ticket price sync failed. Please re-edit to retry.",
+              variant: "destructive",
+            });
+          }
         }
 
         toast({
