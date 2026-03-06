@@ -23,7 +23,8 @@ import { useCommunityEvents } from '@/hooks/useCommunityEvents';
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Plus, Calendar as CalendarIcon, Brain, Users, Edit, Megaphone, Plane } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, Brain, Users, Megaphone, Plane } from 'lucide-react';
+import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -91,7 +92,7 @@ const generateImageUrl = (title: string, description?: string): string => {
   return images[Math.abs(hash) % images.length];
 };
 
-const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void) => {
+const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void) => {
   // Construct author object with proper fallback chain
   const authorName = event.creator_display_name || event.author?.name || 'Community Host';
   const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
@@ -143,19 +144,16 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     onBuyTicket: (hasTickets || isPaidEvent) ? () => onClick?.(event) : undefined,
     onClick: onClick ? () => onClick(event) : undefined,
     'data-event-id': event.id,
-    utilityTopRight: canEdit && onEdit ? (
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8"
-        onClick={(e) => {
-          e.stopPropagation();
-          onEdit();
-        }}
-      >
-        <Edit className="h-4 w-4" />
-      </Button>
-    ) : undefined,
+    utilityTopRight: (
+      <EventKebabMenu
+        event={event}
+        currentUserId={currentUserId}
+        onEdit={onEdit ? () => onEdit() : undefined}
+        onDelete={onDeleteEvent}
+        onShare={onShareEvent}
+        className="text-white hover:bg-white/20"
+      />
+    ),
     actionButton: (
       <SocialShareButton
         type="event"
@@ -202,7 +200,9 @@ const renderEventGrid = (
       label: string;
       onClick: () => void;
     };
-  }
+  },
+  onDeleteEvent?: (eventId: string) => void,
+  onShareEvent?: (event: any) => void,
 ) => {
   if (events.length === 0) {
     const defaultConfig: {
@@ -257,9 +257,7 @@ const renderEventGrid = (
     const rowEvents = events.slice(i, i + 3);
     const isEvenRow = Math.floor(i / 3) % 2 === 0;
     
-    const canEdit0 = !!currentUserId && (rowEvents[0].created_by === currentUserId || rowEvents[0].is_co_creator === true) && new Date(rowEvents[0].start_time) > new Date();
-    const canEdit1 = rowEvents[1] && !!currentUserId && (rowEvents[1].created_by === currentUserId || rowEvents[1].is_co_creator === true) && new Date(rowEvents[1].start_time) > new Date();
-    const canEdit2 = rowEvents[2] && !!currentUserId && (rowEvents[2].created_by === currentUserId || rowEvents[2].is_co_creator === true) && new Date(rowEvents[2].start_time) > new Date();
+    const mkProps = (ev: any) => transformEventToNewsCard(ev, onClick, false, () => onEdit?.(ev), currentUserId, onDeleteEvent, onShareEvent);
 
     rows.push(
       <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
@@ -268,7 +266,7 @@ const renderEventGrid = (
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
+                {...mkProps(rowEvents[0])}
                 className={cn(
                   "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -279,7 +277,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
+                  {...mkProps(rowEvents[1])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -291,7 +289,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
+                  {...mkProps(rowEvents[2])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -306,7 +304,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0], onClick, canEdit0, () => onEdit?.(rowEvents[0]))}
+                  {...mkProps(rowEvents[0])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -318,7 +316,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], onClick, canEdit1, () => onEdit?.(rowEvents[1]))}
+                  {...mkProps(rowEvents[1])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -330,7 +328,7 @@ const renderEventGrid = (
               <div className="col-span-6">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], onClick, canEdit2, () => onEdit?.(rowEvents[2]))}
+                  {...mkProps(rowEvents[2])}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -547,6 +545,15 @@ const EventsAndMeetups = () => {
   const handleShareEvent = (event: any) => {
     setEventToShare(event);
     setShareDialogOpen(true);
+  };
+
+  // Handle delete event - remove from list and refresh
+  const handleDeleteEvent = (eventId: string) => {
+    fetchEvents();
+    // Close the drawer if the deleted event was selected
+    if (selectedEventId === eventId) {
+      handleDrawerClose();
+    }
   };
 
   // Handle event creation - show the newly created event
@@ -818,13 +825,15 @@ const EventsAndMeetups = () => {
                             label: translate('events.emptyStates.viewUpcoming'),
                             onClick: () => setActiveTab('upcoming')
                           }
-                        }
+                        },
+                        handleDeleteEvent,
+                        handleShareEvent,
                       )
                     ) : (
                       <>
                         {chunkEvents(filteredTodayEvents).map((chunk, chunkIndex) => (
                           <div key={`today-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
                             {chunkIndex < chunkEvents(filteredTodayEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="encouragement" />
@@ -884,13 +893,15 @@ const EventsAndMeetups = () => {
                             label: "Create Event",
                             onClick: () => setCreateSelectionOpen(true)
                           }
-                        }
+                        },
+                        handleDeleteEvent,
+                        handleShareEvent,
                       )
                     ) : (
                       <>
                         {chunkEvents(filteredUpcomingEvents).map((chunk, chunkIndex) => (
                           <div key={`upcoming-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
                             {chunkIndex < chunkEvents(filteredUpcomingEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="achievement" />
@@ -954,13 +965,15 @@ const EventsAndMeetups = () => {
                           icon: <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />,
                           title: "No Recommended Events",
                           description: "Check back soon for curated events.",
-                        }
+                        },
+                        handleDeleteEvent,
+                        handleShareEvent,
                       )
                     ) : (
                       <>
                         {chunkEvents(maxinaEvents).map((chunk, chunkIndex) => (
                           <div key={`recommended-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
                             {chunkIndex < chunkEvents(maxinaEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="encouragement" />
@@ -1041,6 +1054,8 @@ const EventsAndMeetups = () => {
           isMobile={isMobile}
           onPromoteEvent={handlePromoteEvent}
           onShareEvent={handleShareEvent}
+          onEditEvent={handleEditEvent}
+          onDeleteEvent={handleDeleteEvent}
         />
       )}
 

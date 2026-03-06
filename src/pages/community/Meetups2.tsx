@@ -32,11 +32,11 @@ import {
   Heart,
   Activity,
   BookOpen,
-  Edit,
   UserPlus,
   UserMinus,
   Share2
 } from 'lucide-react';
+import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -228,7 +228,7 @@ const sanitizeUrl = (url?: string) => {
 };
 
 // Transform event data to NewsCard format
-const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
+const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void, onDelete?: (eventId: string) => void, onShare?: (event: any) => void) => {
   const rawImage = event.image_url || event.imageUrl;
   console.log('[MEETUP-IMG] Transform event:', {
     eventId: event.id,
@@ -285,28 +285,17 @@ const transformEventToNewsCard = (event: any, currentUserId?: string, onEdit?: (
         }
       : { eventId: String(event.id) }
     ),
-    // Top-right utility edit button (creators only)
-    utilityTopRight: canEdit && onEdit ? (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-8 w-8 p-0 text-white hover:bg-white/20"
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit(event);
-              }}
-              aria-label="Edit meetup"
-            >
-              <Edit className="w-4 h-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent sideOffset={6}>Edit meetup</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    ) : undefined,
+    // Top-right utility kebab menu
+    utilityTopRight: (
+      <EventKebabMenu
+        event={event}
+        currentUserId={currentUserId}
+        onEdit={onEdit ? () => onEdit(event) : undefined}
+        onDelete={onDelete}
+        onShare={onShare}
+        className="text-white hover:bg-white/20"
+      />
+    ),
     // Bottom row actions: only Share now
     actionButton: (
       <div className="flex items-center gap-2">
@@ -357,7 +346,7 @@ const formatEventTime = (dateString: string) => {
   return `${day} · ${time}`;
 };
 
-const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void) => {
+const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event: any) => void, onClick?: (event: any) => void, onDelete?: (eventId: string) => void, onShare?: (event: any) => void) => {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
@@ -383,7 +372,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick)}
+                {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick, onDelete, onShare)}
                 className={cn(
                   "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -394,7 +383,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -406,7 +395,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -422,7 +411,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[0], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -434,7 +423,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick)}
+                  {...transformEventToNewsCard(rowEvents[1], currentUserId, onEdit, onClick, onDelete, onShare)}
                   className={cn(
                     "h-full min-h-[280px] transition-all duration-200 cursor-pointer",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -446,7 +435,7 @@ const renderEventGrid = (events: any[], currentUserId?: string, onEdit?: (event:
               <div className="col-span-6">
               <NewsCard
                 key={`${i}-2`}
-                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick)}
+                {...transformEventToNewsCard(rowEvents[2], currentUserId, onEdit, onClick, onDelete, onShare)}
                 className={cn(
                   "h-full min-h-[320px] md:min-h-[360px] transition-all duration-200 cursor-pointer",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -562,6 +551,22 @@ const {
     setEditMeetupOpen(true);
   };
 
+  const handleDeleteEvent = (eventId: string) => {
+    if (selectedMeetupId === eventId) {
+      handleDrawerClose();
+    }
+  };
+
+  const handleShareEvent = (event: any) => {
+    // Use native share or copy link
+    const url = `${window.location.origin}/community/meetups?meetup=${encodeURIComponent(event.id)}`;
+    if (navigator.share) {
+      navigator.share({ title: event.title, url });
+    } else {
+      navigator.clipboard.writeText(url);
+    }
+  };
+
   const handleCardClick = (event: any) => {
     const eventId = event.id;
     // Toggle selection if clicking the same card
@@ -644,10 +649,10 @@ const {
               <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
-              {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick)}
+              {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick, handleDeleteEvent, handleShareEvent)}
             </SplitBarContent>
             <SplitBarContent value="upcoming" className="mt-6">
-              {renderEventGrid(upcomingList, currentUserId, handleEditEvent, handleCardClick)}
+              {renderEventGrid(upcomingList, currentUserId, handleEditEvent, handleCardClick, handleDeleteEvent, handleShareEvent)}
             </SplitBarContent>
           </SplitBar>
         )}
@@ -686,6 +691,9 @@ const {
           hasPrev={hasPrev}
           hasNext={hasNext}
           isMobile={isMobile}
+          onEditEvent={handleEditEvent}
+          onDeleteEvent={handleDeleteEvent}
+          onShareEvent={handleShareEvent}
         />
       )}
     </AppLayout>

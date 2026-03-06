@@ -91,6 +91,7 @@ import { format, formatDistanceToNow, differenceInHours } from "date-fns";
 import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
+import { EventKebabMenu } from "@/components/events/EventKebabMenu";
 
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
@@ -168,6 +169,8 @@ interface MeetupDetailsDrawerProps {
   isMobile?: boolean;
   onPromoteEvent?: (event: any) => void;
   onShareEvent?: (event: any) => void;
+  onEditEvent?: (event: any) => void;
+  onDeleteEvent?: (eventId: string) => void;
 }
 
 export function MeetupDetailsDrawer({
@@ -181,6 +184,8 @@ export function MeetupDetailsDrawer({
   isMobile = false,
   onPromoteEvent,
   onShareEvent,
+  onEditEvent,
+  onDeleteEvent,
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
@@ -770,16 +775,43 @@ export function MeetupDetailsDrawer({
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
       >
       {isMobile && (
-        <Button
-          variant="outline"
-          size="icon"
-          className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
-          onClick={() => onOpenChange(false)}
-          aria-label="Close event details"
-          style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
-        >
-          <X className="h-5 w-5" />
-        </Button>
+        <>
+          <div
+            className="fixed top-4 left-4 z-[60]"
+            style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
+          >
+            <EventKebabMenu
+              event={event}
+              currentUserId={user?.id}
+              onEdit={onEditEvent ? (ev) => { onOpenChange(false); onEditEvent(ev); } : undefined}
+              onDelete={onDeleteEvent ? (id) => { onOpenChange(false); onDeleteEvent(id); } : undefined}
+              onShare={onShareEvent}
+              className="text-white bg-background/80 backdrop-blur-md rounded-full shadow-md border border-border/40 h-10 w-10"
+            />
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="fixed top-4 right-4 z-[60] rounded-full bg-background/80 backdrop-blur-md shadow-md border-border/40 hover:bg-background/90 h-10 w-10"
+            onClick={() => onOpenChange(false)}
+            aria-label="Close event details"
+            style={{ top: 'calc(env(safe-area-inset-top) + 4px)' }}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </>
+      )}
+      {!isMobile && (
+        <div className="absolute top-4 right-14 z-[60]">
+          <EventKebabMenu
+            event={event}
+            currentUserId={user?.id}
+            onEdit={onEditEvent ? (ev) => { onOpenChange(false); onEditEvent(ev); } : undefined}
+            onDelete={onDeleteEvent ? (id) => { onOpenChange(false); onDeleteEvent(id); } : undefined}
+            onShare={onShareEvent}
+            className="text-white hover:bg-white/20"
+          />
+        </div>
       )}
       <ScrollArea className={cn("flex-1", isMobile ? "pb-[120px]" : "pb-20")}>
         <div 
