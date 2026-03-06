@@ -1,51 +1,41 @@
-## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
 
-### Status: Requires Manual Action (Outside Lovable)
 
-### Diagnosis
-- ✅ `og-event` edge function — working, returns correct OG HTML
-- ✅ `api-event-by-slug` edge function — working, returns correct JSON
-- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
+## Problem: Ticket Price Not Syncing on Edit
 
-### Fix: Deploy/Update Cloudflare Worker
+### What's Happening
 
-In **Cloudflare Dashboard → Workers & Routes**:
+The database confirms the bug. Three "Maxina Experience by Janina Restaurant" events have `metadata.price = 149` and `metadata.display_currency = EUR` (shown on the card), but their `event_ticket_types` rows still have the old prices:
 
-1. **Create or update** worker `vitanaland-og-proxy` with this code:
+| Event ID | Card Price | Ticket Price | Ticket Currency |
+|----------|-----------|-------------|----------------|
+| 1d695c0b | €149 | $99 | USD |
+| 1d77334c | €149 | $10 | USD |
+| 92606649 | €149 | $99 | USD |
 
-```javascript
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    const slug = url.pathname.replace('/e/', '');
-    const ua = request.headers.get('user-agent') || '';
-    
-    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
-      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
-    const isCrawler = crawlers.some(c => ua.includes(c));
-    
-    if (isCrawler) {
-      const ogResp = await fetch(
-        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
-        { headers: { 'User-Agent': ua } }
-      );
-      const html = await ogResp.text();
-      return new Response(html, {
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      });
-    }
-    
-    // Human → redirect to SPA
-    return Response.redirect(
-      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
-    );
-  }
-};
+The edit popup (lines 343-351) does have ticket sync code, but it runs **after** the event update and fails silently -- the `await supabase.from('event_ticket_types').update(...)` result is never checked for errors. The likely cause: the RLS policy uses `auth.uid()` which requires an active session, and if the session token has a slight issue or the update simply errors, it's swallowed.
+
+### Plan
+
+**Fix 1: Make ticket sync reliable in `EditMeetupPopup.tsx`**
+- Move the ticket sync inside the success block but **check its result** and log/toast on failure
+- Also sync for **all** paid events (not just when `formData.isPaid` -- the event was already paid, so even if the toggle didn't change, the price/currency should sync)
+
+**Fix 2: Fix the 3 out-of-sync events now (SQL migration)**
+- Run a one-time migration to align the ticket prices for these 3 events:
+```sql
+UPDATE event_ticket_types SET price = 149, currency = 'EUR'
+WHERE event_id IN (
+  '1d695c0b-45e4-4f2a-b83e-ed70c71b003b',
+  '1d77334c-7a9f-4911-98fa-6db837c42c21',
+  '92606649-a22c-43a5-92c6-53974f8a514f'
+);
 ```
 
-2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
+**Fix 3: Add a broader safety net**
+- After the metadata update in `handleSubmit`, add error handling around the ticket sync so failures are visible to the user instead of silently ignored.
 
-3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
+This ensures:
+- The 3 broken events are immediately fixed
+- Future edits reliably sync ticket prices
+- Any sync failures are surfaced to the user
 
-### Test After Fix
-Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
