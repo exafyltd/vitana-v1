@@ -257,9 +257,7 @@ const renderEventGrid = (
     const rowEvents = events.slice(i, i + 3);
     const isEvenRow = Math.floor(i / 3) % 2 === 0;
     
-    const canEdit0 = !!currentUserId && (rowEvents[0].created_by === currentUserId || rowEvents[0].is_co_creator === true) && new Date(rowEvents[0].start_time) > new Date();
-    const canEdit1 = rowEvents[1] && !!currentUserId && (rowEvents[1].created_by === currentUserId || rowEvents[1].is_co_creator === true) && new Date(rowEvents[1].start_time) > new Date();
-    const canEdit2 = rowEvents[2] && !!currentUserId && (rowEvents[2].created_by === currentUserId || rowEvents[2].is_co_creator === true) && new Date(rowEvents[2].start_time) > new Date();
+    const mkProps = (ev: any) => transformEventToNewsCard(ev, onClick, false, () => onEdit?.(ev), currentUserId, onDeleteEvent, onShareEvent);
 
     rows.push(
       <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
