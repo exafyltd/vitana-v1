@@ -800,14 +800,14 @@ export function MeetupDetailsDrawer({
         </>
       )}
       {!isMobile && (
-        <div className="absolute top-4 right-14 z-[60]">
+        <div className="absolute top-4 right-4 z-[60]">
           <EventKebabMenu
             event={event}
             currentUserId={user?.id}
             onEdit={onEditEvent ? (ev) => { onOpenChange(false); onEditEvent(ev); } : undefined}
             onDelete={onDeleteEvent ? (id) => { onOpenChange(false); onDeleteEvent(id); } : undefined}
             onShare={onShareEvent}
-            className="text-white hover:bg-white/20"
+            className="text-white bg-black/40 hover:bg-black/60 rounded-full h-9 w-9"
           />
         </div>
       )}
