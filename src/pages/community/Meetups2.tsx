@@ -551,6 +551,22 @@ const {
     setEditMeetupOpen(true);
   };
 
+  const handleDeleteEvent = (eventId: string) => {
+    if (selectedMeetupId === eventId) {
+      handleDrawerClose();
+    }
+  };
+
+  const handleShareEvent = (event: any) => {
+    // Use native share or copy link
+    const url = `${window.location.origin}/community/meetups?meetup=${encodeURIComponent(event.id)}`;
+    if (navigator.share) {
+      navigator.share({ title: event.title, url });
+    } else {
+      navigator.clipboard.writeText(url);
+    }
+  };
+
   const handleCardClick = (event: any) => {
     const eventId = event.id;
     // Toggle selection if clicking the same card
