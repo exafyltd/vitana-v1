@@ -37,7 +37,7 @@ export const EventKebabMenu: React.FC<EventKebabMenuProps> = ({
   const isCreator = !!currentUserId && event.created_by === currentUserId;
   const isCoCreator = !!currentUserId && event.is_co_creator === true;
   const canEdit = (isCreator || isCoCreator) && new Date(event.start_time) > new Date();
-  const canDelete = isCreator;
+  const canDelete = isCreator || isCoCreator;
 
   const handleDelete = async () => {
     setIsDeleting(true);

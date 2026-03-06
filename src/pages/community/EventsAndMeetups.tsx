@@ -782,6 +782,8 @@ const EventsAndMeetups = () => {
                     onCardClick={handleCardClick}
                     currentUserId={user?.id}
                     onEdit={handleEditEvent}
+                    onDelete={handleDeleteEvent}
+                    onShare={handleShareEvent}
                     initialEventId={selectedEventId || undefined}
                     onRefresh={fetchEvents}
                     onSlideChange={(eventId) => {
@@ -859,6 +861,8 @@ const EventsAndMeetups = () => {
                     onCardClick={handleCardClick}
                     currentUserId={user?.id}
                     onEdit={handleEditEvent}
+                    onDelete={handleDeleteEvent}
+                    onShare={handleShareEvent}
                     initialEventId={selectedEventId || undefined}
                     onRefresh={fetchEvents}
                     onSlideChange={(eventId) => {
@@ -938,6 +942,8 @@ const EventsAndMeetups = () => {
                     onCardClick={handleCardClick}
                     currentUserId={user?.id}
                     onEdit={handleEditEvent}
+                    onDelete={handleDeleteEvent}
+                    onShare={handleShareEvent}
                     initialEventId={selectedEventId || undefined}
                     onRefresh={fetchEvents}
                     onSlideChange={(eventId) => {
