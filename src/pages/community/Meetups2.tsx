@@ -649,10 +649,10 @@ const {
               <SplitBarTrigger value="upcoming">📅 Upcoming</SplitBarTrigger>
             </SplitBarList>
             <SplitBarContent value="today" className="mt-6">
-              {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick)}
+              {renderEventGrid(todayList, currentUserId, handleEditEvent, handleCardClick, handleDeleteEvent, handleShareEvent)}
             </SplitBarContent>
             <SplitBarContent value="upcoming" className="mt-6">
-              {renderEventGrid(upcomingList, currentUserId, handleEditEvent, handleCardClick)}
+              {renderEventGrid(upcomingList, currentUserId, handleEditEvent, handleCardClick, handleDeleteEvent, handleShareEvent)}
             </SplitBarContent>
           </SplitBar>
         )}
@@ -691,6 +691,9 @@ const {
           hasPrev={hasPrev}
           hasNext={hasNext}
           isMobile={isMobile}
+          onEditEvent={handleEditEvent}
+          onDeleteEvent={handleDeleteEvent}
+          onShareEvent={handleShareEvent}
         />
       )}
     </AppLayout>
