@@ -200,7 +200,9 @@ const renderEventGrid = (
       label: string;
       onClick: () => void;
     };
-  }
+  },
+  onDeleteEvent?: (eventId: string) => void,
+  onShareEvent?: (event: any) => void,
 ) => {
   if (events.length === 0) {
     const defaultConfig: {
