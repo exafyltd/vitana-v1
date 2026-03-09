@@ -743,8 +743,8 @@
     },
     "profilePopup": {
       "title": "Profil Erweitern ✨",
-      "polishBio": "Meine Bio optimieren",
-      "polishBioDesc": "Autopilot kann den Über-Bereich inspirierender gestalten",
+      "polishBio": "Optimieren Sie ihr Profil",
+      "polishBioDesc": "Der Autopilot kann den Abschnitt „Über mich" umschreiben, damit er inspirierender wird.",
       "refreshArchetype": "Profil anpassen",
       "refreshArchetypeDesc": "Archetyp-Aktualisierung basierend auf Aktivität vorschlagen",
       "highlightShowcase": "Meine Highlights",
