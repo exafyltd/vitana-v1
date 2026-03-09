@@ -16,6 +16,7 @@ export const GroupImageCard = ({
   showMatchScore = true,
   onClick,
 }: GroupImageCardProps) => {
+  const { translate } = useTranslation();
   const isCompact = variant === "compact";
   
   const handleClick = () => {
