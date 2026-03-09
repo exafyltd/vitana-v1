@@ -2,11 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function useGroupMembership(groupId?: string) {
   const { user, loading: authLoading } = useAuth();
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { translate } = useTranslation();
   const userId = user?.id;
 
   const membershipQuery = useQuery({
@@ -64,11 +66,18 @@ export function useGroupMembership(groupId?: string) {
     },
     onSuccess: () => {
       invalidateAll();
-      toast({ title: "Joined! 🎉", description: "You're now a member of this group." });
+      toast({
+        title: translate('groupMembership.joined', 'Joined! 🎉'),
+        description: translate('groupMembership.joinedDesc', "You're now a member of this group."),
+      });
     },
     onError: (err: any) => {
       console.error('[joinGroup] error:', err);
-      toast({ title: "Error", description: "Could not join group. Please try again.", variant: "destructive" });
+      toast({
+        title: translate('groupFeed.error', 'Error'),
+        description: translate('groupMembership.errorJoin', 'Could not join group. Please try again.'),
+        variant: "destructive",
+      });
     },
   });
 
@@ -84,11 +93,18 @@ export function useGroupMembership(groupId?: string) {
     },
     onSuccess: () => {
       invalidateAll();
-      toast({ title: "Left group", description: "You've left this group." });
+      toast({
+        title: translate('groupMembership.left', 'Left group'),
+        description: translate('groupMembership.leftDesc', "You've left this group."),
+      });
     },
     onError: (err: any) => {
       console.error('[leaveGroup] error:', err);
-      toast({ title: "Error", description: "Could not leave group. Please try again.", variant: "destructive" });
+      toast({
+        title: translate('groupFeed.error', 'Error'),
+        description: translate('groupMembership.errorLeave', 'Could not leave group. Please try again.'),
+        variant: "destructive",
+      });
     },
   });
 

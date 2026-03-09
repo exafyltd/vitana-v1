@@ -1,6 +1,7 @@
 import { UnifiedGroupCard } from "@/types/community";
 import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface GroupImageCardProps {
   group: UnifiedGroupCard;
@@ -15,6 +16,7 @@ export const GroupImageCard = ({
   showMatchScore = true,
   onClick,
 }: GroupImageCardProps) => {
+  const { translate } = useTranslation();
   const isCompact = variant === "compact";
   
   const handleClick = () => {
@@ -80,7 +82,7 @@ export const GroupImageCard = ({
         {/* Member Count */}
         <div className="flex items-center gap-1 text-[12px] text-white/90">
           <Users className="w-3.5 h-3.5" />
-          <span>{group.member_count.toLocaleString()} members</span>
+          <span>{group.member_count.toLocaleString()} {translate('groupDetail.members', 'Members')}</span>
         </div>
       </div>
 

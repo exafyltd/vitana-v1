@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MessageSquare, Trash2, Send } from "lucide-react";
 import { useGroupPosts } from "@/hooks/useGroupPosts";
 import { useAuth } from "@/context/AuthProvider";
+import { useTranslation } from "@/hooks/useTranslation";
 import { toast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +18,7 @@ interface GroupFeedProps {
 
 export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
   const { user } = useAuth();
+  const { translate } = useTranslation();
   const { posts, isLoading, createPost, deletePost } = useGroupPosts(groupId);
   const [newPostContent, setNewPostContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,21 +29,21 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
     try {
       await createPost.mutateAsync({ content: newPostContent.trim() });
       setNewPostContent("");
-      toast({ title: "Message sent" });
+      toast({ title: translate('groupFeed.messageSent', 'Message sent') });
     } catch (err: any) {
-      toast({ title: "Error", description: err.message || "Failed to send message", variant: "destructive" });
+      toast({ title: translate('groupFeed.error', 'Error'), description: err.message || translate('groupFeed.errorSend', 'Failed to send message'), variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async (messageId: string) => {
-    if (!confirm("Delete this message?")) return;
+    if (!confirm(translate('groupFeed.deleteConfirm', 'Delete this message?'))) return;
     try {
       await deletePost.mutateAsync(messageId);
-      toast({ title: "Message deleted" });
+      toast({ title: translate('groupFeed.messageDeleted', 'Message deleted') });
     } catch {
-      toast({ title: "Error", description: "Failed to delete message", variant: "destructive" });
+      toast({ title: translate('groupFeed.error', 'Error'), description: translate('groupFeed.errorDelete', 'Failed to delete message'), variant: "destructive" });
     }
   };
 
@@ -78,7 +80,7 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
         <Card>
           <CardContent className="pt-4">
             <Textarea
-              placeholder="Share something with the group..."
+              placeholder={translate('groupFeed.placeholder', 'Share something with the group...')}
               value={newPostContent}
               onChange={e => setNewPostContent(e.target.value)}
               className="min-h-[80px] resize-none border-0 bg-muted/50 focus-visible:ring-1"
@@ -90,7 +92,7 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
                 disabled={!newPostContent.trim() || isSubmitting}
               >
                 <Send className="h-4 w-4 mr-1" />
-                Post
+                {translate('groupFeed.post', 'Post')}
               </Button>
             </div>
           </CardContent>
@@ -102,9 +104,9 @@ export function GroupFeed({ groupId, isMember }: GroupFeedProps) {
         <Card>
           <CardContent className="pt-6 text-center py-12">
             <MessageSquare className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
-            <h3 className="font-medium mb-1">No messages yet</h3>
+            <h3 className="font-medium mb-1">{translate('groupFeed.noMessages', 'No messages yet')}</h3>
             <p className="text-sm text-muted-foreground">
-              {isMember ? "Be the first to post in this group!" : "Join the group to start posting."}
+              {isMember ? translate('groupFeed.beFirst', 'Be the first to post in this group!') : translate('groupFeed.joinToPost', 'Join the group to start posting.')}
             </p>
           </CardContent>
         </Card>
