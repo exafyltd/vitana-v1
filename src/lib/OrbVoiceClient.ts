@@ -172,7 +172,9 @@ export class OrbVoiceClient {
   }
 
   /**
-   * Request AI to greet the user when session starts
+   * Request AI to greet the user when session starts.
+   * If initialContext is provided, inject it as the first message so
+   * the model is aware of the user's memory garden / diary data.
    */
   private async requestWelcome(): Promise<void> {
     if (!this.sessionId) return;
@@ -180,6 +182,20 @@ export class OrbVoiceClient {
     console.log('[OrbVoiceClient] Requesting welcome greeting...');
     
     try {
+      // Inject user context as a hidden system message before the greeting
+      if (this.config.initialContext) {
+        console.log('[OrbVoiceClient] Injecting user context (' + this.config.initialContext.length + ' chars)');
+        await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify({
+            session_id: this.sessionId,
+            type: 'text',
+            text: this.config.initialContext
+          })
+        });
+      }
+
       await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
         method: 'POST',
         headers: this.getAuthHeaders(),
