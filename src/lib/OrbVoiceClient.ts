@@ -25,6 +25,7 @@ export type OrbVoiceClientCallbacks = {
 export interface OrbVoiceClientConfig {
   lang: string;
   accessToken: string;
+  initialContext?: string;
 }
 
 // Session diagnostics for debugging "no speech detected"
