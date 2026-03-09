@@ -12,18 +12,12 @@ import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import VoiceDiaryRecorder from "@/components/memory/VoiceDiaryRecorder";
 import { PhotoDiaryUploader } from "@/components/diary/PhotoDiaryUploader";
 import { TextDiaryEditor } from "@/components/diary/TextDiaryEditor";
 import { DiaryEntryList } from "@/components/diary/DiaryEntryList";
-import { FeedbackRecorder } from "@/components/feedback/FeedbackRecorder";
 import { FeedbackReportList } from "@/components/feedback/FeedbackReportList";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { UnifiedCaptureCard, type CaptureMode } from "@/components/capture/UnifiedCaptureCard";
 
 type CategoryTab = "health" | "bugs";
 type PlusOption = "text" | "camera" | "photo";
@@ -35,8 +29,7 @@ const CATEGORIES: { id: CategoryTab; emoji: string; label: string }[] = [
 
 const PLUS_OPTIONS: { id: PlusOption; icon: typeof Type; label: string }[] = [
   { id: "text", icon: Type, label: "Text" },
-  { id: "camera", icon: Camera, label: "Camera" },
-  { id: "photo", icon: Image, label: "Photo" },
+  { id: "camera", icon: Camera, label: "Photo" },
 ];
 
 export default function MobileDailyDiary() {
@@ -44,12 +37,12 @@ export default function MobileDailyDiary() {
   const navigate = useNavigate();
   const { translate } = useTranslation();
   const [activeTab, setActiveTab] = useState<CategoryTab>("health");
-  const [plusOpen, setPlusOpen] = useState(false);
   const [activePlusOption, setActivePlusOption] = useState<PlusOption | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [feedbackRefreshKey, setFeedbackRefreshKey] = useState(0);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [bugSubMode, setBugSubMode] = useState<'bug_report' | 'ux_improvement'>('bug_report');
   const { pendingCount } = useAutopilot();
 
   useEffect(() => {
@@ -63,11 +56,6 @@ export default function MobileDailyDiary() {
   const handleEntryComplete = () => {
     setRefreshKey((k) => k + 1);
     setActivePlusOption(null);
-  };
-
-  const handlePlusSelect = (option: PlusOption) => {
-    setActivePlusOption(option);
-    setPlusOpen(false);
   };
 
   return (
@@ -119,15 +107,6 @@ export default function MobileDailyDiary() {
               onSearch={(query) => setSearchQuery(query)}
             />
             <UniversalCalendarButton />
-            <Button 
-              onClick={() => setPlusOpen(true)}
-              variant="ghost"
-              size="sm"
-              className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-            >
-              <Plus className="h-4 w-4" />
-              <span className="text-sm">{translate('buttons.add', 'Add')}</span>
-            </Button>
           </div>
         </UtilityActionButton>
 
@@ -158,45 +137,31 @@ export default function MobileDailyDiary() {
         <div className="flex-1 overflow-y-auto pb-[120px] space-y-4 px-1">
           {activeTab === "health" && (
             <>
-              {/* Prominent mic area */}
-              <Card className="border-border/50 shadow-sm">
-                <CardContent className="py-8 px-4">
-                  <div className="flex flex-col items-center justify-center relative">
-                    <div className="w-full max-w-[280px]">
-                      <VoiceDiaryRecorder onRecordingChange={() => {}} />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-3">Tap the mic to start recording</p>
-                    
-                    {/* Plus button - absolute right */}
-                    <Popover open={plusOpen} onOpenChange={setPlusOpen}>
-                      <PopoverTrigger asChild>
-                        <button
-                          className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
-                          aria-label="Add entry"
-                        >
-                          <Plus className="h-5 w-5" />
-                        </button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        side="bottom"
-                        align="end"
-                        className="w-40 p-1"
-                      >
-                        {PLUS_OPTIONS.map((opt) => (
-                          <button
-                            key={opt.id}
-                            onClick={() => handlePlusSelect(opt.id)}
-                            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors"
-                          >
-                            <opt.icon className="h-4 w-4 text-muted-foreground" />
-                            {opt.label}
-                          </button>
-                        ))}
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Unified voice-first capture card */}
+              <UnifiedCaptureCard
+                mode="health"
+                onRecordingChange={() => {}}
+                onSaveComplete={() => setRefreshKey(k => k + 1)}
+              />
+
+              {/* Phase 2: manual add flows remain below temporarily */}
+              {/* Compact action row for text/photo add */}
+              <div className="flex gap-2 px-1">
+                {PLUS_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => setActivePlusOption(activePlusOption === opt.id ? null : opt.id)}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                      activePlusOption === opt.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted/60 text-muted-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <opt.icon className="h-3.5 w-3.5" />
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
 
               {/* Active plus option inline */}
               {activePlusOption && (
@@ -231,13 +196,12 @@ export default function MobileDailyDiary() {
 
           {activeTab === "bugs" && (
             <>
-              <Card className="border-border/50 shadow-sm">
-                <CardContent className="py-8 px-4">
-                  <FeedbackRecorder
-                    onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)}
-                  />
-                </CardContent>
-              </Card>
+              {/* Unified voice-first capture card for bugs */}
+              <UnifiedCaptureCard
+                mode={bugSubMode}
+                onModeChange={setBugSubMode}
+                onSubmitted={() => setFeedbackRefreshKey((k) => k + 1)}
+              />
               <FeedbackReportList refreshKey={feedbackRefreshKey} />
             </>
           )}
