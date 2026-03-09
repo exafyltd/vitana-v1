@@ -1,24 +1,75 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
 
-### What was fixed
+# Fix: Translate Daily Diary & UnifiedCaptureCard
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+## Problem
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+The Daily Diary page and its UnifiedCaptureCard have ~40 hardcoded English strings. Only the utility action bar uses `translate()`. Everything else — page title, description, tab labels, mic prompts, toast messages, form labels, buttons, confirmation text — stays English regardless of language setting.
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+## Scope
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+Two files need i18n, plus translation keys added to both JSON files:
+
+### 1. `src/pages/MobileDailyDiary.tsx` — Hardcoded strings
+
+| String | Translation key |
+|--------|----------------|
+| `"📔 Daily Diary"` | `diary.title` |
+| `"Track your wellness journey..."` | `diary.description` |
+| `"Health Diary"` (tab) | `diary.healthTab` |
+| `"Bug Reports"` (tab) | `diary.bugTab` |
+| `"Text"` (plus option) | `diary.text` |
+| `"Photo"` (plus option) | `diary.photo` |
+| `"✍️ Text Entry"` | `diary.textEntry` |
+| `"📸 Photo Entry"` | `diary.photoEntry` |
+
+### 2. `src/components/capture/UnifiedCaptureCard.tsx` — Hardcoded strings
+
+| String | Translation key |
+|--------|----------------|
+| `"Not Supported"` | `capture.notSupported` |
+| `"Speech recognition is not supported..."` | `capture.notSupportedDesc` |
+| `"Recording"` badge | `capture.recording` |
+| `"Tap to start recording"` | `capture.tapToRecord` |
+| `"Tap the mic to describe the issue"` | `capture.tapToDescribe` |
+| `"Live Transcription"` | `capture.liveTranscription` |
+| `"Your Voice Entry"` | `capture.yourVoiceEntry` |
+| `"Your Feedback"` | `capture.yourFeedback` |
+| `"Start speaking..."` | `capture.startSpeaking` |
+| `"Edit or type directly..."` | `capture.editOrType` |
+| `"Interim text appears..."` | `capture.interimHint` |
+| `"Attach"` | `capture.attach` |
+| `"Bug Report"` | `capture.bugReport` |
+| `"UX Improvement"` | `capture.uxImprovement` |
+| `"Severity"` | `capture.severity` |
+| `"Affected Screen"` | `capture.affectedScreen` |
+| `"Select..."` | `capture.select` |
+| Low/Medium/High/Critical | `capture.low` / `capture.medium` / `capture.high` / `capture.critical` |
+| `"Save Entry"` | `capture.saveEntry` |
+| `"Sending..."` / `"Send to Exafy Team"` | `capture.sending` / `capture.sendToTeam` |
+| `"Report Sent!"` | `capture.reportSent` |
+| `"The Exafy team appreciates..."` | `capture.reportSentDesc` |
+| `"Send Another Report"` | `capture.sendAnother` |
+| `"Recording Started"` toast | `capture.recordingStarted` / `capture.recordingStartedDesc` |
+| `"Recording Stopped"` toast | `capture.recordingStopped` / `capture.recordingStoppedDesc` |
+| `"No Content"` / description | `capture.noContent` / `capture.noContentDesc` |
+| `"Entry Saved"` / description | `capture.entrySaved` / `capture.entrySavedDesc` |
+| `"Save Failed"` / description | `capture.saveFailed` / `capture.saveFailedDesc` |
+| `"Send Failed"` / description | `capture.sendFailed` / `capture.sendFailedDesc` |
+| `"Recognition Error"` | `capture.recognitionError` / `capture.recognitionErrorDesc` |
+
+### 3. `src/i18n/de.json` & `src/i18n/en.json`
+
+Add a `diary` block and a `capture` block with all keys above. German translations use formal style consistent with the app.
+
+### Changes
+
+| File | Action |
+|------|--------|
+| `src/i18n/en.json` | Add `diary.*` and `capture.*` keys |
+| `src/i18n/de.json` | Add `diary.*` and `capture.*` keys (German) |
+| `src/pages/MobileDailyDiary.tsx` | Replace all hardcoded strings with `translate()` calls |
+| `src/components/capture/UnifiedCaptureCard.tsx` | Add `useTranslation`, replace all hardcoded strings with `translate()` |
+
+No functional changes — pure i18n pass.
+
