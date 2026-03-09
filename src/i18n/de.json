@@ -2342,10 +2342,10 @@
   "eventDrawer": {
     "host": "Gastgeber",
     "follow": "Folgen",
-    "following": "Folge ich",
+    "following": "Ich folge",
     "followingLoading": "Folge…",
     "unfollowed": "Entfolgt",
-    "followingToast": "Folge ich!",
+    "followingToast": "Ich folge!",
     "communityHost": "Community-Gastgeber",
     "community": "Community",
     "meetup": "Meetup",
