@@ -1,24 +1,21 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
 
-### What was fixed
+# Fix: Language Switch Reverts After Selection
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+## Problem
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+`LanguageContext.tsx` uses `Date.now() - lastLanguageChangeAt < 2000` to prevent server preferences from overwriting a recent local language change. If the mutation takes longer than 2 seconds or a query refetch returns stale data after the guard expires, the effect reverts the language back to the server's old value.
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+## Fix
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+### `src/contexts/LanguageContext.tsx`
+
+Replace the 2-second time guard with a `pendingLanguageRef` (useRef):
+
+- `setSelectedLanguage()` sets `pendingLanguageRef.current = language` before firing the mutation
+- The sync-from-server effect (lines 72-83) skips reverting while `pendingLanguageRef.current !== null`
+- The effect clears the ref only when `preferences.stt_language === pendingLanguageRef.current` (server confirmed the change)
+- Remove `lastLanguageChangeAt` from state and context interface (no longer needed)
+
+One file changed, no other files affected.
+
