@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect, useRef } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
@@ -8,7 +8,6 @@ interface LanguageContextType {
   setSelectedLanguage: (language: string) => void;
   languageOptions: Array<{ label: string; value: string }>;
   isLoading: boolean;
-  lastLanguageChangeAt: number;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -42,16 +41,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const { preferences, updatePreferences, isLoading } = useUserPreferences();
   
-  // RULE 1: Immediate local state for instant UI effect
-  // Initialize from localStorage (persisted) or default to German
   const [selectedLanguage, setLocalLanguage] = useState<string>(getInitialLanguage);
-  const [lastLanguageChangeAt, setLastLanguageChangeAt] = useState<number>(0);
+  
+  // Tracks a pending language change until server confirms it
+  const pendingLanguageRef = useRef<string | null>(null);
   
   // Track if we've already synced from server to avoid overriding local changes
   const [hasInitializedFromServer, setHasInitializedFromServer] = useState(false);
 
   // Sync from server preferences ONLY on initial load
-  // After that, local changes take priority (they get saved to server anyway)
   useEffect(() => {
     if (!hasInitializedFromServer && preferences?.stt_language) {
       const localStored = getLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY);
@@ -71,19 +69,28 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   // Keep runtime language in sync when preferences are changed outside LanguageContext
   useEffect(() => {
-    if (!user) return; // No server prefs for unauthenticated users
+    if (!user) return;
     if (!hasInitializedFromServer || !preferences?.stt_language) return;
-    if (Date.now() - lastLanguageChangeAt < 2000) return; // Don't revert recent local changes
+
+    // If there's a pending change, only clear it once server confirms
+    if (pendingLanguageRef.current !== null) {
+      if (preferences.stt_language === pendingLanguageRef.current) {
+        console.log('[LANG] Server confirmed pending language:', pendingLanguageRef.current);
+        pendingLanguageRef.current = null;
+      } else {
+        // Server hasn't confirmed yet — don't revert
+        return;
+      }
+    }
 
     if (preferences.stt_language !== selectedLanguage) {
       console.log('[LANG] Syncing runtime language from preferences:', preferences.stt_language);
       setLocalLanguage(preferences.stt_language);
       setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, preferences.stt_language);
     }
-  }, [user, hasInitializedFromServer, preferences?.stt_language, selectedLanguage, lastLanguageChangeAt]);
+  }, [user, hasInitializedFromServer, preferences?.stt_language, selectedLanguage]);
 
   const setSelectedLanguage = (language: string) => {
-    // RULE 2: Validate against allowed set
     if (!ALLOWED_LANGUAGES.includes(language)) {
       console.error('[LANG] Invalid language:', language, '- fallback to de-DE');
       language = "de-DE";
@@ -91,29 +98,26 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     
     console.log('[LANG] Rule-based change:', language, new Date().toISOString());
     
-    // RULE 3: Immediate UI update (no waiting)
     setLocalLanguage(language);
-    setLastLanguageChangeAt(Date.now());
+    pendingLanguageRef.current = language;
     
-    // RULE 3.5: Persist to localStorage immediately (works before auth)
     setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, language);
     
-    // RULE 4: Only sync to server if authenticated
     if (!user) {
       console.log('[LANG] User not authenticated, skipping server sync');
+      pendingLanguageRef.current = null;
       return;
     }
     
-    // RULE 5: Auto-update TTS voice when language changes
+    // Auto-update TTS voice when language changes
     const currentVoice = preferences?.tts_voice;
     const shouldUpdateVoice = !currentVoice || !currentVoice.startsWith(language);
     
     if (shouldUpdateVoice) {
-      // Default Chirp 3 HD voices for each language
       const defaultVoices: Record<string, string> = {
-        'de-DE': 'de-DE-Chirp3-HD-Achernar',  // German first
+        'de-DE': 'de-DE-Chirp3-HD-Achernar',
         'en-US': 'en-US-Chirp3-HD-Leda',
-        'sr-RS': 'sr-RS-Standard-B',  // Serbian uses Google Speech
+        'sr-RS': 'sr-RS-Standard-B',
         'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
         'es-ES': 'es-ES-Chirp3-HD-Gacrux',
         'ru-RU': 'ru-RU-Chirp3-HD-Kore',
@@ -126,14 +130,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const newVoice = defaultVoices[language] || `${language}-Standard-A`;
       console.log('[LANG] Auto-updating TTS voice:', currentVoice, '->', newVoice);
       
-      // Update both STT language and TTS voice
       updatePreferences({ 
         stt_language: language,
         tts_voice: newVoice
       });
     } else {
       console.log('[LANG] Keeping existing voice:', currentVoice);
-      // Only update STT language
       updatePreferences({ stt_language: language });
     }
   };
@@ -145,7 +147,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         setSelectedLanguage, 
         languageOptions,
         isLoading,
-        lastLanguageChangeAt
       }}
     >
       {children}
