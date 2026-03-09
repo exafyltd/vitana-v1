@@ -1,51 +1,24 @@
-## WhatsApp OG Preview Fix — Cloudflare Worker Configuration
+## Memory System Fix — Implementation Complete
 
-### Status: Requires Manual Action (Outside Lovable)
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-### Diagnosis
-- ✅ `og-event` edge function — working, returns correct OG HTML
-- ✅ `api-event-by-slug` edge function — working, returns correct JSON
-- ❌ **Cloudflare Worker** at `vitanaland.com/e/*` is NOT intercepting crawler requests → SPA HTML served to WhatsApp bot → no OG tags → blank preview
+### What was fixed
 
-### Fix: Deploy/Update Cloudflare Worker
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-In **Cloudflare Dashboard → Workers & Routes**:
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-1. **Create or update** worker `vitanaland-og-proxy` with this code:
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-```javascript
-export default {
-  async fetch(request) {
-    const url = new URL(request.url);
-    const slug = url.pathname.replace('/e/', '');
-    const ua = request.headers.get('user-agent') || '';
-    
-    const crawlers = ['WhatsApp', 'facebookexternalhit', 'Facebot', 
-      'Twitterbot', 'LinkedInBot', 'Slackbot', 'TelegramBot', 'Discordbot'];
-    const isCrawler = crawlers.some(c => ua.includes(c));
-    
-    if (isCrawler) {
-      const ogResp = await fetch(
-        `https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/og-event?slug=${encodeURIComponent(slug)}`,
-        { headers: { 'User-Agent': ua } }
-      );
-      const html = await ogResp.text();
-      return new Response(html, {
-        headers: { 'Content-Type': 'text/html; charset=utf-8' }
-      });
-    }
-    
-    // Human → redirect to SPA
-    return Response.redirect(
-      `https://vitanaland.com/?share=event&slug=${encodeURIComponent(slug)}`, 302
-    );
-  }
-};
-```
-
-2. **Bind route** `vitanaland.com/e/*` → `vitanaland-og-proxy` worker
-
-3. **Verify** cover images are accessible JPEGs (not transparent PNGs) under 300KB
-
-### Test After Fix
-Share `https://vitanaland.com/e/selbsterfahrung` in WhatsApp — should show title, description, and image.
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
