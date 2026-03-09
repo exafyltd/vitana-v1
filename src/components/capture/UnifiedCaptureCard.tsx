@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "@/hooks/useTranslation";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDuration, mergeFinalTranscript } from "@/utils/sttHelpers";
@@ -90,23 +91,24 @@ export function UnifiedCaptureCard({
 
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  const { translate } = useTranslation();
   const queryClient = useQueryClient();
   const isAndroid = /Android/i.test(navigator.userAgent);
 
   // Progressive disclosure: show expanded UI when recording or transcript exists
   const hasContent = isRecording || transcript.length > 0;
 
-  // Notify parent of recording state (parity item #18)
+  // Notify parent of recording state
   useEffect(() => {
     onRecordingChange?.(isRecording);
   }, [isRecording, onRecordingChange]);
 
-  // ---- STT Logic (parity items #1-#12) ----
+  // ---- STT Logic ----
   const startRecording = () => {
     if (!ClientSTT.isSupported()) {
       toast({
-        title: "Not Supported",
-        description: "Speech recognition is not supported in this browser.",
+        title: translate('capture.notSupported'),
+        description: translate('capture.notSupportedDesc'),
         variant: "destructive",
       });
       return;
@@ -149,8 +151,8 @@ export function UnifiedCaptureCard({
           return;
         }
         toast({
-          title: "Recognition Error",
-          description: "Speech recognition encountered an error. Please try again.",
+          title: translate('capture.recognitionError'),
+          description: translate('capture.recognitionErrorDesc'),
           variant: "destructive",
         });
         stopRecording();
@@ -189,11 +191,10 @@ export function UnifiedCaptureCard({
       setRecordingDuration(prev => prev + 1);
     }, 1000);
 
-    // Parity item #14: health-only toast
     if (isHealthMode) {
       toast({
-        title: "Recording Started",
-        description: "Speak clearly - you'll see your words appear in real-time",
+        title: translate('capture.recordingStarted'),
+        description: translate('capture.recordingStartedDesc'),
       });
     }
   };
@@ -212,20 +213,19 @@ export function UnifiedCaptureCard({
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
-      // Parity item #15: health-only toast
       if (isHealthMode) {
         toast({
-          title: "Recording Stopped",
-          description: "Review and edit your transcription before saving.",
+          title: translate('capture.recordingStopped'),
+          description: translate('capture.recordingStoppedDesc'),
         });
       }
     }
   };
 
-  // ---- Health: Save diary entry (parity items #16-#17) ----
+  // ---- Health: Save diary entry ----
   const saveDiaryEntry = async () => {
     if (!transcript.trim()) {
-      toast({ title: "No Content", description: "Please record or enter some content before saving.", variant: "destructive" });
+      toast({ title: translate('capture.noContent'), description: translate('capture.noContentDesc'), variant: "destructive" });
       return;
     }
     try {
@@ -245,13 +245,13 @@ export function UnifiedCaptureCard({
       queryClient.invalidateQueries({ queryKey: ['diary-entries'] });
       onSaveComplete?.();
 
-      toast({ title: "Entry Saved", description: "Your diary entry has been added to your memory timeline." });
+      toast({ title: translate('capture.entrySaved'), description: translate('capture.entrySavedDesc') });
     } catch {
-      toast({ title: "Save Failed", description: "Could not save your diary entry. Please try again.", variant: "destructive" });
+      toast({ title: translate('capture.saveFailed'), description: translate('capture.saveFailedDesc'), variant: "destructive" });
     }
   };
 
-  // ---- Bug: File handling (parity items #23-#24) ----
+  // ---- Bug: File handling ----
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return;
     const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
@@ -272,10 +272,10 @@ export function UnifiedCaptureCard({
     setPreviewUrls(prev => prev.filter((_, i) => i !== index));
   };
 
-  // ---- Bug: Submit feedback (parity items #25-#29) ----
+  // ---- Bug: Submit feedback ----
   const handleSendFeedback = async () => {
     if (!transcript.trim()) {
-      toast({ title: "No Content", description: "Please record or type your feedback before sending.", variant: "destructive" });
+      toast({ title: translate('capture.noContent'), description: translate('capture.noContentBugDesc'), variant: "destructive" });
       return;
     }
     setIsSending(true);
@@ -322,13 +322,13 @@ export function UnifiedCaptureCard({
       onSubmitted?.();
     } catch (error) {
       console.error('[UnifiedCapture] Send error:', error);
-      toast({ title: "Send Failed", description: "Could not send your feedback. Please try again.", variant: "destructive" });
+      toast({ title: translate('capture.sendFailed'), description: translate('capture.sendFailedDesc'), variant: "destructive" });
     } finally {
       setIsSending(false);
     }
   };
 
-  // ---- Bug: Confirmation state (parity item #26-#27) ----
+  // ---- Bug: Confirmation state ----
   if (isBugMode && showConfirmation) {
     return (
       <div className="rounded-2xl border border-border/50 bg-card shadow-sm min-h-[340px] flex flex-col items-center justify-center p-6 space-y-4">
@@ -337,12 +337,12 @@ export function UnifiedCaptureCard({
             <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
-        <h3 className="text-lg font-semibold text-foreground">Report Sent!</h3>
+        <h3 className="text-lg font-semibold text-foreground">{translate('capture.reportSent')}</h3>
         <p className="text-sm text-muted-foreground text-center max-w-xs">
-          The Exafy team appreciates your support to make Vitanaland a better experience every day.
+          {translate('capture.reportSentDesc')}
         </p>
         <Button variant="outline" onClick={() => setShowConfirmation(false)}>
-          Send Another Report
+          {translate('capture.sendAnother')}
         </Button>
       </div>
     );
@@ -383,7 +383,7 @@ export function UnifiedCaptureCard({
         {/* Status text */}
         {isRecording ? (
           <div className="mt-4 flex items-center gap-3">
-            <Badge variant="destructive" className="animate-pulse">Recording</Badge>
+            <Badge variant="destructive" className="animate-pulse">{translate('capture.recording')}</Badge>
             <span className="text-xl font-mono font-bold text-destructive">
               {formatDuration(recordingDuration)}
             </span>
@@ -391,12 +391,12 @@ export function UnifiedCaptureCard({
         ) : (
           !hasContent && (
             <p className="mt-4 text-sm text-muted-foreground">
-              {isHealthMode ? "Tap to start recording" : "Tap the mic to describe the issue"}
+              {isHealthMode ? translate('capture.tapToRecord') : translate('capture.tapToDescribe')}
             </p>
           )
         )}
 
-        {/* Waveform visualization (parity item #13) */}
+        {/* Waveform visualization */}
         {isRecording && (
           <div className="flex items-end gap-1 h-10 mt-3">
             {Array.from({ length: 8 }).map((_, i) => (
@@ -416,11 +416,11 @@ export function UnifiedCaptureCard({
       {/* ---- Progressive: Transcript + contextual fields ---- */}
       {hasContent && (
         <div className="px-4 pb-4 space-y-3">
-          {/* Transcript area (parity items #11-#12) */}
+          {/* Transcript area */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">
-                {isRecording ? "Live Transcription" : isHealthMode ? "Your Voice Entry" : "Your Feedback"}
+                {isRecording ? translate('capture.liveTranscription') : isHealthMode ? translate('capture.yourVoiceEntry') : translate('capture.yourFeedback')}
               </span>
               {!isRecording && recordingDuration > 0 && (
                 <Badge variant="outline" className="text-[10px]">
@@ -431,18 +431,18 @@ export function UnifiedCaptureCard({
             <Textarea
               value={transcript + (interimText ? ` ${interimText}` : '')}
               onChange={(e) => !isRecording && setTranscript(e.target.value)}
-              placeholder={isRecording ? "Start speaking..." : "Edit or type directly..."}
+              placeholder={isRecording ? translate('capture.startSpeaking') : translate('capture.editOrType')}
               className="min-h-20 text-sm"
               disabled={isRecording}
             />
             {interimText && isRecording && (
               <p className="text-[10px] text-muted-foreground italic">
-                Interim text appears in gray until finalized...
+                {translate('capture.interimHint')}
               </p>
             )}
           </div>
 
-          {/* ---- Compact action row (no dominant FAB) ---- */}
+          {/* ---- Compact action row ---- */}
           {isBugMode && (
             <div className="flex items-center gap-2">
               <input
@@ -460,12 +460,12 @@ export function UnifiedCaptureCard({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Paperclip className="h-3.5 w-3.5" />
-                Attach
+                {translate('capture.attach')}
               </Button>
             </div>
           )}
 
-          {/* Bug attachment previews (parity item #23) */}
+          {/* Bug attachment previews */}
           {isBugMode && previewUrls.length > 0 && (
             <div className="flex gap-2 flex-wrap">
               {previewUrls.map((url, i) => (
@@ -482,10 +482,10 @@ export function UnifiedCaptureCard({
             </div>
           )}
 
-          {/* ---- Bug contextual fields (inside card, above save) ---- */}
+          {/* ---- Bug contextual fields ---- */}
           {isBugMode && (
             <div className="space-y-3">
-              {/* Report type toggle inside card (parity item #20) */}
+              {/* Report type toggle */}
               <div className="flex gap-2">
                 <Button
                   variant={mode === "bug_report" ? "default" : "outline"}
@@ -494,7 +494,7 @@ export function UnifiedCaptureCard({
                   onClick={() => onModeChange?.("bug_report")}
                 >
                   <Bug className="h-3.5 w-3.5" />
-                  Bug Report
+                  {translate('capture.bugReport')}
                 </Button>
                 <Button
                   variant={mode === "ux_improvement" ? "default" : "outline"}
@@ -503,31 +503,31 @@ export function UnifiedCaptureCard({
                   onClick={() => onModeChange?.("ux_improvement")}
                 >
                   <Lightbulb className="h-3.5 w-3.5" />
-                  UX Improvement
+                  {translate('capture.uxImprovement')}
                 </Button>
               </div>
 
-              {/* Severity + affected screen (parity items #21-#22) */}
+              {/* Severity + affected screen */}
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-medium text-muted-foreground">Severity</label>
+                  <label className="text-[10px] font-medium text-muted-foreground">{translate('capture.severity')}</label>
                   <Select value={severity} onValueChange={(v: any) => setSeverity(v)}>
                     <SelectTrigger className="h-8 text-xs">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="critical">Critical</SelectItem>
+                      <SelectItem value="low">{translate('capture.low')}</SelectItem>
+                      <SelectItem value="medium">{translate('capture.medium')}</SelectItem>
+                      <SelectItem value="high">{translate('capture.high')}</SelectItem>
+                      <SelectItem value="critical">{translate('capture.critical')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] font-medium text-muted-foreground">Affected Screen</label>
+                  <label className="text-[10px] font-medium text-muted-foreground">{translate('capture.affectedScreen')}</label>
                   <Select value={affectedScreen} onValueChange={setAffectedScreen}>
                     <SelectTrigger className="h-8 text-xs">
-                      <SelectValue placeholder="Select..." />
+                      <SelectValue placeholder={translate('capture.select')} />
                     </SelectTrigger>
                     <SelectContent>
                       {SCREEN_OPTIONS.map(s => (
@@ -545,7 +545,7 @@ export function UnifiedCaptureCard({
             isHealthMode ? (
               <Button onClick={saveDiaryEntry} className="w-full gap-2" size="sm">
                 <Save className="h-4 w-4" />
-                Save Entry
+                {translate('capture.saveEntry')}
               </Button>
             ) : (
               <Button
@@ -555,7 +555,7 @@ export function UnifiedCaptureCard({
                 size="sm"
               >
                 <Send className="h-4 w-4" />
-                {isSending ? "Sending..." : "Send to Exafy Team"}
+                {isSending ? translate('capture.sending') : translate('capture.sendToTeam')}
               </Button>
             )
           )}

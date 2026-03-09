@@ -22,16 +22,6 @@ import { UnifiedCaptureCard, type CaptureMode } from "@/components/capture/Unifi
 type CategoryTab = "health" | "bugs";
 type PlusOption = "text" | "camera" | "photo";
 
-const CATEGORIES: { id: CategoryTab; emoji: string; label: string }[] = [
-  { id: "health", emoji: "🩺", label: "Health Diary" },
-  { id: "bugs", emoji: "🐛", label: "Bug Reports" },
-];
-
-const PLUS_OPTIONS: { id: PlusOption; icon: typeof Type; label: string }[] = [
-  { id: "text", icon: Type, label: "Text" },
-  { id: "camera", icon: Camera, label: "Photo" },
-];
-
 export default function MobileDailyDiary() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -44,6 +34,16 @@ export default function MobileDailyDiary() {
   const [searchQuery, setSearchQuery] = useState("");
   const [bugSubMode, setBugSubMode] = useState<'bug_report' | 'ux_improvement'>('bug_report');
   const { pendingCount } = useAutopilot();
+
+  const CATEGORIES: { id: CategoryTab; emoji: string; labelKey: string }[] = [
+    { id: "health", emoji: "🩺", labelKey: "diary.healthTab" },
+    { id: "bugs", emoji: "🐛", labelKey: "diary.bugTab" },
+  ];
+
+  const PLUS_OPTIONS: { id: PlusOption; icon: typeof Type; labelKey: string }[] = [
+    { id: "text", icon: Type, labelKey: "diary.text" },
+    { id: "camera", icon: Camera, labelKey: "diary.photo" },
+  ];
 
   useEffect(() => {
     if (!isMobile) {
@@ -63,8 +63,8 @@ export default function MobileDailyDiary() {
       <div className="px-2 pt-2 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         {/* Standard header with subtitle */}
         <StandardHeader
-          title="📔 Daily Diary"
-          description="Track your wellness journey and help us improve"
+          title={translate('diary.title', '📔 Daily Diary')}
+          description={translate('diary.description', 'Track your wellness journey and help us improve')}
         />
 
         {/* Utility action bar */}
@@ -128,7 +128,7 @@ export default function MobileDailyDiary() {
               }`}
             >
               <span>{cat.emoji}</span>
-              <span>{cat.label}</span>
+              <span>{translate(cat.labelKey)}</span>
             </button>
           ))}
         </div>
@@ -144,7 +144,6 @@ export default function MobileDailyDiary() {
                 onSaveComplete={() => setRefreshKey(k => k + 1)}
               />
 
-              {/* Phase 2: manual add flows remain below temporarily */}
               {/* Compact action row for text/photo add */}
               <div className="flex gap-2 px-1">
                 {PLUS_OPTIONS.map((opt) => (
@@ -158,7 +157,7 @@ export default function MobileDailyDiary() {
                     }`}
                   >
                     <opt.icon className="h-3.5 w-3.5" />
-                    {opt.label}
+                    {translate(opt.labelKey)}
                   </button>
                 ))}
               </div>
@@ -169,8 +168,8 @@ export default function MobileDailyDiary() {
                   <CardContent className="p-3">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-muted-foreground">
-                        {activePlusOption === "text" && "✍️ Text Entry"}
-                        {(activePlusOption === "camera" || activePlusOption === "photo") && "📸 Photo Entry"}
+                        {activePlusOption === "text" && translate('diary.textEntry', '✍️ Text Entry')}
+                        {(activePlusOption === "camera" || activePlusOption === "photo") && translate('diary.photoEntry', '📸 Photo Entry')}
                       </span>
                       <button
                         onClick={() => setActivePlusOption(null)}
