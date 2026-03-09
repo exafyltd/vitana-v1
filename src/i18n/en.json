@@ -2584,5 +2584,44 @@
       "error": "Error",
       "errorDesc": "Failed to create event. Please try again."
     }
+  },
+  "groupDetail": {
+    "members": "Members",
+    "public": "Public",
+    "private": "Private",
+    "leaveGroup": "Leave Group",
+    "leaving": "Leaving...",
+    "joinGroup": "Join Group",
+    "joining": "Joining...",
+    "back": "Back",
+    "notFound": "Group not found",
+    "notFoundDesc": "This group may have been removed or doesn't exist.",
+    "browseGroups": "Browse Groups",
+    "support": "Support"
+  },
+  "groupFeed": {
+    "placeholder": "Share something with the group...",
+    "post": "Post",
+    "noMessages": "No messages yet",
+    "beFirst": "Be the first to post in this group!",
+    "joinToPost": "Join the group to start posting.",
+    "messageSent": "Message sent",
+    "deleteConfirm": "Delete this message?",
+    "messageDeleted": "Message deleted",
+    "error": "Error",
+    "errorSend": "Failed to send message",
+    "errorDelete": "Failed to delete message"
+  },
+  "groupMembership": {
+    "joined": "Joined! \ud83c\udf89",
+    "joinedDesc": "You're now a member of this group.",
+    "left": "Left group",
+    "leftDesc": "You've left this group.",
+    "errorJoin": "Could not join group. Please try again.",
+    "errorLeave": "Could not leave group. Please try again."
+  },
+  "follow": {
+    "noFollowers": "No followers yet",
+    "noFollowing": "Not following anyone yet"
   }
 }

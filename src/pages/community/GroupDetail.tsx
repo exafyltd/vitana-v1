@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useGroupMembership } from "@/hooks/useGroupMembership";
 import { generateGroupImage } from "@/lib/groupCardTransformers";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,7 @@ export default function GroupDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { translate } = useTranslation();
   const { isMember, joinGroup, leaveGroup, isJoining, isLeaving, checkingMembership } = useGroupMembership(id);
   const [membersDialogOpen, setMembersDialogOpen] = useState(false);
 
@@ -76,9 +78,9 @@ export default function GroupDetail() {
         {!isMobile && <SubNavigation items={communityNavigation} />}
         <div className="p-6 max-w-4xl mx-auto text-center py-20">
           <Users className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-          <h2 className="text-xl font-semibold mb-2">Group not found</h2>
-          <p className="text-muted-foreground mb-4">This group may have been removed or doesn't exist.</p>
-          <Button onClick={() => navigate('/comm/groups')}>Browse Groups</Button>
+          <h2 className="text-xl font-semibold mb-2">{translate('groupDetail.notFound', 'Group not found')}</h2>
+          <p className="text-muted-foreground mb-4">{translate('groupDetail.notFoundDesc', "This group may have been removed or doesn't exist.")}</p>
+          <Button onClick={() => navigate('/comm/groups')}>{translate('groupDetail.browseGroups', 'Browse Groups')}</Button>
         </div>
       </AppLayout>
     );
@@ -102,7 +104,7 @@ export default function GroupDetail() {
             className="absolute top-4 left-4 text-white hover:bg-white/20"
             onClick={() => navigate(-1)}
           >
-            <ArrowLeft className="h-4 w-4 mr-1" /> Back
+            <ArrowLeft className="h-4 w-4 mr-1" /> {translate('groupDetail.back', 'Back')}
           </Button>
         </div>
 
@@ -114,11 +116,11 @@ export default function GroupDetail() {
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Users className="h-4 w-4" />
-                  {group.member_count.toLocaleString()} members
+                  {group.member_count.toLocaleString()} {translate('groupDetail.members', 'Members')}
                 </span>
                 <Badge variant="outline" className="gap-1">
                   {group.is_public ? <Globe className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
-                  {group.is_public ? 'Public' : 'Private'}
+                  {group.is_public ? translate('groupDetail.public', 'Public') : translate('groupDetail.private', 'Private')}
                 </Badge>
                 {group.category && (
                   <Badge variant="secondary" className="capitalize">{group.category}</Badge>
@@ -129,11 +131,11 @@ export default function GroupDetail() {
             {!checkingMembership && (
               isMember ? (
                 <Button variant="outline" onClick={leaveGroup} disabled={isLeaving}>
-                  {isLeaving ? 'Leaving...' : 'Leave Group'}
+                  {isLeaving ? translate('groupDetail.leaving', 'Leaving...') : translate('groupDetail.leaveGroup', 'Leave Group')}
                 </Button>
               ) : (
                 <Button onClick={joinGroup} disabled={isJoining}>
-                  {isJoining ? 'Joining...' : 'Join Group'}
+                  {isJoining ? translate('groupDetail.joining', 'Joining...') : translate('groupDetail.joinGroup', 'Join Group')}
                 </Button>
               )
             )}
@@ -156,7 +158,7 @@ export default function GroupDetail() {
             <CardContent className="pt-6">
               <h3 className="text-base font-semibold mb-4 flex items-center gap-2">
                 <Users className="h-4 w-4" />
-                Members ({group.member_count})
+                {translate('groupDetail.members', 'Members')} ({group.member_count})
               </h3>
               <div className="flex flex-wrap gap-2">
                 {members.map((m) => (

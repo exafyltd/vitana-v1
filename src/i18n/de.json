@@ -2593,5 +2593,44 @@
       "error": "Fehler",
       "errorDesc": "Event konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
     }
+  },
+  "groupDetail": {
+    "members": "Mitglieder",
+    "public": "\u00d6ffentlich",
+    "private": "Privat",
+    "leaveGroup": "Gruppe verlassen",
+    "leaving": "Verlassen...",
+    "joinGroup": "Beitreten",
+    "joining": "Beitreten...",
+    "back": "Zur\u00fcck",
+    "notFound": "Gruppe nicht gefunden",
+    "notFoundDesc": "Diese Gruppe wurde m\u00f6glicherweise entfernt oder existiert nicht.",
+    "browseGroups": "Gruppen durchsuchen",
+    "support": "Hilfe"
+  },
+  "groupFeed": {
+    "placeholder": "Mitteilung in der Gruppe...",
+    "post": "Posten",
+    "noMessages": "Noch keine Nachrichten",
+    "beFirst": "Schreibe den ersten Beitrag!",
+    "joinToPost": "Tritt der Gruppe bei, um zu posten.",
+    "messageSent": "Nachricht gesendet",
+    "deleteConfirm": "Diese Nachricht l\u00f6schen?",
+    "messageDeleted": "Nachricht gel\u00f6scht",
+    "error": "Fehler",
+    "errorSend": "Nachricht konnte nicht gesendet werden",
+    "errorDelete": "Nachricht konnte nicht gel\u00f6scht werden"
+  },
+  "groupMembership": {
+    "joined": "Beigetreten! \ud83c\udf89",
+    "joinedDesc": "Du bist jetzt Mitglied dieser Gruppe.",
+    "left": "Gruppe verlassen",
+    "leftDesc": "Du hast diese Gruppe verlassen.",
+    "errorJoin": "Beitritt nicht m\u00f6glich. Bitte versuche es erneut.",
+    "errorLeave": "Verlassen nicht m\u00f6glich. Bitte versuche es erneut."
+  },
+  "follow": {
+    "noFollowers": "Noch keine Follower",
+    "noFollowing": "Folgt noch niemandem"
   }
 }
