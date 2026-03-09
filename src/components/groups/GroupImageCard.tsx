@@ -1,6 +1,7 @@
 import { UnifiedGroupCard } from "@/types/community";
 import { Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface GroupImageCardProps {
   group: UnifiedGroupCard;
