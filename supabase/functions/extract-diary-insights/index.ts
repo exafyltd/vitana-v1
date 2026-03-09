@@ -173,7 +173,7 @@ CRITICAL RULES:
         // Generate embedding for the new insight
         try {
           const { error: embeddingError } = await supabase.functions.invoke('generate-memory-embedding', {
-            body: { memoryId: insertedMemory.id }
+            body: { memoryId: insertedMemory.id, content: insertedMemory.content }
           });
           if (embeddingError) {
             console.error(`[diary-insights] Failed to generate embedding for ${insertedMemory.id}:`, embeddingError);
