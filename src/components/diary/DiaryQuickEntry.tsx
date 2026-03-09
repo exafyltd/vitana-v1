@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { X, Save } from 'lucide-react'
+import { X, Save, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import {
@@ -9,6 +9,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import { supabase } from '@/integrations/supabase/client'
+import { useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 
 interface DiaryQuickEntryProps {
   open: boolean
@@ -26,7 +29,9 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
   autoFocusText = false
 }) => {
   const [content, setContent] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (open) {
@@ -40,10 +45,57 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
     }
   }, [open, autoFocusText])
 
-  const handleSave = () => {
-    // TODO: Implement actual save functionality
-    console.log('Saving diary entry:', content)
-    onClose()
+  const handleSave = async () => {
+    if (!content.trim() || isSaving) return
+
+    setIsSaving(true)
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        toast.error('Please sign in to save diary entries')
+        return
+      }
+
+      const source = (text || initialContent) ? 'voice' : 'manual'
+
+      const { data: entry, error } = await supabase
+        .from('diary_entries')
+        .insert({
+          user_id: user.id,
+          text: content.trim(),
+          source,
+          tags: ['diary'],
+        })
+        .select('id')
+        .single()
+
+      if (error) throw error
+
+      toast.success('Diary entry saved')
+
+      // Invalidate diary queries so lists update
+      queryClient.invalidateQueries({ queryKey: ['diary-entries'] })
+      queryClient.invalidateQueries({ queryKey: ['knowledge-base'] })
+      queryClient.invalidateQueries({ queryKey: ['memory-timeline'] })
+
+      // Non-blocking: extract insights + refresh metadata
+      if (entry?.id) {
+        supabase.functions.invoke('extract-diary-insights', {
+          body: { diaryEntryId: entry.id, content: content.trim() }
+        }).then(() => {
+          supabase.functions.invoke('refresh-memory-metadata', {}).catch(() => {})
+        }).catch((err) => {
+          console.warn('[DiaryQuickEntry] extract-diary-insights failed:', err)
+        })
+      }
+
+      onClose()
+    } catch (error: any) {
+      console.error('[DiaryQuickEntry] Save failed:', error)
+      toast.error('Failed to save diary entry')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleCancel = () => {
@@ -86,11 +138,15 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
           <div className="flex gap-2 flex-shrink-0">
             <Button
               onClick={handleSave}
-              disabled={!content.trim()}
+              disabled={!content.trim() || isSaving}
               className="flex-1"
             >
-              <Save className="h-4 w-4 mr-2" />
-              Save Entry
+              {isSaving ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4 mr-2" />
+              )}
+              {isSaving ? 'Saving...' : 'Save Entry'}
             </Button>
             <Button
               variant="outline"
