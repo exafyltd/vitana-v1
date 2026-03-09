@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { buildOrbContext } from '@/lib/buildOrbContext';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
 
@@ -25,11 +26,29 @@ interface UseOrbVoiceClientReturn {
 
 /**
  * Derive the 2-letter ORB lang code from the full BCP-47 locale.
- * e.g. "de-DE" → "de", "en-US" → "en", "zh-CN" → "zh"
  */
 function localeToOrbLang(locale: string): string {
   const base = locale.split('-')[0].toLowerCase();
-  return base || 'de'; // fallback to German
+  return base || 'de';
+}
+
+/** Persist an ORB message turn to ai_messages (fire-and-forget). */
+async function logOrbMessage(
+  conversationId: string,
+  role: 'user' | 'assistant',
+  content: string
+) {
+  try {
+    await supabase.from('ai_messages').insert({
+      conversation_id: conversationId,
+      role,
+      content,
+      input_method: 'voice',
+      metadata: { channel: 'orb' },
+    });
+  } catch (e) {
+    console.warn('[useOrbVoiceClient] Failed to log message:', e);
+  }
 }
 
 export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
@@ -46,6 +65,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   const [transcript, setTranscript] = useState('');
 
   const clientRef = useRef<OrbVoiceClient | null>(null);
+  const conversationIdRef = useRef<string | null>(null);
   
   // Use refs for stable callback identities
   const connectRef = useRef<() => Promise<void>>();
@@ -119,13 +139,46 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
       const orbLang = localeToOrbLang(selectedLanguage);
       console.log('[useOrbVoiceClient] Using language:', selectedLanguage, '→ ORB lang:', orbLang);
 
-      // 5. Create config for OrbVoiceClient
+      // 5. Fetch user context (memory garden + diary) for injection
+      let initialContext = '';
+      try {
+        const ctx = await buildOrbContext(user.id);
+        initialContext = ctx.contextString;
+        console.log('[useOrbVoiceClient] Built context:', ctx.itemCount, 'items,', initialContext.length, 'chars');
+      } catch (ctxErr) {
+        console.warn('[useOrbVoiceClient] Failed to build context, proceeding without:', ctxErr);
+      }
+
+      // 6. Create or reuse conversation for persistence
+      let convId = conversationIdRef.current;
+      if (!convId) {
+        // Check localStorage for recent orb conversation
+        const storedConvId = localStorage.getItem('orb_conversation_id');
+        if (storedConvId) {
+          convId = storedConvId;
+        } else {
+          // Create new conversation
+          const { data: conv } = await supabase.from('ai_conversations').insert({
+            user_id: user.id,
+            agent_type: 'wellness',
+            metadata: { channel: 'orb' },
+          }).select('id').single();
+          if (conv) {
+            convId = conv.id;
+            localStorage.setItem('orb_conversation_id', conv.id);
+          }
+        }
+        conversationIdRef.current = convId;
+      }
+
+      // 7. Create config for OrbVoiceClient
       const config: OrbVoiceClientConfig = {
         lang: orbLang,
-        accessToken: accessToken,
+        accessToken,
+        initialContext: initialContext || undefined,
       };
 
-      // 6. Create new client with callbacks
+      // 8. Create new client with callbacks
       const client = new OrbVoiceClient(config, {
         onConnectionStateChange: (state) => {
           setConnectionState(state);
@@ -141,6 +194,10 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         },
         onTranscript: (text) => {
           setTranscript(text);
+          // Persist assistant transcript
+          if (convId && text.trim()) {
+            logOrbMessage(convId, 'assistant', text);
+          }
         },
         onError: (err) => {
           setError(err);
@@ -156,7 +213,6 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
       console.error('[useOrbVoiceClient] Connect error:', err);
       setError(err.message || 'Failed to connect');
       setConnectionState('disconnected');
-      // Ensure clientRef is cleaned up on failure
       clientRef.current = null;
     }
   };
@@ -188,6 +244,10 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
   sendMessageRef.current = (text: string) => {
     if (clientRef.current && text.trim()) {
       clientRef.current.sendTextMessage(text);
+      // Persist user text message
+      if (conversationIdRef.current) {
+        logOrbMessage(conversationIdRef.current, 'user', text);
+      }
     }
   };
 
