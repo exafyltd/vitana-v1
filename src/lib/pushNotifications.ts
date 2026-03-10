@@ -60,36 +60,34 @@ class PushNotificationManager {
       let token: string | null = null;
       let tokenSource: string = 'none';
 
-      if (isAppilix()) {
-        console.log('[Push] Appilix detected — attempting native FCM token...');
-        token = await requestNativeFcmToken();
-        if (token) {
-          tokenSource = 'native';
-          console.log('[Push] ✅ Native FCM token obtained from Appilix');
-        } else {
-          console.warn('[Push] ⚠️ Native FCM token failed — trying web FCM fallback...');
-        }
+      // Always try native token first (Custom JS may have injected it even without bridge)
+      console.log('[Push] Attempting native/injected FCM token...');
+      token = await requestNativeFcmToken();
+      if (token) {
+        tokenSource = 'native';
+        console.log('[Push] ✅ Native/injected FCM token obtained');
       }
 
       if (!token && this.isSupported) {
         try {
+          console.log('[Push] Trying web FCM fallback...');
           token = await requestFCMToken();
           if (token) {
             tokenSource = 'web';
-            console.log('[Push] ✅ Web FCM token obtained' + (isAppilix() ? ' (Appilix fallback)' : ''));
+            console.log('[Push] ✅ Web FCM token obtained');
             this.setupForegroundHandler();
           } else {
             console.warn('[Push] ⚠️ Web FCM returned null (permission denied or unsupported)');
           }
         } catch (webErr) {
-          console.warn('[Push] ⚠️ Web FCM threw error (expected in WebView):', webErr);
+          console.warn('[Push] ⚠️ Web FCM error (expected in WebView):', webErr);
         }
       }
 
       if (!token) {
-        console.warn('[Push] ❌ No FCM token obtained — push notifications unavailable');
+        console.warn('[Push] ❌ No FCM token — push notifications unavailable');
         if (isAppilix()) {
-          console.warn('[Push] 💡 Ensure google-services.json is uploaded in Appilix dashboard');
+          console.warn('[Push] 💡 Add FCM token injection script in Appilix Dashboard → Custom CSS & JS');
         }
         return null;
       }
