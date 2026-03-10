@@ -15,9 +15,9 @@ firebase.initializeApp({
   appId: '1:86804897789:web:348bb41ad5025632c14394',
 });
 
-// Initialize messaging so Firebase registers its internal push handler,
-// but we intercept BEFORE it via our own 'push' listener added first.
-const messaging = firebase.messaging();
+// NOTE: We intentionally do NOT call firebase.messaging() here.
+// Calling it registers Firebase's own push handler which causes duplicate notifications.
+// Our raw 'push' event listener below handles everything.
 
 // Dedup cache
 const recentTags = new Set();
