@@ -1,10 +1,11 @@
 /**
  * Push Notification Manager — Firebase Cloud Messaging (FCM)
- * Unified web + Appilix native path. Tokens registered with Gateway backend.
+ * Web push + Appilix device metadata registration.
+ * Tokens registered with Gateway backend.
  */
 import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
-import { isAppilix, requestNativeFcmToken } from '@/lib/appilix';
+import { isAppilix } from '@/lib/appilix';
 
 export interface PushNotificationPayload {
   title: string;
@@ -31,26 +32,29 @@ class PushNotificationManager {
 
   async initialize(): Promise<boolean> {
     await this.loadMutedThreads();
-    if (isAppilix()) {
-      console.log('[Push] Appilix detected — trying native push first');
-      // Also register SW as fallback in case native FCM is not configured
-      if (this.isSupported) {
-        try {
-          this.registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-          console.log('[Push] Service Worker registered (Appilix fallback)');
-        } catch {
-          // WebView may not support SW — that's fine, native path is primary
-        }
+
+    if (!this.isSupported) {
+      if (isAppilix()) {
+        console.log('[Push] Appilix detected — SW not supported in this WebView, will register device metadata');
+        return true;
       }
-      return true;
+      return false;
     }
-    if (!this.isSupported) return false;
+
     try {
       this.registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
       console.log('[Push] Service Worker registered');
+
+      // Force browser to check for updated SW script (fixes stale cached versions)
+      this.registration.update().catch(() => {});
+
       return true;
     } catch (error) {
       console.error('[Push] SW registration failed:', error);
+      if (isAppilix()) {
+        console.log('[Push] SW failed but Appilix detected — will register device metadata');
+        return true;
+      }
       return false;
     }
   }
@@ -58,22 +62,20 @@ class PushNotificationManager {
   async subscribe(): Promise<string | null> {
     try {
       let token: string | null = null;
-      let tokenSource: string = 'none';
 
-      // Always try native token first (Custom JS may have injected it even without bridge)
-      console.log('[Push] Attempting native/injected FCM token...');
-      token = await requestNativeFcmToken();
-      if (token) {
-        tokenSource = 'native';
-        console.log('[Push] ✅ Native/injected FCM token obtained');
+      // For Appilix: register device metadata for backend routing,
+      // then attempt web FCM as harmless fallback
+      if (isAppilix()) {
+        console.log('[Push] Appilix device — registering metadata for backend routing');
+        await this.registerAppilixDevice();
       }
 
-      if (!token && this.isSupported) {
+      // Attempt web FCM (works in browsers, may work in some WebViews)
+      if (this.isSupported) {
         try {
-          console.log('[Push] Trying web FCM fallback...');
+          console.log('[Push] Trying web FCM...');
           token = await requestFCMToken();
           if (token) {
-            tokenSource = 'web';
             console.log('[Push] ✅ Web FCM token obtained');
             this.setupForegroundHandler();
           } else {
@@ -85,15 +87,16 @@ class PushNotificationManager {
       }
 
       if (!token) {
-        console.warn('[Push] ❌ No FCM token — push notifications unavailable');
         if (isAppilix()) {
-          console.warn('[Push] 💡 Add FCM token injection script in Appilix Dashboard → Custom CSS & JS');
+          console.log('[Push] No web token — Appilix device metadata registered, native delivery via backend');
+        } else {
+          console.warn('[Push] ❌ No FCM token — push notifications unavailable');
         }
         return null;
       }
 
       this.fcmToken = token;
-      console.log(`[Push] Token source: ${tokenSource}, registering with backend...`);
+      console.log('[Push] Registering web FCM token with backend...');
       await this.registerTokenWithBackend(token);
       return token;
     } catch (error) {
@@ -143,6 +146,38 @@ class PushNotificationManager {
     });
     if (!res.ok) console.error('[Push] Token registration failed:', res.status);
     else console.log('[Push] Token registered with backend');
+  }
+
+  /**
+   * Register Appilix device metadata with the backend.
+   * This tells the gateway that this user has an Appilix-installed app,
+   * so the backend can route notifications via Appilix Push API or FCM topic.
+   * No FCM token is required — the backend handles native delivery.
+   */
+  private async registerAppilixDevice(): Promise<void> {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const jwt = sessionData?.session?.access_token;
+    if (!jwt) return;
+
+    try {
+      const res = await fetch(`${GATEWAY_URL}/api/v1/notifications/token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt}` },
+        body: JSON.stringify({
+          device_type: 'appilix',
+          package_name: 'com.vitanaland.app',
+          device_label: `Appilix ${navigator.userAgent.slice(0, 80)}`,
+        }),
+      });
+      if (!res.ok) {
+        console.warn('[Push] Appilix device registration returned:', res.status,
+          '— backend may need updating to accept device_type registrations');
+      } else {
+        console.log('[Push] ✅ Appilix device metadata registered with backend');
+      }
+    } catch (err) {
+      console.warn('[Push] Appilix device registration failed (network):', err);
+    }
   }
 
   private async removeTokenFromBackend(token: string): Promise<void> {

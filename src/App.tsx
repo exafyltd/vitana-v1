@@ -284,34 +284,13 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
-  const { isAppilix: inAppilix, isReady: appilixReady } = useAppilix();
+  useAppilix();
   const { user } = useAuth();
 
   useEffect(() => {
     if (!user) return;
-
-    const retryDelays = inAppilix ? [5000, 10000, 15000] : [];
-    let cancelled = false;
-
-    const init = async () => {
-      await initializePushNotifications();
-
-      // In Appilix, retry at 5s, 10s, 15s if token wasn't obtained
-      if (inAppilix) {
-        const { pushNotificationManager } = await import('@/lib/pushNotifications');
-        for (const delay of retryDelays) {
-          if (cancelled || pushNotificationManager.isSubscribed()) break;
-          await new Promise(r => setTimeout(r, delay));
-          if (cancelled || pushNotificationManager.isSubscribed()) break;
-          console.log(`[Push] Appilix retry at ${delay / 1000}s...`);
-          await pushNotificationManager.subscribe();
-        }
-      }
-    };
-    init();
-
-    return () => { cancelled = true; };
-  }, [user, inAppilix]);
+    initializePushNotifications();
+  }, [user]);
 
   return null;
 };
