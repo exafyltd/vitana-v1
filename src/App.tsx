@@ -26,6 +26,7 @@ import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBann
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfUse from "./pages/legal/TermsOfUse";
 import DeleteAccount from "./pages/legal/DeleteAccount";
 import MaxinaSupport from "./pages/legal/MaxinaSupport";
 import Login from "./pages/Login";
@@ -343,6 +344,7 @@ const App = () => {
           {/* Public Routes - No Auth Required */}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfUse />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/maxina_support" element={<MaxinaSupport />} />
           <Route path="/redeem" element={<RedeemVoucher />} />
