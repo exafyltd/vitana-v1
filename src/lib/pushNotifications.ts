@@ -197,19 +197,26 @@ class PushNotificationManager {
       // App is focused — skip notification display entirely
       if (!document.hidden && document.hasFocus()) return;
 
-      // FCM messages with notification payload are auto-displayed by the browser
-      // when the app is backgrounded — don't show again from foreground handler
-      if (payload.notification) return;
-
-      // Data-only: show manually, but deduplicate by tag
+      const notif = payload.notification || {};
       const data = payload.data || {};
-      const tag = data.tag || data.type || 'fg-' + Date.now();
+
+      // Extract sender name from data payload for better notification titles
+      const senderName = data.sender_name || data.senderName || data.sender || data.from_name || data.fromName;
+      const title = senderName || notif.title || data.title || 'Vitana';
+      const body = notif.body || data.body || data.message || '';
+
+      // Stable tag for deduplication
+      const tag = data.message_id || data.messageId
+        || (data.thread_id ? `thread-${data.thread_id}` : null)
+        || (data.threadId ? `thread-${data.threadId}` : null)
+        || data.tag || 'fg-' + Date.now();
+
       if (shownTags.has(tag)) return;
       shownTags.add(tag);
       setTimeout(() => shownTags.delete(tag), 5000);
 
-      if (data.title) {
-        this.showLocalNotification({ title: data.title, body: data.body || '', data, tag });
+      if (title) {
+        this.showLocalNotification({ title, body, data, tag });
       }
     });
   }
