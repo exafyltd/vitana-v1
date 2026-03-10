@@ -334,16 +334,6 @@ export default function Auth() {
                     </Button>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t text-center">
-                    <button
-                      type="button"
-                      onClick={() => navigate('/')}
-                      className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-                    >
-                      <span>←</span>
-                      <span>{translate('authPage.backToPortals', 'Back to all portals')}</span>
-                    </button>
-                  </div>
                 </form>
               </TabsContent>
               
