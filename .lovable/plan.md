@@ -1,43 +1,24 @@
+## Memory System Fix — Implementation Complete
 
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-# Fix Language Switching Revert Issue
+### What was fixed
 
-## Root Cause
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-The error **"Cannot coerce the result to a single JSON object"** comes from `useUserPreferences.ts` line 95: `.select().single()` on the update query. This fails when there are multiple `user_preferences` rows for the same user (or zero rows). 
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-When the mutation fails:
-1. Language is set locally to German
-2. `updatePreferences` fires but fails → error toast shown
-3. Server still has the old language value
-4. React Query refetches preferences → old language comes back
-5. Although `pendingLanguageRef` should guard against revert, the failed mutation + query invalidation from other sources causes the 2-second snap-back
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-## Fix
-
-### `src/hooks/useUserPreferences.ts`
-
-**Line 90-95**: Remove `.select().single()` from the update mutation. We don't need the returned data since `onSuccess` already invalidates the query cache to refetch.
-
-```ts
-// Before
-const { data, error } = await supabase
-  .from("user_preferences")
-  .update(updates)
-  .eq("user_id", user.id)
-  .select()
-  .single();
-
-// After
-const { error } = await supabase
-  .from("user_preferences")
-  .update(updates)
-  .eq("user_id", user.id);
-```
-
-Also update `mutationFn` return and `onSuccess` accordingly (no data needed).
-
-**Line 100-106**: Suppress the generic "Preferences updated" toast for language changes — it's noise. Remove the toast from `onSuccess` (language context already handles UX feedback implicitly).
-
-This is a one-file, minimal fix that eliminates the Supabase `.single()` error and prevents the revert.
-
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
