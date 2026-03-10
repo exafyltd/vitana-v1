@@ -237,7 +237,7 @@ export function MobileOrdersView({
   return (
     <div className="min-h-screen bg-background pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
+      <div className="sticky top-[calc(env(safe-area-inset-top,0px)+32px)] z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
         <div className="px-4 pt-4 pb-2">
           <h1 className="text-xl font-bold tracking-tight text-foreground">
             {translate('orders.myOrders')} 📦

@@ -528,13 +528,15 @@ export default function Orders() {
   // Mobile view
   if (isMobile) {
     return (
-      <MobileOrdersView
-        activeOrders={mobileActiveOrders}
-        historyOrders={mobileHistoryOrders}
-        isLoading={isLoading}
-        isShowingMockData={isShowingMockData}
-        onRefresh={handleRefresh}
-      />
+      <AppLayout>
+        <MobileOrdersView
+          activeOrders={mobileActiveOrders}
+          historyOrders={mobileHistoryOrders}
+          isLoading={isLoading}
+          isShowingMockData={isShowingMockData}
+          onRefresh={handleRefresh}
+        />
+      </AppLayout>
     );
   }
 

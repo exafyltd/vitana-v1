@@ -1,38 +1,24 @@
+## Memory System Fix — Implementation Complete
 
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-# Fix: Orders Mobile Missing App Bar
+### What was fixed
 
-## Problem
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-In `Orders.tsx` (line 529-538), the mobile path returns `<MobileOrdersView>` directly — **without wrapping in `<AppLayout>`**. Since `AppLayout` provides `MobileAppShell` which renders the `TopAppBar`, the app bar never renders on the Orders mobile screen.
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-The desktop path (line 541) correctly wraps in `<AppLayout>`.
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-## Fix
-
-### 1. `src/pages/discover/Orders.tsx`
-Wrap the mobile return in `<AppLayout>` so it goes through `MobileAppShell` → `TopAppBar`:
-
-```tsx
-if (isMobile) {
-  return (
-    <AppLayout>
-      <MobileOrdersView ... />
-    </AppLayout>
-  );
-}
-```
-
-### 2. `src/components/orders/MobileOrdersView.tsx`
-The sticky header at line 240 uses `sticky top-0 z-20`. With the TopAppBar now rendering above it (fixed, 32px + safe-area), this sticky header needs an offset so it doesn't hide behind the app bar:
-
-- Change `top-0` to `top-[calc(env(safe-area-inset-top,0px)+32px)]` to sit below the TopAppBar
-- Remove the duplicate title/description from `MobileOrdersView`'s header since `Orders.tsx` already renders `StandardHeader` — or keep MobileOrdersView self-contained but ensure the sticky offset is correct
-
-### Files changed
-
-| File | Change |
-|------|--------|
-| `src/pages/discover/Orders.tsx` | Wrap mobile return in `<AppLayout>` |
-| `src/components/orders/MobileOrdersView.tsx` | Adjust sticky header top offset for TopAppBar clearance |
-
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
