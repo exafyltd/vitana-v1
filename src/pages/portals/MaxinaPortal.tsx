@@ -796,6 +796,10 @@ const MaxinaPortal = () => {
                 Terms
               </Link>
               <span className="text-white/30">·</span>
+              <Link to="/delete-account" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
+                Delete Account
+              </Link>
+              <span className="text-white/30">·</span>
               <Link to="/help" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Help
               </Link>
