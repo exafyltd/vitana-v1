@@ -820,10 +820,11 @@ export function useGlobalMessages(
           event: "INSERT",
           schema: "public",
           table: "chat_messages",
-          filter: `receiver_id=eq.${user.id}`,
         },
         async (payload) => {
           const raw = payload.new as ChatMessage;
+          // Client-side filter: only process messages sent TO us
+          if (raw.receiver_id !== user.id) return;
           const peerId = raw.sender_id; // incoming → sender is the peer
 
           const profileMap = await enrichProfiles([raw.sender_id]);
