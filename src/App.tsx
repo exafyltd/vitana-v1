@@ -284,7 +284,7 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
-  const { isAppilix: inAppilix, isReady: appilixReady } = useAppilix();
+  useAppilix();
   const { user } = useAuth();
 
   useEffect(() => {
