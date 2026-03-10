@@ -1,24 +1,23 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
 
-### What was fixed
+# Add "Delete Account" Link to Login Footer
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+## What
+Add a "Delete Account" link to the Maxina portal login footer, changing it from `Privacy · Terms · Help` to `Privacy · Terms · Delete Account · Help`.
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+## Changes
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+### `src/pages/portals/MaxinaPortal.tsx` (lines 797-798)
+After the "Terms" link and its separator, insert a new "Delete Account" link and separator before "Help":
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+```tsx
+<span className="text-white/30">·</span>
+<Link to="/delete-account" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
+  Delete Account
+</Link>
+```
+
+This uses the exact same styling as the existing Privacy, Terms, and Help links. The `/delete-account` route already exists and renders the `DeleteAccount` component.
+
+**No other files need changes** — the `Auth.tsx` and `AuthPages.tsx` login pages don't have this footer pattern (they were the generic auth pages, not the Maxina portal login).
+
