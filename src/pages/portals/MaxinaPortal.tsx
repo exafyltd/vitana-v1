@@ -800,9 +800,9 @@ const MaxinaPortal = () => {
                 Delete Account
               </Link>
               <span className="text-white/30">·</span>
-              <Link to="/help" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
+              <a href="mailto:support@exafy.io" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 Help
-              </Link>
+              </a>
             </div>
             
           </div>
