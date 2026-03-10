@@ -290,21 +290,27 @@ const AppHooksInitializer = () => {
   useEffect(() => {
     if (!user) return;
 
+    const retryDelays = inAppilix ? [5000, 10000, 15000] : [];
+    let cancelled = false;
+
     const init = async () => {
       await initializePushNotifications();
 
-      // In Appilix, retry after 5s if the native bridge wasn't ready on first attempt
+      // In Appilix, retry at 5s, 10s, 15s if token wasn't obtained
       if (inAppilix) {
-        setTimeout(async () => {
-          const { pushNotificationManager } = await import('@/lib/pushNotifications');
-          if (!pushNotificationManager.isSubscribed()) {
-            console.log('[Push] Appilix retry — bridge may be ready now');
-            await pushNotificationManager.subscribe();
-          }
-        }, 5000);
+        const { pushNotificationManager } = await import('@/lib/pushNotifications');
+        for (const delay of retryDelays) {
+          if (cancelled || pushNotificationManager.isSubscribed()) break;
+          await new Promise(r => setTimeout(r, delay));
+          if (cancelled || pushNotificationManager.isSubscribed()) break;
+          console.log(`[Push] Appilix retry at ${delay / 1000}s...`);
+          await pushNotificationManager.subscribe();
+        }
       }
     };
     init();
+
+    return () => { cancelled = true; };
   }, [user, inAppilix]);
 
   return null;

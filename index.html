@@ -31,6 +31,27 @@
   </head>
 
   <body>
+    <script>
+      // Early FCM token detection for Appilix WebView
+      (function() {
+        try {
+          // 1. Check URL params (?fcm_token=...)
+          var params = new URLSearchParams(window.location.search);
+          var urlToken = params.get('fcm_token');
+          if (urlToken) {
+            window.appilix_fcm_token = urlToken;
+            console.log('[Appilix-Early] FCM token from URL param');
+          }
+          // 2. Listen for custom event from Appilix Custom JS
+          document.addEventListener('appilix:fcm_token', function(e) {
+            if (e.detail) {
+              window.appilix_fcm_token = e.detail;
+              console.log('[Appilix-Early] FCM token from custom event');
+            }
+          });
+        } catch(e) {}
+      })();
+    </script>
     <div id="root"></div>
     <div id="modal-root"></div>
     <script type="module" src="/src/main.tsx"></script>

@@ -108,9 +108,21 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
 // ── FCM Push Token Bridge ─────────────────────────────────
 
 export function getNativeFcmToken(): string | null {
-  if (typeof window !== 'undefined' && window.appilix_fcm_token) {
-    return window.appilix_fcm_token;
-  }
+  if (typeof window === 'undefined') return null;
+
+  // 1. Check window global (set by early script or Custom JS)
+  if (window.appilix_fcm_token) return window.appilix_fcm_token;
+
+  // 2. Check URL params (?fcm_token=...)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const urlToken = params.get('fcm_token');
+    if (urlToken) {
+      window.appilix_fcm_token = urlToken;
+      return urlToken;
+    }
+  } catch {}
+
   return null;
 }
 
@@ -120,29 +132,72 @@ export function requestNativeFcmToken(): Promise<string | null> {
     console.log('[Appilix] Using pre-injected FCM token');
     return Promise.resolve(preInjected);
   }
-  if (!isAppilix()) return Promise.resolve(null);
 
-  console.log('[Appilix] Requesting native FCM token via bridge...');
+  // Even if appilix bridge not detected, still poll — Custom JS may inject token later
+  const MAX_WAIT = 10_000; // 10 seconds (Custom JS timing is unpredictable)
+  const INTERVAL = 500;
+
+  console.log('[Appilix] Waiting for FCM token (polling + events, up to 10s)...');
+
   return new Promise((resolve) => {
-    const timeout = setTimeout(() => {
-      console.warn('[Appilix] Native FCM token request timed out after 5s — is google-services.json configured in Appilix dashboard?');
-      window.removeEventListener('message', handler);
-      resolve(null);
-    }, 5000);
+    let resolved = false;
+    const cleanup = () => {
+      resolved = true;
+      clearInterval(poller);
+      clearTimeout(timeout);
+      window.removeEventListener('message', msgHandler);
+      document.removeEventListener('appilix:fcm_token', customHandler as EventListener);
+    };
 
-    function handler(event: MessageEvent) {
+    // Timeout
+    const timeout = setTimeout(() => {
+      if (resolved) return;
+      console.warn('[Appilix] FCM token not received after 10s — add token injection script in Appilix Dashboard → Custom CSS & JS');
+      cleanup();
+      resolve(null);
+    }, MAX_WAIT);
+
+    // Poll window global
+    const poller = setInterval(() => {
+      if (resolved) return;
+      const token = getNativeFcmToken();
+      if (token) {
+        console.log('[Appilix] FCM token detected via polling');
+        cleanup();
+        resolve(token);
+      }
+    }, INTERVAL);
+
+    // Listen for window.postMessage
+    function msgHandler(event: MessageEvent) {
+      if (resolved) return;
       try {
         const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
         if (data?.type === 'fcm_token' && data.token) {
-          clearTimeout(timeout);
-          window.removeEventListener('message', handler);
           window.appilix_fcm_token = data.token;
+          console.log('[Appilix] FCM token from postMessage');
+          cleanup();
           resolve(data.token);
         }
       } catch {}
     }
 
-    window.addEventListener('message', handler);
+    // Listen for custom DOM event
+    function customHandler(e: Event) {
+      if (resolved) return;
+      const token = (e as CustomEvent).detail;
+      if (token) {
+        window.appilix_fcm_token = token;
+        console.log('[Appilix] FCM token from custom event');
+        cleanup();
+        resolve(token);
+      }
+    }
+
+    window.addEventListener('message', msgHandler);
+    document.addEventListener('appilix:fcm_token', customHandler as EventListener);
+
+    // Also try the bridge postMessage (may work if Appilix supports it)
     post({ action: 'get_fcm_token' });
   });
 }
