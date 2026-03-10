@@ -87,22 +87,15 @@ export function useUserPreferences() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("user_preferences")
         .update(updates)
-        .eq("user_id", user.id)
-        .select()
-        .single();
+        .eq("user_id", user.id);
 
       if (error) throw error;
-      return data as UserPreferences;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user_preferences"] });
-      toast({
-        title: "Preferences updated",
-        description: "Your settings have been saved successfully.",
-      });
     },
     onError: (error) => {
       toast({
