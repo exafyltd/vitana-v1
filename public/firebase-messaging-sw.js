@@ -1,10 +1,16 @@
-// SW v3 — Raw push interception to prevent duplicate notifications
+// SW v4 — Firebase onBackgroundMessage suppression + raw push interception
 importScripts('https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/11.4.0/firebase-messaging-compat.js');
 
-// Activate new SW immediately
-self.addEventListener('install', () => self.skipWaiting());
-self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim()));
+// Lifecycle: activate new SW immediately
+self.addEventListener('install', (event) => {
+  console.log('[SW v4] Installing...');
+  self.skipWaiting();
+});
+self.addEventListener('activate', (event) => {
+  console.log('[SW v4] Activating...');
+  event.waitUntil(self.clients.claim());
+});
 
 firebase.initializeApp({
   apiKey: 'AIzaSyCthnpKTnUPpC8d-_bLt3DKz9VCQ8eiwnc',
@@ -15,40 +21,52 @@ firebase.initializeApp({
   appId: '1:86804897789:web:348bb41ad5025632c14394',
 });
 
-// NOTE: We intentionally do NOT call firebase.messaging() here.
-// Calling it registers Firebase's own push handler which causes duplicate notifications.
-// Our raw 'push' event listener below handles everything.
+// Initialize messaging AND register onBackgroundMessage.
+// This tells Firebase SDK: "I'm handling background messages — don't auto-display."
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log('[SW v4] onBackgroundMessage fired (no-op). Payload:', JSON.stringify(payload));
+  // Return without showing a notification — our raw push handler already did it.
+  return;
+});
 
 // Dedup cache
 const recentTags = new Set();
 
 /**
- * Raw push event handler — intercepts ALL push messages before Firebase SDK.
- * This prevents the browser from auto-displaying the `notification` payload,
- * giving us full control over what gets shown.
+ * Raw push event handler — intercepts ALL push messages.
+ * Fires alongside Firebase's internal handler, but we call stopImmediatePropagation()
+ * to prevent Firebase from also processing it. Combined with the no-op onBackgroundMessage
+ * above, this ensures only ONE notification is shown.
  */
 self.addEventListener('push', (event) => {
-  if (!event.data) return;
+  if (!event.data) {
+    console.log('[SW v4] Push received with no data, ignoring');
+    return;
+  }
 
   let payload;
   try {
     payload = event.data.json();
   } catch (e) {
-    console.log('[SW] Non-JSON push data, ignoring');
+    console.log('[SW v4] Non-JSON push data, ignoring');
     return;
   }
 
-  // Extract notification info from both `notification` and `data` fields
   const notif = payload.notification || {};
   const data = payload.data || {};
+
+  console.log('[SW v4] Push received. Has notification:', !!payload.notification, '| Has data:', !!payload.data, '| Payload:', JSON.stringify(payload));
 
   // Build the best possible title — prefer sender_name from data
   const senderName = data.sender_name || data.senderName || data.sender || data.from_name || data.fromName;
   const title = senderName || notif.title || data.title || 'Vitana';
   const body = notif.body || data.body || data.message || '';
 
+  console.log('[SW v4] Resolved title:', title, '| body:', body);
+
   // Build a stable tag for deduplication
-  // Use message_id if available, otherwise thread-based, otherwise content hash
   const tag = data.message_id || data.messageId
     || (data.thread_id ? `thread-${data.thread_id}` : null)
     || (data.threadId ? `thread-${data.threadId}` : null)
@@ -57,8 +75,7 @@ self.addEventListener('push', (event) => {
 
   // Deduplicate by tag (5-second window)
   if (recentTags.has(tag)) {
-    console.log('[SW] Skipping duplicate tag:', tag);
-    // Stop propagation to Firebase SDK
+    console.log('[SW v4] Skipping duplicate tag:', tag);
     event.stopImmediatePropagation();
     event.waitUntil(Promise.resolve());
     return;
@@ -66,13 +83,16 @@ self.addEventListener('push', (event) => {
   recentTags.add(tag);
   setTimeout(() => recentTags.delete(tag), 5000);
 
-  // Build click URL
+  // Build click URL — use null for intermediate fallbacks so final '/' is the true default
   const url = data.url || data.click_action || notif.click_action
-    || (data.thread_id ? `/inbox?thread=${data.thread_id}` : '/')
-    || (data.threadId ? `/inbox?thread=${data.threadId}` : '/');
+    || (data.thread_id ? `/inbox?thread=${data.thread_id}` : null)
+    || (data.threadId ? `/inbox?thread=${data.threadId}` : null)
+    || '/';
 
-  // Stop Firebase SDK from also showing a notification
+  // Stop Firebase SDK from also processing this push
   event.stopImmediatePropagation();
+
+  console.log('[SW v4] Showing notification. Tag:', tag, '| URL:', url);
 
   event.waitUntil(
     self.registration.showNotification(title, {
@@ -87,8 +107,9 @@ self.addEventListener('push', (event) => {
 });
 
 self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
   const url = event.notification.data?.url || '/';
+  console.log('[SW v4] Notification clicked. URL:', url);
+  event.notification.close();
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
       for (const client of clientList) {

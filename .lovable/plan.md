@@ -1,26 +1,24 @@
+## Memory System Fix — Implementation Complete
 
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-# SW v4: Suppress Firebase Auto-Display + Diagnostic Logging
+### What was fixed
 
-## Strategy
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-Re-add `firebase.messaging()` and register an empty `onBackgroundMessage` callback. This tells the Firebase SDK "I'm handling background messages" — suppressing its default auto-display behavior. Our raw `push` listener still fires and shows ONE formatted notification. Detailed logging tracks which handler fires for each payload type.
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-## Changes
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-### `public/firebase-messaging-sw.js`
-- Bump version comment to `// SW v4`
-- Re-add `const messaging = firebase.messaging();`
-- Add `messaging.onBackgroundMessage(() => { console.log(...); return; });` — no-op that suppresses Firebase's default display
-- Add diagnostic `console.log` statements throughout:
-  - `[SW v4] Installing...` / `Activating...` in lifecycle events
-  - `[SW v4] Push received. Has notification: X, Has data: Y, Payload: ...` in push handler
-  - `[SW v4] Resolved title: ... | body: ...`
-  - `[SW v4] Showing notification. Tag: ... | URL: ...`
-  - `[SW v4] onBackgroundMessage fired (no-op)` if Firebase's callback triggers
-  - `[SW v4] Notification clicked: ...`
-- Fix URL fallback logic (use `null` instead of `'/'` in intermediate `||` chain so final `'/'` is the true fallback)
-- Keep all existing dedup, sender name extraction, tag, and notificationclick logic
-
-No other files change.
-
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
