@@ -284,14 +284,28 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
-  useAppilix(); // Detect Appilix WebView & force App Bar visibility
+  const { isAppilix: inAppilix, isReady: appilixReady } = useAppilix();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      initializePushNotifications();
-    }
-  }, [user]);
+    if (!user) return;
+
+    const init = async () => {
+      await initializePushNotifications();
+
+      // In Appilix, retry after 5s if the native bridge wasn't ready on first attempt
+      if (inAppilix) {
+        setTimeout(async () => {
+          const { pushNotificationManager } = await import('@/lib/pushNotifications');
+          if (!pushNotificationManager.isSubscribed()) {
+            console.log('[Push] Appilix retry — bridge may be ready now');
+            await pushNotificationManager.subscribe();
+          }
+        }, 5000);
+      }
+    };
+    init();
+  }, [user, inAppilix]);
 
   return null;
 };
