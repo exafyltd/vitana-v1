@@ -58,26 +58,44 @@ class PushNotificationManager {
   async subscribe(): Promise<string | null> {
     try {
       let token: string | null = null;
+      let tokenSource: string = 'none';
+
       if (isAppilix()) {
+        console.log('[Push] Appilix detected — attempting native FCM token...');
         token = await requestNativeFcmToken();
         if (token) {
-          console.log('[Push] Native FCM token obtained from Appilix');
+          tokenSource = 'native';
+          console.log('[Push] ✅ Native FCM token obtained from Appilix');
         } else {
-          console.log('[Push] Native FCM failed, trying web FCM fallback...');
+          console.warn('[Push] ⚠️ Native FCM token failed — trying web FCM fallback...');
         }
       }
+
       if (!token && this.isSupported) {
-        token = await requestFCMToken();
-        if (token) {
-          console.log('[Push] Web FCM token obtained' + (isAppilix() ? ' (Appilix fallback)' : ''));
-          this.setupForegroundHandler();
+        try {
+          token = await requestFCMToken();
+          if (token) {
+            tokenSource = 'web';
+            console.log('[Push] ✅ Web FCM token obtained' + (isAppilix() ? ' (Appilix fallback)' : ''));
+            this.setupForegroundHandler();
+          } else {
+            console.warn('[Push] ⚠️ Web FCM returned null (permission denied or unsupported)');
+          }
+        } catch (webErr) {
+          console.warn('[Push] ⚠️ Web FCM threw error (expected in WebView):', webErr);
         }
       }
+
       if (!token) {
-        console.warn('[Push] No FCM token obtained — push notifications unavailable');
+        console.warn('[Push] ❌ No FCM token obtained — push notifications unavailable');
+        if (isAppilix()) {
+          console.warn('[Push] 💡 Ensure google-services.json is uploaded in Appilix dashboard');
+        }
         return null;
       }
+
       this.fcmToken = token;
+      console.log(`[Push] Token source: ${tokenSource}, registering with backend...`);
       await this.registerTokenWithBackend(token);
       return token;
     } catch (error) {

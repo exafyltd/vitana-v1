@@ -116,14 +116,19 @@ export function getNativeFcmToken(): string | null {
 
 export function requestNativeFcmToken(): Promise<string | null> {
   const preInjected = getNativeFcmToken();
-  if (preInjected) return Promise.resolve(preInjected);
+  if (preInjected) {
+    console.log('[Appilix] Using pre-injected FCM token');
+    return Promise.resolve(preInjected);
+  }
   if (!isAppilix()) return Promise.resolve(null);
 
+  console.log('[Appilix] Requesting native FCM token via bridge...');
   return new Promise((resolve) => {
     const timeout = setTimeout(() => {
+      console.warn('[Appilix] Native FCM token request timed out after 5s — is google-services.json configured in Appilix dashboard?');
       window.removeEventListener('message', handler);
       resolve(null);
-    }, 3000);
+    }, 5000);
 
     function handler(event: MessageEvent) {
       try {
