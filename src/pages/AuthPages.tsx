@@ -201,12 +201,6 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
             </Button>
           </form>
 
-          <div className="mt-6 pt-4 border-t text-center">
-            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1">
-              <span>←</span>
-              <span>Back to all portals</span>
-            </Link>
-          </div>
 
           <footer className="mt-4 text-center text-sm text-muted-foreground">
             {isRegister ? (

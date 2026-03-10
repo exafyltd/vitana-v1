@@ -801,21 +801,6 @@ const MaxinaPortal = () => {
               </Link>
             </div>
             
-            {/* Portal Navigation - Desktop only */}
-            <div className="hidden md:flex justify-center items-center space-x-4 text-sm mt-2">
-              <Link to="/alkalma" className="text-white/60 hover:text-white transition-colors">
-                AlKalma
-              </Link>
-              <span className="text-white/30">·</span>
-              <Link to="/earthlinks" className="text-white/60 hover:text-white transition-colors">
-                Earthlinks
-              </Link>
-              <span className="text-white/30">·</span>
-              <Link to="/" className="text-white/60 hover:text-white transition-colors">
-                {translate('portals.maxina.allPortals', 'All Portals')}
-              </Link>
-            </div>
-            
           </div>
         </div>
         
