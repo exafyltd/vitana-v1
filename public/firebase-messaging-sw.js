@@ -12,14 +12,34 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// Track recently shown notification tags to deduplicate
+const recentTags = new Set();
+
 messaging.onBackgroundMessage((payload) => {
-  const notification = payload.notification || {};
+  // If payload has a `notification` field, the browser/FCM SDK already
+  // displays it automatically — do NOT call showNotification again.
+  if (payload.notification) {
+    console.log('[SW] Skipping showNotification — browser handles notification payload');
+    return;
+  }
+
+  // Data-only message — we must show it manually
   const data = payload.data || {};
-  self.registration.showNotification(notification.title || 'Vitana', {
-    body: notification.body || '',
-    icon: notification.icon || '/favicon.ico',
+  const tag = data.tag || data.type || 'vitana-' + Date.now();
+
+  // Deduplicate by tag
+  if (recentTags.has(tag)) {
+    console.log('[SW] Skipping duplicate tag:', tag);
+    return;
+  }
+  recentTags.add(tag);
+  setTimeout(() => recentTags.delete(tag), 5000);
+
+  self.registration.showNotification(data.title || 'Vitana', {
+    body: data.body || '',
+    icon: data.icon || '/favicon.ico',
     data: data,
-    tag: data.type || 'default',
+    tag: tag,
   });
 });
 

@@ -157,11 +157,24 @@ class PushNotificationManager {
   }
 
   private setupForegroundHandler(): void {
+    const shownTags = new Set<string>();
     this.foregroundCleanup = onForegroundMessage((payload) => {
+      // App is focused — skip notification display entirely
       if (!document.hidden && document.hasFocus()) return;
-      const { title, body } = payload.notification || {};
-      if (title) {
-        this.showLocalNotification({ title, body: body || '', data: payload.data, tag: payload.data?.type || 'default' });
+
+      // FCM messages with notification payload are auto-displayed by the browser
+      // when the app is backgrounded — don't show again from foreground handler
+      if (payload.notification) return;
+
+      // Data-only: show manually, but deduplicate by tag
+      const data = payload.data || {};
+      const tag = data.tag || data.type || 'fg-' + Date.now();
+      if (shownTags.has(tag)) return;
+      shownTags.add(tag);
+      setTimeout(() => shownTags.delete(tag), 5000);
+
+      if (data.title) {
+        this.showLocalNotification({ title: data.title, body: data.body || '', data, tag });
       }
     });
   }
