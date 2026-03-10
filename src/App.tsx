@@ -344,6 +344,7 @@ const App = () => {
           {/* Public Routes - No Auth Required */}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfUse />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
           <Route path="/maxina_support" element={<MaxinaSupport />} />
           <Route path="/redeem" element={<RedeemVoucher />} />
