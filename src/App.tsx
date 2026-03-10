@@ -26,6 +26,7 @@ import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBann
 import Index from "./pages/Index";
 import ShareEntry from "./pages/ShareEntry";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfUse from "./pages/legal/TermsOfUse";
 import DeleteAccount from "./pages/legal/DeleteAccount";
 import MaxinaSupport from "./pages/legal/MaxinaSupport";
 import Login from "./pages/Login";
