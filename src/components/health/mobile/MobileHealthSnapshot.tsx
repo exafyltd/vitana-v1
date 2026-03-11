@@ -55,9 +55,9 @@ export function MobileHealthSnapshot({
     : translate('health.trend.stable');
 
   return (
-    <div className="mx-4 mt-1">
+    <div className="mx-4 mt-0">
       <div 
-        className="rounded-2xl p-6"
+        className="rounded-2xl p-4"
         style={{
           background: 'linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)',
           border: '1px solid rgba(255, 255, 255, 0.05)',
@@ -65,12 +65,12 @@ export function MobileHealthSnapshot({
         }}
       >
         {/* Header */}
-        <div className="text-center mb-6">
-          <span className="text-lg text-white/70">🧬 {translate('health.healthSnapshot')}</span>
+        <div className="text-center mb-3">
+          <span className="text-base text-white/70">🧬 {translate('health.healthSnapshot')}</span>
         </div>
 
         {/* Vitana Index - Dominant Visual */}
-        <div className="relative flex flex-col items-center mb-6">
+        <div className="relative flex flex-col items-center mb-3">
           {/* Ambient glow */}
           <div 
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -83,7 +83,7 @@ export function MobileHealthSnapshot({
           
           {/* Score */}
           <span 
-            className="relative text-6xl font-extrabold tracking-tight"
+            className="relative text-5xl font-extrabold tracking-tight"
             style={{
               background: 'linear-gradient(135deg, hsl(199, 60%, 58%) 0%, hsl(239, 50%, 72%) 100%)',
               WebkitBackgroundClip: 'text',
@@ -95,7 +95,7 @@ export function MobileHealthSnapshot({
           </span>
 
           {/* Status Text */}
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-2">
             <span className="text-white/60 text-sm">
               {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
             </span>
@@ -129,10 +129,10 @@ export function MobileHealthSnapshot({
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-white/5 my-4" />
+        <div className="h-px bg-white/5 my-3" />
 
         {/* Pillar Micro-bars */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {PILLAR_CONFIG.map(({ key, label, emoji }) => {
             const value = pillars[key as keyof PillarData];
             if (value === undefined) return null;
