@@ -277,21 +277,13 @@ export default function MyBiology() {
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-4 gap-3 mb-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => logBiomarkerUpload('manual', 'Manual Entry')}
+                        onClick={() => openUploadSheet('blood_panel')}
                       >
                         <Upload className="w-4 h-4 mr-2" />
-                        Manual Entry
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => logBiomarkerUpload('pdf', 'PDF Upload')}
-                      >
-                        <FileText className="w-4 h-4 mr-2" />
                         Upload PDF
                       </Button>
                       <Button 
@@ -301,14 +293,6 @@ export default function MyBiology() {
                       >
                         <Activity className="w-4 h-4 mr-2" />
                         Connect Device
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => logBiomarkerOrderTest('Lab Test')}
-                      >
-                        <TestTube className="w-4 h-4 mr-2" />
-                        Order Test
                       </Button>
                     </div>
 
