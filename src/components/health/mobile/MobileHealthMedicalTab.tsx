@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { FileText, Upload, Loader2 } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
@@ -82,17 +81,27 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
         </div>
         <div className="text-left">
           <p className="font-semibold text-foreground">{translate('health.uploadBloodTest', 'Upload Health Report')}</p>
-          <p className="text-sm text-muted-foreground">{translate('health.uploadDescription', 'Blood tests, imaging, lab results')}</p>
+          <p className="text-sm text-muted-foreground">{translate('health.uploadDescription')}</p>
         </div>
       </button>
 
       {/* Reports list */}
       {labReports.length === 0 ? (
-        <I18nEmptyState
-          Icon={FileText}
-          titleKey="health.noReports"
-          descriptionKey="health.noReportsDesc"
-        />
+        <div className="rounded-2xl bg-gradient-to-br from-primary/5 via-accent/10 to-primary/5 border border-border p-6 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <FileText className="h-8 w-8 text-primary" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            {translate('health.noReports')}
+          </h3>
+          <p className="text-sm text-muted-foreground max-w-xs mx-auto mb-5">
+            {translate('health.noReportsDesc')}
+          </p>
+          <Button size="sm" className="rounded-full gap-1.5" onClick={onUpload}>
+            <Upload className="h-4 w-4" />
+            {translate('health.uploadFirstReport')}
+          </Button>
+        </div>
       ) : (
         <div className="space-y-3">
           {labReports.map((report: any) => {
@@ -111,7 +120,7 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
                     {report.title || report.raw_file_ref || 'Health Report'}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {report.provider_name || report.source || translate('health.unknownProvider', 'Unknown provider')}
+                    {report.provider_name || report.source || translate('health.unknownProvider')}
                   </p>
                   {report.report_date && (
                     <p className="text-xs text-muted-foreground mt-0.5">

@@ -1164,7 +1164,17 @@
       "noMentalPlanDesc": "Generate your personalized mental wellness plan to track stress, focus, and emotional balance with AI guidance.",
       "generatePlan": "Generate Plan",
       "generating": "Generating..."
-    }
+    },
+    "noSupplements": "No Supplements Yet",
+    "noSupplementsDesc": "Track your daily vitamins, minerals, and supplements. Add your first supplement to get started.",
+    "noReports": "No Health Reports Yet",
+    "noReportsDesc": "Upload your blood tests, lab results, and medical reports to unlock personalized health insights.",
+    "medical": "Medical",
+    "supplements": "Supplements",
+    "uploadDescription": "Blood tests, imaging, lab results",
+    "unknownProvider": "Unknown provider",
+    "addSupplement": "Add Supplement",
+    "uploadFirstReport": "Upload First Report"
   },
   "home": {
     "title": "Home",
