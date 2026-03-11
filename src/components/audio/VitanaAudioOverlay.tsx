@@ -15,6 +15,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { pausePersisting, resumePersisting } from '@/audio/SoundscapeAudioManager';
+import { useAIConsent } from '@/hooks/useAIConsent';
+import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
 
 export function VitanaAudioOverlay() {
   const { 
@@ -35,7 +37,10 @@ export function VitanaAudioOverlay() {
   const [textInputValue, setTextInputValue] = useState('');
   const [showDiaryEntry, setShowDiaryEntry] = useState(false);
   const [showAutopilot, setShowAutopilot] = useState(false);
-  const [micMuted, setMicMuted] = useState(false); // User-controlled mute state
+  const [micMuted, setMicMuted] = useState(false);
+
+  // AI consent gate
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
   
   // Visual context for screen/camera sharing (preserved for future multimodal)
   const { 
@@ -69,9 +74,16 @@ export function VitanaAudioOverlay() {
   // connect/disconnect are stable refs — only audioOverlayVisible triggers this
   useEffect(() => {
     if (audioOverlayVisible) {
+      // Gate on AI consent
+      if (!hasConsent) {
+        console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
+        setConsentDialogOpen(true);
+        setAudioOverlayVisible(false);
+        return;
+      }
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
-      setMicMuted(false); // Always start with open mic
-      pausePersisting(); // Stop soundscape I/O during voice session
+      setMicMuted(false);
+      pausePersisting();
       connect();
     } else {
       console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
@@ -213,9 +225,10 @@ export function VitanaAudioOverlay() {
     setAutopilotActive(false);
   };
 
-  if (!audioOverlayVisible) return null;
+  if (!audioOverlayVisible && !consentDialogOpen) return null;
 
   return (
+    <>
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
@@ -342,5 +355,13 @@ export function VitanaAudioOverlay() {
         />
       </motion.div>
     </AnimatePresence>
+
+    {/* AI Data Consent Dialog */}
+    <AIDataConsentDialog
+      open={consentDialogOpen}
+      onOpenChange={setConsentDialogOpen}
+      onConsent={grantConsent}
+    />
+    </>
   );
 }

@@ -7,7 +7,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon } from "lucide-react";
+import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon, Brain } from "lucide-react";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { settingsNavigation } from "@/config/navigation";
@@ -15,10 +15,13 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
 import { PrivacyAuditPopup } from "@/components/PrivacyAuditPopup";
+import { useAIConsent } from "@/hooks/useAIConsent";
+import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 
 function Privacy() {
   const [activeTab, setActiveTab] = useState("profile");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
 
   return (
     <AppLayout>
@@ -223,6 +226,47 @@ function Privacy() {
                   />
                 </div>
 
+                {/* AI Data Sharing Consent */}
+                <div className="col-span-12">
+                  <StandardCard
+                    title="AI Data Sharing"
+                    subtitle="Third-Party AI Disclosure"
+                    icon={Brain}
+                    content={
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-medium">Share data with AI provider</h4>
+                            <p className="text-sm text-muted-foreground">
+                              Voice, text, diary, and profile data is sent to Google (Gemini AI) via Lovable AI Gateway for personalized responses.
+                            </p>
+                          </div>
+                          <Switch
+                            checked={hasConsent}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setConsentDialogOpen(true);
+                              } else {
+                                revokeConsent();
+                              }
+                            }}
+                          />
+                        </div>
+                        {hasConsent && (
+                          <p className="text-xs text-muted-foreground">
+                            Consent granted. You can revoke at any time by toggling this off.
+                          </p>
+                        )}
+                        {!hasConsent && (
+                          <p className="text-xs text-muted-foreground">
+                            AI features (voice assistant, proactive messages, profile enhancement) are disabled until consent is granted.
+                          </p>
+                        )}
+                      </div>
+                    }
+                  />
+                </div>
+
                 {/* Row 2: Motivational Banner */}
                 <div className="col-span-12">
                   <MotivationalBanner variant="guidance" />
@@ -401,6 +445,11 @@ function Privacy() {
         </div>
       </div>
       <PrivacyAuditPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
+      <AIDataConsentDialog
+        open={consentDialogOpen}
+        onOpenChange={setConsentDialogOpen}
+        onConsent={grantConsent}
+      />
     </AppLayout>
   );
 }

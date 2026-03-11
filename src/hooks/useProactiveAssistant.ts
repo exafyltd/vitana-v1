@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTextToSpeech } from './useTextToSpeech';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAIConsent } from '@/hooks/useAIConsent';
 interface ProactiveMessage {
   id: string;
   text: string;
@@ -18,6 +19,7 @@ export function useProactiveAssistant() {
   const { speak, isSpeaking } = useTextToSpeech();
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  const { hasConsent } = useAIConsent();
   
   // Log when selectedLanguage changes
   useEffect(() => {
@@ -36,6 +38,17 @@ export function useProactiveAssistant() {
   };
 
   const triggerProactiveMessage = useCallback(async () => {
+    // Gate on AI consent
+    if (!hasConsent) {
+      console.log('[ProactiveAssistant] No AI consent — skipping');
+      toast({
+        title: 'AI consent required',
+        description: 'Please grant AI data sharing consent in Settings > Privacy to use this feature.',
+        variant: 'default',
+      });
+      return;
+    }
+
     // Try to get session (optional)
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -137,7 +150,7 @@ const accessToken = session?.access_token;
     } finally {
       setIsGenerating(false);
     }
-  }, [lastMessageTime, speak, toast, selectedLanguage]);
+  }, [lastMessageTime, speak, toast, selectedLanguage, hasConsent]);
 
   const replayLastMessage = useCallback(() => {
     if (messageHistory.length > 0 && !isSpeaking) {

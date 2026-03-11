@@ -10595,6 +10595,8 @@ export type Database = {
       }
       user_preferences: {
         Row: {
+          ai_data_consent_date: string | null
+          ai_data_consent_given: boolean
           ai_model: string | null
           ai_response_length: string | null
           ai_temperature: number | null
@@ -10628,6 +10630,8 @@ export type Database = {
           wellness_goals: string[] | null
         }
         Insert: {
+          ai_data_consent_date?: string | null
+          ai_data_consent_given?: boolean
           ai_model?: string | null
           ai_response_length?: string | null
           ai_temperature?: number | null
@@ -10661,6 +10665,8 @@ export type Database = {
           wellness_goals?: string[] | null
         }
         Update: {
+          ai_data_consent_date?: string | null
+          ai_data_consent_given?: boolean
           ai_model?: string | null
           ai_response_length?: string | null
           ai_temperature?: number | null

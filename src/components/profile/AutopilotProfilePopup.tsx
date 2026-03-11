@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAIConsent } from "@/hooks/useAIConsent";
+import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 
 interface AutopilotProfilePopupProps {
   open: boolean;
@@ -68,6 +70,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
   const [acceptedFields, setAcceptedFields] = useState<Set<string>>(new Set());
   const { translate } = useTranslation();
   const { toast } = useToast();
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
 
   const handleSuggestionToggle = (suggestionId: string) => {
     setSelectedSuggestions(prev =>
@@ -90,6 +93,10 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
   };
 
   const handleRunAutopilot = async () => {
+    if (!hasConsent) {
+      setConsentDialogOpen(true);
+      return;
+    }
     setStep("loading");
     try {
       const { data, error } = await supabase.functions.invoke("autopilot-profile", {
@@ -179,6 +186,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
     (!suggestions.archetype || acceptedFields.has("archetype"));
 
   return (
+    <>
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[520px] p-0">
         <div className="p-6">
@@ -320,6 +328,12 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
         </div>
       </DialogContent>
     </Dialog>
+    <AIDataConsentDialog
+      open={consentDialogOpen}
+      onOpenChange={setConsentDialogOpen}
+      onConsent={grantConsent}
+    />
+    </>
   );
 }
 
