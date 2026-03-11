@@ -83,7 +83,7 @@ export function MobileHealthSnapshot({
           
           {/* Score */}
           <span 
-            className="relative text-6xl font-extrabold tracking-tight"
+            className="relative text-5xl font-extrabold tracking-tight"
             style={{
               background: 'linear-gradient(135deg, hsl(199, 60%, 58%) 0%, hsl(239, 50%, 72%) 100%)',
               WebkitBackgroundClip: 'text',
