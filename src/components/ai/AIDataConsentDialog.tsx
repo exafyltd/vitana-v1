@@ -74,15 +74,15 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
           {/* Privacy guarantees */}
           <div className="space-y-2 text-sm">
             <div className="flex items-start gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
               <span>{translate('consent.aiData.notStored', 'Data is not permanently stored by the AI provider')}</span>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
               <span>{translate('consent.aiData.revokeAnytime', 'You can revoke consent anytime in Settings > Privacy')}</span>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
               <span>{translate('consent.aiData.gdprCompliant', 'Compliant with GDPR and privacy regulations')}</span>
             </div>
           </div>

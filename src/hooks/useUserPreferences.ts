@@ -44,6 +44,9 @@ export interface UserPreferences {
   interests: string[];
   wellness_goals: string[];
   shorts_filtering_enabled: boolean;
+  // AI Data Consent (Apple 5.1.1)
+  ai_data_consent_given: boolean;
+  ai_data_consent_date: string | null;
   created_at: string;
   updated_at: string;
 }
