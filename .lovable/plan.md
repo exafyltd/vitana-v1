@@ -1,33 +1,24 @@
+## Memory System Fix — Implementation Complete
 
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-# Update Privacy Policy — AI Data Sharing Disclosure
+### What was fixed
 
-## Why
-Apple's rejection note specifically requires: *"Identify in the privacy policy what data the app collects, how it collects that data, all uses of that data, and confirm any third party the app shares data with provides the same or equal protection."*
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-The current privacy policy (Section 5) mentions generic "Service Providers and Partners" but does **not** name Google/Gemini or describe what personal data is sent to AI services.
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-## Change
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-**File:** `src/pages/legal/PrivacyPolicy.tsx`
-
-Add a new bullet to the Section 5 sharing list (`<ul>` at lines 132-137) specifically for AI:
-
-```
-<li>
-  <strong>AI Service Providers:</strong> To power the in-app AI assistant,
-  certain personal data — including voice recordings and transcripts, text
-  messages and diary entries, Memory Garden entries, wellness goals, and
-  profile context (such as your name and preferences) — may be transmitted
-  to Google (Gemini AI models) via the Lovable AI Gateway. This data is
-  sent only after you provide explicit consent through an in-app disclosure
-  dialog. It is transmitted via encrypted connections and is not permanently
-  stored by the AI provider. You may revoke this consent at any time in
-  Settings &gt; Privacy. Google is contractually required to provide
-  protections equivalent to or exceeding those described in this Privacy
-  Policy.
-</li>
-```
-
-This is a single addition — no other sections need changes, since the data types are already listed in Section 3 and the consent mechanism is already built.
-
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
