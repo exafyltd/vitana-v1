@@ -74,9 +74,16 @@ export function VitanaAudioOverlay() {
   // connect/disconnect are stable refs — only audioOverlayVisible triggers this
   useEffect(() => {
     if (audioOverlayVisible) {
+      // Gate on AI consent
+      if (!hasConsent) {
+        console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
+        setConsentDialogOpen(true);
+        setAudioOverlayVisible(false);
+        return;
+      }
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
-      setMicMuted(false); // Always start with open mic
-      pausePersisting(); // Stop soundscape I/O during voice session
+      setMicMuted(false);
+      pausePersisting();
       connect();
     } else {
       console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
