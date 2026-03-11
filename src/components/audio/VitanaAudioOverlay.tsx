@@ -373,7 +373,10 @@ export function VitanaAudioOverlay() {
     <AIDataConsentDialog
       open={consentDialogOpen}
       onOpenChange={setConsentDialogOpen}
-      onConsent={grantConsent}
+      onConsent={() => {
+        grantConsent();
+        setTimeout(() => setAudioOverlayVisible(true), 300);
+      }}
     />
     </>
   );
