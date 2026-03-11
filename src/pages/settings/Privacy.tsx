@@ -7,7 +7,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
-import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon } from "lucide-react";
+import { Plus, Shield, Eye, Users, Lock, Smartphone, History, Settings as SettingsIcon, Brain } from "lucide-react";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { settingsNavigation } from "@/config/navigation";
@@ -15,6 +15,8 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
 import { PrivacyAuditPopup } from "@/components/PrivacyAuditPopup";
+import { useAIConsent } from "@/hooks/useAIConsent";
+import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 
 function Privacy() {
   const [activeTab, setActiveTab] = useState("profile");
