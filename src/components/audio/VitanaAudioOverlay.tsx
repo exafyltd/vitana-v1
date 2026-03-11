@@ -377,6 +377,7 @@ export function VitanaAudioOverlay() {
       onOpenChange={setConsentDialogOpen}
       onConsent={() => {
         grantConsent();
+        consentJustGrantedRef.current = true;
         setTimeout(() => setAudioOverlayVisible(true), 300);
       }}
     />
