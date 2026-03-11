@@ -1,24 +1,22 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
 
-### What was fixed
+# Compress Health Snapshot card to fit viewport
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+The card has excessive internal spacing that pushes the bottom pillar bars off-screen. Tightening paddings and margins will make it fit.
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+## Changes — `src/components/health/mobile/MobileHealthSnapshot.tsx`
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+| Location | Current | New |
+|----------|---------|-----|
+| Outer wrapper (line 58) | `mx-4 mt-1` | `mx-4 mt-0` |
+| Card padding (line 60) | `p-6` | `p-4` |
+| Header margin (line 68) | `mb-6` | `mb-3` |
+| Header text (line 69) | `text-lg` | `text-base` |
+| Score section margin (line 73) | `mb-6` | `mb-3` |
+| Score font (line 86) | `text-6xl` | `text-5xl` |
+| Status text margin (line 98) | `mt-3` | `mt-2` |
+| Divider margin (line 132) | `my-4` | `my-3` |
+| Pillar rows spacing (line 135) | `space-y-3` | `space-y-2` |
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+These are purely spacing/size reductions — no layout or logic changes. The card will compress ~80-100px vertically, fitting entirely within the viewport above the bottom nav.
+
