@@ -327,6 +327,12 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
         </div>
       </DialogContent>
     </Dialog>
+    <AIDataConsentDialog
+      open={consentDialogOpen}
+      onOpenChange={setConsentDialogOpen}
+      onConsent={grantConsent}
+    />
+    </>
   );
 }
 
