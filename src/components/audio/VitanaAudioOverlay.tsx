@@ -249,7 +249,7 @@ export function VitanaAudioOverlay() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
-        className="fixed inset-0 z-[100]"
+        className="fixed inset-0 z-[100] bg-background/10 backdrop-blur-xl"
         role="dialog"
         aria-label="VITANA Audio Mode"
         style={{ pointerEvents: 'auto' }}
