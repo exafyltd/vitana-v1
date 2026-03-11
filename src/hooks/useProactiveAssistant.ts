@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTextToSpeech } from './useTextToSpeech';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAIConsent } from '@/hooks/useAIConsent';
 interface ProactiveMessage {
   id: string;
   text: string;
