@@ -226,6 +226,47 @@ function Privacy() {
                   />
                 </div>
 
+                {/* AI Data Sharing Consent */}
+                <div className="col-span-12">
+                  <StandardCard
+                    title="AI Data Sharing"
+                    subtitle="Third-Party AI Disclosure"
+                    icon={Brain}
+                    content={
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-medium">Share data with AI provider</h4>
+                            <p className="text-sm text-muted-foreground">
+                              Voice, text, diary, and profile data is sent to Google (Gemini AI) via Lovable AI Gateway for personalized responses.
+                            </p>
+                          </div>
+                          <Switch
+                            checked={hasConsent}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setConsentDialogOpen(true);
+                              } else {
+                                revokeConsent();
+                              }
+                            }}
+                          />
+                        </div>
+                        {hasConsent && (
+                          <p className="text-xs text-muted-foreground">
+                            Consent granted. You can revoke at any time by toggling this off.
+                          </p>
+                        )}
+                        {!hasConsent && (
+                          <p className="text-xs text-muted-foreground">
+                            AI features (voice assistant, proactive messages, profile enhancement) are disabled until consent is granted.
+                          </p>
+                        )}
+                      </div>
+                    }
+                  />
+                </div>
+
                 {/* Row 2: Motivational Banner */}
                 <div className="col-span-12">
                   <MotivationalBanner variant="guidance" />
