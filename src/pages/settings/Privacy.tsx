@@ -21,6 +21,7 @@ import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 function Privacy() {
   const [activeTab, setActiveTab] = useState("profile");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
 
   return (
     <AppLayout>
