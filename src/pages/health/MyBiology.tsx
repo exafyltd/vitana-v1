@@ -507,6 +507,13 @@ export default function MyBiology() {
         } : undefined}
         mode={editingSupplement ? 'edit' : 'add'}
       />
+
+      <HealthReportUploadSheet
+        open={uploadSheetOpen}
+        onOpenChange={setUploadSheetOpen}
+        onUploadComplete={() => refetchReports()}
+        defaultCategory={uploadDefaultCategory as any}
+      />
     </AppLayout>
   );
 }
