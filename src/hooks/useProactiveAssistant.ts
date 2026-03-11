@@ -150,7 +150,7 @@ const accessToken = session?.access_token;
     } finally {
       setIsGenerating(false);
     }
-  }, [lastMessageTime, speak, toast, selectedLanguage]);
+  }, [lastMessageTime, speak, toast, selectedLanguage, hasConsent]);
 
   const replayLastMessage = useCallback(() => {
     if (messageHistory.length > 0 && !isSpeaking) {

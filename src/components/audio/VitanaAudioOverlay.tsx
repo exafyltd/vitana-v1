@@ -354,5 +354,13 @@ export function VitanaAudioOverlay() {
         />
       </motion.div>
     </AnimatePresence>
+
+    {/* AI Data Consent Dialog */}
+    <AIDataConsentDialog
+      open={consentDialogOpen}
+      onOpenChange={setConsentDialogOpen}
+      onConsent={grantConsent}
+    />
+    </>
   );
 }
