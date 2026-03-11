@@ -384,6 +384,16 @@ export default function MyBiology() {
                       screenId="my-biology-omics"
                       groupBy="none"
                       gap="md"
+                      emptyState={
+                        <div className="text-center py-12 text-muted-foreground">
+                          <Dna className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                          <p className="font-medium mb-1">No omics data yet</p>
+                          <p className="text-sm">Upload your genomics or metabolomics results to unlock deeper insights.</p>
+                          <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('genomics')}>
+                            <Upload className="w-4 h-4 mr-2" /> Upload Omics Report
+                          </Button>
+                        </div>
+                      }
                     />
                   </CardContent>
                 </Card>
