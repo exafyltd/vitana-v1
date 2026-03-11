@@ -70,7 +70,7 @@ export function MobileHealthSnapshot({
         </div>
 
         {/* Vitana Index - Dominant Visual */}
-        <div className="relative flex flex-col items-center mb-6">
+        <div className="relative flex flex-col items-center mb-3">
           {/* Ambient glow */}
           <div 
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
