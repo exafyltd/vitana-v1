@@ -331,8 +331,12 @@ export default function MyBiology() {
                       gap="md"
                       emptyState={
                         <div className="text-center py-12 text-muted-foreground">
-                          <TestTube className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p>No medical biomarker data yet. Add your first results above.</p>
+                          <Droplets className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                          <p className="font-medium mb-1">No medical reports yet</p>
+                          <p className="text-sm">Upload your first blood panel to start building your health profile.</p>
+                          <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('blood_panel')}>
+                            <Upload className="w-4 h-4 mr-2" /> Upload Blood Panel
+                          </Button>
                         </div>
                       }
                     />
