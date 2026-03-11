@@ -85,6 +85,26 @@ interface OmicsResult {
   description: string;
 }
 
+// Report type display config
+const REPORT_TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode; badgeClass: string }> = {
+  blood_panel: { label: 'Blood Panel', icon: <Droplets className="w-4 h-4" />, badgeClass: 'bg-red-500/10 text-red-600 border-red-500/20' },
+  genomics: { label: 'Genomics', icon: <Dna className="w-4 h-4" />, badgeClass: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
+  metabolomics: { label: 'Metabolomics', icon: <FlaskConical className="w-4 h-4" />, badgeClass: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20' },
+  microbiome: { label: 'Microbiome', icon: <Bug className="w-4 h-4" />, badgeClass: 'bg-green-500/10 text-green-600 border-green-500/20' },
+  allergy: { label: 'Allergy', icon: <AlertTriangle className="w-4 h-4" />, badgeClass: 'bg-orange-500/10 text-orange-600 border-orange-500/20' },
+  cancer: { label: 'Cancer', icon: <Heart className="w-4 h-4" />, badgeClass: 'bg-pink-500/10 text-pink-600 border-pink-500/20' },
+  hormones: { label: 'Hormones', icon: <FlaskConical className="w-4 h-4" />, badgeClass: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' },
+  imaging: { label: 'Imaging', icon: <Scan className="w-4 h-4" />, badgeClass: 'bg-sky-500/10 text-sky-600 border-sky-500/20' },
+  other: { label: 'Other', icon: <MoreHorizontal className="w-4 h-4" />, badgeClass: 'bg-muted text-muted-foreground border-border' },
+};
+
+const STATUS_CONFIG: Record<string, { label: string; variant: 'secondary' | 'outline' | 'destructive' | 'default' }> = {
+  uploaded: { label: 'Uploaded', variant: 'secondary' },
+  processing: { label: 'Processing', variant: 'outline' },
+  parsed: { label: 'Analyzed', variant: 'default' },
+  failed: { label: 'Failed', variant: 'destructive' },
+};
+
 export default function MyBiology() {
   const [results, setResults] = useState<TestResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -93,8 +113,12 @@ export default function MyBiology() {
   const [supplementDialogOpen, setSupplementDialogOpen] = useState(false);
   const [editingSupplement, setEditingSupplement] = useState<UserSupplement | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [mockOmicsResults, setMockOmicsResults] = useState<OmicsResult[]>([]);
+  const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
+  const [uploadDefaultCategory, setUploadDefaultCategory] = useState<string>('blood_panel');
   
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
   const { 
     supplements, 
     isLoading: supplementsLoading,
@@ -113,71 +137,57 @@ export default function MyBiology() {
     logOmicsConnectAPI
   } = useHealthLogger();
 
-  const getMockOmicsResults = (): OmicsResult[] => {
-    return [
-      {
-        id: '1',
-        name: 'Whole Genome Sequencing',
-        category: 'Genomics',
-        provider: '23andMe',
-        date: '2024-01-15',
-        description: 'Complete DNA analysis with ancestry and health insights',
-      },
-      {
-        id: '2',
-        name: 'Metabolic Panel',
-        category: 'Metabolomics',
-        provider: 'Viome',
-        date: '2024-02-10',
-        description: 'Comprehensive metabolite analysis',
-      },
-      {
-        id: '3',
-        name: 'Gut Microbiome Analysis',
-        category: 'Microbiome',
-        provider: 'Thorne',
-        date: '2024-01-28',
-        description: 'Bacterial diversity and gut health assessment',
-      },
-      {
-        id: '4',
-        name: 'Proteomics Analysis',
-        category: 'Proteomics',
-        provider: 'SomaLogic',
-        date: '2023-12-15',
-        description: 'Protein biomarker profiling',
-      },
-      {
-        id: '5',
-        name: 'DNA Methylation Test',
-        category: 'Epigenomics',
-        provider: 'TruDiagnostic',
-        date: '2024-01-05',
-        description: 'Biological age and epigenetic markers',
-      },
-      {
-        id: '6',
-        name: 'Skin Microbiome Analysis',
-        category: 'Skin Microbiome',
-        provider: 'uBiome',
-        date: '2023-11-20',
-        description: 'Skin bacteria and fungi diversity assessment',
-      },
-      {
-        id: '7',
-        name: 'Environmental Microbiome',
-        category: 'Environmental Microbiome',
-        provider: 'BiomeSense',
-        date: '2023-10-15',
-        description: 'Home and workplace microbial environment analysis',
-      },
-    ];
+  // Fetch lab_reports (real data from DB)
+  const { data: labReports = [], isLoading: reportsLoading, refetch: refetchReports } = useQuery({
+    queryKey: ['lab-reports'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data, error } = await supabase
+        .from('lab_reports')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching lab reports:', error);
+        return [];
+      }
+      return data || [];
+    },
+  });
+
+  // Separate reports into medical (blood_panel, hormones, cancer, allergy) vs omics (genomics, metabolomics, microbiome)
+  const medicalTypes = ['blood_panel', 'hormones', 'cancer', 'allergy', 'imaging', 'other'];
+  const omicsTypes = ['genomics', 'metabolomics', 'microbiome'];
+
+  const medicalReports = labReports.filter((r: any) => 
+    !r.report_type || medicalTypes.includes(r.report_type)
+  );
+  const omicsReports = labReports.filter((r: any) => 
+    r.report_type && omicsTypes.includes(r.report_type)
+  );
+
+  const handleViewReport = async (filePath: string | null) => {
+    if (!filePath) {
+      toast({ title: "No file available", variant: "destructive" });
+      return;
+    }
+    const { data, error } = await supabase.storage
+      .from('health-reports')
+      .createSignedUrl(filePath, 3600);
+    
+    if (error || !data?.signedUrl) {
+      toast({ title: "Could not load file", description: error?.message, variant: "destructive" });
+      return;
+    }
+    window.open(data.signedUrl, '_blank');
   };
 
-  useEffect(() => {
-    fetchResults();
-    setMockOmicsResults(getMockOmicsResults());
-  }, []);
+  const openUploadSheet = (category: string) => {
+    setUploadDefaultCategory(category);
+    setUploadSheetOpen(true);
+  };
 
   const fetchResults = async () => {
     try {
