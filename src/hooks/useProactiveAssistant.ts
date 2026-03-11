@@ -38,6 +38,17 @@ export function useProactiveAssistant() {
   };
 
   const triggerProactiveMessage = useCallback(async () => {
+    // Gate on AI consent
+    if (!hasConsent) {
+      console.log('[ProactiveAssistant] No AI consent — skipping');
+      toast({
+        title: 'AI consent required',
+        description: 'Please grant AI data sharing consent in Settings > Privacy to use this feature.',
+        variant: 'default',
+      });
+      return;
+    }
+
     // Try to get session (optional)
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
