@@ -26,7 +26,7 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
       <ResponsiveDialogContent className="max-w-lg">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-amber-500" />
+            <Shield className="w-5 h-5 text-destructive" />
             {translate('consent.aiData.title', 'AI Data Sharing Disclosure')}
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
