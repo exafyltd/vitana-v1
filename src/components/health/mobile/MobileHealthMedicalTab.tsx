@@ -71,19 +71,21 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
 
   return (
     <div className="px-4 space-y-4">
-      {/* Upload CTA */}
-      <button
-        onClick={onUpload}
-        className="w-full flex items-center gap-4 p-4 rounded-2xl border border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors"
-      >
-        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-          <Upload className="h-6 w-6 text-primary" />
-        </div>
-        <div className="text-left">
-          <p className="font-semibold text-foreground">{translate('health.uploadBloodTest', 'Upload Health Report')}</p>
-          <p className="text-sm text-muted-foreground">{translate('health.uploadDescription')}</p>
-        </div>
-      </button>
+      {/* Upload CTA — only show when reports exist; empty state has its own CTA */}
+      {labReports.length > 0 && (
+        <button
+          onClick={onUpload}
+          className="w-full flex items-center gap-4 p-4 rounded-2xl border border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors"
+        >
+          <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <Upload className="h-6 w-6 text-primary" />
+          </div>
+          <div className="text-left">
+            <p className="font-semibold text-foreground">{translate('health.uploadBloodTest', 'Upload Health Report')}</p>
+            <p className="text-sm text-muted-foreground">{translate('health.uploadDescription')}</p>
+          </div>
+        </button>
+      )}
 
       {/* Reports list */}
       {labReports.length === 0 ? (
