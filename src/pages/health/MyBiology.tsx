@@ -75,8 +75,6 @@ const STATUS_CONFIG: Record<string, { label: string; variant: 'secondary' | 'out
 };
 
 export default function MyBiology() {
-  const [results, setResults] = useState<TestResult[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("medical");
   const [supplementDialogOpen, setSupplementDialogOpen] = useState(false);
