@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus, Sparkles } from "lucide-react";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus, Sparkles, Upload } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
@@ -32,9 +32,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileHealthSnapshot } from "@/components/health/mobile/MobileHealthSnapshot";
 import { MobilePriorityFocus } from "@/components/health/mobile/MobilePriorityFocus";
 import { MobileAutopilotGuidance } from "@/components/health/mobile/MobileAutopilotGuidance";
-import { MobileHealthActionStrip } from "@/components/health/mobile/MobileHealthActionStrip";
+import { MobileHealthMedicalTab } from "@/components/health/mobile/MobileHealthMedicalTab";
+import { MobileHealthSupplementsTab } from "@/components/health/mobile/MobileHealthSupplementsTab";
 import { HealthReportUploadSheet } from "@/components/health/mobile/HealthReportUploadSheet";
 import { QuickLabOrderSheet } from "@/components/health/mobile/QuickLabOrderSheet";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 
 const overviewCards = [
   {
@@ -90,6 +92,7 @@ export default withScreenId(function Health() {
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const [vitanaScore] = useState(742);
   const [selectedPillar, setSelectedPillar] = useState("overview");
+  const [mobileTab, setMobileTab] = useState<'overview' | 'medical' | 'supplements'>('overview');
   
   const latestActions = getLatestActions(2);
 
@@ -184,44 +187,111 @@ export default withScreenId(function Health() {
   ];
 
   // Mobile-specific single-screen dashboard
+  const mobileTabs = [
+    { key: 'overview' as const, label: translate('health.tabs.overview', 'Overview') },
+    { key: 'medical' as const, label: translate('health.tabs.medical', 'Medical') },
+    { key: 'supplements' as const, label: translate('health.tabs.supplements', 'Supplements') },
+  ];
+
   if (isMobile) {
     return (
       <AppLayout>
         <SEO title="Health" description="Your personal health dashboard" canonical={window.location.href} />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background pb-32">
-          {/* 1. Health Snapshot (Hero) */}
-          <MobileHealthSnapshot
-            vitanaIndex={vitanaScore}
-            vitanaPercentile={15}
-            trend="up"
-            pillars={pillars}
-          />
-          
-          {/* 2. Priority Focus (Single) */}
-          <MobilePriorityFocus
-            pillarName={getPillarLabel(weakestPillar[0])}
-            pillarScore={weakestPillar[1]}
-            pillarEmoji={pillarEmojis[weakestPillar[0]]}
-            explanation={translate('health.priorityFocusExplanation')}
-          />
-          
-          {/* 3. Autopilot Guidance (Condensed) */}
-          <MobileAutopilotGuidance
-            suggestions={[
-              translate('health.suggestions.uploadBloodTestResults'),
-              translate('health.suggestions.startFitnessChallenge')
-            ]}
-            onTakeAction={() => setHealthActionsOpen(true)}
-          />
-          
-          {/* 4. Action Strip (Bottom) */}
-          <MobileHealthActionStrip
-            onUploadBloodTest={() => setUploadSheetOpen(true)}
-            onOrderBloodTest={() => setOrderSheetOpen(true)}
-            onViewPlans={() => navigate('/health/plans')}
-          />
+          {/* Standard Header */}
+          <div className="px-4 pt-2">
+            <StandardHeader
+              title={translate('health.title', 'Health & Wellness')}
+              description={translate('health.subtitle', 'Track and manage your health journey')}
+              emoji="🌱"
+            />
+          </div>
+
+          {/* Utility Action Bar */}
+          <div className="px-4">
+            <UtilityActionButton
+              afterGiftVoucherChildren={
+                <>
+                  <VitanaIndexChip />
+                  <AutopilotChip 
+                    pendingCount={pendingCount} 
+                    onClick={() => setAutopilotOpen(true)} 
+                  />
+                </>
+              }
+            >
+              <ExpandableSearchButton placeholder={translate('health.searchPlaceholder', 'Search reports, supplements...')} />
+              <UniversalCalendarButton />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                onClick={() => setUploadSheetOpen(true)}
+              >
+                <Upload className="h-4 w-4" />
+                {translate('health.upload', 'Upload')}
+              </Button>
+            </UtilityActionButton>
+          </div>
+
+          {/* Tab Bar */}
+          <div className="px-4 pb-3">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+              {mobileTabs.map(tab => (
+                <button
+                  key={tab.key}
+                  onClick={() => setMobileTab(tab.key)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
+                    mobileTab === tab.key
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <div className="flex-1 overflow-y-auto">
+            {mobileTab === 'overview' && (
+              <>
+                <MobileHealthSnapshot
+                  vitanaIndex={vitanaScore}
+                  vitanaPercentile={15}
+                  trend="up"
+                  pillars={pillars}
+                />
+                <MobilePriorityFocus
+                  pillarName={getPillarLabel(weakestPillar[0])}
+                  pillarScore={weakestPillar[1]}
+                  pillarEmoji={pillarEmojis[weakestPillar[0]]}
+                  explanation={translate('health.priorityFocusExplanation')}
+                />
+                <MobileAutopilotGuidance
+                  suggestions={[
+                    translate('health.suggestions.uploadBloodTestResults'),
+                    translate('health.suggestions.startFitnessChallenge')
+                  ]}
+                  onTakeAction={() => setHealthActionsOpen(true)}
+                />
+              </>
+            )}
+            {mobileTab === 'medical' && (
+              <MobileHealthMedicalTab onUpload={() => setUploadSheetOpen(true)} />
+            )}
+            {mobileTab === 'supplements' && (
+              <MobileHealthSupplementsTab />
+            )}
+          </div>
         </div>
+        
+        <AutopilotPopup
+          open={autopilotOpen}
+          onOpenChange={setAutopilotOpen}
+        />
         
         <HealthMasterActionPopup
           open={healthActionsOpen}
