@@ -132,7 +132,7 @@ export function MobileHealthSnapshot({
         <div className="h-px bg-white/5 my-3" />
 
         {/* Pillar Micro-bars */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {PILLAR_CONFIG.map(({ key, label, emoji }) => {
             const value = pillars[key as keyof PillarData];
             if (value === undefined) return null;
