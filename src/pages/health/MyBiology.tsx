@@ -359,7 +359,7 @@ export default function MyBiology() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => logOmicsUpload('Omics Data', 'Provider')}
+                        onClick={() => openUploadSheet('genomics')}
                       >
                         <FileText className="w-4 h-4 mr-2" />
                         Upload Results
