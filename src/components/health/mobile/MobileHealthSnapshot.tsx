@@ -129,7 +129,7 @@ export function MobileHealthSnapshot({
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-white/5 my-4" />
+        <div className="h-px bg-white/5 my-3" />
 
         {/* Pillar Micro-bars */}
         <div className="space-y-3">
