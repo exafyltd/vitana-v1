@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus, Sparkles } from "lucide-react";
+import { Heart, Droplets, Apple, Dumbbell, Moon, Brain, Stethoscope, Target, AlertTriangle, BookOpen, Users, Calendar, ShoppingBag, Activity, Star, TrendingUp, User, FileText, Plane, Search, Plus, Sparkles, Upload } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { HealthMasterActionPopup } from "@/components/HealthMasterActionPopup";
@@ -32,9 +32,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileHealthSnapshot } from "@/components/health/mobile/MobileHealthSnapshot";
 import { MobilePriorityFocus } from "@/components/health/mobile/MobilePriorityFocus";
 import { MobileAutopilotGuidance } from "@/components/health/mobile/MobileAutopilotGuidance";
-import { MobileHealthActionStrip } from "@/components/health/mobile/MobileHealthActionStrip";
+import { MobileHealthMedicalTab } from "@/components/health/mobile/MobileHealthMedicalTab";
+import { MobileHealthSupplementsTab } from "@/components/health/mobile/MobileHealthSupplementsTab";
 import { HealthReportUploadSheet } from "@/components/health/mobile/HealthReportUploadSheet";
 import { QuickLabOrderSheet } from "@/components/health/mobile/QuickLabOrderSheet";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 
 const overviewCards = [
   {
