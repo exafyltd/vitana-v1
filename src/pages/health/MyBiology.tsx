@@ -45,7 +45,7 @@ import { SupplementCard } from '@/components/supplements/SupplementCard';
 import { getAllCategories } from '@/components/supplements/supplementCategories';
 import { HealthReportUploadSheet } from '@/components/health/mobile/HealthReportUploadSheet';
 import { useToast } from '@/hooks/use-toast';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   Select,
   SelectContent,
