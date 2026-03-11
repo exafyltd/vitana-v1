@@ -217,8 +217,8 @@ export default withScreenId(function Health() {
           
           {/* 4. Action Strip (Bottom) */}
           <MobileHealthActionStrip
-            onUploadBloodTest={() => navigate('/health/biomarker-results')}
-            onOrderBloodTest={() => navigate('/health/services-hub')}
+            onUploadBloodTest={() => setUploadSheetOpen(true)}
+            onOrderBloodTest={() => setOrderSheetOpen(true)}
             onViewPlans={() => navigate('/health/plans')}
           />
         </div>
@@ -226,6 +226,18 @@ export default withScreenId(function Health() {
         <HealthMasterActionPopup
           open={healthActionsOpen}
           onOpenChange={setHealthActionsOpen}
+          onUploadOpen={() => setUploadSheetOpen(true)}
+          onOrderOpen={() => setOrderSheetOpen(true)}
+        />
+        
+        <HealthReportUploadSheet
+          open={uploadSheetOpen}
+          onOpenChange={setUploadSheetOpen}
+        />
+        
+        <QuickLabOrderSheet
+          open={orderSheetOpen}
+          onOpenChange={setOrderSheetOpen}
         />
       </AppLayout>
     );
