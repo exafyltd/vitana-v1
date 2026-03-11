@@ -1,24 +1,40 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
+# Change Health action button to use Plus icon (consistency with other screens)
 
-### What was fixed
+## Problem
+The mobile Health screen uses an Upload icon (`<Upload className="h-4 w-4" />`) for its primary action button, while all other mobile screens (Wallet, Business Hub, etc.) use a Plus icon (`<Plus className="h-4 w-4" />`). This breaks visual consistency.
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+## Fix
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+**`src/pages/Health.tsx`** - Change lines 220-228:
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+Current:
+```tsx
+<Button
+  variant="ghost"
+  size="sm"
+  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+  onClick={() => setUploadSheetOpen(true)}
+>
+  <Upload className="h-4 w-4" />
+  {translate('health.upload', 'Upload')}
+</Button>
+```
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+Change to:
+```tsx
+<Button
+  variant="ghost"
+  size="sm"
+  className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+  onClick={() => setUploadSheetOpen(true)}
+>
+  <Plus className="h-4 w-4" />
+  <span className="text-sm">{translate('buttons.create', 'Add')}</span>
+</Button>
+```
+
+Also update imports to add `Plus` (already imported in the file).
+
+## Translation
+Uses existing key `buttons.create` with fallback "Add", consistent with Business Hub pattern (line 179 of BusinessHub.tsx uses same pattern).
