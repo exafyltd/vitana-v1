@@ -187,12 +187,6 @@ export default withScreenId(function Health() {
   ];
 
   // Mobile-specific single-screen dashboard
-  const mobileTabs = [
-    { key: 'overview' as const, label: translate('health.tabs.overview', 'Overview') },
-    { key: 'medical' as const, label: translate('health.tabs.medical', 'Medical') },
-    { key: 'supplements' as const, label: translate('health.tabs.supplements', 'Supplements') },
-  ];
-
   if (isMobile) {
     return (
       <AppLayout>
