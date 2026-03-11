@@ -225,9 +225,10 @@ export function VitanaAudioOverlay() {
     setAutopilotActive(false);
   };
 
-  if (!audioOverlayVisible) return null;
+  if (!audioOverlayVisible && !consentDialogOpen) return null;
 
   return (
+    <>
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
