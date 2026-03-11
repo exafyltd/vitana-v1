@@ -86,12 +86,13 @@ export function VitanaAudioOverlay() {
   useEffect(() => {
     if (audioOverlayVisible) {
       // Gate on AI consent
-      if (!hasConsent) {
+      if (!hasConsent && !consentJustGrantedRef.current) {
         console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
         setConsentDialogOpen(true);
         setAudioOverlayVisible(false);
         return;
       }
+      consentJustGrantedRef.current = false;
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
       setMicMuted(false);
       pausePersisting();
