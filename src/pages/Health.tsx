@@ -86,6 +86,8 @@ export default withScreenId(function Health() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
+  const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const [vitanaScore] = useState(742);
   const [selectedPillar, setSelectedPillar] = useState("overview");
   
