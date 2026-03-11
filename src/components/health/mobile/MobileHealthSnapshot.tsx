@@ -95,7 +95,7 @@ export function MobileHealthSnapshot({
           </span>
 
           {/* Status Text */}
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-2">
             <span className="text-white/60 text-sm">
               {translate('health.topPercentile').replace('{percent}', vitanaPercentile.toString())}
             </span>
