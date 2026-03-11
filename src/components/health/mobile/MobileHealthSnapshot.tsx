@@ -65,8 +65,8 @@ export function MobileHealthSnapshot({
         }}
       >
         {/* Header */}
-        <div className="text-center mb-6">
-          <span className="text-lg text-white/70">🧬 {translate('health.healthSnapshot')}</span>
+        <div className="text-center mb-3">
+          <span className="text-base text-white/70">🧬 {translate('health.healthSnapshot')}</span>
         </div>
 
         {/* Vitana Index - Dominant Visual */}
