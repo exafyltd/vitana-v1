@@ -224,7 +224,7 @@ export default withScreenId(function Health() {
                 onClick={() => setUploadSheetOpen(true)}
               >
                 <Plus className="h-4 w-4" />
-                <span className="text-sm">{translate('buttons.create', 'Add')}</span>
+                <span className="text-sm">{translate('health.upload', 'Upload')}</span>
               </Button>
             </UtilityActionButton>
           </div>
