@@ -37,7 +37,10 @@ export function VitanaAudioOverlay() {
   const [textInputValue, setTextInputValue] = useState('');
   const [showDiaryEntry, setShowDiaryEntry] = useState(false);
   const [showAutopilot, setShowAutopilot] = useState(false);
-  const [micMuted, setMicMuted] = useState(false); // User-controlled mute state
+  const [micMuted, setMicMuted] = useState(false);
+
+  // AI consent gate
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
   
   // Visual context for screen/camera sharing (preserved for future multimodal)
   const { 
