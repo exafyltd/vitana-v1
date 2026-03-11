@@ -4728,36 +4728,66 @@ export type Database = {
       }
       lab_reports: {
         Row: {
+          ai_summary: string | null
           created_at: string
+          file_path: string | null
+          file_size: number | null
           id: string
+          mime_type: string | null
           parsed_json: Json | null
+          processing_status:
+            | Database["public"]["Enums"]["health_processing_status"]
+            | null
+          provider_name: string | null
           raw_file_ref: string | null
           raw_text: string | null
           report_date: string | null
+          report_type: Database["public"]["Enums"]["health_report_type"] | null
           source: string | null
           tenant_id: string
+          title: string | null
           user_id: string
         }
         Insert: {
+          ai_summary?: string | null
           created_at?: string
+          file_path?: string | null
+          file_size?: number | null
           id?: string
+          mime_type?: string | null
           parsed_json?: Json | null
+          processing_status?:
+            | Database["public"]["Enums"]["health_processing_status"]
+            | null
+          provider_name?: string | null
           raw_file_ref?: string | null
           raw_text?: string | null
           report_date?: string | null
+          report_type?: Database["public"]["Enums"]["health_report_type"] | null
           source?: string | null
           tenant_id: string
+          title?: string | null
           user_id: string
         }
         Update: {
+          ai_summary?: string | null
           created_at?: string
+          file_path?: string | null
+          file_size?: number | null
           id?: string
+          mime_type?: string | null
           parsed_json?: Json | null
+          processing_status?:
+            | Database["public"]["Enums"]["health_processing_status"]
+            | null
+          provider_name?: string | null
           raw_file_ref?: string | null
           raw_text?: string | null
           report_date?: string | null
+          report_type?: Database["public"]["Enums"]["health_report_type"] | null
           source?: string | null
           tenant_id?: string
+          title?: string | null
           user_id?: string
         }
         Relationships: []
@@ -12939,6 +12969,17 @@ export type Database = {
         | "discord"
         | "telegram"
       collection_method: "home_kit" | "lab_facility"
+      health_processing_status: "uploaded" | "processing" | "parsed" | "failed"
+      health_report_type:
+        | "blood_panel"
+        | "genomics"
+        | "metabolomics"
+        | "microbiome"
+        | "allergy"
+        | "cancer"
+        | "hormones"
+        | "imaging"
+        | "other"
       lab_test_category:
         | "blood_markers"
         | "genomics"
@@ -13127,6 +13168,18 @@ export const Constants = {
         "telegram",
       ],
       collection_method: ["home_kit", "lab_facility"],
+      health_processing_status: ["uploaded", "processing", "parsed", "failed"],
+      health_report_type: [
+        "blood_panel",
+        "genomics",
+        "metabolomics",
+        "microbiome",
+        "allergy",
+        "cancer",
+        "hormones",
+        "imaging",
+        "other",
+      ],
       lab_test_category: [
         "blood_markers",
         "genomics",
