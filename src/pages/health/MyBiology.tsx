@@ -220,7 +220,34 @@ export default function MyBiology() {
   const transformedMedicalCards = buildReportCards(medicalReports);
   const transformedOmicsCards = buildReportCards(omicsReports);
 
-  return (
+  const handleSupplementSubmit = async (data: any) => {
+    if (editingSupplement) {
+      await updateSupplement(editingSupplement.id, data);
+      setEditingSupplement(null);
+    } else {
+      await createSupplement(data);
+    }
+  };
+
+  const handleEditSupplement = (supplement: UserSupplement) => {
+    setEditingSupplement(supplement);
+    setSupplementDialogOpen(true);
+  };
+
+  const handleDeleteSupplement = async (id: string) => {
+    await deleteSupplement(id);
+  };
+
+  const allCategories = getAllCategories();
+  const filteredSupplements = categoryFilter === "all" 
+    ? supplements 
+    : supplements.filter(s => s.category === categoryFilter);
+
+  const activeCategoryCount = supplements.reduce((acc, supp) => {
+    acc[supp.category] = (acc[supp.category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
     <AppLayout>
       <SEO 
         title="My Biology | Health" 
