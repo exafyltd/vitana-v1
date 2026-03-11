@@ -224,14 +224,14 @@ export default withScreenId(function Health() {
                 onClick={() => setUploadSheetOpen(true)}
               >
                 <Plus className="h-4 w-4" />
-                <span className="text-sm">{translate('buttons.create', 'Add')}</span>
+                <span className="text-sm">{translate('health.upload', 'Upload')}</span>
               </Button>
             </UtilityActionButton>
           </div>
 
           {/* SplitBar Tabs */}
           <SplitBar value={mobileTab} onValueChange={(v) => setMobileTab(v as any)}>
-            <div className="px-4 pb-2">
+            <div className="px-4 pb-0">
               <SplitBarList>
                 <SplitBarTrigger value="overview">{translate('health.tabs.overview', 'Overview')}</SplitBarTrigger>
                 <SplitBarTrigger value="medical">{translate('health.tabs.medical', 'Medical')}</SplitBarTrigger>

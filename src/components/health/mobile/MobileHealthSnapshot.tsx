@@ -55,7 +55,7 @@ export function MobileHealthSnapshot({
     : translate('health.trend.stable');
 
   return (
-    <div className="mx-4 mt-4">
+    <div className="mx-4 mt-1">
       <div 
         className="rounded-2xl p-6"
         style={{
