@@ -81,32 +81,38 @@ export function VitanaAudioOverlay() {
     onAutopilotOpen: () => setShowAutopilot(true),
   });
 
-  // Connect/disconnect based on overlay visibility
-  // connect/disconnect are stable refs — only audioOverlayVisible triggers this
-  useEffect(() => {
-    if (audioOverlayVisible) {
-      // Wait for preferences to load before checking consent
-      if (consentLoading) return;
+  // Derived: consent is satisfied (loaded + granted, or just-granted bypass)
+  const consentSatisfied = consentJustGrantedRef.current || (!consentLoading && hasConsent);
 
-      // Gate on AI consent
-      if (!hasConsent && !consentJustGrantedRef.current) {
-        console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
-        setConsentDialogOpen(true);
-        setAudioOverlayVisible(false);
-        return;
-      }
-      consentJustGrantedRef.current = false;
-      console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
-      setMicMuted(false);
-      pausePersisting();
-      connect();
-    } else {
-      console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
-      resumePersisting(); // Restore soundscape persistence
-      disconnect();
+  // Clear the just-granted ref once the persisted value catches up
+  useEffect(() => {
+    if (hasConsent) consentJustGrantedRef.current = false;
+  }, [hasConsent]);
+
+  // Show consent dialog when overlay is open but consent not yet given
+  useEffect(() => {
+    if (audioOverlayVisible && !consentLoading && !hasConsent && !consentJustGrantedRef.current) {
+      console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
+      setConsentDialogOpen(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioOverlayVisible, hasConsent, consentLoading]);
+
+  // Connect/disconnect based on overlay visibility + consent
+  useEffect(() => {
+    if (audioOverlayVisible && consentSatisfied) {
+      console.log('[VitanaAudioOverlay] Overlay opened + consent OK — connecting...');
+      setMicMuted(false);
+      pausePersisting();
+      connect();
+    } else if (!audioOverlayVisible) {
+      console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
+      resumePersisting();
+      disconnect();
+    }
+    // When audioOverlayVisible=true but consent not yet satisfied → do nothing, wait
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioOverlayVisible, consentSatisfied]);
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
@@ -240,12 +246,10 @@ export function VitanaAudioOverlay() {
     setAutopilotActive(false);
   };
 
-  if (!audioOverlayVisible && !consentDialogOpen) return null;
+  if (!audioOverlayVisible) return null;
 
   return (
     <>
-    {/* Only render the full audio overlay when actually visible (not during consent-only state) */}
-    {audioOverlayVisible && (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
@@ -372,16 +376,22 @@ export function VitanaAudioOverlay() {
         />
       </motion.div>
     </AnimatePresence>
-    )}
 
-    {/* AI Data Consent Dialog - always above all assistant layers */}
+    {/* AI Data Consent Dialog - renders on top of overlay */}
     <AIDataConsentDialog
       open={consentDialogOpen}
-      onOpenChange={setConsentDialogOpen}
+      onOpenChange={(open) => {
+        setConsentDialogOpen(open);
+        // User dismissed dialog without consenting → close overlay
+        if (!open && !hasConsent && !consentJustGrantedRef.current) {
+          setAudioOverlayVisible(false);
+        }
+      }}
       onConsent={() => {
         grantConsent();
         consentJustGrantedRef.current = true;
-        setTimeout(() => setAudioOverlayVisible(true), 300);
+        // No setTimeout / overlay dance — overlay is already open,
+        // consentSatisfied flips to true and the connect effect fires.
       }}
     />
     </>
