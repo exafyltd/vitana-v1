@@ -1,24 +1,15 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
 
-### What was fixed
+# Fix Health Screen: Button Label + Reduce Spacing
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+## Changes
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+### 1. Button label: "Create" → "Upload" (`src/pages/Health.tsx`, line 227)
+Change the button text from `translate('buttons.create', 'Add')` to `translate('health.upload', 'Upload')`.
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+### 2. Reduce gap between tab bar and Health Snapshot card
+- **`src/pages/Health.tsx` line 234**: Remove or reduce `pb-2` on the SplitBar wrapper div
+- **`src/components/health/mobile/MobileHealthSnapshot.tsx` line 57**: Reduce `mx-4 mt-4` to `mx-4 mt-1` to pull the card up closer to the tabs
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+These two spacing tweaks will eliminate the empty space visible in the screenshot between the tab pills and the dark Health Snapshot card.
+
