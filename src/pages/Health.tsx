@@ -33,6 +33,8 @@ import { MobileHealthSnapshot } from "@/components/health/mobile/MobileHealthSna
 import { MobilePriorityFocus } from "@/components/health/mobile/MobilePriorityFocus";
 import { MobileAutopilotGuidance } from "@/components/health/mobile/MobileAutopilotGuidance";
 import { MobileHealthActionStrip } from "@/components/health/mobile/MobileHealthActionStrip";
+import { HealthReportUploadSheet } from "@/components/health/mobile/HealthReportUploadSheet";
+import { QuickLabOrderSheet } from "@/components/health/mobile/QuickLabOrderSheet";
 
 const overviewCards = [
   {
