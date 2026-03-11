@@ -83,7 +83,6 @@ export default function MyBiology() {
   const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
   const [uploadDefaultCategory, setUploadDefaultCategory] = useState<string>('blood_panel');
   
-  const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const { 
