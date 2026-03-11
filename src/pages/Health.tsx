@@ -229,57 +229,46 @@ export default withScreenId(function Health() {
             </UtilityActionButton>
           </div>
 
-          {/* Tab Bar */}
-          <div className="px-4 pb-3">
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {mobileTabs.map(tab => (
-                <button
-                  key={tab.key}
-                  onClick={() => setMobileTab(tab.key)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors ${
-                    mobileTab === tab.key
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+          {/* SplitBar Tabs */}
+          <SplitBar value={mobileTab} onValueChange={(v) => setMobileTab(v as any)}>
+            <div className="px-4 pb-2">
+              <SplitBarList>
+                <SplitBarTrigger value="overview">{translate('health.tabs.overview', 'Overview')}</SplitBarTrigger>
+                <SplitBarTrigger value="medical">{translate('health.tabs.medical', 'Medical')}</SplitBarTrigger>
+                <SplitBarTrigger value="supplements">{translate('health.tabs.supplements', 'Supplements')}</SplitBarTrigger>
+              </SplitBarList>
             </div>
-          </div>
 
-          {/* Tab Content */}
-          <div className="flex-1 overflow-y-auto">
-            {mobileTab === 'overview' && (
-              <>
-                <MobileHealthSnapshot
-                  vitanaIndex={vitanaScore}
-                  vitanaPercentile={15}
-                  trend="up"
-                  pillars={pillars}
-                />
-                <MobilePriorityFocus
-                  pillarName={getPillarLabel(weakestPillar[0])}
-                  pillarScore={weakestPillar[1]}
-                  pillarEmoji={pillarEmojis[weakestPillar[0]]}
-                  explanation={translate('health.priorityFocusExplanation')}
-                />
-                <MobileAutopilotGuidance
-                  suggestions={[
-                    translate('health.suggestions.uploadBloodTestResults'),
-                    translate('health.suggestions.startFitnessChallenge')
-                  ]}
-                  onTakeAction={() => setHealthActionsOpen(true)}
-                />
-              </>
-            )}
-            {mobileTab === 'medical' && (
+            <SplitBarContent value="overview" className="flex-1 overflow-y-auto">
+              <MobileHealthSnapshot
+                vitanaIndex={vitanaScore}
+                vitanaPercentile={15}
+                trend="up"
+                pillars={pillars}
+              />
+              <MobilePriorityFocus
+                pillarName={getPillarLabel(weakestPillar[0])}
+                pillarScore={weakestPillar[1]}
+                pillarEmoji={pillarEmojis[weakestPillar[0]]}
+                explanation={translate('health.priorityFocusExplanation')}
+              />
+              <MobileAutopilotGuidance
+                suggestions={[
+                  translate('health.suggestions.uploadBloodTestResults'),
+                  translate('health.suggestions.startFitnessChallenge')
+                ]}
+                onTakeAction={() => setHealthActionsOpen(true)}
+              />
+            </SplitBarContent>
+
+            <SplitBarContent value="medical" className="flex-1 overflow-y-auto">
               <MobileHealthMedicalTab onUpload={() => setUploadSheetOpen(true)} />
-            )}
-            {mobileTab === 'supplements' && (
+            </SplitBarContent>
+
+            <SplitBarContent value="supplements" className="flex-1 overflow-y-auto">
               <MobileHealthSupplementsTab />
-            )}
-          </div>
+            </SplitBarContent>
+          </SplitBar>
         </div>
         
         <AutopilotPopup
