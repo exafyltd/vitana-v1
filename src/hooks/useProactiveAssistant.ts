@@ -19,6 +19,7 @@ export function useProactiveAssistant() {
   const { speak, isSpeaking } = useTextToSpeech();
   const { toast } = useToast();
   const { selectedLanguage } = useLanguage();
+  const { hasConsent } = useAIConsent();
   
   // Log when selectedLanguage changes
   useEffect(() => {
