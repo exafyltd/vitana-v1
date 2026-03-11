@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreamingState } from '@/context/StreamingStateContext';
 import { useOrbVoiceClient } from '@/hooks/useOrbVoiceClient';
@@ -41,6 +41,7 @@ export function VitanaAudioOverlay() {
 
   // AI consent gate
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
+  const consentJustGrantedRef = useRef(false);
 
   // Toggle body attribute so CSS can suppress the ORB behind the consent dialog
   useEffect(() => {
@@ -85,12 +86,13 @@ export function VitanaAudioOverlay() {
   useEffect(() => {
     if (audioOverlayVisible) {
       // Gate on AI consent
-      if (!hasConsent) {
+      if (!hasConsent && !consentJustGrantedRef.current) {
         console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
         setConsentDialogOpen(true);
         setAudioOverlayVisible(false);
         return;
       }
+      consentJustGrantedRef.current = false;
       console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
       setMicMuted(false);
       pausePersisting();
@@ -375,6 +377,7 @@ export function VitanaAudioOverlay() {
       onOpenChange={setConsentDialogOpen}
       onConsent={() => {
         grantConsent();
+        consentJustGrantedRef.current = true;
         setTimeout(() => setAudioOverlayVisible(true), 300);
       }}
     />
