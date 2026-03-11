@@ -23,7 +23,7 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="max-w-lg z-[60]" overlayClassName="z-[60]">
+      <ResponsiveDialogContent className="max-w-lg !z-[60]" overlayClassName="!z-[60]">
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center gap-2">
             <Shield className="w-5 h-5 text-destructive" />
