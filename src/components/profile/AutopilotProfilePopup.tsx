@@ -70,6 +70,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
   const [acceptedFields, setAcceptedFields] = useState<Set<string>>(new Set());
   const { translate } = useTranslation();
   const { toast } = useToast();
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
 
   const handleSuggestionToggle = (suggestionId: string) => {
     setSelectedSuggestions(prev =>
