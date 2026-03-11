@@ -93,6 +93,10 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
   };
 
   const handleRunAutopilot = async () => {
+    if (!hasConsent) {
+      setConsentDialogOpen(true);
+      return;
+    }
     setStep("loading");
     try {
       const { data, error } = await supabase.functions.invoke("autopilot-profile", {
