@@ -55,9 +55,9 @@ export function MobileHealthSnapshot({
     : translate('health.trend.stable');
 
   return (
-    <div className="mx-4 mt-1">
+    <div className="mx-4 mt-0">
       <div 
-        className="rounded-2xl p-6"
+        className="rounded-2xl p-4"
         style={{
           background: 'linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)',
           border: '1px solid rgba(255, 255, 255, 0.05)',
