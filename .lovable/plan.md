@@ -1,24 +1,48 @@
-## Memory System Fix — Implementation Complete
 
-### What was broken
-1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
-2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
-3. **ORB voice** never fetched user context — started every session "blank"
-4. **ORB conversations** were not persisted — no cross-session continuity
 
-### What was fixed
+# Fix: AI Consent Dialog Still Behind ORB
 
-#### Phase A — DiaryQuickEntry now saves to DB
-- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
+## Problem
+The ORB CSS uses `z-index: 40 !important` — the `!important` flag means normal Tailwind utility classes (even `z-[60]`) can lose in specificity. Additionally, the Radix Dialog portal renders at the end of the DOM body, but the `z-50` base class on the content element competes with the Tailwind merge of `z-[60]`.
 
-#### Phase B — Embedding generation fixed
-- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
-- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
+## Solution
+Two changes to guarantee the dialog always renders above the ORB:
 
-#### Phase C — ORB context injection
-- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
-- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
-- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
+### 1. Add `!important` to the dialog's z-index
+Since the ORB uses `!important`, the dialog needs it too. Use `z-[60]` with `!important` via Tailwind's `!` prefix on both the overlay and content.
 
-#### Phase D — ORB conversation persistence
-- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
+**File:** `src/components/ai/AIDataConsentDialog.tsx` (line 26)
+
+Change:
+```tsx
+<ResponsiveDialogContent className="max-w-lg z-[60]" overlayClassName="z-[60]">
+```
+To:
+```tsx
+<ResponsiveDialogContent className="max-w-lg !z-[60]" overlayClassName="!z-[60]">
+```
+
+### 2. Hide the ORB when the consent dialog is open
+As a belt-and-suspenders approach, hide the ORB while the consent dialog is visible. In `VitanaAudioOverlay.tsx`, when `consentDialogOpen` is true, dispatch a CSS class or set ORB visibility.
+
+**File:** `src/components/audio/VitanaAudioOverlay.tsx`
+
+When `consentDialogOpen` becomes true, add `data-consent-dialog-open` attribute to `document.body`. Remove it when closed. Then in `src/index.css`, add:
+
+```css
+body[data-consent-dialog-open="true"] .vitana-orb {
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+```
+
+This two-pronged approach ensures the dialog is always fully visible and interactive above the ORB.
+
+## Files Changed
+
+| File | Change |
+|---|---|
+| `src/components/ai/AIDataConsentDialog.tsx` | Add `!` prefix to z-index classes |
+| `src/components/audio/VitanaAudioOverlay.tsx` | Toggle body attribute when consent dialog opens/closes |
+| `src/index.css` | Suppress ORB z-index when consent dialog is open |
+
