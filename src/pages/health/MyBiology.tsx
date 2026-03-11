@@ -25,7 +25,15 @@ import {
   AlertTriangle,
   TrendingDown,
   Plus,
-  Building2
+  Building2,
+  ExternalLink,
+  Loader2,
+  Droplets,
+  FlaskConical,
+  Bug,
+  Heart,
+  Scan,
+  MoreHorizontal
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
@@ -35,6 +43,9 @@ import { useHealthLogger } from '@/hooks/useHealthLogger';
 import { AddSupplementDialog } from '@/components/supplements/AddSupplementDialog';
 import { SupplementCard } from '@/components/supplements/SupplementCard';
 import { getAllCategories } from '@/components/supplements/supplementCategories';
+import { HealthReportUploadSheet } from '@/components/health/mobile/HealthReportUploadSheet';
+import { useToast } from '@/hooks/use-toast';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Select,
   SelectContent,
