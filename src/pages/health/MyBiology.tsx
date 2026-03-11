@@ -54,37 +54,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface TestResult {
-  id: string;
-  order_id: string;
-  biomarker_data: any;
-  ai_insights: string | null;
-  completed_at: string;
-  lab_test: {
-    name: string;
-    category: string;
-    provider_name: string;
-  };
-}
-
-interface BiomarkerItem {
-  name: string;
-  value: number;
-  unit: string;
-  referenceMin: number;
-  referenceMax: number;
-  status: 'normal' | 'high' | 'low' | 'critical';
-}
-
-interface OmicsResult {
-  id: string;
-  name: string;
-  category: string;
-  provider: string;
-  date: string;
-  description: string;
-}
-
 // Report type display config
 const REPORT_TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode; badgeClass: string }> = {
   blood_panel: { label: 'Blood Panel', icon: <Droplets className="w-4 h-4" />, badgeClass: 'bg-red-500/10 text-red-600 border-red-500/20' },
