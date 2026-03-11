@@ -92,6 +92,7 @@ export default withScreenId(function Health() {
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const [vitanaScore] = useState(742);
   const [selectedPillar, setSelectedPillar] = useState("overview");
+  const [mobileTab, setMobileTab] = useState<'overview' | 'medical' | 'supplements'>('overview');
   
   const latestActions = getLatestActions(2);
 
