@@ -408,6 +408,18 @@ export default withScreenId(function Health() {
       <HealthMasterActionPopup
         open={healthActionsOpen}
         onOpenChange={setHealthActionsOpen}
+        onUploadOpen={() => setUploadSheetOpen(true)}
+        onOrderOpen={() => setOrderSheetOpen(true)}
+      />
+      
+      <HealthReportUploadSheet
+        open={uploadSheetOpen}
+        onOpenChange={setUploadSheetOpen}
+      />
+      
+      <QuickLabOrderSheet
+        open={orderSheetOpen}
+        onOpenChange={setOrderSheetOpen}
       />
     </AppLayout>
   );
