@@ -209,6 +209,7 @@ export default function MyBiology() {
     return acc;
   }, {} as Record<string, number>);
 
+  return (
     <AppLayout>
       <SEO 
         title="My Biology | Health" 
