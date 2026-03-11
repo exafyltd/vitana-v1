@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAIConsent } from "@/hooks/useAIConsent";
+import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 
 interface AutopilotProfilePopupProps {
   open: boolean;
