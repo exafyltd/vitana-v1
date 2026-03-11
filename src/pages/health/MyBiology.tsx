@@ -189,226 +189,36 @@ export default function MyBiology() {
     setUploadSheetOpen(true);
   };
 
-  const fetchResults = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setResults(getMockResults());
-        setIsLoading(false);
-        return;
-      }
+  // Helper to build report cards from lab_reports data
+  const buildReportCards = (reports: any[]): StandardHorizontalCardProps[] => {
+    return reports.map((report: any) => {
+      const typeConfig = REPORT_TYPE_CONFIG[report.report_type || 'other'] || REPORT_TYPE_CONFIG.other;
+      const statusConfig = STATUS_CONFIG[report.processing_status || 'uploaded'] || STATUS_CONFIG.uploaded;
 
-      const { data, error } = await supabase
-        .from('lab_test_results')
-        .select(`
-          *,
-          lab_test_orders!inner(
-            lab_tests(name, category, provider_name)
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('completed_at', { ascending: false });
-
-      if (error) throw error;
-
-      const formattedResults = data.map(result => ({
-        ...result,
-        lab_test: result.lab_test_orders.lab_tests
-      })) as TestResult[];
-
-      if (formattedResults.length === 0) {
-        setResults(getMockResults());
-      } else {
-        setResults(formattedResults);
-      }
-    } catch (error) {
-      console.error('Error fetching results:', error);
-      setResults(getMockResults());
-    } finally {
-      setIsLoading(false);
-    }
+      return {
+        id: report.id,
+        screenId: 'my-biology-reports',
+        icon: typeConfig.icon,
+        title: report.title || report.raw_file_ref || 'Health Report',
+        description: report.provider_name || report.source || 'Unknown provider',
+        badges: [
+          { label: typeConfig.label, variant: 'outline' as const },
+          { label: statusConfig.label, variant: statusConfig.variant },
+        ],
+        timestamp: report.report_date 
+          ? format(new Date(report.report_date), 'MMM dd, yyyy')
+          : format(new Date(report.created_at), 'MMM dd, yyyy'),
+        onClick: () => {
+          if (report.file_path) {
+            handleViewReport(report.file_path);
+          }
+        },
+      };
+    });
   };
 
-
-  const getMockResults = (): TestResult[] => [
-    {
-      id: '1',
-      order_id: 'order-1',
-      biomarker_data: {},
-      ai_insights: null,
-      completed_at: '2025-01-15T10:30:00Z',
-      lab_test: {
-        name: 'Complete Blood Count',
-        category: 'medical',
-        provider_name: 'Wellness Lab Inc.'
-      }
-    },
-    {
-      id: '2',
-      order_id: 'order-2',
-      biomarker_data: {},
-      ai_insights: null,
-      completed_at: '2025-01-08T14:20:00Z',
-      lab_test: {
-        name: 'Genomics Analysis',
-        category: 'genomics',
-        provider_name: 'DNA Health Labs'
-      }
-    },
-    {
-      id: '3',
-      order_id: 'order-3',
-      biomarker_data: {},
-      ai_insights: null,
-      completed_at: '2024-12-28T09:15:00Z',
-      lab_test: {
-        name: 'Gut Microbiome Analysis',
-        category: 'microbiome',
-        provider_name: 'Gut Health Solutions'
-      }
-    }
-  ];
-
-  const getMockBiomarkers = (testName: string): BiomarkerItem[] => {
-    const baseMarkers = [
-      { name: 'Cholesterol', value: 190, unit: 'mg/dL', referenceMin: 125, referenceMax: 200, status: 'normal' as const },
-      { name: 'Glucose', value: 95, unit: 'mg/dL', referenceMin: 70, referenceMax: 100, status: 'normal' as const },
-      { name: 'Hemoglobin', value: 14.2, unit: 'g/dL', referenceMin: 12, referenceMax: 16, status: 'normal' as const },
-      { name: 'Vitamin D', value: 25, unit: 'ng/mL', referenceMin: 30, referenceMax: 100, status: 'low' as const },
-    ];
-
-    if (testName.toLowerCase().includes('genomics')) {
-      return [
-        { name: 'APOE4 Variant', value: 1, unit: 'copies', referenceMin: 0, referenceMax: 2, status: 'normal' as const },
-        { name: 'MTHFR C677T', value: 0, unit: 'mutations', referenceMin: 0, referenceMax: 0, status: 'normal' as const },
-      ];
-    }
-
-    if (testName.toLowerCase().includes('microbiome')) {
-      return [
-        { name: 'Lactobacillus', value: 8.2, unit: '% abundance', referenceMin: 5, referenceMax: 15, status: 'normal' as const },
-        { name: 'Diversity Index', value: 4.2, unit: 'Shannon', referenceMin: 3.5, referenceMax: 5.0, status: 'normal' as const },
-      ];
-    }
-
-    return baseMarkers;
-  };
-
-  const getOverallStatus = (biomarkers: BiomarkerItem[]) => {
-    const hasCritical = biomarkers.some(b => b.status === 'critical');
-    const hasHigh = biomarkers.some(b => b.status === 'high');
-    const hasLow = biomarkers.some(b => b.status === 'low');
-    
-    if (hasCritical) return { status: 'Critical', color: 'bg-destructive text-destructive-foreground' };
-    if (hasHigh || hasLow) return { status: 'Needs Attention', color: 'bg-warning text-warning-foreground' };
-    return { status: 'Normal', color: 'bg-success text-success-foreground' };
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'normal': return <CheckCircle className="h-4 w-4 text-success" />;
-      case 'high': return <AlertTriangle className="h-4 w-4 text-warning" />;
-      case 'low': return <TrendingDown className="h-4 w-4 text-warning" />;
-      case 'critical': return <AlertTriangle className="h-4 w-4 text-destructive" />;
-      default: return <CheckCircle className="h-4 w-4 text-muted-foreground" />;
-    }
-  };
-
-  const handleSupplementSubmit = async (data: any) => {
-    if (editingSupplement) {
-      await updateSupplement(editingSupplement.id, data);
-      setEditingSupplement(null);
-    } else {
-      await createSupplement(data);
-    }
-  };
-
-  const handleEditSupplement = (supplement: UserSupplement) => {
-    setEditingSupplement(supplement);
-    setSupplementDialogOpen(true);
-  };
-
-  const handleDeleteSupplement = async (id: string) => {
-    await deleteSupplement(id);
-  };
-
-  const allCategories = getAllCategories();
-  const filteredSupplements = categoryFilter === "all" 
-    ? supplements 
-    : supplements.filter(s => s.category === categoryFilter);
-
-  const activeCategoryCount = supplements.reduce((acc, supp) => {
-    acc[supp.category] = (acc[supp.category] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
-
-  const medicalResults = results.filter(r => r.lab_test.category === 'medical');
-
-  // Transform medical results to StandardHorizontalCard format
-  const transformedMedicalCards: StandardHorizontalCardProps[] = medicalResults.map((result) => {
-    const mockBiomarkers = getMockBiomarkers(result.lab_test.name);
-    const overallStatus = getOverallStatus(mockBiomarkers);
-    
-    return {
-      id: result.id,
-      screenId: 'my-biology-medical',
-      icon: <TestTube className="w-5 h-5" />,
-      title: result.lab_test.name,
-      description: result.lab_test.provider_name,
-      badges: [
-        {
-          label: overallStatus.status,
-          variant: overallStatus.status === 'Critical' ? 'destructive' : 
-                   overallStatus.status === 'Needs Attention' ? 'outline' : 'secondary' as const,
-        }
-      ],
-      timestamp: format(new Date(result.completed_at), 'MMM dd, yyyy'),
-      expandedContent: (
-        <div className="grid gap-2 py-2">
-          {mockBiomarkers.map((biomarker) => (
-            <div key={biomarker.name} className="flex items-center justify-between p-3 bg-background rounded-lg">
-              <div className="flex items-center gap-2">
-                {getStatusIcon(biomarker.status)}
-                <div>
-                  <div className="font-medium text-sm">{biomarker.name}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {biomarker.referenceMin} - {biomarker.referenceMax} {biomarker.unit}
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="font-semibold text-sm">{biomarker.value} {biomarker.unit}</div>
-                <div className="text-xs capitalize text-muted-foreground">{biomarker.status}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    };
-  });
-
-  // Transform omics results to StandardHorizontalCard format
-  const transformedOmicsCards: StandardHorizontalCardProps[] = mockOmicsResults.map((result) => ({
-    id: result.id,
-    screenId: 'my-biology-omics',
-    icon: <Dna className="w-5 h-5" />,
-    title: result.name,
-    description: result.description,
-    badges: [
-      {
-        label: result.category,
-        variant: 'outline' as const,
-      }
-    ],
-    metadata: [
-      {
-        icon: <Building2 className="w-3.5 h-3.5" />,
-        text: result.provider,
-      }
-    ],
-    timestamp: format(new Date(result.date), 'MMM dd, yyyy'),
-    onClick: () => logOmicsView(result.category, result.name),
-  }));
+  const transformedMedicalCards = buildReportCards(medicalReports);
+  const transformedOmicsCards = buildReportCards(omicsReports);
 
   return (
     <AppLayout>
