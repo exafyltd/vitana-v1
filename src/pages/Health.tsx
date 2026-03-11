@@ -33,6 +33,8 @@ import { MobileHealthSnapshot } from "@/components/health/mobile/MobileHealthSna
 import { MobilePriorityFocus } from "@/components/health/mobile/MobilePriorityFocus";
 import { MobileAutopilotGuidance } from "@/components/health/mobile/MobileAutopilotGuidance";
 import { MobileHealthActionStrip } from "@/components/health/mobile/MobileHealthActionStrip";
+import { HealthReportUploadSheet } from "@/components/health/mobile/HealthReportUploadSheet";
+import { QuickLabOrderSheet } from "@/components/health/mobile/QuickLabOrderSheet";
 
 const overviewCards = [
   {
@@ -84,6 +86,8 @@ export default withScreenId(function Health() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [healthActionsOpen, setHealthActionsOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [uploadSheetOpen, setUploadSheetOpen] = useState(false);
+  const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const [vitanaScore] = useState(742);
   const [selectedPillar, setSelectedPillar] = useState("overview");
   
@@ -213,8 +217,8 @@ export default withScreenId(function Health() {
           
           {/* 4. Action Strip (Bottom) */}
           <MobileHealthActionStrip
-            onUploadBloodTest={() => navigate('/health/biomarker-results')}
-            onOrderBloodTest={() => navigate('/health/services-hub')}
+            onUploadBloodTest={() => setUploadSheetOpen(true)}
+            onOrderBloodTest={() => setOrderSheetOpen(true)}
             onViewPlans={() => navigate('/health/plans')}
           />
         </div>
@@ -222,6 +226,18 @@ export default withScreenId(function Health() {
         <HealthMasterActionPopup
           open={healthActionsOpen}
           onOpenChange={setHealthActionsOpen}
+          onUploadOpen={() => setUploadSheetOpen(true)}
+          onOrderOpen={() => setOrderSheetOpen(true)}
+        />
+        
+        <HealthReportUploadSheet
+          open={uploadSheetOpen}
+          onOpenChange={setUploadSheetOpen}
+        />
+        
+        <QuickLabOrderSheet
+          open={orderSheetOpen}
+          onOpenChange={setOrderSheetOpen}
         />
       </AppLayout>
     );
@@ -392,6 +408,18 @@ export default withScreenId(function Health() {
       <HealthMasterActionPopup
         open={healthActionsOpen}
         onOpenChange={setHealthActionsOpen}
+        onUploadOpen={() => setUploadSheetOpen(true)}
+        onOrderOpen={() => setOrderSheetOpen(true)}
+      />
+      
+      <HealthReportUploadSheet
+        open={uploadSheetOpen}
+        onOpenChange={setUploadSheetOpen}
+      />
+      
+      <QuickLabOrderSheet
+        open={orderSheetOpen}
+        onOpenChange={setOrderSheetOpen}
       />
     </AppLayout>
   );

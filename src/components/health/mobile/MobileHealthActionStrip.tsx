@@ -7,6 +7,7 @@ interface MobileHealthActionStripProps {
   onViewPlans: () => void;
 }
 
+
 export function MobileHealthActionStrip({ 
   onUploadBloodTest, 
   onOrderBloodTest, 
