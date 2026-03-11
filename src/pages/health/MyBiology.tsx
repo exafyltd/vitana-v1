@@ -94,12 +94,7 @@ export default function MyBiology() {
   } = useUserSupplements();
 
   const { 
-    logBiomarkerView, 
-    logBiomarkerUpload, 
-    logBiomarkerOrderTest,
     logDeviceConnect,
-    logOmicsUpload,
-    logOmicsView,
     logOmicsConnectAPI
   } = useHealthLogger();
 
