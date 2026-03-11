@@ -1,10 +1,9 @@
 import { useState } from "react";
+import { Loader2, Pill, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Plus, Loader2, Pill } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useUserSupplements } from "@/hooks/useUserSupplements";
 import { SupplementCard } from "@/components/supplements/SupplementCard";
-import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
 
 const CATEGORY_FILTERS = ['All', 'Vitamins', 'Minerals', 'Amino Acids', 'Adaptogens', 'Probiotics', 'Antioxidants', 'Other'];
 
@@ -46,11 +45,21 @@ export function MobileHealthSupplementsTab() {
 
       {/* Supplements list */}
       {filtered.length === 0 ? (
-        <I18nEmptyState
-          Icon={Pill}
-          titleKey="health.noSupplements"
-          descriptionKey="health.noSupplementsDesc"
-        />
+        <div className="rounded-2xl bg-gradient-to-br from-primary/5 via-accent/10 to-primary/5 border border-border p-6 text-center">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <Pill className="h-8 w-8 text-primary" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            {translate('health.noSupplements')}
+          </h3>
+          <p className="text-sm text-muted-foreground max-w-xs mx-auto mb-5">
+            {translate('health.noSupplementsDesc')}
+          </p>
+          <Button size="sm" className="rounded-full gap-1.5">
+            <Plus className="h-4 w-4" />
+            {translate('health.addSupplement')}
+          </Button>
+        </div>
       ) : (
         <div className="space-y-3">
           {filtered.map(supplement => (

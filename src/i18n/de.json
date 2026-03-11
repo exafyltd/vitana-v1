@@ -1165,7 +1165,17 @@
       "noMentalPlanDesc": "Generieren Sie Ihren personalisierten Mental-Wellness-Plan, um Stress, Fokus und emotionales Gleichgewicht mit KI-Unterstützung zu verfolgen.",
       "generatePlan": "Plan generieren",
       "generating": "Wird generiert..."
-    }
+    },
+    "noSupplements": "Noch keine Nahrungserg\u00e4nzungsmittel",
+    "noSupplementsDesc": "Verfolgen Sie Ihre t\u00e4glichen Vitamine, Mineralien und Nahrungserg\u00e4nzungsmittel. F\u00fcgen Sie Ihr erstes Supplement hinzu.",
+    "noReports": "Noch keine Gesundheitsberichte",
+    "noReportsDesc": "Laden Sie Ihre Bluttests, Laborergebnisse und medizinischen Berichte hoch, um personalisierte Gesundheitseinblicke zu erhalten.",
+    "medical": "Medizin",
+    "supplements": "Supplemente",
+    "uploadDescription": "Bluttests, Bildgebung, Laborergebnisse",
+    "unknownProvider": "Unbekannter Anbieter",
+    "addSupplement": "Supplement hinzuf\u00fcgen",
+    "uploadFirstReport": "Ersten Bericht hochladen"
   },
   "home": {
     "title": "Startseite",
