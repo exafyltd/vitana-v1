@@ -239,6 +239,8 @@ export function VitanaAudioOverlay() {
 
   return (
     <>
+    {/* Only render the full audio overlay when actually visible (not during consent-only state) */}
+    {audioOverlayVisible && (
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
@@ -365,8 +367,9 @@ export function VitanaAudioOverlay() {
         />
       </motion.div>
     </AnimatePresence>
+    )}
 
-    {/* AI Data Consent Dialog */}
+    {/* AI Data Consent Dialog - always above all assistant layers */}
     <AIDataConsentDialog
       open={consentDialogOpen}
       onOpenChange={setConsentDialogOpen}
