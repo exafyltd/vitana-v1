@@ -1,65 +1,24 @@
+## Memory System Fix — Implementation Complete
 
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-# Fix: ORB voice broken by consent gate race condition
+### What was fixed
 
-## Root Cause
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-The consent gate useEffect (line 86-106) depends only on `[audioOverlayVisible]` but reads `hasConsent`, which is loaded asynchronously via React Query (`useUserPreferences`). The sequence:
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-1. User taps ORB → `audioOverlayVisible = true`
-2. useEffect fires immediately
-3. `hasConsent` is still `false` because the preferences query hasn't resolved yet (`isLoading = true`)
-4. Gate triggers: shows consent dialog, sets `audioOverlayVisible(false)` → ORB never connects
-5. This happens every time, even for users who already consented
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-The `consentJustGrantedRef` only helps for the flow where consent is granted in that same session — it doesn't help when preferences are still loading.
-
-## Fix
-
-**File: `src/components/audio/VitanaAudioOverlay.tsx`**
-
-Two changes:
-
-1. **Destructure `isLoading`** from `useAIConsent()` (line 43)
-2. **Skip the consent gate while preferences are loading** (line 89) — if `isLoading` is true, do nothing and wait for the query to resolve
-3. **Add `hasConsent` and `isLoading` to the useEffect dependency array** so it re-runs when preferences finish loading
-
-```tsx
-// Line 43: add isLoading
-const { hasConsent, isLoading: consentLoading, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
-
-// Line 86-106: updated useEffect
-useEffect(() => {
-  if (audioOverlayVisible) {
-    // Wait for preferences to load before checking consent
-    if (consentLoading) return;
-
-    // Gate on AI consent
-    if (!hasConsent && !consentJustGrantedRef.current) {
-      console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
-      setConsentDialogOpen(true);
-      setAudioOverlayVisible(false);
-      return;
-    }
-    consentJustGrantedRef.current = false;
-    console.log('[VitanaAudioOverlay] Overlay opened - connecting...');
-    setMicMuted(false);
-    pausePersisting();
-    connect();
-  } else {
-    console.log('[VitanaAudioOverlay] Overlay closed - disconnecting...');
-    resumePersisting();
-    disconnect();
-  }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [audioOverlayVisible, hasConsent, consentLoading]);
-```
-
-This ensures:
-- While preferences load → effect does nothing (no false-negative consent check)
-- Once loaded, if consent exists → proceeds to `connect()` immediately
-- Once loaded, if no consent → shows dialog correctly
-- After granting consent → ref bypass still works as before
-
-Single file change. No other modifications needed.
-
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`

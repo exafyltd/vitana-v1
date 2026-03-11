@@ -40,7 +40,7 @@ export function VitanaAudioOverlay() {
   const [micMuted, setMicMuted] = useState(false);
 
   // AI consent gate
-  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
+  const { hasConsent, isLoading: consentLoading, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
   const consentJustGrantedRef = useRef(false);
 
   // Toggle body attribute so CSS can suppress the ORB behind the consent dialog
@@ -85,6 +85,9 @@ export function VitanaAudioOverlay() {
   // connect/disconnect are stable refs — only audioOverlayVisible triggers this
   useEffect(() => {
     if (audioOverlayVisible) {
+      // Wait for preferences to load before checking consent
+      if (consentLoading) return;
+
       // Gate on AI consent
       if (!hasConsent && !consentJustGrantedRef.current) {
         console.log('[VitanaAudioOverlay] No AI consent — showing consent dialog');
@@ -103,7 +106,7 @@ export function VitanaAudioOverlay() {
       disconnect();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioOverlayVisible]);
+  }, [audioOverlayVisible, hasConsent, consentLoading]);
 
   // Auto-resume listening after AI finishes speaking (unless user muted)
   useEffect(() => {
