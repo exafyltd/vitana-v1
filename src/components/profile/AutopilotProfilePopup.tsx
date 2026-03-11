@@ -186,6 +186,7 @@ export function AutopilotProfilePopup({ open, onOpenChange, currentBio, currentA
     (!suggestions.archetype || acceptedFields.has("archetype"));
 
   return (
+    <>
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[520px] p-0">
         <div className="p-6">
