@@ -41,6 +41,16 @@ export function VitanaAudioOverlay() {
 
   // AI consent gate
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
+
+  // Toggle body attribute so CSS can suppress the ORB behind the consent dialog
+  useEffect(() => {
+    if (consentDialogOpen) {
+      document.body.setAttribute('data-consent-dialog-open', 'true');
+    } else {
+      document.body.removeAttribute('data-consent-dialog-open');
+    }
+    return () => document.body.removeAttribute('data-consent-dialog-open');
+  }, [consentDialogOpen]);
   
   // Visual context for screen/camera sharing (preserved for future multimodal)
   const { 
