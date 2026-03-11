@@ -15,6 +15,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { pausePersisting, resumePersisting } from '@/audio/SoundscapeAudioManager';
+import { useAIConsent } from '@/hooks/useAIConsent';
+import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
 
 export function VitanaAudioOverlay() {
   const { 
