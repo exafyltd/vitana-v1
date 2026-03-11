@@ -1,16 +1,24 @@
+## Memory System Fix — Implementation Complete
 
+### What was broken
+1. **DiaryQuickEntry** had a `TODO` instead of actual DB save — entries were lost
+2. **extract-diary-insights** called `generate-memory-embedding` without `content` — embeddings never generated
+3. **ORB voice** never fetched user context — started every session "blank"
+4. **ORB conversations** were not persisted — no cross-session continuity
 
-# Remove redundant upload CTA from Medical tab empty state
+### What was fixed
 
-When there are no reports, the Medical tab shows two upload buttons: the dashed "Upload Blood Test" card at the top AND the "Upload First Report" button inside the empty state. This is redundant.
+#### Phase A — DiaryQuickEntry now saves to DB
+- `src/components/diary/DiaryQuickEntry.tsx`: inserts into `diary_entries`, triggers `extract-diary-insights` + `refresh-memory-metadata` (non-blocking)
 
-## Fix — `src/components/health/mobile/MobileHealthMedicalTab.tsx`
+#### Phase B — Embedding generation fixed
+- `supabase/functions/extract-diary-insights/index.ts`: now passes `content` to `generate-memory-embedding`
+- `supabase/functions/generate-memory-embedding/index.ts`: falls back to fetching content from `ai_memory` if not provided
 
-**Hide the top dashed upload button when there are no reports.** The empty state card already has a prominent CTA — that's sufficient. When reports exist, the dashed upload button remains useful as a quick-access action.
+#### Phase C — ORB context injection
+- `src/lib/buildOrbContext.ts` (new): builds compact context from profile + ai_memory (top 15) + diary_entries (last 10)
+- `src/lib/OrbVoiceClient.ts`: accepts `initialContext` in config, injects it as first message before greeting
+- `src/hooks/useOrbVoiceClient.ts`: calls `buildOrbContext()` before session start
 
-Wrap the top upload button (lines 75-86) with a condition: only show it when `labReports.length > 0`.
-
-This way:
-- **Empty state**: Single clean empty state card with "Upload First Report" CTA — no redundancy
-- **Has reports**: Dashed upload button at top + report list below — useful quick action
-
+#### Phase D — ORB conversation persistence
+- `src/hooks/useOrbVoiceClient.ts`: creates/reuses `ai_conversations` row, logs assistant transcripts and user text messages to `ai_messages`
