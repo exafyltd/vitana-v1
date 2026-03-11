@@ -445,6 +445,11 @@ function Privacy() {
         </div>
       </div>
       <PrivacyAuditPopup isOpen={actionPopupOpen} onClose={() => setActionPopupOpen(false)} />
+      <AIDataConsentDialog
+        open={consentDialogOpen}
+        onOpenChange={setConsentDialogOpen}
+        onConsent={grantConsent}
+      />
     </AppLayout>
   );
 }
