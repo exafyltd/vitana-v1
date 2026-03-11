@@ -231,7 +231,7 @@ export default withScreenId(function Health() {
 
           {/* SplitBar Tabs */}
           <SplitBar value={mobileTab} onValueChange={(v) => setMobileTab(v as any)}>
-            <div className="px-4 pb-2">
+            <div className="px-4 pb-0">
               <SplitBarList>
                 <SplitBarTrigger value="overview">{translate('health.tabs.overview', 'Overview')}</SplitBarTrigger>
                 <SplitBarTrigger value="medical">{translate('health.tabs.medical', 'Medical')}</SplitBarTrigger>
