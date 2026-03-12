@@ -389,7 +389,7 @@ export default function Wallet() {
                   change="+2.3%"
                   changeType="increase"
                   isLoading={!isLoaded}
-                  onPress={() => handleWalletAction('add-funds')}
+                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('add-funds')}
                 />
                 
                 <MobileWalletBalanceCard
@@ -400,7 +400,7 @@ export default function Wallet() {
                   change="+12.1%"
                   changeType="increase"
                   isLoading={!isLoaded}
-                  onPress={() => handleWalletAction('buy-credits')}
+                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('buy-credits')}
                 />
                 
                 <MobileWalletBalanceCard
