@@ -1008,9 +1008,8 @@ const EventsAndMeetups = () => {
                   </>
                 )}
               </SplitBarContent>
+            </div>
             </SplitBar>
-          </div>
-        </div>
         </div>
       </AppLayout>
 
