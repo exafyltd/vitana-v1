@@ -559,7 +559,7 @@ export default function Wallet() {
                     description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
                     isLoading={!isLoaded}
-                    primaryAction={{
+                    primaryAction={isIAPRestricted() ? undefined : {
                       label: "Add Funds",
                       onClick: () => handleWalletAction('add-funds'),
                       icon: DollarSign,
