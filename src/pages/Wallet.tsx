@@ -601,7 +601,7 @@ export default function Wallet() {
                     description="Platform credits for seamless transactions, rewards and premium features"
                     className="h-full"
                     isLoading={!isLoaded}
-                    primaryAction={{
+                    primaryAction={isIAPRestricted() ? undefined : {
                       label: "Buy Credits",
                       onClick: () => handleWalletAction('buy-credits'),
                       icon: CreditCard,
