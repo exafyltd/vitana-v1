@@ -169,6 +169,7 @@ interface MeetupDetailsDrawerProps {
   onShareEvent?: (event: any) => void;
   onEditEvent?: (event: any) => void;
   onDeleteEvent?: (eventId: string) => void;
+  restoreWindowScrollOnClose?: boolean;
 }
 
 export function MeetupDetailsDrawer({
