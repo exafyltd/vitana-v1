@@ -765,7 +765,7 @@ const EventsAndMeetups = () => {
             </div>
           </UtilityActionButton>
 
-          <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab}>
+          <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab} className={isMobile ? "flex flex-col flex-1 overflow-hidden" : ""}>
               <SplitBarList className={isMobile ? "mb-2" : undefined}>
                 <SplitBarTrigger value="hot">
                   🔥 {translate('events.tabs.hot', 'Hot')}
@@ -781,7 +781,7 @@ const EventsAndMeetups = () => {
                 </SplitBarTrigger>
               </SplitBarList>
           </div>
-          {/* Close sticky wrapper above, content scrolls below */}
+          {/* Close sticky wrapper; scrollable content below */}
 
           <div className="flex-1 overflow-y-auto">
 
