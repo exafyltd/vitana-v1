@@ -43,7 +43,9 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
       return;
     }
 
-    if (isPaid && !canCreatePaidRoom) {
+    const effectiveIsPaid = isPaid && !isIAPRestricted();
+
+    if (effectiveIsPaid && !canCreatePaidRoom) {
       toast({
         title: "Payment setup required",
         description: "Please enable payments in Settings before creating paid rooms",
@@ -52,7 +54,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
       return;
     }
 
-    if (isPaid && (!price || parseFloat(price) < 1)) {
+    if (effectiveIsPaid && (!price || parseFloat(price) < 1)) {
       toast({
         title: "Price required",
         description: "Please enter a price of at least $1.00",
