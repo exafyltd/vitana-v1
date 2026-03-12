@@ -1,41 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Fix: Show only first name in chat input placeholder
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## What's happening
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-The chat input placeholder currently uses `getConversationDisplayTitle()` which returns the **full display name** (e.g., "Jovana Stojanović"). You want it to show just the first name: "Message Jovana..."
-
-## Implementation
-
-1. **Add helper in `src/utils/conversationHelpers.ts`**:
-   - New function `getParticipantFirstName()` that extracts the first name from display_name/full_name
-   - Falls back gracefully for single names
-
-2. **Update `src/components/messages/ConversationView.tsx`**:
-   - Change placeholder from `Message ${getConversationDisplayTitle(...)}...` to `Message ${getParticipantFirstName(...)}...`
-
-## Code changes
-
-### `src/utils/conversationHelpers.ts` - add function:
-```typescript
-export function getParticipantFirstName(participant: ThreadParticipant | null): string {
-  if (!participant) return '';
-  const fullName = participant.profile?.display_name ||
-                   participant.profile?.full_name ||
-                   participant.display_name ||
-                   participant.full_name ||
-                   '';
-  return fullName.split(' ')[0] || fullName;
-}
-```
-
-### `src/components/messages/ConversationView.tsx` line 1203:
-```typescript
-// Before
-placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
-
-// After  
-placeholder={`Message ${getParticipantFirstName(getOtherParticipant(threads.find(t => t.id === threadId), user?.id))}...`}
-```
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.

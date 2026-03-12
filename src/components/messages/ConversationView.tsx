@@ -42,7 +42,7 @@ import AddContactDialog from '@/components/contacts/AddContactDialog';
 import { MessageThreadCallButtons } from '@/components/MessageThreadCallButtons';
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
-import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
+import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -1200,7 +1200,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                   onTypingStop={stopTyping}
                   disabled={isSending}
                   isSending={isSending}
-                  placeholder={`Message ${getConversationDisplayTitle(threads.find(t => t.id === threadId), user?.id)}...`}
+                  placeholder={`Message ${getParticipantFirstName(getOtherParticipant(threads.find(t => t.id === threadId), user?.id))}...`}
                   threadId={threadId}
                   recipientId={recipientId}
                   effectiveRecipientId={effectiveRecipientId}

@@ -96,6 +96,20 @@ export function getConversationDisplayTitle(
 }
 
 /**
+ * Gets only the first name of a participant
+ */
+export function getParticipantFirstName(participant: ThreadParticipant | null): string {
+  if (!participant) return '';
+  const fullName =
+    participant.profile?.display_name ||
+    participant.profile?.full_name ||
+    participant.display_name ||
+    participant.full_name ||
+    '';
+  return fullName.split(' ')[0] || fullName;
+}
+
+/**
  * Gets the conversation avatar URL for display
  */
 export function getConversationDisplayAvatar(
