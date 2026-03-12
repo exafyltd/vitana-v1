@@ -112,12 +112,27 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
  * Kept as a lightweight utility — no polling or event machinery.
  */
 /**
+ * Returns true when running inside the Appilix shell on an iOS device.
+ * Handles modern iPads that report "MacIntel" with desktop-class UA strings
+ * by also checking maxTouchPoints.
+ */
+export function isIOSApp(): boolean {
+  if (!isAppilix()) return false;
+  const ua = navigator.userAgent || '';
+  const platform = navigator.platform || '';
+  const maxTouchPoints = navigator.maxTouchPoints || 0;
+  const isiPhoneLike = /iPhone|iPad|iPod/i.test(ua);
+  const isiPadLikeDesktopUA = platform === 'MacIntel' && maxTouchPoints > 1;
+  return isiPhoneLike || isiPadLikeDesktopUA;
+}
+
+/**
  * iOS App Store Guideline 3.1.1 compliance gate.
  * Returns true when digital purchases must be hidden.
  * Will remain true on iOS until a compliant IAP solution is implemented.
  */
 export function isIAPRestricted(): boolean {
-  return isAppilix();
+  return isIOSApp();
 }
 
 // ── FCM Push Token Bridge ─────────────────────────────────
