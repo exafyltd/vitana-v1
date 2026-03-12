@@ -122,19 +122,21 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
               />
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="paid-toggle">Paid Room</Label>
-                <p className="text-xs text-muted-foreground">Charge participants to join</p>
+            {!isIAPRestricted() && (
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="paid-toggle">Paid Room</Label>
+                  <p className="text-xs text-muted-foreground">Charge participants to join</p>
+                </div>
+                <Switch
+                  id="paid-toggle"
+                  checked={isPaid}
+                  onCheckedChange={setIsPaid}
+                />
               </div>
-              <Switch
-                id="paid-toggle"
-                checked={isPaid}
-                onCheckedChange={setIsPaid}
-              />
-            </div>
+            )}
 
-            {isPaid && !canCreatePaidRoom && (
+            {!isIAPRestricted() && isPaid && !canCreatePaidRoom && (
               <div className="flex items-start gap-2 rounded-md border border-yellow-300 bg-yellow-50 dark:bg-yellow-950/30 dark:border-yellow-700 p-3">
                 <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 mt-0.5 shrink-0" />
                 <div className="text-sm">
@@ -149,7 +151,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
               </div>
             )}
 
-            {isPaid && canCreatePaidRoom && (
+            {!isIAPRestricted() && isPaid && canCreatePaidRoom && (
               <div className="space-y-2">
                 <Label htmlFor="room-price">Price ($)</Label>
                 <Input
