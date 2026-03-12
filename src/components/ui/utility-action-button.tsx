@@ -39,7 +39,7 @@ export function UtilityActionButton({
             {children}
             
             {/* Global Gift Voucher button - appears after main action buttons */}
-            {!hideGiftVoucher && (
+            {!shouldHideVoucher && (
               <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
             )}
             
