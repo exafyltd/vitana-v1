@@ -43,6 +43,7 @@ import { MobileWalletBalanceCard } from "@/components/wallet/mobile/MobileWallet
 import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWalletTransactionList";
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 import { useTranslation } from "@/hooks/useTranslation";
+import { isIAPRestricted } from "@/lib/appilix";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
@@ -388,7 +389,7 @@ export default function Wallet() {
                   change="+2.3%"
                   changeType="increase"
                   isLoading={!isLoaded}
-                  onPress={() => handleWalletAction('add-funds')}
+                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('add-funds')}
                 />
                 
                 <MobileWalletBalanceCard
@@ -399,7 +400,7 @@ export default function Wallet() {
                   change="+12.1%"
                   changeType="increase"
                   isLoading={!isLoaded}
-                  onPress={() => handleWalletAction('buy-credits')}
+                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('buy-credits')}
                 />
                 
                 <MobileWalletBalanceCard
@@ -523,11 +524,11 @@ export default function Wallet() {
                       variant: "default"
                     }}
                     secondaryActions={[
-                      {
+                      ...(isIAPRestricted() ? [] : [{
                         label: "Buy Tokens",
                         onClick: () => handleWalletAction('buy-tokens', 'VTNA'),
                         icon: Coins
-                      },
+                      }]),
                       {
                         label: "Send",
                         onClick: () => handleWalletAction('send', 'VTNA'),
@@ -558,7 +559,7 @@ export default function Wallet() {
                     description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
                     isLoading={!isLoaded}
-                    primaryAction={{
+                    primaryAction={isIAPRestricted() ? undefined : {
                       label: "Add Funds",
                       onClick: () => handleWalletAction('add-funds'),
                       icon: DollarSign,
@@ -600,7 +601,7 @@ export default function Wallet() {
                     description="Platform credits for seamless transactions, rewards and premium features"
                     className="h-full"
                     isLoading={!isLoaded}
-                    primaryAction={{
+                    primaryAction={isIAPRestricted() ? undefined : {
                       label: "Buy Credits",
                       onClick: () => handleWalletAction('buy-credits'),
                       icon: CreditCard,

@@ -1,51 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Fix 3 iOS/Appilix UX Issues
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## Issue 1: Gate `src/components/CreateLiveRoomDialog.tsx`
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-Import `isIAPRestricted` and wrap the paid toggle, price input, and payment warning sections in `{!isIAPRestricted() && (...)}`. When restricted, only the room name input and "Create Room" button remain — clean free-only flow.
-
-Also guard the `handleCreateRoom` logic so `isPaid` is effectively always `false` when restricted (reset it if somehow set).
-
-**Files**: `src/components/CreateLiveRoomDialog.tsx`
-
----
-
-## Issue 2: Fix `MobileWalletQuickActions` grid
-
-Change line 91 from fixed `grid-cols-4` to dynamic based on `actions.length`:
-- 4 items → `grid-cols-4`  
-- 3 items → `grid-cols-3`  
-- 2 items → `grid-cols-2`
-
-Use: `` grid-cols-${actions.length} `` won't work with Tailwind purging, so use a simple ternary mapping object or conditional class.
-
-**Files**: `src/components/wallet/mobile/MobileWalletQuickActions.tsx`
-
----
-
-## Issue 3: Fix dead taps on mobile balance cards in `Wallet.tsx`
-
-When `isIAPRestricted()`:
-- **USD card** (`onPress={() => handleWalletAction('add-funds')}`) → change to `onPress={undefined}` (no-op, removes tap affordance)
-- **Credits card** (`onPress={() => handleWalletAction('buy-credits')}`) → change to `onPress={undefined}`
-- **Tokens card** stays as-is — `stake-tokens` is not a purchase flow
-
-Also update `MobileWalletBalanceCard` to conditionally hide the `ChevronRight` and remove `cursor-pointer` / `active:scale` when `onPress` is undefined/null.
-
-Additionally, on desktop: the `WalletBalanceCard` primary actions for USD ("Add Funds") and Credits ("Buy Credits") should be hidden when restricted. The secondary action "Buy Tokens" on the VTNA card should also be filtered out. These cards are only on desktop but should still be gated.
-
-**Files**: `src/pages/Wallet.tsx`, `src/components/wallet/mobile/MobileWalletBalanceCard.tsx`
-
----
-
-## Summary of all changes
-
-| File | Change |
-|------|--------|
-| `src/components/CreateLiveRoomDialog.tsx` | Hide paid toggle + price UI when `isIAPRestricted()` |
-| `src/components/wallet/mobile/MobileWalletQuickActions.tsx` | Dynamic grid cols based on filtered action count |
-| `src/components/wallet/mobile/MobileWalletBalanceCard.tsx` | Hide chevron + remove tap styles when `onPress` is absent |
-| `src/pages/Wallet.tsx` | Remove `onPress` from USD/Credits cards on iOS; filter purchase primary/secondary actions on desktop cards |
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.

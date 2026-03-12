@@ -78,7 +78,7 @@ export function MobileWalletBalanceCard({
 
   return (
     <Card 
-      className={`cursor-pointer active:scale-[0.98] transition-transform ${className}`}
+      className={`${onPress ? 'cursor-pointer active:scale-[0.98]' : ''} transition-transform ${className}`}
       onClick={onPress}
     >
       <CardContent className="p-4">
@@ -104,8 +104,10 @@ export function MobileWalletBalanceCard({
             )}
           </div>
           
-          {/* Chevron */}
-          <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+          {/* Chevron - only shown when interactive */}
+          {onPress && (
+            <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+          )}
         </div>
       </CardContent>
     </Card>
