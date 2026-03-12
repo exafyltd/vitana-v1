@@ -1,63 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Harden iOS Detection in `src/lib/appilix.ts`
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## Change
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-Replace the current `isIAPRestricted()` with the user's exact `isIOSApp()` + `isIAPRestricted()` pair.
-
-### `src/lib/appilix.ts` — lines 114–121
-
-**Remove:**
-```ts
-/**
- * iOS App Store Guideline 3.1.1 compliance gate.
- * Returns true when digital purchases must be hidden.
- * Will remain true on iOS until a compliant IAP solution is implemented.
- */
-export function isIAPRestricted(): boolean {
-  return isAppilix();
-}
-```
-
-**Replace with:**
-```ts
-/**
- * Returns true when running inside the Appilix shell on an iOS device.
- * Handles modern iPads that report "MacIntel" with desktop-class UA strings
- * by also checking maxTouchPoints.
- */
-export function isIOSApp(): boolean {
-  if (!isAppilix()) return false;
-  const ua = navigator.userAgent || '';
-  const platform = navigator.platform || '';
-  const maxTouchPoints = navigator.maxTouchPoints || 0;
-  const isiPhoneLike = /iPhone|iPad|iPod/i.test(ua);
-  const isiPadLikeDesktopUA = platform === 'MacIntel' && maxTouchPoints > 1;
-  return isiPhoneLike || isiPadLikeDesktopUA;
-}
-
-/**
- * iOS App Store Guideline 3.1.1 compliance gate.
- * Returns true when digital purchases must be hidden.
- * Will remain true on iOS until a compliant IAP solution is implemented.
- */
-export function isIAPRestricted(): boolean {
-  return isIOSApp();
-}
-```
-
-## Scope
-
-**1 file**, **1 function added**, **1 function body changed**. No other files need changes — all consumers already call `isIAPRestricted()`.
-
-## Detection matrix after fix
-
-| Platform | `isAppilix()` | `isIOSApp()` | `isIAPRestricted()` | Purchase UI |
-|----------|---------------|--------------|---------------------|-------------|
-| Web/desktop | false | false | false | Full |
-| Android Appilix | true | false | false | Full |
-| iPhone Appilix | true | true | true | Hidden |
-| iPad Appilix (mobile UA) | true | true | true | Hidden |
-| iPad Appilix (desktop UA, MacIntel) | true | true | true | Hidden |
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
