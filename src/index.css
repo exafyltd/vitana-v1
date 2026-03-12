@@ -621,6 +621,15 @@ All colors MUST be HSL.
 
 }
 
+  /* VITANA ORB idle core pulse — lightweight CSS-only animation */
+  @keyframes vitana-idle-core-pulse {
+    0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(0.97); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.03); }
+  }
+  .vitana-idle-pulse {
+    animation: vitana-idle-core-pulse 5s ease-in-out infinite;
+  }
+
 
   /* Fade In Up Animation */
   @keyframes fadeInUp {
