@@ -32,8 +32,10 @@ export function MobileWalletQuickActions({
   className = ""
 }: MobileWalletQuickActionsProps) {
   const { translate } = useTranslation();
+  const restricted = isIAPRestricted();
+  const restrictedIds = ['add-funds', 'buy-credits'];
   
-  const actions: QuickAction[] = [
+  const allActions: QuickAction[] = [
     {
       id: 'add-funds',
       label: translate('walletActions.addFunds'),
@@ -61,7 +63,7 @@ export function MobileWalletQuickActions({
     }
   ];
 
-  const secondaryActions: QuickAction[] = [
+  const allSecondaryActions: QuickAction[] = [
     {
       id: 'buy-credits',
       label: translate('walletActions.buyCredits'),
@@ -75,6 +77,9 @@ export function MobileWalletQuickActions({
       onClick: onStakeTokens
     }
   ];
+
+  const actions = restricted ? allActions.filter(a => !restrictedIds.includes(a.id)) : allActions;
+  const secondaryActions = restricted ? allSecondaryActions.filter(a => !restrictedIds.includes(a.id)) : allSecondaryActions;
 
   return (
     <Card className={className}>
