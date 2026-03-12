@@ -42,7 +42,7 @@ import AddContactDialog from '@/components/contacts/AddContactDialog';
 import { MessageThreadCallButtons } from '@/components/MessageThreadCallButtons';
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
-import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant } from '@/utils/conversationHelpers';
+import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
 
 interface ConversationViewProps {
   threadId?: string | null;
