@@ -1,14 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchUnreadCount } from "./useChatApi";
 
+const POLL_INTERVAL = 60_000; // 60s — Realtime handles fast path
+
 /**
- * Lightweight hook that polls gateway unread count + listens to Realtime
+ * Lightweight hook that uses Realtime for instant updates
+ * and a visibility-aware setTimeout chain as fallback polling.
  */
 export function useChatUnreadCount() {
   const { user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const refresh = useCallback(async () => {
     if (!user) return;
@@ -20,12 +24,46 @@ export function useChatUnreadCount() {
     }
   }, [user]);
 
-  // Poll on mount + 30s interval
+  // Visibility-aware recursive setTimeout polling
   useEffect(() => {
     if (!user) return;
+
+    const schedule = () => {
+      timeoutRef.current = setTimeout(async () => {
+        if (document.visibilityState === 'visible') {
+          await refresh();
+        }
+        if (document.visibilityState === 'visible') {
+          schedule();
+        }
+      }, POLL_INTERVAL);
+    };
+
+    // Initial fetch + start chain
     refresh();
-    const interval = setInterval(refresh, 30_000);
-    return () => clearInterval(interval);
+    schedule();
+
+    // Restart chain when tab becomes visible
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        // Immediate refresh on return + restart chain
+        refresh();
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        schedule();
+      } else {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [user, refresh]);
 
   // Listen for new messages via Realtime → increment

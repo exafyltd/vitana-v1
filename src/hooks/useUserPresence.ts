@@ -11,13 +11,27 @@ export interface UserPresence {
   last_seen: string;
   display_name?: string;
   avatar_url?: string;
-  lastUpdate?: number; // Local timestamp for cache management
+  lastUpdate?: number;
 }
 
 export interface PresenceConnection {
   status: ConnectionStatus;
   lastConnected?: number;
   reconnectAttempts: number;
+}
+
+const DEBUG_PRESENCE = typeof localStorage !== 'undefined' && localStorage.getItem('debug_presence') === 'true';
+
+/** Throttle wrapper — fires at most once per `ms` */
+function throttle(fn: () => void, ms: number) {
+  let lastCall = 0;
+  return () => {
+    const now = Date.now();
+    if (now - lastCall >= ms) {
+      lastCall = now;
+      fn();
+    }
+  };
 }
 
 export function useUserPresence(context: 'global' | 'tenant' = 'global') {
@@ -39,33 +53,27 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     setIsActive(true);
   }, []);
 
-  // Monitor user activity
+  // Monitor user activity — throttled to 5s minimum gap
   useEffect(() => {
-    let activityTimer: NodeJS.Timeout;
     let awayTimer: NodeJS.Timeout;
 
     const resetTimers = () => {
-      clearTimeout(activityTimer);
       clearTimeout(awayTimer);
-      
-      // Set to away after 5 minutes of inactivity
       awayTimer = setTimeout(() => {
         setIsActive(false);
       }, 5 * 60 * 1000);
     };
 
-    const handleActivity = () => {
+    const handleActivity = throttle(() => {
       updateActivity();
       resetTimers();
-    };
+    }, 5000); // Throttled: fire at most once per 5 seconds
 
-    // Listen for user activity
     const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
     events.forEach(event => {
       document.addEventListener(event, handleActivity, true);
     });
 
-    // Listen for window focus/blur
     const handleFocus = () => setIsActive(true);
     const handleBlur = () => setIsActive(false);
     
@@ -80,12 +88,10 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
       });
       window.removeEventListener('focus', handleFocus);
       window.removeEventListener('blur', handleBlur);
-      clearTimeout(activityTimer);
       clearTimeout(awayTimer);
     };
   }, [updateActivity]);
 
-  // Keep a ref of isActive to avoid resubscribing the channel
   useEffect(() => {
     isActiveRef.current = isActive;
   }, [isActive]);
@@ -98,7 +104,6 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     const timestamp = new Date().toISOString();
     const now = Date.now();
     
-    // Optimistic update - immediately update local state
     const optimisticPresence: UserPresence = {
       user_id: user.id,
       status,
@@ -111,14 +116,13 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     localCache.current.set(user.id, optimisticPresence);
     setPresenceMap(prev => new Map(prev.set(user.id, optimisticPresence)));
     
-    console.log(`[Presence] Optimistic update: ${user.id} as ${status} @ ${timestamp}`);
+    if (DEBUG_PRESENCE) console.log(`[Presence] Optimistic update: ${user.id} as ${status} @ ${timestamp}`);
     
     let attempts = 0;
     const maxRetries = 3;
     
     while (attempts < maxRetries) {
       try {
-        // Try realtime first
         if (channelRef.current && connectionRef.current.status === 'connected') {
           await channelRef.current.track({
             user_id: user.id,
@@ -129,7 +133,6 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
           });
         }
         
-        // Always update database as backup
         await supabase
           .from('thread_presence')
           .upsert({
@@ -141,11 +144,11 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
             onConflict: 'user_id,thread_id,context'
           });
         
-        console.log(`[Presence] Successfully tracked ${user.id} as ${status}`);
+        if (DEBUG_PRESENCE) console.log(`[Presence] Successfully tracked ${user.id} as ${status}`);
         break;
       } catch (err) {
         attempts++;
-        console.error(`[Presence] Tracking failed (attempt ${attempts}/${maxRetries}):`, err);
+        if (DEBUG_PRESENCE) console.error(`[Presence] Tracking failed (attempt ${attempts}/${maxRetries}):`, err);
         
         if (attempts < maxRetries) {
           await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempts) * 1000));
@@ -161,7 +164,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     const attempts = connectionRef.current.reconnectAttempts;
     const delay = Math.min(1000 * Math.pow(2, attempts), 30000);
     
-    console.log(`[Presence] Retrying connection in ${delay}ms (attempt ${attempts + 1})`);
+    if (DEBUG_PRESENCE) console.log(`[Presence] Retrying connection in ${delay}ms (attempt ${attempts + 1})`);
     
     retryTimeoutRef.current = setTimeout(() => {
       retryTimeoutRef.current = null;
@@ -173,12 +176,11 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     }, delay);
   }, []);
 
-  // Update connection ref when connection state changes
   useEffect(() => {
     connectionRef.current = connection;
   }, [connection]);
 
-  // Set up enhanced Supabase realtime presence with monitoring
+  // Set up Supabase realtime presence
   useEffect(() => {
     if (!user?.id) return;
 
@@ -191,9 +193,8 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     });
     channelRef.current = channel;
 
-    console.log(`[Presence] Setting up presence for user ${user.id} in channel ${channelName}`);
+    if (DEBUG_PRESENCE) console.log(`[Presence] Setting up presence for user ${user.id} in channel ${channelName}`);
 
-    // Load existing presence from database as fallback (last 24h)
     const loadDatabasePresence = async () => {
       try {
         const { data } = await supabase
@@ -218,13 +219,12 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
           });
           setPresenceMap(prev => {
             const merged = new Map(prev);
-            // Only add DB entries for users we don't already have via realtime
             dbPresenceMap.forEach((val, key) => {
               if (!merged.has(key)) merged.set(key, val);
             });
             return merged;
           });
-          console.log(`[Presence] Loaded ${dbPresenceMap.size} users from database`);
+          if (DEBUG_PRESENCE) console.log(`[Presence] Loaded ${dbPresenceMap.size} users from database`);
         }
       } catch (error) {
         console.error('[Presence] Failed to load database presence:', error);
@@ -235,7 +235,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
       .on('presence', { event: 'sync' }, () => {
         const newState = channel.presenceState();
         const newPresenceMap = new Map<string, UserPresence>();
-        console.log(`[Presence] Syncing presence state:`, newState);
+        if (DEBUG_PRESENCE) console.log(`[Presence] Syncing presence state:`, newState);
         Object.entries(newState).forEach(([key, presences]) => {
           const presence = (presences as any[])[0];
           if (presence) {
@@ -251,7 +251,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
               display_name: presence.display_name,
               avatar_url: presence.avatar_url,
             });
-            console.log(`[Presence] User ${key} (${presence.display_name}) is ${actualStatus}`);
+            if (DEBUG_PRESENCE) console.log(`[Presence] User ${key} (${presence.display_name}) is ${actualStatus}`);
           }
         });
         setPresenceMap(prev => {
@@ -259,16 +259,16 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
           newPresenceMap.forEach((val, key) => merged.set(key, val));
           return merged;
         });
-        console.log(`[Presence] Updated presence map with ${newPresenceMap.size} users`);
+        if (DEBUG_PRESENCE) console.log(`[Presence] Updated presence map with ${newPresenceMap.size} users`);
       })
       .on('presence', { event: 'join' }, ({ newPresences }) => {
-        console.log('[Presence] User joined:', newPresences);
+        if (DEBUG_PRESENCE) console.log('[Presence] User joined:', newPresences);
       })
       .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-        console.log('[Presence] User left:', leftPresences);
+        if (DEBUG_PRESENCE) console.log('[Presence] User left:', leftPresences);
       })
       .subscribe(async (status) => {
-        console.log(`[Presence] Channel subscription status: ${status}`);
+        if (DEBUG_PRESENCE) console.log(`[Presence] Channel subscription status: ${status}`);
         
         if (status === 'SUBSCRIBED') {
           setConnection(prev => ({ 
@@ -288,33 +288,64 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         }
       });
 
-    // Initial DB fallback load
     loadDatabasePresence();
 
-    // Enhanced heartbeat with connection monitoring
-    const heartbeat = setInterval(() => {
-      if (connectionRef.current.status === 'connected') {
-        trackPresence();
-      } else if (connectionRef.current.status === 'disconnected') {
-        retryConnection();
-      }
-    }, 30000);
+    // Heartbeat: 30s setTimeout chain, pauses when hidden
+    let heartbeatTimeout: NodeJS.Timeout | null = null;
+    const scheduleHeartbeat = () => {
+      heartbeatTimeout = setTimeout(() => {
+        if (document.visibilityState === 'visible') {
+          if (connectionRef.current.status === 'connected') {
+            trackPresence();
+          } else if (connectionRef.current.status === 'disconnected') {
+            retryConnection();
+          }
+        }
+        if (document.visibilityState === 'visible') {
+          scheduleHeartbeat();
+        }
+      }, 30_000);
+    };
 
-    // Connection health check every 10s
-    const healthCheck = setInterval(() => {
-      const timeSinceLastConnection = connectionRef.current.lastConnected 
-        ? Date.now() - connectionRef.current.lastConnected 
-        : Infinity;
-        
-      if (timeSinceLastConnection > 60000 && connectionRef.current.status !== 'disconnected') {
-        console.log('[Presence] Connection health check failed, marking as disconnected');
-        setConnection(prev => ({ ...prev, status: 'disconnected' }));
+    // Health check: 60s setTimeout chain (increased from 10s), pauses when hidden
+    let healthTimeout: NodeJS.Timeout | null = null;
+    const scheduleHealthCheck = () => {
+      healthTimeout = setTimeout(() => {
+        if (document.visibilityState === 'visible') {
+          const timeSinceLastConnection = connectionRef.current.lastConnected 
+            ? Date.now() - connectionRef.current.lastConnected 
+            : Infinity;
+          if (timeSinceLastConnection > 60000 && connectionRef.current.status !== 'disconnected') {
+            if (DEBUG_PRESENCE) console.log('[Presence] Connection health check failed, marking as disconnected');
+            setConnection(prev => ({ ...prev, status: 'disconnected' }));
+          }
+        }
+        if (document.visibilityState === 'visible') {
+          scheduleHealthCheck();
+        }
+      }, 60_000);
+    };
+
+    scheduleHeartbeat();
+    scheduleHealthCheck();
+
+    // Restart chains on visibility change
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        trackPresence();
+        scheduleHeartbeat();
+        scheduleHealthCheck();
+      } else {
+        if (heartbeatTimeout) clearTimeout(heartbeatTimeout);
+        if (healthTimeout) clearTimeout(healthTimeout);
       }
-    }, 10000);
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     return () => {
-      clearInterval(heartbeat);
-      clearInterval(healthCheck);
+      if (heartbeatTimeout) clearTimeout(heartbeatTimeout);
+      if (healthTimeout) clearTimeout(healthTimeout);
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (retryTimeoutRef.current) {
         clearTimeout(retryTimeoutRef.current);
       }
@@ -323,7 +354,6 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     };
   }, [user?.id, context]);
 
-  // Update presence when activity or visibility changes
   useEffect(() => {
     trackPresence();
   }, [isActive, trackPresence]);
@@ -340,72 +370,29 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   }, [trackPresence]);
 
   const getUserPresence = useCallback((userId: string): UserPresence | null => {
-    // First check local cache for most recent data
     const cached = localCache.current.get(userId);
     const mapData = presenceMap.get(userId);
-    
-    // Return cached data if it's more recent
     if (cached && mapData && cached.lastUpdate && cached.lastUpdate > (mapData.lastUpdate || 0)) {
       return cached;
     }
-    
-    return mapData || cached || null;
+    return mapData || null;
   }, [presenceMap]);
 
-  const getStatusColor = useCallback((status: PresenceStatus): string => {
-    switch (status) {
-      case 'online':
-        return 'bg-[hsl(var(--health-success))]';
-      case 'away':
-        return 'bg-[hsl(var(--health-warning))]';
-      case 'offline':
-        return 'bg-[hsl(var(--muted-foreground))]';
-      default:
-        return 'bg-[hsl(var(--muted-foreground))]';
-    }
-  }, []);
+  const getOnlineUsers = useCallback((): UserPresence[] => {
+    return Array.from(presenceMap.values()).filter(p => p.status === 'online');
+  }, [presenceMap]);
 
-  const getConnectionStatusColor = useCallback((): string => {
-    switch (connection.status) {
-      case 'connected':
-        return 'bg-[hsl(var(--health-success))]';
-      case 'connecting':
-        return 'bg-[hsl(var(--health-warning))]';
-      case 'disconnected':
-        return 'bg-[hsl(var(--destructive))]';
-      default:
-        return 'bg-[hsl(var(--muted-foreground))]';
-    }
-  }, [connection.status]);
-
-  const getStatusText = useCallback((presence: UserPresence | null): string => {
-    if (!presence) return '';
-    
-    const lastSeen = new Date(presence.last_seen);
-    const now = new Date();
-    const minutesAway = Math.floor((now.getTime() - lastSeen.getTime()) / (1000 * 60));
-
-    switch (presence.status) {
-      case 'online':
-        return 'Online';
-      case 'away':
-        return minutesAway < 60 ? `Away ${minutesAway}m ago` : `Away ${Math.floor(minutesAway / 60)}h ago`;
-      case 'offline':
-        if (minutesAway < 60) return `Last seen ${minutesAway}m ago`;
-        if (minutesAway < 1440) return `Last seen ${Math.floor(minutesAway / 60)}h ago`;
-        return `Last seen ${Math.floor(minutesAway / 1440)}d ago`;
-      default:
-        return '';
-    }
-  }, []);
+  const getOnlineCount = useCallback((): number => {
+    return Array.from(presenceMap.values()).filter(p => p.status === 'online').length;
+  }, [presenceMap]);
 
   return {
-    getUserPresence,
-    getStatusColor,
-    getStatusText,
-    getConnectionStatusColor,
+    presenceMap,
     isActive,
     connection,
-    presenceCount: presenceMap.size,
+    getUserPresence,
+    getOnlineUsers,
+    getOnlineCount,
+    trackPresence,
   };
 }
