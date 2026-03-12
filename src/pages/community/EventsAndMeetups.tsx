@@ -1074,6 +1074,7 @@ const EventsAndMeetups = () => {
           onShareEvent={handleShareEvent}
           onEditEvent={handleEditEvent}
           onDeleteEvent={handleDeleteEvent}
+          restoreWindowScrollOnClose={false}
         />
       )}
 
