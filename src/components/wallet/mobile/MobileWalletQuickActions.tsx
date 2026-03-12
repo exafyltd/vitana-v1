@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard, Coins } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface QuickAction {
   id: string;
@@ -31,8 +32,10 @@ export function MobileWalletQuickActions({
   className = ""
 }: MobileWalletQuickActionsProps) {
   const { translate } = useTranslation();
+  const restricted = isIAPRestricted();
+  const restrictedIds = ['add-funds', 'buy-credits'];
   
-  const actions: QuickAction[] = [
+  const allActions: QuickAction[] = [
     {
       id: 'add-funds',
       label: translate('walletActions.addFunds'),
@@ -60,7 +63,7 @@ export function MobileWalletQuickActions({
     }
   ];
 
-  const secondaryActions: QuickAction[] = [
+  const allSecondaryActions: QuickAction[] = [
     {
       id: 'buy-credits',
       label: translate('walletActions.buyCredits'),
@@ -74,6 +77,9 @@ export function MobileWalletQuickActions({
       onClick: onStakeTokens
     }
   ];
+
+  const actions = restricted ? allActions.filter(a => !restrictedIds.includes(a.id)) : allActions;
+  const secondaryActions = restricted ? allSecondaryActions.filter(a => !restrictedIds.includes(a.id)) : allSecondaryActions;
 
   return (
     <Card className={className}>

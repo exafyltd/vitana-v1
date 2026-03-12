@@ -111,6 +111,17 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
  * Simple synchronous check for a pre-injected FCM token.
  * Kept as a lightweight utility — no polling or event machinery.
  */
+/**
+ * iOS App Store Guideline 3.1.1 compliance gate.
+ * Returns true when digital purchases must be hidden.
+ * Will remain true on iOS until a compliant IAP solution is implemented.
+ */
+export function isIAPRestricted(): boolean {
+  return isAppilix();
+}
+
+// ── FCM Push Token Bridge ─────────────────────────────────
+
 export function getNativeFcmToken(): string | null {
   if (typeof window === 'undefined') return null;
   if (window.appilix_fcm_token) return window.appilix_fcm_token;

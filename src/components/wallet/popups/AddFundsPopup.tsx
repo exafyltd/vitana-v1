@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { DollarSign, CreditCard, Banknote, Loader2, Shield } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface AddFundsPopupProps {
   open: boolean;
@@ -24,6 +25,8 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
   const { toast } = useToast();
   const [fundAmount, setFundAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const currentBalance = getBalance('USD') || 0;
   const quickAmounts = [25, 50, 100, 200, 500];

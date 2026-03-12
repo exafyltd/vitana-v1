@@ -10,6 +10,7 @@ import { LiveRoom } from '@/services/liveRoomService';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { StripePaymentForm } from '@/components/billing/StripePaymentForm';
+import { isIAPRestricted } from '@/lib/appilix';
 
 // Load Stripe publishable key from env
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
@@ -30,6 +31,9 @@ export function PurchaseRoomAccessDialog({
   onSuccess,
 }: PurchaseRoomAccessDialogProps) {
   const { initiatePurchase, clientSecret, amount, isPending } = useStripePayment(room.id, userId);
+
+  // Block paid room access on iOS (App Store Guideline 3.1.1)
+  if (isIAPRestricted()) return null;
 
   const handlePurchase = () => {
     initiatePurchase();

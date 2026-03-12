@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Coins, TrendingUp, Loader2, Star, Zap } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
 
 interface BuyTokensPopupProps {
@@ -25,6 +26,8 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
   const { toast } = useToast();
   const [tokenAmount, setTokenAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const currentTokens = getBalance('VTNA') || 0;
   const usdBalance = getBalance('USD') || 0;

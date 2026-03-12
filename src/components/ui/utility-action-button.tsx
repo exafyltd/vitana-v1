@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { GiftVoucherButton } from "@/components/voucher/GiftVoucherButton";
 import { MaxinaVoucherModal } from "@/components/voucher/MaxinaVoucherModal";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface UtilityActionButtonProps {
   children: React.ReactNode;
@@ -27,6 +28,7 @@ export function UtilityActionButton({
   afterGiftVoucherChildren
 }: UtilityActionButtonProps) {
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
+  const shouldHideVoucher = hideGiftVoucher || isIAPRestricted();
 
   return (
     <>
@@ -37,7 +39,7 @@ export function UtilityActionButton({
             {children}
             
             {/* Global Gift Voucher button - appears after main action buttons */}
-            {!hideGiftVoucher && (
+            {!shouldHideVoucher && (
               <GiftVoucherButton onClick={() => setVoucherModalOpen(true)} />
             )}
             
@@ -51,7 +53,7 @@ export function UtilityActionButton({
       </div>
       
       {/* Voucher Modal */}
-      {!hideGiftVoucher && (
+      {!shouldHideVoucher && (
         <MaxinaVoucherModal 
           open={voucherModalOpen} 
           onOpenChange={setVoucherModalOpen} 
