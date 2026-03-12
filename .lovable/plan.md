@@ -1,27 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Fix: Consistent large hero image in event detail drawer
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## What's happening
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-The hero image container on mobile uses `min-h-[50vh]` (line 844) — a **minimum** height, not a fixed one. The `img` inside has `w-full h-full object-cover`, but because the parent only has a min-height (no explicit height), the actual rendered size depends on the image's intrinsic aspect ratio:
-
-- **Landscape images** (like KIRA Santanyi beach): container stays at 50vh minimum, image covers it — smaller hero
-- **Portrait/tall images** (like Janina Restaurant chandelier): image's natural height pushes the container beyond 50vh — larger hero
-
-## Fix
-
-Replace `min-h-[50vh]` with a fixed `h-[70vh]` so all images get the larger, immersive hero treatment consistently — matching the look you prefer (screenshot 2).
-
-### File: `src/components/meetups/MeetupDetailsDrawer.tsx` (line 844)
-
-```
-// Before
-isMobile ? "min-h-[50vh]" : "aspect-video"
-
-// After
-isMobile ? "h-[70vh]" : "aspect-video"
-```
-
-One line change. Desktop layout unchanged.
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.

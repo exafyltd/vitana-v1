@@ -841,7 +841,7 @@ export function MeetupDetailsDrawer({
           {/* Hero Image - Edge to edge */}
           <div className={cn(
             "relative w-full bg-muted overflow-hidden",
-            isMobile ? "min-h-[50vh]" : "aspect-video"
+            isMobile ? "h-[70vh]" : "aspect-video"
           )}>
             {!isImageLoaded && (
               <div className="absolute inset-0 bg-muted animate-pulse" />
