@@ -185,6 +185,7 @@ export function MeetupDetailsDrawer({
   onShareEvent,
   onEditEvent,
   onDeleteEvent,
+  restoreWindowScrollOnClose = true,
 }: MeetupDetailsDrawerProps) {
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
