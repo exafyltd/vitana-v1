@@ -15,6 +15,7 @@ import { Video, Users, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useCreatorStatus } from '@/hooks/useCreator';
 import { Link } from 'react-router-dom';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface CreateLiveRoomDialogProps {
   userId: string;
