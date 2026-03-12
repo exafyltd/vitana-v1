@@ -28,6 +28,7 @@ export function UtilityActionButton({
   afterGiftVoucherChildren
 }: UtilityActionButtonProps) {
   const [voucherModalOpen, setVoucherModalOpen] = useState(false);
+  const shouldHideVoucher = hideGiftVoucher || isIAPRestricted();
 
   return (
     <>
