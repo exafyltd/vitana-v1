@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard, Coins } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface QuickAction {
   id: string;
