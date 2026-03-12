@@ -623,6 +623,13 @@ const EventsAndMeetups = () => {
     params.delete('event');
     setSearchParams(params);
     
+    // On mobile, normalize scroll to top so sticky header is always visible
+    if (isMobile) {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 350);
+    }
+    
     if (focusedCardId) {
       setTimeout(() => {
         const card = document.querySelector(`[data-event-id="${focusedCardId}"]`);
