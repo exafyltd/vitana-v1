@@ -386,13 +386,51 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     return Array.from(presenceMap.values()).filter(p => p.status === 'online').length;
   }, [presenceMap]);
 
+  const presenceCount = presenceMap.size;
+
+  const getStatusColor = useCallback((status: PresenceStatus): string => {
+    switch (status) {
+      case 'online': return 'bg-green-500';
+      case 'away': return 'bg-yellow-500';
+      case 'offline': return 'bg-gray-400';
+      default: return 'bg-gray-400';
+    }
+  }, []);
+
+  const getStatusText = useCallback((presence: UserPresence | null): string => {
+    if (!presence) return 'Offline';
+    switch (presence.status) {
+      case 'online': return 'Online';
+      case 'away': {
+        const mins = Math.floor((Date.now() - new Date(presence.last_seen).getTime()) / 60000);
+        if (mins < 60) return `Away ${mins}m ago`;
+        return `Away ${Math.floor(mins / 60)}h ago`;
+      }
+      case 'offline': return 'Offline';
+      default: return 'Offline';
+    }
+  }, []);
+
+  const getConnectionStatusColor = useCallback((): string => {
+    switch (connection.status) {
+      case 'connected': return 'bg-green-500';
+      case 'connecting': return 'bg-yellow-500';
+      case 'disconnected': return 'bg-red-500';
+      default: return 'bg-gray-400';
+    }
+  }, [connection.status]);
+
   return {
     presenceMap,
+    presenceCount,
     isActive,
     connection,
     getUserPresence,
     getOnlineUsers,
     getOnlineCount,
+    getStatusColor,
+    getStatusText,
+    getConnectionStatusColor,
     trackPresence,
   };
 }
