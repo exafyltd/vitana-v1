@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { GiftVoucherButton } from "@/components/voucher/GiftVoucherButton";
 import { MaxinaVoucherModal } from "@/components/voucher/MaxinaVoucherModal";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface UtilityActionButtonProps {
   children: React.ReactNode;
