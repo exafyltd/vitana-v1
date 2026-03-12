@@ -1,29 +1,46 @@
-## iOS/Appilix Digital Purchase Restriction — Implemented
 
-### Kill Switch
-`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
+Goal: Keep the Events & Meet-Ups top area (title + controls) visible and stable after closing the event drawer on mobile, so the screen always returns to the same “first screenshot” state.
 
-### Files Changed (8)
-1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
-2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
-3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
-4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
-5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
-6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
-7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
-8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
+1) Root cause I’ll address
+- The previous fix restores `window.scrollY` inside `MeetupDetailsDrawer`, but this page (`/comm/events-meetups`) primarily scrolls inside internal containers, not the window.
+- After drawer close, restoring window scroll can still leave the page visually shifted up, which hides/crops the title area (exactly what your second screenshot shows).
+- The page header block itself is not sticky, so when this shift happens, the title is the first thing to disappear.
 
-### iOS Purchase Flow Status
-| Flow | Status | Reason |
-|------|--------|--------|
-| Gift Voucher | HIDDEN | Digital good |
-| Add Funds | HIDDEN | Digital currency |
-| Buy Credits | HIDDEN | Digital currency |
-| Buy VTNA Tokens | HIDDEN | Digital currency |
-| Paid Live Room creation | HIDDEN (free-only) | Digital access |
-| Paid Room access | HIDDEN | Digital access |
-| Event Tickets | VISIBLE | Real-world physical events (exempt) |
-| Service Bookings | VISIBLE | Real-world services (exempt) |
+2) Implementation plan (focused and minimal-risk)
+- Make the full mobile top block sticky in `src/pages/community/EventsAndMeetups.tsx`:
+  - StandardHeader (title/description)
+  - Utility action row (Search/Calendar/Create/Gift/Autopilot pills)
+  - Tab row (Hot/Upcoming/Today/Following)
+- Use the same proven mobile offset pattern already used in Orders:
+  - `top-[calc(env(safe-area-inset-top,0px)+32px)]`
+- Keep desktop layout unchanged.
 
-### Post-Approval
-Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
+3) Stabilize drawer close behavior for this page
+- Add a drawer prop to control scroll restoration behavior (default unchanged for other pages):
+  - In `src/components/meetups/MeetupDetailsDrawer.tsx`, guard the current save/restore effect behind a prop (e.g. `restoreWindowScrollOnClose = true`).
+- For `EventsAndMeetups`, pass `restoreWindowScrollOnClose={false}` to stop forcing window scroll restoration where it’s not appropriate.
+- On mobile drawer close in `EventsAndMeetups`, normalize to top (`window.scrollTo(0, 0)`) as a safety net so the title region is always visible.
+
+4) Files to update
+- `src/pages/community/EventsAndMeetups.tsx`
+  - Restructure mobile layout so header/actions/tabs are one sticky block.
+  - Keep tab contents below in a dedicated scrollable region.
+  - Pass `restoreWindowScrollOnClose={false}` to `MeetupDetailsDrawer`.
+  - Add mobile close normalization in `handleDrawerClose`.
+- `src/components/meetups/MeetupDetailsDrawer.tsx`
+  - Add optional prop to enable/disable window scroll restore on close.
+  - Preserve existing default behavior for other pages (no regression risk).
+
+5) Technical notes
+- Sticky header top offset:
+  - Reuse existing app standard: below fixed `TopAppBar` + safe area.
+- Z-index/background:
+  - Sticky container will include backdrop/background so event cards do not bleed through while scrolling.
+- Scope control:
+  - Desktop and non-events pages remain unchanged unless they opt into the new prop.
+
+6) Validation checklist
+- Open any event from Hot/Upcoming/Today, close with X, verify title remains visible.
+- Repeat after scrolling deep in carousel.
+- Repeat across multiple events (“no matter what event we are at”).
+- Confirm no regression on Home/Community pages that also use `MeetupDetailsDrawer`.
