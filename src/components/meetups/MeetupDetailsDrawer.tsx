@@ -218,7 +218,7 @@ export function MeetupDetailsDrawer({
   // Save/restore scroll position to prevent page shift on mobile when Sheet closes
   const scrollYRef = useRef(0);
   useEffect(() => {
-    if (!isMobile) return;
+    if (!isMobile || !restoreWindowScrollOnClose) return;
     if (open) {
       scrollYRef.current = window.scrollY;
     } else {
@@ -231,7 +231,7 @@ export function MeetupDetailsDrawer({
       }, 350);
       return () => clearTimeout(timer);
     }
-  }, [open, isMobile]);
+  }, [open, isMobile, restoreWindowScrollOnClose]);
 
   // Invalidate events cache so list cards update immediately
   const invalidateEventsCache = useCallback(() => {
