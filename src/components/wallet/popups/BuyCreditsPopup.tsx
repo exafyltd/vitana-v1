@@ -21,12 +21,12 @@ interface BuyCreditsPopupProps {
 }
 
 export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
-  if (isIAPRestricted()) return null;
-
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [creditAmount, setCreditAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const currentCredits = getBalance('CREDITS') || 0;
   const usdBalance = getBalance('USD') || 0;

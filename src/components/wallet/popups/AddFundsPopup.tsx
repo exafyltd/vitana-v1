@@ -21,12 +21,12 @@ interface AddFundsPopupProps {
 }
 
 export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
-  if (isIAPRestricted()) return null;
-
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [fundAmount, setFundAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const currentBalance = getBalance('USD') || 0;
   const quickAmounts = [25, 50, 100, 200, 500];

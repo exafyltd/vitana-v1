@@ -22,12 +22,12 @@ interface BuyTokensPopupProps {
 }
 
 export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
-  if (isIAPRestricted()) return null;
-
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [tokenAmount, setTokenAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const currentTokens = getBalance('VTNA') || 0;
   const usdBalance = getBalance('USD') || 0;
