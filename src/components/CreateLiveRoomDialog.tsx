@@ -71,8 +71,8 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
       onRoomCreated(
         roomId,
         roomName,
-        isPaid ? 'paid' : 'free',
-        isPaid ? parseFloat(price) : undefined
+        effectiveIsPaid ? 'paid' : 'free',
+        effectiveIsPaid ? parseFloat(price) : undefined
       );
       setIsOpen(false);
       setRoomName('');
