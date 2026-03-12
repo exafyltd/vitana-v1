@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { DollarSign, CreditCard, Banknote, Loader2, Shield } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface AddFundsPopupProps {
   open: boolean;
