@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Coins, TrendingUp, Loader2, Star, Zap } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
 
 interface BuyTokensPopupProps {
