@@ -695,7 +695,7 @@ const EventsAndMeetups = () => {
           ref={mobileContainerRef}
           className={cn(
             "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50",
-            isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
+            isMobile ? "px-2 pt-2 pb-0 h-[100dvh] flex flex-col overflow-hidden" : "p-6 min-h-screen"
           )}
         >
           <div className={cn(
