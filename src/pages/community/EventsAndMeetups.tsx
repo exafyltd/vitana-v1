@@ -698,75 +698,76 @@ const EventsAndMeetups = () => {
             isMobile ? "px-2 pt-2 pb-0 h-[100dvh] flex flex-col overflow-hidden" : "p-6 min-h-screen"
           )}
         >
-          <div className={cn(
-            isMobile && "sticky top-[calc(env(safe-area-inset-top,0px)+32px)] z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50"
-          )}>
-          <StandardHeader
-            title={translate('events.title', 'Events & MeetUps')}
-            description={translate('events.description', 'Discover formal events and casual meetups in your community')}
-          />
-          
-          <UtilityActionButton 
-            className="min-w-0"
-            afterGiftVoucherChildren={isMobile && (
-              <>
-                {/* Vitana Index - pill style on mobile */}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => navigate('/health')}
-                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-                >
-                  <span className="text-xs opacity-60">🧬</span>
-                  <span className="text-sm font-medium text-primary">742</span>
-                </Button>
-                
-                {/* Autopilot - pill style with label on mobile */}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setAutopilotOpen(true)}
-                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
-                >
-                  <Plane className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
-                  {pendingCount > 0 && (
-                    <Badge 
-                      variant="destructive" 
-                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
-                    >
-                      {pendingCount}
-                    </Badge>
-                  )}
-                </Button>
-              </>
-            )}
-          >
-            <div className="flex items-center gap-2 min-w-max">
-              <ExpandableSearchButton 
-                placeholder={translate('events.searchPlaceholder', 'Search events and meetups...')} 
-                onSearch={(query) => setSearchQuery(query)}
-                dropdownItems={searchDropdownItems}
-                onItemClick={handleSearchItemClick}
-              />
-              <UniversalCalendarButton />
-              
-              {/* Create button - matches pill style */}
-              <Button 
-                onClick={() => setCreateSelectionOpen(true)}
-                variant="ghost"
-                size="sm"
-                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
-              >
-                <Plus className="h-4 w-4" />
-                <span className="text-sm">{translate('buttons.create', 'Create')}</span>
-              </Button>
-              
-            </div>
-          </UtilityActionButton>
-
           <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab} className={isMobile ? "flex flex-col flex-1 overflow-hidden" : ""}>
-              <SplitBarList className={isMobile ? "mb-2" : undefined}>
+            {/* Sticky header block on mobile: title + actions + tabs */}
+            <div className={cn(
+              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-1"
+            )}>
+              <StandardHeader
+                title={translate('events.title', 'Events & MeetUps')}
+                description={translate('events.description', 'Discover formal events and casual meetups in your community')}
+              />
+              
+              <UtilityActionButton 
+                className="min-w-0"
+                afterGiftVoucherChildren={isMobile && (
+                  <>
+                    {/* Vitana Index - pill style on mobile */}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => navigate('/health')}
+                      className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+                    >
+                      <span className="text-xs opacity-60">🧬</span>
+                      <span className="text-sm font-medium text-primary">742</span>
+                    </Button>
+                    
+                    {/* Autopilot - pill style with label on mobile */}
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => setAutopilotOpen(true)}
+                      className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
+                    >
+                      <Plane className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
+                      {pendingCount > 0 && (
+                        <Badge 
+                          variant="destructive" 
+                          className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
+                        >
+                          {pendingCount}
+                        </Badge>
+                      )}
+                    </Button>
+                  </>
+                )}
+              >
+                <div className="flex items-center gap-2 min-w-max">
+                  <ExpandableSearchButton 
+                    placeholder={translate('events.searchPlaceholder', 'Search events and meetups...')} 
+                    onSearch={(query) => setSearchQuery(query)}
+                    dropdownItems={searchDropdownItems}
+                    onItemClick={handleSearchItemClick}
+                  />
+                  <UniversalCalendarButton />
+                  
+                  {/* Create button - matches pill style */}
+                  <Button 
+                    onClick={() => setCreateSelectionOpen(true)}
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="text-sm">{translate('buttons.create', 'Create')}</span>
+                  </Button>
+                  
+                </div>
+              </UtilityActionButton>
+
+              <SplitBarList className={isMobile ? "mb-1" : undefined}>
                 <SplitBarTrigger value="hot">
                   🔥 {translate('events.tabs.hot', 'Hot')}
                 </SplitBarTrigger>
@@ -780,10 +781,10 @@ const EventsAndMeetups = () => {
                   👥 {translate('events.tabs.following', 'Following')}
                 </SplitBarTrigger>
               </SplitBarList>
-          </div>
-          {/* Close sticky wrapper; scrollable content below */}
+            </div>
 
-          <div className="flex-1 overflow-y-auto">
+            {/* Scrollable content area */}
+            <div className={cn(isMobile ? "flex-1 overflow-y-auto" : "")}>
 
               <SplitBarContent value="today" className={isMobile ? "mt-1" : "mt-6"}>
                 {loading && filteredTodayEvents.length === 0 ? (
