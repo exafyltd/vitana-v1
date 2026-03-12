@@ -177,7 +177,7 @@ export const CreateLiveRoomDialog = ({ userId, onRoomCreated }: CreateLiveRoomDi
 
             <Button
               onClick={handleCreateRoom}
-              disabled={isLoading || (isPaid && !canCreatePaidRoom)}
+              disabled={isLoading || (!isIAPRestricted() && isPaid && !canCreatePaidRoom)}
               className="w-full"
             >
               {isLoading ? 'Creating...' : 'Create Room'}

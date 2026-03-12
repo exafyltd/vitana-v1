@@ -524,11 +524,11 @@ export default function Wallet() {
                       variant: "default"
                     }}
                     secondaryActions={[
-                      {
+                      ...(isIAPRestricted() ? [] : [{
                         label: "Buy Tokens",
                         onClick: () => handleWalletAction('buy-tokens', 'VTNA'),
                         icon: Coins
-                      },
+                      }]),
                       {
                         label: "Send",
                         onClick: () => handleWalletAction('send', 'VTNA'),

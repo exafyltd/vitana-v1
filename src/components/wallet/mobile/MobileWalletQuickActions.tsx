@@ -88,7 +88,7 @@ export function MobileWalletQuickActions({
       </CardHeader>
       <CardContent className="pt-0 space-y-4">
         {/* Primary Actions - Grid */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className={`grid gap-2 ${actions.length <= 2 ? 'grid-cols-2' : actions.length === 3 ? 'grid-cols-3' : 'grid-cols-4'}`}>
           {actions.map((action) => (
             <button
               key={action.id}
