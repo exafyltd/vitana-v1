@@ -1,54 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Fix: Scroll position still shifting after closing event drawer
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## Root cause
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-The current `requestAnimationFrame` fires too early — the Radix Sheet close animation takes 300ms, and the body `overflow: hidden` / scroll position reset hasn't fully resolved by the time `rAF` executes. The browser's scroll position is still locked when the restore fires.
-
-## Fix
-
-Replace the single `requestAnimationFrame` with a more robust approach: use a `setTimeout` matching the Sheet's close animation duration (300ms per the `data-[state=closed]:duration-300` class), then restore scroll position. Also add a fallback double-`rAF` after the timeout to ensure layout has settled.
-
-### `src/components/meetups/MeetupDetailsDrawer.tsx` — lines 218–228
-
-**Current:**
-```ts
-useEffect(() => {
-  if (!isMobile) return;
-  if (open) {
-    scrollYRef.current = window.scrollY;
-  } else {
-    const savedY = scrollYRef.current;
-    requestAnimationFrame(() => {
-      window.scrollTo(0, savedY);
-    });
-  }
-}, [open, isMobile]);
-```
-
-**Replace with:**
-```ts
-useEffect(() => {
-  if (!isMobile) return;
-  if (open) {
-    scrollYRef.current = window.scrollY;
-  } else {
-    const savedY = scrollYRef.current;
-    // Wait for Sheet close animation (300ms) + body overflow restore
-    const timer = setTimeout(() => {
-      window.scrollTo(0, savedY);
-      // Fallback: another rAF in case layout hasn't settled
-      requestAnimationFrame(() => {
-        window.scrollTo(0, savedY);
-      });
-    }, 350);
-    return () => clearTimeout(timer);
-  }
-}, [open, isMobile]);
-```
-
-## Scope
-
-Same file, same block — just changing the timing strategy from a single `rAF` to a 350ms timeout with cleanup.
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.

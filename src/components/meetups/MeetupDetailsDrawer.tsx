@@ -221,9 +221,13 @@ export function MeetupDetailsDrawer({
       scrollYRef.current = window.scrollY;
     } else {
       const savedY = scrollYRef.current;
-      requestAnimationFrame(() => {
+      const timer = setTimeout(() => {
         window.scrollTo(0, savedY);
-      });
+        requestAnimationFrame(() => {
+          window.scrollTo(0, savedY);
+        });
+      }, 350);
+      return () => clearTimeout(timer);
     }
   }, [open, isMobile]);
 
