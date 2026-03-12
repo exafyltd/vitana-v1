@@ -14,6 +14,7 @@ import { useCreatorStatus } from '@/hooks/useCreator';
 import { EnablePaymentsButton } from '@/components/creator/EnablePaymentsButton';
 import { useState } from 'react';
 import { Plus, AlertCircle } from 'lucide-react';
+import { isIAPRestricted } from '@/lib/appilix';
 
 export function CreateLiveRoomDialog() {
   const [open, setOpen] = useState(false);
