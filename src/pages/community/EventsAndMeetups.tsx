@@ -765,8 +765,7 @@ const EventsAndMeetups = () => {
             </div>
           </UtilityActionButton>
 
-          <div className="flex-1 overflow-y-auto">
-            <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab}>
+          <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab}>
               <SplitBarList className={isMobile ? "mb-2" : undefined}>
                 <SplitBarTrigger value="hot">
                   🔥 {translate('events.tabs.hot', 'Hot')}
@@ -781,6 +780,9 @@ const EventsAndMeetups = () => {
                   👥 {translate('events.tabs.following', 'Following')}
                 </SplitBarTrigger>
               </SplitBarList>
+          </div>
+
+          <div className="flex-1 overflow-y-auto">
 
               <SplitBarContent value="today" className={isMobile ? "mt-1" : "mt-6"}>
                 {loading && filteredTodayEvents.length === 0 ? (
