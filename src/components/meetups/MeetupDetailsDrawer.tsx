@@ -213,6 +213,20 @@ export function MeetupDetailsDrawer({
   const { translate, isGerman } = useTranslation();
   const queryClient = useQueryClient();
 
+  // Save/restore scroll position to prevent page shift on mobile when Sheet closes
+  const scrollYRef = useRef(0);
+  useEffect(() => {
+    if (!isMobile) return;
+    if (open) {
+      scrollYRef.current = window.scrollY;
+    } else {
+      const savedY = scrollYRef.current;
+      requestAnimationFrame(() => {
+        window.scrollTo(0, savedY);
+      });
+    }
+  }, [open, isMobile]);
+
   // Invalidate events cache so list cards update immediately
   const invalidateEventsCache = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ['global-community-events'] });
