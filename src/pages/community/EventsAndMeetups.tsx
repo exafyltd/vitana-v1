@@ -698,7 +698,9 @@ const EventsAndMeetups = () => {
             isMobile ? "px-2 pt-2 pb-0 h-[100dvh] overflow-hidden" : "p-6 min-h-screen"
           )}
         >
-          <div className="flex-1 overflow-hidden">
+          <div className={cn(
+            isMobile && "sticky top-[calc(env(safe-area-inset-top,0px)+32px)] z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50"
+          )}>
           <StandardHeader
             title={translate('events.title', 'Events & MeetUps')}
             description={translate('events.description', 'Discover formal events and casual meetups in your community')}
