@@ -43,6 +43,7 @@ import { MobileWalletBalanceCard } from "@/components/wallet/mobile/MobileWallet
 import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWalletTransactionList";
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 import { useTranslation } from "@/hooks/useTranslation";
+import { isIAPRestricted } from "@/lib/appilix";
 
 // Mock data has been removed - quickActionsData is defined later in the file
 
