@@ -781,6 +781,7 @@ const EventsAndMeetups = () => {
                 </SplitBarTrigger>
               </SplitBarList>
           </div>
+          {/* Close sticky wrapper above, content scrolls below */}
 
           <div className="flex-1 overflow-y-auto">
 
