@@ -53,7 +53,7 @@ export function UtilityActionButton({
       </div>
       
       {/* Voucher Modal */}
-      {!hideGiftVoucher && (
+      {!shouldHideVoucher && (
         <MaxinaVoucherModal 
           open={voucherModalOpen} 
           onOpenChange={setVoucherModalOpen} 

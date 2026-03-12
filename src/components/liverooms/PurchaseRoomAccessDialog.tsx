@@ -32,6 +32,9 @@ export function PurchaseRoomAccessDialog({
 }: PurchaseRoomAccessDialogProps) {
   const { initiatePurchase, clientSecret, amount, isPending } = useStripePayment(room.id, userId);
 
+  // Block paid room access on iOS (App Store Guideline 3.1.1)
+  if (isIAPRestricted()) return null;
+
   const handlePurchase = () => {
     initiatePurchase();
   };

@@ -82,21 +82,23 @@ export function CreateLiveRoomDialog() {
             />
           </div>
 
-          <div>
-            <Label>Access Level *</Label>
-            <RadioGroup value={accessLevel} onValueChange={(v) => setAccessLevel(v as any)}>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="public" id="public" />
-                <Label htmlFor="public">Free (Public)</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="group" id="group" />
-                <Label htmlFor="group">Paid (Group)</Label>
-              </div>
-            </RadioGroup>
-          </div>
+          {!isIAPRestricted() && (
+            <div>
+              <Label>Access Level *</Label>
+              <RadioGroup value={accessLevel} onValueChange={(v) => setAccessLevel(v as any)}>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="public" id="public" />
+                  <Label htmlFor="public">Free (Public)</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="group" id="group" />
+                  <Label htmlFor="group">Paid (Group)</Label>
+                </div>
+              </RadioGroup>
+            </div>
+          )}
 
-          {accessLevel === 'group' && (
+          {!isIAPRestricted() && accessLevel === 'group' && (
             <>
               {/* VTID-01230: Hard block for paid rooms without onboarding */}
               {(!creatorStatus?.charges_enabled || !creatorStatus?.payouts_enabled) && (

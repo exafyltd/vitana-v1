@@ -21,6 +21,8 @@ interface AddFundsPopupProps {
 }
 
 export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
+  if (isIAPRestricted()) return null;
+
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [fundAmount, setFundAmount] = useState('');

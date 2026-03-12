@@ -22,6 +22,8 @@ interface BuyTokensPopupProps {
 }
 
 export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
+  if (isIAPRestricted()) return null;
+
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [tokenAmount, setTokenAmount] = useState('');
