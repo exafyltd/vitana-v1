@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { CreditCard, Gift, Zap, Loader2, Star } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface BuyCreditsPopupProps {
   open: boolean;
