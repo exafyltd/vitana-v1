@@ -553,8 +553,16 @@ export function useGlobalMessages(
       return legacyMessages;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: 2 * 60 * 1000,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
   });
+
+  useEffect(() => {
+    if (activeThreadId && messages.length > 0 && !isMessagesLoading) {
+      persistMessages(activeThreadId, messages);
+    }
+  }, [activeThreadId, messages, isMessagesLoading]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────
 
