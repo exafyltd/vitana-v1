@@ -1097,7 +1097,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
             <div ref={contentRef}>
               {(() => {
                 // Build message lookup map for O(1) parent resolution
-                const messageMap = new Map(messages.map(m => [m.id, m]));
+                const messageMap = new Map<string, any>(messages.map(m => [m.id, m] as [string, any]));
                 
                 const handleScrollToMessage = (messageId: string) => {
                   const el = document.getElementById(`msg-${messageId}`);
