@@ -7,7 +7,6 @@ interface ReplyQuoteProps {
   onQuoteClick?: () => void;
   className?: string;
   isOwnMessage?: boolean;
-  currentUserId?: string;
 }
 
 export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
