@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import MessageBubble from './MessageBubble';
 import MessageInput from './MessageInput';
+import { SwipeableMessage } from './SwipeableMessage';
 import TypingIndicator from './TypingIndicator';
 import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
