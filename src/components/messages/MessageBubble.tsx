@@ -590,9 +590,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
                 onTouchCancel={handleTouchCancel}
-                role="button"
-                aria-label="Long press or right click for options"
               >
                 {/* Reply Quote - shows if this message is replying to another */}
                 {(message.parent_message_id || message.reply_to_message_id || parentMessage) && (
