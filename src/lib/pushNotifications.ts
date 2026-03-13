@@ -112,7 +112,8 @@ class PushNotificationManager {
       this.fcmToken = token;
       console.log('[Push] FCM token obtained, registering with gateway...', `${GATEWAY_API_BASE}/notifications/token`);
       await this.registerTokenWithBackend(token);
-      this.setupForegroundHandler();
+      await this.setupForegroundHandler();
+      this.startTokenRefreshMonitor();
       return token;
     } catch (error) {
       console.error('[Push] Subscribe failed:', error);
