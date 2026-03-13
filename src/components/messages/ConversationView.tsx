@@ -1006,7 +1006,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className={cn("flex flex-col h-full min-w-0 overflow-hidden w-full", className)}>
+      <div className={cn("flex flex-col h-full min-h-0 min-w-0 overflow-hidden w-full", className)}>
         {/* Header - Sticky at top */}
         <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <div className="flex items-center justify-between px-3 py-1.5">
