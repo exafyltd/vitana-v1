@@ -223,6 +223,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   }, []);
 
+  const handleTouchCancel = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    isLongPress.current = false;
+  }, []);
+
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
   const renderAttachment = (attachment: any, index: number) => {
