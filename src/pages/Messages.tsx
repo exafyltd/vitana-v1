@@ -934,7 +934,7 @@ export default function Messages() {
           <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
             {/* When viewing a conversation, show full-screen chat */}
             {selectedThreadId ? (
-              <div className="fixed inset-0 z-[55] flex flex-col bg-background">
+              <div className="fixed inset-0 z-[55] flex min-h-0 flex-col overflow-hidden bg-background">
                 <ConversationErrorBoundary>
                   <ConversationView 
                     threadId={selectedThreadId}

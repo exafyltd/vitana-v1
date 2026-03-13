@@ -982,7 +982,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
     return (
-      <div className={cn("flex flex-col h-full min-w-0", className)}>
+      <div className={cn("flex flex-col h-full min-h-0 min-w-0 overflow-hidden", className)}>
         <div className="shrink-0 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center gap-3">
             {onBack && (
