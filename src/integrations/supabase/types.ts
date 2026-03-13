@@ -12155,6 +12155,19 @@ export type Database = {
           user_id: string
         }[]
       }
+      get_recent_conversations: {
+        Args: { p_limit?: number; p_tenant_id: string; p_user_id: string }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          peer_id: string
+          read_at: string
+          receiver_id: string
+          sender_id: string
+          tenant_id: string
+        }[]
+      }
       get_recent_test_failures: {
         Args: never
         Returns: {
