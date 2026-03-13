@@ -29,6 +29,7 @@ class PushNotificationManager {
   private fcmToken: string | null = null;
   private foregroundCleanup: (() => void) | null = null;
   private appilixTokenListenerAttached = false;
+  private refreshInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
     this.isSupported = typeof window !== 'undefined' && 'serviceWorker' in navigator && 'Notification' in window;
