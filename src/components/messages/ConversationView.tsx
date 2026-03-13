@@ -320,8 +320,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     const el = scrollRef.current;
     if (!el) return;
 
-    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
-    if (isAtBottom || force) {
+    if (isUserNearBottomRef.current || force) {
       el.scrollTo({ top: el.scrollHeight, behavior: force ? 'smooth' : 'auto' });
     }
   }, []);
