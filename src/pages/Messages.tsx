@@ -779,7 +779,7 @@ export default function Messages() {
 
     // Desktop layout - resizable panels
     return (
-      <div className="h-[calc(100dvh-200px)] flex flex-col min-h-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
         <ResizablePanelGroup direction="horizontal" className="h-full min-h-0">
           {/* Conversation List Panel */}
           <ResizablePanel 
