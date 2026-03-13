@@ -982,7 +982,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
     return (
-      <div className={cn("flex flex-col h-full min-w-0", className)}>
+      <div className={cn("flex flex-col h-full min-h-0 min-w-0 overflow-hidden", className)}>
         <div className="shrink-0 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b p-4">
           <div className="flex items-center gap-3">
             {onBack && (
@@ -1006,7 +1006,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   return (
     <>
-      <div className={cn("flex flex-col h-full min-w-0 overflow-hidden w-full", className)}>
+      <div className={cn("flex flex-col h-full min-h-0 min-w-0 overflow-hidden w-full", className)}>
         {/* Header - Sticky at top */}
         <div className="shrink-0 sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
           <div className="flex items-center justify-between px-3 py-1.5">
@@ -1074,7 +1074,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain touch-pan-y" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain touch-pan-y" 
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}

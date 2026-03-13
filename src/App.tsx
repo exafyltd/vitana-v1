@@ -286,12 +286,12 @@ const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
   useAppilix();
-  const { user } = useAuth();
+  const { user, session } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
+    if (!user?.id || !session?.access_token) return;
     initializePushNotifications();
-  }, [user]);
+  }, [user?.id, session?.access_token]);
 
   return null;
 };
