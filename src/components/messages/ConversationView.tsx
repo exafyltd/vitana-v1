@@ -365,12 +365,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     };
   }, []);
 
-  // Auto-scroll when you're near bottom and new messages arrive
+  // Auto-scroll only when new messages arrive and user is already at bottom
+  const prevMessageCountRef = useRef(messages.length);
   useEffect(() => {
-    if (isUserNearBottom) {
+    if (messages.length > prevMessageCountRef.current && isUserNearBottomRef.current) {
       scrollToBottom(false);
     }
-  }, [messages, isUserNearBottom, scrollToBottom]);
+    prevMessageCountRef.current = messages.length;
+  }, [messages.length, scrollToBottom]);
 
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
