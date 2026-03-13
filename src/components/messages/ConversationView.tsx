@@ -183,7 +183,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         (recipientData?.avatar_url as string | undefined) ||
         getConversationDisplayAvatar(currentThread, user?.id);
 
-      console.log('🎯 Composed recipient:', { userId, name, avatar, participant, recipientData });
+      
       
       return { id: userId, name: name.trim(), avatar };
     };
