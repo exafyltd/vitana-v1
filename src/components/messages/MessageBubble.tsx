@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/context/AuthProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -66,6 +67,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onSendReply
 }) => {
   const isMobile = useIsMobile();
+  const { user } = useAuth();
   const messageRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const lastTapTime = useRef(0);
@@ -617,6 +619,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     parentMessage={parentMessage}
                     onQuoteClick={handleScrollToParent}
                     isOwnMessage={isOwnMessage}
+                    currentUserId={user?.id}
                   />
                 )}
                 

@@ -10,6 +10,7 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthProvider";
 import { 
   validateFile, 
   uploadChatAttachment, 
@@ -77,6 +78,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   const { toast } = useToast();
+  const { user } = useAuth();
   const { activeTenantId } = useTenant();
 
   // Auto-resize textarea with proper row limits (1-6 rows) and update CSS var
@@ -470,6 +472,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         <ReplyPreview 
           message={replyingTo} 
           onCancel={onCancelReply}
+          currentUserId={user?.id}
         />
       )}
 

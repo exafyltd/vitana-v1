@@ -6,15 +6,18 @@ import { cn } from '@/lib/utils';
 interface ReplyPreviewProps {
   message: any;
   onCancel: () => void;
+  currentUserId?: string;
   className?: string;
 }
 
 export const ReplyPreview: React.FC<ReplyPreviewProps> = ({
   message,
   onCancel,
+  currentUserId,
   className
 }) => {
-  const senderName = message?.sender?.display_name || message?.sender?.full_name || 'Unknown User';
+  const isSelf = currentUserId && (message?.sender_id === currentUserId || message?.sender?.id === currentUserId);
+  const senderName = isSelf ? 'yourself' : (message?.sender?.display_name || message?.sender?.full_name || 'Unknown User');
   const content = message?.body || 'Message content not available';
   
   // Truncate content to avoid long previews

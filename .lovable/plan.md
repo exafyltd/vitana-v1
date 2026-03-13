@@ -1,27 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-## Fix: "Replying to yourself" label
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-When you reply to your own message, both the composer reply bar and the in-bubble quote currently show your own name (e.g., "Replying to John"). Instead, they should say "Replying to yourself" / "You" respectively, matching WhatsApp behavior.
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-### Changes
-
-**1. `src/components/messages/ReplyPreview.tsx`** (composer bar)
-- Add an optional `currentUserId` prop.
-- Compare it against `message.sender_id` or `message.sender?.id`.
-- If they match, display **"Replying to yourself"** instead of "Replying to {name}".
-
-**2. `src/components/messages/ReplyQuote.tsx`** (in-bubble quote)
-- Add an optional `currentUserId` prop.
-- If the parent message sender matches the current user, display **"You"** instead of the sender's name.
-
-**3. `src/components/messages/MessageInput.tsx`** (passes prop)
-- Import `useAuth` (or equivalent) to get the current user ID.
-- Pass `currentUserId` to `ReplyPreview`.
-
-**4. `src/components/messages/MessageBubble.tsx`** (passes prop)
-- Already has `isOwnMessage` and access to `message.sender_id`.
-- Pass `currentUserId={message.sender_id}` context or use the existing user reference when rendering `ReplyQuote`.
-
-Minimal, scoped change — no backend or schema modifications.
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
