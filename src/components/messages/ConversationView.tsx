@@ -350,33 +350,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, isWindowFocused, messages.length, markAsRead, onConversationOpened, messageContext, user?.id]);
 
-  // Mark as read when new messages arrive in the currently viewed thread
-  useEffect(() => {
-    if (threadId && isWindowFocused && messages.length > 0 && markAsRead && user?.id) {
-      console.log('📖 ConversationView: New messages arrived, marking as read', { threadId, messagesLength: messages.length });
-      
-      // Auto-mark other users' messages as delivered
-      autoMarkAsDelivered(messages, user.id, messageContext === 'global');
-      
-      // Mark messages as read using the proper function
-      const messageIds = messages.filter(msg => msg.sender_id !== user.id).map(msg => msg.id);
-      if (messageIds.length > 0) {
-        markMessagesAsRead(messageIds, messageContext === 'global');
-      }
-      
-      // Immediate UI update via parent callback for new messages
-      if (onConversationOpened) {
-        onConversationOpened(threadId);
-      }
-      
-      // Small delay to ensure the message is fully rendered before backend update
-      const timer = setTimeout(() => {
-        markAsRead(threadId);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [threadId, messages, isWindowFocused, markAsRead, onConversationOpened, user?.id]);
 
   // Track window focus for read receipts
   useEffect(() => {
