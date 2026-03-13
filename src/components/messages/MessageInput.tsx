@@ -78,6 +78,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
   const { toast } = useToast();
+  const { user } = useAuth();
   const { activeTenantId } = useTenant();
 
   // Auto-resize textarea with proper row limits (1-6 rows) and update CSS var
