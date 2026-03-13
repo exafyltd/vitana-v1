@@ -647,6 +647,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         imageUrl={imageZoomModal.url}
         filename={imageZoomModal.filename}
       />
+
+      {/* Double-tap Emoji Reaction Bar (mobile) */}
+      {showDoubleTapReactions && (
+        <EmojiReactionBar
+          onEmojiSelect={(emoji) => {
+            handleReactionSelect(emoji);
+            setShowDoubleTapReactions(false);
+          }}
+          onClose={() => setShowDoubleTapReactions(false)}
+          onReply={onReply ? handleReply : undefined}
+          position={reactionBarPosition}
+        />
+      )}
     </>
   );
 };
