@@ -1189,8 +1189,8 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                     </SwipeableMessage>
                   </div>
                 );
-              })}
-              
+              });
+              })()}
             </div>
           )}
           
