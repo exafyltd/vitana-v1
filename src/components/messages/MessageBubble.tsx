@@ -198,25 +198,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   }, [onScrollToMessage, message.parent_message_id, message.reply_to_message_id]);
 
-  // Long press handling for mobile - shows reaction bar (WhatsApp style)
+  // Long press handling for mobile - shows reaction drawer (WhatsApp style)
   const isLongPress = useRef(false);
+  const touchStartPos = useRef({ x: 0, y: 0 });
   
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     isLongPress.current = false;
+    touchStartPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     longPressTimer.current = setTimeout(() => {
       isLongPress.current = true;
       if ('vibrate' in navigator) {
         navigator.vibrate(50);
       }
-      const rect = messageRef.current?.getBoundingClientRect();
-      if (rect) {
-        setReactionBarPosition({
-          x: rect.left + rect.width / 2,
-          y: rect.top - 10
-        });
-        setShowDoubleTapReactions(true);
-      }
+      setShowDoubleTapReactions(true);
     }, 500);
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!longPressTimer.current) return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
+    const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
+    if (dx > 10 || dy > 10) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
   }, []);
 
   const handleTouchEnd = useCallback(() => {
