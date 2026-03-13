@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { EmojiReactionBar } from './EmojiReactionBar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Drawer,
+  DrawerContent,
+} from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
 import { format, isToday, isYesterday, isThisYear } from 'date-fns';
 import { CalendarInviteStatus } from './CalendarInviteStatus';
