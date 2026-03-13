@@ -30,13 +30,17 @@ async function getMessagingInstance(): Promise<Messaging | null> {
   return messagingInstance;
 }
 
-export async function requestFCMToken(): Promise<string | null> {
+export async function requestFCMToken(swRegistration?: ServiceWorkerRegistration): Promise<string | null> {
   try {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') return null;
     const messaging = await getMessagingInstance();
     if (!messaging) return null;
-    const token = await getToken(messaging, { vapidKey: VAPID_KEY });
+    const tokenOptions: { vapidKey: string; serviceWorkerRegistration?: ServiceWorkerRegistration } = { vapidKey: VAPID_KEY };
+    if (swRegistration) {
+      tokenOptions.serviceWorkerRegistration = swRegistration;
+    }
+    const token = await getToken(messaging, tokenOptions);
     console.log('[Firebase] FCM token obtained');
     return token;
   } catch (err) {
@@ -45,13 +49,10 @@ export async function requestFCMToken(): Promise<string | null> {
   }
 }
 
-export function onForegroundMessage(callback: (payload: any) => void): (() => void) | null {
-  let unsubscribe: (() => void) | null = null;
-  getMessagingInstance().then((messaging) => {
-    if (!messaging) return;
-    unsubscribe = onMessage(messaging, callback);
-  });
-  return () => { unsubscribe?.(); };
+export async function onForegroundMessage(callback: (payload: any) => void): Promise<(() => void) | null> {
+  const messaging = await getMessagingInstance();
+  if (!messaging) return null;
+  return onMessage(messaging, callback);
 }
 
 export { app as firebaseApp };

@@ -29,6 +29,7 @@ class PushNotificationManager {
   private fcmToken: string | null = null;
   private foregroundCleanup: (() => void) | null = null;
   private appilixTokenListenerAttached = false;
+  private refreshInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
     this.isSupported = typeof window !== 'undefined' && 'serviceWorker' in navigator && 'Notification' in window;
@@ -88,7 +89,7 @@ class PushNotificationManager {
       if (!token && this.isSupported) {
         try {
           console.log('[Push] Trying web FCM...');
-          token = await requestFCMToken();
+          token = await requestFCMToken(this.registration || undefined);
           if (token) {
             console.log('[Push] ✅ Web FCM token obtained');
           } else {
@@ -111,7 +112,8 @@ class PushNotificationManager {
       this.fcmToken = token;
       console.log('[Push] FCM token obtained, registering with gateway...', `${GATEWAY_API_BASE}/notifications/token`);
       await this.registerTokenWithBackend(token);
-      this.setupForegroundHandler();
+      await this.setupForegroundHandler();
+      this.startTokenRefreshMonitor();
       return token;
     } catch (error) {
       console.error('[Push] Subscribe failed:', error);
@@ -126,6 +128,10 @@ class PushNotificationManager {
       this.fcmToken = null;
       this.foregroundCleanup?.();
       this.foregroundCleanup = null;
+      if (this.refreshInterval) {
+        clearInterval(this.refreshInterval);
+        this.refreshInterval = null;
+      }
       return true;
     } catch {
       return false;
@@ -239,11 +245,11 @@ class PushNotificationManager {
     });
   }
 
-  private setupForegroundHandler(): void {
+  private async setupForegroundHandler(): Promise<void> {
     if (this.foregroundCleanup) return;
 
     const shownTags = new Set<string>();
-    this.foregroundCleanup = onForegroundMessage((payload) => {
+    const cleanup = await onForegroundMessage((payload) => {
       // App is focused — skip notification display entirely
       if (!document.hidden && document.hasFocus()) return;
 
@@ -272,6 +278,23 @@ class PushNotificationManager {
         this.showLocalNotification({ title, body, data, tag });
       }
     });
+    if (cleanup) this.foregroundCleanup = cleanup;
+  }
+
+  private startTokenRefreshMonitor(): void {
+    if (this.refreshInterval) return;
+    this.refreshInterval = setInterval(async () => {
+      try {
+        const newToken = await requestFCMToken(this.registration || undefined);
+        if (newToken && newToken !== this.fcmToken) {
+          console.log('[Push] FCM token rotated, re-registering with gateway...');
+          this.fcmToken = newToken;
+          await this.registerTokenWithBackend(newToken);
+        }
+      } catch (err) {
+        console.warn('[Push] Token refresh check failed:', err);
+      }
+    }, 30 * 60 * 1000); // Check every 30 minutes
   }
 
   private attachAppilixTokenListener(): void {
