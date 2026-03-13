@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { EmojiReactionBar } from './EmojiReactionBar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -56,8 +58,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onUpdateMessage,
   onSendReply
 }) => {
+  const isMobile = useIsMobile();
   const messageRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const lastTapTime = useRef(0);
+  const [showDoubleTapReactions, setShowDoubleTapReactions] = useState(false);
+  const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
   const [imageZoomModal, setImageZoomModal] = useState<{ isOpen: boolean; url: string; filename: string }>({
     isOpen: false,
     url: '',
@@ -191,12 +197,34 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   // Long press handling for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     longPressTimer.current = setTimeout(() => {
-      // Add haptic feedback on mobile
       if ('vibrate' in navigator) {
         navigator.vibrate(50);
       }
     }, 500);
-  }, []);
+
+    // Double-tap detection for mobile reactions
+    if (isMobile) {
+      const now = Date.now();
+      if (now - lastTapTime.current < 300) {
+        // Double tap detected
+        e.preventDefault();
+        const rect = messageRef.current?.getBoundingClientRect();
+        if (rect) {
+          setReactionBarPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.top - 10
+          });
+          setShowDoubleTapReactions(true);
+          if ('vibrate' in navigator) {
+            navigator.vibrate(30);
+          }
+        }
+        lastTapTime.current = 0;
+      } else {
+        lastTapTime.current = now;
+      }
+    }
+  }, [isMobile]);
 
   const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
@@ -619,6 +647,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         imageUrl={imageZoomModal.url}
         filename={imageZoomModal.filename}
       />
+
+      {/* Double-tap Emoji Reaction Bar (mobile) */}
+      {showDoubleTapReactions && (
+        <EmojiReactionBar
+          onEmojiSelect={(emoji) => {
+            handleReactionSelect(emoji);
+            setShowDoubleTapReactions(false);
+          }}
+          onClose={() => setShowDoubleTapReactions(false)}
+          onReply={onReply ? handleReply : undefined}
+          position={reactionBarPosition}
+        />
+      )}
     </>
   );
 };
