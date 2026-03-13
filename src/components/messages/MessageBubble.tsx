@@ -221,7 +221,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     if (!longPressTimer.current) return;
     const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
     const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
-    if (dx > 10 || dy > 10) {
+    if (dx > 15 || dy > 15) {
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
