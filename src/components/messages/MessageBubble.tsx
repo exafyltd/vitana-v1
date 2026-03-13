@@ -609,6 +609,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}
                 onTouchCancel={handleTouchCancel}
+                onContextMenu={(e) => e.preventDefault()}
               >
                 {/* Reply Quote - shows if this message is replying to another */}
                 {(message.parent_message_id || message.reply_to_message_id || parentMessage) && (
