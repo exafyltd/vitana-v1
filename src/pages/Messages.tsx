@@ -746,11 +746,11 @@ export default function Messages() {
     // Mobile layout - stack conversations and chat
     if (isMobile) {
       return (
-        <div className="h-[calc(100vh-200px)] flex flex-col min-h-0 overflow-hidden">
+        <div className="h-[calc(100dvh-200px)] flex flex-col min-h-0 overflow-hidden">
           {!selectedThreadId ? (
             // Show conversation list on mobile
-            <div className="h-full bg-card/50 backdrop-blur-sm">
-              <ScrollArea className="flex-1">
+            <div className="h-full min-h-0 flex flex-col bg-card/50 backdrop-blur-sm">
+              <ScrollArea className="h-full flex-1 min-h-0">
                 <div className="p-4 pr-12">
                   {renderConversationList(displayThreads)}
                 </div>
@@ -779,17 +779,17 @@ export default function Messages() {
 
     // Desktop layout - resizable panels
     return (
-      <div className="h-[calc(100vh-200px)] flex flex-col min-h-0 overflow-hidden">
-        <ResizablePanelGroup direction="horizontal" className="h-full">
+      <div className="h-[calc(100dvh-200px)] flex flex-col min-h-0 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal" className="h-full min-h-0">
           {/* Conversation List Panel */}
           <ResizablePanel 
             defaultSize={getConversationPanelSize()} 
             minSize={27} 
             maxSize={50}
-            className="transition-all duration-300 min-w-0 flex flex-col overflow-hidden"
+            className="transition-all duration-300 min-w-0 flex flex-col min-h-0 overflow-hidden"
           >
-            <div className="h-full border-r bg-card/50 backdrop-blur-sm">
-              <ScrollArea className="h-full">
+            <div className="h-full min-h-0 flex flex-col border-r bg-card/50 backdrop-blur-sm">
+              <ScrollArea className="h-full min-h-0">
                 <div className="p-4 pr-12">
                   {renderConversationList(displayThreads)}
                 </div>
@@ -803,7 +803,7 @@ export default function Messages() {
           <ResizablePanel 
             defaultSize={getChatPanelSize()}
             minSize={50}
-            className="transition-all duration-300"
+            className="transition-all duration-300 min-w-0 flex flex-col min-h-0 overflow-hidden"
           >
             <div className="h-full bg-background/95 backdrop-blur-sm min-w-0 flex flex-col min-h-0 overflow-hidden">
               {selectedThreadId || selectedRecipientId ? (

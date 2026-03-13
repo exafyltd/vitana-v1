@@ -7,12 +7,12 @@ const POLL_INTERVAL = 60_000; // 60s — Realtime handles fast path
 
 /**
  * Lightweight hook that uses Realtime for instant updates
- * and a visibility-aware setTimeout chain as fallback polling.
+ * and resilient polling fallback.
  */
 export function useChatUnreadCount() {
   const { user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const refresh = useCallback(async () => {
     if (!user) return;
@@ -24,51 +24,47 @@ export function useChatUnreadCount() {
     }
   }, [user]);
 
-  // Visibility-aware recursive setTimeout polling
+  // Polling fallback (keeps schedule alive even if visibility events are flaky on mobile webviews)
   useEffect(() => {
     if (!user) return;
 
-    const schedule = () => {
-      timeoutRef.current = setTimeout(async () => {
-        if (document.visibilityState === 'visible') {
-          await refresh();
-        }
-        if (document.visibilityState === 'visible') {
-          schedule();
-        }
-      }, POLL_INTERVAL);
-    };
+    let cancelled = false;
 
-    // Initial fetch + start chain
-    refresh();
-    schedule();
+    const tick = async () => {
+      if (cancelled) return;
 
-    // Restart chain when tab becomes visible
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        // Immediate refresh on return + restart chain
-        refresh();
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        schedule();
-      } else {
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-          timeoutRef.current = null;
-        }
+      if (document.visibilityState === "visible") {
+        await refresh();
+      }
+
+      if (!cancelled) {
+        timeoutRef.current = setTimeout(tick, POLL_INTERVAL);
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibility);
+    refresh();
+    timeoutRef.current = setTimeout(tick, POLL_INTERVAL);
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        refresh();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibility);
+      cancelled = true;
+      document.removeEventListener("visibilitychange", handleVisibility);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     };
   }, [user, refresh]);
 
-  // Listen for new messages via Realtime → fetch authoritative count
+  // Realtime inserts from chat and notifications → fetch authoritative unread count
   useEffect(() => {
     if (!user) return;
+
     const channel = supabase
       .channel("chat_unread_badge")
       .on(
@@ -83,7 +79,27 @@ export function useChatUnreadCount() {
           try {
             const count = await fetchUnreadCount();
             setUnreadCount(count);
-          } catch (e) {
+          } catch {
+            setUnreadCount((prev) => prev + 1); // fallback only
+          }
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "user_notifications",
+          filter: `user_id=eq.${user.id}`,
+        },
+        async (payload) => {
+          const notif = payload.new as { type?: string };
+          if (notif?.type !== "new_chat_message") return;
+
+          try {
+            const count = await fetchUnreadCount();
+            setUnreadCount(count);
+          } catch {
             setUnreadCount((prev) => prev + 1); // fallback only
           }
         }
@@ -102,3 +118,4 @@ export function useChatUnreadCount() {
 
   return { unreadCount, refresh, decrementBy };
 }
+
