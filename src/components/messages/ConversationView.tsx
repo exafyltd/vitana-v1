@@ -408,15 +408,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (!content || !scroll || !threadId) return;
 
     const observer = new ResizeObserver(() => {
-      // Only auto-scroll if user is near bottom (won't yank them if scrolled up)
-      if (isUserNearBottom && hasInitialScrolledRef.current === threadId) {
+      // Only auto-scroll if user is truly at bottom (won't yank them if scrolled up)
+      if (isUserNearBottomRef.current && hasInitialScrolledRef.current === threadId) {
         scroll.scrollTop = scroll.scrollHeight - scroll.clientHeight;
       }
     });
 
     observer.observe(content);
     return () => observer.disconnect();
-  }, [threadId, isUserNearBottom]);
+  }, [threadId]);
 
 
   const handleSendMessage = async (
