@@ -33,6 +33,7 @@ export function MobileAppShell({ children }: MobileAppShellProps) {
       <div
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        className="flex flex-col flex-1 min-h-0 overflow-hidden"
         style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 32px)' }}
       >
         {children}

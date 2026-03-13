@@ -450,9 +450,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </div>
 
           <SidebarInset className="flex flex-col w-full overflow-x-hidden">
-            <div className="flex flex-col min-h-screen bg-background rounded-tl-2xl">
+            <div className="flex flex-col h-full min-h-0 bg-background rounded-tl-2xl">
               <PendingCalendarEventProcessor />
-              <main className="flex-1">
+              <main className="flex-1 min-h-0 overflow-hidden">
                 <MobileAppShell>{children}</MobileAppShell>
               </main>
             </div>

@@ -746,7 +746,7 @@ export default function Messages() {
     // Mobile layout - stack conversations and chat
     if (isMobile) {
       return (
-        <div className="h-[calc(100dvh-200px)] flex flex-col min-h-0 overflow-hidden">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
           {!selectedThreadId ? (
             // Show conversation list on mobile
             <div className="h-full min-h-0 flex flex-col bg-card/50 backdrop-blur-sm">
@@ -779,7 +779,7 @@ export default function Messages() {
 
     // Desktop layout - resizable panels
     return (
-      <div className="h-[calc(100dvh-200px)] flex flex-col min-h-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
         <ResizablePanelGroup direction="horizontal" className="h-full min-h-0">
           {/* Conversation List Panel */}
           <ResizablePanel 

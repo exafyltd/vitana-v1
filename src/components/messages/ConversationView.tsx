@@ -1010,11 +1010,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain touch-pan-y" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain" 
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
-          style={{ paddingBottom: isMobile ? 'var(--composer-h, 56px)' : undefined }}
+          style={{ WebkitOverflowScrolling: 'touch', paddingBottom: isMobile ? 'var(--composer-h, 56px)' : undefined }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
