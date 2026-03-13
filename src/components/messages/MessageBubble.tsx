@@ -619,6 +619,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     parentMessage={parentMessage}
                     onQuoteClick={handleScrollToParent}
                     isOwnMessage={isOwnMessage}
+                    currentUserId={user?.id}
                   />
                 )}
                 
