@@ -28,7 +28,8 @@ export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
     );
   }
 
-  const senderName = parentMessage?.sender?.display_name || parentMessage?.sender?.full_name || 'Unknown User';
+  const isQuotedSelf = currentUserId && (parentMessage?.sender_id === currentUserId || parentMessage?.sender?.id === currentUserId);
+  const senderName = isQuotedSelf ? 'You' : (parentMessage?.sender?.display_name || parentMessage?.sender?.full_name || 'Unknown User');
   const content = parentMessage?.body || 'Message content not available';
   
   // Truncate content for quote display

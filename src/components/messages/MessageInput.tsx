@@ -10,6 +10,7 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useRole } from "@/hooks/useRole";
 import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/AuthProvider";
 import { 
   validateFile, 
   uploadChatAttachment, 
