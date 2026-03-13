@@ -254,15 +254,18 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, messageContext, paginatedMessages]);
 
-  // Track scroll position and trigger top pagination
+  // Track scroll position and trigger top pagination — throttled via rAF, no state updates
   const handleScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 16;
-    setIsUserNearBottom(nearBottom);
-    if (el.scrollTop <= 0) {
-      handleScrollToTop();
-    }
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const el = scrollRef.current;
+      if (!el) return;
+      isUserNearBottomRef.current = el.scrollTop + el.clientHeight >= el.scrollHeight - 50;
+      if (el.scrollTop <= 0) {
+        handleScrollToTop();
+      }
+    });
   }, [handleScrollToTop]);
 
   // Fetch recipient data when recipientId changes
