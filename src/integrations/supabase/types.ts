@@ -2086,6 +2086,42 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_message_replies: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          message_id: string
+          parent_message_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          message_id: string
+          parent_message_id: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          message_id?: string
+          parent_message_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_message_replies_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: true
+            referencedRelation: "chat_messages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_message_replies_parent_message_id_fkey"
+            columns: ["parent_message_id"]
+            isOneToOne: false
+            referencedRelation: "chat_messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_messages: {
         Row: {
           content: string

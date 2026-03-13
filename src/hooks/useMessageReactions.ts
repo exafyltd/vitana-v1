@@ -27,27 +27,26 @@ export function useMessageReactions(messageId: string) {
   const [reactions, setReactions] = useState<MessageReaction[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch reactions for a message
+  // Fetch reactions for a message via RPC (handles all message table types)
   const fetchReactions = useCallback(async () => {
     if (!messageId) return;
     
     try {
       const { data, error } = await supabase
-        .from('message_reactions')
-        .select(`
-          *,
-          profiles:user_id (
-            display_name,
-            avatar_url
-          )
-        `)
-        .eq('message_id', messageId)
-        .order('created_at', { ascending: true });
+        .rpc('get_message_reactions_text', { message_id_param: messageId });
 
       if (error) throw error;
-      setReactions(data || []);
+      // Map RPC result to MessageReaction shape
+      setReactions((data || []).map((r: any) => ({
+        message_id: r.message_id,
+        user_id: r.user_id,
+        emoji: r.emoji,
+        created_at: r.created_at,
+        display_name: r.display_name,
+        avatar_url: r.avatar_url,
+      })));
     } catch (error) {
-      console.error('Error fetching reactions:', error);
+      console.warn('Error fetching reactions:', error);
     } finally {
       setLoading(false);
     }
@@ -66,7 +65,7 @@ export function useMessageReactions(messageId: string) {
         created_at: new Date().toISOString()
       };
 
-      setReactions([...reactions, newReaction]);
+      setReactions(prev => [...prev, newReaction]);
 
       const { error } = await supabase
         .from('message_reactions')
@@ -74,7 +73,7 @@ export function useMessageReactions(messageId: string) {
 
       if (error) {
         // Rollback on error
-        setReactions(reactions);
+        setReactions(prev => prev.filter(r => r !== newReaction));
         throw error;
       }
     } catch (error) {
@@ -133,8 +132,8 @@ export function useMessageReactions(messageId: string) {
       count: reactionList.length,
       users: reactionList.map(r => ({
         user_id: r.user_id,
-        display_name: (r as any).profiles?.display_name,
-        avatar_url: (r as any).profiles?.avatar_url
+        display_name: (r as any).display_name,
+        avatar_url: (r as any).avatar_url
       })),
       hasUserReacted: user ? reactionList.some(r => r.user_id === user.id) : false
     }));

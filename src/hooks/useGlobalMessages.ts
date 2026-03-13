@@ -502,8 +502,26 @@ export function useGlobalMessages(
         console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
       }
 
-      // If gateway returned messages, use them
-      if (gatewayMessages.length > 0) return gatewayMessages;
+      // If gateway returned messages, hydrate reply links and use them
+      if (gatewayMessages.length > 0) {
+        // Hydrate parent_message_id from chat_message_replies sidecar
+        const msgIds = gatewayMessages.map((m) => m.id);
+        if (msgIds.length > 0) {
+          const { data: replyLinks } = await supabase
+            .from("chat_message_replies" as any)
+            .select("message_id, parent_message_id")
+            .in("message_id", msgIds);
+          if (replyLinks && replyLinks.length > 0) {
+            const replyMap = new Map(replyLinks.map((r: any) => [r.message_id, r.parent_message_id]));
+            gatewayMessages = gatewayMessages.map((m) => {
+              const parentId = replyMap.get(m.id);
+              if (parentId) return { ...m, parent_message_id: parentId } as any;
+              return m;
+            });
+          }
+        }
+        return gatewayMessages;
+      }
 
       // Fallback: check if there's a legacy thread for this peer
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
@@ -560,7 +578,7 @@ export function useGlobalMessages(
         setIsSending(true);
 
         // Optimistic message
-        const optimistic: GlobalMessage = {
+        const optimistic: GlobalMessage & { parent_message_id?: string } = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
           sender_id: user.id,
@@ -574,6 +592,7 @@ export function useGlobalMessages(
             display_name: user.user_metadata?.display_name || "Me",
             avatar_url: user.user_metadata?.avatar_url || null,
           },
+          ..._parentMessageId ? { parent_message_id: _parentMessageId } : {},
         };
 
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
@@ -655,6 +674,22 @@ export function useGlobalMessages(
               .then(({ error }) => {
                 if (error) console.warn("Failed to update global message content_data:", error);
               });
+          }
+
+          // Persist reply link in sidecar table for direct messages
+          if (_parentMessageId) {
+            supabase
+              .from("chat_message_replies" as any)
+              .insert({
+                message_id: created.id,
+                parent_message_id: _parentMessageId,
+                created_by: user.id,
+              })
+              .then(({ error }) => {
+                if (error) console.warn("Failed to persist reply link:", error);
+              });
+            // Enrich realMsg with parent_message_id for immediate UI
+            (realMsg as any).parent_message_id = _parentMessageId;
           }
         }
 

@@ -189,10 +189,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message]);
 
   const handleScrollToParent = useCallback(() => {
-    if (onScrollToMessage && message.parent_message_id) {
-      onScrollToMessage(message.parent_message_id);
+    const parentId = message.parent_message_id || message.reply_to_message_id;
+    if (onScrollToMessage && parentId) {
+      onScrollToMessage(parentId);
     }
-  }, [onScrollToMessage, message.parent_message_id]);
+  }, [onScrollToMessage, message.parent_message_id, message.reply_to_message_id]);
 
   // Long press handling for mobile - shows reaction bar (WhatsApp style)
   const isLongPress = useRef(false);
@@ -220,6 +221,14 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
+  }, []);
+
+  const handleTouchCancel = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    isLongPress.current = false;
   }, []);
 
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
@@ -573,11 +582,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
+                onTouchCancel={handleTouchCancel}
                 role="button"
                 aria-label="Long press or right click for options"
               >
                 {/* Reply Quote - shows if this message is replying to another */}
-                {(message.parent_message_id || parentMessage) && (
+                {(message.parent_message_id || message.reply_to_message_id || parentMessage) && (
                   <ReplyQuote
                     parentMessage={parentMessage}
                     onQuoteClick={handleScrollToParent}
