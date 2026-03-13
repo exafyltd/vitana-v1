@@ -66,7 +66,7 @@ export function useChatUnreadCount() {
     };
   }, [user, refresh]);
 
-  // Listen for new messages via Realtime → increment
+  // Listen for new messages via Realtime → fetch authoritative count
   useEffect(() => {
     if (!user) return;
     const channel = supabase
@@ -79,8 +79,13 @@ export function useChatUnreadCount() {
           table: "chat_messages",
           filter: `receiver_id=eq.${user.id}`,
         },
-        () => {
-          setUnreadCount((prev) => prev + 1);
+        async () => {
+          try {
+            const count = await fetchUnreadCount();
+            setUnreadCount(count);
+          } catch (e) {
+            setUnreadCount((prev) => prev + 1); // fallback only
+          }
         }
       )
       .subscribe();

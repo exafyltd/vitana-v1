@@ -414,6 +414,24 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
 // ── Helper Functions ────────────────────────────────────────
 
 export function resolveNotificationRoute(type: string, data?: Record<string, any>): string | null {
+  // 1. Honour explicit URL from push payload
+  if (data?.url) {
+    const url = data.url as string;
+    // Normalize legacy /messages/* paths to /inbox
+    if (url.startsWith('/messages/') || url.startsWith('/messages?')) {
+      const id = url.replace('/messages/', '').split('?')[0];
+      if (id) return `/inbox?thread=${id}&context=global`;
+      return '/inbox';
+    }
+    return url;
+  }
+
+  // 2. Special handling for chat messages → deep-link into inbox
+  if (type === 'new_chat_message' && data?.sender_id) {
+    return `/inbox?thread=${data.sender_id}&context=global`;
+  }
+
+  // 3. Standard route template from registry
   const def = NOTIFICATION_TYPES[type];
   if (!def?.route) return null;
 
