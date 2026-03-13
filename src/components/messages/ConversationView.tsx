@@ -109,21 +109,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     isMessagesFetching,
   } = useHybridMessages(context, threadId);
 
-  // Debug logging
-  console.log('ConversationView render:', {
-    threadId,
-    recipientId,
-    context,
-    messageContext,
-    threadsLength: threads.length,
-    hybridMessagesLength: hybridMessagesFromHook?.length || 0,
-    shouldUsePagination: paginatedMessages.shouldUsePagination
-  });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [isUserNearBottom, setIsUserNearBottom] = useState(true);
+  const isUserNearBottomRef = useRef(true);
+  const rafRef = useRef<number | null>(null);
   const hasInitialScrolledRef = useRef<string | null>(null);
   const { toast } = useToast();
   const [recipientData, setRecipientData] = useState<any>(null);
@@ -153,16 +144,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const effectiveRecipient = React.useMemo(() => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
     
-    // Debug logging for participant data
-    console.log('🔍 effectiveRecipient debug:', {
-      threadId,
-      recipientId,
-      hasCurrentThread: !!currentThread,
-      participants: currentThread?.participants,
-      participantCount: currentThread?.participants?.length,
-      userId: user?.id,
-      recipientData
-    });
 
     // Helper to compose a recipient object with robust fallbacks
     const composeRecipient = (userId: string, participant?: any) => {
@@ -202,7 +183,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         (recipientData?.avatar_url as string | undefined) ||
         getConversationDisplayAvatar(currentThread, user?.id);
 
-      console.log('🎯 Composed recipient:', { userId, name, avatar, participant, recipientData });
+      
       
       return { id: userId, name: name.trim(), avatar };
     };
@@ -254,26 +235,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   
   useEffect(() => {
     if (threadId !== previousThreadId.current) {
-      console.log('🔄 Thread switching detected:', { from: previousThreadId.current, to: threadId });
-      setIsThreadDataLoaded(false); // Reset thread data loaded state
-      hasInitialScrolledRef.current = null; // Reset scroll tracking for new thread
+      setIsThreadDataLoaded(false);
+      hasInitialScrolledRef.current = null;
       previousThreadId.current = threadId;
-      
-      // Remove artificial delay - let cache handle instant display
       setIsThreadSwitching(false);
     }
   }, [threadId]);
 
-  // Debug logging for thread/recipient changes
-  useEffect(() => {
-    console.log('ConversationView: Thread/recipient effect', { 
-      threadId, 
-      recipientId,
-      messageContext,
-      messagesLength: messages.length,
-      threadsLength: threads.length
-    });
-  }, [threadId, recipientId, messageContext, messages.length, threads.length]);
 
   // Handle scroll to top for loading older messages
   const handleScrollToTop = useCallback(() => {
@@ -286,15 +254,18 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, messageContext, paginatedMessages]);
 
-  // Track scroll position and trigger top pagination
+  // Track scroll position and trigger top pagination — throttled via rAF, no state updates
   const handleScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 16;
-    setIsUserNearBottom(nearBottom);
-    if (el.scrollTop <= 0) {
-      handleScrollToTop();
-    }
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const el = scrollRef.current;
+      if (!el) return;
+      isUserNearBottomRef.current = el.scrollTop + el.clientHeight >= el.scrollHeight - 50;
+      if (el.scrollTop <= 0) {
+        handleScrollToTop();
+      }
+    });
   }, [handleScrollToTop]);
 
   // Fetch recipient data when recipientId changes
@@ -349,8 +320,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     const el = scrollRef.current;
     if (!el) return;
 
-    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8;
-    if (isAtBottom || force) {
+    if (isUserNearBottomRef.current || force) {
       el.scrollTo({ top: el.scrollHeight, behavior: force ? 'smooth' : 'auto' });
     }
   }, []);
@@ -380,33 +350,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId, isWindowFocused, messages.length, markAsRead, onConversationOpened, messageContext, user?.id]);
 
-  // Mark as read when new messages arrive in the currently viewed thread
-  useEffect(() => {
-    if (threadId && isWindowFocused && messages.length > 0 && markAsRead && user?.id) {
-      console.log('📖 ConversationView: New messages arrived, marking as read', { threadId, messagesLength: messages.length });
-      
-      // Auto-mark other users' messages as delivered
-      autoMarkAsDelivered(messages, user.id, messageContext === 'global');
-      
-      // Mark messages as read using the proper function
-      const messageIds = messages.filter(msg => msg.sender_id !== user.id).map(msg => msg.id);
-      if (messageIds.length > 0) {
-        markMessagesAsRead(messageIds, messageContext === 'global');
-      }
-      
-      // Immediate UI update via parent callback for new messages
-      if (onConversationOpened) {
-        onConversationOpened(threadId);
-      }
-      
-      // Small delay to ensure the message is fully rendered before backend update
-      const timer = setTimeout(() => {
-        markAsRead(threadId);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [threadId, messages, isWindowFocused, markAsRead, onConversationOpened, user?.id]);
 
   // Track window focus for read receipts
   useEffect(() => {
@@ -422,12 +365,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     };
   }, []);
 
-  // Auto-scroll when you're near bottom and new messages arrive
+  // Auto-scroll only when new messages arrive and user is already at bottom
+  const prevMessageCountRef = useRef(messages.length);
   useEffect(() => {
-    if (isUserNearBottom) {
+    if (messages.length > prevMessageCountRef.current && isUserNearBottomRef.current) {
       scrollToBottom(false);
     }
-  }, [messages, isUserNearBottom, scrollToBottom]);
+    prevMessageCountRef.current = messages.length;
+  }, [messages.length, scrollToBottom]);
 
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
@@ -440,14 +385,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         const el = scrollRef.current;
         if (el) {
           el.scrollTop = el.scrollHeight - el.clientHeight;
-          setIsUserNearBottom(true);
+          isUserNearBottomRef.current = true;
         }
       };
       
-      // Immediate attempt
       scrollToEnd();
       
-      // Retry after short delays to handle async content (images, etc.)
       const timers = [50, 150, 300].map(delay => 
         setTimeout(() => {
           requestAnimationFrame(scrollToEnd);
@@ -465,15 +408,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (!content || !scroll || !threadId) return;
 
     const observer = new ResizeObserver(() => {
-      // Only auto-scroll if user is near bottom (won't yank them if scrolled up)
-      if (isUserNearBottom && hasInitialScrolledRef.current === threadId) {
+      // Only auto-scroll if user is truly at bottom (won't yank them if scrolled up)
+      if (isUserNearBottomRef.current && hasInitialScrolledRef.current === threadId) {
         scroll.scrollTop = scroll.scrollHeight - scroll.clientHeight;
       }
     });
 
     observer.observe(content);
     return () => observer.disconnect();
-  }, [threadId, isUserNearBottom]);
+  }, [threadId]);
 
 
   const handleSendMessage = async (
@@ -971,13 +914,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const isLoadingConversation = (!threadId && !recipientId) || 
     (threadId && threads.length === 0 && messages.length === 0);
 
-  console.log('ConversationView: Loading state check', {
-    threadId,
-    recipientId,
-    threadsLength: threads.length,
-    messagesLength: messages.length,
-    isLoadingConversation
-  });
 
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
@@ -1078,7 +1014,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
-          style={{ paddingBottom: 'var(--composer-h, 56px)' }}
+          style={{ paddingBottom: isMobile ? 'var(--composer-h, 56px)' : undefined }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
