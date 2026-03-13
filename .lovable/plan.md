@@ -1,29 +1,68 @@
-## iOS/Appilix Digital Purchase Restriction — Implemented
 
-### Kill Switch
-`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-### Files Changed (8)
-1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
-2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
-3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
-4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
-5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
-6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
-7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
-8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
+## Fix: FCM Token Refresh Not Re-registering with Gateway
 
-### iOS Purchase Flow Status
-| Flow | Status | Reason |
-|------|--------|--------|
-| Gift Voucher | HIDDEN | Digital good |
-| Add Funds | HIDDEN | Digital currency |
-| Buy Credits | HIDDEN | Digital currency |
-| Buy VTNA Tokens | HIDDEN | Digital currency |
-| Paid Live Room creation | HIDDEN (free-only) | Digital access |
-| Paid Room access | HIDDEN | Digital access |
-| Event Tickets | VISIBLE | Real-world physical events (exempt) |
-| Service Bookings | VISIBLE | Real-world services (exempt) |
+### Root Cause
 
-### Post-Approval
-Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
+Firebase periodically rotates FCM tokens. The current code only registers the token once during `initializePushNotifications()`. If the token changes (common on mobile after app restart, SW update, or Firebase-initiated rotation), the gateway holds a stale token and push delivery silently fails.
+
+Additionally, `onForegroundMessage` in `firebase.ts` has a subtle race condition — it returns a cleanup function synchronously but sets `unsubscribe` asynchronously, so early cleanup calls are no-ops.
+
+### Changes
+
+**1. `src/lib/firebase.ts`** — Add `onTokenRefresh` listener
+
+Firebase's `onMessage` already handles foreground messages, but there's no listener for token refresh. Add an `onTokenRefresh` callback using Firebase's `getToken` with `serviceWorkerRegistration` to detect rotations:
+
+```typescript
+export async function requestFCMToken(swRegistration?: ServiceWorkerRegistration): Promise<string | null> {
+  // Pass swRegistration to getToken so Firebase uses the correct SW
+  const token = await getToken(messaging, { 
+    vapidKey: VAPID_KEY, 
+    serviceWorkerRegistration: swRegistration 
+  });
+}
+```
+
+Fix the `onForegroundMessage` race by awaiting the messaging instance before returning:
+```typescript
+export async function onForegroundMessage(callback): Promise<(() => void) | null> {
+  const messaging = await getMessagingInstance();
+  if (!messaging) return null;
+  return onMessage(messaging, callback);
+}
+```
+
+**2. `src/lib/pushNotifications.ts`** — Handle token refresh
+
+In the `subscribe()` method, after initial token registration, set up a periodic token check (every 30 minutes) that re-registers if the token changed. Also pass the SW registration to `requestFCMToken`:
+
+```typescript
+// In subscribe(), after initial registration:
+this.startTokenRefreshMonitor();
+
+private startTokenRefreshMonitor(): void {
+  if (this.refreshInterval) return;
+  this.refreshInterval = setInterval(async () => {
+    try {
+      const newToken = await requestFCMToken(this.registration);
+      if (newToken && newToken !== this.fcmToken) {
+        console.log('[Push] FCM token rotated, re-registering...');
+        this.fcmToken = newToken;
+        await this.registerTokenWithBackend(newToken);
+      }
+    } catch {}
+  }, 30 * 60 * 1000); // 30 minutes
+}
+```
+
+Also fix `setupForegroundHandler` to await the now-async `onForegroundMessage`.
+
+**3. `src/App.tsx`** — No changes needed
+
+The initialization is already correctly gated.
+
+### Summary of changes
+- `src/lib/firebase.ts`: Fix `onForegroundMessage` race condition, accept SW registration in `requestFCMToken`
+- `src/lib/pushNotifications.ts`: Add 30-min token refresh monitor, pass SW registration, fix async foreground handler setup
+
