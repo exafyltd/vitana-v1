@@ -144,16 +144,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const effectiveRecipient = React.useMemo(() => {
     const currentThread: any = threadId ? threads.find((thread: any) => thread.id === threadId) : null;
     
-    // Debug logging for participant data
-    console.log('🔍 effectiveRecipient debug:', {
-      threadId,
-      recipientId,
-      hasCurrentThread: !!currentThread,
-      participants: currentThread?.participants,
-      participantCount: currentThread?.participants?.length,
-      userId: user?.id,
-      recipientData
-    });
 
     // Helper to compose a recipient object with robust fallbacks
     const composeRecipient = (userId: string, participant?: any) => {
