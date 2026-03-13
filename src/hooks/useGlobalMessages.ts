@@ -448,8 +448,16 @@ export function useGlobalMessages(
       return merged;
     },
     enabled: !!user && isGlobalContext,
-    staleTime: 2 * 60 * 1000,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    placeholderData: (prev) => prev ?? (user ? getCachedThreads(user.id) ?? undefined : undefined),
   });
+
+  useEffect(() => {
+    if (user && threads.length > 0 && !isThreadsLoading) {
+      persistThreads(user.id, threads);
+    }
+  }, [user, threads, isThreadsLoading]);
 
   // ── Messages for active thread (= peer) ───────────────────────────
 
