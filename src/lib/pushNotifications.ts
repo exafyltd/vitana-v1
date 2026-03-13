@@ -89,7 +89,7 @@ class PushNotificationManager {
       if (!token && this.isSupported) {
         try {
           console.log('[Push] Trying web FCM...');
-          token = await requestFCMToken();
+          token = await requestFCMToken(this.registration || undefined);
           if (token) {
             console.log('[Push] ✅ Web FCM token obtained');
           } else {
