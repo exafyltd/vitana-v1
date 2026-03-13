@@ -656,6 +656,22 @@ export function useGlobalMessages(
                 if (error) console.warn("Failed to update global message content_data:", error);
               });
           }
+
+          // Persist reply link in sidecar table for direct messages
+          if (_parentMessageId) {
+            supabase
+              .from("chat_message_replies" as any)
+              .insert({
+                message_id: created.id,
+                parent_message_id: _parentMessageId,
+                created_by: user.id,
+              })
+              .then(({ error }) => {
+                if (error) console.warn("Failed to persist reply link:", error);
+              });
+            // Enrich realMsg with parent_message_id for immediate UI
+            (realMsg as any).parent_message_id = _parentMessageId;
+          }
         }
 
         // Replace optimistic with real
