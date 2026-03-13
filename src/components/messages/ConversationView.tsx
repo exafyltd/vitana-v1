@@ -385,14 +385,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         const el = scrollRef.current;
         if (el) {
           el.scrollTop = el.scrollHeight - el.clientHeight;
-          setIsUserNearBottom(true);
+          isUserNearBottomRef.current = true;
         }
       };
       
-      // Immediate attempt
       scrollToEnd();
       
-      // Retry after short delays to handle async content (images, etc.)
       const timers = [50, 150, 300].map(delay => 
         setTimeout(() => {
           requestAnimationFrame(scrollToEnd);
