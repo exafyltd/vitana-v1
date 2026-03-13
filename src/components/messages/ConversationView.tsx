@@ -1095,7 +1095,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           ) : (
 
             <div ref={contentRef}>
-              {messages.map((message, index) => {
+              {(() => {
+                // Build message lookup map for O(1) parent resolution
+                const messageMap = new Map(messages.map(m => [m.id, m]));
+                
+                const handleScrollToMessage = (messageId: string) => {
+                  const el = document.getElementById(`msg-${messageId}`);
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.classList.add('message-highlight');
+                    setTimeout(() => el.classList.remove('message-highlight'), 1500);
+                  }
+                };
+                
+                return messages.map((message, index) => {
                 const isOwnMessage = message.sender_id === user?.id;
                 const previousMessage = index > 0 ? messages[index - 1] : null;
                 const nextMessage = index < messages.length - 1 ? messages[index + 1] : null;
@@ -1117,50 +1130,63 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 const shouldUseSmallSpacing = isConsecutiveFromSameSender && isWithinTimeWindow;
                 
                 const showTimestamp = isLastInGroup || !isWithinTimeWindow;
+                
+                // Resolve parent message for reply quotes
+                const resolvedParentMessage = message.parent_message_id 
+                  ? messageMap.get(message.parent_message_id) || null 
+                  : null;
 
                 return (
                   <div 
-                    key={message.id} 
+                    key={message.id}
+                    id={`msg-${message.id}`}
                     className={cn(
-                      shouldUseSmallSpacing ? "mb-1" : "mb-4"
+                      shouldUseSmallSpacing ? "mb-1" : "mb-4",
+                      "transition-colors duration-500"
                     )}
                   >
-                    <MessageBubble
-                      message={message}
+                    <SwipeableMessage
+                      onReply={() => handleReply(message)}
                       isOwnMessage={isOwnMessage}
-                      onActionClick={handleActionClick}
-                      onReply={handleReply}
-                      showAvatar={showAvatar}
-                      showTimestamp={showTimestamp}
-                      onUpdateMessage={async (messageId: string, updates: any) => {
-                        try {
-                          // Update the message in the database first
-                          const { error } = await supabase
-                            .from(messageContext === 'global' ? 'global_messages' : 'messages')
-                            .update(updates)
-                            .eq('id', messageId);
-                          
-                          if (error) {
-                            console.error('Error updating message:', error);
+                      enabled={isMobile}
+                    >
+                      <MessageBubble
+                        message={message}
+                        isOwnMessage={isOwnMessage}
+                        onActionClick={handleActionClick}
+                        onReply={handleReply}
+                        onScrollToMessage={handleScrollToMessage}
+                        parentMessage={resolvedParentMessage}
+                        showAvatar={showAvatar}
+                        showTimestamp={showTimestamp}
+                        onUpdateMessage={async (messageId: string, updates: any) => {
+                          try {
+                            const { error } = await supabase
+                              .from(messageContext === 'global' ? 'global_messages' : 'messages')
+                              .update(updates)
+                              .eq('id', messageId);
+                            
+                            if (error) {
+                              console.error('Error updating message:', error);
+                              throw error;
+                            }
+                            
+                            if (fetchMessages) {
+                              await fetchMessages();
+                            }
+                          } catch (error) {
+                            console.error('Failed to update message:', error);
+                            toast({
+                              title: "Update Failed",
+                              description: "Failed to update message. Please try again.",
+                              variant: "destructive"
+                            });
                             throw error;
                           }
-                          
-                          // Then refresh the messages to show the updated state
-                          if (fetchMessages) {
-                            await fetchMessages();
-                          }
-                        } catch (error) {
-                          console.error('Failed to update message:', error);
-                          toast({
-                            title: "Update Failed",
-                            description: "Failed to update message. Please try again.",
-                            variant: "destructive"
-                          });
-                          throw error; // Re-throw so PaymentMessageHandler can handle it
-                        }
-                      }}
-                      onSendReply={handleSendMessage}
-                    />
+                        }}
+                        onSendReply={handleSendMessage}
+                      />
+                    </SwipeableMessage>
                   </div>
                 );
               })}

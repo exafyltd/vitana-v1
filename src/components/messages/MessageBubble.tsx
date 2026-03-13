@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { EmojiReactionBar } from './EmojiReactionBar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
