@@ -65,7 +65,7 @@ export function useMessageReactions(messageId: string) {
         created_at: new Date().toISOString()
       };
 
-      setReactions([...reactions, newReaction]);
+      setReactions(prev => [...prev, newReaction]);
 
       const { error } = await supabase
         .from('message_reactions')
@@ -73,7 +73,7 @@ export function useMessageReactions(messageId: string) {
 
       if (error) {
         // Rollback on error
-        setReactions(reactions);
+        setReactions(prev => prev.filter(r => r !== newReaction));
         throw error;
       }
     } catch (error) {
