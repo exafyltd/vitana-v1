@@ -204,26 +204,33 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   // Long press handling for mobile - shows reaction drawer (WhatsApp style)
   const isLongPress = useRef(false);
   const touchStartPos = useRef({ x: 0, y: 0 });
+  const pendingDrawerOpen = useRef(false);
   
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     isLongPress.current = false;
+    pendingDrawerOpen.current = false;
     touchStartPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     longPressTimer.current = setTimeout(() => {
       isLongPress.current = true;
       if ('vibrate' in navigator) {
         navigator.vibrate(50);
       }
-      setShowDoubleTapReactions(true);
+      // Don't open drawer yet — defer to touchend so vaul doesn't
+      // interpret the finger-lift as a dismiss gesture
+      pendingDrawerOpen.current = true;
     }, 500);
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!longPressTimer.current) return;
+    if (!longPressTimer.current && !pendingDrawerOpen.current) return;
     const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
     const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
     if (dx > 15 || dy > 15) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
+      if (longPressTimer.current) {
+        clearTimeout(longPressTimer.current);
+        longPressTimer.current = null;
+      }
+      pendingDrawerOpen.current = false;
     }
   }, []);
 
@@ -232,6 +239,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
+    if (pendingDrawerOpen.current) {
+      pendingDrawerOpen.current = false;
+      setShowDoubleTapReactions(true);
+    }
   }, []);
 
   const handleTouchCancel = useCallback(() => {
@@ -239,6 +250,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
+    pendingDrawerOpen.current = false;
     isLongPress.current = false;
   }, []);
 
