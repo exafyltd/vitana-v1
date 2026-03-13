@@ -13,8 +13,7 @@ export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
   parentMessage,
   onQuoteClick,
   className,
-  isOwnMessage = false,
-  currentUserId
+  isOwnMessage = false
 }) => {
   if (!parentMessage) {
     return (
