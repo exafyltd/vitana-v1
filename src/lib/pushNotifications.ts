@@ -245,11 +245,11 @@ class PushNotificationManager {
     });
   }
 
-  private setupForegroundHandler(): void {
+  private async setupForegroundHandler(): Promise<void> {
     if (this.foregroundCleanup) return;
 
     const shownTags = new Set<string>();
-    this.foregroundCleanup = onForegroundMessage((payload) => {
+    const cleanup = await onForegroundMessage((payload) => {
       // App is focused — skip notification display entirely
       if (!document.hidden && document.hasFocus()) return;
 
@@ -278,6 +278,23 @@ class PushNotificationManager {
         this.showLocalNotification({ title, body, data, tag });
       }
     });
+    if (cleanup) this.foregroundCleanup = cleanup;
+  }
+
+  private startTokenRefreshMonitor(): void {
+    if (this.refreshInterval) return;
+    this.refreshInterval = setInterval(async () => {
+      try {
+        const newToken = await requestFCMToken(this.registration || undefined);
+        if (newToken && newToken !== this.fcmToken) {
+          console.log('[Push] FCM token rotated, re-registering with gateway...');
+          this.fcmToken = newToken;
+          await this.registerTokenWithBackend(newToken);
+        }
+      } catch (err) {
+        console.warn('[Push] Token refresh check failed:', err);
+      }
+    }, 30 * 60 * 1000); // Check every 30 minutes
   }
 
   private attachAppilixTokenListener(): void {
