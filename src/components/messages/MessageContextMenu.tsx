@@ -20,6 +20,7 @@ import {
 import { EmojiPicker } from '@/components/ui/emoji-picker';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MessageContextMenuProps {
   children: React.ReactNode;
@@ -55,10 +56,16 @@ export function MessageContextMenu({
   isPinned = false,
 }: MessageContextMenuProps) {
   const { translate } = useTranslation();
+  const isMobile = useIsMobile();
   
   const handleCopy = () => {
     onCopy?.();
   };
+
+  // On mobile, skip Radix ContextMenu — long-press is handled by MessageBubble's Drawer
+  if (isMobile) {
+    return <>{children}</>;
+  }
 
   return (
     <ContextMenu>
@@ -66,7 +73,6 @@ export function MessageContextMenu({
         {children}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-56 p-1">
-        {/* Primary Actions */}
         {onReply && (
           <ContextMenuItem onClick={onReply} className="flex items-center gap-2 px-3 py-2">
             <Reply className="w-4 h-4" />
@@ -90,7 +96,6 @@ export function MessageContextMenu({
 
         <ContextMenuSeparator />
         
-        {/* Secondary Actions */}
         {onStar && (
           <ContextMenuItem onClick={onStar} className="flex items-center gap-2 px-3 py-2">
             <Star className={cn("w-4 h-4", isStarred && "fill-current text-yellow-500")} />
@@ -119,7 +124,6 @@ export function MessageContextMenu({
           </ContextMenuItem>
         )}
 
-        {/* Delete for own messages */}
         {isOwnMessage && onDelete && (
           <>
             <ContextMenuSeparator />
@@ -133,7 +137,6 @@ export function MessageContextMenu({
           </>
         )}
 
-        {/* Emoji Reactions */}
         {onEmojiSelect && (
           <>
             <ContextMenuSeparator />
@@ -157,7 +160,6 @@ export function MessageContextMenu({
                   </button>
                 ))}
                 
-                {/* More emojis button */}
                 <EmojiPicker 
                   onEmojiSelect={onEmojiSelect}
                   trigger={

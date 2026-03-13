@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { EmojiReactionBar } from './EmojiReactionBar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Drawer,
+  DrawerContent,
+} from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
 import { format, isToday, isYesterday, isThisYear } from 'date-fns';
 import { CalendarInviteStatus } from './CalendarInviteStatus';
@@ -22,7 +25,11 @@ import {
   MapPin,
   Users,
   CheckCircle,
-  X
+  X,
+  Copy,
+  Forward,
+  Share,
+  Trash2
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
@@ -63,7 +70,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const lastTapTime = useRef(0);
   const [showDoubleTapReactions, setShowDoubleTapReactions] = useState(false);
-  const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
   const [imageZoomModal, setImageZoomModal] = useState<{ isOpen: boolean; url: string; filename: string }>({
     isOpen: false,
     url: '',
@@ -195,25 +201,30 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   }, [onScrollToMessage, message.parent_message_id, message.reply_to_message_id]);
 
-  // Long press handling for mobile - shows reaction bar (WhatsApp style)
+  // Long press handling for mobile - shows reaction drawer (WhatsApp style)
   const isLongPress = useRef(false);
+  const touchStartPos = useRef({ x: 0, y: 0 });
   
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     isLongPress.current = false;
+    touchStartPos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     longPressTimer.current = setTimeout(() => {
       isLongPress.current = true;
       if ('vibrate' in navigator) {
         navigator.vibrate(50);
       }
-      const rect = messageRef.current?.getBoundingClientRect();
-      if (rect) {
-        setReactionBarPosition({
-          x: rect.left + rect.width / 2,
-          y: rect.top - 10
-        });
-        setShowDoubleTapReactions(true);
-      }
+      setShowDoubleTapReactions(true);
     }, 500);
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!longPressTimer.current) return;
+    const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
+    const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
+    if (dx > 10 || dy > 10) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
   }, []);
 
   const handleTouchEnd = useCallback(() => {
@@ -582,9 +593,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
                 onTouchCancel={handleTouchCancel}
-                role="button"
-                aria-label="Long press or right click for options"
               >
                 {/* Reply Quote - shows if this message is replying to another */}
                 {(message.parent_message_id || message.reply_to_message_id || parentMessage) && (
@@ -647,18 +657,76 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         filename={imageZoomModal.filename}
       />
 
-      {/* Double-tap Emoji Reaction Bar (mobile) */}
-      {showDoubleTapReactions && (
-        <EmojiReactionBar
-          onEmojiSelect={(emoji) => {
-            handleReactionSelect(emoji);
-            setShowDoubleTapReactions(false);
-          }}
-          onClose={() => setShowDoubleTapReactions(false)}
-          onReply={onReply ? handleReply : undefined}
-          position={reactionBarPosition}
-        />
-      )}
+      {/* Mobile long-press reaction/action drawer */}
+      <Drawer open={showDoubleTapReactions} onOpenChange={setShowDoubleTapReactions}>
+        <DrawerContent className="pb-safe">
+          <div className="px-4 pt-2 pb-4 space-y-4">
+            {/* Quick reactions row */}
+            <div className="flex justify-center gap-3 py-2">
+              {['👍', '❤️', '😂', '😮', '🙏', '🎉'].map((emoji) => (
+                <button
+                  key={emoji}
+                  onClick={() => {
+                    handleReactionSelect(emoji);
+                    setShowDoubleTapReactions(false);
+                  }}
+                  className={cn(
+                    "flex items-center justify-center w-12 h-12 rounded-full",
+                    "active:bg-accent transition-colors duration-150",
+                    "text-2xl active:scale-110 transform transition-transform"
+                  )}
+                  aria-label={`React with ${emoji}`}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+
+            {/* Action buttons */}
+            <div className="grid grid-cols-4 gap-2">
+              {onReply && (
+                <button
+                  onClick={() => { handleReply(); setShowDoubleTapReactions(false); }}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+                >
+                  <Reply className="w-5 h-5 text-foreground" />
+                  <span className="text-xs text-muted-foreground">Reply</span>
+                </button>
+              )}
+              <button
+                onClick={() => { handleCopy(); setShowDoubleTapReactions(false); }}
+                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+              >
+                <Copy className="w-5 h-5 text-foreground" />
+                <span className="text-xs text-muted-foreground">Copy</span>
+              </button>
+              <button
+                onClick={() => { handleForward(); setShowDoubleTapReactions(false); }}
+                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+              >
+                <Forward className="w-5 h-5 text-foreground" />
+                <span className="text-xs text-muted-foreground">Forward</span>
+              </button>
+              <button
+                onClick={() => { handleShare(); setShowDoubleTapReactions(false); }}
+                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+              >
+                <Share className="w-5 h-5 text-foreground" />
+                <span className="text-xs text-muted-foreground">Share</span>
+              </button>
+              {isOwnMessage && (
+                <button
+                  onClick={() => { handleDelete(); setShowDoubleTapReactions(false); }}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+                >
+                  <Trash2 className="w-5 h-5 text-destructive" />
+                  <span className="text-xs text-destructive">Delete</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };
