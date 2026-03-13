@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from "r
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { clearChatCache } from "@/hooks/chatPersistCache";
 
 interface AuthContextValue {
   user: User | null;
@@ -138,6 +139,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('[AuthProvider] Signing out user');
       dismiss();
+      clearChatCache();
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('[AuthProvider] Sign out error:', error);

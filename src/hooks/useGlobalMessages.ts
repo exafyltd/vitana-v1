@@ -5,6 +5,12 @@ import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 import { messageCache } from "./messageCache";
 import {
+  persistThreads,
+  getCachedThreads,
+  persistMessages,
+  getCachedMessages,
+} from "./chatPersistCache";
+import {
   fetchConversations,
   fetchConversation,
   sendChatMessage,
@@ -49,6 +55,9 @@ export interface GlobalMessageThread {
   last_message?: GlobalMessage;
   unread_count: number;
 }
+
+const STALE_TIME = 10 * 60 * 1000;  // 10 minutes
+const GC_TIME = 30 * 60 * 1000;     // 30 minutes
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
@@ -439,8 +448,16 @@ export function useGlobalMessages(
       return merged;
     },
     enabled: !!user && isGlobalContext,
-    staleTime: 2 * 60 * 1000,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    placeholderData: (prev) => prev ?? (user ? getCachedThreads(user.id) ?? undefined : undefined),
   });
+
+  useEffect(() => {
+    if (user && threads.length > 0 && !isThreadsLoading) {
+      persistThreads(user.id, threads);
+    }
+  }, [user, threads, isThreadsLoading]);
 
   // ── Messages for active thread (= peer) ───────────────────────────
 
@@ -536,8 +553,16 @@ export function useGlobalMessages(
       return legacyMessages;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: 2 * 60 * 1000,
+    staleTime: STALE_TIME,
+    gcTime: GC_TIME,
+    placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
   });
+
+  useEffect(() => {
+    if (activeThreadId && messages.length > 0 && !isMessagesLoading) {
+      persistMessages(activeThreadId, messages);
+    }
+  }, [activeThreadId, messages, isMessagesLoading]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────
 
