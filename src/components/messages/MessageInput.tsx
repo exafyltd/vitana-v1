@@ -472,6 +472,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         <ReplyPreview 
           message={replyingTo} 
           onCancel={onCancelReply}
+          currentUserId={user?.id}
         />
       )}
 
