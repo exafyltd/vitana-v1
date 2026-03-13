@@ -1,29 +1,28 @@
-## iOS/Appilix Digital Purchase Restriction — Implemented
 
-### Kill Switch
-`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-### Files Changed (8)
-1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
-2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
-3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
-4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
-5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
-6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
-7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
-8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
+# Fix: Drawer opens and immediately dismisses on mobile long-press
 
-### iOS Purchase Flow Status
-| Flow | Status | Reason |
-|------|--------|--------|
-| Gift Voucher | HIDDEN | Digital good |
-| Add Funds | HIDDEN | Digital currency |
-| Buy Credits | HIDDEN | Digital currency |
-| Buy VTNA Tokens | HIDDEN | Digital currency |
-| Paid Live Room creation | HIDDEN (free-only) | Digital access |
-| Paid Room access | HIDDEN | Digital access |
-| Event Tickets | VISIBLE | Real-world physical events (exempt) |
-| Service Bookings | VISIBLE | Real-world services (exempt) |
+## Root cause
 
-### Post-Approval
-Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
+The long-press timer fires at 500ms **while the user's finger is still on the screen**. This calls `setShowDoubleTapReactions(true)`, which opens the vaul Drawer. When the user then lifts their finger, vaul's internal gesture handler captures that `touchend` event on the newly-rendered overlay and interprets it as a "swipe down to dismiss" — closing the Drawer instantly. The Drawer appears and vanishes in a single frame, making it invisible.
+
+## Fix
+
+**`src/components/messages/MessageBubble.tsx`** — Instead of opening the Drawer immediately in the timer callback, set a flag (`pendingDrawerOpen`) and defer the actual `setShowDoubleTapReactions(true)` call to `handleTouchEnd`. This ensures the Drawer only opens **after** the user lifts their finger, so vaul's gesture system doesn't capture the release as a dismiss.
+
+```text
+Current flow:
+  touchstart → [500ms] → open Drawer (finger still down) → touchend → vaul dismisses
+
+Fixed flow:
+  touchstart → [500ms] → vibrate + set flag → touchend → open Drawer (finger already up)
+```
+
+### Changes in `MessageBubble.tsx`:
+1. Add a `pendingDrawerOpen` ref (boolean flag)
+2. In the 500ms timer callback: set `isLongPress.current = true`, vibrate, set `pendingDrawerOpen.current = true` — but do NOT call `setShowDoubleTapReactions(true)` yet
+3. In `handleTouchEnd`: check `pendingDrawerOpen.current` — if true, call `setShowDoubleTapReactions(true)` and reset the flag
+4. In `handleTouchCancel`: reset `pendingDrawerOpen.current = false`
+
+This is a single-file, ~10-line change. No other files affected.
+
