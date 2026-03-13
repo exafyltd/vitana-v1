@@ -56,6 +56,9 @@ export interface GlobalMessageThread {
   unread_count: number;
 }
 
+const STALE_TIME = 10 * 60 * 1000;  // 10 minutes
+const GC_TIME = 30 * 60 * 1000;     // 30 minutes
+
 // ── Helpers ──────────────────────────────────────────────────────────
 
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
