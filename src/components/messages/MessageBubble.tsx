@@ -222,19 +222,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!longPressTimer.current && !pendingDrawerOpen.current) return;
+    // Once long-press is confirmed, ignore post-confirmation jitter
+    if (pendingDrawerOpen.current) return;
+    if (!longPressTimer.current) return;
     const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
     const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
     if (dx > 15 || dy > 15) {
-      if (longPressTimer.current) {
-        clearTimeout(longPressTimer.current);
-        longPressTimer.current = null;
-      }
-      pendingDrawerOpen.current = false;
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
     }
   }, []);
 
-  const handleTouchEnd = useCallback(() => {
+  // Unified finalizer — called by both touchend and touchcancel
+  const finalizeLongPressGesture = useCallback(() => {
     if (longPressTimer.current) {
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
@@ -245,14 +245,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   }, []);
 
+  const handleTouchEnd = useCallback(() => {
+    finalizeLongPressGesture();
+  }, [finalizeLongPressGesture]);
+
+  // On Android webview, long-press often fires touchcancel instead of touchend.
+  // We must still open the drawer if the gesture was already confirmed.
   const handleTouchCancel = useCallback(() => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-    pendingDrawerOpen.current = false;
-    isLongPress.current = false;
-  }, []);
+    finalizeLongPressGesture();
+  }, [finalizeLongPressGesture]);
 
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
@@ -608,6 +609,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}
                 onTouchCancel={handleTouchCancel}
+                onContextMenu={(e) => e.preventDefault()}
               >
                 {/* Reply Quote - shows if this message is replying to another */}
                 {(message.parent_message_id || message.reply_to_message_id || parentMessage) && (
@@ -671,7 +673,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       />
 
       {/* Mobile long-press reaction/action drawer */}
-      <Drawer open={showDoubleTapReactions} onOpenChange={setShowDoubleTapReactions}>
+      <Drawer open={showDoubleTapReactions} onOpenChange={setShowDoubleTapReactions} repositionInputs={false}>
         <DrawerContent className="pb-safe">
           <div className="px-4 pt-2 pb-4 space-y-4">
             {/* Quick reactions row */}
