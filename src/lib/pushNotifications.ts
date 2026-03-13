@@ -128,6 +128,10 @@ class PushNotificationManager {
       this.fcmToken = null;
       this.foregroundCleanup?.();
       this.foregroundCleanup = null;
+      if (this.refreshInterval) {
+        clearInterval(this.refreshInterval);
+        this.refreshInterval = null;
+      }
       return true;
     } catch {
       return false;
