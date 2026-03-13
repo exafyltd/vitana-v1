@@ -25,7 +25,11 @@ import {
   MapPin,
   Users,
   CheckCircle,
-  X
+  X,
+  Copy,
+  Forward,
+  Share,
+  Trash2
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType } from '@/lib/fileUpload';
