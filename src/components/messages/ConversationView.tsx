@@ -109,16 +109,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     isMessagesFetching,
   } = useHybridMessages(context, threadId);
 
-  // Debug logging
-  console.log('ConversationView render:', {
-    threadId,
-    recipientId,
-    context,
-    messageContext,
-    threadsLength: threads.length,
-    hybridMessagesLength: hybridMessagesFromHook?.length || 0,
-    shouldUsePagination: paginatedMessages.shouldUsePagination
-  });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
