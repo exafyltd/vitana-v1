@@ -1014,7 +1014,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
-          style={{ paddingBottom: 'var(--composer-h, 56px)' }}
+          style={{ paddingBottom: isMobile ? 'var(--composer-h, 56px)' : undefined }}
         >
           {messages.length === 0 ? (
             isMessagesLoading || isMessagesFetching ? (
