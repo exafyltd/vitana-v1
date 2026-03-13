@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Calendar, Briefcase, Radio, User } from "lucide-react";
+import { Calendar, Mail, Radio, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
@@ -11,7 +11,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 const navItems = [
   { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
-  { id: 'business', icon: Briefcase, label: 'Business', path: '/business', i18nKey: 'mobileNav.business' },
+  { id: 'inbox', icon: Mail, label: 'Inbox', path: '/inbox', i18nKey: 'mobileNav.inbox' },
   { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
   { id: 'profile', icon: User, label: 'Profile', path: '/me/profile', i18nKey: 'mobileNav.profile' },
 ];
