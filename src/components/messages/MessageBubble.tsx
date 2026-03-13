@@ -67,6 +67,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onSendReply
 }) => {
   const isMobile = useIsMobile();
+  const { user } = useAuth();
   const messageRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const lastTapTime = useRef(0);
