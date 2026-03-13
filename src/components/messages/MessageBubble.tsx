@@ -58,8 +58,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onUpdateMessage,
   onSendReply
 }) => {
+  const isMobile = useIsMobile();
   const messageRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+  const lastTapTime = useRef(0);
+  const [showDoubleTapReactions, setShowDoubleTapReactions] = useState(false);
+  const [reactionBarPosition, setReactionBarPosition] = useState({ x: 0, y: 0 });
   const [imageZoomModal, setImageZoomModal] = useState<{ isOpen: boolean; url: string; filename: string }>({
     isOpen: false,
     url: '',
