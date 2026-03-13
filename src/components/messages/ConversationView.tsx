@@ -914,13 +914,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const isLoadingConversation = (!threadId && !recipientId) || 
     (threadId && threads.length === 0 && messages.length === 0);
 
-  console.log('ConversationView: Loading state check', {
-    threadId,
-    recipientId,
-    threadsLength: threads.length,
-    messagesLength: messages.length,
-    isLoadingConversation
-  });
 
   // Loading state for when conversation is being loaded  
   if (isLoadingConversation) {
