@@ -936,3 +936,13 @@ All colors MUST be HSL.
       padding-bottom: 0;
     }
   }
+
+  /* Message highlight animation for scroll-to-reply */
+  @keyframes message-highlight-flash {
+    0% { background-color: hsl(var(--primary) / 0.2); }
+    100% { background-color: transparent; }
+  }
+
+  .message-highlight {
+    animation: message-highlight-flash 1.5s ease-out;
+  }
