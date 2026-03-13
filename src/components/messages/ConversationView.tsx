@@ -1074,7 +1074,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
         {/* Messages - Scrollable area */}
         <div 
-          className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain touch-pan-y" 
+          className="chat-scroll flex-1 min-h-0 overflow-y-auto overflow-x-hidden min-w-0 px-4 py-1 overscroll-contain touch-pan-y" 
           id="chat-scroll"
           ref={scrollRef}
           onScroll={handleScroll}
