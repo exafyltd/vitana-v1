@@ -132,8 +132,8 @@ export function useMessageReactions(messageId: string) {
       count: reactionList.length,
       users: reactionList.map(r => ({
         user_id: r.user_id,
-        display_name: (r as any).profiles?.display_name,
-        avatar_url: (r as any).profiles?.avatar_url
+        display_name: (r as any).display_name,
+        avatar_url: (r as any).avatar_url
       })),
       hasUserReacted: user ? reactionList.some(r => r.user_id === user.id) : false
     }));

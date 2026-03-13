@@ -578,7 +578,7 @@ export function useGlobalMessages(
         setIsSending(true);
 
         // Optimistic message
-        const optimistic: GlobalMessage = {
+        const optimistic: GlobalMessage & { parent_message_id?: string } = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
           sender_id: user.id,
@@ -592,6 +592,7 @@ export function useGlobalMessages(
             display_name: user.user_metadata?.display_name || "Me",
             avatar_url: user.user_metadata?.avatar_url || null,
           },
+          ..._parentMessageId ? { parent_message_id: _parentMessageId } : {},
         };
 
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
