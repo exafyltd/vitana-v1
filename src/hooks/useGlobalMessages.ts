@@ -5,6 +5,12 @@ import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 import { messageCache } from "./messageCache";
 import {
+  persistThreads,
+  getCachedThreads,
+  persistMessages,
+  getCachedMessages,
+} from "./chatPersistCache";
+import {
   fetchConversations,
   fetchConversation,
   sendChatMessage,
