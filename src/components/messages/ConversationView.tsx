@@ -1131,9 +1131,10 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                 
                 const showTimestamp = isLastInGroup || !isWithinTimeWindow;
                 
-                // Resolve parent message for reply quotes
-                const resolvedParentMessage = message.parent_message_id 
-                  ? messageMap.get(message.parent_message_id) || null 
+                // Resolve parent message for reply quotes (check both field names)
+                const parentId = message.parent_message_id || message.reply_to_message_id;
+                const resolvedParentMessage = parentId 
+                  ? messageMap.get(parentId) || null 
                   : null;
 
                 return (

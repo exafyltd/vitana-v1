@@ -194,37 +194,26 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   }, [onScrollToMessage, message.parent_message_id]);
 
-  // Long press handling for mobile
+  // Long press handling for mobile - shows reaction bar (WhatsApp style)
+  const isLongPress = useRef(false);
+  
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    isLongPress.current = false;
     longPressTimer.current = setTimeout(() => {
+      isLongPress.current = true;
       if ('vibrate' in navigator) {
         navigator.vibrate(50);
       }
-    }, 500);
-
-    // Double-tap detection for mobile reactions
-    if (isMobile) {
-      const now = Date.now();
-      if (now - lastTapTime.current < 300) {
-        // Double tap detected
-        e.preventDefault();
-        const rect = messageRef.current?.getBoundingClientRect();
-        if (rect) {
-          setReactionBarPosition({
-            x: rect.left + rect.width / 2,
-            y: rect.top - 10
-          });
-          setShowDoubleTapReactions(true);
-          if ('vibrate' in navigator) {
-            navigator.vibrate(30);
-          }
-        }
-        lastTapTime.current = 0;
-      } else {
-        lastTapTime.current = now;
+      const rect = messageRef.current?.getBoundingClientRect();
+      if (rect) {
+        setReactionBarPosition({
+          x: rect.left + rect.width / 2,
+          y: rect.top - 10
+        });
+        setShowDoubleTapReactions(true);
       }
-    }
-  }, [isMobile]);
+    }, 500);
+  }, []);
 
   const handleTouchEnd = useCallback(() => {
     if (longPressTimer.current) {
