@@ -235,12 +235,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   
   useEffect(() => {
     if (threadId !== previousThreadId.current) {
-      console.log('🔄 Thread switching detected:', { from: previousThreadId.current, to: threadId });
-      setIsThreadDataLoaded(false); // Reset thread data loaded state
-      hasInitialScrolledRef.current = null; // Reset scroll tracking for new thread
+      setIsThreadDataLoaded(false);
+      hasInitialScrolledRef.current = null;
       previousThreadId.current = threadId;
-      
-      // Remove artificial delay - let cache handle instant display
       setIsThreadSwitching(false);
     }
   }, [threadId]);
