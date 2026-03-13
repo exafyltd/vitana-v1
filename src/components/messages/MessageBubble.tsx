@@ -189,10 +189,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message]);
 
   const handleScrollToParent = useCallback(() => {
-    if (onScrollToMessage && message.parent_message_id) {
-      onScrollToMessage(message.parent_message_id);
+    const parentId = message.parent_message_id || message.reply_to_message_id;
+    if (onScrollToMessage && parentId) {
+      onScrollToMessage(parentId);
     }
-  }, [onScrollToMessage, message.parent_message_id]);
+  }, [onScrollToMessage, message.parent_message_id, message.reply_to_message_id]);
 
   // Long press handling for mobile - shows reaction bar (WhatsApp style)
   const isLongPress = useRef(false);
