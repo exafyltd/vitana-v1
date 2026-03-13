@@ -1,29 +1,38 @@
-## iOS/Appilix Digital Purchase Restriction — Implemented
 
-### Kill Switch
-`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
+Issue restated:
+- On Android webview, long-press on a plain text message gives haptic feedback, but the reaction panel never appears.
+- Swipe-to-reply works, so touch events are partially working.
 
-### Files Changed (8)
-1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
-2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
-3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
-4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
-5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
-6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
-7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
-8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
+Do I know what the issue is?
+- Yes: the current mobile long-press flow in `MessageBubble.tsx` only opens the drawer on `touchend`.
+- On Android webviews, long-press often ends with `touchcancel` (not `touchend`), and current `handleTouchCancel` clears pending state, so the drawer never opens.
 
-### iOS Purchase Flow Status
-| Flow | Status | Reason |
-|------|--------|--------|
-| Gift Voucher | HIDDEN | Digital good |
-| Add Funds | HIDDEN | Digital currency |
-| Buy Credits | HIDDEN | Digital currency |
-| Buy VTNA Tokens | HIDDEN | Digital currency |
-| Paid Live Room creation | HIDDEN (free-only) | Digital access |
-| Paid Room access | HIDDEN | Digital access |
-| Event Tickets | VISIBLE | Real-world physical events (exempt) |
-| Service Bookings | VISIBLE | Real-world services (exempt) |
+What to change (implementation plan):
 
-### Post-Approval
-Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
+1) Harden long-press finalization in `src/components/messages/MessageBubble.tsx`
+- Create a single `finalizeLongPressGesture()` helper used by both `handleTouchEnd` and `handleTouchCancel`.
+- If long-press was already confirmed (`pendingDrawerOpen.current === true`), open drawer from either terminal event.
+- Add one-shot guard so it can’t open twice if both events fire.
+
+2) Prevent false cancellation after long-press is already confirmed
+- In `handleTouchMove`, only cancel gesture before long-press confirmation.
+- Once haptic has fired and pending open is set, ignore post-confirmation jitter (common on Android release motion).
+
+3) Block native long-press context interference on the bubble
+- Add `onContextMenu={(e) => e.preventDefault()}` on the message bubble touch target.
+- This reduces Android webview long-press takeover behavior that can trigger cancellation paths.
+
+4) Webview safety tweak for this reaction drawer instance
+- In this same `MessageBubble.tsx` drawer usage, pass webview-safe props to Vaul root (e.g. `repositionInputs={false}` and, if needed, `modal={false}` as fallback).
+- Keep this scoped to the message reaction drawer only (not global drawer behavior).
+
+Files affected:
+- `src/components/messages/MessageBubble.tsx` (primary, likely sufficient)
+- No backend/database changes.
+
+Validation checklist:
+- Android webview: long-press plain text message → haptic → reaction drawer appears consistently.
+- Slight finger drift after haptic still opens drawer.
+- Intentional swipe-right still triggers reply.
+- Selecting emoji from drawer adds reaction to that specific message.
+- Regression check: desktop context menu behavior unchanged.
