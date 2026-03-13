@@ -242,16 +242,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     }
   }, [threadId]);
 
-  // Debug logging for thread/recipient changes
-  useEffect(() => {
-    console.log('ConversationView: Thread/recipient effect', { 
-      threadId, 
-      recipientId,
-      messageContext,
-      messagesLength: messages.length,
-      threadsLength: threads.length
-    });
-  }, [threadId, recipientId, messageContext, messages.length, threads.length]);
 
   // Handle scroll to top for loading older messages
   const handleScrollToTop = useCallback(() => {
