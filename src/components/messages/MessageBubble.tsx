@@ -221,7 +221,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     if (!longPressTimer.current) return;
     const dx = Math.abs(e.touches[0].clientX - touchStartPos.current.x);
     const dy = Math.abs(e.touches[0].clientY - touchStartPos.current.y);
-    if (dx > 10 || dy > 10) {
+    if (dx > 15 || dy > 15) {
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
@@ -585,12 +585,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 tabIndex={0}
                 className={cn(
                   "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
-                  "break-words",
+                  "break-words select-none",
                   isOwnMessage 
                     ? "bg-primary text-primary-foreground" 
                     : "bg-muted",
                   isOptimistic && "opacity-70"
                 )}
+                style={isMobile ? { touchAction: 'none', WebkitTouchCallout: 'none' } : undefined}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}

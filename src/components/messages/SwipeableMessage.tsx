@@ -11,11 +11,14 @@ interface SwipeableMessageProps {
 
 const SWIPE_THRESHOLD = 60;
 const MAX_SWIPE = 80;
+const SWIPE_HOLDOFF_MS = 400;
+const EARLY_SWIPE_MIN_PX = 25;
 
 export function SwipeableMessage({ children, onReply, isOwnMessage, enabled = true }: SwipeableMessageProps) {
   const [translateX, setTranslateX] = useState(0);
   const startX = useRef(0);
   const startY = useRef(0);
+  const touchStartTime = useRef(0);
   const swiping = useRef(false);
   const cancelled = useRef(false);
 
@@ -23,6 +26,7 @@ export function SwipeableMessage({ children, onReply, isOwnMessage, enabled = tr
     if (!enabled) return;
     startX.current = e.touches[0].clientX;
     startY.current = e.touches[0].clientY;
+    touchStartTime.current = Date.now();
     swiping.current = false;
     cancelled.current = false;
   }, [enabled]);
@@ -32,11 +36,17 @@ export function SwipeableMessage({ children, onReply, isOwnMessage, enabled = tr
     
     const dx = e.touches[0].clientX - startX.current;
     const dy = e.touches[0].clientY - startY.current;
+    const elapsed = Date.now() - touchStartTime.current;
 
     // If vertical movement exceeds horizontal, cancel swipe (user is scrolling)
     if (!swiping.current && Math.abs(dy) > Math.abs(dx)) {
       cancelled.current = true;
       setTranslateX(0);
+      return;
+    }
+
+    // During hold-off period, only allow swipe if movement is clearly intentional
+    if (elapsed < SWIPE_HOLDOFF_MS && Math.abs(dx) < EARLY_SWIPE_MIN_PX) {
       return;
     }
 
