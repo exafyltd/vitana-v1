@@ -40,6 +40,21 @@ async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   return json.data ?? json;
 }
 
+async function fetchUnreadCountFromSupabase(): Promise<number> {
+  const { data: authData } = await supabase.auth.getUser();
+  const userId = authData?.user?.id;
+  if (!userId) return 0;
+
+  const { count, error } = await supabase
+    .from("chat_messages")
+    .select("id", { count: "exact", head: true })
+    .eq("receiver_id", userId)
+    .is("read_at", null);
+
+  if (error) throw error;
+  return count ?? 0;
+}
+
 export async function fetchConversations(): Promise<ChatConversation[]> {
   return apiFetch<ChatConversation[]>("/api/v1/chat/conversations");
 }
@@ -72,7 +87,16 @@ export async function markChatRead(peerId: string): Promise<void> {
 }
 
 export async function fetchUnreadCount(): Promise<number> {
-  const res = await apiFetch<{ count: number }>("/api/v1/chat/unread-count");
-  // handle both { count } and raw number
-  return typeof res === "number" ? res : (res as any).count ?? (res as any);
+  if (!GATEWAY_BASE) {
+    return fetchUnreadCountFromSupabase();
+  }
+
+  try {
+    const res = await apiFetch<{ count: number }>("/api/v1/chat/unread-count");
+    return typeof res === "number" ? res : (res as any).count ?? (res as any);
+  } catch (error) {
+    console.warn("[useChatApi] Gateway unread count failed, falling back to Supabase:", error);
+    return fetchUnreadCountFromSupabase();
+  }
 }
+
