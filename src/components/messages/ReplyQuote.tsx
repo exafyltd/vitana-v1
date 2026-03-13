@@ -7,15 +7,13 @@ interface ReplyQuoteProps {
   onQuoteClick?: () => void;
   className?: string;
   isOwnMessage?: boolean;
-  currentUserId?: string;
 }
 
 export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
   parentMessage,
   onQuoteClick,
   className,
-  isOwnMessage = false,
-  currentUserId
+  isOwnMessage = false
 }) => {
   if (!parentMessage) {
     return (
@@ -28,8 +26,7 @@ export const ReplyQuote: React.FC<ReplyQuoteProps> = ({
     );
   }
 
-  const isQuotedSelf = currentUserId && (parentMessage?.sender_id === currentUserId || parentMessage?.sender?.id === currentUserId);
-  const senderName = isQuotedSelf ? 'You' : (parentMessage?.sender?.display_name || parentMessage?.sender?.full_name || 'Unknown User');
+  const senderName = parentMessage?.sender?.display_name || parentMessage?.sender?.full_name || 'Unknown User';
   const content = parentMessage?.body || 'Message content not available';
   
   // Truncate content for quote display
