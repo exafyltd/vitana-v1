@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Calendar, Briefcase, Radio, User } from "lucide-react";
+import { Calendar, Mail, Radio, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
