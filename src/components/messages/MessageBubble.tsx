@@ -597,7 +597,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 ref={messageRef}
                 tabIndex={0}
                 className={cn(
-                  "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50",
+                  "rounded-2xl px-4 py-2 max-w-[min(680px,85vw)] w-fit relative cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
                   "break-words select-none",
                   isOwnMessage 
                     ? "bg-primary text-primary-foreground" 
