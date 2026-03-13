@@ -582,6 +582,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
+                onTouchCancel={handleTouchCancel}
                 role="button"
                 aria-label="Long press or right click for options"
               >
