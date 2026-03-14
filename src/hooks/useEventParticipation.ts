@@ -88,7 +88,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
               const userIsAttending = data.some(
                 (row: any) => row.user_id === user.id
               );
-              setIsParticipating(userIsAttending);
+              queryClient.setQueryData(participationQueryKey, { isParticipating: userIsAttending });
             }
           }
         }
