@@ -511,16 +511,29 @@ export function useGlobalMessages(
         const profileMap = await enrichProfiles(Array.from(allUserIds));
 
         gatewayThreads = conversations.map((conv) => {
-          const peer = profileMap[conv.peer_id] || {
-            display_name: "Unknown User",
-            avatar_url: null,
-          };
+          const lastMsg = conv.last_message;
+
+          // Some gateway deployments return a conversation/thread identifier in peer_id.
+          // Derive the actual peer user_id from last_message when possible.
+          const resolvedPeerUserId =
+            lastMsg?.sender_id === user.id
+              ? lastMsg.receiver_id
+              : lastMsg?.receiver_id === user.id
+              ? lastMsg.sender_id
+              : conv.peer_id;
+
+          const peer =
+            profileMap[resolvedPeerUserId] ||
+            profileMap[conv.peer_id] || {
+              display_name: "Unknown User",
+              avatar_url: null,
+            };
+
           const me = profileMap[user.id] || {
             display_name: "Me",
             avatar_url: null,
           };
 
-          const lastMsg = conv.last_message;
           const unreadCount =
             lastMsg &&
             lastMsg.sender_id !== user.id &&
@@ -543,7 +556,7 @@ export function useGlobalMessages(
                 role: "member",
               },
               {
-                user_id: conv.peer_id,
+                user_id: resolvedPeerUserId,
                 display_name: peer.display_name,
                 avatar_url: peer.avatar_url,
                 role: "member",
