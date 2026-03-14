@@ -357,6 +357,107 @@ async function fetchLegacyMessages(legacyThreadId: string): Promise<GlobalMessag
   }
 }
 
+/**
+ * Fallback direct-thread listing from Supabase chat_messages (desktop-safe when gateway is unreachable).
+ */
+async function fetchDirectThreadsFromSupabase(userId: string): Promise<GlobalMessageThread[]> {
+  try {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("id, tenant_id, sender_id, receiver_id, content, read_at, created_at, message_type, metadata")
+      .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+      .order("created_at", { ascending: false })
+      .limit(500) as any;
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("Supabase direct-thread fallback failed:", error.message);
+      return [];
+    }
+
+    const latestByPeer = new Map<string, any>();
+    const unreadByPeer = new Map<string, number>();
+    const allUserIds = new Set<string>([userId]);
+
+    data.forEach((row: any) => {
+      const peerId = row.sender_id === userId ? row.receiver_id : row.sender_id;
+      if (!peerId) return;
+
+      allUserIds.add(row.sender_id);
+      allUserIds.add(row.receiver_id);
+      allUserIds.add(peerId);
+
+      if (!latestByPeer.has(peerId)) {
+        latestByPeer.set(peerId, row); // first row wins (already sorted desc)
+      }
+
+      if (row.receiver_id === userId && !row.read_at) {
+        unreadByPeer.set(peerId, (unreadByPeer.get(peerId) || 0) + 1);
+      }
+    });
+
+    const profileMap = await enrichProfiles(Array.from(allUserIds));
+
+    return Array.from(latestByPeer.entries()).map(([peerId, lastMsg]) => {
+      const peer = profileMap[peerId] || { display_name: "Unknown User", avatar_url: null };
+      const me = profileMap[userId] || { display_name: "Me", avatar_url: null };
+
+      return {
+        id: peerId,
+        type: "direct",
+        created_by: userId,
+        created_at: lastMsg.created_at,
+        updated_at: lastMsg.created_at,
+        participants: [
+          {
+            user_id: userId,
+            display_name: me.display_name,
+            avatar_url: me.avatar_url,
+            role: "member",
+          },
+          {
+            user_id: peerId,
+            display_name: peer.display_name,
+            avatar_url: peer.avatar_url,
+            role: "member",
+          },
+        ],
+        last_message: toGlobalMessage(lastMsg as ChatMessage, peerId, profileMap),
+        unread_count: unreadByPeer.get(peerId) || 0,
+      } satisfies GlobalMessageThread;
+    });
+  } catch (err) {
+    console.warn("Supabase direct-thread fallback error:", err);
+    return [];
+  }
+}
+
+/**
+ * Fallback direct-message fetch from Supabase chat_messages for one peer.
+ */
+async function fetchDirectMessagesFromSupabase(userId: string, peerId: string): Promise<GlobalMessage[]> {
+  try {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("id, tenant_id, sender_id, receiver_id, content, read_at, created_at, message_type, metadata")
+      .or(`and(sender_id.eq.${userId},receiver_id.eq.${peerId}),and(sender_id.eq.${peerId},receiver_id.eq.${userId})`)
+      .order("created_at", { ascending: true })
+      .limit(200) as any;
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("Supabase direct-message fallback failed:", error.message);
+      return [];
+    }
+
+    const senderIds = Array.from(new Set(data.map((m: any) => m.sender_id).filter(Boolean)));
+    const profileMap = await enrichProfiles(senderIds as string[]);
+
+    return data.map((m: any) => toGlobalMessage(m as ChatMessage, peerId, profileMap));
+  } catch (err) {
+    console.warn("Supabase direct-message fallback error:", err);
+    return [];
+  }
+}
+
 // ── Hook ─────────────────────────────────────────────────────────────
 
 export function useGlobalMessages(
