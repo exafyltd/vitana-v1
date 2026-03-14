@@ -3,10 +3,17 @@
  *
  * Types extended with message_type + metadata to support voice transcript
  * messages from the Vitana DM bridge (VTID-CHAT-BRIDGE).
+ *
+ * Auth: Bearer token from Supabase session (gateway validates JWT).
  */
 
+import { supabase } from "@/integrations/supabase/client";
+
 const GATEWAY_BASE =
-  (import.meta as any).env?.VITE_GATEWAY_URL || "/api/v1";
+  (import.meta as any).env?.VITE_GATEWAY_URL ||
+  (import.meta as any).env?.VITE_GATEWAY_BASE
+    ? `${(import.meta as any).env.VITE_GATEWAY_BASE}/api/v1`
+    : "/api/v1";
 
 // ── Types ─────────────────────────────────────────────────────────────
 
@@ -31,12 +38,24 @@ export interface ChatConversation {
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  const { data } = await supabase.auth.getSession();
+  const token = data?.session?.access_token;
+  if (!token) return { "Content-Type": "application/json" };
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 async function gatewayFetch(path: string, init?: RequestInit) {
+  const authHeaders = await getAuthHeaders();
+
   const res = await fetch(`${GATEWAY_BASE}/chat${path}`, {
     ...init,
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      ...authHeaders,
       ...(init?.headers || {}),
     },
   });
