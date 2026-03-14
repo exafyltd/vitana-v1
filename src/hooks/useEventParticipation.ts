@@ -152,7 +152,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           console.error('Error removing calendar event:', calError);
         }
 
-        setIsParticipating(false);
+        queryClient.setQueryData(participationQueryKey, { isParticipating: false });
         setParticipantCount(prev => Math.max(0, prev - 1));
         
         toast({
