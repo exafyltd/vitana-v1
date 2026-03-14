@@ -1,33 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
-Root cause analysis:
-- The previous fix was applied in the wrong place. `SwipeableMessage` already had `touchAction: 'pan-y'`, so changing/confirming it there does not unblock the real issue.
-- The actual blocker is in `src/components/messages/MessageBubble.tsx`:
-  - mobile style is currently `touchAction: 'none'` on the bubble itself (the center touch target users drag on).
-  - `touchAction: 'none'` disables native vertical panning on that element, so scrolling only works when touching non-bubble areas (edges/gaps), exactly matching your symptom.
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-Right fix:
-1. In `MessageBubble.tsx`, change mobile touch style from:
-   - `touchAction: 'none'`
-   to:
-   - `touchAction: 'pan-y'` (or `pan-y pinch-zoom`).
-2. Keep `WebkitTouchCallout: 'none'` and `onContextMenu={e => e.preventDefault()}` so long-press native menus remain suppressed.
-3. Do not add new gesture systems, polling, or extra wrappers. The current swipe-to-reply + long-press logic can remain; this is mainly a touch-action conflict fix.
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-Why this works:
-- Vertical drag on message bubbles will use native scroll (WhatsApp/Telegram behavior).
-- Horizontal swipe-to-reply still works via `SwipeableMessage` handler.
-- Long-press reaction drawer still works because it is timer/jitter-based and does not require `touchAction: 'none'`.
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-Implementation scope:
-- File to update: `src/components/messages/MessageBubble.tsx`
-- Minimal code change: one style value in the bubble container (`style={isMobile ? { ... } : undefined}` block).
-
-Validation checklist (mobile):
-- Drag vertically on bubble text/media in center: chat scrolls immediately.
-- Drag vertically near left/right edges: still scrolls.
-- Swipe right on a message: reply gesture still triggers.
-- Long-press on a message: reaction drawer still opens.
-- No native browser context menu appears on long-press.
-
-If needed after this patch:
-- Only if swipe feels too eager, tighten arbitration in `SwipeableMessage` (e.g., require `abs(dx) > abs(dy) + 8` before setting swipe state). This is optional, second-pass tuning.
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
