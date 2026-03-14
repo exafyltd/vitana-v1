@@ -942,6 +942,13 @@ export function useGlobalMessages(
             refetchThreads();
             return prev;
           });
+
+          // Broadcast unread change so Messages.tsx clears the optimistic override
+          supabase.channel('unread_sync').send({
+            type: 'broadcast',
+            event: 'unread_change',
+            payload: { threadId: peerId, context: 'global', userId: user.id }
+          });
         }
       )
       .subscribe();
