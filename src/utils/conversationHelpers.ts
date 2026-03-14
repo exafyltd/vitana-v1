@@ -65,6 +65,7 @@ export function getParticipantDisplayName(participant: ThreadParticipant | null)
  */
 export function getParticipantAvatarUrl(participant: ThreadParticipant | null): string | null {
   if (!participant) return null;
+  if (isVitanaBot(participant.user_id)) return VITANA_BOT_AVATAR_URL;
   
   return (
     participant.profile?.avatar_url ||
