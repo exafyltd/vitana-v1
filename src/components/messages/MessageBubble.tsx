@@ -578,7 +578,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         )}>
           {!isOwnMessage && showAvatar && (
             <span className="text-xs text-muted-foreground mb-1 ml-3">
-              {message.sender?.display_name || message.sender?.full_name || 'Unknown User'}
+              {(() => {
+                const senderId = message.sender_id || (message.sender as any)?.user_id;
+                if (senderId === '00000000-0000-0000-0000-000000000001') return 'Vitana';
+                return message.sender?.display_name || message.sender?.full_name || 'Unknown User';
+              })()}
             </span>
           )}
           
