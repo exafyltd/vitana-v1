@@ -73,7 +73,7 @@ function toGlobalMessage(
     sender_id: msg.sender_id,
     body: msg.content,
     message_type: (msg as any).message_type || "text",
-    content_data: (msg as any).content_data || null,
+    content_data: (msg as any).metadata || undefined,
     created_at: msg.created_at,
     updated_at: msg.created_at,
     sender: profileMap[msg.sender_id]
