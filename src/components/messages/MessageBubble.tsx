@@ -606,7 +606,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                     : "bg-muted",
                   isOptimistic && "opacity-70"
                 )}
-                style={isMobile ? { touchAction: 'none', WebkitTouchCallout: 'none' } : undefined}
+                style={isMobile ? { touchAction: 'pan-y', WebkitTouchCallout: 'none' } : undefined}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}
