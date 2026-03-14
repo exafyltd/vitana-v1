@@ -674,9 +674,11 @@ export function useGlobalMessages(
         return fetchLegacyMessages(legacyThreadId);
       }
 
-      // Also try using activeThreadId directly as a legacy thread id
+      // Try legacy direct mapping first, then raw chat_messages fallback
       const legacyMessages = await fetchLegacyMessages(activeThreadId);
-      return legacyMessages;
+      if (legacyMessages.length > 0) return legacyMessages;
+
+      return fetchDirectMessagesFromSupabase(user.id, activeThreadId);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: 30 * 1000, // 30 seconds – allows fast catch-up after background
