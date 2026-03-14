@@ -111,22 +111,32 @@ export function useChatUnreadCount() {
     };
   }, [user]);
 
-  // Listen for thread_read broadcasts to instantly clear sidebar badge after reading
+  // Listen for thread_read AND unread_change broadcasts on the SAME channel
+  // that markAsRead/realtime handlers use ('unread_sync')
   useEffect(() => {
     if (!user) return;
 
     const channel = supabase
-      .channel("chat_unread_read_sync")
+      .channel("chat_sidebar_unread_sync")
       .on("broadcast", { event: "thread_read" }, async (payload) => {
         const { userId } = payload.payload;
         if (userId === user.id) {
-          // Re-fetch authoritative count after marking messages as read
           try {
             const count = await fetchUnreadCount();
             setUnreadCount(count);
           } catch {
-            // Optimistic: decrement by 1 as fallback
             setUnreadCount((prev) => Math.max(0, prev - 1));
+          }
+        }
+      })
+      .on("broadcast", { event: "unread_change" }, async (payload) => {
+        const { userId } = payload.payload;
+        if (userId === user.id) {
+          try {
+            const count = await fetchUnreadCount();
+            setUnreadCount(count);
+          } catch {
+            setUnreadCount((prev) => prev + 1);
           }
         }
       })

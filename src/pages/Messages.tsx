@@ -112,12 +112,16 @@ export default function Messages() {
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
 
   // SINGLE SOURCE OF TRUTH: Derive displayThreads from React Query threads + optimistic updates
+  // Safety: if the server shows unread_count > 0 but we have an optimistic 0,
+  // the server wins — a new message arrived after we set the override.
   const displayThreads = React.useMemo(() => {
-    return threads.map(thread => ({
-      ...thread,
-      // Apply optimistic unread updates if they exist
-      unread_count: optimisticUnreadUpdates[thread.id] ?? thread.unread_count
-    }));
+    return threads.map(thread => {
+      const optimistic = optimisticUnreadUpdates[thread.id];
+      const real = thread.unread_count;
+      // If optimistic is 0 but server says > 0, server wins (new msg arrived)
+      const unread_count = (optimistic === 0 && real > 0) ? real : (optimistic ?? real);
+      return { ...thread, unread_count };
+    });
   }, [threads, optimisticUnreadUpdates]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)

@@ -895,6 +895,7 @@ export function useGlobalMessages(
   );
 
   // ── Realtime: listen for new chat_messages ────────────────────────
+  // Also handles reconnect catch-up: on SUBSCRIBED/reconnect, invalidate queries
 
   useEffect(() => {
     if (!user || !isGlobalContext) return;
@@ -942,21 +943,33 @@ export function useGlobalMessages(
             refetchThreads();
             return prev;
           });
-
-          // Broadcast unread change so Messages.tsx clears the optimistic override
-          supabase.channel('unread_sync').send({
-            type: 'broadcast',
-            event: 'unread_change',
-            payload: { threadId: peerId, context: 'global', userId: user.id }
-          });
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('✅ chat_messages realtime subscribed');
+        }
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          console.warn('⚠️ chat_messages realtime error/timeout, will reconnect');
+        }
+      });
+
+    // Reconnect catch-up: when channel reconnects after a drop,
+    // invalidate queries to fetch any missed messages
+    const handleOnline = () => {
+      console.log('🔄 Network back online, invalidating chat queries');
+      queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+      if (activeThreadId) {
+        queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
+      }
+    };
+    window.addEventListener('online', handleOnline);
 
     return () => {
+      window.removeEventListener('online', handleOnline);
       supabase.removeChannel(channel);
     };
-  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads]);
+  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads, queryClient, activeThreadId]);
 
   // ── Realtime: listen for new global_messages (group chats) ────────
 
