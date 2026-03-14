@@ -1,28 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Replace `useChatApi.ts` with updated gateway client
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## What changes
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-Replace `src/hooks/useChatApi.ts` with the user-provided version that:
-
-1. **New env var**: Uses `VITE_GATEWAY_URL` (fallback `/api/v1`) instead of `VITE_GATEWAY_BASE`. Add `VITE_GATEWAY_URL` to `.env` pointing to the same gateway.
-2. **Cookie auth**: Switches from Bearer token (via `supabase.auth.getSession()`) to `credentials: "include"` cookie-based auth. Removes `supabase` import entirely.
-3. **Extended ChatMessage type**: Adds `message_type?: string` and `metadata?: Record<string, unknown>` fields for voice transcript support.
-4. **Simplified fetch**: Single `gatewayFetch` helper prepends `/chat` to paths. No Supabase fallback for unread count.
-5. **Path consolidation**: API paths become short (`/conversations`, `/send`, etc.) since `gatewayFetch` builds the full URL as `${GATEWAY_BASE}/chat${path}`.
-
-## Consumers (no breaking changes)
-
-- `useGlobalMessages.ts` — imports `fetchConversations`, `fetchConversation`, `sendChatMessage`, `markChatRead`, `ChatMessage`, `ChatConversation`. All preserved with same signatures.
-- `useChatUnreadCount.ts` — imports `fetchUnreadCount`. Same signature preserved. The Supabase fallback is removed; if gateway is unreachable the error propagates to the existing `catch` in the hook.
-
-## Files to change
-
-1. **`src/hooks/useChatApi.ts`** — Full rewrite with user-provided code
-2. **`.env`** — Add `VITE_GATEWAY_URL` pointing to same value as `VITE_GATEWAY_BASE`
-
-## Risk note
-
-The Supabase fallback for `fetchUnreadCount` is removed. If the gateway is down, unread count will fail silently (the hook already catches errors). The `VITE_GATEWAY_BASE` env var remains for all other consumers; only this file switches to `VITE_GATEWAY_URL`.
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
