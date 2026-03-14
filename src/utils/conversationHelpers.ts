@@ -49,6 +49,7 @@ export function getOtherParticipant(
  */
 export function getParticipantDisplayName(participant: ThreadParticipant | null): string {
   if (!participant) return 'Unknown';
+  if (isVitanaBot(participant.user_id)) return VITANA_BOT_DISPLAY_NAME;
   
   return (
     participant.profile?.display_name ||
