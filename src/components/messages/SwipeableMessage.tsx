@@ -102,6 +102,7 @@ export function SwipeableMessage({ children, onReply, isOwnMessage, enabled = tr
         style={{
           transform: `translateX(${translateX}px)`,
           transition: swiping.current ? 'none' : 'transform 200ms ease-out',
+          touchAction: 'pan-y',
         }}
       >
         {children}
