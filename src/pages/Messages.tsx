@@ -696,7 +696,7 @@ export default function Messages() {
                           <div className="flex items-start justify-between">
                             <div className="flex-1 min-w-0">
                               <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
-                                {thread.participants?.find(p => p.user_id !== user?.id)?.display_name || 'Unknown'}
+                                {getConversationDisplayTitle(thread, user?.id)}
                               </h3>
                               
                               {thread.last_message && (
