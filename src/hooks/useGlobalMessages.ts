@@ -990,7 +990,17 @@ export function useGlobalMessages(
               .eq("thread_id", legacyThreadId)
               .eq("user_id", user.id);
           } else {
-            await markChatRead(threadId);
+            try {
+              await markChatRead(threadId);
+            } catch (err) {
+              console.warn("Gateway markChatRead failed, falling back to Supabase:", (err as Error).message);
+              await supabase
+                .from("chat_messages")
+                .update({ read_at: new Date().toISOString() })
+                .eq("receiver_id", user.id)
+                .eq("sender_id", threadId)
+                .is("read_at", null);
+            }
           }
 
           updateThreadsOptimistically((prev) =>
