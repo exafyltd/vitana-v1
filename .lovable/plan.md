@@ -1,31 +1,29 @@
+## iOS/Appilix Digital Purchase Restriction — Implemented
 
+### Kill Switch
+`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
 
-# Update Chat Hooks for Vitana DM Integration
+### Files Changed (8)
+1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
+2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
+3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
+4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
+5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
+6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
+7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
+8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
 
-## Changes
+### iOS Purchase Flow Status
+| Flow | Status | Reason |
+|------|--------|--------|
+| Gift Voucher | HIDDEN | Digital good |
+| Add Funds | HIDDEN | Digital currency |
+| Buy Credits | HIDDEN | Digital currency |
+| Buy VTNA Tokens | HIDDEN | Digital currency |
+| Paid Live Room creation | HIDDEN (free-only) | Digital access |
+| Paid Room access | HIDDEN | Digital access |
+| Event Tickets | VISIBLE | Real-world physical events (exempt) |
+| Service Bookings | VISIBLE | Real-world services (exempt) |
 
-### 1. Replace `src/hooks/useChatApi.ts`
-
-The existing file uses `VITE_GATEWAY_BASE` with Bearer auth headers via Supabase session. The new version:
-- Uses `VITE_GATEWAY_URL` (falling back to `/api/v1`) instead of `VITE_GATEWAY_BASE`
-- Uses `credentials: "include"` (cookie auth) instead of explicit Bearer tokens
-- Adds `message_type` and `metadata` fields to `ChatMessage` interface
-- Removes the Supabase fallback for unread count and the `fetchUnreadCount` export
-- Prepends `/chat` to all paths (e.g., `/chat/conversations` instead of `/api/v1/chat/conversations`)
-
-**Impact**: `useGlobalMessages.ts` imports `fetchConversations`, `fetchConversation`, `sendChatMessage`, `markChatRead`, `ChatMessage`, `ChatConversation` — all preserved in the new API. However, `useChatUnreadCount.ts` imports `fetchUnreadCount` which is **removed** in the new version. We need to keep `fetchUnreadCount` to avoid breaking that consumer.
-
-**Plan**: Write the new file as specified but **retain** the `fetchUnreadCount` function and its Supabase fallback, adapting it to use the new `gatewayFetch` helper.
-
-### 2. Update `toGlobalMessage` in `src/hooks/useGlobalMessages.ts`
-
-Line 76: Change `content_data: (msg as any).content_data || null` → `content_data: (msg as any).metadata || undefined`
-
-This maps the database `metadata` column to the UI's `content_data` field so voice transcript messages render correctly.
-
-Line 75 already reads `message_type` dynamically — no change needed there.
-
-## Files Modified
-- `src/hooks/useChatApi.ts` — full rewrite with retained `fetchUnreadCount`
-- `src/hooks/useGlobalMessages.ts` — one-line change at line 76
-
+### Post-Approval
+Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
