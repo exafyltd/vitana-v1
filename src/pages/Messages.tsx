@@ -225,10 +225,15 @@ export default function Messages() {
   }, []);
 
   const handleUnreadChange = useCallback((threadId: string, ctx: 'global' | 'tenant') => {
-    // React Query will refetch on stale time or when invalidated
-    // No aggressive setTimeout refetch needed
-    console.log('🔔 Messages.tsx: Unread change detected', { threadId, ctx });
-  }, []);
+    if (ctx === messageContext) {
+      // Clear optimistic override so the real unread_count shows through
+      setOptimisticUnreadUpdates(prev => {
+        const next = { ...prev };
+        delete next[threadId];
+        return next;
+      });
+    }
+  }, [messageContext]);
 
   // Initialize unread sync
   useUnreadSync(handleThreadRead, handleUnreadChange);
