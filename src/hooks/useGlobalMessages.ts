@@ -82,7 +82,7 @@ function toGlobalMessage(
     sender_id: msg.sender_id,
     body: msg.content,
     message_type: (msg as any).message_type || "text",
-    content_data: (msg as any).content_data || null,
+    content_data: (msg as any).content_data || (msg as any).metadata || null,
     created_at: msg.created_at,
     updated_at: msg.created_at,
     sender: profileMap[msg.sender_id]
@@ -357,6 +357,107 @@ async function fetchLegacyMessages(legacyThreadId: string): Promise<GlobalMessag
   }
 }
 
+/**
+ * Fallback direct-thread listing from Supabase chat_messages (desktop-safe when gateway is unreachable).
+ */
+async function fetchDirectThreadsFromSupabase(userId: string): Promise<GlobalMessageThread[]> {
+  try {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("id, tenant_id, sender_id, receiver_id, content, read_at, created_at, message_type, metadata")
+      .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+      .order("created_at", { ascending: false })
+      .limit(500) as any;
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("Supabase direct-thread fallback failed:", error.message);
+      return [];
+    }
+
+    const latestByPeer = new Map<string, any>();
+    const unreadByPeer = new Map<string, number>();
+    const allUserIds = new Set<string>([userId]);
+
+    data.forEach((row: any) => {
+      const peerId = row.sender_id === userId ? row.receiver_id : row.sender_id;
+      if (!peerId) return;
+
+      allUserIds.add(row.sender_id);
+      allUserIds.add(row.receiver_id);
+      allUserIds.add(peerId);
+
+      if (!latestByPeer.has(peerId)) {
+        latestByPeer.set(peerId, row); // first row wins (already sorted desc)
+      }
+
+      if (row.receiver_id === userId && !row.read_at) {
+        unreadByPeer.set(peerId, (unreadByPeer.get(peerId) || 0) + 1);
+      }
+    });
+
+    const profileMap = await enrichProfiles(Array.from(allUserIds));
+
+    return Array.from(latestByPeer.entries()).map(([peerId, lastMsg]) => {
+      const peer = profileMap[peerId] || { display_name: "Unknown User", avatar_url: null };
+      const me = profileMap[userId] || { display_name: "Me", avatar_url: null };
+
+      return {
+        id: peerId,
+        type: "direct",
+        created_by: userId,
+        created_at: lastMsg.created_at,
+        updated_at: lastMsg.created_at,
+        participants: [
+          {
+            user_id: userId,
+            display_name: me.display_name,
+            avatar_url: me.avatar_url,
+            role: "member",
+          },
+          {
+            user_id: peerId,
+            display_name: peer.display_name,
+            avatar_url: peer.avatar_url,
+            role: "member",
+          },
+        ],
+        last_message: toGlobalMessage(lastMsg as ChatMessage, peerId, profileMap),
+        unread_count: unreadByPeer.get(peerId) || 0,
+      } satisfies GlobalMessageThread;
+    });
+  } catch (err) {
+    console.warn("Supabase direct-thread fallback error:", err);
+    return [];
+  }
+}
+
+/**
+ * Fallback direct-message fetch from Supabase chat_messages for one peer.
+ */
+async function fetchDirectMessagesFromSupabase(userId: string, peerId: string): Promise<GlobalMessage[]> {
+  try {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("id, tenant_id, sender_id, receiver_id, content, read_at, created_at, message_type, metadata")
+      .or(`and(sender_id.eq.${userId},receiver_id.eq.${peerId}),and(sender_id.eq.${peerId},receiver_id.eq.${userId})`)
+      .order("created_at", { ascending: true })
+      .limit(200) as any;
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("Supabase direct-message fallback failed:", error.message);
+      return [];
+    }
+
+    const senderIds = Array.from(new Set(data.map((m: any) => m.sender_id).filter(Boolean)));
+    const profileMap = await enrichProfiles(senderIds as string[]);
+
+    return data.map((m: any) => toGlobalMessage(m as ChatMessage, peerId, profileMap));
+  } catch (err) {
+    console.warn("Supabase direct-message fallback error:", err);
+    return [];
+  }
+}
+
 // ── Hook ─────────────────────────────────────────────────────────────
 
 export function useGlobalMessages(
@@ -385,13 +486,14 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessageThread[]> => {
       if (!user || !isGlobalContext) return [];
 
-      // Fetch from both gateway and legacy in parallel
-      const [conversations, legacyThreads] = await Promise.all([
+      // Fetch from gateway + Supabase fallbacks in parallel
+      const [conversations, legacyThreads, supabaseDirectThreads] = await Promise.all([
         fetchConversations().catch((err) => {
-          console.warn("Gateway fetchConversations failed, using legacy only:", err.message);
+          console.warn("Gateway fetchConversations failed, using Supabase fallback:", err.message);
           return [] as ChatConversation[];
         }),
         fetchLegacyThreads(user.id),
+        fetchDirectThreadsFromSupabase(user.id),
       ]);
 
       // Build gateway threads
@@ -455,10 +557,17 @@ export function useGlobalMessages(
         });
       }
 
-      // Merge: gateway wins on duplicates (same peer_id as thread id)
+      // Merge order: gateway direct threads win, then Supabase direct fallback, then legacy (groups + remaining)
       const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
-      const uniqueLegacy = legacyThreads.filter((t) => !gatewayIds.has(t.id));
-      const merged = [...gatewayThreads, ...uniqueLegacy].sort(
+      const uniqueSupabaseDirect = supabaseDirectThreads.filter((t) => !gatewayIds.has(t.id));
+      const directIds = new Set([
+        ...gatewayThreads.map((t) => t.id),
+        ...uniqueSupabaseDirect.map((t) => t.id),
+      ]);
+      const uniqueLegacy = legacyThreads.filter(
+        (t) => t.type === "group" || !directIds.has(t.id)
+      );
+      const merged = [...gatewayThreads, ...uniqueSupabaseDirect, ...uniqueLegacy].sort(
         (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
 
@@ -565,9 +674,11 @@ export function useGlobalMessages(
         return fetchLegacyMessages(legacyThreadId);
       }
 
-      // Also try using activeThreadId directly as a legacy thread id
+      // Try legacy direct mapping first, then raw chat_messages fallback
       const legacyMessages = await fetchLegacyMessages(activeThreadId);
-      return legacyMessages;
+      if (legacyMessages.length > 0) return legacyMessages;
+
+      return fetchDirectMessagesFromSupabase(user.id, activeThreadId);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: 30 * 1000, // 30 seconds – allows fast catch-up after background
@@ -879,7 +990,17 @@ export function useGlobalMessages(
               .eq("thread_id", legacyThreadId)
               .eq("user_id", user.id);
           } else {
-            await markChatRead(threadId);
+            try {
+              await markChatRead(threadId);
+            } catch (err) {
+              console.warn("Gateway markChatRead failed, falling back to Supabase:", (err as Error).message);
+              await supabase
+                .from("chat_messages")
+                .update({ read_at: new Date().toISOString() })
+                .eq("receiver_id", user.id)
+                .eq("sender_id", threadId)
+                .is("read_at", null);
+            }
           }
 
           updateThreadsOptimistically((prev) =>
