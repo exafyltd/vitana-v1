@@ -435,9 +435,7 @@ export default function Messages() {
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
                                 <h3 className={`font-medium truncate ${densityMode === 'compact' ? 'text-sm' : 'text-base'}`}>
-                                  {thread.name || 
-                                   thread.participants?.find(p => p.user_id !== user?.id)?.display_name ||
-                                   'Unknown'}
+                                  {getConversationDisplayTitle(thread, user?.id)}
                                 </h3>
                                 {isPinned && (
                                   <div className="w-2 h-2 bg-domain-messages-accent rounded-full flex-shrink-0"></div>
