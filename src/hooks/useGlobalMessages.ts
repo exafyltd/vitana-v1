@@ -557,10 +557,17 @@ export function useGlobalMessages(
         });
       }
 
-      // Merge: gateway wins on duplicates (same peer_id as thread id)
+      // Merge order: gateway direct threads win, then Supabase direct fallback, then legacy (groups + remaining)
       const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
-      const uniqueLegacy = legacyThreads.filter((t) => !gatewayIds.has(t.id));
-      const merged = [...gatewayThreads, ...uniqueLegacy].sort(
+      const uniqueSupabaseDirect = supabaseDirectThreads.filter((t) => !gatewayIds.has(t.id));
+      const directIds = new Set([
+        ...gatewayThreads.map((t) => t.id),
+        ...uniqueSupabaseDirect.map((t) => t.id),
+      ]);
+      const uniqueLegacy = legacyThreads.filter(
+        (t) => t.type === "group" || !directIds.has(t.id)
+      );
+      const merged = [...gatewayThreads, ...uniqueSupabaseDirect, ...uniqueLegacy].sort(
         (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
 
