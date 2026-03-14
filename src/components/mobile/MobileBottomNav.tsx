@@ -8,6 +8,7 @@ import { useStreamingState } from "@/context/StreamingStateContext";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
 
 const navItems = [
   { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
