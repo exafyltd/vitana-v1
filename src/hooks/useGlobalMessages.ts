@@ -934,6 +934,9 @@ export function useGlobalMessages(
             refetchThreads();
             return prev;
           });
+
+          // Notify sidebar badge via the reliable client-side path
+          window.dispatchEvent(new Event('chat-unread-refresh'));
         }
       )
       .subscribe((status) => {
