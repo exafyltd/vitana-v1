@@ -871,27 +871,8 @@ export function useGlobalMessages(
             )
           );
 
-          // Sync across tabs via a temporary subscribed channel
-          const syncChannel = supabase.channel(`mark_read_sync_${Date.now()}`);
-          await new Promise<void>((resolve) => {
-            syncChannel.subscribe((status) => {
-              if (status === 'SUBSCRIBED') {
-                syncChannel.send({
-                  type: "broadcast",
-                  event: "thread_read",
-                  payload: {
-                    threadId,
-                    userId: user.id,
-                    timestamp: new Date().toISOString(),
-                    context: "global",
-                  },
-                }).then(() => {
-                  supabase.removeChannel(syncChannel);
-                  resolve();
-                });
-              }
-            });
-          });
+          // Notify sidebar badge to refresh immediately
+          window.dispatchEvent(new Event('chat-unread-refresh'));
         } catch (error) {
           console.error("Error marking chat as read:", error);
         } finally {
@@ -980,6 +961,21 @@ export function useGlobalMessages(
       supabase.removeChannel(channel);
     };
   }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads, queryClient, activeThreadId]);
+
+  // ── Visibility catch-up: refetch on tab focus after silent websocket drops ──
+  useEffect(() => {
+    if (!user || !isGlobalContext || typeof window === 'undefined') return;
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+        if (activeThreadId) {
+          queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [user, isGlobalContext, activeThreadId, queryClient]);
 
   // ── Realtime: listen for new global_messages (group chats) ────────
 

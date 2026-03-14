@@ -147,6 +147,13 @@ export function useChatUnreadCount() {
     };
   }, [user]);
 
+  // Instant same-tab sync: refresh when a thread is marked as read
+  useEffect(() => {
+    const handler = () => { refresh(); };
+    window.addEventListener('chat-unread-refresh', handler);
+    return () => window.removeEventListener('chat-unread-refresh', handler);
+  }, [refresh]);
+
   // Expose a decrement for when user reads a conversation
   const decrementBy = useCallback((n: number) => {
     setUnreadCount((prev) => Math.max(0, prev - n));
