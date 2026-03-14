@@ -31,6 +31,7 @@ export function MobileBottomNav() {
   const location = useLocation();
   const { expandToFull, orbVisible } = useVitanalandNavigation();
   const { setAudioOverlayVisible } = useStreamingState();
+  const { unreadCount } = useChatUnreadCount();
   
   // Routes where the bottom nav should be hidden
   const hideNavRoutes = [
