@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
@@ -553,16 +553,44 @@ export function useGlobalMessages(
       return legacyMessages;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: STALE_TIME,
+    staleTime: 30 * 1000, // 30 seconds – allows fast catch-up after background
     gcTime: GC_TIME,
     placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
   });
 
+  // Debounced persist to avoid scroll jank from frequent writes
   useEffect(() => {
-    if (activeThreadId && messages.length > 0 && !isMessagesLoading) {
+    if (!activeThreadId || messages.length === 0 || isMessagesLoading) return;
+    const timer = setTimeout(() => {
       persistMessages(activeThreadId, messages);
-    }
+    }, 2000);
+    return () => clearTimeout(timer);
   }, [activeThreadId, messages, isMessagesLoading]);
+
+  // ── Visibility-change reconciliation ───────────────────────────────
+  // Refetch messages & threads when app returns to foreground (catches
+  // any messages missed while WebSocket was suspended in background)
+  useEffect(() => {
+    if (!user || !isGlobalContext) return;
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        if (activeThreadId) {
+          queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
+        }
+        queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [user, isGlobalContext, activeThreadId, queryClient]);
+
+  // ── Stable messages ref (prevents re-renders when IDs haven't changed) ──
+  const stableMessages = useMemo(() => messages, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(messages.map((m) => m.id)),
+  ]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────
 
@@ -1027,7 +1055,7 @@ export function useGlobalMessages(
   // ── Return ────────────────────────────────────────────────────────
 
   return {
-    messages,
+    messages: stableMessages,
     threads,
     isLoading: isThreadsLoading || isMessagesLoading,
     isFetching: isThreadsFetching || isMessagesFetching,
