@@ -88,7 +88,12 @@ export function MobileBottomNav() {
         {/* Left nav items - z-[52], ABOVE aura */}
         <div className="relative z-[52] flex items-center">
           {leftItems.map((item) => (
-            <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
+            <NavItem
+              key={item.id}
+              {...item}
+              i18nKey={item.i18nKey}
+              unreadCount={item.id === 'inbox' ? unreadCount : 0}
+            />
           ))}
         </div>
         
