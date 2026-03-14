@@ -1,6 +1,14 @@
-import { supabase } from "@/integrations/supabase/client";
+/**
+ * Chat API client — gateway fetch/send functions for direct messaging.
+ *
+ * Types extended with message_type + metadata to support voice transcript
+ * messages from the Vitana DM bridge (VTID-CHAT-BRIDGE).
+ */
 
-const GATEWAY_BASE = import.meta.env.VITE_GATEWAY_BASE;
+const GATEWAY_BASE =
+  (import.meta as any).env?.VITE_GATEWAY_URL || "/api/v1";
+
+// ── Types ─────────────────────────────────────────────────────────────
 
 export interface ChatMessage {
   id: string;
@@ -10,6 +18,10 @@ export interface ChatMessage {
   content: string;
   read_at: string | null;
   created_at: string;
+  /** Message kind: 'text' (DM default) or 'voice_transcript' (ORB voice) */
+  message_type?: string;
+  /** Structured metadata: orb_session_id, turn_index, model_used, etc. */
+  metadata?: Record<string, unknown>;
 }
 
 export interface ChatConversation {
@@ -17,48 +29,35 @@ export interface ChatConversation {
   last_message: ChatMessage;
 }
 
-async function getAuthHeaders(): Promise<HeadersInit> {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.access_token) throw new Error("No active session");
-  return {
-    "Authorization": `Bearer ${session.access_token}`,
-    "Content-Type": "application/json",
-  };
-}
+// ── Helpers ───────────────────────────────────────────────────────────
 
-async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const headers = await getAuthHeaders();
-  const res = await fetch(`${GATEWAY_BASE}${path}`, {
-    ...options,
-    headers: { ...headers, ...(options?.headers || {}) },
+async function gatewayFetch(path: string, init?: RequestInit) {
+  const res = await fetch(`${GATEWAY_BASE}/chat${path}`, {
+    ...init,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      ...(init?.headers || {}),
+    },
   });
+
   if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Chat API ${res.status}: ${body}`);
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `Gateway ${res.status}`);
   }
-  const json = await res.json();
-  return json.data ?? json;
+
+  return res.json();
 }
 
-async function fetchUnreadCountFromSupabase(): Promise<number> {
-  const { data: authData } = await supabase.auth.getUser();
-  const userId = authData?.user?.id;
-  if (!userId) return 0;
+// ── API Functions ─────────────────────────────────────────────────────
 
-  const { count, error } = await supabase
-    .from("chat_messages")
-    .select("id", { count: "exact", head: true })
-    .eq("receiver_id", userId)
-    .is("read_at", null);
-
-  if (error) throw error;
-  return count ?? 0;
-}
-
+/** List recent conversations (latest message per peer). */
 export async function fetchConversations(): Promise<ChatConversation[]> {
-  return apiFetch<ChatConversation[]>("/api/v1/chat/conversations");
+  const json = await gatewayFetch("/conversations");
+  return json.data || [];
 }
 
+/** Get paginated messages between current user and a peer. */
 export async function fetchConversation(
   peerId: string,
   limit = 50,
@@ -66,37 +65,32 @@ export async function fetchConversation(
 ): Promise<ChatMessage[]> {
   const params = new URLSearchParams({ limit: String(limit) });
   if (before) params.set("before", before);
-  return apiFetch<ChatMessage[]>(`/api/v1/chat/conversation/${peerId}?${params}`);
+  const json = await gatewayFetch(`/conversation/${peerId}?${params}`);
+  return json.data || [];
 }
 
+/** Send a direct message. Returns the created message. */
 export async function sendChatMessage(
   receiverId: string,
   content: string
 ): Promise<ChatMessage> {
-  return apiFetch<ChatMessage>("/api/v1/chat/send", {
+  const json = await gatewayFetch("/send", {
     method: "POST",
     body: JSON.stringify({ receiver_id: receiverId, content }),
   });
+  return json.data;
 }
 
+/** Mark all messages from a peer as read. */
 export async function markChatRead(peerId: string): Promise<void> {
-  await apiFetch("/api/v1/chat/read", {
+  await gatewayFetch("/read", {
     method: "POST",
     body: JSON.stringify({ peer_id: peerId }),
   });
 }
 
+/** Get total unread message count from gateway. */
 export async function fetchUnreadCount(): Promise<number> {
-  if (!GATEWAY_BASE) {
-    return fetchUnreadCountFromSupabase();
-  }
-
-  try {
-    const res = await apiFetch<{ count: number }>("/api/v1/chat/unread-count");
-    return typeof res === "number" ? res : (res as any).count ?? (res as any);
-  } catch (error) {
-    console.warn("[useChatApi] Gateway unread count failed, falling back to Supabase:", error);
-    return fetchUnreadCountFromSupabase();
-  }
+  const json = await gatewayFetch("/unread-count");
+  return json.count || 0;
 }
-

@@ -2127,6 +2127,8 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          message_type: string
+          metadata: Json
           read_at: string | null
           receiver_id: string
           sender_id: string
@@ -2136,6 +2138,8 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          message_type?: string
+          metadata?: Json
           read_at?: string | null
           receiver_id: string
           sender_id: string
@@ -2145,6 +2149,8 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          message_type?: string
+          metadata?: Json
           read_at?: string | null
           receiver_id?: string
           sender_id?: string
@@ -12197,6 +12203,8 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          message_type: string
+          metadata: Json
           peer_id: string
           read_at: string
           receiver_id: string
