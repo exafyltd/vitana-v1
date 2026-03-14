@@ -486,13 +486,14 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessageThread[]> => {
       if (!user || !isGlobalContext) return [];
 
-      // Fetch from both gateway and legacy in parallel
-      const [conversations, legacyThreads] = await Promise.all([
+      // Fetch from gateway + Supabase fallbacks in parallel
+      const [conversations, legacyThreads, supabaseDirectThreads] = await Promise.all([
         fetchConversations().catch((err) => {
-          console.warn("Gateway fetchConversations failed, using legacy only:", err.message);
+          console.warn("Gateway fetchConversations failed, using Supabase fallback:", err.message);
           return [] as ChatConversation[];
         }),
         fetchLegacyThreads(user.id),
+        fetchDirectThreadsFromSupabase(user.id),
       ]);
 
       // Build gateway threads
