@@ -1,6 +1,7 @@
 /**
  * Utility functions for consistent participant selection across conversation components
  */
+import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 export interface ThreadParticipant {
   user_id: string;
