@@ -205,7 +205,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           }
         }
 
-        setIsParticipating(true);
+        queryClient.setQueryData(participationQueryKey, { isParticipating: true });
         setParticipantCount(prev => prev + 1);
         
         toast({
