@@ -567,6 +567,31 @@ export function useGlobalMessages(
     return () => clearTimeout(timer);
   }, [activeThreadId, messages, isMessagesLoading]);
 
+  // ── Visibility-change reconciliation ───────────────────────────────
+  // Refetch messages & threads when app returns to foreground (catches
+  // any messages missed while WebSocket was suspended in background)
+  useEffect(() => {
+    if (!user || !isGlobalContext) return;
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        if (activeThreadId) {
+          queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
+        }
+        queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [user, isGlobalContext, activeThreadId, queryClient]);
+
+  // ── Stable messages ref (prevents re-renders when IDs haven't changed) ──
+  const stableMessages = useMemo(() => messages, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(messages.map((m) => m.id)),
+  ]);
+
   // ── Optimistic cache helpers ──────────────────────────────────────
 
   const updateMessagesOptimistically = useCallback(
