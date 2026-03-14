@@ -103,6 +103,7 @@ export function getConversationDisplayTitle(
  */
 export function getParticipantFirstName(participant: ThreadParticipant | null): string {
   if (!participant) return '';
+  if (isVitanaBot(participant.user_id)) return VITANA_BOT_DISPLAY_NAME;
   const fullName =
     participant.profile?.display_name ||
     participant.profile?.full_name ||
