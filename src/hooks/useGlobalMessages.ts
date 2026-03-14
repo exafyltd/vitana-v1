@@ -871,16 +871,26 @@ export function useGlobalMessages(
             )
           );
 
-          // Sync across tabs
-          await supabase.channel("unread_sync").send({
-            type: "broadcast",
-            event: "thread_read",
-            payload: {
-              threadId,
-              userId: user.id,
-              timestamp: new Date().toISOString(),
-              context: "global",
-            },
+          // Sync across tabs via a temporary subscribed channel
+          const syncChannel = supabase.channel(`mark_read_sync_${Date.now()}`);
+          await new Promise<void>((resolve) => {
+            syncChannel.subscribe((status) => {
+              if (status === 'SUBSCRIBED') {
+                syncChannel.send({
+                  type: "broadcast",
+                  event: "thread_read",
+                  payload: {
+                    threadId,
+                    userId: user.id,
+                    timestamp: new Date().toISOString(),
+                    context: "global",
+                  },
+                }).then(() => {
+                  supabase.removeChannel(syncChannel);
+                  resolve();
+                });
+              }
+            });
           });
         } catch (error) {
           console.error("Error marking chat as read:", error);
