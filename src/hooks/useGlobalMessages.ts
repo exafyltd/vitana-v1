@@ -59,6 +59,17 @@ export interface GlobalMessageThread {
 const STALE_TIME = 10 * 60 * 1000;  // 10 minutes
 const GC_TIME = 30 * 60 * 1000;     // 30 minutes
 
+// ── Constants ────────────────────────────────────────────────────────
+
+const VITANA_BOT_USER_ID =
+  (import.meta as any).env?.VITE_VITANA_BOT_USER_ID ||
+  "00000000-0000-0000-0000-000000000001";
+
+const VITANA_BOT_PROFILE = {
+  display_name: "Vitana",
+  avatar_url: "/vitana-orb-avatar.png",
+};
+
 // ── Helpers ──────────────────────────────────────────────────────────
 
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
@@ -89,6 +100,12 @@ async function enrichProfiles(
   const ids = Array.from(new Set(userIds)).filter(Boolean);
   if (ids.length === 0) return {};
 
+  // Pre-seed Vitana bot identity so it always resolves
+  const map: Record<string, { display_name: string; avatar_url: string | null }> = {};
+  if (ids.includes(VITANA_BOT_USER_ID)) {
+    map[VITANA_BOT_USER_ID] = { ...VITANA_BOT_PROFILE };
+  }
+
   const [{ data: globalProfiles }, { data: mainProfiles }] = await Promise.all([
     supabase
       .from("global_community_profiles")
@@ -100,8 +117,10 @@ async function enrichProfiles(
       .in("user_id", ids),
   ]);
 
-  const map: Record<string, { display_name: string; avatar_url: string | null }> = {};
   ids.forEach((uid) => {
+    // Skip if already set as Vitana bot (keep guaranteed identity)
+    if (uid === VITANA_BOT_USER_ID && map[uid]) return;
+
     const gp = globalProfiles?.find((p) => p.user_id === uid);
     const mp = mainProfiles?.find((p) => p.user_id === uid);
     map[uid] = {
