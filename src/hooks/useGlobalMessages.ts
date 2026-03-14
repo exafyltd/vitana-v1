@@ -962,6 +962,21 @@ export function useGlobalMessages(
     };
   }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads, queryClient, activeThreadId]);
 
+  // ── Visibility catch-up: refetch on tab focus after silent websocket drops ──
+  useEffect(() => {
+    if (!user || !isGlobalContext || typeof window === 'undefined') return;
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+        if (activeThreadId) {
+          queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [user, isGlobalContext, activeThreadId, queryClient]);
+
   // ── Realtime: listen for new global_messages (group chats) ────────
 
   useEffect(() => {
