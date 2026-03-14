@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import { useAuth } from "@/context/AuthProvider";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface EventParticipation {
   eventId: string;
@@ -23,49 +24,39 @@ const isValidUUID = (id: string) =>
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
 export function useEventParticipation(eventId: string, initialCount: number = 0, eventDetails?: EventDetails) {
-  const [isParticipating, setIsParticipating] = useState(false);
   const [participantCount, setParticipantCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
-  const [checking, setChecking] = useState(true);
   const { user, session } = useAuth();
   const { toast } = useToast();
   const { addEvent, removeEvent } = useCalendarEvents();
+  const queryClient = useQueryClient();
 
-  // Check if user is already participating.
-  // Depends on session?.access_token so the check re-runs after re-login
-  // (user?.id alone can be the same value after logout/login with the same account).
-  useEffect(() => {
-    const checkParticipation = async () => {
-      if (!eventId || !isValidUUID(eventId) || !user?.id || !session) {
-        setIsParticipating(false);
-        setChecking(false);
-        return;
-      }
+  const participationQueryKey = ['event-participation', eventId, user?.id];
 
-      setChecking(true);
-      try {
-        const { data, error } = await supabase
-          .from('global_event_participants')
-          .select('*')
-          .eq('event_id', eventId)
-          .eq('user_id', user.id)
-          .maybeSingle();
+  // Cached participation check — survives unmount/remount
+  const { data: participationData, isLoading: checking } = useQuery({
+    queryKey: participationQueryKey,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('global_event_participants')
+        .select('status')
+        .eq('event_id', eventId)
+        .eq('user_id', user!.id)
+        .maybeSingle();
 
-        if (error) {
-          console.error('Error checking participation:', error);
-          return;
-        }
-
-        setIsParticipating(!!data && data.status === 'attending');
-      } catch (error) {
+      if (error) {
         console.error('Error checking participation:', error);
-      } finally {
-        setChecking(false);
+        return { isParticipating: false };
       }
-    };
 
-    checkParticipation();
-  }, [eventId, user?.id, session?.access_token]);
+      return { isParticipating: !!data && data.status === 'attending' };
+    },
+    enabled: !!eventId && isValidUUID(eventId) && !!user?.id && !!session,
+    staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+
+  const isParticipating = participationData?.isParticipating ?? false;
 
   // Subscribe to real-time participant changes.
   // Updates BOTH participantCount AND isParticipating for the current user.
@@ -97,7 +88,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
               const userIsAttending = data.some(
                 (row: any) => row.user_id === user.id
               );
-              setIsParticipating(userIsAttending);
+              queryClient.setQueryData(participationQueryKey, { isParticipating: userIsAttending });
             }
           }
         }
@@ -161,7 +152,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           console.error('Error removing calendar event:', calError);
         }
 
-        setIsParticipating(false);
+        queryClient.setQueryData(participationQueryKey, { isParticipating: false });
         setParticipantCount(prev => Math.max(0, prev - 1));
         
         toast({
@@ -214,7 +205,7 @@ export function useEventParticipation(eventId: string, initialCount: number = 0,
           }
         }
 
-        setIsParticipating(true);
+        queryClient.setQueryData(participationQueryKey, { isParticipating: true });
         setParticipantCount(prev => prev + 1);
         
         toast({
