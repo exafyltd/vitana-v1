@@ -561,11 +561,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           {showAvatar && !isOwnMessage && (
             <Avatar className="w-8 h-8 flex-shrink-0 mt-0.5">
               <AvatarImage 
-                src={message.sender?.avatar_url} 
+                src={(() => {
+                  const senderId = message.sender_id || (message.sender as any)?.user_id;
+                  if (senderId === '00000000-0000-0000-0000-000000000001') return '/vitana-orb-avatar.png';
+                  return message.sender?.avatar_url;
+                })()} 
                 alt={message.sender?.display_name || message.sender?.full_name || 'User'} 
               />
               <AvatarFallback>
-                {(message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase()}
+                {(() => {
+                  const senderId = message.sender_id || (message.sender as any)?.user_id;
+                  if (senderId === '00000000-0000-0000-0000-000000000001') return 'V';
+                  return (message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase();
+                })()}
               </AvatarFallback>
             </Avatar>
           )}
