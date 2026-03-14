@@ -44,6 +44,7 @@ import { MessageThreadCallButtons } from '@/components/MessageThreadCallButtons'
 
 import { autoMarkAsDelivered, markMessagesAsRead } from '@/lib/messageStatus';
 import { getConversationDisplayAvatar, getConversationDisplayTitle, getOtherParticipant, getParticipantFirstName } from '@/utils/conversationHelpers';
+import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 interface ConversationViewProps {
   threadId?: string | null;
@@ -147,6 +148,11 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
     // Helper to compose a recipient object with robust fallbacks
     const composeRecipient = (userId: string, participant?: any) => {
+      // Vitana bot identity override — always resolves correctly
+      if (isVitanaBot(userId)) {
+        return { id: userId, name: VITANA_BOT_DISPLAY_NAME, avatar: VITANA_BOT_AVATAR_URL };
+      }
+
       // Try multiple participant data structures and nested profile objects
       let name = participant?.display_name ||
         participant?.full_name ||

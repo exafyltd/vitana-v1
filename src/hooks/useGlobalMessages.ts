@@ -61,13 +61,11 @@ const GC_TIME = 30 * 60 * 1000;     // 30 minutes
 
 // ── Constants ────────────────────────────────────────────────────────
 
-const VITANA_BOT_USER_ID =
-  (import.meta as any).env?.VITE_VITANA_BOT_USER_ID ||
-  "00000000-0000-0000-0000-000000000001";
+import { VITANA_BOT_USER_ID, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 const VITANA_BOT_PROFILE = {
-  display_name: "Vitana",
-  avatar_url: "/vitana-orb-avatar.png",
+  display_name: VITANA_BOT_DISPLAY_NAME,
+  avatar_url: VITANA_BOT_AVATAR_URL,
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────

@@ -1,6 +1,7 @@
 /**
  * Utility functions for consistent participant selection across conversation components
  */
+import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 export interface ThreadParticipant {
   user_id: string;
@@ -48,6 +49,7 @@ export function getOtherParticipant(
  */
 export function getParticipantDisplayName(participant: ThreadParticipant | null): string {
   if (!participant) return 'Unknown';
+  if (isVitanaBot(participant.user_id)) return VITANA_BOT_DISPLAY_NAME;
   
   return (
     participant.profile?.display_name ||
@@ -63,6 +65,7 @@ export function getParticipantDisplayName(participant: ThreadParticipant | null)
  */
 export function getParticipantAvatarUrl(participant: ThreadParticipant | null): string | null {
   if (!participant) return null;
+  if (isVitanaBot(participant.user_id)) return VITANA_BOT_AVATAR_URL;
   
   return (
     participant.profile?.avatar_url ||
@@ -100,6 +103,7 @@ export function getConversationDisplayTitle(
  */
 export function getParticipantFirstName(participant: ThreadParticipant | null): string {
   if (!participant) return '';
+  if (isVitanaBot(participant.user_id)) return VITANA_BOT_DISPLAY_NAME;
   const fullName =
     participant.profile?.display_name ||
     participant.profile?.full_name ||
