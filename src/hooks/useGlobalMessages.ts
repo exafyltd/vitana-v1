@@ -553,15 +553,18 @@ export function useGlobalMessages(
       return legacyMessages;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: STALE_TIME,
+    staleTime: 30 * 1000, // 30 seconds – allows fast catch-up after background
     gcTime: GC_TIME,
     placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
   });
 
+  // Debounced persist to avoid scroll jank from frequent writes
   useEffect(() => {
-    if (activeThreadId && messages.length > 0 && !isMessagesLoading) {
+    if (!activeThreadId || messages.length === 0 || isMessagesLoading) return;
+    const timer = setTimeout(() => {
       persistMessages(activeThreadId, messages);
-    }
+    }, 2000);
+    return () => clearTimeout(timer);
   }, [activeThreadId, messages, isMessagesLoading]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────

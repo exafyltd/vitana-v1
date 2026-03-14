@@ -288,6 +288,14 @@ const AppHooksInitializer = () => {
   useAppilix();
   const { user, session } = useAuth();
 
+  // Set Appilix push notification user identity for mobile device mapping
+  useEffect(() => {
+    if (user?.id && typeof window !== 'undefined') {
+      (window as any).appilix_push_notification_user_identity = user.id;
+      document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+    }
+  }, [user?.id]);
+
   useEffect(() => {
     if (!user?.id || !session?.access_token) return;
     initializePushNotifications();
