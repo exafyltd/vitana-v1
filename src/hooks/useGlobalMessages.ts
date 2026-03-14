@@ -1055,7 +1055,7 @@ export function useGlobalMessages(
   // ── Return ────────────────────────────────────────────────────────
 
   return {
-    messages,
+    messages: stableMessages,
     threads,
     isLoading: isThreadsLoading || isMessagesLoading,
     isFetching: isThreadsFetching || isMessagesFetching,
