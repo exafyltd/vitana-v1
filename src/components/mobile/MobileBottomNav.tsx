@@ -134,7 +134,12 @@ export function MobileBottomNav() {
         {/* Right nav items - z-[52], ABOVE aura */}
         <div className="relative z-[52] flex items-center">
           {rightItems.map((item) => (
-            <NavItem key={item.id} {...item} i18nKey={item.i18nKey} />
+            <NavItem
+              key={item.id}
+              {...item}
+              i18nKey={item.i18nKey}
+              unreadCount={item.id === 'inbox' ? unreadCount : 0}
+            />
           ))}
         </div>
       </div>
@@ -148,15 +153,16 @@ interface NavItemProps {
   label: string;
   path: string;
   i18nKey?: string;
+  unreadCount?: number;
 }
 
-function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
+function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavItemProps) {
   const { translate } = useTranslation();
-  
+
   return (
     <NavLink
       to={path}
-      className={({ isActive }) =>
+      className={() =>
         cn(
           "flex flex-col items-center gap-0.5 px-3 py-1 min-w-[60px] transition-all duration-200"
         )
@@ -165,15 +171,25 @@ function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
       {({ isActive }) => (
         <div className="relative flex flex-col items-center">
           {/* Icon - black, opacity varies */}
-          <Icon 
-            className={cn(
-              "w-5 h-5 text-black dark:text-white transition-opacity duration-200",
-              isActive ? "opacity-100" : "opacity-50"
-            )} 
-          />
-          
+          <div className="relative">
+            <Icon
+              className={cn(
+                "w-5 h-5 text-black dark:text-white transition-opacity duration-200",
+                isActive ? "opacity-100" : "opacity-50"
+              )}
+            />
+            {id === 'inbox' && unreadCount > 0 && (
+              <span
+                className="absolute -top-1.5 -right-2 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[9px] font-semibold text-destructive-foreground"
+                aria-label={`${unreadCount} unread message${unreadCount !== 1 ? 's' : ''}`}
+              >
+                {unreadCount > 99 ? '99+' : unreadCount}
+              </span>
+            )}
+          </div>
+
           {/* Label - always black, readable */}
-          <span 
+          <span
             className={cn(
               "text-[12px] tracking-tight text-black dark:text-white transition-opacity duration-200",
               isActive ? "font-semibold opacity-100" : "font-medium opacity-60"
@@ -181,10 +197,10 @@ function NavItem({ icon: Icon, label, path, i18nKey }: NavItemProps) {
           >
             {translate(i18nKey ?? '', label)}
           </span>
-          
+
           {/* Active indicator - centered underline */}
           {isActive && (
-            <motion.div 
+            <motion.div
               layoutId="nav-active-indicator"
               className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-primary"
               initial={{ opacity: 0, scaleX: 0 }}
