@@ -1002,6 +1002,7 @@ serve(async (req) => {
             const link = e.slug
               ? `https://e.vitanaland.com/events/${e.slug}`
               : `https://e.vitanaland.com/pub/events/${e.id}`;
+            contextLinkCandidates.push({ url: link, title: e.title });
             systemMessage += `  - ${e.title} - ${date} → ${link}\n`;
           });
         }
