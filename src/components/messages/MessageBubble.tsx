@@ -598,7 +598,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return <p className="break-words">{message.body}</p>;
+        return renderLinkedText(message.body);
     }
   };
 
