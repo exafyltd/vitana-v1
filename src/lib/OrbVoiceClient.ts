@@ -565,6 +565,41 @@ export class OrbVoiceClient {
     }
   }
 
+  /**
+   * Handle turn completion — clear processing, re-enable listening
+   */
+  private handleTurnComplete(): void {
+    this.clearTurnCompleteTimeout();
+    this.callbacks.onProcessingChange?.(false);
+    this.callbacks.onSpeakingChange?.(false);
+    
+    // Re-enable listening after AI finishes its turn
+    if (this.recorder && !this._isListening) {
+      this.startListening();
+    }
+  }
+
+  /**
+   * Schedule a fallback turn-complete if no SSE event arrives after audio ends
+   */
+  private scheduleTurnCompleteFallback(): void {
+    this.clearTurnCompleteTimeout();
+    this.turnCompleteTimeout = setTimeout(() => {
+      console.log('[OrbVoiceClient] Turn complete fallback triggered (no SSE event received)');
+      this.handleTurnComplete();
+    }, this.TURN_COMPLETE_FALLBACK_MS);
+  }
+
+  /**
+   * Clear the turn-complete fallback timeout
+   */
+  private clearTurnCompleteTimeout(): void {
+    if (this.turnCompleteTimeout) {
+      clearTimeout(this.turnCompleteTimeout);
+      this.turnCompleteTimeout = null;
+    }
+  }
+
   async endTurn(): Promise<void> {
     if (!this.sessionId) return;
 
