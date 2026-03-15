@@ -722,6 +722,7 @@ export class OrbVoiceClient {
       clearTimeout(this.silenceTimer);
       this.silenceTimer = null;
     }
+    this.clearTurnCompleteTimeout();
     this.hasSpeechStarted = false;
     
     // Clear no-speech warning
