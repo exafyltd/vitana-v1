@@ -916,7 +916,10 @@ serve(async (req) => {
           systemMessage += `✅ Your Registered Events: ${community.myRegisteredEvents.length} events\n`;
           community.myRegisteredEvents.slice(0, 3).forEach((e: any) => {
             const date = new Date(e.startTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-            systemMessage += `  - ${e.title} - ${date}\n`;
+            const link = e.slug
+              ? `https://e.vitanaland.com/events/${e.slug}`
+              : `https://e.vitanaland.com/pub/events/${e.id}`;
+            systemMessage += `  - ${e.title} - ${date} → ${link}\n`;
           });
         }
         
