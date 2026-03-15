@@ -43,16 +43,56 @@ import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { UniversalShareButton } from '@/components/sharing/UniversalShareButton';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useToast } from '@/hooks/use-toast';
 
 export default withScreenId(function Discover() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
   const { logActivity } = useActivityLogger();
   const { pendingCount } = useAutopilot();
   const { translate } = useTranslation();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('suggested');
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [highlightedMatchId, setHighlightedMatchId] = useState<string | null>(null);
+
+  // Handle ?m= deep link for match highlights
+  useEffect(() => {
+    const matchId = searchParams.get('m');
+    if (!matchId) return;
+
+    // Clear the param from URL immediately
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('m');
+    setSearchParams(nextParams, { replace: true });
+
+    // Try to find and scroll to the match element
+    const tryScroll = (attempts = 0) => {
+      const el = document.querySelector(`[data-match-id="${matchId}"]`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setHighlightedMatchId(matchId);
+        // Remove highlight after 3 seconds
+        setTimeout(() => setHighlightedMatchId(null), 3000);
+        return;
+      }
+      // Retry a few times to allow for lazy-loaded content
+      if (attempts < 5) {
+        setTimeout(() => tryScroll(attempts + 1), 400);
+      } else {
+        toast({
+          title: "Match not found",
+          description: "This match is no longer available",
+          variant: "destructive",
+        });
+      }
+    };
+
+    // Delay slightly to let page render
+    setTimeout(() => tryScroll(), 300);
+  }, [searchParams, setSearchParams, toast]);
 
   // Log discover page view
   useEffect(() => {
