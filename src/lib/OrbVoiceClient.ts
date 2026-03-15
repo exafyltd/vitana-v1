@@ -325,6 +325,8 @@ export class OrbVoiceClient {
       source.onended = () => {
         if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
           this.callbacks.onSpeakingChange?.(false);
+          // Schedule turn-complete fallback in case no SSE turn_complete event arrives
+          this.scheduleTurnCompleteFallback();
         }
       };
     } catch (e) {
