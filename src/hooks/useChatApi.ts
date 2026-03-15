@@ -49,7 +49,6 @@ async function gatewayFetch(path: string, init?: RequestInit) {
 
   const res = await fetch(`${GATEWAY_BASE}/chat${path}`, {
     ...init,
-    credentials: "include",
     headers: {
       ...authHeaders,
       ...(init?.headers || {}),
