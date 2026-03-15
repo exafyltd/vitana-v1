@@ -48,12 +48,14 @@ export class OrbVoiceClient {
   private nextStartTime: number = 0;
   private recorder: CrossPlatformAudioRecorder | null = null;
   private volumeAnimationFrame: number | null = null;
+  private turnCompleteTimeout: ReturnType<typeof setTimeout> | null = null;
 
   // Silence detection for auto end-turn
   private silenceTimer: ReturnType<typeof setTimeout> | null = null;
   private hasSpeechStarted: boolean = false;
   private readonly SILENCE_THRESHOLD = 0.02;
   private readonly SILENCE_DURATION_MS = 1500;
+  private readonly TURN_COMPLETE_FALLBACK_MS = 2000; // If no turn_complete event after last audio, auto-complete
 
   // Track consecutive send failures to detect broken sessions
   private consecutiveSendErrors: number = 0;
@@ -234,6 +236,7 @@ export class OrbVoiceClient {
             if (msg.data_b64) {
               this.callbacks.onSpeakingChange?.(true);
               this.callbacks.onProcessingChange?.(false);
+              this.clearTurnCompleteTimeout();
               this.handleAudioChunk(msg.data_b64);
             }
             break;
@@ -247,8 +250,17 @@ export class OrbVoiceClient {
               this.callbacks.onTranscript?.(msg.text);
             }
             break;
+          case 'turn_complete':
+          case 'turn_end':
+          case 'end_of_turn':
+            console.log('[OrbVoiceClient] Turn complete received');
+            this.handleTurnComplete();
+            break;
           case 'error':
             this.callbacks.onError?.(msg.message);
+            break;
+          default:
+            console.log('[OrbVoiceClient] SSE event type:', msg.type);
             break;
         }
       } catch (e) {
@@ -313,6 +325,8 @@ export class OrbVoiceClient {
       source.onended = () => {
         if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
           this.callbacks.onSpeakingChange?.(false);
+          // Schedule turn-complete fallback in case no SSE turn_complete event arrives
+          this.scheduleTurnCompleteFallback();
         }
       };
     } catch (e) {
@@ -551,6 +565,41 @@ export class OrbVoiceClient {
     }
   }
 
+  /**
+   * Handle turn completion — clear processing, re-enable listening
+   */
+  private handleTurnComplete(): void {
+    this.clearTurnCompleteTimeout();
+    this.callbacks.onProcessingChange?.(false);
+    this.callbacks.onSpeakingChange?.(false);
+    
+    // Re-enable listening after AI finishes its turn
+    if (this.recorder && !this._isListening) {
+      this.startListening();
+    }
+  }
+
+  /**
+   * Schedule a fallback turn-complete if no SSE event arrives after audio ends
+   */
+  private scheduleTurnCompleteFallback(): void {
+    this.clearTurnCompleteTimeout();
+    this.turnCompleteTimeout = setTimeout(() => {
+      console.log('[OrbVoiceClient] Turn complete fallback triggered (no SSE event received)');
+      this.handleTurnComplete();
+    }, this.TURN_COMPLETE_FALLBACK_MS);
+  }
+
+  /**
+   * Clear the turn-complete fallback timeout
+   */
+  private clearTurnCompleteTimeout(): void {
+    if (this.turnCompleteTimeout) {
+      clearTimeout(this.turnCompleteTimeout);
+      this.turnCompleteTimeout = null;
+    }
+  }
+
   async endTurn(): Promise<void> {
     if (!this.sessionId) return;
 
@@ -673,6 +722,7 @@ export class OrbVoiceClient {
       clearTimeout(this.silenceTimer);
       this.silenceTimer = null;
     }
+    this.clearTurnCompleteTimeout();
     this.hasSpeechStarted = false;
     
     // Clear no-speech warning
