@@ -234,6 +234,7 @@ export class OrbVoiceClient {
             if (msg.data_b64) {
               this.callbacks.onSpeakingChange?.(true);
               this.callbacks.onProcessingChange?.(false);
+              this.clearTurnCompleteTimeout();
               this.handleAudioChunk(msg.data_b64);
             }
             break;
@@ -247,8 +248,17 @@ export class OrbVoiceClient {
               this.callbacks.onTranscript?.(msg.text);
             }
             break;
+          case 'turn_complete':
+          case 'turn_end':
+          case 'end_of_turn':
+            console.log('[OrbVoiceClient] Turn complete received');
+            this.handleTurnComplete();
+            break;
           case 'error':
             this.callbacks.onError?.(msg.message);
+            break;
+          default:
+            console.log('[OrbVoiceClient] SSE event type:', msg.type);
             break;
         }
       } catch (e) {
