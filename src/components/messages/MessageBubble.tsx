@@ -259,6 +259,70 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
+  const renderLinkedText = useCallback((text?: string, className?: string) => {
+    if (!text) return null;
+
+    const urlRegex = /https?:\/\/[^\s<]+/gi;
+    const trailingPunctuation = '.,!?;:)]}';
+    const nodes: React.ReactNode[] = [];
+    let match: RegExpExecArray | null;
+    let lastIndex = 0;
+
+    while ((match = urlRegex.exec(text)) !== null) {
+      const rawUrl = match[0];
+      const start = match.index;
+
+      if (start > lastIndex) {
+        nodes.push(text.slice(lastIndex, start));
+      }
+
+      let cleanUrl = rawUrl;
+      let trailing = '';
+
+      while (
+        cleanUrl.length > 0 &&
+        trailingPunctuation.includes(cleanUrl[cleanUrl.length - 1])
+      ) {
+        trailing = cleanUrl[cleanUrl.length - 1] + trailing;
+        cleanUrl = cleanUrl.slice(0, -1);
+      }
+
+      if (cleanUrl) {
+        nodes.push(
+          <a
+            key={`${cleanUrl}-${start}`}
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              "underline underline-offset-2 break-all font-medium",
+              isOwnMessage ? "text-primary-foreground" : "text-primary"
+            )}
+            onClick={(event) => event.stopPropagation()}
+          >
+            {cleanUrl}
+          </a>
+        );
+      }
+
+      if (trailing) {
+        nodes.push(trailing);
+      }
+
+      lastIndex = start + rawUrl.length;
+    }
+
+    if (lastIndex < text.length) {
+      nodes.push(text.slice(lastIndex));
+    }
+
+    return (
+      <p className={cn("whitespace-pre-wrap break-words", className)}>
+        {nodes.length > 0 ? nodes : text}
+      </p>
+    );
+  }, [isOwnMessage]);
+
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
     const imageLoadFailed = failedImages.has(index);
