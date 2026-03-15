@@ -904,7 +904,10 @@ serve(async (req) => {
             const date = new Date(e.startTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
             const spots = e.maxParticipants ? `${e.participantCount}/${e.maxParticipants}` : `${e.participantCount}`;
             const participating = e.isParticipating ? '✅' : '';
-            systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''}\n`;
+            const link = e.slug
+              ? `https://e.vitanaland.com/events/${e.slug}`
+              : `https://e.vitanaland.com/pub/events/${e.id}`;
+            systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''} → ${link}\n`;
           });
         }
         
