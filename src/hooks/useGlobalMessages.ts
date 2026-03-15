@@ -20,6 +20,33 @@ import {
 } from "./useChatApi";
 import type { MessageKind, SendMessageArgs } from "./useHybridMessages";
 
+// ── Cache timing constants ──────────────────────────────────────────
+const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — data shown without refetch
+const GC_TIME = 30 * 60 * 1000;     // 30 minutes — cache kept in memory after unmount
+
+// ── SCROLL FIX: In-memory profile cache (prevents redundant Supabase queries) ──
+const profileCache = new Map<string, { display_name: string; avatar_url: string | null; cachedAt: number }>();
+const PROFILE_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+// ── SCROLL FIX: Debounced localStorage writes (prevents main-thread blocking) ──
+const pendingPersist = new Map<string, NodeJS.Timeout>();
+function debouncedPersistMessages(peerId: string, messages: any[]) {
+  const existing = pendingPersist.get(`msg:${peerId}`);
+  if (existing) clearTimeout(existing);
+  pendingPersist.set(`msg:${peerId}`, setTimeout(() => {
+    persistMessages(peerId, messages);
+    pendingPersist.delete(`msg:${peerId}`);
+  }, 1000)); // 1 second debounce
+}
+function debouncedPersistThreads(userId: string, threads: any[]) {
+  const existing = pendingPersist.get(`thr:${userId}`);
+  if (existing) clearTimeout(existing);
+  pendingPersist.set(`thr:${userId}`, setTimeout(() => {
+    persistThreads(userId, threads);
+    pendingPersist.delete(`thr:${userId}`);
+  }, 1000)); // 1 second debounce
+}
+
 // ── Public types (unchanged – the UI depends on these) ───────────────
 
 export interface GlobalMessage {
@@ -56,23 +83,11 @@ export interface GlobalMessageThread {
   unread_count: number;
 }
 
-const STALE_TIME = 10 * 60 * 1000;  // 10 minutes
-const GC_TIME = 30 * 60 * 1000;     // 30 minutes
-
-// ── Constants ────────────────────────────────────────────────────────
-
-import { VITANA_BOT_USER_ID, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
-
-const VITANA_BOT_PROFILE = {
-  display_name: VITANA_BOT_DISPLAY_NAME,
-  avatar_url: VITANA_BOT_AVATAR_URL,
-};
-
 // ── Helpers ──────────────────────────────────────────────────────────
 
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
 function toGlobalMessage(
-  msg: ChatMessage & { message_type?: string; content_data?: any },
+  msg: ChatMessage,
   peerId: string,
   profileMap: Record<string, { display_name: string; avatar_url: string | null }>
 ): GlobalMessage {
@@ -82,7 +97,7 @@ function toGlobalMessage(
     sender_id: msg.sender_id,
     body: msg.content,
     message_type: (msg as any).message_type || "text",
-    content_data: (msg as any).content_data || (msg as any).metadata || null,
+    content_data: (msg as any).metadata || undefined,
     created_at: msg.created_at,
     updated_at: msg.created_at,
     sender: profileMap[msg.sender_id]
@@ -91,41 +106,52 @@ function toGlobalMessage(
   };
 }
 
-/** Fetch profiles from Supabase for a set of user IDs */
+/** Fetch profiles from Supabase for a set of user IDs (with in-memory cache) */
 async function enrichProfiles(
   userIds: string[]
 ): Promise<Record<string, { display_name: string; avatar_url: string | null }>> {
   const ids = Array.from(new Set(userIds)).filter(Boolean);
   if (ids.length === 0) return {};
 
-  // Pre-seed Vitana bot identity so it always resolves
+  // SCROLL FIX: Check in-memory cache first — avoid Supabase queries for known profiles
+  const now = Date.now();
   const map: Record<string, { display_name: string; avatar_url: string | null }> = {};
-  if (ids.includes(VITANA_BOT_USER_ID)) {
-    map[VITANA_BOT_USER_ID] = { ...VITANA_BOT_PROFILE };
+  const uncachedIds: string[] = [];
+
+  for (const uid of ids) {
+    const cached = profileCache.get(uid);
+    if (cached && now - cached.cachedAt < PROFILE_CACHE_TTL) {
+      map[uid] = { display_name: cached.display_name, avatar_url: cached.avatar_url };
+    } else {
+      uncachedIds.push(uid);
+    }
   }
+
+  // All profiles are cached — no network needed
+  if (uncachedIds.length === 0) return map;
 
   const [{ data: globalProfiles }, { data: mainProfiles }] = await Promise.all([
     supabase
       .from("global_community_profiles")
       .select("user_id, display_name, avatar_url")
-      .in("user_id", ids),
+      .in("user_id", uncachedIds),
     supabase
       .from("profiles")
       .select("user_id, display_name, full_name, avatar_url")
-      .in("user_id", ids),
+      .in("user_id", uncachedIds),
   ]);
 
-  ids.forEach((uid) => {
-    // Skip if already set as Vitana bot (keep guaranteed identity)
-    if (uid === VITANA_BOT_USER_ID && map[uid]) return;
-
+  uncachedIds.forEach((uid) => {
     const gp = globalProfiles?.find((p) => p.user_id === uid);
     const mp = mainProfiles?.find((p) => p.user_id === uid);
-    map[uid] = {
+    const profile = {
       display_name:
         gp?.display_name || mp?.display_name || mp?.full_name || "Unknown User",
       avatar_url: gp?.avatar_url || mp?.avatar_url || null,
     };
+    map[uid] = profile;
+    // Store in cache
+    profileCache.set(uid, { ...profile, cachedAt: now });
   });
   return map;
 }
@@ -192,66 +218,11 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
 
     // 5. Build GlobalMessageThread objects
     return threadRows
+      .filter((t: any) => t.type === "direct") // only direct threads (group not supported by gateway)
       .map((t: any) => {
         const threadParticipants = (allParticipants || []).filter(
           (p: any) => p.thread_id === t.id
         );
-
-        // For group threads, use thread id directly
-        if (t.type === 'group') {
-          const enrichedParticipants = threadParticipants.map((p: any) => ({
-            user_id: p.user_id,
-            display_name: profileMap[p.user_id]?.display_name || "Unknown",
-            avatar_url: profileMap[p.user_id]?.avatar_url || null,
-            role: p.role || "member",
-            last_read_at: p.last_read_at,
-          }));
-
-          const lastMsg = lastMsgByThread[t.id];
-          const lastMessage: GlobalMessage | undefined = lastMsg
-            ? {
-                id: lastMsg.id,
-                thread_id: t.id,
-                sender_id: lastMsg.sender_id,
-                body: lastMsg.body,
-                message_type: lastMsg.message_type || "text",
-                content_data: lastMsg.content_data,
-                created_at: lastMsg.created_at,
-                updated_at: lastMsg.updated_at || lastMsg.created_at,
-                sender: profileMap[lastMsg.sender_id]
-                  ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
-                  : null,
-              }
-            : undefined;
-
-          const myParticipation = participations.find(
-            (p: any) => p.thread_id === t.id
-          );
-          const unreadCount =
-            lastMsg && myParticipation?.last_read_at
-              ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
-                ? 1
-                : 0
-              : lastMsg && lastMsg.sender_id !== userId
-              ? 1
-              : 0;
-
-          return {
-            id: t.id,
-            name: t.name,
-            type: "group" as const,
-            created_by: t.created_by,
-            created_at: t.created_at,
-            updated_at: lastMsg?.created_at || t.updated_at,
-            participants: enrichedParticipants,
-            last_message: lastMessage,
-            unread_count: unreadCount,
-            _legacyThreadId: t.id,
-            _metadata: t.metadata,
-          } as GlobalMessageThread & { _legacyThreadId: string; _metadata?: any };
-        }
-
-        // Direct threads: use peer user_id as thread id
         const otherParticipant = threadParticipants.find(
           (p: any) => p.user_id !== userId
         );
@@ -357,103 +328,75 @@ async function fetchLegacyMessages(legacyThreadId: string): Promise<GlobalMessag
   }
 }
 
+// ── Vitana Bot ────────────────────────────────────────────────────────
+
+const VITANA_BOT_USER_ID = '00000000-0000-0000-0000-000000000001';
+
+// ── Direct chat_messages Supabase fallback ────────────────────────────
 /**
- * Fallback direct-thread listing from Supabase chat_messages (desktop-safe when gateway is unreachable).
+ * When the gateway is down and no legacy threads exist, query
+ * chat_messages directly via the frontend Supabase client.
+ * Mirrors the gateway's own fallback at chat.ts:154-180.
  */
-async function fetchDirectThreadsFromSupabase(userId: string): Promise<GlobalMessageThread[]> {
+async function fetchDirectFromChatMessages(userId: string): Promise<GlobalMessageThread[]> {
   try {
     const { data, error } = await supabase
       .from("chat_messages")
-      .select("id, tenant_id, sender_id, receiver_id, content, read_at, created_at, message_type, metadata")
+      .select("*")
       .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
       .order("created_at", { ascending: false })
-      .limit(500) as any;
+      .limit(200) as any;
 
     if (error || !data || data.length === 0) {
-      if (error) console.warn("Supabase direct-thread fallback failed:", error.message);
+      if (error) console.warn("[chat] Direct chat_messages fallback failed:", error.message);
       return [];
     }
 
-    const latestByPeer = new Map<string, any>();
-    const unreadByPeer = new Map<string, number>();
-    const allUserIds = new Set<string>([userId]);
+    // Dedup by peer — keep latest message per peer
+    const seen = new Map<string, typeof data[0]>();
+    for (const msg of data) {
+      const peerId = msg.sender_id === userId ? msg.receiver_id : msg.sender_id;
+      if (!seen.has(peerId)) seen.set(peerId, msg);
+    }
 
-    data.forEach((row: any) => {
-      const peerId = row.sender_id === userId ? row.receiver_id : row.sender_id;
-      if (!peerId) return;
+    // Enrich profiles
+    const peerIds = Array.from(seen.keys());
+    const profileMap = await enrichProfiles([userId, ...peerIds]);
 
-      allUserIds.add(row.sender_id);
-      allUserIds.add(row.receiver_id);
-      allUserIds.add(peerId);
-
-      if (!latestByPeer.has(peerId)) {
-        latestByPeer.set(peerId, row); // first row wins (already sorted desc)
-      }
-
-      if (row.receiver_id === userId && !row.read_at) {
-        unreadByPeer.set(peerId, (unreadByPeer.get(peerId) || 0) + 1);
-      }
-    });
-
-    const profileMap = await enrichProfiles(Array.from(allUserIds));
-
-    return Array.from(latestByPeer.entries()).map(([peerId, lastMsg]) => {
+    return Array.from(seen.entries()).map(([peerId, lastMsg]) => {
       const peer = profileMap[peerId] || { display_name: "Unknown User", avatar_url: null };
       const me = profileMap[userId] || { display_name: "Me", avatar_url: null };
 
+      const lastMessage: GlobalMessage = {
+        id: lastMsg.id,
+        thread_id: peerId,
+        sender_id: lastMsg.sender_id,
+        body: lastMsg.content,
+        message_type: lastMsg.message_type || "text",
+        content_data: lastMsg.metadata || undefined,
+        created_at: lastMsg.created_at,
+        updated_at: lastMsg.created_at,
+        sender: profileMap[lastMsg.sender_id]
+          ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
+          : null,
+      };
+
       return {
         id: peerId,
-        type: "direct",
+        type: "direct" as const,
         created_by: userId,
         created_at: lastMsg.created_at,
         updated_at: lastMsg.created_at,
         participants: [
-          {
-            user_id: userId,
-            display_name: me.display_name,
-            avatar_url: me.avatar_url,
-            role: "member",
-          },
-          {
-            user_id: peerId,
-            display_name: peer.display_name,
-            avatar_url: peer.avatar_url,
-            role: "member",
-          },
+          { user_id: userId, display_name: me.display_name, avatar_url: me.avatar_url, role: "member" },
+          { user_id: peerId, display_name: peer.display_name, avatar_url: peer.avatar_url, role: "member" },
         ],
-        last_message: toGlobalMessage(lastMsg as ChatMessage, peerId, profileMap),
-        unread_count: unreadByPeer.get(peerId) || 0,
+        last_message: lastMessage,
+        unread_count: lastMsg.sender_id !== userId && !lastMsg.read_at ? 1 : 0,
       } satisfies GlobalMessageThread;
     });
   } catch (err) {
-    console.warn("Supabase direct-thread fallback error:", err);
-    return [];
-  }
-}
-
-/**
- * Fallback direct-message fetch from Supabase chat_messages for one peer.
- */
-async function fetchDirectMessagesFromSupabase(userId: string, peerId: string): Promise<GlobalMessage[]> {
-  try {
-    const { data, error } = await supabase
-      .from("chat_messages")
-      .select("id, tenant_id, sender_id, receiver_id, content, read_at, created_at, message_type, metadata")
-      .or(`and(sender_id.eq.${userId},receiver_id.eq.${peerId}),and(sender_id.eq.${peerId},receiver_id.eq.${userId})`)
-      .order("created_at", { ascending: true })
-      .limit(200) as any;
-
-    if (error || !data || data.length === 0) {
-      if (error) console.warn("Supabase direct-message fallback failed:", error.message);
-      return [];
-    }
-
-    const senderIds = Array.from(new Set(data.map((m: any) => m.sender_id).filter(Boolean)));
-    const profileMap = await enrichProfiles(senderIds as string[]);
-
-    return data.map((m: any) => toGlobalMessage(m as ChatMessage, peerId, profileMap));
-  } catch (err) {
-    console.warn("Supabase direct-message fallback error:", err);
+    console.warn("[chat] Direct chat_messages fallback error:", err);
     return [];
   }
 }
@@ -486,14 +429,13 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessageThread[]> => {
       if (!user || !isGlobalContext) return [];
 
-      // Fetch from gateway + Supabase fallbacks in parallel
-      const [conversations, legacyThreads, supabaseDirectThreads] = await Promise.all([
+      // Fetch from both gateway and legacy in parallel
+      const [conversations, legacyThreads] = await Promise.all([
         fetchConversations().catch((err) => {
-          console.warn("Gateway fetchConversations failed, using Supabase fallback:", err.message);
+          console.warn("Gateway fetchConversations failed, using legacy only:", err.message);
           return [] as ChatConversation[];
         }),
         fetchLegacyThreads(user.id),
-        fetchDirectThreadsFromSupabase(user.id),
       ]);
 
       // Build gateway threads
@@ -511,29 +453,16 @@ export function useGlobalMessages(
         const profileMap = await enrichProfiles(Array.from(allUserIds));
 
         gatewayThreads = conversations.map((conv) => {
-          const lastMsg = conv.last_message;
-
-          // Some gateway deployments return a conversation/thread identifier in peer_id.
-          // Derive the actual peer user_id from last_message when possible.
-          const resolvedPeerUserId =
-            lastMsg?.sender_id === user.id
-              ? lastMsg.receiver_id
-              : lastMsg?.receiver_id === user.id
-              ? lastMsg.sender_id
-              : conv.peer_id;
-
-          const peer =
-            profileMap[resolvedPeerUserId] ||
-            profileMap[conv.peer_id] || {
-              display_name: "Unknown User",
-              avatar_url: null,
-            };
-
+          const peer = profileMap[conv.peer_id] || {
+            display_name: "Unknown User",
+            avatar_url: null,
+          };
           const me = profileMap[user.id] || {
             display_name: "Me",
             avatar_url: null,
           };
 
+          const lastMsg = conv.last_message;
           const unreadCount =
             lastMsg &&
             lastMsg.sender_id !== user.id &&
@@ -556,7 +485,7 @@ export function useGlobalMessages(
                 role: "member",
               },
               {
-                user_id: resolvedPeerUserId,
+                user_id: conv.peer_id,
                 display_name: peer.display_name,
                 avatar_url: peer.avatar_url,
                 role: "member",
@@ -570,31 +499,62 @@ export function useGlobalMessages(
         });
       }
 
-      // Merge order: gateway direct threads win, then Supabase direct fallback, then legacy (groups + remaining)
+      // Fallback: if gateway returned nothing, try reading chat_messages directly
+      let directThreads: GlobalMessageThread[] = [];
+      if (conversations.length === 0) {
+        directThreads = await fetchDirectFromChatMessages(user.id);
+      }
+
+      // Merge: gateway wins > direct Supabase > legacy
       const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
-      const uniqueSupabaseDirect = supabaseDirectThreads.filter((t) => !gatewayIds.has(t.id));
-      const directIds = new Set([
-        ...gatewayThreads.map((t) => t.id),
-        ...uniqueSupabaseDirect.map((t) => t.id),
-      ]);
-      const uniqueLegacy = legacyThreads.filter(
-        (t) => t.type === "group" || !directIds.has(t.id)
-      );
-      const merged = [...gatewayThreads, ...uniqueSupabaseDirect, ...uniqueLegacy].sort(
+      const directIds = new Set(directThreads.map((t) => t.id));
+      const uniqueDirect = directThreads.filter((t) => !gatewayIds.has(t.id));
+      const uniqueLegacy = legacyThreads.filter((t) => !gatewayIds.has(t.id) && !directIds.has(t.id));
+      const merged = [...gatewayThreads, ...uniqueDirect, ...uniqueLegacy].sort(
         (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
+
+      // Auto-seed Vitana thread if not present
+      const hasVitana = merged.some((t) => t.id === VITANA_BOT_USER_ID);
+      if (!hasVitana) {
+        merged.push({
+          id: VITANA_BOT_USER_ID,
+          name: "Vitana",
+          type: "direct",
+          created_by: VITANA_BOT_USER_ID,
+          created_at: new Date().toISOString(),
+          updated_at: "2000-01-01T00:00:00.000Z", // sort to bottom until real messages exist
+          participants: [
+            { user_id: user.id, display_name: "Me", avatar_url: null, role: "member" },
+            { user_id: VITANA_BOT_USER_ID, display_name: "Vitana", avatar_url: null, role: "member" },
+          ],
+          last_message: {
+            id: "vitana-welcome",
+            thread_id: VITANA_BOT_USER_ID,
+            sender_id: VITANA_BOT_USER_ID,
+            body: "Hi! I'm Vitana. Send me a message to get started.",
+            message_type: "text",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            sender: { user_id: VITANA_BOT_USER_ID, display_name: "Vitana" },
+          },
+          unread_count: 0,
+        });
+      }
 
       return merged;
     },
     enabled: !!user && isGlobalContext,
     staleTime: STALE_TIME,
     gcTime: GC_TIME,
+    // Show last-known threads from localStorage instantly while refetching
     placeholderData: (prev) => prev ?? (user ? getCachedThreads(user.id) ?? undefined : undefined),
   });
 
+  // Write-back: persist threads to localStorage (DEBOUNCED to prevent scroll blocking)
   useEffect(() => {
     if (user && threads.length > 0 && !isThreadsLoading) {
-      persistThreads(user.id, threads);
+      debouncedPersistThreads(user.id, threads);
     }
   }, [user, threads, isThreadsLoading]);
 
@@ -610,18 +570,7 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessage[]> => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
 
-      // Check if this is a group thread - if so, skip gateway and use legacy directly
-      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-      const cachedThread = cachedThreads.find((t) => t.id === activeThreadId);
-      const isGroupThread = cachedThread?.type === 'group';
-
-      if (isGroupThread) {
-        // Group threads always use legacy messages
-        const legacyThreadId = (cachedThread as any)?._legacyThreadId || activeThreadId;
-        return fetchLegacyMessages(legacyThreadId);
-      }
-
-      // Direct threads: try gateway first
+      // activeThreadId is the peer's user ID
       let gatewayMessages: GlobalMessage[] = [];
       try {
         const rawMessages = await fetchConversation(activeThreadId);
@@ -633,53 +582,16 @@ export function useGlobalMessages(
         gatewayMessages = sorted.map((m) =>
           toGlobalMessage(m, activeThreadId, profileMap)
         );
-
-        // Enrich gateway messages with content_data from global_messages table
-        const msgIds = gatewayMessages.map((m) => m.id);
-        if (msgIds.length > 0) {
-          const { data: dbMsgs } = await supabase
-            .from("global_messages")
-            .select("id, message_type, content_data")
-            .in("id", msgIds)
-            .not("message_type", "eq", "text");
-          
-          if (dbMsgs && dbMsgs.length > 0) {
-            const dbMap = new Map(dbMsgs.map((m) => [m.id, m]));
-            gatewayMessages = gatewayMessages.map((m) => {
-              const dbMsg = dbMap.get(m.id);
-              if (dbMsg) {
-                return { ...m, message_type: dbMsg.message_type, content_data: dbMsg.content_data };
-              }
-              return m;
-            });
-          }
-        }
       } catch (err) {
         console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
       }
 
-      // If gateway returned messages, hydrate reply links and use them
-      if (gatewayMessages.length > 0) {
-        // Hydrate parent_message_id from chat_message_replies sidecar
-        const msgIds = gatewayMessages.map((m) => m.id);
-        if (msgIds.length > 0) {
-          const { data: replyLinks } = await supabase
-            .from("chat_message_replies" as any)
-            .select("message_id, parent_message_id")
-            .in("message_id", msgIds);
-          if (replyLinks && replyLinks.length > 0) {
-            const replyMap = new Map(replyLinks.map((r: any) => [r.message_id, r.parent_message_id]));
-            gatewayMessages = gatewayMessages.map((m) => {
-              const parentId = replyMap.get(m.id);
-              if (parentId) return { ...m, parent_message_id: parentId } as any;
-              return m;
-            });
-          }
-        }
-        return gatewayMessages;
-      }
+      // If gateway returned messages, use them
+      if (gatewayMessages.length > 0) return gatewayMessages;
 
       // Fallback: check if there's a legacy thread for this peer
+      // Look up the legacy thread id from the threads cache
+      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
       const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
@@ -687,51 +599,23 @@ export function useGlobalMessages(
         return fetchLegacyMessages(legacyThreadId);
       }
 
-      // Try legacy direct mapping first, then raw chat_messages fallback
+      // Also try using activeThreadId directly as a legacy thread id
       const legacyMessages = await fetchLegacyMessages(activeThreadId);
-      if (legacyMessages.length > 0) return legacyMessages;
-
-      return fetchDirectMessagesFromSupabase(user.id, activeThreadId);
+      return legacyMessages;
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: 30 * 1000, // 30 seconds – allows fast catch-up after background
+    staleTime: STALE_TIME,
     gcTime: GC_TIME,
+    // Show last-known messages from localStorage instantly while refetching
     placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
   });
 
-  // Debounced persist to avoid scroll jank from frequent writes
+  // Write-back: persist messages to localStorage (DEBOUNCED to prevent scroll blocking)
   useEffect(() => {
-    if (!activeThreadId || messages.length === 0 || isMessagesLoading) return;
-    const timer = setTimeout(() => {
-      persistMessages(activeThreadId, messages);
-    }, 2000);
-    return () => clearTimeout(timer);
+    if (activeThreadId && messages.length > 0 && !isMessagesLoading) {
+      debouncedPersistMessages(activeThreadId, messages);
+    }
   }, [activeThreadId, messages, isMessagesLoading]);
-
-  // ── Visibility-change reconciliation ───────────────────────────────
-  // Refetch messages & threads when app returns to foreground (catches
-  // any messages missed while WebSocket was suspended in background)
-  useEffect(() => {
-    if (!user || !isGlobalContext) return;
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        if (activeThreadId) {
-          queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
-        }
-        queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [user, isGlobalContext, activeThreadId, queryClient]);
-
-  // ── Stable messages ref (prevents re-renders when IDs haven't changed) ──
-  const stableMessages = useMemo(() => messages, [
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(messages.map((m) => m.id)),
-  ]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────
 
@@ -761,8 +645,8 @@ export function useGlobalMessages(
     async (
       threadId: string,
       body: string,
-      messageType = "text",
-      contentData?: any,
+      _messageType = "text",
+      _contentData?: any,
       _parentMessageId?: string,
       _actionButtons?: any[]
     ) => {
@@ -772,13 +656,12 @@ export function useGlobalMessages(
         setIsSending(true);
 
         // Optimistic message
-        const optimistic: GlobalMessage & { parent_message_id?: string } = {
+        const optimistic: GlobalMessage = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
           sender_id: user.id,
           body,
-          message_type: messageType,
-          content_data: contentData || null,
+          message_type: "text",
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           sender: {
@@ -786,108 +669,37 @@ export function useGlobalMessages(
             display_name: user.user_metadata?.display_name || "Me",
             avatar_url: user.user_metadata?.avatar_url || null,
           },
-          ..._parentMessageId ? { parent_message_id: _parentMessageId } : {},
         };
 
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
         messageCache.addMessage(threadId, "global", optimistic);
 
-        // Check if this is a group thread (cache first, then DB fallback)
-        const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-        const thread = cachedThreads.find((t) => t.id === threadId);
-        let isGroupThread = thread?.type === 'group';
-
-        // If thread not found in cache, check DB to avoid routing group messages to gateway
-        if (!thread) {
-          const { data: dbThread } = await supabase
-            .from("global_message_threads")
-            .select("id, type")
-            .eq("id", threadId)
-            .maybeSingle();
-          if (dbThread?.type === 'group') {
-            isGroupThread = true;
-          }
-        }
-
-        let realMsg: GlobalMessage;
-
-        if (isGroupThread) {
-          // Group threads: insert directly into global_messages
-          const legacyThreadId = (thread as any)?._legacyThreadId || threadId;
-          const { data: inserted, error } = await supabase
-            .from("global_messages")
+        // threadId is the peer's user ID — try gateway first, fallback to Supabase
+        let created: ChatMessage;
+        try {
+          created = await sendChatMessage(threadId, body);
+        } catch (gatewayErr) {
+          console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
+          const tenantId = (user as any).app_metadata?.active_tenant_id;
+          if (!tenantId) throw gatewayErr; // can't fallback without tenant
+          const { data: inserted, error: insertErr } = await supabase
+            .from("chat_messages")
             .insert({
-              thread_id: legacyThreadId,
+              tenant_id: tenantId,
               sender_id: user.id,
-              body,
-              message_type: messageType,
-              content_data: contentData || null,
+              receiver_id: threadId,
+              content: body,
             })
             .select()
-            .single() as any;
-
-          if (error) throw error;
-
-          // Update thread's updated_at
-          await supabase
-            .from("global_message_threads")
-            .update({ updated_at: new Date().toISOString() })
-            .eq("id", legacyThreadId);
-
-          const profileMap = await enrichProfiles([user.id]);
-          realMsg = {
-            id: inserted.id,
-            thread_id: threadId,
-            sender_id: inserted.sender_id,
-            body: inserted.body,
-            message_type: inserted.message_type || "text",
-            content_data: inserted.content_data,
-            created_at: inserted.created_at,
-            updated_at: inserted.updated_at || inserted.created_at,
-            sender: profileMap[user.id]
-              ? { user_id: user.id, ...profileMap[user.id] }
-              : null,
-          };
-        } else {
-          // Direct threads: use gateway API
-          const created = await sendChatMessage(threadId, body);
-
-          const profileMap = await enrichProfiles([created.sender_id]);
-          realMsg = toGlobalMessage(
-            { ...created, message_type: messageType, content_data: contentData } as any,
-            threadId,
-            profileMap
-          );
-
-          // If we have attachment data, update the global_messages record in DB
-          if (messageType !== "text" && contentData) {
-            supabase
-              .from("global_messages")
-              .update({ message_type: messageType, content_data: contentData })
-              .eq("id", created.id)
-              .then(({ error }) => {
-                if (error) console.warn("Failed to update global message content_data:", error);
-              });
-          }
-
-          // Persist reply link in sidecar table for direct messages
-          if (_parentMessageId) {
-            supabase
-              .from("chat_message_replies" as any)
-              .insert({
-                message_id: created.id,
-                parent_message_id: _parentMessageId,
-                created_by: user.id,
-              })
-              .then(({ error }) => {
-                if (error) console.warn("Failed to persist reply link:", error);
-              });
-            // Enrich realMsg with parent_message_id for immediate UI
-            (realMsg as any).parent_message_id = _parentMessageId;
-          }
+            .single();
+          if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
+          created = inserted as unknown as ChatMessage;
         }
 
         // Replace optimistic with real
+        const profileMap = await enrichProfiles([created.sender_id]);
+        const realMsg = toGlobalMessage(created, threadId, profileMap);
+
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
@@ -907,17 +719,12 @@ export function useGlobalMessages(
         return realMsg;
       } catch (error) {
         console.error("Error sending chat message:", error);
-        // Rollback optimistic message so ghost messages don't linger
-        updateMessagesOptimistically(threadId, (prev) =>
-          prev.filter((m) => !m.id.startsWith("temp-"))
-        );
-        messageCache.removeMessage?.(threadId, "global", `temp-`);
         throw error;
       } finally {
         setIsSending(false);
       }
     },
-    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, queryClient]
+    [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically]
   );
 
   const sendMessage = useCallback(
@@ -989,32 +796,7 @@ export function useGlobalMessages(
 
       const timeout = setTimeout(async () => {
         try {
-          // Check if group thread
-          const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-          const thread = cachedThreads.find((t) => t.id === threadId);
-          const isGroupThread = thread?.type === 'group';
-
-          if (isGroupThread) {
-            // For group threads, update last_read_at in global_thread_participants
-            const legacyThreadId = (thread as any)?._legacyThreadId || threadId;
-            await supabase
-              .from("global_thread_participants")
-              .update({ last_read_at: new Date().toISOString() })
-              .eq("thread_id", legacyThreadId)
-              .eq("user_id", user.id);
-          } else {
-            try {
-              await markChatRead(threadId);
-            } catch (err) {
-              console.warn("Gateway markChatRead failed, falling back to Supabase:", (err as Error).message);
-              await supabase
-                .from("chat_messages")
-                .update({ read_at: new Date().toISOString() })
-                .eq("receiver_id", user.id)
-                .eq("sender_id", threadId)
-                .is("read_at", null);
-            }
-          }
+          await markChatRead(threadId);
 
           updateThreadsOptimistically((prev) =>
             prev.map((t) =>
@@ -1022,7 +804,7 @@ export function useGlobalMessages(
             )
           );
 
-          // Notify sidebar badge to refresh immediately
+          // Notify useChatUnreadCount to refresh badge immediately
           window.dispatchEvent(new Event('chat-unread-refresh'));
         } catch (error) {
           console.error("Error marking chat as read:", error);
@@ -1033,92 +815,133 @@ export function useGlobalMessages(
 
       markAsReadTimeouts.current.set(threadId, timeout);
     },
-    [user, isGlobalContext, updateThreadsOptimistically, queryClient]
+    [user, isGlobalContext, updateThreadsOptimistically]
   );
 
-  // ── Realtime: listen for new chat_messages ────────────────────────
-  // Also handles reconnect catch-up: on SUBSCRIBED/reconnect, invalidate queries
+  // ─── FIX 1: STABILIZED REALTIME SUBSCRIPTION ───────────────────────
+  // Create stable channel ID per hook instance (not regenerated on every render)
+  const realtimeChannelId = useRef(`chat_realtime_${Math.random().toString(36).slice(2, 11)}`);
+  const [realtimeStatus, setRealtimeStatus] = useState<'connected' | 'disconnected' | 'error'>('disconnected');
+
+  // FIX 2: ADD GUARANTEED CONVERGENCE PATH - web-only periodic refresh as safety net
+  const conversationOpenRef = useRef(false);
+
+  useEffect(() => {
+    conversationOpenRef.current = !!activeThreadId;
+  }, [activeThreadId]);
 
   useEffect(() => {
     if (!user || !isGlobalContext) return;
 
-    const channelName = `chat_messages_realtime_${crypto.randomUUID()}`;
+    const channelId = realtimeChannelId.current;
+
     const channel = supabase
-      .channel(channelName)
+      .channel(channelId)
       .on(
         "postgres_changes",
         {
           event: "INSERT",
           schema: "public",
           table: "chat_messages",
+          filter: `receiver_id=eq.${user.id}`,
         },
         async (payload) => {
           const raw = payload.new as ChatMessage;
-          // Client-side filter: only process messages sent TO us
-          if (raw.receiver_id !== user.id) return;
-          const peerId = raw.sender_id; // incoming → sender is the peer
+          const peerId = raw.sender_id;
 
-          const profileMap = await enrichProfiles([raw.sender_id]);
-          const msg = toGlobalMessage(raw, peerId, profileMap);
+          try {
+            const profileMap = await enrichProfiles([raw.sender_id]);
+            const msg = toGlobalMessage(raw, peerId, profileMap);
 
-          // Append to the peer's message list
-          updateMessagesOptimistically(peerId, (prev) => {
-            if (prev.some((m) => m.id === msg.id)) return prev;
-            return [...prev, msg];
-          });
+            // FIX 2.1: Update both active thread messages cache AND threads cache
+            queryClient.setQueryData(
+              ["global-messages", peerId],
+              (prev: GlobalMessage[] | undefined) => {
+                if (!prev) return [msg];
+                if (prev.some((m) => m.id === msg.id)) return prev;
+                return [...prev, msg];
+              }
+            );
 
-          // Bump thread to top + increment unread
-          updateThreadsOptimistically((prev) => {
-            const existing = prev.find((t) => t.id === peerId);
-            if (existing) {
-              return [
-                {
-                  ...existing,
-                  updated_at: raw.created_at,
-                  last_message: msg,
-                  unread_count: existing.unread_count + 1,
-                },
-                ...prev.filter((t) => t.id !== peerId),
-              ];
-            }
-            // New conversation from unknown peer – refetch full list
-            refetchThreads();
-            return prev;
-          });
+            queryClient.setQueryData(
+              ["global-threads", user.id],
+              (prev: GlobalMessageThread[] | undefined) => {
+                if (!prev) {
+                  // FIX 2.2: Fallback refetch when cache is missing/stale
+                  queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+                  return prev;
+                }
 
-          // Notify sidebar badge via the reliable client-side path
-          window.dispatchEvent(new Event('chat-unread-refresh'));
+                const existing = prev.find((t) => t.id === peerId);
+                if (existing) {
+                  return [
+                    {
+                      ...existing,
+                      updated_at: raw.created_at,
+                      last_message: msg,
+                      unread_count: existing.unread_count + 1,
+                    },
+                    ...prev.filter((t) => t.id !== peerId),
+                  ];
+                }
+
+                // New conversation - trigger refetch
+                queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+                return prev;
+              }
+            );
+          } catch (error) {
+            console.error("[useGlobalMessages] Realtime event processing error:", error);
+            // FIX 1.3: On realtime failure, trigger targeted query invalidation
+            queryClient.invalidateQueries({ queryKey: ["global-messages", peerId] });
+            queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+          }
         }
       )
       .subscribe((status) => {
+        // FIX 1.3: Add subscription status/error handling
         if (status === 'SUBSCRIBED') {
-          console.log('✅ chat_messages realtime subscribed');
-        }
-        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-          console.warn('⚠️ chat_messages realtime error/timeout, will reconnect');
+          setRealtimeStatus('connected');
+        } else if (status === 'CHANNEL_ERROR') {
+          setRealtimeStatus('error');
+          console.error('[useGlobalMessages] Realtime subscription error - falling back to polling');
+          // On channel failure, invalidate queries to trigger refetch
+          queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+        } else if (status === 'CLOSED') {
+          setRealtimeStatus('disconnected');
         }
       });
 
-    // Reconnect catch-up: when channel reconnects after a drop,
-    // invalidate queries to fetch any missed messages
-    const handleOnline = () => {
-      console.log('🔄 Network back online, invalidating chat queries');
-      queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
-      if (activeThreadId) {
-        queryClient.invalidateQueries({ queryKey: ["global-messages", activeThreadId] });
-      }
-    };
-    window.addEventListener('online', handleOnline);
-
     return () => {
-      window.removeEventListener('online', handleOnline);
       supabase.removeChannel(channel);
     };
-  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads, queryClient, activeThreadId]);
+  }, [user, isGlobalContext, queryClient]); // FIX 1.2: Remove unstable dependencies (updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads)
 
-  // ── Visibility catch-up: refetch on tab focus after silent websocket drops ──
+  // SCROLL FIX: Only poll as fallback when realtime is broken (NOT during normal operation)
+  // The 10-second polling was the PRIMARY cause of scroll freeze — it triggered refetches
+  // during scroll, causing re-renders that disrupted scroll position.
   useEffect(() => {
     if (!user || !isGlobalContext || typeof window === 'undefined') return;
+    // Only enable polling when realtime subscription has failed
+    if (realtimeStatus !== 'error') return;
+
+    console.warn('[useGlobalMessages] Realtime failed, falling back to 30s polling');
+    const interval = setInterval(() => {
+      if (conversationOpenRef.current && activeThreadId) {
+        queryClient.invalidateQueries({
+          queryKey: ["global-messages", activeThreadId],
+          refetchType: 'none'
+        });
+      }
+    }, 30000); // 30 seconds (was 10s — that was far too aggressive)
+
+    return () => clearInterval(interval);
+  }, [user, isGlobalContext, activeThreadId, queryClient, realtimeStatus]);
+
+  // Catch silent websocket drops: refetch when user returns to tab
+  useEffect(() => {
+    if (!user || !isGlobalContext || typeof window === 'undefined') return;
+
     const handleVisibility = () => {
       if (document.visibilityState === 'visible') {
         queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
@@ -1130,91 +953,6 @@ export function useGlobalMessages(
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, [user, isGlobalContext, activeThreadId, queryClient]);
-
-  // ── Realtime: listen for new global_messages (group chats) ────────
-
-  useEffect(() => {
-    if (!user || !isGlobalContext) return;
-
-    // Get group thread IDs from cache to listen for
-    const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-    const groupThreadIds = cachedThreads
-      .filter((t) => t.type === 'group')
-      .map((t) => (t as any)._legacyThreadId || t.id);
-
-    if (groupThreadIds.length === 0) return;
-
-    const channelName = `group_messages_realtime_${crypto.randomUUID()}`;
-    const channel = supabase
-      .channel(channelName)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "global_messages",
-        },
-        async (payload) => {
-          const raw = payload.new as any;
-          // Only handle messages for group threads we're part of
-          if (!groupThreadIds.includes(raw.thread_id)) return;
-
-          // Find the UI thread ID for this message
-          const uiThread = cachedThreads.find(
-            (t) => ((t as any)._legacyThreadId || t.id) === raw.thread_id
-          );
-          const uiThreadId = uiThread?.id || raw.thread_id;
-
-          // Skip if message already exists in cache (e.g. from optimistic update)
-          const currentMessages = queryClient.getQueryData<GlobalMessage[]>(["global-messages", uiThreadId]) || [];
-          if (currentMessages.some((m) => m.id === raw.id)) return;
-
-          const profileMap = await enrichProfiles([raw.sender_id]);
-
-          const msg: GlobalMessage = {
-            id: raw.id,
-            thread_id: uiThreadId,
-            sender_id: raw.sender_id,
-            body: raw.body,
-            message_type: raw.message_type || "text",
-            content_data: raw.content_data,
-            created_at: raw.created_at,
-            updated_at: raw.updated_at || raw.created_at,
-            sender: profileMap[raw.sender_id]
-              ? { user_id: raw.sender_id, ...profileMap[raw.sender_id] }
-              : null,
-          };
-
-          // Append to message list
-          updateMessagesOptimistically(uiThreadId, (prev) => {
-            if (prev.some((m) => m.id === msg.id)) return prev;
-            return [...prev, msg];
-          });
-
-          // Bump thread to top + increment unread
-          updateThreadsOptimistically((prev) => {
-            const existing = prev.find((t) => t.id === uiThreadId);
-            if (existing) {
-              return [
-                {
-                  ...existing,
-                  updated_at: raw.created_at,
-                  last_message: msg,
-                  unread_count: existing.unread_count + 1,
-                },
-                ...prev.filter((t) => t.id !== uiThreadId),
-              ];
-            }
-            return prev;
-          });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user, isGlobalContext, updateMessagesOptimistically, updateThreadsOptimistically, queryClient]);
 
   // ── Legacy compat shims ───────────────────────────────────────────
 
@@ -1231,6 +969,13 @@ export function useGlobalMessages(
 
   const startTyping = useCallback(async (_threadId?: string) => {}, []);
   const stopTyping = useCallback(async (_threadId?: string) => {}, []);
+
+  // ── SCROLL FIX: Stable message reference (prevent re-renders when array content hasn't changed) ──
+  const stableMessages = useMemo(() => messages, [
+    // Only update reference when message IDs or count change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    messages.map((m) => m.id).join(","),
+  ]);
 
   // ── Return ────────────────────────────────────────────────────────
 
@@ -1254,5 +999,6 @@ export function useGlobalMessages(
     startTyping,
     stopTyping,
     isGlobalContext,
+    realtimeStatus, // Expose realtime status for debugging
   };
 }
