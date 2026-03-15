@@ -159,7 +159,8 @@ function cleanAIResponse(text: string): string {
     .replace(/```[\s\S]*?```/g, '')
     .replace(/`([^`]+)`/g, '$1')
     .replace(/^>\s+/gm, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Preserve real URLs when model sends markdown links
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '$1 $2')
     .replace(/^\s*[-*+]\s+/gm, '')
     .replace(/^\s*\d+\.\s+/gm, '');
   
@@ -198,6 +199,86 @@ function cleanAIResponse(text: string): string {
   
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
   return cleaned;
+}
+
+type LinkCandidate = {
+  url: string;
+  title?: string;
+  location?: string;
+};
+
+const LINK_REQUEST_REGEX = /(\blink\b|\burl\b|\bhref\b|schick\s+mir\s+.*\blink\b|send\s+me\s+.*\blink\b|sende\s+.*\blink\b)/i;
+
+function stripTrailingUrlPunctuation(url: string): string {
+  return url.replace(/[.,!?;:)\]}]+$/g, '');
+}
+
+function extractUrlsFromText(text: string): string[] {
+  if (!text) return [];
+  const urls = new Set<string>();
+
+  const markdownLinkRegex = /\[[^\]]+\]\((https?:\/\/[^)\s]+)\)/gi;
+  for (const match of text.matchAll(markdownLinkRegex)) {
+    if (match[1]) urls.add(stripTrailingUrlPunctuation(match[1]));
+  }
+
+  const plainUrlRegex = /https?:\/\/[^\s<>"]+/gi;
+  for (const match of text.matchAll(plainUrlRegex)) {
+    if (match[0]) urls.add(stripTrailingUrlPunctuation(match[0]));
+  }
+
+  return Array.from(urls).filter(Boolean);
+}
+
+function ensureUrlsPreserved(sourceText: string, transformedText: string): string {
+  const sourceUrls = extractUrlsFromText(sourceText);
+  if (sourceUrls.length === 0) return transformedText;
+
+  const missingUrls = sourceUrls.filter((url) => !transformedText.includes(url));
+  if (missingUrls.length === 0) return transformedText;
+
+  const spacer = transformedText.trim().length > 0 ? '\n' : '';
+  return `${transformedText}${spacer}${missingUrls.join('\n')}`.trim();
+}
+
+function selectBestFallbackLink(userMessage: string, candidates: LinkCandidate[]): string | null {
+  if (candidates.length === 0) return null;
+
+  const query = userMessage.toLowerCase();
+  const direct = candidates.find((candidate) => {
+    const title = candidate.title?.toLowerCase() || '';
+    const location = candidate.location?.toLowerCase() || '';
+    return (title && query.includes(title)) || (location && query.includes(location));
+  });
+
+  if (direct?.url) return direct.url;
+
+  const tokens = query
+    .split(/[^\p{L}\p{N}]+/u)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 4);
+
+  const scored = candidates
+    .map((candidate) => {
+      const haystack = `${candidate.title || ''} ${candidate.location || ''}`.toLowerCase();
+      const score = tokens.reduce((sum, token) => sum + (haystack.includes(token) ? 1 : 0), 0);
+      return { candidate, score };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  if ((scored[0]?.score || 0) > 0) return scored[0].candidate.url;
+  return candidates[0]?.url || null;
+}
+
+function enforceLinkIfRequested(userMessage: string, responseText: string, candidates: LinkCandidate[]): string {
+  if (!LINK_REQUEST_REGEX.test(userMessage)) return responseText;
+  if (extractUrlsFromText(responseText).length > 0) return responseText;
+
+  const fallbackLink = selectBestFallbackLink(userMessage, candidates);
+  if (!fallbackLink) return responseText;
+
+  const trimmed = responseText.trim();
+  return trimmed.length > 0 ? `${trimmed} ${fallbackLink}` : fallbackLink;
 }
 
 function normalizeLanguage(languageCode: string): string {
@@ -722,6 +803,7 @@ serve(async (req) => {
 
     const basePrompt = SYSTEM_PROMPTS[agentType as keyof typeof SYSTEM_PROMPTS] || SYSTEM_PROMPTS.health;
     let systemMessage = basePrompt;
+    const contextLinkCandidates: LinkCandidate[] = [];
     
     // === DETERMINISTIC COUNT QUESTION DETECTION ===
     const countQuestionPattern = /(how many|total|count|across.*memory garden|number of.*entr)/i;
@@ -907,6 +989,7 @@ serve(async (req) => {
             const link = e.slug
               ? `https://e.vitanaland.com/events/${e.slug}`
               : `https://e.vitanaland.com/pub/events/${e.id}`;
+            contextLinkCandidates.push({ url: link, title: e.title, location: e.location });
             systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''} → ${link}\n`;
           });
         }
@@ -919,6 +1002,7 @@ serve(async (req) => {
             const link = e.slug
               ? `https://e.vitanaland.com/events/${e.slug}`
               : `https://e.vitanaland.com/pub/events/${e.id}`;
+            contextLinkCandidates.push({ url: link, title: e.title });
             systemMessage += `  - ${e.title} - ${date} → ${link}\n`;
           });
         }
@@ -941,6 +1025,7 @@ serve(async (req) => {
             const status = m.conversationStarted ? '💬 Connected' : '👋 Not yet contacted';
             const interests = m.sharedInterests?.length > 0 ? ` - Shared: ${m.sharedInterests.slice(0, 2).join(', ')}` : '';
             const matchLink = `https://e.vitanaland.com/matches/${m.id}`;
+            contextLinkCandidates.push({ url: matchLink, title: m.displayName });
             systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status} → ${matchLink}\n`;
           });
           
@@ -1253,8 +1338,12 @@ serve(async (req) => {
 
             console.log(`[ai-chat] RULE: Translation complete (${translatedText.length} chars)`);
             
-            // PHASE 3: Re-stream translated text with TTS
-            fullText = translatedText;  // Replace with translated version
+            // PHASE 3: Re-stream translated text with deterministic URL preservation
+            fullText = enforceLinkIfRequested(
+              userMessage,
+              ensureUrlsPreserved(fullText, translatedText),
+              contextLinkCandidates
+            );
             const sentences = splitIntoSentences(fullText);
             
             for (const sentence of sentences) {
@@ -1277,7 +1366,11 @@ serve(async (req) => {
             
             
             // Store complete AI message (rule-based, translated)
-            const cleanedFullText = cleanAIResponse(fullText);
+            const cleanedFullText = enforceLinkIfRequested(
+              userMessage,
+              ensureUrlsPreserved(fullText, cleanAIResponse(fullText)),
+              contextLinkCandidates
+            );
             supabaseClient.from('ai_messages').insert({
               conversation_id: conversationId,
               role: 'assistant',
@@ -1400,7 +1493,11 @@ serve(async (req) => {
 
     const aiData = await aiResponse.json();
     const rawAiText = aiData.choices[0].message.content;
-    const aiText = cleanAIResponse(rawAiText);
+    const aiText = enforceLinkIfRequested(
+      userMessage,
+      ensureUrlsPreserved(rawAiText, cleanAIResponse(rawAiText)),
+      contextLinkCandidates
+    );
 
     supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
