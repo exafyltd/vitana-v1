@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 import { messageCache } from "./messageCache";
+import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import {
   persistThreads,
   getCachedThreads,
