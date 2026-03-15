@@ -1338,8 +1338,12 @@ serve(async (req) => {
 
             console.log(`[ai-chat] RULE: Translation complete (${translatedText.length} chars)`);
             
-            // PHASE 3: Re-stream translated text with TTS
-            fullText = translatedText;  // Replace with translated version
+            // PHASE 3: Re-stream translated text with deterministic URL preservation
+            fullText = enforceLinkIfRequested(
+              userMessage,
+              ensureUrlsPreserved(fullText, translatedText),
+              contextLinkCandidates
+            );
             const sentences = splitIntoSentences(fullText);
             
             for (const sentence of sentences) {
