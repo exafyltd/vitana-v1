@@ -585,6 +585,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     community: {
       upcomingEvents: communityEvents.map((e: any) => ({
         id: e.id,
+        slug: e.slug,
         title: e.title,
         description: e.description,
         type: e.type,
@@ -604,6 +605,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
           const event = communityEvents.find((e: any) => e.id === p.event_id);
           return event ? {
             id: event.id,
+            slug: event.slug,
             title: event.title,
             participantCount: event.participant_count || 0,
             startTime: event.start_time,

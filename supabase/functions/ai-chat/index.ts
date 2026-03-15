@@ -978,6 +978,7 @@ serve(async (req) => {
         systemMessage += '5. 🎯 Nudging them toward community engagement (events, meetups, groups)\n';
         systemMessage += '6. 🏆 Celebrating their community participation and milestones\n';
         systemMessage += '7. 💡 Making personalized suggestions like "Want me to RSVP you?" or "Should I help you connect?"\n';
+        systemMessage += '8. 🔗 When users ask about an event or match, ALWAYS include the link from the context above. Share it directly — never say you cannot find the link.\n';
       }
       
       // === LONG-TERM MEMORY (Unified Semantic Search Results) ===
