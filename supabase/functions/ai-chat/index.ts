@@ -940,7 +940,8 @@ serve(async (req) => {
           topMatches.forEach((m: any) => {
             const status = m.conversationStarted ? '💬 Connected' : '👋 Not yet contacted';
             const interests = m.sharedInterests?.length > 0 ? ` - Shared: ${m.sharedInterests.slice(0, 2).join(', ')}` : '';
-            systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status}\n`;
+            const matchLink = `https://e.vitanaland.com/matches/${m.id}`;
+            systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status} → ${matchLink}\n`;
           });
           
           const uncontacted = community.activeMatches.filter((m: any) => !m.conversationStarted);
