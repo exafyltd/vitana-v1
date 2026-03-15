@@ -500,7 +500,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <p className="text-sm text-muted-foreground mb-2">
                 {message.content_data?.provider_name}
               </p>
-              <p className="text-sm mb-3">{message.body}</p>
+              {renderLinkedText(message.body, "text-sm mb-3")}
               {message.action_buttons && (
                 <div className="flex gap-2">
                   {message.action_buttons.map((button: any, index: number) => (
