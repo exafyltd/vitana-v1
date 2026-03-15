@@ -1,29 +1,24 @@
-## iOS/Appilix Digital Purchase Restriction — Implemented
+## Vitana AI Chat Link Sharing — Implemented
 
-### Kill Switch
-`isIAPRestricted()` in `src/lib/appilix.ts` — returns `isAppilix()`. Stays active on iOS until a compliant IAP solution is built.
+### Changes (VTID: Enable Vitana to Share Event & Match Links)
 
-### Files Changed (8)
-1. `src/lib/appilix.ts` — Added `isIAPRestricted()` export
-2. `src/components/ui/utility-action-button.tsx` — Gift Voucher hidden when restricted
-3. `src/components/wallet/mobile/MobileWalletQuickActions.tsx` — Add Funds & Buy Credits buttons filtered out
-4. `src/components/wallet/popups/AddFundsPopup.tsx` — Returns null when restricted
-5. `src/components/wallet/popups/BuyCreditsPopup.tsx` — Returns null when restricted
-6. `src/components/wallet/popups/BuyTokensPopup.tsx` — Returns null when restricted
-7. `src/components/liverooms/CreateLiveRoomDialog.tsx` — Paid room option hidden, forced free-only
-8. `src/components/liverooms/PurchaseRoomAccessDialog.tsx` — Returns null when restricted
+| # | File | Change |
+|---|------|--------|
+| 1 | `fetch-user-context/index.ts` | Added `slug` to event SELECT query and mapped output |
+| 2 | `ai-chat/index.ts` | Event links: `e.vitanaland.com/events/{slug}` or `/pub/events/{id}` |
+| 3 | `ai-chat/index.ts` | Added instruction #8: always include links when discussing events/matches |
+| 4 | `ai-chat/index.ts` | Match links: `e.vitanaland.com/matches/{id}` via OG proxy |
 
-### iOS Purchase Flow Status
-| Flow | Status | Reason |
-|------|--------|--------|
-| Gift Voucher | HIDDEN | Digital good |
-| Add Funds | HIDDEN | Digital currency |
-| Buy Credits | HIDDEN | Digital currency |
-| Buy VTNA Tokens | HIDDEN | Digital currency |
-| Paid Live Room creation | HIDDEN (free-only) | Digital access |
-| Paid Room access | HIDDEN | Digital access |
-| Event Tickets | VISIBLE | Real-world physical events (exempt) |
-| Service Bookings | VISIBLE | Real-world services (exempt) |
+### Link Format
+- Events (slugged): `https://e.vitanaland.com/events/{slug}`
+- Events (no slug): `https://e.vitanaland.com/pub/events/{id}`
+- Matches: `https://e.vitanaland.com/matches/{id}`
 
-### Post-Approval
-Restrictions remain active on iOS. Re-enabling requires implementing Apple IAP or explicitly changing `isIAPRestricted()`.
+All links use the e.vitanaland.com OG proxy infrastructure (Cloudflare Worker → OG meta → redirect to app).
+
+### Deploy
+Both edge functions (`fetch-user-context`, `ai-chat`) need manual CLI deploy:
+```
+supabase functions deploy fetch-user-context --no-verify-jwt
+supabase functions deploy ai-chat --no-verify-jwt
+```

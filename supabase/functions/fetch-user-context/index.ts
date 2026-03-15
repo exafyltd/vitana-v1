@@ -284,7 +284,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     
     // Upcoming community events (next 30 days)
     supabase.from('global_community_events')
-      .select('id, title, description, type, start_time, end_time, location, virtual_link, participant_count, max_participants, created_by, category, image_url')
+      .select('id, title, description, type, start_time, end_time, location, virtual_link, participant_count, max_participants, created_by, category, image_url, slug')
       .gte('start_time', now.toISOString())
       .lte('start_time', new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString())
       .order('start_time', { ascending: true })
@@ -585,6 +585,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
     community: {
       upcomingEvents: communityEvents.map((e: any) => ({
         id: e.id,
+        slug: e.slug,
         title: e.title,
         description: e.description,
         type: e.type,
@@ -604,6 +605,7 @@ async function fetchUserContext(supabase: any, userId: string): Promise<UserCont
           const event = communityEvents.find((e: any) => e.id === p.event_id);
           return event ? {
             id: event.id,
+            slug: event.slug,
             title: event.title,
             participantCount: event.participant_count || 0,
             startTime: event.start_time,
