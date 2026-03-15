@@ -9,11 +9,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-const GATEWAY_BASE =
-  (import.meta as any).env?.VITE_GATEWAY_URL ||
-  (import.meta as any).env?.VITE_GATEWAY_BASE
-    ? `${(import.meta as any).env.VITE_GATEWAY_BASE}/api/v1`
-    : "/api/v1";
+const GATEWAY_BASE = "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
 // ── Types ─────────────────────────────────────────────────────────────
 
