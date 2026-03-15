@@ -989,6 +989,7 @@ serve(async (req) => {
             const link = e.slug
               ? `https://e.vitanaland.com/events/${e.slug}`
               : `https://e.vitanaland.com/pub/events/${e.id}`;
+            contextLinkCandidates.push({ url: link, title: e.title, location: e.location });
             systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''} → ${link}\n`;
           });
         }
