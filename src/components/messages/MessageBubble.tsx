@@ -470,10 +470,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   </div>
                 )}
                 
-                {message.body && (
-                  <p className="text-sm text-muted-foreground border-l-2 border-muted pl-3 mt-3">
-                    {message.body}
-                  </p>
+                {message.body && renderLinkedText(
+                  message.body,
+                  "text-sm text-muted-foreground border-l-2 border-muted pl-3 mt-3"
                 )}
               </div>
               
