@@ -1366,7 +1366,11 @@ serve(async (req) => {
             
             
             // Store complete AI message (rule-based, translated)
-            const cleanedFullText = cleanAIResponse(fullText);
+            const cleanedFullText = enforceLinkIfRequested(
+              userMessage,
+              ensureUrlsPreserved(fullText, cleanAIResponse(fullText)),
+              contextLinkCandidates
+            );
             supabaseClient.from('ai_messages').insert({
               conversation_id: conversationId,
               role: 'assistant',
