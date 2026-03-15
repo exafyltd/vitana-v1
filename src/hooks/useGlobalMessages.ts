@@ -143,6 +143,16 @@ async function enrichProfiles(
   ]);
 
   uncachedIds.forEach((uid) => {
+    // Override: always use known Vitana identity regardless of DB state
+    if (isVitanaBot(uid)) {
+      const vitanaProfile = {
+        display_name: VITANA_BOT_DISPLAY_NAME,
+        avatar_url: VITANA_BOT_AVATAR_URL,
+      };
+      map[uid] = vitanaProfile;
+      profileCache.set(uid, { ...vitanaProfile, cachedAt: now });
+      return;
+    }
     const gp = globalProfiles?.find((p) => p.user_id === uid);
     const mp = mainProfiles?.find((p) => p.user_id === uid);
     const profile = {
