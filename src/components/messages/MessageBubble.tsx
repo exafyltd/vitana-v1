@@ -560,7 +560,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'attachment':
         return (
           <div className="space-y-3">
-            {message.body && <p className="break-words">{message.body}</p>}
+            {message.body && renderLinkedText(message.body)}
             
             {/* New attachment format with proper rendering */}
             {message.content_data?.attachments && (
