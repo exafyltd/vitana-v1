@@ -48,12 +48,14 @@ export class OrbVoiceClient {
   private nextStartTime: number = 0;
   private recorder: CrossPlatformAudioRecorder | null = null;
   private volumeAnimationFrame: number | null = null;
+  private turnCompleteTimeout: ReturnType<typeof setTimeout> | null = null;
 
   // Silence detection for auto end-turn
   private silenceTimer: ReturnType<typeof setTimeout> | null = null;
   private hasSpeechStarted: boolean = false;
   private readonly SILENCE_THRESHOLD = 0.02;
   private readonly SILENCE_DURATION_MS = 1500;
+  private readonly TURN_COMPLETE_FALLBACK_MS = 2000; // If no turn_complete event after last audio, auto-complete
 
   // Track consecutive send failures to detect broken sessions
   private consecutiveSendErrors: number = 0;
