@@ -1025,6 +1025,7 @@ serve(async (req) => {
             const status = m.conversationStarted ? '💬 Connected' : '👋 Not yet contacted';
             const interests = m.sharedInterests?.length > 0 ? ` - Shared: ${m.sharedInterests.slice(0, 2).join(', ')}` : '';
             const matchLink = `https://e.vitanaland.com/matches/${m.id}`;
+            contextLinkCandidates.push({ url: matchLink, title: m.displayName });
             systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status} → ${matchLink}\n`;
           });
           
