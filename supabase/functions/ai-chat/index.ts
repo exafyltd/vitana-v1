@@ -803,6 +803,7 @@ serve(async (req) => {
 
     const basePrompt = SYSTEM_PROMPTS[agentType as keyof typeof SYSTEM_PROMPTS] || SYSTEM_PROMPTS.health;
     let systemMessage = basePrompt;
+    const contextLinkCandidates: LinkCandidate[] = [];
     
     // === DETERMINISTIC COUNT QUESTION DETECTION ===
     const countQuestionPattern = /(how many|total|count|across.*memory garden|number of.*entr)/i;
