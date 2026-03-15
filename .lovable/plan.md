@@ -1,24 +1,30 @@
-## Vitana AI Chat Link Sharing — Implemented
 
-### Changes (VTID: Enable Vitana to Share Event & Match Links)
 
-| # | File | Change |
-|---|------|--------|
-| 1 | `fetch-user-context/index.ts` | Added `slug` to event SELECT query and mapped output |
-| 2 | `ai-chat/index.ts` | Event links: `e.vitanaland.com/events/{slug}` or `/pub/events/{id}` |
-| 3 | `ai-chat/index.ts` | Added instruction #8: always include links when discussing events/matches |
-| 4 | `ai-chat/index.ts` | Match links: `e.vitanaland.com/matches/{id}` via OG proxy |
+## Problem
 
-### Link Format
-- Events (slugged): `https://e.vitanaland.com/events/{slug}`
-- Events (no slug): `https://e.vitanaland.com/pub/events/{id}`
-- Matches: `https://e.vitanaland.com/matches/{id}`
+The Cloudflare Worker at `e.vitanaland.com` is redirecting `/pub/events/{id}` to `vitanaland.com/e/pub%2Fevents%2F{id}` -- it URL-encodes the slashes, treating the entire path as a single slug segment. The app's `/e/:slug` route then tries to look up `pub%2Fevents%2F118cc9a8-...` as an event slug, which fails with "Event Not Found."
 
-All links use the e.vitanaland.com OG proxy infrastructure (Cloudflare Worker → OG meta → redirect to app).
+The actual URL in the screenshot: `https://vitanaland.com/e/pub%2Fevents%2F118cc9a8-1141-43e2-b9d3-be20c92cd66f`
 
-### Deploy
-Both edge functions (`fetch-user-context`, `ai-chat`) need manual CLI deploy:
+## Fix
+
+**File: `src/pages/PublicEventLanding.tsx`** (lines 51-55)
+
+Add slug sanitization logic right after extracting the identifier. If the slug contains an encoded or literal `pub/events/` prefix, strip it and extract the UUID:
+
+```typescript
+const { slug, id } = useParams<{ slug?: string; id?: string }>();
+
+// Handle malformed redirects where "/pub/events/{id}" gets encoded as a single slug
+let identifier = slug || id;
+if (identifier) {
+  const decoded = decodeURIComponent(identifier);
+  const pubEventsMatch = decoded.match(/^pub\/events\/(.+)$/);
+  if (pubEventsMatch) {
+    identifier = pubEventsMatch[1];
+  }
+}
 ```
-supabase functions deploy fetch-user-context --no-verify-jwt
-supabase functions deploy ai-chat --no-verify-jwt
-```
+
+This is a defensive fix on the frontend. The Cloudflare Worker redirect logic should also be corrected separately to preserve the path structure, but this ensures existing shared links (already in chat history) work immediately.
+
