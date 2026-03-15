@@ -534,7 +534,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'template':
         return (
           <div className="space-y-2">
-            <p>{message.body}</p>
+            {renderLinkedText(message.body)}
             {message.content_data?.quick_replies && (
               <div className="flex flex-wrap gap-1">
                 {message.content_data.quick_replies.map((reply: string, index: number) => (
