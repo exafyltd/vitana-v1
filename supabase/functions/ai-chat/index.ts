@@ -210,7 +210,7 @@ type LinkCandidate = {
 const LINK_REQUEST_REGEX = /(\blink\b|\burl\b|\bhref\b|schick\s+mir\s+.*\blink\b|send\s+me\s+.*\blink\b|sende\s+.*\blink\b)/i;
 
 function stripTrailingUrlPunctuation(url: string): string {
-  return url.replace(/[.,!?;:)]}+$/g, '');
+  return url.replace(/[.,!?;:)\]}]+$/g, '');
 }
 
 function extractUrlsFromText(text: string): string[] {
