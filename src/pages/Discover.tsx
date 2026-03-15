@@ -358,7 +358,14 @@ export default withScreenId(function Discover() {
                     isMobile ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
                   )}>
                     {aiRecommendations.map((rec) => (
-                      <Card key={rec.id} className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 dark:border-purple-800">
+                      <Card 
+                        key={rec.id} 
+                        data-match-id={rec.id}
+                        className={cn(
+                          "group hover:shadow-lg transition-all duration-300 cursor-pointer border-purple-200 dark:border-purple-800",
+                          highlightedMatchId === String(rec.id) && "ring-2 ring-primary animate-pulse"
+                        )}
+                      >
                         <div className="relative">
                           <img 
                             src={rec.image} 
