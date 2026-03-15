@@ -259,6 +259,70 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
+  const renderLinkedText = useCallback((text?: string, className?: string) => {
+    if (!text) return null;
+
+    const urlRegex = /https?:\/\/[^\s<]+/gi;
+    const trailingPunctuation = '.,!?;:)]}';
+    const nodes: React.ReactNode[] = [];
+    let match: RegExpExecArray | null;
+    let lastIndex = 0;
+
+    while ((match = urlRegex.exec(text)) !== null) {
+      const rawUrl = match[0];
+      const start = match.index;
+
+      if (start > lastIndex) {
+        nodes.push(text.slice(lastIndex, start));
+      }
+
+      let cleanUrl = rawUrl;
+      let trailing = '';
+
+      while (
+        cleanUrl.length > 0 &&
+        trailingPunctuation.includes(cleanUrl[cleanUrl.length - 1])
+      ) {
+        trailing = cleanUrl[cleanUrl.length - 1] + trailing;
+        cleanUrl = cleanUrl.slice(0, -1);
+      }
+
+      if (cleanUrl) {
+        nodes.push(
+          <a
+            key={`${cleanUrl}-${start}`}
+            href={cleanUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              "underline underline-offset-2 break-all font-medium",
+              isOwnMessage ? "text-primary-foreground" : "text-primary"
+            )}
+            onClick={(event) => event.stopPropagation()}
+          >
+            {cleanUrl}
+          </a>
+        );
+      }
+
+      if (trailing) {
+        nodes.push(trailing);
+      }
+
+      lastIndex = start + rawUrl.length;
+    }
+
+    if (lastIndex < text.length) {
+      nodes.push(text.slice(lastIndex));
+    }
+
+    return (
+      <p className={cn("whitespace-pre-wrap break-words", className)}>
+        {nodes.length > 0 ? nodes : text}
+      </p>
+    );
+  }, [isOwnMessage]);
+
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
     const imageLoadFailed = failedImages.has(index);
@@ -406,10 +470,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   </div>
                 )}
                 
-                {message.body && (
-                  <p className="text-sm text-muted-foreground border-l-2 border-muted pl-3 mt-3">
-                    {message.body}
-                  </p>
+                {message.body && renderLinkedText(
+                  message.body,
+                  "text-sm text-muted-foreground border-l-2 border-muted pl-3 mt-3"
                 )}
               </div>
               
@@ -437,7 +500,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <p className="text-sm text-muted-foreground mb-2">
                 {message.content_data?.provider_name}
               </p>
-              <p className="text-sm mb-3">{message.body}</p>
+              {renderLinkedText(message.body, "text-sm mb-3")}
               {message.action_buttons && (
                 <div className="flex gap-2">
                   {message.action_buttons.map((button: any, index: number) => (
@@ -471,7 +534,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'template':
         return (
           <div className="space-y-2">
-            <p>{message.body}</p>
+            {renderLinkedText(message.body)}
             {message.content_data?.quick_replies && (
               <div className="flex flex-wrap gap-1">
                 {message.content_data.quick_replies.map((reply: string, index: number) => (
@@ -497,7 +560,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       case 'attachment':
         return (
           <div className="space-y-3">
-            {message.body && <p className="break-words">{message.body}</p>}
+            {message.body && renderLinkedText(message.body)}
             
             {/* New attachment format with proper rendering */}
             {message.content_data?.attachments && (
@@ -535,7 +598,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return <p className="break-words">{message.body}</p>;
+        return renderLinkedText(message.body);
     }
   };
 
