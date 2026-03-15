@@ -1493,7 +1493,11 @@ serve(async (req) => {
 
     const aiData = await aiResponse.json();
     const rawAiText = aiData.choices[0].message.content;
-    const aiText = cleanAIResponse(rawAiText);
+    const aiText = enforceLinkIfRequested(
+      userMessage,
+      ensureUrlsPreserved(rawAiText, cleanAIResponse(rawAiText)),
+      contextLinkCandidates
+    );
 
     supabaseClient.from('ai_messages').insert({
       conversation_id: conversationId,
