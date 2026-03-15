@@ -51,7 +51,16 @@ const isUUID = (str: string): boolean => {
 export default function PublicEventLanding() {
   // Support both :slug (new clean URLs) and :id (legacy URLs)
   const { slug, id } = useParams<{ slug?: string; id?: string }>();
-  const identifier = slug || id;
+  
+  // Handle malformed redirects where "/pub/events/{id}" gets URL-encoded as a single slug
+  let identifier = slug || id;
+  if (identifier) {
+    const decoded = decodeURIComponent(identifier);
+    const pubEventsMatch = decoded.match(/^pub\/events\/(.+)$/);
+    if (pubEventsMatch) {
+      identifier = pubEventsMatch[1];
+    }
+  }
   
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
