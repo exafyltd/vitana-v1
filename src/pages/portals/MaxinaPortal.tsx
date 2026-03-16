@@ -35,8 +35,7 @@ const MaxinaPortal = () => {
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { expandToFull } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
+  // VitanaOrb widget handles voice overlay externally
   const { startFresh } = useSoundscape();
   const isProcessingOAuth = window.location.hash.includes('access_token') || 
     window.location.hash.includes('code=') || 
