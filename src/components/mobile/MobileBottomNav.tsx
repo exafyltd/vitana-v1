@@ -28,7 +28,7 @@ const navItems = [
 export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const location = useLocation();
-  const { orbVisible } = useVitanalandNavigation();
+  const { expandToFull, orbVisible } = useVitanalandNavigation();
   const { unreadCount } = useChatUnreadCount();
   
   // Routes where the bottom nav should be hidden
@@ -61,10 +61,7 @@ export function MobileBottomNav() {
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
+    expandToFull();
   };
   
   // Split nav items for left and right sides of the orb

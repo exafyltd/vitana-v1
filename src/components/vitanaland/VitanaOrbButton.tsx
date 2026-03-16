@@ -8,6 +8,7 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
+import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { playSound } from '@/lib/playSound';
 
 interface VitanaOrbButtonProps {
@@ -28,15 +29,11 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
     return () => window.removeEventListener('vitanaland-keyboard-trigger', handleKeyboardTrigger);
   }, []);
   
+  const { expandToFull } = useVitanalandNavigation();
+  
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
-    
-    // Call optional parent onClick
+    expandToFull();
     onClick?.();
   };
   

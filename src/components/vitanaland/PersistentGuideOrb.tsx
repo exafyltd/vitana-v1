@@ -8,7 +8,7 @@ import { GreetingMicrocopy } from './GreetingMicrocopy';
 import { playSound } from '@/lib/playSound';
 
 export function PersistentGuideOrb() {
-  const { isExpanded, orbVisible, worldVisible } = useVitanalandNavigation();
+  const { isExpanded, expandToFull, orbVisible, worldVisible } = useVitanalandNavigation();
 
   // Keyboard shortcut: Cmd/Ctrl + K
   useEffect(() => {
@@ -20,10 +20,7 @@ export function PersistentGuideOrb() {
         window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
         
         setTimeout(() => {
-          const orb = (window as any).VitanaOrb;
-          if (orb && orb.show) {
-            orb.show();
-          }
+          expandToFull();
         }, 200);
       }
     };
