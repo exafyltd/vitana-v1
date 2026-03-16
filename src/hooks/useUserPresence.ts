@@ -299,7 +299,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         Object.entries(newState).forEach(([key, presences]) => {
           const presence = (presences as any[])[0];
           if (presence) {
-            const normalizedStatus = normalizePresenceStatus(presence.status, presence.last_seen);
+            const normalizedStatus = normalizePresenceStatus(presence.status, new Date().toISOString());
             newPresenceMap.set(String(key), {
               user_id: String(key),
               status: normalizedStatus,
