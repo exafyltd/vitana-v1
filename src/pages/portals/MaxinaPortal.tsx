@@ -819,8 +819,8 @@ const MaxinaPortal = () => {
         {/* VITANA Orb - positioned via global CSS */}
         <MobileFixedOrb />
 
-        {/* Desktop ORB - bottom-left matching sidebar position */}
-        <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+        {/* Desktop ORB - centered near the bottom */}
+        <div className="hidden md:block fixed inset-x-0 bottom-5 z-40">
           <div
             role="button"
             tabIndex={0}
