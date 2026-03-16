@@ -1,35 +1,24 @@
+## Vitana AI Chat Link Sharing — Implemented
 
+### Changes (VTID: Enable Vitana to Share Event & Match Links)
 
-## Fix: Relax Presence Staleness Guard
+| # | File | Change |
+|---|------|--------|
+| 1 | `fetch-user-context/index.ts` | Added `slug` to event SELECT query and mapped output |
+| 2 | `ai-chat/index.ts` | Event links: `e.vitanaland.com/events/{slug}` or `/pub/events/{id}` |
+| 3 | `ai-chat/index.ts` | Added instruction #8: always include links when discussing events/matches |
+| 4 | `ai-chat/index.ts` | Match links: `e.vitanaland.com/matches/{id}` via OG proxy |
 
-**Problem:** Jovana Tadic appears "away" (yellow) despite being actively online. The `normalizePresenceStatus` function downgrades users to `away` after 5 minutes and `offline` after 10 minutes, but this threshold is too aggressive given query cache delays and realtime propagation lag.
+### Link Format
+- Events (slugged): `https://e.vitanaland.com/events/{slug}`
+- Events (no slug): `https://e.vitanaland.com/pub/events/{id}`
+- Matches: `https://e.vitanaland.com/matches/{id}`
 
-**Solution:** Three targeted changes to `src/hooks/useUserPresence.ts`:
+All links use the e.vitanaland.com OG proxy infrastructure (Cloudflare Worker → OG meta → redirect to app).
 
-### 1. Widen staleness thresholds (line 39-42)
-Change from 5/10 minutes to 15/30 minutes:
-- 15 minutes → `away` (was 5)
-- 30 minutes → `offline` (was 10)
-
-This gives plenty of margin above the 30-second heartbeat interval.
-
-### 2. Use actual status column from DB (line 270)
-Replace hardcoded `'online'` with the real `item.status` value from `thread_presence` table:
-```typescript
-const status = normalizePresenceStatus(item.status || 'online', item.last_seen);
+### Deploy
+Both edge functions (`fetch-user-context`, `ai-chat`) need manual CLI deploy:
 ```
-
-### 3. Trust realtime channel presence (line 302)
-If a user is present in the Supabase realtime channel, treat them as definitively online by using the current timestamp:
-```typescript
-const normalizedStatus = normalizePresenceStatus(presence.status, new Date().toISOString());
+supabase functions deploy fetch-user-context --no-verify-jwt
+supabase functions deploy ai-chat --no-verify-jwt
 ```
-
-This bypasses the staleness guard for users actively broadcasting presence via the channel.
-
-### Files Modified
-- `src/hooks/useUserPresence.ts` only
-
-### Result
-Active chatting users show solid green dot. Only truly idle users (15+ min no activity) show amber. Only absent users (30+ min) show gray.
-

@@ -36,10 +36,10 @@ export function normalizePresenceStatus(
 
   const minutesSince = (Date.now() - new Date(lastSeen).getTime()) / 60000;
 
-  // Stale guard: >10 min without heartbeat → offline regardless
-  if (minutesSince > 10) return 'offline';
-  // Stale-ish: >5 min → away regardless of claimed status
-  if (minutesSince > 5) return 'away';
+  // Stale guard: >30 min without heartbeat → offline regardless
+  if (minutesSince > 30) return 'offline';
+  // Stale-ish: >15 min → away regardless of claimed status
+  if (minutesSince > 15) return 'away';
 
   switch (raw) {
     case 'online':
@@ -299,7 +299,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         Object.entries(newState).forEach(([key, presences]) => {
           const presence = (presences as any[])[0];
           if (presence) {
-            const normalizedStatus = normalizePresenceStatus(presence.status, presence.last_seen);
+            const normalizedStatus = normalizePresenceStatus(presence.status, new Date().toISOString());
             newPresenceMap.set(String(key), {
               user_id: String(key),
               status: normalizedStatus,
