@@ -8,6 +8,7 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip";
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
+import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { playSound } from '@/lib/playSound';
 
 interface VitanaOrbButtonProps {
