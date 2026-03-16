@@ -1,6 +1,13 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { VITANA_BOT_USER_ID, isVitanaBot } from '@/lib/vitanaBotIdentity';
+
+/**
+ * Module-level presence cache that survives component remounts / route changes.
+ * This prevents the "grey dot on every screen switch" problem.
+ */
+const globalPresenceCache = new Map<string, UserPresence>();
 
 export type PresenceStatus = 'online' | 'away' | 'offline';
 export type ConnectionStatus = 'connected' | 'connecting' | 'disconnected';
