@@ -97,9 +97,15 @@ export function useNotifications(limit = 20) {
       .subscribe();
     channelRef.current = channel;
     const interval = setInterval(fetchUnreadCount, 30000);
+
+    // Listen for chat-triggered notification clears
+    const handleNotifRefresh = () => { fetchNotifications(); };
+    window.addEventListener('notifications-refresh', handleNotifRefresh);
+
     return () => {
       if (channelRef.current) supabase.removeChannel(channelRef.current);
       clearInterval(interval);
+      window.removeEventListener('notifications-refresh', handleNotifRefresh);
     };
   }, [user, fetchNotifications, fetchUnreadCount, limit]);
 
