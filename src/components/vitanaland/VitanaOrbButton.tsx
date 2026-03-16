@@ -22,42 +22,55 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
       setIsPulsing(true);
       setTimeout(() => setIsPulsing(false), 400);
     };
-    window.addEventListener('vitanaland-keyboard-trigger', handleKeyboardTrigger);
-    return () => window.removeEventListener('vitanaland-keyboard-trigger', handleKeyboardTrigger);
+    window.addEventListener("vitanaland-keyboard-trigger", handleKeyboardTrigger);
+    return () =>
+      window.removeEventListener("vitanaland-keyboard-trigger", handleKeyboardTrigger);
   }, []);
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb?.open) {
-      orb.open();
-    }
+
+    const tryOpenOrb = (attempt = 0) => {
+      const orb = (window as any).VitanaOrb;
+      if (orb?.open) {
+        orb.open();
+        return;
+      }
+
+      if (attempt < 8) {
+        window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
+      }
+    };
+
+    tryOpenOrb();
     onClick?.();
   };
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="rounded-full relative overflow-visible"
-            onClick={handleOrbClick}
-            aria-label="Vitana Voice (Cmd+K)"
-          >
-            <motion.div
-              animate={isPulsing ? { scale: [1, 1.15, 1] } : undefined}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+    <div className="flex w-full justify-center">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative rounded-full overflow-visible"
+              onClick={handleOrbClick}
+              aria-label="Vitana Voice (Cmd+K)"
             >
-              <OrbCore size="sm" />
-            </motion.div>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Vitana Voice (⌘K)</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+              <motion.div
+                animate={isPulsing ? { scale: [1, 1.15, 1] } : undefined}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <OrbCore size="sm" />
+              </motion.div>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Vitana Voice (⌘K)</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 }
