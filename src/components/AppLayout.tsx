@@ -54,8 +54,7 @@ function AppSidebar({
   setWalletPopupOpen,
   cartOpen,
   setCartOpen,
-  onSidebarOpenChange,
-  expandToFull
+  onSidebarOpenChange
 }: { 
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
@@ -64,7 +63,6 @@ function AppSidebar({
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
-  expandToFull: () => void;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
