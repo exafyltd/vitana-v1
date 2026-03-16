@@ -8,7 +8,6 @@ import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
-import { useStreamingState } from '@/context/StreamingStateContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
@@ -21,8 +20,7 @@ const WELCOME_AUDIO_DE = '/sounds/intro/maxina-welcome-de.wav';
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { expandToFull, showOrb } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
+  const { showOrb } = useVitanalandNavigation();
   
   // Ensure orb is visible on intro page (fix "sometimes missing" orb)
   useEffect(() => {
@@ -118,10 +116,20 @@ export default function IntroExperience() {
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+
+    const tryOpenOrb = (attempt = 0) => {
+      const orb = (window as any).VitanaOrb;
+      if (orb?.open) {
+        orb.open();
+        return;
+      }
+
+      if (attempt < 8) {
+        window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
+      }
+    };
+
+    tryOpenOrb();
   };
 
   // Get current language for TTS and translations
@@ -345,8 +353,8 @@ export default function IntroExperience() {
       {/* Mobile-only fixed ORB - positioned via global CSS */}
       <MobileFixedOrb />
 
-      {/* Desktop ORB - bottom-left matching sidebar position */}
-      <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+      {/* Desktop ORB - centered near the bottom */}
+      <div className="hidden md:block fixed inset-x-0 bottom-5 z-40">
         <div
           role="button"
           tabIndex={0}
@@ -357,7 +365,7 @@ export default function IntroExperience() {
               handleOrbClick();
             }
           }}
-          className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+          className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-full cursor-pointer"
         >
           <VitanalandPortalSeed 
             audioState="idle"

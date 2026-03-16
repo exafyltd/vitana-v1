@@ -16,8 +16,6 @@ import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
-import { useStreamingState } from "@/context/StreamingStateContext";
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
@@ -35,8 +33,6 @@ const MaxinaPortal = () => {
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { expandToFull } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
   const { startFresh } = useSoundscape();
   const isProcessingOAuth = window.location.hash.includes('access_token') || 
     window.location.hash.includes('code=') || 
@@ -257,10 +253,20 @@ const MaxinaPortal = () => {
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+
+    const tryOpenOrb = (attempt = 0) => {
+      const orb = (window as any).VitanaOrb;
+      if (orb?.open) {
+        orb.open();
+        return;
+      }
+
+      if (attempt < 8) {
+        window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
+      }
+    };
+
+    tryOpenOrb();
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -813,8 +819,8 @@ const MaxinaPortal = () => {
         {/* VITANA Orb - positioned via global CSS */}
         <MobileFixedOrb />
 
-        {/* Desktop ORB - bottom-left matching sidebar position */}
-        <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
+        {/* Desktop ORB - centered near the bottom */}
+        <div className="hidden md:block fixed inset-x-0 bottom-5 z-40">
           <div
             role="button"
             tabIndex={0}
@@ -825,7 +831,7 @@ const MaxinaPortal = () => {
                 handleOrbClick();
               }
             }}
-            className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+            className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-full cursor-pointer"
           >
             <VitanalandPortalSeed 
               audioState="idle"

@@ -8,7 +8,7 @@ import { GreetingMicrocopy } from './GreetingMicrocopy';
 import { playSound } from '@/lib/playSound';
 
 export function PersistentGuideOrb() {
-  const { isExpanded, orbVisible, expandToFull, worldVisible } = useVitanalandNavigation();
+  const { isExpanded, orbVisible, worldVisible } = useVitanalandNavigation();
 
   // Keyboard shortcut: Cmd/Ctrl + K
   useEffect(() => {
@@ -23,15 +23,33 @@ export function PersistentGuideOrb() {
         window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
         
         // Small delay to let pulse animation play
-        setTimeout(() => {
-          expandToFull();
-        }, 200);
+          setTimeout(() => {
+            const orb = (window as any).VitanaOrb;
+            if (orb?.open) {
+              orb.open();
+              return;
+            }
+
+            const tryOpenOrb = (attempt = 0) => {
+              const delayedOrb = (window as any).VitanaOrb;
+              if (delayedOrb?.open) {
+                delayedOrb.open();
+                return;
+              }
+
+              if (attempt < 8) {
+                window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
+              }
+            };
+
+            tryOpenOrb();
+          }, 200);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isExpanded, orbVisible, expandToFull]);
+  }, [isExpanded, orbVisible]);
 
   if (!orbVisible) return null;
 
