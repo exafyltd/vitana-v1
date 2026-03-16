@@ -187,6 +187,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     };
     
     localCache.current.set(user.id, optimisticPresence);
+    globalPresenceCache.set(user.id, optimisticPresence);
     setPresenceMap(prev => new Map(prev.set(user.id, optimisticPresence)));
     
     if (DEBUG_PRESENCE) console.log(`[Presence] Optimistic update: ${user.id} as ${status} @ ${timestamp}`);
