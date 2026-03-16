@@ -7,7 +7,6 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { playSound } from "@/lib/playSound";
 
 export function VitanaButton() {
