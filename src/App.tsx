@@ -333,8 +333,7 @@ const App = () => {
                     <BrowserRouter>
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
-                        <PersistentGuideOrb />
-                        <VitanaAudioOverlay />
+                        {/* PersistentGuideOrb and VitanaAudioOverlay removed — replaced by external ORB voice widget */}
                         <MobileMuteButton />
                         <SoundscapeResumeBanner />
                         <TenantDetector />
