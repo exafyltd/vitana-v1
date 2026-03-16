@@ -49,7 +49,7 @@ export function PersistentGuideOrb() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isExpanded, orbVisible, expandToFull]);
+  }, [isExpanded, orbVisible]);
 
   if (!orbVisible) return null;
 

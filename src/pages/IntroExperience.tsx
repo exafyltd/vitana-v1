@@ -7,6 +7,7 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
+import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
