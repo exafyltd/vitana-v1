@@ -23,9 +23,27 @@ export function PersistentGuideOrb() {
         window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
         
         // Small delay to let pulse animation play
-        setTimeout(() => {
-          expandToFull();
-        }, 200);
+          setTimeout(() => {
+            const orb = (window as any).VitanaOrb;
+            if (orb?.open) {
+              orb.open();
+              return;
+            }
+
+            const tryOpenOrb = (attempt = 0) => {
+              const delayedOrb = (window as any).VitanaOrb;
+              if (delayedOrb?.open) {
+                delayedOrb.open();
+                return;
+              }
+
+              if (attempt < 8) {
+                window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
+              }
+            };
+
+            tryOpenOrb();
+          }, 200);
       }
     };
 

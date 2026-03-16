@@ -253,10 +253,20 @@ const MaxinaPortal = () => {
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+
+    const tryOpenOrb = (attempt = 0) => {
+      const orb = (window as any).VitanaOrb;
+      if (orb?.open) {
+        orb.open();
+        return;
+      }
+
+      if (attempt < 8) {
+        window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
+      }
+    };
+
+    tryOpenOrb();
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
