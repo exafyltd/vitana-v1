@@ -292,7 +292,10 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
           setPresenceMap(prev => {
             const merged = new Map(prev);
             dbPresenceMap.forEach((val, key) => {
-              if (!merged.has(key)) merged.set(key, val);
+              if (!merged.has(key)) {
+                merged.set(key, val);
+                globalPresenceCache.set(key, val);
+              }
             });
             return merged;
           });
