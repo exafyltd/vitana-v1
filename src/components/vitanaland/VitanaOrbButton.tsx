@@ -17,8 +17,8 @@ interface VitanaOrbButtonProps {
 }
 
 export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
-  const [isPulsing, setIsPulsing] = useState(false);
-  const { expandToFull } = useVitanalandNavigation();
+  // Disabled — replaced by external ORB voice widget (orb-widget.js)
+  return null;
   const { setAudioOverlayVisible } = useStreamingState();
   
   // Listen for keyboard trigger event

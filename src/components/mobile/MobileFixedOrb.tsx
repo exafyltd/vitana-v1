@@ -14,14 +14,8 @@ import { motion } from "framer-motion";
  * - z-40 (above content, below modals)
  */
 export function MobileFixedOrb() {
-  const isMobile = useIsMobile();
-  const { expandToFull, orbVisible } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
-  
-  // Only render on mobile
-  if (!isMobile || !orbVisible) {
-    return null;
-  }
+  // Disabled — replaced by external ORB voice widget (orb-widget.js)
+  return null;
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
