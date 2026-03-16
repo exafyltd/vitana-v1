@@ -234,20 +234,23 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
 
     const profileMap = await enrichProfiles(Array.from(allUserIds));
 
-    // 5. Build GlobalMessageThread objects
+    // 5. Build GlobalMessageThread objects (direct + group)
     return threadRows
-      .filter((t: any) => t.type === "direct") // only direct threads (group not supported by gateway)
       .map((t: any) => {
         const threadParticipants = (allParticipants || []).filter(
           (p: any) => p.thread_id === t.id
         );
+
+        const isGroup = t.type === "group";
+
+        // For direct threads, use peer user_id as thread id (gateway convention)
+        // For group threads, use the actual thread UUID
         const otherParticipant = threadParticipants.find(
           (p: any) => p.user_id !== userId
         );
 
-        // Use peer user_id as thread id (matches gateway convention)
-        const peerId = otherParticipant?.user_id;
-        if (!peerId) return null; // skip threads with no other participant
+        const threadIdentifier = isGroup ? t.id : otherParticipant?.user_id;
+        if (!threadIdentifier) return null; // skip direct threads with no peer
 
         const enrichedParticipants = threadParticipants.map((p: any) => ({
           user_id: p.user_id,
@@ -261,7 +264,7 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
         const lastMessage: GlobalMessage | undefined = lastMsg
           ? {
               id: lastMsg.id,
-              thread_id: peerId,
+              thread_id: threadIdentifier,
               sender_id: lastMsg.sender_id,
               body: lastMsg.body,
               message_type: lastMsg.message_type || "text",
@@ -288,9 +291,9 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
             : 0;
 
         return {
-          id: peerId, // peer user_id as thread id
+          id: threadIdentifier,
           name: t.name,
-          type: "direct" as const,
+          type: isGroup ? ("group" as const) : ("direct" as const),
           created_by: t.created_by,
           created_at: t.created_at,
           updated_at: t.updated_at,
