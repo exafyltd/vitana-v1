@@ -19,7 +19,13 @@ import {
   type ChatMessage,
   type ChatConversation,
 } from "./useChatApi";
-import type { MessageKind, SendMessageArgs } from "./useHybridMessages";
+interface SendMessageArgs {
+  threadId: string;
+  content: string;
+  type?: string;
+  contentData?: any;
+  parentMessageId?: string;
+}
 
 // ── Cache timing constants ──────────────────────────────────────────
 const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — data shown without refetch
