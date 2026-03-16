@@ -20,10 +20,7 @@ export function PersistentGuideOrb() {
         window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
         
         setTimeout(() => {
-          const orb = (window as any).VitanaOrb;
-          if (orb && orb.show) {
-            orb.show();
-          }
+          expandToFull();
         }, 200);
       }
     };
