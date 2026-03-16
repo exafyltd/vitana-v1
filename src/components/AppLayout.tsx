@@ -30,7 +30,7 @@ import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
