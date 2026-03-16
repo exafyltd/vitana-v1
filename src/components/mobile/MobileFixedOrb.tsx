@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
  */
 export function MobileFixedOrb() {
   const isMobile = useIsMobile();
-  const { orbVisible } = useVitanalandNavigation();
+  const { expandToFull, orbVisible } = useVitanalandNavigation();
   
   // Only render on mobile
   if (!isMobile || !orbVisible) {
