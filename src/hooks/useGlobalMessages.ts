@@ -218,7 +218,8 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
       .from("global_messages")
       .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
       .in("thread_id", threadIds)
-      .order("created_at", { ascending: false }) as any;
+      .order("created_at", { ascending: false })
+      .limit(threadIds.length * 2) as any;
 
     // Group last messages by thread (take first per thread = most recent)
     const lastMsgByThread: Record<string, any> = {};
