@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
-import { messageCache } from "./messageCache";
+
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import {
   persistThreads,
@@ -19,7 +19,13 @@ import {
   type ChatMessage,
   type ChatConversation,
 } from "./useChatApi";
-import type { MessageKind, SendMessageArgs } from "./useHybridMessages";
+interface SendMessageArgs {
+  threadId: string;
+  content: string;
+  type?: string;
+  contentData?: any;
+  parentMessageId?: string;
+}
 
 // ── Cache timing constants ──────────────────────────────────────────
 const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — data shown without refetch
@@ -212,7 +218,8 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
       .from("global_messages")
       .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
       .in("thread_id", threadIds)
-      .order("created_at", { ascending: false }) as any;
+      .order("created_at", { ascending: false })
+      .limit(threadIds.length * 2) as any;
 
     // Group last messages by thread (take first per thread = most recent)
     const lastMsgByThread: Record<string, any> = {};
@@ -227,20 +234,23 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
 
     const profileMap = await enrichProfiles(Array.from(allUserIds));
 
-    // 5. Build GlobalMessageThread objects
+    // 5. Build GlobalMessageThread objects (direct + group)
     return threadRows
-      .filter((t: any) => t.type === "direct") // only direct threads (group not supported by gateway)
       .map((t: any) => {
         const threadParticipants = (allParticipants || []).filter(
           (p: any) => p.thread_id === t.id
         );
+
+        const isGroup = t.type === "group";
+
+        // For direct threads, use peer user_id as thread id (gateway convention)
+        // For group threads, use the actual thread UUID
         const otherParticipant = threadParticipants.find(
           (p: any) => p.user_id !== userId
         );
 
-        // Use peer user_id as thread id (matches gateway convention)
-        const peerId = otherParticipant?.user_id;
-        if (!peerId) return null; // skip threads with no other participant
+        const threadIdentifier = isGroup ? t.id : otherParticipant?.user_id;
+        if (!threadIdentifier) return null; // skip direct threads with no peer
 
         const enrichedParticipants = threadParticipants.map((p: any) => ({
           user_id: p.user_id,
@@ -254,7 +264,7 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
         const lastMessage: GlobalMessage | undefined = lastMsg
           ? {
               id: lastMsg.id,
-              thread_id: peerId,
+              thread_id: threadIdentifier,
               sender_id: lastMsg.sender_id,
               body: lastMsg.body,
               message_type: lastMsg.message_type || "text",
@@ -281,9 +291,9 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
             : 0;
 
         return {
-          id: peerId, // peer user_id as thread id
+          id: threadIdentifier,
           name: t.name,
-          type: "direct" as const,
+          type: isGroup ? ("group" as const) : ("direct" as const),
           created_by: t.created_by,
           created_at: t.created_at,
           updated_at: t.updated_at,
@@ -581,7 +591,17 @@ export function useGlobalMessages(
     queryFn: async (): Promise<GlobalMessage[]> => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
 
-      // activeThreadId is the peer's user ID
+      // Check if active thread is a group thread
+      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+      const activeThread = cachedThreads.find((t) => t.id === activeThreadId);
+      const isGroupThread = activeThread?.type === "group";
+
+      // Group threads: always load from global_messages directly (thread UUID = thread_id)
+      if (isGroupThread) {
+        return fetchLegacyMessages(activeThreadId);
+      }
+
+      // Direct threads: activeThreadId is the peer's user ID — try gateway first
       let gatewayMessages: GlobalMessage[] = [];
       try {
         const rawMessages = await fetchConversation(activeThreadId);
@@ -601,8 +621,6 @@ export function useGlobalMessages(
       if (gatewayMessages.length > 0) return gatewayMessages;
 
       // Fallback: check if there's a legacy thread for this peer
-      // Look up the legacy thread id from the threads cache
-      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
       const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
@@ -683,38 +701,79 @@ export function useGlobalMessages(
         };
 
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
-        messageCache.addMessage(threadId, "global", optimistic);
 
-        // threadId is the peer's user ID — try gateway first, fallback to Supabase
-        let created: ChatMessage;
-        try {
-          created = await sendChatMessage(threadId, body);
-        } catch (gatewayErr) {
-          console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
-          const tenantId = (user as any).app_metadata?.active_tenant_id;
-          if (!tenantId) throw gatewayErr; // can't fallback without tenant
+        // Check if this is a group thread
+        const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+        const targetThread = cachedThreads.find((t) => t.id === threadId);
+        const isGroupThread = targetThread?.type === "group";
+
+        let realMsg: GlobalMessage;
+
+        if (isGroupThread) {
+          // Group threads: insert directly into global_messages
           const { data: inserted, error: insertErr } = await supabase
-            .from("chat_messages")
+            .from("global_messages")
             .insert({
-              tenant_id: tenantId,
+              thread_id: threadId,
               sender_id: user.id,
-              receiver_id: threadId,
-              content: body,
-            })
+              body,
+              message_type: "text",
+            } as any)
             .select()
             .single();
-          if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
-          created = inserted as unknown as ChatMessage;
+          if (insertErr || !inserted) throw insertErr || new Error("Group message insert failed");
+
+          // Update thread's updated_at
+          await supabase
+            .from("global_message_threads")
+            .update({ updated_at: new Date().toISOString() } as any)
+            .eq("id", threadId);
+
+          const profileMap = await enrichProfiles([user.id]);
+          realMsg = {
+            id: (inserted as any).id,
+            thread_id: threadId,
+            sender_id: user.id,
+            body,
+            message_type: "text",
+            created_at: (inserted as any).created_at,
+            updated_at: (inserted as any).updated_at || (inserted as any).created_at,
+            sender: profileMap[user.id]
+              ? { user_id: user.id, ...profileMap[user.id] }
+              : { user_id: user.id, display_name: "Me" },
+          };
+        } else {
+          // Direct threads: gateway first, fallback to chat_messages
+          let created: ChatMessage;
+          try {
+            created = await sendChatMessage(threadId, body);
+          } catch (gatewayErr) {
+            console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
+            const tenantId = (user as any).app_metadata?.active_tenant_id;
+            if (!tenantId) throw gatewayErr;
+            const { data: inserted, error: insertErr } = await supabase
+              .from("chat_messages")
+              .insert({
+                tenant_id: tenantId,
+                sender_id: user.id,
+                receiver_id: threadId,
+                content: body,
+              })
+              .select()
+              .single();
+            if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
+            created = inserted as unknown as ChatMessage;
+          }
+
+          const profileMap = await enrichProfiles([created.sender_id]);
+          realMsg = toGlobalMessage(created, threadId, profileMap);
         }
 
         // Replace optimistic with real
-        const profileMap = await enrichProfiles([created.sender_id]);
-        const realMsg = toGlobalMessage(created, threadId, profileMap);
 
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
-        messageCache.updateMessage(threadId, "global", optimistic.id, realMsg);
 
         // Move thread to top
         const now = new Date().toISOString();
