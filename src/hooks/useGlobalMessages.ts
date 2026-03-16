@@ -702,31 +702,74 @@ export function useGlobalMessages(
 
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
 
-        // threadId is the peer's user ID — try gateway first, fallback to Supabase
-        let created: ChatMessage;
-        try {
-          created = await sendChatMessage(threadId, body);
-        } catch (gatewayErr) {
-          console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
-          const tenantId = (user as any).app_metadata?.active_tenant_id;
-          if (!tenantId) throw gatewayErr; // can't fallback without tenant
+        // Check if this is a group thread
+        const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+        const targetThread = cachedThreads.find((t) => t.id === threadId);
+        const isGroupThread = targetThread?.type === "group";
+
+        let realMsg: GlobalMessage;
+
+        if (isGroupThread) {
+          // Group threads: insert directly into global_messages
           const { data: inserted, error: insertErr } = await supabase
-            .from("chat_messages")
+            .from("global_messages")
             .insert({
-              tenant_id: tenantId,
+              thread_id: threadId,
               sender_id: user.id,
-              receiver_id: threadId,
-              content: body,
-            })
+              body,
+              message_type: "text",
+            } as any)
             .select()
             .single();
-          if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
-          created = inserted as unknown as ChatMessage;
+          if (insertErr || !inserted) throw insertErr || new Error("Group message insert failed");
+
+          // Update thread's updated_at
+          await supabase
+            .from("global_message_threads")
+            .update({ updated_at: new Date().toISOString() } as any)
+            .eq("id", threadId);
+
+          const profileMap = await enrichProfiles([user.id]);
+          realMsg = {
+            id: (inserted as any).id,
+            thread_id: threadId,
+            sender_id: user.id,
+            body,
+            message_type: "text",
+            created_at: (inserted as any).created_at,
+            updated_at: (inserted as any).updated_at || (inserted as any).created_at,
+            sender: profileMap[user.id]
+              ? { user_id: user.id, ...profileMap[user.id] }
+              : { user_id: user.id, display_name: "Me" },
+          };
+        } else {
+          // Direct threads: gateway first, fallback to chat_messages
+          let created: ChatMessage;
+          try {
+            created = await sendChatMessage(threadId, body);
+          } catch (gatewayErr) {
+            console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
+            const tenantId = (user as any).app_metadata?.active_tenant_id;
+            if (!tenantId) throw gatewayErr;
+            const { data: inserted, error: insertErr } = await supabase
+              .from("chat_messages")
+              .insert({
+                tenant_id: tenantId,
+                sender_id: user.id,
+                receiver_id: threadId,
+                content: body,
+              })
+              .select()
+              .single();
+            if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
+            created = inserted as unknown as ChatMessage;
+          }
+
+          const profileMap = await enrichProfiles([created.sender_id]);
+          realMsg = toGlobalMessage(created, threadId, profileMap);
         }
 
         // Replace optimistic with real
-        const profileMap = await enrichProfiles([created.sender_id]);
-        const realMsg = toGlobalMessage(created, threadId, profileMap);
 
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
