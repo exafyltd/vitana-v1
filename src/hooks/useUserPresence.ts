@@ -430,6 +430,15 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   }, [trackPresence]);
 
   const getUserPresence = useCallback((userId: string): UserPresence | null => {
+    // Vitana bot is always online — it's a 24/7 AI assistant
+    if (isVitanaBot(userId)) {
+      return {
+        user_id: userId,
+        status: 'online',
+        last_seen: new Date().toISOString(),
+        display_name: 'Vitana',
+      };
+    }
     const cached = localCache.current.get(userId);
     const mapData = presenceMap.get(userId);
     if (cached && mapData && cached.lastUpdate && cached.lastUpdate > (mapData.lastUpdate || 0)) {
