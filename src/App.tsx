@@ -17,9 +17,12 @@ import { EventSelectionProvider } from "@/context/EventSelectionContext";
 import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvider";
 import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
-import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
+// VitanaAudioOverlay disabled — replaced by external ORB voice widget
+// import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
-import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
+// PersistentGuideOrb disabled — replaced by external ORB voice widget
+// import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
+import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
