@@ -11,7 +11,6 @@ import {
 import { playSound } from "@/lib/playSound";
 
 export function VitanaButton() {
-  const { expandToFull } = useVitanalandNavigation();
   const [isPulsing, setIsPulsing] = useState(false);
   
   // Listen for keyboard trigger event
