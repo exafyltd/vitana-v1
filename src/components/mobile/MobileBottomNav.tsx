@@ -3,6 +3,8 @@ import { Calendar, Mail, Radio, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
+import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { useStreamingState } from "@/context/StreamingStateContext";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -27,6 +29,8 @@ const navItems = [
 export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const location = useLocation();
+  const { expandToFull, orbVisible } = useVitanalandNavigation();
+  const { setAudioOverlayVisible } = useStreamingState();
   const { unreadCount } = useChatUnreadCount();
   
   // Routes where the bottom nav should be hidden
@@ -59,20 +63,10 @@ export function MobileBottomNav() {
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-
-    const tryOpenOrb = (attempt = 0) => {
-      const orb = (window as any).VitanaOrb;
-      if (orb?.open) {
-        orb.open();
-        return;
-      }
-
-      if (attempt < 8) {
-        window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
-      }
-    };
-
-    tryOpenOrb();
+    expandToFull();
+    setTimeout(() => {
+      setAudioOverlayVisible(true);
+    }, 100);
   };
   
   // Split nav items for left and right sides of the orb

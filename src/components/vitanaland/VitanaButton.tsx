@@ -7,10 +7,11 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "@/components/ui/tooltip";
-
+import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
 import { playSound } from "@/lib/playSound";
 
 export function VitanaButton() {
+  const { expandToFull } = useVitanalandNavigation();
   const [isPulsing, setIsPulsing] = useState(false);
   
   // Listen for keyboard trigger event
@@ -26,20 +27,7 @@ export function VitanaButton() {
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-
-    const tryOpenOrb = (attempt = 0) => {
-      const orb = (window as any).VitanaOrb;
-      if (orb?.open) {
-        orb.open();
-        return;
-      }
-
-      if (attempt < 8) {
-        window.setTimeout(() => tryOpenOrb(attempt + 1), 120);
-      }
-    };
-
-    tryOpenOrb();
+    expandToFull();
   };
   
   return (
