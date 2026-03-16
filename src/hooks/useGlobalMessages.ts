@@ -620,7 +620,25 @@ export function useGlobalMessages(
       // If gateway returned messages, use them
       if (gatewayMessages.length > 0) return gatewayMessages;
 
-      // Fallback: check if there's a legacy thread for this peer
+      // Fallback 1: read directly from chat_messages table (direct DMs live here)
+      try {
+        const { data: dmRows, error: dmErr } = await supabase
+          .from("chat_messages")
+          .select("*")
+          .or(`and(sender_id.eq.${user.id},receiver_id.eq.${activeThreadId}),and(sender_id.eq.${activeThreadId},receiver_id.eq.${user.id})`)
+          .order("created_at", { ascending: true })
+          .limit(100) as any;
+
+        if (!dmErr && dmRows && dmRows.length > 0) {
+          const senderIds = Array.from(new Set(dmRows.map((m: any) => m.sender_id).filter(Boolean)));
+          const profileMap = await enrichProfiles(senderIds as string[]);
+          return dmRows.map((m: any) => toGlobalMessage(m, activeThreadId, profileMap));
+        }
+      } catch (err) {
+        console.warn("[chat] chat_messages fallback failed:", (err as Error).message);
+      }
+
+      // Fallback 2: legacy global_messages (for old threads that used global_message_threads)
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
       const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
@@ -628,9 +646,7 @@ export function useGlobalMessages(
         return fetchLegacyMessages(legacyThreadId);
       }
 
-      // Also try using activeThreadId directly as a legacy thread id
-      const legacyMessages = await fetchLegacyMessages(activeThreadId);
-      return legacyMessages;
+      return fetchLegacyMessages(activeThreadId);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: STALE_TIME,
