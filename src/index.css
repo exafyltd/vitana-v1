@@ -946,7 +946,6 @@ All colors MUST be HSL.
   .message-highlight {
     animation: message-highlight-flash 1.5s ease-out;
   }
-}
 
 /* Hide external ORB widget's built-in FAB — our nav buttons trigger VitanaOrb.show() instead */
 .vtorb-fab { display: none !important; }
