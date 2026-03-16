@@ -36,10 +36,10 @@ export function normalizePresenceStatus(
 
   const minutesSince = (Date.now() - new Date(lastSeen).getTime()) / 60000;
 
-  // Stale guard: >10 min without heartbeat → offline regardless
-  if (minutesSince > 10) return 'offline';
-  // Stale-ish: >5 min → away regardless of claimed status
-  if (minutesSince > 5) return 'away';
+  // Stale guard: >30 min without heartbeat → offline regardless
+  if (minutesSince > 30) return 'offline';
+  // Stale-ish: >15 min → away regardless of claimed status
+  if (minutesSince > 15) return 'away';
 
   switch (raw) {
     case 'online':
