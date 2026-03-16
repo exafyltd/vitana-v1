@@ -1,7 +1,6 @@
 import { useIsMobile } from "@/hooks/use-mobile";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
-import { useStreamingState } from "@/context/StreamingStateContext";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 
