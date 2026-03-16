@@ -16,8 +16,6 @@ import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
 import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
-import { useStreamingState } from "@/context/StreamingStateContext";
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { playSound } from "@/lib/playSound";
@@ -35,8 +33,7 @@ const MaxinaPortal = () => {
   const { tenant, setTenantBySlug } = useTenant();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { expandToFull } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
+  // VitanaOrb widget handles voice overlay externally
   const { startFresh } = useSoundscape();
   const isProcessingOAuth = window.location.hash.includes('access_token') || 
     window.location.hash.includes('code=') || 
@@ -257,10 +254,10 @@ const MaxinaPortal = () => {
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+    const orb = (window as any).VitanaOrb;
+    if (orb && orb.show) {
+      orb.show();
+    }
   };
 
   const handleSignIn = async (e: React.FormEvent) => {

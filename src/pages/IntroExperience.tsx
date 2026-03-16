@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
-import { useStreamingState } from '@/context/StreamingStateContext';
+
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
@@ -21,8 +21,7 @@ const WELCOME_AUDIO_DE = '/sounds/intro/maxina-welcome-de.wav';
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { expandToFull, showOrb } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
+  const { showOrb } = useVitanalandNavigation();
   
   // Ensure orb is visible on intro page (fix "sometimes missing" orb)
   useEffect(() => {
@@ -118,10 +117,10 @@ export default function IntroExperience() {
 
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+    const orb = (window as any).VitanaOrb;
+    if (orb && orb.show) {
+      orb.show();
+    }
   };
 
   // Get current language for TTS and translations

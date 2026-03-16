@@ -30,7 +30,7 @@ import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
+import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
@@ -54,8 +54,7 @@ function AppSidebar({
   setWalletPopupOpen,
   cartOpen,
   setCartOpen,
-  onSidebarOpenChange,
-  expandToFull
+  onSidebarOpenChange
 }: { 
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
@@ -64,7 +63,6 @@ function AppSidebar({
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
-  expandToFull: () => void;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -400,7 +398,7 @@ function AppSidebar({
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
-  const { expandToFull } = useVitanalandNavigation();
+  useOrbVoiceWidget();
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -445,7 +443,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
               cartOpen={cartOpen}
               setCartOpen={setCartOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
-              expandToFull={expandToFull}
             />
           </div>
 
