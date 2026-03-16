@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
 import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
-import { useStreamingState } from '@/context/StreamingStateContext';
+
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { playSound } from '@/lib/playSound';
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
