@@ -23,10 +23,10 @@ export function MobileFixedOrb() {
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+    const orb = (window as any).VitanaOrb;
+    if (orb && orb.show) {
+      orb.show();
+    }
   };
   
   return (

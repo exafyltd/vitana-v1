@@ -443,7 +443,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
               cartOpen={cartOpen}
               setCartOpen={setCartOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
-              expandToFull={expandToFull}
             />
           </div>
 

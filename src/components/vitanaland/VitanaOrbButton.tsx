@@ -31,13 +31,10 @@ export function VitanaOrbButton({ onClick }: VitanaOrbButtonProps) {
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
     
-    // Trigger both navigation expansion AND audio overlay
-    expandToFull();
-    
-    // Ensure audio overlay is visible
-    setTimeout(() => {
-      setAudioOverlayVisible(true);
-    }, 100);
+    const orb = (window as any).VitanaOrb;
+    if (orb && orb.show) {
+      orb.show();
+    }
     
     // Call optional parent onClick
     onClick?.();
