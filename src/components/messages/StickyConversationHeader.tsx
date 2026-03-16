@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { 
   ArrowLeft, 
   MoreVertical, 
@@ -10,34 +9,39 @@ import {
   Video, 
   Info,
   Users,
-  Settings
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import PresenceIndicator from '@/components/messages/PresenceIndicator';
 
 interface StickyConversationHeaderProps {
   title: string;
   avatarUrl?: string;
-  isOnline?: boolean;
+  participantUserId?: string;
   participantCount?: number;
   isGroup?: boolean;
+  context?: 'global' | 'tenant';
   onBack?: () => void;
   onVideoCall?: () => void;
   onCall?: () => void;
   onInfo?: () => void;
   className?: string;
+  /** @deprecated Use participantUserId instead */
+  isOnline?: boolean;
 }
 
 const StickyConversationHeader: React.FC<StickyConversationHeaderProps> = ({
   title,
   avatarUrl,
-  isOnline = false,
+  participantUserId,
   participantCount = 0,
   isGroup = false,
+  context = 'global',
   onBack,
   onVideoCall,
   onCall,
   onInfo,
-  className
+  className,
+  isOnline,
 }) => {
   return (
     <Card className={cn(
@@ -59,8 +63,14 @@ const StickyConversationHeader: React.FC<StickyConversationHeaderProps> = ({
                 {title?.[0] || '?'}
               </AvatarFallback>
             </Avatar>
-            {!isGroup && isOnline && (
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-background rounded-full"></div>
+            {!isGroup && participantUserId && (
+              <div className="absolute -bottom-0.5 -right-0.5">
+                <PresenceIndicator
+                  userId={participantUserId}
+                  context={context}
+                  size="sm"
+                />
+              </div>
             )}
           </div>
           
@@ -72,8 +82,14 @@ const StickyConversationHeader: React.FC<StickyConversationHeaderProps> = ({
                   <Users className="w-3 h-3 mr-1" />
                   {participantCount} members
                 </>
+              ) : participantUserId ? (
+                <PresenceIndicator
+                  userId={participantUserId}
+                  context={context}
+                  showText
+                />
               ) : (
-                <span>{isOnline ? 'Online' : 'Offline'}</span>
+                <span>{isOnline ? 'Active' : 'Offline'}</span>
               )}
             </div>
           </div>

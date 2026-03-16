@@ -22,6 +22,38 @@ export interface PresenceConnection {
 
 const DEBUG_PRESENCE = typeof localStorage !== 'undefined' && localStorage.getItem('debug_presence') === 'true';
 
+/**
+ * Normalize any raw presence status string + staleness into one of three canonical states.
+ * - online/active/available → online (if last_seen within 10 min)
+ * - idle/away → away (if last_seen within 10 min)
+ * - everything else, null, or stale → offline
+ */
+export function normalizePresenceStatus(
+  raw: string | null | undefined,
+  lastSeen: string | null | undefined
+): PresenceStatus {
+  if (!lastSeen) return 'offline';
+
+  const minutesSince = (Date.now() - new Date(lastSeen).getTime()) / 60000;
+
+  // Stale guard: >10 min without heartbeat → offline regardless
+  if (minutesSince > 10) return 'offline';
+  // Stale-ish: >5 min → away regardless of claimed status
+  if (minutesSince > 5) return 'away';
+
+  switch (raw) {
+    case 'online':
+    case 'active':
+    case 'available':
+      return 'online';
+    case 'idle':
+    case 'away':
+      return 'away';
+    default:
+      return 'offline';
+  }
+}
+
 /** Throttle wrapper — fires at most once per `ms` */
 function throttle(fn: () => void, ms: number) {
   let lastCall = 0;
@@ -47,6 +79,36 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const connectionRef = useRef<PresenceConnection>(connection);
   const localCache = useRef<Map<string, UserPresence>>(new Map());
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  /** Ref to latest presenceMap for debounce comparison without stale closures */
+  const presenceMapRef = useRef<Map<string, UserPresence>>(presenceMap);
+
+  // Keep ref in sync
+  useEffect(() => {
+    presenceMapRef.current = presenceMap;
+  }, [presenceMap]);
+
+  /**
+   * Debounced merge: only update state if at least one user's normalized status actually changed.
+   */
+  const mergePresenceIfChanged = useCallback((incoming: Map<string, UserPresence>) => {
+    const current = presenceMapRef.current;
+    let hasChange = false;
+
+    incoming.forEach((val, key) => {
+      const existing = current.get(key);
+      if (!existing || existing.status !== val.status) {
+        hasChange = true;
+      }
+    });
+
+    if (!hasChange && incoming.size <= current.size) return;
+
+    setPresenceMap(prev => {
+      const merged = new Map(prev);
+      incoming.forEach((val, key) => merged.set(key, val));
+      return merged;
+    });
+  }, []);
 
   // Track user activity
   const updateActivity = useCallback(() => {
@@ -67,7 +129,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     const handleActivity = throttle(() => {
       updateActivity();
       resetTimers();
-    }, 5000); // Throttled: fire at most once per 5 seconds
+    }, 5000);
 
     const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
     events.forEach(event => {
@@ -205,10 +267,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         if (data) {
           const dbPresenceMap = new Map<string, UserPresence>();
           data.forEach(item => {
-            const minutesAway = Math.floor((Date.now() - new Date(item.last_seen).getTime()) / (1000 * 60));
-            let status: PresenceStatus = 'offline';
-            if (minutesAway <= 5) status = 'online';
-            else if (minutesAway <= 15) status = 'away';
+            const status = normalizePresenceStatus('online', item.last_seen);
             dbPresenceMap.set(item.user_id, {
               user_id: item.user_id,
               status,
@@ -217,6 +276,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
               avatar_url: undefined,
             });
           });
+          // Only merge entries not already present (realtime takes priority)
           setPresenceMap(prev => {
             const merged = new Map(prev);
             dbPresenceMap.forEach((val, key) => {
@@ -239,26 +299,19 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         Object.entries(newState).forEach(([key, presences]) => {
           const presence = (presences as any[])[0];
           if (presence) {
-            const lastSeen = new Date(presence.last_seen);
-            const minutesAway = (Date.now() - lastSeen.getTime()) / (1000 * 60);
-            let actualStatus: PresenceStatus = presence.status;
-            if (minutesAway > 15) actualStatus = 'offline';
-            else if (minutesAway > 5) actualStatus = 'away';
+            const normalizedStatus = normalizePresenceStatus(presence.status, presence.last_seen);
             newPresenceMap.set(String(key), {
               user_id: String(key),
-              status: actualStatus,
+              status: normalizedStatus,
               last_seen: presence.last_seen,
               display_name: presence.display_name,
               avatar_url: presence.avatar_url,
             });
-            if (DEBUG_PRESENCE) console.log(`[Presence] User ${key} (${presence.display_name}) is ${actualStatus}`);
+            if (DEBUG_PRESENCE) console.log(`[Presence] User ${key} (${presence.display_name}) is ${normalizedStatus}`);
           }
         });
-        setPresenceMap(prev => {
-          const merged = new Map(prev);
-          newPresenceMap.forEach((val, key) => merged.set(key, val));
-          return merged;
-        });
+        // Debounced merge — skip if nothing actually changed
+        mergePresenceIfChanged(newPresenceMap);
         if (DEBUG_PRESENCE) console.log(`[Presence] Updated presence map with ${newPresenceMap.size} users`);
       })
       .on('presence', { event: 'join' }, ({ newPresences }) => {
@@ -307,7 +360,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
       }, 30_000);
     };
 
-    // Health check: 60s setTimeout chain (increased from 10s), pauses when hidden
+    // Health check: 60s setTimeout chain, pauses when hidden
     let healthTimeout: NodeJS.Timeout | null = null;
     const scheduleHealthCheck = () => {
       healthTimeout = setTimeout(() => {
@@ -391,7 +444,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const getStatusColor = useCallback((status: PresenceStatus): string => {
     switch (status) {
       case 'online': return 'bg-green-500';
-      case 'away': return 'bg-yellow-500';
+      case 'away': return 'bg-amber-500';
       case 'offline': return 'bg-gray-400';
       default: return 'bg-gray-400';
     }
@@ -400,12 +453,8 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const getStatusText = useCallback((presence: UserPresence | null): string => {
     if (!presence) return 'Offline';
     switch (presence.status) {
-      case 'online': return 'Online';
-      case 'away': {
-        const mins = Math.floor((Date.now() - new Date(presence.last_seen).getTime()) / 60000);
-        if (mins < 60) return `Away ${mins}m ago`;
-        return `Away ${Math.floor(mins / 60)}h ago`;
-      }
+      case 'online': return 'Active';
+      case 'away': return 'Away';
       case 'offline': return 'Offline';
       default: return 'Offline';
     }
@@ -414,7 +463,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const getConnectionStatusColor = useCallback((): string => {
     switch (connection.status) {
       case 'connected': return 'bg-green-500';
-      case 'connecting': return 'bg-yellow-500';
+      case 'connecting': return 'bg-amber-500';
       case 'disconnected': return 'bg-red-500';
       default: return 'bg-gray-400';
     }
