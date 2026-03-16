@@ -22,7 +22,7 @@ export function MobileFixedOrb() {
   };
 
   return (
-    <div className="fixed inset-x-0 bottom-5 z-40 flex justify-center md:hidden pointer-events-none">
+    <div className="fixed inset-x-0 bottom-5 z-[60] flex justify-center md:hidden pointer-events-none">
       <motion.div whileTap={{ scale: 0.95 }} className="pointer-events-auto">
         <div
           role="button"
