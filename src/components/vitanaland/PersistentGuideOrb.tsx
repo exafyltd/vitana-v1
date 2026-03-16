@@ -8,7 +8,7 @@ import { GreetingMicrocopy } from './GreetingMicrocopy';
 import { playSound } from '@/lib/playSound';
 
 export function PersistentGuideOrb() {
-  const { isExpanded, orbVisible, expandToFull, worldVisible } = useVitanalandNavigation();
+  const { isExpanded, orbVisible, worldVisible } = useVitanalandNavigation();
 
   // Keyboard shortcut: Cmd/Ctrl + K
   useEffect(() => {
