@@ -3,8 +3,6 @@ import { Calendar, Mail, Radio, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
-import { useStreamingState } from "@/context/StreamingStateContext";
 import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
