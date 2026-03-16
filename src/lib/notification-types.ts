@@ -427,8 +427,14 @@ export function resolveNotificationRoute(type: string, data?: Record<string, any
   }
 
   // 2. Special handling for chat messages → deep-link into inbox
-  if (type === 'new_chat_message' && data?.sender_id) {
-    return `/inbox?thread=${data.sender_id}&context=global`;
+  //    Group chats: use thread_id (UUID); Direct DMs: use sender_id (peer)
+  if (type === 'new_chat_message') {
+    if (data?.thread_id) {
+      return `/inbox?thread=${data.thread_id}&context=global`;
+    }
+    if (data?.sender_id) {
+      return `/inbox?thread=${data.sender_id}&context=global`;
+    }
   }
 
   // 3. Standard route template from registry

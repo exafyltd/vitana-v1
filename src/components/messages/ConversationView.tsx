@@ -336,13 +336,24 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (threadId && isWindowFocused && messages.length > 0 && markAsRead && user?.id) {
       console.log('📖 ConversationView: Marking thread as read', { threadId, messageContext, messagesLength: messages.length });
       
-      // Auto-mark other users' messages as delivered
-      autoMarkAsDelivered(messages, user.id, messageContext === 'global');
+      // Determine if this is a group thread (messages in global_messages) or direct DM (chat_messages)
+      const currentThread = threads.find(t => t.id === threadId);
+      const isGroupThread = currentThread?.type === 'group';
+      // For read receipts: group threads use global_messages, direct DMs should NOT write to global_messages
+      const useGlobalTable = isGroupThread;
       
-      // Mark messages as read using the proper function
-      const messageIds = messages.filter(msg => msg.sender_id !== user.id).map(msg => msg.id);
-      if (messageIds.length > 0) {
-        markMessagesAsRead(messageIds, messageContext === 'global');
+      // Auto-mark other users' messages as delivered
+      if (useGlobalTable) {
+        autoMarkAsDelivered(messages, user.id, true);
+      }
+      // For direct DMs, the gateway handles read state — don't write to wrong table
+      
+      // Mark messages as read using the proper function (only for group/global_messages)
+      if (useGlobalTable) {
+        const messageIds = messages.filter(msg => msg.sender_id !== user.id).map(msg => msg.id);
+        if (messageIds.length > 0) {
+          markMessagesAsRead(messageIds, true);
+        }
       }
       
       // Immediate UI update via parent callback
