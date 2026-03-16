@@ -28,10 +28,7 @@ export function VitanaButton() {
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
+    expandToFull();
   };
   
   return (

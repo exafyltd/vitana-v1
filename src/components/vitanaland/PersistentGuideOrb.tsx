@@ -19,8 +19,8 @@ export function PersistentGuideOrb() {
         playSound("/sounds/vitanaland/pulse-chime.mp3", 0.12);
         window.dispatchEvent(new CustomEvent('vitanaland-keyboard-trigger'));
         
-      setTimeout(() => {
-          const orb = (window as any).VitanaOrb; if (orb && orb.show) { orb.show(); }
+        setTimeout(() => {
+          expandToFull();
         }, 200);
       }
     };
