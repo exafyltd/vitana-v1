@@ -398,7 +398,7 @@ function AppSidebar({
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
-  const { expandToFull } = useVitanalandNavigation();
+  useOrbVoiceWidget();
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
