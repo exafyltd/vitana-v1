@@ -365,7 +365,7 @@ export default function IntroExperience() {
               handleOrbClick();
             }
           }}
-          className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
+          className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-full cursor-pointer"
         >
           <VitanalandPortalSeed 
             audioState="idle"
