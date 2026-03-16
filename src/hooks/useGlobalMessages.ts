@@ -720,7 +720,6 @@ export function useGlobalMessages(
         updateMessagesOptimistically(threadId, (prev) =>
           prev.map((m) => (m.id === optimistic.id ? realMsg : m))
         );
-        messageCache.updateMessage(threadId, "global", optimistic.id, realMsg);
 
         // Move thread to top
         const now = new Date().toISOString();
