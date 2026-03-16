@@ -1,50 +1,24 @@
+## Vitana AI Chat Link Sharing — Implemented
 
+### Changes (VTID: Enable Vitana to Share Event & Match Links)
 
-## ORB Voice Widget — Step 2: Wire Click Handlers
+| # | File | Change |
+|---|------|--------|
+| 1 | `fetch-user-context/index.ts` | Added `slug` to event SELECT query and mapped output |
+| 2 | `ai-chat/index.ts` | Event links: `e.vitanaland.com/events/{slug}` or `/pub/events/{id}` |
+| 3 | `ai-chat/index.ts` | Added instruction #8: always include links when discussing events/matches |
+| 4 | `ai-chat/index.ts` | Match links: `e.vitanaland.com/matches/{id}` via OG proxy |
 
-Based on code review, here are the changes needed:
+### Link Format
+- Events (slugged): `https://e.vitanaland.com/events/{slug}`
+- Events (no slug): `https://e.vitanaland.com/pub/events/{id}`
+- Matches: `https://e.vitanaland.com/matches/{id}`
 
-### Changes Required
+All links use the e.vitanaland.com OG proxy infrastructure (Cloudflare Worker → OG meta → redirect to app).
 
-**1. src/components/mobile/MobileBottomNav.tsx** (lines 62-65)
-Replace `handleOrbClick` body:
-```typescript
-const handleOrbClick = () => {
-  playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-  const orb = (window as any).VitanaOrb;
-  if (orb && orb.show) {
-    orb.show();
-  }
-};
+### Deploy
+Both edge functions (`fetch-user-context`, `ai-chat`) need manual CLI deploy:
 ```
-
-**2. src/components/vitanaland/VitanaButton.tsx** (lines 29-32)
-Replace `handleOrbClick` body:
-```typescript
-const handleOrbClick = () => {
-  playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-  const orb = (window as any).VitanaOrb;
-  if (orb && orb.show) {
-    orb.show();
-  }
-};
+supabase functions deploy fetch-user-context --no-verify-jwt
+supabase functions deploy ai-chat --no-verify-jwt
 ```
-
-**3. src/components/vitanaland/PersistentGuideOrb.tsx** (line 23)
-Replace ONLY the `expandToFull();` line inside setTimeout:
-```typescript
-setTimeout(() => {
-  const orb = (window as any).VitanaOrb; if (orb && orb.show) { orb.show(); }
-}, 200);
-```
-
-### Files Already Updated (No Changes Needed)
-- **src/pages/portals/MaxinaPortal.tsx** — Already has `VitanaOrb.show()` pattern
-- **src/pages/IntroExperience.tsx** — Already has `VitanaOrb.show()` pattern
-
-### What Stays Unchanged
-- All imports remain (including `useVitanalandNavigation`, `expandToFull`, etc.)
-- All component signatures and props remain intact
-- All context providers remain in place
-- All existing code structure preserved
-

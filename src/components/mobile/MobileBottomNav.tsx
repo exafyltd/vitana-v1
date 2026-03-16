@@ -61,7 +61,10 @@ export function MobileBottomNav() {
   
   const handleOrbClick = () => {
     playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
+    const orb = (window as any).VitanaOrb;
+    if (orb && orb.show) {
+      orb.show();
+    }
   };
   
   // Split nav items for left and right sides of the orb
