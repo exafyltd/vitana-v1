@@ -620,7 +620,25 @@ export function useGlobalMessages(
       // If gateway returned messages, use them
       if (gatewayMessages.length > 0) return gatewayMessages;
 
-      // Fallback: check if there's a legacy thread for this peer
+      // Fallback 1: read directly from chat_messages table (direct DMs live here)
+      try {
+        const { data: dmRows, error: dmErr } = await supabase
+          .from("chat_messages")
+          .select("*")
+          .or(`and(sender_id.eq.${user.id},receiver_id.eq.${activeThreadId}),and(sender_id.eq.${activeThreadId},receiver_id.eq.${user.id})`)
+          .order("created_at", { ascending: true })
+          .limit(100) as any;
+
+        if (!dmErr && dmRows && dmRows.length > 0) {
+          const senderIds = Array.from(new Set(dmRows.map((m: any) => m.sender_id).filter(Boolean)));
+          const profileMap = await enrichProfiles(senderIds as string[]);
+          return dmRows.map((m: any) => toGlobalMessage(m, activeThreadId, profileMap));
+        }
+      } catch (err) {
+        console.warn("[chat] chat_messages fallback failed:", (err as Error).message);
+      }
+
+      // Fallback 2: legacy global_messages (for old threads that used global_message_threads)
       const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
       const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
@@ -628,9 +646,7 @@ export function useGlobalMessages(
         return fetchLegacyMessages(legacyThreadId);
       }
 
-      // Also try using activeThreadId directly as a legacy thread id
-      const legacyMessages = await fetchLegacyMessages(activeThreadId);
-      return legacyMessages;
+      return fetchLegacyMessages(activeThreadId);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: STALE_TIME,
@@ -866,7 +882,45 @@ export function useGlobalMessages(
 
       const timeout = setTimeout(async () => {
         try {
-          await markChatRead(threadId);
+          // Determine if this is a group thread
+          const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+          const thread = cachedThreads.find((t) => t.id === threadId);
+          const isGroup = thread?.type === "group";
+
+          if (isGroup) {
+            // Group: update global_thread_participants.last_read_at
+            await (supabase as any)
+              .from("global_thread_participants")
+              .update({ last_read_at: new Date().toISOString() })
+              .eq("thread_id", threadId)
+              .eq("user_id", user.id);
+          } else {
+            // Direct DM: use gateway
+            await markChatRead(threadId);
+          }
+
+          // Also clear related user_notifications for this chat
+          try {
+            if (isGroup) {
+              await (supabase as any)
+                .from("user_notifications")
+                .update({ read_at: new Date().toISOString() })
+                .eq("type", "new_chat_message")
+                .eq("user_id", user.id)
+                .is("read_at", null)
+                .filter("data->>thread_id", "eq", threadId);
+            } else {
+              await (supabase as any)
+                .from("user_notifications")
+                .update({ read_at: new Date().toISOString() })
+                .eq("type", "new_chat_message")
+                .eq("user_id", user.id)
+                .is("read_at", null)
+                .filter("data->>sender_id", "eq", threadId);
+            }
+          } catch (notifErr) {
+            console.warn("[chat] Failed to clear chat notifications:", notifErr);
+          }
 
           updateThreadsOptimistically((prev) =>
             prev.map((t) =>
@@ -876,6 +930,8 @@ export function useGlobalMessages(
 
           // Notify useChatUnreadCount to refresh badge immediately
           window.dispatchEvent(new Event('chat-unread-refresh'));
+          // Also trigger notification refetch
+          window.dispatchEvent(new Event('notifications-refresh'));
         } catch (error) {
           console.error("Error marking chat as read:", error);
         } finally {
@@ -885,7 +941,7 @@ export function useGlobalMessages(
 
       markAsReadTimeouts.current.set(threadId, timeout);
     },
-    [user, isGlobalContext, updateThreadsOptimistically]
+    [user, isGlobalContext, updateThreadsOptimistically, queryClient]
   );
 
   // ─── FIX 1: STABILIZED REALTIME SUBSCRIPTION ───────────────────────
