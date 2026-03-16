@@ -75,7 +75,7 @@ function throttle(fn: () => void, ms: number) {
 
 export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const { user } = useAuth();
-  const [presenceMap, setPresenceMap] = useState<Map<string, UserPresence>>(new Map());
+  const [presenceMap, setPresenceMap] = useState<Map<string, UserPresence>>(() => new Map(globalPresenceCache));
   const [isActive, setIsActive] = useState(true);
   const [connection, setConnection] = useState<PresenceConnection>({
     status: 'connecting',
