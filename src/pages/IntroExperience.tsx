@@ -19,8 +19,7 @@ const WELCOME_AUDIO_DE = '/sounds/intro/maxina-welcome-de.wav';
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { expandToFull, showOrb } = useVitanalandNavigation();
-  const { setAudioOverlayVisible } = useStreamingState();
+  const { showOrb } = useVitanalandNavigation();
   
   // Ensure orb is visible on intro page (fix "sometimes missing" orb)
   useEffect(() => {
