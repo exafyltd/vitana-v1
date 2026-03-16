@@ -690,7 +690,6 @@ export function useGlobalMessages(
         };
 
         updateMessagesOptimistically(threadId, (prev) => [...prev, optimistic]);
-        messageCache.addMessage(threadId, "global", optimistic);
 
         // threadId is the peer's user ID — try gateway first, fallback to Supabase
         let created: ChatMessage;
