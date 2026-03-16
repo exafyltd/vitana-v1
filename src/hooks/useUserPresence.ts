@@ -1,6 +1,13 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { VITANA_BOT_USER_ID, isVitanaBot } from '@/lib/vitanaBotIdentity';
+
+/**
+ * Module-level presence cache that survives component remounts / route changes.
+ * This prevents the "grey dot on every screen switch" problem.
+ */
+const globalPresenceCache = new Map<string, UserPresence>();
 
 export type PresenceStatus = 'online' | 'away' | 'offline';
 export type ConnectionStatus = 'connected' | 'connecting' | 'disconnected';
@@ -68,7 +75,7 @@ function throttle(fn: () => void, ms: number) {
 
 export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   const { user } = useAuth();
-  const [presenceMap, setPresenceMap] = useState<Map<string, UserPresence>>(new Map());
+  const [presenceMap, setPresenceMap] = useState<Map<string, UserPresence>>(() => new Map(globalPresenceCache));
   const [isActive, setIsActive] = useState(true);
   const [connection, setConnection] = useState<PresenceConnection>({
     status: 'connecting',
@@ -89,6 +96,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
 
   /**
    * Debounced merge: only update state if at least one user's normalized status actually changed.
+   * Also writes through to the module-level cache so next mount is instant.
    */
   const mergePresenceIfChanged = useCallback((incoming: Map<string, UserPresence>) => {
     const current = presenceMapRef.current;
@@ -105,7 +113,10 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
 
     setPresenceMap(prev => {
       const merged = new Map(prev);
-      incoming.forEach((val, key) => merged.set(key, val));
+      incoming.forEach((val, key) => {
+        merged.set(key, val);
+        globalPresenceCache.set(key, val); // write-through to module cache
+      });
       return merged;
     });
   }, []);
@@ -176,6 +187,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
     };
     
     localCache.current.set(user.id, optimisticPresence);
+    globalPresenceCache.set(user.id, optimisticPresence);
     setPresenceMap(prev => new Map(prev.set(user.id, optimisticPresence)));
     
     if (DEBUG_PRESENCE) console.log(`[Presence] Optimistic update: ${user.id} as ${status} @ ${timestamp}`);
@@ -280,7 +292,10 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
           setPresenceMap(prev => {
             const merged = new Map(prev);
             dbPresenceMap.forEach((val, key) => {
-              if (!merged.has(key)) merged.set(key, val);
+              if (!merged.has(key)) {
+                merged.set(key, val);
+                globalPresenceCache.set(key, val);
+              }
             });
             return merged;
           });
@@ -423,6 +438,15 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
   }, [trackPresence]);
 
   const getUserPresence = useCallback((userId: string): UserPresence | null => {
+    // Vitana bot is always online — it's a 24/7 AI assistant
+    if (isVitanaBot(userId)) {
+      return {
+        user_id: userId,
+        status: 'online',
+        last_seen: new Date().toISOString(),
+        display_name: 'Vitana',
+      };
+    }
     const cached = localCache.current.get(userId);
     const mapData = presenceMap.get(userId);
     if (cached && mapData && cached.lastUpdate && cached.lastUpdate > (mapData.lastUpdate || 0)) {
