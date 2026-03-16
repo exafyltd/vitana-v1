@@ -267,7 +267,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
         if (data) {
           const dbPresenceMap = new Map<string, UserPresence>();
           data.forEach(item => {
-            const status = normalizePresenceStatus('online', item.last_seen);
+            const status = normalizePresenceStatus(item.status || 'online', item.last_seen);
             dbPresenceMap.set(item.user_id, {
               user_id: item.user_id,
               status,
