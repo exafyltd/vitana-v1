@@ -289,6 +289,7 @@ const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
   useAppilix();
+  useOrbVoiceWidget();
   const { user, session } = useAuth();
 
   // Set Appilix push notification user identity for mobile device mapping
