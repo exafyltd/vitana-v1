@@ -96,6 +96,7 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
 
   /**
    * Debounced merge: only update state if at least one user's normalized status actually changed.
+   * Also writes through to the module-level cache so next mount is instant.
    */
   const mergePresenceIfChanged = useCallback((incoming: Map<string, UserPresence>) => {
     const current = presenceMapRef.current;
@@ -112,7 +113,10 @@ export function useUserPresence(context: 'global' | 'tenant' = 'global') {
 
     setPresenceMap(prev => {
       const merged = new Map(prev);
-      incoming.forEach((val, key) => merged.set(key, val));
+      incoming.forEach((val, key) => {
+        merged.set(key, val);
+        globalPresenceCache.set(key, val); // write-through to module cache
+      });
       return merged;
     });
   }, []);
