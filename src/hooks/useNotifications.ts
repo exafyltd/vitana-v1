@@ -94,6 +94,8 @@ export function useNotifications(limit = 20) {
         if (newNotif.user_id !== user.id) return;
         setNotifications((prev) => [newNotif, ...prev.slice(0, limit - 1)]);
         setUnreadCount((prev) => prev + 1);
+        // Appilix fallback: show browser notification when backgrounded
+        showAppilixFallbackNotification(newNotif);
       })
       .subscribe();
     channelRef.current = channel;
