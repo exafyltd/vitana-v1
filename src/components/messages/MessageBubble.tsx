@@ -65,6 +65,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onScrollToMessage,
   parentMessage,
   onUpdateMessage,
+  onDeleteMessage,
   onSendReply
 }) => {
   const isMobile = useIsMobile();
