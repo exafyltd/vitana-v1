@@ -181,10 +181,25 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const handleDelete = useCallback(() => {
     if (!onDeleteMessage) return;
-    if (confirm('Delete this message?')) {
-      onDeleteMessage(message.id);
+    setShowDeleteConfirm(true);
+  }, [onDeleteMessage]);
+
+  const handleDeleteConfirmed = useCallback(async () => {
+    if (!onDeleteMessage) return;
+    setIsDeletePending(true);
+    setIsDeleted(true);
+    try {
+      await onDeleteMessage(message.id);
+      console.log('[Delete] Succeeded for message:', message.id);
+      setShowDoubleTapReactions(false);
+      setShowDeleteConfirm(false);
+    } catch {
+      console.error('[Delete] Failed for message:', message.id);
+      setIsDeleted(false);
+    } finally {
+      setIsDeletePending(false);
     }
-  }, [message, onDeleteMessage]);
+  }, [message.id, onDeleteMessage]);
 
   const handleSelect = useCallback(() => {
     // TODO: Implement select functionality for multi-select mode
@@ -193,6 +208,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState('');
+  const [optimisticContent, setOptimisticContent] = useState<string | null>(null);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeletePending, setIsDeletePending] = useState(false);
 
   const handleEdit = useCallback(() => {
     const content = message.body || message.content || '';
@@ -202,11 +221,16 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const handleEditSave = useCallback(async () => {
     if (!editContent.trim() || !onUpdateMessage) return;
+    const trimmed = editContent.trim();
+    setOptimisticContent(trimmed);
+    setIsEditing(false);
     try {
-      await onUpdateMessage(message.id, { body: editContent.trim(), content: editContent.trim() });
-      setIsEditing(false);
+      await onUpdateMessage(message.id, { body: trimmed, content: trimmed });
+      console.log('[Edit] Save succeeded for message:', message.id);
     } catch {
-      // error handled upstream
+      console.error('[Edit] Save failed for message:', message.id);
+      setOptimisticContent(null);
+      setIsEditing(true);
     }
   }, [editContent, message.id, onUpdateMessage]);
 
@@ -617,9 +641,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return renderLinkedText(message.body);
+        return renderLinkedText(optimisticContent ?? message.body);
     }
   };
+
+  // Hide deleted messages optimistically
+  if (isDeleted) return null;
 
   if (message.message_type === 'system') {
     return (
@@ -789,7 +816,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       />
 
       {/* Mobile long-press reaction/action drawer */}
-      <Drawer open={showDoubleTapReactions} onOpenChange={setShowDoubleTapReactions} repositionInputs={false}>
+      <Drawer open={showDoubleTapReactions} onOpenChange={(open) => { setShowDoubleTapReactions(open); if (!open) setShowDeleteConfirm(false); }} repositionInputs={false}>
         <DrawerContent className="!z-[120] pb-safe" overlayClassName="!z-[119]">
           <div className="px-4 pt-2 pb-4 space-y-4">
             {/* Quick reactions row */}
@@ -847,9 +874,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   <span className="text-xs text-muted-foreground">Edit</span>
                 </button>
               )}
-              {isOwnMessage && (
+              {isOwnMessage && !showDeleteConfirm && (
                 <button
-                  onClick={() => { handleDelete(); setShowDoubleTapReactions(false); }}
+                  onClick={() => { handleDelete(); }}
                   className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
                 >
                   <Trash2 className="w-5 h-5 text-destructive" />
@@ -857,6 +884,32 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 </button>
               )}
             </div>
+            
+            {/* Inline delete confirmation */}
+            {showDeleteConfirm && (
+              <div className="border-t border-border pt-3 mt-2 space-y-3">
+                <p className="text-sm text-center text-foreground font-medium">Delete this message?</p>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => setShowDeleteConfirm(false)}
+                    disabled={isDeletePending}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    className="flex-1"
+                    onClick={handleDeleteConfirmed}
+                    disabled={isDeletePending}
+                  >
+                    {isDeletePending ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Trash2 className="w-4 h-4 mr-1" />}
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </DrawerContent>
       </Drawer>
