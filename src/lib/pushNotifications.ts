@@ -70,18 +70,37 @@ class PushNotificationManager {
 
       this.attachAppilixTokenListener();
 
-      // For Appilix: register device metadata for backend routing,
-      // then consume pre-injected native token when available.
       if (isAppilix()) {
-        console.log('[Push] Appilix device — registering metadata for backend routing');
-        await this.registerAppilixDevice();
+        console.log('[Push] Appilix device detected — checking for native FCM token...');
 
-        const nativeToken = getNativeFcmToken();
-        if (nativeToken) {
-          token = nativeToken;
-          console.log('[Push] ✅ Native Appilix FCM token detected');
+        // 1. Immediate check
+        token = getNativeFcmToken();
+        if (token) {
+          console.log('[Push] ✅ Native Appilix FCM token found immediately');
         } else {
-          console.warn('[Push] Appilix detected but native FCM token not available yet');
+          // 2. Poll every 2s for up to 30s (token may be injected after page load)
+          console.log('[Push] Starting Appilix FCM token polling (every 2s, up to 30s)...');
+          for (let attempt = 1; attempt <= 15; attempt++) {
+            await new Promise(r => setTimeout(r, 2000));
+            const polledToken = getNativeFcmToken();
+            if (polledToken) {
+              token = polledToken;
+              console.log(`[Push] ✅ Native Appilix FCM token found after ${attempt * 2}s`);
+              break;
+            }
+            if (attempt % 5 === 0) {
+              console.log(`[Push] Still waiting for Appilix FCM token... (${attempt * 2}s elapsed)`);
+            }
+          }
+        }
+
+        // 3. Register device with token (or without if unavailable)
+        await this.registerAppilixDevice(token || undefined);
+
+        if (!token) {
+          console.warn('[Push] ❌ Appilix FCM token not available after 30s — native shell may not be injecting it');
+          console.warn('[Push] Token sources checked: window.appilix_fcm_token, URL param fcm_token, appilix:fcm_token event');
+          return null;
         }
       }
 
@@ -101,16 +120,12 @@ class PushNotificationManager {
       }
 
       if (!token) {
-        if (isAppilix()) {
-          console.log('[Push] Waiting for native Appilix FCM token event for final registration');
-        } else {
-          console.warn('[Push] ❌ No FCM token — push notifications unavailable');
-        }
+        console.warn('[Push] ❌ No FCM token — push notifications unavailable');
         return null;
       }
 
       this.fcmToken = token;
-      console.log('[Push] FCM token obtained, registering with gateway...', `${GATEWAY_API_BASE}/notifications/token`);
+      console.log('[Push] FCM token obtained, registering with gateway...');
       await this.registerTokenWithBackend(token);
       await this.setupForegroundHandler();
       this.startTokenRefreshMonitor();
@@ -202,7 +217,7 @@ class PushNotificationManager {
    * This tells the gateway that this user has an Appilix-installed app,
    * so the backend can route notifications via Appilix Push API or FCM topic.
    */
-  private async registerAppilixDevice(): Promise<void> {
+  private async registerAppilixDevice(fcmToken?: string): Promise<void> {
     const jwt = await this.getAuthToken();
     if (!jwt) {
       console.warn('[Push] Appilix registration skipped: missing auth session token');
@@ -210,21 +225,28 @@ class PushNotificationManager {
     }
 
     try {
+      const payload: Record<string, string> = {
+        device_type: 'appilix',
+        package_name: 'com.vitanaland.app',
+        device_label: `Appilix ${navigator.userAgent.slice(0, 80)}`,
+      };
+      if (fcmToken) {
+        payload.fcm_token = fcmToken;
+      }
+
+      console.log(`[Push] Registering Appilix device ${fcmToken ? 'WITH' : 'WITHOUT'} FCM token...`);
+
       const res = await fetch(`${GATEWAY_API_BASE}/notifications/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt}` },
-        body: JSON.stringify({
-          device_type: 'appilix',
-          package_name: 'com.vitanaland.app',
-          device_label: `Appilix ${navigator.userAgent.slice(0, 80)}`,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const details = await res.text().catch(() => 'no response body');
         console.warn('[Push] Appilix device registration returned:', res.status, details);
       } else {
-        console.log('[Push] ✅ Appilix device metadata registered with backend');
+        console.log(`[Push] ✅ Appilix device registered ${fcmToken ? 'with FCM token' : '(metadata only)'}`);
       }
     } catch (err) {
       console.warn('[Push] Appilix device registration failed (network):', err);
