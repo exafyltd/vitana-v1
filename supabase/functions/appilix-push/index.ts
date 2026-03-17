@@ -35,21 +35,23 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Build query params for Appilix API
-    const params = new URLSearchParams();
-    params.append("app_key", appKey);
-    params.append("account_key", apiKey);
-    params.append("user_identity", user_identity);
-    params.append("notification_title", notification_title);
-    params.append("notification_message", notification_body || "");
+    // Build multipart form data for Appilix API
+    const formData = new FormData();
+    formData.append("app_key", appKey);
+    formData.append("account_key", apiKey);
+    formData.append("user_identity", user_identity);
+    formData.append("notification_title", notification_title);
+    formData.append("notification_message", notification_body || "");
     if (open_link_url) {
-      params.append("open_link_url", open_link_url);
+      formData.append("open_link_url", open_link_url);
     }
 
-    const url = `https://appilix.com/api/push-notification?${params.toString()}`;
-    console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}", url_length=${url.length}`);
+    console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}"`);
 
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch("https://appilix.com/api/push-notification", {
+      method: "POST",
+      body: formData,
+    });
 
     const responseText = await response.text();
     console.log(`📥 Appilix response: ${response.status} — ${responseText}`);
