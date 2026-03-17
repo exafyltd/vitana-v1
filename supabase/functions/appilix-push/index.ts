@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
     // Build multipart form data for Appilix API
     const formData = new FormData();
     formData.append("app_key", appKey);
-    formData.append("account_key", apiKey);
+    formData.append("api_key", apiKey);
     formData.append("user_identity", user_identity);
     formData.append("notification_title", notification_title);
     formData.append("notification_message", notification_body || "");
