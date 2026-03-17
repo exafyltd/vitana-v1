@@ -36,7 +36,7 @@ Deno.serve(async (req) => {
     // Build form-urlencoded body matching Appilix cURL format
     const params = new URLSearchParams();
     params.append("app_key", appKey);
-    params.append("api_key", apiKey);
+    params.append("account_key", apiKey);
     params.append("user_identity", user_identity);
     params.append("notification_title", notification_title);
     params.append("notification_message", notification_body || "");
