@@ -1165,11 +1165,18 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                               .delete()
                               .eq('id', messageId);
                             if (error) {
-                              console.error('Error deleting message:', error);
+                              console.error('[Delete] Mutation FAILED for message:', messageId, 'table:', table, 'error:', error);
                               throw error;
                             }
+                            console.log('[Delete] Mutation succeeded for message:', messageId, 'table:', table);
                             toast({ title: "Message deleted" });
-                            if (fetchMessages) await fetchMessages();
+                            if (fetchMessages) {
+                              console.log('[Delete] Triggering refetch for threadId:', threadId);
+                              await fetchMessages(threadId);
+                              console.log('[Delete] Refetch completed for threadId:', threadId);
+                            } else {
+                              console.warn('[Delete] No fetchMessages function available — UI will not refresh');
+                            }
                           } catch (error) {
                             console.error('Failed to delete message:', error);
                             toast({

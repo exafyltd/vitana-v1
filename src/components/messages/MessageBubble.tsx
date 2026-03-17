@@ -181,10 +181,25 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const handleDelete = useCallback(() => {
     if (!onDeleteMessage) return;
-    if (confirm('Delete this message?')) {
-      onDeleteMessage(message.id);
+    setShowDeleteConfirm(true);
+  }, [onDeleteMessage]);
+
+  const handleDeleteConfirmed = useCallback(async () => {
+    if (!onDeleteMessage) return;
+    setIsDeletePending(true);
+    setIsDeleted(true);
+    try {
+      await onDeleteMessage(message.id);
+      console.log('[Delete] Succeeded for message:', message.id);
+      setShowDoubleTapReactions(false);
+      setShowDeleteConfirm(false);
+    } catch {
+      console.error('[Delete] Failed for message:', message.id);
+      setIsDeleted(false);
+    } finally {
+      setIsDeletePending(false);
     }
-  }, [message, onDeleteMessage]);
+  }, [message.id, onDeleteMessage]);
 
   const handleSelect = useCallback(() => {
     // TODO: Implement select functionality for multi-select mode
