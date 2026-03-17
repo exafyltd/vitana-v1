@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { showAppilixFallbackNotification } from '@/lib/appilixNotificationFallback';
 import { useAuth } from '@/context/AuthProvider';
 
 export interface VitanaNotification {
