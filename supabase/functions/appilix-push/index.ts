@@ -25,6 +25,8 @@ Deno.serve(async (req) => {
     const appKey = Deno.env.get("APPILIX_APP_KEY");
     const apiKey = Deno.env.get("APPILIX_API_KEY");
 
+    console.log(`🔑 appKey present: ${!!appKey} (len=${appKey?.length}), apiKey present: ${!!apiKey} (len=${apiKey?.length})`);
+
     if (!appKey || !apiKey) {
       console.error("Missing APPILIX_APP_KEY or APPILIX_API_KEY secrets");
       return new Response(
