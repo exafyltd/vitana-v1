@@ -641,7 +641,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return renderLinkedText(message.body);
+        return renderLinkedText(optimisticContent ?? message.body);
     }
   };
 
