@@ -47,7 +47,7 @@ Deno.serve(async (req) => {
     }
 
     const url = `https://appilix.com/api/push-notification?${params.toString()}`;
-    console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}"`);
+    console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}", url_length=${url.length}`);
 
     const response = await fetch(url, { method: "GET" });
 
