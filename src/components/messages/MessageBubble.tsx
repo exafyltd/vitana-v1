@@ -685,7 +685,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               onPin={handlePin}
               onDelete={isOwnMessage ? handleDelete : undefined}
               onSelect={handleSelect}
-              onShare={handleShare}
+              onEdit={isOwnMessage ? handleEdit : undefined}
               onEmojiSelect={handleReactionSelect}
               isOwnMessage={isOwnMessage}
             >
