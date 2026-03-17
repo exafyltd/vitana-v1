@@ -211,6 +211,37 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState('');
   const [optimisticContent, setOptimisticContent] = useState<string | null>(null);
+
+  // Keyboard avoidance: scroll edit container into view on mobile
+  useEffect(() => {
+    if (!isEditing) return;
+
+    const scrollToEdit = () => {
+      editContainerRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    };
+
+    // Initial scroll after DOM update, then focus textarea
+    const t1 = setTimeout(scrollToEdit, 100);
+    const t2 = setTimeout(() => {
+      editTextareaRef.current?.focus();
+    }, 200);
+
+    // Re-scroll when keyboard opens/closes (viewport resize)
+    const vv = window.visualViewport;
+    if (vv && isMobile) {
+      vv.addEventListener('resize', scrollToEdit);
+      vv.addEventListener('scroll', scrollToEdit);
+    }
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      if (vv && isMobile) {
+        vv.removeEventListener('resize', scrollToEdit);
+        vv.removeEventListener('scroll', scrollToEdit);
+      }
+    };
+  }, [isEditing, isMobile]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeletePending, setIsDeletePending] = useState(false);
