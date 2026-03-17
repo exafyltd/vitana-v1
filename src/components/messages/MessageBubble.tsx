@@ -778,12 +778,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
                 
                 {isEditing ? (
-                  <div className="p-2 space-y-2">
+                  <div ref={editContainerRef} className="p-2 space-y-2">
                     <textarea
+                      ref={editTextareaRef}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
                       className="w-full min-h-[60px] rounded-md border-2 border-border bg-card text-card-foreground px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
-                      autoFocus
                     />
                     <div className="flex gap-2 justify-end">
                       <Button variant="outline" size="sm" onClick={handleEditCancel} className="text-foreground">
