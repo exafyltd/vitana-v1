@@ -59,10 +59,20 @@ Deno.serve(async (req) => {
     const responseText = await response.text();
     console.log(`📥 Appilix response: ${response.status} — ${responseText}`);
 
+    // Detect identity-not-found and log diagnostic
+    const identityNotFound = responseText.toLowerCase().includes('identity') &&
+                              responseText.toLowerCase().includes('not found');
+    if (identityNotFound) {
+      console.warn(`⚠️ Appilix: user_identity "${user_identity}" is not registered. ` +
+        `The user needs to open the app so the early identity script can register their device. ` +
+        `No broadcast fallback — failing safely for this user only.`);
+    }
+
     return new Response(
       JSON.stringify({
-        success: response.ok,
+        success: response.ok && !identityNotFound,
         status: response.status,
+        identity_registered: !identityNotFound,
         appilix_response: responseText,
       }),
       { status: response.ok ? 200 : 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
