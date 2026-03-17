@@ -1,53 +1,24 @@
+## Vitana AI Chat Link Sharing — Implemented
 
+### Changes (VTID: Enable Vitana to Share Event & Match Links)
 
-## Fix: Group Messages Always Showing as Unread
+| # | File | Change |
+|---|------|--------|
+| 1 | `fetch-user-context/index.ts` | Added `slug` to event SELECT query and mapped output |
+| 2 | `ai-chat/index.ts` | Event links: `e.vitanaland.com/events/{slug}` or `/pub/events/{id}` |
+| 3 | `ai-chat/index.ts` | Added instruction #8: always include links when discussing events/matches |
+| 4 | `ai-chat/index.ts` | Match links: `e.vitanaland.com/matches/{id}` via OG proxy |
 
-### Root Cause
+### Link Format
+- Events (slugged): `https://e.vitanaland.com/events/{slug}`
+- Events (no slug): `https://e.vitanaland.com/pub/events/{id}`
+- Matches: `https://e.vitanaland.com/matches/{id}`
 
-Two related bugs in `src/hooks/useGlobalMessages.ts`:
+All links use the e.vitanaland.com OG proxy infrastructure (Cloudflare Worker → OG meta → redirect to app).
 
-**Bug 1 — Unread count ignores sender identity (line 284-291)**
-
-The unread calculation compares `lastMsg.created_at > myParticipation.last_read_at` but never checks whether the current user IS the sender. So if you send a message to a group, your own message is newer than your `last_read_at`, and it counts as "unread" for you.
-
-**Bug 2 — Sending a group message never updates `last_read_at` (line 728-746)**
-
-After inserting into `global_messages`, the code updates `global_message_threads.updated_at` but does NOT update `global_thread_participants.last_read_at` for the sender. So every new message the user sends pushes the thread into "unread" state for themselves.
-
-### Fix
-
-#### Change 1: `useGlobalMessages.ts` — Fix unread count calculation (~line 284)
-
-Add a sender check: if the last message was sent by the current user, unread is always 0.
-
-```typescript
-const unreadCount =
-  lastMsg && lastMsg.sender_id === userId
-    ? 0  // Own messages are never unread
-    : lastMsg && myParticipation?.last_read_at
-      ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
-        ? 1
-        : 0
-      : lastMsg
-        ? 1
-        : 0;
+### Deploy
+Both edge functions (`fetch-user-context`, `ai-chat`) need manual CLI deploy:
 ```
-
-#### Change 2: `useGlobalMessages.ts` — Update `last_read_at` after sending a group message (~line 746)
-
-After the group message insert succeeds, also update the sender's `last_read_at`:
-
-```typescript
-// After updating thread's updated_at (line 746):
-await supabase
-  .from("global_thread_participants")
-  .update({ last_read_at: new Date().toISOString() })
-  .eq("thread_id", threadId)
-  .eq("user_id", user.id);
+supabase functions deploy fetch-user-context --no-verify-jwt
+supabase functions deploy ai-chat --no-verify-jwt
 ```
-
-This ensures the sender's participation timestamp stays current, so even if the unread calculation runs before the fix in Change 1 takes effect (e.g. from a cache or another code path), it still resolves correctly.
-
-### Files Modified
-- `src/hooks/useGlobalMessages.ts` — two targeted edits
-

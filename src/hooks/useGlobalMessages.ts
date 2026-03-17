@@ -282,13 +282,15 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
           (p: any) => p.thread_id === t.id
         );
         const unreadCount =
-          lastMsg && myParticipation?.last_read_at
-            ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
-              ? 1
-              : 0
-            : lastMsg && lastMsg.sender_id !== userId
-            ? 1
-            : 0;
+          lastMsg && lastMsg.sender_id === userId
+            ? 0 // Own messages are never unread
+            : lastMsg && myParticipation?.last_read_at
+              ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
+                ? 1
+                : 0
+              : lastMsg
+                ? 1
+                : 0;
 
         return {
           id: threadIdentifier,
@@ -739,11 +741,19 @@ export function useGlobalMessages(
             .single();
           if (insertErr || !inserted) throw insertErr || new Error("Group message insert failed");
 
-          // Update thread's updated_at
-          await supabase
-            .from("global_message_threads")
-            .update({ updated_at: new Date().toISOString() } as any)
-            .eq("id", threadId);
+          // Update thread's updated_at and sender's last_read_at
+          const now = new Date().toISOString();
+          await Promise.all([
+            supabase
+              .from("global_message_threads")
+              .update({ updated_at: now } as any)
+              .eq("id", threadId),
+            supabase
+              .from("global_thread_participants")
+              .update({ last_read_at: now } as any)
+              .eq("thread_id", threadId)
+              .eq("user_id", user.id),
+          ]);
 
           const profileMap = await enrichProfiles([user.id]);
           realMsg = {
