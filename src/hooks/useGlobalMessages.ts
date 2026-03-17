@@ -453,11 +453,19 @@ export function useGlobalMessages(
       if (!user || !isGlobalContext) return [];
 
       // Fetch from both gateway and legacy in parallel
+      // Gateway gets a 5-second timeout so a cold-start doesn't block the whole inbox
+      const gatewayWithTimeout = Promise.race([
+        fetchConversations(),
+        new Promise<ChatConversation[]>((_, reject) =>
+          setTimeout(() => reject(new Error('Gateway timeout (5s)')), 5000)
+        ),
+      ]).catch((err) => {
+        console.warn("Gateway fetchConversations failed/timed out, using legacy only:", err.message);
+        return [] as ChatConversation[];
+      });
+
       const [conversations, legacyThreads] = await Promise.all([
-        fetchConversations().catch((err) => {
-          console.warn("Gateway fetchConversations failed, using legacy only:", err.message);
-          return [] as ChatConversation[];
-        }),
+        gatewayWithTimeout,
         fetchLegacyThreads(user.id),
       ]);
 
