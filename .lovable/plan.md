@@ -1,29 +1,35 @@
-## Chat Push Notifications — Fix Applied
+## Appilix Push Notification Integration — Deployed
 
-### Changes
+### What this does
+When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-| # | Type | Change |
-|---|------|--------|
-| 1 | DB Migration | Created `notify_on_chat_message()` trigger on `chat_messages` table |
-| 2 | DB Migration | Cleaned up stale device tokens (kept only most recent per user) |
+### Components
 
-### Priority 1 — `chat_messages` Notification Trigger
+| # | Type | Component | Status |
+|---|------|-----------|--------|
+| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
+| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
+| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
+| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
 
-- **Function**: `public.notify_on_chat_message()` (SECURITY DEFINER, search_path = public)
-- **Trigger**: `trg_notify_chat_message` AFTER INSERT on `chat_messages`
-- **Behavior**: Inserts into `user_notifications` for the receiver with type `new_chat_message`, channel `push_and_inapp`
-- **Deduplication**: 5-second window check prevents duplicates when gateway also creates a notification
-- **Skips**: Bot messages (`00000000-...0001`) and self-messages
+### Flow
+```
+Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
+  → trg_appilix_push → pg_net POST → appilix-push edge function
+    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
+      → Appilix routes via user_identity (= Supabase user.id)
+        → Native Android bell notification
+```
 
-### Priority 1b — Stale Token Cleanup
+### API Fields (from Appilix docs)
+- `app_key` — required
+- `api_key` — required
+- `notification_title` — required
+- `notification_body` — required
+- `user_identity` — optional (targets specific user)
+- `open_link_url` — optional (opens URL on tap)
 
-- Removed duplicate `user_device_tokens` rows, keeping only the most recent per user
-- Gateway-side upsert recommended to prevent re-accumulation
-
-### Priority 3 — Future Hardening (Not Yet Implemented)
-
-Recommended: Scheduled retry dispatcher edge function for `user_notifications WHERE push_sent_at IS NULL`
-
-### Deploy
-
-No edge function deploys needed. Both changes are database-level (triggers + data cleanup).
+### Notes
+- Desktop web push (FCM) path remains unchanged
+- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
+- Trigger fires for `channel IN ('push_and_inapp', 'push')`
