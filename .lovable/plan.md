@@ -1,66 +1,24 @@
+## Vitana AI Chat Link Sharing — Implemented
 
+### Changes (VTID: Enable Vitana to Share Event & Match Links)
 
-## Plan: Fix Edit Mode Keyboard Avoidance on Mobile
+| # | File | Change |
+|---|------|--------|
+| 1 | `fetch-user-context/index.ts` | Added `slug` to event SELECT query and mapped output |
+| 2 | `ai-chat/index.ts` | Event links: `e.vitanaland.com/events/{slug}` or `/pub/events/{id}` |
+| 3 | `ai-chat/index.ts` | Added instruction #8: always include links when discussing events/matches |
+| 4 | `ai-chat/index.ts` | Match links: `e.vitanaland.com/matches/{id}` via OG proxy |
 
-### Problem
-When tapping Edit on mobile, the soft keyboard opens and covers the editing textarea and Save/Cancel buttons. The user must manually scroll to see them.
+### Link Format
+- Events (slugged): `https://e.vitanaland.com/events/{slug}`
+- Events (no slug): `https://e.vitanaland.com/pub/events/{id}`
+- Matches: `https://e.vitanaland.com/matches/{id}`
 
-### Changes — `src/components/messages/MessageBubble.tsx`
+All links use the e.vitanaland.com OG proxy infrastructure (Cloudflare Worker → OG meta → redirect to app).
 
-**1. Add a ref to the edit container and scroll into view after render + keyboard open**
-
-- Add `const editContainerRef = useRef<HTMLDivElement>(null);`
-- When `isEditing` becomes `true`, use a `useEffect` to:
-  1. Immediately call `editContainerRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })`
-  2. Subscribe to `window.visualViewport?.addEventListener('resize', ...)` to re-scroll when the keyboard actually appears (viewport shrinks)
-  3. Clean up the listener when editing ends
-
-```typescript
-useEffect(() => {
-  if (!isEditing || !isMobile) return;
-  
-  const scrollToEdit = () => {
-    editContainerRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-  };
-  
-  // Initial scroll after a tick (let DOM update)
-  const t = setTimeout(scrollToEdit, 100);
-  
-  // Re-scroll when keyboard opens (viewport resizes)
-  const vv = window.visualViewport;
-  if (vv) {
-    vv.addEventListener('resize', scrollToEdit);
-    vv.addEventListener('scroll', scrollToEdit);
-  }
-  
-  return () => {
-    clearTimeout(t);
-    if (vv) {
-      vv.removeEventListener('resize', scrollToEdit);
-      vv.removeEventListener('scroll', scrollToEdit);
-    }
-  };
-}, [isEditing, isMobile]);
+### Deploy
+Both edge functions (`fetch-user-context`, `ai-chat`) need manual CLI deploy:
 ```
-
-**2. Attach ref to the edit container div**
-
-On line 748, add the ref:
-```tsx
-<div ref={editContainerRef} className="p-2 space-y-2">
+supabase functions deploy fetch-user-context --no-verify-jwt
+supabase functions deploy ai-chat --no-verify-jwt
 ```
-
-**3. Delay autoFocus to after scroll positioning**
-
-Remove `autoFocus` from the textarea. Instead, focus programmatically inside the effect after the initial scroll, with a slight delay (~150ms) so the scroll completes first.
-
-This approach:
-- Scrolls the edit area into view immediately
-- Re-scrolls when the keyboard appears (visualViewport resize)
-- Works inside the scroll container (scrollIntoView walks up to the nearest scrollable ancestor)
-- No layout changes for normal browsing — only activates when `isEditing && isMobile`
-- Cleans up listeners when editing ends
-
-### Files Modified
-- `src/components/messages/MessageBubble.tsx` — add ref, useEffect for scroll+keyboard, remove autoFocus
-

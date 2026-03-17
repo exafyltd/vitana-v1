@@ -71,6 +71,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const isMobile = useIsMobile();
   const { user } = useAuth();
   const messageRef = useRef<HTMLDivElement>(null);
+  const editContainerRef = useRef<HTMLDivElement>(null);
+  const editTextareaRef = useRef<HTMLTextAreaElement>(null);
   const longPressTimer = useRef<NodeJS.Timeout | null>(null);
   const lastTapTime = useRef(0);
   const [showDoubleTapReactions, setShowDoubleTapReactions] = useState(false);
@@ -209,6 +211,37 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState('');
   const [optimisticContent, setOptimisticContent] = useState<string | null>(null);
+
+  // Keyboard avoidance: scroll edit container into view on mobile
+  useEffect(() => {
+    if (!isEditing) return;
+
+    const scrollToEdit = () => {
+      editContainerRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    };
+
+    // Initial scroll after DOM update, then focus textarea
+    const t1 = setTimeout(scrollToEdit, 100);
+    const t2 = setTimeout(() => {
+      editTextareaRef.current?.focus();
+    }, 200);
+
+    // Re-scroll when keyboard opens/closes (viewport resize)
+    const vv = window.visualViewport;
+    if (vv && isMobile) {
+      vv.addEventListener('resize', scrollToEdit);
+      vv.addEventListener('scroll', scrollToEdit);
+    }
+
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      if (vv && isMobile) {
+        vv.removeEventListener('resize', scrollToEdit);
+        vv.removeEventListener('scroll', scrollToEdit);
+      }
+    };
+  }, [isEditing, isMobile]);
   const [isDeleted, setIsDeleted] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeletePending, setIsDeletePending] = useState(false);
@@ -745,12 +778,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 )}
                 
                 {isEditing ? (
-                  <div className="p-2 space-y-2">
+                  <div ref={editContainerRef} className="p-2 space-y-2">
                     <textarea
+                      ref={editTextareaRef}
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
                       className="w-full min-h-[60px] rounded-md border-2 border-border bg-card text-card-foreground px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring shadow-sm"
-                      autoFocus
                     />
                     <div className="flex gap-2 justify-end">
                       <Button variant="outline" size="sm" onClick={handleEditCancel} className="text-foreground">
