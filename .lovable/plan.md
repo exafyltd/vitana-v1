@@ -1,47 +1,71 @@
 
 
-## Summary: What Was Changed to Restore Bell Notifications
+## Plan: Appilix Push Notification Integration
 
-### Changes already made (code side — complete)
+### What this does
+When a chat message (DM or group) creates a row in `user_notifications`, a database trigger will call the Appilix Push API to deliver a native Android notification to the recipient's device. This uses the `user_identity` mapping already set in `App.tsx` (`user.id`).
 
-1. **`src/lib/pushNotifications.ts` — `initialize()`**: Removed the `isAppilix()` early return that was skipping service worker registration. The Firebase messaging service worker (`firebase-messaging-sw.js`) now registers normally inside the Appilix WebView.
+### Steps
 
-2. **`src/lib/pushNotifications.ts` — `subscribe()`**: Removed the 30-second polling loop that waited for a native Appilix FCM token (which never arrives). Replaced with a single instant check — if no native token, it immediately proceeds to standard Web FCM registration.
+**1. Store Appilix secrets**
+Add two new Edge Function secrets:
+- `APPILIX_APP_KEY` = `8kwa81zf6ye64b0j42unyk7j9wgbr3u35pfidvn9`
+- `APPILIX_API_KEY` = `u9p6gt2iqnbrod7kmshy`
 
-3. **`src/lib/appilixNotificationFallback.ts`**: Removed the `isAppilix()` gate so the browser Notification fallback works on all platforms.
+**2. Create `appilix-push` Edge Function**
+New file: `supabase/functions/appilix-push/index.ts`
 
-These changes restore the exact flow that worked on March 12:
-```text
-App loads → SW registers → Web FCM token obtained → Token sent to gateway
-→ New chat message → DB trigger → Gateway sends FCM → SW receives push → showNotification()
+Accepts POST with `{ user_identity, notification_title, notification_body, open_link_url }`. Calls `https://appilix.com/api/push-notification` with the secrets + payload using `application/x-www-form-urlencoded` (matching the cURL example). Returns success/failure.
+
+Add to `supabase/config.toml`:
+```toml
+[functions.appilix-push]
+verify_jwt = false
 ```
 
----
+**3. Add database trigger on `user_notifications`**
+SQL migration:
 
-### What you need to do on your side
+```sql
+CREATE OR REPLACE FUNCTION notify_appilix_push()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Only fire for push-eligible notifications
+  IF NEW.channel IN ('push_and_inapp', 'push') AND NEW.priority IN ('p1', 'p2') THEN
+    PERFORM net.http_post(
+      url := 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/functions/v1/appilix-push',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'Authorization', 'Bearer <anon_key>'
+      ),
+      body := jsonb_build_object(
+        'user_identity', NEW.user_id::text,
+        'notification_title', NEW.title,
+        'notification_body', NEW.body,
+        'open_link_url', 'https://vitana-v1.lovable.app' || COALESCE(NEW.data->>'url', '/inbox')
+      )
+    );
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
-1. **Clear the Appilix app cache/data** — The old service worker (which was never registered due to the skip) may be cached. Go to Android Settings → Apps → Vitana/Appilix → Storage → Clear Cache (and optionally Clear Data). This forces a fresh service worker registration.
+CREATE TRIGGER trg_appilix_push
+AFTER INSERT ON user_notifications
+FOR EACH ROW EXECUTE FUNCTION notify_appilix_push();
+```
 
-2. **Open the app and log in** — After clearing cache, open the app normally and sign in.
+### Flow
+```text
+Chat message → trg_notify_chat_message → user_notifications INSERT
+  → trg_appilix_push → pg_net POST to appilix-push edge function
+    → Edge function POST to https://appilix.com/api/push-notification
+      → Appilix routes via user_identity (= Supabase user ID)
+        → Native bell notification on Android device
+```
 
-3. **Grant notification permission** — When prompted, tap "Allow" for notifications. If no prompt appears, check Android Settings → Apps → Vitana → Notifications and ensure they're enabled.
-
-4. **Check the console** — If you have access to remote debugging (chrome://inspect), look for these log lines in order:
-   - `[Push] Service Worker registered`
-   - `[Push] Trying web FCM...`
-   - `[Push] ✅ Web FCM token obtained`
-   - `[Push] ✅ Token registered with backend`
-
-   If you see `[Push] ⚠️ Web FCM returned null`, it means the WebView denied notification permission silently.
-
-5. **Test** — Background the app, send a DM from another account, and the bell notification should appear within a few seconds.
-
-### If notifications still don't appear after these steps
-
-The most likely causes would be:
-- **Permission not granted**: Android WebView may need explicit notification channel permission
-- **Gateway not receiving the token**: The `POST /notifications/token` call may be failing — console logs will show this
-- **Service worker not activating**: The `firebase-messaging-sw.js` may need a hard refresh (close app completely, reopen)
-
-No further code changes are needed — the push path is fully restored. This is an on-device verification step.
+### No changes needed
+- No React/frontend code changes
+- Existing web push path for desktop browsers remains untouched
+- Identity mapping in `App.tsx` already works correctly
 
