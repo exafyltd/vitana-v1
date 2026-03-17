@@ -819,13 +819,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 <Forward className="w-5 h-5 text-foreground" />
                 <span className="text-xs text-muted-foreground">Forward</span>
               </button>
-              <button
-                onClick={() => { handleShare(); setShowDoubleTapReactions(false); }}
-                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
-              >
-                <Share className="w-5 h-5 text-foreground" />
-                <span className="text-xs text-muted-foreground">Share</span>
-              </button>
+              {isOwnMessage && (
+                <button
+                  onClick={() => { handleEdit(); setShowDoubleTapReactions(false); }}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+                >
+                  <Pencil className="w-5 h-5 text-foreground" />
+                  <span className="text-xs text-muted-foreground">Edit</span>
+                </button>
+              )}
               {isOwnMessage && (
                 <button
                   onClick={() => { handleDelete(); setShowDoubleTapReactions(false); }}
