@@ -35,22 +35,25 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Build multipart form data for Appilix API
-    const formData = new FormData();
-    formData.append("app_key", appKey);
-    formData.append("api_key", apiKey);
-    formData.append("user_identity", user_identity);
-    formData.append("notification_title", notification_title);
-    formData.append("notification_message", notification_body || "");
+    // Build x-www-form-urlencoded body matching exact cURL from Appilix docs
+    const bodyParts = [
+      `app_key=${encodeURIComponent(appKey)}`,
+      `api_key=${encodeURIComponent(apiKey)}`,
+      `user_identity=${encodeURIComponent(user_identity)}`,
+      `notification_title=${encodeURIComponent(notification_title)}`,
+      `notification_body=${encodeURIComponent(notification_body || "")}`,
+    ];
     if (open_link_url) {
-      formData.append("open_link_url", open_link_url);
+      bodyParts.push(`open_link_url=${encodeURIComponent(open_link_url)}`);
     }
 
-    console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}"`);
+    const formBody = bodyParts.join("&");
+    console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}", bodyLen=${formBody.length}`);
 
     const response = await fetch("https://appilix.com/api/push-notification", {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formBody,
     });
 
     const responseText = await response.text();
