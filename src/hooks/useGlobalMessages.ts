@@ -282,13 +282,15 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
           (p: any) => p.thread_id === t.id
         );
         const unreadCount =
-          lastMsg && myParticipation?.last_read_at
-            ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
-              ? 1
-              : 0
-            : lastMsg && lastMsg.sender_id !== userId
-            ? 1
-            : 0;
+          lastMsg && lastMsg.sender_id === userId
+            ? 0 // Own messages are never unread
+            : lastMsg && myParticipation?.last_read_at
+              ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
+                ? 1
+                : 0
+              : lastMsg
+                ? 1
+                : 0;
 
         return {
           id: threadIdentifier,
