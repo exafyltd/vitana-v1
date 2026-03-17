@@ -109,8 +109,6 @@ export async function showAppilixFallbackNotification(
         data: { url: `/inbox?thread=${threadParam}` },
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-72x72.png',
-        renotify: true,
-      } as NotificationOptions & { renotify: boolean });
       });
       return true;
     }
