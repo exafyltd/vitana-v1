@@ -110,6 +110,7 @@ export async function showAppilixFallbackNotification(
         icon: '/icons/icon-192x192.png',
         badge: '/icons/icon-72x72.png',
         renotify: true,
+      } as NotificationOptions & { renotify: boolean });
       });
       return true;
     }
