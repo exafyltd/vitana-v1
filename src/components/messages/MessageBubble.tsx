@@ -51,6 +51,7 @@ interface MessageBubbleProps {
   onScrollToMessage?: (messageId: string) => void;
   parentMessage?: any;
   onUpdateMessage?: (messageId: string, updates: any) => void;
+  onDeleteMessage?: (messageId: string) => void;
   onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
 }
 
