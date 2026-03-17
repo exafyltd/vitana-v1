@@ -49,7 +49,7 @@ export function MessageContextMenu({
   onPin,
   onDelete,
   onSelect,
-  onShare,
+  onEdit,
   onEmojiSelect,
   isOwnMessage = false,
   isStarred = false,
