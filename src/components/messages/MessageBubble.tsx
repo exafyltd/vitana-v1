@@ -29,7 +29,7 @@ import {
   X,
   Copy,
   Forward,
-  Share,
+  Pencil,
   Trash2
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
