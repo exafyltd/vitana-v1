@@ -35,7 +35,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Build form-urlencoded body matching Appilix cURL format
+    // Build query params for Appilix API
     const params = new URLSearchParams();
     params.append("app_key", appKey);
     params.append("account_key", apiKey);
@@ -46,13 +46,10 @@ Deno.serve(async (req) => {
       params.append("open_link_url", open_link_url);
     }
 
+    const url = `https://appilix.com/api/push-notification?${params.toString()}`;
     console.log(`📤 Sending Appilix push to user_identity=${user_identity}, title="${notification_title}"`);
 
-    const response = await fetch("https://appilix.com/api/push-notification", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: params.toString(),
-    });
+    const response = await fetch(url, { method: "GET" });
 
     const responseText = await response.text();
     console.log(`📥 Appilix response: ${response.status} — ${responseText}`);
