@@ -14,7 +14,7 @@ import {
   Pin, 
   Trash2, 
   MousePointer2,
-  Share,
+  Pencil,
   Plus
 } from 'lucide-react';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
