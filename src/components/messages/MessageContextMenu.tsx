@@ -117,10 +117,10 @@ export function MessageContextMenu({
           </ContextMenuItem>
         )}
         
-        {onShare && (
-          <ContextMenuItem onClick={onShare} className="flex items-center gap-2 px-3 py-2">
-            <Share className="w-4 h-4" />
-            <span>{translate('common.share', 'Share')}</span>
+        {isOwnMessage && onEdit && (
+          <ContextMenuItem onClick={onEdit} className="flex items-center gap-2 px-3 py-2">
+            <Pencil className="w-4 h-4" />
+            <span>Edit</span>
           </ContextMenuItem>
         )}
 
