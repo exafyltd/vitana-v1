@@ -70,18 +70,37 @@ class PushNotificationManager {
 
       this.attachAppilixTokenListener();
 
-      // For Appilix: register device metadata for backend routing,
-      // then consume pre-injected native token when available.
       if (isAppilix()) {
-        console.log('[Push] Appilix device — registering metadata for backend routing');
-        await this.registerAppilixDevice();
+        console.log('[Push] Appilix device detected — checking for native FCM token...');
 
-        const nativeToken = getNativeFcmToken();
-        if (nativeToken) {
-          token = nativeToken;
-          console.log('[Push] ✅ Native Appilix FCM token detected');
+        // 1. Immediate check
+        token = getNativeFcmToken();
+        if (token) {
+          console.log('[Push] ✅ Native Appilix FCM token found immediately');
         } else {
-          console.warn('[Push] Appilix detected but native FCM token not available yet');
+          // 2. Poll every 2s for up to 30s (token may be injected after page load)
+          console.log('[Push] Starting Appilix FCM token polling (every 2s, up to 30s)...');
+          for (let attempt = 1; attempt <= 15; attempt++) {
+            await new Promise(r => setTimeout(r, 2000));
+            const polledToken = getNativeFcmToken();
+            if (polledToken) {
+              token = polledToken;
+              console.log(`[Push] ✅ Native Appilix FCM token found after ${attempt * 2}s`);
+              break;
+            }
+            if (attempt % 5 === 0) {
+              console.log(`[Push] Still waiting for Appilix FCM token... (${attempt * 2}s elapsed)`);
+            }
+          }
+        }
+
+        // 3. Register device with token (or without if unavailable)
+        await this.registerAppilixDevice(token || undefined);
+
+        if (!token) {
+          console.warn('[Push] ❌ Appilix FCM token not available after 30s — native shell may not be injecting it');
+          console.warn('[Push] Token sources checked: window.appilix_fcm_token, URL param fcm_token, appilix:fcm_token event');
+          return null;
         }
       }
 
@@ -101,16 +120,12 @@ class PushNotificationManager {
       }
 
       if (!token) {
-        if (isAppilix()) {
-          console.log('[Push] Waiting for native Appilix FCM token event for final registration');
-        } else {
-          console.warn('[Push] ❌ No FCM token — push notifications unavailable');
-        }
+        console.warn('[Push] ❌ No FCM token — push notifications unavailable');
         return null;
       }
 
       this.fcmToken = token;
-      console.log('[Push] FCM token obtained, registering with gateway...', `${GATEWAY_API_BASE}/notifications/token`);
+      console.log('[Push] FCM token obtained, registering with gateway...');
       await this.registerTokenWithBackend(token);
       await this.setupForegroundHandler();
       this.startTokenRefreshMonitor();
