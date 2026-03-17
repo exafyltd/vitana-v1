@@ -816,7 +816,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       />
 
       {/* Mobile long-press reaction/action drawer */}
-      <Drawer open={showDoubleTapReactions} onOpenChange={setShowDoubleTapReactions} repositionInputs={false}>
+      <Drawer open={showDoubleTapReactions} onOpenChange={(open) => { setShowDoubleTapReactions(open); if (!open) setShowDeleteConfirm(false); }} repositionInputs={false}>
         <DrawerContent className="!z-[120] pb-safe" overlayClassName="!z-[119]">
           <div className="px-4 pt-2 pb-4 space-y-4">
             {/* Quick reactions row */}
