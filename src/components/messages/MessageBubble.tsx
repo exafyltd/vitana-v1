@@ -180,23 +180,40 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message]);
 
   const handleDelete = useCallback(() => {
-    // TODO: Implement delete functionality with confirmation
-    console.log('Delete message:', message.id);
-  }, [message]);
+    if (!onDeleteMessage) return;
+    if (confirm('Delete this message?')) {
+      onDeleteMessage(message.id);
+    }
+  }, [message, onDeleteMessage]);
 
   const handleSelect = useCallback(() => {
     // TODO: Implement select functionality for multi-select mode
     console.log('Select message:', message.id);
   }, [message]);
 
-  const handleShare = useCallback(() => {
-    // TODO: Implement share functionality
-    if (navigator.share) {
-      navigator.share({
-        text: message.body || message.content || '',
-      });
-    }
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState('');
+
+  const handleEdit = useCallback(() => {
+    const content = message.body || message.content || '';
+    setEditContent(content);
+    setIsEditing(true);
   }, [message]);
+
+  const handleEditSave = useCallback(async () => {
+    if (!editContent.trim() || !onUpdateMessage) return;
+    try {
+      await onUpdateMessage(message.id, { body: editContent.trim(), content: editContent.trim() });
+      setIsEditing(false);
+    } catch {
+      // error handled upstream
+    }
+  }, [editContent, message.id, onUpdateMessage]);
+
+  const handleEditCancel = useCallback(() => {
+    setIsEditing(false);
+    setEditContent('');
+  }, []);
 
   const handleScrollToParent = useCallback(() => {
     const parentId = message.parent_message_id || message.reply_to_message_id;
