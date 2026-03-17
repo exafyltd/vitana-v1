@@ -31,7 +31,7 @@ interface MessageContextMenuProps {
   onPin?: () => void;
   onDelete?: () => void;
   onSelect?: () => void;
-  onShare?: () => void;
+  onEdit?: () => void;
   onEmojiSelect?: (emoji: string) => void;
   isOwnMessage?: boolean;
   isStarred?: boolean;
