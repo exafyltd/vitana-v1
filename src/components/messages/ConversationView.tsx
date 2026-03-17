@@ -1138,6 +1138,26 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                             throw error;
                           }
                         }}
+                        onDeleteMessage={async (messageId: string) => {
+                          try {
+                            const { error } = await supabase
+                              .from(messageContext === 'global' ? 'global_messages' : 'messages')
+                              .delete()
+                              .eq('id', messageId);
+                            if (error) {
+                              console.error('Error deleting message:', error);
+                              throw error;
+                            }
+                            if (fetchMessages) await fetchMessages();
+                          } catch (error) {
+                            console.error('Failed to delete message:', error);
+                            toast({
+                              title: "Delete Failed",
+                              description: "Failed to delete message. Please try again.",
+                              variant: "destructive"
+                            });
+                          }
+                        }}
                         onSendReply={handleSendMessage}
                       />
                     </SwipeableMessage>
