@@ -29,7 +29,7 @@ import {
   X,
   Copy,
   Forward,
-  Share,
+  Pencil,
   Trash2
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
@@ -51,6 +51,7 @@ interface MessageBubbleProps {
   onScrollToMessage?: (messageId: string) => void;
   parentMessage?: any;
   onUpdateMessage?: (messageId: string, updates: any) => void;
+  onDeleteMessage?: (messageId: string) => void;
   onSendReply?: (content: string, messageType?: string, contentData?: any) => Promise<void>;
 }
 
@@ -64,6 +65,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onScrollToMessage,
   parentMessage,
   onUpdateMessage,
+  onDeleteMessage,
   onSendReply
 }) => {
   const isMobile = useIsMobile();
@@ -178,23 +180,40 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message]);
 
   const handleDelete = useCallback(() => {
-    // TODO: Implement delete functionality with confirmation
-    console.log('Delete message:', message.id);
-  }, [message]);
+    if (!onDeleteMessage) return;
+    if (confirm('Delete this message?')) {
+      onDeleteMessage(message.id);
+    }
+  }, [message, onDeleteMessage]);
 
   const handleSelect = useCallback(() => {
     // TODO: Implement select functionality for multi-select mode
     console.log('Select message:', message.id);
   }, [message]);
 
-  const handleShare = useCallback(() => {
-    // TODO: Implement share functionality
-    if (navigator.share) {
-      navigator.share({
-        text: message.body || message.content || '',
-      });
-    }
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState('');
+
+  const handleEdit = useCallback(() => {
+    const content = message.body || message.content || '';
+    setEditContent(content);
+    setIsEditing(true);
   }, [message]);
+
+  const handleEditSave = useCallback(async () => {
+    if (!editContent.trim() || !onUpdateMessage) return;
+    try {
+      await onUpdateMessage(message.id, { body: editContent.trim(), content: editContent.trim() });
+      setIsEditing(false);
+    } catch {
+      // error handled upstream
+    }
+  }, [editContent, message.id, onUpdateMessage]);
+
+  const handleEditCancel = useCallback(() => {
+    setIsEditing(false);
+    setEditContent('');
+  }, []);
 
   const handleScrollToParent = useCallback(() => {
     const parentId = message.parent_message_id || message.reply_to_message_id;
@@ -666,7 +685,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               onPin={handlePin}
               onDelete={isOwnMessage ? handleDelete : undefined}
               onSelect={handleSelect}
-              onShare={handleShare}
+              onEdit={isOwnMessage ? handleEdit : undefined}
               onEmojiSelect={handleReactionSelect}
               isOwnMessage={isOwnMessage}
             >
@@ -698,7 +717,26 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                   />
                 )}
                 
-                {renderContent()}
+                {isEditing ? (
+                  <div className="p-2 space-y-2">
+                    <textarea
+                      value={editContent}
+                      onChange={(e) => setEditContent(e.target.value)}
+                      className="w-full min-h-[60px] rounded-md border border-input bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring"
+                      autoFocus
+                    />
+                    <div className="flex gap-2 justify-end">
+                      <Button variant="ghost" size="sm" onClick={handleEditCancel}>
+                        <X className="w-3 h-3 mr-1" /> Cancel
+                      </Button>
+                      <Button size="sm" onClick={handleEditSave} disabled={!editContent.trim()}>
+                        <Check className="w-3 h-3 mr-1" /> Save
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  renderContent()
+                )}
               </div>
             </MessageContextMenu>
             
@@ -800,13 +838,15 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
                 <Forward className="w-5 h-5 text-foreground" />
                 <span className="text-xs text-muted-foreground">Forward</span>
               </button>
-              <button
-                onClick={() => { handleShare(); setShowDoubleTapReactions(false); }}
-                className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
-              >
-                <Share className="w-5 h-5 text-foreground" />
-                <span className="text-xs text-muted-foreground">Share</span>
-              </button>
+              {isOwnMessage && (
+                <button
+                  onClick={() => { handleEdit(); setShowDoubleTapReactions(false); }}
+                  className="flex flex-col items-center gap-1.5 py-3 rounded-xl active:bg-accent transition-colors"
+                >
+                  <Pencil className="w-5 h-5 text-foreground" />
+                  <span className="text-xs text-muted-foreground">Edit</span>
+                </button>
+              )}
               {isOwnMessage && (
                 <button
                   onClick={() => { handleDelete(); setShowDoubleTapReactions(false); }}

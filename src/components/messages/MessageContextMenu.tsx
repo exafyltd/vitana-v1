@@ -14,7 +14,7 @@ import {
   Pin, 
   Trash2, 
   MousePointer2,
-  Share,
+  Pencil,
   Plus
 } from 'lucide-react';
 import { EmojiPicker } from '@/components/ui/emoji-picker';
@@ -31,7 +31,7 @@ interface MessageContextMenuProps {
   onPin?: () => void;
   onDelete?: () => void;
   onSelect?: () => void;
-  onShare?: () => void;
+  onEdit?: () => void;
   onEmojiSelect?: (emoji: string) => void;
   isOwnMessage?: boolean;
   isStarred?: boolean;
@@ -49,7 +49,7 @@ export function MessageContextMenu({
   onPin,
   onDelete,
   onSelect,
-  onShare,
+  onEdit,
   onEmojiSelect,
   isOwnMessage = false,
   isStarred = false,
@@ -117,10 +117,10 @@ export function MessageContextMenu({
           </ContextMenuItem>
         )}
         
-        {onShare && (
-          <ContextMenuItem onClick={onShare} className="flex items-center gap-2 px-3 py-2">
-            <Share className="w-4 h-4" />
-            <span>{translate('common.share', 'Share')}</span>
+        {isOwnMessage && onEdit && (
+          <ContextMenuItem onClick={onEdit} className="flex items-center gap-2 px-3 py-2">
+            <Pencil className="w-4 h-4" />
+            <span>Edit</span>
           </ContextMenuItem>
         )}
 
