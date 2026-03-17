@@ -645,6 +645,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   };
 
+  // Hide deleted messages optimistically
+  if (isDeleted) return null;
+
   if (message.message_type === 'system') {
     return (
       <div className="flex justify-center my-2">
