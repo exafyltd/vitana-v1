@@ -193,6 +193,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState('');
+  const [optimisticContent, setOptimisticContent] = useState<string | null>(null);
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeletePending, setIsDeletePending] = useState(false);
 
   const handleEdit = useCallback(() => {
     const content = message.body || message.content || '';
@@ -202,11 +206,16 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 
   const handleEditSave = useCallback(async () => {
     if (!editContent.trim() || !onUpdateMessage) return;
+    const trimmed = editContent.trim();
+    setOptimisticContent(trimmed);
+    setIsEditing(false);
     try {
-      await onUpdateMessage(message.id, { body: editContent.trim(), content: editContent.trim() });
-      setIsEditing(false);
+      await onUpdateMessage(message.id, { body: trimmed, content: trimmed });
+      console.log('[Edit] Save succeeded for message:', message.id);
     } catch {
-      // error handled upstream
+      console.error('[Edit] Save failed for message:', message.id);
+      setOptimisticContent(null);
+      setIsEditing(true);
     }
   }, [editContent, message.id, onUpdateMessage]);
 
