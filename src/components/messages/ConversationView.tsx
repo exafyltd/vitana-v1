@@ -1129,12 +1129,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                               .eq('id', messageId);
                             
                             if (error) {
-                              console.error('Error updating message:', error);
+                              console.error('[Edit] Mutation FAILED for message:', messageId, 'table:', table, 'error:', error);
                               throw error;
                             }
                             
+                            console.log('[Edit] Mutation succeeded for message:', messageId, 'table:', table);
                             if (fetchMessages) {
-                              await fetchMessages();
+                              console.log('[Edit] Triggering refetch for threadId:', threadId);
+                              await fetchMessages(threadId);
+                              console.log('[Edit] Refetch completed for threadId:', threadId);
+                            } else {
+                              console.warn('[Edit] No fetchMessages function available — UI will not refresh');
                             }
                           } catch (error) {
                             console.error('Failed to update message:', error);
