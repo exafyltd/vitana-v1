@@ -39,10 +39,7 @@ class PushNotificationManager {
     await this.loadMutedThreads();
 
     if (!this.isSupported) {
-      if (isAppilix()) {
-        console.log('[Push] Appilix detected — SW not supported in this WebView, will register device metadata');
-        return true;
-      }
+      console.warn('[Push] Service Worker or Notification API not supported');
       return false;
     }
 
