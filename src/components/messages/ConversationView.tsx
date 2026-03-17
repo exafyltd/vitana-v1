@@ -1115,9 +1115,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         showTimestamp={showTimestamp}
                         onUpdateMessage={async (messageId: string, updates: any) => {
                           try {
+                            // Route to correct table based on thread type
+                            const ct = threads.find((t: any) => t.id === threadId);
+                            const isGroup = ct?.type === 'group';
+                            const table = messageContext === 'tenant'
+                              ? 'messages'
+                              : isGroup
+                                ? 'global_messages'
+                                : 'chat_messages';
                             const { error } = await supabase
-                              .from(messageContext === 'global' ? 'global_messages' : 'messages')
-                              .update(updates)
+                              .from(table)
+                              .update(table === 'messages' ? updates : { content: updates.body || updates.content })
                               .eq('id', messageId);
                             
                             if (error) {
@@ -1140,14 +1148,22 @@ const ConversationView: React.FC<ConversationViewProps> = ({
                         }}
                         onDeleteMessage={async (messageId: string) => {
                           try {
+                            const ct = threads.find((t: any) => t.id === threadId);
+                            const isGroup = ct?.type === 'group';
+                            const table = messageContext === 'tenant'
+                              ? 'messages'
+                              : isGroup
+                                ? 'global_messages'
+                                : 'chat_messages';
                             const { error } = await supabase
-                              .from(messageContext === 'global' ? 'global_messages' : 'messages')
+                              .from(table)
                               .delete()
                               .eq('id', messageId);
                             if (error) {
                               console.error('Error deleting message:', error);
                               throw error;
                             }
+                            toast({ title: "Message deleted" });
                             if (fetchMessages) await fetchMessages();
                           } catch (error) {
                             console.error('Failed to delete message:', error);
