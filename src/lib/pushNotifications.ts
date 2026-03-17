@@ -53,10 +53,6 @@ class PushNotificationManager {
       return true;
     } catch (error) {
       console.error('[Push] SW registration failed:', error);
-      if (isAppilix()) {
-        console.log('[Push] SW failed but Appilix detected — will register device metadata');
-        return true;
-      }
       return false;
     }
   }
