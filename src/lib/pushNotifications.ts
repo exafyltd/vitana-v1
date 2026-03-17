@@ -39,10 +39,7 @@ class PushNotificationManager {
     await this.loadMutedThreads();
 
     if (!this.isSupported) {
-      if (isAppilix()) {
-        console.log('[Push] Appilix detected — SW not supported in this WebView, will register device metadata');
-        return true;
-      }
+      console.warn('[Push] Service Worker or Notification API not supported');
       return false;
     }
 
@@ -56,10 +53,6 @@ class PushNotificationManager {
       return true;
     } catch (error) {
       console.error('[Push] SW registration failed:', error);
-      if (isAppilix()) {
-        console.log('[Push] SW failed but Appilix detected — will register device metadata');
-        return true;
-      }
       return false;
     }
   }
@@ -71,37 +64,14 @@ class PushNotificationManager {
       this.attachAppilixTokenListener();
 
       if (isAppilix()) {
-        console.log('[Push] Appilix device detected — checking for native FCM token...');
-
-        // 1. Immediate check
-        token = getNativeFcmToken();
-        if (token) {
-          console.log('[Push] ✅ Native Appilix FCM token found immediately');
-        } else {
-          // 2. Poll every 2s for up to 30s (token may be injected after page load)
-          console.log('[Push] Starting Appilix FCM token polling (every 2s, up to 30s)...');
-          for (let attempt = 1; attempt <= 15; attempt++) {
-            await new Promise(r => setTimeout(r, 2000));
-            const polledToken = getNativeFcmToken();
-            if (polledToken) {
-              token = polledToken;
-              console.log(`[Push] ✅ Native Appilix FCM token found after ${attempt * 2}s`);
-              break;
-            }
-            if (attempt % 5 === 0) {
-              console.log(`[Push] Still waiting for Appilix FCM token... (${attempt * 2}s elapsed)`);
-            }
-          }
+        console.log('[Push] Appilix detected — checking native token once, then proceeding to web FCM');
+        const nativeToken = getNativeFcmToken();
+        if (nativeToken) {
+          console.log('[Push] ✅ Native Appilix FCM token found, using it');
+          token = nativeToken;
         }
-
-        // 3. Register device with token (or without if unavailable)
-        await this.registerAppilixDevice(token || undefined);
-
-        if (!token) {
-          console.warn('[Push] ❌ Appilix FCM token not available after 30s — native shell may not be injecting it');
-          console.warn('[Push] Token sources checked: window.appilix_fcm_token, URL param fcm_token, appilix:fcm_token event');
-          return null;
-        }
+        // Register device metadata in background (non-blocking)
+        this.registerAppilixDevice(nativeToken || undefined).catch(() => {});
       }
 
       // Attempt web FCM (works in browsers, may work in some WebViews)
