@@ -20,7 +20,7 @@ import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
-import { SoundscapeProvider } from "@/context/SoundscapeContext";
+import { SoundscapeProvider, useSoundscape } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
 import Index from "./pages/Index";
