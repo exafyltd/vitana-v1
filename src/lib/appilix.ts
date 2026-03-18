@@ -13,6 +13,8 @@ declare global {
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
+    /** Push notification user identity — read by Appilix bridge at page load */
+    appilix_push_notification_user_identity?: string;
   }
 }
 
@@ -105,12 +107,54 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
   });
 }
 
-// ── FCM Push Token Bridge ─────────────────────────────────
+// ── Push Identity Registration ────────────────────────────
 
 /**
- * Simple synchronous check for a pre-injected FCM token.
- * Kept as a lightweight utility — no polling or event machinery.
+ * Actively register user identity with the Appilix native bridge.
+ *
+ * Appilix supports three passive methods (JS variable, cookie, URL param)
+ * but reads them only at page-load time.  When the user logs in *after*
+ * initial load (SPA flow), the passive methods are too late.
+ *
+ * This function:
+ *  1. Sets the window variable (for same-page reads)
+ *  2. Sets a persistent cookie (for next page-load)
+ *  3. Sends a postMessage to the native bridge (immediate registration)
+ *
+ * Returns `true` when running inside the Appilix WebView.
  */
+export function setUserIdentity(userId: string): boolean {
+  if (typeof window === 'undefined') return false;
+
+  // Method 1: window variable (Appilix doc method #2)
+  (window as any).appilix_push_notification_user_identity = userId;
+
+  // Method 2: cookie (Appilix doc method #3) — survives page reloads
+  document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+
+  // Method 3: postMessage to native bridge — immediate, no page reload needed
+  if (isAppilix()) {
+    // Try the update_settings channel (known to work for other settings)
+    post({ action: 'update_settings', settings: { user_identity: userId } });
+    console.log(`[Appilix] User identity registered via postMessage: ${userId.slice(0, 8)}…`);
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Check whether the identity cookie was already set (i.e. a previous
+ * session already wrote it).  Used to decide whether a reload is
+ * necessary to let the Appilix bridge pick up the value.
+ */
+export function hasIdentityCookie(): boolean {
+  if (typeof document === 'undefined') return false;
+  return /appilix_push_notification_user_identity=/.test(document.cookie);
+}
+
+// ── FCM Push Token Bridge ─────────────────────────────────
+
 /**
  * Returns true when running inside the Appilix shell on an iOS device.
  * Handles modern iPads that report "MacIntel" with desktop-class UA strings
