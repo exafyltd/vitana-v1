@@ -489,25 +489,19 @@ export function setMuted(muted: boolean) {
   soundscapeMuted = muted;
   audio.muted = muted;
   
-  // Persist before acting so startFresh() sees the updated value
-  localStorage.setItem('soundscape_muted', muted.toString());
-
   if (muted) {
     // Also pause to release audio focus on mobile
     audio.pause();
+    // Don't persist auto-play=false — next visit should always start with music
     console.log('[AudioManager] Muted and paused to release audio focus');
   } else {
     // Unmuting - resume if not explicitly paused
     if (!userExplicitlyPaused) {
-      // If audio was never loaded (muted on start), do a full init
-      if (!audio.src || audio.src === '' || audio.currentTime === 0) {
-        console.log('[AudioManager] Unmuting with no loaded source, calling startFresh()');
-        startFresh();
-      } else {
-        audio.play().catch(err => console.warn('[AudioManager] Unmute play failed:', err));
-      }
+      audio.play().catch(err => console.warn('[AudioManager] Unmute play failed:', err));
     }
   }
+  
+  localStorage.setItem('soundscape_muted', muted.toString());
   notifyListeners();
 }
 
