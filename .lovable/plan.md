@@ -1,35 +1,49 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+## Plan: Pause Soundscape on Logout and App Exit
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+### Problem
+Soundscape keeps playing when:
+1. User logs out (signOut clears session but nothing stops the audio)
+2. User exits/closes the app (page unload, no cleanup)
 
-### Flow
+### Solution
+
+**File: `src/context/SoundscapeContext.tsx`** — Add two effects:
+
+**1. Pause on logout (user becomes null)**
+Add `useAuth()` and an effect watching `user`:
+```ts
+const { user } = useAuth();
+
+useEffect(() => {
+  if (!user) {
+    console.log('[SoundscapeProvider] User logged out, pausing Soundscape');
+    AudioManager.pause();
+    setIsPlaying(false);
+  }
+}, [user]);
 ```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
+
+**2. Pause on app exit (beforeunload)**
+Add a `beforeunload` listener inside the existing mount effect:
+```ts
+const handleBeforeUnload = () => {
+  AudioManager.pause();
+};
+window.addEventListener('beforeunload', handleBeforeUnload);
+
+// In cleanup:
+window.removeEventListener('beforeunload', handleBeforeUnload);
 ```
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+### Why this is safe
+- On logout: audio stops, but `soundscape_muted` preference in localStorage is untouched — next login respects it
+- On app close: audio stops immediately; on reopen, `startFresh()` is called from MaxinaPortal which checks the muted preference before playing
+- No impact on mute/unmute toggle, priority audio pausing, or route transitions
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+### Files modified
+| File | Change |
+|------|--------|
+| `src/context/SoundscapeContext.tsx` | Import `useAuth`, add logout-pause effect, add `beforeunload` listener |
+
