@@ -66,14 +66,18 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     const unsubscribe = AudioManager.subscribe((state) => {
       setIsPlaying(state.isPlaying);
       setVolumeState(state.volume);
-      setIsMuted(state.isMuted);
+      if (localStorage.getItem('soundscape_muted') !== 'true') {
+        setIsMuted(state.isMuted);
+      }
     });
     
     // Sync initial state
     const state = AudioManager.getState();
     setIsPlaying(state.isPlaying);
     setVolumeState(state.volume);
-    setIsMuted(state.isMuted);
+    if (savedMuted !== 'true') {
+      setIsMuted(state.isMuted);
+    }
     
     // Audio element is created and configured but NOT auto-played.
     // Playback only starts when startFresh() is explicitly called
