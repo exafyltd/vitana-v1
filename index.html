@@ -58,7 +58,6 @@
             window.appilix_push_notification_user_identity = identity;
             console.log('[Appilix-Early] Push identity set:', identity.slice(0, 8) + '…',
               identityParam ? '(from URL param)' : '(from cookie)');
-            // Persist to cookie if it came from URL param
             if (identityParam) {
               document.cookie = 'appilix_push_notification_user_identity=' + identity + '; path=/; max-age=31536000; SameSite=Lax';
             }
