@@ -278,7 +278,7 @@ import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
-import { setUserIdentity, hasIdentityCookie, isAppilix } from "@/lib/appilix";
+
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 
