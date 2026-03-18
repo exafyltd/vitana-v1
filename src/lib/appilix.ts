@@ -13,8 +13,6 @@ declare global {
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
-    /** Push notification user identity for Appilix device mapping */
-    appilix_push_notification_user_identity?: string;
   }
 }
 
@@ -105,32 +103,6 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
     status_bar_color: background,
     status_bar_style: lightContent ? 'light-content' : 'dark-content',
   });
-}
-
-// ── Push Identity Registration ────────────────────────────
-
-/**
- * Actively register the user identity with Appilix for push notification targeting.
- * Sets window property, cookie, and sends postMessage to native bridge.
- */
-export function setUserIdentity(userId: string): boolean {
-  if (typeof window === 'undefined') return false;
-  (window as any).appilix_push_notification_user_identity = userId;
-  document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
-  if (isAppilix()) {
-    post({ action: 'update_settings', settings: { user_identity: userId } });
-    console.log(`[Appilix] User identity registered via postMessage: ${userId.slice(0, 8)}…`);
-    return true;
-  }
-  return false;
-}
-
-/**
- * Returns true if the appilix_push_notification_user_identity cookie exists.
- */
-export function hasIdentityCookie(): boolean {
-  if (typeof document === 'undefined') return false;
-  return /appilix_push_notification_user_identity=/.test(document.cookie);
 }
 
 // ── FCM Push Token Bridge ─────────────────────────────────

@@ -278,8 +278,6 @@ import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
-import { isAppilix } from "@/lib/appilix";
-
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 
@@ -290,45 +288,11 @@ const AppHooksInitializer = () => {
   useAppilix();
   const { user, session } = useAuth();
 
-  // Layer 2: Set/clear Appilix push identity after auth resolves.
-  // Sets both the window variable (for current page) and cookie (for next page load).
-  // Layer 1 (index.html) restores the cookie value before React loads.
+  // Set Appilix push notification user identity for mobile device mapping
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const earlyValue = window.appilix_push_notification_user_identity;
-
-    if (user?.id) {
-      // User logged in — set identity
-      window.appilix_push_notification_user_identity = user.id;
-      document.cookie = `appilix_push_notification_user_identity=${encodeURIComponent(user.id)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
-      console.log('[Appilix-Auth] Identity SET:', user.id);
-
-      // First login inside Appilix — no early cookie existed.
-      // Reload with URL param so Appilix's native scanner picks it up.
-      if (!earlyValue && isAppilix()) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('appilix_push_notification_user_identity', user.id);
-        console.log('[Appilix-Auth] First login — reloading with URL param for device mapping');
-        window.location.replace(url.toString());
-        return;
-      }
-
-      // Diagnostic: check if early value (from index.html cookie) matches
-      if (earlyValue) {
-        if (earlyValue === user.id) {
-          console.log('[Appilix-Auth] Early cookie value MATCHES auth user — identity was available at page load');
-        } else {
-          console.warn('[Appilix-Auth] Early cookie value MISMATCH — cookie had:', earlyValue, 'auth has:', user.id);
-        }
-      }
-    } else {
-      // User logged out — clear identity
-      if (earlyValue || window.appilix_push_notification_user_identity) {
-        window.appilix_push_notification_user_identity = undefined;
-        document.cookie = 'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax';
-        console.log('[Appilix-Auth] Identity CLEARED (user logged out)');
-      }
+    if (user?.id && typeof window !== 'undefined') {
+      (window as any).appilix_push_notification_user_identity = user.id;
+      document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
     }
   }, [user?.id]);
 

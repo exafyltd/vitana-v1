@@ -911,7 +911,7 @@ export default function Messages() {
             name={getConversationDisplayTitle(thread, user?.id) || 'Unknown'}
             avatarUrl={getConversationDisplayAvatar(thread, user?.id) || undefined}
             lastMessage={thread.last_message?.body}
-            timestamp={thread.last_message?.created_at || thread.updated_at}
+            timestamp={thread.updated_at}
             unreadCount={thread.unread_count || 0}
             isActive={selectedThreadId === thread.id}
             isPinned={pinnedThreads.has(thread.id)}

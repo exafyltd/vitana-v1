@@ -55,10 +55,8 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       audioRef.current.volume = vol;
     }
     
-    // Restore muted state from storage (persists across sessions)
-    if (savedMuted === 'true') {
-      setIsMuted(true);
-    }
+    // Don't restore muted state from storage - always start unmuted on each visit
+    // Mute only lasts for the current session
     
     // Subscribe to manager state changes
     const unsubscribe = AudioManager.subscribe((state) => {

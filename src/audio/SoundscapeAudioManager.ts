@@ -237,10 +237,9 @@ export function getAudio(): HTMLAudioElement {
         }
       }
       
-      // Restore mute preference from localStorage (persists across sessions)
-      const savedMutedMobile = localStorage.getItem('soundscape_muted');
-      soundscapeMuted = savedMutedMobile === 'true';
-      audioElement.muted = soundscapeMuted;
+      // Always start unmuted on fresh launch (mute is session-only)
+      audioElement.muted = false;
+      soundscapeMuted = false;
     } catch (e) {
       console.warn('[AudioManager] Mobile restore failed:', e);
     }
@@ -295,9 +294,8 @@ export function initialize() {
   // Get or create audio
   getAudio();
   
-  // Restore mute preference from localStorage (persists across sessions)
-  const savedMutedInit = localStorage.getItem('soundscape_muted');
-  soundscapeMuted = savedMutedInit === 'true';
+  // Always start unmuted on each boot (mute is session-only)
+  soundscapeMuted = false;
   
   // Attach global media event listeners (capture phase)
   document.addEventListener('play', handleGlobalPlay, true);
@@ -754,14 +752,13 @@ export function startFresh(initialVolume = 0.05) {
     return;
   }
   
-  // If user has muted soundscape (persisted), don't auto-start
-  if (soundscapeMuted) {
-    console.log('[AudioManager] startFresh skipped - soundscape is muted (persisted)');
-    return;
-  }
+  // Don't check saved mute — each visit starts fresh with music
   
   // Save position in case browser resets on play()
   const savedTime = audio.currentTime;
+  
+  soundscapeMuted = false;
+  audio.muted = false;
   
   // Only set volume if not already set (don't overwrite user preference)
   const savedVolume = localStorage.getItem('soundscape_volume');

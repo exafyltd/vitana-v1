@@ -1275,60 +1275,6 @@ export type Database = {
           },
         ]
       }
-      autopilot_analyzer_sources: {
-        Row: {
-          config: Json | null
-          created_at: string | null
-          enabled: boolean
-          id: string
-          items_found: number | null
-          items_scanned: number | null
-          last_error: string | null
-          last_error_at: string | null
-          last_scan_at: string | null
-          last_scan_duration_ms: number | null
-          last_scan_run_id: string | null
-          recommendations_generated: number | null
-          source_type: string
-          status: string
-          updated_at: string | null
-        }
-        Insert: {
-          config?: Json | null
-          created_at?: string | null
-          enabled?: boolean
-          id?: string
-          items_found?: number | null
-          items_scanned?: number | null
-          last_error?: string | null
-          last_error_at?: string | null
-          last_scan_at?: string | null
-          last_scan_duration_ms?: number | null
-          last_scan_run_id?: string | null
-          recommendations_generated?: number | null
-          source_type: string
-          status?: string
-          updated_at?: string | null
-        }
-        Update: {
-          config?: Json | null
-          created_at?: string | null
-          enabled?: boolean
-          id?: string
-          items_found?: number | null
-          items_scanned?: number | null
-          last_error?: string | null
-          last_error_at?: string | null
-          last_scan_at?: string | null
-          last_scan_duration_ms?: number | null
-          last_scan_run_id?: string | null
-          recommendations_generated?: number | null
-          source_type?: string
-          status?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       autopilot_feedback: {
         Row: {
           action_id: string
@@ -1466,60 +1412,6 @@ export type Database = {
         }
         Relationships: []
       }
-      autopilot_recommendation_runs: {
-        Row: {
-          analysis_summary: Json | null
-          completed_at: string | null
-          created_at: string | null
-          duplicates_skipped: number | null
-          duration_ms: number | null
-          errors: Json | null
-          errors_count: number | null
-          id: string
-          recommendations_generated: number | null
-          run_id: string
-          sources: string[]
-          started_at: string
-          status: string
-          trigger_type: string
-          triggered_by: string | null
-        }
-        Insert: {
-          analysis_summary?: Json | null
-          completed_at?: string | null
-          created_at?: string | null
-          duplicates_skipped?: number | null
-          duration_ms?: number | null
-          errors?: Json | null
-          errors_count?: number | null
-          id?: string
-          recommendations_generated?: number | null
-          run_id: string
-          sources?: string[]
-          started_at?: string
-          status?: string
-          trigger_type?: string
-          triggered_by?: string | null
-        }
-        Update: {
-          analysis_summary?: Json | null
-          completed_at?: string | null
-          created_at?: string | null
-          duplicates_skipped?: number | null
-          duration_ms?: number | null
-          errors?: Json | null
-          errors_count?: number | null
-          id?: string
-          recommendations_generated?: number | null
-          run_id?: string
-          sources?: string[]
-          started_at?: string
-          status?: string
-          trigger_type?: string
-          triggered_by?: string | null
-        }
-        Relationships: []
-      }
       autopilot_recommendations: {
         Row: {
           activated_at: string | null
@@ -1527,21 +1419,13 @@ export type Database = {
           created_at: string | null
           domain: string
           effort_score: number | null
-          expires_at: string | null
-          fingerprint: string | null
           id: string
           impact_score: number | null
           risk_level: string | null
-          run_id: string | null
           snoozed_until: string | null
-          source_ref: string | null
-          source_type: string | null
           spec_checksum: string | null
           spec_snapshot: Json | null
           status: string
-          suggested_endpoints: string[] | null
-          suggested_files: string[] | null
-          suggested_tests: string[] | null
           summary: string
           title: string
           updated_at: string | null
@@ -1553,21 +1437,13 @@ export type Database = {
           created_at?: string | null
           domain?: string
           effort_score?: number | null
-          expires_at?: string | null
-          fingerprint?: string | null
           id?: string
           impact_score?: number | null
           risk_level?: string | null
-          run_id?: string | null
           snoozed_until?: string | null
-          source_ref?: string | null
-          source_type?: string | null
           spec_checksum?: string | null
           spec_snapshot?: Json | null
           status?: string
-          suggested_endpoints?: string[] | null
-          suggested_files?: string[] | null
-          suggested_tests?: string[] | null
           summary: string
           title: string
           updated_at?: string | null
@@ -1579,21 +1455,13 @@ export type Database = {
           created_at?: string | null
           domain?: string
           effort_score?: number | null
-          expires_at?: string | null
-          fingerprint?: string | null
           id?: string
           impact_score?: number | null
           risk_level?: string | null
-          run_id?: string | null
           snoozed_until?: string | null
-          source_ref?: string | null
-          source_type?: string | null
           spec_checksum?: string | null
           spec_snapshot?: Json | null
           status?: string
-          suggested_endpoints?: string[] | null
-          suggested_files?: string[] | null
-          suggested_tests?: string[] | null
           summary?: string
           title?: string
           updated_at?: string | null
@@ -12063,34 +11931,14 @@ export type Database = {
       clean_expired_context_cache: { Args: never; Returns: undefined }
       clean_expired_memory: { Args: never; Returns: undefined }
       cleanup_abandoned_transactions: { Args: never; Returns: undefined }
-      cleanup_expired_autopilot_recommendations: { Args: never; Returns: Json }
       cleanup_old_presence_records: { Args: never; Returns: undefined }
       cleanup_old_typing_indicators: { Args: never; Returns: undefined }
-      complete_autopilot_recommendation_run: {
-        Args: {
-          p_analysis_summary?: Json
-          p_duplicates_skipped?: number
-          p_errors?: Json
-          p_recommendations_generated?: number
-          p_run_id: string
-          p_status: string
-        }
-        Returns: Json
-      }
       count_events_by_stage: {
         Args: { since_time?: string }
         Returns: {
           count: number
           task_stage: string
         }[]
-      }
-      create_autopilot_recommendation_run: {
-        Args: {
-          p_sources: string[]
-          p_trigger_type?: string
-          p_triggered_by?: string
-        }
-        Returns: Json
       }
       create_global_direct_thread: {
         Args: { p_recipient_id: string }
@@ -12190,38 +12038,6 @@ export type Database = {
         }
       }
       get_active_users_count: { Args: { hours_ago?: number }; Returns: number }
-      get_autopilot_analyzer_sources: {
-        Args: never
-        Returns: {
-          config: Json
-          enabled: boolean
-          items_found: number
-          items_scanned: number
-          last_error: string
-          last_scan_at: string
-          last_scan_duration_ms: number
-          recommendations_generated: number
-          source_type: string
-          status: string
-        }[]
-      }
-      get_autopilot_recommendation_history: {
-        Args: { p_limit?: number; p_offset?: number; p_trigger_type?: string }
-        Returns: {
-          analysis_summary: Json
-          completed_at: string
-          duplicates_skipped: number
-          duration_ms: number
-          errors_count: number
-          recommendations_generated: number
-          run_id: string
-          sources: string[]
-          started_at: string
-          status: string
-          trigger_type: string
-          triggered_by: string
-        }[]
-      }
       get_autopilot_recommendations: {
         Args: {
           p_limit?: number
@@ -12594,25 +12410,6 @@ export type Database = {
       initialize_user_wallet: {
         Args: { user_id_param: string }
         Returns: undefined
-      }
-      insert_autopilot_recommendation: {
-        Args: {
-          p_domain: string
-          p_effort_score: number
-          p_expires_days?: number
-          p_fingerprint: string
-          p_impact_score: number
-          p_risk_level: string
-          p_run_id: string
-          p_source_ref: string
-          p_source_type: string
-          p_suggested_endpoints?: string[]
-          p_suggested_files?: string[]
-          p_suggested_tests?: string[]
-          p_summary: string
-          p_title: string
-        }
-        Returns: Json
       }
       is_community_user: { Args: never; Returns: boolean }
       is_exafy_admin: { Args: { user_id_param: string }; Returns: boolean }
@@ -13138,19 +12935,6 @@ export type Database = {
       update_api_metrics: {
         Args: { p_integration_id: string }
         Returns: undefined
-      }
-      update_autopilot_analyzer_source: {
-        Args: {
-          p_items_found?: number
-          p_items_scanned?: number
-          p_last_error?: string
-          p_last_scan_duration_ms?: number
-          p_last_scan_run_id?: string
-          p_recommendations_generated?: number
-          p_source_type: string
-          p_status?: string
-        }
-        Returns: Json
       }
       update_package_with_items: {
         Args: {
