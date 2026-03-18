@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
 import * as AudioManager from '@/audio/SoundscapeAudioManager';
+import { useAuth } from '@/context/AuthProvider';
 
 interface SoundscapeContextType {
   isPlaying: boolean;
