@@ -355,6 +355,73 @@ async function fetchLegacyMessages(legacyThreadId: string): Promise<GlobalMessag
 
 const VITANA_BOT_USER_ID = '00000000-0000-0000-0000-000000000001';
 
+// ── Direct global_messages Supabase fallback ──────────────────────────
+/**
+ * Query global_messages for direct conversations that may not exist in chat_messages.
+ */
+async function fetchDirectFromGlobalMessages(userId: string): Promise<GlobalMessageThread[]> {
+  try {
+    const { data, error } = await supabase
+      .from("global_messages")
+      .select("*")
+      .or(`sender_id.eq.${userId},recipient_id.eq.${userId}`)
+      .not("recipient_id", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(200) as any;
+
+    if (error || !data || data.length === 0) {
+      if (error) console.warn("[chat] global_messages fallback failed:", error.message);
+      return [];
+    }
+
+    // Dedup by peer — keep latest message per peer
+    const seen = new Map<string, typeof data[0]>();
+    for (const msg of data) {
+      const peerId = msg.sender_id === userId ? msg.recipient_id : msg.sender_id;
+      if (peerId && !seen.has(peerId)) seen.set(peerId, msg);
+    }
+
+    const peerIds = Array.from(seen.keys());
+    const profileMap = await enrichProfiles([userId, ...peerIds]);
+
+    return Array.from(seen.entries()).map(([peerId, lastMsg]) => {
+      const peer = profileMap[peerId] || { display_name: "Unknown User", avatar_url: null };
+      const me = profileMap[userId] || { display_name: "Me", avatar_url: null };
+
+      const lastMessage: GlobalMessage = {
+        id: lastMsg.id,
+        thread_id: peerId,
+        sender_id: lastMsg.sender_id,
+        body: lastMsg.body || lastMsg.content || "",
+        message_type: lastMsg.message_type || "text",
+        content_data: lastMsg.content_data || undefined,
+        created_at: lastMsg.created_at,
+        updated_at: lastMsg.updated_at || lastMsg.created_at,
+        sender: profileMap[lastMsg.sender_id]
+          ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
+          : null,
+      };
+
+      return {
+        id: peerId,
+        type: "direct" as const,
+        created_by: userId,
+        created_at: lastMsg.created_at,
+        updated_at: lastMsg.created_at,
+        participants: [
+          { user_id: userId, display_name: me.display_name, avatar_url: me.avatar_url, role: "member" },
+          { user_id: peerId, display_name: peer.display_name, avatar_url: peer.avatar_url, role: "member" },
+        ],
+        last_message: lastMessage,
+        unread_count: lastMsg.sender_id !== userId && !lastMsg.read_at ? 1 : 0,
+      } satisfies GlobalMessageThread;
+    });
+  } catch (err) {
+    console.warn("[chat] global_messages fallback error:", err);
+    return [];
+  }
+}
+
 // ── Direct chat_messages Supabase fallback ────────────────────────────
 /**
  * When the gateway is down and no legacy threads exist, query
