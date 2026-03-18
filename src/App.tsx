@@ -324,6 +324,10 @@ const AppHooksInitializer = () => {
         }
       }
     } else {
+      // Stop soundscape on logout (don't change mute preference — next login resumes)
+      pauseSoundscape();
+      console.log('[Soundscape] Paused on logout');
+
       // User logged out — clear identity
       if (earlyValue || window.appilix_push_notification_user_identity) {
         window.appilix_push_notification_user_identity = undefined;
