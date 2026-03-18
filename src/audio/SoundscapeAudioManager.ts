@@ -237,9 +237,10 @@ export function getAudio(): HTMLAudioElement {
         }
       }
       
-      // Always start unmuted on fresh launch (mute is session-only)
-      audioElement.muted = false;
-      soundscapeMuted = false;
+      // Restore mute preference from localStorage (persists across sessions)
+      const savedMutedMobile = localStorage.getItem('soundscape_muted');
+      soundscapeMuted = savedMutedMobile === 'true';
+      audioElement.muted = soundscapeMuted;
     } catch (e) {
       console.warn('[AudioManager] Mobile restore failed:', e);
     }
