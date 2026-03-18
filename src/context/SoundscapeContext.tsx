@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef, ReactNode, useCallback } from 'react';
 import { stopAllLoopingSoundsForPath, removeFromRegistry } from '@/lib/playLoopingSound';
 import * as AudioManager from '@/audio/SoundscapeAudioManager';
+import { useAuth } from '@/context/AuthProvider';
 
 interface SoundscapeContextType {
   isPlaying: boolean;
@@ -24,6 +25,7 @@ const DEFAULT_VOLUME = 0.05;
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
 
 export function SoundscapeProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   // State synced from AudioManager
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useState(DEFAULT_VOLUME);
@@ -93,8 +95,14 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     audioRef.current.addEventListener('pause', handlePause);
     audioRef.current.addEventListener('volumechange', handleVolumeChange);
     
+    const handleBeforeUnload = () => {
+      AudioManager.pause();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
     return () => {
       unsubscribe();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
       if (audioRef.current) {
         audioRef.current.removeEventListener('play', handlePlay);
         audioRef.current.removeEventListener('pause', handlePause);
@@ -102,6 +110,15 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       }
     };
   }, []);
+
+  // Pause soundscape when user logs out
+  useEffect(() => {
+    if (!user) {
+      console.log('[SoundscapeProvider] User logged out, pausing Soundscape');
+      AudioManager.pause();
+      setIsPlaying(false);
+    }
+  }, [user]);
 
   // pendingAutoPlay effect removed — no global interaction listener.
   // Music only starts via explicit startFresh() from Maxina-context pages.
