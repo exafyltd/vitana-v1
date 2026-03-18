@@ -52,13 +52,13 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
       const vol = parseFloat(savedVolume);
       setVolumeState(vol);
       previousVolumeRef.current = vol;
-      audioRef.current.volume = vol;
+      if (audioRef.current) audioRef.current.volume = vol;
     }
     
     // Restore muted state from storage — persist across sessions until user unmutes
     if (savedMuted === 'true') {
       setIsMuted(true);
-      audioRef.current.muted = true;
+      if (audioRef.current) audioRef.current.muted = true;
       console.log('[Soundscape] Restored muted state from localStorage');
     }
     
