@@ -3,6 +3,7 @@
  */
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported, Messaging } from 'firebase/messaging';
+import { isAppilix } from '@/lib/appilix';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCthnpKTnUPpC8d-_bLt3DKz9VCQ8eiwnc",
