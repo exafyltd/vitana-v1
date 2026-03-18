@@ -531,9 +531,20 @@ export function useGlobalMessages(
       }
 
       // Fallback: if gateway returned nothing, try reading chat_messages directly
+      // Also query global_messages for direct threads that may only exist there
       let directThreads: GlobalMessageThread[] = [];
       if (conversations.length === 0) {
-        directThreads = await fetchDirectFromChatMessages(user.id);
+        const [chatDirect, globalDirect] = await Promise.all([
+          fetchDirectFromChatMessages(user.id),
+          fetchDirectFromGlobalMessages(user.id),
+        ]);
+        // Merge: chat_messages wins over global_messages for same peer
+        const chatPeerIds = new Set(chatDirect.map(t => t.id));
+        directThreads = [...chatDirect, ...globalDirect.filter(t => !chatPeerIds.has(t.id))];
+        
+        if (directThreads.length === 0 && legacyThreads.length === 0) {
+          console.warn('[chat] All sources returned empty — gateway, chat_messages, global_messages, and legacy threads');
+        }
       }
 
       // Merge: gateway wins > direct Supabase > legacy
