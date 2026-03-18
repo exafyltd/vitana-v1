@@ -41,14 +41,22 @@ export function MobileConversationCard({
   const hasUnread = unreadCount > 0;
   
   const formattedTime = timestamp 
-    ? formatDistanceToNow(new Date(timestamp), { addSuffix: false })
-        .replace('about ', '')
-        .replace(' hours', 'h')
-        .replace(' hour', 'h')
-        .replace(' minutes', 'm')
-        .replace(' minute', 'm')
-        .replace(' days', 'd')
-        .replace(' day', 'd')
+    ? (() => {
+        const raw = formatDistanceToNow(new Date(timestamp), { addSuffix: false });
+        if (raw.includes('less than')) return 'now';
+        return raw
+          .replace('about ', '')
+          .replace(' hours', 'h')
+          .replace(' hour', 'h')
+          .replace(' minutes', 'm')
+          .replace(' minute', 'm')
+          .replace(' days', 'd')
+          .replace(' day', 'd')
+          .replace(' months', 'mo')
+          .replace(' month', 'mo')
+          .replace(' years', 'y')
+          .replace(' year', 'y');
+      })()
     : '';
 
   return (
