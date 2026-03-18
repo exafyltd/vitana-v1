@@ -295,8 +295,9 @@ export function initialize() {
   // Get or create audio
   getAudio();
   
-  // Always start unmuted on each boot (mute is session-only)
-  soundscapeMuted = false;
+  // Restore mute preference from localStorage (persists across sessions)
+  const savedMutedInit = localStorage.getItem('soundscape_muted');
+  soundscapeMuted = savedMutedInit === 'true';
   
   // Attach global media event listeners (capture phase)
   document.addEventListener('play', handleGlobalPlay, true);
