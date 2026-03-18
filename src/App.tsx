@@ -335,7 +335,7 @@ const AppHooksInitializer = () => {
         console.log('[Appilix-Auth] Identity CLEARED (user logged out)');
       }
     }
-  }, [user?.id]);
+  }, [user?.id, pauseSoundscape]);
 
   useEffect(() => {
     if (!user?.id || !session?.access_token) return;
