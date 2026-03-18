@@ -107,6 +107,32 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
   });
 }
 
+// ── Push Identity Registration ────────────────────────────
+
+/**
+ * Actively register the user identity with Appilix for push notification targeting.
+ * Sets window property, cookie, and sends postMessage to native bridge.
+ */
+export function setUserIdentity(userId: string): boolean {
+  if (typeof window === 'undefined') return false;
+  (window as any).appilix_push_notification_user_identity = userId;
+  document.cookie = `appilix_push_notification_user_identity=${userId}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+  if (isAppilix()) {
+    post({ action: 'update_settings', settings: { user_identity: userId } });
+    console.log(`[Appilix] User identity registered via postMessage: ${userId.slice(0, 8)}…`);
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Returns true if the appilix_push_notification_user_identity cookie exists.
+ */
+export function hasIdentityCookie(): boolean {
+  if (typeof document === 'undefined') return false;
+  return /appilix_push_notification_user_identity=/.test(document.cookie);
+}
+
 // ── FCM Push Token Bridge ─────────────────────────────────
 
 /**

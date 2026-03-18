@@ -49,13 +49,20 @@
               console.log('[Appilix-Early] FCM token from custom event');
             }
           });
-          // 3. Early push identity from cookie (before React hydration)
-          var m = document.cookie.match(/appilix_push_notification_user_identity=([^;]+)/);
-          if (m && m[1]) {
-            window.appilix_push_notification_user_identity = m[1];
-            console.log('[Appilix-Early] Push identity set from cookie:', m[1]);
+          // 3. Early push identity — check URL param first, then cookie
+          //    (Appilix reads the JS variable at page-load time)
+          var identityParam = params.get('appilix_push_notification_user_identity');
+          var cookieMatch = document.cookie.match(/appilix_push_notification_user_identity=([^;]+)/);
+          var identity = identityParam || (cookieMatch && cookieMatch[1]) || null;
+          if (identity) {
+            window.appilix_push_notification_user_identity = identity;
+            console.log('[Appilix-Early] Push identity set:', identity.slice(0, 8) + '…',
+              identityParam ? '(from URL param)' : '(from cookie)');
+            if (identityParam) {
+              document.cookie = 'appilix_push_notification_user_identity=' + identity + '; path=/; max-age=31536000; SameSite=Lax';
+            }
           } else {
-            console.log('[Appilix-Early] No push identity cookie found');
+            console.log('[Appilix-Early] No push identity found (URL param or cookie)');
           }
         } catch(e) {
           console.warn('[Appilix-Early] Init error:', e);

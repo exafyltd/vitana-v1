@@ -289,11 +289,19 @@ const AppHooksInitializer = () => {
   useAppilix();
   const { user, session } = useAuth();
 
-  // Set Appilix push notification user identity for mobile device mapping
+  // Actively register Appilix push identity — with first-login reload for WebView
   useEffect(() => {
-    if (user?.id && typeof window !== 'undefined') {
-      (window as any).appilix_push_notification_user_identity = user.id;
-      document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+    if (!user?.id || typeof window === 'undefined') return;
+    const hadCookie = hasIdentityCookie();
+    setUserIdentity(user.id);
+    if (isAppilix() && !hadCookie) {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has('appilix_push_notification_user_identity')) {
+        url.searchParams.set('appilix_push_notification_user_identity', user.id);
+        console.log('[Appilix] First identity registration — reloading with URL param');
+        window.location.replace(url.toString());
+        return;
+      }
     }
   }, [user?.id]);
 
