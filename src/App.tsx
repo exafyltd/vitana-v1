@@ -280,6 +280,7 @@ import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
+import { setUserIdentity, hasIdentityCookie, isAppilix } from "@/lib/appilix";
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
@@ -288,11 +289,26 @@ const AppHooksInitializer = () => {
   useAppilix();
   const { user, session } = useAuth();
 
-  // Set Appilix push notification user identity for mobile device mapping
+  // Register Appilix push notification user identity for mobile device mapping.
+  // Uses postMessage for immediate registration + cookie/variable as fallback.
+  // If inside Appilix and the cookie didn't exist yet (first login), reload with
+  // the identity as a URL parameter so Appilix's bridge reads it at page load.
   useEffect(() => {
-    if (user?.id && typeof window !== 'undefined') {
-      (window as any).appilix_push_notification_user_identity = user.id;
-      document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+    if (!user?.id || typeof window === 'undefined') return;
+
+    const hadCookie = hasIdentityCookie();
+    setUserIdentity(user.id);
+
+    // First-time identity registration inside Appilix: reload with URL param
+    // so the bridge picks up the identity at its native page-load checkpoint.
+    if (isAppilix() && !hadCookie) {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has('appilix_push_notification_user_identity')) {
+        url.searchParams.set('appilix_push_notification_user_identity', user.id);
+        console.log('[Appilix] First identity registration — reloading with URL param');
+        window.location.replace(url.toString());
+        return;
+      }
     }
   }, [user?.id]);
 
