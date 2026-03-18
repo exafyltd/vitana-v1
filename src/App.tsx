@@ -289,6 +289,7 @@ const AppHooksInitializer = () => {
   useAudioPriority();
   useAppilix();
   const { user, session } = useAuth();
+  const { pause: pauseSoundscape } = useSoundscape();
 
   // Layer 2: Set/clear Appilix push identity after auth resolves.
   // Sets both the window variable (for current page) and cookie (for next page load).
