@@ -1,35 +1,69 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+# Persist Soundscape Mute Across Sessions
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+## Problem
 
-### Flow
+The mute state is explicitly reset on every app load. There are **four locations** that force `soundscapeMuted = false`:
+
+1. **`SoundscapeAudioManager.ts` line 242** — `getAudio()`: "Always start unmuted on fresh launch"
+2. **`SoundscapeAudioManager.ts` line 298** — `initialize()`: "Always start unmuted on each boot"
+3. **`SoundscapeAudioManager.ts` lines 755-761** — `startFresh()`: "Don't check saved mute" + forces `soundscapeMuted = false`
+4. **`SoundscapeContext.tsx` line 58** — Comment: "Don't restore muted state from storage"
+
+Meanwhile, `setMuted()` (line 504) already saves to `localStorage.setItem('soundscape_muted', ...)` — so the value IS persisted, it's just never read back.
+
+## Plan
+
+### 1. `SoundscapeAudioManager.ts` — Respect persisted mute on boot
+
+**In `getAudio()` (line 240-242)**: Instead of forcing unmuted, read the saved value:
+```ts
+// Restore mute preference from localStorage (persists across sessions)
+const savedMuted = localStorage.getItem('soundscape_muted');
+soundscapeMuted = savedMuted === 'true';
+audio.muted = soundscapeMuted;
 ```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
+
+**In `initialize()` (line 297-298)**: Same — read instead of reset:
+```ts
+const savedMuted = localStorage.getItem('soundscape_muted');
+soundscapeMuted = savedMuted === 'true';
 ```
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+**In `startFresh()` (lines 749-761)**: Add a mute guard before playback and remove the forced reset:
+```ts
+// If user has muted soundscape (persisted), don't auto-start
+if (soundscapeMuted) {
+  console.log('[AudioManager] startFresh skipped - soundscape is muted');
+  return;
+}
+// (remove lines 755, 760-761 that force soundscapeMuted = false)
+```
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+### 2. `SoundscapeContext.tsx` — Restore mute state on mount
+
+**Line 58**: Replace the "don't restore" comment block with actual restoration:
+```ts
+if (savedMuted === 'true') {
+  setIsMuted(true);
+}
+```
+
+### 3. `SoundscapeAudioManager.ts` — `attemptMobileResume()` already checks `soundscapeMuted`
+
+Line 599 already skips resume when muted — this will now work correctly since `soundscapeMuted` will be `true` from boot.
+
+## Files to modify
+
+| File | Change |
+|------|--------|
+| `src/audio/SoundscapeAudioManager.ts` | Read `soundscape_muted` from localStorage in `getAudio()`, `initialize()`, and `startFresh()` instead of forcing false |
+| `src/context/SoundscapeContext.tsx` | Restore `isMuted` from `savedMuted` on mount |
+
+## What this achieves
+
+- Mute/unmute toggle persists across refresh, logout/login, app restart
+- Only user action (clicking unmute) reactivates Soundscape
+- No other behavior changes — volume, track position, priority audio all work as before
+
