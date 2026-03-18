@@ -1,26 +1,35 @@
+## Appilix Push Notification Integration — Deployed
 
+### What this does
+When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-## Soundscape Mute Persistence Fix
+### Components
 
-### Problem
-The mute state is saved to `localStorage` (`soundscape_muted`) but explicitly **ignored** on reload/revisit in two places:
+| # | Type | Component | Status |
+|---|------|-----------|--------|
+| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
+| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
+| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
+| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
 
-1. **`SoundscapeContext.tsx` line 58**: Comment says "Don't restore muted state from storage — always start unmuted on each visit"
-2. **`SoundscapeAudioManager.ts` line 755-761**: `startFresh()` has a comment "Don't check saved mute — each visit starts fresh with music" and force-resets `soundscapeMuted = false`
+### Flow
+```
+Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
+  → trg_appilix_push → pg_net POST → appilix-push edge function
+    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
+      → Appilix routes via user_identity (= Supabase user.id)
+        → Native Android bell notification
+```
 
-So the mute toggle writes to localStorage correctly, but the value is never read back.
+### API Fields (from Appilix docs)
+- `app_key` — required
+- `api_key` — required
+- `notification_title` — required
+- `notification_body` — required
+- `user_identity` — optional (targets specific user)
+- `open_link_url` — optional (opens URL on tap)
 
-### Changes
-
-**File 1: `src/context/SoundscapeContext.tsx`**
-- Lines 58-59: Replace the "don't restore" comment with actual restoration of saved mute state from `localStorage('soundscape_muted')`. If `'true'`, set `isMuted(true)` and apply to the audio element.
-
-**File 2: `src/audio/SoundscapeAudioManager.ts`**
-- Lines 749-761 in `startFresh()`: After the `userExplicitlyPaused` guard, add a guard that checks `localStorage.getItem('soundscape_muted') === 'true'`. If muted, skip playback and return early. Remove the lines that force-reset `soundscapeMuted = false` and `audio.muted = false`.
-
-### Behavior after fix
-- User mutes Soundscape → saved to localStorage
-- Page refresh / app reopen / new login → mute state restored, Soundscape stays silent
-- User unmutes → localStorage cleared, `startFresh()` proceeds normally on next visit
-- No other flows affected (priority audio pausing, volume persistence, orphan cleanup all unchanged)
-
+### Notes
+- Desktop web push (FCM) path remains unchanged
+- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
+- Trigger fires for `channel IN ('push_and_inapp', 'push')`

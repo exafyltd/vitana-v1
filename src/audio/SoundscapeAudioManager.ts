@@ -752,7 +752,14 @@ export function startFresh(initialVolume = 0.05) {
     return;
   }
   
-  // Don't check saved mute — each visit starts fresh with music
+  // Respect saved mute state — don't auto-play if user previously muted
+  const savedMuted = localStorage.getItem('soundscape_muted');
+  if (savedMuted === 'true') {
+    console.log('[AudioManager] startFresh skipped - user has muted Soundscape (persisted)');
+    soundscapeMuted = true;
+    audio.muted = true;
+    return;
+  }
   
   // Save position in case browser resets on play()
   const savedTime = audio.currentTime;
