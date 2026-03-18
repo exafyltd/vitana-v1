@@ -278,6 +278,7 @@ import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
+import { isAppilix } from "@/lib/appilix";
 
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
@@ -303,6 +304,16 @@ const AppHooksInitializer = () => {
       document.cookie = `appilix_push_notification_user_identity=${encodeURIComponent(user.id)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
       console.log('[Appilix-Auth] Identity SET:', user.id);
 
+      // First login inside Appilix — no early cookie existed.
+      // Reload with URL param so Appilix's native scanner picks it up.
+      if (!earlyValue && isAppilix()) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('appilix_push_notification_user_identity', user.id);
+        console.log('[Appilix-Auth] First login — reloading with URL param for device mapping');
+        window.location.replace(url.toString());
+        return;
+      }
+
       // Diagnostic: check if early value (from index.html cookie) matches
       if (earlyValue) {
         if (earlyValue === user.id) {
@@ -310,8 +321,6 @@ const AppHooksInitializer = () => {
         } else {
           console.warn('[Appilix-Auth] Early cookie value MISMATCH — cookie had:', earlyValue, 'auth has:', user.id);
         }
-      } else {
-        console.log('[Appilix-Auth] No early cookie value — first login, identity will be available on next page load');
       }
     } else {
       // User logged out — clear identity
