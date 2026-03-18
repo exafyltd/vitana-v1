@@ -1,35 +1,35 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+## Fix: Mute icon not reflecting persisted mute state
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+### Problem
+In `SoundscapeContext.tsx`, the initialization effect correctly restores `isMuted = true` from localStorage (line 59-62), but then immediately overwrites it on line 76 with `AudioManager.getState().isMuted`, which defaults to `false`. The TopAppBar reads `isMuted` from context, so it shows the wrong icon.
 
-### Flow
-```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
+### Fix
+
+**File: `src/context/SoundscapeContext.tsx` (line 76)**
+
+Skip overwriting `isMuted` from AudioManager state if we already restored it from localStorage:
+
+```ts
+// Line 76: only sync isMuted from manager if we didn't already restore from localStorage
+if (savedMuted !== 'true') {
+  setIsMuted(state.isMuted);
+}
 ```
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+Same logic should apply to the subscriber callback (line 69) — it should not override a persisted mute. We gate the `setIsMuted` call in the subscribe handler so it doesn't reset the muted state when AudioManager emits its initial state:
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+```ts
+const unsubscribe = AudioManager.subscribe((state) => {
+  setIsPlaying(state.isPlaying);
+  setVolumeState(state.volume);
+  // Don't let AudioManager override persisted mute preference
+  if (localStorage.getItem('soundscape_muted') !== 'true') {
+    setIsMuted(state.isMuted);
+  }
+});
+```
+
+This is a two-line change in one file. The TopAppBar and SoundscapeControl already read `isMuted` correctly from context — they just need the right value.
+
