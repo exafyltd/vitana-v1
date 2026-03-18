@@ -38,21 +38,6 @@ class PushNotificationManager {
   async initialize(): Promise<boolean> {
     await this.loadMutedThreads();
 
-    // In Appilix WebView, 'Notification' may not exist but service workers might still work.
-    // Try to register the service worker regardless — getToken() needs it.
-    if (!this.isSupported && isAppilix() && typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
-      console.log('[Push] Appilix WebView — Notification API missing but service workers available, attempting SW registration');
-      try {
-        this.registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-        console.log('[Push] ✅ Service Worker registered in Appilix WebView');
-        this.registration.update().catch(() => {});
-        return true;
-      } catch (error) {
-        console.warn('[Push] Service Worker registration failed in Appilix WebView:', error);
-        return false;
-      }
-    }
-
     if (!this.isSupported) {
       console.warn('[Push] Service Worker or Notification API not supported');
       return false;
@@ -90,9 +75,9 @@ class PushNotificationManager {
       }
 
       // Attempt web FCM (works in browsers, may work in some WebViews)
-      if (!token && (this.isSupported || isAppilix())) {
+      if (!token && this.isSupported) {
         try {
-          console.log('[Push] Trying web FCM...', isAppilix() ? '(Appilix WebView)' : '(browser)');
+          console.log('[Push] Trying web FCM...');
           token = await requestFCMToken(this.registration || undefined);
           if (token) {
             console.log('[Push] ✅ Web FCM token obtained');

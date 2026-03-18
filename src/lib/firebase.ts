@@ -3,7 +3,6 @@
  */
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported, Messaging } from 'firebase/messaging';
-import { isAppilix } from '@/lib/appilix';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCthnpKTnUPpC8d-_bLt3DKz9VCQ8eiwnc",
@@ -33,17 +32,8 @@ async function getMessagingInstance(): Promise<Messaging | null> {
 
 export async function requestFCMToken(swRegistration?: ServiceWorkerRegistration): Promise<string | null> {
   try {
-    // In Appilix WebView, the Android app already has notification permission —
-    // skip the browser Notification.requestPermission() which doesn't exist in WebViews.
-    if (!isAppilix()) {
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') {
-        console.warn('[Firebase] Notification permission denied');
-        return null;
-      }
-    } else {
-      console.log('[Firebase] Appilix detected — skipping browser permission check (Android app handles it)');
-    }
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return null;
     const messaging = await getMessagingInstance();
     if (!messaging) return null;
     const tokenOptions: { vapidKey: string; serviceWorkerRegistration?: ServiceWorkerRegistration } = { vapidKey: VAPID_KEY };
