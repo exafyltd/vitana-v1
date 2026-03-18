@@ -13,6 +13,8 @@ declare global {
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
+    /** Push notification user identity for Appilix device mapping */
+    appilix_push_notification_user_identity?: string;
   }
 }
 
