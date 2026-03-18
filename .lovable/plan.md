@@ -1,38 +1,35 @@
+## Appilix Push Notification Integration — Deployed
 
+### What this does
+When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-# Stop Soundscape on Logout
+### Components
 
-## Problem
-When the user logs out, Soundscape continues playing in the background. The audio element remains active even after sign-out, persisting across the phone's other apps. Expected behavior: logout stops playback, and next login resumes it (since the user never explicitly muted).
+| # | Type | Component | Status |
+|---|------|-----------|--------|
+| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
+| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
+| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
+| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
 
-## Approach
-Since `AppHooksInitializer` is rendered inside `SoundscapeProvider`, it can use `useSoundscape()`. We already watch `user?.id` there — when it becomes `null` (logout), we call `pause()` from the Soundscape context to stop playback without changing the persisted mute state.
-
-On next login, `startFresh()` is called from Maxina-context pages, which already checks the persisted mute state and resumes if not muted. So no changes needed for the resume path.
-
-## Changes
-
-### `src/App.tsx` — `AppHooksInitializer`
-
-1. Import `useSoundscape` from `@/context/SoundscapeContext`
-2. Destructure `pause` from `useSoundscape()`
-3. In the existing `useEffect` that watches `user?.id` (the Appilix identity one), add a call to `pause()` in the `else` branch (user logged out), alongside the identity cleanup
-4. Also call `killOrphanedAudio` logic via `AudioManager.pause()` to ensure the audio element is fully stopped — but since `pause` from context already calls `AudioManager.pause()`, just calling the context's `pause()` is sufficient
-
-Specifically, in the `else` block (lines 325-331), add:
-
-```ts
-} else {
-  // Stop soundscape on logout (don't change mute preference)
-  pause();
-  
-  // Clear Appilix identity...
-}
+### Flow
+```
+Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
+  → trg_appilix_push → pg_net POST → appilix-push edge function
+    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
+      → Appilix routes via user_identity (= Supabase user.id)
+        → Native Android bell notification
 ```
 
-This stops playback without altering `localStorage` mute state, so on next login `startFresh()` will resume normally.
+### API Fields (from Appilix docs)
+- `app_key` — required
+- `api_key` — required
+- `notification_title` — required
+- `notification_body` — required
+- `user_identity` — optional (targets specific user)
+- `open_link_url` — optional (opens URL on tap)
 
-| File | Change |
-|------|--------|
-| `src/App.tsx` | Import `useSoundscape`, call `pause()` on logout in `AppHooksInitializer` |
-
+### Notes
+- Desktop web push (FCM) path remains unchanged
+- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
+- Trigger fires for `channel IN ('push_and_inapp', 'push')`

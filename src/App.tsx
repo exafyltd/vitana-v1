@@ -20,7 +20,7 @@ import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
-import { SoundscapeProvider } from "@/context/SoundscapeContext";
+import { SoundscapeProvider, useSoundscape } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
 import Index from "./pages/Index";
@@ -289,6 +289,7 @@ const AppHooksInitializer = () => {
   useAudioPriority();
   useAppilix();
   const { user, session } = useAuth();
+  const { pause: pauseSoundscape } = useSoundscape();
 
   // Layer 2: Set/clear Appilix push identity after auth resolves.
   // Sets both the window variable (for current page) and cookie (for next page load).
@@ -323,6 +324,10 @@ const AppHooksInitializer = () => {
         }
       }
     } else {
+      // Stop soundscape on logout (don't change mute preference — next login resumes)
+      pauseSoundscape();
+      console.log('[Soundscape] Paused on logout');
+
       // User logged out — clear identity
       if (earlyValue || window.appilix_push_notification_user_identity) {
         window.appilix_push_notification_user_identity = undefined;
@@ -330,7 +335,7 @@ const AppHooksInitializer = () => {
         console.log('[Appilix-Auth] Identity CLEARED (user logged out)');
       }
     }
-  }, [user?.id]);
+  }, [user?.id, pauseSoundscape]);
 
   useEffect(() => {
     if (!user?.id || !session?.access_token) return;
