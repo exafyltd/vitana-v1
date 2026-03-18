@@ -25,6 +25,7 @@ const DEFAULT_VOLUME = 0.05;
 const AMBIENT_TRACK = '/sounds/vitanaland/maxina-ambient-music.mp3';
 
 export function SoundscapeProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   // State synced from AudioManager
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useState(DEFAULT_VOLUME);
