@@ -255,10 +255,28 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
   );
 }
 
+const NOOP = () => {};
+const SOUNDSCAPE_DEFAULTS: SoundscapeContextType = {
+  isPlaying: false,
+  volume: 0,
+  isMuted: true,
+  currentTrack: '',
+  play: NOOP,
+  pause: NOOP,
+  toggle: NOOP,
+  setVolume: NOOP,
+  toggleMute: NOOP,
+  startFresh: NOOP,
+  handoffAudio: NOOP,
+  pauseForPriorityAudio: NOOP,
+  resumeAfterPriorityAudio: NOOP,
+};
+
 export function useSoundscape() {
   const context = useContext(SoundscapeContext);
   if (context === undefined) {
-    throw new Error('useSoundscape must be used within a SoundscapeProvider');
+    console.warn('[useSoundscape] Used outside SoundscapeProvider — returning safe defaults');
+    return SOUNDSCAPE_DEFAULTS;
   }
   return context;
 }
