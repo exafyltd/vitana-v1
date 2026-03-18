@@ -53,22 +53,30 @@
       })();
     </script>
     <script>
-      // Layer 1: Restore Appilix push identity from cookie BEFORE React loads.
-      // Appilix reads window.appilix_push_notification_user_identity at page-load time.
-      // The cookie is set by Layer 2 (App.tsx) after auth resolves.
-      (function() {
-        try {
-          var m = document.cookie.match(/(?:^|; )appilix_push_notification_user_identity=([^;]+)/);
-          if (m && m[1]) {
-            window.appilix_push_notification_user_identity = decodeURIComponent(m[1]);
-            console.log('[Appilix-Early] Identity restored from cookie:', window.appilix_push_notification_user_identity);
-          } else {
-            console.log('[Appilix-Early] No identity cookie found (first visit or logged out)');
-          }
-        } catch (e) {
-          console.warn('[Appilix-Early] Failed to restore identity from cookie', e);
+  // Layer 1: Restore Appilix push identity BEFORE React loads.
+  // Checks URL param first (set by first-login reload), then falls back to cookie.
+  // Appilix reads window.appilix_push_notification_user_identity at page-load time.
+  (function() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var urlIdentity = params.get('appilix_push_notification_user_identity');
+      if (urlIdentity) {
+        window.appilix_push_notification_user_identity = urlIdentity;
+        document.cookie = 'appilix_push_notification_user_identity=' + encodeURIComponent(urlIdentity) + '; path=/; max-age=31536000; SameSite=Lax';
+        console.log('[Appilix-Early] Identity from URL param:', urlIdentity);
+      } else {
+        var m = document.cookie.match(/(?:^|; )appilix_push_notification_user_identity=([^;]+)/);
+        if (m && m[1]) {
+          window.appilix_push_notification_user_identity = decodeURIComponent(m[1]);
+          console.log('[Appilix-Early] Identity restored from cookie:', window.appilix_push_notification_user_identity);
+        } else {
+          console.log('[Appilix-Early] No identity found (first visit or logged out)');
         }
-      })();
+      }
+    } catch (e) {
+      console.warn('[Appilix-Early] Failed to restore identity', e);
+    }
+  })();
     </script>
     <div id="root"></div>
     <div id="modal-root"></div>
