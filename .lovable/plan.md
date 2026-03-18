@@ -1,35 +1,63 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+# Fix Appilix Device-to-User Identity Mapping
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+## Problem
+Appilix scans for `appilix_push_notification_user_identity` **once at page load** — via URL param, script variable, or cookie. Our Layer 2 (App.tsx `useEffect`) sets the variable and cookie *after* React hydrates, which is too late for Appilix's initial scan.
 
-### Flow
+- **Subsequent visits**: Work fine — Layer 1 (index.html) restores cookie → window variable before React loads
+- **First login**: Fails — no cookie exists yet, so Layer 1 finds nothing, and Layer 2 sets it too late
+
+## Fix
+
+**`src/App.tsx`** — In the Layer 2 `useEffect`, after setting the cookie on first login (when `earlyValue` is falsy and we're inside Appilix), trigger a hard reload with the identity as a URL parameter:
+
+```ts
+if (user?.id) {
+  window.appilix_push_notification_user_identity = user.id;
+  document.cookie = `appilix_push_notification_user_identity=...`;
+
+  // First login inside Appilix — no early cookie existed.
+  // Reload with URL param so Appilix's native scanner picks it up.
+  if (!earlyValue && isAppilix()) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('appilix_push_notification_user_identity', user.id);
+    console.log('[Appilix-Auth] First login — reloading with URL param');
+    window.location.replace(url.toString());
+    return; // stop further execution
+  }
+}
 ```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
+
+**`src/App.tsx`** — Re-add the `isAppilix` import from `@/lib/appilix` (it was removed in the previous change).
+
+**`index.html`** — Update the Layer 1 script to also check for the URL parameter (in addition to cookie), and if found, sync it to the cookie for future loads:
+
+```js
+// Check URL param first (set by first-login reload)
+var params = new URLSearchParams(window.location.search);
+var urlIdentity = params.get('appilix_push_notification_user_identity');
+if (urlIdentity) {
+  window.appilix_push_notification_user_identity = urlIdentity;
+  document.cookie = 'appilix_push_notification_user_identity=' + encodeURIComponent(urlIdentity) + '; path=/; max-age=31536000; SameSite=Lax';
+  console.log('[Appilix-Early] Identity from URL param:', urlIdentity);
+} else {
+  // Fall back to cookie
+  var m = document.cookie.match(...);
+  ...
+}
 ```
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+## Flow After Fix
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+1. **First login**: React sets cookie → detects no early value + Appilix shell → reloads with URL param → Appilix scans URL param → device mapped ✓
+2. **Subsequent visits**: Layer 1 restores cookie → window variable set before scan → device mapped ✓
+3. **Logout**: Cookie cleared → next page load has no identity → clean state ✓
+
+## Files Changed
+
+| File | Change |
+|------|--------|
+| `src/App.tsx` | Add `isAppilix` import; add first-login reload with URL param |
+| `index.html` | Layer 1 script: check URL param before cookie, sync to cookie |
+
