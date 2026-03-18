@@ -56,7 +56,6 @@ export function SoundscapeProvider({ children }: { children: ReactNode }) {
     }
     
     // Restore muted state from storage — persist across sessions until user unmutes
-    const savedMuted = localStorage.getItem('soundscape_muted');
     if (savedMuted === 'true') {
       setIsMuted(true);
       audioRef.current.muted = true;
