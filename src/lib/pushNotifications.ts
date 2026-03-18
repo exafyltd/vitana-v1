@@ -90,9 +90,9 @@ class PushNotificationManager {
       }
 
       // Attempt web FCM (works in browsers, may work in some WebViews)
-      if (!token && this.isSupported) {
+      if (!token && (this.isSupported || isAppilix())) {
         try {
-          console.log('[Push] Trying web FCM...');
+          console.log('[Push] Trying web FCM...', isAppilix() ? '(Appilix WebView)' : '(browser)');
           token = await requestFCMToken(this.registration || undefined);
           if (token) {
             console.log('[Push] ✅ Web FCM token obtained');
