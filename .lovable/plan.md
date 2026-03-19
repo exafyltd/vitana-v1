@@ -1,26 +1,35 @@
+## Appilix Push Notification Integration — Deployed
 
+### What this does
+When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-## Fix: Orders Mobile Layout Alignment
+### Components
 
-### Problem
-The Orders mobile screen has spacing/alignment issues compared to other mobile hubs (visible in the screenshots):
-1. **Double offset**: The sticky header uses `top-[calc(env(safe-area-inset-top,0px)+32px)]` but `MobileAppShell` already applies the same offset as `paddingTop` on the content wrapper — causing the title to sit too far below the app bar.
-2. **Inconsistent header**: Uses a custom inline `h1` instead of the shared `StandardHeader` component used by all other mobile pages.
-3. **Oversized sticky block**: The utility action bar is crammed inside the sticky header, making it overly tall and eating viewport space.
+| # | Type | Component | Status |
+|---|------|-----------|--------|
+| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
+| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
+| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
+| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
 
-### Changes
+### Flow
+```
+Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
+  → trg_appilix_push → pg_net POST → appilix-push edge function
+    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
+      → Appilix routes via user_identity (= Supabase user.id)
+        → Native Android bell notification
+```
 
-**File: `src/components/orders/MobileOrdersView.tsx`**
+### API Fields (from Appilix docs)
+- `app_key` — required
+- `api_key` — required
+- `notification_title` — required
+- `notification_body` — required
+- `user_identity` — optional (targets specific user)
+- `open_link_url` — optional (opens URL on tap)
 
-1. Replace the custom sticky header with the standard mobile hub pattern:
-   - Change sticky `top` from `top-[calc(env(safe-area-inset-top,0px)+32px)]` to `top-0` — MobileAppShell already handles the app bar offset.
-   - Replace the inline `h1`/`p` with `<StandardHeader>` (which renders the compact mobile variant automatically).
-   - Move `StandardHeader` outside the sticky block so it scrolls with content (matching Events/Health hub patterns).
-
-2. Keep the `UtilityActionButton` bar in the sticky block but with tighter padding (`px-4 py-2` instead of the current spacing).
-
-3. Reduce outer padding: change `px-4 pt-4 pb-2` header padding to `px-4 pt-2 pb-1` to match the standard `StandardHeader` mobile spacing (`pt-2 pb-1`).
-
-### Result
-The title will sit flush below the app bar, utility chips will be consistently spaced, and the layout will match the Events/Health/Diary mobile hubs exactly.
-
+### Notes
+- Desktop web push (FCM) path remains unchanged
+- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
+- Trigger fires for `channel IN ('push_and_inapp', 'push')`
