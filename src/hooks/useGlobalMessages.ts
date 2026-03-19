@@ -788,16 +788,16 @@ export function useGlobalMessages(
 
           if (hasAttachments) {
             // Attachment DMs: insert directly into chat_messages with full metadata
-            const tenantId = (user as any).app_metadata?.active_tenant_id;
+            const tenantId = (user as any).app_metadata?.active_tenant_id || 'default';
             const { data: inserted, error: insertErr } = await supabase
               .from("chat_messages")
               .insert({
-                ...(tenantId ? { tenant_id: tenantId } : {}),
+                tenant_id: tenantId,
                 sender_id: user.id,
                 receiver_id: threadId,
                 content: body,
                 message_type: "attachment",
-                metadata: { attachments: _contentData.attachments },
+                metadata: { attachments: _contentData.attachments } as any,
               })
               .select()
               .single();
