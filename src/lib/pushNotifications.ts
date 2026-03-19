@@ -239,6 +239,8 @@ class PushNotificationManager {
 
   private async setupForegroundHandler(): Promise<void> {
     if (this.foregroundCleanup) return;
+    // Native Appilix push (trg_appilix_push) handles notifications — skip FCM foreground path
+    if (isAppilix()) return;
 
     const shownTags = new Set<string>();
     const cleanup = await onForegroundMessage((payload) => {
