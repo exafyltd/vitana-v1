@@ -1,49 +1,30 @@
 
 
-## Reaction Notifications
+## Fix: Desktop Emoji Reactions Not Working in Context Menu
 
 ### Problem
-When a user reacts to someone's message with an emoji, the message author receives no notification. They only discover the reaction when they open that specific chat.
+On desktop, clicking emoji reaction buttons in the right-click context menu does nothing. This is because the quick reaction buttons are plain `<button>` elements inside Radix UI's `ContextMenuContent`. Radix intercepts pointer events for non-`ContextMenuItem` children, so `onClick` handlers on plain buttons are swallowed.
 
 ### Solution
-Create a database trigger on `message_reactions` that inserts a notification into `user_notifications` for the message author, following the same pattern as the existing `notify_on_chat_message` trigger.
+Wrap each quick reaction emoji in a `ContextMenuItem` component instead of a plain `<button>`. Use `onSelect` (Radix's callback) instead of `onClick` to ensure the handler fires and the menu closes properly.
 
-### Implementation
+### File to modify
+**`src/components/messages/MessageContextMenu.tsx`**
 
-**1. Database migration — Create trigger function and trigger**
+- Replace the `<button>` elements for each emoji in `QUICK_REACTIONS` with `<ContextMenuItem>` using `onSelect={() => onEmojiSelect(emoji)}`
+- For the "More emojis" `EmojiPicker` trigger, keep it as-is but ensure the `onEmojiSelect` callback works by wrapping interaction properly
+- The emoji picker (`<Plus>` button) may also need adjustment — wrapping it in a way that Radix doesn't swallow the open event
 
-A new `notify_on_reaction()` function that:
-- Looks up the message author by checking `global_messages`, `chat_messages`, and `messages` tables (since reactions can be on any message type)
-- Skips self-reactions (user reacting to their own message)
-- Gets the reactor's display name from `profiles`
-- Inserts a `user_notification` with type `'message_reaction'`, title like "New Reaction", body like "Alice reacted 👍 to your message"
-- Deduplicates: skips if the same user already reacted to the same message within 5 seconds
-- Looks up the recipient's tenant for the `tenant_id` field
+### Technical detail
+```tsx
+// Before (broken):
+<button onClick={() => onEmojiSelect(emoji)}>
+  {emoji}
+</button>
 
-The trigger fires `AFTER INSERT ON message_reactions`.
-
-**2. Frontend — Handle reaction notification display**
-
-- **`src/hooks/useNotifications.ts`** or notification rendering: Ensure `message_reaction` type notifications display properly with the emoji and link to `/inbox`
-- No changes needed to the reaction hooks themselves — the trigger handles everything server-side
-
-### Technical details
-
-```sql
--- Trigger function pseudocode
-CREATE FUNCTION notify_on_reaction() RETURNS TRIGGER AS $$
-  -- Find message author from global_messages, chat_messages, or messages
-  -- Skip if reactor == author
-  -- Get reactor name from profiles
-  -- Insert into user_notifications (type='message_reaction', body='Name reacted 👍')
-$$;
-
-CREATE TRIGGER trg_notify_reaction
-  AFTER INSERT ON message_reactions
-  FOR EACH ROW EXECUTE FUNCTION notify_on_reaction();
+// After (working):
+<ContextMenuItem onSelect={() => onEmojiSelect(emoji)}>
+  {emoji}
+</ContextMenuItem>
 ```
-
-### Files to modify
-- New SQL migration (database trigger)
-- `src/hooks/useNotifications.ts` — minor: ensure `message_reaction` type renders correctly (if needed)
 
