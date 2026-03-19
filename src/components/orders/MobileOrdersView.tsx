@@ -242,18 +242,17 @@ export function MobileOrdersView({
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="sticky top-[calc(env(safe-area-inset-top,0px)+32px)] z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
-        <div className="px-4 pt-4 pb-2">
-          <h1 className="text-xl font-bold tracking-tight text-foreground">
-            {translate('orders.myOrders')} 📦
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            {translate('orders.trackDescription')}
-          </p>
-        </div>
+      {/* Standard Header - scrolls with content */}
+      <div className="px-4">
+        <StandardHeader 
+          title={translate('orders.myOrders')} 
+          description={translate('orders.trackDescription')}
+          emoji="📦"
+        />
+      </div>
 
-        {/* Utility Action Bar */}
+      {/* Sticky utility bar */}
+      <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
         <div className="px-4">
           <UtilityActionButton 
             className="min-w-0"
@@ -270,26 +269,8 @@ export function MobileOrdersView({
             }
             afterGiftVoucherChildren={
               <>
-                {/* Vitana Index pill */}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => navigate('/health')}
-                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-                >
-                  <span className="text-xs opacity-60">🧬</span>
-                  <span className="text-sm font-medium text-primary">742</span>
-                </Button>
-                
-                {/* Autopilot pill */}
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-                >
-                  <Plane className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
-                </Button>
+                <VitanaIndexChip />
+                <AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} />
               </>
             }
           >
@@ -303,8 +284,6 @@ export function MobileOrdersView({
           </UtilityActionButton>
         </div>
       </div>
-
-      {/* Mock data indicator */}
       {isShowingMockData && (
         <div className="mx-4 mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 flex items-center gap-2">
           <Badge variant="outline" className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-300 dark:border-amber-700 text-[10px]">
