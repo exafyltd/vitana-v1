@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { dismiss } = useToast();
+  const queryClient = useQueryClient();
   const oauthRecoveryRan = useRef(false);
 
   useEffect(() => {
