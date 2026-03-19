@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             qc.prefetchQuery({
               queryKey: ['global-threads', userId],
               queryFn: () => prefetchInboxThreads(userId),
-              staleTime: 10 * 60 * 1000,
+              staleTime: 0,
             }).catch(() => {});
           }
         }

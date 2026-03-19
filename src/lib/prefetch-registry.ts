@@ -131,7 +131,7 @@ export async function prefetchForPath(
     await queryClient.prefetchQuery({
       queryKey: ['global-threads', userId],
       queryFn: () => prefetchInboxThreads(userId),
-      staleTime,
+      staleTime: 0,
     });
   }
 }
