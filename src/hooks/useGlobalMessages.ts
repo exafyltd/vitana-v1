@@ -982,8 +982,10 @@ export function useGlobalMessages(
             )
           );
 
-          // Notify useChatUnreadCount to refresh badge immediately
-          window.dispatchEvent(new Event('chat-unread-refresh'));
+          // Notify badge: recompute from updated thread cache
+          const updatedThreads = queryClient.getQueryData<any[]>(["global-threads", user.id]) ?? [];
+          const totalUnread = updatedThreads.reduce((sum: number, t: any) => sum + (t.unread_count || 0), 0);
+          window.dispatchEvent(new CustomEvent('chat-unread-count-update', { detail: { count: totalUnread } }));
           // Also trigger notification refetch
           window.dispatchEvent(new Event('notifications-refresh'));
         } catch (error) {
