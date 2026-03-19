@@ -1,24 +1,35 @@
+## Appilix Push Notification Integration — Deployed
 
+### What this does
+When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-## Fix: Shared File Opening + Multiple File Attachments
+### Components
 
-### Issue 1: Can't open shared screenshots/files
-In `MessageBubble.tsx`, `handleFileClick` uses `window.open(url, '_blank')` which is frequently blocked by mobile browsers as a popup. The file chip click handler needs to use a more reliable method.
+| # | Type | Component | Status |
+|---|------|-----------|--------|
+| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
+| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
+| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
+| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
 
-**Fix in `src/components/messages/MessageBubble.tsx`:**
-- Change `handleFileClick` to use an anchor element click (`document.createElement('a')`) instead of `window.open`, which bypasses mobile popup blockers.
+### Flow
+```
+Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
+  → trg_appilix_push → pg_net POST → appilix-push edge function
+    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
+      → Appilix routes via user_identity (= Supabase user.id)
+        → Native Android bell notification
+```
 
-### Issue 2: Can only attach one file at a time
-Two constraints prevent multi-file selection:
+### API Fields (from Appilix docs)
+- `app_key` — required
+- `api_key` — required
+- `notification_title` — required
+- `notification_body` — required
+- `user_identity` — optional (targets specific user)
+- `open_link_url` — optional (opens URL on tap)
 
-1. The `<input type="file">` in `MessageInput.tsx` (line 562-568) is missing the `multiple` attribute
-2. `handleFileSelect` (line 249-250) explicitly takes only `files[0]` with the comment "Only allow one file at a time"
-
-**Fix in `src/components/messages/MessageInput.tsx`:**
-- Add `multiple` attribute to the file input element
-- Update `handleFileSelect` to loop through all selected files and upload each one (sequentially, to show proper progress per file)
-
-### Files to modify
-- `src/components/messages/MessageBubble.tsx` — fix `handleFileClick`
-- `src/components/messages/MessageInput.tsx` — add `multiple`, process all files
-
+### Notes
+- Desktop web push (FCM) path remains unchanged
+- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
+- Trigger fires for `channel IN ('push_and_inapp', 'push')`

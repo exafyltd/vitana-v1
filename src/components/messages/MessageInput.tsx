@@ -246,24 +246,18 @@ const MessageInput: React.FC<MessageInputProps> = ({
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    // Only allow one file at a time for better UX
-    const file = files[0];
-    console.log('[Attachment] Selected file:', { name: file.name, type: file.type, size: file.size });
-    
-    // Validate file
-    const validation = validateFile(file);
-    if (!validation.valid) {
-      toast({
-        title: "File not allowed",
-        description: validation.error,
-        variant: "destructive"
-      });
-      
-      // Clear the input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+    // Validate all files first
+    for (const file of files) {
+      const validation = validateFile(file);
+      if (!validation.valid) {
+        toast({
+          title: "File not allowed",
+          description: `${file.name}: ${validation.error}`,
+          variant: "destructive"
+        });
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
       }
-      return;
     }
 
     // Ensure we have a thread to attach to
@@ -277,73 +271,66 @@ const MessageInput: React.FC<MessageInputProps> = ({
       return;
     }
 
-    // Start upload process
     setIsUploading(true);
-    const uploadId = Date.now().toString();
-    // Show immediate progress chip
-    setUploadProgress(prev => ({
-      ...prev,
-      [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
-    }));
-    console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
-    
-    try {
-      const attachmentResult = await uploadChatAttachment(
-        file,
-        (progress) => {
-          setUploadProgress(prev => ({
-            ...prev,
-            [uploadId]: progress
-          }));
-        },
-        threadId
-      );
 
-      // Convert FileUploadResult to AttachmentData format
-      console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
-      const previewableImages = new Set(['image/jpeg','image/png','image/gif','image/webp','image/svg+xml']);
-      const isPreviewImage = previewableImages.has(attachmentResult.type);
-      const attachmentData: AttachmentData = {
-        type: isPreviewImage ? 'image' : 'file',
-        url: attachmentResult.url,
-        path: attachmentResult.path, // Store path for future signed URL support
-        name: attachmentResult.name,
-        size: attachmentResult.size,
-        mime: attachmentResult.type,
-        filename: attachmentResult.name
-      };
+    for (const file of files) {
+      const uploadId = Date.now().toString() + '_' + file.name;
+      setUploadProgress(prev => ({
+        ...prev,
+        [uploadId]: { loaded: 0, total: file.size, percentage: 0 }
+      }));
+      console.log('[Attachment] Upload starting', { threadId, name: file.name, type: file.type, size: file.size });
 
-      // Add successful upload to attachments
-      setAttachments(prev => [...prev, attachmentData]);
-      
-      // Clean up progress tracking
-      setUploadProgress(prev => {
-        const newProgress = { ...prev };
-        delete newProgress[uploadId];
-        return newProgress;
-      });
-      
-    } catch (error) {
-      console.error('Upload error:', error);
-      toast({
-        title: "Upload failed",
-        description: error instanceof Error ? error.message : "Failed to upload file",
-        variant: "destructive"
-      });
-      
-      // Clean up progress tracking
-      setUploadProgress(prev => {
-        const newProgress = { ...prev };
-        delete newProgress[uploadId];
-        return newProgress;
-      });
-    } finally {
-      setIsUploading(false);
-      
-      // Clear the input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+      try {
+        const attachmentResult = await uploadChatAttachment(
+          file,
+          (progress) => {
+            setUploadProgress(prev => ({
+              ...prev,
+              [uploadId]: progress
+            }));
+          },
+          threadId
+        );
+
+        console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
+        const previewableImages = new Set(['image/jpeg','image/png','image/gif','image/webp','image/svg+xml']);
+        const isPreviewImage = previewableImages.has(attachmentResult.type);
+        const attachmentData: AttachmentData = {
+          type: isPreviewImage ? 'image' : 'file',
+          url: attachmentResult.url,
+          path: attachmentResult.path,
+          name: attachmentResult.name,
+          size: attachmentResult.size,
+          mime: attachmentResult.type,
+          filename: attachmentResult.name
+        };
+
+        setAttachments(prev => [...prev, attachmentData]);
+
+        setUploadProgress(prev => {
+          const newProgress = { ...prev };
+          delete newProgress[uploadId];
+          return newProgress;
+        });
+      } catch (error) {
+        console.error('Upload error:', error);
+        toast({
+          title: "Upload failed",
+          description: error instanceof Error ? error.message : "Failed to upload file",
+          variant: "destructive"
+        });
+        setUploadProgress(prev => {
+          const newProgress = { ...prev };
+          delete newProgress[uploadId];
+          return newProgress;
+        });
       }
+    }
+
+    setIsUploading(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -562,6 +549,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           <input
             ref={fileInputRef}
             type="file"
+            multiple
             accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
             onChange={handleFileSelect}
             className="hidden"

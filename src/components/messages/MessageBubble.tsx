@@ -138,8 +138,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   };
 
   const handleFileClick = (url: string, filename: string) => {
-    // Open file in new tab
-    window.open(url, '_blank');
+    const link = document.createElement('a');
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const handleDownload = (url: string, filename: string) => {
