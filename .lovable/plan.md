@@ -1,55 +1,46 @@
 
-Problem confirmed: the reaction notification itself is now being created correctly, but the mobile push still fails after that.
 
-What I verified:
-- The latest `message_reaction` row now has a proper body:
-  - `Jovana Tadic reacted ❤️ to your message`
-- The `notify_on_reaction()` function in the live database is updated correctly and is no longer the blocker.
-- The `appilix-push` delivery attempt for that same notification fails with:
-  - `User identity is not found.`
-- This came directly from the Appilix push response stored in `net._http_response`.
+## Prefetch Chat Threads on Auth Success
 
-Root cause:
-- The notification pipeline is working up to `user_notifications`.
-- The failure is in native Appilix device identity registration/sync for the recipient user.
-- In other words: reaction notifications are generated, but Appilix cannot map that user’s UUID to a registered mobile device, so no native mobile push is shown.
+### Problem
+When users first open the app and log in, navigating to Inbox shows skeleton loaders for several seconds while the gateway cold-starts and threads load. The chat data only starts fetching when the user actually lands on the Inbox page.
 
-Why this matches what you’re seeing:
-- Older broken notifications had `body = null`.
-- Newer reaction notifications now have the correct body, but still do not appear on mobile because push delivery is rejected by Appilix for identity lookup.
+### Solution
+Trigger chat thread prefetching immediately when authentication succeeds (SIGNED_IN event), so by the time the user navigates to Inbox, the data is already cached in React Query.
 
-Implementation plan:
-1. Audit and harden the Appilix identity sync flow
-   - Review the code in `App.tsx`, `index.html`, and push registration helpers.
-   - Make identity registration happen reliably whenever a user is authenticated in Appilix, not just by setting a cookie/window value.
-   - Ensure the bridge sends `update_settings({ user_identity })` consistently for both fresh login and returning sessions.
+### Changes
 
-2. Add defensive re-registration on app resume / foreground
-   - Re-send the authenticated user identity when the app becomes visible again or when the bridge becomes available.
-   - This should recover from cases where the native shell misses the first registration event.
+**1. `src/context/AuthProvider.tsx`**
+- Import `QueryClient` from the global window ref and `fetchConversations` + `enrichProfiles` from the chat hooks
+- In the `onAuthStateChange` listener, when `event === 'SIGNED_IN'`, fire a background prefetch of `["global-threads", userId]` using the same queryFn shape as `useGlobalMessages`
+- This runs in parallel with the rest of the app mounting, giving the gateway 3-5 seconds head start
 
-3. Add diagnostic logging around identity registration
-   - Log when user identity is set to cookie/window/native bridge.
-   - Log whether Appilix is detected and whether an FCM/native token is present.
-   - This will make future push failures much easier to verify.
+**2. `src/lib/prefetch-registry.ts`**
+- Re-enable the `/inbox` prefetch path (currently commented out) with a lightweight version that calls `fetchConversations()` and caches the result under `["global-threads", userId]`
+- This ensures sidebar hover and adjacent-pillar prefetch also warm the inbox cache
 
-4. Keep reaction notifications unchanged except for validation
-   - The reaction trigger itself should stay as-is now that it generates correct body text.
-   - After identity sync is fixed, reaction pushes should start appearing without further database changes.
+### Technical Details
 
-Files likely to change:
-- `src/App.tsx`
-- `src/lib/appilix.ts`
-- possibly `src/lib/pushNotifications.ts`
-- possibly `index.html` if the early identity bootstrap needs to be strengthened
+The prefetch in AuthProvider will look like:
 
-Technical note:
-The latest DB evidence shows:
-- `user_notifications.type = 'message_reaction'`
-- correct `body`
-- `push_sent_at` gets populated
-- but the actual Appilix response is:
-```text
-{"status":"false","msg":"User identity is not found."}
+```typescript
+// On SIGNED_IN, fire-and-forget prefetch
+if (event === 'SIGNED_IN' && session?.user) {
+  const qc = (window as any).queryClient;
+  if (qc) {
+    qc.prefetchQuery({
+      queryKey: ['global-threads', session.user.id],
+      queryFn: () => prefetchInboxThreads(session.user.id),
+      staleTime: 2 * 60 * 1000,
+    }).catch(() => {});
+  }
+}
 ```
-So the next fix should target native identity registration, not the reaction trigger.
+
+A new `prefetchInboxThreads(userId)` helper will be added that calls `fetchConversations()` with a timeout, enriches profiles, and returns the same `GlobalMessageThread[]` shape. This avoids duplicating the full queryFn but ensures cache key match.
+
+### Files to modify
+- `src/context/AuthProvider.tsx` -- add prefetch on SIGNED_IN
+- `src/lib/prefetch-registry.ts` -- re-enable inbox prefetch for adjacent-pillar warming
+- `src/hooks/useGlobalMessages.ts` -- extract the thread-fetching logic into a reusable exported function
+
