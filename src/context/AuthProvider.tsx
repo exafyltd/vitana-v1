@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
+import { prefetchInboxThreads } from "@/lib/prefetchInboxThreads";
 
 interface AuthContextValue {
   user: User | null;
