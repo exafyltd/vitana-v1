@@ -29,6 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AutopilotPopupProps {
   open: boolean;
