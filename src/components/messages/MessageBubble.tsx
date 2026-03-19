@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/context/AuthProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -33,7 +33,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
-import { formatFileSize, isImageType } from '@/lib/fileUpload';
+import { formatFileSize, isImageType, getSignedAttachmentUrl } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
@@ -82,6 +82,43 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     filename: ''
   });
   const [showReactionPopover, setShowReactionPopover] = useState(false);
+  const [resolvedUrls, setResolvedUrls] = useState<Map<string, string>>(new Map());
+
+  // Resolve fresh signed URLs for attachments from private bucket
+  const resolveAttachmentUrl = useCallback(async (attachment: any): Promise<string> => {
+    const cacheKey = attachment.path || attachment.url;
+    const cached = resolvedUrls.get(cacheKey);
+    if (cached) return cached;
+
+    if (attachment.path) {
+      const freshUrl = await getSignedAttachmentUrl(attachment.path);
+      if (freshUrl) {
+        setResolvedUrls(prev => new Map(prev).set(cacheKey, freshUrl));
+        return freshUrl;
+      }
+    }
+    return attachment.url;
+  }, [resolvedUrls]);
+
+  // Eagerly resolve URLs for image attachments on render
+  const contentData = message.content_data;
+  const attachments = useMemo(() => {
+    if (!contentData?.attachments) return [];
+    return contentData.attachments as any[];
+  }, [contentData]);
+
+  useEffect(() => {
+    attachments.forEach((att: any) => {
+      if (att.path && !resolvedUrls.has(att.path)) {
+        getSignedAttachmentUrl(att.path).then(url => {
+          if (url) {
+            setResolvedUrls(prev => new Map(prev).set(att.path, url));
+          }
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [attachments]);
 
   // Use reactions hook
   const { reactionSummary, addReaction, removeReaction } = useMessageReactions(message.id);
@@ -133,11 +170,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   };
 
-  const handleImageClick = (url: string, filename: string) => {
-    setImageZoomModal({ isOpen: true, url, filename });
+  const handleImageClick = async (attachment: any) => {
+    const url = await resolveAttachmentUrl(attachment);
+    setImageZoomModal({ isOpen: true, url, filename: attachment.filename });
   };
 
-  const handleFileClick = (url: string, filename: string) => {
+  const handleFileClick = async (attachment: any) => {
+    const url = await resolveAttachmentUrl(attachment);
     const link = document.createElement('a');
     link.href = url;
     link.target = '_blank';
@@ -147,10 +186,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     document.body.removeChild(link);
   };
 
-  const handleDownload = (url: string, filename: string) => {
+  const handleDownload = async (attachment: any) => {
+    const url = await resolveAttachmentUrl(attachment);
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename;
+    link.download = attachment.filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -407,18 +447,17 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
     const imageLoadFailed = failedImages.has(index);
+    const displayUrl = (attachment.path && resolvedUrls.get(attachment.path)) || attachment.url;
 
-    // If image failed to load, render as file chip instead
     if (isImage && !imageLoadFailed) {
-      // Render image thumbnail
       return (
         <div 
           key={index}
           className="relative group cursor-pointer max-w-xs"
-          onClick={() => handleImageClick(attachment.url, attachment.filename)}
+          onClick={() => handleImageClick(attachment)}
         >
           <img
-            src={attachment.url}
+            src={displayUrl}
             alt={attachment.filename}
             className="w-full h-auto rounded-lg max-h-64 object-cover"
             loading="lazy"
@@ -435,7 +474,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               className="h-7 w-7 p-0"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDownload(attachment.url, attachment.filename);
+                handleDownload(attachment);
               }}
               aria-label="Download image"
             >
@@ -447,14 +486,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               className="h-7 w-7 p-0"
               onClick={(e) => {
                 e.stopPropagation();
-                handleFileClick(attachment.url, attachment.filename);
+                handleFileClick(attachment);
               }}
               aria-label="Open in new tab"
             >
               <ExternalLink className="w-3 h-3" />
             </Button>
           </div>
-          {/* Image info overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 rounded-b-lg">
             <p className="text-white text-xs font-medium truncate">{attachment.filename}</p>
             <p className="text-white/80 text-xs">{formatFileSize(attachment.size)}</p>
@@ -462,12 +500,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         </div>
       );
     } else {
-      // Render file chip
       return (
         <div
           key={index}
           className="flex items-center gap-3 p-3 bg-background/50 rounded-lg border cursor-pointer hover:bg-background/70 transition-colors max-w-xs"
-          onClick={() => handleFileClick(attachment.url, attachment.filename)}
+          onClick={() => handleFileClick(attachment)}
         >
           <FileText className="w-8 h-8 text-muted-foreground flex-shrink-0" />
           <div className="flex-1 min-w-0">
@@ -482,7 +519,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             className="h-7 w-7 p-0 flex-shrink-0"
             onClick={(e) => {
               e.stopPropagation();
-              handleDownload(attachment.url, attachment.filename);
+              handleDownload(attachment);
             }}
             aria-label="Download file"
           >
