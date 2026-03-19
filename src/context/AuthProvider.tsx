@@ -1,19 +1,12 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
 import { prefetchInboxThreads } from "@/lib/prefetchInboxThreads";
 import { QueryClient } from "@tanstack/react-query";
-
-interface AuthContextValue {
-  user: User | null;
-  session: Session | null;
-  loading: boolean;
-  signOut: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+import { AuthContext } from "./AuthContext";
+import type { AuthContextValue } from "./AuthContext";
 
 /**
  * Parse OAuth callback params from URL hash and query string.
