@@ -140,42 +140,25 @@ export function MessageContextMenu({
         {onEmojiSelect && (
           <>
             <ContextMenuSeparator />
-            <div className="p-2">
-              <div className="text-xs font-medium text-muted-foreground mb-2 px-1">
+            <div className="px-1 py-1">
+              <div className="text-xs font-medium text-muted-foreground mb-1 px-2">
                 Quick reactions
               </div>
-              <div className="flex gap-1">
+              <div className="flex gap-1 px-1">
                 {QUICK_REACTIONS.map((emoji) => (
-                  <button
+                  <ContextMenuItem
                     key={emoji}
-                    onClick={() => onEmojiSelect(emoji)}
+                    onSelect={() => onEmojiSelect(emoji)}
                     className={cn(
-                      "flex items-center justify-center w-8 h-8 rounded-md",
-                      "hover:bg-accent transition-colors duration-200",
-                      "text-lg hover:scale-110 transform transition-transform"
+                      "flex items-center justify-center w-8 h-8 rounded-md p-0",
+                      "text-lg hover:scale-110 transform transition-transform",
+                      "cursor-pointer"
                     )}
                     aria-label={`React with ${emoji}`}
                   >
                     {emoji}
-                  </button>
+                  </ContextMenuItem>
                 ))}
-                
-                <EmojiPicker 
-                  onEmojiSelect={onEmojiSelect}
-                  trigger={
-                    <button
-                      className={cn(
-                        "flex items-center justify-center w-8 h-8 rounded-md",
-                        "hover:bg-accent transition-colors duration-200",
-                        "text-muted-foreground hover:text-foreground",
-                        "hover:scale-110 transform transition-transform"
-                      )}
-                      aria-label="More emojis"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  }
-                />
               </div>
             </div>
           </>
