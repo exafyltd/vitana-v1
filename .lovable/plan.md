@@ -1,35 +1,35 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+## Fix: Paperclip (Attach) Button Not Responding to Taps
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+### Problem
+The `PersistentGuideOrb` component renders a `fixed inset-0 z-[90]` overlay (`motion.div`) that periodically appears in the DOM. Even though it animates to `opacity: 0`, it still captures pointer/touch events because the element is in the DOM and has no `pointer-events: none`. This invisible overlay sits above the chat input area (z-50), blocking taps on the paperclip button and potentially other input elements.
 
-### Flow
+The `AttachmentMenu` component itself is correctly wired -- it uses `ResponsivePopover` and should open a bottom sheet on mobile with options like Attach File, Send Funds, Calendar Invite, etc.
+
+### Root Cause
+In `src/components/vitanaland/PersistentGuideOrb.tsx`, line 40:
 ```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
+<motion.div className="fixed inset-0 z-[90]" ...>
+```
+This full-screen overlay at z-index 90 intercepts all touch events when present, even during exit animations (opacity going to 0).
+
+### Fix
+
+**File: `src/components/vitanaland/PersistentGuideOrb.tsx`**
+
+Add `pointer-events: none` to the overlay `motion.div` so it never blocks interactions with elements beneath it. The overlay is purely visual (backdrop blur + tinted background), so it does not need to receive pointer events.
+
+Change on line 40:
+```
+className="fixed inset-0 z-[90]"
+```
+to:
+```
+className="fixed inset-0 z-[90] pointer-events-none"
 ```
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+Also add `pointer-events-none` to the child div (line 47) for safety.
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+This is a one-line CSS class addition. No API or logic changes needed.
+
