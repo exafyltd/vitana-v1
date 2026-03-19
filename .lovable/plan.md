@@ -1,30 +1,28 @@
 
 
-## Fix: Desktop Emoji Reactions Not Working in Context Menu
+## Fix: Desktop Right-Click Context Menu Not Opening
 
 ### Problem
-On desktop, clicking emoji reaction buttons in the right-click context menu does nothing. This is because the quick reaction buttons are plain `<button>` elements inside Radix UI's `ContextMenuContent`. Radix intercepts pointer events for non-`ContextMenuItem` children, so `onClick` handlers on plain buttons are swallowed.
+Line 810 in `MessageBubble.tsx` has `onContextMenu={(e) => e.preventDefault()}` on the message div. This kills **both** the native browser context menu **and** Radix's `ContextMenuTrigger`, which relies on the `contextmenu` event to open. Since Radix never receives the event, the context menu (with quick reactions) never appears on desktop.
 
-### Solution
-Wrap each quick reaction emoji in a `ContextMenuItem` component instead of a plain `<button>`. Use `onSelect` (Radix's callback) instead of `onClick` to ensure the handler fires and the menu closes properly.
+On mobile this doesn't matter because `MessageContextMenu` returns bare children (no Radix wrapper), and long-press uses a Drawer instead.
 
-### File to modify
-**`src/components/messages/MessageContextMenu.tsx`**
+### Fix
 
-- Replace the `<button>` elements for each emoji in `QUICK_REACTIONS` with `<ContextMenuItem>` using `onSelect={() => onEmojiSelect(emoji)}`
-- For the "More emojis" `EmojiPicker` trigger, keep it as-is but ensure the `onEmojiSelect` callback works by wrapping interaction properly
-- The emoji picker (`<Plus>` button) may also need adjustment — wrapping it in a way that Radix doesn't swallow the open event
+**`src/components/messages/MessageBubble.tsx`** (line 810)
 
-### Technical detail
+Change the `onContextMenu` handler to only `preventDefault` on mobile:
+
 ```tsx
-// Before (broken):
-<button onClick={() => onEmojiSelect(emoji)}>
-  {emoji}
-</button>
+// Before:
+onContextMenu={(e) => e.preventDefault()}
 
-// After (working):
-<ContextMenuItem onSelect={() => onEmojiSelect(emoji)}>
-  {emoji}
-</ContextMenuItem>
+// After:
+onContextMenu={(e) => { if (isMobile) e.preventDefault(); }}
 ```
+
+This allows Radix's `ContextMenuTrigger` to intercept the right-click on desktop while still suppressing the native menu on mobile (where the Drawer handles actions).
+
+### Files to modify
+- `src/components/messages/MessageBubble.tsx` — line 810 only
 
