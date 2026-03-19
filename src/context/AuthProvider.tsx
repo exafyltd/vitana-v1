@@ -61,11 +61,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Prefetch inbox threads immediately on sign-in so chat is ready
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
           const userId = session.user.id;
-          queryClient.prefetchQuery({
-            queryKey: ['global-threads', userId],
-            queryFn: () => prefetchInboxThreads(userId),
-            staleTime: 10 * 60 * 1000, // match useGlobalMessages STALE_TIME
-          }).catch(() => {});
+          // Access QueryClient from window (set by App.tsx) to avoid hook dependency
+          const qc = (window as any).__queryClient as QueryClient | undefined;
+          if (qc) {
+            qc.prefetchQuery({
+              queryKey: ['global-threads', userId],
+              queryFn: () => prefetchInboxThreads(userId),
+              staleTime: 10 * 60 * 1000,
+            }).catch(() => {});
+          }
         }
       }
     );
