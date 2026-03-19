@@ -340,6 +340,7 @@ export function MobileOrdersView({
         open={!!selectedOrder}
         onOpenChange={(open) => !open && setSelectedOrder(null)}
       />
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </div>
   );
 }
