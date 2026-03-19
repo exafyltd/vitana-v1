@@ -195,7 +195,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           </div>
         ) : (
           <>
-            <ScrollArea className="max-h-96">
+            <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
               <div className="space-y-2">
                 {showOptions ? (
                   pendingActions.map((action) => (
