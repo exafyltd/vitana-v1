@@ -49,6 +49,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     isExecuting 
   } = useAutopilot();
   
+  const isMobile = useIsMobile();
   const [showOptions, setShowOptions] = useState(false);
   const [executionProgress, setExecutionProgress] = useState(0);
 
