@@ -1067,8 +1067,8 @@ export function useGlobalMessages(
                   ];
                 }
 
-                // Notify global badge store to update in parallel
-                window.dispatchEvent(new Event("chat-unread-refresh"));
+                // Trigger thread refetch for new conversation — badge will update via thread persistence effect
+                // (no manual dispatch needed; invalidation triggers re-render → useEffect dispatches count)
 
                 // New conversation - trigger refetch
                 queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
