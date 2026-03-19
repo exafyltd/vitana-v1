@@ -225,8 +225,13 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <Separator />
 
             <DialogFooter className="flex-col space-y-3">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex space-x-2">
+              <div className={cn(
+                "w-full",
+                isMobile 
+                  ? "flex flex-col gap-2" 
+                  : "flex items-center justify-between"
+              )}>
+                <div className={cn(isMobile ? "flex flex-col gap-2" : "flex space-x-2")}>
                   <Button
                     onClick={handleExecute}
                     disabled={selectedActions.length === 0}
