@@ -1,28 +1,25 @@
 
 
-## Fix: Desktop Right-Click Context Menu Not Opening
+## Fix: Reaction Notification Body is Empty (NULL)
 
 ### Problem
-Line 810 in `MessageBubble.tsx` has `onContextMenu={(e) => e.preventDefault()}` on the message div. This kills **both** the native browser context menu **and** Radix's `ContextMenuTrigger`, which relies on the `contextmenu` event to open. Since Radix never receives the event, the context menu (with quick reactions) never appears on desktop.
+The reaction notification trigger looks up the reactor's name with `SELECT ... FROM profiles WHERE id = NEW.user_id`, but in the `profiles` table, the auth user UUID is stored in the `user_id` column, not `id`. This causes the name lookup to return NULL, which makes the string concatenation for `body` also NULL.
 
-On mobile this doesn't matter because `MessageContextMenu` returns bare children (no Radix wrapper), and long-press uses a Drawer instead.
+Result: notifications are created and pushed to mobile, but with an empty body — the user sees a push with title "New Reaction" and no text.
 
 ### Fix
+**Database migration** — Update `notify_on_reaction()` function, changing one line:
 
-**`src/components/messages/MessageBubble.tsx`** (line 810)
+```sql
+-- Before:
+FROM profiles WHERE id = NEW.user_id;
 
-Change the `onContextMenu` handler to only `preventDefault` on mobile:
-
-```tsx
-// Before:
-onContextMenu={(e) => e.preventDefault()}
-
-// After:
-onContextMenu={(e) => { if (isMobile) e.preventDefault(); }}
+-- After:
+FROM profiles WHERE user_id = NEW.user_id;
 ```
 
-This allows Radix's `ContextMenuTrigger` to intercept the right-click on desktop while still suppressing the native menu on mobile (where the Drawer handles actions).
+This is a single-line fix in the existing function. The rest of the trigger logic is correct — tenant lookup, deduplication, self-reaction skip all work properly.
 
 ### Files to modify
-- `src/components/messages/MessageBubble.tsx` — line 810 only
+- New SQL migration to `CREATE OR REPLACE FUNCTION notify_on_reaction()` with the corrected column reference
 
