@@ -7284,6 +7284,51 @@ export type Database = {
           },
         ]
       }
+      oasis_spec_quality_reports: {
+        Row: {
+          checks_json: Json
+          conflict_json: Json
+          created_at: string | null
+          governance_json: Json
+          id: string
+          impact_json: Json
+          overall_result: string
+          overall_score: number
+          risk_level: string
+          spec_hash: string
+          spec_id: string
+          vtid: string
+        }
+        Insert: {
+          checks_json?: Json
+          conflict_json?: Json
+          created_at?: string | null
+          governance_json?: Json
+          id?: string
+          impact_json?: Json
+          overall_result: string
+          overall_score: number
+          risk_level: string
+          spec_hash: string
+          spec_id: string
+          vtid: string
+        }
+        Update: {
+          checks_json?: Json
+          conflict_json?: Json
+          created_at?: string | null
+          governance_json?: Json
+          id?: string
+          impact_json?: Json
+          overall_result?: string
+          overall_score?: number
+          risk_level?: string
+          spec_hash?: string
+          spec_id?: string
+          vtid?: string
+        }
+        Relationships: []
+      }
       oasis_spec_validations: {
         Row: {
           created_at: string
