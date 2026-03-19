@@ -278,6 +278,7 @@ import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
+import { registerAppilixIdentity } from "@/lib/appilix";
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 
@@ -293,7 +294,21 @@ const AppHooksInitializer = () => {
     if (user?.id && typeof window !== 'undefined') {
       (window as any).appilix_push_notification_user_identity = user.id;
       document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+      // Register identity with native Appilix bridge so push notifications can find this device
+      registerAppilixIdentity(user.id);
     }
+  }, [user?.id]);
+
+  // Re-register identity when app comes back to foreground (Appilix may lose mapping)
+  useEffect(() => {
+    if (!user?.id) return;
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        registerAppilixIdentity(user.id);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [user?.id]);
 
   useEffect(() => {
