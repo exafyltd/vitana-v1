@@ -549,6 +549,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           <input
             ref={fileInputRef}
             type="file"
+            multiple
             accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z,.heic,.heif"
             onChange={handleFileSelect}
             className="hidden"
