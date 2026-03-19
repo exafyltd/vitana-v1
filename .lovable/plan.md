@@ -1,41 +1,80 @@
 
 
-## Fix: Inbox Empty + Badge Out of Sync
+## Fix: Unify Inbox Badges With Thread Data (Current Tab Only)
 
 ### Root Cause
 
-The `staleTime: 0` fix on the **prefetch** was necessary but insufficient. The real blocker is the **consumer**: `useGlobalMessages` declares `staleTime: 10 minutes` on the threads query. When React Query evaluates staleness for a `useQuery` observer, it uses the **observer's own staleTime**, not the prefetch's. Since the prefetch just populated the cache (seconds ago), `Date.now() - dataUpdatedAt < 10 min` is true, so React Query treats the data as fresh and **never calls the full queryFn**.
+Three independent unread count sources produce three different numbers:
 
-The prefetch only fetches gateway direct chats (no groups, no legacy threads, no Vitana bot). If the gateway is cold or returns empty, the cache holds `[]` — and the full queryFn never runs to correct it.
+```text
+Source                          Value   Used by
+─────────────────────────────── ─────── ──────────────────────
+/chat/unread-count (gateway)    0       useChatUnreadCount (intended)
+Thread-level unread_count sum   2       Thread list in Messages.tsx
+/notifications/unread-count     3       useNotifications (bell icon)
 
-### Fix (2 changes)
-
-**1. `src/hooks/useGlobalMessages.ts`** — Set threads query `staleTime: 0`
-
-Change the threads query staleTime from 10 minutes to 0. This ensures the full queryFn always runs when the component mounts, even if prefetched data exists. The user still sees instant content via `placeholderData` (localStorage cache), so there's no visual penalty.
-
-```typescript
-// Line ~578-580
-enabled: !!user && isGlobalContext,
-staleTime: 0,        // was STALE_TIME (10min) — prefetch data must not block full fetch
-gcTime: GC_TIME,
+Badge on bottom nav/drawer      3       Stale optimistic value
 ```
 
-Keep the messages query `staleTime` at 10 minutes (individual thread messages don't have a prefetch collision).
+`useChatUnreadCount` uses gateway `/chat/unread-count` (returns 0), but its realtime handlers optimistically increment on each `user_notifications` INSERT. When the gateway confirm fetch inside the `catch` block fails, the optimistic value sticks. Three notification INSERTs (including `message_reaction` types that shouldn't count) accumulated to 3.
 
-**2. `src/hooks/useGlobalMessages.ts`** — Make unread_count on threads consistent with badge
+Meanwhile, the thread list computes unread from `last_message.read_at`, giving 2 for one thread. The badge and thread list never converge because they use completely different data sources.
 
-Currently, the gateway thread mapper only sets `unread_count: 1` or `0` based on the last message's `read_at`. The `useChatUnreadCount` singleton uses the gateway's `/unread-count` endpoint which returns the true total (7). To keep the inbox thread-level counts consistent, after building the merged thread list, sum unread counts and dispatch a `chat-unread-refresh` event so the badge re-syncs.
+### Fix: Derive badge count from thread cache
 
-This is a minor addition — just dispatch the event after threads are fetched so all badge sources converge.
+Replace the gateway-based unread count with a computation from the same thread data the inbox displays. This guarantees badge = sum of thread badges.
+
+**1. `src/hooks/useGlobalMessages.ts`** -- Dispatch computed count
+
+Change the `chat-unread-refresh` dispatch to a `CustomEvent` carrying the computed total unread from threads:
+
+```typescript
+// In the threads persistence useEffect (~line 586-591)
+useEffect(() => {
+  if (user && threads.length > 0 && !isThreadsLoading) {
+    debouncedPersistThreads(user.id, threads);
+    const totalUnread = threads.reduce((sum, t) => sum + (t.unread_count || 0), 0);
+    window.dispatchEvent(new CustomEvent('chat-unread-count-update', { detail: { count: totalUnread } }));
+  }
+}, [user, threads, isThreadsLoading]);
+```
+
+Also update the markAsRead dispatch (~line 984) to use the same event.
+
+**2. `src/hooks/useTenantMessages.ts`** -- Same dispatch for tenant context
+
+Add a similar useEffect that dispatches `chat-unread-count-update` when tenant threads load, so switching to Network tab updates the badge.
+
+**3. `src/hooks/useChatUnreadCount.ts`** -- Listen for computed count
+
+Replace the `chat-unread-refresh` → gateway fetch pattern with a `chat-unread-count-update` CustomEvent listener that sets the count directly from the thread sum:
+
+```typescript
+function handleCountUpdate(e: Event) {
+  const count = (e as CustomEvent).detail?.count ?? 0;
+  setCount(count);
+}
+window.addEventListener('chat-unread-count-update', handleCountUpdate);
+```
+
+Remove the `user_notifications` realtime subscription (it was incorrectly counting `message_reaction` notifications as chat unreads). Keep the `chat_messages` INSERT subscription but change it to just trigger a thread refetch rather than incrementing optimistically.
+
+Remove the `/chat/unread-count` gateway polling entirely -- the badge now derives from thread data.
+
+**4. `src/hooks/useGlobalMessages.ts`** -- Fix realtime handler badge sync (~line 1068)
+
+Change the `chat-unread-refresh` dispatch in the realtime INSERT handler to compute from the updated cache and dispatch `chat-unread-count-update`.
+
+### Why this fixes the sync
+
+- Badge = `sum(thread.unread_count)` from the same React Query cache the thread list renders
+- Side drawer and bottom nav both read from the same `useChatUnreadCount` singleton
+- "Current tab only" is automatic: whichever context's `useGlobalMessages` or `useTenantMessages` is active dispatches the event
+- No more optimistic increments from notification types that shouldn't count (reactions, etc.)
+- No more stale optimistic values from failed gateway confirms
 
 ### Files to modify
-- `src/hooks/useGlobalMessages.ts` — threads query staleTime → 0, add badge sync event
-
-### Why this works
-- `placeholderData` from localStorage provides instant UI (no flash)
-- `staleTime: 0` forces the full queryFn to run immediately after mount
-- Full queryFn fetches gateway + legacy + groups + Vitana = complete thread list
-- Realtime handlers find all threads and update correctly
-- Badge stays in sync because both the thread list and the singleton use the same gateway source
+- `src/hooks/useChatUnreadCount.ts` -- listen for CustomEvent, remove gateway polling/notification subscription
+- `src/hooks/useGlobalMessages.ts` -- dispatch computed count via CustomEvent
+- `src/hooks/useTenantMessages.ts` -- add same dispatch for tenant threads
 
