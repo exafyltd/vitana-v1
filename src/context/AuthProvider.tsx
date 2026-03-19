@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
           const userId = session.user.id;
           // Access QueryClient from window (set by App.tsx) to avoid hook dependency
-          const qc = (window as any).__queryClient as QueryClient | undefined;
+          const qc = (window as any).queryClient as QueryClient | undefined;
           if (qc) {
             qc.prefetchQuery({
               queryKey: ['global-threads', userId],
