@@ -82,6 +82,43 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     filename: ''
   });
   const [showReactionPopover, setShowReactionPopover] = useState(false);
+  const [resolvedUrls, setResolvedUrls] = useState<Map<string, string>>(new Map());
+
+  // Resolve fresh signed URLs for attachments from private bucket
+  const resolveAttachmentUrl = useCallback(async (attachment: any): Promise<string> => {
+    const cacheKey = attachment.path || attachment.url;
+    const cached = resolvedUrls.get(cacheKey);
+    if (cached) return cached;
+
+    if (attachment.path) {
+      const freshUrl = await getSignedAttachmentUrl(attachment.path);
+      if (freshUrl) {
+        setResolvedUrls(prev => new Map(prev).set(cacheKey, freshUrl));
+        return freshUrl;
+      }
+    }
+    return attachment.url;
+  }, [resolvedUrls]);
+
+  // Eagerly resolve URLs for image attachments on render
+  const contentData = message.content_data;
+  const attachments = useMemo(() => {
+    if (!contentData?.attachments) return [];
+    return contentData.attachments as any[];
+  }, [contentData]);
+
+  useEffect(() => {
+    attachments.forEach((att: any) => {
+      if (att.path && !resolvedUrls.has(att.path)) {
+        getSignedAttachmentUrl(att.path).then(url => {
+          if (url) {
+            setResolvedUrls(prev => new Map(prev).set(att.path, url));
+          }
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [attachments]);
 
   // Use reactions hook
   const { reactionSummary, addReaction, removeReaction } = useMessageReactions(message.id);
