@@ -1,35 +1,27 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+## Fix: Synchronize Global Unread Badge with Thread-Level Counts
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+### Problem
+When a new message arrives, the per-thread unread count updates **instantly** (optimistic `+1` in the React Query cache), but the global badge in the bottom nav and sidebar updates with a **delay** because it waits for its own Supabase realtime channel to fire, then makes a round-trip to the gateway API (`/chat/unread-count`).
 
-### Flow
-```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
-```
+### Root Cause
+Two independent update paths with different latencies:
+- **Thread list** (useGlobalMessages): Receives realtime event → optimistically increments `unread_count + 1` in cache → instant UI update
+- **Global badge** (useChatUnreadCount): Receives its own realtime event → calls `fetchUnreadCount()` gateway API → waits for response → updates
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+The thread-level handler in `useGlobalMessages` never notifies the global badge store.
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+### Solution
+Two complementary changes:
+
+**1. `src/hooks/useGlobalMessages.ts`** — After optimistically incrementing thread `unread_count`, dispatch `chat-unread-refresh` so the global badge starts updating immediately:
+- Add `window.dispatchEvent(new Event('chat-unread-refresh'))` right after the thread cache update (around line 1036), so the badge fetch fires in parallel with the thread UI update.
+
+**2. `src/hooks/useChatUnreadCount.ts`** — Optimistically increment the count immediately on realtime INSERT, then confirm with the gateway:
+- In the `chat_messages` INSERT handler (line 96): call `setCount(currentCount + 1)` **before** the `fetchUnreadCount()` call, so the badge updates instantly. The gateway response will correct any drift.
+- Same pattern for the `user_notifications` INSERT handler (line 108).
+
+### Result
+All three badge locations (thread card, bottom nav, sidebar drawer) will update simultaneously when a new message arrives — the global badge will optimistically increment in the same tick as the thread count, with the gateway fetch confirming the exact value moments later.
+
