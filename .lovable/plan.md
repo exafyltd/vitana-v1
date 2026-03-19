@@ -1,69 +1,41 @@
 
 
-## Investigation: Triple Notifications on Mobile
+## Fix: Inbox Empty + Badge Out of Sync
 
-### How notifications are reaching the device
+### Root Cause
 
-Three independent notification delivery paths all fire for the same incoming chat message:
+The `staleTime: 0` fix on the **prefetch** was necessary but insufficient. The real blocker is the **consumer**: `useGlobalMessages` declares `staleTime: 10 minutes` on the threads query. When React Query evaluates staleness for a `useQuery` observer, it uses the **observer's own staleTime**, not the prefetch's. Since the prefetch just populated the cache (seconds ago), `Date.now() - dataUpdatedAt < 10 min` is true, so React Query treats the data as fresh and **never calls the full queryFn**.
 
-```text
-Message inserted into chat_messages
-         │
-         ├── Path 1: DB Trigger → user_notifications → trg_appilix_push → Appilix Push API → Native OS notification
-         │
-         ├── Path 2: FCM Web Push → firebase-messaging-sw.js → Service Worker showNotification
-         │
-         └── Path 3: Realtime subscription (useNotifications.ts) → showAppilixFallbackNotification() → Browser Notification API / SW showNotification
-```
+The prefetch only fetches gateway direct chats (no groups, no legacy threads, no Vitana bot). If the gateway is cold or returns empty, the cache holds `[]` — and the full queryFn never runs to correct it.
 
-Each path has its own deduplication logic (different tags, different TTLs, different scopes), so they don't suppress each other. The result: 3 notifications for 1 message.
+### Fix (2 changes)
 
-### Why it started working
+**1. `src/hooks/useGlobalMessages.ts`** — Set threads query `staleTime: 0`
 
-The Appilix push trigger (`trg_appilix_push`) was added recently. Combined with the existing FCM web push and the browser fallback, it created three parallel paths.
-
-### Fix: Disable redundant paths on Appilix
-
-The proper notification channel for Appilix mobile is **Path 1** (Appilix Push API via `trg_appilix_push`). The other two are redundant on that platform:
-
-**1. `src/lib/appilixNotificationFallback.ts`** — Skip when Appilix native push is active
-
-Add an early return when running inside the Appilix WebView. The native push (Path 1) already handles delivery. This fallback was a stopgap before `trg_appilix_push` existed.
+Change the threads query staleTime from 10 minutes to 0. This ensures the full queryFn always runs when the component mounts, even if prefetched data exists. The user still sees instant content via `placeholderData` (localStorage cache), so there's no visual penalty.
 
 ```typescript
-import { isAppilix } from '@/lib/appilix';
-
-export async function showAppilixFallbackNotification(notif) {
-  // Native push now handles Appilix notifications via trg_appilix_push
-  if (isAppilix()) {
-    console.log('[NotifFallback] Skipped: Appilix native push active');
-    return false;
-  }
-  // ... rest unchanged
-}
+// Line ~578-580
+enabled: !!user && isGlobalContext,
+staleTime: 0,        // was STALE_TIME (10min) — prefetch data must not block full fetch
+gcTime: GC_TIME,
 ```
 
-**2. `src/lib/pushNotifications.ts`** — Skip FCM foreground handler inside Appilix
+Keep the messages query `staleTime` at 10 minutes (individual thread messages don't have a prefetch collision).
 
-The `setupForegroundHandler` method shows a local notification via FCM's `onForegroundMessage`. Inside the Appilix WebView, FCM web tokens are unreliable anyway, but when they do fire, they duplicate the native push. Add an `isAppilix()` guard:
+**2. `src/hooks/useGlobalMessages.ts`** — Make unread_count on threads consistent with badge
 
-```typescript
-private async setupForegroundHandler(): Promise<void> {
-  if (this.foregroundCleanup) return;
-  if (isAppilix()) return; // Native push handles this
-  // ... rest unchanged
-}
-```
+Currently, the gateway thread mapper only sets `unread_count: 1` or `0` based on the last message's `read_at`. The `useChatUnreadCount` singleton uses the gateway's `/unread-count` endpoint which returns the true total (7). To keep the inbox thread-level counts consistent, after building the merged thread list, sum unread counts and dispatch a `chat-unread-refresh` event so the badge re-syncs.
 
-**3. `public/firebase-messaging-sw.js`** — No change needed
+This is a minor addition — just dispatch the event after threads are fetched so all badge sources converge.
 
-The service worker `push` event only fires when an FCM push arrives. If the FCM token isn't registered on Appilix (which is the intended state), this path is already inactive. No change needed.
+### Files to modify
+- `src/hooks/useGlobalMessages.ts` — threads query staleTime → 0, add badge sync event
 
-### Summary
-
-- Path 1 (Appilix Push API) = **keep** — this is the correct native channel
-- Path 2 (FCM foreground handler) = **disable on Appilix** — 1 line guard
-- Path 3 (browser fallback) = **disable on Appilix** — 1 line guard
-
-Two small changes, two files. Notifications will be single-delivery on Appilix mobile while desktop/PWA behavior remains unchanged.
+### Why this works
+- `placeholderData` from localStorage provides instant UI (no flash)
+- `staleTime: 0` forces the full queryFn to run immediately after mount
+- Full queryFn fetches gateway + legacy + groups + Vitana = complete thread list
+- Realtime handlers find all threads and update correctly
+- Badge stays in sync because both the thread list and the singleton use the same gateway source
 
