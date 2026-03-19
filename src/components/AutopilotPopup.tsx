@@ -155,7 +155,11 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh]">
+      <DialogContent className={cn(
+        isMobile 
+          ? "w-full h-[100dvh] max-w-full max-h-full rounded-none flex flex-col" 
+          : "max-w-2xl max-h-[80vh]"
+      )}>
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
