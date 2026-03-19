@@ -10,6 +10,7 @@
  */
 
 import type { VitanaNotification } from '@/hooks/useNotifications';
+import { isAppilix } from '@/lib/appilix';
 
 // ── Dedup set with auto-expiry ────────────────────────────
 const shownIds = new Set<string>();
@@ -73,6 +74,12 @@ async function ensurePermission(): Promise<boolean> {
 export async function showAppilixFallbackNotification(
   notif: VitanaNotification,
 ): Promise<boolean> {
+  // Native Appilix push (trg_appilix_push) now handles delivery — skip browser fallback
+  if (isAppilix()) {
+    console.log('[NotifFallback] Skipped: Appilix native push active');
+    return false;
+  }
+
   // 1. Only for chat messages
   if (notif.type !== 'new_chat_message') {
     console.log('[NotifFallback] Skipped: type is', notif.type);
