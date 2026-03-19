@@ -46,7 +46,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const { dismiss } = useToast();
   const oauthRecoveryRan = useRef(false);
-  const oauthRecoveryRan = useRef(false);
 
   useEffect(() => {
     // Set up auth state listener FIRST
