@@ -1,18 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchUnreadCount } from "./useChatApi";
-
-const POLL_INTERVAL = 60_000;
+import { useQueryClient } from "@tanstack/react-query";
 
 // ── Singleton shared store ──────────────────────────────────────────
 let currentCount = 0;
 let initializedForUserId: string | null = null;
 const listeners = new Set<() => void>();
 
-let pollTimeout: ReturnType<typeof setTimeout> | null = null;
 let realtimeChannel: ReturnType<typeof supabase.channel> | null = null;
-let broadcastChannel: ReturnType<typeof supabase.channel> | null = null;
 
 function notify() {
   listeners.forEach((cb) => cb());
@@ -25,126 +21,40 @@ function setCount(next: number) {
   }
 }
 
-async function refreshCount() {
-  try {
-    const count = await fetchUnreadCount();
-    setCount(count);
-  } catch (e) {
-    console.warn("[useChatUnreadCount] fetch failed:", e);
-  }
+function handleCountUpdate(e: Event) {
+  const count = (e as CustomEvent).detail?.count ?? 0;
+  setCount(count);
 }
 
 function teardown() {
-  if (pollTimeout) {
-    clearTimeout(pollTimeout);
-    pollTimeout = null;
-  }
   if (realtimeChannel) {
     supabase.removeChannel(realtimeChannel);
     realtimeChannel = null;
   }
-  if (broadcastChannel) {
-    supabase.removeChannel(broadcastChannel);
-    broadcastChannel = null;
-  }
-  window.removeEventListener("chat-unread-refresh", handleWindowRefresh);
-  document.removeEventListener("visibilitychange", handleVisibility);
+  window.removeEventListener("chat-unread-count-update", handleCountUpdate);
   initializedForUserId = null;
   currentCount = 0;
 }
 
-function handleWindowRefresh() {
-  refreshCount();
-}
-
-function handleVisibility() {
-  if (document.visibilityState === "visible") {
-    refreshCount();
-  }
-}
-
 function init(userId: string) {
   if (initializedForUserId === userId) return;
-  // If switching users, tear down previous
   if (initializedForUserId) teardown();
   initializedForUserId = userId;
 
-  // Initial fetch
-  refreshCount();
+  // Listen for thread-derived count updates from useGlobalMessages / useTenantMessages
+  window.addEventListener("chat-unread-count-update", handleCountUpdate);
 
-  // Polling
-  const tick = () => {
-    if (document.visibilityState === "visible") {
-      refreshCount();
-    }
-    pollTimeout = setTimeout(tick, POLL_INTERVAL);
-  };
-  pollTimeout = setTimeout(tick, POLL_INTERVAL);
-
-  // Visibility
-  document.addEventListener("visibilitychange", handleVisibility);
-
-  // Window event for same-tab sync
-  window.addEventListener("chat-unread-refresh", handleWindowRefresh);
-
-  // Realtime: new messages & notifications
+  // Realtime: new incoming messages trigger thread refetch (which will recompute count)
   realtimeChannel = supabase
     .channel("chat_unread_badge")
     .on(
       "postgres_changes",
       { event: "INSERT", schema: "public", table: "chat_messages", filter: `receiver_id=eq.${userId}` },
-      async () => {
-        // Optimistically increment immediately, then confirm with gateway
-        setCount(currentCount + 1);
-        try {
-          const count = await fetchUnreadCount();
-          setCount(count);
-        } catch {
-          // Keep optimistic value
-        }
+      () => {
+        // Trigger thread list refetch — the thread query will recompute unread and dispatch the event
+        window.dispatchEvent(new Event("chat-threads-refetch"));
       }
     )
-    .on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "user_notifications", filter: `user_id=eq.${userId}` },
-      async (payload) => {
-        const notif = payload.new as { type?: string };
-        if (notif?.type !== "new_chat_message") return;
-        // Optimistically increment immediately, then confirm with gateway
-        setCount(currentCount + 1);
-        try {
-          const count = await fetchUnreadCount();
-          setCount(count);
-        } catch {
-          // Keep optimistic value
-        }
-      }
-    )
-    .subscribe();
-
-  // Broadcast: cross-tab thread_read / unread_change
-  broadcastChannel = supabase
-    .channel("chat_sidebar_unread_sync")
-    .on("broadcast", { event: "thread_read" }, async (payload) => {
-      if (payload.payload?.userId === userId) {
-        try {
-          const count = await fetchUnreadCount();
-          setCount(count);
-        } catch {
-          setCount(Math.max(0, currentCount - 1));
-        }
-      }
-    })
-    .on("broadcast", { event: "unread_change" }, async (payload) => {
-      if (payload.payload?.userId === userId) {
-        try {
-          const count = await fetchUnreadCount();
-          setCount(count);
-        } catch {
-          setCount(currentCount + 1);
-        }
-      }
-    })
     .subscribe();
 }
 
@@ -152,27 +62,33 @@ function init(userId: string) {
 export function useChatUnreadCount() {
   const { user } = useAuth();
   const [, rerender] = useState(0);
+  const queryClient = useQueryClient();
 
-  // Initialize singleton for this user
   useEffect(() => {
     if (!user) return;
     init(user.id);
 
-    // Subscribe to shared store
     const cb = () => rerender((n) => n + 1);
     listeners.add(cb);
 
+    // Listen for refetch requests from realtime
+    const handleRefetch = () => {
+      queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
+    };
+    window.addEventListener("chat-threads-refetch", handleRefetch);
+
     return () => {
       listeners.delete(cb);
-      // Tear down when last subscriber leaves
+      window.removeEventListener("chat-threads-refetch", handleRefetch);
       if (listeners.size === 0) {
         teardown();
       }
     };
-  }, [user]);
+  }, [user, queryClient]);
 
   const refresh = useCallback(() => {
-    refreshCount();
+    // Trigger thread refetch which will recompute and dispatch count
+    window.dispatchEvent(new Event("chat-threads-refetch"));
   }, []);
 
   const decrementBy = useCallback((n: number) => {

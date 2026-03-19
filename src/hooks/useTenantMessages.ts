@@ -237,6 +237,14 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
     staleTime: 2 * 60 * 1000,
   });
 
+  // Sync badge: dispatch computed unread total for tenant threads
+  useEffect(() => {
+    if (user && threads.length > 0 && !isThreadsLoading && isTenantContext) {
+      const totalUnread = threads.reduce((sum, t) => sum + (t.unread_count || 0), 0);
+      window.dispatchEvent(new CustomEvent('chat-unread-count-update', { detail: { count: totalUnread } }));
+    }
+  }, [user, threads, isThreadsLoading, isTenantContext]);
+
   // Derived loading state for backwards compatibility
   const isLoading = isThreadsLoading || isMessagesLoading;
 

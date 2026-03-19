@@ -586,8 +586,9 @@ export function useGlobalMessages(
   useEffect(() => {
     if (user && threads.length > 0 && !isThreadsLoading) {
       debouncedPersistThreads(user.id, threads);
-      // Sync badge: dispatch refresh so useChatUnreadCount re-fetches and all badges converge
-      window.dispatchEvent(new Event('chat-unread-refresh'));
+      // Sync badge: dispatch computed unread total so all badges converge
+      const totalUnread = threads.reduce((sum, t) => sum + (t.unread_count || 0), 0);
+      window.dispatchEvent(new CustomEvent('chat-unread-count-update', { detail: { count: totalUnread } }));
     }
   }, [user, threads, isThreadsLoading]);
 
@@ -981,8 +982,10 @@ export function useGlobalMessages(
             )
           );
 
-          // Notify useChatUnreadCount to refresh badge immediately
-          window.dispatchEvent(new Event('chat-unread-refresh'));
+          // Notify badge: recompute from updated thread cache
+          const updatedThreads = queryClient.getQueryData<any[]>(["global-threads", user.id]) ?? [];
+          const totalUnread = updatedThreads.reduce((sum: number, t: any) => sum + (t.unread_count || 0), 0);
+          window.dispatchEvent(new CustomEvent('chat-unread-count-update', { detail: { count: totalUnread } }));
           // Also trigger notification refetch
           window.dispatchEvent(new Event('notifications-refresh'));
         } catch (error) {
@@ -1064,8 +1067,8 @@ export function useGlobalMessages(
                   ];
                 }
 
-                // Notify global badge store to update in parallel
-                window.dispatchEvent(new Event("chat-unread-refresh"));
+                // Trigger thread refetch for new conversation — badge will update via thread persistence effect
+                // (no manual dispatch needed; invalidation triggers re-render → useEffect dispatches count)
 
                 // New conversation - trigger refetch
                 queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
