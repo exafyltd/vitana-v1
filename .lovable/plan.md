@@ -1,46 +1,38 @@
 
 
-## Prefetch Chat Threads on Auth Success
+## Fix: Login Broken Due to PresenceDebugPanel Crash
 
-### Problem
-When users first open the app and log in, navigating to Inbox shows skeleton loaders for several seconds while the gateway cold-starts and threads load. The chat data only starts fetching when the user actually lands on the Inbox page.
+### What Happened
+The previous fix removed `useQueryClient()` from `AuthProvider`, which was the right fix. However, `PresenceDebugPanel` (which calls `useAuth` via `usePresenceDebug` → `useUserPresence`) can still crash the entire app if `AuthProvider` fails for any reason during initialization — because there's no error boundary protecting it.
 
-### Solution
-Trigger chat thread prefetching immediately when authentication succeeds (SIGNED_IN event), so by the time the user navigates to Inbox, the data is already cached in React Query.
+The error at line 192 corresponds to the **previous** version of `AuthProvider.tsx` (before the `useQueryClient` removal). The current code is structurally correct, but the crash cascades because `PresenceDebugPanel` is rendered at the top level of `App` with no protection.
 
-### Changes
+### Fix (Two Changes)
 
-**1. `src/context/AuthProvider.tsx`**
-- Import `QueryClient` from the global window ref and `fetchConversations` + `enrichProfiles` from the chat hooks
-- In the `onAuthStateChange` listener, when `event === 'SIGNED_IN'`, fire a background prefetch of `["global-threads", userId]` using the same queryFn shape as `useGlobalMessages`
-- This runs in parallel with the rest of the app mounting, giving the gateway 3-5 seconds head start
+**1. Wrap `PresenceDebugPanel` in an error boundary** (`src/App.tsx`)
+- Wrap it in a try-catch error boundary so if it crashes, the rest of the app (including login) continues working.
+- Alternatively, make `PresenceDebugPanel` internally guard against missing auth context by catching the `useAuth` error.
 
-**2. `src/lib/prefetch-registry.ts`**
-- Re-enable the `/inbox` prefetch path (currently commented out) with a lightweight version that calls `fetchConversations()` and caches the result under `["global-threads", userId]`
-- This ensures sidebar hover and adjacent-pillar prefetch also warm the inbox cache
+**2. Make `PresenceDebugPanel` safe when AuthContext is unavailable** (`src/components/debug/PresenceDebugPanel.tsx`)
+- Add a safe wrapper that uses `useContext(AuthContext)` directly (without throwing) and returns `null` if the context is undefined. This prevents the debug panel from ever crashing the app.
 
-### Technical Details
-
-The prefetch in AuthProvider will look like:
+### Technical Detail
+In `PresenceDebugPanel.tsx`, instead of calling `usePresenceDebug()` (which calls `useAuth()` which throws), wrap the entire component in a safety check:
 
 ```typescript
-// On SIGNED_IN, fire-and-forget prefetch
-if (event === 'SIGNED_IN' && session?.user) {
-  const qc = (window as any).queryClient;
-  if (qc) {
-    qc.prefetchQuery({
-      queryKey: ['global-threads', session.user.id],
-      queryFn: () => prefetchInboxThreads(session.user.id),
-      staleTime: 2 * 60 * 1000,
-    }).catch(() => {});
+// Safe version - returns null if AuthProvider is not available
+const PresenceDebugPanel: React.FC = () => {
+  try {
+    return <PresenceDebugPanelInner />;
+  } catch {
+    return null;
   }
-}
+};
 ```
 
-A new `prefetchInboxThreads(userId)` helper will be added that calls `fetchConversations()` with a timeout, enriches profiles, and returns the same `GlobalMessageThread[]` shape. This avoids duplicating the full queryFn but ensures cache key match.
+Or better — create a `useAuthSafe()` hook that returns `null` instead of throwing, and use it in `useUserPresence`.
 
 ### Files to modify
-- `src/context/AuthProvider.tsx` -- add prefetch on SIGNED_IN
-- `src/lib/prefetch-registry.ts` -- re-enable inbox prefetch for adjacent-pillar warming
-- `src/hooks/useGlobalMessages.ts` -- extract the thread-fetching logic into a reusable exported function
+- `src/components/debug/PresenceDebugPanel.tsx` — wrap in error boundary / safe check
+- Optionally `src/App.tsx` — add React error boundary around the debug panel
 
