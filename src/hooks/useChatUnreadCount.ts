@@ -94,11 +94,13 @@ function init(userId: string) {
       "postgres_changes",
       { event: "INSERT", schema: "public", table: "chat_messages", filter: `receiver_id=eq.${userId}` },
       async () => {
+        // Optimistically increment immediately, then confirm with gateway
+        setCount(currentCount + 1);
         try {
           const count = await fetchUnreadCount();
           setCount(count);
         } catch {
-          setCount(currentCount + 1);
+          // Keep optimistic value
         }
       }
     )
@@ -108,11 +110,13 @@ function init(userId: string) {
       async (payload) => {
         const notif = payload.new as { type?: string };
         if (notif?.type !== "new_chat_message") return;
+        // Optimistically increment immediately, then confirm with gateway
+        setCount(currentCount + 1);
         try {
           const count = await fetchUnreadCount();
           setCount(count);
         } catch {
-          setCount(currentCount + 1);
+          // Keep optimistic value
         }
       }
     )
