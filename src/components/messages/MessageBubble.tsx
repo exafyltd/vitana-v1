@@ -170,11 +170,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     }
   };
 
-  const handleImageClick = (url: string, filename: string) => {
-    setImageZoomModal({ isOpen: true, url, filename });
+  const handleImageClick = async (attachment: any) => {
+    const url = await resolveAttachmentUrl(attachment);
+    setImageZoomModal({ isOpen: true, url, filename: attachment.filename });
   };
 
-  const handleFileClick = (url: string, filename: string) => {
+  const handleFileClick = async (attachment: any) => {
+    const url = await resolveAttachmentUrl(attachment);
     const link = document.createElement('a');
     link.href = url;
     link.target = '_blank';
@@ -184,10 +186,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     document.body.removeChild(link);
   };
 
-  const handleDownload = (url: string, filename: string) => {
+  const handleDownload = async (attachment: any) => {
+    const url = await resolveAttachmentUrl(attachment);
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename;
+    link.download = attachment.filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
