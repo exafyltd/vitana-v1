@@ -10,6 +10,7 @@
  */
 
 import type { VitanaNotification } from '@/hooks/useNotifications';
+import { isAppilix } from '@/lib/appilix';
 
 // ── Dedup set with auto-expiry ────────────────────────────
 const shownIds = new Set<string>();
