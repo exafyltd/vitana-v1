@@ -29,6 +29,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -48,6 +49,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     isExecuting 
   } = useAutopilot();
   
+  const isMobile = useIsMobile();
   const [showOptions, setShowOptions] = useState(false);
   const [executionProgress, setExecutionProgress] = useState(0);
 
@@ -153,7 +155,11 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[80vh]">
+      <DialogContent className={cn(
+        isMobile 
+          ? "w-full h-[100dvh] max-w-full max-h-full rounded-none flex flex-col" 
+          : "max-w-2xl max-h-[80vh]"
+      )}>
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
@@ -189,7 +195,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           </div>
         ) : (
           <>
-            <ScrollArea className="max-h-96">
+            <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
               <div className="space-y-2">
                 {showOptions ? (
                   pendingActions.map((action) => (
@@ -219,8 +225,13 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <Separator />
 
             <DialogFooter className="flex-col space-y-3">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex space-x-2">
+              <div className={cn(
+                "w-full",
+                isMobile 
+                  ? "flex flex-col gap-2" 
+                  : "flex items-center justify-between"
+              )}>
+                <div className={cn(isMobile ? "flex flex-col gap-2" : "flex space-x-2")}>
                   <Button
                     onClick={handleExecute}
                     disabled={selectedActions.length === 0}
