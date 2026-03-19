@@ -105,12 +105,24 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
   });
 }
 
-// ── FCM Push Token Bridge ─────────────────────────────────
+// ── Identity Registration ─────────────────────────────────
 
 /**
- * Simple synchronous check for a pre-injected FCM token.
- * Kept as a lightweight utility — no polling or event machinery.
+ * Register the authenticated user's identity with the Appilix native shell.
+ * This is the critical step that maps a Supabase user UUID to a physical device
+ * so that push notifications via the Appilix Push API can find this user.
  */
+export function registerAppilixIdentity(userId: string): boolean {
+  if (!isAppilix()) {
+    console.debug('[Appilix] Not in Appilix shell, skipping identity registration');
+    return false;
+  }
+  console.log(`[Appilix] Registering user_identity: ${userId}`);
+  return updateSettings({ user_identity: userId });
+}
+
+// ── FCM Push Token Bridge ─────────────────────────────────
+
 /**
  * Returns true when running inside the Appilix shell on an iOS device.
  * Handles modern iPads that report "MacIntel" with desktop-class UA strings
