@@ -47,7 +47,10 @@ export function EmojiPicker({ onEmojiSelect, trigger, className }: EmojiPickerPr
       <PopoverContent 
         side="top" 
         align="start"
-        className="w-80 p-4 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
+        sideOffset={8}
+        avoidCollisions={true}
+        collisionPadding={8}
+        className="z-[60] w-[min(320px,calc(100vw-2rem))] p-4 bg-background/95 backdrop-blur-sm border border-border shadow-lg"
       >
         <div className="space-y-3">
           {/* Category tabs */}
