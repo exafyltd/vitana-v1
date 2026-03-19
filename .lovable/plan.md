@@ -1,22 +1,22 @@
 
 
-## Fix: Nature Emoji Category Too Limited (Animals Only)
+## Fix: People Emoji Category — Add Faces and Body Emojis
 
 ### Problem
-The Nature category only contains 16 animal emojis. It should include plants, flowers, weather, and other nature-related emojis for variety.
+The "People" category only contains hand/gesture emojis. It should also include faces, person emojis, and other people-related emojis.
 
 ### Fix
 
-**File: `src/components/ui/emoji-picker.tsx`** — Expand the `nature` array to include flowers, plants, weather, and celestial emojis alongside the existing animals:
+**File: `src/components/ui/emoji-picker.tsx`** — Expand the `people` array to include faces, person emojis, family, and body parts alongside existing hand gestures:
 
 ```
-nature: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵',
-         '🌸', '🌹', '🌺', '🌻', '🌼', '🌷', '🌱', '🌲', '🌳', '🍀', '🍁', '🍂', '🌾', '🌵',
-         '☀️', '🌙', '⭐', '🌈', '☁️', '⛅', '🌊', '❄️', '🔥', '💧']
+people: ['👋', '🤚', '🖐️', '✋', '🖖', '👌', '🤌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '👍', '👎',
+         '👶', '👦', '👧', '👨', '👩', '👴', '👵', '🧑', '👮', '👷', '💂', '🕵️', '👩‍⚕️', '👩‍🎓', '👩‍💻',
+         '🙋', '🙅', '🙆', '💁', '🙇', '🤷', '🤦', '💆', '💇', '🧖',
+         '👫', '👬', '👭', '👪',
+         '👀', '👁️', '👃', '👂', '👄', '💀', '🧠', '💪', '🦵', '🦶']
 ```
-
-This adds ~25 plant/weather/nature emojis to the existing animals, making the category well-rounded.
 
 ### Files to modify
-- `src/components/ui/emoji-picker.tsx` — expand `nature` array
+- `src/components/ui/emoji-picker.tsx` — expand `people` array
 
