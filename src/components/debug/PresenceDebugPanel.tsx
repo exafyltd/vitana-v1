@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import { usePresenceDebug } from '@/hooks/usePresenceDebug';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 
-const PresenceDebugPanel: React.FC = () => {
+class PresenceDebugErrorBoundary extends Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
+const PresenceDebugPanelInner: React.FC = () => {
   const { debugInfo, showDebug } = usePresenceDebug();
   const [isDismissed, setIsDismissed] = useState(() => {
     return sessionStorage.getItem('presence-debug-dismissed') === 'true';
@@ -64,5 +78,11 @@ const PresenceDebugPanel: React.FC = () => {
     </Card>
   );
 };
+
+const PresenceDebugPanel: React.FC = () => (
+  <PresenceDebugErrorBoundary>
+    <PresenceDebugPanelInner />
+  </PresenceDebugErrorBoundary>
+);
 
 export default PresenceDebugPanel;
