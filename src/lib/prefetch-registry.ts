@@ -6,6 +6,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
+import { prefetchInboxThreads } from '@/lib/prefetchInboxThreads';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
