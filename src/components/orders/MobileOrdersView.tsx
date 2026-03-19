@@ -21,6 +21,10 @@ import { MobileOrderDetailSheet } from './MobileOrderDetailSheet';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
+import StandardHeader from '@/components/StandardHeader';
+import { VitanaIndexChip, AutopilotChip } from '@/components/mobile/MobileActionChips';
+import { useAutopilot } from '@/hooks/use-autopilot';
+import { AutopilotPopup } from '@/components/AutopilotPopup';
 
 // Unified order type
 export interface UnifiedMobileOrder {
