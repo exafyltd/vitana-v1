@@ -447,18 +447,17 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   const renderAttachment = (attachment: any, index: number) => {
     const isImage = attachment.type === 'image' || isImageType(attachment.mime || '');
     const imageLoadFailed = failedImages.has(index);
+    const displayUrl = (attachment.path && resolvedUrls.get(attachment.path)) || attachment.url;
 
-    // If image failed to load, render as file chip instead
     if (isImage && !imageLoadFailed) {
-      // Render image thumbnail
       return (
         <div 
           key={index}
           className="relative group cursor-pointer max-w-xs"
-          onClick={() => handleImageClick(attachment.url, attachment.filename)}
+          onClick={() => handleImageClick(attachment)}
         >
           <img
-            src={attachment.url}
+            src={displayUrl}
             alt={attachment.filename}
             className="w-full h-auto rounded-lg max-h-64 object-cover"
             loading="lazy"
@@ -475,7 +474,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               className="h-7 w-7 p-0"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDownload(attachment.url, attachment.filename);
+                handleDownload(attachment);
               }}
               aria-label="Download image"
             >
@@ -487,14 +486,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               className="h-7 w-7 p-0"
               onClick={(e) => {
                 e.stopPropagation();
-                handleFileClick(attachment.url, attachment.filename);
+                handleFileClick(attachment);
               }}
               aria-label="Open in new tab"
             >
               <ExternalLink className="w-3 h-3" />
             </Button>
           </div>
-          {/* Image info overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 rounded-b-lg">
             <p className="text-white text-xs font-medium truncate">{attachment.filename}</p>
             <p className="text-white/80 text-xs">{formatFileSize(attachment.size)}</p>
@@ -502,12 +500,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         </div>
       );
     } else {
-      // Render file chip
       return (
         <div
           key={index}
           className="flex items-center gap-3 p-3 bg-background/50 rounded-lg border cursor-pointer hover:bg-background/70 transition-colors max-w-xs"
-          onClick={() => handleFileClick(attachment.url, attachment.filename)}
+          onClick={() => handleFileClick(attachment)}
         >
           <FileText className="w-8 h-8 text-muted-foreground flex-shrink-0" />
           <div className="flex-1 min-w-0">
@@ -522,7 +519,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             className="h-7 w-7 p-0 flex-shrink-0"
             onClick={(e) => {
               e.stopPropagation();
-              handleDownload(attachment.url, attachment.filename);
+              handleDownload(attachment);
             }}
             aria-label="Download file"
           >
