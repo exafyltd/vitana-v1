@@ -37,14 +37,14 @@ export function PersistentGuideOrb() {
       <AnimatePresence>
         {worldVisible && (
           <motion.div
-            className="fixed inset-0 z-[90]"
+            className="fixed inset-0 z-[90] pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
           >
             {/* Glassy transparent background */}
-            <div className="absolute inset-0 bg-background/10 backdrop-blur-md" />
+            <div className="absolute inset-0 bg-background/10 backdrop-blur-md pointer-events-none" />
           </motion.div>
         )}
       </AnimatePresence>
