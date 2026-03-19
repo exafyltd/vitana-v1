@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { User, Session } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
+import { prefetchInboxThreads } from "@/lib/prefetchInboxThreads";
 
 interface AuthContextValue {
   user: User | null;
@@ -43,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { dismiss } = useToast();
+  const queryClient = useQueryClient();
   const oauthRecoveryRan = useRef(false);
 
   useEffect(() => {
@@ -55,6 +58,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Prefetch inbox threads immediately on sign-in so chat is ready
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+          const userId = session.user.id;
+          queryClient.prefetchQuery({
+            queryKey: ['global-threads', userId],
+            queryFn: () => prefetchInboxThreads(userId),
+            staleTime: 10 * 60 * 1000, // match useGlobalMessages STALE_TIME
+          }).catch(() => {});
+        }
       }
     );
 
