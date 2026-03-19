@@ -1,38 +1,41 @@
 
 
-## Fix: Login Broken Due to PresenceDebugPanel Crash
+## Fix: Real-time Messages Not Appearing + Prefetch Cache Collision
 
-### What Happened
-The previous fix removed `useQueryClient()` from `AuthProvider`, which was the right fix. However, `PresenceDebugPanel` (which calls `useAuth` via `usePresenceDebug` → `useUserPresence`) can still crash the entire app if `AuthProvider` fails for any reason during initialization — because there's no error boundary protecting it.
+### Root Cause
 
-The error at line 192 corresponds to the **previous** version of `AuthProvider.tsx` (before the `useQueryClient` removal). The current code is structurally correct, but the crash cascades because `PresenceDebugPanel` is rendered at the top level of `App` with no protection.
+The recent prefetch change introduced a cache collision. `prefetchInboxThreads()` populates `['global-threads', userId]` with **only gateway direct chats** (no group threads, no legacy threads, no Vitana). It's cached with `staleTime: 10 minutes`.
 
-### Fix (Two Changes)
+When `useGlobalMessages` mounts, React Query sees fresh cached data under the same key and **skips calling its own full queryFn** (which fetches gateway + legacy + group + Vitana). The hook's realtime subscription then tries to update a thread list that may be incomplete or structurally incompatible, causing silent failures.
 
-**1. Wrap `PresenceDebugPanel` in an error boundary** (`src/App.tsx`)
-- Wrap it in a try-catch error boundary so if it crashes, the rest of the app (including login) continues working.
-- Alternatively, make `PresenceDebugPanel` internally guard against missing auth context by catching the `useAuth` error.
+Additionally, if the prefetch runs before the auth token is fully ready, it caches an **empty array** as fresh data, making the inbox appear empty for up to 10 minutes.
 
-**2. Make `PresenceDebugPanel` safe when AuthContext is unavailable** (`src/components/debug/PresenceDebugPanel.tsx`)
-- Add a safe wrapper that uses `useContext(AuthContext)` directly (without throwing) and returns `null` if the context is undefined. This prevents the debug panel from ever crashing the app.
+### Fix (2 changes, minimal risk)
 
-### Technical Detail
-In `PresenceDebugPanel.tsx`, instead of calling `usePresenceDebug()` (which calls `useAuth()` which throws), wrap the entire component in a safety check:
+**1. `src/context/AuthProvider.tsx`** -- Change prefetchQuery staleTime to 0
+
+Set `staleTime: 0` in the `prefetchQuery` call. This means:
+- The prefetched data immediately appears in the UI (React Query uses it as initial/placeholder data)
+- The hook's full queryFn runs immediately after to fetch the complete thread list (gateway + legacy + groups)
+- No 10-minute stale window where incomplete data blocks the real fetch
 
 ```typescript
-// Safe version - returns null if AuthProvider is not available
-const PresenceDebugPanel: React.FC = () => {
-  try {
-    return <PresenceDebugPanelInner />;
-  } catch {
-    return null;
-  }
-};
+qc.prefetchQuery({
+  queryKey: ['global-threads', userId],
+  queryFn: () => prefetchInboxThreads(userId),
+  staleTime: 0, // ← was 10 * 60 * 1000 — let the hook's full queryFn always run
+}).catch(() => {});
 ```
 
-Or better — create a `useAuthSafe()` hook that returns `null` instead of throwing, and use it in `useUserPresence`.
+**2. `src/lib/prefetch-registry.ts`** -- Same staleTime fix if prefetch is called there
+
+Ensure any prefetch registry entry for inbox also uses `staleTime: 0`.
+
+### Why this fixes real-time
+
+The realtime subscription itself was never broken — the Supabase channel on `chat_messages` still fires. But the realtime handler updates the `['global-threads', userId]` cache (line 1043). When that cache contains stale/incomplete prefetched data, the handler's thread lookup can fail silently (the thread isn't found, so the update is skipped). With `staleTime: 0`, the full thread list loads within seconds of login, and the realtime handler finds the correct thread to update.
 
 ### Files to modify
-- `src/components/debug/PresenceDebugPanel.tsx` — wrap in error boundary / safe check
-- Optionally `src/App.tsx` — add React error boundary around the debug panel
+- `src/context/AuthProvider.tsx` — change staleTime from 10min to 0
+- `src/lib/prefetch-registry.ts` — same fix
 
