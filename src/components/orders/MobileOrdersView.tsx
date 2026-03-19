@@ -68,6 +68,8 @@ export function MobileOrdersView({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<UnifiedMobileOrder | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { pendingCount } = useAutopilot();
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
 
   // Filter orders based on search
   const filteredActiveOrders = useMemo(() => {
