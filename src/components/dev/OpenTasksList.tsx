@@ -18,6 +18,7 @@ import {
   ExternalLink,
   MessageSquare,
   Calendar,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -33,6 +34,10 @@ interface Task {
   created_at: string;
   logs?: string[];
   relatedLinks?: { label: string; url: string }[];
+  created_by?: string;
+  created_by_name?: string;
+  created_by_email?: string;
+  initiated_via?: string;
 }
 
 const MOCK_TASKS: Task[] = [
@@ -234,7 +239,7 @@ export function OpenTasksList() {
                           )}
 
                           {/* Metadata row */}
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
                             <span className="flex items-center gap-1">
                               <span className="font-medium">{translate('tasks.assignee', 'Assignee')}:</span>{" "}
                               {task.assignee}
@@ -246,6 +251,20 @@ export function OpenTasksList() {
                               </span>
                             )}
                             <span>{formatTime(task.created_at)}</span>
+                            <span className="flex items-center gap-1">
+                              <User className="w-3 h-3" />
+                              <span className="font-medium">
+                                {task.created_by_name ||
+                                 (task.created_by_email ? task.created_by_email.split("@")[0] : null) ||
+                                 task.created_by ||
+                                 "Unknown"}
+                              </span>
+                              {task.initiated_via && (
+                                <Badge variant="secondary" className="text-xs ml-1 capitalize">
+                                  {task.initiated_via}
+                                </Badge>
+                              )}
+                            </span>
                           </div>
                         </div>
 

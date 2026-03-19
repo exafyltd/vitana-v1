@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
-import { Sparkles } from "lucide-react";
+import { Sparkles, User } from "lucide-react";
 
 interface TaskCardProps {
   task: Task;
@@ -53,8 +53,31 @@ const priorityColors = {
   low: "bg-muted text-muted-foreground border-border",
 };
 
+function getCreatorLabel(task: Task): string {
+  if (task.created_by_name) return task.created_by_name;
+  if (task.created_by_email) {
+    // Extract name from email: "dstevanovic@example.com" → "dstevanovic"
+    return task.created_by_email.split("@")[0];
+  }
+  if (task.created_by) return task.created_by;
+  return "";
+}
+
+function getInitiatorLabel(initiator?: string): string | null {
+  if (!initiator) return null;
+  switch (initiator) {
+    case "manual": return "Manual";
+    case "autopilot": return "Autopilot";
+    case "operator": return "Operator";
+    case "orb": return "Orb";
+    case "system": return "System";
+    default: return initiator;
+  }
+}
+
 export function TaskCard({ task, onClick }: TaskCardProps) {
   const statusColor = statusColors[task.status];
+  const creatorLabel = getCreatorLabel(task);
   
   return (
     <Card
@@ -87,7 +110,7 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
       </CardHeader>
       
       <CardContent className="pb-3">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3 flex-wrap">
           <span className="font-medium">{task.owner}</span>
           <span>•</span>
           <Badge variant="outline" className="text-xs">
@@ -98,6 +121,20 @@ export function TaskCard({ task, onClick }: TaskCardProps) {
               <span>•</span>
               <span>{task.module}</span>
             </>
+          )}
+          {creatorLabel && (
+            <>
+              <span>•</span>
+              <span className="flex items-center gap-1">
+                <User className="h-3 w-3" />
+                <span className="font-medium">{creatorLabel}</span>
+              </span>
+            </>
+          )}
+          {task.initiated_via && (
+            <Badge variant="secondary" className="text-xs">
+              {getInitiatorLabel(task.initiated_via)}
+            </Badge>
           )}
         </div>
         

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, AlertCircle, CheckCircle2, ExternalLink } from "lucide-react";
+import { Clock, AlertCircle, CheckCircle2, ExternalLink, User } from "lucide-react";
 
 interface Task {
   id: string;
@@ -11,6 +11,10 @@ interface Task {
   status: "pending" | "in-progress";
   vtid?: string;
   created_at: string;
+  created_by?: string;
+  created_by_name?: string;
+  created_by_email?: string;
+  initiated_via?: string;
 }
 
 interface TaskDetailsPanelProps {
@@ -102,6 +106,24 @@ export function TaskDetailsPanel({ task }: TaskDetailsPanelProps) {
               <span className="text-muted-foreground">Created</span>
               <span className="font-medium">{formatTime(task.created_at)}</span>
             </div>
+            <div className="flex items-center justify-between py-2 border-b">
+              <span className="text-muted-foreground">Created By</span>
+              <span className="font-medium flex items-center gap-1.5">
+                <User className="w-3.5 h-3.5" />
+                {task.created_by_name ||
+                 (task.created_by_email ? task.created_by_email.split("@")[0] : null) ||
+                 task.created_by ||
+                 "Unknown"}
+              </span>
+            </div>
+            {task.initiated_via && (
+              <div className="flex items-center justify-between py-2 border-b">
+                <span className="text-muted-foreground">Initiated Via</span>
+                <Badge variant="secondary" className="capitalize">
+                  {task.initiated_via}
+                </Badge>
+              </div>
+            )}
           </div>
 
           <div className="pt-4 space-y-2">

@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { devConfig } from "@/config/dev-config";
+import { useAuth } from "@/context/AuthProvider";
+import { createTask as apiCreateTask } from "@/lib/taskApi";
 
 interface CreateTaskModalProps {
   open: boolean;
@@ -15,6 +17,7 @@ interface CreateTaskModalProps {
 }
 
 export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskModalProps) {
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
@@ -29,14 +32,27 @@ export function CreateTaskModal({ open, onOpenChange, onSuccess }: CreateTaskMod
     }
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    toast.success("Task created successfully");
-    onOpenChange(false);
-    onSuccess?.();
-    
+
+    const payload = {
+      title,
+      priority: priority as "high" | "medium" | "low",
+      owner: assignee || undefined,
+      created_by: user?.id,
+      created_by_name: user?.user_metadata?.full_name || user?.user_metadata?.name,
+      created_by_email: user?.email,
+      initiated_via: "manual" as const,
+    };
+
+    const result = await apiCreateTask(payload);
+
+    if (result) {
+      toast.success("Task created successfully");
+      onOpenChange(false);
+      onSuccess?.();
+    } else {
+      toast.error("Failed to create task");
+    }
+
     // Reset form
     setTitle("");
     setDescription("");
