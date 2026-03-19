@@ -710,13 +710,17 @@ export function useGlobalMessages(
       try {
         setIsSending(true);
 
+        // Determine effective message type
+        const effectiveType = _contentData?.attachments?.length ? "attachment" : (_messageType || "text");
+
         // Optimistic message
         const optimistic: GlobalMessage = {
           id: `temp-${Date.now()}`,
           thread_id: threadId,
           sender_id: user.id,
           body,
-          message_type: "text",
+          message_type: effectiveType,
+          content_data: _contentData || undefined,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           sender: {
@@ -743,7 +747,8 @@ export function useGlobalMessages(
               thread_id: threadId,
               sender_id: user.id,
               body,
-              message_type: "text",
+              message_type: effectiveType,
+              content_data: effectiveType !== "text" ? _contentData : undefined,
             } as any)
             .select()
             .single();
@@ -769,7 +774,8 @@ export function useGlobalMessages(
             thread_id: threadId,
             sender_id: user.id,
             body,
-            message_type: "text",
+            message_type: effectiveType,
+            content_data: effectiveType !== "text" ? _contentData : undefined,
             created_at: (inserted as any).created_at,
             updated_at: (inserted as any).updated_at || (inserted as any).created_at,
             sender: profileMap[user.id]
@@ -777,14 +783,12 @@ export function useGlobalMessages(
               : { user_id: user.id, display_name: "Me" },
           };
         } else {
-          // Direct threads: gateway first, fallback to chat_messages
-          let created: ChatMessage;
-          try {
-            created = await sendChatMessage(threadId, body);
-          } catch (gatewayErr) {
-            console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
-            const tenantId = (user as any).app_metadata?.active_tenant_id;
-            if (!tenantId) throw gatewayErr;
+          // Direct threads: handle attachments vs plain text differently
+          const hasAttachments = effectiveType === "attachment" && _contentData?.attachments?.length;
+
+          if (hasAttachments) {
+            // Attachment DMs: insert directly into chat_messages with full metadata
+            const tenantId = (user as any).app_metadata?.active_tenant_id || 'default';
             const { data: inserted, error: insertErr } = await supabase
               .from("chat_messages")
               .insert({
@@ -792,15 +796,44 @@ export function useGlobalMessages(
                 sender_id: user.id,
                 receiver_id: threadId,
                 content: body,
+                message_type: "attachment",
+                metadata: { attachments: _contentData.attachments } as any,
               })
               .select()
               .single();
-            if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
-            created = inserted as unknown as ChatMessage;
-          }
+            if (insertErr || !inserted) throw insertErr || new Error("Attachment DM insert failed");
 
-          const profileMap = await enrichProfiles([created.sender_id]);
-          realMsg = toGlobalMessage(created, threadId, profileMap);
+            const profileMap = await enrichProfiles([user.id]);
+            realMsg = toGlobalMessage(inserted as unknown as ChatMessage, threadId, profileMap);
+            // Ensure content_data is set from metadata
+            realMsg.content_data = (inserted as any).metadata || _contentData;
+            realMsg.message_type = "attachment";
+          } else {
+            // Plain text DMs: gateway first, fallback to chat_messages
+            let created: ChatMessage;
+            try {
+              created = await sendChatMessage(threadId, body);
+            } catch (gatewayErr) {
+              console.warn("[chat] Gateway send failed, falling back to Supabase direct insert:", gatewayErr);
+              const tenantId = (user as any).app_metadata?.active_tenant_id;
+              if (!tenantId) throw gatewayErr;
+              const { data: inserted, error: insertErr } = await supabase
+                .from("chat_messages")
+                .insert({
+                  tenant_id: tenantId,
+                  sender_id: user.id,
+                  receiver_id: threadId,
+                  content: body,
+                })
+                .select()
+                .single();
+              if (insertErr || !inserted) throw insertErr || new Error("Supabase insert returned no data");
+              created = inserted as unknown as ChatMessage;
+            }
+
+            const profileMap = await enrichProfiles([created.sender_id]);
+            realMsg = toGlobalMessage(created, threadId, profileMap);
+          }
         }
 
         // Replace optimistic with real
