@@ -126,11 +126,12 @@ export async function prefetchForPath(
     });
   }
 
-  // Inbox prefetch - DISABLED temporarily to prevent partial data causing UI flickers
-  // The thread hooks fetch detailed data (participants, last_message, unread_count)
-  // but prefetch was only fetching basic thread data, causing cache mismatch
-  // TODO: Re-enable when prefetch matches exact hook queryFn shape
-  // if (path.startsWith('/inbox')) {
-  //   // Prefetching disabled - let the hooks handle initial fetch for data consistency
-  // }
+  // Inbox prefetch - re-enabled with proper queryFn that matches hook shape
+  if (path.startsWith('/inbox') && userId) {
+    await queryClient.prefetchQuery({
+      queryKey: ['global-threads', userId],
+      queryFn: () => prefetchInboxThreads(userId),
+      staleTime,
+    });
+  }
 }
