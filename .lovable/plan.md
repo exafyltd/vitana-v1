@@ -1,35 +1,20 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+## Fix: Emoji Picker Not Working on Mobile
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+### Problem
+The `EmojiPicker` component in `MessageInput.tsx` uses a Radix `Popover` with `side="top"` and a fixed `w-80` (320px) width. On mobile, tapping the smiley icon either:
+- Opens the popover off-screen or clipped (the 320px popover may overflow the viewport)
+- Gets blocked by z-index conflicts with the chat view's sticky/fixed elements
 
-### Flow
-```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
-```
+### Changes
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+**File: `src/components/ui/emoji-picker.tsx`**
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+1. Add `avoidCollisions={true}` and `collisionPadding={8}` to `PopoverContent` so Radix auto-repositions the picker within the viewport.
+2. Make the picker responsive: use `w-[min(320px,calc(100vw-2rem))]` instead of the fixed `w-80` so it fits on narrow screens.
+3. Increase z-index to `z-[60]` to ensure it renders above mobile chat chrome (sticky headers, input bars).
+4. Add `sideOffset={8}` for better spacing from the input bar.
+
+Single file, 2-3 line changes.
+
