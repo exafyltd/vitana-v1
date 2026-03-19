@@ -1,35 +1,39 @@
-## Appilix Push Notification Integration — Deployed
 
-### What this does
-When a chat message creates a `user_notifications` row, a DB trigger calls the Appilix Push API via an edge function to deliver a native Android bell notification.
 
-### Components
+## Fix: Attachments Cannot Be Opened (Expired Signed URLs)
 
-| # | Type | Component | Status |
-|---|------|-----------|--------|
-| 1 | Secret | `APPILIX_APP_KEY`, `APPILIX_API_KEY` | ✅ Stored |
-| 2 | Edge Function | `supabase/functions/appilix-push/index.ts` | ✅ Deployed |
-| 3 | DB Trigger | `trg_appilix_push` on `user_notifications` | ✅ Active |
-| 4 | Config | `supabase/config.toml` — `verify_jwt = false` | ✅ Updated |
+### Problem
+The `chat-attachments` storage bucket is private. When a file is uploaded, a signed URL (1-hour expiry) is stored in the message's `content_data.attachments[].url`. When the message is displayed — even moments later by the sender, or by the receiver — this URL has either expired or is about to expire. Clicking the file chip or image does nothing useful because it points to a dead URL.
 
-### Flow
+The storage `path` IS correctly saved in each attachment object, but `MessageBubble.tsx` never uses it to generate a fresh signed URL.
+
+### Solution
+
+**File: `src/components/messages/MessageBubble.tsx`**
+
+1. **Add a signed URL resolution layer** — When rendering attachments, check if the URL is a Supabase signed URL (contains `/object/sign/`). If so, use the stored `attachment.path` to generate a fresh signed URL via `getSignedAttachmentUrl(path)` before opening/downloading.
+
+2. **Refactor `handleFileClick` and `handleDownload`** to accept an optional `path` parameter. When `path` is present, resolve a fresh signed URL before navigating.
+
+3. **Refactor `handleImageClick`** similarly — resolve a fresh URL before showing the zoom modal.
+
+4. **Cache resolved URLs in component state** (`Map<string, string>`) so repeated clicks don't re-fetch, and pre-resolve URLs on mount/message change for images so they render immediately.
+
+5. **Update `renderAttachment`** to pass `attachment.path` to all click handlers and use resolved URLs for image `src`.
+
+### Technical Detail
+
+```text
+Current flow:
+  Upload → signedUrl (1hr) → stored in content_data.url → displayed → EXPIRED
+
+Fixed flow:
+  Display → check if path exists → getSignedAttachmentUrl(path) → fresh URL → display/open
+  Cache fresh URL in component state for reuse within session
 ```
-Chat message INSERT → trg_notify_chat_message → user_notifications INSERT
-  → trg_appilix_push → pg_net POST → appilix-push edge function
-    → POST https://appilix.com/api/push-notification (x-www-form-urlencoded)
-      → Appilix routes via user_identity (= Supabase user.id)
-        → Native Android bell notification
-```
 
-### API Fields (from Appilix docs)
-- `app_key` — required
-- `api_key` — required
-- `notification_title` — required
-- `notification_body` — required
-- `user_identity` — optional (targets specific user)
-- `open_link_url` — optional (opens URL on tap)
+The fix uses the existing `getSignedAttachmentUrl()` from `src/lib/fileUpload.ts` which creates a 1-hour signed URL. URLs are resolved lazily on interaction (click) and eagerly for image thumbnails (on render).
 
-### Notes
-- Desktop web push (FCM) path remains unchanged
-- Identity mapping set in `App.tsx` via `window.appilix_push_notification_user_identity = user.id`
-- Trigger fires for `channel IN ('push_and_inapp', 'push')`
+### Files to modify
+- `src/components/messages/MessageBubble.tsx` — Add URL resolution logic, update all attachment handlers
+
