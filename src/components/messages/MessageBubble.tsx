@@ -33,7 +33,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { ImageZoomModal } from './ImageZoomModal';
-import { formatFileSize, isImageType } from '@/lib/fileUpload';
+import { formatFileSize, isImageType, getSignedAttachmentUrl } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
 import { ReactionCluster } from './ReactionCluster';
