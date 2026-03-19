@@ -586,6 +586,8 @@ export function useGlobalMessages(
   useEffect(() => {
     if (user && threads.length > 0 && !isThreadsLoading) {
       debouncedPersistThreads(user.id, threads);
+      // Sync badge: dispatch refresh so useChatUnreadCount re-fetches and all badges converge
+      window.dispatchEvent(new Event('chat-unread-refresh'));
     }
   }, [user, threads, isThreadsLoading]);
 
