@@ -1,83 +1,55 @@
 
 
-## Fix: Appilix Mobile Push Notifications Not Delivering
+## Fix: Bell Notifications Not Delivering + Unread Count Always Shows 1
 
-### Root Cause (Two Issues)
+### Two Issues
 
-**Issue 1: Wrong identity registration format**
+**Issue 1: Appilix push trigger missing from live database**
 
-The Appilix docs (uploaded) specify this exact format for registering user identity:
+The function `notify_appilix_push()` exists but the trigger `trg_appilix_push` was never created (migration likely failed silently on the `CREATE TRIGGER` statement). No trigger = the edge function never gets called = no mobile bell notifications.
 
-```javascript
-appilix.postMessage(JSON.stringify({
-  type: "firebase_record_user_identity",
-  props: { user_identity: "user@email.com" }
-}));
+**Issue 2: Unread count always 1**
+
+All three unread computation paths in `useGlobalMessages.ts` use a binary check — "is the last message unread? → 1, else 0". They never count actual unread messages. This means:
+- Thread badge: always 0 or 1
+- Inbox badge (sum of thread badges): capped at number of threads with any unread, not total unread messages
+- Side nav badge: same — derives from thread sum
+
+```text
+Current logic (3 places):
+  unread_count = lastMsg && lastMsg.sender_id !== userId && !lastMsg.read_at ? 1 : 0
+
+Should be:
+  unread_count = count of messages after last_read_at from other senders
 ```
 
-But our code in `registerAppilixIdentity()` sends:
+### Fix Plan
 
-```javascript
-// Current (WRONG)
-{ action: "update_settings", settings: { user_identity: userId } }
+**1. Database migration — Create the missing trigger**
+
+```sql
+CREATE TRIGGER trg_appilix_push
+AFTER INSERT ON public.user_notifications
+FOR EACH ROW EXECUTE FUNCTION public.notify_appilix_push();
 ```
 
-This means the native shell never maps the user UUID to the device. The Appilix API returns "identity not found" because the device was never registered with the correct message type.
+This immediately enables the appilix-push edge function to fire on every new notification insert.
 
-**Issue 2: Edge function not deployed / trigger not active**
+**2. `src/hooks/useGlobalMessages.ts` — Fix unread count computation**
 
-The `appilix-push` edge function has **zero logs** — meaning either the trigger isn't firing in the live database, or the function was never deployed. The migration file exists but may not have been applied to the external Supabase project.
+**Gateway path (~line 502):** The gateway returns `last_message` with `read_at`. For direct chats, query actual unread count from `chat_messages` table:
+- After fetching conversations, batch-query unread counts: `SELECT sender_id, COUNT(*) FROM chat_messages WHERE receiver_id = userId AND read_at IS NULL GROUP BY sender_id`
+- Use this map to set accurate `unread_count` per thread
 
-### Fix
+**Legacy path (~line 285):** Same binary logic. Replace with a count query against `global_messages` where `created_at > last_read_at AND sender_id != userId`.
 
-**1. `src/lib/appilix.ts`** — Fix identity registration to use the documented format
+**Direct fallback path (~line 419):** Same fix — query actual count from `chat_messages`.
 
-Replace the `registerAppilixIdentity` function to use the correct Appilix message type:
+**3. Realtime increment (~line 1085):** The `+1` increment is already correct since it adds to existing count on each new message.
 
-```typescript
-export function registerAppilixIdentity(userId: string): boolean {
-  if (!isAppilix()) {
-    console.debug('[Appilix] Not in Appilix shell, skipping identity registration');
-    return false;
-  }
-  console.log(`[Appilix] Registering user_identity: ${userId}`);
-  try {
-    window.appilix!.postMessage(JSON.stringify({
-      type: "firebase_record_user_identity",
-      props: { user_identity: userId }
-    }));
-    return true;
-  } catch (e) {
-    console.warn('[Appilix] Identity registration failed:', e);
-    return false;
-  }
-}
-```
-
-**2. `index.html`** — Add early identity registration using the correct format
-
-The early script already reads the identity cookie. Add a line to register it immediately (before React hydrates) using the documented format:
-
-```javascript
-if (m && m[1] && window.appilix?.postMessage) {
-  window.appilix.postMessage(JSON.stringify({
-    type: "firebase_record_user_identity",
-    props: { user_identity: m[1] }
-  }));
-  console.log('[Appilix-Early] Identity registered with native shell:', m[1]);
-}
-```
-
-**3. Deploy the `appilix-push` edge function** to the external Supabase project (if not already deployed).
-
-**4. Verify the `trg_appilix_push` trigger** exists in the live database by checking the migration was applied.
-
-### Why notifications were intermittent
-
-Sometimes the `updateSettings` format happened to work (possibly an older Appilix build accepted it), but it's not the documented API. The correct `firebase_record_user_identity` type is what reliably maps device → user identity in Appilix's push system.
+**4. All badges auto-align** — since inbox badge, side nav badge, and bottom nav badge all derive from `sum(thread.unread_count)` via the `chat-unread-count-update` CustomEvent, fixing the thread-level count fixes everything.
 
 ### Files to modify
-- `src/lib/appilix.ts` — fix `registerAppilixIdentity` to use correct message format
-- `index.html` — add early identity registration with correct format
-- Deploy `appilix-push` edge function (manual CLI step or via Lovable deploy tool)
+- Database migration: create `trg_appilix_push` trigger
+- `src/hooks/useGlobalMessages.ts`: replace binary unread checks with actual count queries
 
