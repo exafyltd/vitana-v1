@@ -589,7 +589,7 @@ export function useGlobalMessages(
       // Fallback: if gateway returned nothing, try reading chat_messages directly
       let directThreads: GlobalMessageThread[] = [];
       if (conversations.length === 0) {
-        directThreads = await fetchDirectFromChatMessages(user.id);
+        directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
       }
 
       // Merge: gateway wins > direct Supabase > legacy
