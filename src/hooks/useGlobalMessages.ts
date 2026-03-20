@@ -5,7 +5,7 @@ import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
-import { notifyNewMessage } from '@/lib/pushNotifications';
+import { notifyNewMessage, sendPushToRecipients } from '@/lib/pushNotifications';
 import {
   persistThreads,
   getCachedThreads,
@@ -931,6 +931,16 @@ export function useGlobalMessages(
             ...prev.filter((t) => t.id !== threadId),
           ];
         });
+
+        // Send push notification to recipient(s) via Appilix (fire-and-forget)
+        const senderDisplayName = user.user_metadata?.display_name || user.user_metadata?.full_name || 'Someone';
+        if (isGroupThread && targetThread?.participants) {
+          const recipientIds = targetThread.participants.map((p: any) => p.user_id);
+          sendPushToRecipients(recipientIds, senderDisplayName, body, threadId, user.id);
+        } else {
+          // Direct message: threadId IS the recipient's user ID
+          sendPushToRecipients([threadId], senderDisplayName, body, threadId, user.id);
+        }
 
         return realMsg;
       } catch (error) {

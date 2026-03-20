@@ -6,6 +6,7 @@ import { useTenant } from "./useTenant";
 import { supabase } from "@/integrations/supabase/client";
 import { useCalendarEvents } from "./useCalendarEvents";
 import { messageCache } from "./messageCache";
+import { sendPushToRecipients } from '@/lib/pushNotifications';
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 export interface TenantMessage {
@@ -438,6 +439,21 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
           const otherThreads = prev.filter(t => t.id !== threadId);
           return [updatedThread, ...otherThreads];
         });
+      }
+
+      // Send push notification to recipient(s) via Appilix (fire-and-forget)
+      const senderDisplayName = userProfile?.display_name || userProfile?.full_name || 'Someone';
+      if (threadId) {
+        // Thread-based: get participants from cached threads
+        const cachedThreads = queryClient.getQueryData<any[]>(['tenant-threads', user.id, activeTenantId]) || [];
+        const thread = cachedThreads.find((t: any) => t.id === threadId);
+        if (thread?.participants) {
+          const recipientIds = thread.participants.map((p: any) => p.user_id);
+          sendPushToRecipients(recipientIds, senderDisplayName, body, threadId, user.id);
+        }
+      } else if (recipientId) {
+        // Direct message
+        sendPushToRecipients([recipientId], senderDisplayName, body, recipientId, user.id);
       }
 
       // Refresh threads to ensure consistency with database

@@ -419,3 +419,41 @@ export async function notifyNewMessage(
     data: { threadId, type: 'new_message', url: `/inbox?thread=${threadId}` },
   });
 }
+
+/**
+ * Send a server-side push notification via the Appilix Push API (edge function).
+ * Fire-and-forget — errors are logged but never thrown to avoid blocking message send.
+ */
+export async function sendPushToRecipients(
+  recipientIds: string[],
+  senderName: string,
+  messagePreview: string,
+  threadId: string,
+  senderId: string
+): Promise<void> {
+  // Filter out the sender and dedupe
+  const targets = [...new Set(recipientIds.filter(id => id !== senderId))];
+  if (targets.length === 0) return;
+
+  const title = senderName;
+  const body = messagePreview.length > 100
+    ? messagePreview.substring(0, 100) + '...'
+    : messagePreview;
+  const openUrl = `${window.location.origin}/inbox?thread=${threadId}`;
+
+  // Fire-and-forget for each recipient (parallel, no await on the outer call)
+  for (const recipientId of targets) {
+    supabase.functions.invoke('appilix-push', {
+      body: {
+        user_identity: recipientId,
+        notification_title: title,
+        notification_body: body,
+        open_link_url: openUrl,
+      },
+    }).then(({ error }) => {
+      if (error) console.warn(`[Push] Failed to send to ${recipientId}:`, error);
+    }).catch(err => {
+      console.warn(`[Push] Edge function error for ${recipientId}:`, err);
+    });
+  }
+}
