@@ -552,12 +552,7 @@ export function useGlobalMessages(
           };
 
           const lastMsg = conv.last_message;
-          const unreadCount =
-            lastMsg &&
-            lastMsg.sender_id !== user.id &&
-            !lastMsg.read_at
-              ? 1
-              : 0;
+          const unreadCount = directUnreadMap[conv.peer_id] || 0;
 
           return {
             id: conv.peer_id,
