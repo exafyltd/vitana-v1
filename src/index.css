@@ -947,5 +947,11 @@ All colors MUST be HSL.
     animation: message-highlight-flash 1.5s ease-out;
   }
 
+/* Shimmer animation for refresh indicator bar */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
 /* Hide external ORB widget's built-in FAB — our nav buttons trigger VitanaOrb.show() instead */
 .vtorb-fab { display: none !important; }

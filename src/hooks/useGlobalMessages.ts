@@ -605,8 +605,9 @@ export function useGlobalMessages(
       );
 
       // Guard: if ALL sources returned empty but we had previous data, keep previous data.
-      // This prevents a gateway timeout from wiping a populated inbox.
-      if (merged.length === 0 && gatewayFailed) {
+      // This prevents a gateway timeout OR an empty gateway response from wiping a populated inbox.
+      // gatewayFailed covers timeout/error; conversations.length===0 covers "success but empty".
+      if (merged.length === 0 && (gatewayFailed || conversations.length === 0)) {
         const prev = queryClient.getQueryData<GlobalMessageThread[]>(queryKey);
         if (prev && prev.length > 0) {
           console.warn("[chat] All sources empty after gateway failure — keeping previous cached threads");

@@ -58,21 +58,26 @@ export default function Messages() {
   const { translate } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const defaultCtx = currentRole === 'community' || !currentRole ? 'global' : 'tenant';
-  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(defaultCtx);
-  const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
-  const isGlobalContext = context === 'global';
+  // Derive context directly from currentRole — avoids the race condition where
+  // a stale default triggers a context switch that resets selectedThreadId.
+  const derivedCtx = currentRole === 'community' || !currentRole ? 'global' : 'tenant';
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(derivedCtx);
 
+  // Sync state when role resolves (only meaningful transition, not initial guess)
   const roleLoadedRef = React.useRef(false);
   useEffect(() => {
     if (currentRole && !roleLoadedRef.current) {
       roleLoadedRef.current = true;
-      const correctCtx = currentRole === 'community' ? 'global' : 'tenant';
-      if (correctCtx !== messageContext) {
-        setMessageContext(correctCtx);
-      }
+    }
+    // Always sync to the correct context when role changes
+    const correctCtx = currentRole === 'community' || !currentRole ? 'global' : 'tenant';
+    if (correctCtx !== messageContext) {
+      setMessageContext(correctCtx);
     }
   }, [currentRole]);
+
+  const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
+  const isGlobalContext = context === 'global';
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
   const [showNewConversation, setShowNewConversation] = useState(false);
@@ -162,12 +167,20 @@ export default function Messages() {
     }
   }, [displayThreads, selectedThreadId, pinnedThreads, user?.id, isMobile]);
 
-  // Reset selection when context changes
+  // Reset selection when context changes — but skip the initial mount to avoid
+  // clearing a thread selected from URL params or the auto-select effect.
+  const prevContextRef = React.useRef(messageContext);
   useEffect(() => {
-    setSelectedThreadId(null);
-    setSelectedRecipientId(null);
-    setOptimisticUnreadUpdates({}); // Clear optimistic updates
-    setInboxSearchQuery(""); // Reset search on context switch
+    if (prevContextRef.current !== messageContext) {
+      prevContextRef.current = messageContext;
+      // Only reset if the role had already loaded (user intentionally switched context)
+      if (roleLoadedRef.current) {
+        setSelectedThreadId(null);
+        setSelectedRecipientId(null);
+        setOptimisticUnreadUpdates({}); // Clear optimistic updates
+        setInboxSearchQuery(""); // Reset search on context switch
+      }
+    }
   }, [messageContext]);
 
   // Handle real-time unread sync across tabs/devices - update optimistic state
@@ -843,7 +856,17 @@ export default function Messages() {
     );
   };
 
+  // Show mobile skeleton during initial load when we have no data at all
+  const showMobileSkeleton = isLoading && threads.length === 0;
+  // Show a subtle refreshing indicator when refetching stale cached data
+  const isRefreshingCachedData = isFetching && !isLoading && threads.length > 0;
+
   const renderMobileConversationList = () => {
+    // If still doing initial load with no cached data, show skeleton
+    if (showMobileSkeleton) {
+      return <MobileConversationSkeleton count={6} />;
+    }
+
     const filteredThreads = getFilteredThreads(displayThreads, conversationFilter);
 
     // Apply search filter
@@ -855,7 +878,7 @@ export default function Messages() {
           return name.toLowerCase().includes(q) || lastMsg.toLowerCase().includes(q);
         })
       : filteredThreads;
-    
+
     if (searchFiltered.length === 0 && inboxSearchQuery.trim()) {
       return (
         <div className="text-center py-12">
@@ -867,7 +890,7 @@ export default function Messages() {
 
     if (searchFiltered.length === 0) {
       return (
-        <MobileInboxEmptyState 
+        <MobileInboxEmptyState
           context={messageContext}
           onNewMessage={() => setShowNewConversation(true)}
           onCreateGroup={() => setShowCreateGroup(true)}
@@ -1036,6 +1059,13 @@ export default function Messages() {
                   </SplitBarList>
                   
                   <SplitBarContent value="global" className="pt-3">
+                    {/* Subtle refresh indicator when loading fresh data over cache */}
+                    {isRefreshingCachedData && (
+                      <div className="h-0.5 w-full bg-muted overflow-hidden rounded-full mb-2">
+                        <div className="h-full w-1/3 bg-primary/60 rounded-full animate-[shimmer_1.5s_ease-in-out_infinite]"
+                          style={{ animation: 'shimmer 1.5s ease-in-out infinite', transform: 'translateX(-100%)' }} />
+                      </div>
+                    )}
                     {/* Sub-filter tabs */}
                     <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
                       {['all', 'direct', 'groups'].map((filter) => (
@@ -1045,8 +1075,8 @@ export default function Messages() {
                           size="sm"
                           onClick={() => setConversationFilter(filter as any)}
                           className={`h-8 px-3 rounded-full shrink-0 text-sm ${
-                            conversationFilter === filter 
-                              ? 'bg-primary text-primary-foreground' 
+                            conversationFilter === filter
+                              ? 'bg-primary text-primary-foreground'
                               : 'bg-muted/60'
                           }`}
                         >
@@ -1058,6 +1088,13 @@ export default function Messages() {
                   </SplitBarContent>
                   
                   <SplitBarContent value="tenant" className="pt-3">
+                    {/* Subtle refresh indicator when loading fresh data over cache */}
+                    {isRefreshingCachedData && (
+                      <div className="h-0.5 w-full bg-muted overflow-hidden rounded-full mb-2">
+                        <div className="h-full w-1/3 bg-primary/60 rounded-full"
+                          style={{ animation: 'shimmer 1.5s ease-in-out infinite', transform: 'translateX(-100%)' }} />
+                      </div>
+                    )}
                     {/* Sub-filter tabs */}
                     <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
                       {['all', 'direct', 'groups'].map((filter) => (
@@ -1067,8 +1104,8 @@ export default function Messages() {
                           size="sm"
                           onClick={() => setConversationFilter(filter as any)}
                           className={`h-8 px-3 rounded-full shrink-0 text-sm ${
-                            conversationFilter === filter 
-                              ? 'bg-primary text-primary-foreground' 
+                            conversationFilter === filter
+                              ? 'bg-primary text-primary-foreground'
                               : 'bg-muted/60'
                           }`}
                         >
