@@ -10,7 +10,7 @@
  */
 
 import type { VitanaNotification } from '@/hooks/useNotifications';
-import { isAppilix } from '@/lib/appilix';
+import { isAppilix, getNativeFcmToken } from '@/lib/appilix';
 
 // ── Dedup set with auto-expiry ────────────────────────────
 const shownIds = new Set<string>();
@@ -27,11 +27,11 @@ function isAppBackgrounded(): boolean {
   return document.hidden || document.visibilityState === 'hidden';
 }
 
-function isViewingThread(senderId: string): boolean {
+function isViewingThread(threadOrSenderId: string): boolean {
   try {
     const url = new URL(window.location.href);
     const thread = url.searchParams.get('thread');
-    return thread === senderId;
+    return thread === threadOrSenderId;
   } catch {
     return false;
   }
@@ -74,9 +74,10 @@ async function ensurePermission(): Promise<boolean> {
 export async function showAppilixFallbackNotification(
   notif: VitanaNotification,
 ): Promise<boolean> {
-  // Native Appilix push (trg_appilix_push) now handles delivery — skip browser fallback
-  if (isAppilix()) {
-    console.log('[NotifFallback] Skipped: Appilix native push active');
+  // Only skip browser fallback in Appilix when native FCM token is available,
+  // meaning native push is actually working. Without a token, we need the fallback.
+  if (isAppilix() && getNativeFcmToken()) {
+    console.log('[NotifFallback] Skipped: Appilix native push active (FCM token present)');
     return false;
   }
 
@@ -89,6 +90,7 @@ export async function showAppilixFallbackNotification(
   const data = notif.data || {};
   const messageId = data.message_id as string | undefined;
   const senderId = data.sender_id as string | undefined;
+  const threadId = data.thread_id as string | undefined;
 
   // 2. Dedup — skip if already shown
   if (messageId && shownIds.has(messageId)) {
@@ -97,8 +99,9 @@ export async function showAppilixFallbackNotification(
   }
 
   // 3. Skip if user is looking at this exact thread right now (foreground + thread open)
-  if (senderId && !isAppBackgrounded() && isViewingThread(senderId)) {
-    console.log('[NotifFallback] Skipped: viewing thread', senderId);
+  const viewingId = threadId || senderId;
+  if (viewingId && !isAppBackgrounded() && isViewingThread(viewingId)) {
+    console.log('[NotifFallback] Skipped: viewing thread', viewingId);
     return false;
   }
 
@@ -113,7 +116,7 @@ export async function showAppilixFallbackNotification(
   const title = notif.title || 'New message';
   const body = notif.body || '';
   const tag = messageId ? `message-${messageId}` : `chat-${Date.now()}`;
-  const threadParam = senderId || '';
+  const threadParam = threadId || senderId || '';
 
   console.log('[NotifFallback] Showing notification:', { title, tag, backgrounded: isAppBackgrounded() });
 
