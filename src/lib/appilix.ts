@@ -118,7 +118,16 @@ export function registerAppilixIdentity(userId: string): boolean {
     return false;
   }
   console.log(`[Appilix] Registering user_identity: ${userId}`);
-  return updateSettings({ user_identity: userId });
+  try {
+    window.appilix!.postMessage(JSON.stringify({
+      type: "firebase_record_user_identity",
+      props: { user_identity: userId }
+    }));
+    return true;
+  } catch (e) {
+    console.warn('[Appilix] Identity registration failed:', e);
+    return false;
+  }
 }
 
 // ── FCM Push Token Bridge ─────────────────────────────────
