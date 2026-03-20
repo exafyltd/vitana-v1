@@ -509,6 +509,9 @@ export function useGlobalMessages(
       // Track whether gateway actually succeeded vs timed out/failed
       let gatewayFailed = false;
 
+      // Fetch actual unread counts upfront
+      const directUnreadMap = await fetchDirectUnreadCounts(user.id);
+
       // Fetch from both gateway and legacy in parallel
       // Gateway gets a 5-second timeout so a cold-start doesn't block the whole inbox
       const gatewayWithTimeout = Promise.race([
