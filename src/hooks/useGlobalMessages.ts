@@ -93,6 +93,65 @@ export interface GlobalMessageThread {
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
+/**
+ * Batch-query actual unread message counts from chat_messages.
+ * Returns a map: peerId → count of unread messages from that peer.
+ */
+async function fetchDirectUnreadCounts(userId: string): Promise<Record<string, number>> {
+  try {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("sender_id")
+      .eq("receiver_id", userId)
+      .is("read_at", null)
+      .neq("sender_id", userId) as any;
+
+    if (error || !data) return {};
+
+    const counts: Record<string, number> = {};
+    for (const row of data) {
+      counts[row.sender_id] = (counts[row.sender_id] || 0) + 1;
+    }
+    return counts;
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Batch-query actual unread message counts from global_messages for group threads.
+ * Returns a map: threadId → count of unread messages.
+ */
+async function fetchGroupUnreadCounts(
+  userId: string,
+  threadParticipations: Array<{ thread_id: string; last_read_at: string | null }>
+): Promise<Record<string, number>> {
+  if (threadParticipations.length === 0) return {};
+  try {
+    const counts: Record<string, number> = {};
+    // Query unread messages per thread based on last_read_at
+    for (const p of threadParticipations) {
+      let query = supabase
+        .from("global_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("thread_id", p.thread_id)
+        .neq("sender_id", userId) as any;
+
+      if (p.last_read_at) {
+        query = query.gt("created_at", p.last_read_at);
+      }
+
+      const { count, error } = await query;
+      if (!error && count !== null) {
+        counts[p.thread_id] = count;
+      }
+    }
+    return counts;
+  } catch {
+    return {};
+  }
+}
+
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
 function toGlobalMessage(
   msg: ChatMessage,
@@ -181,7 +240,7 @@ async function enrichProfiles(
  * Uses the other participant's user_id as thread id (same as gateway peer_id)
  * so legacy direct threads naturally dedup with gateway threads.
  */
-async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]> {
+async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string, number>): Promise<GlobalMessageThread[]> {
   try {
     // 1. Get threads the user participates in
     const { data: participations, error: partErr } = await supabase
@@ -195,6 +254,9 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
     }
 
     const threadIds = participations.map((p: any) => p.thread_id);
+
+    // Fetch actual group unread counts if not provided
+    const resolvedGroupUnreadMap = groupUnreadMap ?? await fetchGroupUnreadCounts(userId, participations);
 
     // 2. Get thread metadata
     const { data: threadRows, error: threadErr } = await supabase
@@ -284,14 +346,8 @@ async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]
         );
         const unreadCount =
           lastMsg && lastMsg.sender_id === userId
-            ? 0 // Own messages are never unread
-            : lastMsg && myParticipation?.last_read_at
-              ? new Date(lastMsg.created_at) > new Date(myParticipation.last_read_at)
-                ? 1
-                : 0
-              : lastMsg
-                ? 1
-                : 0;
+            ? 0
+            : (resolvedGroupUnreadMap[t.id] ?? (lastMsg ? 1 : 0));
 
         return {
           id: threadIdentifier,
@@ -362,7 +418,7 @@ const VITANA_BOT_USER_ID = '00000000-0000-0000-0000-000000000001';
  * chat_messages directly via the frontend Supabase client.
  * Mirrors the gateway's own fallback at chat.ts:154-180.
  */
-async function fetchDirectFromChatMessages(userId: string): Promise<GlobalMessageThread[]> {
+async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Record<string, number>): Promise<GlobalMessageThread[]> {
   try {
     const { data, error } = await supabase
       .from("chat_messages")
@@ -416,7 +472,7 @@ async function fetchDirectFromChatMessages(userId: string): Promise<GlobalMessag
           { user_id: peerId, display_name: peer.display_name, avatar_url: peer.avatar_url, role: "member" },
         ],
         last_message: lastMessage,
-        unread_count: lastMsg.sender_id !== userId && !lastMsg.read_at ? 1 : 0,
+        unread_count: directUnreadMap[peerId] || 0,
       } satisfies GlobalMessageThread;
     });
   } catch (err) {
@@ -455,6 +511,9 @@ export function useGlobalMessages(
 
       // Track whether gateway actually succeeded vs timed out/failed
       let gatewayFailed = false;
+
+      // Fetch actual unread counts upfront
+      const directUnreadMap = await fetchDirectUnreadCounts(user.id);
 
       // Fetch from both gateway and legacy in parallel
       // Gateway gets a 5-second timeout so a cold-start doesn't block the whole inbox
@@ -499,12 +558,7 @@ export function useGlobalMessages(
           };
 
           const lastMsg = conv.last_message;
-          const unreadCount =
-            lastMsg &&
-            lastMsg.sender_id !== user.id &&
-            !lastMsg.read_at
-              ? 1
-              : 0;
+          const unreadCount = directUnreadMap[conv.peer_id] || 0;
 
           return {
             id: conv.peer_id,
@@ -538,7 +592,7 @@ export function useGlobalMessages(
       // Fallback: if gateway returned nothing, try reading chat_messages directly
       let directThreads: GlobalMessageThread[] = [];
       if (conversations.length === 0) {
-        directThreads = await fetchDirectFromChatMessages(user.id);
+        directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
       }
 
       // Merge: gateway wins > direct Supabase > legacy
