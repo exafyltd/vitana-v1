@@ -469,7 +469,7 @@ async function fetchDirectFromChatMessages(userId: string): Promise<GlobalMessag
           { user_id: peerId, display_name: peer.display_name, avatar_url: peer.avatar_url, role: "member" },
         ],
         last_message: lastMessage,
-        unread_count: lastMsg.sender_id !== userId && !lastMsg.read_at ? 1 : 0,
+        unread_count: directUnreadMap[peerId] || 0,
       } satisfies GlobalMessageThread;
     });
   } catch (err) {
