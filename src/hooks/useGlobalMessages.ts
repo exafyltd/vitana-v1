@@ -415,7 +415,7 @@ const VITANA_BOT_USER_ID = '00000000-0000-0000-0000-000000000001';
  * chat_messages directly via the frontend Supabase client.
  * Mirrors the gateway's own fallback at chat.ts:154-180.
  */
-async function fetchDirectFromChatMessages(userId: string): Promise<GlobalMessageThread[]> {
+async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Record<string, number>): Promise<GlobalMessageThread[]> {
   try {
     const { data, error } = await supabase
       .from("chat_messages")
