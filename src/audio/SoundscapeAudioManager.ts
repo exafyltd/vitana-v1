@@ -345,9 +345,8 @@ export function stopAndReset() {
   audioElement = null;
   delete window.__SOUNDSCAPE_AUDIO__;
 
-  // 2. Reset module-level state
+  // 2. Reset module-level state (preserve muted preference so it survives re-login)
   userExplicitlyPaused = false;
-  soundscapeMuted = false;
   soundscapeWasPlayingBeforeForeground = false;
   currentlyPausedByForeground = false;
   needsUserGestureToResume = false;
@@ -357,7 +356,8 @@ export function stopAndReset() {
   // 3. Stop persistence interval
   stopPersisting();
 
-  // 4. Clear all persisted Soundscape keys (mobile localStorage + desktop sessionStorage)
+  // 4. Clear playback state keys but KEEP user preferences (muted, volume)
+  //    so that "Soundscape off" is remembered across logout/login cycles.
   try {
     localStorage.removeItem(MOBILE_PERSIST_KEY_TIME);
     localStorage.removeItem(MOBILE_PERSIST_KEY_PLAYING);
@@ -366,8 +366,8 @@ export function stopAndReset() {
     localStorage.removeItem(MOBILE_PERSIST_KEY_VOLUME);
     localStorage.removeItem(MOBILE_PERSIST_KEY_MUTED);
     localStorage.removeItem('soundscape_auto_play');
-    localStorage.removeItem('soundscape_volume');
-    localStorage.removeItem('soundscape_muted');
+    // NOTE: 'soundscape_muted' and 'soundscape_volume' are intentionally
+    // preserved — they are user preferences, not playback state.
   } catch (_) { /* storage may be unavailable */ }
 
   try {
