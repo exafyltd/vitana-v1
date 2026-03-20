@@ -368,14 +368,16 @@ export default function Messages() {
 
         <TabsContent value="all" className="mt-0">
           <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
-            {filteredThreads.length === 0 ? (
-              <EmptyStateIllustration 
+            {filteredThreads.length === 0 && hasConfirmedEmptyThreads ? (
+              <EmptyStateIllustration
                 type="inbox"
                 context={messageContext}
                 threads={threadsList}
                 onAction={() => setShowNewConversation(true)}
                 onCreateGroup={() => setShowCreateGroup(true)}
               />
+            ) : filteredThreads.length === 0 ? (
+              <ConversationListSkeleton />
             ) : (
               [...filteredThreads]
                 .sort((a, b) => {
@@ -516,7 +518,7 @@ export default function Messages() {
           )}
 
           <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
-            {filteredThreads.length === 0 ? (
+            {filteredThreads.length === 0 && hasConfirmedEmptyThreads ? (
               <div className="text-center py-12">
                 <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2">No Groups Yet</h3>
@@ -528,6 +530,8 @@ export default function Messages() {
                   Create Your First Group
                 </Button>
               </div>
+            ) : filteredThreads.length === 0 ? (
+              <ConversationListSkeleton />
             ) : (
               [...filteredThreads]
                 .sort((a, b) => {
@@ -636,7 +640,7 @@ export default function Messages() {
 
         <TabsContent value="direct" className="mt-0">
           <div className={`${densityMode === 'compact' ? 'space-y-1' : 'space-y-2'}`}>
-            {filteredThreads.length === 0 ? (
+            {filteredThreads.length === 0 && hasConfirmedEmptyThreads ? (
               <div className="text-center py-12">
                 <MessageSquareText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2">No Direct Messages</h3>
@@ -646,6 +650,8 @@ export default function Messages() {
                   New Message
                 </Button>
               </div>
+            ) : filteredThreads.length === 0 ? (
+              <ConversationListSkeleton />
             ) : (
               [...filteredThreads]
                 .sort((a, b) => {
@@ -856,8 +862,11 @@ export default function Messages() {
     );
   };
 
-  // Show mobile skeleton during initial load when we have no data at all
-  const showMobileSkeleton = isLoading && threads.length === 0;
+  // Show mobile skeleton when we have no data and any fetch activity is happening
+  // (covers initial load, query-key transitions, and disabled→enabled transitions)
+  const showMobileSkeleton = (isLoading || isFetching) && threads.length === 0;
+  // True only when threads query has settled with no results
+  const hasConfirmedEmptyThreads = !isLoading && !isFetching && threads.length === 0;
   // Show a subtle refreshing indicator when refetching stale cached data
   const isRefreshingCachedData = isFetching && !isLoading && threads.length > 0;
 
@@ -888,7 +897,7 @@ export default function Messages() {
       );
     }
 
-    if (searchFiltered.length === 0) {
+    if (searchFiltered.length === 0 && hasConfirmedEmptyThreads) {
       return (
         <MobileInboxEmptyState
           context={messageContext}
@@ -896,6 +905,11 @@ export default function Messages() {
           onCreateGroup={() => setShowCreateGroup(true)}
         />
       );
+    }
+
+    // Still loading/fetching with no data yet — show skeleton instead of empty state
+    if (searchFiltered.length === 0) {
+      return <MobileConversationSkeleton count={6} />;
     }
 
     // Sort and dedupe threads
