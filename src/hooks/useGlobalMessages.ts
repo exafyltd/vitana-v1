@@ -255,6 +255,9 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
 
     const threadIds = participations.map((p: any) => p.thread_id);
 
+    // Fetch actual group unread counts if not provided
+    const resolvedGroupUnreadMap = groupUnreadMap ?? await fetchGroupUnreadCounts(userId, participations);
+
     // 2. Get thread metadata
     const { data: threadRows, error: threadErr } = await supabase
       .from("global_message_threads")
