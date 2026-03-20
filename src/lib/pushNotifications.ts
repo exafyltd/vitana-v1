@@ -5,7 +5,7 @@
  */
 import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
-import { isAppilix, getNativeFcmToken } from '@/lib/appilix';
+import { isAppilix, getNativeFcmToken, showNativeNotification } from '@/lib/appilix';
 
 export interface PushNotificationPayload {
   title: string;
@@ -39,6 +39,12 @@ class PushNotificationManager {
     await this.loadMutedThreads();
 
     if (!this.isSupported) {
+      // In Appilix WebView, Notification API may be unavailable but we can still
+      // use the native bridge for notifications — don't bail out entirely.
+      if (isAppilix()) {
+        console.log('[Push] Appilix WebView detected — Notification API unavailable, using native bridge');
+        return true;
+      }
       console.warn('[Push] Service Worker or Notification API not supported');
       return false;
     }
@@ -128,25 +134,36 @@ class PushNotificationManager {
   }
 
   async showLocalNotification(payload: PushNotificationPayload): Promise<void> {
-    if (!this.isSupported || Notification.permission !== 'granted') return;
-    try {
-      if (this.registration?.showNotification) {
-        await this.registration.showNotification(payload.title, {
-          body: payload.body,
-          icon: payload.icon || '/favicon.ico',
-          badge: payload.badge,
-          tag: payload.tag,
-          data: payload.data,
-        });
-      } else {
-        new Notification(payload.title, {
-          body: payload.body,
-          icon: payload.icon || '/favicon.ico',
-          tag: payload.tag,
-          data: payload.data,
-        });
+    // Try browser Notification API first
+    if (this.isSupported && Notification.permission === 'granted') {
+      try {
+        if (this.registration?.showNotification) {
+          await this.registration.showNotification(payload.title, {
+            body: payload.body,
+            icon: payload.icon || '/favicon.ico',
+            badge: payload.badge,
+            tag: payload.tag,
+            data: payload.data,
+          });
+          return;
+        } else {
+          new Notification(payload.title, {
+            body: payload.body,
+            icon: payload.icon || '/favicon.ico',
+            tag: payload.tag,
+            data: payload.data,
+          });
+          return;
+        }
+      } catch (err) {
+        console.warn('[Push] Browser notification failed, trying fallback:', err);
       }
-    } catch {}
+    }
+
+    // Fallback: use Appilix native bridge to show notification
+    if (isAppilix()) {
+      showNativeNotification(payload.title, payload.body, payload.data);
+    }
   }
 
   private async getAuthToken(maxRetries = 6, retryDelayMs = 300): Promise<string | null> {
@@ -239,8 +256,8 @@ class PushNotificationManager {
 
   private async setupForegroundHandler(): Promise<void> {
     if (this.foregroundCleanup) return;
-    // Native Appilix push (trg_appilix_push) handles notifications — skip FCM foreground path
-    if (isAppilix()) return;
+    // Only skip FCM foreground handling in Appilix when native push is actually working
+    if (isAppilix() && getNativeFcmToken()) return;
 
     const shownTags = new Set<string>();
     const cleanup = await onForegroundMessage((payload) => {
@@ -388,7 +405,10 @@ export async function notifyNewMessage(
   threadId: string,
   isGroup = false
 ): Promise<void> {
-  if (!document.hidden && document.hasFocus()) return;
+  // In Appilix WebViews, document.hasFocus() is unreliable — rely on document.hidden only.
+  // In regular browsers, check both for accuracy.
+  const isForeground = isAppilix() ? !document.hidden : (!document.hidden && document.hasFocus());
+  if (isForeground) return;
   if (pushNotificationManager.isThreadMuted(threadId)) return;
   const title = isGroup ? `${senderName} in group` : senderName;
   const body = messagePreview.length > 50 ? messagePreview.substring(0, 50) + '...' : messagePreview;
