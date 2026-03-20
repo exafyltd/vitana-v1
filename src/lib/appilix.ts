@@ -105,6 +105,17 @@ export function setStatusBarStyle(background: string, lightContent: boolean): bo
   });
 }
 
+// ── Native Notification Bridge ─────────────────────────────
+
+/**
+ * Ask the Appilix native shell to show a local notification.
+ * This is the fallback when the browser Notification API is unavailable
+ * or unreliable inside the WebView.
+ */
+export function showNativeNotification(title: string, body: string, data?: Record<string, unknown>): boolean {
+  return post({ action: 'show_notification', title, body, data });
+}
+
 // ── Identity Registration ─────────────────────────────────
 
 /**

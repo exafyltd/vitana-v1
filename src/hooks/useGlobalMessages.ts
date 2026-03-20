@@ -5,6 +5,7 @@ import { useRole } from "./useRole";
 import { supabase } from "@/integrations/supabase/client";
 
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { notifyNewMessage } from '@/lib/pushNotifications';
 import {
   persistThreads,
   getCachedThreads,
@@ -1095,6 +1096,11 @@ export function useGlobalMessages(
                 return prev;
               }
             );
+
+            // Show local browser notification when app is backgrounded
+            const senderName = msg.sender?.display_name || 'Someone';
+            const preview = raw.content || '';
+            notifyNewMessage(senderName, preview, peerId);
           } catch (error) {
             console.error("[useGlobalMessages] Realtime event processing error:", error);
             // FIX 1.3: On realtime failure, trigger targeted query invalidation
