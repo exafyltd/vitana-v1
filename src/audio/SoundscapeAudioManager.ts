@@ -366,6 +366,9 @@ export function stopAndReset() {
     localStorage.removeItem(MOBILE_PERSIST_KEY_VOLUME);
     localStorage.removeItem(MOBILE_PERSIST_KEY_MUTED);
     localStorage.removeItem('soundscape_auto_play');
+    // Signal to attemptMobileResume / startFresh that playback was stopped
+    // intentionally (logout). Cleared on next explicit startFresh().
+    localStorage.setItem('soundscape_stopped', 'true');
     // NOTE: 'soundscape_muted' and 'soundscape_volume' are intentionally
     // preserved — they are user preferences, not playback state.
   } catch (_) { /* storage may be unavailable */ }
@@ -648,22 +651,35 @@ export function setTrack(trackIdOrSrc: string, trackUrl?: string) {
  */
 export function attemptMobileResume(): void {
   if (!isMobileDevice) return;
-  
+
   const savedTime = localStorage.getItem(MOBILE_PERSIST_KEY_TIME);
   const savedTrackSrc = localStorage.getItem(MOBILE_PERSIST_KEY_TRACK_SRC);
   const wasPlaying = localStorage.getItem(MOBILE_PERSIST_KEY_PLAYING);
+
+  // Only resume if audio was actually playing before (stopAndReset clears this)
+  if (wasPlaying !== 'true') {
+    console.log('[AudioManager] Mobile resume skipped: was not playing');
+    return;
+  }
+
+  // Skip if stopped for logout
+  if (localStorage.getItem('soundscape_stopped') === 'true') {
+    console.log('[AudioManager] Mobile resume skipped: stopped for logout');
+    return;
+  }
+
   // Skip if muted this session (in-memory only, not persisted)
   if (soundscapeMuted) {
     console.log('[AudioManager] Mobile resume skipped: muted this session');
     return;
   }
-  
+
   // Don't resume if foreground media is active
   if (activeForegroundMedia.size > 0) {
     console.log('[AudioManager] Mobile resume skipped: foreground media active');
     return;
   }
-  
+
   const audio = getAudio();
   
   // Restore track src if needed (canonical comparison)
@@ -781,9 +797,12 @@ export function subscribe(listener: StateListener): () => void {
  * This prevents route changes from restarting music.
  */
 export function startFresh(initialVolume = 0.05) {
+  // Clear the logout-stop flag — user is deliberately starting playback
+  try { localStorage.removeItem('soundscape_stopped'); } catch (_) {}
+
   // Safety net: scan DOM for duplicate ambient audio elements and destroy them
   killDuplicateAudio();
-  
+
   const audio = getAudio();
   
   // IDEMPOTENT guard 1: Already playing the ambient track → do nothing
