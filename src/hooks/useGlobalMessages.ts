@@ -93,6 +93,65 @@ export interface GlobalMessageThread {
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
+/**
+ * Batch-query actual unread message counts from chat_messages.
+ * Returns a map: peerId → count of unread messages from that peer.
+ */
+async function fetchDirectUnreadCounts(userId: string): Promise<Record<string, number>> {
+  try {
+    const { data, error } = await supabase
+      .from("chat_messages")
+      .select("sender_id")
+      .eq("receiver_id", userId)
+      .is("read_at", null)
+      .neq("sender_id", userId) as any;
+
+    if (error || !data) return {};
+
+    const counts: Record<string, number> = {};
+    for (const row of data) {
+      counts[row.sender_id] = (counts[row.sender_id] || 0) + 1;
+    }
+    return counts;
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Batch-query actual unread message counts from global_messages for group threads.
+ * Returns a map: threadId → count of unread messages.
+ */
+async function fetchGroupUnreadCounts(
+  userId: string,
+  threadParticipations: Array<{ thread_id: string; last_read_at: string | null }>
+): Promise<Record<string, number>> {
+  if (threadParticipations.length === 0) return {};
+  try {
+    const counts: Record<string, number> = {};
+    // Query unread messages per thread based on last_read_at
+    for (const p of threadParticipations) {
+      let query = supabase
+        .from("global_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("thread_id", p.thread_id)
+        .neq("sender_id", userId) as any;
+
+      if (p.last_read_at) {
+        query = query.gt("created_at", p.last_read_at);
+      }
+
+      const { count, error } = await query;
+      if (!error && count !== null) {
+        counts[p.thread_id] = count;
+      }
+    }
+    return counts;
+  } catch {
+    return {};
+  }
+}
+
 /** Map a gateway ChatMessage → GlobalMessage the UI understands */
 function toGlobalMessage(
   msg: ChatMessage,
