@@ -306,11 +306,34 @@ export function initialize() {
   
   // Listen for custom foreground intent (mobile backup)
   window.addEventListener('foreground-audio-intent', handleForegroundIntent);
-  
+
+  // MOBILE: Pause audio when app goes to background (prevents background playback)
+  if (isMobileDevice) {
+    document.addEventListener('visibilitychange', handleMobileVisibilityChange);
+  }
+
   // Start persisting currentTime
   startPersisting();
   
   console.log('[AudioManager] Initialized with muted:', soundscapeMuted);
+}
+
+/**
+ * Mobile visibility handler: pause audio when app goes to background so it
+ * doesn't keep playing after the user exits / minimises the app.
+ */
+let pausedByVisibilityChange = false;
+
+function handleMobileVisibilityChange() {
+  if (document.visibilityState === 'hidden') {
+    const audio = audioElement || window.__SOUNDSCAPE_AUDIO__;
+    if (audio && !audio.paused) {
+      audio.pause();
+      pausedByVisibilityChange = true;
+      console.log('[AudioManager] Paused for background (visibilitychange hidden)');
+    }
+  }
+  // NOTE: Resume is handled by SoundscapeResumeBanner → attemptMobileResume()
 }
 
 /**
@@ -322,6 +345,7 @@ export function cleanup() {
   document.removeEventListener('pause', handleGlobalPauseOrEnd, true);
   document.removeEventListener('ended', handleGlobalPauseOrEnd, true);
   document.removeEventListener('volumechange', handleGlobalVolumeChange, true);
+  document.removeEventListener('visibilitychange', handleMobileVisibilityChange);
   window.removeEventListener('foreground-audio-intent', handleForegroundIntent);
   stopPersisting();
   isInitialized = false;
@@ -517,6 +541,8 @@ export function resumeAfterForeground() {
 export function play(): Promise<void> {
   const audio = getAudio();
   userExplicitlyPaused = false;
+  // Clear logout-stop flag — user is deliberately starting playback
+  try { localStorage.removeItem('soundscape_stopped'); } catch (_) {}
   localStorage.setItem('soundscape_auto_play', 'true');
   
   return audio.play().then(() => {
@@ -797,20 +823,17 @@ export function subscribe(listener: StateListener): () => void {
  * This prevents route changes from restarting music.
  */
 export function startFresh(initialVolume = 0.05) {
-  // Clear the logout-stop flag — user is deliberately starting playback
-  try { localStorage.removeItem('soundscape_stopped'); } catch (_) {}
-
   // Safety net: scan DOM for duplicate ambient audio elements and destroy them
   killDuplicateAudio();
 
   const audio = getAudio();
-  
+
   // IDEMPOTENT guard 1: Already playing the ambient track → do nothing
   if (!audio.paused && audio.src.includes('maxina-ambient-music')) {
     console.log('[AudioManager] startFresh skipped - already playing');
     return;
   }
-  
+
   // Guard 2: Audio is mid-session (has position) → just resume, don't reinitialize
   // This catches the race condition where audio is briefly paused (foreground transition)
   // but currentTime > 0.5 means it's clearly mid-playback, not a fresh start.
@@ -821,13 +844,13 @@ export function startFresh(initialVolume = 0.05) {
     }
     return;
   }
-  
+
   // If user explicitly paused, don't auto-start
   if (userExplicitlyPaused) {
     console.log('[AudioManager] startFresh skipped - user explicitly paused');
     return;
   }
-  
+
   // Respect saved mute state — don't auto-play if user previously muted
   const savedMuted = localStorage.getItem('soundscape_muted');
   if (savedMuted === 'true') {
@@ -836,7 +859,13 @@ export function startFresh(initialVolume = 0.05) {
     audio.muted = true;
     return;
   }
-  
+
+  // Block playback if stopped for logout (cleared on next successful play)
+  if (localStorage.getItem('soundscape_stopped') === 'true') {
+    console.log('[AudioManager] startFresh skipped - stopped for logout');
+    return;
+  }
+
   // Save position in case browser resets on play()
   const savedTime = audio.currentTime;
   
@@ -857,6 +886,7 @@ export function startFresh(initialVolume = 0.05) {
         console.log('[AudioManager] startFresh: restored currentTime to', savedTime);
       }
       localStorage.setItem('soundscape_auto_play', 'true');
+      try { localStorage.removeItem('soundscape_stopped'); } catch (_) {}
       console.log('[AudioManager] startFresh succeeded');
       notifyListeners();
     })
