@@ -306,11 +306,34 @@ export function initialize() {
   
   // Listen for custom foreground intent (mobile backup)
   window.addEventListener('foreground-audio-intent', handleForegroundIntent);
-  
+
+  // MOBILE: Pause audio when app goes to background (prevents background playback)
+  if (isMobileDevice) {
+    document.addEventListener('visibilitychange', handleMobileVisibilityChange);
+  }
+
   // Start persisting currentTime
   startPersisting();
   
   console.log('[AudioManager] Initialized with muted:', soundscapeMuted);
+}
+
+/**
+ * Mobile visibility handler: pause audio when app goes to background so it
+ * doesn't keep playing after the user exits / minimises the app.
+ */
+let pausedByVisibilityChange = false;
+
+function handleMobileVisibilityChange() {
+  if (document.visibilityState === 'hidden') {
+    const audio = audioElement || window.__SOUNDSCAPE_AUDIO__;
+    if (audio && !audio.paused) {
+      audio.pause();
+      pausedByVisibilityChange = true;
+      console.log('[AudioManager] Paused for background (visibilitychange hidden)');
+    }
+  }
+  // NOTE: Resume is handled by SoundscapeResumeBanner → attemptMobileResume()
 }
 
 /**
@@ -322,9 +345,70 @@ export function cleanup() {
   document.removeEventListener('pause', handleGlobalPauseOrEnd, true);
   document.removeEventListener('ended', handleGlobalPauseOrEnd, true);
   document.removeEventListener('volumechange', handleGlobalVolumeChange, true);
+  document.removeEventListener('visibilitychange', handleMobileVisibilityChange);
   window.removeEventListener('foreground-audio-intent', handleForegroundIntent);
   stopPersisting();
   isInitialized = false;
+}
+
+/**
+ * Fully stop Soundscape playback, destroy the audio element, and clear all
+ * persisted state.  Call on logout / sign-out so that the ambient track does
+ * not keep playing in the background on mobile.
+ */
+export function stopAndReset() {
+  console.log('[AudioManager] stopAndReset: stopping playback and clearing state');
+
+  // 1. Pause & destroy the audio element
+  const audio = audioElement || window.__SOUNDSCAPE_AUDIO__;
+  if (audio) {
+    audio.pause();
+    audio.src = '';
+    audio.load(); // releases the network/media resource
+  }
+  audioElement = null;
+  delete window.__SOUNDSCAPE_AUDIO__;
+
+  // 2. Reset module-level state (preserve muted preference so it survives re-login)
+  userExplicitlyPaused = false;
+  soundscapeWasPlayingBeforeForeground = false;
+  currentlyPausedByForeground = false;
+  needsUserGestureToResume = false;
+  currentTrackId = 'ambient';
+  activeForegroundMedia.clear();
+
+  // 3. Stop persistence interval
+  stopPersisting();
+
+  // 4. Clear playback state keys but KEEP user preferences (muted, volume)
+  //    so that "Soundscape off" is remembered across logout/login cycles.
+  try {
+    localStorage.removeItem(MOBILE_PERSIST_KEY_TIME);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_PLAYING);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_TRACK);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_TRACK_SRC);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_VOLUME);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_MUTED);
+    localStorage.removeItem('soundscape_auto_play');
+    // Signal to attemptMobileResume / startFresh that playback was stopped
+    // intentionally (logout). Cleared on next explicit startFresh().
+    localStorage.setItem('soundscape_stopped', 'true');
+    // NOTE: 'soundscape_muted' and 'soundscape_volume' are intentionally
+    // preserved — they are user preferences, not playback state.
+  } catch (_) { /* storage may be unavailable */ }
+
+  try {
+    sessionStorage.removeItem(SESSION_KEY_TIME);
+    sessionStorage.removeItem(SESSION_KEY_PLAYING);
+    sessionStorage.removeItem(SESSION_KEY_VOLUME);
+    sessionStorage.removeItem(SESSION_KEY_TRACK);
+  } catch (_) { /* storage may be unavailable */ }
+
+  // 5. Notify subscribers so UI updates
+  notifyListeners();
+  notifyResumeBannerListeners(false);
+
+  console.log('[AudioManager] stopAndReset complete');
 }
 
 // ===== Global Media Event Handlers =====
@@ -457,6 +541,8 @@ export function resumeAfterForeground() {
 export function play(): Promise<void> {
   const audio = getAudio();
   userExplicitlyPaused = false;
+  // Clear logout-stop flag — user is deliberately starting playback
+  try { localStorage.removeItem('soundscape_stopped'); } catch (_) {}
   localStorage.setItem('soundscape_auto_play', 'true');
   
   return audio.play().then(() => {
@@ -591,22 +677,35 @@ export function setTrack(trackIdOrSrc: string, trackUrl?: string) {
  */
 export function attemptMobileResume(): void {
   if (!isMobileDevice) return;
-  
+
   const savedTime = localStorage.getItem(MOBILE_PERSIST_KEY_TIME);
   const savedTrackSrc = localStorage.getItem(MOBILE_PERSIST_KEY_TRACK_SRC);
   const wasPlaying = localStorage.getItem(MOBILE_PERSIST_KEY_PLAYING);
+
+  // Only resume if audio was actually playing before (stopAndReset clears this)
+  if (wasPlaying !== 'true') {
+    console.log('[AudioManager] Mobile resume skipped: was not playing');
+    return;
+  }
+
+  // Skip if stopped for logout
+  if (localStorage.getItem('soundscape_stopped') === 'true') {
+    console.log('[AudioManager] Mobile resume skipped: stopped for logout');
+    return;
+  }
+
   // Skip if muted this session (in-memory only, not persisted)
   if (soundscapeMuted) {
     console.log('[AudioManager] Mobile resume skipped: muted this session');
     return;
   }
-  
+
   // Don't resume if foreground media is active
   if (activeForegroundMedia.size > 0) {
     console.log('[AudioManager] Mobile resume skipped: foreground media active');
     return;
   }
-  
+
   const audio = getAudio();
   
   // Restore track src if needed (canonical comparison)
@@ -726,15 +825,15 @@ export function subscribe(listener: StateListener): () => void {
 export function startFresh(initialVolume = 0.05) {
   // Safety net: scan DOM for duplicate ambient audio elements and destroy them
   killDuplicateAudio();
-  
+
   const audio = getAudio();
-  
+
   // IDEMPOTENT guard 1: Already playing the ambient track → do nothing
   if (!audio.paused && audio.src.includes('maxina-ambient-music')) {
     console.log('[AudioManager] startFresh skipped - already playing');
     return;
   }
-  
+
   // Guard 2: Audio is mid-session (has position) → just resume, don't reinitialize
   // This catches the race condition where audio is briefly paused (foreground transition)
   // but currentTime > 0.5 means it's clearly mid-playback, not a fresh start.
@@ -745,13 +844,13 @@ export function startFresh(initialVolume = 0.05) {
     }
     return;
   }
-  
+
   // If user explicitly paused, don't auto-start
   if (userExplicitlyPaused) {
     console.log('[AudioManager] startFresh skipped - user explicitly paused');
     return;
   }
-  
+
   // Respect saved mute state — don't auto-play if user previously muted
   const savedMuted = localStorage.getItem('soundscape_muted');
   if (savedMuted === 'true') {
@@ -760,7 +859,13 @@ export function startFresh(initialVolume = 0.05) {
     audio.muted = true;
     return;
   }
-  
+
+  // Block playback if stopped for logout (cleared on next successful play)
+  if (localStorage.getItem('soundscape_stopped') === 'true') {
+    console.log('[AudioManager] startFresh skipped - stopped for logout');
+    return;
+  }
+
   // Save position in case browser resets on play()
   const savedTime = audio.currentTime;
   
@@ -781,6 +886,7 @@ export function startFresh(initialVolume = 0.05) {
         console.log('[AudioManager] startFresh: restored currentTime to', savedTime);
       }
       localStorage.setItem('soundscape_auto_play', 'true');
+      try { localStorage.removeItem('soundscape_stopped'); } catch (_) {}
       console.log('[AudioManager] startFresh succeeded');
       notifyListeners();
     })

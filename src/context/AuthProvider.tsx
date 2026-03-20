@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
 import { prefetchInboxThreads } from "@/lib/prefetchInboxThreads";
+import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
@@ -148,6 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('[AuthProvider] Signing out user');
       dismiss();
+      stopSoundscape();
       clearChatCache();
       const { error } = await supabase.auth.signOut();
       if (error) {
