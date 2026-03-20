@@ -576,7 +576,7 @@ export function useGlobalMessages(
       return merged;
     },
     enabled: !!user && isGlobalContext,
-    staleTime: 0,        // Must be 0 — prefetch populates partial data; observer must always run full queryFn
+    staleTime: STALE_TIME, // Use cached threads on re-navigation; realtime subscriptions handle live updates
     gcTime: GC_TIME,
     // Show last-known threads from localStorage instantly while refetching
     placeholderData: (prev) => prev ?? (user ? getCachedThreads(user.id) ?? undefined : undefined),
