@@ -327,6 +327,63 @@ export function cleanup() {
   isInitialized = false;
 }
 
+/**
+ * Fully stop Soundscape playback, destroy the audio element, and clear all
+ * persisted state.  Call on logout / sign-out so that the ambient track does
+ * not keep playing in the background on mobile.
+ */
+export function stopAndReset() {
+  console.log('[AudioManager] stopAndReset: stopping playback and clearing state');
+
+  // 1. Pause & destroy the audio element
+  const audio = audioElement || window.__SOUNDSCAPE_AUDIO__;
+  if (audio) {
+    audio.pause();
+    audio.src = '';
+    audio.load(); // releases the network/media resource
+  }
+  audioElement = null;
+  delete window.__SOUNDSCAPE_AUDIO__;
+
+  // 2. Reset module-level state
+  userExplicitlyPaused = false;
+  soundscapeMuted = false;
+  soundscapeWasPlayingBeforeForeground = false;
+  currentlyPausedByForeground = false;
+  needsUserGestureToResume = false;
+  currentTrackId = 'ambient';
+  activeForegroundMedia.clear();
+
+  // 3. Stop persistence interval
+  stopPersisting();
+
+  // 4. Clear all persisted Soundscape keys (mobile localStorage + desktop sessionStorage)
+  try {
+    localStorage.removeItem(MOBILE_PERSIST_KEY_TIME);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_PLAYING);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_TRACK);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_TRACK_SRC);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_VOLUME);
+    localStorage.removeItem(MOBILE_PERSIST_KEY_MUTED);
+    localStorage.removeItem('soundscape_auto_play');
+    localStorage.removeItem('soundscape_volume');
+    localStorage.removeItem('soundscape_muted');
+  } catch (_) { /* storage may be unavailable */ }
+
+  try {
+    sessionStorage.removeItem(SESSION_KEY_TIME);
+    sessionStorage.removeItem(SESSION_KEY_PLAYING);
+    sessionStorage.removeItem(SESSION_KEY_VOLUME);
+    sessionStorage.removeItem(SESSION_KEY_TRACK);
+  } catch (_) { /* storage may be unavailable */ }
+
+  // 5. Notify subscribers so UI updates
+  notifyListeners();
+  notifyResumeBannerListeners(false);
+
+  console.log('[AudioManager] stopAndReset complete');
+}
+
 // ===== Global Media Event Handlers =====
 
 function isSoundscapeElement(el: HTMLMediaElement): boolean {
