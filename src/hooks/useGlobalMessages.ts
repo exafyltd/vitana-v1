@@ -449,8 +449,11 @@ export function useGlobalMessages(
     refetch: refetchThreads,
   } = useQuery({
     queryKey: ["global-threads", user?.id],
-    queryFn: async (): Promise<GlobalMessageThread[]> => {
+    queryFn: async ({ queryKey }): Promise<GlobalMessageThread[]> => {
       if (!user || !isGlobalContext) return [];
+
+      // Track whether gateway actually succeeded vs timed out/failed
+      let gatewayFailed = false;
 
       // Fetch from both gateway and legacy in parallel
       // Gateway gets a 5-second timeout so a cold-start doesn't block the whole inbox
@@ -461,6 +464,7 @@ export function useGlobalMessages(
         ),
       ]).catch((err) => {
         console.warn("Gateway fetchConversations failed/timed out, using legacy only:", err.message);
+        gatewayFailed = true;
         return [] as ChatConversation[];
       });
 
@@ -544,6 +548,22 @@ export function useGlobalMessages(
       const merged = [...gatewayThreads, ...uniqueDirect, ...uniqueLegacy].sort(
         (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
+
+      // Guard: if ALL sources returned empty but we had previous data, keep previous data.
+      // This prevents a gateway timeout from wiping a populated inbox.
+      if (merged.length === 0 && gatewayFailed) {
+        const prev = queryClient.getQueryData<GlobalMessageThread[]>(queryKey);
+        if (prev && prev.length > 0) {
+          console.warn("[chat] All sources empty after gateway failure — keeping previous cached threads");
+          return prev;
+        }
+        // Also try localStorage cache as last resort
+        const cached = getCachedThreads(user.id);
+        if (cached && cached.length > 0) {
+          console.warn("[chat] All sources empty after gateway failure — restoring from localStorage");
+          return cached as GlobalMessageThread[];
+        }
+      }
 
       // Auto-seed Vitana thread if not present
       const hasVitana = merged.some((t) => t.id === VITANA_BOT_USER_ID);
