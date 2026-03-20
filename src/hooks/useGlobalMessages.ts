@@ -347,7 +347,7 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
         const unreadCount =
           lastMsg && lastMsg.sender_id === userId
             ? 0
-            : (groupUnreadMap[t.id] ?? (lastMsg ? 1 : 0));
+            : (resolvedGroupUnreadMap[t.id] ?? (lastMsg ? 1 : 0));
 
         return {
           id: threadIdentifier,
