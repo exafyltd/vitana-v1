@@ -1,80 +1,83 @@
 
 
-## Fix: Unify Inbox Badges With Thread Data (Current Tab Only)
+## Fix: Appilix Mobile Push Notifications Not Delivering
 
-### Root Cause
+### Root Cause (Two Issues)
 
-Three independent unread count sources produce three different numbers:
+**Issue 1: Wrong identity registration format**
 
-```text
-Source                          Value   Used by
-─────────────────────────────── ─────── ──────────────────────
-/chat/unread-count (gateway)    0       useChatUnreadCount (intended)
-Thread-level unread_count sum   2       Thread list in Messages.tsx
-/notifications/unread-count     3       useNotifications (bell icon)
+The Appilix docs (uploaded) specify this exact format for registering user identity:
 
-Badge on bottom nav/drawer      3       Stale optimistic value
+```javascript
+appilix.postMessage(JSON.stringify({
+  type: "firebase_record_user_identity",
+  props: { user_identity: "user@email.com" }
+}));
 ```
 
-`useChatUnreadCount` uses gateway `/chat/unread-count` (returns 0), but its realtime handlers optimistically increment on each `user_notifications` INSERT. When the gateway confirm fetch inside the `catch` block fails, the optimistic value sticks. Three notification INSERTs (including `message_reaction` types that shouldn't count) accumulated to 3.
+But our code in `registerAppilixIdentity()` sends:
 
-Meanwhile, the thread list computes unread from `last_message.read_at`, giving 2 for one thread. The badge and thread list never converge because they use completely different data sources.
+```javascript
+// Current (WRONG)
+{ action: "update_settings", settings: { user_identity: userId } }
+```
 
-### Fix: Derive badge count from thread cache
+This means the native shell never maps the user UUID to the device. The Appilix API returns "identity not found" because the device was never registered with the correct message type.
 
-Replace the gateway-based unread count with a computation from the same thread data the inbox displays. This guarantees badge = sum of thread badges.
+**Issue 2: Edge function not deployed / trigger not active**
 
-**1. `src/hooks/useGlobalMessages.ts`** -- Dispatch computed count
+The `appilix-push` edge function has **zero logs** — meaning either the trigger isn't firing in the live database, or the function was never deployed. The migration file exists but may not have been applied to the external Supabase project.
 
-Change the `chat-unread-refresh` dispatch to a `CustomEvent` carrying the computed total unread from threads:
+### Fix
+
+**1. `src/lib/appilix.ts`** — Fix identity registration to use the documented format
+
+Replace the `registerAppilixIdentity` function to use the correct Appilix message type:
 
 ```typescript
-// In the threads persistence useEffect (~line 586-591)
-useEffect(() => {
-  if (user && threads.length > 0 && !isThreadsLoading) {
-    debouncedPersistThreads(user.id, threads);
-    const totalUnread = threads.reduce((sum, t) => sum + (t.unread_count || 0), 0);
-    window.dispatchEvent(new CustomEvent('chat-unread-count-update', { detail: { count: totalUnread } }));
+export function registerAppilixIdentity(userId: string): boolean {
+  if (!isAppilix()) {
+    console.debug('[Appilix] Not in Appilix shell, skipping identity registration');
+    return false;
   }
-}, [user, threads, isThreadsLoading]);
-```
-
-Also update the markAsRead dispatch (~line 984) to use the same event.
-
-**2. `src/hooks/useTenantMessages.ts`** -- Same dispatch for tenant context
-
-Add a similar useEffect that dispatches `chat-unread-count-update` when tenant threads load, so switching to Network tab updates the badge.
-
-**3. `src/hooks/useChatUnreadCount.ts`** -- Listen for computed count
-
-Replace the `chat-unread-refresh` → gateway fetch pattern with a `chat-unread-count-update` CustomEvent listener that sets the count directly from the thread sum:
-
-```typescript
-function handleCountUpdate(e: Event) {
-  const count = (e as CustomEvent).detail?.count ?? 0;
-  setCount(count);
+  console.log(`[Appilix] Registering user_identity: ${userId}`);
+  try {
+    window.appilix!.postMessage(JSON.stringify({
+      type: "firebase_record_user_identity",
+      props: { user_identity: userId }
+    }));
+    return true;
+  } catch (e) {
+    console.warn('[Appilix] Identity registration failed:', e);
+    return false;
+  }
 }
-window.addEventListener('chat-unread-count-update', handleCountUpdate);
 ```
 
-Remove the `user_notifications` realtime subscription (it was incorrectly counting `message_reaction` notifications as chat unreads). Keep the `chat_messages` INSERT subscription but change it to just trigger a thread refetch rather than incrementing optimistically.
+**2. `index.html`** — Add early identity registration using the correct format
 
-Remove the `/chat/unread-count` gateway polling entirely -- the badge now derives from thread data.
+The early script already reads the identity cookie. Add a line to register it immediately (before React hydrates) using the documented format:
 
-**4. `src/hooks/useGlobalMessages.ts`** -- Fix realtime handler badge sync (~line 1068)
+```javascript
+if (m && m[1] && window.appilix?.postMessage) {
+  window.appilix.postMessage(JSON.stringify({
+    type: "firebase_record_user_identity",
+    props: { user_identity: m[1] }
+  }));
+  console.log('[Appilix-Early] Identity registered with native shell:', m[1]);
+}
+```
 
-Change the `chat-unread-refresh` dispatch in the realtime INSERT handler to compute from the updated cache and dispatch `chat-unread-count-update`.
+**3. Deploy the `appilix-push` edge function** to the external Supabase project (if not already deployed).
 
-### Why this fixes the sync
+**4. Verify the `trg_appilix_push` trigger** exists in the live database by checking the migration was applied.
 
-- Badge = `sum(thread.unread_count)` from the same React Query cache the thread list renders
-- Side drawer and bottom nav both read from the same `useChatUnreadCount` singleton
-- "Current tab only" is automatic: whichever context's `useGlobalMessages` or `useTenantMessages` is active dispatches the event
-- No more optimistic increments from notification types that shouldn't count (reactions, etc.)
-- No more stale optimistic values from failed gateway confirms
+### Why notifications were intermittent
+
+Sometimes the `updateSettings` format happened to work (possibly an older Appilix build accepted it), but it's not the documented API. The correct `firebase_record_user_identity` type is what reliably maps device → user identity in Appilix's push system.
 
 ### Files to modify
-- `src/hooks/useChatUnreadCount.ts` -- listen for CustomEvent, remove gateway polling/notification subscription
-- `src/hooks/useGlobalMessages.ts` -- dispatch computed count via CustomEvent
-- `src/hooks/useTenantMessages.ts` -- add same dispatch for tenant threads
+- `src/lib/appilix.ts` — fix `registerAppilixIdentity` to use correct message format
+- `index.html` — add early identity registration with correct format
+- Deploy `appilix-push` edge function (manual CLI step or via Lovable deploy tool)
 
