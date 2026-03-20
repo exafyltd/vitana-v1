@@ -240,7 +240,7 @@ async function enrichProfiles(
  * Uses the other participant's user_id as thread id (same as gateway peer_id)
  * so legacy direct threads naturally dedup with gateway threads.
  */
-async function fetchLegacyThreads(userId: string): Promise<GlobalMessageThread[]> {
+async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string, number>): Promise<GlobalMessageThread[]> {
   try {
     // 1. Get threads the user participates in
     const { data: participations, error: partErr } = await supabase
