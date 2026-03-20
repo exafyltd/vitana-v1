@@ -97,7 +97,13 @@ class PushNotificationManager {
       this.fcmToken = token;
       console.log('[Push] FCM token obtained, registering with gateway...');
       await this.registerTokenWithBackend(token);
-      await this.setupForegroundHandler();
+      // Only set up FCM foreground handler on browsers (not Appilix)
+      // Appilix uses native push + browser fallback, FCM is unreliable in WebView
+      if (!isAppilix()) {
+        await this.setupForegroundHandler();
+      } else {
+        console.log('[Push] Skipping FCM foreground handler on Appilix (using browser fallback)');
+      }
       this.startTokenRefreshMonitor();
       return token;
     } catch (error) {
