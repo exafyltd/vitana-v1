@@ -5,8 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 
-const GATEWAY_BASE = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
-const API_BASE = `${GATEWAY_BASE.replace(/\/+$/, "")}/api/v1`;
+const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+
 
 export interface AutopilotRecommendation {
   id: string;
@@ -106,7 +106,7 @@ export function useAutopilot() {
     if (!user) return;
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations/count`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count`, { headers });
       if (!res.ok) return;
       const json = await res.json();
       if (json.ok) {
@@ -125,7 +125,7 @@ export function useAutopilot() {
     setError(null);
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations?status=new&limit=20`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new&limit=20`, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
@@ -134,8 +134,8 @@ export function useAutopilot() {
         throw new Error(json.error ?? "Unknown error");
       }
     } catch (e: any) {
-      console.warn("[Autopilot] API unavailable, falling back to empty:", e.message);
-      setRecommendations([]);
+      console.error("[Autopilot] fetch error:", e.message);
+      setError(e.message || "Failed to load recommendations");
     } finally {
       setLoading(false);
     }
@@ -145,7 +145,7 @@ export function useAutopilot() {
   const activateRecommendation = useCallback(async (id: string): Promise<string | null> => {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations/${id}/activate`, {
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate`, {
         method: "POST",
         headers,
       });
@@ -166,7 +166,7 @@ export function useAutopilot() {
   const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations/${id}/reject`, {
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject`, {
         method: "POST",
         headers,
       });
@@ -183,7 +183,10 @@ export function useAutopilot() {
     }
   }, []);
 
-  // No mount fetch — count is derived from recommendations list
+  // Fetch count on mount
+  useEffect(() => {
+    fetchCount();
+  }, [fetchCount]);
 
   // ── Legacy compatibility ──
 
