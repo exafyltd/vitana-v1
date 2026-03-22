@@ -1,33 +1,32 @@
 
 
-## Fix Autopilot API Integration
+## Fix: Autopilot CORS Failure — `X-User-ID` Header Triggers Preflight Block
 
-### Problem
+### Root Cause
 
-The autopilot hook uses `VITE_GATEWAY_BASE` with a manual `/api/v1` append, and silently swallows all fetch errors (showing "All caught up!" instead of surfacing the real issue). The user confirms the API exists and is deployed.
+The `X-User-ID` custom header in autopilot requests triggers a CORS **preflight** (OPTIONS) request. The Gateway's autopilot routes don't include `X-User-ID` in their `Access-Control-Allow-Headers` response, so the browser blocks the actual GET/POST.
 
-### Changes
+Evidence: `GET /api/v1/chat/conversations` succeeds (200) on the **same gateway** with the **same JWT** — but chat does NOT send `X-User-ID`. The autopilot requests are the only ones adding this header, and they all fail with "Failed to fetch".
 
-**File: `src/hooks/use-autopilot.ts`**
+### Fix
 
-1. Replace the gateway URL construction to match the pattern used elsewhere:
-   ```typescript
-   const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "";
-   ```
-   Then use `${GATEWAY_URL}/autopilot/recommendations/...` for all endpoints (since `VITE_GATEWAY_URL` already includes `/api/v1`).
+**File: `src/hooks/use-autopilot.ts`** — Remove `X-User-ID` from `getAuthHeaders()`
 
-2. Revert the silent error suppression in `fetchRecommendations` — set the error state properly so the error UI renders (the API exists, so errors should be visible for debugging):
-   ```typescript
-   } catch (e: any) {
-     console.error("[Autopilot] fetch error:", e.message);
-     setError(e.message || "Failed to load");
-   }
-   ```
+The gateway can extract the user ID from the JWT `sub` claim (standard practice). The custom header is unnecessary and is the sole cause of the CORS block.
 
-3. Re-enable `fetchCount` on mount so the badge count is fetched when the hook initializes.
+```typescript
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token ?? "";
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+}
+```
 
-**No changes needed to `AutopilotPopup.tsx`** — it already has proper loading, error, and empty states.
+Also: add a debounce guard to `fetchCount` to prevent the 15+ redundant calls visible in the network log (the hook is instantiated by multiple components).
 
 ### Files to modify
-- `src/hooks/use-autopilot.ts`
+- `src/hooks/use-autopilot.ts` — remove `X-User-ID` header, add fetch dedup
 
