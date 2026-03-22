@@ -183,7 +183,10 @@ export function useAutopilot() {
     }
   }, []);
 
-  // No mount fetch — count is derived from recommendations list
+  // Fetch count on mount
+  useEffect(() => {
+    fetchCount();
+  }, [fetchCount]);
 
   // ── Legacy compatibility ──
 
