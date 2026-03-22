@@ -104,18 +104,20 @@ export function useAutopilot() {
 
   // Fetch badge count
   const fetchCount = useCallback(async () => {
-    if (!user) return;
+    if (!user || countInFlight) return;
+    countInFlight = true;
     try {
       const headers = await getAuthHeaders();
       const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count`, { headers });
       if (!res.ok) return;
       const json = await res.json();
       if (json.ok) {
-        // Update actions array length info but don't overwrite actual data
         console.log("[Autopilot] badge count:", json.count);
       }
     } catch (e) {
       console.warn("[Autopilot] count fetch error:", e);
+    } finally {
+      countInFlight = false;
     }
   }, [user]);
 
