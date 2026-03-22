@@ -5,8 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 
-const GATEWAY_BASE = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
-const API_BASE = `${GATEWAY_BASE.replace(/\/+$/, "")}/api/v1`;
+const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+
 
 export interface AutopilotRecommendation {
   id: string;
