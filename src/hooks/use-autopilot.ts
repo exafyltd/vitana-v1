@@ -106,7 +106,7 @@ export function useAutopilot() {
     if (!user) return;
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations/count`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count`, { headers });
       if (!res.ok) return;
       const json = await res.json();
       if (json.ok) {
@@ -125,7 +125,7 @@ export function useAutopilot() {
     setError(null);
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations?status=new&limit=20`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new&limit=20`, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
@@ -145,7 +145,7 @@ export function useAutopilot() {
   const activateRecommendation = useCallback(async (id: string): Promise<string | null> => {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations/${id}/activate`, {
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate`, {
         method: "POST",
         headers,
       });
@@ -166,7 +166,7 @@ export function useAutopilot() {
   const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${API_BASE}/autopilot/recommendations/${id}/reject`, {
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject`, {
         method: "POST",
         headers,
       });
