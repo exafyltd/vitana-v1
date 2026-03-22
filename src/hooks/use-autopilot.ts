@@ -108,7 +108,7 @@ export function useAutopilot() {
     countInFlight = true;
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/count?personal_only=true`, { headers });
       if (!res.ok) return;
       const json = await res.json();
       if (json.ok) {
