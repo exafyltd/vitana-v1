@@ -1,257 +1,201 @@
-import { useState, useEffect, useMemo } from "react";
-import { AutopilotAction, AutopilotState, AutopilotPriority, AutopilotCategory, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
+import { useState, useEffect, useCallback } from "react";
+import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
-import { useTranslation } from "@/hooks/useTranslation";
 
-// Action IDs map to translation keys
-interface ActionConfig {
+const GATEWAY_BASE = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
+const API_BASE = `${GATEWAY_BASE.replace(/\/+$/, "")}/api/v1`;
+
+export interface AutopilotRecommendation {
   id: string;
-  titleKey: string;
-  reasonKey: string;
-  category: AutopilotCategory;
-  priority: AutopilotPriority;
-  timeEstimate: string;
-  icon: string;
-  imageUrl: string;
-  actionType?: string;
-  ctaLabel?: string;
+  title: string;
+  summary: string;
+  domain: string;
+  risk_level: string;
+  impact_score: number;
+  effort_score: number;
+  estimated_duration: string;
+  signal_type: string;
+  status: string;
 }
 
-const actionConfigs: ActionConfig[] = [
-  { id: "1", titleKey: "action1Title", reasonKey: "action1Reason", category: "community", priority: "high", timeEstimate: "2 min", icon: "💃", imageUrl: "/src/assets/actions/community-dance-group.jpg", actionType: "join" },
-  { id: "2", titleKey: "action2Title", reasonKey: "action2Reason", category: "discover", priority: "medium", timeEstimate: "1-2 min", icon: "✨", imageUrl: "/src/assets/actions/ai-neural-patterns.jpg", ctaLabel: "View Insight" },
-  { id: "3", titleKey: "action3Title", reasonKey: "action3Reason", category: "health", priority: "medium", timeEstimate: "30 sec", icon: "💧", imageUrl: "/src/assets/actions/hydration-water-bottle.jpg", ctaLabel: "Log It" },
-  { id: "4", titleKey: "action4Title", reasonKey: "action4Reason", category: "community", priority: "high", timeEstimate: "1 min", icon: "🎉", imageUrl: "/src/assets/actions/friends-meetup-selfie.jpg", ctaLabel: "Send Invites" },
-  { id: "5", titleKey: "action5Title", reasonKey: "action5Reason", category: "health", priority: "high", timeEstimate: "3 min", icon: "🩺", imageUrl: "/src/assets/actions/doctor-biomarker-review.jpg", actionType: "review" },
-  { id: "6", titleKey: "action6Title", reasonKey: "action6Reason", category: "media", priority: "low", timeEstimate: "30 sec", icon: "🧘", imageUrl: "/src/assets/actions/wellness-yoga-nature.jpg", actionType: "watch" },
-];
+interface UseAutopilotReturn {
+  recommendations: AutopilotRecommendation[];
+  pendingCount: number;
+  loading: boolean;
+  error: string | null;
+  isExecuting: boolean;
+  fetchRecommendations: () => Promise<void>;
+  activateRecommendation: (id: string) => Promise<string | null>;
+  dismissRecommendation: (id: string) => Promise<boolean>;
+  // Legacy compat fields used by sidebar / chips
+  pendingActions: AutopilotRecommendation[];
+  selectedActions: AutopilotRecommendation[];
+  executeActions: (ids: string[]) => Promise<{ actionId: string; success: boolean; message?: string }[]>;
+  toggleActionSelection: (id: string) => void;
+  dismissActions: (ids: string[]) => void;
+  getLatestActions: (count?: number) => AutopilotRecommendation[];
+}
 
-export function useAutopilot() {
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token ?? "";
+  const userId = data.session?.user?.id ?? "";
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+    "X-User-ID": userId,
+  };
+}
+
+export function useAutopilot(): UseAutopilotReturn {
+  const { user } = useAuth();
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
-  const { translate } = useTranslation();
 
-  // Generate mock actions with translations
-  const generateMockActions = useMemo((): AutopilotAction[] => {
-    const now = Date.now();
-    return actionConfigs.map((config, index) => ({
-      id: config.id,
-      title: translate(`autopilot.actions.${config.titleKey}`),
-      reason: translate(`autopilot.actions.${config.reasonKey}`),
-      category: config.category,
-      priority: config.priority,
-      timeEstimate: config.timeEstimate,
-      icon: config.icon,
-      imageUrl: config.imageUrl,
-      timestamp: new Date(now - (5 + index * 4) * 60 * 1000),
-      status: "pending" as AutopilotActionStatus,
-      selected: index < 4, // First 4 selected by default
-      actionType: config.actionType,
-      ctaLabel: config.ctaLabel,
-    }));
-  }, [translate]);
+  const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-  const [state, setState] = useState<AutopilotState>({
-    actions: generateMockActions,
-    isExecuting: false,
-    lastUpdate: new Date()
-  });
-
-  // Update actions when language changes
-  useEffect(() => {
-    setState(prev => ({
-      ...prev,
-      actions: generateMockActions,
-      lastUpdate: new Date()
-    }));
-  }, [generateMockActions]);
-
-  // Filter actions based on user preferences
-  const filterActionsByPreferences = (actions: AutopilotAction[]) => {
-    if (!preferences?.autopilot_enabled) return [];
-    
-    let filtered = actions.filter(action => action.status === "pending");
-    
-    // Filter by enabled categories
-    if (preferences.autopilot_categories) {
-      filtered = filtered.filter(action => {
-        const categoryKey = action.category as keyof typeof preferences.autopilot_categories;
-        return preferences.autopilot_categories[categoryKey] ?? true;
-      });
+  // Fetch badge count
+  const fetchCount = useCallback(async () => {
+    if (!user) return;
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${API_BASE}/autopilot/recommendations/count`, { headers });
+      if (!res.ok) throw new Error(`Count fetch failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) setPendingCount(json.count ?? 0);
+    } catch (e) {
+      console.warn("[Autopilot] count fetch error:", e);
     }
-    
-    // Filter by priority
-    if (preferences.autopilot_priority_filter === 'high') {
-      filtered = filtered.filter(action => action.priority === 'high');
-    } else if (preferences.autopilot_priority_filter === 'high_medium') {
-      filtered = filtered.filter(action => action.priority === 'high' || action.priority === 'medium');
-    }
-    
-    // Respect max actions per day
-    const maxActions = preferences.autopilot_max_actions_per_day || 5;
-    filtered = filtered.slice(0, maxActions);
-    
-    return filtered;
-  };
+  }, [user]);
 
-  const pendingActions = filterActionsByPreferences(state.actions);
-  const pendingCount = pendingActions.length;
-  const selectedActions = pendingActions.filter(action => action.selected);
-
-  // Mock real-time updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Simulate new actions arriving
-      if (Math.random() < 0.1) { // 10% chance every 5 seconds
-        const newAction: AutopilotAction = {
-          id: Date.now().toString(),
-          title: translate('autopilot.actions.newActionTitle'),
-          reason: translate('autopilot.actions.newActionReason'),
-          category: Math.random() > 0.5 ? "health" : "community",
-          priority: "medium" as AutopilotPriority,
-          timeEstimate: "1-2 min",
-          icon: "✨",
-          imageUrl: "/src/assets/actions/ai-neural-patterns.jpg",
-          timestamp: new Date(),
-          status: "pending",
-          selected: true
-        };
-
-        setState(prev => ({
-          ...prev,
-          actions: [newAction, ...prev.actions],
-          lastUpdate: new Date()
-        }));
+  // Fetch full list
+  const fetchRecommendations = useCallback(async () => {
+    if (!user) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${API_BASE}/autopilot/recommendations?status=new&limit=20`, { headers });
+      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        const recs: AutopilotRecommendation[] = json.recommendations ?? [];
+        setRecommendations(recs);
+        setPendingCount(json.count ?? recs.length);
+        // Auto-select all by default
+        setSelectedIds(new Set(recs.map((r) => r.id)));
+      } else {
+        throw new Error(json.error ?? "Unknown error");
       }
-    }, 5000);
+    } catch (e: any) {
+      console.error("[Autopilot] fetch error:", e);
+      setError(e.message ?? "Failed to load recommendations");
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
-    return () => clearInterval(interval);
-  }, [translate]);
+  // Activate
+  const activateRecommendation = useCallback(async (id: string): Promise<string | null> => {
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${API_BASE}/autopilot/recommendations/${id}/activate`, {
+        method: "POST",
+        headers,
+      });
+      if (!res.ok) throw new Error(`Activate failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        setRecommendations((prev) => prev.filter((r) => r.id !== id));
+        setPendingCount((prev) => Math.max(0, prev - 1));
+        setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
+        return json.vtid ?? null;
+      }
+      return null;
+    } catch (e) {
+      console.error("[Autopilot] activate error:", e);
+      return null;
+    }
+  }, []);
 
-  const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
-    setState(prev => ({ ...prev, isExecuting: true }));
+  // Dismiss
+  const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${API_BASE}/autopilot/recommendations/${id}/reject`, {
+        method: "POST",
+        headers,
+      });
+      if (!res.ok) throw new Error(`Dismiss failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        setRecommendations((prev) => prev.filter((r) => r.id !== id));
+        setPendingCount((prev) => Math.max(0, prev - 1));
+        setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error("[Autopilot] dismiss error:", e);
+      return false;
+    }
+  }, []);
 
-    // Simulate execution with realistic timing
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const results: ExecutionResult[] = actionIds.map(id => ({
-          actionId: id,
-          success: Math.random() > 0.1, // 90% success rate
-          message: Math.random() > 0.1 ? translate('autopilot.success') : translate('autopilot.failed')
-        }));
+  // Fetch count on mount
+  useEffect(() => {
+    fetchCount();
+  }, [fetchCount]);
 
-        setState(prev => ({
-          ...prev,
-          isExecuting: false,
-          actions: prev.actions.map(action => 
-            actionIds.includes(action.id)
-              ? { 
-                  ...action, 
-                  status: results.find(r => r.actionId === action.id)?.success ? "completed" : "failed" as AutopilotActionStatus 
-                }
-              : action
-          ),
-          lastUpdate: new Date()
-        }));
+  // ── Legacy compatibility layer ──
+  const pendingActions = recommendations;
+  const selectedActions = recommendations.filter((r) => selectedIds.has(r.id));
 
-        // Log execution activity for each action
-        results.forEach((result) => {
-          const action = state.actions.find(a => a.id === result.actionId);
-          if (action) {
-            logActivity({
-              activityType: 'autopilot.action.execute',
-              activityData: {
-                title: action.title,
-                category: action.category,
-                success: result.success,
-                priority: action.priority
-              },
-              contextData: {
-                action_id: action.id
-              }
-            });
-          }
-        });
-
-        resolve(results);
-      }, 2000); // 2 second execution time
+  const toggleActionSelection = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
     });
   };
 
-  const toggleActionSelection = (actionId: string) => {
-    const action = state.actions.find(a => a.id === actionId);
-    const willBeSelected = action ? !action.selected : false;
-    
-    setState(prev => ({
-      ...prev,
-      actions: prev.actions.map(action =>
-        action.id === actionId 
-          ? { ...action, selected: !action.selected }
-          : action
-      )
-    }));
-
-    // Log selection activity
-    if (action && willBeSelected) {
-      logActivity({
-        activityType: 'autopilot.action.select',
-        activityData: {
-          title: action.title,
-          category: action.category,
-          priority: action.priority
-        },
-        contextData: {
-          action_id: actionId
-        }
-      });
+  const executeActions = async (ids: string[]) => {
+    setIsExecuting(true);
+    const results: { actionId: string; success: boolean; message?: string }[] = [];
+    for (const id of ids) {
+      const vtid = await activateRecommendation(id);
+      results.push({ actionId: id, success: !!vtid, message: vtid ? `VTID: ${vtid}` : "Failed" });
     }
+    setIsExecuting(false);
+    return results;
   };
 
-  const dismissActions = (actionIds: string[]) => {
-    // Log dismiss activity for each action
-    actionIds.forEach(actionId => {
-      const action = state.actions.find(a => a.id === actionId);
-      if (action) {
-        logActivity({
-          activityType: 'autopilot.action.dismiss',
-          activityData: {
-            title: action.title,
-            category: action.category,
-            priority: action.priority
-          },
-          contextData: {
-            action_id: actionId
-          }
-        });
-      }
-    });
-
-    setState(prev => ({
-      ...prev,
-      actions: prev.actions.map(action =>
-        actionIds.includes(action.id)
-          ? { ...action, status: "skipped" as AutopilotActionStatus }
-          : action
-      )
-    }));
+  const dismissActions = (ids: string[]) => {
+    ids.forEach((id) => dismissRecommendation(id));
   };
 
-  const getLatestActions = (count: number = 2) => {
-    return pendingActions
-      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
-      .slice(0, count);
-  };
+  const getLatestActions = (count = 2) => recommendations.slice(0, count);
 
   return {
-    state,
-    pendingActions,
+    recommendations,
     pendingCount,
+    loading,
+    error,
+    isExecuting,
+    fetchRecommendations,
+    activateRecommendation,
+    dismissRecommendation,
+    pendingActions,
     selectedActions,
     executeActions,
-    toggleActionSelection, 
+    toggleActionSelection,
     dismissActions,
     getLatestActions,
-    isExecuting: state.isExecuting
   };
 }
