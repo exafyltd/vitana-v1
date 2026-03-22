@@ -1543,6 +1543,7 @@ export type Database = {
           suggested_files: string[] | null
           suggested_tests: string[] | null
           summary: string
+          time_estimate_seconds: number | null
           title: string
           updated_at: string | null
           user_id: string | null
@@ -1569,6 +1570,7 @@ export type Database = {
           suggested_files?: string[] | null
           suggested_tests?: string[] | null
           summary: string
+          time_estimate_seconds?: number | null
           title: string
           updated_at?: string | null
           user_id?: string | null
@@ -1595,6 +1597,7 @@ export type Database = {
           suggested_files?: string[] | null
           suggested_tests?: string[] | null
           summary?: string
+          time_estimate_seconds?: number | null
           title?: string
           updated_at?: string | null
           user_id?: string | null
@@ -11484,9 +11487,11 @@ export type Database = {
           deleted_at: string | null
           deleted_by: string | null
           description: string | null
+          failure_count: number | null
           id: string
           is_terminal: boolean | null
           is_test: boolean
+          last_failure_at: string | null
           layer: string
           metadata: Json
           module: string
@@ -11522,9 +11527,11 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           description?: string | null
+          failure_count?: number | null
           id?: string
           is_terminal?: boolean | null
           is_test?: boolean
+          last_failure_at?: string | null
           layer: string
           metadata?: Json
           module: string
@@ -11560,9 +11567,11 @@ export type Database = {
           deleted_at?: string | null
           deleted_by?: string | null
           description?: string | null
+          failure_count?: number | null
           id?: string
           is_terminal?: boolean | null
           is_test?: boolean
+          last_failure_at?: string | null
           layer?: string
           metadata?: Json
           module?: string
@@ -12640,25 +12649,47 @@ export type Database = {
         Args: { user_id_param: string }
         Returns: undefined
       }
-      insert_autopilot_recommendation: {
-        Args: {
-          p_domain: string
-          p_effort_score: number
-          p_expires_days?: number
-          p_fingerprint: string
-          p_impact_score: number
-          p_risk_level: string
-          p_run_id: string
-          p_source_ref: string
-          p_source_type: string
-          p_suggested_endpoints?: string[]
-          p_suggested_files?: string[]
-          p_suggested_tests?: string[]
-          p_summary: string
-          p_title: string
-        }
-        Returns: Json
-      }
+      insert_autopilot_recommendation:
+        | {
+            Args: {
+              p_domain: string
+              p_effort_score: number
+              p_expires_days?: number
+              p_fingerprint: string
+              p_impact_score: number
+              p_risk_level: string
+              p_run_id: string
+              p_source_ref: string
+              p_source_type: string
+              p_suggested_endpoints?: string[]
+              p_suggested_files?: string[]
+              p_suggested_tests?: string[]
+              p_summary: string
+              p_title: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_domain: string
+              p_effort_score: number
+              p_expires_days?: number
+              p_fingerprint: string
+              p_impact_score: number
+              p_risk_level: string
+              p_run_id: string
+              p_source_ref: string
+              p_source_type: string
+              p_suggested_endpoints?: string[]
+              p_suggested_files?: string[]
+              p_suggested_tests?: string[]
+              p_summary: string
+              p_time_estimate_seconds?: number
+              p_title: string
+              p_user_id?: string
+            }
+            Returns: Json
+          }
       is_community_user: { Args: never; Returns: boolean }
       is_exafy_admin: { Args: { user_id_param: string }; Returns: boolean }
       is_group_admin: {
