@@ -128,7 +128,7 @@ export function useAutopilot() {
     setError(null);
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new&limit=20`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new&limit=20&personal_only=true`, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
