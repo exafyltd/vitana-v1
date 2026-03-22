@@ -1,31 +1,33 @@
 
 
-## Autopilot "Could not load recommendations" — Root Cause & Fix
+## Fix Autopilot API Integration
 
-### What's happening
+### Problem
 
-The Autopilot popup calls `GET /api/v1/autopilot/recommendations/count` and `GET /api/v1/autopilot/recommendations?status=new` on the Cloud Run Gateway. These endpoints **don't exist yet** on the gateway — the requests fail with network errors (no CORS headers returned = "Failed to fetch"). The console shows this clearly with repeated `[Autopilot] count fetch error: TypeError: Failed to fetch`.
+The autopilot hook uses `VITE_GATEWAY_BASE` with a manual `/api/v1` append, and silently swallows all fetch errors (showing "All caught up!" instead of surfacing the real issue). The user confirms the API exists and is deployed.
 
-### Fix: Graceful fallback when API is unavailable
-
-Since the gateway endpoints aren't deployed yet, the Autopilot should **silently fall back to an empty state** ("All caught up!") instead of showing a scary error. Once the backend endpoints are live, it will automatically start showing real data.
+### Changes
 
 **File: `src/hooks/use-autopilot.ts`**
 
-1. In `fetchCount` (~line 105): catch block already handles this — no change needed.
+1. Replace the gateway URL construction to match the pattern used elsewhere:
+   ```typescript
+   const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "";
+   ```
+   Then use `${GATEWAY_URL}/autopilot/recommendations/...` for all endpoints (since `VITE_GATEWAY_URL` already includes `/api/v1`).
 
-2. In `fetchRecommendations` (~line 122): Instead of setting an error state on network failure, treat it as "no recommendations available" — set `recommendations` to `[]` and leave `error` as `null`. Log a debug warning but don't surface it to the user.
+2. Revert the silent error suppression in `fetchRecommendations` — set the error state properly so the error UI renders (the API exists, so errors should be visible for debugging):
+   ```typescript
+   } catch (e: any) {
+     console.error("[Autopilot] fetch error:", e.message);
+     setError(e.message || "Failed to load");
+   }
+   ```
 
-3. Remove the `fetchCount` call from `useEffect` on mount — it fires 5+ times redundantly (visible in logs) and serves no purpose until the endpoint exists. Only call `fetchCount` after activate/reject actions succeed.
+3. Re-enable `fetchCount` on mount so the badge count is fetched when the hook initializes.
 
-4. In `AutopilotPopup.tsx`: Keep the error UI for future use, but it will no longer trigger for "endpoint not found" scenarios.
-
-### Result
-
-- Autopilot card in sidebar: shows 0 badge (no pending count)
-- Clicking Autopilot: shows "All caught up!" instead of an error
-- When the backend endpoint goes live: automatically starts working with real data
+**No changes needed to `AutopilotPopup.tsx`** — it already has proper loading, error, and empty states.
 
 ### Files to modify
-- `src/hooks/use-autopilot.ts` — treat fetch failures as empty results
+- `src/hooks/use-autopilot.ts`
 
