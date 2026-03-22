@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -24,7 +24,10 @@ import {
   Settings, 
   CheckCircle,
   AlertTriangle,
-  Info
+  Info,
+  Loader2,
+  PartyPopper,
+  WifiOff
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -46,12 +49,22 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     executeActions, 
     toggleActionSelection, 
     dismissActions,
-    isExecuting 
+    isExecuting,
+    loading,
+    error,
+    fetchRecommendations,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
   const [showOptions, setShowOptions] = useState(false);
   const [executionProgress, setExecutionProgress] = useState(0);
+
+  // Fetch recommendations when popup opens
+  useEffect(() => {
+    if (open) {
+      fetchRecommendations();
+    }
+  }, [open, fetchRecommendations]);
 
   const getPriorityColor = (priority: AutopilotPriority) => {
     switch (priority) {
@@ -75,7 +88,6 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     setExecutionProgress(0);
     const actionIds = selectedActions.map(a => a.id);
     
-    // Animate progress
     const progressInterval = setInterval(() => {
       setExecutionProgress(prev => {
         if (prev >= 100) {
@@ -153,6 +165,114 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     </div>
   );
 
+  // ── Loading state ──
+  const renderLoading = () => (
+    <div className="py-12 flex flex-col items-center justify-center text-center">
+      <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+      <p className="text-sm text-muted-foreground">Loading recommendations…</p>
+    </div>
+  );
+
+  // ── Error state ──
+  const renderError = () => (
+    <div className="py-12 flex flex-col items-center justify-center text-center">
+      <WifiOff className="w-10 h-10 text-destructive mb-4" />
+      <p className="text-sm font-medium mb-1">Could not load recommendations</p>
+      <p className="text-xs text-muted-foreground mb-4">{error}</p>
+      <Button size="sm" variant="outline" onClick={() => fetchRecommendations()}>
+        Try Again
+      </Button>
+    </div>
+  );
+
+  // ── Empty state ──
+  const renderEmpty = () => (
+    <div className="py-12 flex flex-col items-center justify-center text-center">
+      <PartyPopper className="w-10 h-10 text-primary mb-4" />
+      <p className="text-sm font-medium mb-1">All caught up!</p>
+      <p className="text-xs text-muted-foreground">No new recommendations right now. Check back later.</p>
+    </div>
+  );
+
+  const renderContent = () => {
+    if (loading) return renderLoading();
+    if (error) return renderError();
+    if (pendingActions.length === 0) return renderEmpty();
+
+    return (
+      <>
+        <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
+          <div className="space-y-2">
+            {showOptions ? (
+              pendingActions.map((action) => (
+                <ActionItem key={action.id} action={action} showCheckbox={true} />
+              ))
+            ) : (
+              selectedActions.slice(0, 6).map((action) => (
+                <ActionItem key={action.id} action={action} />
+              ))
+            )}
+            
+            {!showOptions && selectedActions.length > 6 && (
+              <div className="text-center py-3">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowOptions(true)}
+                >
+                  {translate('autopilot.popup.moreActions').replace('{count}', String(selectedActions.length - 6))}
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
+
+        <Separator />
+
+        <DialogFooter className="flex-col space-y-3">
+          <div className={cn(
+            "w-full",
+            isMobile 
+              ? "flex flex-col gap-2" 
+              : "flex items-center justify-between"
+          )}>
+            <div className={cn(isMobile ? "flex flex-col gap-2" : "flex space-x-2")}>
+              <Button
+                onClick={handleExecute}
+                disabled={selectedActions.length === 0}
+                className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                {translate('autopilot.popup.go').replace('{count}', String(selectedActions.length))}
+              </Button>
+              <Button variant="outline" onClick={handleNotNow}>
+                {translate('autopilot.popup.notNow')}
+              </Button>
+              {!showOptions && (
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowOptions(true)}
+                >
+                  <Settings className="w-4 h-4 mr-1" />
+                  {translate('autopilot.popup.seeOptions')}
+                </Button>
+              )}
+            </div>
+            
+            <Button
+              variant="link"
+              onClick={handleQuickJump}
+              className="text-sm text-muted-foreground p-0 h-auto"
+            >
+              {translate('autopilot.popup.seeAllInAI')}
+            </Button>
+          </div>
+        </DialogFooter>
+      </>
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={cn(
@@ -166,14 +286,21 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               <Plane className="w-4 h-4 text-red-500" />
             </div>
             <span>{translate('autopilot.popup.title')}</span>
-            <Badge variant="outline" className="ml-2">
-              {translate('autopilot.popup.selectedOf')
-                .replace('{selected}', String(selectedActions.length))
-                .replace('{total}', String(pendingActions.length))}
-            </Badge>
+            {!loading && pendingActions.length > 0 && (
+              <Badge variant="outline" className="ml-2">
+                {translate('autopilot.popup.selectedOf')
+                  .replace('{selected}', String(selectedActions.length))
+                  .replace('{total}', String(pendingActions.length))}
+              </Badge>
+            )}
           </DialogTitle>
           <DialogDescription>
-            {translate('autopilot.popup.readyToExecute').replace('{count}', String(selectedActions.length))}
+            {loading 
+              ? "Checking for new suggestions…"
+              : pendingActions.length > 0
+                ? translate('autopilot.popup.readyToExecute').replace('{count}', String(selectedActions.length))
+                : "Your autopilot recommendations"
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -193,78 +320,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               </span>
             </div>
           </div>
-        ) : (
-          <>
-            <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
-              <div className="space-y-2">
-                {showOptions ? (
-                  pendingActions.map((action) => (
-                    <ActionItem key={action.id} action={action} showCheckbox={true} />
-                  ))
-                ) : (
-                  selectedActions.slice(0, 6).map((action) => (
-                    <ActionItem key={action.id} action={action} />
-                  ))
-                )}
-                
-                {!showOptions && selectedActions.length > 6 && (
-                  <div className="text-center py-3">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => setShowOptions(true)}
-                    >
-                      {translate('autopilot.popup.moreActions').replace('{count}', String(selectedActions.length - 6))}
-                      <ChevronRight className="w-4 h-4 ml-1" />
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </ScrollArea>
-
-            <Separator />
-
-            <DialogFooter className="flex-col space-y-3">
-              <div className={cn(
-                "w-full",
-                isMobile 
-                  ? "flex flex-col gap-2" 
-                  : "flex items-center justify-between"
-              )}>
-                <div className={cn(isMobile ? "flex flex-col gap-2" : "flex space-x-2")}>
-                  <Button
-                    onClick={handleExecute}
-                    disabled={selectedActions.length === 0}
-                    className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
-                  >
-                    <Zap className="w-4 h-4 mr-2" />
-                    {translate('autopilot.popup.go').replace('{count}', String(selectedActions.length))}
-                  </Button>
-                  <Button variant="outline" onClick={handleNotNow}>
-                    {translate('autopilot.popup.notNow')}
-                  </Button>
-                  {!showOptions && (
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setShowOptions(true)}
-                    >
-                      <Settings className="w-4 h-4 mr-1" />
-                      {translate('autopilot.popup.seeOptions')}
-                    </Button>
-                  )}
-                </div>
-                
-                <Button
-                  variant="link"
-                  onClick={handleQuickJump}
-                  className="text-sm text-muted-foreground p-0 h-auto"
-                >
-                  {translate('autopilot.popup.seeAllInAI')}
-                </Button>
-              </div>
-            </DialogFooter>
-          </>
-        )}
+        ) : renderContent()}
       </DialogContent>
     </Dialog>
   );
