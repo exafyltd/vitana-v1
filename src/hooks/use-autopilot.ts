@@ -134,8 +134,8 @@ export function useAutopilot() {
         throw new Error(json.error ?? "Unknown error");
       }
     } catch (e: any) {
-      console.warn("[Autopilot] API unavailable, falling back to empty:", e.message);
-      setRecommendations([]);
+      console.error("[Autopilot] fetch error:", e.message);
+      setError(e.message || "Failed to load recommendations");
     } finally {
       setLoading(false);
     }
