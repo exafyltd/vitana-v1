@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { AutopilotAction, AutopilotState, AutopilotPriority, AutopilotCategory, ExecutionResult, AutopilotActionStatus } from "@/types/autopilot";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
@@ -20,22 +21,49 @@ export interface AutopilotRecommendation {
   status: string;
 }
 
-interface UseAutopilotReturn {
-  recommendations: AutopilotRecommendation[];
-  pendingCount: number;
-  loading: boolean;
-  error: string | null;
-  isExecuting: boolean;
-  fetchRecommendations: () => Promise<void>;
-  activateRecommendation: (id: string) => Promise<string | null>;
-  dismissRecommendation: (id: string) => Promise<boolean>;
-  // Legacy compat fields used by sidebar / chips
-  pendingActions: AutopilotRecommendation[];
-  selectedActions: AutopilotRecommendation[];
-  executeActions: (ids: string[]) => Promise<{ actionId: string; success: boolean; message?: string }[]>;
-  toggleActionSelection: (id: string) => void;
-  dismissActions: (ids: string[]) => void;
-  getLatestActions: (count?: number) => AutopilotRecommendation[];
+// Domain → category mapping
+function domainToCategory(domain: string): AutopilotCategory {
+  const map: Record<string, AutopilotCategory> = {
+    health: "health", wellness: "health", fitness: "health",
+    community: "community", social: "community",
+    media: "media", content: "media",
+    discover: "discover", learning: "discover",
+    calendar: "calendar", schedule: "calendar",
+  };
+  return map[domain?.toLowerCase()] ?? "discover";
+}
+
+// Risk → priority mapping
+function riskToPriority(risk: string): AutopilotPriority {
+  const map: Record<string, AutopilotPriority> = { high: "high", critical: "high", medium: "medium", low: "low" };
+  return map[risk?.toLowerCase()] ?? "medium";
+}
+
+// Domain → icon mapping
+function domainToIcon(domain: string): string {
+  const map: Record<string, string> = {
+    health: "🩺", wellness: "🧘", fitness: "💪",
+    community: "👥", social: "🎉",
+    media: "📸", content: "✍️",
+    discover: "✨", learning: "📚",
+    calendar: "📅", schedule: "⏰",
+  };
+  return map[domain?.toLowerCase()] ?? "✨";
+}
+
+function recToAction(rec: AutopilotRecommendation, index: number): AutopilotAction {
+  return {
+    id: rec.id,
+    title: rec.title,
+    reason: rec.summary,
+    category: domainToCategory(rec.domain),
+    priority: riskToPriority(rec.risk_level),
+    timeEstimate: rec.estimated_duration || undefined,
+    icon: domainToIcon(rec.domain),
+    timestamp: new Date(),
+    status: "pending" as AutopilotActionStatus,
+    selected: true,
+  };
 }
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
@@ -49,17 +77,29 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
   };
 }
 
-export function useAutopilot(): UseAutopilotReturn {
+export function useAutopilot() {
   const { user } = useAuth();
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
 
   const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
-  const [pendingCount, setPendingCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isExecuting, setIsExecuting] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
+  const [state, setState] = useState<AutopilotState>({
+    actions: [],
+    isExecuting: false,
+    lastUpdate: new Date(),
+  });
+
+  // Keep state.actions in sync with recommendations
+  useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      actions: recommendations.map((r, i) => recToAction(r, i)),
+      lastUpdate: new Date(),
+    }));
+  }, [recommendations]);
 
   // Fetch badge count
   const fetchCount = useCallback(async () => {
@@ -67,9 +107,12 @@ export function useAutopilot(): UseAutopilotReturn {
     try {
       const headers = await getAuthHeaders();
       const res = await fetch(`${API_BASE}/autopilot/recommendations/count`, { headers });
-      if (!res.ok) throw new Error(`Count fetch failed: ${res.status}`);
+      if (!res.ok) return;
       const json = await res.json();
-      if (json.ok) setPendingCount(json.count ?? 0);
+      if (json.ok) {
+        // Update actions array length info but don't overwrite actual data
+        console.log("[Autopilot] badge count:", json.count);
+      }
     } catch (e) {
       console.warn("[Autopilot] count fetch error:", e);
     }
@@ -86,11 +129,7 @@ export function useAutopilot(): UseAutopilotReturn {
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
-        const recs: AutopilotRecommendation[] = json.recommendations ?? [];
-        setRecommendations(recs);
-        setPendingCount(json.count ?? recs.length);
-        // Auto-select all by default
-        setSelectedIds(new Set(recs.map((r) => r.id)));
+        setRecommendations(json.recommendations ?? []);
       } else {
         throw new Error(json.error ?? "Unknown error");
       }
@@ -114,8 +153,6 @@ export function useAutopilot(): UseAutopilotReturn {
       const json = await res.json();
       if (json.ok) {
         setRecommendations((prev) => prev.filter((r) => r.id !== id));
-        setPendingCount((prev) => Math.max(0, prev - 1));
-        setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
         return json.vtid ?? null;
       }
       return null;
@@ -137,8 +174,6 @@ export function useAutopilot(): UseAutopilotReturn {
       const json = await res.json();
       if (json.ok) {
         setRecommendations((prev) => prev.filter((r) => r.id !== id));
-        setPendingCount((prev) => Math.max(0, prev - 1));
-        setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
         return true;
       }
       return false;
@@ -153,49 +188,53 @@ export function useAutopilot(): UseAutopilotReturn {
     fetchCount();
   }, [fetchCount]);
 
-  // ── Legacy compatibility layer ──
-  const pendingActions = recommendations;
-  const selectedActions = recommendations.filter((r) => selectedIds.has(r.id));
+  // ── Legacy compatibility ──
 
-  const toggleActionSelection = (id: string) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
+  const pendingActions = state.actions.filter((a) => a.status === "pending");
+  const pendingCount = pendingActions.length;
+  const selectedActions = pendingActions.filter((a) => a.selected);
+
+  const toggleActionSelection = (actionId: string) => {
+    setState((prev) => ({
+      ...prev,
+      actions: prev.actions.map((a) =>
+        a.id === actionId ? { ...a, selected: !a.selected } : a
+      ),
+    }));
   };
 
-  const executeActions = async (ids: string[]) => {
-    setIsExecuting(true);
-    const results: { actionId: string; success: boolean; message?: string }[] = [];
-    for (const id of ids) {
+  const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
+    setState((prev) => ({ ...prev, isExecuting: true }));
+    const results: ExecutionResult[] = [];
+    for (const id of actionIds) {
       const vtid = await activateRecommendation(id);
       results.push({ actionId: id, success: !!vtid, message: vtid ? `VTID: ${vtid}` : "Failed" });
     }
-    setIsExecuting(false);
+    setState((prev) => ({ ...prev, isExecuting: false }));
     return results;
   };
 
-  const dismissActions = (ids: string[]) => {
-    ids.forEach((id) => dismissRecommendation(id));
+  const dismissActions = (actionIds: string[]) => {
+    actionIds.forEach((id) => dismissRecommendation(id));
   };
 
-  const getLatestActions = (count = 2) => recommendations.slice(0, count);
+  const getLatestActions = (count = 2) => pendingActions.slice(0, count);
 
   return {
+    state,
     recommendations,
-    pendingCount,
-    loading,
-    error,
-    isExecuting,
-    fetchRecommendations,
-    activateRecommendation,
-    dismissRecommendation,
     pendingActions,
+    pendingCount,
     selectedActions,
     executeActions,
     toggleActionSelection,
     dismissActions,
     getLatestActions,
+    isExecuting: state.isExecuting,
+    loading,
+    error,
+    fetchRecommendations,
+    activateRecommendation,
+    dismissRecommendation,
   };
 }
