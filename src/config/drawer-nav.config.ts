@@ -11,6 +11,7 @@ import {
   Plug,
   Mail,
   UserCircle,
+  Trash2,
   LogOut,
   type LucideIcon,
 } from 'lucide-react';
