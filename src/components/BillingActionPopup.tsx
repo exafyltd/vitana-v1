@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { CreditCard, Download, Star, Calendar, Users, Zap } from "lucide-react";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface BillingActionPopupProps {
   isOpen: boolean;
