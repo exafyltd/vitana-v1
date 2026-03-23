@@ -22,6 +22,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { PhotoGallery } from "../gallery/PhotoGallery";
 import { VideoGallery } from "../gallery/VideoGallery";
+import { MusicGallery } from "../gallery/MusicGallery";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { useAuth } from "@/context/AuthProvider";
