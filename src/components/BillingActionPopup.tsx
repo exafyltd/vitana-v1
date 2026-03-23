@@ -46,24 +46,28 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
         
         <div className="space-y-6">
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex-col gap-2"
-              onClick={() => setActiveTab("payment")}
-            >
-              <CreditCard className="w-6 h-6" />
-              <span className="text-sm">Add Payment</span>
-            </Button>
+          <div className={`grid grid-cols-2 ${isIAPRestricted() ? '' : 'md:grid-cols-4'} gap-4`}>
+            {!isIAPRestricted() && (
+              <Button
+                variant="outline"
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => setActiveTab("payment")}
+              >
+                <CreditCard className="w-6 h-6" />
+                <span className="text-sm">Add Payment</span>
+              </Button>
+            )}
 
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex-col gap-2"
-              onClick={() => setActiveTab("upgrade")}
-            >
-              <Star className="w-6 h-6" />
-              <span className="text-sm">Upgrade Plan</span>
-            </Button>
+            {!isIAPRestricted() && (
+              <Button
+                variant="outline"
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => setActiveTab("upgrade")}
+              >
+                <Star className="w-6 h-6" />
+                <span className="text-sm">Upgrade Plan</span>
+              </Button>
+            )}
 
             <Button
               variant="outline"
