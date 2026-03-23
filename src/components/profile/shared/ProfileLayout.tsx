@@ -34,6 +34,7 @@ import { MilestoneTimeline } from "../milestones/MilestoneTimeline";
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { PhotoGallery } from "../gallery/PhotoGallery";
 import { VideoGallery } from "../gallery/VideoGallery";
+import { MusicGallery } from "../gallery/MusicGallery";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { ShareProfileModal } from "./ShareProfileModal";
 import { useProfileShare } from "@/hooks/useProfileShare";
