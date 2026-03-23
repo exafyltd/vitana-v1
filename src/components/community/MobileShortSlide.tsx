@@ -1,10 +1,12 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { Heart, Share2, MessageCircle, ArrowLeft, Volume2, VolumeX, Play, Pause } from 'lucide-react';
+import { Heart, Share2, ArrowLeft, Volume2, VolumeX, Play, Pause, Loader2, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
+
+type VideoState = 'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error';
 
 interface MobileShortSlideProps {
   video: {
@@ -38,13 +40,13 @@ export function MobileShortSlide({
   const videoRef = useRef<HTMLVideoElement>(null);
   const { translate } = useTranslation();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [videoState, setVideoState] = useState<VideoState>('loading');
+  const stallTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   // Start unmuted on mobile - user preference stored in sessionStorage
-  // This ensures Shorts have sound by default when user opens them
   const [isMuted, setIsMuted] = useState(() => {
     try {
       const saved = sessionStorage.getItem('shorts_audio_enabled');
-      // Default to FALSE (unmuted/sound ON) if user hasn't set preference
-      // This fixes the "no audio" issue on mobile
       return saved === 'false';
     } catch {
       return false; // Default: sound ON
@@ -54,41 +56,146 @@ export function MobileShortSlide({
   const [showHeartAnimation, setShowHeartAnimation] = useState(false);
   const lastTapRef = useRef<number>(0);
 
+  const clearStallTimer = useCallback(() => {
+    if (stallTimerRef.current) {
+      clearTimeout(stallTimerRef.current);
+      stallTimerRef.current = null;
+    }
+  }, []);
+
+  const startStallTimer = useCallback((ms: number) => {
+    clearStallTimer();
+    stallTimerRef.current = setTimeout(() => {
+      setVideoState(prev => {
+        // Only set stalled if we're not already playing or in error
+        if (prev !== 'playing' && prev !== 'error') return 'stalled';
+        return prev;
+      });
+    }, ms);
+  }, [clearStallTimer]);
+
+  // Cleanup stall timer on unmount
+  useEffect(() => {
+    return () => clearStallTimer();
+  }, [clearStallTimer]);
+
   // Handle autoplay when slide becomes active
   useEffect(() => {
     if (!videoRef.current) return;
 
     if (isActive) {
+      setVideoState('loading');
       videoRef.current.currentTime = 0;
-      // Apply current mute state and volume
       videoRef.current.muted = isMuted;
       videoRef.current.volume = 1;
-      
+
       videoRef.current.play().then(() => {
         setIsPlaying(true);
-        // If playing with sound, notify Soundscape to pause
+        setVideoState('playing');
         if (!isMuted) {
-          window.dispatchEvent(new CustomEvent('foreground-audio-intent', { 
-            detail: { source: 'shorts-autoplay' } 
+          window.dispatchEvent(new CustomEvent('foreground-audio-intent', {
+            detail: { source: 'shorts-autoplay' }
           }));
         }
       }).catch(() => {
-        // Autoplay blocked, user needs to tap
+        // Autoplay blocked — try muted fallback (iPad often requires muted autoplay)
         setIsPlaying(false);
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          videoRef.current.play().then(() => {
+            setIsPlaying(true);
+            setVideoState('playing');
+            setIsMuted(true);
+          }).catch(() => {
+            setVideoState('autoplay-blocked');
+          });
+        }
       });
     } else {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
       setIsPlaying(false);
+      clearStallTimer();
     }
-  }, [isActive, isMuted]);
+  }, [isActive, isMuted, clearStallTimer]);
+
+  // Video event handlers
+  const handleCanPlay = useCallback(() => {
+    clearStallTimer();
+    setVideoState(prev => prev === 'loading' ? 'ready' : prev);
+  }, [clearStallTimer]);
+
+  const handleLoadedData = useCallback(() => {
+    clearStallTimer();
+  }, [clearStallTimer]);
+
+  const handlePlaying = useCallback(() => {
+    clearStallTimer();
+    setVideoState('playing');
+    setIsPlaying(true);
+  }, [clearStallTimer]);
+
+  const handlePause = useCallback(() => {
+    if (videoState !== 'error' && videoState !== 'stalled' && videoState !== 'autoplay-blocked') {
+      setVideoState('paused');
+    }
+    setIsPlaying(false);
+  }, [videoState]);
+
+  const handleWaiting = useCallback(() => {
+    if (isActive) startStallTimer(5000);
+  }, [isActive, startStallTimer]);
+
+  const handleStalled = useCallback(() => {
+    if (isActive) startStallTimer(5000);
+  }, [isActive, startStallTimer]);
+
+  const handleError = useCallback(() => {
+    clearStallTimer();
+    setVideoState('error');
+    setIsPlaying(false);
+  }, [clearStallTimer]);
+
+  // Manual play handler for autoplay-blocked / retry
+  const handleManualPlay = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    setVideoState('loading');
+    videoRef.current.play().then(() => {
+      setIsPlaying(true);
+      setVideoState('playing');
+    }).catch(() => {
+      videoRef.current!.muted = true;
+      videoRef.current!.play().then(() => {
+        setIsPlaying(true);
+        setVideoState('playing');
+        setIsMuted(true);
+      }).catch(() => {
+        setVideoState('error');
+      });
+    });
+  }, []);
+
+  // Retry handler for error/stalled
+  const handleRetry = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    setVideoState('loading');
+    // Reload source
+    videoRef.current.load();
+    videoRef.current.play().then(() => {
+      setIsPlaying(true);
+      setVideoState('playing');
+    }).catch(() => {
+      setVideoState('autoplay-blocked');
+    });
+  }, []);
 
   // Handle tap to play/pause
   const handleTap = useCallback(() => {
     const now = Date.now();
     const timeSinceLastTap = now - lastTapRef.current;
-    
-    // Double tap detection for like
+
     if (timeSinceLastTap < 300) {
       onLike();
       setShowHeartAnimation(true);
@@ -96,14 +203,13 @@ export function MobileShortSlide({
       lastTapRef.current = 0;
       return;
     }
-    
+
     lastTapRef.current = now;
-    
-    // Single tap for play/pause (with small delay to detect double tap)
+
     setTimeout(() => {
       if (Date.now() - lastTapRef.current >= 300 && lastTapRef.current !== 0) {
         if (!videoRef.current) return;
-        
+
         if (isPlaying) {
           videoRef.current.pause();
           setIsPlaying(false);
@@ -111,80 +217,115 @@ export function MobileShortSlide({
           videoRef.current.play();
           setIsPlaying(true);
         }
-        
+
         setShowPlayIcon(true);
         setTimeout(() => setShowPlayIcon(false), 500);
       }
     }, 300);
   }, [isPlaying, onLike]);
 
-  // Toggle mute - ensure audio activation on unmute via user gesture
-  // On mobile WebViews, calling play() inside a click handler is required for audio
+  // Toggle mute
   const handleMuteToggle = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
       const newMutedState = !isMuted;
-      console.log('[MobileShortSlide] Toggling mute:', { from: isMuted, to: newMutedState });
-      
-      // Save preference
       try {
         sessionStorage.setItem('shorts_audio_enabled', (!newMutedState).toString());
-      } catch {
-        // sessionStorage may be unavailable
-      }
-      
+      } catch { /* ignore */ }
+
       videoRef.current.muted = newMutedState;
       setIsMuted(newMutedState);
-      
-      // CRITICAL: On mobile WebViews, unmuting requires a user-gesture play() call
-      // to actually enable audio output. Just setting muted=false is not enough.
+
       if (!newMutedState) {
-        // Unmuting - ensure volume is audible and call play() for mobile audio activation
         videoRef.current.volume = 1;
         videoRef.current.play()
-          .then(() => {
-            console.log('[MobileShortSlide] Audio activated via user gesture play()');
-            setIsPlaying(true);
-          })
-          .catch(err => {
-            console.warn('[MobileShortSlide] Play on unmute failed:', err);
-          });
-        
-        // Dispatch event to pause Soundscape (handled by AudioManager)
-        window.dispatchEvent(new CustomEvent('foreground-audio-intent', { 
-          detail: { source: 'shorts' } 
+          .then(() => setIsPlaying(true))
+          .catch(() => { /* ignore */ });
+
+        window.dispatchEvent(new CustomEvent('foreground-audio-intent', {
+          detail: { source: 'shorts' }
         }));
       }
-      
-      console.log('[MobileShortSlide] Video state after toggle:', {
-        muted: videoRef.current.muted,
-        volume: videoRef.current.volume,
-        paused: videoRef.current.paused
-      });
     }
   }, [isMuted]);
 
   const thumbnailUrl = video.thumbnail_url || video.thumbnailImage;
+  const showThumbnailFallback = videoState === 'loading' || videoState === 'error' || videoState === 'stalled' || videoState === 'autoplay-blocked';
 
   return (
-    <div 
+    <div
       className="h-[100dvh] w-full snap-start snap-always relative bg-black flex-shrink-0"
       onClick={handleTap}
     >
+      {/* Thumbnail fallback layer — always behind video */}
+      {thumbnailUrl && showThumbnailFallback && (
+        <img
+          src={thumbnailUrl}
+          alt={video.title}
+          className="absolute inset-0 w-full h-full object-cover z-[1]"
+        />
+      )}
+
       {/* Video */}
       <video
         ref={videoRef}
         src={video.src_url}
         poster={thumbnailUrl}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover z-[2]"
         loop
         muted={isMuted}
         playsInline
+        // @ts-ignore — legacy WebKit attribute for iPad WebView
+        webkit-playsinline=""
+        crossOrigin="anonymous"
         preload={isActive ? "auto" : "metadata"}
+        onCanPlay={handleCanPlay}
+        onLoadedData={handleLoadedData}
+        onPlaying={handlePlaying}
+        onPause={handlePause}
+        onWaiting={handleWaiting}
+        onStalled={handleStalled}
+        onError={handleError}
       />
 
       {/* Gradient overlays for readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none z-[3]" />
+
+      {/* Loading spinner overlay */}
+      {isActive && videoState === 'loading' && (
+        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+          <div className="h-16 w-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+            <Loader2 className="h-8 w-8 text-white animate-spin" />
+          </div>
+        </div>
+      )}
+
+      {/* Autoplay blocked — tap to play */}
+      {isActive && videoState === 'autoplay-blocked' && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <button
+            onClick={handleManualPlay}
+            className="h-20 w-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all active:scale-95"
+          >
+            <Play className="h-10 w-10 text-white ml-1" />
+          </button>
+        </div>
+      )}
+
+      {/* Error / Stalled — tap to retry */}
+      {isActive && (videoState === 'error' || videoState === 'stalled') && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-20 gap-3">
+          <button
+            onClick={handleRetry}
+            className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all active:scale-95"
+          >
+            <RotateCcw className="h-8 w-8 text-white" />
+          </button>
+          <span className="text-white text-sm font-medium drop-shadow-lg">
+            {videoState === 'error' ? 'Failed to load — tap to retry' : 'Buffering — tap to retry'}
+          </span>
+        </div>
+      )}
 
       {/* Top overlay - Back button and labels */}
       <div className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between z-10 safe-area-inset-top">
@@ -199,7 +340,7 @@ export function MobileShortSlide({
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        
+
         <div className="flex items-center gap-2">
           <Badge variant="secondary" className="bg-black/30 backdrop-blur-sm text-white border-none">
             Shorts
