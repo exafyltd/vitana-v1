@@ -17,6 +17,7 @@ import { TokenMarketIntelligenceCard } from "@/components/wallet/intelligence/To
 import { MembershipROIAnalyticsCard } from "@/components/wallet/intelligence/MembershipROIAnalyticsCard";
 import { EarningOptimizationSplitScreen } from "@/components/wallet/intelligence/EarningOptimizationSplitScreen";
 import { CreditCard, Coins, Shield, Plus, TrendingUp } from "lucide-react";
+import { isIAPRestricted } from "@/lib/appilix";
 import { useState } from "react";
 import {
   Dialog,
