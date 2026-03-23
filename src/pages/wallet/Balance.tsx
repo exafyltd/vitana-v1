@@ -110,10 +110,12 @@ function Balance() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
           <UniversalCalendarButton />
-          <Button size="sm" onClick={contextualAction.onClick}>
-            <contextualAction.icon className="h-4 w-4 mr-2" />
-            {contextualAction.label}
-          </Button>
+          {contextualAction && (
+            <Button size="sm" onClick={contextualAction.onClick}>
+              <contextualAction.icon className="h-4 w-4 mr-2" />
+              {contextualAction.label}
+            </Button>
+          )}
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
