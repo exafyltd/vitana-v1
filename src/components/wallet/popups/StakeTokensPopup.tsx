@@ -21,11 +21,12 @@ interface StakeTokensPopupProps {
 }
 
 export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) {
-  if (isIAPRestricted()) return null;
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [stakeAmount, setStakeAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const vtnaBalance = getBalance('VTNA') || 0;
   const stakingPeriods = [
