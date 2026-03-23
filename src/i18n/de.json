@@ -2423,6 +2423,7 @@
     "connectors": "Connectors",
     "inbox": "Postfach",
     "profile": "Profil",
+    "deleteAccount": "Konto löschen",
     "logout": "Abmelden"
   },
   "milestones": {
