@@ -411,7 +411,7 @@ export default function Wallet() {
                   change="+5.7%"
                   changeType="increase"
                   isLoading={!isLoaded}
-                  onPress={() => handleWalletAction('stake-tokens')}
+                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('stake-tokens')}
                 />
                 
                 {/* Quick Actions Card */}
@@ -517,7 +517,7 @@ export default function Wallet() {
                     description="Vitana Network Tokens for governance and staking rewards"
                     className="h-full"
                     isLoading={!isLoaded}
-                    primaryAction={{
+                    primaryAction={isIAPRestricted() ? undefined : {
                       label: "Stake Tokens",
                       onClick: () => handleWalletAction('stake-tokens'),
                       icon: Coins,

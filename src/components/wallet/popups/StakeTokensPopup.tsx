@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Coins, TrendingUp, Shield, Loader2 } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface StakeTokensPopupProps {
   open: boolean;
@@ -24,6 +25,8 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
   const { toast } = useToast();
   const [stakeAmount, setStakeAmount] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isIAPRestricted()) return null;
 
   const vtnaBalance = getBalance('VTNA') || 0;
   const stakingPeriods = [

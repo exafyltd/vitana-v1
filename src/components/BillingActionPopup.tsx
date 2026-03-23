@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { CreditCard, Download, Star, Calendar, Users, Zap } from "lucide-react";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface BillingActionPopupProps {
   isOpen: boolean;
@@ -45,24 +46,28 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
         
         <div className="space-y-6">
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex-col gap-2"
-              onClick={() => setActiveTab("payment")}
-            >
-              <CreditCard className="w-6 h-6" />
-              <span className="text-sm">Add Payment</span>
-            </Button>
+          <div className={`grid grid-cols-2 ${isIAPRestricted() ? '' : 'md:grid-cols-4'} gap-4`}>
+            {!isIAPRestricted() && (
+              <Button
+                variant="outline"
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => setActiveTab("payment")}
+              >
+                <CreditCard className="w-6 h-6" />
+                <span className="text-sm">Add Payment</span>
+              </Button>
+            )}
 
-            <Button
-              variant="outline"
-              className="h-auto p-4 flex-col gap-2"
-              onClick={() => setActiveTab("upgrade")}
-            >
-              <Star className="w-6 h-6" />
-              <span className="text-sm">Upgrade Plan</span>
-            </Button>
+            {!isIAPRestricted() && (
+              <Button
+                variant="outline"
+                className="h-auto p-4 flex-col gap-2"
+                onClick={() => setActiveTab("upgrade")}
+              >
+                <Star className="w-6 h-6" />
+                <span className="text-sm">Upgrade Plan</span>
+              </Button>
+            )}
 
             <Button
               variant="outline"
@@ -86,7 +91,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
           <Separator />
 
           {/* Add Payment Method */}
-          {activeTab === "payment" && (
+          {!isIAPRestricted() && activeTab === "payment" && (
             <Card>
               <CardHeader>
                 <CardTitle>Add Payment Method</CardTitle>
@@ -125,7 +130,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
           )}
 
           {/* Upgrade Plan */}
-          {activeTab === "upgrade" && (
+          {!isIAPRestricted() && activeTab === "upgrade" && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Available Upgrades</h3>
               <div className="grid gap-4">
