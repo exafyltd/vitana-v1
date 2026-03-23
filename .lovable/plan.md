@@ -1,38 +1,36 @@
 
 
-## Add "Delete Account" to the Profile Drawer
+## Make "Delete Account" Accessible on Mobile
 
 ### Problem
 
-The Delete Account link only appears on the sign-in page footer. Once authenticated, mobile users have no way to reach it — there's no mobile Settings screen.
+The "Delete Account" button was added to `ProfileDrawer`, but that component is only rendered in the **desktop sidebar** (triggered by the avatar). On mobile, navigation uses `SideDrawerNav` which reads from `drawer-nav.config.ts` — the ProfileDrawer is never shown.
 
 ### Fix
 
-Add a "Delete Account" link to `ProfileDrawer.tsx`, visible to all authenticated users (mobile and desktop). Place it after the "Edit Profile" button, separated by a divider, styled as a destructive ghost button with a `Trash2` icon.
+Add a "Delete Account" entry to the mobile side drawer, placed just before "Log Out" so it's easy to find.
 
 ### Changes
 
-**File: `src/components/profile/ProfileDrawer.tsx`**
-
+**File: `src/config/drawer-nav.config.ts`**
 1. Import `Trash2` from `lucide-react`
-2. After the "Edit Profile" button block (line ~148), add a `Separator` followed by a destructive "Delete Account" button:
+2. Add a new nav item before `logout`:
+   ```typescript
+   { id: 'delete-account', route: '/delete-account', icon: Trash2, translationKey: 'drawerNav.deleteAccount' }
+   ```
 
-```tsx
-<Separator />
-<div className="space-y-2">
-  <DrawerClose asChild>
-    <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
-      <Link to="/delete-account">
-        <Trash2 className="mr-2 h-4 w-4" />
-        Delete Account
-      </Link>
-    </Button>
-  </DrawerClose>
-</div>
-```
+**File: `src/components/mobile/SideDrawerNav.tsx`**
+3. Style the `delete-account` item with destructive colors (same treatment as `logout`):
+   ```typescript
+   const isDestructive = item.id === 'logout' || item.id === 'delete-account';
+   ```
+   Use `isDestructive` instead of `isLogout` for the red styling.
+
+**File: Translation config** (wherever `drawerNav.*` keys are defined)
+4. Add `drawerNav.deleteAccount` translation key (e.g., "Delete Account" / "Konto löschen")
 
 ### Result
-- Authenticated users on any device can reach account deletion from their profile drawer
-- Styled as a clearly destructive action, visually distinct from other options
-- One file change only
+- Mobile users see "Delete Account" in the side drawer, styled in red, just above "Log Out"
+- Desktop users still have it in the ProfileDrawer (unchanged)
+- One consistent path: both lead to `/delete-account`
 
