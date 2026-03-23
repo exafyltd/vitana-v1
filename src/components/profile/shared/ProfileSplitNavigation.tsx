@@ -137,6 +137,7 @@ export function ProfileSplitNavigation({
             isUploading={uploadPhoto.isPending}
           />
           <VideoGallery userId={profileUserId} />
+          <MusicGallery userId={profileUserId} />
         </div>
       </SplitBarContent>
 

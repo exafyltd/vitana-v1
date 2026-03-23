@@ -292,6 +292,7 @@ export function ProfileLayout({
                 isUploading={uploadPhoto.isPending}
               />
               <VideoGallery userId={profileUserId} />
+              <MusicGallery userId={profileUserId} />
             </div>
           )}
 
