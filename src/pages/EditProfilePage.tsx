@@ -431,6 +431,7 @@ export default function EditProfilePage() {
                   isUploading={uploadPhoto.isPending}
                 />
                 <VideoGallery userId={user?.id} />
+                <MusicGallery userId={user?.id} />
               </div>
             )}
             
