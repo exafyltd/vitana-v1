@@ -1,4 +1,4 @@
-import { Play, ImageIcon, ChevronRight } from "lucide-react";
+import { Play, ImageIcon, ChevronRight, Music } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { Upload } from "lucide-react";
+import { MusicGallery } from "@/components/profile/gallery/MusicGallery";
 
 interface MobileMediaTabContentProps {
   userId?: string;
@@ -122,6 +123,9 @@ export function MobileMediaTabContent({
         {translate('profileMedia.viewAllCta', 'View all media')}
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
       </button>
+
+      {/* Music Gallery */}
+      <MusicGallery userId={userId} />
     </div>
   );
 }
