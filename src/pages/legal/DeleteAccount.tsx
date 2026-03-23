@@ -211,7 +211,7 @@ const DeleteAccount = () => {
         {step === "done" && (
           <Card>
             <CardContent className="text-center py-10 space-y-4">
-              <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto" />
+              <CheckCircle2 className="h-12 w-12 text-primary mx-auto" />
               <h2 className="text-xl font-semibold text-foreground">Account Deleted</h2>
               <p className="text-muted-foreground text-sm">
                 Your account and associated data have been permanently deleted.
