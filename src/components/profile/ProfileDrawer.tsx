@@ -15,7 +15,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Building } from "lucide-react";
+import { User, LogOut, Shield, Building, Trash2 } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole, UserRole } from "@/hooks/useRole";
