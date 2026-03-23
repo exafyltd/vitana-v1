@@ -11,6 +11,7 @@ import {
   Plug,
   Mail,
   UserCircle,
+  Trash2,
   LogOut,
   type LucideIcon,
 } from 'lucide-react';
@@ -34,6 +35,7 @@ export const drawerNavItems: DrawerNavItem[] = [
   { id: 'diary',      route: '/daily-diary',             icon: BookOpen,    translationKey: 'drawerNav.diary' },
   { id: 'connectors', route: '/settings/connected-apps', icon: Plug,        translationKey: 'drawerNav.connectors' },
   { id: 'inbox',      route: '/inbox',                   icon: Mail,        translationKey: 'drawerNav.inbox' },
-  { id: 'profile',    route: '/me/profile',              icon: UserCircle,  translationKey: 'drawerNav.profile' },
-  { id: 'logout',     route: '__logout__',               icon: LogOut,      translationKey: 'drawerNav.logout' },
+  { id: 'profile',         route: '/me/profile',              icon: UserCircle,  translationKey: 'drawerNav.profile' },
+  { id: 'delete-account',  route: '/delete-account',          icon: Trash2,      translationKey: 'drawerNav.deleteAccount' },
+  { id: 'logout',          route: '__logout__',               icon: LogOut,      translationKey: 'drawerNav.logout' },
 ];
