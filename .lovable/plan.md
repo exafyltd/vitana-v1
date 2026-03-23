@@ -1,50 +1,23 @@
 
 
-## Add Music Gallery to Profile Media Tab
+## Fix: Music Gallery Not Visible in Profile Media Tab
 
-### What
-Add a "Music Gallery" section alongside the existing Photo Gallery and Video Gallery in the profile's Media tab. Users can upload, play, and delete audio tracks from their profile — same pattern as the Media Hub music feature but scoped to the user's profile.
+### Investigation
+The code is correctly wired: `MusicGallery` is imported and placed at line 295 of `ProfileLayout.tsx`, right after `VideoGallery`. The component logic is sound — when the user is the profile owner and has no tracks, it should show a dashed-border empty state with "No music yet" and an "Add your first track" button.
 
-### Changes
+### Likely Cause
+The empty state is too subtle — it blends in with the page background. The dashed border + `bg-muted/30` is nearly invisible, especially on mobile where the user might think the page ends after the Video Gallery section.
 
-**New file: `src/components/profile/gallery/MusicUploadDialog.tsx`**
-- Dialog with file input accepting audio formats (MP3, WAV, FLAC, AAC, OGG, M4A)
-- Fields: title (required), description (optional), genre (optional), visibility toggle
-- 50MB limit, file materialization for mobile reliability
-- Progress bar during upload
-- Mirrors `VideoUploadDialog` structure
+### Fix (2 changes in 1 file)
 
-**New file: `src/components/profile/gallery/MusicGallery.tsx`**
-- Mirrors `VideoGallery` structure:
-  - Query `media_uploads` where `media_type = 'music'` for the target user
-  - Owner sees "Upload Music" button and delete controls
-  - Non-owner with no tracks: component returns null
-  - Each track row: play/pause button, title, artist (from `music_metadata`), duration, delete (owner only)
-  - Uses `useAudioPlayer` for inline playback (play/pause toggle)
-  - Uses `useMediaUpload` for uploads with `mediaType: 'music'`
-  - Delete confirmation via AlertDialog
-  - Music icon and "No music yet" empty state for owners
+**File: `src/components/profile/gallery/MusicGallery.tsx`**
 
-**Modified: `src/components/profile/shared/ProfileLayout.tsx`**
-- Import `MusicGallery`
-- Add `<MusicGallery userId={profileUserId} />` after `<VideoGallery />` in the mobile media tab (line ~293)
+1. **Make the empty state much more prominent** — use a solid card background with stronger visual hierarchy (larger icon, bolder text, prominent upload button) to match the Photo Gallery empty state styling
+2. **Add a loading state** — show a skeleton/spinner while the query loads so the section is visible even during data fetch, preventing a flash of nothing
+3. **Always render the section header** (🎵 Music Gallery + Upload button) even during loading, so the user sees the section exists immediately
 
-**Modified: `src/components/profile/shared/ProfileSplitNavigation.tsx`**
-- Import `MusicGallery`
-- Add `<MusicGallery userId={profileUserId} />` after `<VideoGallery />` in the desktop media tab (line ~138)
-
-### Technical details
-
-- Reuses existing `useMediaUpload` hook with `mediaType: 'music'` — handles storage upload, `media_uploads` insert, and `music_metadata` insert (genre/mood)
-- Reuses existing `useAudioPlayer` for play/pause — same audio player used in `MobileMusicList`
-- Each track displays as a horizontal row (play button, info, actions) matching the `MobileMusicList` visual style but simplified (no bookmark/share — profile context)
-- Accepted MIME types: `audio/mpeg, audio/wav, audio/flac, audio/aac, audio/ogg, audio/mp4, audio/x-m4a`
-- No new database tables or migrations needed — uses existing `media_uploads` + `music_metadata` tables
-- Web/mobile parity: both `ProfileLayout` (mobile) and `ProfileSplitNavigation` (desktop) get the gallery
+This ensures the Music Gallery section is always visible to profile owners, with a clear call-to-action to upload their first track.
 
 ### Files
-- `src/components/profile/gallery/MusicUploadDialog.tsx` (new)
-- `src/components/profile/gallery/MusicGallery.tsx` (new)
-- `src/components/profile/shared/ProfileLayout.tsx` (add import + component)
-- `src/components/profile/shared/ProfileSplitNavigation.tsx` (add import + component)
+- `src/components/profile/gallery/MusicGallery.tsx`
 
