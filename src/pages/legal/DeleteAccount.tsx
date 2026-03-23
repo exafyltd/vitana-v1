@@ -125,18 +125,18 @@ const DeleteAccount = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="rounded-lg bg-destructive/5 p-4 space-y-2 text-sm text-foreground/80">
-                <p className="font-medium text-foreground">When you delete your account:</p>
+                <p className="font-medium text-foreground">When you delete your account, we permanently remove:</p>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Your profile and personal data will be permanently removed</li>
-                  <li>Your chat history and conversations will be deleted</li>
-                  <li>Any active subscriptions will be cancelled</li>
-                  <li>You will lose access to all community features</li>
-                  <li>This cannot be reversed</li>
+                  <li>Your profile, preferences, and personal data</li>
+                  <li>Chat messages, AI conversations, and diary entries</li>
+                  <li>Uploaded photos, videos, and files</li>
+                  <li>Event RSVPs, memberships, and community activity</li>
+                  <li>Bookmarks, supplements, and health data</li>
                 </ul>
               </div>
 
               <p className="text-xs text-muted-foreground">
-                Some information may be retained if required by law, in accordance with our{" "}
+                Completed payment transactions may be retained as required by financial regulations, in accordance with our{" "}
                 <Link to="/privacy" className="text-primary hover:underline">
                   Privacy Policy
                 </Link>.
