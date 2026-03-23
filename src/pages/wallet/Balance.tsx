@@ -17,6 +17,7 @@ import { TokenMarketIntelligenceCard } from "@/components/wallet/intelligence/To
 import { MembershipROIAnalyticsCard } from "@/components/wallet/intelligence/MembershipROIAnalyticsCard";
 import { EarningOptimizationSplitScreen } from "@/components/wallet/intelligence/EarningOptimizationSplitScreen";
 import { CreditCard, Coins, Shield, Plus, TrendingUp } from "lucide-react";
+import { isIAPRestricted } from "@/lib/appilix";
 import { useState } from "react";
 import {
   Dialog,
@@ -76,6 +77,7 @@ function Balance() {
   ];
 
   const getContextualAction = () => {
+    if (isIAPRestricted()) return null;
     switch (activeTab) {
       case "credits":
         return { label: "Top Up Credits", icon: Plus, onClick: () => setIsTopUpOpen(true) };
@@ -108,10 +110,12 @@ function Balance() {
         <UtilityActionButton>
           <ExpandableSearchButton placeholder="Search balances, transactions, or benefits..." />
           <UniversalCalendarButton />
-          <Button size="sm" onClick={contextualAction.onClick}>
-            <contextualAction.icon className="h-4 w-4 mr-2" />
-            {contextualAction.label}
-          </Button>
+          {contextualAction && (
+            <Button size="sm" onClick={contextualAction.onClick}>
+              <contextualAction.icon className="h-4 w-4 mr-2" />
+              {contextualAction.label}
+            </Button>
+          )}
         </UtilityActionButton>
 
         <SplitBar value={activeTab} onValueChange={setActiveTab}>
