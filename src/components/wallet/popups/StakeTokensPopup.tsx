@@ -21,6 +21,7 @@ interface StakeTokensPopupProps {
 }
 
 export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) {
+  if (isIAPRestricted()) return null;
   const { getBalance, updateBalance } = useWallet();
   const { toast } = useToast();
   const [stakeAmount, setStakeAmount] = useState('');

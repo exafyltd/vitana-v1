@@ -130,7 +130,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
           )}
 
           {/* Upgrade Plan */}
-          {activeTab === "upgrade" && (
+          {!isIAPRestricted() && activeTab === "upgrade" && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Available Upgrades</h3>
               <div className="grid gap-4">
