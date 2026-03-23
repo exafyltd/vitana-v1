@@ -97,7 +97,7 @@ export function MusicGallery({ userId }: MusicGalleryProps) {
     return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
-  if (tracks.length === 0 && !isOwner) return null;
+  if (!isLoading && tracks.length === 0 && !isOwner) return null;
 
   return (
     <div className="space-y-4">
@@ -114,14 +114,27 @@ export function MusicGallery({ userId }: MusicGalleryProps) {
         )}
       </div>
 
-      {tracks.length === 0 ? (
-        <div className="p-8 text-center border border-dashed rounded-xl bg-muted/30">
-          <Music className="h-10 w-10 mx-auto text-muted-foreground/40 mb-3" />
-          <p className="text-sm text-muted-foreground">
+      {isLoading ? (
+        <div className="p-8 rounded-xl bg-card border border-border animate-pulse">
+          <div className="flex flex-col items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-muted" />
+            <div className="h-4 w-32 rounded bg-muted" />
+            <div className="h-3 w-24 rounded bg-muted" />
+          </div>
+        </div>
+      ) : tracks.length === 0 ? (
+        <div className="p-8 text-center rounded-xl bg-card border border-border">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <Music className="h-7 w-7 text-primary/60" />
+          </div>
+          <p className="text-sm font-medium text-foreground">
             {translate("gallery.noMusic", "No music yet")}
           </p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {translate("gallery.noMusicHint", "Share your favorite tracks on your profile")}
+          </p>
           {isOwner && (
-            <Button variant="ghost" size="sm" className="mt-3" onClick={() => setUploadOpen(true)}>
+            <Button size="sm" className="mt-4" onClick={() => setUploadOpen(true)}>
               <Plus className="h-4 w-4 mr-1" />
               {translate("gallery.addFirstTrack", "Add your first track")}
             </Button>
