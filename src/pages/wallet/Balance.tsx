@@ -76,6 +76,7 @@ function Balance() {
   ];
 
   const getContextualAction = () => {
+    if (isIAPRestricted()) return null;
     switch (activeTab) {
       case "credits":
         return { label: "Top Up Credits", icon: Plus, onClick: () => setIsTopUpOpen(true) };

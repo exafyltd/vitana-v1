@@ -779,7 +779,8 @@ export default function Wallet() {
 
               <WalletMotivationalBanner variant="overview" />
 
-              {/* Row 2: Traditional Quick Actions */}
+              {/* Row 2: Traditional Quick Actions — hidden on iOS (no digital purchases) */}
+              {!isIAPRestricted() && (
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-4">
                   <NewsCard
@@ -824,6 +825,7 @@ export default function Wallet() {
                   />
                 </div>
               </div>
+              )}
             </div>
           </SplitBarContent>
         </SplitBar>
