@@ -63,7 +63,7 @@ const DeleteAccount = () => {
   };
 
   // Not logged in state
-  if (!authLoading && !user) {
+  if (!authLoading && !user && step === "info") {
     return (
       <div className="min-h-screen bg-background">
         <SEO
