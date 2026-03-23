@@ -91,7 +91,7 @@ export function BillingActionPopup({ isOpen, onClose }: BillingActionPopupProps)
           <Separator />
 
           {/* Add Payment Method */}
-          {activeTab === "payment" && (
+          {!isIAPRestricted() && activeTab === "payment" && (
             <Card>
               <CardHeader>
                 <CardTitle>Add Payment Method</CardTitle>
