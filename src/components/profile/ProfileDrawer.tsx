@@ -15,7 +15,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { User, LogOut, Shield, Building } from "lucide-react";
+import { User, LogOut, Shield, Building, Trash2 } from "lucide-react";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
 import { useRole, UserRole } from "@/hooks/useRole";
@@ -142,6 +142,18 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
                 <Link to="/me/profile">
                   <User className="mr-2 h-4 w-4" />
                   Edit Profile
+                </Link>
+              </Button>
+            </DrawerClose>
+          </div>
+
+          <Separator />
+          <div className="space-y-2">
+            <DrawerClose asChild>
+              <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
+                <Link to="/delete-account">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete Account
                 </Link>
               </Button>
             </DrawerClose>
