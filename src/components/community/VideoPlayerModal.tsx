@@ -1,8 +1,10 @@
 import { Dialog, DialogContent, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
-import { useEffect, useRef, useState } from "react";
-import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
+
+type VideoState = 'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error';
 
 interface VideoPlayerModalProps {
   isOpen: boolean;
@@ -37,6 +39,7 @@ export const VideoPlayerModal = ({
   const idleTimerRef = useRef<NodeJS.Timeout>();
   const touchStartRef = useRef<number>(0);
   const hasInteracted = useRef(false);
+  const stallTimerRef = useRef<NodeJS.Timeout | null>(null);
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -46,6 +49,28 @@ export const VideoPlayerModal = ({
   const [showArrowsMobile, setShowArrowsMobile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCoarsePointer, setIsCoarsePointer] = useState(false);
+  const [videoState, setVideoState] = useState<VideoState>('loading');
+
+  const clearStallTimer = useCallback(() => {
+    if (stallTimerRef.current) {
+      clearTimeout(stallTimerRef.current);
+      stallTimerRef.current = null;
+    }
+  }, []);
+
+  const startStallTimer = useCallback((ms: number) => {
+    clearStallTimer();
+    stallTimerRef.current = setTimeout(() => {
+      setVideoState(prev => {
+        if (prev !== 'playing' && prev !== 'error') return 'stalled';
+        return prev;
+      });
+    }, ms);
+  }, [clearStallTimer]);
+
+  useEffect(() => {
+    return () => clearStallTimer();
+  }, [clearStallTimer]);
 
   useEffect(() => {
     if (isOpen && video && videoRef.current) {
@@ -53,6 +78,7 @@ export const VideoPlayerModal = ({
       setIsTransitioning(false);
       setShowArrowsMobile(false);
       hasInteracted.current = false;
+      setVideoState('loading');
       handleVideoPlay();
     }
   }, [isOpen, video]);
@@ -86,7 +112,7 @@ export const VideoPlayerModal = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, hasNext, hasPrevious, onNext, onPrevious, onClose]);
 
-  // Detect pointer type (fine = mouse/trackpad, coarse = touch)
+  // Detect pointer type
   useEffect(() => {
     const mql = window.matchMedia('(pointer: coarse)');
     const update = () => setIsCoarsePointer(mql.matches);
@@ -126,8 +152,21 @@ export const VideoPlayerModal = ({
     try {
       await videoRef.current?.play();
       setIsPlaying(true);
+      setVideoState('playing');
     } catch (e) {
       console.log('Autoplay prevented:', e);
+      // Try muted fallback for iPad
+      if (videoRef.current) {
+        videoRef.current.muted = true;
+        try {
+          await videoRef.current.play();
+          setIsPlaying(true);
+          setVideoState('playing');
+          setIsMuted(true);
+        } catch {
+          setVideoState('autoplay-blocked');
+        }
+      }
     }
   };
 
@@ -211,8 +250,78 @@ export const VideoPlayerModal = ({
     }
   };
 
+  // Video event handlers for state tracking
+  const handleCanPlay = useCallback(() => {
+    clearStallTimer();
+    setVideoState(prev => prev === 'loading' ? 'ready' : prev);
+  }, [clearStallTimer]);
+
+  const handleLoadedData = useCallback(() => {
+    clearStallTimer();
+  }, [clearStallTimer]);
+
+  const handleVideoPlaying = useCallback(() => {
+    clearStallTimer();
+    setVideoState('playing');
+    setIsPlaying(true);
+  }, [clearStallTimer]);
+
+  const handleVideoPause = useCallback(() => {
+    if (videoState !== 'error' && videoState !== 'stalled' && videoState !== 'autoplay-blocked') {
+      setVideoState('paused');
+    }
+    setIsPlaying(false);
+  }, [videoState]);
+
+  const handleWaiting = useCallback(() => {
+    startStallTimer(5000);
+  }, [startStallTimer]);
+
+  const handleStalled = useCallback(() => {
+    startStallTimer(5000);
+  }, [startStallTimer]);
+
+  const handleVideoError = useCallback(() => {
+    clearStallTimer();
+    setVideoState('error');
+    setIsPlaying(false);
+  }, [clearStallTimer]);
+
+  const handleManualPlay = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    setVideoState('loading');
+    videoRef.current.play().then(() => {
+      setIsPlaying(true);
+      setVideoState('playing');
+    }).catch(() => {
+      videoRef.current!.muted = true;
+      videoRef.current!.play().then(() => {
+        setIsPlaying(true);
+        setVideoState('playing');
+        setIsMuted(true);
+      }).catch(() => {
+        setVideoState('error');
+      });
+    });
+  }, []);
+
+  const handleRetry = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    setVideoState('loading');
+    videoRef.current.load();
+    videoRef.current.play().then(() => {
+      setIsPlaying(true);
+      setVideoState('playing');
+    }).catch(() => {
+      setVideoState('autoplay-blocked');
+    });
+  }, []);
+
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const showArrows = !isCoarsePointer || showArrowsMobile;
+  const showThumbnailFallback = videoState === 'loading' || videoState === 'error' || videoState === 'stalled' || videoState === 'autoplay-blocked';
 
   if (!video) return null;
 
@@ -249,7 +358,7 @@ export const VideoPlayerModal = ({
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Left navigation arrow - Always visible on desktop, show on tap/swipe on mobile */}
+          {/* Left navigation arrow */}
           {hasPrevious && onPrevious && (
             <button
               aria-label="Previous video"
@@ -267,7 +376,7 @@ export const VideoPlayerModal = ({
             </button>
           )}
           
-          {/* Right navigation arrow - Always visible on desktop, show on tap/swipe on mobile */}
+          {/* Right navigation arrow */}
           {hasNext && onNext && (
             <button
               aria-label="Next video"
@@ -298,24 +407,78 @@ export const VideoPlayerModal = ({
             onMouseLeave={() => isPlaying && setShowControls(false)}
           >
             <div className="relative w-full h-full bg-black rounded-2xl overflow-hidden">
+              {/* Thumbnail fallback layer */}
+              {video.thumbnail_url && showThumbnailFallback && (
+                <img
+                  src={video.thumbnail_url}
+                  alt={video.title}
+                  className="absolute inset-0 w-full h-full object-cover z-[1]"
+                />
+              )}
+
               {/* Video element */}
               <video
                 ref={videoRef}
                 src={video.src_url}
                 poster={video.thumbnail_url}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover relative z-[2]"
                 onPlay={handlePlay}
-                onPlaying={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
+                onPlaying={handleVideoPlaying}
+                onPause={handleVideoPause}
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}
+                onCanPlay={handleCanPlay}
+                onLoadedData={handleLoadedData}
+                onWaiting={handleWaiting}
+                onStalled={handleStalled}
+                onError={handleVideoError}
                 playsInline
+                // @ts-ignore — legacy WebKit attribute for iPad WebView
+                webkit-playsinline=""
+                crossOrigin="anonymous"
                 controlsList="nodownload"
               />
 
+              {/* Loading spinner */}
+              {videoState === 'loading' && (
+                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="h-16 w-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 text-white animate-spin" />
+                  </div>
+                </div>
+              )}
+
+              {/* Autoplay blocked overlay */}
+              {videoState === 'autoplay-blocked' && (
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <button
+                    onClick={handleManualPlay}
+                    className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110"
+                  >
+                    <Play className="w-10 h-10 text-white fill-white ml-1" />
+                  </button>
+                </div>
+              )}
+
+              {/* Error / Stalled overlay */}
+              {(videoState === 'error' || videoState === 'stalled') && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-20 gap-3">
+                  <button
+                    onClick={handleRetry}
+                    className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all hover:scale-110"
+                  >
+                    <RotateCcw className="h-8 w-8 text-white" />
+                  </button>
+                  <span className="text-white text-sm font-medium drop-shadow-lg">
+                    {videoState === 'error' ? 'Failed to load — tap to retry' : 'Buffering — tap to retry'}
+                  </span>
+                </div>
+              )}
+
               {/* Custom controls overlay */}
+              {videoState !== 'autoplay-blocked' && videoState !== 'error' && videoState !== 'stalled' && (
               <div 
-                className={`absolute inset-0 transition-opacity duration-300 ${
+                className={`absolute inset-0 transition-opacity duration-300 z-10 ${
                   showControls ? 'opacity-100' : 'opacity-0'
                 }`}
                 onClick={togglePlay}
@@ -387,9 +550,10 @@ export const VideoPlayerModal = ({
                   )}
                 </div>
               </div>
+              )}
 
               {/* Gradient progress bar */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-10">
                 <div
                   className="h-full transition-all duration-200"
                   style={{
@@ -400,8 +564,8 @@ export const VideoPlayerModal = ({
               </div>
 
               {/* Title overlay when paused */}
-              {!isPlaying && (
-                <div className="absolute top-0 left-0 right-0 p-6 bg-gradient-to-b from-black/70 to-transparent">
+              {!isPlaying && videoState !== 'autoplay-blocked' && videoState !== 'error' && videoState !== 'stalled' && (
+                <div className="absolute top-0 left-0 right-0 p-6 bg-gradient-to-b from-black/70 to-transparent z-10">
                   <h3 className="text-white text-xl font-semibold">{video.title}</h3>
                 </div>
               )}
