@@ -32,6 +32,7 @@ import { MilestoneTimeline } from "@/components/profile/milestones/MilestoneTime
 import { useProfileMilestones } from "@/hooks/useProfileMilestones";
 import { PhotoGallery } from "@/components/profile/gallery/PhotoGallery";
 import { VideoGallery } from "@/components/profile/gallery/VideoGallery";
+import { MusicGallery } from "@/components/profile/gallery/MusicGallery";
 import { useProfileGallery } from "@/hooks/useProfileGallery";
 import { ShareProfileModal } from "@/components/profile/shared/ShareProfileModal";
 import { MobileQRShareScreen } from "@/components/profile/mobile/MobileQRShareScreen";
