@@ -1,77 +1,60 @@
 
 
-## Fix: Media/Shorts Black Screen on iPad Air (Appilix WebView)
+## iOS/Appilix Purchase Restriction — Audit Results
 
-### Problem
-Videos render as black/blank screens on iPad Air 11-inch in Appilix WebView. The `<video>` element lacks iPad-specific attributes and has no fallback for load failure, autoplay blocking, or network stalls.
+### Already Gated (Confirmed Working)
 
-### Changes
+| Feature | File | Method |
+|---|---|---|
+| Gift Voucher button | `utility-action-button.tsx` | `isIAPRestricted()` hides button + modal |
+| Add Funds popup | `AddFundsPopup.tsx` | Returns `null` |
+| Buy Credits popup | `BuyCreditsPopup.tsx` | Returns `null` |
+| Buy Tokens popup | `BuyTokensPopup.tsx` | Returns `null` |
+| Add Funds quick action (mobile) | `MobileWalletQuickActions.tsx` | Filtered via `restrictedIds` |
+| Buy Credits quick action (mobile) | `MobileWalletQuickActions.tsx` | Filtered via `restrictedIds` |
+| Buy Tokens quick action (mobile) | `MobileWalletQuickActions.tsx` | Filtered via `restrictedIds` (recently added) |
+| Wallet promo cards (desktop) | `Wallet.tsx` line 783 | `!isIAPRestricted()` wraps entire block |
+| USD balance card tap (mobile) | `Wallet.tsx` line 392 | `onPress` set to `undefined` |
+| Credits balance card tap (mobile) | `Wallet.tsx` line 403 | `onPress` set to `undefined` |
+| Paid room creation (both dialogs) | `CreateLiveRoomDialog.tsx` (×2) | Access level / paid toggle hidden |
+| Paid room purchase dialog | `PurchaseRoomAccessDialog.tsx` | Returns `null` |
+| Desktop USD card "Add Funds" primary action | `Wallet.tsx` line 562 | `isIAPRestricted() ? undefined` |
+| Desktop Credits card "Buy Credits" primary action | `Wallet.tsx` line 604 | `isIAPRestricted() ? undefined` |
+| Desktop "Buy Tokens" secondary action | `Wallet.tsx` line 527 | Filtered from array |
+| Balance page contextual actions | `Balance.tsx` line 80 | Returns `null` (Top Up, Buy/Stake, Upgrade) |
 
-**File 1: `src/components/community/MobileShortSlide.tsx`** — Full rewrite of video handling
+### Remaining Gaps Found
 
-1. Add a `VideoState` type: `'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error'`
-2. Add `webkit-playsinline=""` and `crossOrigin="anonymous"` to `<video>`
-3. Add event handlers: `onCanPlay`, `onLoadedData`, `onPlaying`, `onPause`, `onWaiting`, `onStalled`, `onError`
-4. Add stall timer (5s) — if `onWaiting`/`onStalled` fires and doesn't resolve, set state to `'stalled'`
-5. Add three overlay states:
-   - **Loading**: Spinner overlay when `videoState === 'loading'` and slide is active
-   - **Autoplay blocked**: Large centered Play button (tappable) when `videoState === 'autoplay-blocked'`; manual play handler tries unmuted first, falls back to muted
-   - **Error/Stalled**: RotateCcw retry button + text label ("Failed to load — tap to retry" / "Buffering — tap to retry")
-6. Show thumbnail `<img>` behind the video during loading, error, and autoplay-blocked states so the user never sees pure black
-7. Import `Loader2`, `RotateCcw` from lucide-react
-8. All overlays use proper z-index layering (thumbnail z-1, video z-2, gradient z-3, interactive overlays z-20)
+| # | Issue | File | Risk |
+|---|---|---|---|
+| 1 | **"Stake Tokens" primary action on desktop VTNA card** — not gated | `Wallet.tsx` line 520-525 | Medium — "Stake Tokens" button visible; leads to `StakeTokensPopup` which has no `isIAPRestricted()` check |
+| 2 | **"Stake Tokens" on mobile VTNA balance card** — `onPress` not gated | `Wallet.tsx` line 414 | Medium — tappable, opens StakeTokensPopup |
+| 3 | **`StakeTokensPopup` itself** — no iOS gate | `StakeTokensPopup.tsx` | Medium — if reached, full staking UI with amounts is visible |
+| 4 | **`BillingActionPopup` "Upgrade Plan" tab** — shows $19.99/mo and $49.99/mo pricing with "Upgrade Now" buttons | `BillingActionPopup.tsx` lines 58-64, 127-175 | High — explicit pricing and purchase CTA visible on Settings > Billing |
+| 5 | **`BillingActionPopup` "Add Payment" tab** — "Add Payment Method" button | `BillingActionPopup.tsx` lines 95-124 | Medium — implies digital purchases |
 
-**File 2: `src/components/community/VideoPlayerModal.tsx`** — Add iPad compatibility + error handling
+### Proposed Fixes
 
-1. Add `webkit-playsinline=""` and `crossOrigin="anonymous"` to `<video>` element (line 302-314)
-2. Add `videoState` state with same type as above
-3. Add `onError`, `onWaiting`, `onStalled`, `onCanPlay`, `onLoadedData` handlers
-4. When error/stalled: show thumbnail as `<img>` behind video + retry button overlay
-5. When autoplay blocked (existing `.catch()` in `handleVideoPlay`): set state to `'autoplay-blocked'` — the existing center play button already handles this but ensure it stays visible
-6. Add loading spinner when `videoState === 'loading'`
+**1. `StakeTokensPopup.tsx`** — Add early return: `if (isIAPRestricted()) return null;`
 
-### Key technical details
+**2. `Wallet.tsx`** — Gate the desktop VTNA card's "Stake Tokens" primary action with `isIAPRestricted() ? undefined : { ... }` (line 520). Gate mobile VTNA balance card `onPress` with `isIAPRestricted() ? undefined : ...` (line 414).
 
-**iPad WebView attributes:**
-```tsx
-<video
-  playsInline
-  webkit-playsinline=""  // legacy WebKit for iPad WebView
-  crossOrigin="anonymous"  // CORS for Supabase storage
-  preload={isActive ? "auto" : "metadata"}
-  onCanPlay={() => setVideoState('ready')}
-  onLoadedData={() => { /* clear stall */ }}
-  onPlaying={() => { setVideoState('playing'); clearStallTimer(); }}
-  onWaiting={() => { startStallTimer(5000); }}
-  onStalled={() => { startStallTimer(5000); }}
-  onError={() => setVideoState('error')}
-/>
-```
+**3. `BillingActionPopup.tsx`** — Gate "Upgrade Plan" and "Add Payment" tabs: hide these buttons from the quick actions grid when `isIAPRestricted()`, and hide the tab content. Alternatively, add `if (isIAPRestricted()) return null;` at the top if the entire popup is purchase-oriented.
 
-**Manual play handler (autoplay-blocked recovery):**
-```tsx
-// Try with current mute state first
-video.play().catch(() => {
-  // Fall back to muted playback (iPad often requires muted autoplay)
-  video.muted = true;
-  video.play().catch(() => setVideoState('error'));
-});
-```
+### Items That Are Safe (No Change Needed)
 
-**Thumbnail fallback layer:**
-```tsx
-{thumbnailUrl && (showError || showAutoplay || showLoading) && (
-  <img src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover z-[1]" />
-)}
-```
+- **Staking** is borderline — it's not a "purchase" but involves digital token manipulation. Recommend hiding on iOS to be safe since Apple may interpret it as a digital goods transaction.
+- **"Send", "Request", "Exchange", "Withdraw"** — These are peer-to-peer transfers/withdrawals of existing balances, not purchases. Apple doesn't restrict these.
+- **Package purchases** (`PackagePurchaseSuccess.tsx`) — These appear to be for physical/service packages (business packages with items), which are exempt from IAP rules. No gate needed unless they're purely digital.
+- **Membership tab label** in Balance.tsx ("Membership Benefits") — Just a label showing benefits info, the action button is already gated. Safe.
 
-### Files to modify
-- `src/components/community/MobileShortSlide.tsx`
-- `src/components/community/VideoPlayerModal.tsx`
+### Layout / Dead Tap Check
 
-### Result
-- No blank/black screens — thumbnail always visible as fallback
-- Clear recovery actions: tap-to-play, tap-to-retry
-- Proper iPad WebView compatibility via webkit-playsinline
-- Video states clearly distinguished: loading → ready → playing/paused/blocked/stalled/error
+- Mobile VTNA balance card: currently tappable (opens Stake Tokens) — will become static with the fix. No empty space since the card still shows balance info.
+- Desktop VTNA card: "Stake Tokens" button removed, but "Send", "Request", "Exchange" secondary actions remain. No empty card.
+- `MobileWalletQuickActions`: with 3 purchase items filtered, remaining actions are Send, Exchange, Withdraw (3 items in a 3-column grid). Layout intact.
+
+### Summary
+
+5 gaps to fix across 3 files. All changes are iOS-only via `isIAPRestricted()`. Android and web remain completely unaffected.
 
