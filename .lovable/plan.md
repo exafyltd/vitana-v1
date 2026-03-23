@@ -1,23 +1,47 @@
 
+## Fix Music Gallery Visibility on Mobile Profile
 
-## Fix: Music Gallery Not Visible in Profile Media Tab
+### Root cause
+The main issue is not just styling: the mobile **Edit Profile** media tab does not render `MusicGallery` at all.
 
-### Investigation
-The code is correctly wired: `MusicGallery` is imported and placed at line 295 of `ProfileLayout.tsx`, right after `VideoGallery`. The component logic is sound — when the user is the profile owner and has no tracks, it should show a dashed-border empty state with "No music yet" and an "Add your first track" button.
+I confirmed:
+- `ProfileLayout.tsx` includes `MusicGallery` under Photos + Videos
+- `ProfileSplitNavigation.tsx` includes it on desktop
+- but `EditProfilePage.tsx` mobile media tab only renders:
+  - `PhotoGallery`
+  - `VideoGallery`
+- so on the owner’s main mobile editing flow, users never see a music section or upload CTA
 
-### Likely Cause
-The empty state is too subtle — it blends in with the page background. The dashed border + `bg-muted/30` is nearly invisible, especially on mobile where the user might think the page ends after the Video Gallery section.
+That matches your screenshot exactly.
 
-### Fix (2 changes in 1 file)
+### Implementation plan
 
-**File: `src/components/profile/gallery/MusicGallery.tsx`**
+**1. Fix the missing mobile owner flow**
+- Update `src/pages/EditProfilePage.tsx`
+- Add `<MusicGallery userId={user?.id} />` directly below `VideoGallery` in the mobile `media` tab
 
-1. **Make the empty state much more prominent** — use a solid card background with stronger visual hierarchy (larger icon, bolder text, prominent upload button) to match the Photo Gallery empty state styling
-2. **Add a loading state** — show a skeleton/spinner while the query loads so the section is visible even during data fetch, preventing a flash of nothing
-3. **Always render the section header** (🎵 Music Gallery + Upload button) even during loading, so the user sees the section exists immediately
+This is the critical fix so the section actually appears where users expect it.
 
-This ensures the Music Gallery section is always visible to profile owners, with a clear call-to-action to upload their first track.
+**2. Keep the Music section visually obvious**
+- Refine `src/components/profile/gallery/MusicGallery.tsx` so the section is clearly visible even with zero tracks:
+  - always show the section header
+  - keep the upload button visible for owners
+  - use a stronger empty-state card
+  - keep the “Add your first track” CTA prominent
 
-### Files
+**3. Make discoverability better for profile owners**
+- Ensure the empty state copy explicitly says users can upload music to their profile
+- Keep the upload CTA visible without needing existing tracks
+
+### Files to update
+- `src/pages/EditProfilePage.tsx`
 - `src/components/profile/gallery/MusicGallery.tsx`
 
+### Expected result
+After this fix:
+- mobile profile owners will see a visible **Music Gallery** section in the Media tab
+- they will have a clear **Upload Music** / **Add your first track** action
+- users will no longer think music upload is unsupported or hidden
+
+### Technical note
+This is primarily a wiring bug in the owner/mobile flow, not a database or upload issue. The music component already exists; it just was not included in one of the key mobile profile screens.
