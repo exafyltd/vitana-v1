@@ -123,6 +123,9 @@ export function MobileMediaTabContent({
         {translate('profileMedia.viewAllCta', 'View all media')}
         <ChevronRight className="h-4 w-4 text-muted-foreground" />
       </button>
+
+      {/* Music Gallery */}
+      <MusicGallery userId={userId} />
     </div>
   );
 }
