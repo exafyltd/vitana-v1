@@ -1,47 +1,28 @@
 
-## Fix Music Gallery Visibility on Mobile Profile
 
-### Root cause
-The main issue is not just styling: the mobile **Edit Profile** media tab does not render `MusicGallery` at all.
+## Fix: Desktop Sidebar Search Dropdown Not Working
 
-I confirmed:
-- `ProfileLayout.tsx` includes `MusicGallery` under Photos + Videos
-- `ProfileSplitNavigation.tsx` includes it on desktop
-- but `EditProfilePage.tsx` mobile media tab only renders:
-  - `PhotoGallery`
-  - `VideoGallery`
-- so on the owner’s main mobile editing flow, users never see a music section or upload CTA
+### Root Cause
+The `GlobalSearch` component uses `ResponsivePopover` (Radix Popover on desktop) to show search suggestions. Radix Popover has built-in focus management that conflicts with the search input — when the popover opens, it can steal focus from the input or close itself when the input re-focuses. This causes the dropdown to flash or never appear, making search appear broken.
 
-That matches your screenshot exactly.
+### Fix
+Replace the `ResponsivePopover` wrapper in `GlobalSearch.tsx` with a simple portal-based absolutely-positioned dropdown on desktop — the same pattern used successfully in the mobile drawer search and other search dropdowns across the platform.
 
-### Implementation plan
+**File: `src/components/GlobalSearch.tsx`**
 
-**1. Fix the missing mobile owner flow**
-- Update `src/pages/EditProfilePage.tsx`
-- Add `<MusicGallery userId={user?.id} />` directly below `VideoGallery` in the mobile `media` tab
+1. Remove `ResponsivePopover`, `ResponsivePopoverTrigger`, `ResponsivePopoverContent` imports
+2. Use a `useRef` on the input wrapper to get position via `getBoundingClientRect()`
+3. Render the suggestions dropdown as a `ReactDOM.createPortal` into `document.body` with `position: fixed`, aligned to the input
+4. Use `onMouseDown` (not `onClick`) on suggestion items to prevent input blur from dismissing before the click registers
+5. Close dropdown on `Escape` key or clicking outside (existing `onBlur` logic)
+6. Keep the existing search logic, member fetching, keyboard navigation — only change the rendering approach
 
-This is the critical fix so the section actually appears where users expect it.
+### Result
+- Dropdown renders without Radix focus interference
+- Input stays focused while browsing suggestions
+- Matches the proven portal pattern used elsewhere in the app
+- No changes to search logic or member fetching
 
-**2. Keep the Music section visually obvious**
-- Refine `src/components/profile/gallery/MusicGallery.tsx` so the section is clearly visible even with zero tracks:
-  - always show the section header
-  - keep the upload button visible for owners
-  - use a stronger empty-state card
-  - keep the “Add your first track” CTA prominent
+### Files
+- `src/components/GlobalSearch.tsx`
 
-**3. Make discoverability better for profile owners**
-- Ensure the empty state copy explicitly says users can upload music to their profile
-- Keep the upload CTA visible without needing existing tracks
-
-### Files to update
-- `src/pages/EditProfilePage.tsx`
-- `src/components/profile/gallery/MusicGallery.tsx`
-
-### Expected result
-After this fix:
-- mobile profile owners will see a visible **Music Gallery** section in the Media tab
-- they will have a clear **Upload Music** / **Add your first track** action
-- users will no longer think music upload is unsupported or hidden
-
-### Technical note
-This is primarily a wiring bug in the owner/mobile flow, not a database or upload issue. The music component already exists; it just was not included in one of the key mobile profile screens.
