@@ -85,6 +85,7 @@ const mockHealthResults: SearchResult[] = [
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [query, setQuery] = useState(searchParams.get('q') || '');
   const [activeTab, setActiveTab] = useState(searchParams.get('type') || 'all');
   const [results, setResults] = useState<SearchResult[]>([]);
