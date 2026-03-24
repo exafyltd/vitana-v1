@@ -199,8 +199,8 @@ export default function Search() {
                   <p className="text-sm text-muted-foreground mb-2">{result.subtitle}</p>
                   <p className="text-sm text-foreground/80">{result.description}</p>
                   <div className="flex gap-2 mt-3">
-                    <Button size="sm" variant="outline">View Profile</Button>
-                    <Button size="sm" variant="ghost">Message</Button>
+                    <Button size="sm" variant="outline" onClick={() => navigate(`/u/${result.id}`)}>View Profile</Button>
+                    <Button size="sm" variant="ghost" onClick={() => navigate(`/u/${result.id}`, { state: { openMessage: true } })}>Message</Button>
                   </div>
                 </div>
               </div>
