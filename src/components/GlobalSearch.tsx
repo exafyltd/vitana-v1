@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { Search, Users, MessageSquare, Video, Calendar, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger } from "@/components/ui/responsive-popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
@@ -32,8 +32,11 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<SearchSuggestion[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null);
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { members, loading, searchMembers, getDisplayName } = useCommunityMembers();
 
   // Trigger search when query changes
@@ -48,10 +51,8 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   useEffect(() => {
     console.log('GlobalSearch: Members updated:', members.length, 'members, query:', query);
     if (query.trim() && open) {
-      // Create member suggestions from current members data
       const memberSuggestions: SearchSuggestion[] = members.map(member => {
         const displayName = member.display_name || member.full_name || 'Unknown User';
-        console.log('GlobalSearch: Member:', displayName, 'matches query:', query, '?', displayName.toLowerCase().includes(query.toLowerCase()));
         return {
           id: member.user_id,
           type: 'person' as const,
@@ -61,14 +62,12 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
         };
       });
 
-      // Filter content suggestions based on query
       const contentSuggestions = mockContentSuggestions.filter(suggestion =>
         suggestion.title.toLowerCase().includes(query.toLowerCase()) ||
         suggestion.subtitle?.toLowerCase().includes(query.toLowerCase())
       );
 
       const allSuggestions = [...memberSuggestions, ...contentSuggestions];
-      console.log('GlobalSearch: Final suggestions:', allSuggestions.map(s => s.title));
       setFilteredSuggestions(allSuggestions);
       setShowSuggestions(true);
       setSelectedIndex(-1);
@@ -79,9 +78,31 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
     }
   }, [members, query, open]);
 
+  // Update dropdown position when showing
+  useEffect(() => {
+    if (showSuggestions && wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width });
+    }
+  }, [showSuggestions, filteredSuggestions]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        wrapperRef.current && !wrapperRef.current.contains(target) &&
+        (!dropdownRef.current || !dropdownRef.current.contains(target))
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleInputClick = () => {
     if (!open) {
-      // Navigate to search page when sidebar is collapsed
       navigate('/search');
     } else {
       inputRef.current?.focus();
@@ -91,7 +112,6 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open) {
       e.preventDefault();
-      // Can't control sidebar from here
       return;
     }
 
@@ -137,19 +157,16 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
 
   const handleSearch = (searchQuery: string = query) => {
     if (searchQuery.trim()) {
-      // Log search activity
       import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
         const { logSearch } = useCommunityLogger();
         logSearch(searchQuery, 'all', filteredSuggestions.length);
       });
       
-      // First try to find as community member
       const member = members.find(m => {
         const displayName = m.display_name || m.full_name || 'Unknown User';
         return displayName.toLowerCase().includes(searchQuery.toLowerCase());
       });
       if (member) {
-        // Navigate to member profile - use handle if available, fallback to user_id
         const memberHandle = member.handle;
         if (memberHandle) {
           navigate(`/u/@${memberHandle}`);
@@ -162,7 +179,6 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
         return;
       }
       
-      // Fallback to general search
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
       setQuery('');
       setShowSuggestions(false);
@@ -171,7 +187,6 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
   };
 
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
-    // Log specific search type
     import('@/hooks/useCommunityLogger').then(({ useCommunityLogger }) => {
       const { logSearchMember, logSearchGroup } = useCommunityLogger();
       if (suggestion.type === 'person') {
@@ -182,7 +197,6 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
     });
     
     if (suggestion.type === 'person') {
-      // Find the member to get their handle
       const member = members.find(m => m.user_id === suggestion.id);
       if (member && member.handle) {
         navigate(`/u/@${member.handle}`);
@@ -205,107 +219,115 @@ export function GlobalSearch({ open }: GlobalSearchProps) {
     }
   };
 
-  return (
-    <ResponsivePopover open={showSuggestions && filteredSuggestions.length > 0 && open} onOpenChange={setShowSuggestions}>
-      <ResponsivePopoverTrigger asChild>
-        <div className="relative w-full">
-          {open ? (
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
-              <Input
-                ref={inputRef}
-                type="text"
-                placeholder="Search members, groups, content…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleKeyDown}
-                className={cn(
-                  "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
-                  "bg-sidebar-accent/50 border border-sidebar-border/50",
-                  "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
-                  "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
-                  "hover:bg-sidebar-accent/70 transition-colors"
-                )}
-              />
-              {query && (
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleSearch()}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
-                >
-                  <Search className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleInputClick}
-              className="w-10 h-10 rounded-lg hover:bg-sidebar-accent/70 transition-colors"
-              title="Search"
-            >
-              <Search className="h-4 w-4 text-sidebar-foreground/70" />
-            </Button>
-          )}
-        </div>
-      </ResponsivePopoverTrigger>
+  const hasDropdown = showSuggestions && filteredSuggestions.length > 0 && open && dropdownPos;
 
-      <ResponsivePopoverContent 
-        title="Suggestions"
-        className="w-[var(--radix-popover-trigger-width)] p-0 mt-2 bg-popover border border-border shadow-lg rounded-lg z-50"
-        align="start"
-        side="bottom"
-        sideOffset={8}
-        onOpenAutoFocus={(e) => e.preventDefault()}
-      >
-        <ScrollArea className="max-h-80">
-          <div className="py-1">
-            {filteredSuggestions.map((suggestion, index) => (
+  return (
+    <>
+      <div ref={wrapperRef} className="relative w-full">
+        {open ? (
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sidebar-foreground/50" />
+            <Input
+              ref={inputRef}
+              type="text"
+              placeholder="Search members, groups, content…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => {
+                if (query.trim() && filteredSuggestions.length > 0) setShowSuggestions(true);
+              }}
+              onKeyDown={handleKeyDown}
+              className={cn(
+                "w-full pl-10 pr-4 py-2 text-sm rounded-lg",
+                "bg-sidebar-accent/50 border border-sidebar-border/50",
+                "text-sidebar-foreground placeholder:text-sidebar-foreground/50",
+                "focus:bg-sidebar-accent focus:border-sidebar-ring/50 focus:outline-none focus:ring-2 focus:ring-sidebar-ring/20",
+                "hover:bg-sidebar-accent/70 transition-colors"
+              )}
+            />
+            {query && (
               <Button
-                key={suggestion.id}
+                size="sm"
                 variant="ghost"
-                onClick={() => handleSuggestionClick(suggestion)}
-                className={cn(
-                  "w-full justify-start p-3 h-auto rounded-none",
-                  "hover:bg-accent/50 border-b border-border/30 last:border-b-0",
-                  selectedIndex === index && "bg-accent/70"
-                )}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  handleSearch();
+                }}
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 p-0"
               >
-                <div className="flex items-center gap-3 w-full">
-                  <div className="flex-shrink-0">
-                    {suggestion.avatar ? (
-                      <img 
-                        src={suggestion.avatar} 
-                        alt={suggestion.title}
-                        className="h-8 w-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
-                        {getTypeIcon(suggestion.type)}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1 text-left">
-                    <div className="font-medium text-foreground text-sm">
-                      {suggestion.title}
+                <Search className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleInputClick}
+            className="w-10 h-10 rounded-lg hover:bg-sidebar-accent/70 transition-colors"
+            title="Search"
+          >
+            <Search className="h-4 w-4 text-sidebar-foreground/70" />
+          </Button>
+        )}
+      </div>
+
+      {hasDropdown && createPortal(
+        <div
+          ref={dropdownRef}
+          style={{ position: 'fixed', top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width, zIndex: 50 }}
+          className="bg-popover border border-border shadow-lg rounded-lg overflow-hidden"
+        >
+          <ScrollArea className="max-h-80">
+            <div className="py-1">
+              {filteredSuggestions.map((suggestion, index) => (
+                <div
+                  key={suggestion.id}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleSuggestionClick(suggestion);
+                  }}
+                  className={cn(
+                    "w-full p-3 cursor-pointer",
+                    "hover:bg-accent/50 border-b border-border/30 last:border-b-0",
+                    selectedIndex === index && "bg-accent/70"
+                  )}
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="flex-shrink-0">
+                      {suggestion.avatar ? (
+                        <img 
+                          src={suggestion.avatar} 
+                          alt={suggestion.title}
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                          {getTypeIcon(suggestion.type)}
+                        </div>
+                      )}
                     </div>
-                    {suggestion.subtitle && (
-                      <div className="text-xs text-muted-foreground">
-                        {suggestion.subtitle}
+                    <div className="flex-1 text-left">
+                      <div className="font-medium text-foreground text-sm">
+                        {suggestion.title}
                       </div>
-                    )}
-                  </div>
-                  <div className="flex-shrink-0 text-muted-foreground">
-                    {getTypeIcon(suggestion.type)}
+                      {suggestion.subtitle && (
+                        <div className="text-xs text-muted-foreground">
+                          {suggestion.subtitle}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0 text-muted-foreground">
+                      {getTypeIcon(suggestion.type)}
+                    </div>
                   </div>
                 </div>
-              </Button>
-            ))}
-          </div>
-        </ScrollArea>
-      </ResponsivePopoverContent>
-    </ResponsivePopover>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
