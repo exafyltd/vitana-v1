@@ -146,9 +146,12 @@ Deno.serve(async (req) => {
     console.log('og-event request:', { slug, eventId, isCrawler: isCrawler(userAgent) });
 
     if (!slug && !eventId) {
-      return new Response(generateFallbackHTML(), {
-        headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8' },
-      });
+      const h = new Headers();
+      h.set('Content-Type', 'text/html; charset=utf-8');
+      h.set('X-Content-Type-Options', 'nosniff');
+      h.set('Access-Control-Allow-Origin', '*');
+      h.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+      return new Response(generateFallbackHTML(), { headers: h });
     }
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -175,9 +178,12 @@ Deno.serve(async (req) => {
     }
 
     if (!event) {
-      return new Response(generateFallbackHTML(), {
-        headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8' },
-      });
+      const h = new Headers();
+      h.set('Content-Type', 'text/html; charset=utf-8');
+      h.set('X-Content-Type-Options', 'nosniff');
+      h.set('Access-Control-Allow-Origin', '*');
+      h.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+      return new Response(generateFallbackHTML(), { headers: h });
     }
 
     // Canonical URL is always vitanaland.com/e/{slug}
@@ -193,13 +199,13 @@ Deno.serve(async (req) => {
     const destinationUrl = `https://vitanaland.com/?${shareParams.toString()}`;
 
     if (isCrawler(userAgent)) {
-      return new Response(generateOGHTML(event, canonicalUrl, destinationUrl), {
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'public, max-age=120, s-maxage=120',
-        },
-      });
+      const h = new Headers();
+      h.set('Content-Type', 'text/html; charset=utf-8');
+      h.set('X-Content-Type-Options', 'nosniff');
+      h.set('Cache-Control', 'public, max-age=120, s-maxage=120');
+      h.set('Access-Control-Allow-Origin', '*');
+      h.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+      return new Response(generateOGHTML(event, canonicalUrl, destinationUrl), { headers: h });
     }
 
     return new Response(null, {
@@ -208,8 +214,11 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('og-event error:', error);
-    return new Response(generateFallbackHTML(), {
-      headers: { ...corsHeaders, 'Content-Type': 'text/html; charset=utf-8' },
-    });
+    const h = new Headers();
+    h.set('Content-Type', 'text/html; charset=utf-8');
+    h.set('X-Content-Type-Options', 'nosniff');
+    h.set('Access-Control-Allow-Origin', '*');
+    h.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
+    return new Response(generateFallbackHTML(), { headers: h });
   }
 });
