@@ -1,21 +1,29 @@
 
 
-## Fix: "View Profile" and "Message" Buttons on Search Results Page
+## Fix: Event OG Images Not Showing on WhatsApp
 
-### Problem
-In `src/pages/Search.tsx`, the "View Profile" and "Message" buttons on people search result cards (lines 201-202) have no `onClick` handlers — they are plain `<Button>` elements with no navigation or action attached.
+### Root Cause
+
+The `og-event` edge function is **not deployed**. Calling it returns a 404:
+
+```text
+supabase-edge-functions http error: status code 404
+{"code":"NOT_FOUND","message":"Requested function was not found"}
+```
+
+The Cloudflare Worker at `e.vitanaland.com` proxies crawler requests to this edge function. Since the function doesn't exist on the server, WhatsApp's crawler gets no OG metadata, so no image preview appears.
+
+The code in `supabase/functions/og-event/index.ts` is correct and complete — it just needs to be deployed.
 
 ### Fix
 
-**File: `src/pages/Search.tsx`**
+**Deploy the `og-event` edge function.** One action, no code changes needed.
 
-1. Import `useNavigate` from `react-router-dom`
-2. Add `onClick` to **"View Profile"** button: navigate to `/u/${result.id}` (the `result.id` is already the user's `user_id`)
-3. Add `onClick` to **"Message"** button: navigate to `/inbox` with the user ID as a query param to open a DM conversation — e.g., `/inbox?dm=${result.id}` — or use the existing direct message creation pattern from the codebase
-4. Look up how DM initiation works elsewhere in the app to use the same pattern (likely navigating to inbox with a recipient param or using a `useDirectMessage` hook)
+After deployment, verify by curling the function with a WhatsApp user-agent to confirm it returns HTML with the correct `og:image` meta tag for the "Maxina Experience by Janina Restaurant" event.
 
-I'll check the existing DM initiation pattern to ensure consistency.
+Note: WhatsApp caches link previews aggressively. After deploying, sharing the link again should show the image. For already-cached links, WhatsApp may take hours to refresh the preview.
 
 ### Files
-- `src/pages/Search.tsx`
+- No code changes needed
+- Deploy: `supabase/functions/og-event/index.ts`
 
