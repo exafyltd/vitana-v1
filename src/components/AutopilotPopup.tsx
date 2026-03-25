@@ -67,6 +67,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   useEffect(() => {
     if (!open) {
       setShowBanner(false);
+      setBannerMessage(null);
     }
   }, [open]);
 
@@ -205,14 +206,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     <div className="w-full rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 p-5 mb-4">
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0">
-          <Rocket className="w-6 h-6 text-primary" />
+          <Check className="w-6 h-6 text-primary" />
         </div>
         <div>
           <h3 className="text-lg font-bold text-foreground">
-            Super, ich kümmere mich darum!
+            Erledigt!
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Du bekommst eine Nachricht, sobald alles erledigt ist.
+            {bannerMessage || "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."}
           </p>
         </div>
       </div>
