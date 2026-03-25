@@ -198,7 +198,7 @@ export function useAutopilot() {
 
   const pendingActions = state.actions.filter((a) => a.status === "pending");
   const executingActions = state.actions.filter((a) => a.status === "executing");
-  const allVisibleActions = state.actions.filter((a) => a.status === "pending" || a.status === "executing");
+  const allVisibleActions = state.actions.filter((a) => a.status === "pending" || a.status === "executing" || a.status === "completed");
   const pendingCount = pendingActions.length;
   const selectedActions = pendingActions.filter((a) => a.selected);
 
@@ -235,7 +235,10 @@ export function useAutopilot() {
       const vtid = await activateRecommendation(id);
       const success = !!vtid;
       results.push({ actionId: id, success, message: vtid ? `VTID: ${vtid}` : "Failed" });
-      setActionStatus(id, success ? "completed" : "failed");
+      // Keep as "executing" (spinner) — only backend completion signal should mark "completed"
+      if (!success) {
+        setActionStatus(id, "failed");
+      }
     }
 
     // Refresh badge count after all done

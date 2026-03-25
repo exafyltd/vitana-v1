@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,17 +19,16 @@ import {
   Plane,
   Zap, 
   Clock, 
-  ChevronRight, 
   CheckCircle,
   AlertTriangle,
   Info,
   Loader2,
   PartyPopper,
   WifiOff,
-  Check
+  Check,
+  Rocket
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -40,7 +39,6 @@ interface AutopilotPopupProps {
 
 export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { translate } = useTranslation();
   const { 
     allVisibleActions,
@@ -48,36 +46,28 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     selectedActions, 
     executeActions, 
     toggleActionSelection, 
-    setActionStatus,
     isExecuting,
     loading,
     error,
     fetchRecommendations,
-    fetchCount,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
-  const [fadingOut, setFadingOut] = useState<Set<string>>(new Set());
+  const [showBanner, setShowBanner] = useState(false);
 
   // Fetch recommendations when popup opens
   useEffect(() => {
     if (open) {
       fetchRecommendations();
-      setFadingOut(new Set());
     }
   }, [open, fetchRecommendations]);
 
-  // Fade out completed items after 1.5s
+  // Reset banner when popup closes
   useEffect(() => {
-    const completed = allVisibleActions.filter(a => a.status === "completed");
-    completed.forEach(action => {
-      if (!fadingOut.has(action.id)) {
-        setTimeout(() => {
-          setFadingOut(prev => new Set(prev).add(action.id));
-        }, 1500);
-      }
-    });
-  }, [allVisibleActions, fadingOut]);
+    if (!open) {
+      setShowBanner(false);
+    }
+  }, [open]);
 
   const getPriorityColor = (priority: AutopilotPriority) => {
     switch (priority) {
@@ -98,35 +88,19 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const handleExecute = async () => {
     if (selectedActions.length === 0) return;
     
-    // Show confirmation
-    toast({
-      title: "Super, ich kümmere mich darum!",
-    });
+    // Show confirmation banner inside popup
+    setShowBanner(true);
 
     const actionIds = selectedActions.map(a => a.id);
     
     try {
-      const results = await executeActions(actionIds);
-      const successCount = results.filter(r => r.success).length;
-      
-      if (successCount < results.length) {
-        toast({
-          title: "Teilweise abgeschlossen",
-          description: `${successCount} von ${results.length} erfolgreich aktiviert.`,
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: translate('autopilot.popup.toastFailedTitle'), 
-        description: translate('autopilot.popup.toastFailedDesc'),
-        variant: "destructive"
-      });
+      await executeActions(actionIds);
+    } catch (err) {
+      console.error("[Autopilot] execution error:", err);
     }
   };
 
   const handleNotNow = () => {
-    // Just close — don't reject or dismiss anything
     onOpenChange(false);
   };
 
@@ -139,16 +113,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     const isCompleted = action.status === "completed";
     const isProcessing = action.status === "executing";
     const isPending = action.status === "pending";
-    const isFading = fadingOut.has(action.id);
 
     return (
       <div 
         className={cn(
-          "flex items-start space-x-3 p-3 rounded-lg border bg-card transition-all duration-500 cursor-pointer",
-          isPending && "hover:bg-accent/50",
+          "flex items-start space-x-3 p-3 rounded-lg border bg-card transition-all duration-300",
+          isPending && "hover:bg-accent/50 cursor-pointer",
           isCompleted && "border-green-300 bg-green-50/50 dark:bg-green-900/10",
           isProcessing && "border-primary/30 bg-primary/5",
-          isFading && "opacity-0 max-h-0 p-0 m-0 overflow-hidden border-0"
         )}
         onClick={() => isPending && toggleActionSelection(action.id)}
       >
@@ -215,6 +187,25 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     );
   };
 
+  // ── Confirmation Banner ──
+  const renderBanner = () => (
+    <div className="w-full rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 p-5 mb-4">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0">
+          <Rocket className="w-6 h-6 text-primary" />
+        </div>
+        <div>
+          <h3 className="text-lg font-bold text-foreground">
+            Super, ich kümmere mich darum!
+          </h3>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Du bekommst eine Nachricht, sobald alles erledigt ist.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+
   // ── Loading state ──
   const renderLoading = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
@@ -244,9 +235,6 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     </div>
   );
 
-  // Filter out fully faded items for display
-  const visibleItems = allVisibleActions.filter(a => !fadingOut.has(a.id));
-
   const renderContent = () => {
     if (loading) return renderLoading();
     if (error) return renderError();
@@ -254,9 +242,11 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
     return (
       <>
+        {showBanner && renderBanner()}
+
         <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
           <div className="space-y-2">
-            {visibleItems.map((action) => (
+            {allVisibleActions.map((action) => (
               <ActionItem key={action.id} action={action} />
             ))}
           </div>
