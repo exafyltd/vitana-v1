@@ -52,6 +52,8 @@ function domainToIcon(domain: string): string {
 }
 
 function recToAction(rec: AutopilotRecommendation, index: number): AutopilotAction {
+  // Map API status to UI status
+  const uiStatus: AutopilotActionStatus = rec.status === "activated" ? "executing" : "pending";
   return {
     id: rec.id,
     title: rec.title,
@@ -61,8 +63,8 @@ function recToAction(rec: AutopilotRecommendation, index: number): AutopilotActi
     timeEstimate: rec.estimated_duration || undefined,
     icon: domainToIcon(rec.domain),
     timestamp: new Date(),
-    status: "pending" as AutopilotActionStatus,
-    selected: true,
+    status: uiStatus,
+    selected: uiStatus === "pending", // only pre-select new items
   };
 }
 
@@ -123,14 +125,14 @@ export function useAutopilot() {
     }
   }, [user]);
 
-  // Fetch full list
+  // Fetch full list — includes both new and activated items
   const fetchRecommendations = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError(null);
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new&limit=20&role=community`, { headers });
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations?status=new,activated&limit=20&role=community`, { headers });
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
@@ -146,7 +148,7 @@ export function useAutopilot() {
     }
   }, [user]);
 
-  // Activate
+  // Activate a single recommendation — updates local state to "executing"
   const activateRecommendation = useCallback(async (id: string): Promise<string | null> => {
     try {
       const headers = await getAuthHeaders();
@@ -157,7 +159,6 @@ export function useAutopilot() {
       if (!res.ok) throw new Error(`Activate failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
-        setRecommendations((prev) => prev.filter((r) => r.id !== id));
         return json.vtid ?? null;
       }
       return null;
@@ -196,6 +197,8 @@ export function useAutopilot() {
   // ── Legacy compatibility ──
 
   const pendingActions = state.actions.filter((a) => a.status === "pending");
+  const executingActions = state.actions.filter((a) => a.status === "executing");
+  const allVisibleActions = state.actions.filter((a) => a.status === "pending" || a.status === "executing");
   const pendingCount = pendingActions.length;
   const selectedActions = pendingActions.filter((a) => a.selected);
 
@@ -203,18 +206,41 @@ export function useAutopilot() {
     setState((prev) => ({
       ...prev,
       actions: prev.actions.map((a) =>
-        a.id === actionId ? { ...a, selected: !a.selected } : a
+        a.id === actionId && a.status === "pending" ? { ...a, selected: !a.selected } : a
       ),
     }));
   };
 
+  // Mark a single action's local status
+  const setActionStatus = useCallback((actionId: string, status: AutopilotActionStatus) => {
+    setState((prev) => ({
+      ...prev,
+      actions: prev.actions.map((a) =>
+        a.id === actionId ? { ...a, status } : a
+      ),
+    }));
+  }, []);
+
+  // Execute selected actions one-by-one with per-card status updates
   const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
     setState((prev) => ({ ...prev, isExecuting: true }));
     const results: ExecutionResult[] = [];
+
+    // Mark all as executing
+    for (const id of actionIds) {
+      setActionStatus(id, "executing");
+    }
+
     for (const id of actionIds) {
       const vtid = await activateRecommendation(id);
-      results.push({ actionId: id, success: !!vtid, message: vtid ? `VTID: ${vtid}` : "Failed" });
+      const success = !!vtid;
+      results.push({ actionId: id, success, message: vtid ? `VTID: ${vtid}` : "Failed" });
+      setActionStatus(id, success ? "completed" : "failed");
     }
+
+    // Refresh badge count after all done
+    await fetchCount();
+
     setState((prev) => ({ ...prev, isExecuting: false }));
     return results;
   };
@@ -229,10 +255,13 @@ export function useAutopilot() {
     state,
     recommendations,
     pendingActions,
+    executingActions,
+    allVisibleActions,
     pendingCount,
     selectedActions,
     executeActions,
     toggleActionSelection,
+    setActionStatus,
     dismissActions,
     getLatestActions,
     isExecuting: state.isExecuting,
@@ -241,5 +270,6 @@ export function useAutopilot() {
     fetchRecommendations,
     activateRecommendation,
     dismissRecommendation,
+    fetchCount,
   };
 }
