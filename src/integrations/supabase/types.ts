@@ -9971,6 +9971,156 @@ export type Database = {
         }
         Relationships: []
       }
+      test_cycles: {
+        Row: {
+          created_at: string | null
+          enabled: boolean | null
+          id: string
+          last_run_at: string | null
+          last_run_id: string | null
+          name: string
+          projects: string[]
+          schedule: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          enabled?: boolean | null
+          id?: string
+          last_run_at?: string | null
+          last_run_id?: string | null
+          name: string
+          projects?: string[]
+          schedule?: string | null
+          type?: string
+        }
+        Update: {
+          created_at?: string | null
+          enabled?: boolean | null
+          id?: string
+          last_run_at?: string | null
+          last_run_id?: string | null
+          name?: string
+          projects?: string[]
+          schedule?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_test_cycles_last_run"
+            columns: ["last_run_id"]
+            isOneToOne: false
+            referencedRelation: "test_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_results: {
+        Row: {
+          created_at: string | null
+          duration_ms: number | null
+          error_message: string | null
+          file_path: string | null
+          id: string
+          project: string
+          retry_count: number | null
+          run_id: string
+          status: string
+          test_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          file_path?: string | null
+          id?: string
+          project: string
+          retry_count?: number | null
+          run_id: string
+          status: string
+          test_name: string
+        }
+        Update: {
+          created_at?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          file_path?: string | null
+          id?: string
+          project?: string
+          retry_count?: number | null
+          run_id?: string
+          status?: string
+          test_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_results_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "test_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      test_runs: {
+        Row: {
+          created_at: string | null
+          cycle_id: string | null
+          duration_ms: number | null
+          error_message: string | null
+          failed: number | null
+          finished_at: string | null
+          id: string
+          passed: number | null
+          projects: string[]
+          skipped: number | null
+          status: string
+          total: number | null
+          triggered_by: string | null
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          cycle_id?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          failed?: number | null
+          finished_at?: string | null
+          id?: string
+          passed?: number | null
+          projects?: string[]
+          skipped?: number | null
+          status?: string
+          total?: number | null
+          triggered_by?: string | null
+          type?: string
+        }
+        Update: {
+          created_at?: string | null
+          cycle_id?: string | null
+          duration_ms?: number | null
+          error_message?: string | null
+          failed?: number | null
+          finished_at?: string | null
+          id?: string
+          passed?: number | null
+          projects?: string[]
+          skipped?: number | null
+          status?: string
+          total?: number | null
+          triggered_by?: string | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "test_runs_cycle_id_fkey"
+            columns: ["cycle_id"]
+            isOneToOne: false
+            referencedRelation: "test_cycles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       thread_participants: {
         Row: {
           id: string
