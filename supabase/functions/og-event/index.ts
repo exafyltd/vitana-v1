@@ -24,16 +24,22 @@ function ensureAbsoluteUrl(url: string | null | undefined): string {
   return `https://inmkhvwdcuyhnxkgfvsb.supabase.co/${url}`;
 }
 
-// Return direct public storage URL — no transformation, no redirects
+// Return transformed image URL resized to 1200x630 for OG previews
 function getOptimizedImageUrl(url: string | null | undefined): string {
   const defaultImage = 'https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/covers/vitana-og-default.jpg';
   if (!url) return defaultImage;
 
   let imageUrl = ensureAbsoluteUrl(url).split('?')[0];
 
-  // If somehow a /render/image/ URL got stored, convert back to /object/public/
+  // Normalize to /object/public/ path first
   if (imageUrl.includes('/storage/v1/render/image/public/')) {
     imageUrl = imageUrl.replace('/storage/v1/render/image/public/', '/storage/v1/object/public/');
+  }
+
+  // Use Supabase image transformation to resize to OG-friendly 1200x630
+  if (imageUrl.includes('supabase.co/storage/v1/object/public/')) {
+    imageUrl = imageUrl.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/');
+    imageUrl += '?width=1200&height=630&resize=cover';
   }
 
   return imageUrl;
