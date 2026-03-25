@@ -1,29 +1,41 @@
 
 
-## Fix: Event OG Images Not Showing on WhatsApp
+## Investigation Results
 
-### Root Cause
+### What's Working
+- The `og-event` edge function is deployed and returns correct OG HTML with title, description, and image URL
+- The image file exists in Supabase storage (526KB JPEG, accessible)
+- WhatsApp IS reading the OG metadata (title "Maxina Experience by Janina Restaurant" appears in the preview)
 
-The `og-event` edge function is **not deployed**. Calling it returns a 404:
+### Root Cause: `Content-Type: text/plain` Response Header
 
-```text
-supabase-edge-functions http error: status code 404
-{"code":"NOT_FOUND","message":"Requested function was not found"}
-```
+The edge function code correctly sets `Content-Type: text/html; charset=utf-8`, but the actual response returns `Content-Type: text/plain` (confirmed via curl). This is a Supabase edge runtime behavior where the Content-Type header gets overridden.
 
-The Cloudflare Worker at `e.vitanaland.com` proxies crawler requests to this edge function. Since the function doesn't exist on the server, WhatsApp's crawler gets no OG metadata, so no image preview appears.
-
-The code in `supabase/functions/og-event/index.ts` is correct and complete — it just needs to be deployed.
+WhatsApp's crawler can extract text-based OG tags (title, description) even from `text/plain`, but it does NOT follow `og:image` URLs from non-HTML responses. This matches the exact symptom: title shows, image doesn't.
 
 ### Fix
 
-**Deploy the `og-event` edge function.** One action, no code changes needed.
+**File: `supabase/functions/og-event/index.ts`**
 
-After deployment, verify by curling the function with a WhatsApp user-agent to confirm it returns HTML with the correct `og:image` meta tag for the "Maxina Experience by Janina Restaurant" event.
+Use explicit `new Headers()` construction and set Content-Type first (before spread), ensuring it isn't silently overridden by the runtime. Also add `X-Content-Type-Options: nosniff` to prevent MIME type sniffing interference.
 
-Note: WhatsApp caches link previews aggressively. After deploying, sharing the link again should show the image. For already-cached links, WhatsApp may take hours to refresh the preview.
+For the crawler response (line ~196):
+```typescript
+const headers = new Headers();
+headers.set('Content-Type', 'text/html; charset=utf-8');
+headers.set('Cache-Control', 'public, max-age=120, s-maxage=120');
+headers.set('X-Content-Type-Options', 'nosniff');
+headers.set('Access-Control-Allow-Origin', '*');
 
-### Files
-- No code changes needed
-- Deploy: `supabase/functions/og-event/index.ts`
+return new Response(generateOGHTML(event, canonicalUrl, destinationUrl), { headers });
+```
+
+Apply the same `new Headers()` pattern to the fallback HTML responses (lines ~149, ~178, ~211) for consistency.
+
+After deploying, verify with curl that the response now shows `Content-Type: text/html`. Then share the link fresh in WhatsApp (cached previews won't update immediately).
+
+### Technical Details
+- 1 file changed: `supabase/functions/og-event/index.ts`
+- Redeploy edge function after code change
+- WhatsApp caches link previews aggressively; test with a fresh link share
 
