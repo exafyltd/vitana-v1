@@ -1,41 +1,47 @@
 
 
-## Investigation Results
+## Diagnosis: WhatsApp Image Preview Not Working
 
-### What's Working
-- The `og-event` edge function is deployed and returns correct OG HTML with title, description, and image URL
-- The image file exists in Supabase storage (526KB JPEG, accessible)
-- WhatsApp IS reading the OG metadata (title "Maxina Experience by Janina Restaurant" appears in the preview)
+### Root Cause: e.vitanaland.com is DOWN
 
-### Root Cause: `Content-Type: text/plain` Response Header
+The shared event URLs (e.g., `https://e.vitanaland.com/events/maxina-experience-by-janina-restaurant-3`) return a **Cloudflare DNS error (Error 1016)** — "Cloudflare is currently unable to resolve your requested domain." The Cloudflare Worker that proxies crawler requests to the `og-event` edge function is not reachable.
 
-The edge function code correctly sets `Content-Type: text/html; charset=utf-8`, but the actual response returns `Content-Type: text/plain` (confirmed via curl). This is a Supabase edge runtime behavior where the Content-Type header gets overridden.
+This means WhatsApp's crawler never reaches your OG metadata at all. The title showing in WhatsApp previews may be cached from a previous working state.
 
-WhatsApp's crawler can extract text-based OG tags (title, description) even from `text/plain`, but it does NOT follow `og:image` URLs from non-HTML responses. This matches the exact symptom: title shows, image doesn't.
+### Secondary Issue: Content-Type text/plain
 
-### Fix
+Even when calling the `og-event` edge function directly, Supabase returns `Content-Type: text/plain` instead of `text/html`. This is a **known Supabase bug** affecting non-custom domains — the edge runtime overrides the Content-Type header regardless of what the code sets. The `new Headers()` approach does not fix it.
 
-**File: `supabase/functions/og-event/index.ts`**
+### What Needs to Happen (Infrastructure, not code)
 
-Use explicit `new Headers()` construction and set Content-Type first (before spread), ensuring it isn't silently overridden by the runtime. Also add `X-Content-Type-Options: nosniff` to prevent MIME type sniffing interference.
+1. **Fix e.vitanaland.com DNS/Cloudflare Worker** — The Cloudflare Worker needs to be re-deployed or the DNS records corrected so the domain resolves properly. This is done in the Cloudflare dashboard, not in this codebase.
 
-For the crawler response (line ~196):
-```typescript
-const headers = new Headers();
-headers.set('Content-Type', 'text/html; charset=utf-8');
-headers.set('Cache-Control', 'public, max-age=120, s-maxage=120');
-headers.set('X-Content-Type-Options', 'nosniff');
-headers.set('Access-Control-Allow-Origin', '*');
+2. **Fix Content-Type in Cloudflare Worker** — Since Supabase edge functions always return `text/plain`, the Cloudflare Worker should explicitly override the `Content-Type` to `text/html; charset=utf-8` when proxying the og-event response back to crawlers. Add this in the Worker code:
+   ```javascript
+   // After fetching from og-event edge function:
+   const response = await fetch(edgeFunctionUrl);
+   const html = await response.text();
+   return new Response(html, {
+     headers: {
+       'Content-Type': 'text/html; charset=utf-8',
+       'X-Content-Type-Options': 'nosniff',
+       'Cache-Control': 'public, max-age=120',
+     }
+   });
+   ```
 
-return new Response(generateOGHTML(event, canonicalUrl, destinationUrl), { headers });
-```
+3. **Image URL is correct** — The `og-event` function generates proper OG tags with a 1200x630 transformed image URL. No code changes needed in this repo.
 
-Apply the same `new Headers()` pattern to the fallback HTML responses (lines ~149, ~178, ~211) for consistency.
+### Summary
 
-After deploying, verify with curl that the response now shows `Content-Type: text/html`. Then share the link fresh in WhatsApp (cached previews won't update immediately).
+No code changes in this project will fix the issue. The fix is:
+- Restore `e.vitanaland.com` Cloudflare Worker (DNS/deployment issue)
+- Have the Worker set `Content-Type: text/html` on its response to crawlers
 
-### Technical Details
-- 1 file changed: `supabase/functions/og-event/index.ts`
-- Redeploy edge function after code change
-- WhatsApp caches link previews aggressively; test with a fresh link share
+### Action Required
+
+You need to check your **Cloudflare dashboard** for the `vitanaland.com` zone and verify:
+- The `e` subdomain DNS record exists and points to a Worker route
+- The Worker is deployed and active
+- The Worker route pattern matches `e.vitanaland.com/*`
 
