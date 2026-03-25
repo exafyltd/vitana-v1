@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotAction, AutopilotPriority } from "@/types/autopilot";
@@ -21,13 +20,13 @@ import {
   Zap, 
   Clock, 
   ChevronRight, 
-  Settings, 
   CheckCircle,
   AlertTriangle,
   Info,
   Loader2,
   PartyPopper,
-  WifiOff
+  WifiOff,
+  Check
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -44,27 +43,41 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const { toast } = useToast();
   const { translate } = useTranslation();
   const { 
-    pendingActions, 
+    allVisibleActions,
+    pendingActions,
     selectedActions, 
     executeActions, 
     toggleActionSelection, 
-    dismissActions,
+    setActionStatus,
     isExecuting,
     loading,
     error,
     fetchRecommendations,
+    fetchCount,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
-  const [showOptions, setShowOptions] = useState(false);
-  const [executionProgress, setExecutionProgress] = useState(0);
+  const [fadingOut, setFadingOut] = useState<Set<string>>(new Set());
 
   // Fetch recommendations when popup opens
   useEffect(() => {
     if (open) {
       fetchRecommendations();
+      setFadingOut(new Set());
     }
   }, [open, fetchRecommendations]);
+
+  // Fade out completed items after 1.5s
+  useEffect(() => {
+    const completed = allVisibleActions.filter(a => a.status === "completed");
+    completed.forEach(action => {
+      if (!fadingOut.has(action.id)) {
+        setTimeout(() => {
+          setFadingOut(prev => new Set(prev).add(action.id));
+        }, 1500);
+      }
+    });
+  }, [allVisibleActions, fadingOut]);
 
   const getPriorityColor = (priority: AutopilotPriority) => {
     switch (priority) {
@@ -85,33 +98,24 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const handleExecute = async () => {
     if (selectedActions.length === 0) return;
     
-    setExecutionProgress(0);
+    // Show confirmation
+    toast({
+      title: "Super, ich kümmere mich darum!",
+    });
+
     const actionIds = selectedActions.map(a => a.id);
-    
-    const progressInterval = setInterval(() => {
-      setExecutionProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 200);
     
     try {
       const results = await executeActions(actionIds);
       const successCount = results.filter(r => r.success).length;
       
-      toast({
-        title: translate('autopilot.popup.toastExecutedTitle'),
-        description: translate('autopilot.popup.toastExecutedDesc')
-          .replace('{success}', String(successCount))
-          .replace('{total}', String(results.length)),
-      });
-      
-      onOpenChange(false);
-      setShowOptions(false);
-      setExecutionProgress(0);
+      if (successCount < results.length) {
+        toast({
+          title: "Teilweise abgeschlossen",
+          description: `${successCount} von ${results.length} erfolgreich aktiviert.`,
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: translate('autopilot.popup.toastFailedTitle'), 
@@ -122,8 +126,8 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   };
 
   const handleNotNow = () => {
+    // Just close — don't reject or dismiss anything
     onOpenChange(false);
-    setShowOptions(false);
   };
 
   const handleQuickJump = () => {
@@ -131,39 +135,85 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     navigate("/dashboard/actions");
   };
 
-  const ActionItem = ({ action, showCheckbox = false }: { action: AutopilotAction; showCheckbox?: boolean }) => (
-    <div className="flex items-start space-x-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
-      {showCheckbox && (
-        <Checkbox
-          checked={action.selected}
-          onCheckedChange={() => toggleActionSelection(action.id)}
-          className="mt-1"
-        />
-      )}
-      <div className="text-2xl">{action.icon}</div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-1">
-          <h4 className="font-medium text-sm">{action.title}</h4>
-          <div className="flex items-center space-x-2">
-            {action.timeEstimate && (
-              <Badge variant="outline" className="text-xs">
-                <Clock className="w-3 h-3 mr-1" />
-                {action.timeEstimate}
-              </Badge>
-            )}
-            <Badge 
-              variant="outline" 
-              className={cn("text-xs border", getPriorityColor(action.priority))}
-            >
-              {getPriorityIcon(action.priority)}
-              <span className="ml-1 capitalize">{translate(`autopilot.priorities.${action.priority}`)}</span>
-            </Badge>
-          </div>
+  const ActionItem = ({ action }: { action: AutopilotAction }) => {
+    const isCompleted = action.status === "completed";
+    const isProcessing = action.status === "executing";
+    const isPending = action.status === "pending";
+    const isFading = fadingOut.has(action.id);
+
+    return (
+      <div 
+        className={cn(
+          "flex items-start space-x-3 p-3 rounded-lg border bg-card transition-all duration-500 cursor-pointer",
+          isPending && "hover:bg-accent/50",
+          isCompleted && "border-green-300 bg-green-50/50 dark:bg-green-900/10",
+          isProcessing && "border-primary/30 bg-primary/5",
+          isFading && "opacity-0 max-h-0 p-0 m-0 overflow-hidden border-0"
+        )}
+        onClick={() => isPending && toggleActionSelection(action.id)}
+      >
+        {/* Left side: checkbox, spinner, or checkmark */}
+        <div className="mt-1 flex-shrink-0">
+          {isPending && (
+            <Checkbox
+              checked={action.selected}
+              onCheckedChange={() => toggleActionSelection(action.id)}
+              className="pointer-events-none"
+            />
+          )}
+          {isProcessing && (
+            <Loader2 className="w-4 h-4 text-primary animate-spin" />
+          )}
+          {isCompleted && (
+            <Check className="w-4 h-4 text-green-600" />
+          )}
         </div>
-        <p className="text-xs text-muted-foreground">{action.reason}</p>
+
+        <div className="text-2xl flex-shrink-0">{action.icon}</div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
+            <h4 className={cn(
+              "font-medium text-sm",
+              isCompleted && "text-green-700 dark:text-green-400",
+              isProcessing && "text-muted-foreground"
+            )}>
+              {action.title}
+            </h4>
+            <div className="flex items-center space-x-2">
+              {isProcessing && (
+                <Badge variant="outline" className="text-xs text-primary border-primary/30">
+                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                  In Bearbeitung…
+                </Badge>
+              )}
+              {isCompleted && (
+                <Badge variant="outline" className="text-xs text-green-600 border-green-300 bg-green-50">
+                  <Check className="w-3 h-3 mr-1" />
+                  Erledigt
+                </Badge>
+              )}
+              {isPending && action.timeEstimate && (
+                <Badge variant="outline" className="text-xs">
+                  <Clock className="w-3 h-3 mr-1" />
+                  {action.timeEstimate}
+                </Badge>
+              )}
+              {isPending && (
+                <Badge 
+                  variant="outline" 
+                  className={cn("text-xs border", getPriorityColor(action.priority))}
+                >
+                  {getPriorityIcon(action.priority)}
+                  <span className="ml-1 capitalize">{translate(`autopilot.priorities.${action.priority}`)}</span>
+                </Badge>
+              )}
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground">{action.reason}</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // ── Loading state ──
   const renderLoading = () => (
@@ -194,37 +244,21 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     </div>
   );
 
+  // Filter out fully faded items for display
+  const visibleItems = allVisibleActions.filter(a => !fadingOut.has(a.id));
+
   const renderContent = () => {
     if (loading) return renderLoading();
     if (error) return renderError();
-    if (pendingActions.length === 0) return renderEmpty();
+    if (allVisibleActions.length === 0) return renderEmpty();
 
     return (
       <>
         <ScrollArea className={cn(isMobile ? "flex-1" : "max-h-96")}>
           <div className="space-y-2">
-            {showOptions ? (
-              pendingActions.map((action) => (
-                <ActionItem key={action.id} action={action} showCheckbox={true} />
-              ))
-            ) : (
-              selectedActions.slice(0, 6).map((action) => (
-                <ActionItem key={action.id} action={action} />
-              ))
-            )}
-            
-            {!showOptions && selectedActions.length > 6 && (
-              <div className="text-center py-3">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => setShowOptions(true)}
-                >
-                  {translate('autopilot.popup.moreActions').replace('{count}', String(selectedActions.length - 6))}
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-            )}
+            {visibleItems.map((action) => (
+              <ActionItem key={action.id} action={action} />
+            ))}
           </div>
         </ScrollArea>
 
@@ -240,24 +274,19 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <div className={cn(isMobile ? "flex flex-col gap-2" : "flex space-x-2")}>
               <Button
                 onClick={handleExecute}
-                disabled={selectedActions.length === 0}
+                disabled={selectedActions.length === 0 || isExecuting}
                 className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white"
               >
-                <Zap className="w-4 h-4 mr-2" />
-                {translate('autopilot.popup.go').replace('{count}', String(selectedActions.length))}
+                {isExecuting ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Zap className="w-4 h-4 mr-2" />
+                )}
+                GO ({selectedActions.length})
               </Button>
               <Button variant="outline" onClick={handleNotNow}>
                 {translate('autopilot.popup.notNow')}
               </Button>
-              {!showOptions && (
-                <Button 
-                  variant="outline" 
-                  onClick={() => setShowOptions(true)}
-                >
-                  <Settings className="w-4 h-4 mr-1" />
-                  {translate('autopilot.popup.seeOptions')}
-                </Button>
-              )}
             </div>
             
             <Button
@@ -288,9 +317,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <span>{translate('autopilot.popup.title')}</span>
             {!loading && pendingActions.length > 0 && (
               <Badge variant="outline" className="ml-2">
-                {translate('autopilot.popup.selectedOf')
-                  .replace('{selected}', String(selectedActions.length))
-                  .replace('{total}', String(pendingActions.length))}
+                {selectedActions.length} / {pendingActions.length}
               </Badge>
             )}
           </DialogTitle>
@@ -298,29 +325,13 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             {loading 
               ? "Checking for new suggestions…"
               : pendingActions.length > 0
-                ? translate('autopilot.popup.readyToExecute').replace('{count}', String(selectedActions.length))
+                ? `${selectedActions.length} Vorschläge ausgewählt`
                 : "Your autopilot recommendations"
             }
           </DialogDescription>
         </DialogHeader>
 
-        {isExecuting ? (
-          <div className="py-8">
-            <div className="text-center mb-4">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
-                <Plane className="w-6 h-6 text-red-500 animate-pulse" />
-              </div>
-              <h3 className="font-medium mb-2">{translate('autopilot.popup.executingTitle')}</h3>
-              <p className="text-sm text-muted-foreground">{translate('autopilot.popup.executingDesc')}</p>
-            </div>
-            <Progress value={executionProgress} className="w-full" />
-            <div className="text-center mt-2">
-              <span className="text-sm text-muted-foreground">
-                {translate('autopilot.popup.complete').replace('{percent}', String(executionProgress))}
-              </span>
-            </div>
-          </div>
-        ) : renderContent()}
+        {renderContent()}
       </DialogContent>
     </Dialog>
   );
