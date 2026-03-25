@@ -26,7 +26,6 @@ import {
   PartyPopper,
   WifiOff,
   Check,
-  Rocket
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -54,6 +53,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   
   const isMobile = useIsMobile();
   const [showBanner, setShowBanner] = useState(false);
+  const [bannerMessage, setBannerMessage] = useState<string | null>(null);
 
   // Fetch recommendations when popup opens
   useEffect(() => {
@@ -66,6 +66,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   useEffect(() => {
     if (!open) {
       setShowBanner(false);
+      setBannerMessage(null);
     }
   }, [open]);
 
@@ -87,14 +88,26 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
   const handleExecute = async () => {
     if (selectedActions.length === 0) return;
-    
-    // Show confirmation banner inside popup
-    setShowBanner(true);
 
     const actionIds = selectedActions.map(a => a.id);
     
     try {
-      await executeActions(actionIds);
+      const results = await executeActions(actionIds);
+      
+      // Check for navigate action — use the first navigate result
+      const navigateResult = results.find(r => r.success && r.action_type === "navigate" && r.target);
+      if (navigateResult) {
+        onOpenChange(false);
+        navigate(navigateResult.target!);
+        return;
+      }
+
+      // For "notify" or default — show completion banner with message
+      const notifyResult = results.find(r => r.success && r.completion_message);
+      if (notifyResult) {
+        setBannerMessage(notifyResult.completion_message!);
+      }
+      setShowBanner(true);
     } catch (err) {
       console.error("[Autopilot] execution error:", err);
     }
@@ -192,14 +205,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     <div className="w-full rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 p-5 mb-4">
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0">
-          <Rocket className="w-6 h-6 text-primary" />
+          <Check className="w-6 h-6 text-primary" />
         </div>
         <div>
           <h3 className="text-lg font-bold text-foreground">
-            Super, ich kümmere mich darum!
+            Erledigt!
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Du bekommst eine Nachricht, sobald alles erledigt ist.
+            {bannerMessage || "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."}
           </p>
         </div>
       </div>

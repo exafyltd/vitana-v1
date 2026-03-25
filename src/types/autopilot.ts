@@ -35,4 +35,7 @@ export interface ExecutionResult {
   actionId: string;
   success: boolean;
   message?: string;
+  action_type?: "navigate" | "notify";
+  target?: string;
+  completion_message?: string;
 }
