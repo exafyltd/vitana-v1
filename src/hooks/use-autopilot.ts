@@ -69,9 +69,11 @@ function recToAction(rec: AutopilotRecommendation, index: number): AutopilotActi
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token ?? "";
+  const userId = data.session?.user?.id ?? "";
   return {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
+    "X-User-ID": userId,
   };
 }
 
