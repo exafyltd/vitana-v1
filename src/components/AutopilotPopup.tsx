@@ -54,6 +54,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   
   const isMobile = useIsMobile();
   const [showBanner, setShowBanner] = useState(false);
+  const [bannerMessage, setBannerMessage] = useState<string | null>(null);
 
   // Fetch recommendations when popup opens
   useEffect(() => {
