@@ -148,18 +148,24 @@ export function useAutopilot() {
     }
   }, [user]);
 
-  // Activate a single recommendation — updates local state to "executing"
-  const activateRecommendation = useCallback(async (id: string): Promise<string | null> => {
+  // Activate a single recommendation — returns full API response
+  const activateRecommendation = useCallback(async (id: string): Promise<{
+    ok: boolean;
+    vtid?: string;
+    action_type?: "navigate" | "notify";
+    target?: string;
+    completion_message?: string;
+  } | null> => {
     try {
       const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate`, {
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/activate?role=community`, {
         method: "POST",
         headers,
       });
       if (!res.ok) throw new Error(`Activate failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
-        return json.vtid ?? null;
+        return json;
       }
       return null;
     } catch (e) {
@@ -221,23 +227,27 @@ export function useAutopilot() {
     }));
   }, []);
 
-  // Execute selected actions one-by-one with per-card status updates
+  // Execute selected actions — community activation is instant
   const executeActions = async (actionIds: string[]): Promise<ExecutionResult[]> => {
     setState((prev) => ({ ...prev, isExecuting: true }));
     const results: ExecutionResult[] = [];
 
-    // Mark all as executing
     for (const id of actionIds) {
-      setActionStatus(id, "executing");
-    }
-
-    for (const id of actionIds) {
-      const vtid = await activateRecommendation(id);
-      const success = !!vtid;
-      results.push({ actionId: id, success, message: vtid ? `VTID: ${vtid}` : "Failed" });
-      // Keep as "executing" (spinner) — only backend completion signal should mark "completed"
-      if (!success) {
+      const response = await activateRecommendation(id);
+      const success = !!response;
+      if (success) {
+        setActionStatus(id, "completed");
+        results.push({
+          actionId: id,
+          success: true,
+          message: response.completion_message || `VTID: ${response.vtid}`,
+          action_type: response.action_type,
+          target: response.target,
+          completion_message: response.completion_message,
+        });
+      } else {
         setActionStatus(id, "failed");
+        results.push({ actionId: id, success: false, message: "Failed" });
       }
     }
 
