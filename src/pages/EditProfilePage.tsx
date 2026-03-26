@@ -45,7 +45,6 @@ const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche 
 export default function EditProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const fromCommandHub = location.state?.fromCommandHub === true;
   const { profile: contextProfile } = useProfile();
   const { user } = useAuth();
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");

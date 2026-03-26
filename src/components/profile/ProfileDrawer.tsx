@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -57,12 +57,9 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const [open, setOpen] = React.useState(false);
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
 
-  const location = useLocation();
-  const isFromCommandHub = location.pathname.startsWith('/dev');
-
   const handleEditProfile = () => {
     setOpen(false);
-    setTimeout(() => navigate('/me/profile', { state: { fromCommandHub: isFromCommandHub } }), 150);
+    navigate('/me/profile');
   };
   
   // Admin users get access to all roles for supervision purposes
