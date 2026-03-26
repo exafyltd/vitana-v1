@@ -122,7 +122,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   };
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         {trigger}
       </DrawerTrigger>
@@ -158,7 +158,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             <Button 
               variant="ghost" 
               className="w-full justify-start"
-              onClick={() => navigate('/me/profile')}
+              onClick={handleEditProfile}
             >
               <User className="mr-2 h-4 w-4" />
               Edit Profile
