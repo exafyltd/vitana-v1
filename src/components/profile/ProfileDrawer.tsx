@@ -147,17 +147,21 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             </DrawerClose>
           </div>
 
-          <Separator />
-          <div className="space-y-2">
-            <DrawerClose asChild>
-              <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
-                <Link to="/delete-account">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  Delete Account
-                </Link>
-              </Button>
-            </DrawerClose>
-          </div>
+          {isMobile && (
+            <>
+              <Separator />
+              <div className="space-y-2">
+                <DrawerClose asChild>
+                  <Button variant="ghost" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10" asChild>
+                    <Link to="/delete-account">
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete Account
+                    </Link>
+                  </Button>
+                </DrawerClose>
+              </div>
+            </>
+          )}
 
 
           {/* Role Switcher - desktop only, mobile is community-only */}
