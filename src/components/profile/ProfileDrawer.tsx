@@ -59,7 +59,8 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
 
   const handleEditProfile = () => {
     setOpen(false);
-    navigate('/me/profile');
+    // Use window.location for a full page redirect to bypass any platform overlays
+    window.location.href = '/me/profile';
   };
   
   // Admin users get access to all roles for supervision purposes
