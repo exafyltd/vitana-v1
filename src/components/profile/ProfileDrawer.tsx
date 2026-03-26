@@ -57,9 +57,12 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const [open, setOpen] = React.useState(false);
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
 
+  const location = useLocation();
+  const isFromCommandHub = location.pathname.startsWith('/dev');
+
   const handleEditProfile = () => {
     setOpen(false);
-    setTimeout(() => navigate('/me/profile'), 150);
+    setTimeout(() => navigate('/me/profile', { state: { fromCommandHub: isFromCommandHub } }), 150);
   };
   
   // Admin users get access to all roles for supervision purposes
