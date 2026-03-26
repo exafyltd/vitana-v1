@@ -21,6 +21,8 @@ import { Input } from "@/components/ui/input";
 import { ProfileDrawer } from "@/components/profile/ProfileDrawer";
 import { useProfile } from "@/context/ProfileProvider";
 import { useAuth } from "@/context/AuthProvider";
+import { useRole } from "@/hooks/useRole";
+import { useTenant } from "@/hooks/useTenant";
 import { useToast } from "@/hooks/use-toast";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
@@ -55,6 +57,8 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
   const { toast } = useToast();
   const isMobile = useMediaQuery('(max-width: 768px)');
   const { profile } = useProfile();
+  const { currentRole } = useRole();
+  const { isExafyAdmin } = useTenant();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -106,14 +110,21 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
             <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
               <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                 <AvatarImage src={profile.avatar} alt={profile.displayName} />
-                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-800 font-semibold text-xs">
+                <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
                   {profile.initials}
                 </AvatarFallback>
               </Avatar>
               {!isMobile && (
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium truncate">{profile.displayName}</p>
-                  <p className="text-xs text-muted-foreground/50">Developer</p>
+                  <p className="text-xs text-sidebar-foreground/50 capitalize">
+                    {isExafyAdmin ? 'Exafy Admin' :
+                     currentRole === 'admin' ? 'Administrator' :
+                     currentRole === 'staff' ? 'Staff' :
+                     currentRole === 'professional' ? 'Professional' :
+                     currentRole === 'patient' ? 'Patient' :
+                     'Community Member'}
+                  </p>
                 </div>
               )}
             </button>
@@ -125,7 +136,7 @@ export function DevSidebar({ user, mobileOpen = false, onMobileOpenChange }: Dev
             <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
               <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
                 <AvatarImage src={profile.avatar} alt={profile.displayName} />
-                <AvatarFallback className="bg-gradient-to-br from-blue-100 to-blue-200 text-blue-800 font-semibold text-xs">
+                <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
                   {profile.initials}
                 </AvatarFallback>
               </Avatar>
