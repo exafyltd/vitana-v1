@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { UserProfile, ViewAsMode } from "@/types/profile";
@@ -44,6 +44,8 @@ const DEFAULT_BIO_DE = 'Wellness-Enthusiast mit Leidenschaft für ganzheitliche 
 
 export default function EditProfilePage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromCommandHub = location.state?.fromCommandHub === true;
   const { profile: contextProfile } = useProfile();
   const { user } = useAuth();
   const [viewAs, setViewAs] = useState<ViewAsMode>("me");
