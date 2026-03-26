@@ -10,6 +10,7 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { ActiveVTIDProvider } from "@/context/ActiveVTIDContext";
+import { useRole } from "@/hooks/useRole";
 
 interface DevLayoutProps {
   children?: ReactNode;
@@ -19,6 +20,14 @@ export default function DevLayout({ children }: DevLayoutProps) {
   const { user } = useAuth();
   const { errors, dismissError } = useErrorNotifications();
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const { currentRole, setRole, isLoading: roleLoading } = useRole();
+
+  // Auto-set role to admin when entering Command Hub
+  useEffect(() => {
+    if (!roleLoading && currentRole !== 'admin') {
+      setRole('admin');
+    }
+  }, [roleLoading, currentRole]);
 
   // Sidebar state with localStorage persistence
   const [sidebarOpen, setSidebarOpen] = useState(() => {
