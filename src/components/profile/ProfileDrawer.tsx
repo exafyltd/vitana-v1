@@ -54,7 +54,13 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   
   const isMobile = useIsMobile();
   
+  const [open, setOpen] = React.useState(false);
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+  const handleEditProfile = () => {
+    setOpen(false);
+    setTimeout(() => navigate('/me/profile'), 150);
+  };
   
   // Admin users get access to all roles for supervision purposes
   const availableRoles = isExafyAdmin 
@@ -116,7 +122,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   };
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         {trigger}
       </DrawerTrigger>
@@ -152,7 +158,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             <Button 
               variant="ghost" 
               className="w-full justify-start"
-              onClick={() => navigate('/me/profile')}
+              onClick={handleEditProfile}
             >
               <User className="mr-2 h-4 w-4" />
               Edit Profile
