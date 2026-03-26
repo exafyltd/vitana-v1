@@ -101,16 +101,6 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
     }, 100);
   };
 
-  const handleEditProfile = () => {
-    // Close drawer first, then navigate to avoid the drawer staying open during route change
-    const drawerCloseButton = document.querySelector('[data-vaul-drawer-close]') as HTMLButtonElement;
-    if (drawerCloseButton) {
-      drawerCloseButton.click();
-    }
-    setTimeout(() => {
-      navigate("/me/profile");
-    }, 100);
-  };
 
   const handleSignOut = async () => {
     try {
