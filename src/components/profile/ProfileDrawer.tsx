@@ -76,14 +76,9 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
 
   const handleRoleChange = (newRole: UserRole) => {
     setRole(newRole);
-    
-    // Close drawer immediately
-    const drawerCloseButton = document.querySelector('[data-vaul-drawer-close]') as HTMLButtonElement;
-    if (drawerCloseButton) {
-      drawerCloseButton.click();
-    }
-    
-    // Navigate immediately
+    setOpen(false);
+
+    // Navigate after drawer closes
     setTimeout(() => {
       switch (newRole) {
         case "admin":
