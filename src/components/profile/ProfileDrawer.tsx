@@ -149,14 +149,14 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
         <div className="px-4 space-y-4">
           {/* Always show basic actions */}
           <div className="space-y-2">
-            <DrawerClose asChild>
-              <Button variant="ghost" className="w-full justify-start" asChild>
-                <Link to="/me/profile">
-                  <User className="mr-2 h-4 w-4" />
-                  Edit Profile
-                </Link>
-              </Button>
-            </DrawerClose>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start"
+              onClick={() => navigate('/me/profile')}
+            >
+              <User className="mr-2 h-4 w-4" />
+              Edit Profile
+            </Button>
           </div>
 
           {isMobile && (
