@@ -49,7 +49,7 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   const { signOut, user } = useAuth();
   const { tenant, activeTenantId, isExafyAdmin } = useTenant();
   const { currentRole, setRole } = useRole();
-  const { roles: membershipRoles } = useMemberships(activeTenantId || undefined);
+  const { roles: membershipRoles, memberships } = useMemberships(activeTenantId || undefined);
   const { getLogoutRedirectUrl } = useTenantLogoutRedirect();
   
   const isMobile = useIsMobile();
@@ -59,7 +59,11 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   // Admin users get access to all roles for supervision purposes
   const availableRoles = isExafyAdmin 
     ? ['community', 'patient', 'professional', 'staff', 'admin'] as UserRole[]
-    : membershipRoles || [];
+    : membershipRoles 
+      ? membershipRoles as UserRole[]
+      : memberships && activeTenantId
+        ? [...new Set(memberships.filter(m => m.tenant_id === activeTenantId).map(m => m.role))] as UserRole[]
+        : [];
 
   const handleRoleChange = (newRole: UserRole) => {
     setRole(newRole);
@@ -127,9 +131,17 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
             </Avatar>
             <div className="space-y-1 flex flex-col items-center">
               <DrawerTitle className="text-lg">{profile.displayName}</DrawerTitle>
+              {user?.email && (
+                <p className="text-xs text-muted-foreground">{user.email}</p>
+              )}
               <Badge variant="secondary" className="text-xs">
                 {ROLE_LABELS[profile.role]}
               </Badge>
+              {activeTenantId && (
+                <p className="text-xs text-muted-foreground">
+                  Tenant: {activeTenantId.substring(0, 8)}...
+                </p>
+              )}
             </div>
           </div>
         </DrawerHeader>
