@@ -54,7 +54,13 @@ export function ProfileDrawer({ trigger }: ProfileDrawerProps) {
   
   const isMobile = useIsMobile();
   
+  const [open, setOpen] = React.useState(false);
   const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+  const handleEditProfile = () => {
+    setOpen(false);
+    setTimeout(() => navigate('/me/profile'), 150);
+  };
   
   // Admin users get access to all roles for supervision purposes
   const availableRoles = isExafyAdmin 
