@@ -14,8 +14,7 @@ export const useProfileShare = ({ handle, name, profileId, isPublic }: ShareOpti
 
   // Generate canonical profile URL with UTM parameters
   const getShareUrl = useCallback(() => {
-    const canonicalBase = 'https://e.vitanaland.com';
-    return `${canonicalBase}/profiles/${encodeURIComponent(profileId)}`;
+    return `https://vitanaland.com/?share=profile&id=${encodeURIComponent(profileId)}`;
   }, [profileId]);
 
   // Check if Web Share API is available

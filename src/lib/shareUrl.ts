@@ -34,20 +34,27 @@ export function getShareUrl(
   // Events/meetups use canonical vitanaland.com URLs for sharing
   // Cloudflare Worker handles OG meta for crawlers — NO UTM params on shared links
   if (type === 'event' || type === 'meetup') {
-    const canonicalBase = 'https://e.vitanaland.com';
+    const canonicalBase = 'https://vitanaland.com';
     
-    // Build clean URL path - prefer slug for SEO-friendly URLs
-    const path = options?.slug 
-      ? `/events/${encodeURIComponent(options.slug)}`
-      : `/pub/events/${encodeURIComponent(id)}`;
+    // Use ?share=event routing through ShareEntry.tsx
+    const params = new URLSearchParams();
+    params.set('share', 'event');
+    if (options?.slug) {
+      params.set('slug', options.slug);
+    } else {
+      params.set('id', id);
+    }
+    if (options?.utm_source) params.set('utm_source', options.utm_source);
+    if (options?.utm_medium) params.set('utm_medium', options.utm_medium);
+    if (options?.utm_campaign) params.set('utm_campaign', options.utm_campaign);
     
-    return `${canonicalBase}${path}`;
+    return `${canonicalBase}/?${params.toString()}`;
   }
 
-  // Profiles use e.vitanaland.com for OG image previews
+  // Profiles use ?share=profile routing through ShareEntry.tsx
   if (type === 'profile') {
-    const canonicalBase = 'https://e.vitanaland.com';
-    return `${canonicalBase}/profiles/${encodeURIComponent(id)}`;
+    const canonicalBase = 'https://vitanaland.com';
+    return `${canonicalBase}/?share=profile&id=${encodeURIComponent(id)}`;
   }
   
   // Other content types use direct app URLs
@@ -101,12 +108,12 @@ export function getResellerShareUrl(
  * @returns Clean event URL
  */
 export function getCleanEventUrl(slug?: string | null, id?: string): string {
-  const canonicalBase = 'https://e.vitanaland.com';
+  const canonicalBase = 'https://vitanaland.com';
   if (slug) {
-    return `${canonicalBase}/events/${encodeURIComponent(slug)}`;
+    return `${canonicalBase}/?share=event&slug=${encodeURIComponent(slug)}`;
   }
   if (id) {
-    return `${canonicalBase}/pub/events/${encodeURIComponent(id)}`;
+    return `${canonicalBase}/?share=event&id=${encodeURIComponent(id)}`;
   }
   return canonicalBase;
 }
