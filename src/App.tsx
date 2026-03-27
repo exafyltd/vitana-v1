@@ -320,6 +320,12 @@ const AppHooksInitializer = () => {
   return null;
 };
 
+// Mobile/Desktop settings router
+function SettingsRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSettings /> : <Settings />;
+}
+
 const App = () => {
   // Initialize session ID for activity logging
   useEffect(() => {
