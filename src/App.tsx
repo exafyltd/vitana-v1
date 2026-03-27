@@ -128,6 +128,7 @@ import Community from "./pages/Community";
 import AI from "./pages/AI";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
+import MobileSettings from "./pages/MobileSettings";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
 

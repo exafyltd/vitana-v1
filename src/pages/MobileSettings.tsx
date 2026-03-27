@@ -116,9 +116,8 @@ export default function MobileSettings() {
           )}
         >
           <ExpandableSearchButton
-            value={searchQuery}
-            onChange={setSearchQuery}
             placeholder={translate('settings.search', 'Search settings...')}
+            onSearch={setSearchQuery}
           />
           <UniversalCalendarButton />
         </UtilityActionButton>
