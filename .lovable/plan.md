@@ -1,38 +1,32 @@
 
 
-## Add Mobile Settings Page & Update Drawer Navigation
+## Fix: Settings Drawer Label + Page Spacing
 
-### Summary
-Create a dedicated mobile Settings page at `/settings`, replace the "Delete Account" drawer entry with "Settings", and de-emphasize account deletion by placing it inside the Settings page. Skip Billing for now.
+### Issues Found
+1. **Drawer label shows "drawerNav.settings"** — the translation key was never added to en.json, de.json, or ar.json. All other drawer items have translations but `settings` was missed.
+2. **Settings page feels "stuffed"** — compared to Events, the page uses tight padding (`px-2 pt-2`), compact card spacing (`space-y-3`, `py-1`), and small inner gaps throughout.
 
 ### Changes
 
-#### 1. `src/config/drawer-nav.config.ts`
-- Import `Settings` icon from lucide-react
-- Replace the `delete-account` entry with: `{ id: 'settings', route: '/settings', icon: Settings, translationKey: 'drawerNav.settings' }`
-- Keep `connectors` entry unchanged
-- Final order: Events, Live, Media, Business, Discover, Orders, Wallet, Health, Diary, Connectors, Inbox, Profile, **Settings**, Logout
+#### 1. Add translation keys (3 files)
+- `src/i18n/en.json` — add `"settings": "Settings"` to `drawerNav` block, remove stale `"deleteAccount"` entry
+- `src/i18n/de.json` — add `"settings": "Einstellungen"` to `drawerNav` block, remove stale `"deleteAccount"` entry
+- `src/i18n/ar.json` — add `"settings": "الإعدادات"` to `drawerNav` block
 
-#### 2. Create `src/pages/MobileSettings.tsx`
-New page following `MobileDailyDiary` pattern:
-- `MobileAppShell` wrapper
-- `StandardHeader` — title: "Settings ⚙️", subtitle: "Manage your preferences and account"
-- `UtilityActionButton` bar (search, calendar, Vitana Index chip, Autopilot chip)
-- **Sections** (card-based, scrollable):
-  - **Notifications** — Master push toggle + per-category toggles (Live Rooms, Community, Recommendations, Tasks, Memory) + Quiet Hours toggle with time pickers. Uses existing `useNotificationPreferences` hook
-  - **Privacy** — navigation card → `/settings/privacy`
-  - **Preferences** — navigation card → `/settings/preferences`
-  - **Support** — navigation card → `/settings/support`
-  - **Delete Account** — red-tinted card at bottom with warning subtitle, navigates to `/delete-account`. De-emphasized but accessible (App Store compliance)
+#### 2. Fix spacing in `src/pages/MobileSettings.tsx`
+Adjust the page layout to match Events/other hubs:
+- Outer container: `px-2 pt-2` → `px-4 pt-4` (more breathing room)
+- Scrollable area: `space-y-4 px-1` → `space-y-5 px-0` (wider gaps between sections)
+- Notification card inner: `p-4 space-y-3` → `p-5 space-y-4` (more internal padding)
+- Category toggle rows: `py-1` → `py-2.5` (taller tap targets, less cramped)
+- Push notification row: `py-1.5` → `py-2.5`
+- Section title margin: `mb-1` → `mb-2`
+- NavCard items: `py-3.5` → `py-4`, `gap-3` → `gap-4`
+- Delete account section: `pt-4` → `pt-6`
 
-#### 3. `src/App.tsx` (line ~741-747)
-- Import `MobileSettings` and `useIsMobile`
-- On `/settings` route: render `MobileSettings` when mobile, existing `Settings` when desktop
-
-#### 4. `src/components/mobile/SideDrawerNav.tsx` (line 209)
-- Change `isDestructive` check from `item.id === 'logout' || item.id === 'delete-account'` to just `item.id === 'logout'`
-
-### Files
-- **Create**: `src/pages/MobileSettings.tsx`
-- **Edit**: `src/config/drawer-nav.config.ts`, `src/App.tsx`, `src/components/mobile/SideDrawerNav.tsx`
+### Files to edit
+- `src/i18n/en.json` (line ~2421)
+- `src/i18n/de.json` (line ~2426)
+- `src/i18n/ar.json` (line ~62)
+- `src/pages/MobileSettings.tsx`
 
