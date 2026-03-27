@@ -987,8 +987,8 @@ serve(async (req) => {
             const spots = e.maxParticipants ? `${e.participantCount}/${e.maxParticipants}` : `${e.participantCount}`;
             const participating = e.isParticipating ? '✅' : '';
             const link = e.slug
-              ? `https://vitanaland.com/?share=event&slug=${encodeURIComponent(e.slug)}`
-              : `https://vitanaland.com/?share=event&id=${encodeURIComponent(e.id)}`;
+              ? `https://e.vitanaland.com/events/${encodeURIComponent(e.slug)}`
+              : `https://e.vitanaland.com/events/${encodeURIComponent(e.id)}`;
             contextLinkCandidates.push({ url: link, title: e.title, location: e.location });
             systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''} → ${link}\n`;
           });
@@ -1000,8 +1000,8 @@ serve(async (req) => {
           community.myRegisteredEvents.slice(0, 3).forEach((e: any) => {
             const date = new Date(e.startTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
             const link = e.slug
-              ? `https://vitanaland.com/?share=event&slug=${encodeURIComponent(e.slug)}`
-              : `https://vitanaland.com/?share=event&id=${encodeURIComponent(e.id)}`;
+              ? `https://e.vitanaland.com/events/${encodeURIComponent(e.slug)}`
+              : `https://e.vitanaland.com/events/${encodeURIComponent(e.id)}`;
             contextLinkCandidates.push({ url: link, title: e.title });
             systemMessage += `  - ${e.title} - ${date} → ${link}\n`;
           });
@@ -1024,7 +1024,7 @@ serve(async (req) => {
           topMatches.forEach((m: any) => {
             const status = m.conversationStarted ? '💬 Connected' : '👋 Not yet contacted';
             const interests = m.sharedInterests?.length > 0 ? ` - Shared: ${m.sharedInterests.slice(0, 2).join(', ')}` : '';
-            const matchLink = `https://vitanaland.com/?share=match&id=${encodeURIComponent(m.id)}`;
+            const matchLink = `https://e.vitanaland.com/matches/${encodeURIComponent(m.id)}`;
             contextLinkCandidates.push({ url: matchLink, title: m.displayName });
             systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status} → ${matchLink}\n`;
           });
