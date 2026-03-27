@@ -35,7 +35,7 @@ function NavCard({ icon: Icon, label, subtitle, route, variant = 'default' }: Na
   return (
     <button
       onClick={() => navigate(route)}
-      className={`w-full flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all duration-150 text-left ${
+      className={`w-full flex items-center gap-4 rounded-2xl px-4 py-4 transition-all duration-150 text-left ${
         isDestructive
           ? 'bg-destructive/5 hover:bg-destructive/10 border border-destructive/20'
           : 'bg-card hover:bg-accent/50 border border-border/50'
@@ -99,7 +99,7 @@ export default function MobileSettings() {
 
   return (
     <MobileAppShell>
-      <div className="px-2 pt-2 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
+      <div className="px-4 pt-4 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader
           title={translate('settings.title', 'Settings')}
           description={translate('settings.description', 'Manage your preferences and account')}
@@ -123,12 +123,12 @@ export default function MobileSettings() {
         </UtilityActionButton>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto pb-24 space-y-4 px-1">
+        <div className="flex-1 overflow-y-auto pb-24 space-y-5 px-0">
           
           {/* Notifications Section */}
           <Card className="rounded-2xl border-border/50 shadow-sm">
-            <CardContent className="p-4 space-y-3">
-              <div className="flex items-center gap-2 mb-1">
+            <CardContent className="p-5 space-y-4">
+              <div className="flex items-center gap-2 mb-2">
                 <Bell className="w-4.5 h-4.5 text-primary" />
                 <h3 className="text-sm font-semibold text-foreground">
                   {translate('settings.notifications', 'Notifications')}
@@ -136,7 +136,7 @@ export default function MobileSettings() {
               </div>
 
               {/* Master push toggle */}
-              <div className="flex items-center justify-between py-1.5">
+              <div className="flex items-center justify-between py-2.5">
                 <div className="flex items-center gap-2">
                   {prefs.push_enabled ? (
                     <Bell className="w-4 h-4 text-primary" />
@@ -158,7 +158,7 @@ export default function MobileSettings() {
 
               {/* Category toggles */}
               {notificationToggles.map((item) => (
-                <div key={item.field} className="flex items-center justify-between py-1">
+                <div key={item.field} className="flex items-center justify-between py-2.5">
                   <span className="text-sm text-foreground/80">{item.label}</span>
                   <Switch
                     checked={!!prefs[item.field]}
@@ -171,7 +171,7 @@ export default function MobileSettings() {
               <Separator className="bg-border/30" />
 
               {/* Quiet Hours */}
-              <div className="flex items-center justify-between py-1.5">
+              <div className="flex items-center justify-between py-2.5">
                 <div className="flex items-center gap-2">
                   <Moon className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm text-foreground/80">
@@ -210,7 +210,7 @@ export default function MobileSettings() {
           </div>
 
           {/* Delete Account — de-emphasized */}
-          <div className="pt-4">
+          <div className="pt-6">
             <NavCard
               icon={Trash2}
               label={translate('settings.deleteAccount', 'Delete Account')}
