@@ -206,7 +206,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               {drawerNavItems.map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
-                const isDestructive = item.id === 'logout' || item.id === 'delete-account';
+                const isDestructive = item.id === 'logout';
 
                 return (
                   <button
