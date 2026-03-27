@@ -35,7 +35,7 @@ function NavCard({ icon: Icon, label, subtitle, route, variant = 'default' }: Na
   return (
     <button
       onClick={() => navigate(route)}
-      className={`w-full flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all duration-150 text-left ${
+      className={`w-full flex items-center gap-4 rounded-2xl px-4 py-4 transition-all duration-150 text-left ${
         isDestructive
           ? 'bg-destructive/5 hover:bg-destructive/10 border border-destructive/20'
           : 'bg-card hover:bg-accent/50 border border-border/50'
