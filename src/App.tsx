@@ -742,7 +742,7 @@ const App = () => {
           <Route path="/settings" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
-                <MobileSettingsRouter />
+                <SettingsRouter />
               </ProtectedRoute>
             </AuthGuard>
           } />
