@@ -987,8 +987,8 @@ serve(async (req) => {
             const spots = e.maxParticipants ? `${e.participantCount}/${e.maxParticipants}` : `${e.participantCount}`;
             const participating = e.isParticipating ? '✅' : '';
             const link = e.slug
-              ? `https://e.vitanaland.com/events/${e.slug}`
-              : `https://e.vitanaland.com/pub/events/${e.id}`;
+              ? `https://vitanaland.com/?share=event&slug=${encodeURIComponent(e.slug)}`
+              : `https://vitanaland.com/?share=event&id=${encodeURIComponent(e.id)}`;
             contextLinkCandidates.push({ url: link, title: e.title, location: e.location });
             systemMessage += `  ${participating} ${e.title} (${e.type}) - ${date}, ${spots} attending${e.location ? `, ${e.location}` : ''} → ${link}\n`;
           });
@@ -1000,8 +1000,8 @@ serve(async (req) => {
           community.myRegisteredEvents.slice(0, 3).forEach((e: any) => {
             const date = new Date(e.startTime).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
             const link = e.slug
-              ? `https://e.vitanaland.com/events/${e.slug}`
-              : `https://e.vitanaland.com/pub/events/${e.id}`;
+              ? `https://vitanaland.com/?share=event&slug=${encodeURIComponent(e.slug)}`
+              : `https://vitanaland.com/?share=event&id=${encodeURIComponent(e.id)}`;
             contextLinkCandidates.push({ url: link, title: e.title });
             systemMessage += `  - ${e.title} - ${date} → ${link}\n`;
           });
@@ -1024,7 +1024,7 @@ serve(async (req) => {
           topMatches.forEach((m: any) => {
             const status = m.conversationStarted ? '💬 Connected' : '👋 Not yet contacted';
             const interests = m.sharedInterests?.length > 0 ? ` - Shared: ${m.sharedInterests.slice(0, 2).join(', ')}` : '';
-            const matchLink = `https://e.vitanaland.com/matches/${m.id}`;
+            const matchLink = `https://vitanaland.com/?share=match&id=${encodeURIComponent(m.id)}`;
             contextLinkCandidates.push({ url: matchLink, title: m.displayName });
             systemMessage += `  - ${m.displayName} (${m.compatibilityScore}% compatible)${interests} - ${status} → ${matchLink}\n`;
           });
@@ -1063,7 +1063,7 @@ serve(async (req) => {
         systemMessage += '5. 🎯 Nudging them toward community engagement (events, meetups, groups)\n';
         systemMessage += '6. 🏆 Celebrating their community participation and milestones\n';
         systemMessage += '7. 💡 Making personalized suggestions like "Want me to RSVP you?" or "Should I help you connect?"\n';
-        systemMessage += '8. 🔗 CRITICAL: When users ask about an event or match, you MUST include the full clickable URL (starting with https://e.vitanaland.com/) from the → arrow in the context above. Copy the exact URL — never write placeholder text like "[Link zum Event]" or "[link]". Always paste the real URL.\n';
+        systemMessage += '8. 🔗 CRITICAL: When users ask about an event or match, you MUST include the full clickable URL (starting with https://vitanaland.com/) from the → arrow in the context above. Copy the exact URL — never write placeholder text like "[Link zum Event]" or "[link]". Always paste the real URL.\n';
       }
       
       // === LONG-TERM MEMORY (Unified Semantic Search Results) ===

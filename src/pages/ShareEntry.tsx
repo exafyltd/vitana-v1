@@ -63,6 +63,19 @@ export default function ShareEntry({ fallback }: { fallback: ReactNode }) {
       return;
     }
 
+    if (shareType === "profile") {
+      const id = params.get("id");
+      if (!id) return;
+
+      const nextParams = new URLSearchParams(params);
+      nextParams.delete("share");
+      nextParams.delete("id");
+
+      const qs = nextParams.toString();
+      navigate(`/profile/${encodeURIComponent(id)}${qs ? `?${qs}` : ""}`, { replace: true });
+      return;
+    }
+
     // 2. Handle domain-based tenant redirect (only if no share link)
     if (shouldRedirectForDomain && tenantForDomain) {
       const qs = params.toString();
