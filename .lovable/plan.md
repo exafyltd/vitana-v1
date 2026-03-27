@@ -1,32 +1,46 @@
 
 
-## Fix: Settings Drawer Label + Page Spacing
+## Investigation: Event Sharing Broken
 
-### Issues Found
-1. **Drawer label shows "drawerNav.settings"** — the translation key was never added to en.json, de.json, or ar.json. All other drawer items have translations but `settings` was missed.
-2. **Settings page feels "stuffed"** — compared to Events, the page uses tight padding (`px-2 pt-2`), compact card spacing (`space-y-3`, `py-1`), and small inner gaps throughout.
+### Root Cause
+The `e.vitanaland.com` subdomain has a **broken SSL certificate** (`ERR_SSL_VERSION_OR_CIPHER_MISMATCH`). Every shared event link, profile link, and match link currently points to this dead subdomain. This is an infrastructure issue (Cloudflare/DNS), not a code bug.
 
-### Changes
+### Impact
+- All event share links are unreachable (WhatsApp, copy link, email, etc.)
+- No OG image previews (the Cloudflare Worker that serves them is on `e.vitanaland.com`)
+- Profile share links broken
+- Match share links broken
+- AI chat event links broken
 
-#### 1. Add translation keys (3 files)
-- `src/i18n/en.json` — add `"settings": "Settings"` to `drawerNav` block, remove stale `"deleteAccount"` entry
-- `src/i18n/de.json` — add `"settings": "Einstellungen"` to `drawerNav` block, remove stale `"deleteAccount"` entry
-- `src/i18n/ar.json` — add `"settings": "الإعدادات"` to `drawerNav` block
+### Recommended Fix: Switch to `vitanaland.com` with share parameters
 
-#### 2. Fix spacing in `src/pages/MobileSettings.tsx`
-Adjust the page layout to match Events/other hubs:
-- Outer container: `px-2 pt-2` → `px-4 pt-4` (more breathing room)
-- Scrollable area: `space-y-4 px-1` → `space-y-5 px-0` (wider gaps between sections)
-- Notification card inner: `p-4 space-y-3` → `p-5 space-y-4` (more internal padding)
-- Category toggle rows: `py-1` → `py-2.5` (taller tap targets, less cramped)
-- Push notification row: `py-1.5` → `py-2.5`
-- Section title margin: `mb-1` → `mb-2`
-- NavCard items: `py-3.5` → `py-4`, `gap-3` → `gap-4`
-- Delete account section: `pt-4` → `pt-6`
+Since `vitanaland.com` works and `ShareEntry.tsx` already handles `?share=event&slug=...` routing, we can reroute all share URLs through the main domain. This restores link functionality immediately while the SSL issue is resolved separately.
 
-### Files to edit
-- `src/i18n/en.json` (line ~2421)
-- `src/i18n/de.json` (line ~2426)
-- `src/i18n/ar.json` (line ~62)
-- `src/pages/MobileSettings.tsx`
+#### Files to edit
+
+**1. `src/lib/shareUrl.ts`**
+- Change `canonicalBase` from `https://e.vitanaland.com` to `https://vitanaland.com`
+- Events: generate `https://vitanaland.com/?share=event&slug={slug}` (or `&id={id}` fallback)
+- Profiles: generate `https://vitanaland.com/?share=profile&id={id}`
+- `getCleanEventUrl`: same pattern change
+
+**2. `src/hooks/useProfileShare.ts`**
+- Change canonical base from `https://e.vitanaland.com` to `https://vitanaland.com`
+- Use `?share=profile&id={id}` pattern
+
+**3. `src/pages/ShareEntry.tsx`**
+- Add handler for `share=profile` type (redirect to `/profile/{id}`)
+
+**4. `supabase/functions/ai-chat/index.ts`**
+- Update hardcoded `https://e.vitanaland.com/events/...` URLs to use `https://vitanaland.com/?share=event&slug=...` pattern
+- Update match links similarly
+
+### What this does NOT fix
+- OG image previews for social media crawlers — these require the Cloudflare Worker to be operational. The Worker needs its SSL certificate fixed on Cloudflare's dashboard. This is an external infrastructure task, not a code change.
+
+### Trade-off
+Once the `e.vitanaland.com` SSL is fixed, you can switch back to the subdomain URLs for cleaner links and OG preview support. The `?share=` pattern works as a reliable fallback.
+
+### Technical note
+The `DOMAIN_TENANT_MAP` entry for `e.vitanaland.com` can remain — it will work correctly once SSL is restored.
 
