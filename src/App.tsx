@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner"; // Global toast provider
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -128,6 +129,7 @@ import Community from "./pages/Community";
 import AI from "./pages/AI";
 import Messages from "./pages/Messages";
 import Settings from "./pages/Settings";
+import MobileSettings from "./pages/MobileSettings";
 import NotFound from "./pages/NotFound";
 import Search from "./pages/Search";
 
@@ -318,6 +320,12 @@ const AppHooksInitializer = () => {
 
   return null;
 };
+
+// Mobile/Desktop settings router
+function SettingsRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSettings /> : <Settings />;
+}
 
 const App = () => {
   // Initialize session ID for activity logging
@@ -741,7 +749,7 @@ const App = () => {
           <Route path="/settings" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
-                <Settings />
+                <SettingsRouter />
               </ProtectedRoute>
             </AuthGuard>
           } />
