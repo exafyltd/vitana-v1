@@ -73,6 +73,7 @@ function AppSidebar({
   const { signOut, user } = useAuth();
   const { cartCount } = useCart();
   const { translate } = useTranslation();
+  const isMobile = useIsMobile();
 
   // Get dynamic navigation: URL path takes priority over stored role
   const getEffectiveNavigation = () => {
@@ -387,6 +388,8 @@ function AppSidebar({
           
           {/* Soundscape Control */}
           <SoundscapeControl />
+
+          {!isMobile && <div aria-hidden="true" className={open ? "h-28" : "h-16"} />}
           
         </div>
       </SidebarFooter>
@@ -398,6 +401,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const isMobile = useIsMobile();
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
@@ -425,6 +429,19 @@ export default function AppLayout({ children }: AppLayoutProps) {
       setSidebarOpen(stored === null ? true : stored === "true");
     }
   }, [tenant?.id]);
+
+  useEffect(() => {
+    if (isMobile) {
+      delete document.body.dataset.desktopSidebarState;
+      return;
+    }
+
+    document.body.dataset.desktopSidebarState = sidebarOpen ? "expanded" : "collapsed";
+
+    return () => {
+      delete document.body.dataset.desktopSidebarState;
+    };
+  }, [isMobile, sidebarOpen]);
 
   return (
     <div>
