@@ -612,7 +612,7 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px) - 28px) !important;
+    bottom: calc(var(--appilix-bottom-nav-height, 72px) - 28px + env(safe-area-inset-bottom, 0px)) !important;
     margin: 0 !important;
     z-index: 60 !important;
     pointer-events: auto !important;

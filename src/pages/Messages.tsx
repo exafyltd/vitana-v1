@@ -254,14 +254,13 @@ export default function Messages() {
   };
 
   // Hide ORB when direct chat is open on mobile
+  // Hide ORB on entire inbox/messages page (chat is text-only)
   useEffect(() => {
-    if (isMobile && selectedThreadId) {
+    if (isMobile) {
       document.body.dataset.chatScreenOpen = "true";
       return () => { delete document.body.dataset.chatScreenOpen; };
-    } else {
-      delete document.body.dataset.chatScreenOpen;
     }
-  }, [isMobile, selectedThreadId]);
+  }, [isMobile]);
 
   // Only show skeleton when loading AND no cached data
   if (isLoading && threads.length === 0) {
