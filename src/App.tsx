@@ -352,10 +352,10 @@ const App = () => {
                 <TooltipProvider>
                     <Toaster />
                     <SonnerToaster position="top-center" richColors />
-                    <MilestoneCelebration />
                     <PresenceDebugPanel />
                     <AppHooksInitializer />
                     <BrowserRouter>
+                    <MilestoneCelebration />
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
