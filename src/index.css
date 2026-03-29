@@ -568,12 +568,14 @@ All colors MUST be HSL.
 }
 
 /* ORB — universal fixed position: bottom-left on all screens */
+.vtorb-fab,
 .vitana-orb,
 [data-vitana-orb="true"],
 #vitana-orb,
 .OrbFloatingButton,
 #vitana-orb-fab,
-[id^="vitana-orb"] {
+[id^="vitana-orb"],
+[class^="vtorb-fab"] {
   position: fixed !important;
   left: 1.5rem !important;
   bottom: 1.5rem !important;
@@ -584,27 +586,26 @@ All colors MUST be HSL.
   margin: 0 !important;
 }
 
-/* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
-@media (max-width: 768px) {
+/* MOBILE / TABLET — ORB fixed positioning above bottom nav */
+@media (max-width: 1023px) {
+  .vtorb-fab,
   .vitana-orb,
   [data-vitana-orb="true"],
   #vitana-orb,
   .OrbFloatingButton,
   #vitana-orb-fab,
-  [id^="vitana-orb"] {
+  [id^="vitana-orb"],
+  [class^="vtorb-fab"] {
     position: fixed !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    /* Y-axis ONLY: dock tight to bottom with safe-area */
     bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
     margin: 0 !important;
-    z-index: 40 !important; /* above content, below modals */
+    z-index: 40 !important;
     pointer-events: auto !important;
-    /* Removed filter: drop-shadow - orb has its own internal shadows */
   }
 
-  /* /maxina only: ensure the “Privacy · Terms · Help” footer area never collides with the orb */
   .maxina-signin-page {
     padding-bottom: calc(
       var(--appilix-bottom-nav-height, 72px) +
@@ -614,24 +615,28 @@ All colors MUST be HSL.
   }
 
   /* Suppress ORB when AI consent dialog is open */
+  body[data-consent-dialog-open="true"] .vtorb-fab,
   body[data-consent-dialog-open="true"] .vitana-orb,
   body[data-consent-dialog-open="true"] [data-vitana-orb="true"],
   body[data-consent-dialog-open="true"] #vitana-orb,
   body[data-consent-dialog-open="true"] .OrbFloatingButton,
   body[data-consent-dialog-open="true"] #vitana-orb-fab,
-  body[data-consent-dialog-open="true"] [id^="vitana-orb"] {
+  body[data-consent-dialog-open="true"] [id^="vitana-orb"],
+  body[data-consent-dialog-open="true"] [class^="vtorb-fab"] {
     z-index: 0 !important;
     pointer-events: none !important;
     opacity: 0 !important;
   }
 
   /* Maxina portal pages: dock orb at bottom edge on mobile */
+  body.maxina-signin-page .vtorb-fab,
   body.maxina-signin-page .vitana-orb,
   body.maxina-signin-page [data-vitana-orb="true"],
   body.maxina-signin-page #vitana-orb,
   body.maxina-signin-page .OrbFloatingButton,
   body.maxina-signin-page #vitana-orb-fab,
-  body.maxina-signin-page [id^="vitana-orb"] {
+  body.maxina-signin-page [id^="vitana-orb"],
+  body.maxina-signin-page [class^="vtorb-fab"] {
     bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
   }
 
@@ -643,6 +648,8 @@ All colors MUST be HSL.
   }
 
 }
+
+
 
   /* VITANA ORB idle core pulse — lightweight CSS-only animation */
   @keyframes vitana-idle-core-pulse {
