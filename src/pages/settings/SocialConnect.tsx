@@ -63,7 +63,7 @@ export default function SocialConnect() {
                   <CardContent className={isMobile ? "p-4" : "p-5"}>
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="shrink-0" style={{ color: platform.color.replace('text-', '') }}>
+                        <div className={`shrink-0 ${platform.color}`}>
                           <IconComponent className="w-8 h-8" />
                         </div>
                         <div className="min-w-0">
