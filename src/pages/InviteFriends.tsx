@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/context/AuthProvider";
+import { useProfile } from "@/context/ProfileProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { communityFetch } from "@/lib/community-gateway";
 import { Upload, Smartphone, Users, Search, X, Check, Share2, Loader2, ChevronDown, Plus } from "lucide-react";
@@ -43,6 +44,7 @@ function getInitials(name: string) {
 
 export default function InviteFriends() {
   const { user } = useAuth();
+  const { profile } = useProfile();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -89,7 +91,12 @@ export default function InviteFriends() {
       const res = await communityFetch("/api/v1/social-accounts/connections");
       const { connections } = await res.json();
       if (!connections || connections.length === 0) {
-        toast.info("No connected accounts. Connect one in Settings → Social Accounts.");
+        const hasProfileLinks = profile?.linkedin_url || profile?.instagram_url || profile?.facebook_url || profile?.x_url;
+        if (hasProfileLinks) {
+          toast.info("Deine verknüpften Accounts (LinkedIn, etc.) unterstützen keinen Kontaktimport. Nutze CSV-Upload oder füge Kontakte manuell hinzu.");
+        } else {
+          toast.info("Keine Accounts mit Kontaktzugriff verbunden. Verbinde Accounts mit OAuth unter Einstellungen → Social Accounts.");
+        }
         return;
       }
       for (const conn of connections) {
@@ -278,6 +285,14 @@ export default function InviteFriends() {
                 >
                   {importingSocial ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Users className="w-4 h-4 mr-1" />}
                   Import from Social
+                </Button>
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="w-full text-xs text-muted-foreground mt-1 h-auto p-0"
+                  onClick={() => navigate("/settings/social")}
+                >
+                  Verbindungen verwalten →
                 </Button>
               </CardContent>
             </Card>
