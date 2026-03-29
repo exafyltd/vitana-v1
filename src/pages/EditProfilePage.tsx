@@ -52,6 +52,7 @@ export default function EditProfilePage() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
   const { translate } = useTranslation();
+  const { completeBySourceRef } = useAutopilotComplete();
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
   const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);

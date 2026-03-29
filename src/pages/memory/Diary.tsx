@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import { Plus, Mic, Image, PenSquare, LayoutGrid, List, Bug } from "lucide-react";
 import { FeedbackRecorder } from "@/components/feedback/FeedbackRecorder";
 import { FeedbackReportList } from "@/components/feedback/FeedbackReportList";
@@ -34,6 +35,8 @@ interface SelectedEntry {
 
 function Diary() {
   const [activeTab, setActiveTab] = useState("voice");
+  const { completeBySourceRef } = useAutopilotComplete();
+  useEffect(() => { completeBySourceRef('onboarding_diary_day0'); }, [completeBySourceRef]);
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [photoViewMode, setPhotoViewMode] = useState<"list" | "gallery">("list");
   const [selectedEntry, setSelectedEntry] = useState<SelectedEntry | null>(null);

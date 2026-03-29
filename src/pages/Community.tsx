@@ -6,6 +6,7 @@ import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { toast } from "sonner";
+import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -975,6 +976,8 @@ export default withScreenId(function Community() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { todayEvents, upcomingEvents } = useCommunityEvents();
+  const { completeBySourceRef } = useAutopilotComplete();
+  useEffect(() => { completeBySourceRef('onboarding_explore'); }, [completeBySourceRef]);
   const { pendingCount, getLatestActions } = useAutopilot();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
   const [selectedEventData, setSelectedEventData] = useState<any>(null);
