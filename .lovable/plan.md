@@ -1,27 +1,69 @@
 
+# Fix desktop ORB position — anchor it inside the sidebar footer
 
-# Fix ORB — Position Fully Above Bottom Nav
+## What I found
+- The desktop ORB is currently forced globally in `src/index.css`:
+  - `left: 1.5rem !important;`
+  - `bottom: 1.5rem !important;`
+- That hard-codes the ORB to the viewport corner instead of the desktop sidebar.
+- The desktop sidebar footer structure in `src/components/AppLayout.tsx` already matches the reference layout:
+  1. user profile row
+  2. soundscape control
+  3. empty space below where the ORB should visually sit
+- The reference screenshot shows the ORB centered horizontally in the open desktop sidebar, directly under the Soundscape card, not floating over the main page.
 
-## Problem
-The ORB is sitting half on the footer nav bar. Current `bottom: calc(72px + 0px + 12px) = 84px` puts the ORB center at the nav boundary, so it overlaps.
+## Implementation plan
 
-## Root cause
-The `--appilix-bottom-nav-height` defaults to `72px`, but the actual MobileBottomNav is shorter (~56px with padding). Regardless, 12px gap is insufficient — the ORB itself is ~56px tall, so the bottom of the ORB needs to clear the top of the nav bar entirely.
+### 1. Update desktop ORB CSS in `src/index.css`
+Replace the current desktop fixed-position rule so the ORB is positioned relative to the left sidebar footprint instead of the viewport corner:
+- keep `position: fixed`
+- set `left` to the center of the expanded sidebar (`8rem`, since sidebar width is `16rem`)
+- remove the old `left: 1.5rem`
+- set a desktop `bottom` value that aligns the ORB into the footer utility zone under Soundscape, matching the screenshot
+- keep desktop transform centered with `translateX(-50%)`
+- keep high enough z-index so it stays visible above sidebar content
 
-## Fix — `src/index.css` line 603
+### 2. Preserve the existing mobile rule
+Do not change the mobile/tablet rule inside `@media (max-width: 1023px)`.
+- mobile already has separate ORB behavior tied to the bottom nav
+- this request is specifically for desktop placement
 
-Change the mobile bottom value to give proper clearance above the nav:
+### 3. Handle collapsed desktop sidebar cleanly
+Because the sidebar can collapse to icon width, desktop CSS should also include a collapsed-sidebar override so the ORB stays centered within the collapsed rail when needed instead of drifting into content.
+This can be done by targeting the desktop sidebar’s collapsed data attribute and switching the desktop `left` value from expanded-center to collapsed-center.
 
-```css
-/* Before */
-bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+## Expected result
+- Desktop, sidebar open: ORB sits centered inside the sidebar footer area under the user profile and Soundscape, exactly like the reference
+- Desktop, sidebar collapsed: ORB remains centered in the collapsed rail
+- Mobile/tablet: unchanged
 
-/* After — use a simple fixed value that matches the reference screenshots */
-bottom: calc(env(safe-area-inset-bottom, 0px) + 96px) !important;
+## Files to update
+- `src/index.css`
+- possibly `src/components/AppLayout.tsx` only if a sidebar state hook/class is needed for a precise collapsed override, but I expect CSS-only to be enough
+
+## Technical details
+```text
+Desktop today:
+ORB fixed to viewport bottom-left
+
+Desktop target:
+ORB fixed to sidebar center line
+┌ sidebar (16rem) ┐
+│ profile         │
+│ soundscape      │
+│      ORB        │
+└─────────────────┘
 ```
 
-This places the ORB's bottom edge at 96px from the viewport bottom, which fully clears the ~56-60px nav bar with visible breathing room — matching the reference screenshots where the ORB floats clearly above the nav.
+Primary change direction:
+```css
+/* desktop concept */
+left: 8rem !important;
+transform: translateX(-50%) !important;
+bottom: <footer-aligned value> !important;
+```
 
-## Single file change
-- `src/index.css` line 603: update bottom value
-
+If needed for collapsed desktop:
+```css
+[data-collapsible="icon"] ... => left: 1.5rem or calc(collapsed width / 2)
+```
