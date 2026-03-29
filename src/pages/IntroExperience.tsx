@@ -105,13 +105,6 @@ export default function IntroExperience() {
     continueToMaxina();
   }, [continueToMaxina]);
 
-  const handleOrbClick = () => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
-  };
 
   // Get current language for TTS and translations
   const { t, isGerman } = useTranslation();
