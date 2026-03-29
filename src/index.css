@@ -612,7 +612,7 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px) - 36px) !important;
+    bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px) - 28px) !important;
     margin: 0 !important;
     z-index: 60 !important;
     pointer-events: auto !important;
@@ -624,6 +624,20 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
       env(safe-area-inset-bottom, 0px) +
       90px
     ) !important;
+  }
+
+  /* Suppress ORB when direct chat screen is open */
+  body[data-chat-screen-open="true"] .vtorb-fab,
+  body[data-chat-screen-open="true"] .vitana-orb,
+  body[data-chat-screen-open="true"] [data-vitana-orb="true"],
+  body[data-chat-screen-open="true"] #vitana-orb,
+  body[data-chat-screen-open="true"] .OrbFloatingButton,
+  body[data-chat-screen-open="true"] #vitana-orb-fab,
+  body[data-chat-screen-open="true"] [id^="vitana-orb"],
+  body[data-chat-screen-open="true"] [class^="vtorb-fab"] {
+    z-index: 0 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
   }
 
   /* Suppress ORB when AI consent dialog is open */

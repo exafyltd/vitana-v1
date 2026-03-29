@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -930,6 +930,16 @@ export default function Messages() {
       </div>
     );
   };
+
+  // Hide ORB when direct chat is open on mobile
+  useEffect(() => {
+    if (isMobile && selectedThreadId) {
+      document.body.dataset.chatScreenOpen = "true";
+      return () => { delete document.body.dataset.chatScreenOpen; };
+    } else {
+      delete document.body.dataset.chatScreenOpen;
+    }
+  }, [isMobile, selectedThreadId]);
 
   // Mobile Layout - matches Events/Wallet/BusinessHub pattern
   if (isMobile) {
