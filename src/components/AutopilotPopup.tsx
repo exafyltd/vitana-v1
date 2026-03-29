@@ -26,8 +26,11 @@ import {
   PartyPopper,
   WifiOff,
   Check,
+  CircleDot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { communityFetch } from "@/lib/community-gateway";
+import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -122,6 +125,26 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     navigate("/dashboard/actions");
   };
 
+  const [completingId, setCompletingId] = useState<string | null>(null);
+
+  const handleCompleteTask = async (actionId: string) => {
+    setCompletingId(actionId);
+    try {
+      const res = await communityFetch(`/api/v1/autopilot/recommendations/${actionId}/complete`, { method: 'POST' });
+      if (res.ok) {
+        const { reward } = await res.json();
+        if (reward) toast.success(`+${reward} VTN earned!`);
+        fetchRecommendations();
+      } else {
+        toast.error("Could not complete task");
+      }
+    } catch {
+      toast.error("Could not complete task");
+    } finally {
+      setCompletingId(null);
+    }
+  };
+
   const ActionItem = ({ action }: { action: AutopilotAction }) => {
     const isCompleted = action.status === "completed";
     const isProcessing = action.status === "executing";
@@ -137,7 +160,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
         )}
         onClick={() => isPending && toggleActionSelection(action.id)}
       >
-        {/* Left side: checkbox, spinner, or checkmark */}
+        {/* Left side: checkbox, icon, or checkmark */}
         <div className="mt-1 flex-shrink-0">
           {isPending && (
             <Checkbox
@@ -147,7 +170,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             />
           )}
           {isProcessing && (
-            <Loader2 className="w-4 h-4 text-primary animate-spin" />
+            <CircleDot className="w-4 h-4 text-primary" />
           )}
           {isCompleted && (
             <Check className="w-4 h-4 text-green-600" />
@@ -160,16 +183,26 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             <h4 className={cn(
               "font-medium text-sm",
               isCompleted && "text-green-700 dark:text-green-400",
-              isProcessing && "text-muted-foreground"
             )}>
               {action.title}
             </h4>
             <div className="flex items-center space-x-2">
               {isProcessing && (
-                <Badge variant="outline" className="text-xs text-primary border-primary/30">
-                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                  In Bearbeitung…
-                </Badge>
+                <Button
+                  size="xs"
+                  variant="default"
+                  disabled={completingId === action.id}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCompleteTask(action.id);
+                  }}
+                >
+                  {completingId === action.id ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <>Complete ✓</>
+                  )}
+                </Button>
               )}
               {isCompleted && (
                 <Badge variant="outline" className="text-xs text-green-600 border-green-300 bg-green-50">
