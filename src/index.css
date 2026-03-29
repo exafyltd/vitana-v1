@@ -567,7 +567,7 @@ All colors MUST be HSL.
   --orb-gap: 4px; /* reduced gap to dock orb closer to bottom nav (~4cm lower) */
 }
 
-/* ORB — desktop: centered in sidebar footer */
+/* ORB — desktop: centered in actual sidebar footer */
 .vtorb-fab,
 .vitana-orb,
 [data-vitana-orb="true"],
@@ -578,7 +578,7 @@ All colors MUST be HSL.
 [class^="vtorb-fab"] {
   position: fixed !important;
   left: 8rem !important;
-  bottom: 2rem !important;
+  bottom: 1.25rem !important;
   right: auto !important;
   top: auto !important;
   transform: translateX(-50%) !important;
@@ -586,24 +586,16 @@ All colors MUST be HSL.
   margin: 0 !important;
 }
 
-/* ORB — collapsed desktop sidebar */
-[data-collapsible="icon"] ~ .vtorb-fab,
-[data-collapsible="icon"] ~ .vitana-orb,
-[data-collapsible="icon"] ~ [data-vitana-orb="true"],
-[data-collapsible="icon"] ~ #vitana-orb,
-[data-collapsible="icon"] ~ .OrbFloatingButton,
-[data-collapsible="icon"] ~ #vitana-orb-fab,
-[data-collapsible="icon"] ~ [id^="vitana-orb"],
-[data-collapsible="icon"] ~ [class^="vtorb-fab"],
-[data-sidebar="collapsed"] .vtorb-fab,
-[data-sidebar="collapsed"] .vitana-orb,
-[data-sidebar="collapsed"] [data-vitana-orb="true"],
-[data-sidebar="collapsed"] #vitana-orb,
-[data-sidebar="collapsed"] .OrbFloatingButton,
-[data-sidebar="collapsed"] #vitana-orb-fab,
-[data-sidebar="collapsed"] [id^="vitana-orb"],
-[data-sidebar="collapsed"] [class^="vtorb-fab"] {
+body[data-desktop-sidebar-state="collapsed"] .vtorb-fab,
+body[data-desktop-sidebar-state="collapsed"] .vitana-orb,
+body[data-desktop-sidebar-state="collapsed"] [data-vitana-orb="true"],
+body[data-desktop-sidebar-state="collapsed"] #vitana-orb,
+body[data-desktop-sidebar-state="collapsed"] .OrbFloatingButton,
+body[data-desktop-sidebar-state="collapsed"] #vitana-orb-fab,
+body[data-desktop-sidebar-state="collapsed"] [id^="vitana-orb"],
+body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   left: 1.5rem !important;
+  bottom: 1rem !important;
 }
 
 /* MOBILE / TABLET — ORB fixed positioning above bottom nav */
