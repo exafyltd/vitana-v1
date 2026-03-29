@@ -29,14 +29,13 @@ import { CartSidebar } from "@/components/cart/CartSidebar";
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
-import { VitanaOrbButton } from "@/components/vitanaland/VitanaOrbButton";
-import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
+import { useOrbWidget } from "@/hooks/useOrbWidget";
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
 import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
+
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -389,8 +388,6 @@ function AppSidebar({
           {/* Soundscape Control */}
           <SoundscapeControl />
           
-          {/* VITANA Orb - Voice-First Interface */}
-          <VitanaOrbButton />
         </div>
       </SidebarFooter>
     </Sidebar>
@@ -398,7 +395,7 @@ function AppSidebar({
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
-  useOrbVoiceWidget();
+  useOrbWidget();
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);

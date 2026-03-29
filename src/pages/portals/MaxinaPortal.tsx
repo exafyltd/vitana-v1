@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Users, Eye, EyeOff, MailCheck } from "lucide-react";
 import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
-import { MobileFixedOrb } from "@/components/mobile/MobileFixedOrb";
+
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSoundscape } from "@/context/SoundscapeContext";
@@ -807,8 +807,6 @@ const MaxinaPortal = () => {
         
         <div className="pb-6 md:pb-0" />
 
-        {/* VITANA Orb - positioned via global CSS */}
-        <MobileFixedOrb />
 
         {/* Desktop ORB - bottom-left matching sidebar position */}
         <div className="hidden md:block fixed bottom-5 left-[104px] z-40">

@@ -6,7 +6,7 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
 import { toast } from 'sonner';
 import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
-import { MobileFixedOrb } from '@/components/mobile/MobileFixedOrb';
+
 import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
 
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -341,8 +341,6 @@ export default function IntroExperience() {
         </p>
       </div>
 
-      {/* Mobile-only fixed ORB - positioned via global CSS */}
-      <MobileFixedOrb />
 
       {/* Desktop ORB - bottom-left matching sidebar position */}
       <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
