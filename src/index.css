@@ -571,7 +571,9 @@ All colors MUST be HSL.
 .vitana-orb,
 [data-vitana-orb="true"],
 #vitana-orb,
-.OrbFloatingButton {
+.OrbFloatingButton,
+#vitana-orb-fab,
+[id^="vitana-orb"] {
   position: fixed !important;
   left: 1.5rem !important;
   bottom: 1.5rem !important;
@@ -587,7 +589,9 @@ All colors MUST be HSL.
   .vitana-orb,
   [data-vitana-orb="true"],
   #vitana-orb,
-  .OrbFloatingButton {
+  .OrbFloatingButton,
+  #vitana-orb-fab,
+  [id^="vitana-orb"] {
     position: fixed !important;
     left: 50% !important;
     right: auto !important;
@@ -613,7 +617,9 @@ All colors MUST be HSL.
   body[data-consent-dialog-open="true"] .vitana-orb,
   body[data-consent-dialog-open="true"] [data-vitana-orb="true"],
   body[data-consent-dialog-open="true"] #vitana-orb,
-  body[data-consent-dialog-open="true"] .OrbFloatingButton {
+  body[data-consent-dialog-open="true"] .OrbFloatingButton,
+  body[data-consent-dialog-open="true"] #vitana-orb-fab,
+  body[data-consent-dialog-open="true"] [id^="vitana-orb"] {
     z-index: 0 !important;
     pointer-events: none !important;
     opacity: 0 !important;
@@ -623,7 +629,9 @@ All colors MUST be HSL.
   body.maxina-signin-page .vitana-orb,
   body.maxina-signin-page [data-vitana-orb="true"],
   body.maxina-signin-page #vitana-orb,
-  body.maxina-signin-page .OrbFloatingButton {
+  body.maxina-signin-page .OrbFloatingButton,
+  body.maxina-signin-page #vitana-orb-fab,
+  body.maxina-signin-page [id^="vitana-orb"] {
     bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
   }
 
