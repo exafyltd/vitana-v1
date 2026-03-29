@@ -9,7 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { communityFetch } from "@/lib/community-gateway";
 import { Loader2 } from "lucide-react";
 
 export default function AutopilotSettings() {
@@ -221,8 +224,124 @@ export default function AutopilotSettings() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Auto-Share */}
+          <AutoShareCard />
         </div>
       </div>
     </AppLayout>
+  );
+}
+
+function AutoShareCard() {
+  const queryClient = useQueryClient();
+
+  const { data: shareData, isLoading, isError } = useQuery({
+    queryKey: ["share-prefs"],
+    queryFn: async () => {
+      const res = await communityFetch("/api/v1/social-accounts/share-prefs");
+      if (!res.ok) throw new Error("Failed");
+      return res.json() as Promise<{
+        prefs: {
+          auto_share_enabled: boolean;
+          share_milestones: boolean;
+          share_to_providers: string[];
+          share_visibility: "public" | "connections" | "private";
+        };
+      }>;
+    },
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (updatedPrefs: any) => {
+      const res = await communityFetch("/api/v1/social-accounts/share-prefs", {
+        method: "PUT",
+        body: JSON.stringify(updatedPrefs),
+      });
+      if (!res.ok) throw new Error("Failed");
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["share-prefs"] }),
+  });
+
+  if (isError) return null;
+
+  const prefs = shareData?.prefs;
+  const providerOptions = ["facebook", "linkedin", "instagram"];
+
+  const update = (partial: Partial<typeof prefs>) => {
+    if (!prefs) return;
+    mutation.mutate({ ...prefs, ...partial });
+  };
+
+  const toggleProvider = (p: string) => {
+    if (!prefs) return;
+    const current = prefs.share_to_providers || [];
+    const next = current.includes(p) ? current.filter((x) => x !== p) : [...current, p];
+    update({ share_to_providers: next });
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Auto-Share</CardTitle>
+        <CardDescription>
+          Automatically share your milestones and achievements
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="auto-share-enabled">Auto-share enabled</Label>
+          <Switch
+            id="auto-share-enabled"
+            checked={prefs?.auto_share_enabled ?? false}
+            onCheckedChange={(checked) => update({ auto_share_enabled: checked })}
+            disabled={isLoading}
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="share-milestones">Share milestones</Label>
+          <Switch
+            id="share-milestones"
+            checked={prefs?.share_milestones ?? false}
+            onCheckedChange={(checked) => update({ share_milestones: checked })}
+            disabled={isLoading}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label>Share to providers</Label>
+          {providerOptions.map((p) => (
+            <div key={p} className="flex items-center space-x-2">
+              <Checkbox
+                id={`share-${p}`}
+                checked={prefs?.share_to_providers?.includes(p) ?? false}
+                onCheckedChange={() => toggleProvider(p)}
+                disabled={isLoading}
+              />
+              <Label htmlFor={`share-${p}`} className="capitalize">{p}</Label>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="share-visibility">Visibility</Label>
+          <Select
+            value={prefs?.share_visibility ?? "public"}
+            onValueChange={(v: any) => update({ share_visibility: v })}
+            disabled={isLoading}
+          >
+            <SelectTrigger id="share-visibility">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="public">Public</SelectItem>
+              <SelectItem value="connections">Connections Only</SelectItem>
+              <SelectItem value="private">Private</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
