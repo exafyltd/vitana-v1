@@ -567,6 +567,21 @@ All colors MUST be HSL.
   --orb-gap: 4px; /* reduced gap to dock orb closer to bottom nav (~4cm lower) */
 }
 
+/* ORB — universal fixed position: bottom-left on all screens */
+.vitana-orb,
+[data-vitana-orb="true"],
+#vitana-orb,
+.OrbFloatingButton {
+  position: fixed !important;
+  left: 1.5rem !important;
+  bottom: 1.5rem !important;
+  right: auto !important;
+  top: auto !important;
+  transform: none !important;
+  z-index: 40 !important;
+  margin: 0 !important;
+}
+
 /* MOBILE ONLY - ORB fixed positioning above Appilix bottom nav */
 @media (max-width: 768px) {
   .vitana-orb,
