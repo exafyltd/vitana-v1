@@ -6,7 +6,7 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
 import { toast } from 'sonner';
 import { useSoundscape } from '@/context/SoundscapeContext';
-import { playSound } from '@/lib/playSound';
+
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
 import { useTranslation } from '@/hooks/useTranslation';
 

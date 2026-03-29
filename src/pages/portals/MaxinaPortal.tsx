@@ -16,7 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import { playSound } from "@/lib/playSound";
+
 import { motion } from "framer-motion";
 import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
