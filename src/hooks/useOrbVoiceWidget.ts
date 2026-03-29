@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
 
-const GATEWAY_HOST = "https://gateway-q74ibpv6ia-uc.a.run.app";
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || `${GATEWAY_HOST}/api/v1`;
+const GATEWAY_URL = "https://gateway-q74ibpv6ia-uc.a.run.app";
 
 export function useOrbVoiceWidget() {
   const { session } = useAuth();
