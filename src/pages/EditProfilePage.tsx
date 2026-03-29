@@ -448,7 +448,11 @@ export default function EditProfilePage() {
           open={identityDrawerOpen}
           onOpenChange={(open) => {
             setIdentityDrawerOpen(open);
-            if (!open) refetchProfile();
+            if (!open) {
+              refetchProfile();
+              completeBySourceRef('onboarding_profile');
+              completeBySourceRef('onboarding_avatar');
+            }
           }}
         />
 
