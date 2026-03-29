@@ -26,8 +26,11 @@ import {
   PartyPopper,
   WifiOff,
   Check,
+  CircleDot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { communityFetch } from "@/lib/community-gateway";
+import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
 
