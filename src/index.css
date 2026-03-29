@@ -600,7 +600,7 @@ All colors MUST be HSL.
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 4px) !important;
+    bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px) + 12px) !important;
     margin: 0 !important;
     z-index: 40 !important;
     pointer-events: auto !important;
@@ -637,7 +637,7 @@ All colors MUST be HSL.
   body.maxina-signin-page #vitana-orb-fab,
   body.maxina-signin-page [id^="vitana-orb"],
   body.maxina-signin-page [class^="vtorb-fab"] {
-    bottom: calc(env(safe-area-inset-bottom, 0px) - 24px) !important;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
   }
 
   /* Hide irrelevant tenant links for Maxina app users */
