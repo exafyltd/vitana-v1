@@ -15,6 +15,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
 import { StackedCardList } from "@/components/ui/stacked-card-list";
@@ -81,6 +82,8 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 export default withScreenId(function Health() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { completeBySourceRef } = useAutopilotComplete();
+  useEffect(() => { completeBySourceRef('onboarding_health'); }, [completeBySourceRef]);
   const isMobile = useIsMobile();
   const { profile } = useProfile();
   const { translate } = useTranslation();

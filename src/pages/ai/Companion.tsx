@@ -14,6 +14,8 @@ import { SmartCalendarCard } from "@/components/crossover/SmartCalendarCard";
 import { LifestylePlanCard } from "@/components/crossover/LifestylePlanCard";
 import { MotivationCard } from "@/components/crossover/MotivationCard";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 
 const aiSubItems = [
   { id: "overview", name: "Overview", path: "/ai" },
@@ -25,6 +27,8 @@ const aiSubItems = [
 
 export default function Companion() {
   const navigate = useNavigate();
+  const { completeBySourceRef } = useAutopilotComplete();
+  useEffect(() => { completeBySourceRef('onboarding_maxina'); }, [completeBySourceRef]);
   
   const handleChatAction = (action: string) => {
     console.log("Analytics: cta_execute", {

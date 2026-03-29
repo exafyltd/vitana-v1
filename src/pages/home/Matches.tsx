@@ -26,11 +26,15 @@ import { AnalysisHero } from "@/components/analysis/AnalysisHero";
 import { InsightsSummaryGrid } from "@/components/analysis/InsightsSummaryGrid";
 import { ContinueConnectingFeed } from "@/components/analysis/ContinueConnectingFeed";
 import { useDemoMatches } from "@/hooks/useDemoMatches";
+import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
+import { useEffect } from "react";
 
 export default function Matches() {
   const navigate = useNavigate();
   const [matchFiltersOpen, setMatchFiltersOpen] = useState(false);
   const { insights } = useDemoMatches();
+  const { completeBySourceRef } = useAutopilotComplete();
+  useEffect(() => { completeBySourceRef('onboarding_discover_matches'); }, [completeBySourceRef]);
 
   return (
     <AppLayout>

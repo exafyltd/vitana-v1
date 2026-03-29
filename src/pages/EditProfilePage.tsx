@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import { MobileIdCardSwitcher } from "@/components/profile/mobile/MobileIdCardSwitcher";
 import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
@@ -51,6 +52,7 @@ export default function EditProfilePage() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
   const { translate } = useTranslation();
+  const { completeBySourceRef } = useAutopilotComplete();
   const [identityDrawerOpen, setIdentityDrawerOpen] = useState(false);
   const [aboutDrawerOpen, setAboutDrawerOpen] = useState(false);
   const [servicesDrawerOpen, setServicesDrawerOpen] = useState(false);
@@ -447,7 +449,11 @@ export default function EditProfilePage() {
           open={identityDrawerOpen}
           onOpenChange={(open) => {
             setIdentityDrawerOpen(open);
-            if (!open) refetchProfile();
+            if (!open) {
+              refetchProfile();
+              completeBySourceRef('onboarding_profile');
+              completeBySourceRef('onboarding_avatar');
+            }
           }}
         />
 

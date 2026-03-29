@@ -159,6 +159,7 @@ export const settingsNavigation = [
   { id: "preferences", name: "Preferences", path: "/settings/preferences" },
   { id: "privacy", name: "Privacy", path: "/settings/privacy" },
   { id: "connected-apps", name: "Connected Apps & Integrations", path: "/settings/connected-apps" },
+  { id: "social", name: "Social Accounts", path: "/settings/social" },
   { id: "billing", name: "Billing", path: "/settings/billing" },
   { id: "support", name: "Support", path: "/settings/support" },
 ];

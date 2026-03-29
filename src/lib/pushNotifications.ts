@@ -261,11 +261,23 @@ class PushNotificationManager {
 
     const shownTags = new Set<string>();
     const cleanup = await onForegroundMessage((payload) => {
-      // App is focused — skip notification display entirely
-      if (!document.hidden && document.hasFocus()) return;
-
       const notif = payload.notification || {};
       const data = payload.data || {};
+
+      // Milestone celebration — always show, even when app is focused
+      if (data.milestone) {
+        window.dispatchEvent(new CustomEvent('vitana-milestone', {
+          detail: {
+            milestone: data.milestone,
+            title: notif.title || data.title || 'Milestone!',
+            body: notif.body || data.body || '',
+            url: data.url || '/',
+          },
+        }));
+      }
+
+      // App is focused — skip notification display entirely
+      if (!document.hidden && document.hasFocus()) return;
 
       // Extract sender name from data payload for better notification titles
       const senderName = data.sender_name || data.senderName || data.sender || data.from_name || data.fromName;

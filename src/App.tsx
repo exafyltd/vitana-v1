@@ -217,6 +217,10 @@ import Support from "./pages/settings/Support";
 import TenantRole from "./pages/settings/TenantRole";
 import AutopilotSettings from "./pages/settings/AutopilotSettings";
 import VoiceAISettings from "./pages/settings/VoiceAISettings";
+import SocialConnect from "./pages/settings/SocialConnect";
+import AutopilotDashboard from "./pages/AutopilotDashboard";
+import InviteFriends from "./pages/InviteFriends";
+import MilestoneCelebration from "./components/MilestoneCelebration";
 
 // Wallet sub-pages
 import Balance from "./pages/wallet/Balance";
@@ -348,6 +352,7 @@ const App = () => {
                 <TooltipProvider>
                     <Toaster />
                     <SonnerToaster position="top-center" richColors />
+                    <MilestoneCelebration />
                     <PresenceDebugPanel />
                     <AppHooksInitializer />
                     <BrowserRouter>
@@ -790,6 +795,11 @@ const App = () => {
               <Support />
             </AuthGuard>
           } />
+          <Route path="/settings/social" element={
+            <AuthGuard>
+              <SocialConnect />
+            </AuthGuard>
+          } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
           <Route path="/settings/voice-ai" element={<Navigate to="/assistant?tab=voice" replace />} />
           
@@ -813,6 +823,19 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/u/:identifier" element={<PublicProfilePage />} />
+
+          {/* Autopilot Dashboard (My Journey) */}
+          <Route path="/autopilot" element={
+            <AuthGuard>
+              <AutopilotDashboard />
+            </AuthGuard>
+          } />
+          {/* Invite Friends */}
+          <Route path="/invite" element={
+            <AuthGuard>
+              <InviteFriends />
+            </AuthGuard>
+          } />
 
           {/* New module routes */}
           <Route path="/wallet" element={
