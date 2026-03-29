@@ -29,7 +29,7 @@ import { CartSidebar } from "@/components/cart/CartSidebar";
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
-import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
+
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
@@ -395,7 +395,6 @@ function AppSidebar({
 }
 
 export default function AppLayout({ children }: AppLayoutProps) {
-  useOrbVoiceWidget();
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);

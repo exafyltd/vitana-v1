@@ -285,12 +285,14 @@ import { useAppilix } from "@/hooks/useAppilix";
 import { registerAppilixIdentity } from "@/lib/appilix";
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
+import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
   useAppilix();
+  useOrbVoiceWidget();
   const { user, session } = useAuth();
 
   // Set Appilix push notification user identity for mobile device mapping
