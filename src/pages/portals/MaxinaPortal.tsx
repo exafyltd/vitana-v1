@@ -250,13 +250,6 @@ const MaxinaPortal = () => {
   // Soundscape should only start on explicit user gesture (click)
   // The ensureSoundscapePlaying callback handles this correctly
 
-  const handleOrbClick = () => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
-  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
