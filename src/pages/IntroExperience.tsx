@@ -5,12 +5,8 @@ import { Play, Pause, Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
 import { toast } from 'sonner';
-import { VitanalandPortalSeed } from '@/components/audio/VitanalandPortalSeed';
-
-import { useVitanalandNavigation } from '@/context/VitanalandNavigationContext';
-
 import { useSoundscape } from '@/context/SoundscapeContext';
-import { playSound } from '@/lib/playSound';
+
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -21,12 +17,6 @@ const WELCOME_AUDIO_DE = '/sounds/intro/maxina-welcome-de.wav';
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-  const { showOrb } = useVitanalandNavigation();
-  
-  // Ensure orb is visible on intro page (fix "sometimes missing" orb)
-  useEffect(() => {
-    showOrb();
-  }, [showOrb]);
 
   // Add body class for Maxina-specific orb positioning
   useEffect(() => {
@@ -115,13 +105,6 @@ export default function IntroExperience() {
     continueToMaxina();
   }, [continueToMaxina]);
 
-  const handleOrbClick = () => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
-  };
 
   // Get current language for TTS and translations
   const { t, isGerman } = useTranslation();
@@ -342,28 +325,6 @@ export default function IntroExperience() {
       </div>
 
 
-      {/* Desktop ORB - bottom-left matching sidebar position */}
-      <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={handleOrbClick}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleOrbClick();
-            }
-          }}
-          className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
-        >
-          <VitanalandPortalSeed 
-            audioState="idle"
-            volumeLevel={0}
-            size="sm"
-            layoutId="vitana-orb-desktop-intro"
-          />
-        </div>
-      </div>
     </div>
   );
 }

@@ -12,13 +12,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Users, Eye, EyeOff, MailCheck } from "lucide-react";
-import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
-
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSoundscape } from "@/context/SoundscapeContext";
 import { Checkbox } from "@/components/ui/checkbox";
-import { playSound } from "@/lib/playSound";
+
 import { motion } from "framer-motion";
 import { preloadDemoImages } from "@/lib/preloadDemoImages";
 import { toast } from "sonner";
@@ -252,13 +250,6 @@ const MaxinaPortal = () => {
   // Soundscape should only start on explicit user gesture (click)
   // The ensureSoundscapePlaying callback handles this correctly
 
-  const handleOrbClick = () => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    const orb = (window as any).VitanaOrb;
-    if (orb && orb.show) {
-      orb.show();
-    }
-  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -808,28 +799,6 @@ const MaxinaPortal = () => {
         <div className="pb-6 md:pb-0" />
 
 
-        {/* Desktop ORB - bottom-left matching sidebar position */}
-        <div className="hidden md:block fixed bottom-5 left-[104px] z-40">
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={handleOrbClick}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleOrbClick();
-              }
-            }}
-            className="p-3 h-[72px] w-[72px] rounded-full cursor-pointer"
-          >
-            <VitanalandPortalSeed 
-              audioState="idle"
-              volumeLevel={0}
-              size="sm"
-              layoutId="vitana-orb-desktop-portal"
-            />
-          </div>
-        </div>
       </div>
     </div>
   );

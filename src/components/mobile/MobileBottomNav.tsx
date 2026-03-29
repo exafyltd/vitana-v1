@@ -2,9 +2,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Calendar, Mail, Radio, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { VitanalandPortalSeed } from "@/components/audio/VitanalandPortalSeed";
-import { useVitanalandNavigation } from "@/context/VitanalandNavigationContext";
-import { playSound } from "@/lib/playSound";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
@@ -17,18 +14,12 @@ const navItems = [
 ];
 
 /**
- * Mobile bottom navigation bar with integrated pop-out Vitana Orb.
- * 
- * Z-Index Layering:
- * - Nav container: z-50 (base)
- * - Orb aura: z-[51] (above container, below labels)
- * - Nav labels/icons: z-[52] (above aura, readable)
- * - Orb itself: z-[53] (topmost, always visible)
+ * Mobile bottom navigation bar — clean 4-item layout.
+ * The gateway widget FAB is the sole voice entry point.
  */
 export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const location = useLocation();
-  const { expandToFull, orbVisible } = useVitanalandNavigation();
   const { unreadCount } = useChatUnreadCount();
   
   // Routes where the bottom nav should be hidden
@@ -59,15 +50,6 @@ export function MobileBottomNav() {
     return null;
   }
   
-  const handleOrbClick = () => {
-    playSound("/sounds/vitanaland/spark-chime.mp3", 0.12);
-    expandToFull();
-  };
-  
-  // Split nav items for left and right sides of the orb
-  const leftItems = navItems.slice(0, 2);
-  const rightItems = navItems.slice(2);
-  
   return (
     <motion.nav
       initial={{ y: 100, opacity: 0 }}
@@ -75,68 +57,15 @@ export function MobileBottomNav() {
       transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      {/* Glass background - base layer */}
       <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
-        
-        {/* Orb aura layer removed - no external glow */}
-        
-        {/* Left nav items - z-[52], ABOVE aura */}
-        <div className="relative z-[52] flex items-center">
-          {leftItems.map((item) => (
-            <NavItem
-              key={item.id}
-              {...item}
-              i18nKey={item.i18nKey}
-              unreadCount={item.id === 'inbox' ? unreadCount : 0}
-            />
-          ))}
-        </div>
-        
-        {/* Center Orb container */}
-        <div className="relative flex items-center justify-center" style={{ width: '56px' }}>
-          {/* Orb - z-[53], topmost layer */}
-          <motion.div 
-            className="absolute -top-12 z-[53]"
-            whileTap={{ scale: 0.95 }}
-          >
-            <div 
-              role="button"
-              tabIndex={0}
-              onClick={handleOrbClick}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  handleOrbClick();
-                }
-              }}
-              aria-label="Ask VITANA for guidance"
-              className="relative cursor-pointer"
-            >
-              <VitanalandPortalSeed 
-                audioState="idle"
-                volumeLevel={0}
-                size="nav"
-                layoutId="vitana-orb-nav"
-                glowIntensity={0}
-              />
-            </div>
-          </motion.div>
-          
-          {/* Spacer to maintain layout */}
-          <div className="h-9" />
-        </div>
-        
-        {/* Right nav items - z-[52], ABOVE aura */}
-        <div className="relative z-[52] flex items-center">
-          {rightItems.map((item) => (
-            <NavItem
-              key={item.id}
-              {...item}
-              i18nKey={item.i18nKey}
-              unreadCount={item.id === 'inbox' ? unreadCount : 0}
-            />
-          ))}
-        </div>
+        {navItems.map((item) => (
+          <NavItem
+            key={item.id}
+            {...item}
+            i18nKey={item.i18nKey}
+            unreadCount={item.id === 'inbox' ? unreadCount : 0}
+          />
+        ))}
       </div>
     </motion.nav>
   );
@@ -165,7 +94,6 @@ function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavI
     >
       {({ isActive }) => (
         <div className="relative flex flex-col items-center">
-          {/* Icon - black, opacity varies */}
           <div className="relative">
             <Icon
               className={cn(
@@ -183,7 +111,6 @@ function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavI
             )}
           </div>
 
-          {/* Label - always black, readable */}
           <span
             className={cn(
               "text-[12px] tracking-tight text-black dark:text-white transition-opacity duration-200",
@@ -193,7 +120,6 @@ function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavI
             {translate(i18nKey ?? '', label)}
           </span>
 
-          {/* Active indicator - centered underline */}
           {isActive && (
             <motion.div
               layoutId="nav-active-indicator"
