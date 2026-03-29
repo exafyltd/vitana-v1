@@ -18,9 +18,7 @@ import { EventSelectionProvider } from "@/context/EventSelectionContext";
 import { IntelligentGreetingProvider } from "@/context/IntelligentGreetingProvider";
 import { StreamingStateProvider, useStreamingState } from "@/context/StreamingStateContext";
 import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
-import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
-import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
@@ -358,8 +356,6 @@ const App = () => {
                     <MilestoneCelebration />
                     <VitanalandNavigationProvider>
                       <GreetingProviderWrapper>
-                        <PersistentGuideOrb />
-                        <VitanaAudioOverlay />
                         <MobileMuteButton />
                         <SoundscapeResumeBanner />
                         <TenantDetector />
