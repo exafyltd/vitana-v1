@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
