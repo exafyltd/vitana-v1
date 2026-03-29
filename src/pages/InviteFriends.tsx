@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback } from "react";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
@@ -11,16 +10,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/context/AuthProvider";
-import { useProfile } from "@/context/ProfileProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { communityFetch } from "@/lib/community-gateway";
-import { Upload, Smartphone, Users, Search, X, Check, Share2, Loader2, ChevronDown, Plus } from "lucide-react";
+import { useContacts } from "@/hooks/useContacts";
+import useContactSync from "@/hooks/useContactSync";
+import { Upload, Smartphone, Search, X, Check, Share2, Loader2, ChevronDown, Plus } from "lucide-react";
 
-interface Contact {
+interface LocalContact {
   name: string;
   email: string;
   phone: string;
@@ -28,7 +26,7 @@ interface Contact {
   selected: boolean;
 }
 
-function deduplicateContacts(contacts: Contact[]) {
+function deduplicateContacts(contacts: LocalContact[]) {
   const seen = new Set<string>();
   return contacts.filter(c => {
     const key = (c.email || c.phone || c.name).toLowerCase();
@@ -44,15 +42,14 @@ function getInitials(name: string) {
 
 export default function InviteFriends() {
   const { user } = useAuth();
-  const { profile } = useProfile();
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { addContact, inviteContact } = useContacts();
+  const { syncContacts } = useContactSync();
 
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<LocalContact[]>([]);
   const [search, setSearch] = useState("");
   const [sending, setSending] = useState(false);
-  const [importingSocial, setImportingSocial] = useState(false);
   const [importingPhone, setImportingPhone] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
   const [manualName, setManualName] = useState("");
@@ -64,76 +61,47 @@ export default function InviteFriends() {
   const handleImportPhone = useCallback(async () => {
     setImportingPhone(true);
     try {
-      const picked = await (navigator as any).contacts.select(
-        ["name", "email", "tel"],
-        { multiple: true }
-      );
-      const mapped: Contact[] = picked.map((c: any) => ({
-        name: c.name?.[0] || "Unknown",
-        email: c.email?.[0] || "",
-        phone: c.tel?.[0] || "",
-        selected: true,
-      }));
-      setContacts(prev => deduplicateContacts([...prev, ...mapped]));
-      toast.success(`${mapped.length} contacts imported`);
+      const result = await syncContacts(["phonebook"]);
+      if (result.totalImported > 0) {
+        // Add imported contacts to local list for selection
+        const mapped: LocalContact[] = [
+          ...result.matches.map(m => ({
+            name: m.platformUser.display_name || m.localContact.name,
+            email: m.localContact.email || "",
+            phone: m.localContact.phone || "",
+            source: "phone",
+            selected: true,
+          })),
+          ...result.nonMatches.map(c => ({
+            name: c.name,
+            email: c.email || "",
+            phone: c.phone || "",
+            source: "phone",
+            selected: true,
+          })),
+        ];
+        setContacts(prev => deduplicateContacts([...prev, ...mapped]));
+        toast.success(`${result.totalImported} contacts imported`);
+      }
     } catch (e) {
-      if ((e as Error).name !== "TypeError") {
-        toast.error("Could not access contacts");
+      const msg = (e as Error).message;
+      if (msg !== "Contact selection cancelled") {
+        toast.error(msg || "Could not access contacts");
       }
     } finally {
       setImportingPhone(false);
     }
-  }, []);
+  }, [syncContacts]);
 
-  const handleImportSocial = useCallback(async () => {
-    setImportingSocial(true);
-    try {
-      const res = await communityFetch("/api/v1/social-accounts/connections");
-      const { connections } = await res.json();
-      if (!connections || connections.length === 0) {
-        const hasProfileLinks = profile?.linkedin_url || profile?.instagram_url || profile?.facebook_url || profile?.x_url;
-        if (hasProfileLinks) {
-          toast.info("Deine verknüpften Accounts (LinkedIn, etc.) unterstützen keinen Kontaktimport. Nutze CSV-Upload oder füge Kontakte manuell hinzu.");
-        } else {
-          toast.info("Keine Accounts mit Kontaktzugriff verbunden. Verbinde Accounts mit OAuth unter Einstellungen → Social Accounts.");
-        }
-        return;
-      }
-      for (const conn of connections) {
-        try {
-          const contactsRes = await communityFetch(`/api/v1/social-accounts/${conn.provider}/contacts`);
-          if (contactsRes.ok) {
-            const { contacts: socialContacts } = await contactsRes.json();
-            const mapped: Contact[] = (socialContacts || []).map((c: any) => ({
-              name: c.name || c.display_name || c.username || "Unknown",
-              email: c.email || "",
-              phone: c.phone || "",
-              source: conn.provider,
-              selected: true,
-            }));
-            setContacts(prev => deduplicateContacts([...prev, ...mapped]));
-            toast.success(`${mapped.length} contacts from ${conn.name || conn.provider}`);
-          }
-        } catch {
-          // silently skip failed providers
-        }
-      }
-    } catch {
-      toast.error("Failed to fetch connected accounts");
-    } finally {
-      setImportingSocial(false);
-    }
-  }, []);
-
-  const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       const text = reader.result as string;
       const lines = text.split("\n").filter(l => l.trim());
       const startIdx = lines[0]?.toLowerCase().includes("name") ? 1 : 0;
-      const parsed: Contact[] = lines.slice(startIdx).map(line => {
+      const parsed: LocalContact[] = lines.slice(startIdx).map(line => {
         const parts = line.split(",").map(s => s.trim().replace(/^"|"$/g, ""));
         return {
           name: parts[0] || "Unknown",
@@ -142,16 +110,33 @@ export default function InviteFriends() {
           selected: true,
         };
       }).filter(c => c.name && c.name !== "Unknown");
+
+      // Save each contact to Supabase
+      for (const c of parsed) {
+        await addContact({
+          contact_name: c.name,
+          contact_email: c.email || undefined,
+          contact_phone: c.phone || undefined,
+        });
+      }
+
       setContacts(prev => deduplicateContacts([...prev, ...parsed]));
       toast.success(`${parsed.length} contacts imported from file`);
     };
     reader.readAsText(file);
     if (fileInputRef.current) fileInputRef.current.value = "";
-  }, []);
+  }, [addContact]);
 
-  const handleManualAdd = useCallback(() => {
+  const handleManualAdd = useCallback(async () => {
     if (!manualName.trim()) { toast.error("Name is required"); return; }
     if (!manualEmail.trim() && !manualPhone.trim()) { toast.error("Please provide email or phone"); return; }
+
+    await addContact({
+      contact_name: manualName.trim(),
+      contact_email: manualEmail.trim() || undefined,
+      contact_phone: manualPhone.trim() || undefined,
+    });
+
     setContacts(prev => deduplicateContacts([...prev, {
       name: manualName.trim(),
       email: manualEmail.trim(),
@@ -162,7 +147,7 @@ export default function InviteFriends() {
     setManualEmail("");
     setManualPhone("");
     toast.success("Contact added");
-  }, [manualName, manualEmail, manualPhone]);
+  }, [manualName, manualEmail, manualPhone, addContact]);
 
   const toggleSelect = (idx: number) => {
     setContacts(prev => prev.map((c, i) => i === idx ? { ...c, selected: !c.selected } : c));
@@ -186,25 +171,28 @@ export default function InviteFriends() {
   });
 
   const handleSend = async () => {
+    if (!user?.id) return;
     setSending(true);
     try {
       const selected = contacts.filter(c => c.selected);
-      const res = await communityFetch("/api/v1/automations/execute/AP-1303", {
-        method: "POST",
-        body: JSON.stringify({
-          tenant_id: user?.user_metadata?.tenant_id || "",
-          event_payload: {
-            user_id: user?.id,
-            contacts: selected.map(c => ({
-              name: c.name,
-              email: c.email || undefined,
-              phone: c.phone || undefined,
-            })),
-          },
-        }),
-      });
-      if (res.ok) {
-        toast.success(`${selected.length} invites sent!`);
+      let sentCount = 0;
+      
+      for (const c of selected) {
+        // Save contact if not already saved, then mark as invited
+        const result = await addContact({
+          contact_name: c.name,
+          contact_email: c.email || undefined,
+          contact_phone: c.phone || undefined,
+        });
+        if (result?.id) {
+          const channel = c.email ? 'email' : 'sms';
+          await inviteContact(result.id, channel);
+          sentCount++;
+        }
+      }
+      
+      if (sentCount > 0) {
+        toast.success(`${sentCount} invites sent!`);
         setContacts([]);
       } else {
         toast.error("Failed to send invites");
@@ -228,7 +216,7 @@ export default function InviteFriends() {
           />
 
           {/* Import Methods */}
-          <div className={`grid gap-3 mb-6 ${isMobile ? "grid-cols-1" : "grid-cols-3"}`}>
+          <div className={`grid gap-3 mb-6 ${isMobile ? "grid-cols-1" : "grid-cols-2"}`}>
             {/* Phone Contacts */}
             {hasContactPicker && (
               <Card>
@@ -262,40 +250,6 @@ export default function InviteFriends() {
                 </CardContent>
               </Card>
             )}
-
-            {/* Connected Accounts */}
-            <Card>
-              <CardHeader className="pb-2 p-4">
-                <div className="flex items-center gap-2">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Users className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-sm">Connected Accounts</CardTitle>
-                    <CardDescription className="text-xs">Import from social accounts</CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="p-4 pt-0">
-                <Button
-                  size="sm"
-                  className="w-full"
-                  onClick={handleImportSocial}
-                  disabled={importingSocial}
-                >
-                  {importingSocial ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Users className="w-4 h-4 mr-1" />}
-                  Import from Social
-                </Button>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="w-full text-xs text-muted-foreground mt-1 h-auto p-0"
-                  onClick={() => navigate("/settings/social")}
-                >
-                  Verbindungen verwalten →
-                </Button>
-              </CardContent>
-            </Card>
 
             {/* Upload CSV */}
             <Card>
@@ -341,7 +295,7 @@ export default function InviteFriends() {
                       {selectedCount} selected
                     </Badge>
                   </div>
-                  <Button variant="ghost" size="xs" onClick={toggleAll}>
+                  <Button variant="ghost" size="sm" onClick={toggleAll}>
                     {contacts.every(c => c.selected) ? (
                       <><X className="w-3 h-3 mr-1" /> Deselect All</>
                     ) : (
