@@ -253,7 +253,6 @@ export default function Messages() {
     setSelectedRecipientId(null);
   };
 
-  // Hide ORB when direct chat is open on mobile
   // Hide ORB on entire inbox/messages page (chat is text-only)
   useEffect(() => {
     if (isMobile) {
