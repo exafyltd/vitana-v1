@@ -1,22 +1,25 @@
 
 
-# Fix ORB Positioning — Bottom-Left on All Screens
-
-## Problem
-There is no universal (all-viewport) base rule for the ORB widget position. On desktop it falls back to the widget's default (bottom-right). The user wants it fixed to **bottom-left** on every page, every screen size.
+# Fix ORB Widget — Missing on Landing Pages + Wrong Position
 
 ## Changes
 
-### `src/index.css` — Add universal ORB base rule
+### 1. `src/App.tsx` — Move ORB init to app root
+Call `useOrbVoiceWidget()` inside the top-level component (after `AuthProvider`) so the widget initializes on every page, including MaxinaPortal, IntroExperience, and Auth.
 
-Insert **before** the existing mobile `@media (max-width: 768px)` block (before line 570) a new universal rule:
+### 2. `src/components/AppLayout.tsx` — Remove duplicate hook call
+Remove `useOrbVoiceWidget()` call (line 398) and its import to avoid double-initialization.
+
+### 3. `src/index.css` — Broaden CSS selectors
+Add `#vitana-orb-fab` and `[id^="vitana-orb"]` to the existing universal bottom-left rule:
 
 ```css
-/* ORB — universal fixed position: bottom-left on all screens */
 .vitana-orb,
 [data-vitana-orb="true"],
 #vitana-orb,
-.OrbFloatingButton {
+.OrbFloatingButton,
+#vitana-orb-fab,
+[id^="vitana-orb"] {
   position: fixed !important;
   left: 1.5rem !important;
   bottom: 1.5rem !important;
@@ -28,15 +31,16 @@ Insert **before** the existing mobile `@media (max-width: 768px)` block (before 
 }
 ```
 
-The existing mobile `@media (max-width: 768px)` block (lines 570–622) stays as-is — it overrides `left: 50%` and `transform: translateX(-50%)` to center the ORB for the Appilix mobile app.
+Existing mobile `@media (max-width: 768px)` block stays as-is.
 
-## What is NOT changed
-- No components created or deleted (no `OrbTriggerButton` exists)
-- No desktop hide/show rules exist to remove
-- Mobile override block preserved exactly
-- `useOrbVoiceWidget` hook unchanged
+### No MutationObserver
+Skipped per your direction. CSS `!important` rules should suffice. If the widget's inline styles still win, we revisit with a targeted JS fix later.
 
-## Result
-- **Desktop**: ORB visible at bottom-left corner, every page
-- **Mobile**: ORB centered horizontally (mobile override wins via specificity)
+## Files changed
+
+| File | Change |
+|------|--------|
+| `src/App.tsx` | Add `useOrbVoiceWidget()` call at app root |
+| `src/components/AppLayout.tsx` | Remove `useOrbVoiceWidget()` call and import |
+| `src/index.css` | Broaden selectors on universal ORB rule |
 
