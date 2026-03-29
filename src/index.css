@@ -602,7 +602,7 @@ All colors MUST be HSL.
     transform: translateX(-50%) !important;
     bottom: calc(var(--appilix-bottom-nav-height, 72px) + env(safe-area-inset-bottom, 0px) - 36px) !important;
     margin: 0 !important;
-    z-index: 40 !important;
+    z-index: 60 !important;
     pointer-events: auto !important;
   }
 
