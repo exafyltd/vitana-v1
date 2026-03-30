@@ -191,12 +191,25 @@ serve(async (req) => {
         tts_voice: preferencesResult.data?.tts_voice || 'alloy'
       },
       memory: {
-        recent_facts: (memoryResult.data || []).map(m => ({
-          content: m.content,
-          type: m.memory_type,
-          confidence: m.confidence_score,
-          date: m.created_at
-        }))
+        recent_facts: (() => {
+          const profileName = profileResult.data?.display_name || profileResult.data?.full_name;
+          const filtered = (memoryResult.data || []).filter(m => {
+            // Filter out name-identity memories that conflict with the profile
+            if (/\b(name is|called|goes by|known as|my name|i am|i'm)\b/i.test(m.content)) {
+              if (profileName && !m.content.toLowerCase().includes(profileName.toLowerCase())) {
+                console.log(`[context] Filtered conflicting name memory: "${m.content}" (profile: ${profileName})`);
+                return false;
+              }
+            }
+            return true;
+          });
+          return filtered.map(m => ({
+            content: m.content,
+            type: m.memory_type,
+            confidence: m.confidence_score,
+            date: m.created_at
+          }));
+        })()
       },
       interests: (interestsResult.data || []).map(i => ({
         name: i.interest,
