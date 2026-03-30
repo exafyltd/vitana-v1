@@ -57,7 +57,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       if (localStored && localStored !== preferences.stt_language) {
         console.log('[LANG] Local override:', localStored, '(server had:', preferences.stt_language, ')');
         setLocalLanguage(localStored);
-        updatePreferences({ stt_language: localStored });
+        if (user) {
+          updatePreferences({ stt_language: localStored });
+        }
       } else {
         console.log('[LANG] Initial sync from server:', preferences.stt_language);
         setLocalLanguage(preferences.stt_language);
@@ -102,6 +104,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     pendingLanguageRef.current = language;
     
     setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, language);
+    localStorage.setItem('vitana.lang', language);
     
     if (!user) {
       console.log('[LANG] User not authenticated, skipping server sync');
