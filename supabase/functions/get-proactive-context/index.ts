@@ -71,7 +71,7 @@ serve(async (req) => {
       .eq('user_id', userId)
       .single();
 
-    if (cachedContext && new Date(cachedContext.expires_at) > new Date()) {
+    if (cachedContext && new Date(cachedContext.expires_at) > new Date() && !body.force_refresh) {
       console.log('Returning cached context for user:', userId);
       return new Response(JSON.stringify(cachedContext.context_data), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
