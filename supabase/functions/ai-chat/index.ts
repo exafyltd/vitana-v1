@@ -413,6 +413,8 @@ async function extractAndStoreInsights(
 - Goals (health targets, lifestyle changes)
 - Important dates and events
 
+IMPORTANT: Do NOT extract the user's name or any name they mention as their own — the user's identity is already known from their profile. Never store "name is X" or "called X" as an insight.
+
 Return ONLY meaningful, memorable facts. Skip questions, commands, or temporary information.
 Each insight must have high confidence (0.7+). Be concise - extract the core fact only.`
         },
