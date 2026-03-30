@@ -91,6 +91,6 @@ export async function buildOrbContext(userId: string): Promise<OrbContextSnapsho
   const contextString = lines.join('\n');
   return {
     contextString,
-    itemCount: memories.length + diaries.length,
+    itemCount: filteredMemories.length + diaries.length,
   };
 }
