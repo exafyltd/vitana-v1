@@ -258,7 +258,7 @@ serve(async (req) => {
         user_id: userId,
         context_data: context,
         computed_at: new Date().toISOString(),
-        expires_at: new Date(Date.now() + 60 * 60 * 1000).toISOString()
+        expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString()
       }, {
         onConflict: 'user_id'
       });

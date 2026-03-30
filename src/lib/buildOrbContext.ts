@@ -53,11 +53,21 @@ export async function buildOrbContext(userId: string): Promise<OrbContextSnapsho
     lines.push(`Born: ${profile.date_of_birth}`);
   }
 
-  // Memory garden
-  if (memories.length > 0) {
+  // Memory garden — filter out name-identity memories that conflict with profile
+  const filteredMemories = memories.filter(m => {
+    if (/\b(name is|called|goes by|known as|my name|i am|i'm)\b/i.test(m.content)) {
+      if (name !== 'User' && !m.content.toLowerCase().includes(name.toLowerCase())) {
+        console.log(`[ORB context] Filtered conflicting name memory: "${m.content}" (profile: ${name})`);
+        return false;
+      }
+    }
+    return true;
+  });
+
+  if (filteredMemories.length > 0) {
     lines.push('');
     lines.push('Known facts about this user:');
-    for (const m of memories) {
+    for (const m of filteredMemories) {
       lines.push(`- [${m.memory_type}] ${m.content}`);
     }
   }
