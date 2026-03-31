@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useFollow } from "@/hooks/useFollow";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -180,13 +181,15 @@ export function MeetupDetailsDrawer({
   onNavigateNext,
   hasPrev,
   hasNext,
-  isMobile = false,
+  isMobile: isMobileProp,
   onPromoteEvent,
   onShareEvent,
   onEditEvent,
   onDeleteEvent,
   restoreWindowScrollOnClose = true,
 }: MeetupDetailsDrawerProps) {
+  const isMobileHook = useIsMobile();
+  const isMobile = isMobileProp ?? isMobileHook;
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
