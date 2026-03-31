@@ -64,9 +64,12 @@ export default function Messages() {
   const isGlobalContext = context === 'global';
 
   const roleLoadedRef = React.useRef(false);
+  const userSelectedContextRef = React.useRef(false);
   useEffect(() => {
     if (currentRole && !roleLoadedRef.current) {
       roleLoadedRef.current = true;
+      // Don't override if the user already manually selected a tab
+      if (userSelectedContextRef.current) return;
       const correctCtx = currentRole === 'community' ? 'global' : 'tenant';
       if (correctCtx !== messageContext) {
         setMessageContext(correctCtx);
@@ -261,8 +264,8 @@ export default function Messages() {
     }
   }, [isMobile]);
 
-  // Only show skeleton when loading AND no cached data
-  if (isLoading && threads.length === 0) {
+  // Show skeleton when loading/fetching AND no cached data
+  if ((isLoading || isFetching) && threads.length === 0) {
     // Mobile loading state
     if (isMobile) {
       return (
@@ -883,8 +886,8 @@ export default function Messages() {
       );
     }
 
-    // Sort and dedupe threads
-    const sortedThreads = [...filteredThreads]
+    // Sort and dedupe threads (use searchFiltered to respect search query)
+    const sortedThreads = [...searchFiltered]
       .sort((a, b) => {
         const ap = pinnedThreads.has(a.id) ? 1 : 0;
         const bp = pinnedThreads.has(b.id) ? 1 : 0;
@@ -1036,7 +1039,7 @@ export default function Messages() {
                 {/* Mobile Tabs - consolidated SplitBar */}
                 <SplitBar 
                   value={messageContext} 
-                  onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} 
+                  onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }}
                   className="w-full"
                 >
                   <SplitBarList>
@@ -1165,7 +1168,7 @@ export default function Messages() {
           </UtilityActionButton>
 
           {/* Split Navigation */}
-          <SplitBar value={messageContext} onValueChange={(value: string) => setMessageContext(value as 'global' | 'tenant')} className="flex-1">
+          <SplitBar value={messageContext} onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }} className="flex-1">
             <SplitBarList>
             <SplitBarTrigger value="global">
               🌍 Global Community

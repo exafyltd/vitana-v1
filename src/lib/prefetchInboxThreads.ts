@@ -13,7 +13,7 @@ import {
   type ChatConversation,
   type ChatMessage,
 } from '@/hooks/useChatApi';
-import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
+import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL, VITANA_BOT_USER_ID } from '@/lib/vitanaBotIdentity';
 
 // ── Minimal types (mirroring useGlobalMessages) ─────────────────────
 
@@ -83,6 +83,34 @@ async function enrichProfiles(
   return map;
 }
 
+// ── Vitana bot seed thread (ensures cache is never empty) ──────────
+
+function makeVitanaBotThread(userId: string): PrefetchGlobalThread {
+  return {
+    id: VITANA_BOT_USER_ID,
+    name: VITANA_BOT_DISPLAY_NAME,
+    type: 'direct',
+    created_by: VITANA_BOT_USER_ID,
+    created_at: new Date().toISOString(),
+    updated_at: '2000-01-01T00:00:00.000Z',
+    participants: [
+      { user_id: userId, display_name: 'Me', avatar_url: null, role: 'member' },
+      { user_id: VITANA_BOT_USER_ID, display_name: VITANA_BOT_DISPLAY_NAME, avatar_url: VITANA_BOT_AVATAR_URL, role: 'member' },
+    ],
+    last_message: {
+      id: 'vitana-welcome',
+      thread_id: VITANA_BOT_USER_ID,
+      sender_id: VITANA_BOT_USER_ID,
+      body: "Hi! I'm Vitana. Send me a message to get started.",
+      message_type: 'text',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      sender: { user_id: VITANA_BOT_USER_ID, display_name: VITANA_BOT_DISPLAY_NAME },
+    },
+    unread_count: 0,
+  };
+}
+
 // ── Main prefetch function ──────────────────────────────────────────
 
 export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlobalThread[]> {
@@ -90,7 +118,7 @@ export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlob
   const conversations: ChatConversation[] = await Promise.race([
     fetchConversations(),
     new Promise<ChatConversation[]>((_, reject) =>
-      setTimeout(() => reject(new Error('Gateway timeout (5s)')), 5000)
+      setTimeout(() => reject(new Error('Gateway timeout (8s)')), 8000)
     ),
   ]).catch((err) => {
     console.warn('[prefetchInbox] Gateway failed/timed out:', err.message);
@@ -98,8 +126,9 @@ export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlob
   });
 
   if (!conversations || conversations.length === 0) {
-    // Don't bother with legacy fallback in prefetch — the hook will handle it
-    return [];
+    // Seed Vitana bot so the cache is never empty — prevents empty-state flash
+    // while the full hook refetches with all fallbacks
+    return [makeVitanaBotThread(userId)];
   }
 
   // Collect user IDs for profile enrichment
