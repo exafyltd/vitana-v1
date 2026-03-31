@@ -797,7 +797,7 @@ export function MeetupDetailsDrawer({
         />
       )}
       <div
-        className="flex flex-col h-full relative"
+        className="flex flex-col h-full"
         onTouchStart={!isMobile ? onTouchStart : undefined}
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
@@ -1728,14 +1728,29 @@ export function MeetupDetailsDrawer({
   // Use Drawer for desktop, Sheet for mobile
   if (isMobile) {
     return (
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent 
-          side="bottom" 
-          className="!inset-0 !h-full p-0 rounded-none [&>button]:hidden"
-        >
-          {content}
-        </SheetContent>
-      </Sheet>
+      <>
+        {/* Bottom gap filler — covers the white space left by hidden MobileBottomNav */}
+        {open && (
+          <div
+            className="fixed bottom-0 left-0 right-0 z-[51]"
+            style={{
+              height: '100px',
+              background: 'rgba(255, 255, 255, 0.86)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+            }}
+            aria-hidden="true"
+          />
+        )}
+        <Sheet open={open} onOpenChange={onOpenChange}>
+          <SheetContent
+            side="bottom"
+            className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
+          >
+            {content}
+          </SheetContent>
+        </Sheet>
+      </>
     );
   }
 
