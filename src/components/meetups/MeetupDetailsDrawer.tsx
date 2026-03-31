@@ -188,6 +188,8 @@ export function MeetupDetailsDrawer({
   onDeleteEvent,
   restoreWindowScrollOnClose = true,
 }: MeetupDetailsDrawerProps) {
+  const isMobileHook = useIsMobile();
+  const isMobile = isMobileProp ?? isMobileHook;
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
