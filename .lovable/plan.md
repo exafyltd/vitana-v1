@@ -1,75 +1,86 @@
 
+Goal: stop cross-account leakage so Alex never receives Jovana’s identity or memory again.
 
-# Fix: Vitana calling Alex "Jovana" — identity contamination via AI memory
+What I found
+1. The previous memory-filter fix is present in:
+   - `supabase/functions/get-proactive-context/index.ts`
+   - `supabase/functions/ai-chat/index.ts`
+   - `src/lib/buildOrbContext.ts`
+2. The database does not show active “Jovana” memories for Alex’s user ID.
+3. Alex currently has no cached proactive context row, so this is likely not coming from `proactive_context_cache`.
+4. The stronger remaining leak is the ORB/session layer:
+   - `src/hooks/useOrbVoiceWidget.ts` initializes the external widget globally with `orb.init({ showFab: true })`
+   - the widget auto-reads auth from browser storage
+   - the app does not explicitly sync the current logged-in Supabase token into widget storage on sign-in
+   - the app also does not clear widget-specific auth/context keys on sign-out
+5. There is also a second leakage risk in the legacy React ORB path:
+   - `src/hooks/useOrbVoiceClient.ts` stores `orb_conversation_id` in plain `localStorage`
+   - that key is not user-scoped and not cleared on logout
+   - if reused across accounts, it can carry prior assistant context/history
 
-## Root Cause
+Most likely root cause
+The currently logged-in UI session and the ORB voice session are drifting apart. The widget is likely still booting with a stale token and/or stale ORB conversation from Jovana’s previous browser session, so the gateway thinks the active user is Jovana even while the app UI shows Alex.
 
-The `ai-chat` edge function extracts "insights" from every conversation and stores them in `ai_memory` (lines 352-515). The extraction prompt includes "Personal facts (birthday, age, location, occupation, family)" — which means if someone says "my name is Jovana" in a conversation, it gets stored as a high-confidence fact like `"User's name is Jovana"`.
+Implementation plan
+1. Add explicit ORB auth/session sync in the auth layer
+   - Update `src/context/AuthProvider.tsx`
+   - On sign-in / token refresh:
+     - write the current access token to a dedicated ORB key such as `vitana.authToken`
+     - write the current authenticated user id to a key like `vitana.userId`
+   - On sign-out:
+     - remove `vitana.authToken`
+     - remove `vitana.userId`
+     - remove any ORB session/conversation keys
+   - This makes the widget follow the real authenticated session instead of stale browser state.
 
-These memories are then injected into:
-1. **Greeting prompt** (`generate-proactive-greeting`) — via `get-proactive-context` which includes `memory.recent_facts`
-2. **Chat system prompt** (`ai-chat`) — via the "USER SNAPSHOT (High-Confidence Facts)" section
-3. **ORB voice context** (`buildOrbContext.ts`) — feeds `ai_memory` directly
+2. Clear cross-user ORB state on auth changes
+   - In `src/context/AuthProvider.tsx`, detect when the authenticated user id changes
+   - If user changes from one account to another:
+     - clear `orb_conversation_id`
+     - clear any widget session ids / cached greeting ids if present
+     - optionally trigger widget destroy/re-init path indirectly through a small reset signal
+   - This prevents account A’s conversation/session from being reused by account B.
 
-The AI sees **both** the profile name ("Alex") and a stored memory ("User's name is Jovana") and trusts the memory because it says "based on previous conversations."
+3. User-scope the legacy ORB conversation cache
+   - Update `src/hooks/useOrbVoiceClient.ts`
+   - Replace plain `orb_conversation_id` with a user-scoped key, e.g. `orb_conversation_id:${user.id}`
+   - When reading stored conversation ids, only use the current user’s key
+   - This blocks conversation history bleed between accounts on shared browsers/devices.
 
-There's also a **1-hour cache** in `proactive_context_cache` that could serve stale data from a previous session.
+4. Add a defensive widget reset hook
+   - Update `src/hooks/useOrbVoiceWidget.ts`
+   - Re-initialize or refresh the widget when auth identity changes, rather than only once on mount
+   - Keep the zero-config init, but make the hook respond to current auth state so the widget cannot stay attached to an old identity after account switching.
 
-## Fix (3 changes)
+5. Audit and clear any other ORB-related localStorage keys
+   - Search for keys used by voice/gateway integration
+   - Explicitly clear them on logout and on user-switch if they can carry identity/session context
+   - Keep tenant keys if needed, but clear user-bound voice keys.
 
-### 1. Filter identity-conflicting memories from greeting context
-**File: `supabase/functions/get-proactive-context/index.ts`**
+6. Add server-side identity hardening where feasible
+   - Review any ORB/gateway-backed request path still using client-provided context/session ids
+   - Ensure user context is always derived from the validated token, not from reusable client storage
+   - If there is any app-controlled request that passes prior conversation/session ids, only allow ids that belong to the current user.
 
-After fetching memories (line 112-118), filter out any memories whose content mentions a name that conflicts with the profile's `display_name`. Add a post-processing step:
+7. Verify the full leak path after implementation
+   - Test this exact sequence:
+     - sign in as Jovana
+     - use ORB
+     - sign out
+     - sign in as Alex
+     - use ORB and greeting again
+   - Confirm:
+     - Alex is called Alex
+     - no Jovana memories appear
+     - a fresh ORB session is created for Alex
+   - Also test on mobile-sized viewport since the user is currently on mobile.
 
-```typescript
-// Filter out name-identity memories that conflict with the profile
-const profileName = profileResult.data?.display_name || profileResult.data?.full_name;
-const filteredMemories = (memoryResult.data || []).filter(m => {
-  const contentLower = m.content.toLowerCase();
-  // Skip memories that try to override the user's name
-  if (/\b(name is|called|goes by|known as)\b/i.test(m.content)) {
-    if (profileName && !contentLower.includes(profileName.toLowerCase())) {
-      console.log(`[context] Filtered conflicting name memory: "${m.content}" (profile: ${profileName})`);
-      return false;
-    }
-  }
-  return true;
-});
-```
+Files I expect to change
+- `src/context/AuthProvider.tsx`
+- `src/hooks/useOrbVoiceWidget.ts`
+- `src/hooks/useOrbVoiceClient.ts`
 
-Then use `filteredMemories` instead of `memoryResult.data` when building context (line 194).
-
-### 2. Exclude name/identity facts from `extractAndStoreInsights`
-**File: `supabase/functions/ai-chat/index.ts`**
-
-Update the extraction system prompt (line 409-417) to explicitly exclude name extraction since the profile already has the canonical name:
-
-```
-Do NOT extract the user's name — it is already known from their profile.
-```
-
-### 3. Invalidate stale context cache on login
-**File: `supabase/functions/get-proactive-context/index.ts`**
-
-Reduce cache TTL from 1 hour to 15 minutes, and add a `force_refresh` parameter that callers can use when needed:
-
-```typescript
-// Line 74: reduce stale window
-if (cachedContext && new Date(cachedContext.expires_at) > new Date() && !body.force_refresh) {
-```
-
-### 4. Filter identity memories in `buildOrbContext.ts`
-**File: `src/lib/buildOrbContext.ts`**
-
-Apply the same name-conflict filter when building ORB voice context, so the ORB widget also won't receive conflicting name memories.
-
-## Data cleanup needed
-
-The existing incorrect memories in `ai_memory` for Alex's user should be deactivated. This requires a one-time database query (or the user can delete them from the Memory Garden UI).
-
-## Files to change
-1. `supabase/functions/get-proactive-context/index.ts` — filter conflicting name memories + reduce cache TTL
-2. `supabase/functions/ai-chat/index.ts` — exclude name from insight extraction prompt
-3. `src/lib/buildOrbContext.ts` — filter conflicting name memories from ORB context
-
+Technical notes
+- The previous memory filtering was necessary, but it did not address stale auth/session state inside the external ORB widget.
+- Because the widget is loaded globally from `index.html` and initialized once, auth synchronization must be explicit.
+- The unscoped `orb_conversation_id` is a concrete bug even if it is not the only cause.
