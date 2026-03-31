@@ -520,7 +520,7 @@ export function useGlobalMessages(
       const gatewayWithTimeout = Promise.race([
         fetchConversations(),
         new Promise<ChatConversation[]>((_, reject) =>
-          setTimeout(() => reject(new Error('Gateway timeout (5s)')), 5000)
+          setTimeout(() => reject(new Error('Gateway timeout (8s)')), 8000)
         ),
       ]).catch((err) => {
         console.warn("Gateway fetchConversations failed/timed out, using legacy only:", err.message);
@@ -589,11 +589,8 @@ export function useGlobalMessages(
         });
       }
 
-      // Fallback: if gateway returned nothing, try reading chat_messages directly
-      let directThreads: GlobalMessageThread[] = [];
-      if (conversations.length === 0) {
-        directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
-      }
+      // Always fetch from chat_messages as a fallback — merge logic deduplicates
+      const directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
 
       // Merge: gateway wins > direct Supabase > legacy
       const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
@@ -605,8 +602,8 @@ export function useGlobalMessages(
       );
 
       // Guard: if ALL sources returned empty but we had previous data, keep previous data.
-      // This prevents a gateway timeout from wiping a populated inbox.
-      if (merged.length === 0 && gatewayFailed) {
+      // This prevents a gateway timeout or empty 200 from wiping a populated inbox.
+      if (merged.length === 0) {
         const prev = queryClient.getQueryData<GlobalMessageThread[]>(queryKey);
         if (prev && prev.length > 0) {
           console.warn("[chat] All sources empty after gateway failure — keeping previous cached threads");
