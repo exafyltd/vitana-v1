@@ -84,15 +84,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (event, session) => {
         if (event === 'SIGNED_OUT') {
           dismiss();
+          clearOrbSessionState();
         }
+
+        // Detect user switch and clear stale ORB state
+        const newUserId = session?.user?.id ?? null;
+        if (prevUserIdRef.current && newUserId && prevUserIdRef.current !== newUserId) {
+          console.log('[AuthProvider] User changed, clearing ORB state', prevUserIdRef.current, '→', newUserId);
+          clearOrbSessionState();
+        }
+        prevUserIdRef.current = newUserId;
+
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Prefetch inbox threads immediately on sign-in so chat is ready
+        // Sync ORB auth + prefetch inbox on sign-in
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+          syncOrbAuth(session);
+
           const userId = session.user.id;
-          // Access QueryClient from window (set by App.tsx) to avoid hook dependency
           const qc = (window as any).queryClient as QueryClient | undefined;
           if (qc) {
             qc.prefetchQuery({
