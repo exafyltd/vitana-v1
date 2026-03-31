@@ -717,6 +717,11 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
 
 }
 
+  /* Hide bottom nav when fullscreen drawer is open */
+  body[data-drawer-open="true"] .mobile-bottom-nav {
+    display: none !important;
+  }
+
 
 
   /* VITANA ORB idle core pulse — lightweight CSS-only animation */
