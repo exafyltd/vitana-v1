@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useFollow } from "@/hooks/useFollow";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -180,13 +181,15 @@ export function MeetupDetailsDrawer({
   onNavigateNext,
   hasPrev,
   hasNext,
-  isMobile = false,
+  isMobile: isMobileProp,
   onPromoteEvent,
   onShareEvent,
   onEditEvent,
   onDeleteEvent,
   restoreWindowScrollOnClose = true,
 }: MeetupDetailsDrawerProps) {
+  const isMobileHook = useIsMobile();
+  const isMobile = isMobileProp ?? isMobileHook;
   const [isJoining, setIsJoining] = useState(false);
   const [isJoined, setIsJoined] = useState(false);
   const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
@@ -796,7 +799,7 @@ export function MeetupDetailsDrawer({
           canonical={eventUrl}
         />
       )}
-      <div
+      <div 
         className="flex flex-col h-full"
         onTouchStart={!isMobile ? onTouchStart : undefined}
         onTouchMove={!isMobile ? onTouchMove : undefined}
@@ -1351,8 +1354,8 @@ export function MeetupDetailsDrawer({
       <div 
         className={cn(
           "absolute bottom-0 left-0 right-0 flex items-center",
-          isMobile
-            ? "backdrop-blur-xl"
+          isMobile 
+            ? "backdrop-blur-xl" 
             : "bg-background/95 backdrop-blur-sm border-t shadow-lg"
         )}
         style={isMobile ? {
@@ -1728,16 +1731,14 @@ export function MeetupDetailsDrawer({
   // Use Drawer for desktop, Sheet for mobile
   if (isMobile) {
     return (
-      <>
-        <Sheet open={open} onOpenChange={onOpenChange}>
-          <SheetContent
-            side="bottom"
-            className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
-          >
-            {content}
-          </SheetContent>
-        </Sheet>
-      </>
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <SheetContent 
+          side="bottom" 
+          className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
+        >
+          {content}
+        </SheetContent>
+      </Sheet>
     );
   }
 
