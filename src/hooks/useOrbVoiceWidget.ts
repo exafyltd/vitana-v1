@@ -6,9 +6,8 @@ export function useOrbVoiceWidget() {
   const lastUserId = useRef<string | null>(null);
   const { user, session, loading } = useAuth();
 
-  // Main init effect — waits for auth to resolve before initializing the widget
+  // Main init effect — waits for auth to resolve, then inits widget anonymously
   useEffect(() => {
-    // Don't do anything until auth state is resolved
     if (loading) return;
 
     function tryInit() {
@@ -16,36 +15,19 @@ export function useOrbVoiceWidget() {
       if (!orb) return false;
 
       if (!initialized.current) {
-        if (user && session) {
-          // Authenticated: pass explicit token so the widget uses the correct identity
-          localStorage.setItem('vitana.authToken', session.access_token);
-          localStorage.setItem('vitana.userId', user.id);
-          console.log("[ORB] Initializing widget for authenticated user", user.id);
-          orb.init({ showFab: true, authToken: session.access_token });
-        } else {
-          // Anonymous: clear ALL possible auth keys the widget might auto-detect
-          localStorage.removeItem('vitana.authToken');
-          localStorage.removeItem('vitana.userId');
-
-          // Temporarily hide the Supabase session key so the widget can't auto-detect it
-          const supabaseKey = 'sb-inmkhvwdcuyhnxkgfvsb-auth-token';
-          const savedSupabaseToken = localStorage.getItem(supabaseKey);
-          if (savedSupabaseToken) {
-            localStorage.removeItem(supabaseKey);
-            console.log("[ORB] Temporarily cleared Supabase auth key for anonymous init");
-          }
-
-          console.log("[ORB] Initializing widget in anonymous mode");
-          orb.init({ showFab: true, authToken: null });
-
-          // Restore the Supabase session key so Supabase auth still works
-          if (savedSupabaseToken) {
-            localStorage.setItem(supabaseKey, savedSupabaseToken);
-            console.log("[ORB] Restored Supabase auth key after init");
-          }
-        }
+        // Always init anonymous — no auth token passed
+        console.log("[ORB] Initializing widget in anonymous mode");
+        orb.init({ showFab: true });
         initialized.current = true;
         console.log("[ORB] Widget initialized");
+
+        // If user is already authenticated, immediately set auth
+        if (user && session) {
+          console.log("[ORB] Setting auth for user", user.id);
+          orb.setAuth(session.access_token);
+          localStorage.setItem('vitana.authToken', session.access_token);
+          localStorage.setItem('vitana.userId', user.id);
+        }
       }
       return true;
     }
@@ -64,34 +46,36 @@ export function useOrbVoiceWidget() {
     return () => clearInterval(interval);
   }, [loading, user?.id, session?.access_token]);
 
-  // Re-initialize the widget when the authenticated user changes
+  // Sync auth state when user changes (login/logout/switch)
   useEffect(() => {
+    if (loading || !initialized.current) return;
+
+    const orb = (window as any).VitanaOrb;
+    if (!orb) return;
+
     const currentUserId = user?.id ?? null;
+    const previousUserId = lastUserId.current;
 
-    if (lastUserId.current !== null && currentUserId !== null && lastUserId.current !== currentUserId) {
-      console.log("[ORB] User changed, resetting widget", lastUserId.current, "→", currentUserId);
-      const orb = (window as any).VitanaOrb;
-      if (orb && initialized.current) {
-        orb.destroy();
-        initialized.current = false;
-
-        // Re-initialize after a short delay with the new user's token
-        setTimeout(() => {
-          const freshOrb = (window as any).VitanaOrb;
-          if (freshOrb && session) {
-            localStorage.setItem('vitana.authToken', session.access_token);
-            localStorage.setItem('vitana.userId', currentUserId);
-            freshOrb.init({ showFab: true, authToken: session.access_token });
-            initialized.current = true;
-            console.log("[ORB] Widget re-initialized for new user");
-          }
-        }, 300);
+    if (currentUserId !== previousUserId) {
+      if (currentUserId && session) {
+        // User logged in or switched
+        console.log("[ORB] setAuth for user", currentUserId);
+        orb.setAuth(session.access_token);
+        localStorage.setItem('vitana.authToken', session.access_token);
+        localStorage.setItem('vitana.userId', currentUserId);
+      } else {
+        // User logged out
+        console.log("[ORB] setAuth('') — back to anonymous");
+        orb.setAuth('');
+        localStorage.removeItem('vitana.authToken');
+        localStorage.removeItem('vitana.userId');
       }
     }
 
     lastUserId.current = currentUserId;
-  }, [user?.id, session?.access_token]);
+  }, [loading, user?.id, session?.access_token]);
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       const orb = (window as any).VitanaOrb;
