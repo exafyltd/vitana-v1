@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import { createPortal } from "react-dom";
 import { useFollow } from "@/hooks/useFollow";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -217,22 +216,18 @@ export function MeetupDetailsDrawer({
   const queryClient = useQueryClient();
 
   // Signal ORB suppression when drawer is open on mobile
-  // Also set body/html background to cover the area below the viewport (WebView gap)
+  // Also set html background to cover the gap below the CSS viewport (WebView edge)
   useEffect(() => {
     if (open && isMobile) {
       document.body.dataset.drawerOpen = "true";
-      // DEBUG: red to diagnose if body bg reaches the gap below viewport
-      document.documentElement.style.background = "red";
-      document.body.style.background = "red";
+      document.documentElement.style.backgroundColor = "rgb(255,255,255)";
     } else {
       delete document.body.dataset.drawerOpen;
-      document.documentElement.style.background = "";
-      document.body.style.background = "";
+      document.documentElement.style.backgroundColor = "";
     }
     return () => {
       delete document.body.dataset.drawerOpen;
-      document.documentElement.style.background = "";
-      document.body.style.background = "";
+      document.documentElement.style.backgroundColor = "";
     };
   }, [open, isMobile]);
 
@@ -1371,7 +1366,7 @@ export function MeetupDetailsDrawer({
           paddingTop: '10px',
           paddingLeft: '12px',
           paddingRight: '12px',
-          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 32px)',
           gap: '10px',
           background: 'rgba(255, 255, 255, 0.86)',
           borderTop: '1px solid rgba(0, 0, 0, 0.06)',
@@ -1743,7 +1738,7 @@ export function MeetupDetailsDrawer({
         <Sheet open={open} onOpenChange={onOpenChange}>
           <SheetContent
             side="bottom"
-            className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
+            className="!inset-0 !h-[100lvh] p-0 rounded-none [&>button]:hidden"
           >
             {content}
           </SheetContent>
