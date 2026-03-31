@@ -222,10 +222,15 @@ export function MeetupDetailsDrawer({
   useEffect(() => {
     if (open && isMobile) {
       document.body.dataset.drawerOpen = "true";
+      document.documentElement.style.backgroundColor = 'hsl(var(--background))';
     } else {
       delete document.body.dataset.drawerOpen;
+      document.documentElement.style.backgroundColor = '';
     }
-    return () => { delete document.body.dataset.drawerOpen; };
+    return () => {
+      delete document.body.dataset.drawerOpen;
+      document.documentElement.style.backgroundColor = '';
+    };
   }, [open, isMobile]);
 
   // Save/restore scroll position to prevent page shift on mobile when Sheet closes
