@@ -199,6 +199,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       dismiss();
       stopSoundscape();
       clearChatCache();
+      clearOrbSessionState();
+
+      // Destroy ORB widget so it doesn't keep a stale session
+      const orb = (window as any).VitanaOrb;
+      if (orb && typeof orb.destroy === 'function') {
+        orb.destroy();
+        console.log('[AuthProvider] ORB widget destroyed on sign-out');
+      }
+
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('[AuthProvider] Sign out error:', error);
