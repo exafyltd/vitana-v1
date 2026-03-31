@@ -796,8 +796,8 @@ export function MeetupDetailsDrawer({
           canonical={eventUrl}
         />
       )}
-      <div 
-        className="flex flex-col h-full"
+      <div
+        className="flex flex-col h-full relative"
         onTouchStart={!isMobile ? onTouchStart : undefined}
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
@@ -1731,7 +1731,7 @@ export function MeetupDetailsDrawer({
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent 
           side="bottom" 
-          className="!inset-0 p-0 rounded-none [&>button]:hidden"
+          className="!inset-0 !h-full p-0 rounded-none [&>button]:hidden"
         >
           {content}
         </SheetContent>
