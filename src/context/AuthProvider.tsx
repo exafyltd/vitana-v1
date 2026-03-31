@@ -122,6 +122,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(existingSession?.user ?? null);
       setLoading(false);
 
+      // No active session — purge any stale ORB auth to prevent
+      // the external widget from using a previous user's identity
+      if (!existingSession) {
+        const staleOrbToken = localStorage.getItem('vitana.authToken');
+        if (staleOrbToken) {
+          console.log('[AuthProvider] No session but stale ORB token found — clearing');
+          clearOrbSessionState();
+        }
+      }
+
       // If session already found, no need for OAuth recovery
       if (existingSession || oauthRecoveryRan.current) return;
       oauthRecoveryRan.current = true;
