@@ -26,6 +26,7 @@ import { VisualRoutinesGrid } from "@/components/ai-feed/VisualRoutinesGrid";
 import { GlowingSuggestionsGrid } from "@/components/ai-feed/GlowingSuggestionsGrid";
 import { VisualHistoryTimeline } from "@/components/ai-feed/VisualHistoryTimeline";
 import { MotivationalBanner } from "@/components/ai-feed/MotivationalBanner";
+import { useProfile } from "@/context/ProfileProvider";
 
 // Import unified horizontal list components
 import { HorizontalCardList } from "@/components/ui/horizontal-card-list";
@@ -38,6 +39,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function AIFeed() {
   const navigate = useNavigate();
+  const { displayName } = useProfile();
   const { state, executeActions } = useAutopilot();
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -188,7 +190,7 @@ export default function AIFeed() {
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="learning" 
-                  userName="Jovana"
+                  userName={displayName}
                   className="mb-4"
                 />
                 
@@ -239,7 +241,7 @@ export default function AIFeed() {
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="celebrating" 
-                  userName="Jovana"
+                  userName={displayName}
                   className="mb-4"
                 />
                 
@@ -296,7 +298,7 @@ export default function AIFeed() {
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="adapting" 
-                  userName="Jovana"
+                  userName={displayName}
                   className="mb-4"
                 />
                 
@@ -330,7 +332,7 @@ export default function AIFeed() {
               <div className="space-y-6 pb-8">
                 <MotivationalBanner 
                   variant="encouraging" 
-                  userName="Jovana"
+                  userName={displayName}
                   className="mb-4"
                 />
                 

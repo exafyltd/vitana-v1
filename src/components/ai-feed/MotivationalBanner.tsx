@@ -75,7 +75,7 @@ const getBannerConfig = (variant: MotivationalBannerProps["variant"], userName: 
 };
 
 export function MotivationalBanner({ 
-  userName = "Jovana",
+  userName = "User",
   variant = "encouraging",
   className = ""
 }: MotivationalBannerProps) {

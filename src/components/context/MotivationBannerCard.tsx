@@ -7,7 +7,7 @@ interface MotivationBannerCardProps {
 }
 
 export function MotivationBannerCard({
-  userName = "Jovana",
+  userName = "User",
   message = "your energy is on point today ⚡",
   className
 }: MotivationBannerCardProps) {
