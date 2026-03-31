@@ -215,6 +215,16 @@ export function MeetupDetailsDrawer({
   const { translate, isGerman } = useTranslation();
   const queryClient = useQueryClient();
 
+  // Signal ORB suppression when drawer is open on mobile
+  useEffect(() => {
+    if (open && isMobile) {
+      document.body.dataset.drawerOpen = "true";
+    } else {
+      delete document.body.dataset.drawerOpen;
+    }
+    return () => { delete document.body.dataset.drawerOpen; };
+  }, [open, isMobile]);
+
   // Save/restore scroll position to prevent page shift on mobile when Sheet closes
   const scrollYRef = useRef(0);
   useEffect(() => {
