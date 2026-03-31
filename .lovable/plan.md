@@ -1,38 +1,28 @@
 
 
-# Hide ORB When Event Drawer Is Open (Mobile Only)
+# Extend Buy Ticket Bar to Cover Bottom Nav Space
 
 ## Problem
-The MeetupDetailsDrawer opens as a fullscreen sheet on mobile, but the bottom nav remains mounted underneath. Since `data-bottom-nav-visible="true"` is still set, the ORB suppression rule doesn't trigger.
+When the event drawer opens on mobile, the bottom nav is hidden but its reserved space remains as white empty area below the Buy Ticket sticky bar. The action bar should extend to the very bottom of the screen.
 
 ## Solution
-Same pattern used for the shorts overlay: set a body attribute when the drawer is open, add a CSS suppression block.
+Update the sticky action bar's mobile padding to include `pb-safe` equivalent spacing, ensuring it fills the full bottom area including the system navigation/safe-area zone that the bottom nav normally occupies.
 
 ## Changes
 
-### 1. `src/components/meetups/MeetupDetailsDrawer.tsx`
-Add a `useEffect` that sets `document.body.dataset.drawerOpen = "true"` when `open` is true, and removes it on close/unmount. Gate this behind mobile check (`window.innerWidth < 1024`) so desktop is unaffected.
-
-### 2. `src/index.css`
-Add a new suppression block after the shorts one (same 8 selectors):
-
-```css
-/* Suppress ORB when fullscreen drawer is open on mobile */
-body[data-drawer-open="true"] .vtorb-fab,
-body[data-drawer-open="true"] .vitana-orb,
-body[data-drawer-open="true"] [data-vitana-orb="true"],
-body[data-drawer-open="true"] #vitana-orb,
-body[data-drawer-open="true"] .OrbFloatingButton,
-body[data-drawer-open="true"] #vitana-orb-fab,
-body[data-drawer-open="true"] [id^="vitana-orb"],
-body[data-drawer-open="true"] [class^="vtorb-fab"] {
-  z-index: 0 !important;
-  pointer-events: none !important;
-  opacity: 0 !important;
-}
+### `src/components/meetups/MeetupDetailsDrawer.tsx`
+In the sticky action bar (line ~1358), increase the mobile `paddingBottom` to account for the full safe area. Currently it uses:
 ```
+paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)'
+```
+This should be sufficient, but the real issue may be that the Sheet itself doesn't extend fully. Check if the `!h-full` on SheetContent is being overridden. Change the SheetContent class to use `!h-[100dvh]` instead of `!h-full` to guarantee it covers the entire viewport including the area behind the system navigation bar, and ensure the sticky bar sits flush at the true bottom.
+
+**Specific edits:**
+1. Line ~1734: Change `!h-full` to `!h-[100dvh]` on SheetContent for guaranteed full-screen coverage
+2. Line ~1363: Increase the action bar's bottom padding to `calc(env(safe-area-inset-bottom, 0px) + 16px)` for a more comfortable touch target at the very bottom edge
+
+This is mobile-only — desktop rendering via the Drawer path is unaffected.
 
 ## Files
-- `src/components/meetups/MeetupDetailsDrawer.tsx` — add body attribute effect
-- `src/index.css` — add drawer suppression block
+- `src/components/meetups/MeetupDetailsDrawer.tsx`
 
