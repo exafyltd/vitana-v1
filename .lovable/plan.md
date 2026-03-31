@@ -1,28 +1,29 @@
 
 
-# Extend Buy Ticket Bar to Cover Bottom Nav Space
+# Hide Bottom Nav When Event Drawer Is Open
 
 ## Problem
-When the event drawer opens on mobile, the bottom nav is hidden but its reserved space remains as white empty area below the Buy Ticket sticky bar. The action bar should extend to the very bottom of the screen.
+The MobileBottomNav (`z-50`, `fixed bottom-0`) remains visible behind/on top of the event drawer sheet (also `z-50`). The white space below the Buy Ticket bar is literally the bottom nav bar still rendering. The drawer doesn't hide it because it's route-based hiding, and the route doesn't change when the drawer opens.
 
 ## Solution
-Update the sticky action bar's mobile padding to include `pb-safe` equivalent spacing, ensuring it fills the full bottom area including the system navigation/safe-area zone that the bottom nav normally occupies.
+Hide the bottom nav via CSS when `data-drawer-open="true"` is set on the body (already being set by the drawer's `useEffect`). This removes the nav entirely, letting the sheet's action bar sit flush at the bottom.
 
 ## Changes
 
-### `src/components/meetups/MeetupDetailsDrawer.tsx`
-In the sticky action bar (line ~1358), increase the mobile `paddingBottom` to account for the full safe area. Currently it uses:
-```
-paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 10px)'
-```
-This should be sufficient, but the real issue may be that the Sheet itself doesn't extend fully. Check if the `!h-full` on SheetContent is being overridden. Change the SheetContent class to use `!h-[100dvh]` instead of `!h-full` to guarantee it covers the entire viewport including the area behind the system navigation bar, and ensure the sticky bar sits flush at the true bottom.
+### `src/index.css`
+Add a rule to hide the bottom nav when a fullscreen drawer is open:
 
-**Specific edits:**
-1. Line ~1734: Change `!h-full` to `!h-[100dvh]` on SheetContent for guaranteed full-screen coverage
-2. Line ~1363: Increase the action bar's bottom padding to `calc(env(safe-area-inset-bottom, 0px) + 16px)` for a more comfortable touch target at the very bottom edge
+```css
+/* Hide bottom nav when fullscreen drawer is open */
+body[data-drawer-open="true"] .mobile-bottom-nav {
+  display: none !important;
+}
+```
 
-This is mobile-only — desktop rendering via the Drawer path is unaffected.
+### `src/components/mobile/MobileBottomNav.tsx`
+Add a class identifier to the nav element so the CSS rule can target it. Add `mobile-bottom-nav` class to the `<motion.nav>` element.
 
 ## Files
-- `src/components/meetups/MeetupDetailsDrawer.tsx`
+- `src/components/mobile/MobileBottomNav.tsx` — add `mobile-bottom-nav` class
+- `src/index.css` — add suppression rule
 
