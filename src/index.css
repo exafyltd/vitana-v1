@@ -717,6 +717,12 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
 
 }
 
+  /* When fullscreen drawer is open, prevent Radix Dialog's overflow:hidden
+     from constraining fixed elements to the viewport (which causes the gap) */
+  body[data-drawer-open="true"] {
+    overflow: visible !important;
+  }
+
   /* Hide bottom nav content when fullscreen drawer is open, but keep the
      element itself so its background fills the gap below the Sheet viewport */
   body[data-drawer-open="true"] .mobile-bottom-nav {
