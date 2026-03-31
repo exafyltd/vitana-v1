@@ -1729,15 +1729,13 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <>
-        {/* Bottom gap filler — covers the white space left by hidden MobileBottomNav */}
+        {/* DEBUG: Bottom gap filler with red background to diagnose gap location */}
         {open && (
           <div
-            className="fixed bottom-0 left-0 right-0 z-[51]"
+            className="fixed bottom-0 left-0 right-0 z-[9999]"
             style={{
-              height: '100px',
-              background: 'rgba(255, 255, 255, 0.86)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              height: '200px',
+              background: 'red',
             }}
             aria-hidden="true"
           />
