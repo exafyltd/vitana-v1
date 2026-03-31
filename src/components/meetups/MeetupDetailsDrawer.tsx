@@ -217,13 +217,23 @@ export function MeetupDetailsDrawer({
   const queryClient = useQueryClient();
 
   // Signal ORB suppression when drawer is open on mobile
+  // Also set body/html background to cover the area below the viewport (WebView gap)
   useEffect(() => {
     if (open && isMobile) {
       document.body.dataset.drawerOpen = "true";
+      // DEBUG: red to diagnose if body bg reaches the gap below viewport
+      document.documentElement.style.background = "red";
+      document.body.style.background = "red";
     } else {
       delete document.body.dataset.drawerOpen;
+      document.documentElement.style.background = "";
+      document.body.style.background = "";
     }
-    return () => { delete document.body.dataset.drawerOpen; };
+    return () => {
+      delete document.body.dataset.drawerOpen;
+      document.documentElement.style.background = "";
+      document.body.style.background = "";
+    };
   }, [open, isMobile]);
 
   // Save/restore scroll position to prevent page shift on mobile when Sheet closes
@@ -1730,18 +1740,6 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <>
-        {/* Bottom gap filler — portaled to body level so it's not covered by Sheet portal */}
-        {open && createPortal(
-          <div
-            className="fixed bottom-0 left-0 right-0 z-[9999]"
-            style={{
-              height: '200px',
-              background: 'red',
-            }}
-            aria-hidden="true"
-          />,
-          document.body
-        )}
         <Sheet open={open} onOpenChange={onOpenChange}>
           <SheetContent
             side="bottom"
