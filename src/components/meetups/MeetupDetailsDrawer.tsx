@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilePreview } from "@/hooks/useProfilePreview";
 
+import { isAppilix } from "@/lib/appilix";
 import { getShareUrl } from "@/lib/shareUrl";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
@@ -841,7 +842,7 @@ export function MeetupDetailsDrawer({
           />
         </div>
       )}
-      <ScrollArea className={cn("flex-1", isMobile ? "pb-[120px]" : "pb-20")}>
+      <ScrollArea className={cn("flex-1", isMobile ? "pb-[180px]" : "pb-20")}>
         <div 
           className={cn(
             "transition-opacity duration-300",
@@ -1350,17 +1351,19 @@ export function MeetupDetailsDrawer({
       {/* Sticky Action Bar - Premium Glassy Design */}
       <div 
         className={cn(
-          "absolute bottom-0 left-0 right-0 flex items-center",
-          isMobile 
-            ? "backdrop-blur-xl" 
-            : "bg-background/95 backdrop-blur-sm border-t shadow-lg"
+          "left-0 right-0 flex items-center",
+          isMobile
+            ? "fixed bottom-0 z-[60] backdrop-blur-xl"
+            : "absolute bottom-0 bg-background/95 backdrop-blur-sm border-t shadow-lg"
         )}
         style={isMobile ? {
           minHeight: '72px',
           paddingTop: '10px',
           paddingLeft: '12px',
           paddingRight: '12px',
-          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
+          paddingBottom: isAppilix()
+            ? 'calc(env(safe-area-inset-bottom, 0px) + var(--appilix-bottom-nav-height, 72px) + 16px)'
+            : 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
           gap: '10px',
           background: 'rgba(255, 255, 255, 0.86)',
           borderTop: '1px solid rgba(0, 0, 0, 0.06)',
