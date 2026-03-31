@@ -181,7 +181,7 @@ export function MeetupDetailsDrawer({
   onNavigateNext,
   hasPrev,
   hasNext,
-  isMobile = false,
+  isMobile: isMobileProp,
   onPromoteEvent,
   onShareEvent,
   onEditEvent,
