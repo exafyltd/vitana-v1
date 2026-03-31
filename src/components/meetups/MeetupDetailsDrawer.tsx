@@ -216,19 +216,13 @@ export function MeetupDetailsDrawer({
   const queryClient = useQueryClient();
 
   // Signal ORB suppression when drawer is open on mobile
-  // Also set html background to cover the gap below the CSS viewport (WebView edge)
   useEffect(() => {
     if (open && isMobile) {
       document.body.dataset.drawerOpen = "true";
-      document.documentElement.style.backgroundColor = "rgb(255,255,255)";
     } else {
       delete document.body.dataset.drawerOpen;
-      document.documentElement.style.backgroundColor = "";
     }
-    return () => {
-      delete document.body.dataset.drawerOpen;
-      document.documentElement.style.backgroundColor = "";
-    };
+    return () => { delete document.body.dataset.drawerOpen; };
   }, [open, isMobile]);
 
   // Save/restore scroll position to prevent page shift on mobile when Sheet closes
@@ -1366,7 +1360,7 @@ export function MeetupDetailsDrawer({
           paddingTop: '10px',
           paddingLeft: '12px',
           paddingRight: '12px',
-          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 32px)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
           gap: '10px',
           background: 'rgba(255, 255, 255, 0.86)',
           borderTop: '1px solid rgba(0, 0, 0, 0.06)',
@@ -1738,7 +1732,7 @@ export function MeetupDetailsDrawer({
         <Sheet open={open} onOpenChange={onOpenChange}>
           <SheetContent
             side="bottom"
-            className="!inset-0 !h-[100lvh] p-0 rounded-none [&>button]:hidden"
+            className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
           >
             {content}
           </SheetContent>

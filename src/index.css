@@ -717,9 +717,14 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
 
 }
 
-  /* Hide bottom nav when fullscreen drawer is open */
+  /* Hide bottom nav content when fullscreen drawer is open, but keep the
+     element itself so its background fills the gap below the Sheet viewport */
   body[data-drawer-open="true"] .mobile-bottom-nav {
-    display: none !important;
+    pointer-events: none !important;
+    z-index: 40 !important;
+  }
+  body[data-drawer-open="true"] .mobile-bottom-nav > * {
+    visibility: hidden !important;
   }
 
 
