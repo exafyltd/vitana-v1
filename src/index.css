@@ -654,6 +654,20 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     opacity: 0 !important;
   }
 
+  /* Suppress ORB when fullscreen drawer is open on mobile */
+  body[data-drawer-open="true"] .vtorb-fab,
+  body[data-drawer-open="true"] .vitana-orb,
+  body[data-drawer-open="true"] [data-vitana-orb="true"],
+  body[data-drawer-open="true"] #vitana-orb,
+  body[data-drawer-open="true"] .OrbFloatingButton,
+  body[data-drawer-open="true"] #vitana-orb-fab,
+  body[data-drawer-open="true"] [id^="vitana-orb"],
+  body[data-drawer-open="true"] [class^="vtorb-fab"] {
+    z-index: 0 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+
   /* Suppress ORB when direct chat screen is open (belt-and-suspenders) */
   body[data-chat-screen-open="true"] .vtorb-fab,
   body[data-chat-screen-open="true"] .vitana-orb,
