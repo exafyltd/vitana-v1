@@ -12,6 +12,13 @@ export function useOrbVoiceWidget() {
       if (!orb) return false;
 
       if (!initialized.current) {
+        // If no authenticated user, clear stale ORB auth keys so the widget
+        // initializes in anonymous mode instead of using a previous user's token
+        if (!user) {
+          localStorage.removeItem('vitana.authToken');
+          localStorage.removeItem('vitana.userId');
+          console.log("[ORB] No user — cleared stale auth keys before init");
+        }
         orb.init({ showFab: true });
         initialized.current = true;
         console.log("[ORB] Widget initialized");
