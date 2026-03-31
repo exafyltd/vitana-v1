@@ -728,7 +728,7 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   body[data-drawer-open="true"] .mobile-bottom-nav {
     pointer-events: none !important;
     z-index: 40 !important;
-    background-color: hsl(var(--background)) !important;
+    background-color: red !important;
   }
   body[data-drawer-open="true"] .mobile-bottom-nav > * {
     visibility: hidden !important;
