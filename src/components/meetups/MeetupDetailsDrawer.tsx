@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { useFollow } from "@/hooks/useFollow";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -1729,8 +1730,8 @@ export function MeetupDetailsDrawer({
   if (isMobile) {
     return (
       <>
-        {/* DEBUG: Bottom gap filler with red background to diagnose gap location */}
-        {open && (
+        {/* Bottom gap filler — portaled to body level so it's not covered by Sheet portal */}
+        {open && createPortal(
           <div
             className="fixed bottom-0 left-0 right-0 z-[9999]"
             style={{
@@ -1738,7 +1739,8 @@ export function MeetupDetailsDrawer({
               background: 'red',
             }}
             aria-hidden="true"
-          />
+          />,
+          document.body
         )}
         <Sheet open={open} onOpenChange={onOpenChange}>
           <SheetContent
