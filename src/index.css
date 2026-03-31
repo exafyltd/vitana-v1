@@ -626,7 +626,35 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     ) !important;
   }
 
-  /* Suppress ORB when direct chat screen is open */
+  /* Hide ORB when bottom nav is not visible (except Maxina pages) */
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) .vtorb-fab,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) .vitana-orb,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) [data-vitana-orb="true"],
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) #vitana-orb,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) .OrbFloatingButton,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) #vitana-orb-fab,
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) [id^="vitana-orb"],
+  body:not([data-bottom-nav-visible="true"]):not(.maxina-signin-page) [class^="vtorb-fab"] {
+    z-index: 0 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+
+  /* Also suppress when shorts overlay is open (bottom nav still mounted underneath) */
+  body[data-shorts-open="true"] .vtorb-fab,
+  body[data-shorts-open="true"] .vitana-orb,
+  body[data-shorts-open="true"] [data-vitana-orb="true"],
+  body[data-shorts-open="true"] #vitana-orb,
+  body[data-shorts-open="true"] .OrbFloatingButton,
+  body[data-shorts-open="true"] #vitana-orb-fab,
+  body[data-shorts-open="true"] [id^="vitana-orb"],
+  body[data-shorts-open="true"] [class^="vtorb-fab"] {
+    z-index: 0 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+
+  /* Suppress ORB when direct chat screen is open (belt-and-suspenders) */
   body[data-chat-screen-open="true"] .vtorb-fab,
   body[data-chat-screen-open="true"] .vitana-orb,
   body[data-chat-screen-open="true"] [data-vitana-orb="true"],

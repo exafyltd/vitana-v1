@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Calendar, Mail, Radio, User } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -45,6 +46,17 @@ export function MobileBottomNav() {
     (route.endsWith('/') && location.pathname.startsWith(route))
   );
   
+  // Sync body attribute so external widgets (ORB) know when bottom nav is visible
+  useEffect(() => {
+    const visible = isMobile && !shouldHideNav;
+    if (visible) {
+      document.body.dataset.bottomNavVisible = "true";
+    } else {
+      delete document.body.dataset.bottomNavVisible;
+    }
+    return () => { delete document.body.dataset.bottomNavVisible; };
+  }, [isMobile, shouldHideNav]);
+
   // Only render on mobile and when not on hidden routes
   if (!isMobile || shouldHideNav) {
     return null;

@@ -38,6 +38,12 @@ export function MobileShortsFeed({
   const [likeAdjustments, setLikeAdjustments] = useState<Map<string, number>>(new Map());
   const toggleLike = useToggleLike();
 
+  // Signal that shorts overlay is open (hides ORB)
+  useEffect(() => {
+    document.body.dataset.shortsOpen = "true";
+    return () => { delete document.body.dataset.shortsOpen; };
+  }, []);
+
   // Android hardware back button support
   useEffect(() => {
     window.history.pushState(null, '', window.location.href);
