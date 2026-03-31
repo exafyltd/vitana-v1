@@ -10,6 +10,42 @@ import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
 
 /**
+ * Clear all ORB-related localStorage keys to prevent cross-account leakage.
+ * Called on sign-out and when the authenticated user changes.
+ */
+function clearOrbSessionState() {
+  const orbKeys = [
+    'orb_conversation_id',
+    'vitana.authToken',
+    'vitana.userId',
+  ];
+  // Also clear any user-scoped orb conversation keys
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    const key = localStorage.key(i);
+    if (key && (key.startsWith('orb_conversation_id') || key.startsWith('orb_') || key.startsWith('vitana.auth') || key.startsWith('vitana.user'))) {
+      localStorage.removeItem(key);
+    }
+  }
+  orbKeys.forEach(k => localStorage.removeItem(k));
+  console.log('[AuthProvider] Cleared ORB session state');
+}
+
+/**
+ * Sync ORB auth state in localStorage so the external widget picks up the
+ * correct identity. Also triggers a widget reset if VitanaOrb is loaded.
+ */
+function syncOrbAuth(session: Session) {
+  localStorage.setItem('vitana.authToken', session.access_token);
+  localStorage.setItem('vitana.userId', session.user.id);
+
+  // Signal the external widget to refresh its auth context
+  const orb = (window as any).VitanaOrb;
+  if (orb && typeof orb.updateAuth === 'function') {
+    orb.updateAuth({ token: session.access_token, userId: session.user.id });
+  }
+}
+
+/**
  * Parse OAuth callback params from URL hash and query string.
  * Supports both implicit flow (hash tokens) and PKCE (code param).
  */
@@ -40,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const { dismiss } = useToast();
   const oauthRecoveryRan = useRef(false);
+  const prevUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -47,15 +84,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       (event, session) => {
         if (event === 'SIGNED_OUT') {
           dismiss();
+          clearOrbSessionState();
         }
+
+        // Detect user switch and clear stale ORB state
+        const newUserId = session?.user?.id ?? null;
+        if (prevUserIdRef.current && newUserId && prevUserIdRef.current !== newUserId) {
+          console.log('[AuthProvider] User changed, clearing ORB state', prevUserIdRef.current, '→', newUserId);
+          clearOrbSessionState();
+        }
+        prevUserIdRef.current = newUserId;
+
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Prefetch inbox threads immediately on sign-in so chat is ready
+        // Sync ORB auth + prefetch inbox on sign-in
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+          syncOrbAuth(session);
+
           const userId = session.user.id;
-          // Access QueryClient from window (set by App.tsx) to avoid hook dependency
           const qc = (window as any).queryClient as QueryClient | undefined;
           if (qc) {
             qc.prefetchQuery({
@@ -151,6 +199,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       dismiss();
       stopSoundscape();
       clearChatCache();
+      clearOrbSessionState();
+
+      // Destroy ORB widget so it doesn't keep a stale session
+      const orb = (window as any).VitanaOrb;
+      if (orb && typeof orb.destroy === 'function') {
+        orb.destroy();
+        console.log('[AuthProvider] ORB widget destroyed on sign-out');
+      }
+
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error('[AuthProvider] Sign out error:', error);

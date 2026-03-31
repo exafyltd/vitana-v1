@@ -149,11 +149,12 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         console.warn('[useOrbVoiceClient] Failed to build context, proceeding without:', ctxErr);
       }
 
-      // 6. Create or reuse conversation for persistence
+      // 6. Create or reuse conversation for persistence (user-scoped key)
+      const convStorageKey = `orb_conversation_id:${user.id}`;
       let convId = conversationIdRef.current;
       if (!convId) {
-        // Check localStorage for recent orb conversation
-        const storedConvId = localStorage.getItem('orb_conversation_id');
+        // Check localStorage for recent orb conversation (user-scoped)
+        const storedConvId = localStorage.getItem(convStorageKey);
         if (storedConvId) {
           convId = storedConvId;
         } else {
@@ -165,7 +166,7 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
           }).select('id').single();
           if (conv) {
             convId = conv.id;
-            localStorage.setItem('orb_conversation_id', conv.id);
+            localStorage.setItem(convStorageKey, conv.id);
           }
         }
         conversationIdRef.current = convId;
