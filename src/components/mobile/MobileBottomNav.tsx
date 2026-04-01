@@ -69,8 +69,18 @@ export function MobileBottomNav() {
       transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      <div className="relative flex items-end justify-between bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
-        {navItems.map((item) => (
+      <div className="relative grid grid-cols-5 items-end bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
+        {navItems.slice(0, 2).map((item) => (
+          <NavItem
+            key={item.id}
+            {...item}
+            i18nKey={item.i18nKey}
+            unreadCount={item.id === 'inbox' ? unreadCount : 0}
+          />
+        ))}
+        {/* Spacer for central Orb FAB */}
+        <div />
+        {navItems.slice(2).map((item) => (
           <NavItem
             key={item.id}
             {...item}
