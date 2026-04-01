@@ -14,12 +14,12 @@ export function TenantDetector() {
   const tenantCtx = useTenantSafe();
   const { user } = useAuth();
 
-  // Gracefully skip if TenantProvider isn't ready yet
-  if (!tenantCtx) return null;
-
-  const { setTenantBySlug, tenant } = tenantCtx;
+  const setTenantBySlug = tenantCtx?.setTenantBySlug;
+  const tenantSlug = tenantCtx?.tenant?.slug;
 
   useEffect(() => {
+    if (!setTenantBySlug) return;
+
     const getTenantSlugFromPath = (): string | null => {
       if (location.pathname.startsWith('/maxina')) return 'maxina';
       if (location.pathname.startsWith('/alkalma')) return 'alkalma';
@@ -29,15 +29,11 @@ export function TenantDetector() {
 
     const urlTenantSlug = getTenantSlugFromPath();
     
-    // Always prioritize URL-based tenant detection
-    // Re-triggers when user becomes available (post-OAuth) so tenant is set correctly
-    if (urlTenantSlug) {
-      if (tenant?.slug !== urlTenantSlug) {
-        console.debug('[TenantDetector] Switching to', urlTenantSlug, 'user:', !!user);
-        setTenantBySlug(urlTenantSlug);
-      }
+    if (urlTenantSlug && tenantSlug !== urlTenantSlug) {
+      console.debug('[TenantDetector] Switching to', urlTenantSlug, 'user:', !!user);
+      setTenantBySlug(urlTenantSlug);
     }
-  }, [location.pathname, setTenantBySlug, tenant?.slug, user]);
+  }, [location.pathname, setTenantBySlug, tenantSlug, user]);
 
   return null;
 }
