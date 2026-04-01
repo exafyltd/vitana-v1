@@ -84,7 +84,7 @@ export function useSidebarHoverPrefetch() {
     // Start prefetch after 150ms hover delay
     hoverTimeoutRef.current = setTimeout(async () => {
       try {
-        await prefetchForPath(queryClient, path, user?.id, activeTenantId);
+        await prefetchForPath(queryClient, path, user?.id, sidebarTenantId);
       } catch (error) {
         // Silent fail
         console.debug('[Hover Prefetch] Failed for', path, error);
