@@ -71,8 +71,8 @@ export function useBackgroundPrefetch() {
 export function useSidebarHoverPrefetch() {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const tenantCtx2 = useTenantSafe();
-  const activeTenantId = tenantCtx2?.activeTenantId ?? null;
+  const sidebarTenantCtx = useTenantSafe();
+  const sidebarTenantId = sidebarTenantCtx?.activeTenantId ?? null;
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePrefetchStart = (path: string) => {
