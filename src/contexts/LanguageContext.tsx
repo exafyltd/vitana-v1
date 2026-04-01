@@ -87,6 +87,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
 
     if (preferences.stt_language !== selectedLanguage) {
+      // Don't override if localStorage explicitly has the current selection
+      const localStored = getLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY);
+      if (localStored && localStored === selectedLanguage) {
+        console.log('[LANG] Keeping localStorage selection:', localStored, '(server has:', preferences.stt_language, ')');
+        pendingLanguageRef.current = localStored;
+        if (user) {
+          updatePreferences({ stt_language: localStored });
+        }
+        return;
+      }
       console.log('[LANG] Syncing runtime language from preferences:', preferences.stt_language);
       setLocalLanguage(preferences.stt_language);
       setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, preferences.stt_language);
