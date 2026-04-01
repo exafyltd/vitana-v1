@@ -100,7 +100,7 @@ function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavI
       to={path}
       className={() =>
         cn(
-          "flex flex-col items-center gap-0.5 px-3 py-1 min-w-[60px] transition-all duration-200"
+          "flex flex-col items-center gap-0.5 flex-1 px-1 py-1 transition-all duration-200"
         )
       }
     >
