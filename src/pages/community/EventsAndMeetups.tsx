@@ -440,14 +440,14 @@ const EventsAndMeetups = () => {
   }, [dbEvents, searchQuery]);
 
 
-  const HOT_CREATOR_IDS = new Set([
-    '07ade9bf-9c2f-4fe1-a733-29e85a1d253b',
-    'c7d3260d-8311-4a0b-ab1c-53928a37caec',
+  const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
+  const HOT_EVENT_IDS = new Set([
+    '6bb46db6-a3ba-42b6-8a50-2be8658e436f', // Dancing Filmevent
   ]);
 
   const maxinaEvents = useMemo(() => {
     return dbEvents
-      .filter(event => HOT_CREATOR_IDS.has(event.created_by))
+      .filter(event => event.created_by === MAXINA_CREATOR_ID || HOT_EVENT_IDS.has(event.id))
       .map(event => ({ ...event, event_type: 'event' }));
   }, [dbEvents]);
 
