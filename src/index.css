@@ -717,9 +717,10 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
 
 }
 
-  /* Force Sheet to extend beyond 100dvh to fill the gap below viewport on Android */
+  /* Force Sheet to extend beyond 100dvh to fill the gap below viewport on Android.
+     Uses the bottom nav height variable since the gap matches the hidden nav area. */
   [data-drawer-sheet] {
-    height: calc(100dvh + 100px) !important;
+    height: calc(100dvh + var(--appilix-bottom-nav-height, 72px)) !important;
     bottom: auto !important;
   }
 
