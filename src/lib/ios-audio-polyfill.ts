@@ -11,7 +11,8 @@ const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
 
 const IS_SAFARI = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-export const IS_IOS_SAFARI = IS_IOS || (IS_IOS && IS_SAFARI);
+// All iOS browsers use WebKit, so treat any iOS browser as "iOS Safari" for audio handling
+export const IS_IOS_SAFARI = IS_IOS;
 
 export interface AudioRecorderCallbacks {
   onAudioData: (pcmFloat32: Float32Array) => void;
