@@ -219,20 +219,31 @@ async function fetchLegacyGroupThreads(userId: string): Promise<PrefetchGlobalTh
 // ── Main prefetch function ──────────────────────────────────────────
 
 export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlobalThread[]> {
-  // Gateway call with 5-second timeout
-  const conversations: ChatConversation[] = await Promise.race([
-    fetchConversations(),
-    new Promise<ChatConversation[]>((_, reject) =>
-      setTimeout(() => reject(new Error('Gateway timeout (8s)')), 8000)
-    ),
-  ]).catch((err) => {
-    console.warn('[prefetchInbox] Gateway failed/timed out:', err.message);
-    return [] as ChatConversation[];
-  });
+  // Fetch gateway DMs + legacy group threads in parallel
+  const [conversations, legacyGroupThreads] = await Promise.all([
+    // Gateway call with 8-second timeout
+    Promise.race([
+      fetchConversations(),
+      new Promise<ChatConversation[]>((_, reject) =>
+        setTimeout(() => reject(new Error('Gateway timeout (8s)')), 8000)
+      ),
+    ]).catch((err) => {
+      console.warn('[prefetchInbox] Gateway failed/timed out:', err.message);
+      return [] as ChatConversation[];
+    }),
+    // Legacy group threads with 5-second timeout
+    Promise.race([
+      fetchLegacyGroupThreads(userId),
+      new Promise<PrefetchGlobalThread[]>((_, reject) =>
+        setTimeout(() => reject(new Error('Legacy groups timeout (5s)')), 5000)
+      ),
+    ]).catch((err) => {
+      console.warn('[prefetchInbox] Legacy groups failed/timed out:', err.message);
+      return [] as PrefetchGlobalThread[];
+    }),
+  ]);
 
-  if (!conversations || conversations.length === 0) {
-    // Seed Vitana bot so the cache is never empty — prevents empty-state flash
-    // while the full hook refetches with all fallbacks
+  if ((!conversations || conversations.length === 0) && legacyGroupThreads.length === 0) {
     return [makeVitanaBotThread(userId)];
   }
 
@@ -248,7 +259,7 @@ export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlob
 
   const profileMap = await enrichProfiles(Array.from(allUserIds));
 
-  const threads: PrefetchGlobalThread[] = conversations.map((conv) => {
+  const dmThreads: PrefetchGlobalThread[] = conversations.map((conv) => {
     const peer = profileMap[conv.peer_id] || { display_name: 'Unknown User', avatar_url: null };
     const me = profileMap[userId] || { display_name: 'Me', avatar_url: null };
     const lastMsg = conv.last_message;
@@ -285,7 +296,17 @@ export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlob
     };
   });
 
-  return threads.sort(
+  // Merge DM threads + legacy group threads, dedup by id
+  const seenIds = new Set(dmThreads.map((t) => t.id));
+  const mergedThreads = [...dmThreads];
+  for (const gt of legacyGroupThreads) {
+    if (!seenIds.has(gt.id)) {
+      mergedThreads.push(gt);
+      seenIds.add(gt.id);
+    }
+  }
+
+  return mergedThreads.sort(
     (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
   );
 }
