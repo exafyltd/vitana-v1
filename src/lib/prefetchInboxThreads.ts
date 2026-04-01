@@ -111,6 +111,111 @@ function makeVitanaBotThread(userId: string): PrefetchGlobalThread {
   };
 }
 
+// ── Legacy group thread fetcher (mirrors fetchLegacyThreads but groups only) ──
+
+async function fetchLegacyGroupThreads(userId: string): Promise<PrefetchGlobalThread[]> {
+  try {
+    // 1. Get threads the user participates in
+    const { data: participations, error: partErr } = await supabase
+      .from('global_thread_participants')
+      .select('thread_id, role, last_read_at')
+      .eq('user_id', userId) as any;
+
+    if (partErr || !participations || participations.length === 0) return [];
+
+    const threadIds = participations.map((p: any) => p.thread_id);
+
+    // 2. Get group thread metadata only
+    const { data: threadRows, error: threadErr } = await supabase
+      .from('global_message_threads')
+      .select('id, name, type, created_by, created_at, updated_at')
+      .in('id', threadIds)
+      .eq('type', 'group')
+      .order('updated_at', { ascending: false }) as any;
+
+    if (threadErr || !threadRows || threadRows.length === 0) return [];
+
+    const groupThreadIds = threadRows.map((t: any) => t.id);
+
+    // 3. Get participants + last messages in parallel
+    const [{ data: allParticipants }, { data: lastMessages }] = await Promise.all([
+      supabase
+        .from('global_thread_participants')
+        .select('thread_id, user_id, role, last_read_at')
+        .in('thread_id', groupThreadIds) as any,
+      supabase
+        .from('global_messages')
+        .select('id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at')
+        .in('thread_id', groupThreadIds)
+        .order('created_at', { ascending: false })
+        .limit(Math.max(groupThreadIds.length * 3, 30)) as any,
+    ]);
+
+    // Last message per thread
+    const lastMsgByThread: Record<string, any> = {};
+    (lastMessages || []).forEach((m: any) => {
+      if (!lastMsgByThread[m.thread_id]) lastMsgByThread[m.thread_id] = m;
+    });
+
+    // Profile enrichment
+    const allUserIds = new Set<string>([userId]);
+    (allParticipants || []).forEach((p: any) => allUserIds.add(p.user_id));
+    Object.values(lastMsgByThread).forEach((m: any) => allUserIds.add(m.sender_id));
+    const profileMap = await enrichProfiles(Array.from(allUserIds));
+
+    // 4. Build thread objects
+    return threadRows
+      .map((t: any) => {
+        const threadParticipants = (allParticipants || []).filter(
+          (p: any) => p.thread_id === t.id
+        );
+
+        const enrichedParticipants = threadParticipants.map((p: any) => ({
+          user_id: p.user_id,
+          display_name: profileMap[p.user_id]?.display_name || 'Unknown',
+          avatar_url: profileMap[p.user_id]?.avatar_url || null,
+          role: p.role || 'member',
+          last_read_at: p.last_read_at,
+        }));
+
+        const lastMsg = lastMsgByThread[t.id];
+        const lastMessage: PrefetchGlobalMessage | undefined = lastMsg
+          ? {
+              id: lastMsg.id,
+              thread_id: t.id,
+              sender_id: lastMsg.sender_id,
+              body: lastMsg.body,
+              message_type: lastMsg.message_type || 'text',
+              content_data: lastMsg.content_data,
+              created_at: lastMsg.created_at,
+              updated_at: lastMsg.updated_at || lastMsg.created_at,
+              sender: profileMap[lastMsg.sender_id]
+                ? { user_id: lastMsg.sender_id, ...profileMap[lastMsg.sender_id] }
+                : null,
+            }
+          : undefined;
+
+        const unreadCount = lastMsg && lastMsg.sender_id !== userId ? 1 : 0;
+
+        return {
+          id: t.id,
+          name: t.name,
+          type: 'group',
+          created_by: t.created_by,
+          created_at: t.created_at,
+          updated_at: t.updated_at,
+          participants: enrichedParticipants,
+          last_message: lastMessage,
+          unread_count: unreadCount,
+        } as PrefetchGlobalThread;
+      })
+      .filter(Boolean) as PrefetchGlobalThread[];
+  } catch (err) {
+    console.warn('[prefetchInbox] Legacy group threads error:', err);
+    return [];
+  }
+}
+
 // ── Main prefetch function ──────────────────────────────────────────
 
 export async function prefetchInboxThreads(userId: string): Promise<PrefetchGlobalThread[]> {
