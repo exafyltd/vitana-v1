@@ -39,6 +39,12 @@ export function useOrbVoiceWidget() {
           localStorage.removeItem(sbKey);
         }
 
+        // Clear stale ORB identity keys so the widget starts anonymous
+        const staleToken = localStorage.getItem('vitana.authToken');
+        const staleUserId = localStorage.getItem('vitana.userId');
+        localStorage.removeItem('vitana.authToken');
+        localStorage.removeItem('vitana.userId');
+
         console.log("[ORB] Initializing widget in anonymous mode");
         orb.init({ showFab: true });
         initialized.current = true;
