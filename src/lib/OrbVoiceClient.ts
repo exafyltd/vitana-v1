@@ -20,6 +20,7 @@ export type OrbVoiceClientCallbacks = {
   onSpeakingChange?: (isSpeaking: boolean) => void;
   onProcessingChange?: (isProcessing: boolean) => void;
   onVolumeChange?: (volume: number) => void;
+  onLink?: (url: string) => void;
 };
 
 export interface OrbVoiceClientConfig {
@@ -255,6 +256,12 @@ export class OrbVoiceClient {
           case 'end_of_turn':
             console.log('[OrbVoiceClient] Turn complete received');
             this.handleTurnComplete();
+            break;
+          case 'link':
+            if (msg.url) {
+              console.info('[OrbVoiceClient] 🔗 Link event:', msg.url);
+              this.callbacks.onLink?.(msg.url);
+            }
             break;
           case 'error':
             this.callbacks.onError?.(msg.message);

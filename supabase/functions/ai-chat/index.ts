@@ -1428,13 +1428,23 @@ serve(async (req) => {
               }
             }).catch((err) => console.error('[stream] Error storing AI message:', err));
             
+            // Emit link events for any URLs found in the final response
+            const responseUrls = extractUrlsFromText(fullText);
+            for (const url of responseUrls) {
+              const linkEvent = `data: ${JSON.stringify({ type: 'link', url })}\n\n`;
+              safeEnqueue(encoder.encode(linkEvent));
+            }
+            if (responseUrls.length > 0) {
+              console.info(`[stream] 🔗 Emitted ${responseUrls.length} link event(s)`);
+            }
+
             // Wait for any pending TTS tasks to flush audio events before closing the stream
             try {
               await Promise.allSettled(pendingTTS);
             } catch (e) {
               console.error('[stream] Error awaiting TTS tasks:', e);
             }
-            
+
             // Send done event
             const doneEvent = `data: ${JSON.stringify({ 
               type: 'done', 

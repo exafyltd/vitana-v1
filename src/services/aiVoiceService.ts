@@ -233,11 +233,12 @@ export class AIVoiceService {
   }
 
   async sendTextMessage(
-    text: string, 
+    text: string,
     language?: string,
     onTextChunk?: (chunk: string) => void,
     onAudioChunk?: (audioData: string) => void,
-    isVoiceInput?: boolean  // Track if this came from voice
+    isVoiceInput?: boolean,  // Track if this came from voice
+    onLink?: (url: string) => void
   ): Promise<AIChatResponse> {
     console.info('[streaming] Sending text message:', text.substring(0, 50));
     
@@ -382,6 +383,11 @@ export class AIVoiceService {
               }
               // Queue audio for playback
               await this.queueAudio(event.content);
+            } else if (event.type === 'link') {
+              console.info('[streaming] 🔗 Link event:', event.url);
+              if (onLink && event.url) {
+                onLink(event.url);
+              }
             } else if (event.type === 'audio_error') {
               console.warn('[streaming] ⚠️ TTS synthesis failed:', event.message);
               // Continue with text-only response
