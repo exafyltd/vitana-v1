@@ -282,7 +282,7 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
       .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
       .in("thread_id", threadIds)
       .order("created_at", { ascending: false })
-      .limit(threadIds.length * 2) as any;
+      .limit(Math.max(threadIds.length * 3, 100)) as any;
 
     // Group last messages by thread (take first per thread = most recent)
     const lastMsgByThread: Record<string, any> = {};
@@ -605,12 +605,15 @@ export function useGlobalMessages(
       const directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
       console.log("[chat:debug] directThreads:", directThreads.length, "gatewayThreads:", gatewayThreads.length);
 
-      // Merge: gateway wins > direct Supabase > legacy
-      const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
-      const directIds = new Set(directThreads.map((t) => t.id));
-      const uniqueDirect = directThreads.filter((t) => !gatewayIds.has(t.id));
-      const uniqueLegacy = legacyThreads.filter((t) => !gatewayIds.has(t.id) && !directIds.has(t.id));
-      const merged = [...gatewayThreads, ...uniqueDirect, ...uniqueLegacy].sort(
+      // Merge: keep the freshest version of each thread across all sources
+      const threadMap = new Map<string, GlobalMessageThread>();
+      for (const t of [...legacyThreads, ...directThreads, ...gatewayThreads]) {
+        const existing = threadMap.get(t.id);
+        if (!existing || new Date(t.updated_at) > new Date(existing.updated_at)) {
+          threadMap.set(t.id, t);
+        }
+      }
+      const merged = Array.from(threadMap.values()).sort(
         (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
 
