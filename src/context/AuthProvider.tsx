@@ -86,9 +86,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Sync ORB auth + prefetch inbox on sign-in
+        // Prefetch inbox on sign-in (ORB auth is handled by useOrbVoiceWidget)
         if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
-          syncOrbAuth(session);
 
           const userId = session.user.id;
           const qc = (window as any).queryClient as QueryClient | undefined;
