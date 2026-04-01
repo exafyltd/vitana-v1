@@ -456,6 +456,15 @@ export function MeetupDetailsDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, hasPrev, hasNext, onNavigatePrev, onNavigateNext, onOpenChange]);
 
+  // Sync document background to prevent white band behind system bars
+  useEffect(() => {
+    if (open && isMobile) {
+      const prev = document.documentElement.style.backgroundColor;
+      document.documentElement.style.backgroundColor = 'hsl(var(--background))';
+      return () => { document.documentElement.style.backgroundColor = prev; };
+    }
+  }, [open, isMobile]);
+
 
   if (!event) return null;
 
@@ -1363,7 +1372,7 @@ export function MeetupDetailsDrawer({
           paddingTop: '10px',
           paddingLeft: '12px',
           paddingRight: '12px',
-          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 4px)',
           gap: '10px',
           background: 'rgba(255, 255, 255, 0.86)',
           borderTop: '1px solid rgba(0, 0, 0, 0.06)',
@@ -1734,7 +1743,7 @@ export function MeetupDetailsDrawer({
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent 
           side="bottom" 
-          className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
+          className="!inset-0 !h-[100lvh] p-0 rounded-none [&>button]:hidden"
         >
           {content}
         </SheetContent>
