@@ -9,7 +9,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/context/AuthProvider';
-import { useTenant } from '@/hooks/useTenant';
+import { useTenantSafe } from '@/hooks/useTenant';
 import { ADJACENT_PILLARS, prefetchForPath } from '@/lib/prefetch-registry';
 
 const PREFETCH_DEBOUNCE_MS = 250;
@@ -18,7 +18,8 @@ export function useBackgroundPrefetch() {
   const location = useLocation();
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const { activeTenantId } = useTenant();
+  const tenantCtx = useTenantSafe();
+  const activeTenantId = tenantCtx?.activeTenantId ?? null;
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const prefetchedRef = useRef<Set<string>>(new Set());
 
