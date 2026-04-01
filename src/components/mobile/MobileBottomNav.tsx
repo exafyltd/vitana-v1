@@ -69,7 +69,7 @@ export function MobileBottomNav() {
       transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
-      <div className="relative flex items-end justify-around bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-1 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
+      <div className="relative flex items-end justify-around <div className="relative flex items-end justify-between bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
         {navItems.map((item) => (
           <NavItem
             key={item.id}
