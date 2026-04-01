@@ -1363,7 +1363,7 @@ export function MeetupDetailsDrawer({
           paddingTop: '10px',
           paddingLeft: '12px',
           paddingRight: '12px',
-          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 4px)',
           gap: '10px',
           background: 'rgba(255, 255, 255, 0.86)',
           borderTop: '1px solid rgba(0, 0, 0, 0.06)',
