@@ -241,3 +241,8 @@ export function useTenant() {
   }
   return context;
 }
+
+/** Safe variant that returns undefined instead of throwing when outside TenantProvider */
+export function useTenantSafe() {
+  return useContext(TenantContext);
+}
