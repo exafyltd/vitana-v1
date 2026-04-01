@@ -194,7 +194,7 @@ export function MeetupDetailsDrawer({
   const [isJoined, setIsJoined] = useState(false);
   const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
-  const { isFollowing, loading: isFollowLoading, followUser, unfollowUser } = useFollow(event.created_by);
+  const { isFollowing, loading: isFollowLoading, followUser, unfollowUser } = useFollow(event?.created_by);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
