@@ -718,7 +718,7 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
 }
 
   /* Force Sheet to extend beyond 100dvh to fill the gap below viewport on Android */
-  body[data-drawer-open="true"] [data-radix-dialog-content] {
+  [data-drawer-sheet] {
     height: calc(100dvh + 100px) !important;
     bottom: auto !important;
   }
