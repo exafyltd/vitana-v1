@@ -1,30 +1,60 @@
 
+Diagnosis
 
-# Refactor ORB widget: authToken-based init, remove setAuth calls
+- No, this does not look like a reverted deployment.
+- The new ORB logic is still present in `src/hooks/useOrbVoiceWidget.ts`.
+- The real problem is that a second, older ORB auth path is still active in `src/context/AuthProvider.tsx`.
 
-## Summary
-The external ORB widget now supports `forceAnonymous` mode: if `init()` is called without `authToken`, subsequent `setAuth()` calls are ignored. This means authenticated screens must pass `authToken` in `init()`, and standalone `setAuth()` calls should be removed entirely.
+What is happening
 
-## Changes — single file: `src/hooks/useOrbVoiceWidget.ts`
+- `useOrbVoiceWidget.ts` now uses the correct new model:
+  - anonymous: `orb.init({ showFab: true })`
+  - authenticated: `orb.init({ showFab: true, authToken })`
+  - login/logout: `destroy()` + reinit
+- But `AuthProvider.tsx` still has legacy code:
+  - `syncOrbAuth(session)`
+  - writes `vitana.authToken` and `vitana.userId` into `localStorage`
+  - calls `orb.updateAuth(...)`
+- That legacy code runs on both:
+  - `SIGNED_IN`
+  - `TOKEN_REFRESHED`
 
-### 1. Simplify `tryInit()` (lines 23–68)
-Replace the current logic (Supabase key hiding, stale key clearing, post-init `setAuth()`) with a clean branch:
-- **If user + session exist**: call `orb.init({ showFab: true, authToken: session.access_token })`
-- **Otherwise**: call `orb.init({ showFab: true })` (anonymous, forceAnonymous kicks in)
-- Keep the `isOrbAlive()` guard for externally destroyed widgets
-- Remove all localStorage manipulation (`vitana.authToken`, `vitana.userId`, Supabase key hiding) — no longer needed since `init()` handles auth directly
+Why it broke “5 minutes later”
 
-### 2. Replace auth sync effect (lines 84–131)
-Replace the current `setAuth()`-based sync with a destroy+reinit pattern:
-- Watch `user?.id` (not `session?.access_token` — avoids unnecessary reinits on token refresh)
-- When `user?.id` changes and widget is initialized: `orb.destroy()` → `initialized.current = false` → reinit with or without `authToken`
-- Remove `lastUserId` ref — no longer needed since the effect simply reinits on any `user?.id` change
+- Your Supabase client has `autoRefreshToken: true`.
+- That means a background token refresh happens automatically after some time.
+- When that refresh fires, `AuthProvider` runs the old ORB sync again.
+- So the widget gets re-touched by the legacy auth path and appears to “go back” to the old behavior.
 
-### 3. Keep cleanup effect (lines 133–142) unchanged
+So the issue is:
+- not a rollback
+- not a reverted deployment
+- but two competing ORB auth systems running at once, with the old one waking up later during token refresh
 
-### Result
-- Landing page → `init({ showFab: true })` → anonymous, bulletproof (setAuth ignored)
-- Post-login → `destroy()` + `init({ showFab: true, authToken })` → authenticated
-- Logout → `destroy()` + `init({ showFab: true })` → back to anonymous
-- No standalone `setAuth()` calls anywhere
+Fix plan
 
+1. Remove the legacy ORB auth sync from `src/context/AuthProvider.tsx`
+   - delete `syncOrbAuth(session)`
+   - stop writing `vitana.authToken`
+   - stop writing `vitana.userId`
+   - stop calling `orb.updateAuth(...)`
+
+2. Keep ORB auth ownership in one place only
+   - `src/hooks/useOrbVoiceWidget.ts` should be the only file that initializes/reinitializes the widget
+
+3. Keep only cleanup behavior in `AuthProvider`
+   - clearing ORB storage on sign-out or user switch is fine
+   - but no active auth syncing from there
+
+4. Re-test the exact failure sequence
+   - open `/maxina` anonymous
+   - verify ORB is anonymous
+   - sign in and verify authenticated widget
+   - wait long enough for token refresh / reload
+   - verify it does not silently revert
+   - sign out and verify anonymous again
+
+Files involved
+
+- `src/hooks/useOrbVoiceWidget.ts` — correct new approach is already there
+- `src/context/AuthProvider.tsx` — conflicting legacy path is still causing the regression
