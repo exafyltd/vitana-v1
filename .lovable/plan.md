@@ -1,24 +1,30 @@
 
 
-# Evenly distribute bottom nav items around the central Orb
+# Fix: Dock CTA bar flush to bottom edge
 
 ## Problem
-The 4 items currently use `flex-1` which divides the bar into 4 equal columns. But the Orb FAB sits in the center, so the layout needs to account for a "5th slot" in the middle. Inbox and Live need to flank the Orb with appropriate spacing, while Events and Profile sit at the edges.
+The "Buy Ticket" action bar has a visible white gap beneath it on mobile (especially Android). Two causes:
 
-## Approach
-Instead of 4 equal `flex-1` columns, treat the bar as a **5-column grid** where the middle column is an invisible spacer for the Orb. This naturally pushes Inbox left of center and Live right of center, with Events and Profile at the edges — all evenly spaced.
+1. **`100dvh` vs `100lvh`**: The sheet uses `!h-[100dvh]` which excludes the system navigation bar area on Android. Should use `!h-[100lvh]` to extend behind it (per existing architectural memory).
+2. **Excessive bottom padding**: The CTA bar has `paddingBottom: calc(env(safe-area-inset-bottom, 0px) + 16px)` — the extra 16px creates unnecessary white space beneath the buttons. Reduce to just `env(safe-area-inset-bottom, 0px) + 4px` for a tight dock feel.
+3. **Background sync**: Add a `useEffect` to set `document.documentElement.style.backgroundColor` to match the CTA bar background while the drawer is open, preventing any flash of white behind system bars.
 
-## Change — `src/components/mobile/MobileBottomNav.tsx`
+## Changes — single file: `src/components/meetups/MeetupDetailsDrawer.tsx`
 
-**Container (line 72):** Replace `flex justify-between` with a 5-column grid:
+### 1. Sheet height (line 1737)
+Change `!h-[100dvh]` to `!h-[100lvh]` so the sheet extends behind Android system navigation.
+
+### 2. CTA bottom padding (line 1366)
+Change from:
 ```
-grid grid-cols-5
+paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)'
 ```
-Keep all other classes (`px-4`, `pb-safe`, `pt-2`, background, border, etc.).
+To:
+```
+paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 4px)'
+```
+This keeps safe-area respect but eliminates the extra white band.
 
-**Nav items loop (lines 73-80):** After rendering the 2nd item (Inbox), insert an empty `<div />` spacer as the 3rd grid column. This can be done by splitting the render: render first 2 items, then the spacer, then last 2 items.
-
-**Nav item class (line 101):** Keep `flex-1` or remove it (grid children auto-fill). Keep `px-1`.
-
-This gives: `[Events] [Inbox] [Orb space] [Live] [Profile]` — 5 equal columns, perfectly centered around the Orb.
+### 3. Background color sync
+Add a `useEffect` near existing effects that, when `open && isMobile`, sets `document.documentElement.style.backgroundColor` to the CTA bar's background color (`rgb(240, 240, 240)` or `hsl(var(--background))`), and resets on cleanup. This prevents any white band showing through behind system bars.
 
