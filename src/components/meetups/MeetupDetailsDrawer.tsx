@@ -456,6 +456,15 @@ export function MeetupDetailsDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [open, hasPrev, hasNext, onNavigatePrev, onNavigateNext, onOpenChange]);
 
+  // Sync document background to prevent white band behind system bars
+  useEffect(() => {
+    if (open && isMobile) {
+      const prev = document.documentElement.style.backgroundColor;
+      document.documentElement.style.backgroundColor = 'hsl(var(--background))';
+      return () => { document.documentElement.style.backgroundColor = prev; };
+    }
+  }, [open, isMobile]);
+
 
   if (!event) return null;
 
