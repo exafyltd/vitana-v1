@@ -1,41 +1,63 @@
 
 
-# Fix: Landing page language selection reverts to stored language
+# Investigating: Group chats not visible on mobile
 
-## Root Cause
+## Analysis
 
-There is a race condition between two `useEffect` hooks in `LanguageContext.tsx`:
+After thorough code review, **the mobile and desktop inbox use identical data pipelines**. There is no mobile-specific code that filters out group chats. Both viewports:
+- Use `useHybridMessages(messageContext)` → `useGlobalMessages()` → same `fetchLegacyThreads()` function
+- Render threads from the same `displayThreads` array
+- Apply the same filter logic (`getFilteredThreads`)
 
-**Effect 1 (line 53-70)** — Initial sync: detects that localStorage differs from server, correctly picks localStorage, and calls `updatePreferences()` to push local value to server. But it does NOT set `pendingLanguageRef`.
+The mobile layout at line 1050-1069 of `Messages.tsx` shows a `SplitBar` with "Community" and "Network" tabs, plus sub-filters for "All", "Direct", and "Groups" — all using the same thread data.
 
-**Effect 2 (line 73-93)** — Ongoing sync: checks if server preferences differ from runtime language. Since `pendingLanguageRef` is `null` (Effect 1 never set it), this effect sees the OLD server value and immediately **overrides the user's selection back to the server value**.
+## Likely causes (data, not code)
 
-The same race happens when the user clicks the toggle while unauthenticated on the landing page:
-1. User clicks toggle → `setSelectedLanguage('en-US')` → `!user` → saves to localStorage, clears `pendingLanguageRef` immediately
-2. Auth resolves moments later → user becomes non-null
-3. Effect 1: local differs from server → uses local, pushes to server (no pending set)
-4. Effect 2: server still has old value, no pending lock → **reverts the selection**
+1. **Context tab mismatch**: Group chats only appear under the "Community" tab. If the user's `currentRole` resolves to something other than `community`, the default tab will be "Network" (tenant), which fetches from a different message store that has no group threads.
 
-Console log confirms: `[LANG] Syncing runtime language from preferences: en-US` fires and overrides the user's choice.
+2. **No group thread participants**: The reactivation migration returned 0 rows — meaning either all participants were already active, or none existed. If the user was never added as a participant to group threads, they won't see them.
 
-## Fix
+3. **RLS blocking**: The `global_message_threads` SELECT policy requires `is_active = true` in `global_thread_participants`. If somehow a user's participation row has `is_active = false` for a non-group thread type (the migration only targeted `type = 'group'`), that's fine — but it's worth verifying.
 
-**File: `src/contexts/LanguageContext.tsx`** — two changes:
+## Recommended diagnostic steps
 
-### 1. Effect 1: Set `pendingLanguageRef` when pushing local override to server
-When the first effect calls `updatePreferences({ stt_language: localStored })`, also set `pendingLanguageRef.current = localStored`. This prevents Effect 2 from reverting the value before the server confirms.
+Since the issue is data-level, not code-level, we need to run SQL queries in the Supabase SQL Editor to diagnose:
 
-### 2. Effect 2: Also compare against localStorage, not just server
-Add a guard: if `selectedLanguage` matches what's in localStorage, don't override it from server. The user's explicit localStorage choice should always win until confirmed.
+### Query 1: Check if the user has any group thread participations
+```sql
+SELECT gtp.thread_id, gtp.is_active, gtp.role, gmt.type, gmt.name
+FROM global_thread_participants gtp
+JOIN global_message_threads gmt ON gmt.id = gtp.thread_id
+WHERE gtp.user_id = '<USER_ID>'
+AND gmt.type = 'group';
+```
 
-### 3. `setSelectedLanguage`: Don't clear `pendingLanguageRef` for unauthenticated users
-Currently line 111 clears `pendingLanguageRef` when `!user`. Instead, keep it set so that if auth resolves shortly after, Effect 2 won't override. Only clear it after a short delay or when the value is stable.
+### Query 2: Check all group threads that exist
+```sql
+SELECT id, name, type, created_by, created_at
+FROM global_message_threads
+WHERE type = 'group'
+ORDER BY created_at DESC
+LIMIT 20;
+```
 
-## Changes summary
+### Query 3: Check community group memberships vs thread participants
+```sql
+SELECT gcgm.group_id, gcg.name, gcg.chat_thread_id,
+  EXISTS(
+    SELECT 1 FROM global_thread_participants gtp 
+    WHERE gtp.thread_id = gcg.chat_thread_id 
+    AND gtp.user_id = '<USER_ID>'
+  ) as has_thread_participant
+FROM global_community_group_members gcgm
+JOIN global_community_groups gcg ON gcg.id = gcgm.group_id
+WHERE gcgm.user_id = '<USER_ID>';
+```
 
-Only one file: `src/contexts/LanguageContext.tsx`
+## Next steps
 
-- Line 60-62: After `updatePreferences`, add `pendingLanguageRef.current = localStored`
-- Line 88-92: Add localStorage cross-check before overriding from server
-- Line 109-112: Keep `pendingLanguageRef` set even when `!user`, use a timeout or let Effect 2's pending logic handle it naturally
+No code changes needed at this stage. The user should:
+1. Confirm they are on the **"Community" tab** (not "Network") on mobile
+2. Run the diagnostic queries above with their user ID to identify whether group thread participant rows exist
+3. If rows are missing, we can write a migration to backfill them
 
