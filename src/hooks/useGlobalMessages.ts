@@ -282,7 +282,7 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
       .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
       .in("thread_id", threadIds)
       .order("created_at", { ascending: false })
-      .limit(threadIds.length * 2) as any;
+      .limit(Math.max(threadIds.length * 3, 100)) as any;
 
     // Group last messages by thread (take first per thread = most recent)
     const lastMsgByThread: Record<string, any> = {};
@@ -427,9 +427,8 @@ async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Reco
       .order("created_at", { ascending: false })
       .limit(200) as any;
 
-    console.log("[chat:debug] chat_messages query:", { rows: data?.length ?? 0, error: error?.message ?? null, errorCode: error?.code ?? null });
     if (error || !data || data.length === 0) {
-      if (error) console.warn("[chat] Direct chat_messages fallback failed:", error.message, error.code, error.details);
+      if (error) console.warn("[chat] Direct chat_messages fallback failed:", error.message);
       return [];
     }
 
@@ -508,18 +507,13 @@ export function useGlobalMessages(
   } = useQuery({
     queryKey: ["global-threads", user?.id],
     queryFn: async ({ queryKey }): Promise<GlobalMessageThread[]> => {
-      console.log("[chat:debug] queryFn called", { userId: user?.id, isGlobalContext });
-      if (!user || !isGlobalContext) {
-        console.warn("[chat:debug] queryFn skipped — user:", !!user, "isGlobalContext:", isGlobalContext);
-        return [];
-      }
+      if (!user || !isGlobalContext) return [];
 
       // Track whether gateway actually succeeded vs timed out/failed
       let gatewayFailed = false;
 
       // Fetch actual unread counts upfront
       const directUnreadMap = await fetchDirectUnreadCounts(user.id);
-      console.log("[chat:debug] unreadMap keys:", Object.keys(directUnreadMap).length);
 
       // Fetch from both gateway and legacy in parallel
       // Gateway gets a 5-second timeout so a cold-start doesn't block the whole inbox
@@ -538,12 +532,6 @@ export function useGlobalMessages(
         gatewayWithTimeout,
         fetchLegacyThreads(user.id),
       ]);
-
-      console.log("[chat:debug] sources:", {
-        gateway: conversations?.length ?? 0,
-        legacy: legacyThreads?.length ?? 0,
-        gatewayFailed,
-      });
 
       // Build gateway threads
       let gatewayThreads: GlobalMessageThread[] = [];
@@ -603,14 +591,16 @@ export function useGlobalMessages(
 
       // Always fetch from chat_messages as a fallback — merge logic deduplicates
       const directThreads = await fetchDirectFromChatMessages(user.id, directUnreadMap);
-      console.log("[chat:debug] directThreads:", directThreads.length, "gatewayThreads:", gatewayThreads.length);
 
-      // Merge: gateway wins > direct Supabase > legacy
-      const gatewayIds = new Set(gatewayThreads.map((t) => t.id));
-      const directIds = new Set(directThreads.map((t) => t.id));
-      const uniqueDirect = directThreads.filter((t) => !gatewayIds.has(t.id));
-      const uniqueLegacy = legacyThreads.filter((t) => !gatewayIds.has(t.id) && !directIds.has(t.id));
-      const merged = [...gatewayThreads, ...uniqueDirect, ...uniqueLegacy].sort(
+      // Merge: keep the freshest version of each thread across all sources
+      const threadMap = new Map<string, GlobalMessageThread>();
+      for (const t of [...legacyThreads, ...directThreads, ...gatewayThreads]) {
+        const existing = threadMap.get(t.id);
+        if (!existing || new Date(t.updated_at) > new Date(existing.updated_at)) {
+          threadMap.set(t.id, t);
+        }
+      }
+      const merged = Array.from(threadMap.values()).sort(
         (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       );
 
