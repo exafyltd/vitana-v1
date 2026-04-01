@@ -57,6 +57,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       if (localStored && localStored !== preferences.stt_language) {
         console.log('[LANG] Local override:', localStored, '(server had:', preferences.stt_language, ')');
         setLocalLanguage(localStored);
+        pendingLanguageRef.current = localStored;
         if (user) {
           updatePreferences({ stt_language: localStored });
         }
