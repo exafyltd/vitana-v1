@@ -30,20 +30,7 @@ function clearOrbSessionState() {
   console.log('[AuthProvider] Cleared ORB session state');
 }
 
-/**
- * Sync ORB auth state in localStorage so the external widget picks up the
- * correct identity. Also triggers a widget reset if VitanaOrb is loaded.
- */
-function syncOrbAuth(session: Session) {
-  localStorage.setItem('vitana.authToken', session.access_token);
-  localStorage.setItem('vitana.userId', session.user.id);
-
-  // Signal the external widget to refresh its auth context
-  const orb = (window as any).VitanaOrb;
-  if (orb && typeof orb.updateAuth === 'function') {
-    orb.updateAuth({ token: session.access_token, userId: session.user.id });
-  }
-}
+// Legacy syncOrbAuth removed — ORB lifecycle is now managed solely by useOrbVoiceWidget hook
 
 /**
  * Parse OAuth callback params from URL hash and query string.
