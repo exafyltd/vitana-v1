@@ -119,7 +119,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     
     if (!user) {
       console.log('[LANG] User not authenticated, skipping server sync');
-      pendingLanguageRef.current = null;
+      // Keep pendingLanguageRef set — auth may resolve shortly after,
+      // and Effect 2 would otherwise revert the selection
       return;
     }
     
