@@ -1,17 +1,23 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useTenant } from "@/hooks/useTenant";
+import { useTenantSafe } from "@/hooks/useTenant";
 import { useAuth } from "@/context/AuthProvider";
 
 /**
  * Component to detect tenant from URL and update context
  * Must be used inside Router context
  * Re-evaluates when auth session becomes available (critical for OAuth returns)
+ * Uses useTenantSafe to avoid crashes during HMR or context initialization races
  */
 export function TenantDetector() {
   const location = useLocation();
-  const { setTenantBySlug, tenant } = useTenant();
+  const tenantCtx = useTenantSafe();
   const { user } = useAuth();
+
+  // Gracefully skip if TenantProvider isn't ready yet
+  if (!tenantCtx) return null;
+
+  const { setTenantBySlug, tenant } = tenantCtx;
 
   useEffect(() => {
     const getTenantSlugFromPath = (): string | null => {
