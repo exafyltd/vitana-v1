@@ -1,36 +1,41 @@
 
 
-# Fix: ORB greeting "Hello Jovana" on landing page before login
+# Fix: Landing page language selection reverts to stored language
 
 ## Root Cause
 
-There's a race condition between two processes on app boot:
+There is a race condition between two `useEffect` hooks in `LanguageContext.tsx`:
 
-1. **`useOrbVoiceWidget`** calls `orb.init()` as soon as the ORB script loads. It hides the Supabase auth key but does NOT clear `vitana.authToken` / `vitana.userId` from localStorage. The external widget reads these stale keys and resolves the previous user's identity.
+**Effect 1 (line 53-70)** — Initial sync: detects that localStorage differs from server, correctly picks localStorage, and calls `updatePreferences()` to push local value to server. But it does NOT set `pendingLanguageRef`.
 
-2. **`AuthProvider`** calls `getSession()` and clears stale ORB tokens only after the session check resolves — but by then the widget has already initialized with the stale identity.
+**Effect 2 (line 73-93)** — Ongoing sync: checks if server preferences differ from runtime language. Since `pendingLanguageRef` is `null` (Effect 1 never set it), this effect sees the OLD server value and immediately **overrides the user's selection back to the server value**.
+
+The same race happens when the user clicks the toggle while unauthenticated on the landing page:
+1. User clicks toggle → `setSelectedLanguage('en-US')` → `!user` → saves to localStorage, clears `pendingLanguageRef` immediately
+2. Auth resolves moments later → user becomes non-null
+3. Effect 1: local differs from server → uses local, pushes to server (no pending set)
+4. Effect 2: server still has old value, no pending lock → **reverts the selection**
+
+Console log confirms: `[LANG] Syncing runtime language from preferences: en-US` fires and overrides the user's choice.
 
 ## Fix
 
-Two changes in `src/hooks/useOrbVoiceWidget.ts`:
+**File: `src/contexts/LanguageContext.tsx`** — two changes:
 
-### 1. Clear stale ORB identity keys before anonymous init
+### 1. Effect 1: Set `pendingLanguageRef` when pushing local override to server
+When the first effect calls `updatePreferences({ stt_language: localStored })`, also set `pendingLanguageRef.current = localStored`. This prevents Effect 2 from reverting the value before the server confirms.
 
-In the `tryInit()` function, alongside hiding the Supabase persistence key, also temporarily remove `vitana.authToken` and `vitana.userId` before calling `orb.init()`. Only restore them if the user is actually authenticated.
+### 2. Effect 2: Also compare against localStorage, not just server
+Add a guard: if `selectedLanguage` matches what's in localStorage, don't override it from server. The user's explicit localStorage choice should always win until confirmed.
 
-### 2. Guard: skip setAuth if no user
+### 3. `setSelectedLanguage`: Don't clear `pendingLanguageRef` for unauthenticated users
+Currently line 111 clears `pendingLanguageRef` when `!user`. Instead, keep it set so that if auth resolves shortly after, Effect 2 won't override. Only clear it after a short delay or when the value is stable.
 
-After `orb.init()`, the code unconditionally sets auth if `user && session` exist. This is fine, but the stale localStorage values are the real problem — they persist from a previous session and the external widget reads them during init.
+## Changes summary
 
-## Changes
+Only one file: `src/contexts/LanguageContext.tsx`
 
-**File: `src/hooks/useOrbVoiceWidget.ts`** — inside `tryInit()`, before `orb.init({ showFab: true })`:
-
-- Remove `vitana.authToken` and `vitana.userId` from localStorage (same pattern as the Supabase key suppression)
-- Only set them back after init if `user && session` are present
-- This ensures the external widget sees a clean anonymous state on the landing page
-
-## No other files affected
-
-The `AuthProvider` cleanup logic (line 127-132) is correct but arrives too late. The fix at the widget init level prevents the race entirely.
+- Line 60-62: After `updatePreferences`, add `pendingLanguageRef.current = localStored`
+- Line 88-92: Add localStorage cross-check before overriding from server
+- Line 109-112: Keep `pendingLanguageRef` set even when `!user`, use a timeout or let Effect 2's pending logic handle it naturally
 
