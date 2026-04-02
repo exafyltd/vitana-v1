@@ -408,7 +408,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               
               {/* Description */}
               {description && (
-                <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+                <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
                   {description}
                 </p>
               )}
