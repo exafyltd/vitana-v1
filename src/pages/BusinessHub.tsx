@@ -168,6 +168,19 @@ export default function BusinessHub() {
                   placeholder={translate('businessHub.searchBusiness', 'Search business...')}
                   onSearch={(query) => console.log('Search:', query)}
                 />
+                
+                {/* Mode pill - replaces SplitBarList on mobile */}
+                <MobileModePill
+                  modes={[
+                    { value: "snapshot", label: translate('businessHub.tabs.snapshot', 'Snapshot'), icon: "📊" },
+                    { value: "services", label: translate('businessHub.tabs.services', 'Services'), icon: "💼" },
+                    ...(isReseller ? [{ value: "sales", label: translate('businessHub.tabs.sales', 'Sales'), icon: "🎫" }] : []),
+                    { value: "insights", label: translate('businessHub.tabs.insights', 'Insights'), icon: "📈" },
+                  ]}
+                  activeMode={mobileTab}
+                  onModeChange={setMobileTab}
+                />
+                
                 <UniversalCalendarButton />
                 
                 {/* Create button - primary action */}
@@ -183,14 +196,8 @@ export default function BusinessHub() {
               </div>
             </UtilityActionButton>
             
-            {/* Consolidated SplitBar - All sections in one tab bar */}
-            <SplitBar defaultValue="snapshot" className="w-full mt-1">
-              <SplitBarList className="mb-2">
-                <SplitBarTrigger value="snapshot">📊 {translate('businessHub.tabs.snapshot', 'Snapshot')}</SplitBarTrigger>
-                <SplitBarTrigger value="services">💼 {translate('businessHub.tabs.services', 'Services')}</SplitBarTrigger>
-                {isReseller && <SplitBarTrigger value="sales">🎫 {translate('businessHub.tabs.sales', 'Sales')}</SplitBarTrigger>}
-                <SplitBarTrigger value="insights">📈 {translate('businessHub.tabs.insights', 'Insights')}</SplitBarTrigger>
-              </SplitBarList>
+            {/* Controlled SplitBar - driven by mode pill */}
+            <SplitBar value={mobileTab} onValueChange={setMobileTab} className="w-full mt-1">
               
               {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
               <SplitBarContent value="snapshot" className="space-y-3 pt-1">
