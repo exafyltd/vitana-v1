@@ -14,6 +14,7 @@ import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill'
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
+  onLink?: (url: string) => void;
   onError?: (error: string) => void;
   onConnectionStateChange?: (state: 'disconnected' | 'connecting' | 'ready') => void;
   onListeningChange?: (isListening: boolean) => void;
@@ -249,8 +250,15 @@ export class OrbVoiceClient {
             }
             break;
           case 'assistant_text':
+          case 'output_transcript':
             if (msg.text) {
               this.callbacks.onTranscript?.(msg.text);
+            }
+            break;
+          case 'link':
+            if (msg.url) {
+              console.log('[OrbVoiceClient] Link received:', msg.url);
+              this.callbacks.onLink?.(msg.url);
             }
             break;
           case 'turn_complete':

@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { buildOrbContext } from '@/lib/buildOrbContext';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
@@ -199,6 +200,17 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
           if (convId && text.trim()) {
             logOrbMessage(convId, 'assistant', text);
           }
+        },
+        onLink: (url) => {
+          console.log('[useOrbVoiceClient] Event link received:', url);
+          toast('Link available', {
+            description: url,
+            action: {
+              label: 'Open',
+              onClick: () => window.open(url, '_blank'),
+            },
+            duration: 15000,
+          });
         },
         onError: (err) => {
           setError(err);
