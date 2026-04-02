@@ -754,7 +754,7 @@ export default function LiveRooms() {
           </SplitBarContent>
 
           <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
-            <div className="text-center py-12">
+            <div className="text-center py-6">
               <p className="text-muted-foreground">Past sessions will appear here once rooms end.</p>
               <p className="text-sm text-muted-foreground mt-2">
                 View summaries, highlights, and recordings from completed sessions.

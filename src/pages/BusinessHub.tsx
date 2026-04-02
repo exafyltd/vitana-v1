@@ -226,7 +226,7 @@ export default function BusinessHub() {
               </SplitBarContent>
               
               {/* Insights Tab - Clients + Analytics combined */}
-              <SplitBarContent value="insights" className="pt-2 space-y-6">
+              <SplitBarContent value="insights" className="pt-1 space-y-4">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.clients', 'Clients')}</h3>
                   <ClientsSubTabs />

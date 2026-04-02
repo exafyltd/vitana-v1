@@ -740,10 +740,10 @@ export default function MediaHub() {
             <SplitBarContent value="shorts">
               {/* Mobile TikTok-style immersive feed */}
               {isMobile ? (
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {/* Mobile Shorts Preview Grid - tap to enter immersive mode */}
-                  <div className="text-center py-4">
-                    <p className="text-sm text-muted-foreground mb-3">
+                  <div className="text-center py-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       {translate('mediaHub.shortsAvailable').replace('{count}', String(videoShorts.length))}
                     </p>
                     <Button
