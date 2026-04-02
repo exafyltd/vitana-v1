@@ -31,11 +31,10 @@ export default function StandardHeader({ title, description, emoji, syncTimestam
   // Beautified mobile header - premium, consistent pattern
   if (isMobile) {
     return (
-      <div className={cn("pt-2 pb-1", className)}>
-        <h1 className="text-xl font-bold tracking-tight text-foreground">
+      <div className={cn("pt-1 pb-0", className)}>
+        <h1 className="text-lg font-bold tracking-tight text-foreground">
           {title} {emoji}
         </h1>
-        <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{description}</p>
       </div>
     );
   }

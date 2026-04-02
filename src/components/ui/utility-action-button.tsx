@@ -34,7 +34,7 @@ export function UtilityActionButton({
 
   return (
     <>
-      <div className={cn("pt-4 pb-5", className)}>
+      <div className={cn(compact ? "pt-2 pb-2" : "pt-4 pb-5", className)}>
         {/* Outer wrapper allows badge overflow while inner container scrolls */}
         <div className="overflow-visible">
           <div className="flex gap-2.5 items-center overflow-x-auto scrollbar-hide snap-x snap-mandatory py-2 -my-2">
