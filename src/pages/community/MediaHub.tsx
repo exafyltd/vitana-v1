@@ -49,6 +49,7 @@ import { EditShortVideoModal } from '@/components/community/EditShortVideoModal'
 import { useShortsDensity } from '@/hooks/useShortsDensity';
 import { DensityControl } from '@/components/community/DensityControl';
 import { MobileShortsFeed } from '@/components/community/MobileShortsFeed';
+import { MobileShortsCarousel } from '@/components/community/MobileShortsCarousel';
 import { MobileMusicList } from '@/components/community/MobileMusicList';
 import { MobilePodcastList } from '@/components/community/MobilePodcastList';
 import { useIsMobile } from '@/hooks/use-mobile';
