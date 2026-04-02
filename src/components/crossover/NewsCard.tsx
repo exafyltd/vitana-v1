@@ -335,7 +335,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           />
           
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20 pointer-events-none" />
           
           {/* Media Play Icon Overlay */}
           {MediaIcon && (
