@@ -1,53 +1,73 @@
 
 
-# Add Ticket Type Management to Event Editing
+# Unified Mobile Mode Pill in Utility Rail
 
-## Problem
+## Summary
 
-When creating events, organizers can define multiple ticket types (Early Bird, General Admission, VIP, etc.) with individual prices, quantities, sale dates, and descriptions using the `TicketTypeForm` component. When editing events, they only see a single price/currency toggle — no way to manage individual ticket types.
+Create a reusable `MobileModePill` component and integrate it into the utility rail of **Media Hub**, **Live Rooms**, and **Business Hub** on mobile. This replaces the separate `SplitBarList` tab row with a compact dropdown pill placed immediately after Search, matching the Events pattern.
 
-## Solution
+## New Component
 
-Replace the simple price section in `EditMeetupPopup` with the same `TicketTypeForm` used during creation, pre-populated with existing ticket types from the database.
+### `src/components/ui/MobileModePill.tsx`
 
-## Changes
+A reusable pill button that:
+- Displays current mode label with emoji prefix and chevron-down affordance
+- Opens a bottom `Sheet` with mode options on tap
+- Styled as `h-9 px-3 rounded-full bg-muted/60 hover:bg-muted shrink-0` (matches existing utility rail pills)
+- Props: `modes: { value: string; label: string; icon?: string; badge?: number }[]`, `activeMode: string`, `onModeChange: (value: string) => void`
+- The Sheet lists modes as tappable rows with active state highlighting
 
-### 1. `src/components/EditMeetupPopup.tsx` — Add ticket type editing
+## File Changes
 
-**Data loading** (inside the `useEffect` that populates form data):
-- Fetch existing ticket types from `event_ticket_types` table for this event
-- Map them into `TicketTypeInput[]` format and set state
+### 1. `src/pages/community/MediaHub.tsx` — Mobile only
 
-**State**:
-- Add `ticketTypes` state (`TicketTypeInput[]`)
-- Keep `enableTicketSales` derived from whether ticket types exist
-- Remove standalone `price` / `displayCurrency` from formData (replaced by per-ticket-type values)
+**In the mobile utility rail** (inside `UtilityActionButton children`, lines ~607-626):
+- After `ExpandableSearchButton`, insert `<MobileModePill>` with modes: Shorts, Music, Podcasts
+- Wire `activeMediaTab` / `setActiveMediaTab`
 
-**UI** (lines 662-747, the "Event Pricing" card):
-- Replace the simple paid/price toggle with a `Switch` for "Enable Ticket Sales"
-- When enabled, render `<TicketTypeForm ticketTypes={ticketTypes} onChange={setTicketTypes} eventDate={formData.date} />`
-- This gives organizers full control: add/remove ticket types, set per-type prices, quantities, sale windows
+**Remove mobile SplitBarList** (lines ~729-740):
+- Wrap `SplitBarList` in `{!isMobile && ...}` so the tab row only shows on desktop
+- Keep `SplitBarContent` blocks unchanged — they still render based on `activeMediaTab`
 
-**Submit** (lines 315-361):
-- After updating the event, sync ticket types:
-  - Fetch current DB ticket types for the event
-  - Delete removed ones (those in DB but not in form)
-  - Update existing ones (match by ID if we track it, or by name)
-  - Insert new ones
-- Remove the old blanket `update all ticket types to same price` logic
+### 2. `src/pages/community/LiveRooms.tsx` — Mobile only
 
-### 2. Ticket type ID tracking
+**In the mobile utility rail** (inside `UtilityActionButton children`, lines ~602-619):
+- After `ExpandableSearchButton`, insert `<MobileModePill>` with modes: Live Now, Scheduled, Past
+- Wire `activeTab` / `setActiveTab`
 
-Extend the local `TicketTypeInput` usage with an optional `id` field so we can distinguish existing vs new ticket types during save:
-- When loading from DB, include the `id`
-- On save, items with `id` get updated, items without get inserted, DB items not in the form get deactivated (`is_active = false`)
+**Remove mobile SplitBarList** (lines ~622-650):
+- Wrap `SplitBarList` in `{!isMobile && ...}` so the tab row only shows on desktop
+- Keep `SplitBarContent` blocks unchanged
 
-### Files changed
-1. `src/components/EditMeetupPopup.tsx` — Replace simple pricing with `TicketTypeForm`, add DB fetch/sync logic
+### 3. `src/pages/BusinessHub.tsx` — Mobile only
 
-### What stays the same
-- `TicketTypeForm` component unchanged (already supports everything needed)
-- Create event flow unchanged
-- Reseller options section unchanged
-- All non-event (meetup) editing unchanged
+**In the mobile utility rail** (inside `UtilityActionButton children`, lines ~164-181):
+- After `ExpandableSearchButton`, insert `<MobileModePill>` with modes: Snapshot, Services, Sales (conditional on isReseller), Insights
+- Wire to the existing `SplitBar` `defaultValue`/state (will need to lift to controlled state)
+
+**Remove mobile SplitBarList** (lines ~185-191):
+- Remove the `SplitBarList` from mobile layout
+- Keep `SplitBarContent` blocks unchanged — Services/Sales tabs already render their own internal sub-tab rows (`ServicesSubTabs`, `SellAndEarnSubTabs`) which serve as the secondary submode row
+
+### 4. Desktop unchanged
+
+All three pages keep their existing `SplitBarList` tab rows on desktop. The `MobileModePill` only renders when `isMobile` is true.
+
+## Utility Rail Order (all three screens)
+
+```text
+[ 🔍 Search ] [ 📹 Shorts ▾ ] [ 📅 Calendar ] [ + Create ] [ 🧬 742 ] [ ✈ Autopilot ]
+```
+
+## Visual Style
+
+- Matches existing pills in the utility rail: `h-9 px-3 rounded-full bg-muted/60`
+- Emoji prefix + label + `ChevronDown` icon
+- Sheet selector uses same pattern as Events filter sheet: `SheetContent side="bottom" className="rounded-t-2xl"` with tappable rows
+
+## Technical Notes
+
+- Business Hub's `SplitBar` currently uses `defaultValue` — will change to controlled `value`/`onValueChange` with `useState` for the mobile mode pill to drive tab switching
+- `SplitBarContent` blocks don't need wrapping in `SplitBar` when the `value` is controlled — they already respond to the parent `SplitBar` value
+- Business Hub secondary submodes (ServicesSubTabs, SellAndEarnSubTabs) already render their own internal tab rows, so the "secondary submode row" requirement is already met
 
