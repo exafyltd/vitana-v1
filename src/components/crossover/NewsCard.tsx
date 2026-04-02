@@ -434,7 +434,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 )}
 
                 {/* Location & Attendees */}
-                <div className="flex items-center gap-3 text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+                <div className="flex items-center gap-3 text-xs text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
                   {location && (
                     <div className="flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-white/70" />
