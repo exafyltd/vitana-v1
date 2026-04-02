@@ -201,6 +201,17 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
             logOrbMessage(convId, 'assistant', text);
           }
         },
+        onLink: (url) => {
+          console.log('[useOrbVoiceClient] Event link received:', url);
+          toast('Link available', {
+            description: url,
+            action: {
+              label: 'Open',
+              onClick: () => window.open(url, '_blank'),
+            },
+            duration: 15000,
+          });
+        },
         onError: (err) => {
           setError(err);
         },
