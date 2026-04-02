@@ -155,11 +155,14 @@ export class OrbVoiceClient {
       // 2. Connect to SSE stream
       this.connectSSE();
 
-      // 3. Initialize audio output context
-      await this.initAudioOutput();
-
-      // 4. Start recording (uses iOS-safe polyfill)
+      // 3. Start recording FIRST (uses iOS-safe polyfill)
+      // On iOS, getUserMedia reconfigures audio routing to voice-chat mode.
+      // If we create the output AudioContext before this, iOS will suspend it.
       await this.startRecording();
+
+      // 4. Initialize audio output context AFTER mic is active
+      // This ensures the AudioContext is created after iOS audio routing is settled.
+      await this.initAudioOutput();
 
       this.callbacks.onConnectionStateChange?.('ready');
 
@@ -275,22 +278,45 @@ export class OrbVoiceClient {
 
   private async initAudioOutput(): Promise<void> {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    
-    // iOS requires explicit resume from a user gesture context
+
+    // iOS requires explicit resume — may need multiple attempts after audio route changes
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
-    
+
+    // iOS safety: listen for the context being suspended (e.g. by route changes)
+    // and auto-resume it
+    this.audioContext.onstatechange = () => {
+      if (this.audioContext && this.audioContext.state === 'suspended') {
+        console.log('[OrbVoiceClient] AudioContext suspended (iOS route change?) — resuming');
+        this.audioContext.resume().catch(() => {});
+      }
+    };
+
     this.nextStartTime = 0;
+    console.log('[OrbVoiceClient] Audio output initialized, state:', this.audioContext.state);
   }
 
   private handleAudioChunk(base64: string): void {
     if (!this.audioContext) return;
-    
-    // Resume if suspended (browser autoplay policy)
+
+    // Resume if suspended (browser autoplay policy / iOS audio route changes)
     if (this.audioContext.state === 'suspended') {
-      this.audioContext.resume();
+      this.audioContext.resume().then(() => {
+        console.log('[OrbVoiceClient] AudioContext resumed from suspended state');
+        // Re-process this chunk now that context is active
+        this.playPCMChunk(base64);
+      }).catch(e => {
+        console.warn('[OrbVoiceClient] AudioContext resume failed:', e);
+      });
+      return; // Don't try to play on a suspended context — wait for resume
     }
+
+    this.playPCMChunk(base64);
+  }
+
+  private playPCMChunk(base64: string): void {
+    if (!this.audioContext) return;
 
     try {
       // Decode base64 → Int16 → Float32
