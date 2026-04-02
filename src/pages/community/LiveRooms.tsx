@@ -620,8 +620,8 @@ export default function LiveRooms() {
         </UtilityActionButton>
 
         {/* Split Bar for Live/Scheduled/Past */}
-        <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-2" : "mt-6"}>
-          <SplitBarList className={isMobile ? "mb-2" : undefined}>
+        <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-1" : "mt-6"}>
+          <SplitBarList className={isMobile ? "mb-1" : undefined}>
             <SplitBarTrigger value="live">
               📡 {translate('liveRooms.tabs.live', 'Live Now')}
               {filteredLiveRooms.length > 0 && (
