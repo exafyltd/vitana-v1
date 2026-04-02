@@ -180,9 +180,21 @@ export default function BusinessHub() {
                 <MobileModePill
                   modes={[
                     { value: "snapshot", label: translate('businessHub.tabs.snapshot', 'Snapshot'), icon: "📊" },
-                    { value: "services", label: translate('businessHub.tabs.services', 'Services'), icon: "💼" },
-                    ...(isReseller ? [{ value: "sales", label: translate('businessHub.tabs.sales', 'Sales'), icon: "🎫" }] : []),
-                    { value: "insights", label: translate('businessHub.tabs.insights', 'Insights'), icon: "📈" },
+                    { value: "services", label: translate('businessHub.tabs.services', 'Services'), icon: "💼", children: [
+                      { value: "services.services", label: "My Services", icon: "💼" },
+                      { value: "services.events", label: "My Events", icon: "📅" },
+                      { value: "services.packages", label: "Packages", icon: "📦" },
+                    ]},
+                    ...(isReseller ? [{ value: "sales", label: translate('businessHub.tabs.sales', 'Sales'), icon: "🎫", children: [
+                      { value: "sales.inventory", label: "Inventory", icon: "📦" },
+                      { value: "sales.promotions", label: "Promotions", icon: "📣" },
+                    ]}] : []),
+                    { value: "insights", label: translate('businessHub.tabs.insights', 'Insights'), icon: "📈", children: [
+                      { value: "insights.clients", label: "Clients", icon: "👥" },
+                      { value: "insights.performance", label: "Performance", icon: "📊" },
+                      { value: "insights.earnings", label: "Earnings", icon: "💵" },
+                      { value: "insights.growth", label: "Growth", icon: "📈" },
+                    ]},
                   ]}
                   activeMode={mobileTab}
                   onModeChange={setMobileTab}
