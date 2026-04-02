@@ -439,6 +439,7 @@ const EventsAndMeetups = () => {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [eventToShare, setEventToShare] = useState<any>(null);
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
 
   const mobileContainerRef = useRef<HTMLDivElement>(null);
 
