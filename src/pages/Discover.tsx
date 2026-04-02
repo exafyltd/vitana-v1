@@ -36,6 +36,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useAutopilot } from '@/hooks/use-autopilot';
 import { cn } from '@/lib/utils';
 import { MobileDiscoverView } from '@/components/discover/MobileDiscoverView';
+import { MobileModePill } from '@/components/ui/MobileModePill';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
