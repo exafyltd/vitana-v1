@@ -1,67 +1,36 @@
 
 
-# Add ORB Voice Link Handler
+# Integrate Filter Chip into Search Button
 
-## Summary
-Add support for `link` events from the ORB voice SSE stream, displaying them as clickable toast notifications.
+## Goal
+Merge the standalone `MobileFilterChip` into the `ExpandableSearchButton` so the active filter label (e.g., "🔥 Hot") appears as a compact chip attached to the right side of the Search pill — matching the uploaded reference screenshot. This removes one separate item from the utility rail while keeping the filter always visible.
 
 ## Changes
 
-### File 1: `src/lib/OrbVoiceClient.ts`
+### 1. `src/components/ui/expandable-search-button.tsx` — Add filter chip prop
 
-**A) Add `onLink` callback** (line 16, after `onTranscript`):
-```typescript
-onLink?: (url: string) => void;
+Add optional props for an inline filter chip:
+- `filterLabel?: string` — e.g., "🔥 Hot"
+- `onFilterClick?: () => void` — opens the bottom sheet
+
+**Collapsed state**: Render the button as `[🔍 Search | 🔥 Hot ▾]` — a single pill with a subtle divider between Search and the filter chip. The filter side is tappable independently (calls `onFilterClick`), while the search side expands the input as before.
+
+**Expanded state**: The filter chip disappears (search input takes full width), same as current behavior.
+
+### 2. `src/pages/community/EventsAndMeetups.tsx` — Restructure mobile filter integration
+
+**a) Extract the Sheet from `MobileFilterChip`**: Keep the `Sheet` (bottom sheet with filter options) but manage its `open` state in the parent, so the `ExpandableSearchButton` can trigger it via `onFilterClick`.
+
+**b) Pass filter props to `ExpandableSearchButton`**: On mobile, pass `filterLabel={active.icon + ' ' + active.label}` and `onFilterClick={() => setFilterSheetOpen(true)}` to the search button.
+
+**c) Remove the standalone `MobileFilterChip` button** from `afterGiftVoucherChildren` — it's now part of the search pill.
+
+### Files changed
+1. `src/components/ui/expandable-search-button.tsx` — add `filterLabel` + `onFilterClick` props, render combined pill
+2. `src/pages/community/EventsAndMeetups.tsx` — wire filter sheet to search button, remove standalone chip
+
+### Visual result (collapsed)
+```text
+[ 🔍 Search │ 🔥 Hot ▾ ]  [ 📅 ]  [ + Create ]  [ 🎁 ]  [ 🧬 ]  [ ✈ ]
 ```
-
-**B) Merge `output_transcript` into `assistant_text` case** and add `link` case (lines 251–264):
-Replace:
-```typescript
-          case 'assistant_text':
-            if (msg.text) {
-              this.callbacks.onTranscript?.(msg.text);
-            }
-            break;
-          case 'turn_complete':
-```
-With:
-```typescript
-          case 'assistant_text':
-          case 'output_transcript':
-            if (msg.text) {
-              this.callbacks.onTranscript?.(msg.text);
-            }
-            break;
-          case 'link':
-            if (msg.url) {
-              console.log('[OrbVoiceClient] Link received:', msg.url);
-              this.callbacks.onLink?.(msg.url);
-            }
-            break;
-          case 'turn_complete':
-```
-
-### File 2: `src/hooks/useOrbVoiceClient.ts`
-
-**A) Add import** (line 6, after supabase import):
-```typescript
-import { toast } from 'sonner';
-```
-
-**B) Add `onLink` callback** (after `onTranscript` block, line 202):
-```typescript
-        onLink: (url) => {
-          console.log('[useOrbVoiceClient] Event link received:', url);
-          toast('Link available', {
-            description: url,
-            action: {
-              label: 'Open',
-              onClick: () => window.open(url, '_blank'),
-            },
-            duration: 15000,
-          });
-        },
-```
-
-No other changes.
 
