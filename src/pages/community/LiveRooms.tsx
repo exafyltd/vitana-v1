@@ -40,6 +40,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
 import { useMyRoom } from "@/hooks/useMyRoom";
 import { useTranslation } from "@/hooks/useTranslation";
+import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -604,6 +605,20 @@ export default function LiveRooms() {
               placeholder="Search Live Rooms…"
               onSearch={(query) => setSearchQuery(query)}
             />
+            
+            {/* Mode pill - replaces SplitBarList on mobile */}
+            {isMobile && (
+              <MobileModePill
+                modes={[
+                  { value: "live", label: translate('liveRooms.tabs.live', 'Live Now'), icon: "📡", badge: filteredLiveRooms.length || undefined },
+                  { value: "scheduled", label: translate('liveRooms.tabs.scheduled', 'Scheduled'), icon: "📅", badge: filteredScheduledRooms.length || undefined },
+                  { value: "past", label: translate('liveRooms.tabs.past', 'Past'), icon: "📋" },
+                ]}
+                activeMode={activeTab}
+                onModeChange={setActiveTab}
+              />
+            )}
+            
             <UniversalCalendarButton />
             
             {/* Go Live - PRIMARY ACTION */}
@@ -621,33 +636,35 @@ export default function LiveRooms() {
 
         {/* Split Bar for Live/Scheduled/Past */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-1" : "mt-6"}>
-          <SplitBarList className={isMobile ? "mb-1" : undefined}>
-            <SplitBarTrigger value="live">
-              📡 {translate('liveRooms.tabs.live', 'Live Now')}
-              {filteredLiveRooms.length > 0 && (
-                <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {filteredLiveRooms.length}
-                  {liveStreams.length === 0 && (
-                    <span className="ml-1 text-[10px] opacity-70">(demo)</span>
-                  )}
-                </Badge>
-              )}
-            </SplitBarTrigger>
-            <SplitBarTrigger value="scheduled">
-              📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
-              {filteredScheduledRooms.length > 0 && (
-                <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {filteredScheduledRooms.length}
-                  {scheduledStreams.length === 0 && (
-                    <span className="ml-1 text-[10px] opacity-70">(demo)</span>
-                  )}
-                </Badge>
-              )}
-            </SplitBarTrigger>
-            <SplitBarTrigger value="past">
-              📋 {translate('liveRooms.tabs.past', 'Past')}
-            </SplitBarTrigger>
-          </SplitBarList>
+          {!isMobile && (
+            <SplitBarList>
+              <SplitBarTrigger value="live">
+                📡 {translate('liveRooms.tabs.live', 'Live Now')}
+                {filteredLiveRooms.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                    {filteredLiveRooms.length}
+                    {liveStreams.length === 0 && (
+                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                    )}
+                  </Badge>
+                )}
+              </SplitBarTrigger>
+              <SplitBarTrigger value="scheduled">
+                📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
+                {filteredScheduledRooms.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                    {filteredScheduledRooms.length}
+                    {scheduledStreams.length === 0 && (
+                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                    )}
+                  </Badge>
+                )}
+              </SplitBarTrigger>
+              <SplitBarTrigger value="past">
+                📋 {translate('liveRooms.tabs.past', 'Past')}
+              </SplitBarTrigger>
+            </SplitBarList>
+          )}
 
           <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (

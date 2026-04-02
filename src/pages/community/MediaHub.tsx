@@ -54,6 +54,7 @@ import { MobileMusicList } from '@/components/community/MobileMusicList';
 import { MobilePodcastList } from '@/components/community/MobilePodcastList';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from '@/hooks/useTranslation';
+import { MobileModePill } from '@/components/ui/MobileModePill';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
@@ -605,9 +606,20 @@ export default function MediaHub() {
                 }
               >
                 <div className="flex items-center gap-2 min-w-max">
-                  <ExpandableSearchButton 
+                <ExpandableSearchButton 
                     placeholder={translate('mediaHub.searchPlaceholder')}
                     onSearch={(query) => console.log('Search Media:', query)}
+                  />
+                  
+                  {/* Mode pill - replaces SplitBarList on mobile */}
+                  <MobileModePill
+                    modes={[
+                      { value: "shorts", label: translate('mediaHub.tabs.shorts', 'Shorts'), icon: "📹" },
+                      { value: "music", label: translate('mediaHub.tabs.music', 'Music'), icon: "🎵" },
+                      { value: "podcasts", label: translate('mediaHub.tabs.podcasts', 'Podcasts'), icon: "🎙️" },
+                    ]}
+                    activeMode={activeMediaTab}
+                    onModeChange={setActiveMediaTab}
                   />
                   
                   {/* Calendar - default styling */}
@@ -727,17 +739,19 @@ export default function MediaHub() {
 
           {/* Media Hub Subtabs */}
           <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className={cn("w-full", isMobile && "mt-1")}>
-            <SplitBarList className={isMobile ? "mb-2" : undefined}>
-            <SplitBarTrigger value="shorts">
-              📹 {translate('mediaHub.tabs.shorts')}
-            </SplitBarTrigger>
-            <SplitBarTrigger value="music">
-              🎵 {translate('mediaHub.tabs.music')}
-            </SplitBarTrigger>
-            <SplitBarTrigger value="podcasts">
-              🎙️ {translate('mediaHub.tabs.podcasts')}
-            </SplitBarTrigger>
-            </SplitBarList>
+            {!isMobile && (
+              <SplitBarList>
+                <SplitBarTrigger value="shorts">
+                  📹 {translate('mediaHub.tabs.shorts')}
+                </SplitBarTrigger>
+                <SplitBarTrigger value="music">
+                  🎵 {translate('mediaHub.tabs.music')}
+                </SplitBarTrigger>
+                <SplitBarTrigger value="podcasts">
+                  🎙️ {translate('mediaHub.tabs.podcasts')}
+                </SplitBarTrigger>
+              </SplitBarList>
+            )}
 
             <SplitBarContent value="shorts">
               {/* Mobile TikTok-style immersive feed */}
