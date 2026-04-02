@@ -205,19 +205,100 @@
 
 ---
 
-### PRIORITY 5: Enhanced Temporal & Spatial Context
+### PRIORITY 5: Community Engagement Coaching (Motivational Context)
 
-#### Feature 5.1 - Dynamic Geolocation Context
+**Goal:** The orb understands the user's community engagement level and actively motivates them to grow their presence, build a following, and contribute to the community.
+
+**Data already available** (via `fetch-user-context` + hooks):
+- Followers count, following count (`user_follow_counts` materialized view)
+- Posts count (`profile_posts` table)
+- Media uploads count (`media_uploads` table)
+- Groups joined & created (`global_community_group_members` with roles)
+- Events attended & created (`global_event_participants`, `event_co_creators`)
+- Active matches with compatibility scores (`user_matches`)
+- User interests (`global_community_profiles.interests`)
+- Profile visibility and completeness
+
+#### Feature 5.1 - Community Engagement Snapshot
+- Inject a `[COMMUNITY ENGAGEMENT]` block into AI context:
+  ```
+  [COMMUNITY ENGAGEMENT]
+  Followers: 12 | Following: 45
+  Posts: 3 | Media uploads: 1
+  Groups joined: 2 | Groups created: 0
+  Events attended: 5 | Events created: 0
+  Active matches: 3 (avg compatibility: 78%)
+  Profile completeness: 65%
+  Interests: fitness, nutrition, mindfulness
+  Member since: 2025-09-15 (6 months)
+  Engagement trend: growing (↑ 3 new followers this week)
+  ```
+- Always available (lightweight), not conditional on community screen
+
+#### Feature 5.2 - Engagement Level Classification
+- Classify user into engagement tiers:
+  - **Observer** (0-2 posts, <5 followers, 0 groups created) → "Getting started"
+  - **Participant** (3-10 posts, 5-20 followers, joined groups) → "Finding your voice"
+  - **Contributor** (10+ posts, 20-100 followers, media uploads) → "Building presence"
+  - **Leader** (groups created, events hosted, 100+ followers) → "Community builder"
+  - **Influencer** (high engagement, multiple groups, regular content) → "Thought leader"
+- Tier drives AI coaching tone and suggestions
+
+#### Feature 5.3 - Proactive Community Growth Coaching
+- AI uses engagement data to offer specific, actionable advice:
+
+  **For Observers:**
+  - "I notice you haven't posted yet - your interests in fitness and mindfulness are shared by 47 community members. A simple post could spark great conversations!"
+  - "You have 3 matches with over 80% compatibility. Want me to help you start a conversation?"
+
+  **For Participants:**
+  - "You've been engaging with fitness content. Have you considered joining the 'Morning Runners' group? It has 23 active members."
+  - "Your last post got 5 likes! Your perspective on nutrition is resonating. Want to share more?"
+
+  **For Contributors:**
+  - "You've built a following of 45 people interested in your wellness journey. Have you thought about creating your own group?"
+  - "I see you attend events regularly but haven't hosted one yet. With your expertise in mindfulness, a guided session could attract your followers."
+
+  **For Leaders:**
+  - "Your group has grown to 30 members this month. Want me to help you plan a community event to keep momentum?"
+  - "3 of your followers just uploaded media about their fitness progress inspired by your posts. Want to feature them?"
+
+#### Feature 5.4 - Business & Professional Growth Nudges
+- For users with business profiles or professional credentials:
+  - "You have coaching credentials in nutrition - 12 community members are looking for exactly this. Want to set up your service offerings?"
+  - "Your fitness group has 50+ members. This is a great base to launch a live room session or offer premium content."
+  - "I see 3 new people followed you after your last event. Growing your community is the first step to building your wellness business."
+- Connect engagement to monetization (wallet, services, events with tickets)
+
+#### Feature 5.5 - Social Graph Intelligence
+- Analyze who follows the user vs. who they follow back
+- Identify mutual connections and suggest follow-backs
+- Spot engagement clusters: "Most of your followers are interested in mental wellness - your fitness content could attract a new audience too"
+- Suggest strategic follows: "These 5 community leaders share your interests and following them could increase your visibility"
+
+#### Feature 5.6 - Engagement Streak & Milestone Tracking
+- Track community engagement streaks (daily posts, event attendance, group activity)
+- Celebrate milestones via orb greetings:
+  - "Congratulations! You just hit 50 followers!"
+  - "You've posted 3 days in a row - your consistency is building real community presence."
+  - "Your event last week had 15 attendees - that's your best turnout yet!"
+- Use `pattern_discoveries` table to detect engagement trends
+
+---
+
+### PRIORITY 6: Enhanced Temporal & Spatial Context
+
+#### Feature 6.1 - Dynamic Geolocation Context
 - Request location permission (optional)
 - Inject city/region into context for location-relevant suggestions
 - "There's a community event near you this Saturday..."
 
-#### Feature 5.2 - Session Journey Context
+#### Feature 6.2 - Session Journey Context
 - Track the full session journey (sequence of screens + actions + duration)
 - AI understands user's current "mission" (e.g., browsing events → registering → checking wallet = event registration flow)
 - Enable: "Looks like you're trying to sign up for an event. Need help?"
 
-#### Feature 5.3 - Time-on-Screen Intelligence
+#### Feature 6.3 - Time-on-Screen Intelligence
 - Track dwell time per screen
 - Long dwell = potentially confused or deeply engaged
 - Short dwell + rapid navigation = browsing/exploring
@@ -225,13 +306,13 @@
 
 ---
 
-### PRIORITY 6: Cross-Session Context
+### PRIORITY 7: Cross-Session Context
 
-#### Feature 6.1 - Session Continuity
+#### Feature 7.1 - Session Continuity
 - Remember what user was doing in their last session
 - "Welcome back! Last time you were looking at the Wellness Retreat event. Want to pick up where you left off?"
 
-#### Feature 6.2 - Behavioral Pattern Surfacing
+#### Feature 7.2 - Behavioral Pattern Surfacing
 - Use `pattern_discoveries` table to surface patterns in AI context
 - "I've noticed you tend to check your health dashboard on Monday mornings..."
 - Enable pattern-aware proactive suggestions
@@ -244,11 +325,14 @@
 |---|---|---|
 | **Phase 1** | 1.1 Screen Context Provider + 1.2 AI Injection + 1.3 Prompt Augmentation | Orb becomes screen-aware overnight |
 | **Phase 2** | 1.5 Screen-Aware Greetings + 1.4 Transition Awareness | Greetings feel contextual, not generic |
-| **Phase 3** | 2.1 Action Context Buffer + 2.2 Action-Triggered Messages | Orb becomes action-aware |
-| **Phase 4** | 3.1 Screen Feature Registry + 3.2 Contextual Help | Orb becomes a guide, not just a responder |
-| **Phase 5** | 4.2 Lightweight Screen State + 5.2 Session Journey | Deep situational awareness |
-| **Phase 6** | 4.1 Glass Mode Bridge + 5.1 Geolocation + 5.3 Dwell Intelligence | Full sensory context |
-| **Phase 7** | 6.1 Session Continuity + 6.2 Pattern Surfacing | Cross-session intelligence |
+| **Phase 3** | 5.1 Community Engagement Snapshot + 5.2 Engagement Level Classification | Orb understands user's community standing |
+| **Phase 4** | 5.3 Proactive Growth Coaching + 5.4 Business Nudges | Orb becomes a community growth coach |
+| **Phase 5** | 2.1 Action Context Buffer + 2.2 Action-Triggered Messages | Orb becomes action-aware |
+| **Phase 6** | 3.1 Screen Feature Registry + 3.2 Contextual Help | Orb becomes a guide, not just a responder |
+| **Phase 7** | 5.5 Social Graph Intelligence + 5.6 Engagement Streaks | Deep community intelligence |
+| **Phase 8** | 4.2 Lightweight Screen State + 6.2 Session Journey | Deep situational awareness |
+| **Phase 9** | 4.1 Glass Mode Bridge + 6.1 Geolocation + 6.3 Dwell Intelligence | Full sensory context |
+| **Phase 10** | 7.1 Session Continuity + 7.2 Pattern Surfacing | Cross-session intelligence |
 
 ---
 
@@ -270,7 +354,19 @@ These are already in the codebase and can be leveraged immediately:
 | Mobile bottom nav | `src/components/mobile/MobileBottomNav.tsx` | Route-aware navigation component |
 | Role navigation | `src/config/role-navigation.ts` | Module → route mappings per role |
 | Drawer config | `src/config/drawer-nav.config.ts` | All navigable destinations |
+| Follow system | `src/hooks/useFollow.ts` | Followers/following counts, follow/unfollow actions |
+| Community logger | `src/hooks/useCommunityLogger.ts` | 30+ community activity types tracked |
+| Profile stats | `src/components/profile/shared/ProfileStats.tsx` | Posts, followers, following, media, groups display |
+| Community context | `supabase/functions/fetch-user-context/index.ts` | Full community data (events, groups, matches, follows) |
+| Follow counts view | `user_follow_counts` materialized view | Pre-computed follower/following counts |
+| Profile posts | `profile_posts` table | User post content and engagement metrics |
+| Media uploads | `media_uploads` table | Media content with views, likes, plays tracking |
+| Community groups | `global_community_groups` table | Groups with member counts, categories, settings |
+| Event participants | `global_event_participants` table | Event attendance tracking |
+| User matches | `user_matches` table | Compatibility scores and shared interests |
+| User interests | `global_community_profiles.interests` | User's declared interest topics |
+| Engagement score | `user_journey.engagement_score` | Existing engagement metric |
 
 ---
 
-*This document serves as the baseline for the next phase of orb development. Phase 1 (Screen Awareness) is the immediate priority.*
+*This document serves as the baseline for the next phase of orb development. Phase 1 (Screen Awareness) and Phase 3-4 (Community Engagement Coaching) are the immediate priorities.*
