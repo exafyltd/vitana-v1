@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
+import { getScreenContextPayload } from "@/lib/getScreenContextPayload";
 
 export interface AIChatResponse {
   text: string;
@@ -206,11 +207,12 @@ export class AIVoiceService {
     let conversationId = localStorage.getItem('ai_conversation_id') || undefined;
     
     const { data, error } = await supabase.functions.invoke('ai-chat', {
-      body: { 
+      body: {
         audio: base64Audio,
         agentType: 'health',
         conversationId,
-        stream: false
+        stream: false,
+        screenContext: getScreenContextPayload(),
       },
     });
 
@@ -274,7 +276,8 @@ export class AIVoiceService {
       agentType: 'health',
       conversationId,
       stream: true,
-      isVoiceInput: isVoiceInput || false
+      isVoiceInput: isVoiceInput || false,
+      screenContext: getScreenContextPayload(),
     };
 
     const response = await fetch(`${supabaseUrl}/functions/v1/ai-chat`, {

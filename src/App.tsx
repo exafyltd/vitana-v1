@@ -20,6 +20,7 @@ import { ProfilePreviewProvider } from "@/hooks/useProfilePreview";
 import { VitanaAudioOverlay } from "@/components/audio/VitanaAudioOverlay";
 import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationContext";
 import { PersistentGuideOrb } from "@/components/vitanaland/PersistentGuideOrb";
+import { ScreenContextBridge } from "@/components/ScreenContextBridge";
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
@@ -67,6 +68,7 @@ import DashboardSystemHealth from "./pages/dev/dashboard/SystemHealth";
 import CommandApprovals from "./pages/dev/command/Approvals";
 import CommandHistory from "./pages/dev/command/History";
 import CommandCompose from "./pages/dev/command/Compose";
+import ScreenAwarenessQA from "./pages/dev/command/ScreenAwarenessQA";
 
 // Dev Hub Agents sub-pages
 import AgentsWorker from "./pages/dev/agents/Worker";
@@ -317,6 +319,7 @@ const App = () => {
                     <AppHooksInitializer />
                     <BrowserRouter>
                     <VitanalandNavigationProvider>
+                      <ScreenContextBridge />
                       <GreetingProviderWrapper>
                         <PersistentGuideOrb />
                         <VitanaAudioOverlay />
@@ -372,6 +375,7 @@ const App = () => {
             <Route path="command/approvals" element={<CommandApprovals />} />
             <Route path="command/history" element={<CommandHistory />} />
             <Route path="command/compose" element={<CommandCompose />} />
+            <Route path="command/screen-awareness" element={<ScreenAwarenessQA />} />
             <Route path="command/tasks" element={<DevCommand />} />
             <Route path="command/autopilot-runs" element={<DevCommand />} />
             <Route path="agents" element={<DevAgents />} />

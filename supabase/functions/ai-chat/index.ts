@@ -441,14 +441,15 @@ serve(async (req) => {
   try {
     const body = await req.json();
     const { 
-      audio, 
-      text, 
+      audio,
+      text,
       language,
       override_language,  // RULE 1: Mandatory language override
       agentType = 'health',
       conversationId: existingConversationId,
       stream = true,
-      isVoiceInput = false
+      isVoiceInput = false,
+      screenContext: clientScreenContext,  // Screen awareness from client
     } = body;
     
     // RULE 1: Validate override_language against allowed set
@@ -973,6 +974,45 @@ serve(async (req) => {
         systemMessage += '7. 💡 Making personalized suggestions like "Want me to RSVP you?" or "Should I help you connect?"\n';
       }
       
+      // === SCREEN CONTEXT (Where the user is right now) ===
+      if (clientScreenContext) {
+        console.info('[ai-chat] Injecting SCREEN CONTEXT:', clientScreenContext.screenName || clientScreenContext.pathname);
+        systemMessage += '\n\n=== SCREEN CONTEXT (User\'s Current View) ===\n';
+        if (clientScreenContext.screenName) {
+          systemMessage += `Current Screen: ${clientScreenContext.screenName}`;
+          if (clientScreenContext.screenId) systemMessage += ` (${clientScreenContext.screenId})`;
+          systemMessage += '\n';
+        }
+        if (clientScreenContext.module) {
+          systemMessage += `Module: ${clientScreenContext.module}`;
+          if (clientScreenContext.moduleDescription) systemMessage += ` — ${clientScreenContext.moduleDescription}`;
+          systemMessage += '\n';
+        }
+        if (clientScreenContext.description) {
+          systemMessage += `Screen Description: ${clientScreenContext.description}\n`;
+        }
+        if (clientScreenContext.capabilities?.length > 0) {
+          systemMessage += `Available Actions on Screen: ${clientScreenContext.capabilities.join(', ')}\n`;
+        }
+        if (clientScreenContext.promptHint) {
+          systemMessage += `AI Guidance: ${clientScreenContext.promptHint}\n`;
+        }
+        if (clientScreenContext.previousScreen) {
+          systemMessage += `Previous Screen: ${clientScreenContext.previousScreen}\n`;
+        }
+        if (clientScreenContext.navigationTrail) {
+          systemMessage += `Navigation Trail: ${clientScreenContext.navigationTrail}\n`;
+        }
+        if (clientScreenContext.dwellSeconds && clientScreenContext.dwellSeconds > 5) {
+          const d = clientScreenContext.dwellSeconds;
+          const dur = d < 60 ? `${d}s` : `${Math.floor(d / 60)}m ${d % 60}s`;
+          systemMessage += `Time on Screen: ${dur}\n`;
+        }
+        systemMessage += 'INSTRUCTION: Tailor your responses to be relevant to the screen the user is currently viewing. ';
+        systemMessage += 'If they ask "what can I do here?" or similar, reference the available actions. ';
+        systemMessage += 'If they seem stuck, proactively offer help relevant to this screen.\n';
+      }
+
       // === LONG-TERM MEMORY (Unified Semantic Search Results) ===
       if (relevantMemories.length > 0) {
         systemMessage += '\n=== LONG-TERM MEMORY (Retrieved from Memory Garden & Diaries) ===\n';

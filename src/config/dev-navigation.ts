@@ -16,6 +16,7 @@ export const devCommandNavigation = [
   { id: "live-console", name: "Live Console", path: "/dev/command" },
   { id: "tasks", name: "Tasks", path: "/dev/command/tasks" },
   { id: "autopilot-runs", name: "Autopilot Runs", path: "/dev/command/autopilot-runs" },
+  { id: "screen-awareness", name: "Screen Awareness QA", path: "/dev/command/screen-awareness" },
   { id: "history", name: "History", path: "/dev/command/history" },
 ];
 

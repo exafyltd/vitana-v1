@@ -2,21 +2,44 @@ import { createContext, useContext, useState, useEffect, useCallback, ReactNode,
 import { useLocation, matchPath } from 'react-router-dom';
 import { useStreamingState } from './StreamingStateContext';
 import { supabase } from '@/integrations/supabase/client';
+import { resolveScreen, resolveModule, MODULE_DESCRIPTIONS, type ScreenMeta, type ScreenModule } from '@/lib/screen-registry';
+
+const MAX_SCREEN_HISTORY = 10;
+
+interface ScreenContextData {
+  /** Current screen metadata */
+  current: ScreenMeta | null;
+  /** Current module */
+  module: ScreenModule;
+  /** Module description */
+  moduleDescription: string;
+  /** Previous screen */
+  previous: ScreenMeta | null;
+  /** Timestamp when user entered current screen */
+  enteredAt: number;
+  /** Navigation history (most recent first) */
+  history: ScreenMeta[];
+  /** Serialized context string for AI injection */
+  toContextString: () => string;
+}
 
 interface VitanalandNavigationState {
   // Visual state
   isExpanded: boolean; // false = mini orb, true = full experience
   worldVisible: boolean; // show dreamlike background
-  
+
   // First-time experience
   isFirstVisit: boolean; // auto-show full experience on first load
-  
+
   // Orb visibility control
   orbVisible: boolean; // hide on full-screen modes
-  
+
   // Active scene tracking
   activeSceneIndex: number;
-  
+
+  // Screen awareness
+  screenContext: ScreenContextData;
+
   // Actions
   expandToFull: () => void; // mini → full + activate audio
   minimizeToOrb: () => void; // full → mini
@@ -52,7 +75,13 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
   const [orbVisible, setOrbVisible] = useState(true);
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
   const [isExpanding, setIsExpanding] = useState(false);
-  
+
+  // Screen awareness tracking
+  const [currentScreen, setCurrentScreen] = useState<ScreenMeta | null>(null);
+  const [previousScreen, setPreviousScreen] = useState<ScreenMeta | null>(null);
+  const [screenHistory, setScreenHistory] = useState<ScreenMeta[]>([]);
+  const screenEnteredAtRef = useRef(Date.now());
+
   const location = useLocation();
   const { setAudioOverlayVisible, audioOverlayVisible } = useStreamingState();
   const idleTimeoutRef = useRef<NodeJS.Timeout>();
@@ -99,6 +128,68 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
     
     setOrbVisible(!shouldHide);
   }, [location.pathname]);
+
+  // Resolve screen context on route change
+  useEffect(() => {
+    const newScreen = resolveScreen(location.pathname);
+    if (newScreen?.id !== currentScreen?.id) {
+      setPreviousScreen(currentScreen);
+      setCurrentScreen(newScreen);
+      screenEnteredAtRef.current = Date.now();
+      if (newScreen) {
+        setScreenHistory(prev => {
+          const next = [newScreen, ...prev.filter(s => s.id !== newScreen.id)];
+          return next.slice(0, MAX_SCREEN_HISTORY);
+        });
+      }
+    }
+  }, [location.pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Build serializable screen context
+  const screenContextToString = useCallback(() => {
+    const lines: string[] = ['=== SCREEN CONTEXT ==='];
+    const mod = resolveModule(location.pathname);
+    const modDesc = MODULE_DESCRIPTIONS[mod] || '';
+
+    if (currentScreen) {
+      lines.push(`Current Screen: ${currentScreen.name} (${currentScreen.id})`);
+      lines.push(`Module: ${mod} — ${modDesc}`);
+      lines.push(`Screen Description: ${currentScreen.description}`);
+      const seconds = Math.floor((Date.now() - screenEnteredAtRef.current) / 1000);
+      if (seconds > 5) {
+        const duration = seconds < 60 ? `${seconds}s` : `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+        lines.push(`Time on Screen: ${duration}`);
+      }
+      if (currentScreen.capabilities.length > 0) {
+        lines.push(`Available Actions: ${currentScreen.capabilities.join(', ')}`);
+      }
+      lines.push(`AI Guidance: ${currentScreen.promptHint}`);
+    } else {
+      lines.push(`Current Path: ${location.pathname}`);
+      lines.push(`Module: ${mod} — ${modDesc}`);
+    }
+
+    if (previousScreen) {
+      lines.push(`Previous Screen: ${previousScreen.name} (${previousScreen.id})`);
+    }
+
+    if (screenHistory.length > 2) {
+      const trail = screenHistory.slice(0, 5).map(s => s.name).join(' → ');
+      lines.push(`Navigation Trail: ${trail}`);
+    }
+
+    return lines.join('\n');
+  }, [currentScreen, previousScreen, screenHistory, location.pathname]);
+
+  const screenContext: ScreenContextData = {
+    current: currentScreen,
+    module: resolveModule(location.pathname),
+    moduleDescription: MODULE_DESCRIPTIONS[resolveModule(location.pathname)] || '',
+    previous: previousScreen,
+    enteredAt: screenEnteredAtRef.current,
+    history: screenHistory,
+    toContextString: screenContextToString,
+  };
 
   // Idle detection (2.5 minutes)
   const resetIdleTimer = useCallback(() => {
@@ -185,6 +276,7 @@ export function VitanalandNavigationProvider({ children }: VitanalandNavigationP
         isFirstVisit,
         orbVisible,
         activeSceneIndex,
+        screenContext,
         expandToFull,
         minimizeToOrb,
         hideOrb,
