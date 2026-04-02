@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
