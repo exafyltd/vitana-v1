@@ -736,91 +736,44 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
             </CardContent>
           </Card>
 
-          {/* Price Section - Only for Events */}
+          {/* Ticket Types Section - Only for Events */}
           {event.event_type === 'event' && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-orange-600" />
-                  Event Pricing
+                  <DollarSign className="w-5 h-5 text-primary" />
+                  Event Pricing & Tickets
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label htmlFor="isPaid">Paid Event</Label>
+                    <Label htmlFor="enableTicketSales">Enable Ticket Sales</Label>
                     <p className="text-sm text-muted-foreground">
-                      Require payment for attendance
+                      Set up different ticket types with individual prices
                     </p>
                   </div>
                   <Switch
-                    id="isPaid"
-                    checked={formData.isPaid}
+                    id="enableTicketSales"
+                    checked={enableTicketSales}
                     onCheckedChange={(checked) => {
-                      setFormData(prev => ({ 
-                        ...prev, 
-                        isPaid: checked,
-                        price: checked ? prev.price : ""
-                      }));
-                      if (errors.price) {
-                        setErrors(prev => {
-                          const newErrors = {...prev};
-                          delete newErrors.price;
-                          return newErrors;
-                        });
+                      setEnableTicketSales(checked);
+                      if (!checked) {
+                        setTicketTypes([]);
                       }
                     }}
                   />
                 </div>
                 
-                {formData.isPaid && (
-                  <div>
-                    <Label htmlFor="price">
-                      Price <span className="text-destructive">*</span>
-                    </Label>
-                    <div className="flex gap-2 mt-1">
-                      <Select 
-                        value={formData.displayCurrency} 
-                        onValueChange={(v) => setFormData(prev => ({...prev, displayCurrency: v as "USD" | "EUR"}))}
-                      >
-                        <SelectTrigger className="w-24 shrink-0">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="USD">$ USD</SelectItem>
-                          <SelectItem value="EUR">€ EUR</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Input
-                        id="price"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        placeholder="Enter ticket price"
-                        value={formData.price}
-                        onChange={(e) => {
-                          setFormData(prev => ({ ...prev, price: e.target.value }));
-                          if (errors.price) {
-                            setErrors(prev => {
-                              const newErrors = {...prev};
-                              delete newErrors.price;
-                              return newErrors;
-                            });
-                          }
-                        }}
-                        className={errors.price ? "border-destructive" : ""}
-                      />
-                    </div>
-                    {errors.price && (
-                      <p className="text-sm text-destructive mt-1 flex items-center gap-1">
-                        <AlertCircle className="h-3 w-3" />
-                        {errors.price}
-                      </p>
-                    )}
-                  </div>
+                {enableTicketSales && (
+                  <TicketTypeForm
+                    ticketTypes={ticketTypes}
+                    onChange={setTicketTypes}
+                    eventDate={formData.date}
+                  />
                 )}
               </CardContent>
-          </Card>
+            </Card>
           )}
 
           {/* Reseller Options - Only for Events */}
