@@ -36,6 +36,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useAutopilot } from '@/hooks/use-autopilot';
 import { cn } from '@/lib/utils';
 import { MobileDiscoverView } from '@/components/discover/MobileDiscoverView';
+import { MobileModePill } from '@/components/ui/MobileModePill';
 
 import { discoverNavigation } from "@/config/navigation";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
@@ -247,9 +248,9 @@ export default withScreenId(function Discover() {
       
       <div className={cn(
         "p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 dark:from-background dark:via-background dark:to-background min-h-screen",
-        isMobile && "px-4 pb-32" // Mobile: tighter padding + safe area for bottom nav + orb
+        isMobile && "px-3 pb-32"
       )}>
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className={cn("max-w-7xl mx-auto", isMobile ? "space-y-3" : "space-y-6")}>
             <StandardHeader
               title={isMobile ? translate('discover.mobileTitle') : translate('discover.title')}
               description={isMobile ? translate('discover.mobileDescription') : translate('discover.description')}
@@ -258,6 +259,7 @@ export default withScreenId(function Discover() {
 
           {/* Utility Action Buttons - Mobile optimized pill rail */}
           <UtilityActionButton
+            compact={isMobile}
             afterGiftVoucherChildren={isMobile ? (
               <>
                 {/* Vitana Index - pill style on mobile */}
@@ -306,22 +308,32 @@ export default withScreenId(function Discover() {
             <ExpandableSearchButton 
               placeholder={isMobile ? "Search..." : "Search marketplace products, services, and experiences…"}
             />
+            {isMobile && (
+              <MobileModePill
+                modes={[
+                  { value: "suggested", label: "AI Picks", icon: "💡" },
+                  { value: "categories", label: "Categories", icon: "📂" },
+                  { value: "share", label: "Share & Earn", icon: "💰" },
+                ]}
+                activeMode={activeTab}
+                onModeChange={setActiveTab}
+              />
+            )}
             <UniversalCalendarButton />
-            <Button 
-              size="sm"
-              onClick={() => setMasterActionOpen(true)}
-              className={cn(
-                isMobile && "h-9 px-3 rounded-full gap-1.5 shrink-0"
-              )}
-            >
-              <Plus className="h-4 w-4" />
-              {!isMobile && <span className="ml-2">Action</span>}
-            </Button>
+            {!isMobile && (
+              <Button 
+                size="sm"
+                onClick={() => setMasterActionOpen(true)}
+              >
+                <Plus className="h-4 w-4" />
+                <span className="ml-2">Action</span>
+              </Button>
+            )}
           </UtilityActionButton>
 
-          {/* Mobile: Guided Discovery View */}
+          {/* Mobile: Tab-driven content via MobileModePill */}
           {isMobile ? (
-            <MobileDiscoverView aiRecommendations={aiRecommendations} />
+            <MobileDiscoverView aiRecommendations={aiRecommendations} activeTab={activeTab} />
           ) : (
             /* Desktop: Full Split Bar Navigation */
             <SplitBar value={activeTab} onValueChange={setActiveTab}>
