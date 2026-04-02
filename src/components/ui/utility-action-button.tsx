@@ -10,6 +10,7 @@ interface UtilityActionButtonProps {
   hideGiftVoucher?: boolean;
   trailingElement?: React.ReactNode;
   afterGiftVoucherChildren?: React.ReactNode;
+  compact?: boolean;
 }
 
 /**
