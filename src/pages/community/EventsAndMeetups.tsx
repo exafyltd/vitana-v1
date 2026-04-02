@@ -710,17 +710,25 @@ const EventsAndMeetups = () => {
           <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab} className={isMobile ? "flex flex-col flex-1 overflow-hidden" : ""}>
             {/* Sticky header block on mobile: title + actions + tabs */}
             <div className={cn(
-              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-1"
+              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-0"
             )}>
               <StandardHeader
-                title={translate('events.title', 'Events & MeetUps')}
+                title={isMobile ? translate('events.titleShort', 'Events') : translate('events.title', 'Events & MeetUps')}
                 description={translate('events.description', 'Discover formal events and casual meetups in your community')}
               />
               
               <UtilityActionButton 
                 className="min-w-0"
+                compact={isMobile}
                 afterGiftVoucherChildren={isMobile && (
                   <>
+                    {/* Mobile filter chip - replaces the tab row */}
+                    <MobileFilterChip 
+                      activeTab={activeTab} 
+                      onSelect={(tab) => setActiveTab(tab)} 
+                      translate={translate}
+                    />
+                    
                     {/* Vitana Index - pill style on mobile */}
                     <Button 
                       variant="ghost" 
@@ -776,20 +784,23 @@ const EventsAndMeetups = () => {
                 </div>
               </UtilityActionButton>
 
-              <SplitBarList className={isMobile ? "mb-1" : undefined}>
-                <SplitBarTrigger value="hot">
-                  🔥 {translate('events.tabs.hot', 'Hot')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="upcoming">
-                  📅 {translate('events.tabs.upcoming', 'Upcoming')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="today">
-                  ☀️ {translate('events.tabs.today', 'Today')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="following">
-                  👥 {translate('events.tabs.following', 'Following')}
-                </SplitBarTrigger>
-              </SplitBarList>
+              {/* Desktop only: show full tab bar */}
+              {!isMobile && (
+                <SplitBarList>
+                  <SplitBarTrigger value="hot">
+                    🔥 {translate('events.tabs.hot', 'Hot')}
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="upcoming">
+                    📅 {translate('events.tabs.upcoming', 'Upcoming')}
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="today">
+                    ☀️ {translate('events.tabs.today', 'Today')}
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="following">
+                    👥 {translate('events.tabs.following', 'Following')}
+                  </SplitBarTrigger>
+                </SplitBarList>
+              )}
             </div>
 
             {/* Scrollable content area */}
