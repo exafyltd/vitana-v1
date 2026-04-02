@@ -566,7 +566,7 @@ export default function MediaHub() {
               />
               
               {/* Compact Mobile Action Rail */}
-              <UtilityActionButton 
+              <UtilityActionButton compact
                 className="min-w-0"
                 afterGiftVoucherChildren={
                   <>
