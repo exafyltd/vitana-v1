@@ -821,6 +821,17 @@ const EventsAndMeetups = () => {
                     onSearch={(query) => setSearchQuery(query)}
                     dropdownItems={searchDropdownItems}
                     onItemClick={handleSearchItemClick}
+                    filterLabel={isMobile ? (() => {
+                      const filters = [
+                        { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
+                        { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
+                        { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
+                        { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
+                      ];
+                      const active = filters.find(f => f.value === activeTab) || filters[0];
+                      return `${active.icon} ${active.label}`;
+                    })() : undefined}
+                    onFilterClick={isMobile ? () => setFilterSheetOpen(true) : undefined}
                   />
                   <UniversalCalendarButton />
                   
