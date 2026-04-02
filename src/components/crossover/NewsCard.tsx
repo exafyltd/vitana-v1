@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
@@ -97,6 +97,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     const { selectedMeetupId } = useMeetupSelection();
     const { translate } = useTranslation();
     const isSelected = category === 'event' && dataEventId ? selectedMeetupId === dataEventId : false;
+    const [imageLoaded, setImageLoaded] = useState(false);
     
     const categoryStyles = {
       event: "bg-primary/20 text-primary border-primary/30",
@@ -322,17 +323,24 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
         )}
         
         <div className="relative h-full overflow-hidden">
-          {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-            style={imageUrl ? { 
-              backgroundImage: `url("${imageUrl}")`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            } : {
+          {/* Background Image - placeholder gradient + lazy-loaded img */}
+          <div
+            className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+            style={{
               background: 'linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.8) 50%, hsl(var(--muted) / 0.6) 100%)'
             }}
-          />
+          >
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                onLoad={() => setImageLoaded(true)}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+              />
+            )}
+          </div>
           
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10 pointer-events-none" />
@@ -465,7 +473,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
 NewsCardBase.displayName = "NewsCard";
 
-const NewsCard = withCardId(NewsCardBase, "CT-CX-NEWS");
+const MemoizedNewsCardBase = React.memo(NewsCardBase);
+MemoizedNewsCardBase.displayName = "MemoizedNewsCard";
+
+const NewsCard = withCardId(MemoizedNewsCardBase, "CT-CX-NEWS");
 
 export { NewsCard, NewsCardBase };
 export type { NewsCardProps };

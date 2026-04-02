@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner"; // Global toast provider
@@ -22,263 +22,6 @@ import { VitanalandNavigationProvider } from "@/context/VitanalandNavigationCont
 import { SoundscapeProvider } from "@/context/SoundscapeContext";
 import { MobileMuteButton } from "@/components/audio/MobileMuteButton";
 import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBanner";
-import Index from "./pages/Index";
-import ShareEntry from "./pages/ShareEntry";
-import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
-import TermsOfUse from "./pages/legal/TermsOfUse";
-import DeleteAccount from "./pages/legal/DeleteAccount";
-import MaxinaSupport from "./pages/legal/MaxinaSupport";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Auth from "./pages/Auth";
-import IntroExperience from "./pages/IntroExperience";
-import RedeemVoucher from "./pages/RedeemVoucher";
-import CreatorOnboarded from "./pages/CreatorOnboarded";
-import Logout from "./pages/Logout";
-import ResetPassword from "./pages/auth/ResetPassword";
-
-// Portal pages
-import ExafyAdminPortal from "./pages/portals/ExafyAdminPortal";
-import MaxinaPortal from "./pages/portals/MaxinaPortal";
-import AlkalmaPortal from "./pages/portals/AlkalmaPortal";
-import EarthlinksPortal from "./pages/portals/EarthlinksPortal";
-import CommunityPortal from "./pages/portals/CommunityPortal";
-
-// Dev Hub pages
-import DevLogin from "./pages/dev/DevLogin";
-import DevDashboard from "./pages/dev/DevDashboard";
-import DevSettings from "./pages/dev/DevSettings";
-import DevCommand from "./pages/dev/DevCommand";
-import DevAgents from "./pages/dev/DevAgents";
-import DevPipelines from "./pages/dev/DevPipelines";
-import DevOasis from "./pages/dev/DevOasis";
-import DevVTID from "./pages/dev/DevVTID";
-import DevGateway from "./pages/dev/DevGateway";
-import DevCICD from "./pages/dev/DevCICD";
-import DevObservability from "./pages/dev/DevObservability";
-import DevDocs from "./pages/dev/DevDocs";
-import DevLayout from "./layouts/DevLayout";
-
-// Dev Hub Dashboard sub-pages
-import DashboardAIFeed from "./pages/dev/dashboard/AIFeed";
-import DashboardAlerts from "./pages/dev/dashboard/Alerts";
-import DashboardSystemHealth from "./pages/dev/dashboard/SystemHealth";
-
-// Dev Hub Command sub-pages
-import CommandApprovals from "./pages/dev/command/Approvals";
-import CommandHistory from "./pages/dev/command/History";
-import CommandCompose from "./pages/dev/command/Compose";
-
-// Dev Hub Agents sub-pages
-import AgentsWorker from "./pages/dev/agents/Worker";
-import AgentsValidator from "./pages/dev/agents/Validator";
-import AgentsQATest from "./pages/dev/agents/QATest";
-import AgentsCrewTemplate from "./pages/dev/agents/CrewTemplate";
-
-// Dev Hub VTID sub-pages
-import VTIDIssue from "./pages/dev/vtid/Issue";
-import VTIDAnalytics from "./pages/dev/vtid/Analytics";
-import VTIDSearch from "./pages/dev/vtid/Search";
-
-// Dev Hub Gateway sub-pages
-import GatewayRequests from "./pages/dev/gateway/Requests";
-import GatewayMobileLinks from "./pages/dev/gateway/MobileLinks";
-import GatewayWebhooks from "./pages/dev/gateway/Webhooks";
-
-// Dev Hub OASIS sub-pages
-import OasisState from "./pages/dev/oasis/State";
-import OasisLedger from "./pages/dev/oasis/Ledger";
-import OasisPolicies from "./pages/dev/oasis/Policies";
-
-// Dev Hub Pipelines sub-pages
-import PipelinesTests from "./pages/dev/pipelines/Tests";
-import PipelinesCanary from "./pages/dev/pipelines/Canary";
-import PipelinesRollbacks from "./pages/dev/pipelines/Rollbacks";
-
-// Dev Hub CI/CD sub-pages
-import CICDRuns from "./pages/dev/cicd/Runs";
-import CICDArtifacts from "./pages/dev/cicd/Artifacts";
-import CICDMatrix from "./pages/dev/cicd/Matrix";
-
-// Dev Hub Observability sub-pages
-import ObservabilityTraces from "./pages/dev/observability/Traces";
-import ObservabilityMetrics from "./pages/dev/observability/Metrics";
-import ObservabilityCosts from "./pages/dev/observability/Costs";
-
-// Dev Hub Settings sub-pages
-import SettingsAuth from "./pages/dev/settings/Auth";
-import SettingsFlags from "./pages/dev/settings/Flags";
-import SettingsTenants from "./pages/dev/settings/Tenants";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import Discover from "./pages/Discover";
-import Supplements from "./pages/discover/Supplements";
-import ProductDetail from "./pages/discover/ProductDetail";
-import Health from "./pages/Health";
-import HealthTracker from "./pages/HealthTracker";
-import Calendar from "./pages/Calendar";
-import Cart from "./pages/Cart";
-import CheckoutSuccess from "./pages/CheckoutSuccess";
-import TicketPurchaseSuccess from "./pages/TicketPurchaseSuccess";
-import PackagePurchaseSuccess from "./pages/PackagePurchaseSuccess";
-import MyTickets from "./pages/MyTickets";
-import TicketDemo from "./pages/TicketDemo";
-import Community from "./pages/Community";
-import AI from "./pages/AI";
-import Messages from "./pages/Messages";
-import Settings from "./pages/Settings";
-import MobileSettings from "./pages/MobileSettings";
-import NotFound from "./pages/NotFound";
-import Search from "./pages/Search";
-
-// Email confirmation pages
-import EmailConfirmed from "./pages/auth/EmailConfirmed";
-import MaxinaConfirmed from "./pages/portals/MaxinaConfirmed";
-import AlkalmaConfirmed from "./pages/portals/AlkalmaConfirmed";
-import EarthlinksConfirmed from "./pages/portals/EarthlinksConfirmed";
-import CommunityConfirmed from "./pages/portals/CommunityConfirmed";
-import PublicProfilePage from "./pages/PublicProfilePage";
-import PublicEventLanding from "./pages/PublicEventLanding";
-import PublicCampaignLanding from "./pages/PublicCampaignLanding";
-import EditProfilePage from "./pages/EditProfilePage";
-import Wallet from "./pages/Wallet";
-import Sharing from "./pages/Sharing";
-import Memory from "./pages/Memory";
-import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
-// Role-specific dashboards
-import PatientDashboard from "./pages/patient/Dashboard";
-import PatientHealth from "./pages/patient/Health";
-import PatientAppointments from "./pages/patient/Appointments";
-import ProfessionalDashboard from "./pages/professional/Dashboard";
-import ProfessionalPatients from "./pages/professional/Patients";
-import StaffDashboard from "./pages/staff/Dashboard";
-import StaffQueue from "./pages/staff/Queue";
-import AdminDashboard from "./pages/admin/Dashboard";
-import AIAssistant from "./pages/assistant/AIAssistant";
-
-// Home sub-pages
-import Context from "./pages/home/Context";
-import Actions from "./pages/home/Actions";
-import Matches from "./pages/home/Matches";
-import AIFeed from "./pages/home/AIFeed";
-
-// Discover sub-pages
-import WellnessServices from "./pages/discover/WellnessServices";
-import DoctorsCoaches from "./pages/discover/DoctorsCoaches";
-import ProviderProfile from "./pages/discover/ProviderProfile";
-import DealsOffers from "./pages/discover/DealsOffers";
-import Orders from "./pages/discover/Orders";
-import AIPicksPage from "./pages/discover/AIPicksPage";
-
-// Health sub-pages
-import PillarsOfHealth from "./pages/health/PillarsOfHealth";
-import HealthWellnessServices from "./pages/health/WellnessServices";
-import ConditionsRisks from "./pages/health/ConditionsRisks";
-import EducationResources from "./pages/health/EducationResources";
-import BiomarkerResults from "./pages/health/BiomarkerResults";
-import MyBiology from "./pages/health/MyBiology";
-import Plans from "./pages/health/Plans";
-
-// Health Tracker sub-pages - REMOVED (redirected to /health/my-health-tracker)
-
-// Calendar sub-pages - REMOVED (using universal popup system)
-
-// Community sub-pages
-import EventsAndMeetups from "./pages/community/EventsAndMeetups";
-import MyBusiness from "./pages/community/MyBusinessRenamed";
-import BusinessHub from "./pages/BusinessHub";
-import MediaHub from "./pages/community/MediaHub";
-import LiveRooms from "./pages/community/LiveRooms";
-import AIInsights from "./pages/community/AIInsights";
-import GroupDetail from "./pages/community/GroupDetail";
-import Groups from "./pages/community/Groups";
-import LiveRoomViewer from "./pages/community/LiveRoomViewer";
-
-// AI sub-pages
-import Insights from "./pages/ai/Insights";
-import AIRecommendations from "./pages/ai/AIRecommendations";
-import DailySummary from "./pages/ai/DailySummary";
-import Companion from "./pages/ai/Companion";
-
-// Messages sub-pages
-import Archived from "./pages/messages/Archived";
-import Reminder from "./pages/messages/Reminder";
-import Inspiration from "./pages/messages/Inspiration";
-
-// Settings sub-pages
-import Privacy from "./pages/settings/Privacy";
-import SettingsNotifications from "./pages/settings/SettingsNotifications";
-import Preferences from "./pages/settings/Preferences";
-import ConnectedApps from "./pages/settings/ConnectedApps";
-import Billing from "./pages/settings/Billing";
-import Support from "./pages/settings/Support";
-import TenantRole from "./pages/settings/TenantRole";
-import AutopilotSettings from "./pages/settings/AutopilotSettings";
-import VoiceAISettings from "./pages/settings/VoiceAISettings";
-import SocialConnect from "./pages/settings/SocialConnect";
-import AutopilotDashboard from "./pages/AutopilotDashboard";
-import InviteFriends from "./pages/InviteFriends";
-import MilestoneCelebration from "./components/MilestoneCelebration";
-
-// Wallet sub-pages
-import Balance from "./pages/wallet/Balance";
-import Subscriptions from "./pages/wallet/Subscriptions";
-import Rewards from "./pages/wallet/Rewards";
-
-// Sharing sub-pages
-import Distribution from "./pages/sharing/Distribution";
-import DataConsent from "./pages/sharing/DataConsent";
-import Campaigns from "./pages/sharing/Campaigns";
-import CampaignDetail from "./pages/sharing/CampaignDetail";
-
-// Memory sub-pages
-import Timeline from "./pages/memory/Timeline";
-import Recall from "./pages/memory/Recall";
-import MemoryPermissions from "./pages/memory/Permissions";
-import Diary from "./pages/memory/Diary";
-import MobileDailyDiary from "./pages/MobileDailyDiary";
-
-// Admin sub-pages — Restructured (Phase 1: Dashboard + Users & Growth)
-import AdminDashboardHealth from "./pages/admin/dashboard/SystemHealth";
-import AdminDashboardActivity from "./pages/admin/dashboard/ActivityFeed";
-import AdminAllUsers from "./pages/admin/users/AllUsers";
-import AdminSignupFunnel from "./pages/admin/users/SignupFunnel";
-import AdminInvitations from "./pages/admin/users/Invitations";
-import AdminRolesAccess from "./pages/admin/users/RolesAccess";
-// Admin sub-pages — Notifications (Phase 2)
-import AdminNotificationsCompose from "./pages/admin/notifications/Compose";
-import AdminNotificationsSentLog from "./pages/admin/notifications/SentLog";
-import AdminNotificationsPreferences from "./pages/admin/notifications/Preferences";
-// Admin sub-pages — Live Rooms (Phase 3)
-import AdminLiveSessions from "./pages/admin/live/Sessions";
-import AdminLiveAttendance from "./pages/admin/live/Attendance";
-// Admin sub-pages — Intelligence (Phase 3)
-import AdminIntelligenceMemory from "./pages/admin/intelligence/Memory";
-import AdminIntelligenceEmbeddings from "./pages/admin/intelligence/Embeddings";
-import AdminIntelligenceSignals from "./pages/admin/intelligence/Signals";
-import AdminIntelligenceRelationships from "./pages/admin/intelligence/Relationships";
-// Admin sub-pages — System (Phase 3)
-import AdminSystemConfiguration from "./pages/admin/system/Configuration";
-import AdminSystemCreators from "./pages/admin/system/Creators";
-// Admin sub-pages — Audit (Phase 3)
-import AdminAuditEvents from "./pages/admin/audit/Events";
-import AdminAuditUserActivity from "./pages/admin/audit/UserActivity";
-import AdminAuditApiMonitor from "./pages/admin/audit/ApiMonitor";
-import AdminAuditSecurity from "./pages/admin/audit/Security";
-// Admin sub-pages — Legacy (kept for existing pages reused in new structure)
-import CommunitySupervision from "./pages/admin/CommunitySupervision";
-import EventsModeration from "./pages/admin/community/Events";
-import GroupsModeration from "./pages/admin/community/Groups";
-import ReportedContent from "./pages/admin/community/ReportedContent";
-import MediaManagement from "./pages/admin/MediaManagement";
-import VideosManagement from "./pages/admin/media/Videos";
-import PodcastsManagement from "./pages/admin/media/Podcasts";
-import MusicManagement from "./pages/admin/media/Music";
-import LiveStreamOverview from "./pages/admin/LiveStreamOverview";
-import CommunityRoomsAdmin from "./pages/admin/CommunityRoomsAdmin";
-import Bootstrap from "./pages/admin/Bootstrap";
-import TenantManagementLegacy from "./pages/admin/TenantManagement";
-import InitEvents from "./pages/admin/InitEvents";
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
@@ -286,6 +29,241 @@ import { registerAppilixIdentity } from "@/lib/appilix";
 import { useAuth } from "@/context/AuthProvider";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
+import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
+import MilestoneCelebration from "./components/MilestoneCelebration";
+
+// Route loading fallback
+const RouteFallback = () => (
+  <div className="flex items-center justify-center min-h-[60vh]">
+    <div className="animate-pulse flex flex-col items-center gap-3">
+      <div className="w-10 h-10 rounded-full bg-muted" />
+      <div className="h-3 w-24 rounded bg-muted" />
+    </div>
+  </div>
+);
+
+// ─── Eager imports: shell-critical pages (auth, entry, public landing) ───
+import Index from "./pages/Index";
+import ShareEntry from "./pages/ShareEntry";
+import Auth from "./pages/Auth";
+import NotFound from "./pages/NotFound";
+
+// ─── Lazy imports: everything else, grouped by domain ───
+
+// Auth & Legal
+const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
+const TermsOfUse = lazy(() => import("./pages/legal/TermsOfUse"));
+const DeleteAccount = lazy(() => import("./pages/legal/DeleteAccount"));
+const MaxinaSupport = lazy(() => import("./pages/legal/MaxinaSupport"));
+const IntroExperience = lazy(() => import("./pages/IntroExperience"));
+const RedeemVoucher = lazy(() => import("./pages/RedeemVoucher"));
+const CreatorOnboarded = lazy(() => import("./pages/CreatorOnboarded"));
+const Logout = lazy(() => import("./pages/Logout"));
+const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
+const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
+
+// Portal pages
+const ExafyAdminPortal = lazy(() => import("./pages/portals/ExafyAdminPortal"));
+const MaxinaPortal = lazy(() => import("./pages/portals/MaxinaPortal"));
+const AlkalmaPortal = lazy(() => import("./pages/portals/AlkalmaPortal"));
+const EarthlinksPortal = lazy(() => import("./pages/portals/EarthlinksPortal"));
+const CommunityPortal = lazy(() => import("./pages/portals/CommunityPortal"));
+const MaxinaConfirmed = lazy(() => import("./pages/portals/MaxinaConfirmed"));
+const AlkalmaConfirmed = lazy(() => import("./pages/portals/AlkalmaConfirmed"));
+const EarthlinksConfirmed = lazy(() => import("./pages/portals/EarthlinksConfirmed"));
+const CommunityConfirmed = lazy(() => import("./pages/portals/CommunityConfirmed"));
+
+// Dev Hub
+const DevLogin = lazy(() => import("./pages/dev/DevLogin"));
+const DevDashboard = lazy(() => import("./pages/dev/DevDashboard"));
+const DevSettings = lazy(() => import("./pages/dev/DevSettings"));
+const DevCommand = lazy(() => import("./pages/dev/DevCommand"));
+const DevAgents = lazy(() => import("./pages/dev/DevAgents"));
+const DevPipelines = lazy(() => import("./pages/dev/DevPipelines"));
+const DevOasis = lazy(() => import("./pages/dev/DevOasis"));
+const DevVTID = lazy(() => import("./pages/dev/DevVTID"));
+const DevGateway = lazy(() => import("./pages/dev/DevGateway"));
+const DevCICD = lazy(() => import("./pages/dev/DevCICD"));
+const DevObservability = lazy(() => import("./pages/dev/DevObservability"));
+const DevDocs = lazy(() => import("./pages/dev/DevDocs"));
+const DevLayout = lazy(() => import("./layouts/DevLayout"));
+const DashboardAIFeed = lazy(() => import("./pages/dev/dashboard/AIFeed"));
+const DashboardAlerts = lazy(() => import("./pages/dev/dashboard/Alerts"));
+const DashboardSystemHealth = lazy(() => import("./pages/dev/dashboard/SystemHealth"));
+const CommandApprovals = lazy(() => import("./pages/dev/command/Approvals"));
+const CommandHistory = lazy(() => import("./pages/dev/command/History"));
+const CommandCompose = lazy(() => import("./pages/dev/command/Compose"));
+const AgentsWorker = lazy(() => import("./pages/dev/agents/Worker"));
+const AgentsValidator = lazy(() => import("./pages/dev/agents/Validator"));
+const AgentsQATest = lazy(() => import("./pages/dev/agents/QATest"));
+const AgentsCrewTemplate = lazy(() => import("./pages/dev/agents/CrewTemplate"));
+const VTIDIssue = lazy(() => import("./pages/dev/vtid/Issue"));
+const VTIDAnalytics = lazy(() => import("./pages/dev/vtid/Analytics"));
+const VTIDSearch = lazy(() => import("./pages/dev/vtid/Search"));
+const GatewayRequests = lazy(() => import("./pages/dev/gateway/Requests"));
+const GatewayMobileLinks = lazy(() => import("./pages/dev/gateway/MobileLinks"));
+const GatewayWebhooks = lazy(() => import("./pages/dev/gateway/Webhooks"));
+const OasisState = lazy(() => import("./pages/dev/oasis/State"));
+const OasisLedger = lazy(() => import("./pages/dev/oasis/Ledger"));
+const OasisPolicies = lazy(() => import("./pages/dev/oasis/Policies"));
+const PipelinesTests = lazy(() => import("./pages/dev/pipelines/Tests"));
+const PipelinesCanary = lazy(() => import("./pages/dev/pipelines/Canary"));
+const PipelinesRollbacks = lazy(() => import("./pages/dev/pipelines/Rollbacks"));
+const CICDRuns = lazy(() => import("./pages/dev/cicd/Runs"));
+const CICDArtifacts = lazy(() => import("./pages/dev/cicd/Artifacts"));
+const CICDMatrix = lazy(() => import("./pages/dev/cicd/Matrix"));
+const ObservabilityTraces = lazy(() => import("./pages/dev/observability/Traces"));
+const ObservabilityMetrics = lazy(() => import("./pages/dev/observability/Metrics"));
+const ObservabilityCosts = lazy(() => import("./pages/dev/observability/Costs"));
+const SettingsAuth = lazy(() => import("./pages/dev/settings/Auth"));
+const SettingsFlags = lazy(() => import("./pages/dev/settings/Flags"));
+const SettingsTenants = lazy(() => import("./pages/dev/settings/Tenants"));
+
+// Main feature pages
+const Home = lazy(() => import("./pages/Home"));
+const Discover = lazy(() => import("./pages/Discover"));
+const Health = lazy(() => import("./pages/Health"));
+const Community = lazy(() => import("./pages/Community"));
+const AI = lazy(() => import("./pages/AI"));
+const Messages = lazy(() => import("./pages/Messages"));
+const Settings = lazy(() => import("./pages/Settings"));
+const MobileSettings = lazy(() => import("./pages/MobileSettings"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Search = lazy(() => import("./pages/Search"));
+const Cart = lazy(() => import("./pages/Cart"));
+const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
+const TicketPurchaseSuccess = lazy(() => import("./pages/TicketPurchaseSuccess"));
+const PackagePurchaseSuccess = lazy(() => import("./pages/PackagePurchaseSuccess"));
+const MyTickets = lazy(() => import("./pages/MyTickets"));
+const TicketDemo = lazy(() => import("./pages/TicketDemo"));
+const Wallet = lazy(() => import("./pages/Wallet"));
+const Sharing = lazy(() => import("./pages/Sharing"));
+const Memory = lazy(() => import("./pages/Memory"));
+const EditProfilePage = lazy(() => import("./pages/EditProfilePage"));
+const PublicProfilePage = lazy(() => import("./pages/PublicProfilePage"));
+const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
+const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
+const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
+const InviteFriends = lazy(() => import("./pages/InviteFriends"));
+const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
+const Supplements = lazy(() => import("./pages/discover/Supplements"));
+const ProductDetail = lazy(() => import("./pages/discover/ProductDetail"));
+const BusinessHub = lazy(() => import("./pages/BusinessHub"));
+const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
+
+// Home sub-pages
+const Context = lazy(() => import("./pages/home/Context"));
+const Actions = lazy(() => import("./pages/home/Actions"));
+const Matches = lazy(() => import("./pages/home/Matches"));
+const AIFeed = lazy(() => import("./pages/home/AIFeed"));
+
+// Discover sub-pages
+const WellnessServices = lazy(() => import("./pages/discover/WellnessServices"));
+const DoctorsCoaches = lazy(() => import("./pages/discover/DoctorsCoaches"));
+const ProviderProfile = lazy(() => import("./pages/discover/ProviderProfile"));
+const DealsOffers = lazy(() => import("./pages/discover/DealsOffers"));
+const Orders = lazy(() => import("./pages/discover/Orders"));
+const AIPicksPage = lazy(() => import("./pages/discover/AIPicksPage"));
+
+// Health sub-pages
+const PillarsOfHealth = lazy(() => import("./pages/health/PillarsOfHealth"));
+const HealthWellnessServices = lazy(() => import("./pages/health/WellnessServices"));
+const ConditionsRisks = lazy(() => import("./pages/health/ConditionsRisks"));
+const EducationResources = lazy(() => import("./pages/health/EducationResources"));
+const MyBiology = lazy(() => import("./pages/health/MyBiology"));
+const Plans = lazy(() => import("./pages/health/Plans"));
+
+// Community sub-pages
+const EventsAndMeetups = lazy(() => import("./pages/community/EventsAndMeetups"));
+const Groups = lazy(() => import("./pages/community/Groups"));
+const GroupDetail = lazy(() => import("./pages/community/GroupDetail"));
+const MediaHub = lazy(() => import("./pages/community/MediaHub"));
+const LiveRooms = lazy(() => import("./pages/community/LiveRooms"));
+const LiveRoomViewer = lazy(() => import("./pages/community/LiveRoomViewer"));
+
+// AI sub-pages
+const Insights = lazy(() => import("./pages/ai/Insights"));
+const AIRecommendations = lazy(() => import("./pages/ai/AIRecommendations"));
+const DailySummary = lazy(() => import("./pages/ai/DailySummary"));
+const Companion = lazy(() => import("./pages/ai/Companion"));
+
+// Messages sub-pages
+const Archived = lazy(() => import("./pages/messages/Archived"));
+const Reminder = lazy(() => import("./pages/messages/Reminder"));
+const Inspiration = lazy(() => import("./pages/messages/Inspiration"));
+
+// Settings sub-pages
+const Privacy = lazy(() => import("./pages/settings/Privacy"));
+const SettingsNotifications = lazy(() => import("./pages/settings/SettingsNotifications"));
+const Preferences = lazy(() => import("./pages/settings/Preferences"));
+const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
+const Billing = lazy(() => import("./pages/settings/Billing"));
+const Support = lazy(() => import("./pages/settings/Support"));
+const TenantRole = lazy(() => import("./pages/settings/TenantRole"));
+const SocialConnect = lazy(() => import("./pages/settings/SocialConnect"));
+
+// Wallet sub-pages
+const Balance = lazy(() => import("./pages/wallet/Balance"));
+const Subscriptions = lazy(() => import("./pages/wallet/Subscriptions"));
+const Rewards = lazy(() => import("./pages/wallet/Rewards"));
+
+// Sharing sub-pages
+const Distribution = lazy(() => import("./pages/sharing/Distribution"));
+const DataConsent = lazy(() => import("./pages/sharing/DataConsent"));
+const Campaigns = lazy(() => import("./pages/sharing/Campaigns"));
+const CampaignDetail = lazy(() => import("./pages/sharing/CampaignDetail"));
+
+// Memory sub-pages
+const Timeline = lazy(() => import("./pages/memory/Timeline"));
+const Recall = lazy(() => import("./pages/memory/Recall"));
+const MemoryPermissions = lazy(() => import("./pages/memory/Permissions"));
+const Diary = lazy(() => import("./pages/memory/Diary"));
+
+// Role-specific dashboards
+const PatientDashboard = lazy(() => import("./pages/patient/Dashboard"));
+const PatientHealth = lazy(() => import("./pages/patient/Health"));
+const PatientAppointments = lazy(() => import("./pages/patient/Appointments"));
+const ProfessionalDashboard = lazy(() => import("./pages/professional/Dashboard"));
+const ProfessionalPatients = lazy(() => import("./pages/professional/Patients"));
+const StaffDashboard = lazy(() => import("./pages/staff/Dashboard"));
+const StaffQueue = lazy(() => import("./pages/staff/Queue"));
+const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
+
+// Admin sub-pages
+const AdminDashboardHealth = lazy(() => import("./pages/admin/dashboard/SystemHealth"));
+const AdminDashboardActivity = lazy(() => import("./pages/admin/dashboard/ActivityFeed"));
+const AdminAllUsers = lazy(() => import("./pages/admin/users/AllUsers"));
+const AdminSignupFunnel = lazy(() => import("./pages/admin/users/SignupFunnel"));
+const AdminInvitations = lazy(() => import("./pages/admin/users/Invitations"));
+const AdminRolesAccess = lazy(() => import("./pages/admin/users/RolesAccess"));
+const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
+const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
+const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
+const AdminLiveSessions = lazy(() => import("./pages/admin/live/Sessions"));
+const AdminLiveAttendance = lazy(() => import("./pages/admin/live/Attendance"));
+const AdminIntelligenceMemory = lazy(() => import("./pages/admin/intelligence/Memory"));
+const AdminIntelligenceEmbeddings = lazy(() => import("./pages/admin/intelligence/Embeddings"));
+const AdminIntelligenceSignals = lazy(() => import("./pages/admin/intelligence/Signals"));
+const AdminIntelligenceRelationships = lazy(() => import("./pages/admin/intelligence/Relationships"));
+const AdminSystemConfiguration = lazy(() => import("./pages/admin/system/Configuration"));
+const AdminSystemCreators = lazy(() => import("./pages/admin/system/Creators"));
+const AdminAuditEvents = lazy(() => import("./pages/admin/audit/Events"));
+const AdminAuditUserActivity = lazy(() => import("./pages/admin/audit/UserActivity"));
+const AdminAuditApiMonitor = lazy(() => import("./pages/admin/audit/ApiMonitor"));
+const AdminAuditSecurity = lazy(() => import("./pages/admin/audit/Security"));
+const CommunitySupervision = lazy(() => import("./pages/admin/CommunitySupervision"));
+const EventsModeration = lazy(() => import("./pages/admin/community/Events"));
+const GroupsModeration = lazy(() => import("./pages/admin/community/Groups"));
+const ReportedContent = lazy(() => import("./pages/admin/community/ReportedContent"));
+const MediaManagement = lazy(() => import("./pages/admin/MediaManagement"));
+const VideosManagement = lazy(() => import("./pages/admin/media/Videos"));
+const PodcastsManagement = lazy(() => import("./pages/admin/media/Podcasts"));
+const MusicManagement = lazy(() => import("./pages/admin/media/Music"));
+const LiveStreamOverview = lazy(() => import("./pages/admin/LiveStreamOverview"));
+const CommunityRoomsAdmin = lazy(() => import("./pages/admin/CommunityRoomsAdmin"));
+const Bootstrap = lazy(() => import("./pages/admin/Bootstrap"));
+const TenantManagementLegacy = lazy(() => import("./pages/admin/TenantManagement"));
+const InitEvents = lazy(() => import("./pages/admin/InitEvents"));
 
 // Component to initialize global hooks inside provider tree
 const AppHooksInitializer = () => {
@@ -361,6 +339,7 @@ const App = () => {
                         <MobileMuteButton />
                         <SoundscapeResumeBanner />
                         <TenantDetector />
+                  <Suspense fallback={<RouteFallback />}>
                   <Routes>
           <Route path="/" element={<ShareEntry fallback={<Index />} />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
@@ -1228,6 +1207,7 @@ const App = () => {
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+                  </Suspense>
                   </GreetingProviderWrapper>
                 </VitanalandNavigationProvider>
               </BrowserRouter>
