@@ -215,56 +215,121 @@ export default function BusinessHub() {
               </div>
             </UtilityActionButton>
             
-            {/* Controlled SplitBar - driven by mode pill */}
-            <SplitBar value={mobileTab} onValueChange={setMobileTab} className="w-full mt-1">
-              
-              {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
-              <SplitBarContent value="snapshot" className="space-y-3 pt-1">
-                <MobileKPIStrip 
-                  totalEarnings={earnings.totalEarnings}
-                  earnings30Days={earnings.earnings30Days}
-                  pendingPayout={earnings.pendingPayout}
-                  inWallet={earnings.inWallet}
-                  isLoading={false}
-                />
-                <MobileEarningPortal 
-                  onCreateEvent={() => setShowSelectionDialog(true)}
-                  onAddToInventory={() => {/* Will switch to sales tab */}}
-                  onCreateService={() => setShowCreateService(true)}
-                  onCreatePromotion={() => setShowCampaignDialog(true)}
-                />
-                {/* Recent Activity inline */}
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.recentActivity', 'Recent Activity')}</h3>
-                  <EarningsHistoryLedger
-                    transactions={earnings.recentTransactions}
+            {/* Content driven by mobileTab */}
+            <div className="mt-1 space-y-3">
+              {/* Snapshot */}
+              {mobileTab === "snapshot" && (
+                <div className="space-y-3 pt-1">
+                  <MobileKPIStrip 
+                    totalEarnings={earnings.totalEarnings}
+                    earnings30Days={earnings.earnings30Days}
+                    pendingPayout={earnings.pendingPayout}
+                    inWallet={earnings.inWallet}
                     isLoading={false}
                   />
+                  <MobileEarningPortal 
+                    onCreateEvent={() => setShowSelectionDialog(true)}
+                    onAddToInventory={() => setMobileTab("sales.inventory")}
+                    onCreateService={() => setShowCreateService(true)}
+                    onCreatePromotion={() => setShowCampaignDialog(true)}
+                  />
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.recentActivity', 'Recent Activity')}</h3>
+                    <EarningsHistoryLedger
+                      transactions={earnings.recentTransactions}
+                      isLoading={false}
+                    />
+                  </div>
                 </div>
-              </SplitBarContent>
-              
-              {/* Services Tab - My Services, Packages, Events */}
-              <SplitBarContent value="services" className="pt-1">
-                <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
-              </SplitBarContent>
-              
-              {/* Sales Tab - Inventory + Promotions (Reseller only) */}
-              <SplitBarContent value="sales" className="pt-1">
-                <SellAndEarnSubTabs />
-              </SplitBarContent>
-              
-              {/* Insights Tab - Clients + Analytics combined */}
-              <SplitBarContent value="insights" className="pt-1 space-y-4">
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.clients', 'Clients')}</h3>
-                  <ClientsSubTabs />
+              )}
+
+              {/* Services → My Services */}
+              {mobileTab === "services.services" && (
+                <div className="text-center py-12">
+                  <Briefcase className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">No Services Yet</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Create coaching sessions, consultations, or other services to offer.
+                  </p>
+                  <Button onClick={() => setShowCreateService(true)} className="gap-2">
+                    <Plus className="w-4 h-4" />
+                    Create Service
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.analytics', 'Analytics')}</h3>
-                  <AnalyticsSubTabs />
+              )}
+
+              {/* Services → My Events */}
+              {mobileTab === "services.events" && (
+                <OrganizerEventsSection />
+              )}
+
+              {/* Services → Packages */}
+              {mobileTab === "services.packages" && (
+                <div className="space-y-4">
+                  {isLoadingPackages ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2Icon className="w-6 h-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : packages.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Package className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                      <h3 className="text-lg font-semibold text-foreground mb-2">Create Session Packages</h3>
+                      <p className="text-muted-foreground mb-4 max-w-md mx-auto">
+                        Bundle multiple sessions, events, or perks into packages.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid gap-4">
+                      {packages.map((pkg) => (
+                        <PackageCard key={pkg.id} pkg={pkg} onEdit={() => {}} />
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </SplitBarContent>
-            </SplitBar>
+              )}
+
+              {/* Sales → Inventory */}
+              {mobileTab === "sales.inventory" && (
+                <ResellerAvailableEventsTab />
+              )}
+
+              {/* Sales → Promotions */}
+              {mobileTab === "sales.promotions" && (
+                <ResellerCampaignsTab />
+              )}
+
+              {/* Insights → Clients */}
+              {mobileTab === "insights.clients" && (
+                <ClientsSubTabs />
+              )}
+
+              {/* Insights → Performance */}
+              {mobileTab === "insights.performance" && (
+                <div className="text-center py-12">
+                  <BarChart3 className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Performance</h3>
+                  <p className="text-sm text-muted-foreground">Booking analytics coming soon</p>
+                </div>
+              )}
+
+              {/* Insights → Earnings */}
+              {mobileTab === "insights.earnings" && (
+                <div className="text-center py-12">
+                  <TrendingUp className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Earnings</h3>
+                  <p className="text-sm text-muted-foreground">Earnings breakdown coming soon</p>
+                </div>
+              )}
+
+              {/* Insights → Growth */}
+              {mobileTab === "insights.growth" && (
+                <div className="text-center py-12">
+                  <Users className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Growth</h3>
+                  <p className="text-sm text-muted-foreground">Growth analytics coming soon</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
