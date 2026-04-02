@@ -649,7 +649,7 @@ export default function LiveRooms() {
             </SplitBarTrigger>
           </SplitBarList>
 
-          <SplitBarContent value="live" className={isMobile ? "mt-1" : "mt-6"}>
+          <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading live rooms...</p>
