@@ -182,8 +182,8 @@ export default function BusinessHub() {
             </UtilityActionButton>
             
             {/* Consolidated SplitBar - All sections in one tab bar */}
-            <SplitBar defaultValue="snapshot" className="w-full">
-              <SplitBarList>
+            <SplitBar defaultValue="snapshot" className="w-full mt-1">
+              <SplitBarList className="mb-2">
                 <SplitBarTrigger value="snapshot">📊 {translate('businessHub.tabs.snapshot', 'Snapshot')}</SplitBarTrigger>
                 <SplitBarTrigger value="services">💼 {translate('businessHub.tabs.services', 'Services')}</SplitBarTrigger>
                 {isReseller && <SplitBarTrigger value="sales">🎫 {translate('businessHub.tabs.sales', 'Sales')}</SplitBarTrigger>}
