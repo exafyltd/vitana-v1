@@ -706,7 +706,9 @@ export function useGlobalMessages(
       let gatewayMessages: GlobalMessage[] = [];
       try {
         const rawMessages = await fetchConversation(activeThreadId);
-        const sorted = [...rawMessages].reverse();
+    const sorted = [...rawMessages].sort((a, b) =>
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
         const senderIds = Array.from(
           new Set(sorted.map((m) => m.sender_id).filter(Boolean))
         );
