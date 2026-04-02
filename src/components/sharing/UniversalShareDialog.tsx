@@ -27,20 +27,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { analytics } from "@/lib/analytics";
 import { useAuth } from "@/context/AuthProvider";
 import { getShareUrl } from "@/lib/shareUrl";
+import { useNativeShare } from "@/hooks/useNativeShare";
 import { PersonalShareButtons } from "./PersonalShareButtons";
+import type { ShareableContent } from "@/types/sharing";
 
 interface ShareChannel extends SocialPlatform {
   isVitanaMessenger?: boolean;
-}
-
-interface ShareableContent {
-  type: "group" | "event" | "meetup" | "live_room" | "profile" | "post" | "service" | "music";
-  id: string;
-  title: string;
-  description?: string;
-  image_url?: string;
-  url?: string;
-  slug?: string; // Event slug for clean URLs
 }
 
 interface UniversalShareDialogProps {
@@ -61,6 +53,11 @@ export function UniversalShareDialog({
   const [message, setMessage] = useState("");
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [isSharing, setIsSharing] = useState(false);
+
+  const { isAvailable: canNativeShare, share: nativeShare } = useNativeShare({
+    contentId: content.id,
+    contentType: content.type,
+  });
 
   // Build social media channels array (for auto-post)
   const socialChannels: ShareChannel[] = useMemo(() => {
@@ -240,6 +237,15 @@ export function UniversalShareDialog({
               shareText={message || shareText}
               title={content.title}
               variant="grid"
+              showNativeShare={canNativeShare}
+              onNativeShare={async () => {
+                const result = await nativeShare({
+                  title: content.title,
+                  text: message || shareText,
+                  url: shareUrl,
+                });
+                if (result === "shared") onOpenChange(false);
+              }}
             />
           </div>
 

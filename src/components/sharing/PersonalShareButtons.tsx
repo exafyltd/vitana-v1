@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Mail, MessageSquare, Copy, Check, Link2 } from "lucide-react";
+import { Mail, MessageSquare, Copy, Check, Link2, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { siWhatsapp, siViber } from "simple-icons";
@@ -12,6 +12,8 @@ interface PersonalShareButtonsProps {
   variant?: "grid" | "row";
   className?: string;
   showCopyLink?: boolean;
+  showNativeShare?: boolean;
+  onNativeShare?: () => void;
 }
 
 export function PersonalShareButtons({
@@ -21,6 +23,8 @@ export function PersonalShareButtons({
   variant = "grid",
   className,
   showCopyLink = true,
+  showNativeShare,
+  onNativeShare,
 }: PersonalShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
@@ -139,6 +143,19 @@ export function PersonalShareButtons({
           ) : (
             <Link2 className="w-5 h-5 text-muted-foreground" />
           )}
+        </div>
+      ),
+    });
+  }
+
+  if (showNativeShare && onNativeShare) {
+    buttons.push({
+      id: "native",
+      label: "More...",
+      onClick: onNativeShare,
+      icon: (
+        <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+          <Share2 className="w-5 h-5 text-muted-foreground" />
         </div>
       ),
     });
