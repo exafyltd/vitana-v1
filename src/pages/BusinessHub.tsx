@@ -4,7 +4,7 @@ import SubNavigation from "@/components/SubNavigation";
 import StandardHeader from "@/components/StandardHeader";
 import { Badge } from "@/components/ui/badge";
 
-import { Plus, Plane, Briefcase, Users, TrendingUp, BarChart3 } from "lucide-react";
+import { Plus, Plane, Users, TrendingUp, BarChart3 } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
