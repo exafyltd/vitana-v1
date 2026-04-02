@@ -64,7 +64,6 @@ const sanitizeUrl = (url?: string): string | undefined => {
     lower.includes('undefined') ||
     s.startsWith('/api/placeholder')
   ) {
-    console.log('[MEETUP-IMG] Rejected URL (dangerous/invalid):', s);
     return undefined;
   }
   
@@ -83,7 +82,6 @@ const sanitizeUrl = (url?: string): string | undefined => {
     return s;
   }
   
-  console.log('[MEETUP-IMG] Rejected URL (invalid format):', s);
   return undefined;
 };
 
@@ -107,23 +105,8 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
   
   // Handle image URL with sanitization and fallback
   const rawImage = event.image_url || event.imageUrl || event.metadata?.image_url || event.metadata?.cover_image_url;
-  console.log('[MEETUP-IMG] Transform event:', {
-    eventId: event.id,
-    eventTitle: event.title,
-    rawImage,
-    hasRawImage: !!rawImage
-  });
-  
   const safeImage = sanitizeUrl(rawImage);
   const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
-  
-  console.log('[MEETUP-IMG] Final image decision:', {
-    eventId: event.id,
-    rawImage,
-    safeImage,
-    finalImageUrl: imageUrl,
-    usingFallback: !safeImage
-  });
   
   // Check if event has ticket sales enabled
   const hasTickets = event.metadata?.has_tickets === true;
@@ -542,49 +525,45 @@ const EventsAndMeetups = () => {
   }, [dbEvents, handleCardClick]);
 
   // Handle edit
-  const handleEditEvent = (event: any) => {
+  const handleEditEvent = useCallback((event: any) => {
     setSelectedEvent(event);
     setEditMeetupOpen(true);
-  };
+  }, []);
 
   // Handle promote event
-  const handlePromoteEvent = (event: any) => {
+  const handlePromoteEvent = useCallback((event: any) => {
     setEventToPromote(event);
     setPromoteCampaignOpen(true);
-  };
+  }, []);
 
   // Handle share event - opens share dialog from parent
-  const handleShareEvent = (event: any) => {
+  const handleShareEvent = useCallback((event: any) => {
     setEventToShare(event);
     setShareDialogOpen(true);
-  };
+  }, []);
 
   // Handle delete event - remove from list and refresh
-  const handleDeleteEvent = (eventId: string) => {
+  const handleDeleteEvent = useCallback((eventId: string) => {
     fetchEvents();
     // Close the drawer if the deleted event was selected
     if (selectedEventId === eventId) {
       handleDrawerClose();
     }
-  };
+  }, [fetchEvents, selectedEventId]);
 
   // Handle event creation - show the newly created event
   const handleEventCreated = async (eventId: string) => {
-    console.log('🎯 Event created, handling:', eventId);
-    
     // Wait a bit for the database to update
     await new Promise(resolve => setTimeout(resolve, 500));
     
     // Refresh events - refetch returns QueryObserverResult, use refetch().then() pattern
     const result = await fetchEvents();
     const freshEvents = result.data || [];
-    console.log('✅ Fresh events fetched:', freshEvents.length);
     
     // Find the event in the fresh data to determine which tab it belongs to
     const event = freshEvents.find(e => e.id === eventId);
     
     if (!event) {
-      console.error('❌ Event not found in fresh data:', eventId);
       toast({
         title: "Event Created",
         description: "Your event was created but couldn't be displayed. Please refresh the page.",
@@ -592,8 +571,6 @@ const EventsAndMeetups = () => {
       });
       return;
     }
-    
-    console.log('📅 Event found:', event.title, 'Start time:', event.start_time);
     
     const eventDate = new Date(event.start_time);
     const today = new Date();
@@ -609,7 +586,6 @@ const EventsAndMeetups = () => {
       targetTab = 'upcoming';
     }
     
-    console.log('🔄 Switching to tab:', targetTab);
     setActiveTab(targetTab);
     
     // Open the detail drawer for the newly created event with correct tab
@@ -620,10 +596,7 @@ const EventsAndMeetups = () => {
     setTimeout(() => {
       const card = document.querySelector(`[data-event-id="${eventId}"]`);
       if (card) {
-        console.log('📍 Scrolling to card');
         card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        console.warn('⚠️ Card not found in DOM');
       }
     }, 300);
   };
