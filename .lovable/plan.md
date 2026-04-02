@@ -1,35 +1,34 @@
 
 
-# Fix stale event image on mobile (browser cache issue)
+# Improve text readability on event cards with busy images
 
 ## Problem
-Desktop and mobile both use the exact same data (`event.image_url`) from the same database query and identical transform logic. The old image persists on mobile because the **mobile browser has cached the previous image** at that URL. Since Supabase storage URLs don't change when you replace a file at the same path, mobile continues serving the cached version.
+When an event's background image contains a lot of text or visual noise (like the "Dancing Filmevent" poster), the card's overlay text becomes hard to read because the current gradient overlay is too subtle.
 
 ## Solution
-Add a cache-busting query parameter to Supabase storage image URLs in both the desktop and mobile `sanitizeUrl` functions. This forces the browser to re-fetch the image.
+Strengthen the dark overlay gradient and add stronger text shadows to ensure card text is always readable regardless of the background image.
 
-## Changes
+## Changes — `src/components/crossover/NewsCard.tsx`
 
-### 1. `src/pages/community/EventsAndMeetups.tsx` — update `sanitizeUrl` (line ~75-78)
+### 1. Darken the gradient overlay (line 338)
 
-After validating the URL, append a cache-busting param based on the current date (changes daily) for Supabase storage URLs:
-
-```typescript
-if (isHttp || isAsset || isSupabaseStorage || isDataImage || isBlob) {
-  // Cache-bust Supabase storage URLs to pick up replaced images
-  if (isSupabaseStorage && !s.includes('_cb=')) {
-    const cb = new Date().toISOString().slice(0, 10); // daily cache bust
-    return s + (s.includes('?') ? '&' : '?') + '_cb=' + cb;
-  }
-  return s;
-}
+Current:
+```
+from-black/70 via-black/35 to-black/10
 ```
 
-### 2. `src/components/community/MobileEventCarousel.tsx` — same change to its `sanitizeUrl` (line ~35-37)
+New — heavier overlay that fades more gradually:
+```
+from-black/85 via-black/50 to-black/20
+```
 
-Apply the identical cache-busting logic to the mobile version's `sanitizeUrl`.
+This darkens the bottom and middle of the card where all the text sits, while keeping the top relatively transparent so the image is still visible.
 
-### Files changed
-- `src/pages/community/EventsAndMeetups.tsx`
-- `src/components/community/MobileEventCarousel.tsx`
+### 2. Strengthen text drop shadows (lines 405, 411, 430, 437)
+
+- Title: increase shadow from `rgba(0,0,0,0.8)` → `rgba(0,0,0,1)` with a slightly larger blur
+- Description: increase from `rgba(0,0,0,0.6)` → `rgba(0,0,0,0.9)`
+- Author name and meta: increase from `rgba(0,0,0,0.5)` → `rgba(0,0,0,0.8)`
+
+Single file, ~5 line tweaks.
 
