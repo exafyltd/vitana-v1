@@ -22,6 +22,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { PersonalShareButtons } from "@/components/sharing/PersonalShareButtons";
 import { InstagramShareModal } from "@/components/sharing/InstagramShareModal";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useNativeShare } from "@/hooks/useNativeShare";
 
 interface SocialShareButtonProps {
   type: 'service' | 'event' | 'referral' | 'live_room';
@@ -51,12 +52,18 @@ export default function SocialShareButton({
   className
 }: SocialShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const [isInstagramModalOpen, setIsInstagramModalOpen] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const { allPlatforms, loading } = useSocialPlatforms();
   const navigate = useNavigate();
   const { translate } = useTranslation();
+
+  const { isAvailable: canNativeShare, share: nativeShare } = useNativeShare({
+    contentId: data.id || type,
+    contentType: type,
+  });
 
   const getShareText = () => {
     switch (type) {
@@ -174,7 +181,24 @@ export default function SocialShareButton({
       <Button
         variant={variant === 'icon' ? 'ghost' : 'outline'}
         size={size}
-        onClick={() => setIsOpen(true)}
+        disabled={isSharing}
+        onClick={async () => {
+          if (isSharing) return;
+          if (canNativeShare) {
+            setIsSharing(true);
+            const result = await nativeShare({
+              title: data.title,
+              text: shareText,
+              url: shareLink,
+            });
+            setIsSharing(false);
+            if (result === "failed") {
+              setIsOpen(true);
+            }
+            return;
+          }
+          setIsOpen(true);
+        }}
         className={variant === 'icon' ? `p-2 ${className || ''}` : className}
       >
         <Share2 className="w-4 h-4" />
@@ -245,6 +269,15 @@ export default function SocialShareButton({
                 shareText={shareText}
                 title={data.title}
                 variant="grid"
+                showNativeShare={canNativeShare}
+                onNativeShare={async () => {
+                  const result = await nativeShare({
+                    title: data.title,
+                    text: shareText,
+                    url: shareLink,
+                  });
+                  if (result === "shared") setIsOpen(false);
+                }}
               />
             </div>
 
