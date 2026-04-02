@@ -1,28 +1,35 @@
 
 
-# Fix Hot tab: keep Maxina creator + add one specific event
+# Fix stale event image on mobile (browser cache issue)
 
 ## Problem
-The current filter includes ALL events from both creator IDs. The user only wants:
-- All events by the original Maxina creator (`07ade9bf-...`)
-- Plus one specific event: "Dancing Filmevent" (`6bb46db6-a3ba-42b6-8a50-2be8658e436f`)
+Desktop and mobile both use the exact same data (`event.image_url`) from the same database query and identical transform logic. The old image persists on mobile because the **mobile browser has cached the previous image** at that URL. Since Supabase storage URLs don't change when you replace a file at the same path, mobile continues serving the cached version.
 
-## Change — `src/pages/community/EventsAndMeetups.tsx`
+## Solution
+Add a cache-busting query parameter to Supabase storage image URLs in both the desktop and mobile `sanitizeUrl` functions. This forces the browser to re-fetch the image.
 
-Replace the `HOT_CREATOR_IDS` Set approach with a filter that checks either the original Maxina creator ID OR the specific event ID:
+## Changes
+
+### 1. `src/pages/community/EventsAndMeetups.tsx` — update `sanitizeUrl` (line ~75-78)
+
+After validating the URL, append a cache-busting param based on the current date (changes daily) for Supabase storage URLs:
 
 ```typescript
-const MAXINA_CREATOR_ID = '07ade9bf-9c2f-4fe1-a733-29e85a1d253b';
-const HOT_EVENT_IDS = new Set([
-  '6bb46db6-a3ba-42b6-8a50-2be8658e436f', // Dancing Filmevent
-]);
-
-const maxinaEvents = useMemo(() => {
-  return dbEvents
-    .filter(event => event.created_by === MAXINA_CREATOR_ID || HOT_EVENT_IDS.has(event.id))
-    .map(event => ({ ...event, event_type: 'event' }));
-}, [dbEvents]);
+if (isHttp || isAsset || isSupabaseStorage || isDataImage || isBlob) {
+  // Cache-bust Supabase storage URLs to pick up replaced images
+  if (isSupabaseStorage && !s.includes('_cb=')) {
+    const cb = new Date().toISOString().slice(0, 10); // daily cache bust
+    return s + (s.includes('?') ? '&' : '?') + '_cb=' + cb;
+  }
+  return s;
+}
 ```
 
-Single file, single change.
+### 2. `src/components/community/MobileEventCarousel.tsx` — same change to its `sanitizeUrl` (line ~35-37)
+
+Apply the identical cache-busting logic to the mobile version's `sanitizeUrl`.
+
+### Files changed
+- `src/pages/community/EventsAndMeetups.tsx`
+- `src/components/community/MobileEventCarousel.tsx`
 
