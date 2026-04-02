@@ -216,7 +216,7 @@ export default function BusinessHub() {
               </SplitBarContent>
               
               {/* Services Tab - My Services, Packages, Events */}
-              <SplitBarContent value="services" className="pt-2">
+              <SplitBarContent value="services" className="pt-1">
                 <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
               </SplitBarContent>
               
