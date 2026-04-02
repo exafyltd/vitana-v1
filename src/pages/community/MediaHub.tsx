@@ -724,8 +724,8 @@ export default function MediaHub() {
           )}
 
           {/* Media Hub Subtabs */}
-          <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
-            <SplitBarList>
+          <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className={cn("w-full", isMobile && "mt-1")}>
+            <SplitBarList className={isMobile ? "mb-2" : undefined}>
             <SplitBarTrigger value="shorts">
               📹 {translate('mediaHub.tabs.shorts')}
             </SplitBarTrigger>
