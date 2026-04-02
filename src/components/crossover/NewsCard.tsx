@@ -402,7 +402,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             {/* Main Content Area - takes up remaining space */}
             <div className="flex-1 flex flex-col justify-end space-y-3 pb-14">
               {/* Title */}
-              <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+              <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
                 {title}
               </h3>
               
