@@ -32,7 +32,9 @@ export function ExpandableSearchButton({
   onClear,
   dropdownItems,
   onItemClick,
-  className 
+  className,
+  filterLabel,
+  onFilterClick,
 }: ExpandableSearchButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
