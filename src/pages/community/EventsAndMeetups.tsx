@@ -98,65 +98,7 @@ const generateImageUrl = (title: string, description?: string): string => {
   return images[Math.abs(hash) % images.length];
 };
 
-// Mobile filter chip + bottom sheet — replaces the SplitBarList on mobile
-function MobileFilterChip({ activeTab, onSelect, translate }: { 
-  activeTab: string; 
-  onSelect: (tab: string) => void;
-  translate: (key: string, fallback: string) => string;
-}) {
-  const [open, setOpen] = useState(false);
 
-  const filters = [
-    { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
-    { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
-    { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
-    { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
-  ];
-
-  const active = filters.find(f => f.value === activeTab) || filters[0];
-
-  return (
-    <>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setOpen(true)}
-        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-      >
-        <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-        <span className="text-sm font-medium">{active.icon} {active.label}</span>
-        <ChevronDown className="h-3 w-3 text-muted-foreground" />
-      </Button>
-
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="rounded-t-2xl px-4 pb-8">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-base">Filter Events</SheetTitle>
-          </SheetHeader>
-          <div className="flex flex-col gap-2">
-            {filters.map(filter => (
-              <Button
-                key={filter.value}
-                variant={activeTab === filter.value ? "default" : "ghost"}
-                className={cn(
-                  "justify-start h-12 text-base rounded-xl gap-3",
-                  activeTab === filter.value && "bg-primary text-primary-foreground"
-                )}
-                onClick={() => {
-                  onSelect(filter.value);
-                  setOpen(false);
-                }}
-              >
-                <span>{filter.icon}</span>
-                <span>{filter.label}</span>
-              </Button>
-            ))}
-          </div>
-        </SheetContent>
-      </Sheet>
-    </>
-  );
-}
 
 const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void) => {
   // Construct author object with proper fallback chain
