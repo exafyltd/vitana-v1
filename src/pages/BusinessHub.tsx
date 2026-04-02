@@ -117,7 +117,7 @@ export default function BusinessHub() {
         />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
-          <div className="p-4 pb-32 space-y-4">
+          <div className="px-4 pt-1 pb-32 space-y-1">
             {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub */}
             <StandardHeader
               title={translate('businessHub.title', 'Business Hub')}
