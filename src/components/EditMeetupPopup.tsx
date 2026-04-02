@@ -73,6 +73,10 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
   const [generatedImagePreview, setGeneratedImagePreview] = useState<string | null>(null);
   const [generationError, setGenerationError] = useState<string | null>(null);
   
+  // Ticket types state
+  const [enableTicketSales, setEnableTicketSales] = useState(false);
+  const [ticketTypes, setTicketTypes] = useState<(TicketTypeInput & { id?: string })[]>([]);
+  
   // Reselling options
   const [resellable, setResellable] = useState(false);
   const [resaleScope, setResaleScope] = useState<"public" | "tenant" | "none">("public");
