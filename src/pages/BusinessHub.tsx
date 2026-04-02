@@ -221,7 +221,7 @@ export default function BusinessHub() {
               </SplitBarContent>
               
               {/* Sales Tab - Inventory + Promotions (Reseller only) */}
-              <SplitBarContent value="sales" className="pt-2">
+              <SplitBarContent value="sales" className="pt-1">
                 <SellAndEarnSubTabs />
               </SplitBarContent>
               
