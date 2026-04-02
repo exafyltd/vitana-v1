@@ -1215,6 +1215,39 @@ const EventsAndMeetups = () => {
         onOpenChange={setAutopilotOpen}
       />
 
+      {/* Mobile filter bottom sheet — triggered from search button filter chip */}
+      <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
+        <SheetContent side="bottom" className="rounded-t-2xl px-4 pb-8">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-base">{translate('events.filterTitle', 'Filter Events')}</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col gap-2">
+            {[
+              { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
+              { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
+              { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
+              { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
+            ].map(filter => (
+              <Button
+                key={filter.value}
+                variant={activeTab === filter.value ? "default" : "ghost"}
+                className={cn(
+                  "justify-start h-12 text-base rounded-xl gap-3",
+                  activeTab === filter.value && "bg-primary text-primary-foreground"
+                )}
+                onClick={() => {
+                  setActiveTab(filter.value);
+                  setFilterSheetOpen(false);
+                }}
+              >
+                <span>{filter.icon}</span>
+                <span>{filter.label}</span>
+              </Button>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+
     </>
   );
 };
