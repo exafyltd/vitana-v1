@@ -554,7 +554,7 @@ export default function MediaHub() {
     <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
       {!isMobile && <SubNavigation items={communityNavigation} />}
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen")}>
         <div className="max-w-7xl mx-auto">
           
           {/* Mobile Header */}
