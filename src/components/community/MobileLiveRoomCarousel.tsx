@@ -227,7 +227,7 @@ export function MobileLiveRoomCarousel({
         ref={containerRef}
         className="overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
-          height: 'calc(100dvh - 282px)',
+          height: 'calc(100dvh - 190px)',
         } as React.CSSProperties}
       >
         {rooms.map((room, index) => (
