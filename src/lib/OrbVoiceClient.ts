@@ -14,6 +14,7 @@ import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill'
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
+  onLink?: (url: string) => void;
   onError?: (error: string) => void;
   onConnectionStateChange?: (state: 'disconnected' | 'connecting' | 'ready') => void;
   onListeningChange?: (isListening: boolean) => void;
@@ -246,6 +247,7 @@ export class OrbVoiceClient {
             }
             break;
           case 'assistant_text':
+          case 'output_transcript':
             if (msg.text) {
               this.callbacks.onTranscript?.(msg.text);
             }
@@ -255,6 +257,13 @@ export class OrbVoiceClient {
           case 'end_of_turn':
             console.log('[OrbVoiceClient] Turn complete received');
             this.handleTurnComplete();
+            break;
+          case 'link':
+            // VTID-LINK-INJECT: Gateway sends event URLs from tool results (search_events etc.)
+            if (msg.url) {
+              console.log('[OrbVoiceClient] Link received:', msg.url);
+              this.callbacks.onLink?.(msg.url);
+            }
             break;
           case 'error':
             this.callbacks.onError?.(msg.message);

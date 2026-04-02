@@ -5,6 +5,7 @@ import { useTenant } from '@/hooks/useTenant';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { buildOrbContext } from '@/lib/buildOrbContext';
+import { toast } from 'sonner';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
 
@@ -198,6 +199,18 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
           if (convId && text.trim()) {
             logOrbMessage(convId, 'assistant', text);
           }
+        },
+        onLink: (url) => {
+          // VTID-LINK-INJECT: Show clickable link toast when AI mentions an event
+          console.log('[useOrbVoiceClient] Event link received:', url);
+          toast('Link available', {
+            description: url,
+            action: {
+              label: 'Open',
+              onClick: () => window.open(url, '_blank'),
+            },
+            duration: 15000,
+          });
         },
         onError: (err) => {
           setError(err);
