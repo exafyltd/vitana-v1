@@ -701,7 +701,7 @@ export default function LiveRooms() {
             )}
           </SplitBarContent>
 
-          <SplitBarContent value="scheduled" className={isMobile ? "mt-1" : "mt-6"}>
+          <SplitBarContent value="scheduled" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingScheduled ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading scheduled rooms...</p>
