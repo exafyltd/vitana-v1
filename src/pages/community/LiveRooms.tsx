@@ -604,6 +604,20 @@ export default function LiveRooms() {
               placeholder="Search Live Rooms…"
               onSearch={(query) => setSearchQuery(query)}
             />
+            
+            {/* Mode pill - replaces SplitBarList on mobile */}
+            {isMobile && (
+              <MobileModePill
+                modes={[
+                  { value: "live", label: translate('liveRooms.tabs.live', 'Live Now'), icon: "📡", badge: filteredLiveRooms.length || undefined },
+                  { value: "scheduled", label: translate('liveRooms.tabs.scheduled', 'Scheduled'), icon: "📅", badge: filteredScheduledRooms.length || undefined },
+                  { value: "past", label: translate('liveRooms.tabs.past', 'Past'), icon: "📋" },
+                ]}
+                activeMode={activeTab}
+                onModeChange={setActiveTab}
+              />
+            )}
+            
             <UniversalCalendarButton />
             
             {/* Go Live - PRIMARY ACTION */}
