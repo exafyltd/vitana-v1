@@ -742,62 +742,13 @@ export default function MediaHub() {
             <SplitBarContent value="shorts">
               {/* Mobile TikTok-style immersive feed */}
               {isMobile ? (
-                <div className="space-y-2">
-                  {/* Mobile Shorts Preview Grid - tap to enter immersive mode */}
-                  <div className="text-center py-2">
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {translate('mediaHub.shortsAvailable').replace('{count}', String(videoShorts.length))}
-                    </p>
-                    <Button
-                      onClick={() => setMobileShortsFeedOpen(true)}
-                      className="bg-gradient-to-r from-violet-500 to-pink-500 text-white rounded-full px-6"
-                    >
-                      <Play className="h-4 w-4 mr-2" />
-                      {translate('mediaHub.actions.watchShorts')}
-                    </Button>
-                  </div>
-                  
-                  {/* Preview grid */}
-                  <div className="grid grid-cols-2 gap-3">
-                    {videoShorts.slice(0, 4).map((video, index) => (
-                      <div
-                        key={video.id || index}
-                        onClick={() => {
-                          setSelectedVideoIndex(index);
-                          setMobileShortsFeedOpen(true);
-                        }}
-                        className="relative aspect-[9/16] rounded-xl overflow-hidden bg-muted cursor-pointer group"
-                      >
-                        <img
-                          src={video.thumbnail_url || video.thumbnailImage}
-                          alt={video.title}
-                          className="absolute inset-0 w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <div className="w-12 h-12 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
-                            <Play className="h-6 w-6 text-white ml-0.5" />
-                          </div>
-                        </div>
-                        <div className="absolute bottom-2 left-2 right-2">
-                          <p className="text-white text-xs font-medium line-clamp-2 drop-shadow-lg">
-                            {video.title}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {videoShorts.length > 4 && (
-                    <Button
-                      variant="ghost"
-                      onClick={() => setMobileShortsFeedOpen(true)}
-                      className="w-full text-muted-foreground"
-                    >
-                      {translate('mediaHub.actions.viewAllShorts').replace('{count}', String(videoShorts.length))}
-                    </Button>
-                  )}
-                </div>
+                <MobileShortsCarousel
+                  shorts={videoShorts}
+                  onShortClick={(index) => {
+                    setSelectedVideoIndex(index);
+                    setMobileShortsFeedOpen(true);
+                  }}
+                />
               ) : (
               /* Desktop Grid Layout */
               <div className="space-y-6">
