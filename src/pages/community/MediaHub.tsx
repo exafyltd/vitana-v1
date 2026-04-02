@@ -605,9 +605,20 @@ export default function MediaHub() {
                 }
               >
                 <div className="flex items-center gap-2 min-w-max">
-                  <ExpandableSearchButton 
+                <ExpandableSearchButton 
                     placeholder={translate('mediaHub.searchPlaceholder')}
                     onSearch={(query) => console.log('Search Media:', query)}
+                  />
+                  
+                  {/* Mode pill - replaces SplitBarList on mobile */}
+                  <MobileModePill
+                    modes={[
+                      { value: "shorts", label: translate('mediaHub.tabs.shorts', 'Shorts'), icon: "📹" },
+                      { value: "music", label: translate('mediaHub.tabs.music', 'Music'), icon: "🎵" },
+                      { value: "podcasts", label: translate('mediaHub.tabs.podcasts', 'Podcasts'), icon: "🎙️" },
+                    ]}
+                    activeMode={activeMediaTab}
+                    onModeChange={setActiveMediaTab}
                   />
                   
                   {/* Calendar - default styling */}
