@@ -136,6 +136,34 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       setResellable(event.resellable || false);
       setResaleScope((event.resale_scope as "public" | "tenant" | "none") || "public");
       setResellerCommission(event.default_reseller_commission_rate || 10);
+
+      // Fetch existing ticket types for this event
+      const fetchTicketTypes = async () => {
+        const { data: existingTickets } = await supabase
+          .from("event_ticket_types")
+          .select("*")
+          .eq("event_id", event.id)
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true });
+
+        if (existingTickets && existingTickets.length > 0) {
+          setEnableTicketSales(true);
+          setTicketTypes(existingTickets.map(t => ({
+            id: t.id,
+            name: t.name,
+            description: t.description || "",
+            price: t.price,
+            currency: (t.currency || "USD") as "USD" | "EUR",
+            quantity: t.quantity_available,
+            saleStartDate: t.sale_start_date ? t.sale_start_date.split("T")[0] : "",
+            saleEndDate: t.sale_end_date ? t.sale_end_date.split("T")[0] : "",
+          })));
+        } else {
+          setEnableTicketSales(false);
+          setTicketTypes([]);
+        }
+      };
+      fetchTicketTypes();
     }
   }, [event, isOpen]);
 
