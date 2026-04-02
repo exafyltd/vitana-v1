@@ -191,7 +191,7 @@ export default function BusinessHub() {
               </SplitBarList>
               
               {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
-              <SplitBarContent value="snapshot" className="space-y-4 pt-2">
+              <SplitBarContent value="snapshot" className="space-y-3 pt-1">
                 <MobileKPIStrip 
                   totalEarnings={earnings.totalEarnings}
                   earnings30Days={earnings.earnings30Days}
