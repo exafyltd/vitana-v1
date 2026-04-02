@@ -125,7 +125,7 @@ export default function BusinessHub() {
             />
             
             {/* Action Rail - same pattern */}
-            <UtilityActionButton 
+            <UtilityActionButton compact
               className="min-w-0"
               afterGiftVoucherChildren={
                 <>
