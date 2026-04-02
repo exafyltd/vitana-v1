@@ -1,73 +1,100 @@
 
 
-# Unified Mobile Mode Pill in Utility Rail
+# Hierarchical Mode Pill with Sub-Categories for Business Hub
 
-## Summary
+## Problem
 
-Create a reusable `MobileModePill` component and integrate it into the utility rail of **Media Hub**, **Live Rooms**, and **Business Hub** on mobile. This replaces the separate `SplitBarList` tab row with a compact dropdown pill placed immediately after Search, matching the Events pattern.
+The current `MobileModePill` bottom sheet shows flat top-level modes (Snapshot, Services, Sales, Insights). But Services, Sales, and Insights each have their own internal sub-tabs. The user wants the sheet to show expandable dropdown arrows next to these categories, revealing their sub-items inline. Selecting a sub-item should navigate directly to that specific screen — no secondary tab row needed.
 
-## New Component
+## Approach
 
-### `src/components/ui/MobileModePill.tsx`
+### 1. Extend `MobileModePill` to support hierarchical modes
 
-A reusable pill button that:
-- Displays current mode label with emoji prefix and chevron-down affordance
-- Opens a bottom `Sheet` with mode options on tap
-- Styled as `h-9 px-3 rounded-full bg-muted/60 hover:bg-muted shrink-0` (matches existing utility rail pills)
-- Props: `modes: { value: string; label: string; icon?: string; badge?: number }[]`, `activeMode: string`, `onModeChange: (value: string) => void`
-- The Sheet lists modes as tappable rows with active state highlighting
+Update `ModeOption` to include optional `children`:
 
-## File Changes
-
-### 1. `src/pages/community/MediaHub.tsx` — Mobile only
-
-**In the mobile utility rail** (inside `UtilityActionButton children`, lines ~607-626):
-- After `ExpandableSearchButton`, insert `<MobileModePill>` with modes: Shorts, Music, Podcasts
-- Wire `activeMediaTab` / `setActiveMediaTab`
-
-**Remove mobile SplitBarList** (lines ~729-740):
-- Wrap `SplitBarList` in `{!isMobile && ...}` so the tab row only shows on desktop
-- Keep `SplitBarContent` blocks unchanged — they still render based on `activeMediaTab`
-
-### 2. `src/pages/community/LiveRooms.tsx` — Mobile only
-
-**In the mobile utility rail** (inside `UtilityActionButton children`, lines ~602-619):
-- After `ExpandableSearchButton`, insert `<MobileModePill>` with modes: Live Now, Scheduled, Past
-- Wire `activeTab` / `setActiveTab`
-
-**Remove mobile SplitBarList** (lines ~622-650):
-- Wrap `SplitBarList` in `{!isMobile && ...}` so the tab row only shows on desktop
-- Keep `SplitBarContent` blocks unchanged
-
-### 3. `src/pages/BusinessHub.tsx` — Mobile only
-
-**In the mobile utility rail** (inside `UtilityActionButton children`, lines ~164-181):
-- After `ExpandableSearchButton`, insert `<MobileModePill>` with modes: Snapshot, Services, Sales (conditional on isReseller), Insights
-- Wire to the existing `SplitBar` `defaultValue`/state (will need to lift to controlled state)
-
-**Remove mobile SplitBarList** (lines ~185-191):
-- Remove the `SplitBarList` from mobile layout
-- Keep `SplitBarContent` blocks unchanged — Services/Sales tabs already render their own internal sub-tab rows (`ServicesSubTabs`, `SellAndEarnSubTabs`) which serve as the secondary submode row
-
-### 4. Desktop unchanged
-
-All three pages keep their existing `SplitBarList` tab rows on desktop. The `MobileModePill` only renders when `isMobile` is true.
-
-## Utility Rail Order (all three screens)
-
-```text
-[ 🔍 Search ] [ 📹 Shorts ▾ ] [ 📅 Calendar ] [ + Create ] [ 🧬 742 ] [ ✈ Autopilot ]
+```ts
+export interface ModeOption {
+  value: string;
+  label: string;
+  icon?: string;
+  badge?: number;
+  children?: ModeOption[]; // sub-categories
+}
 ```
 
-## Visual Style
+In the bottom sheet:
+- Modes **without** children behave as before (tap → select, close)
+- Modes **with** children show a chevron-down arrow by the label; tapping toggles an expand/collapse of child items indented below
+- Tapping a child item sets `activeMode` to `"parent.child"` format (e.g. `"services.events"`) and closes the sheet
+- The pill button label shows the deepest selected label (e.g. "📅 My Events" instead of "💼 Services")
 
-- Matches existing pills in the utility rail: `h-9 px-3 rounded-full bg-muted/60`
-- Emoji prefix + label + `ChevronDown` icon
-- Sheet selector uses same pattern as Events filter sheet: `SheetContent side="bottom" className="rounded-t-2xl"` with tappable rows
+### 2. Update Business Hub modes config
 
-## Technical Notes
+```ts
+modes={[
+  { value: "snapshot", label: "Snapshot", icon: "📊" },
+  { value: "services", label: "Services", icon: "💼", children: [
+    { value: "services.services", label: "My Services", icon: "💼" },
+    { value: "services.events", label: "My Events", icon: "📅" },
+    { value: "services.packages", label: "Packages", icon: "📦" },
+  ]},
+  ...(isReseller ? [{ value: "sales", label: "Sales", icon: "🎫", children: [
+    { value: "sales.inventory", label: "Inventory", icon: "🎫" },
+    { value: "sales.promotions", label: "Promotions", icon: "📣" },
+  ]}] : []),
+  { value: "insights", label: "Insights", icon: "📈", children: [
+    { value: "insights.clients", label: "Clients", icon: "👥" },
+    { value: "insights.performance", label: "Performance", icon: "📊" },
+    { value: "insights.earnings", label: "Earnings", icon: "💵" },
+    { value: "insights.growth", label: "Growth", icon: "📈" },
+  ]},
+]}
+```
 
-- Business Hub's `SplitBar` currently uses `defaultValue` — will change to controlled `value`/`onValueChange` with `useState` for the mobile mode pill to drive tab switching
-- `SplitBarContent` blocks don't need wrapping in `SplitBar` when the `value` is controlled — they already respond to the parent `SplitBar` value
-- Business Hub secondary submodes (ServicesSubTabs, SellAndEarnSubTabs) already render their own internal tab rows, so the "secondary submode row" requirement is already met
+### 3. Update Business Hub content rendering
+
+Instead of rendering `ServicesSubTabs` (which has its own SplitBar), render the specific sub-content directly based on `mobileTab`:
+
+- `"services.services"` → Services empty state / list
+- `"services.events"` → `OrganizerEventsSection`
+- `"services.packages"` → Package cards
+- `"sales.inventory"` → `ResellerAvailableEventsTab`
+- `"sales.promotions"` → `ResellerCampaignsTab`
+- `"insights.clients"` → `ClientsSubTabs`
+- `"insights.performance"` → Performance card
+- `"insights.earnings"` → Earnings card
+- `"insights.growth"` → Growth card
+
+This eliminates the secondary sub-tab row entirely on mobile — the user picks the exact screen from the hierarchical sheet.
+
+### 4. Remove secondary SplitBarList rows on mobile
+
+The `ServicesSubTabs`, `SellAndEarnSubTabs`, and `AnalyticsSubTabs` components each render their own `SplitBarList`. On mobile, these will be bypassed since BusinessHub renders the specific sub-content directly. The sub-tab components remain unchanged for desktop use.
+
+## Files Changed
+
+1. **`src/components/ui/MobileModePill.tsx`** — Add `children` support to `ModeOption`, expandable sections in the sheet
+2. **`src/pages/BusinessHub.tsx`** — Update modes config with children, replace `SplitBarContent` blocks with granular sub-content rendering based on dot-notation `mobileTab` value
+
+## Visual Reference
+
+The bottom sheet will look like:
+
+```text
+Select Mode
+───────────────────────
+📊  Snapshot
+💼  Services            ▾
+    💼  My Services
+    📅  My Events
+    📦  Packages
+🎫  Sales               ▾
+    🎫  Inventory
+    📣  Promotions
+📈  Insights         ✓  ▾
+    👥  Clients
+    📊  Performance
+    💵  Earnings
+    📈  Growth           ✓
+```
 
