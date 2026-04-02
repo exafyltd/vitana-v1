@@ -15,6 +15,8 @@ import { communityNavigation } from "@/config/navigation";
 import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { ChevronDown, Filter } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
@@ -95,6 +97,66 @@ const generateImageUrl = (title: string, description?: string): string => {
   const hash = (title + (description || '')).split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
   return images[Math.abs(hash) % images.length];
 };
+
+// Mobile filter chip + bottom sheet — replaces the SplitBarList on mobile
+function MobileFilterChip({ activeTab, onSelect, translate }: { 
+  activeTab: string; 
+  onSelect: (tab: string) => void;
+  translate: (key: string, fallback: string) => string;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const filters = [
+    { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
+    { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
+    { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
+    { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
+  ];
+
+  const active = filters.find(f => f.value === activeTab) || filters[0];
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setOpen(true)}
+        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
+      >
+        <Filter className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="text-sm font-medium">{active.icon} {active.label}</span>
+        <ChevronDown className="h-3 w-3 text-muted-foreground" />
+      </Button>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="bottom" className="rounded-t-2xl px-4 pb-8">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-base">Filter Events</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col gap-2">
+            {filters.map(filter => (
+              <Button
+                key={filter.value}
+                variant={activeTab === filter.value ? "default" : "ghost"}
+                className={cn(
+                  "justify-start h-12 text-base rounded-xl gap-3",
+                  activeTab === filter.value && "bg-primary text-primary-foreground"
+                )}
+                onClick={() => {
+                  onSelect(filter.value);
+                  setOpen(false);
+                }}
+              >
+                <span>{filter.icon}</span>
+                <span>{filter.label}</span>
+              </Button>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+}
 
 const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void) => {
   // Construct author object with proper fallback chain
@@ -708,17 +770,25 @@ const EventsAndMeetups = () => {
           <SplitBar defaultValue="hot" value={activeTab} onValueChange={setActiveTab} className={isMobile ? "flex flex-col flex-1 overflow-hidden" : ""}>
             {/* Sticky header block on mobile: title + actions + tabs */}
             <div className={cn(
-              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-1"
+              isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-0"
             )}>
               <StandardHeader
-                title={translate('events.title', 'Events & MeetUps')}
+                title={isMobile ? translate('events.titleShort', 'Events') : translate('events.title', 'Events & MeetUps')}
                 description={translate('events.description', 'Discover formal events and casual meetups in your community')}
               />
               
               <UtilityActionButton 
                 className="min-w-0"
+                compact={isMobile}
                 afterGiftVoucherChildren={isMobile && (
                   <>
+                    {/* Mobile filter chip - replaces the tab row */}
+                    <MobileFilterChip 
+                      activeTab={activeTab} 
+                      onSelect={(tab) => setActiveTab(tab)} 
+                      translate={translate}
+                    />
+                    
                     {/* Vitana Index - pill style on mobile */}
                     <Button 
                       variant="ghost" 
@@ -774,20 +844,23 @@ const EventsAndMeetups = () => {
                 </div>
               </UtilityActionButton>
 
-              <SplitBarList className={isMobile ? "mb-1" : undefined}>
-                <SplitBarTrigger value="hot">
-                  🔥 {translate('events.tabs.hot', 'Hot')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="upcoming">
-                  📅 {translate('events.tabs.upcoming', 'Upcoming')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="today">
-                  ☀️ {translate('events.tabs.today', 'Today')}
-                </SplitBarTrigger>
-                <SplitBarTrigger value="following">
-                  👥 {translate('events.tabs.following', 'Following')}
-                </SplitBarTrigger>
-              </SplitBarList>
+              {/* Desktop only: show full tab bar */}
+              {!isMobile && (
+                <SplitBarList>
+                  <SplitBarTrigger value="hot">
+                    🔥 {translate('events.tabs.hot', 'Hot')}
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="upcoming">
+                    📅 {translate('events.tabs.upcoming', 'Upcoming')}
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="today">
+                    ☀️ {translate('events.tabs.today', 'Today')}
+                  </SplitBarTrigger>
+                  <SplitBarTrigger value="following">
+                    👥 {translate('events.tabs.following', 'Following')}
+                  </SplitBarTrigger>
+                </SplitBarList>
+              )}
             </div>
 
             {/* Scrollable content area */}
