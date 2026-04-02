@@ -295,7 +295,7 @@ export default function BusinessHub() {
 
               {/* Sales → Promotions */}
               {mobileTab === "sales.promotions" && (
-                <ResellerCampaignsTab />
+                <ResellerCampaignsTab searchQuery="" />
               )}
 
               {/* Insights → Clients */}
