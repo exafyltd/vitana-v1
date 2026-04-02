@@ -40,6 +40,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
 import { useMyRoom } from "@/hooks/useMyRoom";
 import { useTranslation } from "@/hooks/useTranslation";
+import { MobileModePill } from "@/components/ui/MobileModePill";
 
 import { supabase } from "@/integrations/supabase/client";
 

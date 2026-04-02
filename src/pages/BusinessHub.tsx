@@ -40,6 +40,7 @@ import {
   SplitBarContent,
 } from "@/components/ui/split-bar";
 import { useTranslation } from "@/hooks/useTranslation";
+import { MobileModePill } from "@/components/ui/MobileModePill";
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 

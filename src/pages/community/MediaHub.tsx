@@ -54,6 +54,7 @@ import { MobileMusicList } from '@/components/community/MobileMusicList';
 import { MobilePodcastList } from '@/components/community/MobilePodcastList';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTranslation } from '@/hooks/useTranslation';
+import { MobileModePill } from '@/components/ui/MobileModePill';
 import shortsMorningStretch from "@/assets/shorts-morning-stretch.jpg";
 import shortsHealthyBreakfast from "@/assets/shorts-healthy-breakfast.jpg";
 import shortsBreathingExercise from "@/assets/shorts-breathing-exercise.jpg";
