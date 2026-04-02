@@ -12,6 +12,7 @@ import { Users, MapPin, Calendar, Clock, X, AlertCircle, Plus, Sparkles, Refresh
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { TicketTypeForm, TicketTypeInput } from "@/components/tickets/TicketTypeForm";
 
 interface CommunityEvent {
   id: string;
