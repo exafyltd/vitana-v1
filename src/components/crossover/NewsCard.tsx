@@ -427,7 +427,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                       className="w-7 h-7 border-2 border-white/40"
                       disabled={authorId?.startsWith('demo-')}
                     />
-                    <span className="text-xs text-white font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+                    <span className="text-xs text-white font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
                       {author.name}
                     </span>
                   </div>
