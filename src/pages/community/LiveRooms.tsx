@@ -563,7 +563,7 @@ export default function LiveRooms() {
         />
 
         {/* Utility Action Button */}
-        <UtilityActionButton 
+        <UtilityActionButton compact={isMobile} 
           className="min-w-0"
           afterGiftVoucherChildren={isMobile && (
             <>
