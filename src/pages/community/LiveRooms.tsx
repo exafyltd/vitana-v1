@@ -738,7 +738,7 @@ export default function LiveRooms() {
                 </>
               )
             ) : (
-              <div className="text-center py-12">
+              <div className="text-center py-6">
                 <p className="text-muted-foreground">No scheduled rooms</p>
                 <Button 
                   variant="outline" 
