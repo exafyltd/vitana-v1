@@ -782,13 +782,6 @@ const EventsAndMeetups = () => {
                 compact={isMobile}
                 afterGiftVoucherChildren={isMobile && (
                   <>
-                    {/* Mobile filter chip - replaces the tab row */}
-                    <MobileFilterChip 
-                      activeTab={activeTab} 
-                      onSelect={(tab) => setActiveTab(tab)} 
-                      translate={translate}
-                    />
-                    
                     {/* Vitana Index - pill style on mobile */}
                     <Button 
                       variant="ghost" 

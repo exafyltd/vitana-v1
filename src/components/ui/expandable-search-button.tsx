@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,10 @@ interface ExpandableSearchButtonProps {
   dropdownItems?: SearchDropdownItem[];
   onItemClick?: (id: string) => void;
   className?: string;
+  /** Optional inline filter chip label, e.g. "🔥 Hot" */
+  filterLabel?: string;
+  /** Called when the filter chip portion is tapped */
+  onFilterClick?: () => void;
 }
 
 export function ExpandableSearchButton({ 
