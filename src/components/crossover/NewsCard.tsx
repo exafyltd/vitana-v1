@@ -335,7 +335,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           />
           
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20 pointer-events-none" />
           
           {/* Media Play Icon Overlay */}
           {MediaIcon && (
@@ -402,13 +402,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
             {/* Main Content Area - takes up remaining space */}
             <div className="flex-1 flex flex-col justify-end space-y-3 pb-14">
               {/* Title */}
-              <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+              <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
                 {title}
               </h3>
               
               {/* Description */}
               {description && (
-                <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+                <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
                   {description}
                 </p>
               )}
@@ -427,14 +427,14 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                       className="w-7 h-7 border-2 border-white/40"
                       disabled={authorId?.startsWith('demo-')}
                     />
-                    <span className="text-xs text-white font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+                    <span className="text-xs text-white font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
                       {author.name}
                     </span>
                   </div>
                 )}
 
                 {/* Location & Attendees */}
-                <div className="flex items-center gap-3 text-xs text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
+                <div className="flex items-center gap-3 text-xs text-white/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)]">
                   {location && (
                     <div className="flex items-center gap-1.5">
                       <MapPin className="w-3.5 h-3.5 text-white/70" />
