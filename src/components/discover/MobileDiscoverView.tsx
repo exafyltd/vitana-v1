@@ -164,12 +164,12 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
     const rest = aiRecommendations.slice(1);
 
     return (
-      <div className="space-y-3">
+      <div className="space-y-1">
         {/* Section header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-purple-500" />
-            <h2 className="text-base font-semibold">{translate('discover.aiPicksForYou')}</h2>
+            <Sparkles className="h-4 w-4 text-purple-500" />
+            <h2 className="text-base font-semibold">{translate('discover.recommendedForYou')}</h2>
           </div>
           <Button 
             variant="ghost" 
@@ -181,18 +181,28 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
           </Button>
         </div>
 
-        {/* Featured card (first item) */}
+        {/* Featured hero recommendation */}
         {featured && (
           <RecommendationCard rec={featured} featured onNavigate={handleNavigate} />
         )}
 
-        {/* 2-column grid for remaining */}
+        {/* Secondary section divider */}
         {rest.length > 0 && (
-          <div className="grid grid-cols-2 gap-3">
-            {rest.map((rec) => (
-              <RecommendationCard key={rec.id} rec={rec} onNavigate={handleNavigate} />
-            ))}
-          </div>
+          <>
+            <div className="flex items-center gap-3 pt-4 pb-1">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider shrink-0">
+                {translate('discover.moreToExplore')}
+              </span>
+              <div className="h-[1px] flex-1 bg-border/50" />
+            </div>
+
+            {/* 2-column grid for remaining */}
+            <div className="grid grid-cols-2 gap-3">
+              {rest.map((rec) => (
+                <RecommendationCard key={rec.id} rec={rec} onNavigate={handleNavigate} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     );
