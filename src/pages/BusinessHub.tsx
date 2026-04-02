@@ -68,6 +68,7 @@ export default function BusinessHub() {
   
   const { isReseller } = useIsReseller();
   const { earnings } = useUnifiedEarnings();
+  const { packages, isLoading: isLoadingPackages } = useBusinessPackages();
   const latestActions = getLatestActions(2);
 
   // Add subtle earnings indicator to Sell & Earn tab
