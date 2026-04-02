@@ -348,22 +348,20 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       const eventData = {
         title: formData.title,
         description: formData.description || undefined,
-        event_type: event.event_type, // Preserve original type (event vs meetup)
+        event_type: event.event_type,
         location: formData.isVirtual ? undefined : formData.location || undefined,
         virtual_link: formData.isVirtual ? 'Virtual Event' : undefined,
         start_time: startTime,
         end_time: endTime,
         max_participants: formData.capacity ? parseInt(formData.capacity) : undefined,
         image_url: uploadedImageUrl,
-        // Preserve ALL existing metadata and update only is_paid/price
         metadata: {
           ...(event.metadata || {}),
-          is_paid: formData.isPaid,
-          ...(formData.isPaid ? { price: parseFloat(formData.price) || 0 } : {}),
+          is_paid: enableTicketSales,
+          ...(enableTicketSales && ticketTypes.length > 0 ? { price: ticketTypes[0].price } : {}),
           detailed_description: formData.detailedDescription || null,
-          display_currency: formData.displayCurrency
+          display_currency: ticketTypes.length > 0 ? ticketTypes[0].currency : (formData.displayCurrency || 'USD'),
         },
-        // Reselling options
         resellable: resellable,
         resale_scope: resellable ? resaleScope : 'none',
         default_reseller_commission_rate: resellable ? resellerCommission : null
@@ -372,25 +370,71 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
       const result = await updateEvent(event.id, eventData);
       
       if (result.success) {
-        // Always sync ticket type prices/currency for paid events
-        const price = parseFloat(formData.price) || 0;
-        const currency = (formData.displayCurrency || 'USD').toUpperCase();
-        
-        if (price > 0) {
-          const { error: ticketSyncError } = await supabase
+        // Sync ticket types with database
+        try {
+          // Fetch current DB ticket types
+          const { data: dbTickets } = await supabase
             .from('event_ticket_types')
-            .update({ price, currency })
+            .select('id')
             .eq('event_id', event.id)
             .eq('is_active', true);
 
-          if (ticketSyncError) {
-            console.error('Ticket price sync failed:', ticketSyncError);
-            toast({
-              title: "Warning",
-              description: "Event updated but ticket price sync failed. Please re-edit to retry.",
-              variant: "destructive",
-            });
+          const dbTicketIds = new Set(dbTickets?.map(t => t.id) || []);
+          const formTicketIds = new Set(ticketTypes.filter(t => t.id).map(t => t.id!));
+
+          if (enableTicketSales && ticketTypes.length > 0) {
+            // Deactivate removed tickets
+            const removedIds = [...dbTicketIds].filter(id => !formTicketIds.has(id));
+            if (removedIds.length > 0) {
+              await supabase
+                .from('event_ticket_types')
+                .update({ is_active: false })
+                .in('id', removedIds);
+            }
+
+            // Update existing & insert new
+            for (let i = 0; i < ticketTypes.length; i++) {
+              const t = ticketTypes[i];
+              const ticketData = {
+                event_id: event.id,
+                name: t.name,
+                description: t.description || null,
+                price: t.price,
+                currency: t.currency,
+                quantity_available: t.quantity,
+                sale_start_date: t.saleStartDate || null,
+                sale_end_date: t.saleEndDate || null,
+                is_active: true,
+                sort_order: i,
+              };
+
+              if (t.id && dbTicketIds.has(t.id)) {
+                await supabase
+                  .from('event_ticket_types')
+                  .update(ticketData)
+                  .eq('id', t.id);
+              } else {
+                await supabase
+                  .from('event_ticket_types')
+                  .insert(ticketData);
+              }
+            }
+          } else {
+            // Disable all ticket types if ticket sales turned off
+            if (dbTicketIds.size > 0) {
+              await supabase
+                .from('event_ticket_types')
+                .update({ is_active: false })
+                .eq('event_id', event.id);
+            }
           }
+        } catch (syncErr) {
+          console.error('Ticket type sync failed:', syncErr);
+          toast({
+            title: "Warning",
+            description: "Event updated but ticket sync failed. Please re-edit to retry.",
+            variant: "destructive",
+          });
         }
 
         toast({
