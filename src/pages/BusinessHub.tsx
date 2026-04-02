@@ -27,6 +27,12 @@ import { ServicesSubTabs } from "@/components/business/ServicesSubTabs";
 import { ClientsSubTabs } from "@/components/business/ClientsSubTabs";
 import { SellAndEarnSubTabs } from "@/components/business/SellAndEarnSubTabs";
 import { AnalyticsSubTabs } from "@/components/business/AnalyticsSubTabs";
+import { OrganizerEventsSection } from "@/components/business/OrganizerEventsSection";
+import { PackageCard } from "@/components/business/PackageCard";
+import { useBusinessPackages } from "@/hooks/useBusinessPackages";
+import { ResellerAvailableEventsTab } from "@/components/reseller/ResellerAvailableEventsTab";
+import { ResellerCampaignsTab } from "@/components/reseller/ResellerCampaignsTab";
+import { Briefcase, Package, Loader2 as Loader2Icon } from "lucide-react";
 import { CampaignDialog } from "@/components/sharing/CampaignDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 // MobileBusinessNav removed - consolidated into single SplitBar
