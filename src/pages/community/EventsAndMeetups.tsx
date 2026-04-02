@@ -16,7 +16,7 @@ import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { ChevronDown, Filter } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
