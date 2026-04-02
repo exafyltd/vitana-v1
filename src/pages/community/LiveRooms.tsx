@@ -635,33 +635,35 @@ export default function LiveRooms() {
 
         {/* Split Bar for Live/Scheduled/Past */}
         <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-1" : "mt-6"}>
-          <SplitBarList className={isMobile ? "mb-1" : undefined}>
-            <SplitBarTrigger value="live">
-              📡 {translate('liveRooms.tabs.live', 'Live Now')}
-              {filteredLiveRooms.length > 0 && (
-                <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {filteredLiveRooms.length}
-                  {liveStreams.length === 0 && (
-                    <span className="ml-1 text-[10px] opacity-70">(demo)</span>
-                  )}
-                </Badge>
-              )}
-            </SplitBarTrigger>
-            <SplitBarTrigger value="scheduled">
-              📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
-              {filteredScheduledRooms.length > 0 && (
-                <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
-                  {filteredScheduledRooms.length}
-                  {scheduledStreams.length === 0 && (
-                    <span className="ml-1 text-[10px] opacity-70">(demo)</span>
-                  )}
-                </Badge>
-              )}
-            </SplitBarTrigger>
-            <SplitBarTrigger value="past">
-              📋 {translate('liveRooms.tabs.past', 'Past')}
-            </SplitBarTrigger>
-          </SplitBarList>
+          {!isMobile && (
+            <SplitBarList>
+              <SplitBarTrigger value="live">
+                📡 {translate('liveRooms.tabs.live', 'Live Now')}
+                {filteredLiveRooms.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                    {filteredLiveRooms.length}
+                    {liveStreams.length === 0 && (
+                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                    )}
+                  </Badge>
+                )}
+              </SplitBarTrigger>
+              <SplitBarTrigger value="scheduled">
+                📅 {translate('liveRooms.tabs.scheduled', 'Scheduled')}
+                {filteredScheduledRooms.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                    {filteredScheduledRooms.length}
+                    {scheduledStreams.length === 0 && (
+                      <span className="ml-1 text-[10px] opacity-70">(demo)</span>
+                    )}
+                  </Badge>
+                )}
+              </SplitBarTrigger>
+              <SplitBarTrigger value="past">
+                📋 {translate('liveRooms.tabs.past', 'Past')}
+              </SplitBarTrigger>
+            </SplitBarList>
+          )}
 
           <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (
