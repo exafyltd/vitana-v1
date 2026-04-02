@@ -33,6 +33,11 @@ const sanitizeUrl = (url?: string): string | undefined => {
   const isBlob = lower.startsWith('blob:');
   
   if (isHttp || isAsset || isSupabaseStorage || isDataImage || isBlob) {
+    // Cache-bust Supabase storage URLs to pick up replaced images
+    if (isSupabaseStorage && !s.includes('_cb=')) {
+      const cb = new Date().toISOString().slice(0, 10);
+      return s + (s.includes('?') ? '&' : '?') + '_cb=' + cb;
+    }
     return s;
   }
   
