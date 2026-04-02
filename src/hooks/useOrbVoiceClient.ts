@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useTenant } from '@/hooks/useTenant';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 import { buildOrbContext } from '@/lib/buildOrbContext';
 
 type ConnectionState = 'disconnected' | 'connecting' | 'ready';
