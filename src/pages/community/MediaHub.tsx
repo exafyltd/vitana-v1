@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -554,7 +555,7 @@ export default function MediaHub() {
     <AppLayout>
       <SEO title="Media Hub | Community" description="Discover videos, podcasts, and community content" canonical={window.location.href} />
       {!isMobile && <SubNavigation items={communityNavigation} />}
-      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+      <div className={cn(isMobile ? "px-4 pt-1 pb-0" : "p-6", "bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen")}>
         <div className="max-w-7xl mx-auto">
           
           {/* Mobile Header */}
@@ -566,7 +567,7 @@ export default function MediaHub() {
               />
               
               {/* Compact Mobile Action Rail */}
-              <UtilityActionButton 
+              <UtilityActionButton compact
                 className="min-w-0"
                 afterGiftVoucherChildren={
                   <>
@@ -724,8 +725,8 @@ export default function MediaHub() {
           )}
 
           {/* Media Hub Subtabs */}
-          <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className="w-full">
-            <SplitBarList>
+          <SplitBar value={activeMediaTab} onValueChange={setActiveMediaTab} className={cn("w-full", isMobile && "mt-1")}>
+            <SplitBarList className={isMobile ? "mb-2" : undefined}>
             <SplitBarTrigger value="shorts">
               📹 {translate('mediaHub.tabs.shorts')}
             </SplitBarTrigger>
@@ -740,10 +741,10 @@ export default function MediaHub() {
             <SplitBarContent value="shorts">
               {/* Mobile TikTok-style immersive feed */}
               {isMobile ? (
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {/* Mobile Shorts Preview Grid - tap to enter immersive mode */}
-                  <div className="text-center py-4">
-                    <p className="text-sm text-muted-foreground mb-3">
+                  <div className="text-center py-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       {translate('mediaHub.shortsAvailable').replace('{count}', String(videoShorts.length))}
                     </p>
                     <Button

@@ -117,7 +117,7 @@ export default function BusinessHub() {
         />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
-          <div className="p-4 pb-32 space-y-4">
+          <div className="px-4 pt-1 pb-32 space-y-1">
             {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub */}
             <StandardHeader
               title={translate('businessHub.title', 'Business Hub')}
@@ -125,7 +125,7 @@ export default function BusinessHub() {
             />
             
             {/* Action Rail - same pattern */}
-            <UtilityActionButton 
+            <UtilityActionButton compact
               className="min-w-0"
               afterGiftVoucherChildren={
                 <>
@@ -182,8 +182,8 @@ export default function BusinessHub() {
             </UtilityActionButton>
             
             {/* Consolidated SplitBar - All sections in one tab bar */}
-            <SplitBar defaultValue="snapshot" className="w-full">
-              <SplitBarList>
+            <SplitBar defaultValue="snapshot" className="w-full mt-1">
+              <SplitBarList className="mb-2">
                 <SplitBarTrigger value="snapshot">📊 {translate('businessHub.tabs.snapshot', 'Snapshot')}</SplitBarTrigger>
                 <SplitBarTrigger value="services">💼 {translate('businessHub.tabs.services', 'Services')}</SplitBarTrigger>
                 {isReseller && <SplitBarTrigger value="sales">🎫 {translate('businessHub.tabs.sales', 'Sales')}</SplitBarTrigger>}
@@ -191,7 +191,7 @@ export default function BusinessHub() {
               </SplitBarList>
               
               {/* Snapshot Tab - KPIs + Quick Actions + Recent Activity */}
-              <SplitBarContent value="snapshot" className="space-y-4 pt-2">
+              <SplitBarContent value="snapshot" className="space-y-3 pt-1">
                 <MobileKPIStrip 
                   totalEarnings={earnings.totalEarnings}
                   earnings30Days={earnings.earnings30Days}
@@ -216,17 +216,17 @@ export default function BusinessHub() {
               </SplitBarContent>
               
               {/* Services Tab - My Services, Packages, Events */}
-              <SplitBarContent value="services" className="pt-2">
+              <SplitBarContent value="services" className="pt-1">
                 <ServicesSubTabs onCreateService={() => setShowCreateService(true)} />
               </SplitBarContent>
               
               {/* Sales Tab - Inventory + Promotions (Reseller only) */}
-              <SplitBarContent value="sales" className="pt-2">
+              <SplitBarContent value="sales" className="pt-1">
                 <SellAndEarnSubTabs />
               </SplitBarContent>
               
               {/* Insights Tab - Clients + Analytics combined */}
-              <SplitBarContent value="insights" className="pt-2 space-y-6">
+              <SplitBarContent value="insights" className="pt-1 space-y-4">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium text-muted-foreground px-1">{translate('businessHub.clients', 'Clients')}</h3>
                   <ClientsSubTabs />
