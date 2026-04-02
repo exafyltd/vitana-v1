@@ -51,6 +51,7 @@ export default function BusinessHub() {
   const { pendingCount, getLatestActions } = useAutopilot();
   const { translate } = useTranslation();
   const [showSelectionDialog, setShowSelectionDialog] = useState(false);
+  const [mobileTab, setMobileTab] = useState("snapshot");
   const [showCreateEvent, setShowCreateEvent] = useState(false);
   const [showCreateMeetup, setShowCreateMeetup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
