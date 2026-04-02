@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,10 @@ interface ExpandableSearchButtonProps {
   dropdownItems?: SearchDropdownItem[];
   onItemClick?: (id: string) => void;
   className?: string;
+  /** Optional inline filter chip label, e.g. "🔥 Hot" */
+  filterLabel?: string;
+  /** Called when the filter chip portion is tapped */
+  onFilterClick?: () => void;
 }
 
 export function ExpandableSearchButton({ 
@@ -28,7 +32,9 @@ export function ExpandableSearchButton({
   onClear,
   dropdownItems,
   onItemClick,
-  className 
+  className,
+  filterLabel,
+  onFilterClick,
 }: ExpandableSearchButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -167,17 +173,33 @@ export function ExpandableSearchButton({
   }
 
   return (
-    <Button 
-      variant="ghost" 
-      size="sm" 
-      onClick={handleExpand}
+    <div
       className={cn(
-        "h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 shrink-0 transition-all duration-300 ease-in-out",
+        "flex items-center h-9 rounded-full bg-muted/60 shrink-0 transition-all duration-300 ease-in-out overflow-hidden",
         className
       )}
     >
-      <Search className="w-4 h-4" />
-      <span className="text-sm">{translate('actionBar.search', 'Search')}</span>
-    </Button>
+      <button 
+        type="button"
+        onClick={handleExpand}
+        className="flex items-center gap-1.5 px-3 h-full hover:bg-muted/80 transition-colors rounded-l-full"
+      >
+        <Search className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-foreground">{translate('actionBar.search', 'Search')}</span>
+      </button>
+      {filterLabel && onFilterClick && (
+        <>
+          <div className="w-px h-4 bg-border/60" />
+          <button
+            type="button"
+            onClick={onFilterClick}
+            className="flex items-center gap-1 px-2.5 pr-3 h-full hover:bg-muted/80 transition-colors rounded-r-full"
+          >
+            <span className="text-sm font-medium">{filterLabel}</span>
+            <ChevronDown className="h-3 w-3 text-muted-foreground" />
+          </button>
+        </>
+      )}
+    </div>
   );
 }

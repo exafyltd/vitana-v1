@@ -16,7 +16,7 @@ import { MotivationalBanner } from '@/components/MotivationalBanner';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { ChevronDown, Filter } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
@@ -98,65 +98,7 @@ const generateImageUrl = (title: string, description?: string): string => {
   return images[Math.abs(hash) % images.length];
 };
 
-// Mobile filter chip + bottom sheet — replaces the SplitBarList on mobile
-function MobileFilterChip({ activeTab, onSelect, translate }: { 
-  activeTab: string; 
-  onSelect: (tab: string) => void;
-  translate: (key: string, fallback: string) => string;
-}) {
-  const [open, setOpen] = useState(false);
 
-  const filters = [
-    { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
-    { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
-    { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
-    { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
-  ];
-
-  const active = filters.find(f => f.value === activeTab) || filters[0];
-
-  return (
-    <>
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setOpen(true)}
-        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-      >
-        <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-        <span className="text-sm font-medium">{active.icon} {active.label}</span>
-        <ChevronDown className="h-3 w-3 text-muted-foreground" />
-      </Button>
-
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="rounded-t-2xl px-4 pb-8">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-base">Filter Events</SheetTitle>
-          </SheetHeader>
-          <div className="flex flex-col gap-2">
-            {filters.map(filter => (
-              <Button
-                key={filter.value}
-                variant={activeTab === filter.value ? "default" : "ghost"}
-                className={cn(
-                  "justify-start h-12 text-base rounded-xl gap-3",
-                  activeTab === filter.value && "bg-primary text-primary-foreground"
-                )}
-                onClick={() => {
-                  onSelect(filter.value);
-                  setOpen(false);
-                }}
-              >
-                <span>{filter.icon}</span>
-                <span>{filter.label}</span>
-              </Button>
-            ))}
-          </div>
-        </SheetContent>
-      </Sheet>
-    </>
-  );
-}
 
 const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void) => {
   // Construct author object with proper fallback chain
@@ -439,6 +381,7 @@ const EventsAndMeetups = () => {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [eventToShare, setEventToShare] = useState<any>(null);
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
 
   const mobileContainerRef = useRef<HTMLDivElement>(null);
 
@@ -782,13 +725,6 @@ const EventsAndMeetups = () => {
                 compact={isMobile}
                 afterGiftVoucherChildren={isMobile && (
                   <>
-                    {/* Mobile filter chip - replaces the tab row */}
-                    <MobileFilterChip 
-                      activeTab={activeTab} 
-                      onSelect={(tab) => setActiveTab(tab)} 
-                      translate={translate}
-                    />
-                    
                     {/* Vitana Index - pill style on mobile */}
                     <Button 
                       variant="ghost" 
@@ -827,6 +763,17 @@ const EventsAndMeetups = () => {
                     onSearch={(query) => setSearchQuery(query)}
                     dropdownItems={searchDropdownItems}
                     onItemClick={handleSearchItemClick}
+                    filterLabel={isMobile ? (() => {
+                      const filters = [
+                        { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
+                        { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
+                        { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
+                        { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
+                      ];
+                      const active = filters.find(f => f.value === activeTab) || filters[0];
+                      return `${active.icon} ${active.label}`;
+                    })() : undefined}
+                    onFilterClick={isMobile ? () => setFilterSheetOpen(true) : undefined}
                   />
                   <UniversalCalendarButton />
                   
@@ -1209,6 +1156,39 @@ const EventsAndMeetups = () => {
         open={autopilotOpen} 
         onOpenChange={setAutopilotOpen}
       />
+
+      {/* Mobile filter bottom sheet — triggered from search button filter chip */}
+      <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
+        <SheetContent side="bottom" className="rounded-t-2xl px-4 pb-8">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-base">{translate('events.filterTitle', 'Filter Events')}</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col gap-2">
+            {[
+              { value: 'hot', label: translate('events.tabs.hot', 'Hot'), icon: '🔥' },
+              { value: 'upcoming', label: translate('events.tabs.upcoming', 'Upcoming'), icon: '📅' },
+              { value: 'today', label: translate('events.tabs.today', 'Today'), icon: '☀️' },
+              { value: 'following', label: translate('events.tabs.following', 'Following'), icon: '👥' },
+            ].map(filter => (
+              <Button
+                key={filter.value}
+                variant={activeTab === filter.value ? "default" : "ghost"}
+                className={cn(
+                  "justify-start h-12 text-base rounded-xl gap-3",
+                  activeTab === filter.value && "bg-primary text-primary-foreground"
+                )}
+                onClick={() => {
+                  setActiveTab(filter.value);
+                  setFilterSheetOpen(false);
+                }}
+              >
+                <span>{filter.icon}</span>
+                <span>{filter.label}</span>
+              </Button>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
 
     </>
   );
