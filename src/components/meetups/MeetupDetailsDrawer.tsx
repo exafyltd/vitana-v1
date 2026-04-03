@@ -218,6 +218,11 @@ export function MeetupDetailsDrawer({
   const { translate, isGerman } = useTranslation();
   const queryClient = useQueryClient();
 
+  // Reset message modal when drawer closes
+  useEffect(() => {
+    if (!open) setMessageModalOpen(false);
+  }, [open]);
+
   // Signal ORB suppression when drawer is open on mobile
   useEffect(() => {
     if (open && isMobile) {
@@ -1705,31 +1710,6 @@ export function MeetupDetailsDrawer({
         </div>
       </div>
 
-      {/* Message Compose Modal */}
-      {event.created_by && (
-        <MessageComposeModal
-          isOpen={messageModalOpen}
-          onOpenChange={setMessageModalOpen}
-          recipient={{
-            id: event.created_by,
-            name: event.creator_display_name || 'Event Host',
-            handle: event.creator_handle || 'host',
-            avatarUrl: event.creator_avatar_url || '',
-            roles: [],
-            stats: { posts: 0, followers: 0, following: 0, mediaUploads: 0, groupsJoined: 0 },
-            visibility: {
-              about: 'public',
-              links: 'public',
-              location: 'public',
-              showcase: 'public',
-              indexPublic: false,
-              healthShareConsent: false
-            }
-          }}
-          onSend={handleSendMessageToHost}
-        />
-      )}
-
       {/* Share Dialog is now managed by parent component via onShareEvent callback */}
       
       {/* Profile Preview Dialog is now managed at page level to avoid focus-trap conflicts */}
@@ -1737,26 +1717,57 @@ export function MeetupDetailsDrawer({
     </>
   );
 
+  // Message modal rendered as sibling to avoid nested Radix Dialog focus-trap conflicts
+  const messageModal = event.created_by ? (
+    <MessageComposeModal
+      isOpen={messageModalOpen}
+      onOpenChange={setMessageModalOpen}
+      recipient={{
+        id: event.created_by,
+        name: event.creator_display_name || 'Event Host',
+        handle: event.creator_handle || 'host',
+        avatarUrl: event.creator_avatar_url || '',
+        roles: [],
+        stats: { posts: 0, followers: 0, following: 0, mediaUploads: 0, groupsJoined: 0 },
+        visibility: {
+          about: 'public',
+          links: 'public',
+          location: 'public',
+          showcase: 'public',
+          indexPublic: false,
+          healthShareConsent: false
+        }
+      }}
+      onSend={handleSendMessageToHost}
+    />
+  ) : null;
+
   // Use Drawer for desktop, Sheet for mobile
   if (isMobile) {
     return (
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <SheetContent
-          side="bottom"
-          className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
-          data-drawer-sheet=""
-        >
-          {content}
-        </SheetContent>
-      </Sheet>
+      <>
+        <Sheet open={open} onOpenChange={onOpenChange}>
+          <SheetContent
+            side="bottom"
+            className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
+            data-drawer-sheet=""
+          >
+            {content}
+          </SheetContent>
+        </Sheet>
+        {messageModal}
+      </>
     );
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange} direction="right">
-      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-full md:w-[500px] rounded-none">
-        {content}
-      </DrawerContent>
-    </Drawer>
+    <>
+      <Drawer open={open} onOpenChange={onOpenChange} direction="right">
+        <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-full md:w-[500px] rounded-none">
+          {content}
+        </DrawerContent>
+      </Drawer>
+      {messageModal}
+    </>
   );
 }
