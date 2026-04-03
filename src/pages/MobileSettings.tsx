@@ -129,7 +129,8 @@ export default function MobileSettings() {
         />
 
         <UtilityActionButton 
-          className="pt-1 pb-2 px-1 min-w-0"
+          compact
+          className="px-1 min-w-0"
           afterGiftVoucherChildren={(
             <>
               <VitanaIndexChip />
@@ -141,7 +142,11 @@ export default function MobileSettings() {
             placeholder={translate('settings.search', 'Search settings...')}
             onSearch={setSearchQuery}
           />
-          <UniversalCalendarButton />
+          <MobileModePill
+            modes={settingsModes}
+            activeMode={activeSection}
+            onModeChange={handleSectionChange}
+          />
         </UtilityActionButton>
 
         {/* Scrollable content */}
