@@ -72,6 +72,27 @@ export default function MobileSettings() {
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeSection, setActiveSection] = useState('notifications');
+
+  const settingsModes: ModeOption[] = [
+    { value: 'notifications', label: translate('settings.notifications', 'Notifications'), icon: '🔔' },
+    { value: 'privacy', label: translate('settings.privacy', 'Privacy'), icon: '🛡️' },
+    { value: 'preferences', label: translate('settings.preferences', 'Preferences'), icon: '🎛️' },
+    { value: 'support', label: translate('settings.support', 'Support'), icon: '🆘' },
+  ];
+
+  const sectionRefs = {
+    notifications: useRef<HTMLDivElement>(null),
+    privacy: useRef<HTMLDivElement>(null),
+    preferences: useRef<HTMLDivElement>(null),
+    support: useRef<HTMLDivElement>(null),
+  };
+
+  const handleSectionChange = (value: string) => {
+    setActiveSection(value);
+    const ref = sectionRefs[value as keyof typeof sectionRefs];
+    ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     if (!isMobile) {
