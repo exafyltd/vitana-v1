@@ -50,6 +50,8 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { MobileConversationCard } from "@/components/messages/mobile/MobileConversationCard";
 import { MobileInboxEmptyState } from "@/components/messages/mobile/MobileInboxEmptyState";
 import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileConversationSkeleton";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Messages() {
