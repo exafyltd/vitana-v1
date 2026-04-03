@@ -224,12 +224,14 @@ export default function MobileSettings() {
               subtitle={translate('settings.privacySub', 'Data sharing & visibility')}
               route="/settings/privacy"
             />
+            <div ref={sectionRefs.preferences}></div>
             <NavCard
               icon={SlidersHorizontal}
               label={translate('settings.preferences', 'Preferences')}
               subtitle={translate('settings.preferencesSub', 'Language, theme & display')}
               route="/settings/preferences"
             />
+            <div ref={sectionRefs.support}></div>
             <NavCard
               icon={LifeBuoy}
               label={translate('settings.support', 'Support')}
