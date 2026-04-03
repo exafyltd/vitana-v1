@@ -153,6 +153,7 @@ export default function MobileSettings() {
         <div className="flex-1 overflow-y-auto pb-24 space-y-5 px-0">
           
           {/* Notifications Section */}
+          <div ref={sectionRefs.notifications}></div>
           <Card className="rounded-2xl border-border/50 shadow-sm">
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
