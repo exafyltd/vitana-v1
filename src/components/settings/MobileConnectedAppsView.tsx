@@ -58,6 +58,15 @@ export function MobileConnectedAppsView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [connectPopupOpen, setConnectPopupOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const connectorModes: ModeOption[] = [
+    { value: 'all', label: translate('connectedApps.sections.all', 'All'), icon: '🔌' },
+    { value: 'social', label: translate('connectedApps.sections.social', 'Social'), icon: '📱' },
+    { value: 'fitness', label: translate('connectedApps.sections.fitness', 'Fitness'), icon: '💪' },
+    { value: 'health', label: translate('connectedApps.sections.health', 'Health'), icon: '🏥' },
+    { value: 'other', label: translate('connectedApps.sections.other', 'Other'), icon: '🔧' },
+  ];
   
   // Social media import dialog state
   const [socialImportOpen, setSocialImportOpen] = useState(false);
