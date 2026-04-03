@@ -218,11 +218,6 @@ export function MeetupDetailsDrawer({
   const { translate, isGerman } = useTranslation();
   const queryClient = useQueryClient();
 
-  // Reset message modal when drawer closes
-  useEffect(() => {
-    if (!open) setMessageModalOpen(false);
-  }, [open]);
-
   // Signal ORB suppression when drawer is open on mobile
   useEffect(() => {
     if (open && isMobile) {
