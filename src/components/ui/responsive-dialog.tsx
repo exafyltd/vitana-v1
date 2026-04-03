@@ -120,7 +120,7 @@ const ResponsiveDialogContent = React.forwardRef<
               "hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
               "disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
               isMobile
-                ? "right-4 top-5 z-20 w-11 h-11 flex items-center justify-center"
+                ? "right-2 top-1 z-20 w-10 h-10 flex items-center justify-center"
                 : "right-4 top-4"
             )}
           >
@@ -146,7 +146,7 @@ const ResponsiveDialogHeader = ({
       className={cn(
         "flex flex-col space-y-1.5",
         isMobile 
-          ? "sticky top-0 z-10 bg-background px-4 pt-2 pb-3 text-center border-b" 
+          ? "sticky top-0 z-10 bg-background px-4 pr-12 pt-2 pb-3 text-center border-b"
           : "text-center sm:text-left",
         className
       )}
