@@ -51,7 +51,7 @@ export function MessageComposeModal({
   return (
     <ResponsiveDialog open={isOpen} onOpenChange={onOpenChange}>
       <ResponsiveDialogContent
-        overlayClassName="z-[60]"
+        overlayClassName="z-[60] !backdrop-blur-none !bg-black/40 !animate-none"
         className="z-[60] sm:max-w-[520px] p-0 gap-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_20px_60px_rgba(0,0,0,0.2)] sm:rounded-3xl overflow-hidden"
       >
         <ResponsiveDialogHeader className="p-4 sm:p-6 sm:pb-4 border-b border-white/20 dark:border-gray-800/20">
