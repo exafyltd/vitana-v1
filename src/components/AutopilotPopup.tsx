@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogBody,
+  ResponsiveDialogFooter,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -300,11 +301,11 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
         <Separator />
 
-        <DialogFooter className="flex-col space-y-3">
+        <ResponsiveDialogFooter className="flex-col space-y-3">
           <div className={cn(
             "w-full",
-            isMobile 
-              ? "flex flex-col gap-2" 
+            isMobile
+              ? "flex flex-col gap-2"
               : "flex items-center justify-between"
           )}>
             <div className={cn(isMobile ? "flex flex-col gap-2" : "flex space-x-2")}>
@@ -324,7 +325,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                 {translate('autopilot.popup.notNow')}
               </Button>
             </div>
-            
+
             <Button
               variant="link"
               onClick={handleQuickJump}
@@ -333,20 +334,16 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
               {translate('autopilot.popup.seeAllInAI')}
             </Button>
           </div>
-        </DialogFooter>
+        </ResponsiveDialogFooter>
       </>
     );
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(
-        isMobile 
-          ? "w-full h-[100dvh] max-w-full max-h-full rounded-none flex flex-col" 
-          : "max-w-2xl max-h-[80vh]"
-      )}>
-        <DialogHeader>
-          <DialogTitle className="flex items-center space-x-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="max-w-2xl max-h-[80vh]" fullscreenOnMobile>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
               <Plane className="w-4 h-4 text-red-500" />
             </div>
@@ -356,19 +353,21 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                 {selectedActions.length} / {pendingActions.length}
               </Badge>
             )}
-          </DialogTitle>
-          <DialogDescription>
-            {loading 
+          </ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>
+            {loading
               ? "Checking for new suggestions…"
               : pendingActions.length > 0
                 ? `${selectedActions.length} Vorschläge ausgewählt`
                 : "Your autopilot recommendations"
             }
-          </DialogDescription>
-        </DialogHeader>
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        {renderContent()}
-      </DialogContent>
-    </Dialog>
+        <ResponsiveDialogBody>
+          {renderContent()}
+        </ResponsiveDialogBody>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }
