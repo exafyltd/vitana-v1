@@ -106,6 +106,13 @@ export default function Wallet() {
   const [exchangeAndSendOpen, setExchangeAndSendOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [activeTab, setActiveTab] = useState("balance-overview");
+  const [mobileWalletMode, setMobileWalletMode] = useState("balances");
+
+  const mobileWalletModes: ModeOption[] = [
+    { value: 'balances', label: translate('wallet.tabs.balances', 'Balances'), icon: '💰' },
+    { value: 'activity', label: translate('wallet.tabs.activity', 'Activity'), icon: '📊' },
+    { value: 'actions', label: translate('wallet.tabs.actions', 'Actions'), icon: '⚡' },
+  ];
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { user } = useAuth();
