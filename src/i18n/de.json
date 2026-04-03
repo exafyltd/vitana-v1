@@ -956,9 +956,9 @@
     "staked": "Gesperrt",
     "searchWallet": "Wallet durchsuchen...",
     "tabs": {
-      "balances": "💰 Guthaben",
-      "activity": "📊 Aktivität",
-      "actions": "⚡ Aktionen"
+      "balances": "Guthaben",
+      "activity": "Aktivität",
+      "actions": "Aktionen"
     },
     "filters": {
       "commissions": "Provisionen",
@@ -986,8 +986,8 @@
       "archived": "Archiviert"
     },
     "contextTabs": {
-      "community": "🌍 Community",
-      "network": "🏢 Netzwerk"
+      "community": "Community",
+      "network": "Netzwerk"
     },
     "actions": {
       "new": "Neu",
@@ -1083,9 +1083,9 @@
     "searchPlaceholder": "Einstellungen, Datenschutz, Integrationen suchen...",
     "quickSetup": "Schnelleinrichtung",
     "tabs": {
-      "overview": "⚙️ Übersicht",
-      "notifications": "🔔 Benachrichtigungen",
-      "quickActions": "⚡ Schnellaktionen"
+      "overview": "Übersicht",
+      "notifications": "Benachrichtigungen",
+      "quickActions": "Schnellaktionen"
     },
     "categories": {
       "privacy": "Datenschutz",
