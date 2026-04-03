@@ -536,8 +536,23 @@ const EventsAndMeetups = () => {
     setPromoteCampaignOpen(true);
   }, []);
 
-  // Handle share event - opens share dialog from parent
-  const handleShareEvent = useCallback((event: any) => {
+  // Handle share event - native share first, dialog fallback
+  const handleShareEvent = useCallback(async (event: any) => {
+    const shareUrl = getShareUrl('event', event.id, { slug: event.slug });
+
+    if (typeof navigator !== 'undefined' && 'share' in navigator) {
+      try {
+        await navigator.share({
+          title: event.title,
+          text: event.description || event.title,
+          url: shareUrl,
+        });
+        return;
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') return;
+      }
+    }
+
     setEventToShare(event);
     setShareDialogOpen(true);
   }, []);
