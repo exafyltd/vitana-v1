@@ -69,6 +69,12 @@ export function MobileOrdersView({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [activeMode, setActiveMode] = useState('active');
+
+  const orderModes: ModeOption[] = [
+    { value: 'active', label: translate('orders.tabs.active', 'Active'), icon: '📦' },
+    { value: 'history', label: translate('orders.tabs.history', 'History'), icon: '✅' },
+  ];
 
   // Filter orders based on search
   const filteredActiveOrders = useMemo(() => {
