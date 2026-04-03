@@ -37,9 +37,9 @@ export default function MobileDailyDiary() {
   const [bugSubMode, setBugSubMode] = useState<'bug_report' | 'ux_improvement'>('bug_report');
   const { pendingCount } = useAutopilot();
 
-  const CATEGORIES: { id: CategoryTab; emoji: string; labelKey: string }[] = [
-    { id: "health", emoji: "🩺", labelKey: "diary.healthTab" },
-    { id: "bugs", emoji: "🐛", labelKey: "diary.bugTab" },
+  const diaryModes: ModeOption[] = [
+    { value: 'health', label: translate('diary.healthTab', 'Health Diary'), icon: '🩺' },
+    { value: 'bugs', label: translate('diary.bugTab', 'Bug Reports'), icon: '🐛' },
   ];
 
   const PLUS_OPTIONS: { id: PlusOption; icon: typeof Type; labelKey: string }[] = [
