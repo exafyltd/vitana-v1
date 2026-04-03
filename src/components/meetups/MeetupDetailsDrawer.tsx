@@ -20,7 +20,7 @@ import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
-import { MessageComposeModal } from "@/components/profile/shared/MessageComposeModal";
+import { Textarea } from "@/components/ui/textarea";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
@@ -84,6 +84,8 @@ import {
   CalendarPlus,
   BarChart3,
   Eye,
+  Send,
+  ArrowLeft,
 } from "lucide-react";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
@@ -209,6 +211,7 @@ export function MeetupDetailsDrawer({
   
   const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
   const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [composeMessage, setComposeMessage] = useState("");
   const [isCreatingThread, setIsCreatingThread] = useState(false);
   // Share dialog state now managed by parent via onShareEvent callback
   
@@ -735,6 +738,7 @@ export function MeetupDetailsDrawer({
       return;
     }
 
+    setComposeMessage("");
     setMessageModalOpen(true);
   };
 
@@ -795,6 +799,24 @@ export function MeetupDetailsDrawer({
   const eventDescription = event.description?.slice(0, 200) || `Join ${event.title} on ${format(startDate, 'MMMM d, yyyy')}`;
   const eventImage = getAbsoluteImageUrl(event.image_url);
 
+  const handleInlineSend = async () => {
+    const msg = composeMessage.trim();
+    if (!msg || isCreatingThread) return;
+    await handleSendMessageToHost(msg);
+    setComposeMessage("");
+  };
+
+  const handleComposeKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      handleInlineSend();
+    }
+  };
+
+  const hostName = event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host');
+  const hostHandle = event.creator_handle || 'host';
+  const hostAvatar = event.creator_avatar_url || event.author?.avatar;
+
   const content = (
     <>
       {open && (
@@ -808,8 +830,64 @@ export function MeetupDetailsDrawer({
           canonical={eventUrl}
         />
       )}
-      <div 
-        className="flex flex-col h-full"
+
+      {/* Inline compose view — avoids opening a second Radix Dialog which causes flickering in WebView */}
+      {messageModalOpen && (
+        <div className="flex flex-col h-full">
+          <div className="flex items-center gap-3 p-4 border-b border-border/50">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="shrink-0"
+              onClick={() => setMessageModalOpen(false)}
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <Avatar className="h-10 w-10 border-2 border-primary">
+              <AvatarImage src={hostAvatar} alt={hostName} />
+              <AvatarFallback>{hostName[0]}</AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="font-semibold text-[15px] truncate">{hostName}</p>
+              <p className="text-[13px] text-muted-foreground">@{hostHandle}</p>
+            </div>
+          </div>
+          <div className="flex-1 p-4 space-y-3">
+            <Textarea
+              placeholder={translate('eventDrawer.typeMessage', 'Type your message...')}
+              value={composeMessage}
+              onChange={(e) => setComposeMessage(e.target.value)}
+              onKeyDown={handleComposeKeyDown}
+              className="min-h-[140px] resize-none rounded-2xl"
+              autoFocus
+            />
+            <p className="text-xs text-muted-foreground text-center">
+              {translate('eventDrawer.sendShortcut', 'Press ⌘ + ↵ to send')}
+            </p>
+          </div>
+          <div className="p-4 border-t border-border/50 flex justify-end gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setMessageModalOpen(false)}
+              disabled={isCreatingThread}
+              className="rounded-full"
+            >
+              {translate('eventDrawer.cancel', 'Cancel')}
+            </Button>
+            <Button
+              onClick={handleInlineSend}
+              disabled={!composeMessage.trim() || isCreatingThread}
+              className="rounded-full gap-2"
+            >
+              <Send className="h-4 w-4" />
+              {isCreatingThread ? translate('eventDrawer.sending', 'Sending...') : translate('eventDrawer.send', 'Send')}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <div
+        className={cn("flex flex-col h-full", messageModalOpen && "hidden")}
         onTouchStart={!isMobile ? onTouchStart : undefined}
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
@@ -1712,57 +1790,26 @@ export function MeetupDetailsDrawer({
     </>
   );
 
-  // Message modal rendered as sibling to avoid nested Radix Dialog focus-trap conflicts
-  const messageModal = event.created_by ? (
-    <MessageComposeModal
-      isOpen={messageModalOpen}
-      onOpenChange={setMessageModalOpen}
-      recipient={{
-        id: event.created_by,
-        name: event.creator_display_name || 'Event Host',
-        handle: event.creator_handle || 'host',
-        avatarUrl: event.creator_avatar_url || '',
-        roles: [],
-        stats: { posts: 0, followers: 0, following: 0, mediaUploads: 0, groupsJoined: 0 },
-        visibility: {
-          about: 'public',
-          links: 'public',
-          location: 'public',
-          showcase: 'public',
-          indexPublic: false,
-          healthShareConsent: false
-        }
-      }}
-      onSend={handleSendMessageToHost}
-    />
-  ) : null;
-
   // Use Drawer for desktop, Sheet for mobile
   if (isMobile) {
     return (
-      <>
-        <Sheet open={open} onOpenChange={onOpenChange}>
-          <SheetContent
-            side="bottom"
-            className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
-            data-drawer-sheet=""
-          >
-            {content}
-          </SheetContent>
-        </Sheet>
-        {messageModal}
-      </>
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <SheetContent
+          side="bottom"
+          className="!inset-0 !h-[100dvh] p-0 rounded-none [&>button]:hidden"
+          data-drawer-sheet=""
+        >
+          {content}
+        </SheetContent>
+      </Sheet>
     );
   }
 
   return (
-    <>
-      <Drawer open={open} onOpenChange={onOpenChange} direction="right">
-        <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-full md:w-[500px] rounded-none">
-          {content}
-        </DrawerContent>
-      </Drawer>
-      {messageModal}
-    </>
+    <Drawer open={open} onOpenChange={onOpenChange} direction="right">
+      <DrawerContent className="h-screen top-0 right-0 left-auto mt-0 w-full md:w-[500px] rounded-none">
+        {content}
+      </DrawerContent>
+    </Drawer>
   );
 }
