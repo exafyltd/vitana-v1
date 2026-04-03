@@ -696,6 +696,20 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     opacity: 0 !important;
   }
 
+  /* Suppress ORB when any dialog/modal/drawer overlay is open */
+  body[data-dialog-open="true"] .vtorb-fab,
+  body[data-dialog-open="true"] .vitana-orb,
+  body[data-dialog-open="true"] [data-vitana-orb="true"],
+  body[data-dialog-open="true"] #vitana-orb,
+  body[data-dialog-open="true"] .OrbFloatingButton,
+  body[data-dialog-open="true"] #vitana-orb-fab,
+  body[data-dialog-open="true"] [id^="vitana-orb"],
+  body[data-dialog-open="true"] [class^="vtorb-fab"] {
+    z-index: 0 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+
   /* Maxina portal pages: dock orb at bottom edge on mobile */
   body.maxina-signin-page .vtorb-fab,
   body.maxina-signin-page .vitana-orb,
