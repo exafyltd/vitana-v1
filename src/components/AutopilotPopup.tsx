@@ -341,8 +341,11 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="sm:max-w-2xl sm:max-h-[80vh]" fullscreenOnMobile>
-        <ResponsiveDialogHeader>
+      <ResponsiveDialogContent className={cn(
+        "sm:max-w-2xl sm:max-h-[80vh]",
+        isMobile && "p-6 flex flex-col"
+      )} fullscreenOnMobile>
+        <ResponsiveDialogHeader className={isMobile ? "text-left border-b-0 px-0 pr-0 pt-0 pb-0" : undefined}>
           <ResponsiveDialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
               <Plane className="w-4 h-4 text-red-500" />
@@ -364,9 +367,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
 
-        <ResponsiveDialogBody>
-          {renderContent()}
-        </ResponsiveDialogBody>
+        {renderContent()}
       </ResponsiveDialogContent>
     </ResponsiveDialog>
   );
