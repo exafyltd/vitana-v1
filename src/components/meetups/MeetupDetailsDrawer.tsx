@@ -977,7 +977,7 @@ export function MeetupDetailsDrawer({
                 <div className="flex items-center justify-center p-6 bg-white dark:bg-gray-900 rounded-2xl border border-white/40 dark:border-gray-800/40 shadow-lg">
                   <QRCodeSVG
                     id="host-profile-qr-code"
-                    value={`${window.location.origin}/u/${hostHandle}`}
+                    value={`${window.location.origin}/u/${event.created_by}`}
                     size={200}
                     level="H"
                     includeMargin
@@ -1016,7 +1016,7 @@ export function MeetupDetailsDrawer({
               onClick={() => {
                 setHostProfileOpen(false);
                 onOpenChange(false);
-                navigate(`/u/${hostHandle}`);
+                navigate(`/u/${event.created_by}`);
               }}
               variant="secondary"
               className="w-full gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
