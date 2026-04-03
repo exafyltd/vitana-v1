@@ -473,7 +473,7 @@ const Events = () => {
             <SubNavigation items={communityNavigation} />
             
             <StandardHeader 
-              title="Events"
+              title="Events & MeetUps"
               description="Discover wellness events, workshops, and activities"
               emoji="📅"
             />
