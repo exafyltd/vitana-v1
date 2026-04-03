@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Bell, BellOff, Shield, SlidersHorizontal, LifeBuoy, 
@@ -10,6 +10,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
