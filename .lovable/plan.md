@@ -1,61 +1,79 @@
 
 
-# Reorganize Discover Content Area Hierarchy
+# Unified Mobile Upper-Screen System — 7 Remaining Screens
 
-## Problem
+## Current State Summary
 
-The AI Picks content area feels flat — a featured card sits directly on top of a 2-column grid with no visual separation or hierarchy. The heading "AI Picks for You" redundantly echoes the utility rail pill. The layout lacks intentional structure.
+Each screen has varying degrees of the pattern already. The key gaps are:
+- **Orders**: Has header + utility rail + SplitBarList tabs below (second row). No `MobileModePill`. No `compact` on utility rail.
+- **Wallet**: Has header + utility rail + SplitBarList tabs below (second row). No `MobileModePill`. No `compact`.
+- **Health**: Has header + utility rail + SplitBarList tabs below (second row). No `MobileModePill`. No `compact`.
+- **Daily Diary**: Has header + utility rail + custom two-segment tab buttons below (second row). No `MobileModePill`. 
+- **Connectors**: Has header + utility rail. No `MobileModePill` dropdown for section categories. No `compact`.
+- **Inbox**: Has header + utility rail + SplitBarList tabs (Community/Network) + sub-filter pills below (third row). No `MobileModePill`. No `compact`.
+- **Settings**: Has header + utility rail. No `MobileModePill`. Already uses `MobileAppShell`.
 
-## Changes
+## What Changes Per Screen
 
-### `src/components/discover/MobileDiscoverView.tsx` — Suggested tab only
+For all 7 screens: add `MobileModePill` immediately after `ExpandableSearchButton` in the utility rail, use `compact` on `UtilityActionButton`, and remove the separate `SplitBarList` / tab row that currently sits below the utility rail. Content rendering switches on the pill's `activeMode` value directly.
 
-**1. Replace heading text:**
-- Change `translate('discover.aiPicksForYou')` → `translate('discover.recommendedForYou')`
-- Add translation keys `"recommendedForYou": "Recommended for you"` (en) / `"Für Sie empfohlen"` (de) to both i18n files
+### 1. Orders (`src/components/orders/MobileOrdersView.tsx`)
+- Add `compact` to `UtilityActionButton`
+- Add `MobileModePill` after Search with modes: `📦 Active`, `✅ History`
+- Remove `SplitBarList` row (lines ~299-309). Render content conditionally based on pill mode instead of `SplitBarContent`
+- Tighten spacing: `space-y-4` → `space-y-3`, remove excess padding
 
-**2. Add clear visual separation between featured and grid:**
-- After the featured card, insert a secondary section heading before the grid: a subtle label like `translate('discover.moreToExplore')` ("More to explore") styled as `text-xs font-medium text-muted-foreground uppercase tracking-wider` with a thin divider line
-- Add translation keys for this secondary heading
+### 2. Wallet (`src/pages/Wallet.tsx`, mobile section ~302-466)
+- Add `compact` to `UtilityActionButton`
+- Add `MobileModePill` after Search with modes: `💰 Balances`, `📊 Activity`, `⚡ Actions`
+- Remove `SplitBar`/`SplitBarList` row (lines ~374-379). Render content conditionally based on pill mode
+- Tighten `space-y-4` → `space-y-3`
 
-**3. Featured card differentiation:**
-- Give the featured card slightly more breathing room: `mb-1` after the section header, then the featured card, then `mt-4` gap before the secondary section
-- The featured card already has `h-56` and `col-span-2` — keep those
+### 3. Health (`src/pages/Health.tsx`, mobile section ~193-299)
+- Add `compact` to `UtilityActionButton`
+- Add `MobileModePill` after Search with modes: `🏠 Overview`, `🏥 Medical`, `💊 Supplements`
+- Remove `SplitBarList` row (lines ~236-243). Render content conditionally based on pill mode
+- Tighten spacing
 
-**4. Grid section treatment:**
-- Wrap the grid in a subtle container or just ensure the secondary heading creates enough visual break
-- The grid cards (`h-48`) remain as-is — the hierarchy comes from the heading + spacing, not card redesign
+### 4. Daily Diary (`src/pages/MobileDailyDiary.tsx`)
+- Add `compact` to `UtilityActionButton`
+- Add `MobileModePill` after Search with modes: `🩺 Health Diary`, `🐛 Bug Reports`
+- Remove the custom two-segment button row (lines ~113-134). Render content conditionally based on pill mode
+- Tighten spacing
 
-### `src/i18n/en.json` and `src/i18n/de.json`
+### 5. Connectors (`src/components/settings/MobileConnectedAppsView.tsx`)
+- Add `compact` to `UtilityActionButton`
+- Add `MobileModePill` after Search with modes: `📱 Social`, `💪 Fitness`, `🏥 Health`, `🔌 Other`
+- Content already renders all sections in a vertical scroll. The pill will filter to show only the selected category section
+- Tighten spacing: `space-y-4` → `space-y-3`
 
-Add two new keys under `discover`:
-- `"recommendedForYou"` — "Recommended for you" / "Für Sie empfohlen"
-- `"moreToExplore"` — "More to explore" / "Mehr entdecken"
+### 6. Inbox (`src/pages/Messages.tsx`, mobile section ~946-1100)
+- Add `compact` to `UtilityActionButton`
+- Add `MobileModePill` after Search with modes: `🌐 Community`, `🏢 Network`
+- Remove `SplitBar`/`SplitBarList` for context tabs (lines ~1040-1048). Wire pill to `messageContext` state
+- Remove the sub-filter pills row (All/Direct/Groups) — merge into pill as children if needed, or keep as lightweight inline pills inside the content area (since they're sub-filters, not modes)
+- Tighten spacing
 
-## Summary of visual result
+### 7. Settings (`src/pages/MobileSettings.tsx`)
+- Add `compact` to `UtilityActionButton` (already partially compact)
+- Add `MobileModePill` after Search with modes: `🔔 Notifications`, `🛡️ Privacy`, `🎛️ Preferences`, `🆘 Support`
+- The pill selects which section scrolls into view or filters content. Currently all sections are visible in a single scroll — the pill will act as a jump-to / filter
+- Tighten spacing
 
-```text
-[ Recommended for you          See all > ]
-┌──────────────────────────────────────┐
-│  FEATURED HERO CARD (h-56, full-w)   │
-│  image + gradient + title + provider │
-│  reason chip + price + CTA           │
-└──────────────────────────────────────┘
+## Files Changed
 
-── More to explore ────────────────────
+1. `src/components/orders/MobileOrdersView.tsx` — add MobileModePill, remove SplitBarList, compact utility rail
+2. `src/pages/Wallet.tsx` (mobile block) — add MobileModePill, remove SplitBarList, compact utility rail
+3. `src/pages/Health.tsx` (mobile block) — add MobileModePill, remove SplitBarList, compact utility rail
+4. `src/pages/MobileDailyDiary.tsx` — add MobileModePill, remove custom tab row, compact utility rail
+5. `src/components/settings/MobileConnectedAppsView.tsx` — add MobileModePill, filter sections by mode, compact utility rail
+6. `src/pages/Messages.tsx` (mobile block) — add MobileModePill, remove SplitBarList + sub-filter row, compact utility rail
+7. `src/pages/MobileSettings.tsx` — add MobileModePill, filter/jump sections by mode, compact utility rail
 
-┌────────────┐  ┌────────────┐
-│  Card 2    │  │  Card 3    │
-│  (h-48)    │  │  (h-48)    │
-└────────────┘  └────────────┘
-┌────────────┐  ┌────────────┐
-│  Card 4    │  │  Card 5    │
-└────────────┘  └────────────┘
-```
+## What Does Not Change
 
-## Files changed
-
-1. `src/components/discover/MobileDiscoverView.tsx` — heading text swap, add secondary section divider/heading with spacing
-2. `src/i18n/en.json` — add `recommendedForYou`, `moreToExplore`
-3. `src/i18n/de.json` — add German equivalents
+- Desktop layouts on all screens remain untouched
+- Profile is excluded
+- Core content areas/components within each screen remain unchanged
+- The `MobileModePill` component itself needs no changes (already supports flat modes)
 
