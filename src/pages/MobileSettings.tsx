@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Bell, BellOff, Shield, SlidersHorizontal, LifeBuoy, 
@@ -10,6 +10,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -71,6 +72,27 @@ export default function MobileSettings() {
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeSection, setActiveSection] = useState('notifications');
+
+  const settingsModes: ModeOption[] = [
+    { value: 'notifications', label: translate('settings.notifications', 'Notifications'), icon: '🔔' },
+    { value: 'privacy', label: translate('settings.privacy', 'Privacy'), icon: '🛡️' },
+    { value: 'preferences', label: translate('settings.preferences', 'Preferences'), icon: '🎛️' },
+    { value: 'support', label: translate('settings.support', 'Support'), icon: '🆘' },
+  ];
+
+  const sectionRefs = {
+    notifications: useRef<HTMLDivElement>(null),
+    privacy: useRef<HTMLDivElement>(null),
+    preferences: useRef<HTMLDivElement>(null),
+    support: useRef<HTMLDivElement>(null),
+  };
+
+  const handleSectionChange = (value: string) => {
+    setActiveSection(value);
+    const ref = sectionRefs[value as keyof typeof sectionRefs];
+    ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     if (!isMobile) {
@@ -107,7 +129,8 @@ export default function MobileSettings() {
         />
 
         <UtilityActionButton 
-          className="pt-1 pb-2 px-1 min-w-0"
+          compact
+          className="px-1 min-w-0"
           afterGiftVoucherChildren={(
             <>
               <VitanaIndexChip />
@@ -119,13 +142,18 @@ export default function MobileSettings() {
             placeholder={translate('settings.search', 'Search settings...')}
             onSearch={setSearchQuery}
           />
-          <UniversalCalendarButton />
+          <MobileModePill
+            modes={settingsModes}
+            activeMode={activeSection}
+            onModeChange={handleSectionChange}
+          />
         </UtilityActionButton>
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto pb-24 space-y-5 px-0">
           
           {/* Notifications Section */}
+          <div ref={sectionRefs.notifications}></div>
           <Card className="rounded-2xl border-border/50 shadow-sm">
             <CardContent className="p-5 space-y-4">
               <div className="flex items-center gap-2 mb-2">
@@ -188,6 +216,7 @@ export default function MobileSettings() {
           </Card>
 
           {/* Navigation Cards */}
+          <div ref={sectionRefs.privacy}></div>
           <div className="space-y-2">
             <NavCard
               icon={Shield}
@@ -195,12 +224,14 @@ export default function MobileSettings() {
               subtitle={translate('settings.privacySub', 'Data sharing & visibility')}
               route="/settings/privacy"
             />
+            <div ref={sectionRefs.preferences}></div>
             <NavCard
               icon={SlidersHorizontal}
               label={translate('settings.preferences', 'Preferences')}
               subtitle={translate('settings.preferencesSub', 'Language, theme & display')}
               route="/settings/preferences"
             />
+            <div ref={sectionRefs.support}></div>
             <NavCard
               icon={LifeBuoy}
               label={translate('settings.support', 'Support')}

@@ -14,11 +14,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { TicketPurchase } from '@/hooks/useEventTickets';
 import { MobileOrderDetailSheet } from './MobileOrderDetailSheet';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
+import { MobileModePill, ModeOption } from '@/components/ui/MobileModePill';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import StandardHeader from '@/components/StandardHeader';
 import { VitanaIndexChip, AutopilotChip } from '@/components/mobile/MobileActionChips';
@@ -69,6 +69,12 @@ export function MobileOrdersView({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [activeMode, setActiveMode] = useState('active');
+
+  const orderModes: ModeOption[] = [
+    { value: 'active', label: translate('orders.tabs.active', 'Active'), icon: '📦' },
+    { value: 'history', label: translate('orders.tabs.history', 'History'), icon: '✅' },
+  ];
 
   // Filter orders based on search
   const filteredActiveOrders = useMemo(() => {
@@ -254,6 +260,7 @@ export function MobileOrdersView({
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
         <div className="px-4">
           <UtilityActionButton 
+            compact
             className="min-w-0"
             trailingElement={
               <Button
@@ -278,6 +285,11 @@ export function MobileOrdersView({
                 placeholder={translate('orders.searchPlaceholder')} 
                 onSearch={(query) => setSearchQuery(query)}
               />
+              <MobileModePill
+                modes={orderModes}
+                activeMode={activeMode}
+                onModeChange={setActiveMode}
+              />
               <UniversalCalendarButton />
             </div>
           </UtilityActionButton>
@@ -294,44 +306,31 @@ export function MobileOrdersView({
         </div>
       )}
 
-      {/* Tabs content */}
-      <div className="px-4 pt-4">
-        <SplitBar defaultValue="active" className="w-full">
-          <SplitBarList className="mb-4">
-            <SplitBarTrigger value="active" className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              {translate('orders.tabs.active')} ({filteredActiveOrders.length})
-            </SplitBarTrigger>
-            <SplitBarTrigger value="history" className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              {translate('orders.tabs.history')} ({filteredHistoryOrders.length})
-            </SplitBarTrigger>
-          </SplitBarList>
+      {/* Content */}
+      <div className="px-4 pt-3 space-y-3">
+        {activeMode === 'active' && (
+          isLoading ? (
+            <LoadingSkeleton />
+          ) : filteredActiveOrders.length > 0 ? (
+            filteredActiveOrders.map(order => (
+              <OrderCard key={order.id} order={order} />
+            ))
+          ) : (
+            <EmptyState type="active" />
+          )
+        )}
 
-          <SplitBarContent value="active" className="space-y-3">
-            {isLoading ? (
-              <LoadingSkeleton />
-            ) : filteredActiveOrders.length > 0 ? (
-              filteredActiveOrders.map(order => (
-                <OrderCard key={order.id} order={order} />
-              ))
-            ) : (
-              <EmptyState type="active" />
-            )}
-          </SplitBarContent>
-
-          <SplitBarContent value="history" className="space-y-3">
-            {isLoading ? (
-              <LoadingSkeleton />
-            ) : filteredHistoryOrders.length > 0 ? (
-              filteredHistoryOrders.map(order => (
-                <OrderCard key={order.id} order={order} />
-              ))
-            ) : (
-              <EmptyState type="history" />
-            )}
-          </SplitBarContent>
-        </SplitBar>
+        {activeMode === 'history' && (
+          isLoading ? (
+            <LoadingSkeleton />
+          ) : filteredHistoryOrders.length > 0 ? (
+            filteredHistoryOrders.map(order => (
+              <OrderCard key={order.id} order={order} />
+            ))
+          ) : (
+            <EmptyState type="history" />
+          )
+        )}
       </div>
 
       {/* Order Detail Sheet */}

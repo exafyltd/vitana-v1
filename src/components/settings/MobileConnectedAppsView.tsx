@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { useTranslation } from "@/hooks/useTranslation";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
@@ -57,6 +58,15 @@ export function MobileConnectedAppsView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [connectPopupOpen, setConnectPopupOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  const connectorModes: ModeOption[] = [
+    { value: 'all', label: translate('connectedApps.sections.all', 'All'), icon: '🔌' },
+    { value: 'social', label: translate('connectedApps.sections.social', 'Social'), icon: '📱' },
+    { value: 'fitness', label: translate('connectedApps.sections.fitness', 'Fitness'), icon: '💪' },
+    { value: 'health', label: translate('connectedApps.sections.health', 'Health'), icon: '🏥' },
+    { value: 'other', label: translate('connectedApps.sections.other', 'Other'), icon: '🔧' },
+  ];
   
   // Social media import dialog state
   const [socialImportOpen, setSocialImportOpen] = useState(false);
@@ -124,7 +134,7 @@ export function MobileConnectedAppsView() {
 
   return (
     <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
-      <div className="p-4 pb-32 space-y-4">
+      <div className="p-4 pb-32 space-y-3">
         {/* Header */}
         <StandardHeader
           title={translate('connectedApps.title')}
@@ -133,6 +143,7 @@ export function MobileConnectedAppsView() {
 
         {/* Action Bar */}
         <UtilityActionButton
+          compact
           afterGiftVoucherChildren={
             <>
               <VitanaIndexChip />
@@ -146,6 +157,11 @@ export function MobileConnectedAppsView() {
           <ExpandableSearchButton
             placeholder={translate('connectedApps.searchPlaceholder')}
             onSearch={setSearchQuery}
+          />
+          <MobileModePill
+            modes={connectorModes}
+            activeMode={activeCategory}
+            onModeChange={setActiveCategory}
           />
           <UniversalCalendarButton />
           <Button
@@ -167,7 +183,7 @@ export function MobileConnectedAppsView() {
 
         {/* Integration Sections */}
         <div className="space-y-3">
-          {filteredSocial.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'social') && filteredSocial.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.social')}
               emoji="📱"
@@ -176,7 +192,7 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {filteredFitness.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'fitness') && filteredFitness.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.fitness')}
               emoji="💪"
@@ -185,7 +201,7 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {filteredHealth.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'health') && filteredHealth.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.health')}
               emoji="🩺"
@@ -194,7 +210,7 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {filteredOther.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'other') && filteredOther.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.other')}
               emoji="🔧"

@@ -50,6 +50,8 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { MobileConversationCard } from "@/components/messages/mobile/MobileConversationCard";
 import { MobileInboxEmptyState } from "@/components/messages/mobile/MobileInboxEmptyState";
 import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileConversationSkeleton";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Messages() {
@@ -86,6 +88,11 @@ export default function Messages() {
   const [inboxSearchQuery, setInboxSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
+
+  const inboxModes: ModeOption[] = [
+    { value: 'global', label: translate('inbox.contextTabs.community', 'Community'), icon: '🌐' },
+    { value: 'tenant', label: translate('inbox.contextTabs.network', 'Network'), icon: '🏢' },
+  ];
 
   // Parse query params to auto-select thread from notifications
   const [searchParams, setSearchParams] = useSearchParams();
@@ -969,47 +976,21 @@ export default function Messages() {
               </div>
             ) : (
               /* Inbox list view */
-              <div className="p-4 pb-32 space-y-4">
-                {/* StandardHeader - same pattern as Events/Wallet */}
+              <div className="p-4 pb-32 space-y-3">
+                {/* StandardHeader */}
                 <StandardHeader
                   title={translate('inbox.title')}
                   description={translate('inbox.description')}
                 />
                 
-                {/* Action Rail - same pattern */}
+                {/* Action Rail */}
                 <UtilityActionButton 
+                  compact
                   className="min-w-0"
                   afterGiftVoucherChildren={
                     <>
-                      {/* Vitana Index - pill style */}
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => navigate('/health')}
-                        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-                      >
-                        <span className="text-xs opacity-60">🧬</span>
-                        <span className="text-sm font-medium text-primary">742</span>
-                      </Button>
-                      
-                      {/* Autopilot - pill style with label */}
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => setAutopilotOpen(true)}
-                        className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
-                      >
-                        <Plane className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
-                        {pendingCount > 0 && (
-                          <Badge 
-                            variant="destructive" 
-                            className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
-                          >
-                            {pendingCount}
-                          </Badge>
-                        )}
-                      </Button>
+                      <VitanaIndexChip />
+                      <AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} />
                     </>
                   }
                 >
@@ -1021,9 +1002,14 @@ export default function Messages() {
                       dropdownItems={searchDropdownItems}
                       onItemClick={handleSearchItemClick}
                     />
+                    <MobileModePill
+                      modes={inboxModes}
+                      activeMode={messageContext}
+                      onModeChange={(v) => { userSelectedContextRef.current = true; setMessageContext(v as 'global' | 'tenant'); }}
+                    />
                     <UniversalCalendarButton />
                     
-                    {/* New Message button - primary action */}
+                    {/* New Message button */}
                     <Button 
                       onClick={() => setShowNewConversation(true)}
                       variant="ghost"
@@ -1036,61 +1022,26 @@ export default function Messages() {
                   </div>
                 </UtilityActionButton>
                 
-                {/* Mobile Tabs - consolidated SplitBar */}
-                <SplitBar 
-                  value={messageContext} 
-                  onValueChange={(value: string) => { userSelectedContextRef.current = true; setMessageContext(value as 'global' | 'tenant'); }}
-                  className="w-full"
-                >
-                  <SplitBarList>
-                    <SplitBarTrigger value="global">{translate('inbox.contextTabs.community')}</SplitBarTrigger>
-                    <SplitBarTrigger value="tenant">{translate('inbox.contextTabs.network')}</SplitBarTrigger>
-                  </SplitBarList>
-                  
-                  <SplitBarContent value="global" className="pt-3">
-                    {/* Sub-filter tabs */}
-                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-                      {['all', 'direct', 'groups'].map((filter) => (
-                        <Button
-                          key={filter}
-                          variant={conversationFilter === filter ? "default" : "ghost"}
-                          size="sm"
-                          onClick={() => setConversationFilter(filter as any)}
-                          className={`h-8 px-3 rounded-full shrink-0 text-sm ${
-                            conversationFilter === filter 
-                              ? 'bg-primary text-primary-foreground' 
-                              : 'bg-muted/60'
-                          }`}
-                        >
-                          {translate(`inbox.tabs.${filter}`)}
-                        </Button>
-                      ))}
-                    </div>
-                    {renderMobileConversationList()}
-                  </SplitBarContent>
-                  
-                  <SplitBarContent value="tenant" className="pt-3">
-                    {/* Sub-filter tabs */}
-                    <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-                      {['all', 'direct', 'groups'].map((filter) => (
-                        <Button
-                          key={filter}
-                          variant={conversationFilter === filter ? "default" : "ghost"}
-                          size="sm"
-                          onClick={() => setConversationFilter(filter as any)}
-                          className={`h-8 px-3 rounded-full shrink-0 text-sm ${
-                            conversationFilter === filter 
-                              ? 'bg-primary text-primary-foreground' 
-                              : 'bg-muted/60'
-                          }`}
-                        >
-                          {translate(`inbox.tabs.${filter}`)}
-                        </Button>
-                      ))}
-                    </div>
-                    {renderMobileConversationList()}
-                  </SplitBarContent>
-                </SplitBar>
+                {/* Sub-filter pills */}
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {['all', 'direct', 'groups'].map((filter) => (
+                    <Button
+                      key={filter}
+                      variant={conversationFilter === filter ? "default" : "ghost"}
+                      size="sm"
+                      onClick={() => setConversationFilter(filter as any)}
+                      className={`h-8 px-3 rounded-full shrink-0 text-sm ${
+                        conversationFilter === filter 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'bg-muted/60'
+                      }`}
+                    >
+                      {translate(`inbox.tabs.${filter}`)}
+                    </Button>
+                  ))}
+                </div>
+                
+                {renderMobileConversationList()}
               </div>
             )}
           </div>
