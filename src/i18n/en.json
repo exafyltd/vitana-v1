@@ -955,9 +955,9 @@
     "staked": "Staked",
     "searchWallet": "Search wallet...",
     "tabs": {
-      "balances": "💰 Balances",
-      "activity": "📊 Activity",
-      "actions": "⚡ Actions"
+      "balances": "Balances",
+      "activity": "Activity",
+      "actions": "Actions"
     },
     "filters": {
       "commissions": "Sell & Earn Commissions",
@@ -985,8 +985,8 @@
       "archived": "Archived"
     },
     "contextTabs": {
-      "community": "🌍 Community",
-      "network": "🏢 Network"
+      "community": "Community",
+      "network": "Network"
     },
     "actions": {
       "new": "New",
@@ -1082,9 +1082,9 @@
     "searchPlaceholder": "Search settings, privacy controls, integrations...",
     "quickSetup": "Quick Setup",
     "tabs": {
-      "overview": "⚙️ Overview",
-      "notifications": "🔔 Notifications",
-      "quickActions": "⚡ Quick Actions"
+      "overview": "Overview",
+      "notifications": "Notifications",
+      "quickActions": "Quick Actions"
     },
     "categories": {
       "privacy": "Privacy",
