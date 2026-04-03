@@ -341,7 +341,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
   return (
     <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
-      <ResponsiveDialogContent className="max-w-2xl max-h-[80vh]" fullscreenOnMobile>
+      <ResponsiveDialogContent className="sm:max-w-2xl sm:max-h-[80vh]" fullscreenOnMobile>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle className="flex items-center space-x-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400/20 to-orange-500/20 flex items-center justify-center">
