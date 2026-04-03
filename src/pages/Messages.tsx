@@ -89,6 +89,11 @@ export default function Messages() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { pendingCount } = useAutopilot();
 
+  const inboxModes: ModeOption[] = [
+    { value: 'global', label: translate('inbox.contextTabs.community', 'Community'), icon: '🌐' },
+    { value: 'tenant', label: translate('inbox.contextTabs.network', 'Network'), icon: '🏢' },
+  ];
+
   // Parse query params to auto-select thread from notifications
   const [searchParams, setSearchParams] = useSearchParams();
   const urlThreadId = searchParams.get('thread');
