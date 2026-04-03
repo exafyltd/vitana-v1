@@ -14,11 +14,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
-import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { TicketPurchase } from '@/hooks/useEventTickets';
 import { MobileOrderDetailSheet } from './MobileOrderDetailSheet';
 import { UtilityActionButton } from '@/components/ui/utility-action-button';
 import { ExpandableSearchButton } from '@/components/ui/expandable-search-button';
+import { MobileModePill, ModeOption } from '@/components/ui/MobileModePill';
 import { UniversalCalendarButton } from '@/components/UniversalCalendarButton';
 import StandardHeader from '@/components/StandardHeader';
 import { VitanaIndexChip, AutopilotChip } from '@/components/mobile/MobileActionChips';
