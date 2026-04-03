@@ -218,11 +218,6 @@ export function MeetupDetailsDrawer({
   const { translate, isGerman } = useTranslation();
   const queryClient = useQueryClient();
 
-  // Reset message modal when drawer closes
-  useEffect(() => {
-    if (!open) setMessageModalOpen(false);
-  }, [open]);
-
   // Signal ORB suppression when drawer is open on mobile
   useEffect(() => {
     if (open && isMobile) {
@@ -740,6 +735,8 @@ export function MeetupDetailsDrawer({
       return;
     }
 
+    // Close drawer first to avoid overlapping overlays/backdrop-blur flickering
+    onOpenChange(false);
     setMessageModalOpen(true);
   };
 
@@ -772,11 +769,9 @@ export function MeetupDetailsDrawer({
         description: translate('eventDrawer.messageSentDesc', 'Your message has been sent to {name}').replace('{name}', event.creator_display_name || event.author?.name || translate('eventDrawer.host', 'the host')),
       });
 
-      // 4. Close modal and drawer
+      // 4. Close modal and navigate to messages
       setMessageModalOpen(false);
-      onOpenChange(false);
 
-      // 5. Navigate to messages view
       navigate('/messages', { 
         state: { 
           threadId: thread.id,
