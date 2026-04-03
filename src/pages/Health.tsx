@@ -12,6 +12,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
