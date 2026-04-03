@@ -119,8 +119,8 @@ const ResponsiveDialogContent = React.forwardRef<
               "absolute rounded-sm opacity-70 ring-offset-background transition-opacity",
               "hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
               "disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
-              isMobile 
-                ? "right-3 top-3 w-11 h-11 flex items-center justify-center" 
+              isMobile
+                ? "right-4 top-5 z-20 w-11 h-11 flex items-center justify-center"
                 : "right-4 top-4"
             )}
           >
