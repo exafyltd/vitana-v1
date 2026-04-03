@@ -704,7 +704,7 @@ const EventsAndMeetups = () => {
               isMobile && "sticky top-0 z-30 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 pb-0"
             )}>
               <StandardHeader
-                title={isMobile ? translate('events.titleShort', 'Events') : translate('events.title', 'Events & MeetUps')}
+                title={isMobile ? translate('events.titleShort', 'Events & MeetUps') : translate('events.title', 'Events & MeetUps')}
                 description={translate('events.description', 'Discover formal events and casual meetups in your community')}
               />
               
