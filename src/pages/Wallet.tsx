@@ -315,47 +315,21 @@ export default function Wallet() {
         <SEO title={`${translate('wallet.title')} | VITANA`} description={translate('wallet.description')} canonical={window.location.href} />
         
         <div className="flex flex-col min-h-dvh bg-gradient-to-b from-primary/5 to-background">
-          <div className="p-4 pb-32 space-y-4">
-            {/* StandardHeader - same pattern as Events/LiveRooms/MediaHub/BusinessHub */}
+          <div className="p-4 pb-32 space-y-3">
+            {/* StandardHeader */}
             <StandardHeader
               title={translate('wallet.title')}
               description={translate('wallet.description')}
             />
             
-            {/* Action Rail - same pattern */}
+            {/* Action Rail */}
             <UtilityActionButton 
+              compact
               className="min-w-0"
               afterGiftVoucherChildren={
                 <>
-                  {/* Vitana Index - pill style */}
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => navigate('/health')}
-                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 shrink-0"
-                  >
-                    <span className="text-xs opacity-60">🧬</span>
-                    <span className="text-sm font-medium text-primary">742</span>
-                  </Button>
-                  
-                  {/* Autopilot - pill style with label */}
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => setAutopilotOpen(true)}
-                    className="h-9 px-3 rounded-full bg-muted/60 hover:bg-muted gap-1.5 relative shrink-0"
-                  >
-                    <Plane className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">{translate('actionBar.autopilot', 'Autopilot')}</span>
-                    {pendingCount > 0 && (
-                      <Badge 
-                        variant="destructive" 
-                        className="absolute -top-1 -right-1 w-4 h-4 rounded-full p-0 flex items-center justify-center text-[10px] animate-pulse"
-                      >
-                        {pendingCount}
-                      </Badge>
-                    )}
-                  </Button>
+                  <VitanaIndexChip />
+                  <AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} />
                 </>
               }
             >
@@ -363,6 +337,11 @@ export default function Wallet() {
                 <ExpandableSearchButton 
                   placeholder={translate('wallet.searchWallet')}
                   onSearch={(query) => console.log('Search:', query)}
+                />
+                <MobileModePill
+                  modes={mobileWalletModes}
+                  activeMode={mobileWalletMode}
+                  onModeChange={setMobileWalletMode}
                 />
                 <UniversalCalendarButton />
                 
@@ -379,17 +358,9 @@ export default function Wallet() {
               </div>
             </UtilityActionButton>
             
-            {/* Mobile Tabs - consolidated SplitBar */}
-            <SplitBar defaultValue="balances" className="w-full">
-              <SplitBarList>
-                <SplitBarTrigger value="balances">{translate('wallet.tabs.balances')}</SplitBarTrigger>
-                <SplitBarTrigger value="activity">{translate('wallet.tabs.activity')}</SplitBarTrigger>
-                <SplitBarTrigger value="actions">{translate('wallet.tabs.actions')}</SplitBarTrigger>
-              </SplitBarList>
-              
-              {/* Balances Tab - Simplified balance cards */}
-              <SplitBarContent value="balances" className="space-y-3 pt-3">
-                {/* Balance Cards - vertical stack */}
+            {/* Content based on active mode */}
+            {mobileWalletMode === 'balances' && (
+              <div className="space-y-3">
                 <MobileWalletBalanceCard
                   type="cash"
                   title={translate('wallet.usdBalance')}
@@ -423,7 +394,6 @@ export default function Wallet() {
                   onPress={isIAPRestricted() ? undefined : () => handleWalletAction('stake-tokens')}
                 />
                 
-                {/* Quick Actions Card */}
                 <MobileWalletQuickActions
                   onAddFunds={() => handleWalletAction('add-funds')}
                   onSend={() => handleWalletAction('send', 'USD')}
@@ -433,11 +403,11 @@ export default function Wallet() {
                   onStakeTokens={() => handleWalletAction('stake-tokens')}
                   className="mt-4"
                 />
-              </SplitBarContent>
-              
-              {/* Activity Tab - Transaction list */}
-              <SplitBarContent value="activity" className="space-y-3 pt-3">
-                {/* Filter Chip */}
+              </div>
+            )}
+            
+            {mobileWalletMode === 'activity' && (
+              <div className="space-y-3">
                 {filterType && (
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary" className="pl-3 pr-2 py-1.5 flex items-center gap-2">
@@ -459,14 +429,15 @@ export default function Wallet() {
                   maxItems={10}
                   showHeader={true}
                 />
-              </SplitBarContent>
-              
-              {/* Actions Tab - Smart actions & opportunities */}
-              <SplitBarContent value="actions" className="space-y-4 pt-3">
+              </div>
+            )}
+            
+            {mobileWalletMode === 'actions' && (
+              <div className="space-y-4">
                 <PredictiveActionsCard className="w-full" />
                 <DynamicRewardOpportunityCard className="w-full" />
-              </SplitBarContent>
-            </SplitBar>
+              </div>
+            )}
           </div>
         </div>
         

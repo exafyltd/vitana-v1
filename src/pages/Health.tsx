@@ -215,6 +215,7 @@ export default withScreenId(function Health() {
           {/* Utility Action Bar */}
           <div className="px-4">
             <UtilityActionButton
+              compact
               afterGiftVoucherChildren={
                 <>
                   <VitanaIndexChip />
@@ -226,6 +227,11 @@ export default withScreenId(function Health() {
               }
             >
               <ExpandableSearchButton placeholder={translate('health.searchPlaceholder', 'Search reports, supplements...')} />
+              <MobileModePill
+                modes={healthModes}
+                activeMode={mobileTab}
+                onModeChange={(v) => setMobileTab(v as any)}
+              />
               <UniversalCalendarButton />
               <Button
                 variant="ghost"
@@ -239,17 +245,9 @@ export default withScreenId(function Health() {
             </UtilityActionButton>
           </div>
 
-          {/* SplitBar Tabs */}
-          <SplitBar value={mobileTab} onValueChange={(v) => setMobileTab(v as any)}>
-            <div className="px-4 pb-0">
-              <SplitBarList>
-                <SplitBarTrigger value="overview">{translate('health.tabs.overview', 'Overview')}</SplitBarTrigger>
-                <SplitBarTrigger value="medical">{translate('health.tabs.medical', 'Medical')}</SplitBarTrigger>
-                <SplitBarTrigger value="supplements">{translate('health.tabs.supplements', 'Supplements')}</SplitBarTrigger>
-              </SplitBarList>
-            </div>
-
-            <SplitBarContent value="overview" className="flex-1 overflow-y-auto">
+          {/* Content based on active mode */}
+          {mobileTab === 'overview' && (
+            <div className="flex-1 overflow-y-auto">
               <MobileHealthSnapshot
                 vitanaIndex={vitanaScore}
                 vitanaPercentile={15}
@@ -269,16 +267,20 @@ export default withScreenId(function Health() {
                 ]}
                 onTakeAction={() => setHealthActionsOpen(true)}
               />
-            </SplitBarContent>
+            </div>
+          )}
 
-            <SplitBarContent value="medical" className="flex-1 overflow-y-auto">
+          {mobileTab === 'medical' && (
+            <div className="flex-1 overflow-y-auto">
               <MobileHealthMedicalTab onUpload={() => setUploadSheetOpen(true)} />
-            </SplitBarContent>
+            </div>
+          )}
 
-            <SplitBarContent value="supplements" className="flex-1 overflow-y-auto">
+          {mobileTab === 'supplements' && (
+            <div className="flex-1 overflow-y-auto">
               <MobileHealthSupplementsTab />
-            </SplitBarContent>
-          </SplitBar>
+            </div>
+          )}
         </div>
         
         <AutopilotPopup

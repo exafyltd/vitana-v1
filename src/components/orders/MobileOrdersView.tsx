@@ -306,44 +306,31 @@ export function MobileOrdersView({
         </div>
       )}
 
-      {/* Tabs content */}
-      <div className="px-4 pt-4">
-        <SplitBar defaultValue="active" className="w-full">
-          <SplitBarList className="mb-4">
-            <SplitBarTrigger value="active" className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              {translate('orders.tabs.active')} ({filteredActiveOrders.length})
-            </SplitBarTrigger>
-            <SplitBarTrigger value="history" className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
-              {translate('orders.tabs.history')} ({filteredHistoryOrders.length})
-            </SplitBarTrigger>
-          </SplitBarList>
+      {/* Content */}
+      <div className="px-4 pt-3 space-y-3">
+        {activeMode === 'active' && (
+          isLoading ? (
+            <LoadingSkeleton />
+          ) : filteredActiveOrders.length > 0 ? (
+            filteredActiveOrders.map(order => (
+              <OrderCard key={order.id} order={order} />
+            ))
+          ) : (
+            <EmptyState type="active" />
+          )
+        )}
 
-          <SplitBarContent value="active" className="space-y-3">
-            {isLoading ? (
-              <LoadingSkeleton />
-            ) : filteredActiveOrders.length > 0 ? (
-              filteredActiveOrders.map(order => (
-                <OrderCard key={order.id} order={order} />
-              ))
-            ) : (
-              <EmptyState type="active" />
-            )}
-          </SplitBarContent>
-
-          <SplitBarContent value="history" className="space-y-3">
-            {isLoading ? (
-              <LoadingSkeleton />
-            ) : filteredHistoryOrders.length > 0 ? (
-              filteredHistoryOrders.map(order => (
-                <OrderCard key={order.id} order={order} />
-              ))
-            ) : (
-              <EmptyState type="history" />
-            )}
-          </SplitBarContent>
-        </SplitBar>
+        {activeMode === 'history' && (
+          isLoading ? (
+            <LoadingSkeleton />
+          ) : filteredHistoryOrders.length > 0 ? (
+            filteredHistoryOrders.map(order => (
+              <OrderCard key={order.id} order={order} />
+            ))
+          ) : (
+            <EmptyState type="history" />
+          )
+        )}
       </div>
 
       {/* Order Detail Sheet */}

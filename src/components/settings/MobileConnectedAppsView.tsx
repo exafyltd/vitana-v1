@@ -183,7 +183,7 @@ export function MobileConnectedAppsView() {
 
         {/* Integration Sections */}
         <div className="space-y-3">
-          {filteredSocial.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'social') && filteredSocial.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.social')}
               emoji="📱"
@@ -192,7 +192,7 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {filteredFitness.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'fitness') && filteredFitness.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.fitness')}
               emoji="💪"
@@ -201,7 +201,7 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {filteredHealth.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'health') && filteredHealth.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.health')}
               emoji="🩺"
@@ -210,7 +210,7 @@ export function MobileConnectedAppsView() {
             />
           )}
 
-          {filteredOther.length > 0 && (
+          {(activeCategory === 'all' || activeCategory === 'other') && filteredOther.length > 0 && (
             <MobileIntegrationSection
               title={translate('connectedApps.sections.other')}
               emoji="🔧"

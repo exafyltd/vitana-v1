@@ -216,6 +216,7 @@ export default function MobileSettings() {
           </Card>
 
           {/* Navigation Cards */}
+          <div ref={sectionRefs.privacy}></div>
           <div className="space-y-2">
             <NavCard
               icon={Shield}
