@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { useTranslation } from "@/hooks/useTranslation";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
