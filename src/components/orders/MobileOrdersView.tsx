@@ -260,6 +260,7 @@ export function MobileOrdersView({
       <div className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/20">
         <div className="px-4">
           <UtilityActionButton 
+            compact
             className="min-w-0"
             trailingElement={
               <Button
@@ -283,6 +284,11 @@ export function MobileOrdersView({
               <ExpandableSearchButton 
                 placeholder={translate('orders.searchPlaceholder')} 
                 onSearch={(query) => setSearchQuery(query)}
+              />
+              <MobileModePill
+                modes={orderModes}
+                activeMode={activeMode}
+                onModeChange={setActiveMode}
               />
               <UniversalCalendarButton />
             </div>
