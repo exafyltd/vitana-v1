@@ -3,6 +3,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useOrbSuppression } from "@/hooks/useOrbSuppression"
 
 // ============================================================================
 // ResponsiveDialog - Automatically renders as bottom sheet on mobile
@@ -31,19 +32,22 @@ interface ResponsiveDialogOverlayProps
 const ResponsiveDialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   ResponsiveDialogOverlayProps
->(({ className, overlayClassName, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm",
-      "data-[state=open]:animate-in data-[state=closed]:animate-out",
-      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      overlayClassName,
-      className
-    )}
-    {...props}
-  />
-))
+>(({ className, overlayClassName, ...props }, ref) => {
+  useOrbSuppression();
+  return (
+    <DialogPrimitive.Overlay
+      ref={ref}
+      className={cn(
+        "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out",
+        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        overlayClassName,
+        className
+      )}
+      {...props}
+    />
+  );
+})
 ResponsiveDialogOverlay.displayName = "ResponsiveDialogOverlay"
 
 // Content wrapper that switches between centered dialog and bottom sheet

@@ -2,6 +2,7 @@ import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
 import { cn } from "@/lib/utils"
+import { useOrbSuppression } from "@/hooks/useOrbSuppression"
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -23,13 +24,16 @@ const DrawerClose = DrawerPrimitive.Close
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Overlay
-    ref={ref}
-    className={cn("fixed inset-0 z-50 backdrop-blur-sm bg-black/20", className)}
-    {...props}
-  />
-))
+>(({ className, ...props }, ref) => {
+  useOrbSuppression();
+  return (
+    <DrawerPrimitive.Overlay
+      ref={ref}
+      className={cn("fixed inset-0 z-50 backdrop-blur-sm bg-black/20", className)}
+      {...props}
+    />
+  );
+})
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName
 
 const DrawerContent = React.forwardRef<
