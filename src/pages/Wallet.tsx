@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
+import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
+import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivationalBanner";
 import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionPopup";
 import { PopupCoordinationWrapper } from "@/components/payment/PopupCoordinationWrapper";
