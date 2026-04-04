@@ -1,0 +1,10 @@
+node_modules
+.git
+docs
+reports
+stories
+scripts
+.lovable
+.claude
+*.md
+!README.md
