@@ -61,3 +61,15 @@ jobs:
           done
           echo "::error::Health check failed after 6 attempts"
           exit 1
+
+      - name: Trigger E2E smoke tests
+        if: success()
+        continue-on-error: true
+        run: |
+          echo "Dispatching E2E smoke tests against $DEPLOY_URL"
+          curl -s -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.CROSS_REPO_PAT }}" \
+            https://api.github.com/repos/exafyltd/vitana-platform/dispatches \
+            -d '{"event_type":"community-app-deployed","client_payload":{"community_url":"'"$DEPLOY_URL"'","projects":"desktop-community,mobile-community"}}'
+          echo "E2E smoke test dispatch sent"
