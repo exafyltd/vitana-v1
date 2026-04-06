@@ -4,6 +4,7 @@ import { useAIConsent } from "./useAIConsent";
 
 const ORB_SCRIPT_URL = "https://gateway-q74ibpv6ia-uc.a.run.app/command-hub/orb-widget.js";
 const ORB_SCRIPT_ID = "vtorb-script";
+const PENDING_OPEN_KEY = "vitana_orb_pending_open";
 
 /** Dynamically inject the ORB widget script tag */
 function loadOrbScript(): Promise<void> {
@@ -39,7 +40,6 @@ function removeOrbScript() {
 
 export function useOrbVoiceWidget() {
   const initialized = useRef(false);
-  const prevConsentRef = useRef(false);
   const { user, session, loading } = useAuth();
   const { hasConsent, isLoading: consentLoading } = useAIConsent();
 
@@ -56,13 +56,15 @@ export function useOrbVoiceWidget() {
         console.log("[ORB] Widget destroyed — AI consent revoked");
       }
       removeOrbScript();
-      prevConsentRef.current = false;
       return;
     }
 
-    // Detect if consent was just granted (transition from false → true)
-    const consentJustGranted = hasConsent && !prevConsentRef.current;
-    prevConsentRef.current = hasConsent;
+    // Check if user just granted consent and wants the overlay to open
+    let pendingOpen = false;
+    try {
+      pendingOpen = sessionStorage.getItem(PENDING_OPEN_KEY) === 'true';
+      if (pendingOpen) sessionStorage.removeItem(PENDING_OPEN_KEY);
+    } catch {}
 
     // Consent granted → load script and init widget
     let cancelled = false;
@@ -74,24 +76,20 @@ export function useOrbVoiceWidget() {
         if (!orb) return;
 
         if (!initialized.current) {
-          // If consent was just granted, init with FAB hidden — we'll go straight to overlay
-          const showFab = !consentJustGranted;
           if (user && session) {
-            orb.init({ showFab, authToken: session.access_token });
+            orb.init({ showFab: true, authToken: session.access_token });
           } else {
-            orb.init({ showFab });
+            orb.init({ showFab: true });
           }
           initialized.current = true;
-          console.log("[ORB] Widget initialized (consent granted, showFab=" + showFab + ")");
+          console.log("[ORB] Widget initialized (consent granted)");
         }
 
-        // If consent was just granted, go straight to overlay then enable FAB for future use
-        if (consentJustGranted) {
-          console.log("[ORB] Consent just granted — opening overlay directly");
+        // If user just consented via the placeholder, open overlay automatically
+        if (pendingOpen) {
+          console.log("[ORB] Pending open — launching overlay");
           const o = (window as any).VitanaOrb;
-          if (o && typeof o.show === 'function') {
-            o.show();
-          }
+          if (o && typeof o.show === 'function') o.show();
         }
       })
       .catch((err) => {
