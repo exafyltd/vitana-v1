@@ -18,6 +18,15 @@ export function OrbConsentPlaceholder() {
         className="vtorb-fab"
         onClick={() => setDialogOpen(true)}
         aria-label="Open Vitana Voice — consent required"
+        style={{
+          width: 64,
+          height: 64,
+          borderRadius: '50%',
+          border: 'none',
+          cursor: 'pointer',
+          background: 'radial-gradient(circle at 35% 35%, #7c8db5, #5a6a8a 50%, #3a4a6a 100%)',
+          boxShadow: '0 4px 24px rgba(90,110,150,0.5), inset 0 1px 2px rgba(255,255,255,0.15)',
+        }}
       />
       <AIDataConsentDialog
         open={dialogOpen}
