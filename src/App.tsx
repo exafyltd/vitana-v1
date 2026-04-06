@@ -30,6 +30,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
+import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
 
@@ -271,7 +272,7 @@ const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
   useAppilix();
-  useOrbVoiceWidget();
+  const { hasConsent: orbConsent } = useOrbVoiceWidget();
   const { user, session } = useAuth();
 
   // Set Appilix push notification user identity for mobile device mapping
@@ -313,7 +314,8 @@ const AppHooksInitializer = () => {
     initializePushNotifications();
   }, [user?.id, session?.access_token]);
 
-  return null;
+  // Show ORB consent placeholder when AI consent not yet granted
+  return orbConsent ? null : <OrbConsentPlaceholder />;
 };
 
 // Mobile/Desktop settings router
