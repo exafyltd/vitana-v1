@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useUserPreferences } from './useUserPreferences';
+import { useAIConsent } from './useAIConsent';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface TTSOptions {
@@ -10,6 +11,7 @@ export interface TTSOptions {
 
 export function useTextToSpeech() {
   const { preferences } = useUserPreferences();
+  const { hasConsent } = useAIConsent();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isSupported] = useState(() => 'speechSynthesis' in window);
 
@@ -65,6 +67,29 @@ export function useTextToSpeech() {
       };
 
       // Route to appropriate TTS service
+      // If no AI consent, skip cloud TTS and fall back to browser speechSynthesis
+      if (!hasConsent) {
+        console.log('[TTS] No AI consent — falling back to browser TTS');
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = preferences.tts_speed || 1.0;
+        utterance.pitch = preferences.tts_pitch || 1.0;
+        utterance.volume = preferences.tts_volume / 100;
+        utterance.lang = sttLanguage;
+
+        utterance.onend = () => {
+          setIsSpeaking(false);
+          options?.onEnd?.();
+        };
+
+        utterance.onerror = () => {
+          setIsSpeaking(false);
+          options?.onError?.(new Error('Speech synthesis failed'));
+        };
+
+        window.speechSynthesis.speak(utterance);
+        return;
+      }
+
       if (isChirp3Voice || (!isGoogleSpeechVoice && !isSerbian)) {
         // Use Gemini TTS (Chirp 3 HD)
         const voiceId = isChirp3Voice ? userVoice : GEMINI_VOICE_MAP[sttLanguage];
@@ -162,7 +187,7 @@ export function useTextToSpeech() {
       setIsSpeaking(false);
       options?.onError?.(error as Error);
     }
-  }, [preferences, isSupported]);
+  }, [preferences, isSupported, hasConsent]);
 
   const cancel = useCallback(() => {
     if (isSupported) {

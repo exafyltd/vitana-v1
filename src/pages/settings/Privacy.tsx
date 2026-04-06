@@ -238,7 +238,7 @@ function Privacy() {
                           <div>
                             <h4 className="font-medium">Share data with AI provider</h4>
                             <p className="text-sm text-muted-foreground">
-                              Voice, text, diary, and profile data is sent to Google (Gemini AI) via Lovable AI Gateway for personalized responses.
+                              Allow personal data to be sent to third-party AI services for AI-powered features.
                             </p>
                           </div>
                           <Switch
@@ -251,6 +251,12 @@ function Privacy() {
                               }
                             }}
                           />
+                        </div>
+                        <div className="text-xs text-muted-foreground space-y-1 border-l-2 border-muted pl-3">
+                          <p><strong>Data shared:</strong> Voice recordings, transcripts, typed prompts, chat messages, diary entries, Memory Garden content, wellness goals, profile context, social profile text/URLs</p>
+                          <p><strong>Recipients:</strong> Google (Gemini AI / Cloud AI services), Lovable AI Gateway</p>
+                          <p><strong>Purpose:</strong> AI responses, voice synthesis, proactive greetings, health coaching, profile enrichment</p>
+                          <p><strong>Control:</strong> Toggle off here to revoke consent at any time</p>
                         </div>
                         {hasConsent && (
                           <p className="text-xs text-muted-foreground">

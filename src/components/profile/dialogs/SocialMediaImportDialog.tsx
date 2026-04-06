@@ -8,6 +8,8 @@ import { Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useAIConsent } from '@/hooks/useAIConsent';
+import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
 
 type Platform = 'linkedin' | 'instagram' | 'tiktok' | 'youtube' | 'facebook' | 'x';
 
@@ -71,8 +73,14 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
   const [importing, setImporting] = useState(false);
   const { toast } = useToast();
   const { translate } = useTranslation();
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
 
   const handleImport = async () => {
+    if (!hasConsent) {
+      setConsentDialogOpen(true);
+      return;
+    }
+
     // Validate profileId is a real UUID (not 'current-user' or empty)
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!profileId || !uuidRegex.test(profileId)) {
@@ -212,6 +220,11 @@ export const SocialMediaImportDialog: React.FC<SocialMediaImportDialogProps> = (
           </Button>
         </div>
       </DialogContent>
+      <AIDataConsentDialog
+        open={consentDialogOpen}
+        onOpenChange={setConsentDialogOpen}
+        onConsent={grantConsent}
+      />
     </Dialog>
   );
 };

@@ -37,7 +37,7 @@ const PrivacyPolicy = () => {
             Privacy Policy for the Maxina Mobile Application
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>Effective Date:</strong> 29th March 2025
+            <strong>Effective Date:</strong> 6th April 2026
           </p>
 
           <p className="text-foreground/90 leading-relaxed">
@@ -131,7 +131,7 @@ const PrivacyPolicy = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
             <li><strong>Service Providers and Partners:</strong> To help us operate, maintain, and improve the App and the underlying Vitana System (e.g., hosting providers, analytics services). These third parties are contractually bound to protect your data and only process it as directed by us.</li>
-            <li><strong>AI Service Providers:</strong> To power the in-app AI assistant, certain personal data — including voice recordings and transcripts, text messages and diary entries, Memory Garden entries, wellness goals, and profile context (such as your name and preferences) — may be transmitted to Google (Gemini AI models) via the Lovable AI Gateway. This data is sent only after you provide explicit consent through an in-app disclosure dialog. It is transmitted via encrypted connections and is not permanently stored by the AI provider. You may revoke this consent at any time in Settings &gt; Privacy. Google is contractually required to provide protections equivalent to or exceeding those described in this Privacy Policy.</li>
+            <li><strong>AI Service Providers:</strong> To power the in-app AI assistant and related AI features, certain personal data — including voice recordings and transcripts, typed prompts and chat messages, diary entries, Memory Garden entries, wellness goals, profile context (such as your name and preferences), and social media profile URLs and bio text (when using import/enrichment features) — may be transmitted to Google (Gemini AI models and Google Cloud AI services) via the Lovable AI Gateway. This data is used to generate personalized AI responses, voice synthesis, proactive greetings, health coaching, and profile enrichment suggestions. This data is sent only after you provide explicit consent through an in-app disclosure dialog that appears before first use of any AI feature. It is transmitted via encrypted connections and is not permanently stored by the AI provider. You may revoke this consent at any time in Settings &gt; Privacy. Google is contractually required to provide protections equivalent to or exceeding those described in this Privacy Policy.</li>
             <li><strong>Affiliates and Subsidiaries:</strong> We may share data with subsidiaries or affiliates under Exafy LTD that support our business operations, provided they also adhere to this Privacy Policy.</li>
             <li><strong>Legal or Regulatory Authorities:</strong> We may disclose data if required to do so by law or in good faith that such disclosure is necessary to comply with legal processes or to protect our rights, property, or personal safety.</li>
             <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, personal data may be transferred to the acquiring entity under the same or a revised privacy policy, subject to your rights to be notified and/or to withdraw consent.</li>
@@ -229,7 +229,7 @@ const PrivacyPolicy = () => {
           {/* Footer */}
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>Last Updated:</strong> 29th March 2025
+              <strong>Last Updated:</strong> 6th April 2026
             </p>
             <p className="text-sm text-muted-foreground mt-4">
               By using the Maxina Mobile Application, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree, please discontinue the use of the App immediately.

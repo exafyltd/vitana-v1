@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useUserPreferences } from './useUserPreferences';
 import { useTextToSpeech } from './useTextToSpeech';
+import { useAIConsent } from './useAIConsent';
 import { generateGreetingMessage, GreetingContext, GreetingMessage, GreetingMessageType } from '@/services/greetingMessages';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -19,6 +20,7 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
   const { user } = useAuth();
   const { preferences } = useUserPreferences();
   const { speak, isSpeaking } = useTextToSpeech();
+  const { hasConsent } = useAIConsent();
   const [lastGreeting, setLastGreeting] = useState<GreetingMessage | null>(null);
   const [greetingHistory, setGreetingHistory] = useState<Array<{ message: string; time: string }>>([]);
   const activationTimesRef = useRef<number[]>([]);
@@ -39,6 +41,10 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
   const shouldGreet = useCallback((): boolean => {
     const traceId = traceIdRef.current;
     
+    if (!hasConsent) {
+      console.log(`[GREET][${traceId}] skipped_no_ai_consent`);
+      return false;
+    }
     if (!preferences?.auto_greeting_enabled) {
       console.log(`[GREET][${traceId}] skipped_auto_greeting_disabled`);
       return false;
@@ -116,7 +122,7 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
     }
 
     return !hasGreeted;
-  }, [preferences, user, guards, isSpeaking]);
+  }, [preferences, user, guards, isSpeaking, hasConsent]);
 
   // Canonicalize language code (sr, sr-RS, sr_RS → sr-RS)
   const canonicalizeLang = useCallback((l: string): string => {
@@ -248,8 +254,13 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
 
   const manualGreeting = useCallback(async () => {
     try {
+      if (!hasConsent) {
+        console.log('[GREET] Manual greeting skipped — no AI consent');
+        return;
+      }
+
       console.log('🎯 Triggering manual AI greeting...');
-      
+
       // For audio mode (when mic is active), use a brief contextual greeting
       if (guards?.micActive) {
         console.log('🎤 Audio mode detected - using brief greeting');
@@ -299,7 +310,7 @@ export function useIntelligentGreeting(guards?: GreetingGuards) {
     } catch (error) {
       console.error('Failed to trigger manual greeting:', error);
     }
-  }, [speak, preferences, guards]);
+  }, [speak, preferences, guards, hasConsent]);
 
   const suppressGreeting = useCallback(() => {
     const traceId = traceIdRef.current;
