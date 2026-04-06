@@ -9568,6 +9568,93 @@ export type Database = {
         }
         Relationships: []
       }
+      self_healing_log: {
+        Row: {
+          attempt_number: number | null
+          blast_radius: string | null
+          confidence: number
+          created_at: string | null
+          diagnosis: Json
+          endpoint: string
+          failure_class: string
+          id: string
+          net_health_delta: number | null
+          newly_broken: string[] | null
+          outcome: string | null
+          resolved_at: string | null
+          spec_hash: string | null
+          vtid: string
+        }
+        Insert: {
+          attempt_number?: number | null
+          blast_radius?: string | null
+          confidence: number
+          created_at?: string | null
+          diagnosis?: Json
+          endpoint: string
+          failure_class: string
+          id?: string
+          net_health_delta?: number | null
+          newly_broken?: string[] | null
+          outcome?: string | null
+          resolved_at?: string | null
+          spec_hash?: string | null
+          vtid: string
+        }
+        Update: {
+          attempt_number?: number | null
+          blast_radius?: string | null
+          confidence?: number
+          created_at?: string | null
+          diagnosis?: Json
+          endpoint?: string
+          failure_class?: string
+          id?: string
+          net_health_delta?: number | null
+          newly_broken?: string[] | null
+          outcome?: string | null
+          resolved_at?: string | null
+          spec_hash?: string | null
+          vtid?: string
+        }
+        Relationships: []
+      }
+      self_healing_snapshots: {
+        Row: {
+          cloud_run_revision: string | null
+          endpoints: Json
+          git_sha: string | null
+          healthy: number
+          id: string
+          phase: string
+          timestamp: string | null
+          total: number
+          vtid: string
+        }
+        Insert: {
+          cloud_run_revision?: string | null
+          endpoints?: Json
+          git_sha?: string | null
+          healthy: number
+          id?: string
+          phase: string
+          timestamp?: string | null
+          total: number
+          vtid: string
+        }
+        Update: {
+          cloud_run_revision?: string | null
+          endpoints?: Json
+          git_sha?: string | null
+          healthy?: number
+          id?: string
+          phase?: string
+          timestamp?: string | null
+          total?: number
+          vtid?: string
+        }
+        Relationships: []
+      }
       signup_attempts: {
         Row: {
           auth_user_id: string | null
@@ -9807,6 +9894,27 @@ export type Database = {
           serving_size?: string | null
           servings_per_container?: number | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      system_config: {
+        Row: {
+          key: string
+          updated_at: string | null
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string | null
+          updated_by?: string | null
+          value?: Json
         }
         Relationships: []
       }
