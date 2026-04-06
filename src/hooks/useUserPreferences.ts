@@ -100,10 +100,8 @@ export function useUserPreferences() {
       queryClient.invalidateQueries({ queryKey: ["user_preferences"] });
     },
     onError: (error) => {
-      toast({
-        title: "Error updating preferences",
+      toast.error("Error updating preferences", {
         description: error.message,
-        variant: "destructive",
       });
     },
   });
