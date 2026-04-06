@@ -2,14 +2,41 @@ import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useAIConsent } from "./useAIConsent";
 
-/** Check whether the external ORB widget is actually alive in the DOM */
-function isOrbAlive(): boolean {
-  return !!(
-    document.querySelector('.vtorb-fab') ||
-    document.querySelector('[class^="vtorb-fab"]') ||
-    document.querySelector('.vitana-orb') ||
-    document.getElementById('vitana-orb-fab')
-  );
+const ORB_SCRIPT_URL = "https://gateway-q74ibpv6ia-uc.a.run.app/command-hub/orb-widget.js";
+const ORB_SCRIPT_ID = "vtorb-script";
+
+/** Dynamically inject the ORB widget script tag */
+function loadOrbScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (document.getElementById(ORB_SCRIPT_ID)) {
+      // Script already in DOM — resolve once VitanaOrb is available
+      if ((window as any).VitanaOrb) { resolve(); return; }
+      const check = setInterval(() => {
+        if ((window as any).VitanaOrb) { clearInterval(check); resolve(); }
+      }, 100);
+      setTimeout(() => { clearInterval(check); reject(new Error("ORB script timeout")); }, 10000);
+      return;
+    }
+    const script = document.createElement("script");
+    script.id = ORB_SCRIPT_ID;
+    script.src = ORB_SCRIPT_URL;
+    script.defer = true;
+    script.onload = () => {
+      // Script loaded, wait for VitanaOrb to be defined
+      const check = setInterval(() => {
+        if ((window as any).VitanaOrb) { clearInterval(check); resolve(); }
+      }, 50);
+      setTimeout(() => { clearInterval(check); reject(new Error("ORB script timeout")); }, 5000);
+    };
+    script.onerror = () => reject(new Error("Failed to load ORB widget script"));
+    document.head.appendChild(script);
+  });
+}
+
+/** Remove the ORB widget script tag from DOM */
+function removeOrbScript() {
+  const script = document.getElementById(ORB_SCRIPT_ID);
+  if (script) script.parentNode?.removeChild(script);
 }
 
 export function useOrbVoiceWidget() {
@@ -17,11 +44,11 @@ export function useOrbVoiceWidget() {
   const { user, session, loading } = useAuth();
   const { hasConsent, isLoading: consentLoading } = useAIConsent();
 
-  // Main init effect — waits for auth + consent to resolve, then inits widget
+  // Main effect — only load and init when consent is granted
   useEffect(() => {
     if (loading || consentLoading) return;
 
-    // If no AI consent, destroy the widget if it was previously initialized
+    // No consent → destroy widget and remove script
     if (!hasConsent) {
       const orb = (window as any).VitanaOrb;
       if (orb && initialized.current) {
@@ -29,20 +56,19 @@ export function useOrbVoiceWidget() {
         initialized.current = false;
         console.log("[ORB] Widget destroyed — AI consent revoked");
       }
+      removeOrbScript();
       return;
     }
 
-    function tryInit() {
-      const orb = (window as any).VitanaOrb;
-      if (!orb) return false;
+    // Consent granted → load script and init widget
+    let cancelled = false;
 
-      // If we think we're initialized but the widget was destroyed externally, reset
-      if (initialized.current && !isOrbAlive()) {
-        console.log("[ORB] Widget was destroyed externally, resetting state");
-        initialized.current = false;
-      }
+    loadOrbScript()
+      .then(() => {
+        if (cancelled) return;
+        const orb = (window as any).VitanaOrb;
+        if (!orb || initialized.current) return;
 
-      if (!initialized.current) {
         if (user && session) {
           orb.init({ showFab: true, authToken: session.access_token });
           console.log("[ORB] Widget initialized (authenticated, consent granted)");
@@ -51,22 +77,12 @@ export function useOrbVoiceWidget() {
           console.log("[ORB] Widget initialized (anonymous, consent granted)");
         }
         initialized.current = true;
-      }
-      return true;
-    }
+      })
+      .catch((err) => {
+        if (!cancelled) console.warn("[ORB] Failed to load widget:", err);
+      });
 
-    if (tryInit()) return;
-
-    let attempts = 0;
-    const interval = setInterval(() => {
-      attempts++;
-      if (tryInit() || attempts >= 20) {
-        clearInterval(interval);
-        if (attempts >= 20) console.warn("[ORB] Widget script never loaded");
-      }
-    }, 500);
-
-    return () => clearInterval(interval);
+    return () => { cancelled = true; };
   }, [loading, consentLoading, hasConsent, user?.id, session?.access_token]);
 
   // Watch for auth changes — reinit widget when user logs in or out
@@ -75,7 +91,6 @@ export function useOrbVoiceWidget() {
     const orb = (window as any).VitanaOrb;
     if (!orb || !initialized.current) return;
 
-    // Auth state changed — destroy and reinit with correct mode
     orb.destroy();
     initialized.current = false;
 
