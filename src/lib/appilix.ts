@@ -141,6 +141,50 @@ export function registerAppilixIdentity(userId: string): boolean {
   }
 }
 
+/**
+ * Wait for the Appilix native bridge (`window.appilix`) to become available.
+ * The bridge may be injected after the WebView's initial page load.
+ */
+export function waitForAppilixBridge(timeoutMs = 5000, intervalMs = 100): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (isAppilix()) { resolve(true); return; }
+    let elapsed = 0;
+    const timer = setInterval(() => {
+      elapsed += intervalMs;
+      if (isAppilix()) { clearInterval(timer); resolve(true); return; }
+      if (elapsed >= timeoutMs) { clearInterval(timer); resolve(false); }
+    }, intervalMs);
+  });
+}
+
+/**
+ * Robustly register the user identity with the Appilix native shell.
+ * Waits for the bridge to become available, then retries with exponential backoff.
+ * This is critical for old users whose identity was never registered before this
+ * code was deployed — when they next open the app, this ensures registration succeeds.
+ */
+export async function ensureAppilixIdentity(userId: string, maxRetries = 3): Promise<boolean> {
+  const bridgeReady = await waitForAppilixBridge();
+  if (!bridgeReady) {
+    console.debug('[Appilix] Bridge not available after timeout, skipping identity registration');
+    return false;
+  }
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const success = registerAppilixIdentity(userId);
+    if (success) {
+      console.log(`[Appilix] Identity registered successfully (attempt ${attempt + 1})`);
+      return true;
+    }
+    const delay = Math.min(1000 * Math.pow(2, attempt), 5000);
+    console.warn(`[Appilix] Identity registration attempt ${attempt + 1} failed, retrying in ${delay}ms...`);
+    await new Promise(r => setTimeout(r, delay));
+  }
+
+  console.error('[Appilix] Identity registration failed after all retries');
+  return false;
+}
+
 // ── FCM Push Token Bridge ─────────────────────────────────
 
 /**

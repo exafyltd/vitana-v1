@@ -5,7 +5,7 @@
  */
 import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
-import { isAppilix, getNativeFcmToken, showNativeNotification } from '@/lib/appilix';
+import { isAppilix, getNativeFcmToken, showNativeNotification, registerAppilixIdentity } from '@/lib/appilix';
 
 export interface PushNotificationPayload {
   title: string;
@@ -308,6 +308,14 @@ class PushNotificationManager {
     if (this.refreshInterval) return;
     this.refreshInterval = setInterval(async () => {
       try {
+        // Re-register Appilix identity periodically in case the native shell lost it
+        if (isAppilix()) {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user?.id) {
+            registerAppilixIdentity(user.id);
+          }
+        }
+
         const newToken = await requestFCMToken(this.registration || undefined);
         if (newToken && newToken !== this.fcmToken) {
           console.log('[Push] FCM token rotated, re-registering with gateway...');
