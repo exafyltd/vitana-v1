@@ -25,8 +25,9 @@ import { SoundscapeResumeBanner } from "@/components/mobile/SoundscapeResumeBann
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
-import { registerAppilixIdentity } from "@/lib/appilix";
+import { registerAppilixIdentity, ensureAppilixIdentity } from "@/lib/appilix";
 import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
@@ -278,8 +279,9 @@ const AppHooksInitializer = () => {
     if (user?.id && typeof window !== 'undefined') {
       (window as any).appilix_push_notification_user_identity = user.id;
       document.cookie = `appilix_push_notification_user_identity=${user.id}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
-      // Register identity with native Appilix bridge so push notifications can find this device
-      registerAppilixIdentity(user.id);
+      // Use robust async version that waits for native bridge + retries on failure.
+      // Critical for old users whose identity was never registered before this code shipped.
+      ensureAppilixIdentity(user.id);
     }
   }, [user?.id]);
 
@@ -293,6 +295,17 @@ const AppHooksInitializer = () => {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [user?.id]);
+
+  // Re-register Appilix identity on auth state changes (token refresh, re-login)
+  useEffect(() => {
+    if (!user?.id) return;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+        registerAppilixIdentity(session.user.id);
+      }
+    });
+    return () => subscription.unsubscribe();
   }, [user?.id]);
 
   useEffect(() => {
