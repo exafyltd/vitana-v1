@@ -74,24 +74,24 @@ export function useOrbVoiceWidget() {
         if (!orb) return;
 
         if (!initialized.current) {
+          // If consent was just granted, init with FAB hidden — we'll go straight to overlay
+          const showFab = !consentJustGranted;
           if (user && session) {
-            orb.init({ showFab: true, authToken: session.access_token });
-            console.log("[ORB] Widget initialized (authenticated, consent granted)");
+            orb.init({ showFab, authToken: session.access_token });
           } else {
-            orb.init({ showFab: true });
-            console.log("[ORB] Widget initialized (anonymous, consent granted)");
+            orb.init({ showFab });
           }
           initialized.current = true;
+          console.log("[ORB] Widget initialized (consent granted, showFab=" + showFab + ")");
         }
 
-        // If consent was just granted, auto-open the overlay
-        // (user tapped the ORB placeholder intending to use it)
+        // If consent was just granted, go straight to overlay then enable FAB for future use
         if (consentJustGranted) {
-          console.log("[ORB] Consent just granted — auto-opening overlay");
-          setTimeout(() => {
-            const o = (window as any).VitanaOrb;
-            if (o && typeof o.show === 'function') o.show();
-          }, 300);
+          console.log("[ORB] Consent just granted — opening overlay directly");
+          const o = (window as any).VitanaOrb;
+          if (o && typeof o.show === 'function') {
+            o.show();
+          }
         }
       })
       .catch((err) => {
