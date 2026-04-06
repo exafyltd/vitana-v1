@@ -9,7 +9,6 @@ const ORB_SCRIPT_ID = "vtorb-script";
 function loadOrbScript(): Promise<void> {
   return new Promise((resolve, reject) => {
     if (document.getElementById(ORB_SCRIPT_ID)) {
-      // Script already in DOM — resolve once VitanaOrb is available
       if ((window as any).VitanaOrb) { resolve(); return; }
       const check = setInterval(() => {
         if ((window as any).VitanaOrb) { clearInterval(check); resolve(); }
@@ -22,7 +21,6 @@ function loadOrbScript(): Promise<void> {
     script.src = ORB_SCRIPT_URL;
     script.defer = true;
     script.onload = () => {
-      // Script loaded, wait for VitanaOrb to be defined
       const check = setInterval(() => {
         if ((window as any).VitanaOrb) { clearInterval(check); resolve(); }
       }, 50);
@@ -41,6 +39,7 @@ function removeOrbScript() {
 
 export function useOrbVoiceWidget() {
   const initialized = useRef(false);
+  const prevConsentRef = useRef(false);
   const { user, session, loading } = useAuth();
   const { hasConsent, isLoading: consentLoading } = useAIConsent();
 
@@ -57,8 +56,13 @@ export function useOrbVoiceWidget() {
         console.log("[ORB] Widget destroyed — AI consent revoked");
       }
       removeOrbScript();
+      prevConsentRef.current = false;
       return;
     }
+
+    // Detect if consent was just granted (transition from false → true)
+    const consentJustGranted = hasConsent && !prevConsentRef.current;
+    prevConsentRef.current = hasConsent;
 
     // Consent granted → load script and init widget
     let cancelled = false;
@@ -67,16 +71,28 @@ export function useOrbVoiceWidget() {
       .then(() => {
         if (cancelled) return;
         const orb = (window as any).VitanaOrb;
-        if (!orb || initialized.current) return;
+        if (!orb) return;
 
-        if (user && session) {
-          orb.init({ showFab: true, authToken: session.access_token });
-          console.log("[ORB] Widget initialized (authenticated, consent granted)");
-        } else {
-          orb.init({ showFab: true });
-          console.log("[ORB] Widget initialized (anonymous, consent granted)");
+        if (!initialized.current) {
+          if (user && session) {
+            orb.init({ showFab: true, authToken: session.access_token });
+            console.log("[ORB] Widget initialized (authenticated, consent granted)");
+          } else {
+            orb.init({ showFab: true });
+            console.log("[ORB] Widget initialized (anonymous, consent granted)");
+          }
+          initialized.current = true;
         }
-        initialized.current = true;
+
+        // If consent was just granted, auto-open the overlay
+        // (user tapped the ORB placeholder intending to use it)
+        if (consentJustGranted) {
+          console.log("[ORB] Consent just granted — auto-opening overlay");
+          setTimeout(() => {
+            const o = (window as any).VitanaOrb;
+            if (o && typeof o.show === 'function') o.show();
+          }, 300);
+        }
       })
       .catch((err) => {
         if (!cancelled) console.warn("[ORB] Failed to load widget:", err);
