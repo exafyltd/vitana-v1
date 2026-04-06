@@ -52,7 +52,6 @@ export interface UserPreferences {
 }
 
 export function useUserPreferences() {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const { data: preferences, isLoading, error } = useQuery({
