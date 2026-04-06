@@ -34,6 +34,8 @@ import { communityFetch } from "@/lib/community-gateway";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAIConsent } from "@/hooks/useAIConsent";
+import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -56,15 +58,18 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   } = useAutopilot();
   
   const isMobile = useIsMobile();
+  const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent } = useAIConsent();
   const [showBanner, setShowBanner] = useState(false);
   const [bannerMessage, setBannerMessage] = useState<string | null>(null);
 
-  // Fetch recommendations when popup opens
+  // Fetch recommendations when popup opens (only if consent granted)
   useEffect(() => {
-    if (open) {
+    if (open && hasConsent) {
       fetchRecommendations();
+    } else if (open && !hasConsent) {
+      setConsentDialogOpen(true);
     }
-  }, [open, fetchRecommendations]);
+  }, [open, hasConsent, fetchRecommendations]);
 
   // Reset banner when popup closes
   useEffect(() => {
@@ -369,6 +374,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
 
         {renderContent()}
       </ResponsiveDialogContent>
+      <AIDataConsentDialog
+        open={consentDialogOpen}
+        onOpenChange={(isOpen) => {
+          setConsentDialogOpen(isOpen);
+          if (!isOpen && !hasConsent) onOpenChange(false);
+        }}
+        onConsent={grantConsent}
+      />
     </ResponsiveDialog>
   );
 }
