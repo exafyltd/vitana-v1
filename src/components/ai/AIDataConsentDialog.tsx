@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/responsive-dialog';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, CheckCircle, Brain, Mic, BookOpen, Heart, User } from 'lucide-react';
+import { Shield, CheckCircle, Brain, Mic, BookOpen, Heart, User, Share2, Target } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface AIDataConsentDialogProps {
@@ -47,7 +47,7 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
               </div>
               <div className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 flex-shrink-0" />
-                <span>{translate('consent.aiData.diaryData', 'Text messages and diary entries')}</span>
+                <span>{translate('consent.aiData.diaryData', 'Typed prompts, chat messages, and diary entries')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Brain className="w-4 h-4 flex-shrink-0" />
@@ -56,6 +56,10 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4 flex-shrink-0" />
                 <span>{translate('consent.aiData.profileData', 'Profile context (name, preferences)')}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Share2 className="w-4 h-4 flex-shrink-0" />
+                <span>{translate('consent.aiData.socialData', 'Social media profile URLs and bio text (when using import features)')}</span>
               </div>
             </div>
           </div>
@@ -70,6 +74,17 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
               {translate('consent.aiData.recipient', 'Google (Gemini AI models) via the Lovable AI Gateway. Your data is transmitted securely via encrypted connections.')}
             </AlertDescription>
           </Alert>
+
+          {/* Purpose */}
+          <div>
+            <h4 className="font-semibold text-sm mb-2">
+              {translate('consent.aiData.purposeLabel', 'Purpose')}
+            </h4>
+            <div className="flex items-start gap-2 text-sm text-muted-foreground">
+              <Target className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <span>{translate('consent.aiData.purpose', 'To generate personalized AI responses, voice synthesis, proactive greetings, health coaching, and profile enrichment suggestions.')}</span>
+            </div>
+          </div>
 
           {/* Privacy guarantees */}
           <div className="space-y-2 text-sm">
@@ -88,13 +103,18 @@ export function AIDataConsentDialog({ open, onOpenChange, onConsent }: AIDataCon
           </div>
         </ResponsiveDialogBody>
 
-        <ResponsiveDialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {translate('consent.aiData.notNow', 'Not Now')}
-          </Button>
-          <Button onClick={onConsent}>
-            {translate('consent.aiData.iAgree', 'I Agree')}
-          </Button>
+        <ResponsiveDialogFooter className="flex-col gap-3">
+          <p className="text-xs text-muted-foreground text-center">
+            {translate('consent.aiData.agreementFooter', "By tapping 'I Agree', you give Exafy LTD permission to send the data listed above to the named AI service providers. You can withdraw this permission at any time in Settings > Privacy.")}
+          </p>
+          <div className="flex gap-2 w-full justify-end">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              {translate('consent.aiData.notNow', 'Not Now')}
+            </Button>
+            <Button onClick={onConsent}>
+              {translate('consent.aiData.iAgree', 'I Agree')}
+            </Button>
+          </div>
         </ResponsiveDialogFooter>
       </ResponsiveDialogContent>
     </ResponsiveDialog>
