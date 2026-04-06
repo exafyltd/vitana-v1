@@ -1,4 +1,5 @@
 import { useAIConsent } from '@/hooks/useAIConsent';
+import { useAuth } from '@/context/AuthProvider';
 import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
 
 /**
@@ -8,9 +9,10 @@ import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
  */
 export function OrbConsentPlaceholder() {
   const { hasConsent, isLoading, dialogOpen, setDialogOpen, grantConsent } = useAIConsent();
+  const { user } = useAuth();
 
-  // Don't show if consent is granted (real widget handles it) or still loading
-  if (hasConsent || isLoading) return null;
+  // Don't show if: consent granted, still loading, or user not authenticated
+  if (hasConsent || isLoading || !user) return null;
 
   return (
     <>
