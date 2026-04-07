@@ -1,40 +1,39 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useAIConsent } from '@/hooks/useAIConsent';
 import { useAuth } from '@/context/AuthProvider';
 import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
 
-const ORB_SCRIPT_URL = "https://gateway-q74ibpv6ia-uc.a.run.app/command-hub/orb-widget.js";
 const PENDING_OPEN_KEY = "vitana_orb_pending_open";
 
 /**
- * Renders a placeholder FAB button that matches the external ORB widget's styling.
- * Shown when AI consent has not been granted — tapping opens the consent dialog.
- * Once consent is granted, this disappears and the real ORB widget takes over.
+ * For authenticated users without AI consent:
+ * - Hides the real ORB FAB (via body attribute + CSS)
+ * - Shows a matching placeholder FAB that opens the consent dialog
+ * - After consent, real ORB takes over
+ *
+ * For unauthenticated users: does nothing (real ORB works normally)
  */
 export function OrbConsentPlaceholder() {
   const { hasConsent, isLoading, dialogOpen, setDialogOpen, grantConsent } = useAIConsent();
   const { user } = useAuth();
-  const preloaded = useRef(false);
 
-  // Preload the ORB widget script while the placeholder is visible
+  // Set body attribute to hide real ORB FAB when placeholder is active
+  const showPlaceholder = !!user && !hasConsent && !isLoading;
   useEffect(() => {
-    if (preloaded.current || hasConsent || isLoading || !user) return;
-    preloaded.current = true;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'script';
-    link.href = ORB_SCRIPT_URL;
-    document.head.appendChild(link);
-  }, [hasConsent, isLoading, user]);
+    if (showPlaceholder) {
+      document.body.setAttribute('data-orb-consent-pending', 'true');
+    } else {
+      document.body.removeAttribute('data-orb-consent-pending');
+    }
+    return () => document.body.removeAttribute('data-orb-consent-pending');
+  }, [showPlaceholder]);
 
-  // When user consents, signal that the overlay should auto-open
   const handleConsent = useCallback(() => {
     try { sessionStorage.setItem(PENDING_OPEN_KEY, 'true'); } catch {}
     grantConsent();
   }, [grantConsent]);
 
-  // Don't show if: consent granted, still loading, or user not authenticated
-  if (hasConsent || isLoading || !user) return null;
+  if (!showPlaceholder) return null;
 
   return (
     <>
@@ -54,7 +53,12 @@ export function OrbConsentPlaceholder() {
       />
       <AIDataConsentDialog
         open={dialogOpen}
-        onOpenChange={setDialogOpen}
+        onOpenChange={(isOpen) => {
+          setDialogOpen(isOpen);
+          if (!isOpen && !hasConsent) {
+            // User dismissed without consenting — no action needed
+          }
+        }}
         onConsent={handleConsent}
       />
     </>
