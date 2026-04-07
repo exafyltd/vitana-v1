@@ -272,7 +272,7 @@ const AppHooksInitializer = () => {
   useAppointmentNotifications();
   useAudioPriority();
   useAppilix();
-  const { hasConsent: orbConsent } = useOrbVoiceWidget();
+  useOrbVoiceWidget();
   const { user, session } = useAuth();
 
   // Set Appilix push notification user identity for mobile device mapping
@@ -314,8 +314,8 @@ const AppHooksInitializer = () => {
     initializePushNotifications();
   }, [user?.id, session?.access_token]);
 
-  // Show ORB consent placeholder when AI consent not yet granted
-  return orbConsent ? null : <OrbConsentPlaceholder />;
+  // ORB consent interceptor — renders only a dialog, no visible elements
+  return <OrbConsentPlaceholder />;
 };
 
 // Mobile/Desktop settings router

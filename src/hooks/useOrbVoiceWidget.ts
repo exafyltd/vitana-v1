@@ -19,7 +19,7 @@ export function useOrbVoiceWidget() {
   const { user, session, loading } = useAuth();
   const { hasConsent, isLoading: consentLoading } = useAIConsent();
 
-  // Init the widget — always show FAB, pass auth token when available
+  // Main init effect — waits for auth to resolve, then inits widget
   useEffect(() => {
     if (loading) return;
 
@@ -79,7 +79,7 @@ export function useOrbVoiceWidget() {
     console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
   }, [user?.id]);
 
-  // After consent is freshly granted (via placeholder), auto-open the overlay
+  // After consent is freshly granted via the interceptor, auto-open the overlay
   useEffect(() => {
     if (consentLoading || !hasConsent) return;
     let pendingOpen = false;
@@ -90,8 +90,11 @@ export function useOrbVoiceWidget() {
 
     if (pendingOpen) {
       console.log("[ORB] Consent just granted — auto-opening overlay");
-      const orb = (window as any).VitanaOrb;
-      if (orb && typeof orb.show === 'function') orb.show();
+      // Small delay to ensure widget is fully initialized after consent
+      setTimeout(() => {
+        const orb = (window as any).VitanaOrb;
+        if (orb && typeof orb.show === 'function') orb.show();
+      }, 200);
     }
   }, [consentLoading, hasConsent]);
 
@@ -105,6 +108,4 @@ export function useOrbVoiceWidget() {
       }
     };
   }, []);
-
-  return { hasConsent, consentLoading };
 }
