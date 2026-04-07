@@ -32,8 +32,9 @@ export default function Logout() {
         console.log('[Logout] React Query cache cleared');
       }
       
-      // 3. Clear persisted localStorage cache + ORB state
+      // 3. Clear persisted localStorage cache + ORB state + AI consent
       localStorage.removeItem('vitana-query-cache');
+      localStorage.removeItem('vitana_ai_consent_given');
       // Clear all ORB session keys to prevent cross-account leakage
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const key = localStorage.key(i);
@@ -41,7 +42,7 @@ export default function Logout() {
           localStorage.removeItem(key);
         }
       }
-      console.log('[Logout] localStorage cache cleared');
+      console.log('[Logout] localStorage cache + AI consent cleared');
       
       // 4. Redirect to Maxina portal
       navigate('/maxina', { replace: true });

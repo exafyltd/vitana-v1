@@ -2,40 +2,16 @@ import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
 import { useAIConsent } from "./useAIConsent";
 
-const ORB_SCRIPT_URL = "https://gateway-q74ibpv6ia-uc.a.run.app/command-hub/orb-widget.js";
-const ORB_SCRIPT_ID = "vtorb-script";
 const PENDING_OPEN_KEY = "vitana_orb_pending_open";
 
-/** Dynamically inject the ORB widget script tag */
-function loadOrbScript(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (document.getElementById(ORB_SCRIPT_ID)) {
-      if ((window as any).VitanaOrb) { resolve(); return; }
-      const check = setInterval(() => {
-        if ((window as any).VitanaOrb) { clearInterval(check); resolve(); }
-      }, 100);
-      setTimeout(() => { clearInterval(check); reject(new Error("ORB script timeout")); }, 10000);
-      return;
-    }
-    const script = document.createElement("script");
-    script.id = ORB_SCRIPT_ID;
-    script.src = ORB_SCRIPT_URL;
-    script.defer = true;
-    script.onload = () => {
-      const check = setInterval(() => {
-        if ((window as any).VitanaOrb) { clearInterval(check); resolve(); }
-      }, 50);
-      setTimeout(() => { clearInterval(check); reject(new Error("ORB script timeout")); }, 5000);
-    };
-    script.onerror = () => reject(new Error("Failed to load ORB widget script"));
-    document.head.appendChild(script);
-  });
-}
-
-/** Remove the ORB widget script tag from DOM */
-function removeOrbScript() {
-  const script = document.getElementById(ORB_SCRIPT_ID);
-  if (script) script.parentNode?.removeChild(script);
+/** Check whether the external ORB widget is actually alive in the DOM */
+function isOrbAlive(): boolean {
+  return !!(
+    document.querySelector('.vtorb-fab') ||
+    document.querySelector('[class^="vtorb-fab"]') ||
+    document.querySelector('.vitana-orb') ||
+    document.getElementById('vitana-orb-fab')
+  );
 }
 
 export function useOrbVoiceWidget() {
@@ -43,68 +19,54 @@ export function useOrbVoiceWidget() {
   const { user, session, loading } = useAuth();
   const { hasConsent, isLoading: consentLoading } = useAIConsent();
 
-  // Main effect — only load and init when consent is granted
+  // Init the widget — always show FAB, pass auth token when available
   useEffect(() => {
-    if (loading || consentLoading) return;
+    if (loading) return;
 
-    // No consent → destroy widget and remove script
-    if (!hasConsent) {
+    function tryInit() {
       const orb = (window as any).VitanaOrb;
-      if (orb && initialized.current) {
-        orb.destroy();
+      if (!orb) return false;
+
+      // If we think we're initialized but the widget was destroyed externally, reset
+      if (initialized.current && !isOrbAlive()) {
+        console.log("[ORB] Widget was destroyed externally, resetting state");
         initialized.current = false;
-        console.log("[ORB] Widget destroyed — AI consent revoked");
       }
-      removeOrbScript();
-      return;
+
+      if (!initialized.current) {
+        if (user && session) {
+          orb.init({ showFab: true, authToken: session.access_token });
+          console.log("[ORB] Widget initialized (authenticated)");
+        } else {
+          orb.init({ showFab: true });
+          console.log("[ORB] Widget initialized (anonymous)");
+        }
+        initialized.current = true;
+      }
+      return true;
     }
 
-    // Check if user just granted consent and wants the overlay to open
-    let pendingOpen = false;
-    try {
-      pendingOpen = sessionStorage.getItem(PENDING_OPEN_KEY) === 'true';
-      if (pendingOpen) sessionStorage.removeItem(PENDING_OPEN_KEY);
-    } catch {}
+    if (tryInit()) return;
 
-    // Consent granted → load script and init widget
-    let cancelled = false;
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (tryInit() || attempts >= 20) {
+        clearInterval(interval);
+        if (attempts >= 20) console.warn("[ORB] Widget script never loaded");
+      }
+    }, 500);
 
-    loadOrbScript()
-      .then(() => {
-        if (cancelled) return;
-        const orb = (window as any).VitanaOrb;
-        if (!orb) return;
-
-        if (!initialized.current) {
-          if (user && session) {
-            orb.init({ showFab: true, authToken: session.access_token });
-          } else {
-            orb.init({ showFab: true });
-          }
-          initialized.current = true;
-          console.log("[ORB] Widget initialized (consent granted)");
-        }
-
-        // If user just consented via the placeholder, open overlay automatically
-        if (pendingOpen) {
-          console.log("[ORB] Pending open — launching overlay");
-          const o = (window as any).VitanaOrb;
-          if (o && typeof o.show === 'function') o.show();
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) console.warn("[ORB] Failed to load widget:", err);
-      });
-
-    return () => { cancelled = true; };
-  }, [loading, consentLoading, hasConsent, user?.id, session?.access_token]);
+    return () => clearInterval(interval);
+  }, [loading, user?.id, session?.access_token]);
 
   // Watch for auth changes — reinit widget when user logs in or out
   useEffect(() => {
-    if (loading || consentLoading || !hasConsent) return;
+    if (loading) return;
     const orb = (window as any).VitanaOrb;
     if (!orb || !initialized.current) return;
 
+    // Auth state changed — destroy and reinit with correct mode
     orb.destroy();
     initialized.current = false;
 
@@ -116,6 +78,22 @@ export function useOrbVoiceWidget() {
     initialized.current = true;
     console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
   }, [user?.id]);
+
+  // After consent is freshly granted (via placeholder), auto-open the overlay
+  useEffect(() => {
+    if (consentLoading || !hasConsent) return;
+    let pendingOpen = false;
+    try {
+      pendingOpen = sessionStorage.getItem(PENDING_OPEN_KEY) === 'true';
+      if (pendingOpen) sessionStorage.removeItem(PENDING_OPEN_KEY);
+    } catch {}
+
+    if (pendingOpen) {
+      console.log("[ORB] Consent just granted — auto-opening overlay");
+      const orb = (window as any).VitanaOrb;
+      if (orb && typeof orb.show === 'function') orb.show();
+    }
+  }, [consentLoading, hasConsent]);
 
   // Cleanup on unmount
   useEffect(() => {
