@@ -3,8 +3,6 @@ import { useAIConsent } from '@/hooks/useAIConsent';
 import { useAuth } from '@/context/AuthProvider';
 import { AIDataConsentDialog } from '@/components/ai/AIDataConsentDialog';
 
-const PENDING_OPEN_KEY = "vitana_orb_pending_open";
-
 /**
  * Intercepts clicks on the real ORB FAB for authenticated users without consent.
  * Uses a document-level capturing event listener — NO extra DOM elements on the page,
@@ -64,8 +62,10 @@ export function OrbConsentPlaceholder() {
   }, []);
 
   const handleConsent = useCallback(() => {
-    try { sessionStorage.setItem(PENDING_OPEN_KEY, 'true'); } catch {}
     grantConsent();
+    // Open ORB overlay immediately — widget is already initialized
+    const orb = (window as any).VitanaOrb;
+    if (orb && typeof orb.show === 'function') orb.show();
   }, [grantConsent]);
 
   // Only render the dialog — no visible DOM elements
