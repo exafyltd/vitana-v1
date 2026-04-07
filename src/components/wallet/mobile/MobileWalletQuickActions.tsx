@@ -33,7 +33,7 @@ export function MobileWalletQuickActions({
 }: MobileWalletQuickActionsProps) {
   const { translate } = useTranslation();
   const restricted = isIAPRestricted();
-  const restrictedIds = ['add-funds', 'buy-credits', 'buy-tokens'];
+  const restrictedIds = ['add-funds', 'buy-credits', 'buy-tokens', 'exchange', 'withdraw', 'stake-tokens'];
   
   const allActions: QuickAction[] = [
     {

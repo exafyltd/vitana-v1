@@ -39,6 +39,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
+import { isIAPRestricted } from "@/lib/appilix";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -84,7 +85,8 @@ function AppSidebar({
     if (path === '/patient' || path.startsWith('/patient/')) return getRoleNavigation('patient');
     return getRoleNavigation(currentRole);
   };
-  const sidebarCategories = getEffectiveNavigation();
+  const sidebarCategories = getEffectiveNavigation()
+    .filter(cat => !(isIAPRestricted() && cat.path === '/wallet'));
 
   // Check if current path matches category (including subpages)
   // But exclude parent paths if a more specific sibling path matches
@@ -243,15 +245,17 @@ function AppSidebar({
                 <NotificationBell />
               </div>
               
-              {/* Wallet Button */}
-              <Button 
-                variant="ghost" 
+              {/* Wallet Button — hidden on iOS (prototype feature) */}
+              {!isIAPRestricted() && (
+              <Button
+                variant="ghost"
                 className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
                 title="Digital Wallet"
                 onClick={() => setWalletPopupOpen(true)}
               >
                 <Wallet className="h-4 w-4 text-white" />
               </Button>
+              )}
               
               {/* Autopilot Button */}
               <div className="relative">

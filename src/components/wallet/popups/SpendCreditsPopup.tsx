@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface SpendCreditsPopupProps {
   open: boolean;
@@ -57,6 +58,9 @@ const spendingCategories = [
 const quickSpendAmounts = [25, 50, 100, 250];
 
 export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps) {
+  // Hide spend credits on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [customAmount, setCustomAmount] = useState('');

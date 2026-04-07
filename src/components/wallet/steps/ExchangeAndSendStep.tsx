@@ -13,6 +13,7 @@ import { useMessages } from '@/hooks/useMessages';
 import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { useCommunityMembers } from '@/hooks/useCommunityMembers';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface ExchangeAndSendStepProps {
   onBack: () => void;
@@ -20,6 +21,8 @@ interface ExchangeAndSendStepProps {
 }
 
 export function ExchangeAndSendStep({ onBack, onClose }: ExchangeAndSendStepProps) {
+  // Hide exchange-and-send on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
   const { exchangeCurrency, transferFunds, getBalance, exchangeAndSend } = useWallet();
   const { sendMessage } = useMessages(undefined, false);
   const { toast } = useToast();

@@ -22,6 +22,7 @@ import {
 import { ArrowDown, CreditCard, Building2, Clock, DollarSign, Loader2 } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface WithdrawPopupProps {
   open: boolean;
@@ -29,6 +30,8 @@ interface WithdrawPopupProps {
 }
 
 export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
+  // Hide withdraw on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
