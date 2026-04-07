@@ -7,58 +7,63 @@ const PENDING_OPEN_KEY = "vitana_orb_pending_open";
 
 /**
  * For authenticated users without AI consent:
- * - Hides the real ORB FAB (via body attribute + CSS)
- * - Shows a matching placeholder FAB that opens the consent dialog
- * - After consent, real ORB takes over
+ * Places an invisible click interceptor over the real ORB FAB.
+ * When tapped, the consent dialog opens instead of the ORB session.
+ * After consent, the interceptor disappears and the real ORB works normally.
  *
- * For unauthenticated users: does nothing (real ORB works normally)
+ * The ORB itself is NEVER hidden or replaced — it's always visible.
  */
 export function OrbConsentPlaceholder() {
   const { hasConsent, isLoading, dialogOpen, setDialogOpen, grantConsent } = useAIConsent();
   const { user } = useAuth();
 
-  // Set body attribute to hide real ORB FAB when placeholder is active
-  const showPlaceholder = !!user && !hasConsent && !isLoading;
+  const needsConsent = !!user && !hasConsent && !isLoading;
+
+  // When consent dialog opens, set body attribute to suppress ORB overlay behind it
   useEffect(() => {
-    if (showPlaceholder) {
-      document.body.setAttribute('data-orb-consent-pending', 'true');
+    if (dialogOpen) {
+      document.body.setAttribute('data-consent-dialog-open', 'true');
     } else {
-      document.body.removeAttribute('data-orb-consent-pending');
+      document.body.removeAttribute('data-consent-dialog-open');
     }
-    return () => document.body.removeAttribute('data-orb-consent-pending');
-  }, [showPlaceholder]);
+    return () => document.body.removeAttribute('data-consent-dialog-open');
+  }, [dialogOpen]);
 
   const handleConsent = useCallback(() => {
     try { sessionStorage.setItem(PENDING_OPEN_KEY, 'true'); } catch {}
     grantConsent();
   }, [grantConsent]);
 
-  if (!showPlaceholder) return null;
+  if (!needsConsent) return null;
 
+  // Invisible interceptor positioned exactly over the real ORB FAB
+  // Uses the same CSS class for positioning, but is transparent and on top
   return (
     <>
-      <button
+      <div
         className="vtorb-fab"
-        onClick={() => setDialogOpen(true)}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          setDialogOpen(true);
+        }}
         aria-label="Open Vitana Voice — consent required"
+        role="button"
+        tabIndex={0}
         style={{
           width: 64,
           height: 64,
           borderRadius: '50%',
+          background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          background: 'radial-gradient(circle at 35% 35%, #7c8db5, #5a6a8a 50%, #3a4a6a 100%)',
-          boxShadow: '0 4px 24px rgba(90,110,150,0.5), inset 0 1px 2px rgba(255,255,255,0.15)',
+          zIndex: 9999,
+          position: 'fixed',
         }}
       />
       <AIDataConsentDialog
         open={dialogOpen}
-        onOpenChange={(isOpen) => {
-          setDialogOpen(isOpen);
-          if (!isOpen && !hasConsent) {
-            // User dismissed without consenting — no action needed
-          }
-        }}
+        onOpenChange={setDialogOpen}
         onConsent={handleConsent}
       />
     </>
