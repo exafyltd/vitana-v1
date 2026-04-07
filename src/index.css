@@ -295,6 +295,15 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* Reset button borders — WebView (Appilix) applies default button frames
+     that override Tailwind preflight. Utility classes like `border` still win. */
+  button,
+  [role="button"] {
+    border: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
   html, body, #root {
     overflow-x: hidden;
   }
