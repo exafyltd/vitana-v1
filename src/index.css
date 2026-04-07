@@ -682,20 +682,6 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     opacity: 0 !important;
   }
 
-  /* Suppress real ORB FAB when consent placeholder is showing (authenticated, no consent) */
-  body[data-orb-consent-pending="true"] .vtorb-fab,
-  body[data-orb-consent-pending="true"] .vitana-orb,
-  body[data-orb-consent-pending="true"] [data-vitana-orb="true"],
-  body[data-orb-consent-pending="true"] #vitana-orb,
-  body[data-orb-consent-pending="true"] .OrbFloatingButton,
-  body[data-orb-consent-pending="true"] #vitana-orb-fab,
-  body[data-orb-consent-pending="true"] [id^="vitana-orb"],
-  body[data-orb-consent-pending="true"] [class^="vtorb-fab"]:not([aria-label*="consent"]) {
-    z-index: 0 !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-  }
-
   /* Suppress ORB when AI consent dialog is open */
   body[data-consent-dialog-open="true"] .vtorb-fab,
   body[data-consent-dialog-open="true"] .vitana-orb,
