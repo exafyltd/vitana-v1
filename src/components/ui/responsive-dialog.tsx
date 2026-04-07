@@ -119,10 +119,10 @@ const ResponsiveDialogContent = React.forwardRef<
         {/* Close button - always accessible with 44px tap target on mobile */}
         {!hideCloseButton && (
           <DialogPrimitive.Close
-            style={{ border: 'none', background: 'transparent', outline: 'none', padding: 0, WebkitAppearance: 'none' }}
+            style={{ boxShadow: 'none' }}
             className={cn(
-              "absolute rounded-sm opacity-70 ring-offset-background transition-opacity",
-              "hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+              "absolute rounded-sm opacity-70 transition-opacity",
+              "hover:opacity-100 focus:outline-none",
               "disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
               isMobile
                 ? "right-2 top-1 z-20 w-10 h-10 flex items-center justify-center"
