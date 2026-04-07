@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getCurrentExchangeRates, formatCurrency } from '@/lib/exchangeRates';
 import { cn } from '@/lib/utils';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface ExchangeRateDisplayProps {
   compact?: boolean;
@@ -10,6 +11,8 @@ interface ExchangeRateDisplayProps {
 }
 
 export function ExchangeRateDisplay({ compact = false, className }: ExchangeRateDisplayProps) {
+  // Hide exchange rates on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
   const rates = getCurrentExchangeRates();
   
   // Show key rates: USD->VTNA and VTNA->Credits

@@ -10,6 +10,7 @@ import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { calculateExchange } from '@/lib/exchangeRates';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface ExchangeStepProps {
   onBack: () => void;
@@ -18,6 +19,8 @@ interface ExchangeStepProps {
 }
 
 export function ExchangeStep({ onBack, onClose, initialCurrency }: ExchangeStepProps) {
+  // Hide exchange on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
   const { exchangeCurrency, getBalance } = useWallet();
   const { toast } = useToast();
   

@@ -10,6 +10,7 @@ import { calculateExchange, formatCurrency, getCurrencySymbol } from '@/lib/exch
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface QuickExchangeWidgetProps {
   onExchange?: (fromAmount: number, fromCurrency: string, toCurrency: string, toAmount: number) => void;
@@ -17,11 +18,13 @@ interface QuickExchangeWidgetProps {
   className?: string;
 }
 
-export function QuickExchangeWidget({ 
-  onExchange, 
+export function QuickExchangeWidget({
+  onExchange,
   onExchangeAndSend,
-  className 
+  className
 }: QuickExchangeWidgetProps) {
+  // Hide exchange widget on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
   const [fromAmount, setFromAmount] = useState('');
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('VTNA');

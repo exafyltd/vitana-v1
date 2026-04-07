@@ -361,48 +361,52 @@ export default function Wallet() {
             {/* Content based on active mode */}
             {mobileWalletMode === 'balances' && (
               <div className="space-y-3">
-                <MobileWalletBalanceCard
-                  type="cash"
-                  title={translate('wallet.usdBalance')}
-                  balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
-                  subBalance="Available: 100%"
-                  change="+2.3%"
-                  changeType="increase"
-                  isLoading={!isLoaded}
-                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('add-funds')}
-                />
-                
-                <MobileWalletBalanceCard
-                  type="credits"
-                  title={translate('wallet.creditsBalance')}
-                  balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : translate('common.loading')}
-                  subBalance={`${translate('wallet.available')}: 100%`}
-                  change="+12.1%"
-                  changeType="increase"
-                  isLoading={!isLoaded}
-                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('buy-credits')}
-                />
-                
-                <MobileWalletBalanceCard
-                  type="tokens"
-                  title={translate('wallet.vtnaTokens')}
-                  balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : translate('common.loading')}
-                  subBalance={`${translate('wallet.staked')}: 25%`}
-                  change="+5.7%"
-                  changeType="increase"
-                  isLoading={!isLoaded}
-                  onPress={isIAPRestricted() ? undefined : () => handleWalletAction('stake-tokens')}
-                />
-                
-                <MobileWalletQuickActions
-                  onAddFunds={() => handleWalletAction('add-funds')}
-                  onSend={() => handleWalletAction('send', 'USD')}
-                  onExchange={() => handleWalletAction('exchange', 'USD')}
-                  onWithdraw={() => handleWalletAction('withdraw')}
-                  onBuyCredits={() => handleWalletAction('buy-credits')}
-                  onStakeTokens={() => handleWalletAction('stake-tokens')}
-                  className="mt-4"
-                />
+                {!isIAPRestricted() && (
+                  <>
+                    <MobileWalletBalanceCard
+                      type="cash"
+                      title={translate('wallet.usdBalance')}
+                      balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
+                      subBalance="Available: 100%"
+                      change="+2.3%"
+                      changeType="increase"
+                      isLoading={!isLoaded}
+                      onPress={() => handleWalletAction('add-funds')}
+                    />
+
+                    <MobileWalletBalanceCard
+                      type="credits"
+                      title={translate('wallet.creditsBalance')}
+                      balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} Credits` : translate('common.loading')}
+                      subBalance={`${translate('wallet.available')}: 100%`}
+                      change="+12.1%"
+                      changeType="increase"
+                      isLoading={!isLoaded}
+                      onPress={() => handleWalletAction('buy-credits')}
+                    />
+
+                    <MobileWalletBalanceCard
+                      type="tokens"
+                      title={translate('wallet.vtnaTokens')}
+                      balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : translate('common.loading')}
+                      subBalance={`${translate('wallet.staked')}: 25%`}
+                      change="+5.7%"
+                      changeType="increase"
+                      isLoading={!isLoaded}
+                      onPress={() => handleWalletAction('stake-tokens')}
+                    />
+
+                    <MobileWalletQuickActions
+                      onAddFunds={() => handleWalletAction('add-funds')}
+                      onSend={() => handleWalletAction('send', 'USD')}
+                      onExchange={() => handleWalletAction('exchange', 'USD')}
+                      onWithdraw={() => handleWalletAction('withdraw')}
+                      onBuyCredits={() => handleWalletAction('buy-credits')}
+                      onStakeTokens={() => handleWalletAction('stake-tokens')}
+                      className="mt-4"
+                    />
+                  </>
+                )}
               </div>
             )}
             
@@ -483,7 +487,8 @@ export default function Wallet() {
 
           <SplitBarContent value="balance-overview">
             <div className="mt-6">
-              {/* Row 1: All Account Balance Cards */}
+              {/* Row 1: All Account Balance Cards — hidden on iOS (prototype features) */}
+              {!isIAPRestricted() && (
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
                 <div className="col-span-4">
                   <WalletBalanceCard
@@ -612,6 +617,7 @@ export default function Wallet() {
                   />
                 </div>
               </div>
+              )}
 
               <WalletMotivationalBanner variant="overview" />
 

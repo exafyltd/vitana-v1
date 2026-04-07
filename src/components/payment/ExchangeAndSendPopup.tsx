@@ -13,6 +13,7 @@ import { useMessages } from "@/hooks/useMessages";
 import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins, CreditCard } from "lucide-react";
 import { calculateExchange, formatCurrency, getCurrencySymbol } from "@/lib/exchangeRates";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
+import { isIAPRestricted } from "@/lib/appilix";
 
 interface ExchangeAndSendPopupProps {
   isOpen: boolean;
@@ -27,14 +28,16 @@ interface ExchangeAndSendPopupProps {
   initialToCurrency?: string;
 }
 
-export default function ExchangeAndSendPopup({ 
-  isOpen, 
-  onClose, 
+export default function ExchangeAndSendPopup({
+  isOpen,
+  onClose,
   recipient,
   initialAmount = "",
   initialFromCurrency = "USD",
   initialToCurrency = "VTNA"
 }: ExchangeAndSendPopupProps) {
+  // Hide exchange-and-send on iOS — prototype feature only
+  if (isIAPRestricted()) return null;
   const [amount, setAmount] = useState(initialAmount);
   const [fromCurrency, setFromCurrency] = useState(initialFromCurrency);
   const [toCurrency, setToCurrency] = useState(initialToCurrency);

@@ -27,6 +27,7 @@ import { SendStep } from './steps/SendStep';
 import { ExchangeAndSendStep } from './steps/ExchangeAndSendStep';
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface WalletMasterActionPopupProps {
   open: boolean;
@@ -125,7 +126,10 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
     }
   };
 
-  const renderMenu = () => (
+  const renderMenu = () => {
+    const restricted = isIAPRestricted();
+
+    return (
     <>
       <DialogHeader>
         <DialogTitle className="flex items-center gap-2">
@@ -133,9 +137,10 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
           Wallet Actions
         </DialogTitle>
       </DialogHeader>
-      
+
       <div className="grid gap-4">
-        {/* Buy & Add Section */}
+        {/* Buy & Add Section — hidden on iOS (prototype features) */}
+        {!restricted && (
         <div>
           <h4 className="text-sm font-medium text-muted-foreground mb-3">Purchase & Add Funds</h4>
           <div className="grid gap-2">
@@ -175,10 +180,12 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             </Button>
           </div>
         </div>
+        )}
 
-        <Separator />
+        {!restricted && <Separator />}
 
-        {/* Transfer & Convert Section */}
+        {/* Transfer & Convert Section — hidden on iOS (prototype features) */}
+        {!restricted && (
         <div>
           <h4 className="text-sm font-medium text-muted-foreground mb-3">Transfer & Convert</h4>
           <div className="grid gap-2">            
@@ -220,10 +227,12 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             </Button>
           </div>
         </div>
+        )}
 
-        <Separator />
+        {!restricted && <Separator />}
 
-        {/* Withdraw & Manage Section */}
+        {/* Withdraw & Manage Section — hidden on iOS (prototype features) */}
+        {!restricted && (
         <div>
           <h4 className="text-sm font-medium text-muted-foreground mb-3">Withdraw & Manage</h4>
           <div className="grid gap-2">
@@ -263,9 +272,11 @@ export function WalletMasterActionPopup({ open, onOpenChange, initialStep, selec
             </Button>
           </div>
         </div>
+        )}
       </div>
     </>
   );
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
