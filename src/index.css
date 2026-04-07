@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * WebView (Appilix) button border reset.
+ * Must live OUTSIDE @layer so it beats both preflight and WebView UA styles.
+ * :not(.border):not(.border-2) preserves intentional borders (e.g. outline Button variant).
+ */
+button:not(.border):not(.border-2),
+[role="button"]:not(.border):not(.border-2) {
+  border: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
@@ -293,15 +305,6 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
-  }
-
-  /* Reset button borders — WebView (Appilix) applies default button frames
-     that override Tailwind preflight. Utility classes like `border` still win. */
-  button,
-  [role="button"] {
-    border: none;
-    -webkit-appearance: none;
-    appearance: none;
   }
 
   html, body, #root {
