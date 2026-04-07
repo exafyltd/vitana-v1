@@ -164,7 +164,7 @@ const ResponsivePopoverContent = React.forwardRef<
               )}
               {!title && <div />}
               {!hideCloseButton && (
-                <SheetPrimitive.Close className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-accent -mr-2">
+                <SheetPrimitive.Close className="w-11 h-11 flex items-center justify-center border-0 bg-transparent appearance-none p-0 rounded-full hover:bg-accent -mr-2">
                   <X className="h-5 w-5" />
                   <span className="sr-only">Close</span>
                 </SheetPrimitive.Close>
