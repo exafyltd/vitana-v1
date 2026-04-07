@@ -1,8 +1,5 @@
 import { useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useAIConsent } from "./useAIConsent";
-
-const PENDING_OPEN_KEY = "vitana_orb_pending_open";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -17,7 +14,6 @@ function isOrbAlive(): boolean {
 export function useOrbVoiceWidget() {
   const initialized = useRef(false);
   const { user, session, loading } = useAuth();
-  const { hasConsent, isLoading: consentLoading } = useAIConsent();
 
   // Main init effect — waits for auth to resolve, then inits widget
   useEffect(() => {
@@ -78,25 +74,6 @@ export function useOrbVoiceWidget() {
     initialized.current = true;
     console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
   }, [user?.id]);
-
-  // After consent is freshly granted via the interceptor, auto-open the overlay
-  useEffect(() => {
-    if (consentLoading || !hasConsent) return;
-    let pendingOpen = false;
-    try {
-      pendingOpen = sessionStorage.getItem(PENDING_OPEN_KEY) === 'true';
-      if (pendingOpen) sessionStorage.removeItem(PENDING_OPEN_KEY);
-    } catch {}
-
-    if (pendingOpen) {
-      console.log("[ORB] Consent just granted — auto-opening overlay");
-      // Small delay to ensure widget is fully initialized after consent
-      setTimeout(() => {
-        const orb = (window as any).VitanaOrb;
-        if (orb && typeof orb.show === 'function') orb.show();
-      }, 200);
-    }
-  }, [consentLoading, hasConsent]);
 
   // Cleanup on unmount
   useEffect(() => {
