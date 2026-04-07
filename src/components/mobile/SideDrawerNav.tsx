@@ -11,6 +11,7 @@ import { useAuth } from '@/context/AuthProvider';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
 import { getInstantTenantName } from '@/lib/tenant-display';
 import { supabase } from '@/integrations/supabase/client';
+import { isIAPRestricted } from '@/lib/appilix';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -203,7 +204,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
             {/* Nav items */}
             <div className="flex-1 overflow-y-auto py-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
-              {drawerNavItems.map((item) => {
+              {(isIAPRestricted() ? drawerNavItems.filter(item => item.id !== 'wallet') : drawerNavItems).map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
                 const isDestructive = item.id === 'logout';

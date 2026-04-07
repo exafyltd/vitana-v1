@@ -88,6 +88,13 @@ const quickActionsData = [
 export default function Wallet() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  // Redirect iOS users away — wallet is a prototype feature hidden on iOS
+  useEffect(() => {
+    if (isIAPRestricted()) {
+      navigate('/home', { replace: true });
+    }
+  }, [navigate]);
   const isMobile = useIsMobile();
   const { translate } = useTranslation();
   const filterType = searchParams.get("filter"); // e.g., "reseller_commission"
