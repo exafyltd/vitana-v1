@@ -1,79 +1,63 @@
 
 
-# Unified Mobile Upper-Screen System — 7 Remaining Screens
+# Fix: Settings Mobile Mode Pill with Nested Sub-Categories + Build Error
 
-## Current State Summary
+## Problem
 
-Each screen has varying degrees of the pattern already. The key gaps are:
-- **Orders**: Has header + utility rail + SplitBarList tabs below (second row). No `MobileModePill`. No `compact` on utility rail.
-- **Wallet**: Has header + utility rail + SplitBarList tabs below (second row). No `MobileModePill`. No `compact`.
-- **Health**: Has header + utility rail + SplitBarList tabs below (second row). No `MobileModePill`. No `compact`.
-- **Daily Diary**: Has header + utility rail + custom two-segment tab buttons below (second row). No `MobileModePill`. 
-- **Connectors**: Has header + utility rail. No `MobileModePill` dropdown for section categories. No `compact`.
-- **Inbox**: Has header + utility rail + SplitBarList tabs (Community/Network) + sub-filter pills below (third row). No `MobileModePill`. No `compact`.
-- **Settings**: Has header + utility rail. No `MobileModePill`. Already uses `MobileAppShell`.
+1. **Settings mobile navigation**: The mode pill dropdown has 4 flat entries (Notifications, Privacy, Preferences, Support). When selecting Privacy/Preferences/Support, it merely scrolls to a NavCard on the same page that then navigates to an independent screen (`/settings/privacy`, `/settings/preferences`, `/settings/support`) which does NOT follow the unified mobile pattern. The screenshots confirm this — each sub-page has its own separate header, SplitBarList tabs, and non-unified layout.
 
-## What Changes Per Screen
+2. **Build error**: `npm:@react-email/components@0.0.22` cannot be resolved. The Supabase edge function needs a `deno.json` with package mappings or the import approach needs adjustment.
 
-For all 7 screens: add `MobileModePill` immediately after `ExpandableSearchButton` in the utility rail, use `compact` on `UtilityActionButton`, and remove the separate `SplitBarList` / tab row that currently sits below the utility rail. Content rendering switches on the pill's `activeMode` value directly.
+## Solution
 
-### 1. Orders (`src/components/orders/MobileOrdersView.tsx`)
-- Add `compact` to `UtilityActionButton`
-- Add `MobileModePill` after Search with modes: `📦 Active`, `✅ History`
-- Remove `SplitBarList` row (lines ~299-309). Render content conditionally based on pill mode instead of `SplitBarContent`
-- Tighten spacing: `space-y-4` → `space-y-3`, remove excess padding
+### 1. Settings Mode Pill — Add Nested Children with Direct Navigation
 
-### 2. Wallet (`src/pages/Wallet.tsx`, mobile section ~302-466)
-- Add `compact` to `UtilityActionButton`
-- Add `MobileModePill` after Search with modes: `💰 Balances`, `📊 Activity`, `⚡ Actions`
-- Remove `SplitBar`/`SplitBarList` row (lines ~374-379). Render content conditionally based on pill mode
-- Tighten `space-y-4` → `space-y-3`
+Convert Privacy, Preferences, and Support from flat modes into expandable groups with children (same pattern as Business Hub). Selecting a child navigates directly to a route parameter or renders inline content.
 
-### 3. Health (`src/pages/Health.tsx`, mobile section ~193-299)
-- Add `compact` to `UtilityActionButton`
-- Add `MobileModePill` after Search with modes: `🏠 Overview`, `🏥 Medical`, `💊 Supplements`
-- Remove `SplitBarList` row (lines ~236-243). Render content conditionally based on pill mode
-- Tighten spacing
+**Updated mode structure:**
+```
+Notifications (flat — stays as-is, renders inline)
+Privacy (expandable)
+  → Profile Visibility
+  → Data Sharing  
+  → Security
+Preferences (expandable)
+  → Appearance
+  → Language & Region
+Support (expandable)
+  → Contact Support
+  → Knowledge Base
+```
 
-### 4. Daily Diary (`src/pages/MobileDailyDiary.tsx`)
-- Add `compact` to `UtilityActionButton`
-- Add `MobileModePill` after Search with modes: `🩺 Health Diary`, `🐛 Bug Reports`
-- Remove the custom two-segment button row (lines ~113-134). Render content conditionally based on pill mode
-- Tighten spacing
+When a child is selected, use `navigate()` to go to the sub-page route (e.g., `/settings/privacy`) with a query parameter or state indicating which tab to auto-select (`?tab=profile`, `?tab=data`, `?tab=security`). The sub-pages already use `SplitBar` with those exact tab values.
 
-### 5. Connectors (`src/components/settings/MobileConnectedAppsView.tsx`)
-- Add `compact` to `UtilityActionButton`
-- Add `MobileModePill` after Search with modes: `📱 Social`, `💪 Fitness`, `🏥 Health`, `🔌 Other`
-- Content already renders all sections in a vertical scroll. The pill will filter to show only the selected category section
-- Tighten spacing: `space-y-4` → `space-y-3`
+**However**, the real ask is that these sub-screens should also follow the unified mobile pattern. So instead of navigating away, we should render the sub-content inline within MobileSettings itself, using the mode pill as the sole navigation.
 
-### 6. Inbox (`src/pages/Messages.tsx`, mobile section ~946-1100)
-- Add `compact` to `UtilityActionButton`
-- Add `MobileModePill` after Search with modes: `🌐 Community`, `🏢 Network`
-- Remove `SplitBar`/`SplitBarList` for context tabs (lines ~1040-1048). Wire pill to `messageContext` state
-- Remove the sub-filter pills row (All/Direct/Groups) — merge into pill as children if needed, or keep as lightweight inline pills inside the content area (since they're sub-filters, not modes)
-- Tighten spacing
+**Approach**: Keep `MobileSettings` as the single mobile settings screen. When a nested child is selected (e.g., `privacy.visibility`), render the corresponding content cards inline rather than navigating to a separate page. This eliminates the non-unified sub-screens on mobile entirely.
 
-### 7. Settings (`src/pages/MobileSettings.tsx`)
-- Add `compact` to `UtilityActionButton` (already partially compact)
-- Add `MobileModePill` after Search with modes: `🔔 Notifications`, `🛡️ Privacy`, `🎛️ Preferences`, `🆘 Support`
-- The pill selects which section scrolls into view or filters content. Currently all sections are visible in a single scroll — the pill will act as a jump-to / filter
-- Tighten spacing
+### Files changed
 
-## Files Changed
+**`src/pages/MobileSettings.tsx`**
+- Change `settingsModes` to use `children` for Privacy, Preferences, Support (matching Business Hub pattern)
+- Remove `NavCard` components and `sectionRefs` scroll logic
+- Add inline content rendering for each child mode:
+  - `privacy.visibility` — Profile Visibility Controls (switches from Privacy.tsx)
+  - `privacy.data` — Data Sharing controls + AI consent (from Privacy.tsx)
+  - `privacy.security` — Security settings (from Privacy.tsx)
+  - `preferences.appearance` — Theme, primary color, compact mode (from Preferences.tsx)
+  - `preferences.language` — Language & Region (from Preferences.tsx)
+  - `support.contact` — Contact Support options (from Support.tsx)
+  - `support.knowledge` — Knowledge Base (from Support.tsx)
+- Keep Notifications as a flat top-level mode (renders inline as it does now)
+- Keep Delete Account card at the bottom regardless of mode
+- Remove `useRef` scroll refs since navigation is now mode-based
 
-1. `src/components/orders/MobileOrdersView.tsx` — add MobileModePill, remove SplitBarList, compact utility rail
-2. `src/pages/Wallet.tsx` (mobile block) — add MobileModePill, remove SplitBarList, compact utility rail
-3. `src/pages/Health.tsx` (mobile block) — add MobileModePill, remove SplitBarList, compact utility rail
-4. `src/pages/MobileDailyDiary.tsx` — add MobileModePill, remove custom tab row, compact utility rail
-5. `src/components/settings/MobileConnectedAppsView.tsx` — add MobileModePill, filter sections by mode, compact utility rail
-6. `src/pages/Messages.tsx` (mobile block) — add MobileModePill, remove SplitBarList + sub-filter row, compact utility rail
-7. `src/pages/MobileSettings.tsx` — add MobileModePill, filter/jump sections by mode, compact utility rail
+**`supabase/functions/send-appointment-reminder/index.ts`** and **`_templates/appointment-reminder.tsx`**
+- Both already use `@0.0.22`. The build error is likely caused by missing Deno config. Add a `deno.json` in the function directory with `nodeModulesDir: "auto"` or switch to `esm.sh` imports which Deno resolves without npm node_modules.
+- Safest fix: replace `npm:@react-email/components@0.0.22` with `https://esm.sh/@react-email/components@0.0.22` in both files, which Deno can resolve as URL imports without needing node_modules.
 
-## What Does Not Change
-
-- Desktop layouts on all screens remain untouched
-- Profile is excluded
-- Core content areas/components within each screen remain unchanged
-- The `MobileModePill` component itself needs no changes (already supports flat modes)
+### What does not change
+- Desktop settings pages remain untouched
+- The `MobileModePill` component needs no changes (already supports children)
+- Other screens are not affected
 
