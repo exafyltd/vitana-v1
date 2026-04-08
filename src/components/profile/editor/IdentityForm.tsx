@@ -53,7 +53,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('display_name, handle, avatar_url, avatar_offset_x, avatar_offset_y, longevity_archetype')
+        .select('*')
         .eq('user_id', user.id)
         .single();
 

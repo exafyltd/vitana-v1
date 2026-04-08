@@ -18,7 +18,7 @@ export function useProfilesByIds(userIds: string[]) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('user_id, display_name, avatar_url, avatar_offset_x, avatar_offset_y')
+        .select('user_id, display_name, avatar_url')
         .in('user_id', ids);
       
       if (error) throw error;
