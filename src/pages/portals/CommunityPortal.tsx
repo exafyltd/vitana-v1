@@ -102,7 +102,24 @@ const CommunityPortal = () => {
         }
       });
       if (error) throw error;
-      // Don't reset loading — page will redirect
+      // On Android, OAuth may complete in a Chrome Custom Tab while
+      // the WebView stays on this page. Poll for the session that the
+      // external context writes to shared localStorage.
+      let pollCount = 0;
+      const pollTimer = setInterval(async () => {
+        pollCount++;
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            clearInterval(pollTimer);
+            setLoading(false);
+          }
+        } catch {}
+        if (pollCount >= 15) {
+          clearInterval(pollTimer);
+          setLoading(false);
+        }
+      }, 1000);
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(err.message || 'Social login failed. Please try again.');
