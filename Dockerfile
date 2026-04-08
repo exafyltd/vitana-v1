@@ -2,8 +2,11 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
+# Increase Node.js heap for large builds (551+ screens, 1.5MB main chunk)
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 COPY . .
 RUN npm run build
