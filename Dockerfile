@@ -17,6 +17,9 @@ FROM nginx:1.25-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Create health check file (more reliable than nginx return directive)
+RUN echo "ok" > /usr/share/nginx/html/healthz
+
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
