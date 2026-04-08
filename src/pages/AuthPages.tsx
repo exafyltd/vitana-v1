@@ -47,6 +47,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const isRegister = mode === "register";
 
   useEffect(() => {
@@ -54,7 +55,9 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
   }, []);
 
   const handleProvider = async (provider: string) => {
+    setIsLoading(true);
     try {
+      localStorage.setItem('oauth_provider', provider.toLowerCase());
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider.toLowerCase() as any,
         options: {
@@ -62,9 +65,10 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
         }
       });
       if (error) throw error;
+      // Don't reset loading — page will redirect
     } catch (error: any) {
       console.error('OAuth error:', error.message);
-      // TODO: Add proper error handling UI
+      setIsLoading(false);
     }
   };
 
