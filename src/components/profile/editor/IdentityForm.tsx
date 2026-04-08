@@ -61,8 +61,8 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
         setDisplayName(profile.display_name || "");
         setHandle(profile.handle || "");
         setAvatarUrl(profile.avatar_url || "");
-        setAvatarOffsetX(profile.avatar_offset_x ?? 50);
-        setAvatarOffsetY(profile.avatar_offset_y ?? 50);
+        setAvatarOffsetX((profile as any).avatar_offset_x ?? 50);
+        setAvatarOffsetY((profile as any).avatar_offset_y ?? 50);
         setLongevityArchetype(profile.longevity_archetype || "");
       }
       setLoaded(true);
