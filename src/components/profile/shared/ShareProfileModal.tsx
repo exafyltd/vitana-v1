@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Copy, Check, QrCode, Download, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 import {
   Dialog,
   DialogContent,
@@ -153,7 +154,7 @@ export function ShareProfileModal({
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/5 via-transparent to-[hsl(var(--pill-nutrition-accent))]/5 rounded-2xl pointer-events-none" />
             <div className="relative flex items-center gap-4">
               <Avatar className="h-16 w-16 border-2 border-white/80 dark:border-gray-800/80 shadow-lg">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+                <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
                 <AvatarFallback className="text-lg font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white">
                   {profile.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>

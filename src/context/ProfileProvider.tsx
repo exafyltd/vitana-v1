@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface ProfileData {
   avatar?: string;
+  avatarOffsetX?: number;
+  avatarOffsetY?: number;
   displayName: string;
   role: UserRole;
   tenantId: TenantType;
@@ -88,6 +90,8 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         tenantId: "maxina" as const,
         initials,
         avatar: profileData?.avatar_url || undefined,
+        avatarOffsetX: profileData?.avatar_offset_x ?? 50,
+        avatarOffsetY: profileData?.avatar_offset_y ?? 50,
         handle: profileData?.handle || undefined,
         bio: profileData?.bio || undefined,
         fullName: profileData?.full_name || undefined,

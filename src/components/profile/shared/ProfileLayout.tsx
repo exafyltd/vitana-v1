@@ -334,6 +334,8 @@ export function ProfileLayout({
           profileName={profile.name}
           profileHandle={profile.handle}
           avatarUrl={profile.avatarUrl}
+          avatarOffsetX={profile.avatarOffsetX}
+          avatarOffsetY={profile.avatarOffsetY}
         />
 
         {/* Message Compose Modal for visitor view */}

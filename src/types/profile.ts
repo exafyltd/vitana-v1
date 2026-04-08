@@ -70,6 +70,8 @@ export interface UserProfile {
   name: string;
   handle: string;
   avatarUrl?: string;
+  avatarOffsetX?: number;
+  avatarOffsetY?: number;
   coverUrl?: string;
   roles: Array<'community'|'patient'|'professional'|'staff'|'admin'>;
   membershipTier?: 'vip' | 'standard' | null;

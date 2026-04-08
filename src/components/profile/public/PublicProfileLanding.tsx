@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -67,7 +68,7 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
         <div className="relative max-w-2xl mx-auto px-6 -mt-16 sm:-mt-20">
           <div className="flex flex-col items-center text-center">
             <Avatar className="h-28 w-28 sm:h-36 sm:w-36 ring-4 ring-background shadow-2xl">
-              <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+              <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
               <AvatarFallback className="text-3xl font-bold bg-gradient-to-br from-primary to-primary/60 text-primary-foreground">
                 {profile.name?.charAt(0) || '?'}
               </AvatarFallback>

@@ -105,6 +105,8 @@ export function MobileIdCardSwitcher({
             >
               <MobileIdentityCard
                 avatarUrl={profile.avatarUrl}
+                avatarOffsetX={profile.avatarOffsetX}
+                avatarOffsetY={profile.avatarOffsetY}
                 displayName={profile.name}
                 handle={profile.handle}
                 archetype={profile.longevityArchetype}

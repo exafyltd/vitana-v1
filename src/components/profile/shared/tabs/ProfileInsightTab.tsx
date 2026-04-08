@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { 
   MapPin, 
   Calendar, 
@@ -134,7 +135,7 @@ export function ProfileInsightTab({
             <div className="flex items-start gap-6">
               {/* Avatar */}
               <Avatar className="h-28 w-28 ring-4 ring-white dark:ring-slate-800 shadow-lg">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name || 'User'} />
+                <AvatarImage src={profile.avatarUrl} alt={profile.name || 'User'} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
                 <AvatarFallback className="text-3xl font-semibold bg-gradient-to-br from-violet-500 to-sky-500 text-white">
                   {profile.name?.charAt(0) || 'U'}
                 </AvatarFallback>

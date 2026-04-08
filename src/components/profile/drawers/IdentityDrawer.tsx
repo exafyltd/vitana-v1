@@ -17,6 +17,8 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
     displayName: "",
     handle: "",
     avatarUrl: "",
+    avatarOffsetX: 50,
+    avatarOffsetY: 50,
     longevityArchetype: ""
   });
   const [saving, setSaving] = useState(false);
@@ -50,6 +52,8 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
           display_name: formData.displayName,
           handle: formData.handle,
           avatar_url: formData.avatarUrl,
+          avatar_offset_x: formData.avatarOffsetX,
+          avatar_offset_y: formData.avatarOffsetY,
           longevity_archetype: formData.longevityArchetype,
           updated_at: new Date().toISOString(),
         }, {
