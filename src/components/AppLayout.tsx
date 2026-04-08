@@ -29,8 +29,6 @@ import { useCart } from "@/hooks/useCart";
 import { CartSidebar } from "@/components/cart/CartSidebar";
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
-import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
-
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
@@ -486,7 +484,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
         open={cartOpen} 
         onClose={() => setCartOpen(false)} 
       />
-       <MiniAudioPlayer />
        {/* Processes queued calendar events after sign-in */}
        <div className="hidden">
          {/* Keep DOM clean while mounting the processor */}
