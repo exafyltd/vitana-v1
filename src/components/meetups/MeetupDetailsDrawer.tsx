@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
-import { useProfilePreview } from "@/hooks/useProfilePreview";
+
 
 import { getShareUrl } from "@/lib/shareUrl";
 import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
@@ -209,7 +209,7 @@ export function MeetupDetailsDrawer({
   const [liveParticipantCount, setLiveParticipantCount] = useState<number | null>(null);
   const [hasTicketSelection, setHasTicketSelection] = useState(false);
   
-  const { userId: previewUserId, isOpen: isPreviewOpen, openPreview, closePreview } = useProfilePreview();
+
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [composeMessage, setComposeMessage] = useState("");
   const [isCreatingThread, setIsCreatingThread] = useState(false);
@@ -990,9 +990,16 @@ export function MeetupDetailsDrawer({
                 {/* Identity Chip - Clickable to profile */}
                 <div
                   className={cn(
-                    "group flex items-center gap-2 h-11 sm:h-11 px-2 rounded-full",
+                    "group flex items-center gap-2 h-11 sm:h-11 px-2 rounded-full cursor-pointer",
                     "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenChange(false);
+                    navigate(`/u/${event.creator_handle || event.created_by}`);
+                  }}
+                  role="link"
+                  tabIndex={0}
                 >
                   <ClickableAvatar
                     userId={event.created_by}
@@ -1000,10 +1007,7 @@ export function MeetupDetailsDrawer({
                     fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
                     alt={event.creator_display_name || event.author?.name || 'Community Host'}
                     className="h-7 w-7 ring-1 ring-white/50"
-                    onPreview={(uid, e) => {
-                      e.stopPropagation();
-                      openPreview(uid);
-                    }}
+                    disabled
                   />
                   <div className="flex items-center gap-1.5 pr-2">
                     <span className="text-sm font-semibold max-w-[120px] sm:max-w-[160px] truncate">
