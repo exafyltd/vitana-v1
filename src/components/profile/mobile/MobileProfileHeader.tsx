@@ -2,6 +2,8 @@ import { MobileIdentityCard } from "./MobileIdentityCard";
 
 interface MobileProfileHeaderProps {
   avatarUrl?: string | null;
+  avatarOffsetX?: number;
+  avatarOffsetY?: number;
   displayName: string;
   handle?: string;
   archetype?: string;
@@ -16,6 +18,8 @@ interface MobileProfileHeaderProps {
 
 export function MobileProfileHeader({
   avatarUrl,
+  avatarOffsetX,
+  avatarOffsetY,
   displayName,
   handle,
   archetype,
@@ -29,6 +33,8 @@ export function MobileProfileHeader({
   return (
     <MobileIdentityCard
       avatarUrl={avatarUrl}
+      avatarOffsetX={avatarOffsetX}
+      avatarOffsetY={avatarOffsetY}
       displayName={displayName}
       handle={handle}
       archetype={archetype}

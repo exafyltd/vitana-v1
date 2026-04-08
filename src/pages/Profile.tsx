@@ -62,6 +62,8 @@ export default function Profile() {
     name: profile.displayName,
     handle: profile.handle || "@user",
     avatarUrl: profile.avatar,
+    avatarOffsetX: profile.avatarOffsetX,
+    avatarOffsetY: profile.avatarOffsetY,
     coverUrl: profile.coverUrl,
     roles: ["community" as const],
     membershipTier: null,

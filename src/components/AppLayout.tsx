@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useEffect, useRef, useState } from "react";
@@ -356,7 +357,7 @@ function AppSidebar({
               trigger={
                 <button className="flex items-center gap-2 py-1 rounded-xl p-2 hover:bg-sidebar-accent/50 transition-all hover:shadow-sm relative group w-full">
                   <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                    <AvatarImage src={profile.avatar} alt={profile.displayName} />
+                    <AvatarImage src={profile.avatar} alt={profile.displayName} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
                     <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold">
                       {profile.initials}
                     </AvatarFallback>
@@ -380,7 +381,7 @@ function AppSidebar({
               trigger={
                 <button className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-sidebar-accent/50 transition-all mx-auto">
                   <Avatar className="h-8 w-8 ring-1 ring-sidebar-border">
-                    <AvatarImage src={profile.avatar} alt={profile.displayName} />
+                    <AvatarImage src={profile.avatar} alt={profile.displayName} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
                     <AvatarFallback className="bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800 font-semibold text-xs">
                       {profile.initials}
                     </AvatarFallback>

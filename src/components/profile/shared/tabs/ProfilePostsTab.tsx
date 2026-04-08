@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Heart, MessageSquare, Share, Edit3, MapPin, ExternalLink, Trash2, PenSquare, Send, X } from "lucide-react";
 import { UserProfile } from "@/types/profile";
@@ -191,7 +192,7 @@ function PostCardWithInteractions({
           <Tooltip>
             <TooltipTrigger asChild>
               <Avatar className="h-11 w-11 ring-1 ring-violet-200/50 dark:ring-violet-400/20 transition-all duration-300 cursor-pointer">
-                <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+                <AvatarImage src={profile.avatarUrl} alt={profile.name} style={avatarPositionStyle(profile.avatarOffsetX, profile.avatarOffsetY)} />
                 <AvatarFallback>{profile.name[0]}</AvatarFallback>
               </Avatar>
             </TooltipTrigger>

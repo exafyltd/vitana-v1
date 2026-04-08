@@ -3,16 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Upload, X } from "lucide-react";
+import { Upload, X, Move } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/hooks/useTranslation";
+import { AvatarPositioner } from "./AvatarPositioner";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 
 interface IdentityFormProps {
   onDataChange?: (data: {
     displayName: string;
     handle: string;
     avatarUrl: string;
+    avatarOffsetX: number;
+    avatarOffsetY: number;
     longevityArchetype: string;
   }) => void;
 }
@@ -21,9 +25,12 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   const [displayName, setDisplayName] = useState("");
   const [handle, setHandle] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarOffsetX, setAvatarOffsetX] = useState(50);
+  const [avatarOffsetY, setAvatarOffsetY] = useState(50);
   const [longevityArchetype, setLongevityArchetype] = useState("");
   const [uploading, setUploading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [showPositioner, setShowPositioner] = useState(false);
   const { toast } = useToast();
   const { translate } = useTranslation();
 
@@ -35,9 +42,9 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
   // Notify parent of data changes only after initial load
   useEffect(() => {
     if (loaded && onDataChange) {
-      onDataChange({ displayName, handle, avatarUrl, longevityArchetype });
+      onDataChange({ displayName, handle, avatarUrl, avatarOffsetX, avatarOffsetY, longevityArchetype });
     }
-  }, [displayName, handle, avatarUrl, longevityArchetype, onDataChange, loaded]);
+  }, [displayName, handle, avatarUrl, avatarOffsetX, avatarOffsetY, longevityArchetype, onDataChange, loaded]);
 
   const loadProfile = async () => {
     try {
@@ -46,7 +53,7 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('display_name, handle, avatar_url, longevity_archetype')
+        .select('display_name, handle, avatar_url, avatar_offset_x, avatar_offset_y, longevity_archetype')
         .eq('user_id', user.id)
         .single();
 
@@ -54,6 +61,8 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
         setDisplayName(profile.display_name || "");
         setHandle(profile.handle || "");
         setAvatarUrl(profile.avatar_url || "");
+        setAvatarOffsetX(profile.avatar_offset_x ?? 50);
+        setAvatarOffsetY(profile.avatar_offset_y ?? 50);
         setLongevityArchetype(profile.longevity_archetype || "");
       }
       setLoaded(true);
@@ -140,10 +149,13 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
     const url = await uploadFile(file, 'avatars', 'avatar');
     if (url) {
       setAvatarUrl(url);
+      setAvatarOffsetX(50);
+      setAvatarOffsetY(50);
       toast({
         title: translate('profileEditor.identity.avatarUploaded'),
         description: translate('profileEditor.identity.avatarUploadedDesc'),
       });
+      setShowPositioner(true);
     }
     setUploading(false);
   };
@@ -171,15 +183,15 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
         <Label>{translate('profileEditor.identity.profilePicture')}</Label>
         <div className="flex items-center gap-4">
           <Avatar className="w-20 h-20">
-            <AvatarImage src={avatarUrl} />
+            <AvatarImage src={avatarUrl} style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)} />
             <AvatarFallback className="text-lg">
               {displayName.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
-          <div className="flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
+          <div className="flex gap-2 flex-wrap">
+            <Button
+              variant="outline"
+              size="sm"
               onClick={handleAvatarUpload}
               disabled={uploading}
             >
@@ -187,10 +199,21 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
               {uploading ? translate('profileEditor.identity.uploading') : translate('profileEditor.identity.upload')}
             </Button>
             {avatarUrl && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setAvatarUrl("")}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPositioner(true)}
+                disabled={uploading}
+              >
+                <Move className="w-4 h-4 mr-2" />
+                {translate('profileEditor.identity.reposition', 'Reposition')}
+              </Button>
+            )}
+            {avatarUrl && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => { setAvatarUrl(""); setAvatarOffsetX(50); setAvatarOffsetY(50); }}
                 disabled={uploading}
               >
                 <X className="w-4 h-4 mr-2" />
@@ -243,6 +266,21 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
           {translate('profileEditor.identity.personalityDescriptorDescription')}
         </p>
       </div>
+
+      {/* Avatar Positioner Dialog */}
+      {avatarUrl && (
+        <AvatarPositioner
+          open={showPositioner}
+          onOpenChange={setShowPositioner}
+          imageUrl={avatarUrl}
+          initialOffsetX={avatarOffsetX}
+          initialOffsetY={avatarOffsetY}
+          onConfirm={(x, y) => {
+            setAvatarOffsetX(x);
+            setAvatarOffsetY(y);
+          }}
+        />
+      )}
     </div>
   );
 }

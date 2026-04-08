@@ -4,9 +4,12 @@ import { Pencil, ChevronRight, Share2, UserPlus, UserCheck, MessageSquare } from
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
+import { avatarPositionStyle } from "@/lib/avatarPosition";
 
 interface MobileIdentityCardProps {
   avatarUrl?: string | null;
+  avatarOffsetX?: number;
+  avatarOffsetY?: number;
   displayName: string;
   handle?: string;
   archetype?: string;
@@ -26,6 +29,8 @@ interface MobileIdentityCardProps {
 
 export function MobileIdentityCard({
   avatarUrl,
+  avatarOffsetX,
+  avatarOffsetY,
   displayName,
   handle,
   archetype,
@@ -105,7 +110,7 @@ export function MobileIdentityCard({
               style={{ background: `radial-gradient(circle, ${tier.color}, transparent 70%)` }}
             />
             <Avatar className="relative h-24 w-24 border-[3px] border-white/10 shadow-lg">
-              <AvatarImage src={avatarUrl || undefined} alt={displayName} />
+              <AvatarImage src={avatarUrl || undefined} alt={displayName} style={avatarPositionStyle(avatarOffsetX, avatarOffsetY)} />
               <AvatarFallback className="text-xl font-semibold bg-white/5 text-white/80">
                 {initials}
               </AvatarFallback>
