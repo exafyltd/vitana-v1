@@ -33,42 +33,42 @@ const fullNameSchema = z.string()
 // Friendly error message mapping
 const getAuthErrorMessage = (error: any): string => {
   const errorMsg = error?.message || '';
-  
+
   console.error('[Auth] Error:', errorMsg);
-  
+
   // Network errors
   if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
     return 'Network error. Please check your internet connection and try again.';
   }
-  
+
   // Rate limiting
   if (errorMsg.includes('rate limit') || errorMsg.includes('too many requests')) {
     return 'Too many attempts. Please wait a moment and try again.';
   }
-  
+
   // Sign up errors
   if (errorMsg.includes('User already registered')) {
     return 'This email is already registered. Please sign in instead.';
   }
-  
+
   if (errorMsg.includes('Password should be at least')) {
     return 'Password must be at least 6 characters long.';
   }
-  
+
   // Sign in errors
   if (errorMsg.includes('Invalid login credentials') || errorMsg.includes('Invalid email or password')) {
     return 'Invalid email or password. Please check your credentials and try again.';
   }
-  
+
   if (errorMsg.includes('Email not confirmed')) {
     return 'Please verify your email address before signing in. Check your inbox for a confirmation link.';
   }
-  
+
   // General errors
   if (errorMsg.includes('timeout')) {
     return 'Request timed out. Please try again.';
   }
-  
+
   // Default fallback
   return errorMsg || 'An unexpected error occurred. Please try again.';
 };
@@ -141,15 +141,15 @@ export default function Auth() {
 
       // Track email for resend button
       setSignupEmail(emailValidation.data);
-      
+
       // Show success message for email verification
       setError('✅ Registration successful! Please check your email for a confirmation link to activate your account.');
-      
+
       // Clear form fields
       setEmail('');
       setPassword('');
       setFullName('');
-      
+
     } catch (err: any) {
       setError(getAuthErrorMessage(err));
     } finally {
@@ -193,7 +193,7 @@ export default function Auth() {
       setSignInEmailNotConfirmed(false);
       console.log('[Auth] Sign in successful');
       navigate('/home');
-      
+
     } catch (err: any) {
       setError(getAuthErrorMessage(err));
     } finally {
@@ -213,7 +213,24 @@ export default function Auth() {
         }
       });
       if (error) throw error;
-      // Don't reset loading — page will redirect
+      // On Android, OAuth may complete in a Chrome Custom Tab while
+      // the WebView stays on this page. Poll for the session that the
+      // external context writes to shared localStorage.
+      let pollCount = 0;
+      const pollTimer = setInterval(async () => {
+        pollCount++;
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            clearInterval(pollTimer);
+            setIsLoading(false);
+          }
+        } catch {}
+        if (pollCount >= 15) {
+          clearInterval(pollTimer);
+          setIsLoading(false);
+        }
+      }, 1000);
     } catch (err: any) {
       console.error('OAuth error:', err);
       setError(getAuthErrorMessage(err));
@@ -223,7 +240,7 @@ export default function Auth() {
 
   return (
     <>
-      <SEO 
+      <SEO
         title="Sign In - VITANA Health Platform"
         description="Access your VITANA health dashboard. Sign in or create an account to track your wellness journey, view lab results, and discover personalized health insights."
       />
@@ -243,7 +260,7 @@ export default function Auth() {
                 <TabsTrigger value="signin">{translate('authPage.signIn', 'Sign In')}</TabsTrigger>
                 <TabsTrigger value="signup">{translate('authPage.signUp', 'Sign Up')}</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="signin">
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
@@ -284,7 +301,7 @@ export default function Auth() {
                     </div>
                   </div>
                   {error && (
-                    <Alert variant={error.startsWith('✅') ? 'default' : error.includes('check your email') ? 'default' : 'destructive'} 
+                    <Alert variant={error.startsWith('✅') ? 'default' : error.includes('check your email') ? 'default' : 'destructive'}
                            className={error.startsWith('✅') ? 'border-green-500 bg-green-50 text-green-700' : ''}>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
@@ -296,7 +313,7 @@ export default function Auth() {
                     {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     {translate('authPage.signIn', 'Sign In')}
                   </Button>
-                  
+
                   <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
                       <div className="w-full border-t border-border/50" />
@@ -341,7 +358,7 @@ export default function Auth() {
 
                 </form>
               </TabsContent>
-              
+
               <TabsContent value="signup">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
