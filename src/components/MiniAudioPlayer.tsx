@@ -76,81 +76,33 @@ export function MiniAudioPlayer() {
 
   const progressPercentage = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // ── Mobile: floating pill + drawer ──────────────────────────────────
+  // ── Mobile: small FAB indicator + drawer ────────────────────────────
   if (isMobile) {
     return (
       <>
-        {/* Compact floating pill above MobileBottomNav */}
-        <div
-          className="fixed left-3 right-3 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300"
-          style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px) + 8px)' }}
+        {/* Floating indicator button */}
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="fixed right-4 z-50 w-12 h-12 rounded-full shadow-lg flex items-center justify-center overflow-hidden bg-primary hover:bg-primary/90 active:scale-95 transition-transform"
+          style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px) + 12px)' }}
+          aria-label="Open audio player"
         >
-          <div
-            className="flex items-center gap-3 rounded-2xl bg-background/95 backdrop-blur-xl border border-border/60 shadow-lg px-3 py-2.5 cursor-pointer"
-            onClick={() => setDrawerOpen(true)}
-          >
-            {/* Thumbnail or music icon */}
-            {currentMedia.imageUrl ? (
-              <img
-                src={currentMedia.imageUrl}
-                alt={currentMedia.title}
-                className="w-10 h-10 rounded-xl object-cover flex-shrink-0"
-              />
-            ) : (
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Music className="w-5 h-5 text-primary" />
-              </div>
-            )}
+          {/* Pulse ring when playing */}
+          {isPlaying && (
+            <span className="absolute inset-0 rounded-full bg-primary/40 animate-ping" />
+          )}
 
-            {/* Track info */}
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-foreground truncate leading-tight">
-                {currentMedia.title}
-              </p>
-              <p className="text-xs text-muted-foreground truncate leading-tight">
-                {currentMedia.creator}
-              </p>
-            </div>
-
-            {/* Play/Pause */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                togglePlay();
-              }}
-              className="h-9 w-9 p-0 rounded-full bg-primary hover:bg-primary/90 flex-shrink-0"
-            >
-              {isPlaying ? (
-                <Pause className="h-4 w-4 text-primary-foreground" />
-              ) : (
-                <Play className="h-4 w-4 text-primary-foreground ml-0.5" />
-              )}
-            </Button>
-
-            {/* Close */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                closeMedia();
-              }}
-              className="h-7 w-7 p-0 flex-shrink-0"
-            >
-              <X className="h-3.5 w-3.5 text-muted-foreground" />
-            </Button>
-
-            {/* Progress bar at bottom of pill */}
-            <div className="absolute bottom-0 left-4 right-4 h-0.5 bg-muted rounded-full overflow-hidden">
-              <div
-                className="h-full bg-primary rounded-full transition-all duration-300"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
-          </div>
-        </div>
+          {/* Album art or music icon */}
+          {currentMedia.imageUrl ? (
+            <img
+              src={currentMedia.imageUrl}
+              alt={currentMedia.title}
+              className="w-full h-full object-cover relative z-10"
+            />
+          ) : (
+            <Music className="w-5 h-5 text-primary-foreground relative z-10" />
+          )}
+        </button>
 
         {/* Expanded drawer */}
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
