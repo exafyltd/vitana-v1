@@ -65,7 +65,24 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
         }
       });
       if (error) throw error;
-      // Don't reset loading — page will redirect
+      // On Android, OAuth may complete in a Chrome Custom Tab while
+      // the WebView stays on this page. Poll for the session that the
+      // external context writes to shared localStorage.
+      let pollCount = 0;
+      const pollTimer = setInterval(async () => {
+        pollCount++;
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            clearInterval(pollTimer);
+            setIsLoading(false);
+          }
+        } catch {}
+        if (pollCount >= 15) {
+          clearInterval(pollTimer);
+          setIsLoading(false);
+        }
+      }, 1000);
     } catch (error: any) {
       console.error('OAuth error:', error.message);
       setIsLoading(false);
@@ -114,7 +131,7 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4 pb-32 md:pb-0">
       <SEO title={title} description={description} canonical={window.location.href} />
       <main className="w-full max-w-lg">
-      
+
         <article className="w-full rounded-3xl border bg-card p-8 md:p-10 shadow-sm">
           <header className="text-center space-y-2 mb-6">
             <div className="mx-auto flex items-center justify-center gap-2">
@@ -184,8 +201,8 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm">
-                <Checkbox 
-                  id="keep-logged-in" 
+                <Checkbox
+                  id="keep-logged-in"
                   checked={keepLoggedIn}
                   onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
                 />
