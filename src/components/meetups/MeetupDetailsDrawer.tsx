@@ -86,18 +86,7 @@ import {
   Eye,
   Send,
   ArrowLeft,
-  Copy,
-  QrCode,
-  ExternalLink,
 } from "lucide-react";
-import { useProfileShare } from "@/hooks/useProfileShare";
-import { QRCodeSVG } from "qrcode.react";
-import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
-import { XIcon } from "@/components/icons/XIcon";
-import { FacebookIcon } from "@/components/icons/FacebookIcon";
-import { InstagramIcon } from "@/components/icons/InstagramIcon";
-import { TikTokIcon } from "@/components/icons/TikTokIcon";
-import { YouTubeIcon } from "@/components/icons/YouTubeIcon";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
 import { format, formatDistanceToNow, differenceInHours } from "date-fns";
 import { de as deLocale } from "date-fns/locale";
@@ -224,9 +213,6 @@ export function MeetupDetailsDrawer({
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [composeMessage, setComposeMessage] = useState("");
   const [isCreatingThread, setIsCreatingThread] = useState(false);
-  const [hostProfileOpen, setHostProfileOpen] = useState(false);
-  const [showHostQR, setShowHostQR] = useState(false);
-  const [hostLinkCopied, setHostLinkCopied] = useState(false);
   // Share dialog state now managed by parent via onShareEvent callback
   
   const { addEvent, removeEvent } = useCalendarEvents();
@@ -235,12 +221,6 @@ export function MeetupDetailsDrawer({
   const { translate, isGerman } = useTranslation();
   const queryClient = useQueryClient();
 
-  const hostShareHook = useProfileShare({
-    handle: event.creator_handle || 'host',
-    name: event.creator_display_name || event.author?.name || 'Host',
-    profileId: event.created_by || '',
-    isPublic: true,
-  });
 
   // Signal ORB suppression when drawer is open on mobile
   useEffect(() => {
@@ -907,129 +887,8 @@ export function MeetupDetailsDrawer({
         </div>
       )}
 
-      {/* Inline share profile view — avoids opening a second Radix Dialog */}
-      {hostProfileOpen && (
-        <div className="flex flex-col h-full">
-          <div className="flex items-center gap-3 p-4 border-b border-border/50">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="shrink-0"
-              onClick={() => setHostProfileOpen(false)}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <h3 className="text-xl font-bold text-foreground">{translate('share.shareProfile', 'Share Profile')}</h3>
-          </div>
-          <div className="flex-1 overflow-y-auto p-6 space-y-5">
-            {/* Mini ID Card */}
-            <div className="relative p-5 rounded-2xl bg-gradient-to-br from-white/80 via-white/50 to-white/20 dark:from-gray-900/80 dark:via-gray-900/50 dark:to-gray-900/20 backdrop-blur-xl border border-white/40 dark:border-gray-800/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)]">
-              <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))]/5 via-transparent to-[hsl(var(--pill-nutrition-accent))]/5 rounded-2xl pointer-events-none" />
-              <div className="relative flex items-center gap-4">
-                <Avatar className="h-16 w-16 border-2 border-white/80 dark:border-gray-800/80 shadow-lg">
-                  <AvatarImage src={hostAvatar} alt={hostName} />
-                  <AvatarFallback className="text-lg font-bold bg-gradient-to-br from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] text-white">
-                    {hostName.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-bold text-foreground truncate">{hostName}</h3>
-                  <p className="text-sm text-muted-foreground">@{hostHandle}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Copy Link */}
-            <Button
-              onClick={async () => {
-                await hostShareHook.copyLink();
-                setHostLinkCopied(true);
-                setTimeout(() => setHostLinkCopied(false), 2000);
-              }}
-              className="w-full justify-start gap-3 h-12 rounded-2xl bg-gradient-to-r from-[hsl(var(--sys-vitana-accent))] to-[hsl(var(--pill-nutrition-accent))] hover:from-[hsl(var(--sys-vitana-accent))]/90 hover:to-[hsl(var(--pill-nutrition-accent))]/90 shadow-[0_4px_16px_hsl(var(--sys-vitana-accent)/0.3)] hover:shadow-[0_6px_24px_hsl(var(--sys-vitana-accent)/0.4)] transition-all text-white border-0"
-              variant="default"
-            >
-              {hostLinkCopied ? (
-                <>
-                  <Check className="h-5 w-5 animate-in zoom-in-50 duration-200" />
-                  <span className="font-semibold">{translate('share.linkCopied', 'Link Copied!')}</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-5 w-5" />
-                  <span className="font-semibold">{translate('share.copyProfileLink', 'Copy Profile Link')}</span>
-                </>
-              )}
-            </Button>
-
-            {/* QR Code */}
-            {!showHostQR ? (
-              <Button
-                onClick={() => setShowHostQR(true)}
-                variant="outline"
-                className="w-full justify-start gap-3 h-12 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
-              >
-                <QrCode className="h-5 w-5" />
-                <span className="font-medium">{translate('share.showQRCode', 'Show QR Code')}</span>
-              </Button>
-            ) : (
-              <div className="space-y-3 animate-in fade-in-0 slide-in-from-top-2 duration-300">
-                <div className="flex items-center justify-center p-6 bg-white dark:bg-gray-900 rounded-2xl border border-white/40 dark:border-gray-800/40 shadow-lg">
-                  <QRCodeSVG
-                    id="host-profile-qr-code"
-                    value={`${window.location.origin}/u/${event.created_by}`}
-                    size={200}
-                    level="H"
-                    includeMargin
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Social Share */}
-            <div className="space-y-3">
-              <p className="text-sm font-semibold text-muted-foreground">{translate('share.shareToSocial', 'Share to social')}</p>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { name: 'LinkedIn', icon: <LinkedInIcon className="h-5 w-5" />, handler: hostShareHook.shareToLinkedIn },
-                  { name: 'X', icon: <XIcon className="h-5 w-5" />, handler: hostShareHook.shareToX },
-                  { name: 'Facebook', icon: <FacebookIcon className="h-5 w-5" />, handler: hostShareHook.shareToFacebook },
-                  { name: 'Instagram', icon: <InstagramIcon className="h-5 w-5" />, handler: hostShareHook.shareToInstagram },
-                  { name: 'TikTok', icon: <TikTokIcon className="h-5 w-5" />, handler: hostShareHook.shareToTikTok },
-                  { name: 'YouTube', icon: <YouTubeIcon className="h-5 w-5" />, handler: hostShareHook.shareToYouTube },
-                ].map((platform) => (
-                  <Button
-                    key={platform.name}
-                    onClick={platform.handler}
-                    variant="outline"
-                    className="gap-2 h-12 rounded-2xl backdrop-blur-sm transition-all flex flex-col items-center justify-center py-2 px-3 bg-white/40 dark:bg-gray-800/40 border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60"
-                  >
-                    {platform.icon}
-                    <span className="text-xs font-medium">{platform.name}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* View Profile */}
-            <Button
-              onClick={() => {
-                setHostProfileOpen(false);
-                onOpenChange(false);
-                navigate(`/u/${event.created_by}`);
-              }}
-              variant="secondary"
-              className="w-full gap-2 h-11 rounded-2xl bg-white/40 dark:bg-gray-800/40 backdrop-blur-sm border-white/40 dark:border-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-800/60 transition-all"
-            >
-              <ExternalLink className="h-4 w-4" />
-              <span className="font-medium">{translate('share.viewPublicProfile', 'View Public Profile')}</span>
-            </Button>
-          </div>
-        </div>
-      )}
-
       <div
-        className={cn("flex flex-col h-full", (messageModalOpen || hostProfileOpen) && "hidden")}
+        className={cn("flex flex-col h-full", messageModalOpen && "hidden")}
         onTouchStart={!isMobile ? onTouchStart : undefined}
         onTouchMove={!isMobile ? onTouchMove : undefined}
         onTouchEnd={!isMobile ? onTouchEnd : undefined}
@@ -1441,15 +1300,15 @@ export function MeetupDetailsDrawer({
               <div className="flex items-center gap-3 p-4 bg-muted/40 rounded-2xl">
                 <ClickableAvatar
                   userId={event.created_by}
+                  handle={event.creator_handle}
                   src={event.creator_avatar_url || event.author?.avatar}
                   fallback={(event.creator_display_name || event.author?.name)?.[0] || 'H'}
-                   alt={event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}
+                  alt={event.creator_display_name || event.author?.name || translate('eventDrawer.communityHost', 'Community Host')}
                   className="h-14 w-14 border-2 border-primary"
-                  onPreview={(uid, e) => {
+                  onClick={(e) => {
                     e.stopPropagation();
-                    setShowHostQR(false);
-                    setHostLinkCopied(false);
-                    setHostProfileOpen(true);
+                    onOpenChange(false);
+                    navigate(`/u/${event.creator_handle || event.created_by}`);
                   }}
                 />
                 <div className="flex-1 min-w-0">
